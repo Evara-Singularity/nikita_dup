@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductComponent implements OnInit {
 
-  private productMsnId: string = null;
+  public productMsnId: object = null;
 
   constructor(
     private http: HttpClient,
@@ -25,7 +25,7 @@ export class ProductComponent implements OnInit {
 
   getParams() {
     this.route.data.subscribe((data)=>{
-      console.log('getParams data', data);
+      this.productMsnId = data;
     })
   }
 

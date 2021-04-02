@@ -1,0 +1,32 @@
+<app-pop-up class="bs-popup" (outData$)="outData($event)"
+    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16', class: 'payment-popup', selector:'openViewAllPopup', headerText: 'Similar Products'}">
+    <div class="content-popup card-30" content>
+        <ul class="view-products list">
+            <li *ngFor="let similarProduct of similarProducts; let i = index;">
+                <a href="{{similarProduct.productUrl}}" class="clearfix">
+                    <div class="product-img">
+                        <img src="{{imagePath+similarProduct.mainImageLink}}" alt="product Image">
+                    </div>
+                    <div class="product-description">
+                        <p class="description-txt">{{similarProduct.productName}}</p>
+                        <p class="price">
+                            <span class="before-discount"> &#x20B9;{{similarProduct.mrp | mathFloor | number:
+                                '1.0-0'}}</span>
+                            <span class="discount"
+                                *ngIf="similarProduct.discount != undefined && similarProduct.discount>0 && similarProduct.mrp > 0">{{((similarProduct.mrp
+                                - similarProduct.priceWithoutTax)/similarProduct.mrp)*100 | mathFloor
+                                | number : '1.0-0'}}% OFF</span>
+                            <span class="after-discount">&#x20B9;{{similarProduct.priceWithoutTax | mathFloor |
+                                number: '1.0-0'}}</span>
+                        </p>
+                        <ng-container *ngFor="let itemEl of similarProduct.shortDesc;">
+                            <p *ngIf="itemEl.key==='Brand'" class="seller">
+                                <span>By :</span> {{itemEl.value}}
+                            </p>
+                        </ng-container>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</app-pop-up>

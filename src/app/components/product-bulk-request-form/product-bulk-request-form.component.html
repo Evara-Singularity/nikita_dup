@@ -1,0 +1,88 @@
+<app-pop-up *ngIf="openBulkRequestPopup"
+    [data]="{class: 'bulkRequest', selector: 'openBulkRequestPopup', headerCustom:true}">
+    <div class="head-sec" header>
+        <i *ngIf="!isOutOfStockSuccessfull" class="icon-circle-delete f-left" (click)="close()" ></i>
+        <p *ngIf="!isOutOfStockSuccessfull" class="txt"> </p>
+    </div>
+    <div class="content-popup bulkRequest" content>
+        <p *ngIf="!isOutOfStockSuccessfull" class="prod-name">
+            {{productInfo.productName}}
+        </p>
+        <p *ngIf="!isOutOfStockSuccessfull" class="fill-detail">
+            Fill in the required details:
+        </p>
+        <form *ngIf="!isOutOfStockSuccessfull" [formGroup]="outOfStockForm" class="rfq-form" (submit)="verifyGSTIN(outOfStockForm.value)">
+            <div class="clearfix">
+                <div class="inpt-brand input-field readOnlytxt">
+                    <input type="text" formControlName="brandName" placeholder="Brand*" name="brand" value="{{productInfo.brand}}" readonly>
+                </div>
+                <div class="input-field choose-qty">
+                    <input type="number" min="{{productInfo['minimal_quantity']}}" formControlName="quantity" maxlength="3" placeholder="Qty*">
+                    <ng-container *ngIf="rfqQuantity.dirty && rfqQuantity.invalid">
+                        <p *ngIf="rfqQuantity.hasError('required')" class="error-msg">
+                            Kindly enter product quantity
+                        </p>
+                        <p *ngIf="rfqQuantity.hasError('min')" class="error-msg">
+                            RFQ Quantity should be greater than {{productInfo['minimal_quantity'] ? productInfo['minimal_quantity'] : 0}}
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="input-field">
+                    <textarea formControlName="description" placeholder="Add Comment.." name="desc" maxlength="300"></textarea>
+                </div>
+            </div>
+            <div class="businessCust">
+                <label>
+                    <input type="checkbox" [checked]="isChecked" (change)="changeOosUserType()">
+                    <span class="custChck">I am a business customer</span>
+                </label>
+            </div>
+            <div *ngIf="isChecked">
+                <div class="input-field">
+                    <input class="form-control f-size-13 text-grey pad-tb-5  b-l-0 text-400 h-40 relative " type="text" maxlength="15" formControlName="tin" placeholder="GSTIN*" (keypress)="gstinError;gstinError=''" >
+                    <p *ngIf="outOfStockForm.controls['tin'].dirty && outOfStockForm.controls['tin'].hasError('required')" class="error-msg">Kindly enter your GSTIN NO.</p>
+                    <p *ngIf="!outOfStockForm.controls['tin'].hasError('required') && outOfStockForm.controls['tin'].hasError('pattern')" class="error-msg">Please provide valid GSTIN NO.</p>
+                    <p *ngIf="outOfStockForm.controls['tin'].errors == null && gstinError" class="error-msg"> {{gstinError}} </p>
+                </div>
+            </div>
+            <div class="input-field">
+                <input type="text" maxlength="30" formControlName="first_name" placeholder="Full Name*"
+                    name="firstName">
+                <p *ngIf="outOfStockForm.controls['first_name'].dirty && outOfStockForm.controls['first_name'].hasError('required')"
+                    class="error-msg">Kindly enter your full name</p>
+            </div>
+            <div class="input-field">
+                <input type="email" placeholder="Email ID*" formControlName="email" name="email">
+                <p *ngIf="outOfStockForm.controls['email'].dirty && outOfStockForm.controls['email'].hasError('required')"
+                    class="error-msg">Kindly enter your email id</p>
+                <p *ngIf="!outOfStockForm.controls['email'].hasError('required') && outOfStockForm.controls['email'].hasError('invalidCharT')"
+                    class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your valid email id</p>
+            </div>
+            <div class="input-field">
+                <input minlength="10" maxlength="10" (keypress)="checkQuantityCode($event)" type="number"
+                    formControlName="phone" placeholder="Phone No.*" name="phoneNumber">
+                <p *ngIf="outOfStockForm.controls['phone'].dirty && outOfStockForm.controls['phone'].hasError('required')"
+                    class="error-msg">Kindly enter your phone no.</p>
+                <p *ngIf="!outOfStockForm.controls['phone'].hasError('required') && outOfStockForm.controls['phone'].hasError('minlength')"
+                    class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your 10 digit phone number</p>
+            </div>
+            <div class="input-field">
+                <input (keyup)="getByPincode()" maxlength="6" type="text" formControlName="rfq_pincode"
+                    placeholder="Pincode*" name="rfq_pincode">
+                <p *ngIf="outOfStockForm.controls['rfq_pincode'].dirty && outOfStockForm.controls['rfq_pincode'].invalid"
+                    class="error-msg"> {{outOfStockForm.controls['rfq_pincode'].errors.message }}</p>
+                <p *ngIf="outOfStockForm.controls['rfq_pincode'].valid && isPincodeNotValid" class="error-msg">Invalid
+                    pincode
+                </p>
+            </div>
+            <div class="input-field readOnlytxt">
+                <input readonly type="text" formControlName="city" placeholder="City*" name="city">
+            </div>
+            <div class="input-field readOnlytxt">
+                <input readonly type="text" formControlName="stateName" placeholder="State*" name="state">
+            </div>
+            <button type="submit" [ngClass]="outOfStockForm.invalid ? 'disable-txt':'active'"
+                [disabled]="outOfStockForm.invalid" class="submit-btn  popup-bottom">GET BULK QUOTE NOW</button>
+        </form>
+    </div>
+</app-pop-up>

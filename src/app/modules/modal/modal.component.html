@@ -1,0 +1,10 @@
+<div [ngClass]="{'show':showModal, 'hide': !showModal,'modalClass':modalClass,'heightFull':heightFull,'showVideoOverlay':showVideoOverlay}">
+    <div class="open">
+        <div class="bottom-options">
+            <div class="overlay"></div>
+            <div class="content-box verifyPopup">
+                <ng-template modal-host></ng-template>
+            </div>
+        </div>
+    </div>
+</div>

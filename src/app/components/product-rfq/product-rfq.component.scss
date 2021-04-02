@@ -1,0 +1,212 @@
+@import "../../scss/variables";
+
+.rfqForm {
+    .rfq_header {
+        display: flex;
+        img {
+            width: 30px;
+        }
+        .rfq_header_text {
+            margin-left: 15px;
+            h3 {
+                color: #f5681e;
+                font-size: 14px;
+                padding: 5px 0px;
+            }
+            p {
+                color: #53534F;
+                font-size: 12px;
+            }
+            .ins-text {
+                color: #303030;
+            }
+        }
+    }
+    .product-rfq {
+        .multiple-form-field {
+            display: flex;
+            &>div {
+                width: 60%;
+                &:first-child {
+                    width: 40%;
+                    margin-right: 15px;
+                }
+            }
+        }
+        .input-field {
+            margin-bottom: 15px;
+        }
+        .rfq-checkbox {
+            margin-bottom: 15px;
+            @extend %clear-fix;
+            label {
+                @extend %custom-check-box-checkout;
+                .custom-box {
+                    font-size: 14px;
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+            .chk-txt {
+                font-size: $medium-font;
+                width: calc(100% - 25px);
+                float: right;
+                .heading {
+                    font-weight: bold;
+                    display: block;
+                    font-size: $large-font;
+                    color: #343434;
+                    line-height: 21px;
+                }
+                .txt {
+                    font-size: $medium-font;
+                    color: #343434;
+                    font-weight: normal;
+                }
+            }
+        }
+        input,
+        select {
+            width: 100%;
+            border: 1px solid #343434;
+            border-width: 1px;
+            height: 40px;
+            padding: 0px 10px 0px 10px;
+            font-size: 14px;
+            border-radius: 3px;
+            background: #fff;
+            font-family: inherit;
+        }
+        label.indusrty {
+            position: relative;
+            display: block;
+            select+.icon-down {
+                position: absolute;
+                right: 10px;
+                top: 15px;
+                font-size: $large-font;
+            }
+        }
+        textarea {
+            height: 60px;
+            border: 1px solid #343434;
+            padding: 10px 10px 0px 10px;
+            width: 100%;
+            border-width: 1px;
+            font-size: 14px;
+            border-radius: 3px;
+            font-family: inherit;
+        }
+        @include placeholder {
+            font-size: 14px;
+        }
+        input {
+            &:read-only {
+                background: #E7E7E7;
+            }
+        }
+        background: #fff4ef;
+        padding: 15px;
+        p {
+            // color: #f5681e;
+            // font-size: 14px;
+            // font-weight: bold;
+            // line-height: 19px;
+            &.error-txt {
+                color: #D7222C;
+                margin-top: 5px;
+                font-weight: normal !important;
+            }
+        }
+        span {
+            color: #53534f;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 16px;
+        }
+        .req-qty {
+            padding: 20px 0;
+            display: flex;
+            label {
+                width: calc(100% - 160px);
+                font-size: 14px;
+                line-height: 25px;
+            }
+            .quantity-block {
+                width: 160px;
+                display: inline-flex;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                .qty-btn {
+                    width: 30px;
+                    height: 30px;
+                    text-align: center;
+                    background: #dbedff;
+                    border: 1px solid #8bc5ff;
+                    line-height: 30px;
+                    font-size: 14px;
+                    border-radius: 3px;
+                }
+                .add-qty {
+                    margin-right: 5px;
+                }
+                .remove-qty {
+                    margin-left: 5px;
+                }
+                input {
+                    width: 60px;
+                    padding: 0px;
+                    height: 30px;
+                    background: #ddd;
+                    text-align: center;
+                    border: none;
+                    background: white;
+                    border-radius: 2px;
+                    border: 1px solid #333;
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
+        }
+        .submit-btn {
+            margin-top: 30px;
+            background: #F5681E;
+            color: #fff;
+            border-radius: 4px;
+            border: none;
+            display: block;
+            padding: 12px;
+            text-align: center;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            width: 100%;
+        }
+    }
+    .in-instock {
+        background: #fff;
+        padding: 0px 8px;
+    }
+}
+
+.mar-t-5 {
+    margin-top: 5px;
+}
+
+.break-line {
+    width: 100%;
+    padding-left: 40px;
+}
+
+.bulkRequest {
+    height: calc(100% - 120px);
+}
+
+.stickyRfqButton {
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    right: 0;
+}

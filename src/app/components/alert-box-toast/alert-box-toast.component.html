@@ -1,0 +1,28 @@
+<div class="alert-box" id="revwSub">
+    <div class="overlay"></div>
+    <div class="content-area">
+        <div class="green-block">
+            <i class="del-ico icon-circle-delete" (click)="remove()"></i>
+            <div class="inner-txt">
+                <i class="icon-done"></i>
+                <p class="info-title" *ngIf="mainText" [innerHtml]='mainText'></p>
+            </div>
+        </div>
+        <div class="detail-info" *ngIf="subText">
+            <p class="support-txt" [innerHtml]='subText'></p>
+            <ng-container *ngIf="extraSectionName == 'RFQ_SUBMISSION'">
+                <div class="contact-detail">
+                    <p>For further assistance either</p>
+                    <p>
+                        call or Whatsapp
+                        <a href="tel:+91 9999644044">@ +91 9999644044</a>
+                    </p>
+                    <p>
+                        You can also mail us at
+                        <a href="mailto:salesenquiry@moglix.com">salesenquiry@moglix.com</a>
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

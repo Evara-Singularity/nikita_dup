@@ -1,0 +1,68 @@
+@import "../../scss/variables";
+
+.deals-list {
+    .heading-3 {
+        padding-left: 15px;
+        border-bottom: 0.5px solid #E3E3E3;
+    }
+    li {
+        @extend %clear-fix;
+        border-bottom: 0.5px solid #E3E3E3;
+        padding: 15px;
+        &.location {
+            background: rgba(65, 123, 253, 0.1);
+        }
+        .ico_offer {
+            font-size: $extra-large-font;
+            float: left;
+            line-height: initial;
+            padding-right: 10px;
+        }
+        .gst-icon {
+            float: left;
+            padding-right: 10px;
+            img {
+                height: 20px;
+            }
+        }
+        .ofr_txt {
+            font-size: $large-font;
+            float: left;
+            width: 70%;
+            width: calc(100% - 90px);
+            padding-bottom: 2px;
+            .first-txt {
+                font-weight: 500;
+                line-height: 21px;
+            }
+            small {
+                font-size: $medium-font;
+                padding-top: 5px;
+                display: block;
+            }
+        }
+        .ico-right {
+            float: right;
+            color: #0D99FF;
+            line-height: 21px;
+            font-weight: 500;
+            font-size: $medium-font;
+        }
+        small {
+            color: #303030;
+            font-size: $medium-font;
+        }
+        strong {
+            font-weight: 500;
+        }
+        .full-txt {
+            color: $btn-color;
+            font-size: $large-font;
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+    }
+    li.active {
+        background: rgba(65, 123, 253, 0.1);
+    }
+}

@@ -1,0 +1,95 @@
+<app-pop-up (outData$)="outData($event)" [data]="{headerText: 'EMI', selector:'openEMIPopup'}">
+    <div class="content-popup emi" content>
+        <div class="container">
+            <div class="prod-block">
+                <h4 class="prod-name">
+                    {{productInfo['productName']}}
+                </h4>
+                <h4 class="prod-name">
+                    <span class="prod-price">Price :</span>&#8377;{{emiPlansPrice.price}}
+                    <span class="f-right">
+                        <span class="prod-qty">Qty:</span>{{emiPlansPrice.quantity}}</span>
+                </h4>
+            </div>
+            <p class="grey-txt">Minimum order placed should be Rs. 3000 across banks while for Bajaj Finserv it should be Rs. 4500</p>
+            <div class="payment-steps">
+                <div class="first-step">
+                    <h4 class="pay-head">1. Pay Via Credit Card</h4>
+                    <p class="grey-txt">Select Bank</p>
+                    <form [formGroup]="emiForm" class="material-form">
+                        <div class="choose-bank input-field" formGroupName="requestParams">
+                            <label>
+                                <select class="select-box" formControlName="bankname" name="bankname"
+                                    (change)="changeBank($event)" #bank>
+                                    <option *ngFor="let data of dataEmi | arraysort ; let i = index;"
+                                        [value]="data.key">{{data.key | bankpipe }}</option>
+                                </select>
+                                <i class="icon-down"></i>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="second-step">
+                    <h4 class="pay-head">2. Select a Plan</h4>
+                    <table cellpadding="0" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Tenure</th>
+                                <th>EMI</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
+                                <td>{{getEmiMonths(emi.key)
+                                    < 10 ? '0' + getEmiMonths(emi.key) : getEmiMonths(emi.key) }}</td>
+                                        <td>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}{{emi.value.emi_interest_paid > 0 ? '( ' + emi.value.emiBankInterest + '% )' : '(No cost EMI)' }}</td>
+                                        <td>₹{{emi.value.transactionAmount | mathCeil| number : '1.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="pad-t-10 pad-b-10 clearfix emidesc">
+                <p>No Cost EMI offer of Moglix enables users to purchase *everything on EMI and experience easy shopping. This special scheme allows customers to purchase expensive products on EMI at the original price of the product that is split equally
+                    across the **EMI tenure. The interest a buyer is liable to pay is offered as an upfront discount on checkout. So, there are no addition costs such as interest, down payment or processing fee. Moglix offers No Cost EMI on all products
+                    across the site.
+                </p>
+                <ul class="no-padding no-margin no-list-style f-left pad-t-10 emicond">
+                    <li>
+                        <b>*Minimum order placed should be Rs. 3000 across banks while for Bajaj Finserv it should be
+                            Rs. 4500</b>
+                    </li>
+                    <li>
+                        <b>**Applicable on EMI tenure for 3 and 6 months only, across all banks.</b>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="terms clearfix">
+                <div (click)="showTermCondtion()" class="clearfix">
+                    <h4>Terms and Conditions Apply</h4>
+                    <i [ngClass]="isTermConditionShow ? 'icon-down' : 'icon-next'"></i>
+                </div>
+                <div *ngIf="isTermConditionShow">
+                    <div class="terms_cond">
+                        <h3>EMI Details</h3>
+                        <ul>
+                            <li> Select your preferred EMI option at the time of payment.</li>
+                            <li> Final EMI is calculated on the total value of your order at the time of payment.</li>
+                            <li> The Bank charges annual interest rates according to the reducing monthly balance. In the monthly reducing cycle, the principal is reduced with every EMI and the interest is calculated on the outstanding balance.</li>
+                            <li> Minimum order placed should be Rs. 3000 across banks while for Bajaj Finserv it should be Rs. 4500.
+                            </li>
+                            <li> In case of any kind of refund in an EMI transaction, interest already billed in a particular transaction will not be refundable under any circumstances.</li>
+                            <li> While you will not be charged a processing fee for availing EMI option, the interest charged by the bank shall not be refunded.</li>
+                            <li>You may check with the respective bank/issuer on how a cancellation, refund or pre-closure could affect the EMI terms, and what interest charges would be levied on you for the same.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</app-pop-up>

@@ -1,0 +1,63 @@
+@import "../../scss/variables";
+
+.submit-review {
+    .container {
+        width: 88%;
+    }
+    .popup-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    .head-sec {
+        i {
+            font-size: 20px;
+        }
+    }
+    .prod-name {
+        font-size: 16px;
+        padding-bottom: 30px;
+        line-height: 21px;
+        font-weight: 500;
+    }
+    .rate-heading {
+        font-size: $large-font;
+        padding-bottom: 10px;
+    }
+    .stars-block {
+        font-size: 35px;
+        padding: 10px 0px;
+        .icon-rating-star {
+            margin-right: 10px;
+        }
+    }
+    .form-head {
+        font-size: 14px;
+        padding-bottom: 5px;
+        padding-top: 20px;
+    }
+    .with-rating {
+        color: #FDB92C;
+    }
+    .without-rating {
+        color: #DBDBDB;
+    }
+}
+
+
+.submit-btn {
+    width: 100%;
+    color: white;
+    text-align: center;
+    height: 45px;
+    font-size: 16px;
+    border-radius: 0px !important;
+    border: none;
+    background: #A9A9A9;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    &.active {
+        background: $btn-color;
+    }
+}

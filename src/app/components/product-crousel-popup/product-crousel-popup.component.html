@@ -1,0 +1,28 @@
+<app-pop-up (outData$)="outData($event)" class="openMobikwikPopup"
+    [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:''}">
+    <div class="content-popup youtube-container" content>
+        <ngx-siema [options]="ngxSiemaOptions">
+            <ngx-siema-slide *ngFor="let item of productAllImages;let itemIndex=index">
+                <ng-container *ngIf="item.contentType=='IMAGE'">
+                    <div  class="img-block" >
+                        <div class="inner_block">
+                            <div class="pinch-zoom element" style="transform-origin: 0% 0%;" [attr.id]="'prodImg_' + itemIndex" >
+                                <img src="{{item?.xxlarge}}">
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="item.contentType=='YOUTUBE_VIDEO'">
+                    <div class="img-block">
+                        <div class="inner_block">
+                            <div class="inner_element" style="transform-origin: 0% 0%;">
+                                <input class="youtube_icon" type="image" src="/assets/img/youtube_icon.svg" (click)="$event.stopPropagation();showYTVideo(item['video'])" border="border of the image" alt="text">
+                                <img [src]="item['video'] | ytthumbnail:'hqdefault'">
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ngx-siema-slide>
+        </ngx-siema>
+    </div>
+</app-pop-up>

@@ -1,0 +1,17 @@
+<ul class="deals-list" *ngIf="allofferData" >
+    <li *ngFor="let item of allofferData; let i=index;" >
+        <i class="icon-offers ico_offer"></i>
+        <p class="ofr_txt">
+            <small>{{item.block_data['image_block'][0].image_title}}</small>
+        </p>
+        <span class="ico-right" (click)="sendOfferData(item)" >VIEW</span>
+    </li>
+    <li (click)="openEmiPopup()">
+        <i class="icon-emi ico_offer"></i>
+        <div class="ofr_txt">
+            <strong>EMIs Available</strong>
+            <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
+        </div>
+        <span class="ico-right">COMPARE</span>
+    </li>
+</ul>

@@ -1,0 +1,43 @@
+<div *ngIf="show" class="bottom-options open">
+    <div class="overlay" (click)="hide()"></div>
+    <div class="content-box social-links">
+        <ul class="share-container"> 
+            <li>
+                <a [attr.href]="'mailto:?subject=' + productResult['productName'] + '&body=' + productResult['productName'] + 'is available on Moglix.Here is the link to check prices and specification:'+API.PROD+'/'+productResult['canonicalUrl']" target="_blank">
+                    <i class="icon-mail"></i>
+                    <span>Email</span>
+                </a>
+            </li>
+            <li>
+                <a href={{shareFbUrl}} target="_blank">
+                    <i class="icon-facebook"></i>
+                    <span>Facebook</span>
+                </a>
+            </li>
+            <li>
+                <a href={{shareTwitterUrl}} target="_blank">
+                    <i class="icon-twitter"></i>
+                    <span>Twitter</span>
+                </a>
+            </li>
+            <li>
+                <a target="#" href={{shareLinkedInUrl}} target="_blank">
+                    <i class="icon-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+            </li>
+            <li>
+                <a [attr.href]="shareWhatsappUrl" rel="noopener noreferrer" target="_blank">
+                    <i class="icon-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+            </li>
+            <li>
+                <a target="#" class="more" (click)="share()">
+                    <i class="icon-dot"></i>
+                    <span>More</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<ng-container *ngIf="items && items.length > 0 && initialized">
+    
+    <ngx-siema [options]="ngxSiemaOptions" id="lazyLoad">
+        <ngx-siema-slide *ngFor="let item of items;let i=index">
+            <siema-slide [options]="options" [item]="item" [contentType]="item.contentType" [imagePath]="imagePath" [defaultImage]="defaultImage" [itemIndex]="i"  [productName]="productName"></siema-slide>
+        </ngx-siema-slide>
+    </ngx-siema>
+
+    <ng-container *ngIf="options.pager && items.length>1">
+        <ul class="pager">
+            <ng-container *ngFor="let item of items;let i=index">
+                <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="goTo(i,ngxSiemaOptions.selector)" class="{{i}} {{currentIndex}}" [ngClass]="{'active':(!currentIndex && i==0) || currentIndex==i}"></li>
+                <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" [ngClass]="{'active':(!currentIndex && i==0) || currentIndex==i}" class="pager_icon_dot">
+                    <i class="icon-youtube"></i>
+                </li>
+            </ng-container>
+        </ul>
+    </ng-container>
+
+</ng-container>
+
+<div #kelsiema>
+    <ng-container #kvcsiema></ng-container>
+</div>

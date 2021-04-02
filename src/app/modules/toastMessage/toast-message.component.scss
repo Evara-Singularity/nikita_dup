@@ -1,0 +1,16 @@
+/*Toast Message*/
+.toast-message{
+    text-align: center;
+    position: fixed;
+    top: 70px;
+    left: 6%;
+    width: 88%;
+    color: #fff;
+    z-index: 99;
+    & > div{
+        background: rgba(83, 83, 83, .9);
+        padding: 10px;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+}

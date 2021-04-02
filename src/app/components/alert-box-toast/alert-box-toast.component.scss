@@ -1,0 +1,20 @@
+.alert-box {
+    .overlay {
+        z-index: 120;
+    }
+    .content-area {
+        .inner-txt {
+            padding: 10px 15px 50px;
+            line-height: 21px;
+        }
+        z-index: 120;
+        .detail-info {
+            padding: 50px 10px;
+            text-align: center;
+            .support-txt {
+                padding-bottom: 30px;
+                line-height: 22px;
+            }
+        }
+    }
+}

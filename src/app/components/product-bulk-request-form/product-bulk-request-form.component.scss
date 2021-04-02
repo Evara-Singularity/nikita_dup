@@ -1,0 +1,125 @@
+@import "../../scss/variables";
+
+.bulkRequest {
+    height: calc(100% - 130px);
+    .prod-name {
+        font-size: 16px;
+        padding-bottom: 30px;
+        line-height: 21px;
+        font-weight: 500;
+    }
+    .head-sec {
+        i {
+            font-size: 20px;
+        }
+    }
+    .fill-detail {
+        font-size: $large-font;
+        padding-bottom: 10px;
+    }
+    .rfq-form {
+        .input-field {
+            margin-bottom: 15px;
+        }
+        .businessCust {
+            margin-bottom: 15px;
+            input {
+                display: none;
+            }
+            .custChck {
+                display: inline-block;
+                color: #0061d5;
+                font-size: $large-font;
+                &:before {
+                    content: "\e915";
+                    font-family: 'icomooon_pwa';
+                    color: #c2c2c2;
+                    margin-right: 10px;
+                    display: inline-block;
+                    font-size: $large-font;
+                }
+            }
+            input:checked+span {
+                &.custChck {
+                    &:before {
+                        content: "\e914";
+                        color: #3365e2;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+        input,
+        select {
+            width: 100%;
+            border: 1px solid #343434;
+            border-width: 1px;
+            height: 40px;
+            padding: 0px 10px 0px 10px;
+            font-size: 14px;
+            border-radius: 1px;
+        }
+        label.indusrty {
+            position: relative;
+            display: block;
+            select+.icon-down {
+                position: absolute;
+                right: 10px;
+                top: 15px;
+                font-size: $large-font;
+            }
+        }
+        textarea {
+            height: 80px;
+            border: 1px solid #343434;
+            padding: 10px 10px 0px 10px;
+            width: 100%;
+            border-width: 1px;
+            font-size: 14px;
+        }
+         ::placeholder {
+            font-size: 14px;
+        }
+        .inpt-brand {
+            float: left;
+            width: 54%;
+        }
+        .inpt-qty {
+            float: left;
+            width: 35%;
+            margin-left: 10px;
+        }
+        .choose-qty {
+            float: left;
+            width: 42%;
+            margin-left: 10px;
+        }
+        .upload-file {
+            float: right;
+            width: 40%;
+        }
+    }
+    .popup-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+
+.submit-btn {
+    width: 100%;
+    color: white;
+    text-align: center;
+    height: 45px;
+    font-size: 16px;
+    border-radius: 0px !important;
+    border: none;
+    background: #A9A9A9;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    &.active {
+        background: $btn-color;
+    }
+}

@@ -1,0 +1,30 @@
+<app-pop-up (outData$)="outData($event)" [data]="{headerText: 'REVIEW & RATING', selector:'openReviewPopup'}">
+    <div class="content-popup submit-review"   content>
+        <div class="container">
+            <h4 class="prod-name">
+                {{productInfo.productName}}
+            </h4>
+            <p class="rate-heading">Rate your product:</p>
+            <div class="stars-block">
+                <i *ngFor="let star of [1,2,3,4,5];let i=index;" (click)="ratingValue=star;" [ngClass]="{'with-rating': ratingValue>=star, 'without-rating': ratingValue < star}" class="star icon-rating-star"></i>
+            </div>
+            <p class="form-head">Write your review :</p>
+            <form class="material-form " [formGroup]="reviewForm">
+                <div class="input-field">
+                    <label [class.is-focus]="title.value.length > 0">
+                        <input type="text" formControlName="review_subject" maxlength="100" #title>
+                        <span class="label">Title</span>
+                    </label>
+                </div>
+                <div class="input-field">
+                    <label [class.is-focus]="review.value.length > 0">
+                        <input type="text" formControlName="review_text" maxlength="600" #review>
+                        <span class="label">Review</span>
+                    </label>
+                </div>
+            </form>
+
+            <button class="submit-btn popup-bottom" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
+        </div>
+    </div>
+</app-pop-up>

@@ -1,0 +1,6 @@
+<ng-container *ngIf="breadcrumb" >
+    <ul class="bread-head no-margin hidden-sm-down">
+        <li [routerLink]="['']" class="f-size-12">Home </li>
+        <li class="item f-size-12" *ngFor="let item of breadcrumb" (click)="goToCategory(item.categoryLink)"  >{{item?.categoryName}}</li>
+    </ul>
+</ng-container>

@@ -1,0 +1,44 @@
+
+@import "../../scss/variables";
+
+.mobikwik-wallet {
+    // display:block;
+    img {
+        padding-bottom: 15px;
+        width: 200px;
+        margin: auto;
+        display: table;
+    }
+    .top-txt {
+        background: #EFEFEF;
+        padding: 20px 60px 20px 20px;
+        line-height: 24px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #303030;
+    }
+    .head-sec {
+        i {
+            font-size: 20px;
+        }
+    }
+    .wallet-body {
+        .paytm_head {
+            font-size: 16px;
+            font-weight: 800;
+        }
+        .heading-3 {
+            font-weight: 600;
+            padding-bottom: 0px;
+        }
+        background: white;
+        .inner-mobikwik {
+            padding: 15px 10px 15px 15px;
+        }
+        .wallet-condtn {
+            padding: 10px 0px;
+            font-size: $large-font;
+            line-height: 22px;
+        }
+    }
+}

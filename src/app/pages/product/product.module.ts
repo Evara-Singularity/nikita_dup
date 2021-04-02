@@ -1,17 +1,59 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
+import { ProductRoutingModule } from './product-routing.module';
 
+import { BreadcrumbNavModule } from '../../modules/breadcrumb-nav/breadcrumb-nav.module';
+import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
+import { ModalModule } from '../../modules/modal/modal.module';
+import { LoaderModule } from '../../modules/loader/loader.module';
+import { ToastMessageModule } from '../../modules/toastMessage/toast-message.module';
 
+import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
+import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
+import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
+import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
+import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
+import { ObserveVisibilityDirective } from '../../utils/directives/observe-visibility.directive';
+
+import { ModalService } from '../../modules/modal/modal.service';
+import { ProductService } from '../../utils/services/product.service';
+import { DataService } from '../../utils/services/data.service';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { ProductUtilsService } from '../../utils/services/product-utils.service';
+import { BusinessDetailService } from '../../utils/services/business-detail.service';
+import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 @NgModule({
   declarations: [
-    ProductComponent
+    ProductComponent,
+    ObserveVisibilityDirective
   ],
   imports: [
     CommonModule,
-    ProductRoutingModule
+    ProductRoutingModule,
+    BreadcrumbNavModule,
+    LoaderModule,
+    SiemaCarouselModule,
+    ModalModule,
+    ObjectToArrayPipeModule,
+    MathFloorPipeModule,
+    MathCeilPipeModule,
+    ToastMessageModule,
+    ReactiveFormsModule,
+    ArrayFilterPipeModule,
+    YTThumnailPipeModule,
+    NgxPageScrollCoreModule
+  ],
+  exports: [],
+  providers: [
+    ModalService, 
+    ProductService,
+    DataService,
+    LocalAuthService,
+    ProductUtilsService,
+    BusinessDetailService
   ]
 })
 export class ProductModule { }

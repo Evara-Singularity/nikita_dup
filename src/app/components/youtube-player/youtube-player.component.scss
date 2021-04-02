@@ -1,0 +1,23 @@
+.youtube_player {
+    position: relative;
+    .icon-delete {
+        position: absolute;
+        color: #d0caca;
+        font-size: 16px;
+        right: 15px;
+        top: 40%;
+        padding: 5px;
+        top: 30px;
+    }
+}
+
+.videoLoader {
+    width: 90px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    img {
+        width: 100%;
+    }
+}

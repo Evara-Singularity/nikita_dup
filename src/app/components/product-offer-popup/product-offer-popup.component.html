@@ -1,0 +1,19 @@
+<app-pop-up *ngIf="openMobikwikPopup" (outData$)="outData($event)"  class="openMobikwikPopup" [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:'Offer Details'}">
+    <div class="content-popup mobikwik-wallet" content>
+        <div class="wallet-block">
+            <img src="{{IMG_PATH}}{{data['image_block'][0].image_name}}" width="80%">
+        </div>
+        <div class="top-txt">
+            <b>{{data['image_block'][0].image_title}}</b><br>
+            <b *ngFor="let item of data['image_block'][0].image_general">{{item.general_url}} </b>
+        </div>
+        <div class="wallet-body">
+            <div class="inner-mobikwik">
+                <p class="heading-3" *ngIf="data.general_block?.length > 0"> {{data.general_block[0].element_url}}</p>
+                <p class="wallet-condtn" *ngFor="let item of data.general_block | slice:1 ;let i=index;">
+                    {{item.element_url}}
+                </p>
+            </div>
+        </div>
+    </div>
+</app-pop-up>

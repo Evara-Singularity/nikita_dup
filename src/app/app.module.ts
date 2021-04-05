@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +10,7 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import CONSTANTS from './config/constants';
 
-const config: SocketIoConfig = { url:  CONSTANTS.SOCKET_URL_, options: { }};
+const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL_, options: {} };
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'ssr-pwa' }),
@@ -24,7 +23,7 @@ const config: SocketIoConfig = { url:  CONSTANTS.SOCKET_URL_, options: { }};
   declarations: [
     AppComponent,
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(

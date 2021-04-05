@@ -19,11 +19,6 @@ import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
 import { ObserveVisibilityDirective } from '../../utils/directives/observe-visibility.directive';
 
 import { ModalService } from '../../modules/modal/modal.service';
-import { ProductService } from '../../utils/services/product.service';
-import { DataService } from '../../utils/services/data.service';
-import { LocalAuthService } from '../../utils/services/auth.service';
-import { ProductUtilsService } from '../../utils/services/product-utils.service';
-import { BusinessDetailService } from '../../utils/services/business-detail.service';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 @NgModule({
   declarations: [
@@ -48,12 +43,7 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
   ],
   exports: [],
   providers: [
-    ModalService, 
-    ProductService,
-    DataService,
-    LocalAuthService,
-    ProductUtilsService,
-    BusinessDetailService
+    ModalService
   ]
 })
 export class ProductModule { }

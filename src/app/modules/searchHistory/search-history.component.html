@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="clearfix recentSearchWrapper" *ngIf="shd && shd.length>0">
+        <h4 class="ico-txt heading-4 f-left"> 
+             <span class="txt">Recent Searches:</span></h4>
+        <span class="clear-txt f-right clearHistoryText" (click)="csh()">Clear History</span>
+    </div>
+    <ul *ngIf="shd && shd.length>0" class="plan-list">
+        <li *ngFor="let item of shd">
+            <img src="./assets/img/cross.png" class="crossIcon">
+            <a (click)="navigateTo(item.extras)" class="recentSearchProduct">{{item.name}}</a>
+
+            <img src="./assets/img/interface.png" class="interfaceIcon">
+        </li>        
+    </ul>
+    <ul *ngIf="shd && shd.length===0" class="plan-list">    
+        <li class="disable-txt">There is no Search History Available</li>
+    </ul>
+</div>

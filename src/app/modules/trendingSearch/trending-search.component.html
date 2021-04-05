@@ -1,0 +1,10 @@
+<div class="container">
+    <div class="trending-search pb-15">
+        <h4 class="heading-4 mb-15">Trending Search</h4>
+        <ul class="tags-list">
+            <li *ngFor="let prod of trendingCatName">
+                <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
+            </li>
+        </ul>
+    </div>
+</div>

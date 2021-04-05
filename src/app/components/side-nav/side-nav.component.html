@@ -1,0 +1,81 @@
+<!--Side Menu start-->
+<section class="sidemenu" [class.open]="sideMenuOpen">
+    <div class="overlay" (click)="sideMenu()"></div>
+    <div class="menu-content">
+        <div class="menu-header" (click)="sideMenu();redirectProfile();">
+            <i class="icon-profile"></i>
+            <p class="customer-detail" *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
+                Sign In | Join Free
+            </p>
+            <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
+                <span class="user-name">
+                    {{(user.userName.length > 20)? (user.userName | slice:0: 20)+'...': user.userName }}
+                </span>
+                <i class="icon-edit-line-icon f-14"></i>
+            </p>
+        </div>
+        <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
+            <li>
+                <a href="#">
+                    <i class="icon-home"></i>
+                    <span class="text">Home </span>
+                </a>
+            </li>
+            <li>
+                <a href="/all-categories">
+                    <i class="icon-all-categories"></i>
+                    <span class="text">All Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/order">
+                    <i class="icon-my-orders"></i>
+                    <span class="text">My Orders</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/rfq">
+                    <i class="icon-my-rfq"></i>
+                    <span class="text">My RFQs</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/business-detail">
+                    <i class="icon-business-details"></i>
+                    <span class="text">My Business Details</span>
+                    <!-- </span> -->
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/address">
+                    <i class="icon-location"></i>
+                    <span class="text">My Address</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/purchase-list">
+                    <i class="icon-purchase-list"></i>
+                    <span class="text">WishList</span>
+                </a>
+            </li>
+            <li>
+                <a href="/faq">
+                    <i class="icon-faq-side-navigation"></i>
+                    <span class="text">FAQ</span>
+                </a>
+            </li>
+            <li>
+                <a href="/contact">
+                    <i class="icon-call"></i>
+                    <span class="text">Contact Us</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="menu-list" *ngIf="reStoreHome">
+            <li class="side-menu-foot" (click)="reStoreCookie()">
+                <i class="icon-search-history"></i>
+                <span class="text">Restore Home Page</span>
+            </li>
+        </ul>
+    </div>
+</section>

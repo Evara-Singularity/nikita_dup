@@ -1,0 +1,8 @@
+<app-bottom-menu *ngIf="sbm" (outData$)="onUpdate($event)">
+    <ul class="container" content>
+        <li (click)="resetBottomOptCall('/dashboard/purchase-list')" [routerLink]="['']">View Wishlist</li>
+        <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']">View All Category</li>
+        <li (click)="resetBottomOptCall('/')" [routerLink]="['/']">Home</li>
+        <li (click)="resetBottomOptCall()">Cancel</li>
+    </ul>
+</app-bottom-menu>

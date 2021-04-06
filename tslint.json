@@ -1,7 +1,8 @@
 {
   "extends": "tslint:recommended",
   "rulesDirectory": [
-    "codelyzer"
+    "codelyzer",
+    "node_modules/rxjs-tslint"
   ],
   "rules": {
     "align": {
@@ -82,11 +83,6 @@
         "named": "never"
       }
     },
-    // TODO(gkalpak): Fix the code and enable this.
-    // "typedef": [
-    //   true,
-    //   "call-signature"
-    // ],
     "typedef-whitespace": {
       "options": [
         {
@@ -146,9 +142,12 @@
     "component-selector": [
       true,
       "element",
-      // TODO: Fix the code and change the prefix to `"app"` (or whatever makes sense).
       "",
       "kebab-case"
-    ]
+    ],
+    "rxjs-collapse-imports": true,
+    "rxjs-pipeable-operators-only": true,
+    "rxjs-no-static-observable-methods": true,
+    "rxjs-proper-imports": true
   }
 }

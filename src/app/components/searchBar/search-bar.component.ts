@@ -1,10 +1,8 @@
 import { Component, ViewEncapsulation, Input, OnInit, PLATFORM_ID, Inject, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { map } from 'rxjs/operators/map';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';

@@ -185,7 +185,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
           this.isHomePage = true;
         } else {
           this.isHomePage = false;
-          (<HTMLElement>document.querySelector('header-nav + div')).style.marginTop = '';
+          // (<HTMLElement>document.querySelector('header-nav + div'))['style']['marginTop'] = '';
         }
         this.createHeaderData(this.route);
       }

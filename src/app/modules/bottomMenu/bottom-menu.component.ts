@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
-import { of } from 'rxjs/observable/of';
-import { delay } from 'rxjs/operators/delay';
+import { delay } from 'rxjs/operators';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-bottom-menu',

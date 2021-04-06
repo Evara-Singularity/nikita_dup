@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, Input, OnInit, PLATFORM_ID, Inject, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
@@ -12,6 +12,7 @@ import { TrendingSearchModule } from '../../modules/trendingSearch/trending-sear
 import { SearchHistoryModule } from '../../modules/searchHistory/search-history.module';
 import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive';
 import CONSTANTS from 'src/app/config/constants';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-search-bar',
@@ -293,18 +294,18 @@ export class SearchBarComponent implements OnInit {
 @NgModule({
     imports: [
         CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
         RouterModule,
         TrendingSearchModule,
-        SearchHistoryModule
+        SearchHistoryModule,
+        FormsModule, 
+        ReactiveFormsModule,
     ],
     declarations: [
         SearchBarComponent,
         AutoFocusDirective
     ],
     providers: [
-        TypeAheadService
+        TypeAheadService,
     ]
 })
 export class SearchBarModule {}

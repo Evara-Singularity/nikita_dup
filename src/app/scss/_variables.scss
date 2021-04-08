@@ -1,5 +1,4 @@
 $cdn_url: "https://ik.imagekit.io/moglix/";
-
 $font-family: 'Roboto',
 sans-serif;
 $cdn_url: "#{$cdn_url}";
@@ -101,6 +100,14 @@ $extra-large-font: 16px;
         padding: 0;
         display: block;
     }
+}
+
+%container {
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    @extend %clear-fix;
 }
 
 %custom-green-radio-checkout {

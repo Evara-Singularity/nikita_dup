@@ -1,5 +1,4 @@
 @import "../../scss/variables";
-
 .page-not-found {
     background: $white;
     img {
@@ -454,6 +453,11 @@
                     display: block;
                 }
             }
+            .ofr_img {
+                width: 25px;
+                float: left;
+                margin-right: 5px;
+            }
             .ico-right {
                 float: right;
                 color: #0D99FF;
@@ -473,6 +477,13 @@
                 font-size: $large-font;
                 font-weight: bold;
                 padding-bottom: 10px;
+            }
+            .getQuote {
+                padding: 6px 8px;
+                color: #F5681F;
+                background: #FEEFE8;
+                border-radius: 3px;
+                font-weight: bold;
             }
         }
         li.active {

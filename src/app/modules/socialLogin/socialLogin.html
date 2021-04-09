@@ -1,0 +1,12 @@
+<button class="facebook-btn btn" (click)="signIn('facebook')" title="Login with Facebook">
+   <span class="ico-txt"> 
+       <i class="icon-facebook-login"></i> <span class="txt">Facebook</span>
+    </span>
+</button>
+<button class="google-btn btn" (click)="signIn('google')" title="Login with Gmail">
+   <span class="icon"> 
+        <img src ="{{imagePath}}assets/img/google.png"> 
+        <span class="txt">Google</span>
+   </span>
+</button>
+<button (click)="activateWindow()" type="button" class="activate-window" style="position: absolute; right: 100px; opacity:0; z-index: -9"></button>

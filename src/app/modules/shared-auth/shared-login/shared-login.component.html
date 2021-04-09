@@ -1,0 +1,70 @@
+<loader [showLoader]="isReqProcessing"></loader>
+<div class="signUpContainer">
+    <div class="login-select">
+        <!--tabs will built from component-->
+        <ng-container *ngFor="let tab of tabs;index as tabIndex">
+            <label [class.selected]="currentTab === tab.type">
+                <input type="radio" name="mlogin" [checked]="currentTab === tab.type"
+                    (click)="$event.stopPropagation();setTab(tab.type)">
+                <span class="custom-box icon-box"></span>
+                <span class="chk-txt">
+                    <strong class="heading">{{tab.heading}}</strong>
+                </span>
+            </label>
+        </ng-container>
+    </div>
+</div>
+<div class="signUpFormContainer" [ngSwitch]="currentTab">
+    <!--Login Form-->
+    <div class="material-form" [formGroup]="loginForm" *ngSwitchCase="'LOGIN'">
+        <div>
+            <div class="input-field">
+                <label [class.is-focus]="username.value.length!=0">
+                    <input type="text" formControlName="username">
+                    <span class="label">Mobile Number/Email Id*</span>
+                    <ng-container *ngIf="isSubmitted && username.errors != null">
+                        <p class="error-txt">{{getErrors(username.errors)}}</p>
+                    </ng-container>
+                </label>
+            </div>
+        </div>
+        <div class="input-field">
+            <label [class.is-focus]="password.value.length!=0">
+                <input type="password" class="input-password" formControlName="password">
+                <span class="label">Password*</span>
+                <ng-container *ngIf="isSubmitted && password.errors != null">
+                    <p class="error-txt" *ngIf="password.errors.required">Please provide password.</p>
+                    <p class="error-txt" *ngIf="password.errors.minlength">Password should be of min. 8 characters</p>
+                </ng-container>
+                <p class="edit-field" *ngIf="username.valid" (click)="$event.stopPropagation();verifyUser('FORGOT')">
+                    FORGOT PASSWORD?</p>
+            </label>
+        </div>
+        <button class="btn signInbtn" type="button" (click)="$event.stopPropagation();verifyUser('LOGIN')">CONTINUE</button>
+        <p class="or_seperator">Or</p>
+        <button class="btn otulineButton" (click)="$event.stopPropagation();verifyUser('OTP')">REQUEST OTP</button>
+    </div>
+    <!--Sign up Form-->
+    <div class="material-form" *ngSwitchCase="'SIGNUP'">
+        <div>
+            <div class="input-field">
+                <label [class.is-focus]="mobile.value.length!=0">
+                    <input type="text" [formControl]="mobile" maxlength="10">
+                    <span class="label">Mobile Number*</span>
+                </label>
+                <ng-container *ngIf="isSubmitted && mobile.errors != null">
+                    <p class="error-txt" *ngIf="!isUserExists && (mobile.errors.required || mobile.errors.minlength || mobile.errors.pattern)">
+                        Please provide valid Mobile Number.
+                    </p>
+                </ng-container>
+            </div>
+        </div>
+        <button class="btn signInbtn" (click)="$event.stopPropagation();verifyUser('SIGNUP')">CONTINUE</button>
+    </div>
+    <div class="clearfix socialContainer ">
+        <div class="login-seperator-text "> <span>Or Continue with Social Media</span></div>
+        <div class="clearfix ">
+            <social-login class="o-hidden "></social-login>
+        </div>
+    </div>
+</div>

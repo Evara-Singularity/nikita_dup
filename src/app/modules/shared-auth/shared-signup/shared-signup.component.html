@@ -1,0 +1,73 @@
+<loader [showLoader]="isReqProcessing"></loader>
+<div class="signUpFormContainer">
+    <div class="stepHeader" *ngIf="mobile.valid">
+        <h3 class="heading-3">Enter OTP & Complete your profile</h3>
+        <p class="heading-3-txt">We have sent on +91-{{mobile.value}}</p>
+    </div>
+    <div class="material-form" [formGroup]="signupForm">
+        <div>
+            <div class="input-field">
+                <label [class.is-focus]="mobile.value.length!=0">
+                    <input maxlength="10" type="text" formControlName="mobile" readonly>
+                    <span class="label">Mobile number*</span>
+                    <span class="edit-field" (click)="$event.stopPropagation();navigateToLogin();">EDIT</span>
+                </label>
+            </div>
+            <div class="input-field otp-field resendOtpField">
+                <label [class.is-focus]="otp.value.length!=0">
+                    <span class="resendOtpTxt" *ngIf="isTicking">Resend OTP in {{timerLabel}}</span>
+                    <input formControlName="otp" type="text" maxlength="6" [readonly]="isOTPValidated">
+                    <span class="label">Enter OTP*</span>
+                    <span class="edit-field" *ngIf="canRequestOTP && !isOTPValidated"
+                        (click)="$event.stopPropagation();fetchOTP();">RESEND OTP</span>
+                    <span *ngIf="!canRequestOTP && !isOTPValidated" class="edit-field disabled">RESEND OTP</span>
+                    <span *ngIf="isOTPValidated" class="icon-done"></span>
+                </label>
+                <ng-container *ngIf="invalidOTPMessage || (isSubmitted && otp.errors != null)">
+                    <p class="error-txt" *ngIf="otp.hasError('required')">Please provide valid OTP.</p>
+                    <p class="error-txt" *ngIf="otp.hasError('minlength') || otp.hasError('pattern')">OTP must contain 6 digits.
+                    </p>
+                    <p class="error-txt" *ngIf="invalidOTPMessage && otp.errors == null">{{invalidOTPMessage}}</p>
+                </ng-container>
+            </div>
+            <div class="input-field">
+                <label [class.is-focus]="name.value.length!=0">
+                    <input formControlName="name" type="text">
+                    <span class="label">Name*</span>
+                </label>
+                <p class="error-txt" *ngIf="isSubmitted && name.errors != null">Please provide Name.
+                </p>
+            </div>
+            <div class="input-field">
+                <label [class.is-focus]="email.value.length!=0">
+                    <input formControlName="email" type="text">
+                    <span class="label">Email (optional)</span>
+                </label>
+                <ng-container *ngIf="isEmailExists || (isSubmitted && (email.errors && email.errors != null))">
+                    <p class="error-txt" *ngIf="email.errors && email.errors.invalidCharT">Please provide valid email.</p>
+                    <p class="error-txt" *ngIf="isEmailExists">Email already exists!</p>
+                </ng-container>
+            </div>
+            <div class="input-field">
+                <label [class.is-focus]="password.value.length!=0">
+                    <input formControlName="password" [attr.type]="isPasswordType?'password':'text'">
+                    <span class="label">Set Password*</span>
+                    <i  class="icon-view-password show-pass" [class.green-txt]="!isPasswordType"  (click)="$event.stopPropagation();setPasswordType();"></i>
+                </label>
+                <ng-container *ngIf="isSubmitted && password.errors != null">
+                    <p class="error-txt" *ngIf="password.hasError('required')">{{password.errors.required}}</p>
+                    <p class="error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>
+                    <p class="error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}</p>
+                </ng-container>
+            </div>
+        </div>
+        <button (click)="register()" class="btn signInbtn">REGISTER</button>
+    </div>
+    <div class="clearfix socialContainer" *ngIf="!isCheckoutModule">
+        <div class="login-seperator-text"> <span>Or Continue with Social Media</span></div>
+        <div class="clearfix">
+            <social-login class="o-hidden"></social-login>
+        </div>
+    </div>
+    <p class="term-footer-txt">By signing up you agree to our <span (click)="termsPage()" >Terms of Use</span></p>
+</div>

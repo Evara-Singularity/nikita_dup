@@ -9,13 +9,22 @@ const CONSTANTS = {
     IMG_URL: 'https://img.moglimg.com/',
     DOCUMENT_URL: 'https://document.moglix.com/',
     DEVICE: {
-		device: 'mobile'
-	},
+        device: 'mobile'
+    },
+    SOCIAL_LOGIN: {
+        "google": {
+            "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"
+        },
+        "facebook": {
+            "clientId": "775243655917959",
+            "apiVersion": "v2.4"
+        }
+    },
     META: {
-		ROBOT: 'index,follow',
-		ROBOT1: 'noindex,follow',
-		ROBOT2: 'noindex,nofollow'
-	},
+        ROBOT: 'index,follow',
+        ROBOT1: 'noindex,follow',
+        ROBOT2: 'noindex,nofollow'
+    },
     GLOBAL: {
         loginByEmail: 1,
         loginByPhone: 2,

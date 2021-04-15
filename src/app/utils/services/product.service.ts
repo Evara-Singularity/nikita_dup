@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 
 import { DataService } from './data.service';
 import CONSTANTS from '../../config/constants';
+import { ENDPOINTS } from 'src/app/config/endpoints';
 
 @Injectable({
     providedIn: 'root'
@@ -118,6 +119,26 @@ export class ProductService {
 
     getRecentlyBoughtProducts(msn) {
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/cmsApi/productStatusCount?timeInterval=10&productId=" + msn);
+    }
+
+    getReviewsRating(obj) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_REVIEW;
+        return this._dataService.callRestful('POST', url, { body: obj })
+            .pipe(
+                catchError((res: HttpErrorResponse) => {
+                    return of({ data: null, httpStatus: res.status });
+                })
+            );
+    }
+
+    getQuestionsAnswers(productId: string) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.Q_AND_A + "?itemId=" + productId.toUpperCase();
+        return this._dataService.callRestful('GET', url)
+            .pipe(
+                catchError((res: HttpErrorResponse) => {
+                    return of({ data: [], statusCode: res.status });
+                })
+            );
     }
 
 }

@@ -25,6 +25,10 @@ const CONSTANTS = {
         ROBOT1: 'noindex,follow',
         ROBOT2: 'noindex,nofollow'
     },
+    CONST_VAR: {
+		shippingcharge: '99',
+		FreeShippingMinAmount: '999',
+	},
     GLOBAL: {
         loginByEmail: 1,
         loginByPhone: 2,

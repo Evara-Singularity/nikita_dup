@@ -1,0 +1,60 @@
+@import '../../scss/variables';
+
+.apply-promo{
+  @extend %cards;
+  padding: 25px 0 15px 0;
+  margin: 10px 0;
+  .open-offers{
+    text-align: center;
+    font-weight: 600;
+    color:$blue-link-color;
+    margin-top: 18px;
+  }
+}
+
+.order-summary{
+  @extend %cards;
+  padding: 15px 0;
+  font-size: $large-font;
+  h3{
+    padding: 0 0 0 15px;
+    font-size: $extra-large-font
+  }
+  li{
+    padding: 8px 15px;
+  }
+  .border{
+    border: solid $border-color;
+    border-width: 1px 0;
+    padding: 15px;
+    margin: 15px 0 5px 0;
+  }
+  .bold-txt{
+    font-size: $extra-large-font;
+    padding:15px 15px 0 15px;
+    border-top: 1px solid $border-color;
+  }
+}
+.shop-btn{
+  
+  background: $white;
+  color: $blue-link-color;
+ 
+  border: solid $border-color;
+  border-width: 1px 0 1px 0;
+  
+}
+.btn{
+  width: 100%;
+  height: 60px;
+  font-size: $large-font;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.heading{
+  color: #9c9292;
+  font-size: 13px;
+  margin-top: 3px;
+
+}
+

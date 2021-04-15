@@ -1,0 +1,41 @@
+<!-- New Popup Design -->
+<ng-container *ngIf="itemsList != null && itemsList.length>0">
+    <div class="unavailableItems">
+        <div class ="container">
+            <div class="container-head-sec">
+                <p class ="txt">{{itemsList.length}} {{itemsList.length == 1 ? "Item" : "Items"}} not available
+                  <!-- <span>A item in your order are not deliverable to the selected address.</span> -->
+                </p>
+                <i (click)="closeModal()" class="icon-circle-delete f-right"></i>
+            </div>
+        </div>
+        <div [ngClass]="{'oos':item.oos}" class="card relative" *ngFor="let item of itemsList; let i = index">
+            <div class="container pb-15">
+                <div class="product-left">
+                    <div class="product-img">
+                        <img [routerLink]="showLink ? '/'+item.productUrl:[]" src="{{item.productImg}}">
+                    </div>
+                </div>
+                <div class="product-detail pad-tb-10">
+                    <div class="p-name f-14">
+                        <a [ngClass]="{'cursor-initial':!showLink}" [routerLink]="showLink ? '/'+item.productUrl:[]">
+                            {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
+                    </div>
+                    <p class=" f-size-11 Brandtext-grey text-400">Brand :{{item.brandName}}</p>
+
+                    <p *ngIf="item.bulkPrice !==null" class="price">
+                        {{item.bulkPriceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}</p>
+                    <p *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null"
+                        class="price">
+                        {{item.priceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}
+                    </p>
+                    <p class="red-text">
+                        {{item.oos ? "Product is not available for order" : "Product is not deliverable at your shipping address"}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button (click)="removeUnavailableItems(data.removeUnavailableItems)" class="continue-btn"> REMOVE
+            UNAVAILABLE ITEMS</button>
+    </div>
+</ng-container>

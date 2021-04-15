@@ -10,5 +10,11 @@ export const ENDPOINTS = {
     LOGIN_AUTHENTICATE: '/login/authenticate',
     FORGOT_PASSWORD: '/login/forgetpassword',
     VERIFY_CUSTOMER: '/validation/verifycustomer',
-    SIGN_UP: '/login/signup'
+    SIGN_UP: '/login/signup',
+    CART: {
+        validatePromoCode: '/promoCode/validatePromoCode',
+        getShippingValue : '/shipping/getShippingValue',
+        getAllActivePromoCodes: '/promoCode/getAllActivePromoCodes',
+        getPromoCodeDetails: '/promoCode/getPromoCodeDetails'
+    }
 }

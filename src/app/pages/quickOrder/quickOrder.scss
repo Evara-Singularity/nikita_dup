@@ -1,0 +1,50 @@
+@import '../../scss/variables';
+.white-btn{
+  background: $white;
+  color: $blue-link-color;
+  border:1px solid $border-color;
+}
+.continue-btn{
+  height: 60px;
+  @extend %ripple;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  text-transform:uppercase;
+}
+.emptycart{
+  background:#fff;
+  padding:10% 0;
+  img{
+    margin:auto;
+    display: block;
+  }
+}
+.catlink{
+  padding:0;
+  background:#fff;
+  text-align: center;
+}
+.categories-list{
+  li{
+    margin-bottom: 30px;
+    @include gridForCategory('3' , '20');
+    display: inline-block;
+    float: none;
+    i{
+      width: 75px;
+      height: 75px;
+      display: block;
+      margin: auto;
+      background: $gray-color;
+      border-radius: 50%;
+      font-size: 35px;
+      line-height: 75px;
+      margin-bottom: 5px;
+    }
+    span{
+      font-size: $large-font;
+    }
+  }
+}

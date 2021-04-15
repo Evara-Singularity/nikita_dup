@@ -14,6 +14,15 @@ const routes: Routes = [
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
       },
       {
+        path: 'quickorder',
+        loadChildren: () => import('./quickOrder/quickOrder.module').then(m => m.QuickOrderModule),
+        data: {
+          footer: false,
+          title: 'My Cart',
+          moreOpt: true
+        }
+      },
+      {
         path: 'login',
         loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         data: {

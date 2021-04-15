@@ -27,7 +27,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
     totalAmount: number;
     itemsList: Array<{}>;
     data: any;
-    private cartSession: any;
+    cartSession: any;
     // promoCodeGroup: FormGroup;
     shippingCharges: number;
     errorMeesage: string;

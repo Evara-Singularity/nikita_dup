@@ -13,11 +13,13 @@ export class UnAvailableItemsComponent {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input() data: any;
     @Input() user: {};
+    @Input() showLink = true;
     globalConstants: {};
     isServer: boolean;
     isBrowser: boolean;
     private cDistroyed = new Subject();
     itemsList: [] = [];
+    
     constructor(        
         @Inject(PLATFORM_ID) platformId,
     ) {

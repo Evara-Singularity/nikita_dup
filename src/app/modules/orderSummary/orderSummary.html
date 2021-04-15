@@ -1,12 +1,12 @@
 <loader [showLoader]="isShowLoader"></loader>
 <div *ngIf="noOfCart>0">
     <div class="apply-promo no-border">
-        <app-promo-apply (updateCartSession$)="updateCartSession()" (outData$)="outData($event)" [iData]="pad"></app-promo-apply>
+        <app-promo-apply (updateCartSession$)="updateCartSession($event)" (outData$)="outData($event)" [iData]="pad"></app-promo-apply>
         <p class="open-offers" (click)="openOfferPopUp()">VIEW ALL OFFERS</p>
 
     </div>
 
-    <app-promo-offer *ngIf="vof" [iData]="{pcd: {text: pad?.text, isApplied: pad?.isApplied}}" (closePopup$)="closePopup()" (outData$)="outData($event)" (updateCartSession$)="updateCartSession()"></app-promo-offer>
+    <app-promo-offer *ngIf="vof" [iData]="{pcd: {text: pad?.text, isApplied: pad['isApplied']}}" (closePopup$)="closePopup()" (outData$)="outData($event)" (updateCartSession$)="updateCartSession($event)"></app-promo-offer>
 
     <!-- <div class="mobile-promo-box">
       <div>

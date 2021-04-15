@@ -3,7 +3,7 @@
     <div class="unavailableItems">
         <div class ="container">
             <div class="container-head-sec">
-                <p class ="txt">{{itemsList.length}} {{itemsList.length == 1 ? "Item" : "Items"}} not available
+                <p class ="txt">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not available
                   <!-- <span>A item in your order are not deliverable to the selected address.</span> -->
                 </p>
                 <i (click)="closeModal()" class="icon-circle-delete f-right"></i>

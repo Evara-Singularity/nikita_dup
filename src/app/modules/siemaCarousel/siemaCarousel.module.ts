@@ -1,6 +1,3 @@
-/**
- * Created by shubham on 4/9/18.
- */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NgxSiemaModule } from 'ngx-siema';

@@ -62,6 +62,15 @@ const routes: Routes = [
         },
         canActivate: [IsNotAuthenticatedGuard]
       },
+      {
+        path: 'articles/:name',
+        loadChildren: () => import('./articles/articles.module').then(m => m.ArticlesModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
     ]
   }
 ];

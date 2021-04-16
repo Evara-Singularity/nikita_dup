@@ -1,0 +1,87 @@
+<loader [showLoader]="isShowLoader"></loader>
+
+<section class="cash-container container">
+
+    <div id="cash_block" class=" pad-lr-15">
+        <p class="green-txt mb-15 f-14" *ngIf="isCODEnable">Great! All products in your cart are eligible for cash on delivery.</p>
+        <p class="mb-15">*Payment via debit/credit card, on order delivery, is subject to availability of the card swipe machine</p>
+        <div class="wp-100 mar-tb-15 pad-lr-10 o-hidden">
+            <p *ngIf="!isCODEnable">Good News! We have started taking COD Orders [Upto Rs {{globalConstants['codMax']}}.]</p>
+            <div *ngIf="!isCODEnable" class="f-size-12 text-green"> {{message}}</div>
+        </div>
+
+        <!-- {{isCODEnable}} -->
+        <div *ngIf="isCODEnable">
+            <div *ngIf="!verifyOtp">
+                <form novalidate class="material-form mt-15" #sendOtpForm="ngForm">
+                    <div class="input-field">
+                        <label [class.is-focus]="mobileRef.value > 0">
+                            <input type="number" class="no-border inline-block" name="mobile_num" pattern="^[1-9][0-9]{9}$" required #mobileRef="ngModel" [ngModel]="userNum" readonly>
+                            <span class="label">Phone No*</span>
+                        </label>
+                        <label [class.is-focus]="emailId.value.length > 0">
+                            <input name="cust_email" type="text" class="no-border inline-block" [ngModel]="userEmail" #emailId readonly>
+                            <span class="label">Email</span>
+                        </label>
+                    </div>
+                    <!-- <div class="">
+                        <p class="">The OTP Phone Number/ Email should be same as in the Shipping Details</p>
+                    </div> -->
+                    <div class="" *ngIf="mobileRef.errors && (mobileRef.dirty || mobileRef.touched)">
+                        <p *ngIf="mobileRef.errors.required" class="">Kindly enter 10 digit mobile no. to proceed</p>
+                        <p *ngIf="mobileRef.errors.pattern" class="">Kindly enter your 10 digit contact number</p>
+                    </div>
+                    <div class="continue-button">
+                        <div class="container">
+                            <p class="total-mount"> 
+                                <span class="payable-amnt">Payable Amount</span>
+                                ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
+                            <button (click)="confirmOrder()" type="submit" class="btn">Confirm Order</button>
+                            <!-- [disabled]="!mobileRef.valid" -->
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+            <div class="verify_otp pad-tb-30" *ngIf="verifyOtp">
+                <!-- <form class="material-form mt-15"  novalidate #verifyOtpForm="ngForm" (ngSubmit)="verifyMyOtp(verifyOtpForm.value)" >
+                                       
+                    <div class="input-field">
+                        <label [class.is-focus]="otpRef.value?.toString().length != 0">
+                            <input onkeypress="if(window.event.keyCode > 31 && (window.event.keyCode < 48 || window.event.keyCode > 57)){ return false; }" pattern="^[0-9]{6}$" type="text" name="otp" #otpRef="ngModel" ngModel required>
+                            <span class="label">Enter OTP</span>
+                            <span class="edit-field" *ngIf="showResendOtp" (click)="resendOtp()">Resend OTP</span>
+                        </label>
+                        <div *ngIf="otpRef.errors && (otpRef.dirty || otpRef.touched)">
+                            <p *ngIf="!otpRef.errors.required" class="error-txt">Enter a valid OTP.</p>
+                            <p *ngIf="!otpRef.errors.pattern" class="error-txt">OTP can't be blank.</p>
+                        </div>
+                        <p class="sucess-txt" *ngIf="otpError?.length > 0" class="mt-10">{{ otpError }}</p>                                            
+                    </div>
+                    
+                    
+                    <div class="mar-t-10 form-group">
+                        <button type="submit" [class.o-5]="!otpRef.valid" [disabled]="!otpRef.valid || submittedOnce" class="continue-btn bottom-stick">Verify OTP</button>
+                    </div>
+                    
+                </form> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-box" *ngIf="showPopup">
+        <div class="overlay"></div>
+        <div class="content-area">
+            <div class="info-area">
+                <p class="info-title">Update Shipping Number</p>
+                <p class="info">The number doesn't match the one, mentioned in your shipping details. If this is your latest number, we'll update it in your shipping details.</p>
+                </div>
+                <div class="button-area">
+                <button (click)="removePopup()" class="cancel">CANCEL</button>
+                <button (click)="confirmOrder()" class="continue">UPDATE NUMBER</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</section>

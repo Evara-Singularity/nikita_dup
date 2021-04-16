@@ -1,0 +1,18 @@
+<div *ngIf="userLoggedIn" class="continue-button else hideContinue">
+	<div class="container payable">
+		<p class="total-mount">
+			<span class="payable-amnt">Payable Amount
+				<span (click)="scrollPaymentSummary();">
+					<img src="../../../../assets/img/info.png">
+				</span>
+			</span>
+			₹ {{totalAmount | mathCeil | number : '1.2-2'}}
+		</p>
+		<button [disabled]="isDisabled || !isContinue" class="btn" (click)="continueCheckout(tabIndex)">
+			CONTINUE
+		</button>
+	</div>
+</div>
+<ng-template #hideContinue>
+	<div></div>
+</ng-template>

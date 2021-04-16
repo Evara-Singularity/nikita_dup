@@ -1,0 +1,17 @@
+<loader [showLoader]="showLoader"></loader>
+
+<ng-container *ngIf="currentSection == SECTIONS.LOGIN">
+    <app-shared-checkout-login (updatedStepShared$)="updatedStepEvent($event)" (socialLoginWorkingShared$)="socialLoginWorkingEvent($event)" (changeTab$)="changeTab($event)" ></app-shared-checkout-login>
+</ng-container>
+
+<ng-container *ngIf="currentSection == SECTIONS.SIGN_UP">
+    <app-shared-signup [isCheckoutModule]="true"></app-shared-signup>
+</ng-container>
+
+<ng-container *ngIf="currentSection == SECTIONS.FORGET_PASSWORD">
+    <app-shared-forgot-password [isCheckoutModule]="true"></app-shared-forgot-password>
+</ng-container>
+
+<ng-container *ngIf="currentSection == SECTIONS.VERIFY_OTP">
+    <app-shared-otp [isCheckoutModule]="true"></app-shared-otp>
+</ng-container>

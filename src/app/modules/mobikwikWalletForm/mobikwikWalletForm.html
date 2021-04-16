@@ -1,0 +1,28 @@
+<!--https://www.mobikwik.com/wallet-->
+<!--https://test.mobikwik.com/wallet-->
+<form action="{{data['formUrl']}}" method="post" id="mobikwik_wallet_form" name="mobikwik_wallet_form">
+    <input type="hidden" name="mid" [value]="data['mid']" />
+    <input type="hidden" name="orderid" [value]="data['orderid']" />
+    <input type="hidden" name="redirecturl" [value]="data['redirecturl']" />
+    <input type="hidden" name="merchantname" [value]="data['merchantname']" />
+    <input type="hidden" name="email" [value]="data['email']" />
+    <input type="hidden" name="amount" [value]="data['amount']" />
+    <input type="hidden" name="cell" [value]="data['cell']" />
+    <input type="hidden" name="checksum" [value]="data['checksum']" />
+    <input type="hidden" name="version" [value]="data['version']" />
+</form>
+
+<!--<button type="button" (click)="doPayment()"></button>-->
+
+
+<!--
+<form action="https://www.mobikwik.com/wallet" method="post" id="MobikwikWallet_form" class="hidden ng-pristine ng-valid">
+    <input id="mid_mobik" type="hidden" name="mid" value="MBK9326" autocomplete="off">
+    <input type="hidden" name="orderid" value="300023" autocomplete="off">
+    <input name="redirecturl" type="hidden" size="60" value="http://www.moglix.com/modules/MobikwikWallet/response.php" autocomplete="off">
+    <input name="merchantname" type="hidden" size="60" value="mobikwik" autocomplete="off">
+    <input name="email" type="hidden" value="kuldeep.panchal@moglix.com" autocomplete="off">
+    <input name="amount" type="hidden" value="1325" autocomplete="off">
+    <input name="cell" type="hidden" value="8937639937" autocomplete="off">
+    <input name="checksum" type="hidden" value="615949e6223703bc2a64af6ec12b2a935b19e4aa0f286bc41d3a3e15cc9bacc2" autocomplete="off">
+</form>-->

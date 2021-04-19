@@ -34,6 +34,7 @@ import { CartService } from "src/app/utils/services/cart.service";
 import { FooterService } from "src/app/utils/services/footer.service";
 import { LocalAuthService } from "src/app/utils/services/auth.service";
 import { CommonService } from "src/app/utils/services/common.service";
+import { ActivatedRoute } from "@angular/router";
 
 // const HPDK = makeStateKey<any>('homepagedata'); // Home page data key
 // const TCK = makeStateKey<any>('topcarouseldata'); // Home page data key
@@ -80,7 +81,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   isMobile: boolean;
   recentProductList: Array<any> = [];
   result: any;
-  homeServiceUnsub;
   getFlyOutDataUnsub;
   bannerCarouselSelector = ".banner-carousel-siema";
   selectedBanner: Number = 0;
@@ -140,7 +140,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private homeService: HomeService,
     private cfr: ComponentFactoryResolver,
     private _commonService: CommonService,
-    private injector: Injector
+    private injector: Injector,
+    private route: ActivatedRoute
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -148,6 +149,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.route.data.subscribe((rawData) => {
+      if (!rawData['homeData']['error']) {
+        this.fetchHomePageData(rawData.homeData)
+      }
+    });
     this.setMetaData();
     if (this.isBrowser) {
       this.isMobile = true;
@@ -158,7 +164,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         page_type: "home_page",
       };
       this.dataService.sendMessage(trackData);
-      this.fetchHomePageData();
       this.cartService.homePageFlyOut.next(false);
       this.setAnalyticTags();
       setTimeout(() => {
@@ -172,11 +177,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getFlyOutData();
     this.footerService.setFooterObj({ footerData: true });
   }
-
-  fetchHomePageData() {
-    this.homeServiceUnsub = this.homeService
-      .getHomePageData()
-      .subscribe((response) => {
+  fetchHomePageData(response) {
         if (response && response["statusCode"] === 200 && response["data"]) {
           const data: any = {};
           response["data"].forEach((block) => {
@@ -344,7 +345,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             );
           }, 1000);
         }
-      });
   }
 
   setAnalyticTags() {
@@ -580,7 +580,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     for (let key in footerObj) {
       footerObj[key] = true;
     }
-    if (this.homeServiceUnsub) this.homeServiceUnsub.unsubscribe();
     if (this.getFlyOutDataUnsub) this.getFlyOutDataUnsub.unsubscribe();
     this.footerService.setMobileFoooters();
   }

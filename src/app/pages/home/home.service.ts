@@ -10,14 +10,14 @@ export class HomeService {
 
     constructor(public _dataService: DataService) { }
 
-    getHomePageData() {
-        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + '/homepage/layoutbyjson?requestType=mobile')
-        .pipe(
-            catchError((res: HttpErrorResponse) => {
-                return of(null);
-            })
-        );
-    }
+    // getHomePageData() {
+    //     return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + '/homepage/layoutbyjson?requestType=mobile')
+    //     .pipe(
+    //         catchError((res: HttpErrorResponse) => {
+    //             return of(null);
+    //         })
+    //     );
+    // }
 
     getFlyoutDataApi(url) {
         return this._dataService.callRestful('GET', url)

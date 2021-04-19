@@ -1,18 +1,19 @@
 import { Component, Input, OnInit } from "@angular/core";
 
 @Component({
-    selector: 'home-feature-brands',
-    templateUrl: './featuredBrands.html',
-    styleUrls: ['./featuredBrands.scss']
+    selector: 'home-feature-arrivals',
+    templateUrl: './featuredArrivals.html',
+    styleUrls: ['./featuredArrivals.scss']
 })
-export class FeaturedBrands implements OnInit{
-    @Input('featureBrandData') featureBrandData;
+export class FeaturedArrivals implements OnInit{
+    @Input('featureArrivalData') featureArrivalData;
     @Input('defaultImage') defaultImage;
     @Input('imagePath') imagePath;
 
     ngOnInit() {
-        console.log(this.featureBrandData);
-        console.log(this.defaultImage, this.imagePath);
+        debugger;
+        console.log(this.featureArrivalData);
+        console.log(this.defaultImage);
     }
 
     setCookieFeatured(imageTitle) {

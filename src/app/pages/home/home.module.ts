@@ -16,9 +16,10 @@ import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
 import { ModalService } from 'src/app/modules/modal/modal.service';
 // import { SelectCustomerTypeModule } from 'src/app/components/selectCutosmerType/select-customer-type.module';
 import { RecentlyViewedCarouselModule } from 'src/app/components/recentlyViewedCarousel/recentlyViewedCarousel.module';
-import { FeaturedBrands } from './featureBrands/featuredBrands.component';
+import { FeaturedBrands } from './featuredBrands/featuredBrands.component';
 import { ObserveVisibilityDirectiveModule } from 'src/app/utils/directives/observe-visibility.directive';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
+import { FeaturedArrivals } from './featuredArrivals/featuredArrivals.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
         HomeComponent,
         AdBlockDirective,
         FeaturedBrands,
+        FeaturedArrivals,
     ],
     providers: [
         HomeService,

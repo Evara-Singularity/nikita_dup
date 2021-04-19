@@ -171,7 +171,12 @@
         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
-<section class="featr_arrival">
+<!-- Featured Arrivals Section -->
+<div id="featureArrivals" observeVisibility [debounceTime]="600" (visible)="onVisibleFeaturedArrivals($event)">
+    <ng-container #FeaturedArrivals></ng-container>
+</div>
+
+<!-- <section class="featr_arrival">
     <div class="container">
         <div class="clearfix pad-tb-10">
             <h2 class="f-left f-14 pad-tb-10 upper-case">Featured Arrivals</h2>
@@ -204,7 +209,8 @@
             </li>
         </ul>
     </div>
-</section>
+</section> -->
+
 
 <!-- Pop up -->
 

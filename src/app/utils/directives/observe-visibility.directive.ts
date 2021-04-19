@@ -1,5 +1,5 @@
-import { isPlatformBrowser, isPlatformServer } from "@angular/common";
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, PLATFORM_ID } from "@angular/core";
+import { CommonModule, isPlatformBrowser, isPlatformServer } from "@angular/common";
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Inject, Input, NgModule, OnDestroy, OnInit, Output, PLATFORM_ID } from "@angular/core";
 import { Subject } from "rxjs";
 import { delay, filter } from "rxjs/operators";
 
@@ -103,3 +103,13 @@ export class ObserveVisibilityDirective
       });
   }
 }
+
+//exporting directive as an module
+@NgModule({
+  declarations: [ObserveVisibilityDirective],
+  imports: [
+      CommonModule
+  ],
+  exports: [ObserveVisibilityDirective],
+})
+export class ObserveVisibilityDirectiveModule { }

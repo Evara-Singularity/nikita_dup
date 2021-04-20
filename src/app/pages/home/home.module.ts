@@ -20,6 +20,7 @@ import { FeaturedBrands } from './featuredBrands/featuredBrands.component';
 import { ObserveVisibilityDirectiveModule } from 'src/app/utils/directives/observe-visibility.directive';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { FeaturedArrivals } from './featuredArrivals/featuredArrivals.component';
+import { SelectCustomerTypeModule } from 'src/app/components/selectCutosmerType/select-customer-type.module';
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import { FeaturedArrivals } from './featuredArrivals/featuredArrivals.component'
         MathCeilPipeModule,
         ObserveVisibilityDirectiveModule,
         NgxPageScrollCoreModule,
-        // SelectCustomerTypeModule,
+        SelectCustomerTypeModule,
     ],
     declarations: [
         HomeComponent,

@@ -10,7 +10,7 @@
     <button class="next icon-circle-next" [disabled]="!sct" (click)="spcp=true"></button>    
 
 
-        <app-pop-up *ngIf="spcp" (outData$)="outData$($event)" [class.open]="spcp" [data]="{class: 'customer-popup', sctd: types[sct]}">
+        <app-pop-up *ngIf="spcp" (outData$)="outData($event)" [class.open]="spcp" [data]="{class: 'customer-popup', sctd: types[sct]}">
         <h2 class="head" header>
           <span class="f-left icon-back" (click)="spcp=false"></span>
           <span class="head-txt" *ngIf="types[sct]">{{types[sct]['name']}}</span>

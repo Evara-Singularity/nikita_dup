@@ -118,12 +118,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
   appendSiemaItemSubjects: {};
 
-  // ondemad loaded components offer compare section popup
+  // ondemad loaded components: feature brands
   featuredBrandsInstance = null;
   @ViewChild('FeaturedBrands', { read: ViewContainerRef }) featuredBrandsContainerRef: ViewContainerRef;
-  // ondemad loaded components offer compare section popup
+  // ondemad loaded components: Feature Arrivals
   featuredArrivalsInstance = null;
   @ViewChild('FeaturedArrivals', { read: ViewContainerRef }) featuredArrivalsContainerRef: ViewContainerRef;
+    // ondemad loaded components: PWA Categories
+    categoriesInstance = null;
+    @ViewChild('Categories', { read: ViewContainerRef }) fCategoriesContainerRef: ViewContainerRef;
 
   constructor(
     public dataService: DataService,
@@ -630,30 +633,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   //     ";path=/";
   // }
 
-  setCategoryorBrandCookie(categoryName, type) {
-    this._commonService.setSectionClickInformation("homepage", "listing");
-    var date = new Date();
-    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
-    if (type === "tbrand") {
-      document.cookie =
-        "adobeClick=" +
-        "Brand" +
-        "_" +
-        categoryName +
-        "; expires=" +
-        date.toUTCString() +
-        ";path=/";
-    } else if (type === "tcat") {
-      document.cookie =
-        "adobeClick=" +
-        "Category" +
-        "_" +
-        categoryName +
-        "; expires=" +
-        date.toUTCString() +
-        ";path=/";
-    }
-  }
+
 
   async onVisibleFeaturedBrands(htmlElement) {
     const { FeaturedBrands } = await import('./featuredBrands/featuredBrands.component');
@@ -667,10 +647,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   async onVisibleFeaturedArrivals(htmlElement) {
     const { FeaturedArrivals } = await import('./featuredArrivals/featuredArrivals.component');
     const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
-    this.featuredBrandsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
+    this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
     this.featuredArrivalsInstance.instance['featureArrivalData'] = this.featureArrivalData;
     this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
     this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
+  }
+
+  async onVisibleCategories(htmlElement) {
+    const { Categories } = await import('./categories/categories.component');
+    const factory = this.cfr.resolveComponentFactory(Categories);
+    this.categoriesInstance = this.fCategoriesContainerRef.createComponent(factory, null, this.injector);
+    this.categoriesInstance.instance['middleImageJsonData'] = this.middleImageJsonData;
+    this.categoriesInstance.instance['categories'] = this.categories;
+    this.categoriesInstance.instance['carouselData'] = this.carouselData;
+    this.categoriesInstance.instance['defaultImage'] = this.defaultImage;
+    this.categoriesInstance.instance['imagePath'] = this.imagePath;
+    this.categoriesInstance.instance['recentProductList'] = this.recentProductList;
   }
 
   getCategoryLabel(categoryName) {

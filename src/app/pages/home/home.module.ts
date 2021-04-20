@@ -21,6 +21,7 @@ import { ObserveVisibilityDirectiveModule } from 'src/app/utils/directives/obser
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { FeaturedArrivals } from './featuredArrivals/featuredArrivals.component';
 import { SelectCustomerTypeModule } from 'src/app/components/selectCutosmerType/select-customer-type.module';
+import { Categories } from './categories/categories.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { SelectCustomerTypeModule } from 'src/app/components/selectCutosmerType/
         AdBlockDirective,
         FeaturedBrands,
         FeaturedArrivals,
+        Categories
     ],
     providers: [
         HomeService,

@@ -64,12 +64,16 @@
 
 <!-- Section for feature Brands -->
 <div class="featr_brand clearfix">
-    <div observeVisibility [debounceTime]="3000" (visible)="onVisibleFeaturedBrands($event)">
+    <div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedBrands($event)">
         <ng-container #FeaturedBrands></ng-container>
     </div>
 </div>
 
-<section class="banner-ad bulk" *ngFor="let im of middleImageJsonData;let i = index;">
+<div observeVisibility [debounceTime]="300" (visible)="onVisibleCategories($event)">
+    <ng-container #Categories></ng-container>
+</div>
+
+<!-- <section class="banner-ad bulk" *ngFor="let im of middleImageJsonData;let i = index;">
     <a *ngIf="i==2" href="{{im.image_link}}">
         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
     </a>
@@ -170,9 +174,9 @@
     <a *ngIf="i==1" href="{{im.image_link}}">
         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
     </a>
-</section>
+</section> -->
 <!-- Featured Arrivals Section -->
-<div id="featureArrivals" observeVisibility [debounceTime]="3000" (visible)="onVisibleFeaturedArrivals($event)">
+<div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div>
 

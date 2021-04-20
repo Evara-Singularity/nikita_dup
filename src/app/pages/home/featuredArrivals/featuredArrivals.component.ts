@@ -11,7 +11,6 @@ export class FeaturedArrivals implements OnInit{
     @Input('imagePath') imagePath;
 
     ngOnInit() {
-        debugger;
         console.log(this.featureArrivalData);
         console.log(this.defaultImage);
     }

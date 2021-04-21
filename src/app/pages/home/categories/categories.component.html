@@ -20,7 +20,7 @@
                     class="btn-red f-right">VIEW ALL
                 </a>
                 <ng-template #showPop>
-                    <a (click)="openPopup=true;sendDataToPopUP(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
+                    <a (click)="openPopup=true;sendDataToPopUP.emit(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
                         class="btn-red f-right">VIEW ALL</a>
                 </ng-template>
             </div>

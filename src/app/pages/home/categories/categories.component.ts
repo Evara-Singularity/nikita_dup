@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { CommonService } from "src/app/utils/services/common.service";
 
 @Component({
@@ -13,15 +13,11 @@ export class Categories {
     @Input('defaultImage') defaultImage;
     @Input('imagePath') imagePath;
     @Input('recentProductList') recentProductList;
+    @Output('sendDataToPopUP') sendDataToPopUP = new EventEmitter();
     openPopup;
     categoryNameFromHomePage;
-    constructor(private _commonService: CommonService) {
-
-    }
-
-    sendDataToPopUP(value) {
-
-    }
+    
+    constructor(private _commonService: CommonService) {}
 
     getCategoryLabel(categoryName) {
       this.categoryNameFromHomePage = categoryName;

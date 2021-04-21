@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
   pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
   appendSiemaItemSubjects: {};
-
+  anil; 
   // ondemad loaded components: feature brands
   featuredBrandsInstance = null;
   @ViewChild('FeaturedBrands', { read: ViewContainerRef }) featuredBrandsContainerRef: ViewContainerRef;
@@ -620,21 +620,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  // setCookieFeatured(imageTitle) {
-  //   var date = new Date();
-  //   date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
-  //   document.cookie =
-  //     "adobeClick=" +
-  //     "Featured" +
-  //     "_" +
-  //     imageTitle +
-  //     "; expires=" +
-  //     date.toUTCString() +
-  //     ";path=/";
-  // }
-
-
-
   async onVisibleFeaturedBrands(htmlElement) {
     const { FeaturedBrands } = await import('./featuredBrands/featuredBrands.component');
     const factory = this.cfr.resolveComponentFactory(FeaturedBrands);
@@ -663,6 +648,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.categoriesInstance.instance['defaultImage'] = this.defaultImage;
     this.categoriesInstance.instance['imagePath'] = this.imagePath;
     this.categoriesInstance.instance['recentProductList'] = this.recentProductList;
+    (this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>).subscribe((popupData) => {
+      this.sendDataToPopUP(popupData);
+    })
   }
 
   getCategoryLabel(categoryName) {

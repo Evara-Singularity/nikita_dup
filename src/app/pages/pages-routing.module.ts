@@ -70,15 +70,15 @@ const routes: Routes = [
         },
         canActivate: [IsNotAuthenticatedGuard]
       },
-    //   {
-    //     path: 'brand-store',
-    //     loadChildren: () => import('./static/brand/brand.module').then(m => m.BrandModule),
-    //     data: {
-    //         footer: false,
-    //         title: 'Brand Store',
-    //         moreOpt: true
-    //     }
-    // },
+      {
+        path: 'brand-store',
+        loadChildren: () => import('./static/brand/brand.module').then(m => m.BrandModule),
+        data: {
+          footer: false,
+          title: 'Brand Store',
+          moreOpt: true
+        }
+      },
     ]
   }
 ];

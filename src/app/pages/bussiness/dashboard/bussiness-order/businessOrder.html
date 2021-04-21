@@ -1,0 +1,112 @@
+<loader [showLoader]="showLoader"></loader>
+<!-- <div *ngIf="showLoader" class="page-loader">
+    <svg class="divi" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+        style="enable-background:new 0 0 200 200" xml:space="preserve">
+        <g>
+            <circle class="outer" cx="100" cy="100" r="70"></circle>
+            <path class="outer" d="M100.2,6C47.8,6,5.4,48.5,5.4,100.8s42.5,94.8,94.8,94.8s94.8-42.5,94.8-94.8S152.5,6,100.2,6z M100.2,185.7 		c-46.9,0-84.8-38-84.8-84.8S53.3,16,100.2,16S185,54,185,100.8S147,185.7,100.2,185.7z"></path>
+            <image class="inner" x="65" y="68" width="75" height="75" attr.xlink:href="{{imagePath}}mob/assets/img/loader.svg"
+                clip-path="url(#circleView)" />
+        </g>
+    </svg>
+</div> -->
+
+<div *ngIf="orders && orders.length>0">
+    <div class="orderbox" *ngFor="let order of orders;let i=index">
+        <div class="orderIdtab" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
+            <div class="orderSum">
+                <span class="orderId">Order ID : {{order.orderId}}</span>
+                <span class="orderOthDet">
+                    <span class="ordernoItems">{{(order.numberOfItem != undefined && order.numberOfItem != null) ?
+                        order.numberOfItem: 0}} {{(order.numberOfItem && order.numberOfItem>1) ? 'Items' : 'Item'}}&nbsp;| &nbsp;
+                    </span>
+                <span class="orderDate">
+                        Placed on : {{order.createdOn | date : 'dd-MM-yyyy'}}
+                    </span>
+                <!-- <span class="iconaccordian"><i [ngClass]="order.isOrderVisible ? 'icon-collaps' : 'icon-expand'"></i></span> -->
+                <span class="ico-order" *ngIf="order.isOrderVisible"><img src ="../../../../../assets/icons/collaps.png"></span>
+                <span class="ico-order" *ngIf="!order.isOrderVisible"><img src ="../../../../../assets/icons/expand.png"></span>
+                </span>
+            </div>
+        </div>
+        <ng-container *ngIf="order.isOrderVisible">
+            <div class="orderdtBox" id="one">
+                <div *ngFor="let detail of orderDetail[order.orderId]" class="orderdtBoxinner">
+                    <a href="#" [routerLink]="['../../order-detail',order.orderId, detail.item_id]">
+                        <div class="orderdtDesc clearfix">
+                            <div class="orderproImg">
+                                <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+                            </div>
+                            <div class="orderproDesc">
+                                <p>
+                                    <a href="#">{{(detail.product_name | slice:0:30) + (detail.product_name > 30 ? "...":"")}} 
+                                <!-- <i class="icon-next ico-right"></i>   -->
+                                    </a>
+                                </p>
+                                <div class="orderqty clearfix">
+                                    <span class="qtyleft"><span>Qty :{{detail.Quantity}} | {{detail.price}}</span><small class="greytxt">(Price Inclusive of GST)</small></span>
+                                    <!-- <span class="qtyleft">Price Inclusive of GST: <span> {{detail.price}} </span></span> -->
+                                </div>
+                                <div class="clearfix">
+                                    <span class="orderstatus f-left">Status:<span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED' || detail.status == 'DELIVERED' || detail.status == 'RETURN DONE' || detail.status == 'RETURN REQUESTED' || detail.status == 'RETURN APPROVED' || detail.status == 'RETURN PICKED' || detail.status == 'EXCHANGE REQUESTED' || detail.status == 'EXCHANGE PICKED' || detail.status == 'EXCHANGE APPROVED' || detail.status == 'EXCHANGE DONE' ? 'green-txt':'red-txt'">{{detail.status}}</span></span>
+                                    <span *ngIf="showBuyAgain_Invoice(detail['status'])" class="buy-again f-right"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY AGAIN</a></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="orderShipDet">
+                    <div class="ordersumBox businessBox">
+                        <h3 class="top_txt clearfix">
+                            Payment Summary
+                        </h3>
+                        <div class="chargestext">Payment Mode:
+                            <span>{{orderDetail[order.orderId][0]?.payment_type}}</span>
+                        </div>
+                        <div class="chargestext clearfix">Total Shipping:
+                            <span>₹ {{currentOrderShippingCharges}}</span>
+                        </div>
+                        <!-- <div class="chargestext " *ngIf="detail && detail.discount">Total Discount:
+                            <span class="textgreen">₹ {{detail.discount | mathFloor | number : '1.2-2'}}</span>
+                        </div> -->
+                        <div class="chargestext">Total Discount:
+                            <span class="textgreen">₹ {{currentOrderDiscountCharges + currentOrderNoEMIDiscountCharges}}</span>
+                        </div>
+                        <div class="totPrice">Total Paid :
+                            <span class="paymode">₹ {{getTotalAmount(orderDetail[order.orderId]) | number : '1.0-0'}}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="norder" *ngIf="orders && orders.length===0">
+    <img alt="" src="{{imagePath}}b/I/P/B/d/no-order-image.png" width="200" />
+    <div class="noordertext"> No Orders placed yet. Add items to your cart and make a purchase.</div>
+    <button [routerLink]="['/']" class="btn startshop">START SHOPPING</button>
+</div>
+<div class="bottom-options hide">
+    <div class="overlay"></div>
+    <div class="content-box">
+        <ul class="container">
+            <li>Download Invoice</li>
+            <li>Return order</li>
+            <li>Cancel Order</li>
+        </ul>
+    </div>
+</div>
+<router-outlet></router-outlet>
+<div>
+    <ng-container *ngIf="pages>0">
+        <div>
+            <ul class="paginate">
+                <li [ngClass]="{'active': currentPage==i}" (click)="changePagination(i)" *ngFor="let item of pagesArray | paginate: { itemsPerPage: 10, currentPage: currentPage }"></li>
+            </ul>
+            <pagination-controls (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </div>
+    </ng-container>
+</div>

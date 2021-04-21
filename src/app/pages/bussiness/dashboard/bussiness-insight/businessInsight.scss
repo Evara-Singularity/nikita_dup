@@ -1,0 +1,23 @@
+@import "../../../../../var";
+
+.empower_icon {
+  background: url("#{$cdn_url}mob/assets/img/businessIcons.svg");
+  background-size: 1700%;
+  &.empower {
+    background-position: -234px -20px;
+  }
+  &.purchase {
+    background-position: -160px -22px;
+  }
+  &.location {
+    background-position: -451px -18px;
+  }
+
+  &.pricing {
+    background-position: -609px -24px;
+  }
+
+  &.invoice {
+    background-position: -88px -22px;
+  }
+}

@@ -71,6 +71,15 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'order-confirmation',
+        loadChildren: () => import('./orderConfirmation/orderConfirmation.module').then(m => m.OrderConfirmationModule),
+        data: {
+          footer: false,
+          logo: true,
+          menuBar: true
+        }
+      }
     ]
   }
 ];

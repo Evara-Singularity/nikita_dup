@@ -1,0 +1,28 @@
+.order-container {
+  padding-bottom: 33px;
+  .card-30 {
+    padding-top: 10px;
+  }
+  .main-img {
+    width: 120px;
+  }
+}
+.order-detail {
+  text-align: left;
+  ul {
+    li {
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 10px;
+      &::before {
+        content: "-";
+        position: absolute;
+        left: -1px;
+      }
+    }
+  }
+}
+.continue-button p {
+  line-height: 20px;
+  margin: 10px 0 0 20px;
+}

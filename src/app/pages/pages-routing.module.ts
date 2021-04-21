@@ -71,6 +71,15 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'order-failure',
+        loadChildren: () => import('./orderFailure/orderFailure.module').then(m => m.OrderFailureModule),
+        data: {
+          footer: false,
+          logo: true,
+          menuBar: true
+        }
+    }
     ]
   }
 ];

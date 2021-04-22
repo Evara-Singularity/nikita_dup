@@ -79,6 +79,23 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'all-categories',
+        loadChildren: () => import('./view/view.module').then(m => m.ViewModule),
+        data: {
+            footer: false,
+            logo: true
+        }
+      },
+      {
+        path: 'industrystore',
+        loadChildren: () => import('./static/industryStore/industryStore.module').then(m => m.IndustryStoreModule),
+        data: {
+            footer: true,
+            title: 'Industry Store',
+            moreOpt: true
+        }
+      },
     ]
   }
 ];

@@ -1,0 +1,118 @@
+<section id="view_all-page" class="category-container">
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-content">
+      <div *ngIf="clusterCategoryData" class="allCategory">
+        <!-- <h3 class="l0_heading">All Cluster Categories</h3> -->
+        <div class="categoryOverBlk">
+          <div class="clearfix">
+            <div class="commonCategorySlide" *ngFor="let item of clusterCategoryData['data']">
+              <div class="innerSlide">
+                <a [routerLink]="['/'+item.image_general[0].general_url]">
+                  <div class="categoryImg">
+                    <!-- <img src="../../../assets/img/safety/cluster_cat.png"> -->
+                    <img [defaultImage]="defaultImage" [lazyLoad]="API['IMAGE_BASE_URL'] + item.image_name">
+                  </div>
+                  <div class="categoryName">
+                    <span>{{item['image_title']}}</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="clearfix breadcrumbs border-bottom">
+        <h1 (click)="goto(0)" style="font-size:14pt;">All Categories</h1>
+        <ng-container *ngFor="let cat of clickedCategories; let i=index;">
+          <i class="icon-next"></i>
+          <span (click)="goto(i+1,cat.index)">{{cat.name}}</span>
+        </ng-container>
+      </div>
+      <div class="sidebar-menu" id="tabs" #tabs>
+        <ul class="">
+          <li class="category-list" *ngFor="let categoryL1 of categoriesData; let L1Index=index;" [ngClass]="{'active':currentL1Index==L1Index,'sidebar-dropdown':currentL1Index==L1Index, 'header-menu':currentL1Index==L1Index}">
+            <a  (click)="_commonService.setSectionClickInformation('all_categories', 'listing')" [routerLink]="'/'+categoryL1?.categoryDetails?.categoryLink" data-toggle="tab">
+              <i class="cat-icon-bg icon-{{categoryL1?.categoryDetails?.categoryId}}"></i>
+              <ng-container *ngIf="!categoryL1?.categoryDetails?.imageURL">
+                <i class="imagefalse"></i>
+              </ng-container>
+              <span class="l1Title">{{categoryL1?.categoryDetails?.categoryName}}</span>
+            </a>
+
+            <ng-container *ngIf="categoryL1.children.length>0 && !categoryL1['showChild']">
+              <i class="icon-next" aria-hidden="true" style="font-size:16px;padding:10px;" [ngClass]="{'active':currentL1Index==L1Index}"
+                (click)="getDownArrow(L1Index, categoryL1)"></i>
+            </ng-container>
+            <ng-container *ngIf="categoryL1['showChild']">
+              <img src="http://img.moglimg.com/img/down_arrow.png" aria-hidden="true" [ngClass]="{'downarrow':categoryL1['showChild']==true}"
+                (click)="getUpArrow(L1Index, categoryL1)" style="font-size:24px;margin-left:5px;" />
+            </ng-container>
+            <div *ngIf="categoryL1['showChild']" class="sidebar-submenu">
+              <ul class="submenu-li ull2">
+                <li *ngFor="let submenu of categoryL1.children">
+                  <a [routerLink]="'/'+submenu.categoryDetails.categoryLink">
+                    {{submenu.categoryDetails.categoryName}} </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+
+
+
+
+
+<!-- 
+<section id="view_all-page" class="category-container">
+  <div class="clearfix breadcrumbs border-bottom">
+      <h1 class="" (click)="goto(0)">All Categories</h1> 
+      <ng-container *ngFor="let cat of clickedCategories; let i = index;">
+        <i class="icon-next"></i> 
+        <span (click)="goto(i+1,cat.index)">{{cat.name}}</span>
+      </ng-container>
+  </div>
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-content">
+        <div class="sidebar-menu">
+          <ul>
+            <li *ngFor="let menu of menus" [ngClass]="{'active': menu.active , 'sidebar-dropdown':menu.type === 'dropdown' , 'header-menu':menu.type === 'header'}">
+              <span *ngIf="menu.type === 'header'">{{menu.title}}</span>
+              <a *ngIf="menu.type !== 'header'" href="#" (click)='toggle(menu)'>
+                <i class="{{menu.icon}}"></i>
+                <span>{{menu.title}}</span>
+                <span *ngIf="menu.badge" class="badge badge-pill" [ngClass]="menu.badge.class">{{menu.badge.text}}</span>
+              </a>
+              <div *ngIf="menu.type === 'dropdown'" class="sidebar-submenu" [@slide]="getState(menu)">
+                <ul>
+                  <li *ngFor="let submenu of menu.submenus">
+                    <a href="#"> {{submenu.title}}
+                      <span *ngIf="submenu.badge" class="badge badge-pill" [ngClass]="submenu.badge.class">{{submenu.badge.text}}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+    </div>
+    
+  </nav>
+  
+  <div class="container">
+
+    <ul class="category-list">
+      <li *ngFor="let category of categoriesData; let i = index;">
+        <a [routerLink]="[category.catURL]">
+          <i class="cat-icon-bg {{category.className}}" *ngIf="!childCatIcons"></i>
+          <h5>{{category.catName}} </h5>
+        </a>
+        <i *ngIf="category.childCategories && category.childCategories.length" (click)="clicked(i,category.catName)" class="icon-next"></i>
+      </li>
+    </ul>
+  </div>
+</section> -->

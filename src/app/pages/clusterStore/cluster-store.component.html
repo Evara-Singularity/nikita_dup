@@ -1,0 +1,18 @@
+<loader [showLoader]="isShowLoader"></loader>
+<div *ngIf ="data" class="l0CategoryContainer">
+    <app-cluster-category *ngIf="data['category_cluster'] && data['category_cluster']['data'].length > 0" [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category>
+    <div class ="cluster-body">
+        <app-banner *ngIf="data['main_banner'] && data['main_banner']['data'].length > 0" [data]="data['main_banner']"></app-banner>
+        <app-all-category *ngIf="data['all_categories'] && data['all_categories']['data'].length > 0" [data]="data['all_categories']"></app-all-category>
+        <app-new-arrival *ngIf="data['new_arrival'] && data['new_arrival']['data'].length > 0"  [data]="data['new_arrival']"></app-new-arrival>
+        <app-trending-category *ngIf="data['trending_categories'] && data['trending_categories']['data'].length > 0" [data]="data['trending_categories']"></app-trending-category>
+        <app-featured-brand *ngIf="data['featured_brands'] && data['featured_brands']['data'].length > 0" [data]="data['featured_brands']"></app-featured-brand>
+        <app-feature-banner  *ngIf="data['secondary_banner'] && data['secondary_banner']['data'].length > 0" [data]="data['secondary_banner']"></app-feature-banner>
+        <app-bestseller *ngIf="data['bestseller'] && data['bestseller']['data'].length > 0"  [data]="data['bestseller']"></app-bestseller>
+        <app-featured-category *ngIf="data['featured_categories'] && data['featured_categories']['data'].length > 0" [data]="data['featured_categories']"></app-featured-category>
+        <cluster-video *ngIf="data['video_block'] && data['video_block']['data'].length > 0"
+            [listOfVideos]="data['video_block']['data']" [title]="data['video_block']['title']">
+        </cluster-video>
+        <app-cluster-footer *ngIf="data['footer_data'] && data['footer_data']['data'].length > 0" [data]="data['footer_data']"></app-cluster-footer>
+    </div>
+</div>

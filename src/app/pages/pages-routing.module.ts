@@ -105,6 +105,15 @@ const routes: Routes = [
             moreOpt: true
         }
       },
+      {
+        path: 'store/:type',
+        loadChildren: () => import('./clusterStore/cluster-store.module').then(m => m.ClusterStoreModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true
+        }
+      },
     ]
   }
 ];

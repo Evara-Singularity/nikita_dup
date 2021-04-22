@@ -1,0 +1,104 @@
+<div *ngIf ="bannerData && bannerData.length >0"class="mfrWrap row">
+    <div *ngFor="let banner of bannerData" class="bannerBlock" [ngStyle]="{'background': 'url(' +imagePath+banner_bg + ')','background-repeat':'no-repeat','background-size':'cover','background-position': 'center center'}">
+        <div class="bannerTxtBlock">
+            <h3> {{banner.image_general[0].general_text}}</h3>
+            <p>
+                {{banner.image_general[0].general_url}}
+            </p>
+        </div>
+    </div>
+    <div *ngIf="iconsData && iconsData.length > 0" class="mfrFeaturesblock clearfix">
+        <div *ngFor="let icon of iconsData" class="block">
+            <img src="{{imagePath}}{{icon.image_name}}">
+            <small>{{icon.image_general[0].general_url}}</small>
+            <span>{{icon.image_general[0].general_text}}</span>
+        </div>
+    </div>
+    <div *ngIf ="bestSellerArray && bestSellerArray.length >0"class="mfr-bestSeller clearfix">
+            <h2 class="ss_sec-heading-center">BESTSELLERS</h2>
+            <siema-carousel [imagePath]="imagePath" [defaultImage]="defaultImage" [options]="manufacturerBestSellerOptions" [items]="bestSellerArray">
+            </siema-carousel>
+    </div>
+    <div *ngIf ="percentageData && percentageData.length >0" class="mfrPercentageWrap clearfix">
+        <div *ngFor="let img of percentageData" class="leftSection">
+            <a href="{{img.image_link}}">
+                <img src="{{imagePath}}{{img.image_name}}">
+            </a>
+        </div>
+    </div>
+    <div *ngIf ="newArrivalArray && newArrivalArray.length >0" class="mfr-bestSeller clearfix clearfix">
+      
+        <h2 class="ss_sec-heading-center">NEW ARRIVALS</h2>
+        <siema-carousel [imagePath]="imagePath" [defaultImage]="defaultImage" [options]="manufacturerNewArrival" [items]="newArrivalArray">
+        </siema-carousel>
+    </div>
+   <div *ngIf ="whyChooseUsData && whyChooseUsData.length >0" class="whyChooseUs clearfix">
+        <h2 class="ss_sec-heading-left">WHY CHOOSE US</h2>
+        <div class="whyChooseUs_sec1">
+            <div *ngFor="let choose_block of whyChooseUsData" class="whyChooseUsBlock clearfix">
+                <img src="{{imagePath}}{{choose_block.image_name}}">
+                <div class="txtBlock">
+                    <h4>{{choose_block.image_general[0].general_text}}</h4>
+                    <p>{{choose_block.image_general[0].general_url}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf ="brandKeysData && brandKeysData.length >0" class ="all-products-container">
+        <div *ngFor="let brandBlock of brandKeysData" class="all-products clearfix">
+                    <h2 class="ss_sec-heading-left">{{getBrandName(brandBlock) |uppercase}}
+                        <a [routerLink]="['/brands/'+getBrandName(brandBlock)]" class="viewallbs">VIEW ALL</a>
+                    </h2>
+                    <ul class="view-products grid">
+                        <li *ngFor="let brand of block_data[brandBlock]" class="gridView mfr_brand_block">
+                            {{brand.productUrl}}
+                            <a [routerLink]="['/'+brand.productlink]" class="no-hover pad-tb-15 pad-lr-15 block">
+                                <div class="">
+                                    <div class="product-img">
+                                        <img src="{{imagePath}}{{brand.imageLink_medium}}" class="img-responsive">
+                                        <!-- <img [defaultImage]="defaultImage"
+                                         [lazyLoad]="imagePath + item.imageLink_medium" class="img-responsive"
+                                         [scrollObservable]="imageChange$"> -->
+                                    </div>
+                                    <div class="mfr_product_details">
+                                        <p class="prod-name">
+                                            {{brand.productName | slice:0:30}}
+                                            <!-- {{ item.productName | slice:0:30 }} -->
+                                            <span *ngIf="brand.productName.length>30">...</span>
+                                        </p>
+                                        <p class="mrp">
+                                            {{brand.priceWithoutTax}}
+                                            <span class="before-discount">{{brand.mrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+                                            <!-- {{ floor(brand.pricewithouttax) | currency:'INR': 'symbol':"1.0"}} -->
+                                        </p>
+                                        <p class="f-size-17 f-size-xs-14 b-text text-green mar-t-5 pad-b-5"></p>
+                                        <!-- {{ item.pricewithouttax  | currency:'INR': 'symbol':"1.0"}}</p> -->
+                                        <p class="discount">{{brand.discount_percentage | number:'1.0-0' }}% OFF</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+        </div>
+    </div>
+    <!-- <div *ngIf="awardsData.length" class="awardsSection clearfix">
+        <div *ngFor="let award of awardsData" class="inner-section">
+            <h2 class="ss_sec-heading-center">AWARDS</h2>
+            <p *ngIf="award.image_general[0].general_url" class="desc-text">{{award.image_general[0].general_url}}</p>
+            <div class="award_img-section">
+                <div>
+                    <img src="{{imagePath}}{{award.image_name}}">
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div *ngIf="reviewsArray && reviewsArray.length >0" class="ourClientsBlock">
+        <div class="supplier-carousel">
+            <!-- {{supplierReviewOptions | json}} -->
+            <h2 class="ss_sec-heading-center">WHAT OUR CUSTOMERS SAY</h2>
+            <siema-carousel [imagePath]="imagePath" [defaultImage]="defaultImage" [options]="supplierReviewOptions" [items]="reviewsArray">
+            </siema-carousel>
+        </div> 
+    </div>
+</div>
+<!-- pagination -->

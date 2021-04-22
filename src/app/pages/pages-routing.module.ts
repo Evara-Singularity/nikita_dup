@@ -96,6 +96,15 @@ const routes: Routes = [
             moreOpt: true
         }
       },
+      {
+        path: 'manufacturer-store/:manufacturer',
+        loadChildren: () => import('./static/manufacturer-store/liberty/liberty.module').then(m => m.LibertyModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true
+        }
+      },
     ]
   }
 ];

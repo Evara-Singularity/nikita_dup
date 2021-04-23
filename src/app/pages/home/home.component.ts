@@ -64,13 +64,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   bannerImagesScroll: any = {};
   middleImageJsonData: any = [];
   middleImageJsonDataLink: any = [];
-  featureBrandDataLink: any = [];
-  featureArrivalDataLink: any = [];
 
-  middleBannerData: any = {};
-  featureData: any;
+  // featureData: any;
   featureBrandData: any = [];
-  featureArrival: any;
+  // featureArrival: any;
   featureArrivalData: any = [];
 
   dataKeyToPopUpPage: any;
@@ -85,11 +82,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   bannerCarouselSelector = ".banner-carousel-siema";
   selectedBanner: Number = 0;
   carouselData: any = {};
-  siemaOptionsObject = {
-    outerWrapperClass: ["product_block_container"],
-    innerWrapperClass: ["product_block"],
-  };
-  DESKTOP_IMAGE_CATEGORY = "246";
+  // DESKTOP_IMAGE_CATEGORY = "246";
   MOBILE_IMAGE_CATEGORY = "381";
   defaultImage = CONSTANTS.IMAGE_BASE_URL + "assets/img/home_card.webp";
   defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + "image_placeholder.jpg";
@@ -117,7 +110,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
   pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
   appendSiemaItemSubjects: {};
-  anil; 
   // ondemad loaded components: feature brands
   featuredBrandsInstance = null;
   @ViewChild('FeaturedBrands', { read: ViewContainerRef }) featuredBrandsContainerRef: ViewContainerRef;
@@ -476,14 +468,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  floor(num) {
-    if (!num) {
-      return "";
-    }
-    num = num + "";
-    return num.split(".")[0];
-  }
-
   parseAndOrderBannerData(data) {
     let category = this.MOBILE_IMAGE_CATEGORY;
     const dataObj = { bannerData: [], secondaryBanner: [] };
@@ -509,41 +493,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     return dataObj;
-  }
-  changeBanner(index) {
-    if (!this.isServer) {
-      Array.prototype.map.call(
-        document.querySelectorAll(".home_banner_caption a"),
-        (el, i): boolean => {
-          if (el.classList.contains("active")) {
-            if (i === index) {
-              return true;
-            } else {
-              this._siemaCarouselComponent.goTo(
-                index,
-                this.bannerCarouselSelector
-              );
-              el.classList.remove("active");
-              return false;
-            }
-          } else {
-            return false;
-          }
-        }
-      );
-      this.selectedBanner = index;
-    }
-  }
-
-  getEmail(): any {
-    let userEmail = " ";
-    if (this._lss.retrieve("user")) {
-      const user = this._lss.retrieve("user");
-      if (user.authenticated === "false") {
-        userEmail = user.email;
-      }
-    }
-    return userEmail;
   }
 
   webSiteSchema() {
@@ -651,14 +600,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     (this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>).subscribe((popupData) => {
       this.sendDataToPopUP(popupData);
     })
-  }
-
-  getCategoryLabel(categoryName) {
-    this.categoryNameFromHomePage = categoryName;
-    setTimeout(() => {
-      window.scrollTo(window.scrollX, window.scrollY + 1);
-      window.scrollTo(window.scrollX, window.scrollY - 1);
-    }, 100);
   }
 
   getBrandName(brand_description) {

@@ -1,0 +1,70 @@
+<div class="card-head pad-tb-10 border-bottom" *ngIf="products != undefined && products.length>0">
+    <div class="container">
+        <h1 class="displayCategoryName" *ngIf="isDisplayCategoryName">{{displayCategoryName}}</h1>
+        <p class="f-left heading-3"><span *ngIf="productCount" class="normal-txt">{{productCount}}</span> <span
+                class="normal-txt">
+                Products below</span></p>
+    </div>
+</div>
+<div *ngIf="products != undefined && products.length>0" class="row prod_list prod_list" lazy-load-images>
+    <ul class="view-products list">
+        <ng-container *ngFor="let product of products | showAvailableOnRequestLast; let i = index">
+            <li>
+                <a [title]="product.productName" [routerLink]="'/'+product.productUrl" (click)="execGaGTm(product, i)"
+                    [target]="blank" class="clearfix">
+                    <ng-container *ngIf="product.productTags && product.productTags != undefined">
+                        <div *ngFor="let tag of product.productTags | arrayFilterPipe : 'tagType': 'image': 'object' | slice:0:1; let i = index;"
+                            class="productTags">
+                            <img src="{{tag.tagImageLink}}">
+                        </div>
+                    </ng-container>
+
+                    <div class="product-img">
+                        <img *ngIf="isBrowser && i == 0" [alt]="product.productName" [src]="defaultImage"
+                            lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid">
+                        <img *ngIf="isServer && i == 0" [alt]="product.productName" [src]="firstImage"
+                            lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid">
+                        <img *ngIf="i > 0" [alt]="product.productName" [src]="defaultImage"
+                            lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid">
+                    </div>
+                    <div class="product-description">
+                        <div *ngIf="product.avgRating" class="reviewRatingWrap">
+                            <span class="reviewRating">
+                                {{product.avgRating | rating |  number : '1.1-1'}}
+                                <img src="assets/img/star_image.png">
+                            </span>
+                            <span class="ratingCount" *ngIf="product.reviewCount">({{product.reviewCount}})</span>
+                        </div>
+                        <p class="description-txt">{{product.productName | slice:0:70 }}<span
+                                *ngIf="product.productName.length>70">...</span></p>
+                        <p class="price" *ngIf="product.salesPrice>0">
+                            <span class="before-discount" *ngIf="product.mrp>product.priceWithoutTax">
+                                {{product.mrp | currency: 'INR': 'symbol': '1.0-0'}}</span>
+                            <span class="discount" *ngIf="product.mrp>product.priceWithoutTax">
+                                {{((product.mrp -  product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}}%
+                                OFF</span>
+                            <span class="after-discount" *ngIf="product.priceWithoutTax >= 0">
+                                {{product.priceWithoutTax | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}</span>
+                        </p>
+                        <p class="request-text" *ngIf="product.quantityAvailable<=0 || product.salesPrice == 0">
+                            Available on Request
+                        </p>
+                        <p class="qpp" *ngIf="product.quantityAvailable>0">Qty Per Pack : {{product.itemInPack}}</p>
+                        <p class="seller" *ngIf="product && product.brandName"> <span>By :</span>
+                            {{ product.brandName }} </p>
+                    </div>
+                </a>
+            </li>
+
+        </ng-container>
+    </ul>
+
+</div>
+
+<div class="align-center" *ngIf="products != undefined && products.length==0">
+    <div class="container pt-15">
+        <h3 class="pb-15 mt-15 align-center f-16">No Product Found</h3>
+        <img class="no-product" src="{{imagePath}}b/I/P/B/d/no-search-result.svg">
+        <p class="pad-tb-15 f-16">Maybe your search was too specific. Contact for this specific product.</p>
+    </div>
+</div>

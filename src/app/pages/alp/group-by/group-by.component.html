@@ -1,0 +1,31 @@
+<div class="groupByWrapper">
+    <div class="innerCarouselWrapper">
+        <h3 class="topBrandHeading">{{name | titlecase}}</h3>
+        <ul>
+            <li *ngFor="let product of products">
+                <a [routerLink]="'/'+product.productUrl">
+                    <img class="brandImage" [alt]="product.productName" [src]="baseImgPath + product.mainImageLink">
+                </a>
+                <h5>
+                    {{product?.productName | slice:0:30 }}
+                    <ng-container *ngIf="product.productName.length>30">...</ng-container>
+                </h5>
+                <p class="brandName">{{'By : ' + product?.brandName }}</p>
+                <div *ngIf="product.quantityAvailable<=0 || product.salesPrice == 0;else detailSection">
+                    <p class="available">
+                        Available on Request
+                    </p>
+                </div>
+                <ng-template #detailSection>
+                    <span *ngIf="product.quantityAvailable>0 && product.salesPrice>0"> 
+                        {{product.mrp | currency: 'INR': 'symbol': '1.0-0'}}
+                        <strong>{{product | discount }}</strong>
+                    </span>
+                    <h6 *ngIf="product.priceWithoutTax >= 0">
+                        {{product.priceWithoutTax | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}</h6>
+                    <p class="packSize">{{'Qty Per Pack :' + product?.itemInPack}}</p>
+                </ng-template>
+            </li>
+        </ul>
+    </div>
+</div>

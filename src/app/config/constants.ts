@@ -25,6 +25,7 @@ const CONSTANTS = {
         ROBOT1: 'noindex,follow',
         ROBOT2: 'noindex,nofollow'
     },
+    FILTER_GA_ID:[114000000,116111700,211000000],
     CONST_VAR: {
 		shippingcharge: '99',
 		FreeShippingMinAmount: '999',

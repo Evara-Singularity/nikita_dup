@@ -71,6 +71,15 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+          path: 'alp/:attribute',
+          loadChildren: () => import('./alp/category.module').then(m => m.CategoryModule),
+          data: {
+              footer: false,
+              logo: true,
+              moreOpt: true
+          }
+      }
     ]
   }
 ];

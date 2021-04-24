@@ -1,0 +1,51 @@
+<section class="bscategory">
+    <div class="bscatwrap">
+        <h2 class="slp-heading clearfix">BestSellers
+            <a (click)="openPopup=true;" class="viewallbs">VIEW ALL</a>
+        </h2>
+        <div class="bsrow clearfix">
+            <div class="bs_item" *ngFor="let product of bestSeller_Data">
+                <div class="bs_item_img">
+                    <a [routerLink]="'/'+product.productlink">
+                        <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
+                            alt="{{product.productName}}" />
+                    </a>
+                </div>
+                <div class="bs_item_desc">
+                    <h3>{{product.productName | slice:0:30}} </h3>
+                    <p class="safetysh_discount"><span>₹{{product.mrp}}</span> {{product.discount_percentage}}% OFF</p>
+                    <p class="safetysh_price">₹{{product.pricewithouttax}}</p>
+                    <p class="brandname">By: <span>{{getBrandBy(product.short_description)}}</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
+    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+    <div class="content-popup" content>
+        <ul class="view-products no-border list border-top">
+            <li *ngFor="let product of bestSeller_Data">
+                <a [routerLink]="'/'+product.productlink" class="clearfix">
+                    <div class="product-img">
+                        <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
+                            alt="{{product.productName}}">
+                    </div>
+                    <div class="product-description">
+                        <p class="description-txt">{{product.productName | slice:0:60}} <span
+                                *ngIf="product.productName.length>60">...</span></p>
+                        <p class="price">
+                            <span class="before-discount">₹{{product.mrp}}
+                            </span>
+                            <span class="discount">{{product.discount_percentage}}% OFF</span>
+                            <span class="after-discount">{{product.pricewithouttax}}</span>
+                        </p>
+                        <p class="seller">
+                            <span>By :</span>{{getBrandBy(product.short_description)}}</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</app-pop-up>

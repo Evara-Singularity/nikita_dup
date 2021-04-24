@@ -1,0 +1,55 @@
+<loader [showLoader]="showLoader"></loader>
+<div class="cat_filter_wrap">
+    <div class="prod_filter">
+        <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName"
+            [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter>
+    </div>
+</div>
+<breadcrump [breadcrumpUpdated]="breadcrumpUpdated" [type]="'category'" [pageTitle]="titleHeading"></breadcrump>
+<div class="attributeListingGroup">
+    <h1 class="attributeHeading">{{titleHeading}}</h1>
+    <p class="attributeContent" [innerHTML]="titleDescription" *ngIf="firstPageContent"></p>
+</div>
+
+<div class="groupByComponent" *ngIf="displayGroupBy">
+    <h3 class="attributeHeading">Popular Brands</h3>
+</div>
+
+<ng-container *ngIf="displayGroupBy">
+    <ngx-siema [options]="groupedBrandSiema">
+        <ngx-siema-slide *ngFor="let brand of groupedProductNames">
+            <div class="groupCategorySlide clearfix">
+                <group-by [name]="brand" [products]="groupedProducts[brand]"></group-by>
+            </div>
+        </ngx-siema-slide>
+    </ngx-siema>
+</ng-container>
+<div class="cate-container" id=category-cards-section>
+    <div class="bg_white">
+        <div class="clearfix"></div>
+        <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"
+            [relatedCatgoryListUpdated]="relatedCatgoryListUpdated" [isDisplayCategoryName]="false"></product-list>
+        <div class="filter-wrapper">
+            <button type="button" (click)="filterUp()">
+                <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER <span
+                        *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
+            </button>
+
+            <button type="button" (click)="sortByOpt = true">
+                <i class="icon-sort-by" aria-hidden="true"></i>
+                <span class="txt">SORT BY</span>
+            </button>
+        </div>
+        <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
+        <div>
+            <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated"
+                [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
+                (onPageChange)="pageChanged($event)"></pagination>
+        </div>
+    </div>
+    <ng-container *ngIf="!showLoader && bestSellerProducts.length>0">
+        <best-seller [items]="bestSellerProducts" [titleName]="bestSellerTitle"></best-seller>
+    </ng-container>
+    <div id="openCat3" *ngIf="firstPageContent && productSearchResult && productSearchResult['products'].length>0"
+        class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
+</div>

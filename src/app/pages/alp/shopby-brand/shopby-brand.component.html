@@ -1,0 +1,11 @@
+  <div class="safetyshopbywrap">
+      <h2 class="slp-heading">
+          Shop By Brand
+      </h2>            
+      <div class="brandslogorow">
+          <ul class="brandslogo clearfix">
+             <li *ngFor="let item of brand_Data"><a [routerLink]="'/'+item.brand_url">
+                <img [src]="defaultImage" lazyLoad="{{imagePath}}{{item.brand_image}}" alt ="{{item.brandName}}" /></a></li>
+          </ul>
+      </div>
+  </div>

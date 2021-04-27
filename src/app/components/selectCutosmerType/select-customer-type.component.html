@@ -1,53 +1,44 @@
+<p class="question">Please select what type of customer are you?</p>
+<div class="select-type clearfix">
+  <label [ngClass]="{ 'f-left' : odd, 'f-right' : even, 'selected' : sct == i  }"
+    *ngFor="let type of types; let even = even; let odd = odd; let i=index;" (click)="spcp=true">
+    <input type="radio" value="{{i}}" [(ngModel)]="sct">
+    <img src={{imagePath}}{{type.img}} alt="INDIVIDUAL Customer">
+    <p>{{type.name}}</p>
+  </label>
+</div>
+<button class="next icon-circle-next" [disabled]="!sct" (click)="spcp=true"></button>
 
-    <p class="question">Please select what type of customer are you?</p>
-    <div class="select-type clearfix">
-        <label [ngClass]="{ 'f-left' : odd, 'f-right' : even, 'selected' : sct == i  }" *ngFor="let type of types; let even = even; let odd = odd; let i=index;" (click)="spcp=true">
-            <input type="radio" value="{{i}}" [(ngModel)]="sct">
-            <img src={{imagePath}}{{type.img}} alt="INDIVIDUAL Customer">
-        <p>{{type.name}}</p>
-        </label>          
+
+<app-pop-up *ngIf="spcp" (outData$)="outData($event)" [class.open]="spcp"
+  [data]="{class: 'customer-popup', sctd: types[sct]}">
+  <h2 class="head" header>
+    <span class="f-left icon-back" (click)="spcp=false"></span>
+    <span class="head-txt" *ngIf="types[sct]">{{types[sct]['name']}}</span>
+  </h2>
+
+  <div class="content-popup step-2" content>
+    <p class="note-msg">Please Select your preferred category
+      <br> (maximum 5 selection)
+    </p>
+
+    <!-- {{tc.data}} -->
+    <div class="trending-category">
+      <div class="categories clearfix">
+        <label *ngFor="let tc of tCategories; let i = index">
+          <input type="checkbox" name="chkbox[]" [disabled]="chkbox && !tc.checked" [(ngModel)]="tc.checked"
+            (change)="checkInputLimit()">
+          <span class="custom-box icon-box"></span>
+          <span class="overlay-container">
+            <i [ngClass]="'icon-'+tc?.categoryCode"></i>
+            <p>{{(tc?.categoryName)}}</p>
+          </span>
+        </label>
+      </div>
     </div>
-    <button class="next icon-circle-next" [disabled]="!sct" (click)="spcp=true"></button>    
 
 
-        <app-pop-up *ngIf="spcp" (outData$)="outData($event)" [class.open]="spcp" [data]="{class: 'customer-popup', sctd: types[sct]}">
-        <h2 class="head" header>
-          <span class="f-left icon-back" (click)="spcp=false"></span>
-          <span class="head-txt" *ngIf="types[sct]">{{types[sct]['name']}}</span>
-        </h2>
-          
-        <div class="content-popup step-2" content>
-            <p class="note-msg">Please Select your preferred category
-                <br> (maximum 5 selection)</p>
 
-                <!-- {{tc.data}} -->
-              <div class="trending-category">
-                <div class="categories clearfix">
-                  <label *ngFor="let tc of tCategories; let i = index">
-                    <input type="checkbox" name="chkbox[]" [disabled]="chkbox && !tc.checked" [(ngModel)]="tc.checked" (change)="checkInputLimit()">
-                    <span class="custom-box icon-box"></span>
-                    <span class="overlay-container">
-                    <i [ngClass]="'icon-'+tc?.categoryCode"></i>
-                    <p>{{(tc?.categoryName)}}</p>
-                    </span>
-                  </label>
-                </div>
-              </div>
-          
-              
-          
-              <button type="button" class="continue-btn bottom-stick" (click)="addDataToStorage();">Done</button>
-
-            <!-- <div class="custom-cbox" *ngFor="let tc of tCategories">
-                <label>
-                    <input class="hidden" type="checkbox" [(ngModel)]="tc.checked">
-                    <span class="custom-box icon-box"></span>
-                    <span class="chk-txt">{{tc.name}}</span>
-                </label>
-            </div>
-
-            <button type="button">Done</button> -->
-        </div>
-    </app-pop-up>
-
-  
+    <button type="button" class="continue-btn bottom-stick" (click)="addDataToStorage();">Done</button>
+  </div>
+</app-pop-up>

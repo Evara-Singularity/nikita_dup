@@ -4,7 +4,6 @@ import { SelectCustomerTypeComponent } from './select-customer-type.component';
 import { SelectCustomerTypeService } from './select-customer-type.service';
 import { FormsModule } from '@angular/forms';
 import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
-// import { PopUpModule } from '../popUp/pop-up.module';
 
 @NgModule({
     imports: [

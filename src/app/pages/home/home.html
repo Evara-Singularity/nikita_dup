@@ -27,7 +27,6 @@
                 <div class="innerSlide">
                     <a [routerLink]="['/all-categories']">
                         <div class="categoryImg view_all_img">
-                            <!-- <img src="../../../assets/img/safety/cluster_cat.png"> -->
                             <img src="{{imagePath + 'img/cluster/Group 10310.svg'}}">
                         </div>
                         <div class="categoryName">
@@ -73,148 +72,10 @@
     <ng-container #Categories></ng-container>
 </div>
 
-<!-- <section class="banner-ad bulk" *ngFor="let im of middleImageJsonData;let i = index;">
-    <a *ngIf="i==2" href="{{im.image_link}}">
-        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
-    </a>
-</section>
-
-
-<ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
-    <ng-container *ngIf="i==1">
-        <recently-viewed-carousel [clickFromSection]="'recently_viewed_home'" [showHeading]="true"
-            [prodList]="recentProductList" class="block no-pad-xs relative mar-b-10"></recently-viewed-carousel>
-    </ng-container>
-    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="deals-offers card"
-        [class.bestSeller]="i == 0">
-        <div class="container clearfix pad-tb-10">
-            <h2 class="f-left f-14 pad-tb-10 upper-case">{{carouselData[category.dataKey]['layout_name']}}</h2>
-            <a *ngIf="category.viewAllLink; else showPop"
-                [routerLink]="'/'+carouselData[category.dataKey]['layout_url']" routerLinkActive="router-link-active"
-                class="btn-red f-right">VIEW ALL
-            </a>
-            <ng-template #showPop>
-                <a (click)="openPopup=true;sendDataToPopUP(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
-                    class="btn-red f-right">VIEW ALL</a>
-            </ng-template>
-        </div>
-        <div class="container clearfix">
-            <ul class="category-brand border-top"
-                *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
-
-                <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">
-
-                    <li *ngFor="let item of carouselData[category.dataKey]['data']['category_block'] | slice : 0:4">
-
-                        <a [routerLink]="item['category_url']"
-                            (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
-
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+item.category_image"
-                                alt="category image" class="category-img">
-                            <p>{{item['CategoryName']}}</p>
-
-
-                        </a>
-                    </li>
-                </div>
-                <ng-template #brandBlock>
-                    <li *ngFor="let items of carouselData[category.dataKey]['data']['brand_block'] | slice : 0:4">
-                        <a [routerLink]="items['brand_url']"
-                            (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
-
-
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+items.brand_image"
-                                alt="category image" class="category-img">
-                            <p>{{items['brandName']}}</p>
-
-
-                        </a>
-                    </li>
-                </ng-template>
-            </ul>
-            <ul class="view-products"
-                [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
-                [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
-                <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
-
-                    <a [routerLink]="item.productlink"
-                        (click)="setCookieLink(carouselData[category.dataKey]['layout_name'], item.msn, 'pdp')"
-                        class="clearfix">
-                        <div class="product-img">
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.imageLink_medium"
-                                alt="product Image">
-                        </div>
-                        <div class="product-description">
-                            <p class="description-txt">
-                                {{item.productName | slice:0: (carouselData[category.dataKey]['layout_name'] ==
-                                'Bestsellers' ? 60 : 30 )}}<span
-                                    *ngIf="item.productName.length>(carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 60 : 30 )">...</span>
-                            </p>
-                            <p class="price">
-                                <span
-                                    class="before-discount">{{beforeDiscount(item.pricewithouttax,item.discount_percentage)
-                                    | currency: 'INR' : 'symbol'
-                                    : '1.0-0'}}
-                                </span>
-                                <span class="discount">{{item.discount_percentage}}% OFF</span>
-                                <span class="after-discount">{{item.pricewithouttax | currency: 'INR' : 'symbol' :
-                                    '1.0-0'}}</span>
-                            </p>
-                            <p class="seller">
-                                <span>By :</span> {{getBrandName(item.short_description)}}
-                            </p>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </section>
-</ng-container>
-<section class="banner-ad mar-b-10 mar-t-10" *ngFor="let im of middleImageJsonData;let i = index;">
-    <a *ngIf="i==1" href="{{im.image_link}}">
-        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
-    </a>
-</section> -->
 <!-- Featured Arrivals Section -->
 <div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div>
-
-<!-- <section class="featr_arrival">
-    <div class="container">
-        <div class="clearfix pad-tb-10">
-            <h2 class="f-left f-14 pad-tb-10 upper-case">Featured Arrivals</h2>
-
-            <a [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
-                class="btn-red f-right">VIEW ALL
-            </a>
-        </div>
-        <ul class="view-products grid">
-            <li *ngFor="let item of featureArrivalData | slice:0:4">
-
-                <a [routerLink]="item.image_link" (click)="setCookieFeatured(item.image_title)">
-
-                    <div class="product-img">
-                        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="product Image">
-                    </div>
-                    <div class="product-description">
-                        <p class="prod-name">
-                            {{item.image_title}}
-                        </p>
-                        <p *ngFor="let imggen of item.image_general" class="product_helpLink">
-
-                            <a [routerLink]="imggen.general_url"
-                                (click)=setCookieFeatured(item.image_title)>{{imggen.general_text}}</a>
-
-
-                        </p>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-</section> -->
-
 
 <!-- Pop up -->
 

@@ -190,18 +190,6 @@ const CONSTANTS = {
         ]
     },
     IDS_MAP:{
-        //old ids  for desktop
-        // 'CM278051':'BEST_SELLER',
-        // 'CM711587':'BANNER',
-        // 'CM881267':'FANS_BLOWER',
-        // 'CM566946':'SAFETY',
-        // 'CM889618':'FLY_OUT',
-        // 'CM668808':'CAT_B',
-        // 'CM364239':'CAT_C',
-        // 'CM391787':'CAT_D',
-        // 'CM358993':'CAT_E', 
-        // 'CM762824':'CAT_F',
-        // 'CM201340':'CAT_G'
         //new ids for mobile
         
         'cm136360':'BEST_SELLER',
@@ -221,20 +209,6 @@ const CONSTANTS = {
 
     },
     CMS_IDS:{
-		//old config for mobile
-		// BEST_SELLER : 'id=cm278051',
-		// BANNER: 'id=cm711587',
-		// FANS_BLOWER :'id=cm881267',
-		// SAFETY: 'id=cm566946',
-		// FLY_OUT : 'id=cm889618',
-		// CAT_A : 'id=cm566946',
-		// CAT_B : 'id=cm668808',
-		// CAT_C : 'id=cm364239',
-		// CAT_D : 'id=cm391787',
-		// CAT_E : 'id=cm358993', 
-		// CAT_F : 'id=cm762824',
-		// CAT_G : 'id=cm201340',
-		// CAT_H : 'id=cm668808'
 		// new layout ids for mobile
 		BEST_SELLER : 'id=cm136360',
         BANNER: 'id=cm915657',

@@ -36,12 +36,7 @@ import { LocalAuthService } from "src/app/utils/services/auth.service";
 import { CommonService } from "src/app/utils/services/common.service";
 import { ActivatedRoute } from "@angular/router";
 
-// const HPDK = makeStateKey<any>('homepagedata'); // Home page data key
-// const TCK = makeStateKey<any>('topcarouseldata'); // Home page data key
 const FDK = makeStateKey<string>("flyout");
-// const MIJDL = makeStateKey<string>("middlejson");
-// const FBDK = makeStateKey<string>('featr_brandjson');//Featured Brand data key
-// const FADK = makeStateKey<string>('featr_arrivaljson');//Featured Arrival data key
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -65,9 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   middleImageJsonData: any = [];
   middleImageJsonDataLink: any = [];
 
-  // featureData: any;
   featureBrandData: any = [];
-  // featureArrival: any;
   featureArrivalData: any = [];
 
   dataKeyToPopUpPage: any;
@@ -82,7 +75,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   bannerCarouselSelector = ".banner-carousel-siema";
   selectedBanner: Number = 0;
   carouselData: any = {};
-  // DESKTOP_IMAGE_CATEGORY = "246";
   MOBILE_IMAGE_CATEGORY = "381";
   defaultImage = CONSTANTS.IMAGE_BASE_URL + "assets/img/home_card.webp";
   defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + "image_placeholder.jpg";
@@ -92,7 +84,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     interval: 5000,
     selector: this.bannerCarouselSelector,
     duration: 200,
-    // easing: 'ease-out',
     perPage: 1,
     startIndex: 0,
     draggable: false,
@@ -447,7 +438,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getFlyOutData() {
     const url = CONSTANTS.NEW_MOGLIX_API + "/homepage/flyout?type=m";
     if (this._tState.hasKey(FDK)) {
-      // this.initFlyoutData(this._tState.get(FDK, []));
       this.flyOutData = this._tState.get(FDK, []);
     } else {
       this.getFlyOutDataUnsub = this.homeService

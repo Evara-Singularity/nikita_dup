@@ -5,11 +5,9 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
-import { isPlatformServer } from '@angular/common';
-import { ENDPOINTS } from '../../config/endpoints';
 import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '../services/global-loader.service';
 

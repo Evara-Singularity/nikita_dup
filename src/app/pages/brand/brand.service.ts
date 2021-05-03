@@ -7,10 +7,6 @@ import { DataService } from "src/app/utils/services/data.service";
 export class BrandService {
 
   constructor(private _dataService: DataService) { }
-
-  getBrandByName(brandName) {
-    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/brand/getBrandByName', { params: { name: brandName } })
-  }
   getBrand() {
     return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/search/getAllBrands');
   }

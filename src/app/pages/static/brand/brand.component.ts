@@ -1,10 +1,9 @@
 import { Component, Renderer2, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from "@angular/common";
-import { BrandService } from '../../brand/brand.service';
-import CONSTANTS from 'src/app/config/constants';
-import { ClientUtility } from 'src/app/utils/client.utility';
+import CONSTANTS from '../../../config/constants';
+import { ClientUtility } from '../../../utils/client.utility';
 
 @Component({
   selector: 'brand',
@@ -20,12 +19,12 @@ export class BrandComponent{
   brand_name: any = [];
   final_arr: any = [];
   final_arr1: any = [];
-  alphabet_arr = ['0-9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  alphabet_arr = CONSTANTS.alphabet_arr;
   total_count: any;
   brand_url: any;
   isShowLoader: boolean;
   brandsLogo;
-  constructor(public _brandService: BrandService, private title: Title, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, public _router: Router) {
+  constructor(private title: Title, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, public _router: Router, private route: ActivatedRoute) {
     this.API = CONSTANTS;
     this.title.setTitle("Moglix Brand Store");
     this.meta.addTag({ "property": "og:title", "content": "Moglix Brand Store" });
@@ -41,19 +40,19 @@ export class BrandComponent{
 
   }
   ngOnInit(){
-    this._brandService.getBrand().subscribe(val => {
-      this.isShowLoader = false;
-      this.total_count = val['totalCount'];
-      this.final_arr1 = val['brands'].sort(this.compare);
-      this.final_arr1.forEach(element => {
-        this.adjustArray(element);
-      });
+    this.route.data.subscribe((rawData) => {
+      if (!rawData['brandData']['error'] && rawData['brandData'].length) {
+        // this.fetchHomePageData(rawData.homeData);
+        const brandData = rawData['brandData'];
+        this.brandsLogo = brandData[0]["data"][0]['block_data']['all_brand_store']['data'];
+        this.isShowLoader = false;
+          this.total_count = brandData[1]['totalCount'];
+          this.final_arr1 = brandData[1]['brands'].sort(this.compare);
+          this.final_arr1.forEach(element => {
+            this.adjustArray(element);
+          });
+      }
     });
-    this._brandService.getBrandLogo().subscribe(val=>{
-       this.brandsLogo = val["data"][0]['block_data']['all_brand_store']['data'];
-       console.log("this.brandsLogo",this.brandsLogo);
-     });
-
     var scrollFixedVal = 0;
     window.addEventListener('scroll',function(e){
       var letterId = document.getElementById('letterId');

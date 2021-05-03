@@ -22,7 +22,6 @@ import {
   ComponentFactoryResolver,
   Injector,
 } from "@angular/core";
-import { HomeService } from "./home.service";
 import { LocalStorageService, LocalStorage } from "ngx-webstorage";
 import { Subject } from "rxjs";
 import { fade } from "src/app/pages/animation/animations";
@@ -71,7 +70,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   isMobile: boolean;
   recentProductList: Array<any> = [];
   result: any;
-  getFlyOutDataUnsub;
   bannerCarouselSelector = ".banner-carousel-siema";
   selectedBanner: Number = 0;
   carouselData: any = {};
@@ -92,7 +90,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     autoPlay: false,
   };
   topOptions: any = this.options;
-  flyOutData: Array<{}>;
 
   clustorCategories = CONSTANTS.clusterCategories;
 
@@ -123,7 +120,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public cartService: CartService,
     public footerService: FooterService,
     private _localAuthService: LocalAuthService,
-    private homeService: HomeService,
     private cfr: ComponentFactoryResolver,
     private _commonService: CommonService,
     private injector: Injector,
@@ -160,7 +156,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }, 0);
     }
-    this.getFlyOutData();
     this.footerService.setFooterObj({ footerData: true });
   }
   fetchHomePageData(response) {
@@ -435,29 +430,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this._renderer2.appendChild(this._document.head, links);
   }
 
-  getFlyOutData() {
-    const url = CONSTANTS.NEW_MOGLIX_API + "/homepage/flyout?type=m";
-    if (this._tState.hasKey(FDK)) {
-      this.flyOutData = this._tState.get(FDK, []);
-    } else {
-      this.getFlyOutDataUnsub = this.homeService
-        .getFlyoutDataApi(url)
-        .pipe(
-          map((res) => {
-            if (res["statusCode"] === 200) {
-              return res["data"];
-            } else {
-              return [];
-            }
-          })
-        )
-        .subscribe((data) => {
-          this._tState.set(FDK, data);
-          this.flyOutData = data;
-        });
-    }
-  }
-
   parseAndOrderBannerData(data) {
     let category = this.MOBILE_IMAGE_CATEGORY;
     const dataObj = { bannerData: [], secondaryBanner: [] };
@@ -522,7 +494,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     for (let key in footerObj) {
       footerObj[key] = true;
     }
-    if (this.getFlyOutDataUnsub) this.getFlyOutDataUnsub.unsubscribe();
     this.footerService.setMobileFoooters();
   }
   beforeDiscount(afterDiscountPrice, discount_percentage) {

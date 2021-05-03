@@ -18,10 +18,11 @@ import { FeatureBannerComponent } from './feature-banner/feature-banner.componen
 import { ClusterFooterComponent } from './cluster-footer/cluster-footer.component';
 import { ClusterVideoComponent } from './cluster-video/cluster-video.component';
 import { NgxSiemaModule } from 'ngx-siema';
-import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
-import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
-import { CharacterremovePipeModule } from 'src/app/utils/pipes/characterRemove.pipe';
-import { LoaderModule } from 'src/app/modules/loader/loader.module';
+import { PopUpModule } from '../../modules/popUp/pop-up.module';
+import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
+import { CharacterremovePipeModule } from '../..//utils/pipes/characterRemove.pipe';
+import { LoaderModule } from '../../modules/loader/loader.module';
+import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { LoaderModule } from 'src/app/modules/loader/loader.module';
     LazyLoadImageModule,
     LoaderModule,
     NgxSiemaModule.forRoot(),
+    ObserveVisibilityDirectiveModule
   ],
 providers:[
   ClusterStoreService,

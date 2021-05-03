@@ -9,7 +9,7 @@ import CONSTANTS from 'src/app/config/constants';
 })
 export class AllCategoryComponent implements OnInit {
   openPopup: boolean;
-  @Input() data;
+  @Input('data') data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
   constructor() { 

@@ -10,7 +10,7 @@ import CONSTANTS from 'src/app/config/constants';
   styleUrls: ['./cluster-category.component.scss']
 })
 export class ClusterCategoryComponent implements OnInit {
-  @Input() data;
+  @Input('data') data;
   @Input() extraData;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';

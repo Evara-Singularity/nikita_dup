@@ -7,7 +7,7 @@ import CONSTANTS from 'src/app/config/constants';
   styleUrls: ['./featured-category.component.scss']
 })
 export class FeaturedCategoryComponent implements OnInit {
-  @Input() data;
+  @Input('data') data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
   constructor() { }

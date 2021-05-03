@@ -9,7 +9,6 @@ import { routing } from "./brand.routing";
 import {BrandComponent} from "./brand.component";
 import { KpToggleDirectiveModule } from 'src/app/utils/directives/kp-toggle.directive';
 import { LoaderModule } from 'src/app/modules/loader/loader.module';
-import { BrandService } from '../../brand/brand.service';
 
 @NgModule({
     imports:[
@@ -25,9 +24,7 @@ import { BrandService } from '../../brand/brand.service';
     exports: [
       BrandComponent
     ],
-    providers:[
-      BrandService
-    ]
+    providers:[]
 })
 
 export class BrandModule{}

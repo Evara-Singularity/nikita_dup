@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./cluster-footer.component.scss']
 })
 export class ClusterFooterComponent implements OnInit {
-  @Input() data;
+  @Input('data') data;
   constructor() { }
 
   ngOnInit(): void {

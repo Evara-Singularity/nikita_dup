@@ -45,22 +45,6 @@
     </a>
 </section>
 
-<section *ngIf="flyOutData" class="trending-container pad-tb-10">
-    <div class="container pad-tb-10">
-        <h2 class="f-left f-14 pad-tb-10 upper-case">
-            {{tocd && tocd['data'] && tocd['data'].length>0 ? 'MY CATEGORIES' : 'TRENDING CATEGORIES'}}
-        </h2>
-    </div>
-    <ul class="trending-categories">
-        <li *ngFor="let item of flyOutData | slice:0:6;let i=index">
-            <a [routerLink]="item.link" (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing')">
-                <img src="{{item.imageUrl}}">
-                <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>
-            </a>
-        </li>
-    </ul>
-</section>
-
 <!-- Section for feature Brands -->
 <div class="featr_brand clearfix">
     <div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedBrands($event)">

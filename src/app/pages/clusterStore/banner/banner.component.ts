@@ -7,7 +7,7 @@ import CONSTANTS from 'src/app/config/constants';
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit {
-  @Input() data;
+  @Input('data') data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
   

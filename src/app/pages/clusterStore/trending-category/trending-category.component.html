@@ -1,5 +1,5 @@
 <div class="otherCategoryBlock trending">
-    <h3 class="l0_heading">{{data.title}}</h3>
+    <h3 class="l0_heading">{{data?.title}}</h3>
     <ul class="clearfix">
         <li *ngFor="let item of data['data'] | slice:0:4;let i=index">
             <div [routerLink] ="['/'+item.image_link]" class="innerCategory">

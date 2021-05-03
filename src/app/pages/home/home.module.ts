@@ -9,7 +9,6 @@ import {routing} from './home.routing';
 import {AdBlockDirective} from './common/ad-block.directive';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { HomeService } from './home.service';
 import { SiemaCarouselModule } from 'src/app/modules/siemaCarousel/siemaCarousel.module';
 import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
 import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
@@ -46,7 +45,6 @@ import { Categories } from './categories/categories.component';
         Categories
     ],
     providers: [
-        HomeService,
         ModalService
     ]
 })

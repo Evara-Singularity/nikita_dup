@@ -116,63 +116,63 @@ export class ClusterStoreComponent implements OnInit {
     }
 
     async onVisibleAppBanner() {
-        const { BannerComponent } = await import('./banner/banner.component');
+        const { BannerComponent } = await import('../../components/cluster-store/banner/banner.component');
         const factory = this.cfr.resolveComponentFactory(BannerComponent);
         this.appBannerInstance = this.appBannerContainerRef.createComponent(factory, null, this.injector);
         this.appBannerInstance.instance['data'] = this.data['main_banner'];
     }
 
     async onVisibleAllCategoryComponent() {
-        const { AllCategoryComponent } = await import('./all-category/all-category.component');
+        const { AllCategoryComponent } = await import('../../components/cluster-store/all-category/all-category.component');
         const factory = this.cfr.resolveComponentFactory(AllCategoryComponent);
         this.allcategoriesInstance = this.allCategoriesContainerRef.createComponent(factory, null, this.injector);
         this.allcategoriesInstance.instance['data'] = this.data['all_categories'];
     }
 
     async onVisibleNewArrivals() {
-        const { NewArrivalComponent } = await import('./new-arrival/new-arrival.component');
+        const { NewArrivalComponent } = await import('../../components/cluster-store/new-arrival/new-arrival.component');
         const factory = this.cfr.resolveComponentFactory(NewArrivalComponent);
         this.newArrivalInstance = this.newArrivalContainerRef.createComponent(factory, null, this.injector);
         this.newArrivalInstance.instance['data'] = this.data['new_arrival'];
     }
 
     async onVisibleTrendingCategories() {
-        const { TrendingCategoryComponent } = await import('./trending-category/trending-category.component');
+        const { TrendingCategoryComponent } = await import('../../components/cluster-store/trending-category/trending-category.component');
         const factory = this.cfr.resolveComponentFactory(TrendingCategoryComponent);
         this.trendingCategoryInstance = this.trendingCategoryContainerRef.createComponent(factory, null, this.injector);
         this.trendingCategoryInstance.instance['data'] = this.data['trending_categories'];
     }
 
     async onVisibleFeaturedBrands() {
-        const { FeaturedBrandComponent } = await import('./featured-brand/featured-brand.component');
+        const { FeaturedBrandComponent } = await import('../../components/cluster-store/featured-brand/featured-brand.component');
         const factory = this.cfr.resolveComponentFactory(FeaturedBrandComponent);
         this.featuredBrandInstance = this.featuredBrandContainerRef.createComponent(factory, null, this.injector);
         this.featuredBrandInstance.instance['data'] = this.data['featured_brands'];
     }
 
     async onVisibleFeatureBanner() {
-        const { FeatureBannerComponent } = await import('./feature-banner/feature-banner.component');
+        const { FeatureBannerComponent } = await import('../../components/cluster-store/feature-banner/feature-banner.component');
         const factory = this.cfr.resolveComponentFactory(FeatureBannerComponent);
         this.featureBannerInstance = this.featureBannerContainerRef.createComponent(factory, null, this.injector);
         this.featureBannerInstance.instance['data'] = this.data['secondary_banner'];
     }
 
     async onVisibleBestSeller() {
-        const { BestsellerComponent } = await import('./bestseller/bestseller.component');
+        const { BestsellerComponent } = await import('../../components/cluster-store/bestseller/bestseller.component');
         const factory = this.cfr.resolveComponentFactory(BestsellerComponent);
         this.bestSellerInstance = this.bestSellerContainerRef.createComponent(factory, null, this.injector);
         this.bestSellerInstance.instance['data'] = this.data['bestseller'];
     }
 
     async onVisibleFeturedCategories() {
-        const { FeaturedCategoryComponent } = await import('./featured-category/featured-category.component');
+        const { FeaturedCategoryComponent } = await import('../../components/cluster-store/featured-category/featured-category.component');
         const factory = this.cfr.resolveComponentFactory(FeaturedCategoryComponent);
         this.featuredCategoriesInstance = this.featuredCategoriesContainerRef.createComponent(factory, null, this.injector);
         this.featuredCategoriesInstance.instance['data'] = this.data['featured_categories'];
     }
 
     async onVisibleClusterVideo() {
-        const { ClusterVideoComponent } = await import('./cluster-video/cluster-video.component');
+        const { ClusterVideoComponent } = await import('../../components/cluster-store/cluster-video/cluster-video.component');
         const factory = this.cfr.resolveComponentFactory(ClusterVideoComponent);
         this.clusterVideoInstance = this.clusterVideoContainerRef.createComponent(factory, null, this.injector);
         this.clusterVideoInstance.instance['listOfVideos'] = this.data['video_block']['data'];
@@ -180,7 +180,7 @@ export class ClusterStoreComponent implements OnInit {
     }
 
     async onVisibleFooter() {
-        const { ClusterFooterComponent } = await import('./cluster-footer/cluster-footer.component');
+        const { ClusterFooterComponent } = await import('../../components/cluster-store/cluster-footer/cluster-footer.component');
         const factory = this.cfr.resolveComponentFactory(ClusterFooterComponent);
         this.clusterFooterInstance = this.clusterFooterContainerRef.createComponent(factory, null, this.injector);
         this.clusterFooterInstance.instance['data'] = this.data['footer_data'];

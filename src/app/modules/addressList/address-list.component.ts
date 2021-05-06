@@ -21,7 +21,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() type: number;
     @Input() layoutType: string;
     @Input() invoiceType: string;
-    @Input() showRadio:boolean;
+    @Input() showRadio: boolean;
     addressList: Array<{}>;
     sai: number; // sai: selected address index
     selectedBillingAddress: number;
@@ -46,18 +46,18 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         if (document.getElementsByClassName('open').length === 0) {
             document.getElementById('body').classList.add('popup-overlay');
-        } 
+        }
         this.setAddressIndex();
 
-        if(!this.layoutType){
-            this.layoutType = 'LIST'; 
+        if (!this.layoutType) {
+            this.layoutType = 'LIST';
         }
     }
 
     setAddressIndex() {
         const selectedAddress = (this.type == 1) ? this._checkoutService.getCheckoutAddress() : this._checkoutService.getBillingAddress();
 
-        if(this.addresses && selectedAddress && this.addresses.length > 0){
+        if (this.addresses && selectedAddress && this.addresses.length > 0) {
             this.addresses.forEach((address, index) => {
                 console.log(address['idAddress'], selectedAddress['idAddress']);
                 if (address['idAddress'] == selectedAddress['idAddress']) {
@@ -71,20 +71,20 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // ngOnChanges(changes: SimpleChanges): void {
-       
+
     // }
 
     ngOnDestroy() {
         of(null)
-        .pipe(
-            delay(200)
-        )
-        .subscribe(() => {
-            if (this.isBrowser && document.getElementsByClassName('open').length === 0) {
-                (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
-                this.enableScroll();
-            }
-        });
+            .pipe(
+                delay(200)
+            )
+            .subscribe(() => {
+                if (this.isBrowser && document.getElementsByClassName('open').length === 0) {
+                    (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+                    this.enableScroll();
+                }
+            });
     }
 
     ngAfterViewInit() {
@@ -116,7 +116,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         if (address.country !== undefined && address.country.name !== undefined) {
             a.push(address.country.name);
         }
-        return a.join(', ')+' - '+address.postCode;
+        return a.join(', ') + ' - ' + address.postCode;
     }
 
     /**
@@ -145,8 +145,8 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sbm = undefined;
 
     }
-    resetAddressCall(){
-        this._bottomMenuComponent.updateParent({popupClose:true});
+    resetAddressCall() {
+        this._bottomMenuComponent.updateParent({ popupClose: true });
     }
     resetAddress() {
         this.sbm = undefined;

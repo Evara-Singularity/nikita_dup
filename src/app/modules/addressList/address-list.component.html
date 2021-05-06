@@ -3,7 +3,7 @@
   <form>
     <div class="multiple-address" *ngFor="let address of addresses; let i = index">
       <label>
-        <input *ngIf="showRadio" type="radio" name="sai" [checked]="(sai===i) || (addresses.length === 1)"  value="i" (change)="ucai(address,type, i)">
+        <input *ngIf="showRadio" type="radio" name="sai" [checked]="(sai===i) || (addresses && addresses.length > 0 && addresses.length < 2)"  value="i" (change)="ucai(address,type, i)">
         <span *ngIf="showRadio" class="custom-box icon-box"></span>
         <span class="chk-txt">
           <span class="heading-container">
@@ -23,7 +23,7 @@
 
 <app-bottom-menu *ngIf="sbm && sbm.index != undefined && layoutType == 'LIST'" (outData$)="onUpdate($event)">
   <ul class="container" content>
-    <li (click)="updateAddress(index,type)">Edit</li>
+    <li (click)="updateAddress()">Edit</li>
     <li (click)="deleteAddress()">Delete</li>
   </ul>
 </app-bottom-menu>

@@ -1,5 +1,5 @@
-import {Routes, RouterModule} from '@angular/router';
-import {CheckoutComponent} from "./checkout.component";
+import { Routes, RouterModule } from '@angular/router';
+import { CheckoutComponent } from "./checkout.component";
 
 const routes: Routes = [
     {

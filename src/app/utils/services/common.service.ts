@@ -445,14 +445,10 @@ export class CommonService {
         return actualParams;
     }
 
-    /* getSession() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession");
-    } */
-
     getSession(): Observable<{}> {
         let user = this._localStorageService.retrieve('user');
-        // alert(user);
-        if (user) {//return current local session if exist
+        // return user from localstorage OR call API
+        if (user) {
             return of(user);
         }
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession")

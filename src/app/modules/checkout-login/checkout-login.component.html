@@ -1,5 +1,7 @@
 <loader [showLoader]="showLoader"></loader>
-
+<h1>
+    Checkout module encounted
+</h1>
 <ng-container *ngIf="currentSection == SECTIONS.LOGIN">
     <app-shared-checkout-login (updatedStepShared$)="updatedStepEvent($event)" (socialLoginWorkingShared$)="socialLoginWorkingEvent($event)" (changeTab$)="changeTab($event)" ></app-shared-checkout-login>
 </ng-container>

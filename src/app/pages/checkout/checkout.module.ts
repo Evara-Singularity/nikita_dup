@@ -20,6 +20,7 @@ import { CheckoutComponent } from './checkout.component';
 import { Angular2SocialLoginModule } from 'angular2-social-login';
 import CONSTANTS from '../../config/constants';
 import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-header.module';
+import { CheckoutLoginModule } from '../../modules/checkout-login/checkout-login.module';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-hea
         CartUpdatesModule,
         UnAvailableItemsModule,
         SharedAuthModule,
-        CheckoutHeaderModule
+        CheckoutHeaderModule,
+        CheckoutLoginModule
     ],
     declarations: [
         CheckoutComponent,
@@ -49,8 +51,8 @@ import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-hea
     providers: [
     ]
 })
-
 export class CheckoutModule { }
-if (typeof window != 'undefined') {
-    Angular2SocialLoginModule.loadProvidersScripts(CONSTANTS.SOCIAL_LOGIN);
-}
+
+// if (typeof window != 'undefined') {
+//     Angular2SocialLoginModule.loadProvidersScripts(CONSTANTS.SOCIAL_LOGIN);
+// }

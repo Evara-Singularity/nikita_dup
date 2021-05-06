@@ -3,7 +3,7 @@
 <div class="saved-details custom-cbox-green" *ngIf="savedCardForm != undefined">
     <form [formGroup]="savedCardForm" (ngSubmit)="pay(savedCardForm.value, savedCardForm.valid)">
         <!-- <h3>Saved Payment Options</h3> -->
-        <div class="card-detail" [class.active]="selectedCardIndex !== undefined && selectedCardIndex===i" formArrayName="cards" *ngFor="let card of savedCardForm.get('cards').controls; let i=index">
+        <div class="card-detail" [class.active]="selectedCardIndex !== undefined && selectedCardIndex===i" formArrayName="cards" *ngFor="let card of savedCardForm.get('cards')['controls']; let i=index">
             <ng-container [formGroupName]="i">
                 <!-- <i class="icon-circle-delete delete-ico" (click)="deleteCard(i)"></i> -->
                 <label>    

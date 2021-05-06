@@ -212,7 +212,7 @@ export class PaytmUpiComponent {
         this._cartService.setCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
     }
-    resetLoginError(){
+    resetLoginError(event){
         this.upiError ="";
     }
 }

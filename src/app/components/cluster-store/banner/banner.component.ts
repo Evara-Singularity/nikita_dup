@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import CONSTANTS from 'src/app/config/constants';
 
 @Component({
@@ -17,3 +19,14 @@ export class BannerComponent implements OnInit {
   }
 
 }
+
+@NgModule({
+  declarations: [
+    BannerComponent
+  ],
+  imports: [
+      CommonModule,
+      RouterModule,
+  ],
+})
+export class BannerModule { }

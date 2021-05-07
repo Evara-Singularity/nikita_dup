@@ -1,19 +1,17 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Component, Input, NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @Component({
     selector: 'home-feature-arrivals',
     templateUrl: './featuredArrivals.html',
     styleUrls: ['./featuredArrivals.scss']
 })
-export class FeaturedArrivals implements OnInit{
+export class FeaturedArrivals{
     @Input('featureArrivalData') featureArrivalData;
     @Input('defaultImage') defaultImage;
     @Input('imagePath') imagePath;
-
-    ngOnInit() {
-        console.log(this.featureArrivalData);
-        console.log(this.defaultImage);
-    }
 
     setCookieFeatured(imageTitle) {
         var date = new Date();
@@ -28,3 +26,15 @@ export class FeaturedArrivals implements OnInit{
           ";path=/";
       }
 }
+
+@NgModule({
+    declarations: [
+        FeaturedArrivals
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        LazyLoadImageModule
+    ],
+})
+export class FeaturedArrivalModule { }

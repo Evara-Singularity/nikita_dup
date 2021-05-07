@@ -1,6 +1,9 @@
-import { Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Input, NgModule } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import CONSTANTS from 'src/app/config/constants';
+import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
 
 @Component({
   selector: 'app-all-category',
@@ -26,3 +29,16 @@ export class AllCategoryComponent implements OnInit {
   }
 
 }
+
+@NgModule({
+  declarations: [
+    AllCategoryComponent
+  ],
+  imports: [
+      CommonModule,
+      RouterModule,
+      PopUpModule
+  ],
+})
+export class AllCategoryModule { }
+

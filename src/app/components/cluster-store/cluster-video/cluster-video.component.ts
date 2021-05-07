@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID, NgModule } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PlatformLocation, isPlatformBrowser } from '@angular/common';
+import { PlatformLocation, isPlatformBrowser, CommonModule } from '@angular/common';
 import { NgxSiemaOptions } from 'ngx-siema';
 import CONSTANTS from 'src/app/config/constants';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
@@ -65,3 +66,14 @@ export class ClusterVideoComponent implements OnInit, AfterViewInit
         return this.sanitizer.bypassSecurityTrustResourceUrl(url);
     }
 }
+
+@NgModule({
+    declarations: [
+      ClusterVideoComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule
+    ],
+  })
+  export class ClusterVideoModule { }

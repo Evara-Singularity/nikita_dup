@@ -1,6 +1,7 @@
-import { Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Input, NgModule } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import CONSTANTS from 'src/app/config/constants';
 
 
@@ -25,7 +26,4 @@ export class ClusterCategoryComponent implements OnInit {
   link(url){
     this.router.navigateByUrl('/'+url);
   }
-  
-
-
 }

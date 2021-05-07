@@ -13,14 +13,10 @@ import { SiemaCarouselModule } from 'src/app/modules/siemaCarousel/siemaCarousel
 import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
 import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
 import { ModalService } from 'src/app/modules/modal/modal.service';
-// import { SelectCustomerTypeModule } from 'src/app/components/selectCutosmerType/select-customer-type.module';
 import { RecentlyViewedCarouselModule } from 'src/app/components/recentlyViewedCarousel/recentlyViewedCarousel.module';
-import { FeaturedBrands } from './featuredBrands/featuredBrands.component';
 import { ObserveVisibilityDirectiveModule } from 'src/app/utils/directives/observe-visibility.directive';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
-import { FeaturedArrivals } from './featuredArrivals/featuredArrivals.component';
 import { SelectCustomerTypeModule } from 'src/app/components/selectCutosmerType/select-customer-type.module';
-import { Categories } from './categories/categories.component';
 
 
 @NgModule({
@@ -40,9 +36,6 @@ import { Categories } from './categories/categories.component';
     declarations: [
         HomeComponent,
         AdBlockDirective,
-        FeaturedBrands,
-        FeaturedArrivals,
-        Categories
     ],
     providers: [
         ModalService

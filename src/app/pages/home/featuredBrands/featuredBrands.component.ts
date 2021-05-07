@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
-
+import { CommonModule } from "@angular/common";
+import { Component, Input, NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 @Component({
     selector: 'home-feature-brands',
     templateUrl: './featuredBrands.html',
@@ -23,3 +25,15 @@ export class FeaturedBrands {
           ";path=/";
       }
 }
+
+@NgModule({
+    declarations: [
+        FeaturedBrands
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        LazyLoadImageModule
+    ],
+})
+export class FeaturedBrandsModule { }

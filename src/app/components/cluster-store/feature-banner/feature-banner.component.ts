@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import CONSTANTS from 'src/app/config/constants';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 
 @Component({
   selector: 'app-feature-banner',
@@ -16,3 +20,15 @@ export class FeatureBannerComponent implements OnInit {
   }
 
 }
+
+@NgModule({
+  declarations: [
+    FeatureBannerComponent
+  ],
+  imports: [
+      CommonModule,
+      RouterModule,
+      LazyLoadImageModule
+  ],
+})
+export class FeatureBannerModule { }

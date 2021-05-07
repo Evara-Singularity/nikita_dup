@@ -1,5 +1,10 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Component, Input, Output, EventEmitter, NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { CommonService } from "src/app/utils/services/common.service";
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { RecentlyViewedCarouselModule } from "src/app/components/recentlyViewedCarousel/recentlyViewedCarousel.module";
+
 
 @Component({
     selector: 'home-categories',
@@ -81,5 +86,17 @@ export class Categories {
         const newValue = Math.round(0.0 + removeDecimal);
         return newValue;
       }
-
 }
+
+@NgModule({
+  declarations: [
+      Categories
+  ],
+  imports: [
+      CommonModule,
+      RouterModule,
+      LazyLoadImageModule,
+      RecentlyViewedCarouselModule
+  ],
+})
+export class FeaturedArrivalModule { }

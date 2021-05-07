@@ -1,5 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import CONSTANTS from 'src/app/config/constants';
+import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
+import { CharacterremovePipeModule } from 'src/app/utils/pipes/characterRemove.pipe';
+import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
 
 
 @Component({
@@ -25,3 +30,17 @@ export class NewArrivalComponent implements OnInit {
       }
   }
 }
+
+@NgModule({
+  declarations: [
+    NewArrivalComponent
+  ],
+  imports: [
+      CommonModule,
+      RouterModule,
+      CharacterremovePipeModule,
+      MathCeilPipeModule,
+      PopUpModule
+  ],
+})
+export class NewArrivalModule { }

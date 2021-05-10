@@ -78,7 +78,7 @@ const routes: Routes = [
           footer: false,
           logo: true,
           moreOpt: true,
-          layoutId:'cm661682'
+          layoutId: 'cm661682'
         }
       },
       {
@@ -88,7 +88,34 @@ const routes: Routes = [
           footer: false,
           logo: true,
           moreOpt: true,
-          layoutId:'cm918679'
+          layoutId: 'cm918679'
+        }
+      },
+      {
+        path: 'about',
+        loadChildren: () => import('./about/about.module').then(m => m.AboutModule),
+        data: {
+          footer: false,
+          title: 'About Us',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'services',
+        loadChildren: () => import('./installationService/installationService.module').then(m => m.InstallationModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'career',
+        loadChildren: () => import('./career/career.module').then(m => m.CareerModule),
+        data: {
+          footer: false,
+          title: 'Career',
+          moreOpt: true
         }
       },
     ]

@@ -1,0 +1,67 @@
+.career-component {
+    padding:0 0 15px 0;
+    h1.headingmain{
+        font-size:28px;
+        font-weight: 500;
+        padding:20px 0px;
+    }
+    a{
+        color: #0061d5;
+        padding-top: 10px;
+        display: block;
+    }
+    h2{
+        font-size:18px;
+        font-weight: 500;
+        padding-bottom:10px;
+        line-height: 23px;
+    }
+    h3{
+        font-size:18px;
+        font-weight: 400;
+        padding-bottom:10px;
+        line-height: 23px;
+    }
+    h4{
+        padding:10px 0;
+        font-size:16px;
+        font-weight: 400;
+    }
+    
+    .border{
+        border:1px solid #ddd;
+    }
+    ul{
+       margin-bottom:15px;
+        li{
+            padding: 0px 0 5px 0;
+            font-size:12px;
+            line-height:18px;
+            a{color: #0061d5;}
+        }
+    }
+    .bg-sidebar{        
+        h2{
+            font-size:18px;
+            font-weight: 400;
+            margin-bottom:10px;
+        }
+        ul{
+            li{
+                padding:5px 0;
+                font-size:14px;
+                a{color: #0061d5;}
+            }
+        }
+    }
+}
+.wp-100{
+  .wp-50{padding:0 10px 10px 0;}
+  h5{font-size: 12px;margin:10px 0;}
+  ul{
+    margin-bottom:15px;
+    li{
+      margin-bottom:5px;
+    }
+  }
+}

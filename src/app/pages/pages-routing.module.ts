@@ -24,7 +24,7 @@ const routes: Routes = [
       },
       {
         path: 'checkout',
-        loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule),
+        loadChildren: () => import('./checkout-v1/checkout-v1.module').then(m => m.CheckoutV1Module),
         data: {
           footer: false,
           title: 'Checkout',
@@ -81,7 +81,8 @@ const routes: Routes = [
 })
 export class PagesRoutingModule { }
 
-export function productMatch(url: UrlSegment[]): any {
+
+function productMatch(url: UrlSegment[]): any {
   const urlLength = url.length;
   if (urlLength > 2) {
     const secondURLStrig = url[1].toString();
@@ -90,3 +91,4 @@ export function productMatch(url: UrlSegment[]): any {
     }
   }
 }
+

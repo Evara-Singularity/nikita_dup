@@ -1,7 +1,7 @@
 <loader [showLoader]="showLoader"></loader>
-
 <checkout-header [step]="headerStep"></checkout-header>
 <ng-container *ngIf="isBrowser && isCheckoutResolved">
+    <h1>isContinue {{isContinue}}</h1>
     <continue *ngIf="tabIndex<4" [isContinue]="isContinue" [tabIndex]="tabIndexList.invoiceType"
         (updateTabIndex)="tabIndexUpdated(tabIndexList.invoiceType+1)"></continue>
 

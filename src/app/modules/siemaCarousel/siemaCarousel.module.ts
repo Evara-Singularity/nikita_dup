@@ -16,8 +16,8 @@ import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
         MathCeilPipeModule,
         MathFloorPipeModule,
         RouterModule,
-        CommonModule, 
-        NgxSiemaModule.forRoot(), 
+        CommonModule,
+        NgxSiemaModule.forRoot(),
         //LazyLoadImageModule,
         YTThumnailPipeModule
     ],
@@ -25,5 +25,4 @@ import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
     entryComponents: [SiemaSlideComponent],
     declarations: [SiemaCarouselComponent, SiemaSlideComponent],
 })
-
-export class SiemaCarouselModule{}
+export class SiemaCarouselModule { }

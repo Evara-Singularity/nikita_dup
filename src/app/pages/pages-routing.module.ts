@@ -14,6 +14,42 @@ const routes: Routes = [
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
       },
       {
+        matcher: categoriesMatcher,
+        loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brands/:brand',
+        loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule),
+        data: {
+          footer: false,
+          title: 'Brands',
+          moreOpt: true
+        }
+      },
+      {
+        matcher: brandCategoriesMatcher,
+        loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule),
+        data: {
+          footer: false,
+          title: 'Brand',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'search',
+        loadChildren: () => import('./search/search.module').then(m => m.SearchModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
         path: 'quickorder',
         loadChildren: () => import('./quickOrder/quickOrder.module').then(m => m.QuickOrderModule),
         data: {
@@ -87,6 +123,29 @@ export function productMatch(url: UrlSegment[]): any {
     const secondURLStrig = url[1].toString();
     if (secondURLStrig === 'mp') {
       return ({ consumed: url, posParams: { msnid: url[2] } });
+    }
+  }
+}
+
+
+export function categoriesMatcher(url: UrlSegment[]): any {
+  const urlLength = url.length;
+  if (urlLength > 0) {
+    const lastParam = url[urlLength - 1].toString();
+    const brandParam = url[0].toString();
+    if (lastParam.match(/^\d{9}$/) && brandParam !== 'brands') {
+      return ({ consumed: url, posParams: { id: url[urlLength - 1] } });
+    }
+  }
+}
+
+export function brandCategoriesMatcher(url: UrlSegment[]): any {
+  const urlLength = url.length;
+  if (urlLength > 0) {
+    const lastParam = url[urlLength - 1].toString();
+    const brandParam = url[0].toString();
+    if (lastParam.match(/^\d{9}$/) && brandParam === 'brands') {
+      return ({ consumed: url, posParams: { category: url[urlLength - 1], brand: url[1] } });
     }
   }
 }

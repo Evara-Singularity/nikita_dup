@@ -6,8 +6,8 @@ import { ArticleService } from './article.service';
 import { ArticlesRoutingModule } from './articles-routing.module';
 import { CmsModule } from '../../modules/cms/cms.module';
 import { ArticleComponent } from './article.component';
-import { LoaderModule } from 'src/app/modules/loader/loader.module';
-import { ToastMessageModule } from 'src/app/modules/toastMessage/toast-message.module';
+import { LoaderModule } from '@app/modules/loader/loader.module';
+import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 
 @NgModule({
     declarations: [

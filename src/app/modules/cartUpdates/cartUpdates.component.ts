@@ -5,10 +5,10 @@ import { ViewEncapsulation } from '@angular/core';
 import { Component, Input, EventEmitter, Output, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
-import { GlobalState } from 'src/app/utils/global.state';
+import { GlobalState } from '@app/utils/global.state';
 import { ModalService } from '../modal/modal.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { CommonService } from 'src/app/utils/services/common.service';
+import { CartService } from '@app/utils/services/cart.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { UnAvailableItemsComponent } from '../unAvailableItems/unAvailableItems.component';
 
 @Component({

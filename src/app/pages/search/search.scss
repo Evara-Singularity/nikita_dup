@@ -1,0 +1,36 @@
+@import '../../scss/variables';
+.related-search{
+  p{
+    font-size: $large-font;
+    line-height: 30px;
+    width: calc(100% - 25px);
+    a{
+      color: $blue-link-color;
+    }
+  }
+  
+}
+.search-res{
+  background: $white;
+}
+.search-txt{
+  p{
+    font-size: $large-font;
+    line-height: 16px;
+    padding: 15px 0;
+    width: calc(100% - 30px);
+  }
+}
+.related-tags{
+  @extend %cards;
+  padding: 10px 0;
+  margin-top: 15px;
+}
+.products-container{
+  margin-bottom: 65px;
+}
+
+.blue-text{
+  color: #3875FD;
+  font-size: 13px;
+}

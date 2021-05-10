@@ -12,7 +12,7 @@ import { CommonService } from '../../../utils/services/common.service';
 import CONSTANTS from '../../../config/constants';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { SharedLoginUtilService } from './shared-login-util.service';
-import { UsernameValidator } from 'src/app/utils/validators/username.validator';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { SharedAuthService } from '../shared-auth.service';
 const TABLIST = ['LOGIN', 'SIGNUP', 'OTP'];
 

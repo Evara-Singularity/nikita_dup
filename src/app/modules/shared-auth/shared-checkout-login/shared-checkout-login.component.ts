@@ -6,11 +6,11 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import { Meta } from '@angular/platform-browser';
 import { SharedCheckoutLoginUtilService } from './shared-checkout-login-util.service';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { UsernameValidator } from 'src/app/utils/validators/username.validator';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { SharedAuthService } from '../shared-auth.service';
 const IDENTIFIER = { EMAIL: 'e', PHONE: 'p', }
 const SECTIONS = { 'LOGIN': 'LOGIN', 'FORGET_PASSWORD': 'FORGET_PASSWORD', 'VERIFY_OTP': 'VERIFY_OTP', 'SIGN_UP': 'SIGN_UP' }

@@ -1,0 +1,156 @@
+<loader [showLoader]="showLoader"></loader>
+
+<div class="cat_filter_wrap">
+    <div class="prod_filter">
+        <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"></filter>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
+    </div>
+</div>
+
+<ul class="bread-head no-margin mar-b-15 hidden-sm-down" [ngClass]="{'notFoundEl' : !iba }">
+    <li [routerLink]="['/']" href="https://www.moglix.com" class="f-size-12">Home</li>
+    <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
+    <li class="item f-size-12">
+        <a [routerLink]="['/brands',friendlyUrl]" style="text-transform: capitalize">
+        {{brand}}</a>
+    </li>
+    <li *ngIf="categoryNameinAPI" class="item f-size-12">
+        <a [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
+        {{categoryNameinAPI}}</a>
+    </li>
+</ul>
+
+<div class="cate-container">
+    <div class="sub-cate-container">
+        <div class="container pt-10">
+            <!--<h1 class="f-16 pad-tb-10">Shop {{brand}} Products</h1>-->
+            <h1 *ngIf="!brandCategoryName" style="text-transform: capitalize" class="f-16 pad-tb-10 bold-txt">
+                {{heading ? (heading | removeHTML) : brand}} Products
+            </h1>
+
+            <h1 *ngIf="brandCategoryName" style="text-transform: capitalize" class="f-16 pad-tb-10 bold-txt">
+                Shop {{heading ? (heading | removeHTML) : brand}} Online
+            </h1>
+
+        </div>
+        <div class="container pt-10">
+            <!-- <p *ngIf="shortDesciption != null" class="desc-brand f-12 pb-10 lh-18" [innerHTML]="shortDesciption"></p> -->
+            <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand f-12 pb-10 lh-18">Moglix offers superior quality and genuine
+                <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize"> {{brandCategoryName}}
+        </a> from a renowned brand
+                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(heading | removeHTML)}}. Buy these products
+                at best prices and get them delivered at your doorstep across India.
+            </p>
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+
+
+    <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
+
+    <div class="filter-wrapper">
+        <button type="button" (click)="filterUp()">
+      <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
+    </button>
+
+        <button type="button" (click)="sortByOpt = true">
+      <i class="icon-sort-by" aria-hidden="true"></i>
+      <span class="txt">SORT BY</span>
+    </button>
+    </div>
+    <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
+    <div>
+        <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated" [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'" (onPageChange)="pageChanged($event)">
+        </pagination>
+    </div>
+
+    <div class="brandsSection" *ngIf="productCategoryNames.length>0">
+        <div class="innerBrandSection">
+            <h4>Popular Categories</h4>
+            <span class="border-bottom"></span>
+            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}" class="brandList">{{category}} <span *ngIf="!(isLast)">. </span></a>
+        </div>
+    </div>
+
+    <div class="body-bg pt-1" *ngIf="firstPageContent">
+        <div *ngIf="brandCatDesc || brandShortDesc || brandContent" class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !iba }">
+            <div class="panel-head">
+                <div class="container">
+                    <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat3' , iconMode : true}">
+                        More About Brand
+                        <!-- <span class="iconaccordian f-right">
+              <i class="icon-expand"></i>
+            </span> -->
+                    </h3>
+                </div>
+            </div>
+
+            <div id="openCat3" class="category_data" style="display: block;">
+                <div class="container cms-content">
+                    <div [innerHTML]="((brandCatDesc !== null && brandCatDesc !== '') ? brandCatDesc : (showDesc == true ? brandShortDesc : '<h2> Genuine Products from '+ brand + ' at the Best Prices Online at Moglix </h2>
+
+            <p> '+ brand + ' products are procured through reliable distributors and dealers in India and several other countries worldwide. We, at Moglix, offer more than
+            ' + productCount + ' products by '+ brand + ' that are listed on our online store. These are suitable for personal or commercial use in various industries, homes, businesses and offices. These listings have been properly curated and arranged in various product categories such as ' +   categoryNames + ' to provide easy navigation and seamless user experience.</p><br />
+            
+            <p>Moglix is one stop solution if you are looking online for best deals and offers on '+ brand + ' products. We also offer the option of bulk buying or wholesale prices on these products. Having a pan India presence including major cities like Delhi NCR, Mumbai, Chennai, Bengaluru, Kolkata, Chennai, Pune, Jaipur, Hyderabad, and Ahmedabad, Moglix provides timely doorstep delivery nation-wide.</p>
+            
+            ')) ">
+
+                    </div>
+                    <!-- <div *ngIf="brandShortDesc" class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !iba }">
+            <div class="row mar-b-10">
+              <div class="col-md-12 col-sm-12 pad-tb-10 text-bottom tabel_func margin-bot" [innerHTML]="brandShortDesc">
+              </div>
+
+            </div>
+          </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="cat_seo" *ngIf="productSearchResult && productSearchResult['products'].length>0">
+
+            <div *ngIf="productSearchResultSEO.length">
+                <div class="panel-head">
+                    <div class="container">
+                        <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
+                            <p>Top Selling {{heading ? (heading | removeHTML) : brand}} Price List in India</p>
+
+
+                            <!-- <span class="iconaccordian f-right">
+                <i class="icon-expand"></i>
+              </span> -->
+                        </h3>
+                    </div>
+                </div>
+
+                <div id="openCat4" style="display:block" class="brand-tbl">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <th>Latest {{getRelatedCatgory?.categoryDetails?.categoryName}} Models</th>
+                                <th>Expected Price</th>
+                                <th>Discount</th>
+                            </tr>
+                            <ng-container *ngFor="let product of productSearchResultSEO | slice:0:10, let i=index">
+                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                                    <td><a href="{{product.productUrl}}">{{product.productName}}</a></td>
+                                    <td>Rs. {{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>
+                                    <td>
+                                        {{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                    <span class="date-text">This data was last updated on {{todayDate | date:'shortDate'}}.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

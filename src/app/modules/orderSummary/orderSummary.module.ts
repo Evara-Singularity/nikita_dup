@@ -7,8 +7,8 @@ import {OrderSummaryService} from './orderSummary.service';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PromoOfferModule } from '../promoOffers/promo-offer.module';
 import { PromoApplyModule } from '../promoApply/promo-apply.module';
-import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
-import { MathFloorPipeModule } from 'src/app/utils/pipes/math-floor';
+import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
+import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { LoaderModule } from '../loader/loader.module';
 
 @NgModule({

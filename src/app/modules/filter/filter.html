@@ -1,0 +1,808 @@
+<section class="screen-view popup mob_filter" *ngIf="buckets.length" id="mob_filter">
+    <div class="popup-head">
+        <i class="icon-back" (click)="filterUp()"></i>
+        <span class="txt-name">FILTER</span>
+        <span (click)="applyMobileFilter({productFilterData: {}})" class="clear-filter">CLEAR ALL</span>
+    </div>
+    <button class="apply-filter continue-btn" (click)="applyMobileFilter()">APPLY</button>
+    <div class="filters-content">
+        <ul class="side-filters">
+            <li *ngFor="let bucket of buckets; let i = index;" (click)="updateFilterActiveIndex(i)" [ngClass]="{active: filterActiveIndex == i}">
+                <div class="filter-label">
+                    <span class="filter-parent">{{bucket.name}}<span *ngIf="bucket.count>0">({{bucket.count}})</span></span>
+                    <!--<span class="selected-no">2</span>-->
+                </div>
+                <div class="filter-options">
+                    <ng-container *ngIf="bucket.name === 'category'">
+                        <app-f-category [terms]="bucket.terms"></app-f-category>
+                    </ng-container>
+                    <ng-container *ngIf="bucket.name != 'category'">
+                        
+                        <div class="filter-list">
+                            <div class="filter-search" *ngIf="bucket.name != 'availability' && bucket.name != 'discount' && bucket.name != 'price'">
+                                <input type="text" placeholder="Search" filterSearchBox>
+                                <i class="icon-search"></i>
+                            </div>
+                            <div class="custom-cbox">
+                                <ng-container *ngFor="let item of bucket.terms">
+                                    <label [class.selected]="categoryCheckBox.checked" *ngIf="item.count">
+                                        <span class="chk-box">
+                                            <input class="hidden" type="checkbox" [disabled]="(!item.enabled || item.count==0)" [checked]="item.selected" (click)="updateProductFilterData($event, bucket.name, item, true)" #categoryCheckBox>
+                                            <span class="custom-box icon-box"></span>
+                                        </span>
+                                         <div *ngIf="bucket.name!=='price' && bucket.name!=='discount'"> 
+                                             <span class="chk-txt">{{item.term}}</span>
+                                         </div>
+                                         <div *ngIf="bucket.name=='price'">
+                                            <span class="chk-txt">{{addRupee(item.term)}}</span>
+                                         </div>
+                                         <div *ngIf="bucket.name=='discount'">
+                                            <span class="chk-txt">{{addDiscount(item.term)}}</span>
+                                         </div>
+                                    </label>                                
+                                </ng-container>                            
+                            </div>
+                        </div>
+                    </ng-container>    
+                </div>
+            </li>
+        </ul>
+        <div class="filter-options">
+            <!-- <div class="filter-categories hide">
+                <ul class="filter-list">
+                    <li>
+                        <div class="heading-name">
+                            <i class="icon-next"></i>
+                            <span class="name">Fans &amp; Blowers</span>
+                            <span class="total-count">(8)</span>
+                        </div>
+                        <div class="custom-cbox">
+                            <label [class.selected]="categoryCheckBox.checked">
+                                <span class="chk-box">
+                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                    <span class="custom-box icon-box"></span>
+                                </span>
+                                <span class="chk-txt">Immersion Rods</span>
+                            </label>
+                            <label [class.selected]="categoryCheckBox2.checked">
+                                <span class="chk-box">
+                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                    <span class="custom-box icon-box"></span>
+                                </span>
+                                <span class="chk-txt">Water Heaters</span>
+                            </label>
+
+                            <label [class.selected]="categoryCheckBox3.checked">
+                                <span class="chk-box">
+                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                    <span class="custom-box icon-box"></span>
+                                </span>
+                                <span class="chk-txt">Immersion Rods</span>
+                            </label>
+
+                            <label [class.selected]="categoryCheckBox4.checked">
+                                <span class="chk-box">
+                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                    <span class="custom-box icon-box"></span>
+                                </span>
+                                <span class="chk-txt">Water Heaters</span>
+                            </label>
+                        </div>
+                    </li>
+
+                    <li class="openMenu">
+                        <div class="heading-name">
+                            <i class="icon-next"></i>
+                            <span class="name">Fans &amp; Blowers</span>
+                            <span class="total-count">(8)</span>
+                        </div>
+                        <div class="second-level">
+                            <div>
+                                <ul class="filter-list">
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="app-f-categorychk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>app-f-category
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="app-f-categorychk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="heading-name">
+                                            <i class="icon-next"></i>
+                                            <span class="name">Fans &amp; Blowers</span>
+                                            <span class="total-count">(8)</span>
+                                        </div>
+
+                                        <div class="custom-cbox">
+                                            <label [class.selected]="categoryCheckBox.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+                                            <label [class.selected]="categoryCheckBox2.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox2>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox3.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox3>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Immersion Rods</span>
+                                            </label>
+
+                                            <label [class.selected]="categoryCheckBox4.checked">
+                                                <span class="chk-box">
+                                                    <input class="hidden" type="checkbox" #categoryCheckBox4>
+                                                    <span class="custom-box icon-box"></span>
+                                                </span>
+                                                <span class="chk-txt">Water Heaters</span>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>  -->
+    
+            <!-- <div *ngFor="let bucket of buckets; let i = index;">
+                    <div *ngIf="bucket.name == 'category' && filterActiveIndex == i">
+                        <div *ngFor="let item of bucket.terms; let a = index;">
+                            <label class="collapse">
+                                <i [ngClass]="{'fa-angle-right':lev0[a]?.right,'arrow-rotate':!lev0[a]?.right}" (click)="changeArraow(0,a);toggleList('#lev_one', a);"
+                                    data-toggle="collapse" [attr.data-target]="createDataTarget('#lev_one', a)" class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5"
+                                    aria-hidden="true"></i>
+                                <span class="inline-block" style="font-size: 13px !important; font-weight: bold !important; ">
+                                    <a class="text-500 text-semiblack" [routerLink]="getRouterLink(item)" [queryParams]="getQueryParams(item)"
+                                        [fragment]="getFragments()" style="font-weight: bold;">{{item.term}}</a>
+                                </span>
+                            </label>
+    
+                            <ul class="no-padding no-list-style" *ngIf="isChildCategoryExist(item.childCategories)" [attr.id]="createDataTarget('lev_one', a)"
+                            class="collapse  no-list-style no-padding no-margin pad-l-10">
+                            <li *ngFor="let childCategory of item.childCategories | objectToArray;  let b = index;">
+                                <label>
+                                    <i *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                    [ngClass]="{'fa-angle-right':lev1[b]?.right,'arrow-rotate':!lev1[b]?.right}"
+                                       (click)="changeArraow(1,b);toggleList('#lev_two', b);" data-toggle="collapse"
+                                       [attr.data-target]="createDataTarget('#lev_two', b)"
+                                       class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5" aria-hidden="true"></i>
+                                    <a class="text-400 text-semiblack" [routerLink]="getRouterLink(childCategory)"
+                                       [queryParams]="getQueryParams(childCategory)" [fragment]="getFragments()"  style="font-size: 13px !important;">{{childCategory.term}}</a>
+                                </label>
+                                <ul class="no-padding no-list-style" *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                    [attr.id]="createDataTarget('lev_two', b)"
+                                    class="collapse no-padding no-margin pad-l-10 no-list-style">
+                                    <li
+                                            *ngFor="let childCategory of childCategory.childCategories | objectToArray;  let c = index;">
+                                        <label> <i *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                            [ngClass]="{'fa-angle-right':lev2[0]?.right,'arrow-rotate':!lev2[0]?.right}"
+                                                   (click)="changeArraow(2,c);toggleList('#lev_three', c);" data-toggle="collapse"
+                                                   [attr.data-target]="createDataTarget('#lev_three', c)"
+                                                   class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5" aria-hidden="true"></i> <a
+                                                class="text-400 text-semiblack" [routerLink]="getRouterLink(childCategory)"
+                                                [queryParams]="getQueryParams(childCategory)" [fragment]="getFragments()"  style="font-size: 13px !important;">{{childCategory.term}}</a></label>
+                                        <ul class="no-padding no-list-style" *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                            [attr.id]="createDataTarget('lev_three', c)"
+                                            class="collapse no-padding no-list-style no-margin no-list-style">
+                                            <li
+                                                    *ngFor="let childCategory of childCategory.childCategories | objectToArray; let d = index;">
+                                                <label> <i *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                    [ngClass]="{'fa-angle-right':lev3[0]?.right,'arrow-rotate':!lev3[0]?.right}"
+                                                           (click)="changeArraow(3,d);toggleList('#lev_four', d);" data-toggle="collapse"
+                                                           [attr.data-target]="createDataTarget('#lev_four', d)"
+                                                           class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5" aria-hidden="true"></i> <a
+                                                        class="text-400 text-semiblack"
+                                                        [routerLink]="getRouterLink(childCategory)"
+                                                        [queryParams]="getQueryParams(childCategory)" [fragment]="getFragments()"  style="font-size: 13px !important;">{{childCategory.term}}</a></label>
+                                                <ul class="no-padding no-list-style" *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                    [attr.id]="createDataTarget('lev_four', d)"
+                                                    class="collapse no-padding no-list-style no-margin pad-l-10">
+                                                    <li
+                                                            *ngFor="let childCategory of childCategory.childCategories | objectToArray; let e = index;">
+                                                        <label> <i
+                                                                *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                [ngClass]="{'fa-angle-right':lev4[0]?.right,'arrow-rotate':!lev4[0]?.right}"
+                                                                (click)="changeArraow(4,e);toggleList('#lev_five', e);" data-toggle="collapse"
+                                                                [attr.data-target]="createDataTarget('#lev_five', e)"
+                                                                class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5" aria-hidden="true"></i> <a
+                                                                class="text-400 text-semiblack"
+                                                                [routerLink]="getRouterLink(childCategory)"
+                                                                [queryParams]="getQueryParams(childCategory)"
+                                                                [fragment]="getFragments()">{{childCategory.term}}</a></label>
+                                                        <ul class="no-padding no-list-style" *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                            [attr.id]="createDataTarget('lev_five', e)"
+                                                            class="collapse no-padding no-list-style no-margin pad-l-10">
+                                                            <li
+                                                                    *ngFor="let childCategory of childCategory.childCategories | objectToArray; let f = index;">
+                                                                <label> <i
+                                                                        *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                        [ngClass]="{'fa-angle-right':lev5[f]?.right,'arrow-rotate':!lev5[f]?.right}"
+                                                                        (click)="changeArraow(5,f);toggleList('#lev_six', f);" data-toggle="collapse"
+                                                                        [attr.data-target]="createDataTarget('#lev_six', f)"
+                                                                        class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5"
+                                                                        aria-hidden="true"></i> <a class="text-400 text-semiblack"
+                                                                                                   [routerLink]="getRouterLink(childCategory)"
+                                                                                                   [queryParams]="getQueryParams(childCategory)"
+                                                                                                   [fragment]="getFragments()">{{childCategory.term}}</a></label>
+                                                                <ul class="no-padding no-list-style"
+                                                                    *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                    [attr.id]="createDataTarget('lev_six', f)"
+                                                                    class="collapse no-padding no-list-style no-margin pad-l-10">
+                                                                    <li
+                                                                            *ngFor="let childCategory of childCategory.childCategories | objectToArray; let g = index;">
+                                                                        <label> <i
+                                                                                *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                                [ngClass]="{'fa-angle-right':lev6[4]?.right,'arrow-rotate':!lev6[4]?.right}"
+                                                                                (click)="changeArraow(6,g);toggleList('#lev_seven', g);"
+                                                                                [attr.data-target]="createDataTarget('#lev_seven', g)"
+                                                                                class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5"
+                                                                                aria-hidden="true"></i> <a
+                                                                                class="text-400 text-semiblack"
+                                                                                [routerLink]="getRouterLink(childCategory)"
+                                                                                [queryParams]="getQueryParams(childCategory)"
+                                                                                [fragment]="getFragments()">{{childCategory.term}}</a></label>
+                                                                        <ul class="no-padding no-list-style"
+                                                                            *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                            [attr.id]="createDataTarget('lev_seven', g)"
+                                                                            class="collapse in no-padding no-list-style no-margin pad-l-10">
+                                                                            <li
+                                                                                    *ngFor="let childCategory of childCategory.childCategories | objectToArray; let h = index;">
+                                                                                <label> <i
+                                                                                        *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                                        [ngClass]="{'fa-angle-right':lev7[h]?.right,'arrow-rotate':!lev7[h]?.right}"
+                                                                                        (click)="changeArraow(7,h);toggleList('#lev_eight', h);"
+                                                                                        data-toggle="collapse"
+                                                                                        [attr.data-target]="createDataTarget('#lev_eight', h)"
+                                                                                        class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5"
+                                                                                        aria-hidden="true"></i> <a
+                                                                                        class="text-400 text-semiblack"
+                                                                                        [routerLink]="getRouterLink(childCategory)"
+                                                                                        [queryParams]="getQueryParams(childCategory)"
+                                                                                        [fragment]="getFragments()">{{childCategory.term}}</a></label>
+                                                                                <ul class="no-padding no-list-style"
+                                                                                    *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                                    [attr.id]="createDataTarget('lev_eight', h)"
+                                                                                    class="collapse in no-padding no-list-style no-margin pad-l-10">
+                                                                                    <li
+                                                                                            *ngFor="let childCategory of childCategory.childCategories | objectToArray">
+                                                                                        <label> <i
+                                                                                                *ngIf="isChildCategoryExist(childCategory.childCategories)"
+                                                                                                [ngClass]="{'fa-angle-right':allArraows[6]?.right,'arrow-rotate':!allArraows[6]?.right}"
+                                                                                                (click)="changeArraow(6)"
+                                                                                                data-toggle="collapse"
+                                                                                                [attr.data-target]="createDataTarget('#lev_eight', h)"
+                                                                                                class="icon-home_next_arrow f-size-10 f-left pointer pad-r-5"
+                                                                                                aria-hidden="true"></i> <a
+                                                                                                class="text-400 text-semiblack"
+                                                                                                [routerLink]="getRouterLink(childCategory)"
+                                                                                                [queryParams]="getQueryParams(childCategory)"
+                                                                                                [fragment]="getFragments()">{{childCategory.term}}</a></label>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+    
+                    <div *ngIf="bucket.name != 'category' && filterActiveIndex == i">
+                        <input type="text" filterSearchBox placeholder="Search {{bucket.name}}" *ngIf="bucket.terms.length>8 && bucket.name != 'Category'"
+                            class="form-control custom-filter-opt border bg-white top-50 right-0" placeholder="enter name"
+                            style="text-transform: capitalize; background: white !important; width: 100%;">
+                        <ul [class.pad-t-30]="bucket.terms.length>8" class="no-padding no-list-style" style=" max-height: 450px;  overflow: auto;">
+                            <li class="o-hidden" *ngFor="let item of bucket.terms" style="padding: 4px 0px;">
+                                <label class="f-left filter-check mar-r-5">
+                                    <input type="checkbox" name="filter" class="inline-block pad-r-10" [disabled]="(!item.enabled || item.count==0)"
+                                        [checked]="item.selected" (click)="updateProductFilterData($event, bucket.name, item, true)" />
+                                    <span class="inline-block pointer f-ock -13 icon-font" [ngClass]="{'text-lightgrey': (!item.enabled || item.count==0), 'text-black': (item.enabled && item.count>0)}"></span>
+    
+                                    <div *ngIf="bucket.name!='brand'" [class.disbled]="!item.enabled" class="f-left f-size-13 lh-17"
+                                        [innerHtml]="item.term | addRupaySymbol:bucket.name" style="width: calc(100% - 30px);">
+                                    </div>
+                                    <div *ngIf="bucket.name=='brand'" [class.disbled]="!item.enabled" class="f-left f-size-13 lh-17"
+                                        style="width: calc(100% - 30px);">
+                                        {{item.term}}
+                                        <span style="padding-left: 3px;">({{item.count}})</span>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+        </div>
+    </div>
+</section>

@@ -1,4 +1,4 @@
-const CONSTANTS = {
+export const CONSTANTS = {
     PROD: "https://www.moglix.com",
     NEW_MOGLIX: 'https://beta.moglix.com',
     //NEW_MOGLIX_API: 'https://apinew.moglix.com/nodeApi/v1',
@@ -29,6 +29,7 @@ const CONSTANTS = {
 		shippingcharge: '99',
 		FreeShippingMinAmount: '999',
 	},
+    FILTER_GA_ID: [114000000, 116111700, 211000000],
     GLOBAL: {
         loginByEmail: 1,
         loginByPhone: 2,

@@ -71,6 +71,96 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'brand-store/bosch',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Bosch',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/godrej',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Godrej',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/3m',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: '3M',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/philips',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Philips',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/havells',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Havells',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/vguard',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'VGuard',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/eveready',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Eveready',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/luminous',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/makita',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'brand-store/karam',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
     ]
   }
 ];

@@ -199,6 +199,44 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'max',
+        loadChildren: () => import('./max/max.module').then(m => m.MaxModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'moglixhaina',
+        loadChildren: () => import('./campaign/campaign.module').then(m => m.CampaignModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'diwali-deals',
+        loadChildren: () => import('./diwali-deals/deals.module').then(m => m.DealsModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm221273'
+        }
+      },
+      {
+        path: '**',
+        loadChildren: () => import('./pageNotFound/pageNotFound.module').then(m => m.PageNotFoundModule),
+        data: {
+          footer: true,
+          logo: true,
+          menuBar: true,
+          moreOpt: false
+        }
+      }
     ]
   }
 ];

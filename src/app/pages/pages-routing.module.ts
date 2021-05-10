@@ -118,6 +118,87 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'affiliate',
+        loadChildren: () => import('./affiliate/affiliate.module').then(m => m.AffiliateModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'moglix-originals',
+        loadChildren: () => import('./originals/originals.module').then(m => m.OriginalsModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'contact',
+        loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'press',
+        loadChildren: () => import('./press/press.module').then(m => m.PressModule),
+        data: {
+          footer: true,
+          title: 'Press',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'compliance',
+        loadChildren: () => import('./compliance/compliance.module').then(m => m.complianceModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'testimonials',
+        loadChildren: () => import('./testimonials/testimonials.module').then(m => m.TestimonialsModule),
+        data: {
+          footer: true,
+          title: 'Testimonials',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'terms',
+        loadChildren: () => import('./terms/terms.module').then(m => m.TermsModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'privacy',
+        loadChildren: () => import('./privacy/privacy.module').then(m => m.PrivacyModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'copyright',
+        loadChildren: () => import('./copyright/copyright.module').then(m => m.CopyrightModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
     ]
   }
 ];

@@ -81,6 +81,16 @@ const routes: Routes = [
           layoutId:'cm661682'
         }
       },
+      {
+        path: 'corporate-gifting',
+        loadChildren: () => import('./corporate/corporate.module').then(m => m.CorporateModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId:'cm918679'
+        }
+      },
     ]
   }
 ];

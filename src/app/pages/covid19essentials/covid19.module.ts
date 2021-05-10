@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { Covid19RoutingModule } from './covid19.routing';
 import { LoaderModule } from '../../modules/loader/loader.module';
 import { Covid19Component } from './covid19.component';
-import { Covid19Service } from './covid19.service';
 
 @NgModule({
     imports: [
@@ -19,9 +18,7 @@ import { Covid19Service } from './covid19.service';
     exports:[
       Covid19Component
     ],
-    providers: [
-      Covid19Service
-    ]
+    providers: []
 })
 
 export class Covid19Module{}

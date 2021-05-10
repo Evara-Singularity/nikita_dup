@@ -71,6 +71,16 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'covid-19-essentials',
+        loadChildren: () => import('./covid19essentials/covid19.module').then(m => m.Covid19Module),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId:'cm661682'
+        }
+      },
     ]
   }
 ];

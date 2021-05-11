@@ -71,6 +71,15 @@ const routes: Routes = [
           moreOpt: true
         }
       },
+      {
+        path: 'deals',
+        loadChildren: () => import('./deals/deals.module').then(m => m.DealsModule),
+        data: {
+            footer: false,
+            title: 'Deals',
+            moreOpt: true
+        }
+      }
     ]
   }
 ];

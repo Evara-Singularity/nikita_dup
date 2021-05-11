@@ -1,0 +1,14 @@
+.column-field{
+  .w-65{
+    width: 65%;
+    float: left;
+  }
+  .w-30{
+    width: 30%;
+    float: right;
+  }
+}
+
+button.continue-btn[disabled] {
+  background: #bdbdbd;
+}

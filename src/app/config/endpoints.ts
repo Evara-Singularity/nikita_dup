@@ -13,8 +13,9 @@ export const ENDPOINTS = {
     SIGN_UP: '/login/signup',
     CART: {
         validatePromoCode: '/promoCode/validatePromoCode',
-        getShippingValue : '/shipping/getShippingValue',
+        getShippingValue: '/shipping/getShippingValue',
         getAllActivePromoCodes: '/promoCode/getAllActivePromoCodes',
         getPromoCodeDetails: '/promoCode/getPromoCodeDetails'
-    }
+    },
+    GET_LAYOUT: '/homepage/layoutbycode',
 }

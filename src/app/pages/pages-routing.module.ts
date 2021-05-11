@@ -181,6 +181,26 @@ const routes: Routes = [
           layoutId: 'cm661682'
         }
       },
+      {
+        path: 'store-front/shoe',
+        loadChildren: () => import('./storefront/shoe/shoe.module').then(m => m.ShoeModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true,
+            layoutId: 'cm226668'
+        }
+    },
+    {
+        path: 'store-front/power-tools',
+        loadChildren: () => import('./storefront/power-tools/power-tools.module').then(m => m.PowerToolsModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true,
+            layoutId: 'cm400124'
+        }
+    },
     ]
   }
 ]

@@ -26,7 +26,7 @@ export class LayoutResolver implements Resolve<object> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-
+    this.loaderService.setLoaderState(true);
     const STATE_KEY = makeStateKey<object>('covid19-essentials');
 
     /**

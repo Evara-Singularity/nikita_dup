@@ -1,0 +1,151 @@
+@import '../../scss/variables';
+
+.payment-options{
+  & > div{
+    @extend %cards;
+    margin-top: 0;
+   padding: 0;
+   & > a{
+      padding: 20px 5px;
+    }
+  }
+}
+
+.payment-container{
+  .card-30{
+    padding: 0;
+  }
+  
+  label{
+    padding: 20px 15px;
+    border-bottom: 1px solid $border-sec-color;
+    &:last-child{
+      border-bottom: 0;
+    }
+  }
+  
+}
+.popup{
+  .head-sec{
+    padding: 15px 0;
+    margin: 0;
+    @extend %box-shadow;
+    background: $white;
+  }
+}
+
+.other-strip{
+  &.other-strip-payment{
+    display: block;
+  position: relative;
+  
+  i{
+    position: absolute;
+    right:0px;
+    height: 50px;    
+    top:0;
+    bottom: 0;
+    margin: auto;
+    &.icon-down{
+      top:0;
+    }
+  }
+  h3{
+    font-size:$extra-large-font;
+    display: block;
+    width:100%;
+    line-height:20px;
+    float: none;
+    padding:0px 0px 0px 15px;
+    small{
+      display: block;
+      &.emierror{
+        display: inline-block;
+        margin-left:10px;
+        margin-top: 0;
+        font-size:$medium-font;
+        vertical-align: middle; 
+        width: 62%;
+        line-height: 19px;    
+      }
+      &.coderror{
+        display: inline-block;
+        margin-left:10px;
+        margin-top: 0;
+        font-size:$medium-font;
+        vertical-align: middle; 
+        width: 55%;
+        line-height: 19px;   
+       }
+      &.nefterror{
+        display: inline-block;
+        margin-left:10px;
+        margin-top: 0;
+        font-size:$medium-font;
+        vertical-align: middle; 
+        width: 55%;
+        line-height: 19px;  
+      }
+    }
+  }
+  }
+  
+}
+.disableCod{
+  pointer-events:none;
+  background:#b1a0a0 !important;
+  position: relative;
+  a{
+    color: #e4d0d0;
+  }
+  .learn-more{
+    position: absolute;
+    pointer-events: auto;
+    font-size: 13px;
+    text-decoration: underline;
+    color: #2020e6;
+    right: 30px;
+  }
+}
+.codUnavailable{
+  .sub-heading{
+    font-size:$medium-font;
+    font-weight:500;
+    padding: 10px 15px 0px 15px;
+  }
+}
+label.payment-radio-btn{
+   padding:0px !important;
+   border:none !important;
+   @extend %custom-radio-checkout;
+    label{
+      @extend %custom-check-box;
+    }
+}
+.payment-content{
+  float: right;
+  width:calc(100% - 30px);
+  .payment-popup{
+     padding-top:20px;
+  }
+}
+.continue-button {
+  p {
+    line-height: 20px;
+  }
+  .payable-amnt{
+    display: block;
+    font-size:$large-font;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: #3030308c;
+    padding-bottom: 4px;
+    img{
+        vertical-align: middle;
+    }
+  }
+}
+
+
+
+

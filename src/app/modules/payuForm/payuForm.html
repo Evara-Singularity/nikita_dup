@@ -1,0 +1,27 @@
+<!--https://test.payu.in/_payment-->
+<!--https://secure.payu.in/_payment-->
+<form action="{{data['formUrl']}}" method="post" id="payu_form" name="payu_form">
+    <input type="hidden" name="key" [value]="data['key']" />
+    <input type="hidden" name="txnid" [value]="data['txnid']" />
+    <input type="hidden" name="amount" [value]="data['amount']" />
+    <input type="hidden" name="productinfo" [value]="data['productinfo']" />
+    <input type="hidden" name="firstname" [value]="data['firstname']" />
+    <input type="hidden" name="email" [value]="data['email']" />
+    <input type="hidden" name="phone" [value]="data['phone']" />
+    <input type="hidden" name="surl" [value]="data['surl']" />
+    <input type="hidden" name="furl" [value]="data['furl']" />
+    <input type="hidden" name="curl" [value]="data['curl']" />
+    <input type="hidden" name="hash" [value]="data['hash']" />
+    <input type="hidden" name="pg" [value]="data['pg']" />
+    <input type="hidden" name="bankcode" [value]="data['bankcode']" />
+    <input *ngIf="data['ccnum'] != undefined" type="hidden" name="ccnum" [value]="data['ccnum']" />
+    <input *ngIf="data['ccname'] != undefined" type="hidden" name="ccname" [value]="data['ccname']" />
+    <input *ngIf="data['ccvv'] != undefined" type="hidden" name="ccvv" [value]="data['ccvv']" />
+    <input *ngIf="data['ccexpmon'] != undefined" type="hidden" name="ccexpmon" [value]="data['ccexpmon']" />
+    <input *ngIf="data['ccexpyr'] != undefined" type="hidden" name="ccexpyr" [value]="data['ccexpyr']" />
+    <input *ngIf="data['store_card'] != undefined" type="hidden" name="store_card" [value]="data['store_card']" />
+    <input *ngIf="data['cardToken'] != undefined" type="hidden" name="store_card_token" [value]="data['cardToken']" />
+    <input *ngIf="data['user_credentials'] != undefined" type="hidden" name="user_credentials" [value]="data['user_credentials']" />
+</form>
+
+<!--<button type="button" (click)="doPayment()"></button>-->

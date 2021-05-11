@@ -1,0 +1,23 @@
+@import '../../scss/variables';
+
+.form-container{
+  @extend %cards;
+  padding: 15px 0;
+}
+.continue-btn{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+.column-field{
+  @extend %clear-fix;
+  .w-65{
+    width: 65%;
+    float: left;
+  }
+  .w-30{
+    width: 30%;
+    float: right;
+  }
+}

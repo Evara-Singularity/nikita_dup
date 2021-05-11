@@ -25,11 +25,18 @@ export const CONSTANTS = {
         ROBOT1: 'noindex,follow',
         ROBOT2: 'noindex,nofollow'
     },
-    CONST_VAR: {
-		shippingcharge: '99',
-		FreeShippingMinAmount: '999',
+    pwaImages: {
+        imgFolder: 'b/I/P/B/d'
+    },
+	CMS_TEXT: {
+		HEADER_TOP_TEXT: "Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100",
+		CART_PAYMENT_METHOD_TEXT:"Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100"
 	},
     FILTER_GA_ID: [114000000, 116111700, 211000000],
+    CONST_VAR: {
+        shippingcharge: '99',
+        FreeShippingMinAmount: '999',
+    },
     GLOBAL: {
         loginByEmail: 1,
         loginByPhone: 2,

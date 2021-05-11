@@ -1,0 +1,18 @@
+<!--https://secure.payu.in/_payment-->
+<form action="{{data['actionUrl']}}" method="post" id="paytm_upi_form" name="paytm_upi_form">
+    <input type="hidden" id="mid" name="mid" autocomplete="off" [value]="data['mid']" />
+    <input type="hidden" id="orderId" name="orderId" autocomplete="off" [value]="data['orderId']" />
+    <input type="hidden" id="txnToken" name="txnToken" autocomplete="off" [value]="data['txnToken']" />
+    <input type="hidden" id="channelId" name="channelId" autocomplete="off" value="WEB" />
+    <input type="hidden" id="paymentMode" name="paymentMode" autocomplete="off" value="UPI" />
+    <input type="hidden" id="authMode" name="authMode" autocomplete="off" value="USRPWD" />
+    <input type="hidden" id="storeInstrument" name="storeInstrument" autocomplete="off" value="0" />
+    <input type="hidden" id="cardInfo" name="cardInfo" autocomplete="off" value="" />
+    <input type="hidden" id="channelCode" name="channelCode" autocomplete="off" value="collect" />
+    <input type="hidden" id="planId" name="planId" autocomplete="off" value="" />
+    <input type="hidden" id="mpin" name="mpin" autocomplete="off" value="" />
+    <input type="hidden" id="paymentFlow" name="paymentFlow" autocomplete="off" value="" />
+    <input type="hidden" id="payerAccount" name="payerAccount" autocomplete="off" [value]="data['payerAccount']" />
+</form>
+
+<!--<button id="payment-check" type="button" (click)="doPayment()"></button>-->

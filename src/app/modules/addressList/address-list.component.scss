@@ -1,0 +1,10 @@
+.persnName{
+    &:after{
+        content:"|";
+        padding:0px 10px;
+        position: absolute;
+    }
+    & + span{
+        padding-left:10px;
+    }
+}

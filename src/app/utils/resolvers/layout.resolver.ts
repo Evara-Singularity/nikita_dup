@@ -26,15 +26,15 @@ export class LayoutResolver implements Resolve<object> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-    this.loaderService.setLoaderState(true);
-    const STATE_KEY = makeStateKey<object>('covid19-essentials');
 
+    
     /**
      * For using this reolver please pass layoutId from pages.routing 
      * Check example for /covid19essentials
      */
     const LAYOUT_ID = route.data['layoutId'];
-    const isHtmlResponse = route.data['htmlType']
+    const STATE_KEY = makeStateKey<object>('layoutId-'+LAYOUT_ID);
+
     if (!LAYOUT_ID) {
       return of(null);
     }

@@ -1,0 +1,20 @@
+.smallimages-articlewrap {
+    overflow-y: hidden;
+    overflow-x: scroll;
+    width: auto;
+    .smallimages-articlewrap-inner {
+        padding: 10px 0px;
+        display: flex;
+    }
+    .smallimages-article {
+        width: 125px;
+        background: white;
+        margin: 0 10px 0 0;
+        float: left;
+        img {
+            width: 100%;
+            border-radius: 4px;
+            background: #F0F0F0;
+        }
+    }
+}

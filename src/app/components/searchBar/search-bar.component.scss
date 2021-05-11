@@ -17,12 +17,36 @@
                 text-transform: capitalize;
                 line-height: 25px;
                 border-bottom: 1px solid #f1f1f1;
+                width: 100%;
+                display: block;
+                padding: 8px 0;
                 .interfaceIcon {
                     float: right;
                     padding: 5px 0 0;
                 }
+                a {
+                    color: $blue-link-color;
+                }
+                @extend %clear-fix;
             }
         }
+    }
+}
+
+.tags-list {
+    li {
+        float: left;
+        margin: 0 10px 10px 0;
+        padding: 3px 12px;
+        border: 1px solid #707070;
+        &:last-child {
+            margin-right: 0;
+        }
+        a {
+            color: $blue-link-color;
+            font-size: $extra-large-font;
+        }
+        @extend %border-radius;
     }
 }
 

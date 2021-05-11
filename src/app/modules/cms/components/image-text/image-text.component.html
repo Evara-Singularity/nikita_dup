@@ -1,0 +1,7 @@
+<div class="imagetext-articlewrap" [class.dynamicclass]="imageAlignment == 'end'">
+    <div class="imagetext-imagearticle">
+        <img [src]="imageLink" [alt]="altImageTitle" (click)="$event.stopPropagation();naivgateTo(redirectPageLink)" />
+    </div>
+    <div class="imagetext-textarticle" [innerHTML]="textDescription">
+    </div>
+</div>

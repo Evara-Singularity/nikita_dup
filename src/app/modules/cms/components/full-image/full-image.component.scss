@@ -1,0 +1,20 @@
+.fullimages-articlewrap {
+	overflow-y: hidden;
+	overflow-x: scroll;
+	width: auto;
+	.fullimages-articlewrap-inner {
+		padding: 10px 0px;
+		display: flex;
+	}
+	.fullimages-article {
+		width: 400px;
+		background: white;
+		margin: 0 10px 0 0;
+		float: left;
+		img {
+			width: 100%;
+			border-radius: 4px;
+			background: #f0f0f0;
+		}
+	}
+}

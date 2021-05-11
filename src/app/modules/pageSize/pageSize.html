@@ -1,7 +1,0 @@
-<!--<span *ngIf="productSearchResult != undefined">{{productSearchResult.products | json}}</span>-->
-
-<select *ngIf="size != undefined && productSearchResult != undefined && productSearchResult.totalCount != undefined && productSearchResult.totalCount > 32" class="f-left" [(ngModel)] = 'size' (change)="updateSize($event.target.value)">
-    <option>32</option>
-    <option>64</option>
-    <option>160</option>
-</select>

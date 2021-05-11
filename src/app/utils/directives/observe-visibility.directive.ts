@@ -103,3 +103,16 @@ export class ObserveVisibilityDirective
       });
   }
 }
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+
+@NgModule({
+  declarations: [ObserveVisibilityDirective],
+  imports: [
+    CommonModule
+  ],
+  exports: [ObserveVisibilityDirective],
+})
+export class ObserveVisibilityDirectiveModule { }

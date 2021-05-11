@@ -10,7 +10,6 @@
             <li *ngFor="let bucket of buckets; let i = index;" (click)="updateFilterActiveIndex(i)" [ngClass]="{active: filterActiveIndex == i}">
                 <div class="filter-label">
                     <span class="filter-parent">{{bucket.name}}<span *ngIf="bucket.count>0">({{bucket.count}})</span></span>
-                    <!--<span class="selected-no">2</span>-->
                 </div>
                 <div class="filter-options">
                     <ng-container *ngIf="bucket.name === 'category'">

@@ -1,8 +1,4 @@
-/**
- * Created by kuldeep on 09/05/17.
- */
 import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, HostListener, PLATFORM_ID, Inject, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
-// import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { CommonService } from '@app/utils/services/common.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -10,7 +6,6 @@ import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { SortByComponent } from '../sortBy/sortBy.component';
 declare let dataLayer;
-// const BUCKETS_KEY: any = makeStateKey<{}>('buckets');
 import { CONSTANTS } from '@app/config/constants';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
@@ -50,12 +45,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
     accordianTarget: boolean;
     isMob: boolean;
     constructor(private _ts: TransferState, @Inject(PLATFORM_ID) platformId, private _ar: ActivatedRoute,
-    private _cd: ChangeDetectorRef, public _router: Router, private _cs: CommonService) {
+        private _cd: ChangeDetectorRef, public _router: Router, private _cs: CommonService) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
         this.filterActiveIndex = 0;
         this.isInitialLoad = 0;
-        // console.log(this._ts.get(ISMOB, false), 'filterfilterfilterfilterfilter');
         this.isMob = this._ts.get(ISMOB, false);
         const defaultParams = this._cs.getDefaultParams();
 
@@ -65,59 +59,31 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        // console.log('*****************Before Bucket Initialization********************');
-        // console.log(this.buckets);
-        // if (this.isBrowser && this.transferState.hasKey(BUCKETS_KEY)) {
-            // console.log('*****************After Bucket Initialization********************');            
-            // console.log(this.transferState.hasKey(BUCKETS_KEY))
-            // this.buckets = this.transferState.get(BUCKETS_KEY, []);
-            // this.initiallizeData(this.buckets);
-        //
-        // }
+        // console.clear();
+        console.log(this.bucketsUpdated);
+        console.log(this.pageName);
+        console.log(this.sortByComponentUpdated);
 
         if (this._ts.hasKey(RPRK)) {
             const response = this._ts.get(RPRK, {});
             this.initiallizeData(response['buckets']);
-            // if(this.isBrowser)
-                // console.log(response['buckets'], 'filter filter filter');
         }
+        
         this.bucketsUpdated.subscribe((buckets) => {
             this.isInitialLoad++;
             this._ar.fragment.subscribe((data) => {
                 if (!data) {
                     this.isInitialLoad = 0;
                     this.initiallizeData(buckets);
-                    // if (this.isServer)
-                    //     this.transferState.set(BUCKETS_KEY, buckets);
                     this._cd.markForCheck(); // marks path
                 }
                 if (data) {
                     this.initiallizeData(buckets);
-                    // if (this.isServer)
-                    //     this.transferState.set(BUCKETS_KEY, buckets);
                     this._cd.markForCheck(); // marks path
                 }
             });
 
-            // console.log('*****************Called Bucket next********************');
-            // console.log(buckets);
-
         });
-
-        // console.log('FilterComponent : ngOnInit : productFilterData', this.productFilterData)
-        // console.log(this.buckets);
-        if (this.isBrowser) {
-            // document.addEventListener('DOMContentLoaded', () => {
-                // console.log('rendered');
-                // console.log(document.querySelector('filter'));
-                /* document.querySelector('filter').addEventListener('click', function(e) {
-                    if (e.target && (<Element>e.target).matches('h4')) {
-                      this.classList.toggle('minus');
-                    }
-                }); */
-            // });
-        }
-
 
         this.sortByComponentUpdated.subscribe((data) => {
             this.initializeSortByData(data);
@@ -134,14 +100,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     if (key === 'toe type') {
                         selectorClass = 'toe';
                     }
-                    /* document.querySelector('.enabled-filter div.' + selectorClass).classList.remove('out');
-                    ClientUtility.getSiblings(document.querySelector('.enabled-filter div.' + selectorClass), function(el){
-                        if( el.nodeName.toLowerCase() === 'h4') {
-                            el.classList.add('minus');
-                        }
-                        return true;
-                    });
-                    document.querySelector('.enabled-filter div.' + selectorClass).classList.add('in'); */
                 }
             }, 0);
         }
@@ -157,7 +115,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     isFound = false;
                     dataLayer.push({
                         'event': 'filterClick',
-                        //  'eventCategory': 'id',
                         'eventAction': bucketName,
                         'eventLabel': bucketTerm.term + '@' + id
                     });
@@ -166,7 +123,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
             if (isFound) {
                 dataLayer.push({
                     'event': 'filterClick',
-                    // 'eventCategory': 'checkout',
                     'eventAction': bucketName,
                     'eventLabel': bucketTerm.term,
                 });
@@ -175,22 +131,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     private initializeSortByData(data) {
-        // console.log('sortByComponentUpdated **********', data);
-
         this.sortByComponent = data;
     }
     private initiallizeData(buckets) {
-        // this.allArraows = [
-        //     { right: true },
-        //     { right: true },
-        //     { right: true },
-        //     { right: true },
-        //     { right: true },
-        //     { right: true },
-        //     { right: true },
-        //     { right: true },
-        //     { right: true }
-        // ];
         this.buckets = buckets;
         this.productFilterData = this.createProductFilterData(this.buckets);
     }
@@ -200,33 +143,20 @@ export class FilterComponent implements OnInit, AfterViewInit {
             this.windowWidth = window.innerWidth;
             if (document.querySelector('.fa-angle-right')) {
                 document.querySelector('.fa-angle-right').addEventListener('click', function (e) {
-                    // alert('ok');
                     this.classList.add('fa-angle-down');
                 });
             }
-
-            // $('.fa-angle-down').click(function (e) {
-            //     $(this).addClass('fa-angle-right');
-            // })
-
-            // if (this.transferState.hasKey(BUCKETS_KEY))
-            //     this.transferState.remove(BUCKETS_KEY);
         }
     }
 
     @HostListener('window:resize', ['$event'])
-     resize(event) {
-     this.windowWidth = window.innerWidth;
-     }
+    resize(event) {
+        this.windowWidth = window.innerWidth;
+    }
 
     filterUp() {
         if (this.isBrowser) {
             document.querySelector('.mob_filter').classList.toggle('upTrans');
-            // if ($('.mob_filter').hasClass('upTrans')) {
-            //     $('.mob_filter').removeClass('upTrans');
-            // } else {
-            //     $('.mob_filter').addClass('upTrans');
-            // }
         }
     }
 
@@ -239,12 +169,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     deleteProductFilterData = (pfdKey, fd) => {
-        // console.log(pfdKey, fd);
-
-        // console.log('Before Slice', this.productFilterData);
         const si = this.productFilterData[pfdKey].indexOf(fd);
         this.productFilterData[pfdKey].splice(si, 1);
-        // console.log('After Slice', this.productFilterData);
         /**
          * Delete filter, if no filter present.
          */
@@ -252,15 +178,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
             delete this.productFilterData[pfdKey];
         }
 
-        // console.log('After Slice', this.productFilterData);
-
-        // this._cs.updateDefaultParamsNew({filter: this.productFilterData, page:1, pageIndex:1});
-
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
 
-        // console.log('##############Extras#################', extras);
-        // this._cs.useLastSortByState = true;
         this._cs.updateSortByState(this.sortByComponent.sortBy);
         this._router.navigate([currentRoute], extras);
     }
@@ -277,7 +197,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (document.querySelector(level + index)) {
             document.querySelector(level + index).classList.toggle('collapse');
         }
-        // ClientUtility.slideToggle(document.querySelector(level + index));
     }
     expandFilter(name, index, event) {
         let targetEl = event.target;
@@ -319,15 +238,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
     createProductFilterData = (buckets) => {
         const productFilterData = {};
         for (const bucketKey of Object.keys(buckets)) {
-            // //console.log('777777777777', buckets[bucketKey])
             const bucket = buckets[bucketKey];
             bucket.count = 0;
             for (const termKey of Object.keys(bucket['terms'])) {
-                // //console.log('55555555555', bucket['terms'][termKey]);
                 const term = bucket['terms'][termKey];
                 if (term['selected']) {
                     bucket.count = bucket.count + 1;
-                    // //console.log('55555555555', term);
                     if (productFilterData.hasOwnProperty(bucket['name'])) {
                         productFilterData[bucket['name']].push(term['term']);
                     } else {
@@ -337,48 +253,20 @@ export class FilterComponent implements OnInit, AfterViewInit {
             }
         }
         this.filterSelected.emit(Object.keys(productFilterData).length);
-        // console.log('6666666666666666666666', productFilterData)
-        // console.log('bucketesss@@@@@@@@@@@@@', this.buckets);
         return productFilterData;
     }
 
     updateProductFilterData = (event, bucketName, bucketTerm, mobileView) => {
-        // alert('ok');
         this.gaEventOncategory(bucketName, bucketTerm);
-        // console.log(event, bucketName, bucketTerm, mobileView);
-
-
-        // console.log(event.target.checked);
         bucketName = bucketName.toLowerCase(); // Done this because, sometime first letter becomes capital.
-
-        // console.log(mobileView);
-        /**
-         * Initially assign the current `$scope.productFilterData` in a variable `productFilterData`
-         */
         let productFilterData = {};
 
-        // console.log(mobileView);
-        /*if(mobileView == true)
-         productFilterData = Object.assign(productFilterData, this.productFilterDataMobileView);
-         else*/
         productFilterData = Object.assign(productFilterData, this.productFilterData);
 
-        // console.log(bucketName, bucketTerm)
-        /**
-         * Test object is like below :
-         * productFilterData = {'price':['101 - 500'],'brand':['Aaditya','AAE','Bajaj'],'discount':['0 - 10']}
-         */
-        // console.log(bucketTerm.selected);
         if (productFilterData.hasOwnProperty(bucketName)) {
-            // console.log('Bucket found in `productFilterData`, Updating bucket in `productFilterData`');
-            // console.log(bucketName, bucketTerm.term);
             if (event.target.checked === true) {
-                // console.log('Adding term to bucket in `productFilterData`');
                 productFilterData[bucketName].push(bucketTerm.term);
-
-                // console.log(productFilterData);
             } else {
-                // console.log('Removing term from bucket in `productFilterData`');
                 for (let i = 0; i < productFilterData[bucketName].length; i++) {
                     if (productFilterData[bucketName][i] === bucketTerm.term) {
                         productFilterData[bucketName].splice(i, 1);
@@ -387,61 +275,30 @@ export class FilterComponent implements OnInit, AfterViewInit {
             }
         } else {
             productFilterData[bucketName] = [bucketTerm.term];
-            // console.log(productFilterData);
         }
 
         this.productFilterData = productFilterData;
         if (this.isBrowser) {
-            // setTimeout(() => {
-                for (const key of Object.keys(this.productFilterData)) {
-                    let selectorClass = key;
-                    if (key === 'toe type') {
-                        selectorClass = 'toe';
-                    }
-                    /* document.querySelector('.enabled-filter div.' + selectorClass).classList.remove('out');
-                    ClientUtility.getSiblings(document.querySelector('.enabled-filter div.' + selectorClass), function(el){
-                        if (el.nodeName.toLowerCase() === 'h4') {
-                            el.classList.add('minus');
-                        }
-                        return true;
-                    });
-                    document.querySelector('.enabled-filter div.' + selectorClass).classList.add('in'); */
+            for (const key of Object.keys(this.productFilterData)) {
+                let selectorClass = key;
+                if (key === 'toe type') {
+                    selectorClass = 'toe';
                 }
-
-                // console.log(this.productFilterData);
-            // }, 0);
+            }
         }
 
-
-        /* if (!mobileView) {
-            const currentRoute = this._cs.getCurrentRoute(this._router.url);
-            const extras: NavigationExtras = this.getExtras();
-            this._cs.updateSortByState(this.sortByComponent.sortBy);
-            this._router.navigate([currentRoute], extras);
-        } */
     }
-
-    /*updateSortByState(){
-     let sortBy = this.sortByComponent.sortBy;
-     let orderBy = (sortBy == 'popularity') ? 'popularity' : 'price';
-     let orderWay = (sortBy == 'lowPrice') ? 'asc' : 'desc';
-     // this._cs.useLastSortByState=true;
-     this._cs.defaultParams.queryParams['orderBy'] = orderBy;
-     this._cs.defaultParams.queryParams['orderWay'] = orderWay;
-     }*/
-
     goToCategory(list) {
         this._router.navigateByUrl(list.categoryLink);
     }
 
     getRouterLink(item) {
         const defaultParams = this._cs.getDefaultParams();
-        // console.log('!!!!!!!!!!!!!1', defaultParams);
         if (defaultParams['pageName'] === 'CATEGORY') {
             return ['/' + item.categoryLink];
         }
         if (defaultParams['pageName'] === 'BRAND') {
-            return ['/brands/' + defaultParams['brand'] + '/' +  item.categoryLink];
+            return ['/brands/' + defaultParams['brand'] + '/' + item.categoryLink];
         }
         return '';
     }
@@ -451,7 +308,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     applyMobileFilter(data?: any) {
-        // console.log(this.productFilterData);
         /**
          * Below if is used in case of resetting the filters.
          */
@@ -462,17 +318,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
 
-        // console.log('##############Extras#################', extras);
-        // this._cs.useLastSortByState = true;
         this._cs.updateSortByState(this.sortByComponent.sortBy);
         this._router.navigate([currentRoute], extras);
         if (this.isBrowser) {
             document.querySelector('.mob_filter').classList.toggle('upTrans');
-            // if ($('.mob_filter').hasClass('upTrans')) {
-            //     $('.mob_filter').removeClass('upTrans');
-            // } else {
-            //     $('.mob_filter').addClass('upTrans');
-            // }
         }
     }
 
@@ -480,8 +329,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.productFilterData = {};
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
-        // console.log('##############Extras#################', extras);
-        // this._cs.useLastSortByState = true;
         this._cs.updateSortByState(this.sortByComponent.sortBy);
         this._router.navigate([currentRoute], extras);
     }
@@ -491,11 +338,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         const fragmentString = this._cs.generateFragmentString(this.productFilterData);
         if (fragmentString != null) {
             extras.fragment = fragmentString;
-            // console.log(extras);
         }
-        // let queryParams = this._cs.generateQueryParams();
         const queryParams = this._ar.snapshot.queryParams;
-
 
         if (Object.keys(queryParams).length > 0) {
             for (const key of Object.keys(queryParams)) {
@@ -513,61 +357,47 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
 
     testFilterFragment(filter) {
-        // console.log('1', filter)
         let currentUrlFilterData = filter.replace(/^\/|\/$/g, '');
-        // console.log('2', currentUrlFilterData);
         currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
-        // console.log('3', currentUrlFilterData);
         let newCurrentUrlFilterData = '';
-        // voltage-12/24 VDC/price-1001 - 5000/
         for (let i = 0; i < currentUrlFilterData.length; i++) {
-            // //console.log(/^\d+$/.test(currentUrlFilterData[i]))
             if (currentUrlFilterData[i] == '/' && /^\d+$/.test(currentUrlFilterData[i + 1])) {
-                // console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
                 newCurrentUrlFilterData = newCurrentUrlFilterData + '$';
-                // console.log(newCurrentUrlFilterData);
             } else {
                 newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
             }
-            // console.log(currentUrlFilterData[i]);
         }
-        // console.log('4',  newCurrentUrlFilterData);
         currentUrlFilterData = newCurrentUrlFilterData.split('/');
-        // console.log('5', currentUrlFilterData);
         if (currentUrlFilterData.length > 0) {
             const filter: any = {};
             for (let i = 0; i < currentUrlFilterData.length; i++) {
                 const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // 'price'
                 const filterData = currentUrlFilterData[i].replace('$', '/')
-                .substr(currentUrlFilterData[i].indexOf('-') + 1).split('||'); // ['101 - 500', '501 - 1000']
+                    .substr(currentUrlFilterData[i].indexOf('-') + 1).split('||'); // ['101 - 500', '501 - 1000']
                 filter[filterName] = filterData;
             }
-            // console.log(filter);
-            // defaultParams['filter']=filter;
         }
     }
 
-    addRupee(priceData) // adding rupee (₹) symbol
+    addRupee(priceData)
     {
-       let symbol = '₹';
-       let price  = priceData.split('-');
-       let rData = symbol+price[0].trim()+" - ";
-       if(price[1].trim()=="*")
-       {
-            symbol="";
-       }
-       rData = rData+symbol+price[1].trim();
-       return rData;
-    }
-    addDiscount(discountData){
-        let symbol = '%';
-        let discount  = discountData.split('-');
-        let dData = discount[0].trim()+symbol+" - ";
-        if(discount[1].trim()=="*")
-        {
-             symbol="";
+        let symbol = '₹';
+        let price = priceData.split('-');
+        let rData = symbol + price[0].trim() + " - ";
+        if (price[1].trim() == "*") {
+            symbol = "";
         }
-        dData = dData+discount[1].trim()+symbol;
+        rData = rData + symbol + price[1].trim();
+        return rData;
+    }
+    addDiscount(discountData) {
+        let symbol = '%';
+        let discount = discountData.split('-');
+        let dData = discount[0].trim() + symbol + " - ";
+        if (discount[1].trim() == "*") {
+            symbol = "";
+        }
+        dData = dData + discount[1].trim() + symbol;
         return dData;
     }
 }
@@ -577,7 +407,7 @@ function createArray(what, L) {
     while (L) {
         arr[--L] = what;
     }
-        return arr;
+    return arr;
 }
 
 

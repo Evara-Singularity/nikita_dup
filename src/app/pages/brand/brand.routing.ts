@@ -1,14 +1,14 @@
-/**
- * Created by kuldeep on 4/4/17.
- */
-
 import {Routes, RouterModule} from '@angular/router';
 import {BrandComponent} from "./brand.component";
+// import { BrandResolver } from '@app/utils/resolvers/brand.resolver';
 
 const routes: Routes = [
     {
         path: '',
-        component: BrandComponent
+        component: BrandComponent,
+        resolve: {
+            // brand: BrandResolver
+        }
     }
 ];
 

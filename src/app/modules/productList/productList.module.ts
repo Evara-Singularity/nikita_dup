@@ -11,8 +11,19 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ArrayFilterPipeModule } from "@app/utils/pipes/k-array-filter.pipe";
 import { ShowAvailableOnRequestLastPipeModule } from "@app/utils/pipes/show-available-on-request-last.pipe";
 
+
 @NgModule({
-    imports: [CommonModule, RouterModule, CharacterremovePipeModule, MathCeilPipeModule, MathFloorPipeModule, LazyLoadImageModule, ShowAvailableOnRequestLastPipeModule, ArrayFilterPipeModule, RatingPipeModule],
+    imports: [
+        CommonModule, 
+        RouterModule, 
+        CharacterremovePipeModule, 
+        MathCeilPipeModule, 
+        MathFloorPipeModule, 
+        LazyLoadImageModule, 
+        ShowAvailableOnRequestLastPipeModule, 
+        ArrayFilterPipeModule, 
+        RatingPipeModule,
+    ],
     exports: [ProductListComponent],
     declarations: [ProductListComponent],
     providers: [ProductListService],

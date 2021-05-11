@@ -2,26 +2,27 @@
 
 <div class="cat_filter_wrap">
     <div class="prod_filter">
-        <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"></filter>
+        <ng-container *ngIf="isBrowser" #filter></ng-container>
+        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"></filter> -->
     </div>
 </div>
 
-<div class="container-fluid">
+<!-- <div class="container-fluid">
     <div class="row">
         <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
     </div>
-</div>
+</div> -->
 
 <ul class="bread-head no-margin mar-b-15 hidden-sm-down" [ngClass]="{'notFoundEl' : !iba }">
     <li [routerLink]="['/']" href="https://www.moglix.com" class="f-size-12">Home</li>
     <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
     <li class="item f-size-12">
         <a [routerLink]="['/brands',friendlyUrl]" style="text-transform: capitalize">
-        {{brand}}</a>
+            {{brand}}</a>
     </li>
     <li *ngIf="categoryNameinAPI" class="item f-size-12">
         <a [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
-        {{categoryNameinAPI}}</a>
+            {{categoryNameinAPI}}</a>
     </li>
 </ul>
 
@@ -40,50 +41,62 @@
         </div>
         <div class="container pt-10">
             <!-- <p *ngIf="shortDesciption != null" class="desc-brand f-12 pb-10 lh-18" [innerHTML]="shortDesciption"></p> -->
-            <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand f-12 pb-10 lh-18">Moglix offers superior quality and genuine
-                <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize"> {{brandCategoryName}}
-        </a> from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(heading | removeHTML)}}. Buy these products
+            <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand f-12 pb-10 lh-18">Moglix offers superior
+                quality and genuine
+                <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
+                    {{brandCategoryName}}
+                </a> from a renowned brand
+                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our
+                assortment and explore more about price, specifications, availability, and deals online for {{(heading |
+                removeHTML)}}. Buy these products
                 at best prices and get them delivered at your doorstep across India.
             </p>
 
         </div>
     </div>
+
     <div class="clearfix"></div>
-
-
 
     <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
 
-    <div class="filter-wrapper">
+    <div class="filter-wrapper"  style="position: fixed; top: 60px; left: 0px;">
         <button type="button" (click)="filterUp()">
-      <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
-    </button>
+            <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
+        </button>
 
-        <button type="button" (click)="sortByOpt = true">
-      <i class="icon-sort-by" aria-hidden="true"></i>
-      <span class="txt">SORT BY</span>
-    </button>
+        <button type="button" (click)="toggleSortBy(true)">
+            <i class="icon-sort-by" aria-hidden="true"></i>
+            <span class="txt">SORT BY</span>
+        </button>
     </div>
-    <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
+    <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
+    <ng-container *ngIf="isBrowser" #sortBy></ng-container>
     <div>
-        <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated" [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'" (onPageChange)="pageChanged($event)">
-        </pagination>
+        <p  observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></p>
+        <ng-template *ngIf="isBrowser" #pagination></ng-template>
+        
+        <!-- <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated"
+            [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
+            (onPageChange)="pageChanged($event)">
+        </pagination> -->
     </div>
 
     <div class="brandsSection" *ngIf="productCategoryNames.length>0">
         <div class="innerBrandSection">
             <h4>Popular Categories</h4>
             <span class="border-bottom"></span>
-            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}" class="brandList">{{category}} <span *ngIf="!(isLast)">. </span></a>
+            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}"
+                class="brandList">{{category}} <span *ngIf="!(isLast)">. </span></a>
         </div>
     </div>
 
     <div class="body-bg pt-1" *ngIf="firstPageContent">
-        <div *ngIf="brandCatDesc || brandShortDesc || brandContent" class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !iba }">
+        <div *ngIf="brandCatDesc || brandShortDesc || brandContent" class="container-fluid pad-lr-0"
+            [ngClass]="{'notFoundEl' : !iba }">
             <div class="panel-head">
                 <div class="container">
-                    <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat3' , iconMode : true}">
+                    <h3 class="heading titleCategory" (click)="scrollTop($event)"
+                        [appKpToggle]="{idName: 'openCat3' , iconMode : true}">
                         More About Brand
                         <!-- <span class="iconaccordian f-right">
               <i class="icon-expand"></i>
@@ -119,7 +132,8 @@
             <div *ngIf="productSearchResultSEO.length">
                 <div class="panel-head">
                     <div class="container">
-                        <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
+                        <h3 class="heading titleCategory" (click)="scrollTop($event)"
+                            [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
                             <p>Top Selling {{heading ? (heading | removeHTML) : brand}} Price List in India</p>
 
 
@@ -143,7 +157,9 @@
                                     <td><a href="{{product.productUrl}}">{{product.productName}}</a></td>
                                     <td>Rs. {{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>
                                     <td>
-                                        {{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off</td>
+                                        {{product.discount == 0? "-": ((product.mrp -
+                                        product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
+                                    </td>
                                 </tr>
                             </ng-container>
                         </tbody>

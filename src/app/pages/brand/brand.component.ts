@@ -1,5 +1,5 @@
 import { FooterService } from '@app/utils/services/footer.service';
-import { Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional } from '@angular/core';
+import { Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
 import { Location, isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { CommonService } from "@app/utils/services/common.service";
@@ -12,6 +12,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
+import { BehaviorSubject } from 'rxjs';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
 declare var digitalData: {};
@@ -26,6 +27,12 @@ declare let _satellite;
 })
 
 export class BrandComponent {
+    filterInstance = null;
+    sortByInstance = null;
+    paginationInstance = null;
+    @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
+    @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
+    @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
     showLoader: boolean = true;
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     getRelatedCatgory;
@@ -33,7 +40,9 @@ export class BrandComponent {
     paginationUpdated: Subject<any> = new Subject<any>();
     sortByUpdated: Subject<any> = new Subject<any>();
     pageSizeUpdated: Subject<any> = new Subject<any>();
-    bucketsUpdated: Subject<any> = new Subject<any>();
+    filterData: Array<any> = [];
+    sortByData: Array<any> = [];
+    paginationData: any= {};
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     windowWidth: number;
     pageName: string;
@@ -45,12 +54,10 @@ export class BrandComponent {
     shortDesciption: any;
     brandcatFlag: boolean = false;
     brandContent: boolean = true;
-
     ProductList: Subject<any> = new Subject<any>();
     productCount;
     categoryLinkLists;
     categoryNames;
-
     session: {};
     isServer: boolean;
     isBrowser: boolean;
@@ -72,10 +79,25 @@ export class BrandComponent {
     trendingSearchData;
     productCategoryNames = [];
     categoryNameinAPI;
-
-
     refreshProductsUnsub$: any;
-    constructor(public dataService: DataService, private router: Router, @Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private title: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService, public location: Location, public _router: Router, public _activatedRoute: ActivatedRoute, public _commonService: CommonService, private localStorageService: LocalStorageService) {
+
+    constructor(
+        public dataService: DataService, 
+        private router: Router, @Optional() @Inject(RESPONSE) 
+        private _response, 
+        private _tState: TransferState, 
+        private _renderer2: Renderer2, @Inject(DOCUMENT) 
+        private _document, private title: Title, 
+        private meta: Meta, @Inject(PLATFORM_ID) platformId, 
+        public footerService: FooterService, 
+        public location: Location, 
+        public _router: Router, 
+        public _activatedRoute: ActivatedRoute, 
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector,
+        public _commonService: CommonService, 
+        private localStorageService: LocalStorageService
+    ) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
         this.pageName = "BRAND";
@@ -89,7 +111,6 @@ export class BrandComponent {
         this.pageNo = qp['page'];
         if (response["title"]) {
             this.brandCatName = this.heading.replace(/(<([^>]+)>)/ig, '');
-            // let title = "Buy " + this.capitalizeFirstLetter(this.brandCatName) + "Online at Best Price - Moglix.com";
             this.title.setTitle(response["title"]);
             this.meta.addTag({ "name": "og:title", "content": response["title"] });
         } else {
@@ -351,7 +372,6 @@ export class BrandComponent {
         }
     }
 
-
     ngOnInit() {
         let queryParams = this._activatedRoute.snapshot.queryParams;
         if (queryParams['category']) {
@@ -367,25 +387,17 @@ export class BrandComponent {
             }
         }
 
-        if (this.isBrowser) {
-            if (window.outerWidth >= 768) {
-                this.footerService.setFooterObj({ footerData: false });
-                this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
-            } else {
-                this.footerService.setMobileFoooters();
-            }
-        }
-
         this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
             () => {
                 this.showLoader = true;
                 this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
                     this.showLoader = false;
                     // $("#page-loader").hide();
-                    this.paginationUpdated.next({ itemCount: response.productSearchResult.totalCount });
+                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
                     this.sortByUpdated.next();
                     this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    this.bucketsUpdated.next(response.buckets);
+                    // this.bucketsUpdated.next(response.buckets);
+                    this.filterData = response.buckets;
                     this.productsUpdated.next(response.productSearchResult.products);
                 });
             }
@@ -410,7 +422,7 @@ export class BrandComponent {
 
         })
 
-
+        this.footerService.setMobileFoooters();
     }
 
     capitalizeFirstLetter(string) {
@@ -457,13 +469,12 @@ export class BrandComponent {
                 }
                 this._response.status(httpStatus);
             }
-            // response = {brandDetails: response['brandDetails'], buckets: [], productSearchResult: {products: [], totalCount: 0}};
         }
         if (flag) {
-            this.paginationUpdated.next({ itemCount: response.productSearchResult['totalCount'] });
+            this.paginationData = { itemCount: response.productSearchResult['totalCount'] };
             this.sortByUpdated.next();
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.bucketsUpdated.next(response.buckets);
+            this.filterData = response.buckets;
             this.productsUpdated.next(response.productSearchResult.products);
         }
         this.productSearchResult = response.productSearchResult;
@@ -484,8 +495,6 @@ export class BrandComponent {
                 this.brandCategoryName = response.categoryName
             }
             this.friendlyUrl = response.brandDetails.friendlyUrl;
-            //console.log(" this.heading",this.heading );
-
 
             if (this.isBrowser) {
                 this.windowWidth = window.innerWidth;
@@ -544,6 +553,28 @@ export class BrandComponent {
         }
     }
 
+    async onVisiblePagination(event) {
+        if (!this.paginationInstance) {
+            this.showLoader = true;
+            const { PaginationComponent } = await import('@app/modules/pagination/pagination.component').finally(() => {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(PaginationComponent);
+            this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
+            this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated; 
+            this.paginationUpdated.next(this.paginationData);
+            this.paginationInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+            this.paginationInstance.instance['position'] = 'BOTTOM';
+            
+            if (this.paginationInstance) {
+                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
+                    this.pageChanged(data);
+                });
+            }
+
+        }
+    }
+
     setAmpTag(page) {
         // console.log("page33",page);
         let currentRoute = this._router.url.split("?")[0].split("#")[0];
@@ -571,12 +602,28 @@ export class BrandComponent {
 
     }
 
-    filterUp() {
+    async filterUp() {
         if (this.isBrowser) {
-            if (document.querySelector('.mob_filter').classList.contains('upTrans')) {
-                document.querySelector('.mob_filter').classList.remove('upTrans');
-            } else {
-                document.querySelector('.mob_filter').classList.add('upTrans');
+            if (!this.filterInstance) {
+                this.showLoader = true;
+                const { FilterComponent } = await import('@app/modules/filter/filter.component').finally(() => {
+                    this.showLoader = false;
+                });
+                const factory = this.cfr.resolveComponentFactory(FilterComponent);
+                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+                this.filterInstance.instance['pageName'] = this.pageName;
+                this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+            }
+            
+            const mob_filter = document.querySelector('.mob_filter');
+            
+            if (mob_filter) {
+                if (mob_filter.classList.contains('upTrans')) {
+                    mob_filter.classList.remove('upTrans');
+                } else {
+                    mob_filter.classList.add('upTrans');
+                }
             }
         }
 
@@ -681,8 +728,21 @@ export class BrandComponent {
         this._router.navigate([currentRoute], extras);
     }
 
-    onUpdaet(data) {
+    async toggleSortBy(data) {
         this.sortByOpt = data.sortByOpt;
+        if (!this.sortByInstance) {
+            const { SortByComponent } = await import('@app/modules/sortBy/sortBy.component').finally(() => {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(SortByComponent);
+            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+            this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+            // if (this.sortByInstance) {
+            //     (this.sortByInstance.instance['outData'] as EventEmitter<any>).subscribe(data => {
+            //         this.toggleSortBy(data);
+            //     });
+            // }
+        }
     }
 
     scrollTop(eve) {
@@ -693,6 +753,14 @@ export class BrandComponent {
     togglets() {
         this.toggletsWrap = !this.toggletsWrap;
     }
+
+    resetLazyComponents(){
+        if (this.filterInstance) {
+            this.filterInstance = null;
+            this.filterContainerRef.remove();
+        }
+    }
+
     ngOnDestroy() {
         if (this.refreshProductsUnsub$) {
             this.refreshProductsUnsub$.unsubscribe();

@@ -201,6 +201,15 @@ const routes: Routes = [
             layoutId: 'cm400124'
         }
     },
+    {
+      path: 'faq',
+      loadChildren: () => import('../modules/faq/faq.module').then(m => m.FaqModule),
+      data: {
+          footer: true,
+          logo: true,
+          moreOpt: true
+      }
+  },
     ]
   }
 ]

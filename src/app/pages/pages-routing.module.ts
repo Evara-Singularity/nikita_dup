@@ -77,7 +77,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: 'Bosch',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm755792'
         }
       },
       {
@@ -86,7 +87,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: 'Godrej',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm104867'
         }
       },
       {
@@ -95,7 +97,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: '3M',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm909874'
         }
       },
       {
@@ -104,7 +107,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: 'Philips',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm645889'
         }
       },
       {
@@ -113,7 +117,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: 'Havells',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm484415'
         }
       },
       {
@@ -122,7 +127,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: 'VGuard',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm987844',
         }
       },
       {
@@ -131,7 +137,8 @@ const routes: Routes = [
         data: {
           footer: false,
           title: 'Eveready',
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm604845'
         }
       },
       {
@@ -140,7 +147,8 @@ const routes: Routes = [
         data: {
           footer: false,
           logo: true,
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm849659'
         }
       },
       {
@@ -149,7 +157,8 @@ const routes: Routes = [
         data: {
           footer: false,
           logo: true,
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm106721'
         }
       },
       {
@@ -158,7 +167,8 @@ const routes: Routes = [
         data: {
           footer: false,
           logo: true,
-          moreOpt: true
+          moreOpt: true,
+          layoutId: 'cm338483'
         }
       },
       {

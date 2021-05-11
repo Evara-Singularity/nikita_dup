@@ -3,10 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import {
-  Router, Resolve,
+  Resolve,
   RouterStateSnapshot,
   ActivatedRouteSnapshot,
-  ActivatedRoute
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -35,7 +34,7 @@ export class LayoutResolver implements Resolve<object> {
      * Check example for /covid19essentials
      */
     const LAYOUT_ID = route.data['layoutId'];
-
+    const isHtmlResponse = route.data['htmlType']
     if (!LAYOUT_ID) {
       return of(null);
     }
@@ -46,6 +45,7 @@ export class LayoutResolver implements Resolve<object> {
       this.loaderService.setLoaderState(false);
       return of([stateObj]);
     } else {
+
       const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
       const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT + `?id=${LAYOUT_ID}`;

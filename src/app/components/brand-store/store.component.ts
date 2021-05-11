@@ -1,11 +1,8 @@
-import {Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import  { StoreService } from './store.service';
+import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title, makeStateKey, Meta, TransferState } from '@angular/platform-browser';
+import { Title, Meta, TransferState } from '@angular/platform-browser';
 import CONSTANTS from 'src/app/config/constants';
-const SD = makeStateKey<any>('storedata');//PD: ProductData
-declare let $: any;
 
 @Component({
 	selector: 'store',
@@ -21,27 +18,32 @@ export class StoreComponent {
 	vguard = 'cm987844';
 	eveready = 'cm604845';
 	luminous = 'cm849659';
-	makita= 'cm106721';
-	karam= 'cm338483';
+	makita = 'cm106721';
+	karam = 'cm338483';
 	philips = 'cm645889';
 	threem = 'cm909874';
-	storeData:any;
+	storeData: any;
 	isServer: boolean;
-    isBrowser: boolean;
- 	constructor(private elementRef: ElementRef,private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, @Inject(PLATFORM_ID) private platformId: Object, public _router: Router, private meta:Meta,private _activatedRoute: ActivatedRoute, private title:Title, private router: Router, private storeService:StoreService){
+	isBrowser: boolean;
+	constructor(private elementRef: ElementRef, private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, @Inject(PLATFORM_ID) private platformId: Object, public _router: Router, private meta: Meta, private _activatedRoute: ActivatedRoute, private title: Title, private router: Router, private route: ActivatedRoute) {
 		let path = this.router.url.split("?");
 		path = path[0].split("/");
 		this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+		this.isBrowser = isPlatformBrowser(platformId);
+		this.route.data.subscribe((rawData) => {
+			if (!rawData['data']['error']) {
+				this.storeData = rawData['data']
+			}
+		});
 		this.getStoreData(path);
- 	}
+	}
 
-	getStoreData(path){
-		let id= "";
+	getStoreData(path) {
+		let id = "";
 		let video = '';
 		let title = '';
 		let description = '';
-   		switch(path[2]){
+		switch (path[2]) {
 			case "bosch": {
 				id = this.bosch;
 				video = 'https://www.youtube.com/embed/lQWkyd57w-4';
@@ -96,69 +98,48 @@ export class StoreComponent {
 		title = path[2] + ' Brand Store';
 		description = 'Get to know more about ' + path[2] + ' brand. Shop bestsellers and range of exclusive products from ' + path[2] + ' at Moglix';
 		this.title.setTitle(title);
-		this.meta.addTag({"property":"og:title","content":title});
-		this.meta.addTag({"property":"og:description","content":description});
-		this.meta.addTag({"property":"og:url","content":'https://www.moglix.com/brand-store/' + path[2]});
-		this.meta.addTag({"name":"description","content":'Get to know more about ' + path[2] + ' brand. Shop bestsellers and range of exclusive products from ' + path[2] + ' at Moglix'});
+		this.meta.addTag({ "property": "og:title", "content": title });
+		this.meta.addTag({ "property": "og:description", "content": description });
+		this.meta.addTag({ "property": "og:url", "content": 'https://www.moglix.com/brand-store/' + path[2] });
+		this.meta.addTag({ "name": "description", "content": 'Get to know more about ' + path[2] + ' brand. Shop bestsellers and range of exclusive products from ' + path[2] + ' at Moglix' });
 		if (this.isServer) {
 			let links = this._renderer2.createElement('link');
 			links.rel = "canonical";
 			links.href = CONSTANTS.PROD + this._router.url.split('?')[0].split("#")[0];
 			this._renderer2.appendChild(this._document.head, links);
 		}
-
-		if (this._tState.hasKey(SD)) {
-			this.storeData = this._tState.get(SD, {data : ""}).data;
-			setTimeout(() => {
-				// wait for DOM rendering
-				this.reinsertLinks();
-			},0);
-		}
-		else {
-			this.storeService.getStoreData(id, { headerData: {'Content-Type':'text/html'} } ).subscribe(data=>{
-				this.storeData = data;
-				if(this.isServer){
-					this._tState.set(SD, {data : "'" + this.storeData + "'"});
+		setTimeout(() => {
+			// wait for DOM rendering
+			this.reinsertLinks();
+		}, 0);
+		setTimeout(() => {
+			if (!this.isServer) {
+				if (typeof window != undefined && document) {
+					document.querySelector('.video_container').innerHTML = '<iframe width="600" height="400" src="' + video + '" frameborder="0" allowfullscreen></iframe>';
 				}
-				setTimeout(() => {
-					// wait for DOM rendering
-					this.reinsertLinks();
-				},0);
-				setTimeout(()=>{
-					if(!this.isServer){
-						if(typeof window != undefined && document){
-							document.querySelector('.video_container').innerHTML = '<iframe width="600" height="400" src="' + video + '" frameborder="0" allowfullscreen></iframe>';
-						}
-					}
-				},500);
-			})
-		}
+			}
+		}, 500);
 	}
 	reinsertLinks() {
 		const links = <HTMLAnchorElement[]>this.elementRef.nativeElement.getElementsByTagName('a');
-	
+
 		if (links) {
-		  const linksInitialLength = links.length;
-		  for (let i = 0; i < linksInitialLength; i++) {
-			const link = links[i];
-	
-			if (link.host === window.location.host) {
-			  this._renderer2.listen(link, 'click', event => {
-				event.preventDefault();
-				this.router.navigate([
-				  link.href
-					.replace(link.host, '')
-					.replace(link.protocol, '')
-					.replace('//', '')
-				]);
-			  });
+			const linksInitialLength = links.length;
+			for (let i = 0; i < linksInitialLength; i++) {
+				const link = links[i];
+
+				if (link.host === window.location.host) {
+					this._renderer2.listen(link, 'click', event => {
+						event.preventDefault();
+						this.router.navigate([
+							link.href
+								.replace(link.host, '')
+								.replace(link.protocol, '')
+								.replace('//', '')
+						]);
+					});
+				}
 			}
-		  }
-		}
-	}
-	ngAfterViewInit() {
-        if (this.isBrowser) {
-			this._tState.remove(SD);
 		}
 	}
 }

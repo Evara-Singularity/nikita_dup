@@ -3,12 +3,16 @@
  */
 
 import {Routes, RouterModule} from '@angular/router';
+import { LayoutResolver } from 'src/app/utils/resolvers/layout.resolver';
 import {StoreComponent} from "./store.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: StoreComponent
+        component: StoreComponent,
+        resolve: {
+            data: LayoutResolver
+        }
     }
 ];
 

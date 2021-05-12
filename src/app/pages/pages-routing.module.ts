@@ -366,6 +366,15 @@ const routes: Routes = [
         }
       },
       {
+        path: 'deals',
+        loadChildren: () => import('./deals/deals.module').then(m => m.DealsModule),
+        data: {
+          footer: false,
+          title: 'Deals',
+          moreOpt: true
+        }
+      },
+      {
         path: '**',
         loadChildren: () => import('./pageNotFound/pageNotFound.module').then(m => m.PageNotFoundModule),
         data: {

@@ -26,7 +26,6 @@ export class LayoutResolver implements Resolve<object> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-
     
     /**
      * For using this reolver please pass layoutId from pages.routing 

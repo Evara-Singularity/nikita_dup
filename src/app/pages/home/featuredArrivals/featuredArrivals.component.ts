@@ -8,7 +8,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     templateUrl: './featuredArrivals.html',
     styleUrls: ['./featuredArrivals.scss']
 })
-export class FeaturedArrivals{
+export class FeaturedArrivals {
+
     @Input('featureArrivalData') featureArrivalData;
     @Input('defaultImage') defaultImage;
     @Input('imagePath') imagePath;
@@ -17,14 +18,14 @@ export class FeaturedArrivals{
         var date = new Date();
         date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
         document.cookie =
-          "adobeClick=" +
-          "Featured" +
-          "_" +
-          imageTitle +
-          "; expires=" +
-          date.toUTCString() +
-          ";path=/";
-      }
+            "adobeClick=" +
+            "Featured" +
+            "_" +
+            imageTitle +
+            "; expires=" +
+            date.toUTCString() +
+            ";path=/";
+    }
 }
 
 @NgModule({

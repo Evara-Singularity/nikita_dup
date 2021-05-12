@@ -46,24 +46,25 @@
 </section>
 
 <!-- Section for feature Brands -->
-<div class="featr_brand clearfix">
-    <div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedBrands($event)">
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="300" (visible)="onVisibleFeaturedBrands($event)" >
+    <div>
         <ng-container #FeaturedBrands></ng-container>
     </div>
 </div>
 
-<div observeVisibility [debounceTime]="300" (visible)="onVisibleCategories($event)">
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="300" (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
 
-<!-- Featured Arrivals Section -->
+<!-- 
 <div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
-</div>
+</div> 
+-->
 
 <!-- Pop up -->
 
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
+<!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
     [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:categoryNameFromHomePage}">
     <div class="content-popup card-30" content>
         <ul class="view-products no-border list" [class.border-top]="categoryNameFromHomePage !== ''">
@@ -93,4 +94,4 @@
             </li>
         </ul>
     </div>
-</app-pop-up>
+</app-pop-up> -->

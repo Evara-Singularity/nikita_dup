@@ -84,6 +84,7 @@ export class ObserveVisibilityDirective
   }
 
   private startObservingElements() {
+    
     if (!this.observer) {
       return;
     }

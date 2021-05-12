@@ -25,7 +25,6 @@ import {
 import { LocalStorageService, LocalStorage } from "ngx-webstorage";
 import { Subject } from "rxjs";
 import { fade } from "src/app/pages/animation/animations";
-import { map } from "rxjs/operators/map";
 import { SiemaCarouselComponent } from "src/app/modules/siemaCarousel/siemaCarousel.component";
 import CONSTANTS from "src/app/config/constants";
 import { DataService } from "src/app/utils/services/data.service";
@@ -104,9 +103,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   // ondemad loaded components: Feature Arrivals
   featuredArrivalsInstance = null;
   @ViewChild('FeaturedArrivals', { read: ViewContainerRef }) featuredArrivalsContainerRef: ViewContainerRef;
-    // ondemad loaded components: PWA Categories
-    categoriesInstance = null;
-    @ViewChild('Categories', { read: ViewContainerRef }) fCategoriesContainerRef: ViewContainerRef;
+  // ondemad loaded components: PWA Categories
+  categoriesInstance = null;
+  @ViewChild('Categories', { read: ViewContainerRef }) fCategoriesContainerRef: ViewContainerRef;
 
   constructor(
     public dataService: DataService,
@@ -131,12 +130,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.route.data.subscribe((rawData) => {
       if (!rawData['homeData']['error']) {
         this.fetchHomePageData(rawData.homeData)
       }
     });
+
     this.setMetaData();
+
     if (this.isBrowser) {
       this.isMobile = true;
       var trackData = {
@@ -156,176 +158,178 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }, 0);
     }
+
     this.footerService.setFooterObj({ footerData: true });
   }
+
   fetchHomePageData(response) {
-        if (response && response["statusCode"] === 200 && response["data"]) {
-          const data: any = {};
-          response["data"].forEach((block) => {
+    if (response && response["statusCode"] === 200 && response["data"]) {
+      const data: any = {};
+      response["data"].forEach((block) => {
+        if (
+          block.layout_code &&
+          CONSTANTS.IDS_MAP.hasOwnProperty(block.layout_code) &&
+          !data.hasOwnProperty(CONSTANTS.IDS_MAP[block.layout_code])
+        ) {
+          let localData = [],
+            bannerData = [],
+            secondaryBanner = [];
+          if (block && block.block_data) {
+            const blockData = block.block_data;
             if (
-              block.layout_code &&
-              CONSTANTS.IDS_MAP.hasOwnProperty(block.layout_code) &&
-              !data.hasOwnProperty(CONSTANTS.IDS_MAP[block.layout_code])
+              blockData.product_data &&
+              blockData.product_data.length &&
+              blockData.product_block_order
             ) {
-              let localData = [],
-                bannerData = [],
-                secondaryBanner = [];
-              if (block && block.block_data) {
-                const blockData = block.block_data;
-                if (
-                  blockData.product_data &&
-                  blockData.product_data.length &&
-                  blockData.product_block_order
-                ) {
-                  (localData = blockData), blockData;
-                } else if (
-                  blockData.image_block &&
-                  blockData.image_block.length &&
-                  block.layout_code == "cm915657"
-                ) {
-                  let parsedBannerData = this.parseAndOrderBannerData(
-                    blockData.image_block
-                  );
-                  bannerData = parsedBannerData.bannerData;
-                  secondaryBanner = parsedBannerData.secondaryBanner;
-                } else if (
-                  blockData.image_block &&
-                  blockData.image_block.length &&
-                  block.layout_code == CONSTANTS.CMS_IDS.MIDDLE_BANNER_ADS
-                ) {
-                  this.middleImageJsonData = blockData.image_block;
-                } else if (
-                  blockData.image_block &&
-                  blockData.image_block.length &&
-                  block.layout_code == CONSTANTS.CMS_IDS.FEATURE_BRANDS
-                ) {
-                  this.featureBrandData = blockData.image_block;
-                } else if (
-                  blockData.image_block &&
-                  blockData.image_block.length &&
-                  block.layout_code == CONSTANTS.CMS_IDS.FEATURE_ARRIVAL
-                ) {
-                  this.featureArrivalData = blockData.image_block;
-                }
-              }
-
-              switch (CONSTANTS.IDS_MAP[block.layout_code]) {
-                case "BEST_SELLER":
-                  data.bestSellerData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "BANNER":
-                  data.bannerData = {
-                    data: bannerData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  this.bannerDataJson = {
-                    data: bannerData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  data.secondaryBanner = {
-                    data: secondaryBanner,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "SAFETY":
-                  data.safetyData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "CAT_B":
-                  data.powerData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "CAT_C":
-                  data.pumpData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "CAT_D":
-                  data.electricalData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "CAT_E":
-                  data.officeData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "CAT_F":
-                  data.medicalData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-                case "CAT_G":
-                  data.lightData = {
-                    data: localData,
-                    layout_name: block["layout_name"],
-                    layout_url: block["layout_url"],
-                  };
-                  break;
-              }
-            }
-          });
-          if (
-            this.bannerDataJson &&
-            this.bannerDataJson["data"] &&
-            this.bannerDataJson["data"].length
-          ) {
-            this.bannerDataJson["data"].map((bdj) => {
-              bdj.image_name = this.imagePathBanner + bdj.image_name;
-            });
-            this.bannerImagesScroll = this.bannerDataJson;
-          }
-          const carousalDataKeys = Object.keys(data);
-
-          const ncd = JSON.parse(JSON.stringify(data));
-
-          for (let i = 0; i < carousalDataKeys.length; i++) {
-            if (
-              carousalDataKeys[i] == "bannerData" ||
-              carousalDataKeys[i] == "secondaryBanner"
+              (localData = blockData), blockData;
+            } else if (
+              blockData.image_block &&
+              blockData.image_block.length &&
+              block.layout_code == "cm915657"
             ) {
-              ncd[carousalDataKeys[i]]["data"] = data[carousalDataKeys[i]][
-                "data"
-              ].filter((item, i) => i < 1);
-            } else {
-              ncd[carousalDataKeys[i]]["data"].product_data =
-                data[carousalDataKeys[i]]["data"].product_data;
+              let parsedBannerData = this.parseAndOrderBannerData(
+                blockData.image_block
+              );
+              bannerData = parsedBannerData.bannerData;
+              secondaryBanner = parsedBannerData.secondaryBanner;
+            } else if (
+              blockData.image_block &&
+              blockData.image_block.length &&
+              block.layout_code == CONSTANTS.CMS_IDS.MIDDLE_BANNER_ADS
+            ) {
+              this.middleImageJsonData = blockData.image_block;
+            } else if (
+              blockData.image_block &&
+              blockData.image_block.length &&
+              block.layout_code == CONSTANTS.CMS_IDS.FEATURE_BRANDS
+            ) {
+              this.featureBrandData = blockData.image_block;
+            } else if (
+              blockData.image_block &&
+              blockData.image_block.length &&
+              block.layout_code == CONSTANTS.CMS_IDS.FEATURE_ARRIVAL
+            ) {
+              this.featureArrivalData = blockData.image_block;
             }
           }
-          this.carouselData = ncd; //carousel data
 
-          if (this.middleImageJsonData && this.middleImageJsonData.block_data) {
-            this.middleImageJsonDataLink = this.middleImageJsonData.block_data[
-              "image_block"
-            ];
+          switch (CONSTANTS.IDS_MAP[block.layout_code]) {
+            case "BEST_SELLER":
+              data.bestSellerData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "BANNER":
+              data.bannerData = {
+                data: bannerData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              this.bannerDataJson = {
+                data: bannerData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              data.secondaryBanner = {
+                data: secondaryBanner,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "SAFETY":
+              data.safetyData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "CAT_B":
+              data.powerData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "CAT_C":
+              data.pumpData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "CAT_D":
+              data.electricalData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "CAT_E":
+              data.officeData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "CAT_F":
+              data.medicalData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
+            case "CAT_G":
+              data.lightData = {
+                data: localData,
+                layout_name: block["layout_name"],
+                layout_url: block["layout_url"],
+              };
+              break;
           }
-          setTimeout(() => {
-            this.appendSiemaItemSubjects["bannerData"].next(
-              data["bannerData"]["data"].filter((item, i) => i >= 1)
-            );
-          }, 1000);
         }
+      });
+      if (
+        this.bannerDataJson &&
+        this.bannerDataJson["data"] &&
+        this.bannerDataJson["data"].length
+      ) {
+        this.bannerDataJson["data"].map((bdj) => {
+          bdj.image_name = this.imagePathBanner + bdj.image_name;
+        });
+        this.bannerImagesScroll = this.bannerDataJson;
+      }
+      const carousalDataKeys = Object.keys(data);
+
+      const ncd = JSON.parse(JSON.stringify(data));
+
+      for (let i = 0; i < carousalDataKeys.length; i++) {
+        if (
+          carousalDataKeys[i] == "bannerData" ||
+          carousalDataKeys[i] == "secondaryBanner"
+        ) {
+          ncd[carousalDataKeys[i]]["data"] = data[carousalDataKeys[i]][
+            "data"
+          ].filter((item, i) => i < 1);
+        } else {
+          ncd[carousalDataKeys[i]]["data"].product_data =
+            data[carousalDataKeys[i]]["data"].product_data;
+        }
+      }
+      this.carouselData = ncd; //carousel data
+
+      if (this.middleImageJsonData && this.middleImageJsonData.block_data) {
+        this.middleImageJsonDataLink = this.middleImageJsonData.block_data[
+          "image_block"
+        ];
+      }
+      setTimeout(() => {
+        this.appendSiemaItemSubjects["bannerData"].next(
+          data["bannerData"]["data"].filter((item, i) => i >= 1)
+        );
+      }, 1000);
+    }
   }
 
   setAnalyticTags() {
@@ -488,6 +492,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 3000);
     }
   }
+
   ngOnDestroy() {
     this.cartService.homePageFlyOut.next(true);
     const footerObj = this.footerService.getFooterObj();
@@ -496,6 +501,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.footerService.setMobileFoooters();
   }
+
   beforeDiscount(afterDiscountPrice, discount_percentage) {
     const val = 100 / (100 - discount_percentage);
     const val2 = Math.round(val * 100) / 100;
@@ -531,21 +537,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onVisibleFeaturedBrands(htmlElement) {
+    
     const { FeaturedBrands } = await import('./featuredBrands/featuredBrands.component');
     const factory = this.cfr.resolveComponentFactory(FeaturedBrands);
     this.featuredBrandsInstance = this.featuredBrandsContainerRef.createComponent(factory, null, this.injector);
     this.featuredBrandsInstance.instance['featureBrandData'] = this.featureBrandData;
     this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
     this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
-  }
-
-  async onVisibleFeaturedArrivals(htmlElement) {
-    const { FeaturedArrivals } = await import('./featuredArrivals/featuredArrivals.component');
-    const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
-    this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
-    this.featuredArrivalsInstance.instance['featureArrivalData'] = this.featureArrivalData;
-    this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
-    this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
   }
 
   async onVisibleCategories(htmlElement) {
@@ -563,12 +561,25 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  // async onVisibleFeaturedArrivals(htmlElement) {
+  //   console.log('onVisibleFeaturedArrivals htmlElement', htmlElement);
+  //   const { FeaturedArrivals } = await import('./featuredArrivals/featuredArrivals.component');
+  //   const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
+  //   this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
+  //   this.featuredArrivalsInstance.instance['featureArrivalData'] = this.featureArrivalData;
+  //   this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
+  //   this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
+  // }
+
+
+
   getBrandName(brand_description) {
     const ParsebrandName = brand_description.split("||");
     const brandName = ParsebrandName[0]; // brandName i,e Brand: ABC at 0th Position
     const afterRemoveBrandWord = brandName.replace("Brand:", "");
     return afterRemoveBrandWord;
   }
+
   setCookieLink(catName, categoryCodeorBannerName, type) {
     this._commonService.setSectionClickInformation("homepage", type);
     var date = new Date();
@@ -582,4 +593,5 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       date.toUTCString() +
       ";path=/";
   }
+
 }

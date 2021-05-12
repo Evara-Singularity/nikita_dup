@@ -46,22 +46,19 @@
 </section>
 
 <!-- Section for feature Brands -->
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="300" (visible)="onVisibleFeaturedBrands($event)" >
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)" >
     <div>
         <ng-container #FeaturedBrands></ng-container>
     </div>
 </div>
 
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="300" (visible)="onVisibleCategories($event)">
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
-
-<!-- 
-<div observeVisibility [debounceTime]="300" (visible)="onVisibleFeaturedArrivals($event)">
+ 
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div> 
--->
-
 <!-- Pop up -->
 
 <!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"

@@ -1,15 +1,15 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, Output, EventEmitter, NgModule } from "@angular/core";
+import { Component, Input, Output, EventEmitter, NgModule, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { CommonService } from "src/app/utils/services/common.service";
+import { CommonService } from "../../../utils/services/common.service";
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { RecentlyViewedCarouselModule } from "src/app/components/recentlyViewedCarousel/recentlyViewedCarousel.module";
+import { ObserveVisibilityDirectiveModule } from "../../../utils/directives/observe-visibility.directive";
 
 
 @Component({
   selector: 'home-categories',
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss']
+  styleUrls: ['./categories.component.scss'],
 })
 export class Categories {
   
@@ -20,11 +20,13 @@ export class Categories {
   @Input('imagePath') imagePath;
   @Input('recentProductList') recentProductList;
   @Output('sendDataToPopUP') sendDataToPopUP = new EventEmitter();
-
+  // ondemad loaded components: Feature Arrivals
+  carouselInstance = null;
+  @ViewChild('RecentlyViewedCarouselComponent', { read: ViewContainerRef }) carouselContainerRef: ViewContainerRef;
   openPopup;
   categoryNameFromHomePage;
 
-  constructor(private _commonService: CommonService) { }
+  constructor(private _commonService: CommonService, private cfr: ComponentFactoryResolver, private injector: Injector) { }
 
   getCategoryLabel(categoryName) {
     this.categoryNameFromHomePage = categoryName;
@@ -88,6 +90,14 @@ export class Categories {
     const newValue = Math.round(0.0 + removeDecimal);
     return newValue;
   }
+    async onVisibleCarousel(htmlElement) {
+      const { RecentlyViewedCarouselComponent } = await import('../../../components/recentlyViewedCarousel/recentlyViewedCarousel.component');
+      const factory = this.cfr.resolveComponentFactory(RecentlyViewedCarouselComponent);
+      this.carouselInstance = this.carouselContainerRef.createComponent(factory, null, this.injector);
+      this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
+      this.carouselInstance.instance['showHeading'] = true;
+      this.carouselInstance.instance['prodList'] = this.recentProductList;
+    }
 }
 
 @NgModule({
@@ -98,7 +108,7 @@ export class Categories {
     CommonModule,
     RouterModule,
     LazyLoadImageModule,
-    RecentlyViewedCarouselModule
-  ],
+    ObserveVisibilityDirectiveModule
+  ]
 })
 export class FeaturedArrivalModule { }

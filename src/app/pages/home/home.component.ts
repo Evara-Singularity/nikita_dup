@@ -561,15 +561,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  // async onVisibleFeaturedArrivals(htmlElement) {
-  //   console.log('onVisibleFeaturedArrivals htmlElement', htmlElement);
-  //   const { FeaturedArrivals } = await import('./featuredArrivals/featuredArrivals.component');
-  //   const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
-  //   this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
-  //   this.featuredArrivalsInstance.instance['featureArrivalData'] = this.featureArrivalData;
-  //   this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
-  //   this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
-  // }
+  async onVisibleFeaturedArrivals(htmlElement) {
+    const { FeaturedArrivals } = await import('./featuredArrivals/featuredArrivals.component');
+    const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
+    this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
+    this.featuredArrivalsInstance.instance['featureArrivalData'] = this.featureArrivalData;
+    this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
+    this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
+  }
 
 
 

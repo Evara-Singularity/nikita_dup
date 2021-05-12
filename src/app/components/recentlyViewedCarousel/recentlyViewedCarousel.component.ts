@@ -1,11 +1,20 @@
-import { Component, ElementRef, Input, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, ElementRef, Input, PLATFORM_ID, Inject, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { RecentlyViewedCarouselService } from "./recentlyViewedCarousel.service";
 import { LocalStorageService } from "ngx-webstorage";
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import CONSTANTS from 'src/app/config/constants';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CommonService } from 'src/app/utils/services/common.service';
+import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
+import CONSTANTS from '../../config/constants';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { CommonService } from '../../utils/services/common.service';
+
+//Module Imports
+import { RouterModule } from '@angular/router';
+import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
+import { PopUpModule } from '../../modules/popUp/pop-up.module';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
+import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
+import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pipe';
 
 @Component({
     selector: 'recently-viewed-carousel',
@@ -122,3 +131,13 @@ export class RecentlyViewedCarouselComponent {
         document.cookie = "adobeClick=" + catName + "_" + categoryCodeorBannerName + "; expires=" + date.toUTCString() + ";path=/";
     }
 }
+
+@NgModule({
+    declarations: [
+      RecentlyViewedCarouselComponent
+    ],
+    imports: [
+      CommonModule, MathFloorPipeModule, PopUpModule, RouterModule, CharacterremovePipeModule, LazyLoadImageModule, SiemaCarouselModule, MathCeilPipeModule, PopUpModule
+    ],
+  })
+  export class RecentlyViewedCarouselModule { }

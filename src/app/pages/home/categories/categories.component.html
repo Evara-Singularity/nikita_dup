@@ -7,10 +7,11 @@
 
 
     <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
-        <!-- <ng-container *ngIf="i==1">
-            <recently-viewed-carousel [clickFromSection]="'recently_viewed_home'" [showHeading]="true"
-                [prodList]="recentProductList" class="block no-pad-xs relative mar-b-10"></recently-viewed-carousel>
-        </ng-container> -->
+        <ng-container *ngIf="i === 1">
+            <div observeVisibility class="block no-pad-xs relative mar-b-10" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
+                <ng-container #RecentlyViewedCarouselComponent></ng-container>
+            </div>
+        </ng-container>
         <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="deals-offers card"
             [class.bestSeller]="i == 0">
             <div class="container clearfix pad-tb-10">

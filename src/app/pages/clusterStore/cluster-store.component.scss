@@ -11,6 +11,9 @@
 }
 .cluster-body{
   padding-top:100px;
+  .lazy-components {
+    min-height: 150px;
+  }
 }
 .l0_heading{
     font-size:16px;

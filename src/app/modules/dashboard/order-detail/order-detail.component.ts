@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs/Subject';
-import { BusinessOrderService } from './../bussiness-order/businessOrder.service';
+import { BusinessOrderService } from '../bussiness-order/businessOrder.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { map ,takeUntil} from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe, formatDate } from '@angular/common';
 import { Bank } from './bank.validate';
@@ -61,8 +61,8 @@ export class OrderDetailComponent implements OnInit {
   returnReasons: Array<{}>;
   showFileError: boolean;
   returnEndDate: any;
-  showReturn:boolean;
-  customerReturn:boolean = false;
+  showReturn: boolean;
+  customerReturn: boolean = false;
   trackStatusKeyName = {
     'accepted': 'Accepted',
     'confirmed': 'Processed',
@@ -90,9 +90,9 @@ export class OrderDetailComponent implements OnInit {
   chequeImage: {};
   private cDistryoyed = new Subject();
 
-   readonly validBuyAgainStatus = ['DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
-   readonly validTrackingStatus = ['SHIPPED','DELIVERED'];
-   readonly trackingMessage = 'Tracking information from courier partner is not available at the moment.';
+  readonly validBuyAgainStatus = ['DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
+  readonly validTrackingStatus = ['SHIPPED', 'DELIVERED'];
+  readonly trackingMessage = 'Tracking information from courier partner is not available at the moment.';
   constructor(
     private datePipe: DatePipe,
     private _formBuilder: FormBuilder,
@@ -101,7 +101,7 @@ export class OrderDetailComponent implements OnInit {
     private _localAuthService: LocalAuthService,
     private _router: Router,
     private _tms: ToastMessageService,
-    private  _modalService:ModalService,
+    private _modalService: ModalService,
     public localStorageService: LocalStorageService
   ) {
     this.showFileError = false;
@@ -118,7 +118,7 @@ export class OrderDetailComponent implements OnInit {
       this.orderId = params['id'];
       this.itemIdParam = params['itemid'];
     });
-   
+
     this.getOrderDetail(this.orderId);
 
     this._businessOrderService.getCancelReasons().subscribe((cancelReasons) => {
@@ -218,7 +218,7 @@ export class OrderDetailComponent implements OnInit {
       res.map((item) => {
         if (item.item_id === this.itemIdParam) {
           this.detail = item;
-          if(this.detail && this.detail.dates.delivered.date){
+          if (this.detail && this.detail.dates.delivered.date) {
             this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
           }
           this.returnReasons = this.getReturnReasons(item.dates.delivered.date);
@@ -260,10 +260,10 @@ export class OrderDetailComponent implements OnInit {
         console.log(detail);
         trackOrderBoxDetail.firstDate = detail.dates.accepted.date;
         trackOrderBoxDetail.firstDateLabel = 'Ordered & Approved';
-        
+
         if (detail.status !== 'RETURN REJECTED' && detail.status !== 'EXCHANGE REJECTED') {
           trackOrderBoxDetail.lastDateLabel = 'Delivered:';
-          if(detail.status === 'SHIPPED' || detail.status === 'ACCEPTED' || detail.status === 'PROCESSING' || detail.status === 'PACKED'){
+          if (detail.status === 'SHIPPED' || detail.status === 'ACCEPTED' || detail.status === 'PROCESSING' || detail.status === 'PACKED') {
             trackOrderBoxDetail.lastDateLabel = 'Estimated Delivery:';
           }
 
@@ -297,7 +297,7 @@ export class OrderDetailComponent implements OnInit {
           trackOrderBoxDetail.lastDateFlag = true;
         }
       } else {
-        if(detail && detail.status === 'RETURN DONE' && detail.dates.delivered.flag == false){
+        if (detail && detail.status === 'RETURN DONE' && detail.dates.delivered.flag == false) {
           this.customerReturn = true;
           console.log("hello");
         }
@@ -473,114 +473,111 @@ export class OrderDetailComponent implements OnInit {
     this.chequeImage = null;
     this.returnForm.controls['bankDetail']['controls']['chequeUrl'].setValue(null);
   }
-  
-    groupByDateKeys:any[]=[];  
-    groupByDate = null;
-    orderScanMsg = '';
-    shipmentDetail = null;
-    currentItemStatus= null;
-    estimatedDelivery = null;
+
+  groupByDateKeys: any[] = [];
+  groupByDate = null;
+  orderScanMsg = '';
+  shipmentDetail = null;
+  currentItemStatus = null;
+  estimatedDelivery = null;
 
   /**
     * @description to fetch tracking as per item details 
     * @param detail : item details
     */
-    fetchTrackingData(itemDetails)
-    {
-      let status = (itemDetails['status'] as string).trim().toUpperCase(); 
-        itemDetails['hasInfo'] = false;
-       
-        if (this.validTrackingStatus.indexOf(status) == -1) {
-                      this.spp = true;
-        } else {
-            this.showLoader = true;
-            this._businessOrderService.getOrderTracking(itemDetails['shipment_detail']['shipment_id'])
-            .pipe(
-              takeUntil(this.cDistryoyed)
-          ).subscribe(
-            (response) => { this.processTrackingResponse(response, itemDetails); },
-            (error) => {this.processTrackingError(error, itemDetails); }
-          )
-        }
-    }
+  fetchTrackingData(itemDetails) {
+    let status = (itemDetails['status'] as string).trim().toUpperCase();
+    itemDetails['hasInfo'] = false;
 
-    /**
-     * @description to process the request on success
-     * @description desceding order, grouping on date
-     * @param response 
-     * @param detail : item details
-     */
-    processTrackingResponse(response, itemDetails)
-    {
-      let lOrderScans: any[] = (response['orderScans'] as any[]);
-      
-      itemDetails['customMsg'] = response['message'];
-      if (lOrderScans) {
-          lOrderScans = lOrderScans.reverse();
-          let lastEstDeliveryindex = -1;
-          let deliveryIndex = -1;
-          lOrderScans.forEach((scanObject, scanIndex)=>{
-              let status: string = scanObject['status'];
-              lOrderScans[scanIndex]['mDate'] = formatDate(scanObject['statusUpdateTime'], 'yyyy-MM-dd', 'en-IN');
-              if (status.toLowerCase() === 'out for delivery') {
-                  lastEstDeliveryindex = scanIndex;
-              }
-              if (status.toLowerCase() === 'delivered') {
-                  deliveryIndex = scanIndex;
-              }
-           });
-          if (deliveryIndex>-1){
-              itemDetails['dates']['delivered']['date'] = lOrderScans[deliveryIndex]['mDate'];
-          }
-          itemDetails['lastOutForDelivery'] = null;
-          if (lastEstDeliveryindex > -1 && deliveryIndex> -1){
-              if (lOrderScans[deliveryIndex]['mDate'] === lOrderScans[lastEstDeliveryindex]['mDate']){
-                  itemDetails['lastOutForDelivery'] = lOrderScans[deliveryIndex]['mDate'];
-              }
-              lOrderScans.splice(deliveryIndex,1);
-          }
-           itemDetails['groupByDate'] = this._businessOrderService.groupBy(lOrderScans, 'mDate');
-           itemDetails['groupByDateKeys'] = Object.keys(itemDetails['groupByDate']);
-           itemDetails['hasInfo'] = true;
-          } 
-          else{
-            itemDetails['hasInfo'] = false;
-            itemDetails['customMsg'] = this.trackingMessage;
-          }
-      this.orderTrackingPopup(itemDetails);
-      this.showLoader = false;
+    if (this.validTrackingStatus.indexOf(status) == -1) {
+      this.spp = true;
+    } else {
+      this.showLoader = true;
+      this._businessOrderService.getOrderTracking(itemDetails['shipment_detail']['shipment_id'])
+        .pipe(
+          takeUntil(this.cDistryoyed)
+        ).subscribe(
+          (response) => { this.processTrackingResponse(response, itemDetails); },
+          (error) => { this.processTrackingError(error, itemDetails); }
+        )
     }
-
-    //Conditional Array Insertion
-     insertIf(condition, ...elements) {
-        return condition ? elements : [];
-    }
-
-    /**
-     * @description to process the request on failure
-     * @param error 
-     * @param detail : item details
-     */
-    
-    processTrackingError(error, itemDetails){
-      itemDetails['customMsg'] = this.trackingMessage; 
-      this.showLoader = false;
-    }
-    closeModal()
-    {
-        this.closePopup$.emit();
-    }
-    orderTrackingPopup(itemDetails){
-      this._modalService.show({
-        component: TrackOrderComponent,
-        inputs: {itemDetails:itemDetails},
-        outputs: {},
-        mConfig:{heightFull:true}
-     });
   }
-  showBuyAgain_Invoice(status:string){
+
+  /**
+   * @description to process the request on success
+   * @description desceding order, grouping on date
+   * @param response 
+   * @param detail : item details
+   */
+  processTrackingResponse(response, itemDetails) {
+    let lOrderScans: any[] = (response['orderScans'] as any[]);
+
+    itemDetails['customMsg'] = response['message'];
+    if (lOrderScans) {
+      lOrderScans = lOrderScans.reverse();
+      let lastEstDeliveryindex = -1;
+      let deliveryIndex = -1;
+      lOrderScans.forEach((scanObject, scanIndex) => {
+        let status: string = scanObject['status'];
+        lOrderScans[scanIndex]['mDate'] = formatDate(scanObject['statusUpdateTime'], 'yyyy-MM-dd', 'en-IN');
+        if (status.toLowerCase() === 'out for delivery') {
+          lastEstDeliveryindex = scanIndex;
+        }
+        if (status.toLowerCase() === 'delivered') {
+          deliveryIndex = scanIndex;
+        }
+      });
+      if (deliveryIndex > -1) {
+        itemDetails['dates']['delivered']['date'] = lOrderScans[deliveryIndex]['mDate'];
+      }
+      itemDetails['lastOutForDelivery'] = null;
+      if (lastEstDeliveryindex > -1 && deliveryIndex > -1) {
+        if (lOrderScans[deliveryIndex]['mDate'] === lOrderScans[lastEstDeliveryindex]['mDate']) {
+          itemDetails['lastOutForDelivery'] = lOrderScans[deliveryIndex]['mDate'];
+        }
+        lOrderScans.splice(deliveryIndex, 1);
+      }
+      itemDetails['groupByDate'] = this._businessOrderService.groupBy(lOrderScans, 'mDate');
+      itemDetails['groupByDateKeys'] = Object.keys(itemDetails['groupByDate']);
+      itemDetails['hasInfo'] = true;
+    }
+    else {
+      itemDetails['hasInfo'] = false;
+      itemDetails['customMsg'] = this.trackingMessage;
+    }
+    this.orderTrackingPopup(itemDetails);
+    this.showLoader = false;
+  }
+
+  //Conditional Array Insertion
+  insertIf(condition, ...elements) {
+    return condition ? elements : [];
+  }
+
+  /**
+   * @description to process the request on failure
+   * @param error 
+   * @param detail : item details
+   */
+
+  processTrackingError(error, itemDetails) {
+    itemDetails['customMsg'] = this.trackingMessage;
+    this.showLoader = false;
+  }
+  closeModal() {
+    this.closePopup$.emit();
+  }
+  orderTrackingPopup(itemDetails) {
+    this._modalService.show({
+      component: TrackOrderComponent,
+      inputs: { itemDetails: itemDetails },
+      outputs: {},
+      mConfig: { heightFull: true }
+    });
+  }
+  showBuyAgain_Invoice(status: string) {
     return this.validBuyAgainStatus.indexOf(status.toUpperCase()) > -1;
-  }  
+  }
 
 
   trackAndNavigateToProductPage(url, productID, e) {
@@ -604,7 +601,7 @@ export class OrderDetailComponent implements OnInit {
     digitalData["page"] = page;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    console.log(digitalData); 
+    console.log(digitalData);
     _satellite.track("genericClick");
 
     e.stopPropagation();

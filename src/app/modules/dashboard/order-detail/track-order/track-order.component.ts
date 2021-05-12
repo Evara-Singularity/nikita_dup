@@ -7,7 +7,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
   styleUrls: ["./track-order.component.scss"],
 })
 export class TrackOrderComponent implements OnInit {
-  constructor() {}
+
   private cDistryoyed = new Subject();
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   @Input() itemDetails;
@@ -23,6 +23,9 @@ export class TrackOrderComponent implements OnInit {
   readonly trackingMessage =
     "Tracking information from courier partner is not available at the moment.";
   deliveredInfo = null;
+
+  constructor() { }
+  
 
   ngOnInit() {
     this.displayScans = this.itemDetails["hasInfo"];
@@ -65,4 +68,5 @@ export class TrackOrderComponent implements OnInit {
     }
     return true;
   }
+  
 }

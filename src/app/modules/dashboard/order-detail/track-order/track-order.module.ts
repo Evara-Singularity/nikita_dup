@@ -1,4 +1,3 @@
-import { TrackOrderService } from './track-order.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrackOrderComponent } from './track-order.component';
@@ -7,7 +6,7 @@ import { TrackOrderComponent } from './track-order.component';
     declarations: [TrackOrderComponent],
     imports: [CommonModule],
     entryComponents: [TrackOrderComponent],
-    providers:[TrackOrderService]
+    providers:[]
 
 })
 export class TrackOrderModule { }

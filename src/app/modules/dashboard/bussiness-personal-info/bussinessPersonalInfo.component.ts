@@ -1,5 +1,5 @@
 import { LocalStorageService } from "ngx-webstorage";
-import { DashboardService } from "./../dashboard.service";
+import { DashboardService } from "../dashboard.service";
 import { map } from "rxjs/operators/map";
 import { delay } from "rxjs/operators/delay";
 import { mergeMap } from "rxjs/operators/mergeMap";

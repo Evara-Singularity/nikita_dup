@@ -8,7 +8,6 @@ import { Subject } from "rxjs/Subject";
 import { SortByComponent } from "@app/modules/sortBy/sortBy.component";
 import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-browser';
 import { CONSTANTS } from "@app/config/constants";
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
@@ -36,7 +35,7 @@ export class BrandComponent {
     showLoader: boolean = true;
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     getRelatedCatgory;
-    productsUpdated: Subject<any> = new Subject<any>();
+    productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     paginationUpdated: Subject<any> = new Subject<any>();
     sortByUpdated: Subject<any> = new Subject<any>();
     pageSizeUpdated: Subject<any> = new Subject<any>();
@@ -83,8 +82,7 @@ export class BrandComponent {
 
     constructor(
         public dataService: DataService, 
-        private router: Router, @Optional() @Inject(RESPONSE) 
-        private _response, 
+        @Optional() @Inject(RESPONSE)  private _response,
         private _tState: TransferState, 
         private _renderer2: Renderer2, @Inject(DOCUMENT) 
         private _document, private title: Title, 
@@ -98,16 +96,69 @@ export class BrandComponent {
         public _commonService: CommonService, 
         private localStorageService: LocalStorageService
     ) {
+        // detect if its a browser or desktop
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
+        // set page name
         this.pageName = "BRAND";
-        //alert(this._router.url);
+    }
+
+    ngOnInit() {
+        // get Queryparams
+        let queryParams = this._activatedRoute.snapshot.queryParams;
+        if (queryParams['category']) {
+
+            this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
+        }
+
+        this.todayDate = Date.now();
+        if (this.isBrowser) {
+            this.windowWidth = window.innerWidth;
+            window.onresize = () => {
+                this.windowWidth = window.innerWidth;
+            }
+        }
+
+        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
+            () => {
+                this.showLoader = true;
+                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+                    this.showLoader = false;
+                    // $("#page-loader").hide();
+                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
+                    this.sortByUpdated.next();
+                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
+                    // this.bucketsUpdated.next(response.buckets);
+                    this.filterData = response.buckets;
+                    this.productsUpdated.next(response.productSearchResult.products);
+                });
+            }
+        );
+
+        const sParams = this._activatedRoute.snapshot.params;
+
+
+        this.brand = decodeURI(sParams['brand']);
+
+
+        this._activatedRoute.data.subscribe(response => {
+            this.initiallizeData(response['brand'][0], true);
+        });
+
+        this._activatedRoute.queryParams.subscribe(data => {
+            if (data['page'] == undefined || data['page'] == 1) {
+                this.firstPageContent = true;
+            } else {
+                this.firstPageContent = false;
+            }
+
+        })
+
+        this.footerService.setMobileFoooters();
     }
 
     setLinks(response) {
         let qp = this._activatedRoute.snapshot.queryParams;
-        //console.log("paramssss",qp);
-        //console.log("qp",qp['page']);
         this.pageNo = qp['page'];
         if (response["title"]) {
             this.brandCatName = this.heading.replace(/(<([^>]+)>)/ig, '');
@@ -372,59 +423,6 @@ export class BrandComponent {
         }
     }
 
-    ngOnInit() {
-        let queryParams = this._activatedRoute.snapshot.queryParams;
-        if (queryParams['category']) {
-
-            this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
-        }
-
-        this.todayDate = Date.now();
-        if (this.isBrowser) {
-            this.windowWidth = window.innerWidth;
-            window.onresize = () => {
-                this.windowWidth = window.innerWidth;
-            }
-        }
-
-        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
-            () => {
-                this.showLoader = true;
-                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                    this.showLoader = false;
-                    // $("#page-loader").hide();
-                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                    this.sortByUpdated.next();
-                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    // this.bucketsUpdated.next(response.buckets);
-                    this.filterData = response.buckets;
-                    this.productsUpdated.next(response.productSearchResult.products);
-                });
-            }
-        );
-
-        const sParams = this._activatedRoute.snapshot.params;
-
-
-        this.brand = decodeURI(sParams['brand']);
-
-
-        combineLatest(this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment).subscribe(() => {
-            this.refreshProducts();
-        });
-
-        this._activatedRoute.queryParams.subscribe(data => {
-            if (data['page'] == undefined || data['page'] == 1) {
-                this.firstPageContent = true;
-            } else {
-                this.firstPageContent = false;
-            }
-
-        })
-
-        this.footerService.setMobileFoooters();
-    }
-
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -436,6 +434,65 @@ export class BrandComponent {
             this._tState.remove(RPRK);
         }
     }
+
+    createDefaultParams() {
+        let newParams: any = {
+            queryParams: {}
+        };
+
+        let defaultParams = this._commonService.getDefaultParams();
+        /**
+         *  Below code is added to maintain the state of sortBy : STARTS
+         */
+        if (defaultParams['queryParams']['orderBy'] != undefined)
+            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
+        if (defaultParams['queryParams']['orderWay'] != undefined)
+            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
+        /**
+         *  maintain the state of sortBy : ENDS
+         */
+
+        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+
+        // Object.assign(newParams["queryParams"], currentQueryParams);
+
+        for (let key in currentQueryParams) {
+            newParams.queryParams[key] = currentQueryParams[key];
+        }
+
+        // newParams["queryParams"] = queryParams;
+        newParams["filter"] = {};
+
+        let params = this._activatedRoute.snapshot.params;
+        newParams["brand"] = params['brand'];
+        if (params['category'])
+            newParams["category"] = params['category'];
+        else {
+            this._commonService.deleteDefaultParam('category');
+        }
+        let fragment = this._activatedRoute.snapshot.fragment;
+        if (fragment != undefined && fragment != null && fragment.length > 0) {
+            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+            currentUrlFilterData = currentUrlFilterData.split("/");
+            if (currentUrlFilterData.length > 0) {
+                const filter = {};
+                for (let i = 0; i < currentUrlFilterData.length; i++) {
+                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
+                    filter[filterName] = filterData;
+                }
+                newParams["filter"] = filter;
+            }
+        }
+
+        newParams["pageName"] = this.pageName;
+        console.log(newParams);
+
+        return newParams;
+    }
+
+    
 
     refreshProducts() {
         const defaultParams = this.createDefaultParams();
@@ -460,7 +517,7 @@ export class BrandComponent {
 
     private initiallizeData(response: any, flag: boolean) {
         this.showLoader = false;
-        this.iba = response['brandDetails']['active'];
+        this.iba = response['brandDetails']['active']; 
         if (!this.iba || response['productSearchResult']['totalCount'] === 0) {
             if (this.isServer) {
                 let httpStatus = 404;
@@ -478,6 +535,8 @@ export class BrandComponent {
             this.productsUpdated.next(response.productSearchResult.products);
         }
         this.productSearchResult = response.productSearchResult;
+        console.log(this.productSearchResult);
+
         this.productSearchResultSEO = [];
         for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
             if (response.productSearchResult.products[p].salesPrice > 0 && response.productSearchResult.products[p].priceWithoutTax > 0) {
@@ -628,64 +687,6 @@ export class BrandComponent {
         }
 
     }
-
-
-    createDefaultParams() {
-        let newParams: any = {
-            queryParams: {}
-        };
-
-        let defaultParams = this._commonService.getDefaultParams();
-        /**
-         *  Below code is added to maintain the state of sortBy : STARTS
-         */
-        if (defaultParams['queryParams']['orderBy'] != undefined)
-            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
-        if (defaultParams['queryParams']['orderWay'] != undefined)
-            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
-        /**
-         *  maintain the state of sortBy : ENDS
-         */
-
-        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
-
-        // Object.assign(newParams["queryParams"], currentQueryParams);
-
-        for (let key in currentQueryParams) {
-            newParams.queryParams[key] = currentQueryParams[key];
-        }
-
-        // newParams["queryParams"] = queryParams;
-        newParams["filter"] = {};
-
-        let params = this._activatedRoute.snapshot.params;
-        newParams["brand"] = params['brand'];
-        if (params['category'])
-            newParams["category"] = params['category'];
-        else{
-            this._commonService.deleteDefaultParam('category');
-        }
-        let fragment = this._activatedRoute.snapshot.fragment;
-        if (fragment != undefined && fragment != null && fragment.length > 0) {
-            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
-            currentUrlFilterData = currentUrlFilterData.split("/");
-            if (currentUrlFilterData.length > 0) {
-                const filter = {};
-                for (let i = 0; i < currentUrlFilterData.length; i++) {
-                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
-                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
-                    filter[filterName] = filterData;
-                }
-                newParams["filter"] = filter;
-            }
-        }
-
-        newParams["pageName"] = this.pageName;
-
-        return newParams;
-    }
-
 
     pageChanged(page) {
         //console.log("Event page changed called");

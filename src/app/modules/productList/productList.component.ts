@@ -1,7 +1,7 @@
 import {
     Component, ElementRef, ViewEncapsulation, Input, ChangeDetectorRef,
     ChangeDetectionStrategy,
-    PLATFORM_ID, Inject
+    PLATFORM_ID, Inject, SimpleChanges
 } from '@angular/core';
 // import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';

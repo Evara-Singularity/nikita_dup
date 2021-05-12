@@ -3,7 +3,8 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import {
     Resolve,
     RouterStateSnapshot,
-    ActivatedRouteSnapshot
+    ActivatedRouteSnapshot,
+    ActivatedRoute
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'
@@ -12,41 +13,100 @@ import { isPlatformServer } from '@angular/common';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { CommonService } from '../services/common.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BrandResolver implements Resolve<object> {
-
+    pageName;
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
         private http: HttpClient,
-        private loaderService: GlobalLoaderService
-    ) { }
+        private loaderService: GlobalLoaderService,
+        private _commonService: CommonService,
+        private _activatedRoute: ActivatedRoute
+    ) {
+        this.pageName = "BRAND";
+    }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
+    createDefaultParams(brandNameFromRoute) {
+        let newParams: any = {
+            queryParams: {}
+        };
+
+        let defaultParams = this._commonService.getDefaultParams();
+        /**
+         *  Below code is added to maintain the state of sortBy : STARTS
+         */
+        if (defaultParams['queryParams']['orderBy'] != undefined)
+            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
+        if (defaultParams['queryParams']['orderWay'] != undefined)
+            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
+        /**
+         *  maintain the state of sortBy : ENDS
+         */
+
+        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+
+        // Object.assign(newParams["queryParams"], currentQueryParams);
+
+        for (let key in currentQueryParams) {
+            newParams.queryParams[key] = currentQueryParams[key];
+        }
+
+        // newParams["queryParams"] = queryParams;
+        newParams["filter"] = {};
+
+        let params = {brand: brandNameFromRoute};
+        newParams["brand"] = params['brand'];
+        if (params['category'])
+            newParams["category"] = params['category'];
+        else {
+            this._commonService.deleteDefaultParam('category');
+        }
+        let fragment = this._activatedRoute.snapshot.fragment;
+        if (fragment != undefined && fragment != null && fragment.length > 0) {
+            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+            currentUrlFilterData = currentUrlFilterData.split("/");
+            if (currentUrlFilterData.length > 0) {
+                const filter = {};
+                for (let i = 0; i < currentUrlFilterData.length; i++) {
+                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
+                    filter[filterName] = filterData;
+                }
+                newParams["filter"] = filter;
+            }
+        }
+
+        newParams["pageName"] = this.pageName;
+        console.log(newParams);
+
+        return newParams;
+    }
+
+    resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
 
+        const defaultParams = this.createDefaultParams(_activatedRouteSnapshot.params.brand);
+        this._commonService.updateDefaultParamsNew(defaultParams);
+        const fragment = this._activatedRoute.snapshot.fragment;
+        const RPRK: any = makeStateKey<{}>("RPRK");
 
-        const PRODUCT_KEY = makeStateKey<object>('product-');
-        
         if (
-            this.transferState.hasKey(PRODUCT_KEY)
+            this.transferState.hasKey(RPRK) && !fragment
         ) {
-            // id transferState data found then simply pass data
-            const productObj = this.transferState.get<object>(PRODUCT_KEY, null);
-            this.transferState.remove(PRODUCT_KEY);
             this.loaderService.setLoaderState(false);
-            return of([productObj]);
+            const response = this.transferState.get(RPRK, {});
+            this.transferState.remove(RPRK);
+            // this.initiallizeData(response, true);
+            const listingObj = this.transferState.get<object>(RPRK, null);
+            return of([listingObj]);
         } else {
-            // if transferState data not found then fetch data from server
-            const REVIEW_URL = environment.BASE_URL + ENDPOINTS.PRODUCT_REVIEW;
-            const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: '2343242323423423', user_id: " " };
-            const productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody);
-            alert('a');
-
-            return forkJoin([productReviewObs]).pipe(
+            return forkJoin([this._commonService.refreshProducts()]).pipe(
                 catchError((err) => {
                     this.loaderService.setLoaderState(false);
                     console.log('err', err);
@@ -54,11 +114,11 @@ export class BrandResolver implements Resolve<object> {
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
-                        this.transferState.set(PRODUCT_KEY, result[0]);
+                        this.transferState.set(RPRK, result[0]);
                         this.loaderService.setLoaderState(false);
                     }
                 })
-            )
+            );
         }
 
     }

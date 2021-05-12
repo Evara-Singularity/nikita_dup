@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 
@@ -137,6 +137,7 @@ export class CommonService {
     }
 
     private getCategoryData(type, curl, params) {
+        console.log('getCategoryData', type, curl, params);
         const formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
             .pipe(
@@ -189,11 +190,13 @@ export class CommonService {
     }
 
     private getPopularSeachData(type, curl, params) {
+        console.log('getPopularSeachData');
         let formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams });
     }
-
+    
     private getSearchData(type, curl, params) {
+        console.log('getSearchData');
         const formattedParams = this.formatParams(params);
         // console.log(formattedParams);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
@@ -267,6 +270,7 @@ export class CommonService {
             const defaultParams = this.defaultParams;
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
+                alert('CATEGORY');
                 if (this.currentRequest !== undefined)
                     this.currentRequest.unsubscribe();
 
@@ -288,7 +292,8 @@ export class CommonService {
             } else if (defaultParams["pageName"] == "BRAND") {
                 if (this.currentRequest != undefined)
                     this.currentRequest.unsubscribe();
-                this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
+                // alert(this._activatedRouteSnapshot.params['brand']);
+                    this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
                     .pipe(
                         map((res) => {
                             res.buckets.map((bucket) => {
@@ -298,9 +303,6 @@ export class CommonService {
                         })
                     )
                     .subscribe((response) => {
-                        /*if(defaultParams["queryParams"]["category"] != 'undefined') {
-                            response.category = defaultParams["queryParams"]["category"];
-                        }*/
                         if (this._router.url.search('#') < 0) {
                             this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
                                 if (res['status']) {
@@ -315,6 +317,7 @@ export class CommonService {
                         observer.complete();
                     });
             } else if (defaultParams["pageName"] == "SEARCH") {
+                alert('SEARCH');
                 if (this.currentRequest != undefined)
                     this.currentRequest.unsubscribe();
                 this.currentRequest = this.getSearchData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)
@@ -334,6 +337,7 @@ export class CommonService {
                     });
 
             } else if (defaultParams["pageName"] == "POPULAR SEARCH") {
+                alert('POPULAR SEARCH');
                 if (this.currentRequest != undefined)
                     this.currentRequest.unsubscribe();
                 this.currentRequest = this.getPopularSeachData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)
@@ -406,9 +410,11 @@ export class CommonService {
             if (queryParams["str"] != undefined)
                 actualParams['str'] = queryParams["str"];
         } else if (params.pageName == "BRAND") {
-            if (params["category"])
+            if (params["category"]){
                 actualParams['category'] = params["category"];
-            actualParams['brand'] = params.brand.toLowerCase();
+            }
+            console.log(actualParams);
+            actualParams['brand'] = params.brand ? params.brand.toLowerCase() : '';
         } else if (params.pageName == "SEARCH") {
             /**
              * Below first if is only appending didYouMean when calling api and not appending for further routes on page

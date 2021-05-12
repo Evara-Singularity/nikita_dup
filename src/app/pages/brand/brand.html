@@ -59,7 +59,7 @@
 
     <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
 
-    <div class="filter-wrapper"  style="position: fixed; top: 60px; left: 0px;">
+    <div class="filter-wrapper">
         <button type="button" (click)="filterUp()">
             <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
         </button>
@@ -72,13 +72,13 @@
     <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
     <ng-container *ngIf="isBrowser" #sortBy></ng-container>
     <div>
-        <p  observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></p>
-        <ng-template *ngIf="isBrowser" #pagination></ng-template>
+        <!-- <p  observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></p>
+        <ng-template *ngIf="isBrowser" #pagination></ng-template> -->
         
-        <!-- <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated"
+        <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated"
             [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
             (onPageChange)="pageChanged($event)">
-        </pagination> -->
+        </pagination>
     </div>
 
     <div class="brandsSection" *ngIf="productCategoryNames.length>0">

@@ -1,8 +1,9 @@
-/**
- * Created by Kuldeep on 22/5/17.
- */
+import { Injectable } from '@angular/core';
 import {range} from 'underscore';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class PagerService {
 
     getPager(totalItems: number, currentPage: number = 1, pageSize: number = 32) {

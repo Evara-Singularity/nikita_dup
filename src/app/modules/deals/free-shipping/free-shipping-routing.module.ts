@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LayoutResolver } from 'src/app/utils/resolvers/layout.resolver';
+import { LayoutResolver } from '@app/utils/resolvers/layout.resolver';
 import { FreeShippingComponent } from './free-shipping.component';
 
 const routes: Routes = [

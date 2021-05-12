@@ -82,6 +82,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
         });
 
         this.sortByComponentUpdated.subscribe((data) => {
+            alert('a');
+            console.log(data);
             this.initializeSortByData(data);
             this._cd.markForCheck();
         });
@@ -129,6 +131,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
     private initializeSortByData(data) {
         this.sortByComponent = data;
     }
+
     private initiallizeData(buckets) {
         this.buckets = buckets;
         this.productFilterData = this.createProductFilterData(this.buckets);
@@ -304,17 +307,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     applyMobileFilter(data?: any) {
-        /**
-         * Below if is used in case of resetting the filters.
-         */
         if (data !== undefined && data.productFilterData !== undefined) {
             this.productFilterData = data.productFilterData;
         }
 
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
-
-        this._cs.updateSortByState(this.sortByComponent.sortBy);
+        console.clear();
+        console.log(this.sortByComponent);
+        if (this.sortByComponent) {
+            this._cs.updateSortByState(this.sortByComponent.sortBy);
+        }
         this._router.navigate([currentRoute], extras);
         if (this.isBrowser) {
             document.querySelector('.mob_filter').classList.toggle('upTrans');
@@ -325,7 +328,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.productFilterData = {};
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
-        this._cs.updateSortByState(this.sortByComponent.sortBy);
+        if (this.sortByComponent) {
+            this._cs.updateSortByState(this.sortByComponent.sortBy);
+        }
         this._router.navigate([currentRoute], extras);
     }
 

@@ -1,11 +1,7 @@
-/**
- * Created by kuldeep on 09/05/17.
- */
 import {
     Component, ElementRef, Input, EventEmitter, Output, SimpleChanges,
     ChangeDetectionStrategy, ChangeDetectorRef, ViewEncapsulation, PLATFORM_ID, Inject
 } from '@angular/core';
-// import { TransferState, makeStateKey } from '@angular/platform-browser';
 import {PagerService} from "./pager.service";
 import {isPlatformServer, isPlatformBrowser} from '@angular/common';
 import { Subject } from "rxjs/Subject";
@@ -14,17 +10,19 @@ import {CommonService} from "@app/utils/services/common.service";
 import {GLOBAL_CONSTANT} from "@app/config/global.constant";
 import {SortByComponent} from "@app/modules/sortBy/sortBy.component";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgxPaginationModule, PaginationService } from "ngx-pagination";
+import { RouterModule } from '@angular/router';
 
-// const PAGINATION_DATA_KEY: any = makeStateKey<{}>("pagination")
-// const SORTBY_DATA_KEY: any = makeStateKey<{}>("sortby")
 const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
-
 
 @Component({
     selector: 'pagination',
     templateUrl: 'pagination.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls:['./pagination.scss'],
+    providers: [PagerService],
     encapsulation: ViewEncapsulation.None
 })
 
@@ -128,42 +126,18 @@ export class PaginationComponent{
     }
 
     ngAfterViewInit(){
-        /*if(this.isBrowser){
-            if(this.transferState.hasKey(PAGINATION_DATA_KEY))
-                this.transferState.remove(PAGINATION_DATA_KEY);
-            if(this.transferState.hasKey(SORTBY_DATA_KEY))
-                this.transferState.remove(SORTBY_DATA_KEY);
-        }*/
     }
 
     checkSortBy(){
-        //console.log("Check sort by", this.sortByComponent);
     }
     ngOnChanges(changes: SimpleChanges){
-        // console.log(changes);
-        // console.log("Pagination Component: ngOnChanges", changes);
-        // console.log(Object.keys(changes));
 
         if(Object.keys(changes).length > 0 && changes["sortByComponent"]){
-            // console.log("sort by component **************", changes["sortByComponent"]["currentValue"][0]);    
             this.sortByComponent = changes["sortByComponent"]["currentValue"][0];
-        }
-
-        // console.log("ngOnChanges***", changes["sortByComponent"], this.sortByComponent);
-
-        if(changes["itemCount"]){
-            /*let queryParams = this._activatedRoute.snapshot.queryParams;
-             if(Object.keys(queryParams).length>0 && queryParams["page"] != undefined && queryParams["page"] != 1)
-             this.page = queryParams["page"];
-             else
-             this.page = 1;
-             this.setPage(this.page);
-             //console.log("Pagination Component: ngOnChanges", this.itemCount, this.position);*/
         }
     }
 
     setDefaultPage(page: number) {
-        //console.log("Page changed to ", page);
         if (page < 1 || page > this.pager.totalPages) {
             return;
         }
@@ -187,17 +161,23 @@ export class PaginationComponent{
         page = parseInt(page) - 1
         this.setPage(page);
     }
-    //totalItems: number, currentPage: number = 1, pageSize: number = 32
-    updatePagination(itemCount: number, page=GLOBAL_CONSTANT.default.pageSize){
-
-    }
 
     pageChanged(newPage){
-        // this._commonService.useLastSortByState = true;
-       // console.log("Page Changed **********", this.sortByComponent);
         if(this.sortByComponent)
             this._commonService.updateSortByState(this.sortByComponent.sortBy);
         this.page = newPage;
         this.onPageChange.emit(this.page);
     }
 }
+
+@NgModule({
+    imports: [
+        CommonModule,
+        NgxPaginationModule,
+        RouterModule],
+    exports: [PaginationComponent],
+    declarations: [PaginationComponent],
+})
+export class BrandModule {}
+export class SearchModule extends BrandModule {}
+export class CategoryModule extends BrandModule {}

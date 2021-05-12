@@ -11,7 +11,6 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
 import { BehaviorSubject } from 'rxjs';
-import { BrandService } from '@app/utils/services/brand.service';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
 declare var digitalData: {};
@@ -21,7 +20,6 @@ declare let _satellite;
     selector: 'brand',
     templateUrl: './brand.html',
     styleUrls: ['./brand.scss'],
-    providers: [BrandService]
 })
 
 export class BrandComponent {
@@ -149,6 +147,7 @@ export class BrandComponent {
     private refreshProductsBasedOnRouteChange(){
         this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
             () => {
+                alert('aaaa');
                 this._commonService.showLoader = true;
                 this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
                     this._commonService.showLoader = false;
@@ -532,6 +531,7 @@ export class BrandComponent {
             this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
             this.paginationUpdated.next(this.paginationData);
             this.paginationInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+            this.paginationInstance.instance['sortByComponentUpdated'].next(this.sortByComponent);
             this.paginationInstance.instance['position'] = 'BOTTOM';
 
             if (this.paginationInstance) {
@@ -555,6 +555,7 @@ export class BrandComponent {
                 this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
                 this.filterInstance.instance['pageName'] = this.pageName;
                 this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+                this.filterInstance.instance['sortByComponent'] = this.sortByComponentUpdated;
             }
 
             const mob_filter = document.querySelector('.mob_filter');
@@ -639,6 +640,8 @@ export class BrandComponent {
             }
         }
 
+        console.clear();
+        console.log(page);
         if (page != "1") {
             newQueryParams["page"] = page;
         } else if (newQueryParams["page"] != undefined) {
@@ -650,6 +653,8 @@ export class BrandComponent {
         else
             extras.queryParams = {};
 
+        console.log(currentRoute);
+        console.log(extras);
         this._router.navigate([currentRoute], extras);
     }
 
@@ -675,6 +680,7 @@ export class BrandComponent {
         if (this.refreshProductsUnsub) {
             this.refreshProductsUnsub.unsubscribe();
         }
+        this.resetLazyComponents();
     }
 
 }

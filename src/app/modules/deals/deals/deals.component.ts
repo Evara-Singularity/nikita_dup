@@ -1,13 +1,13 @@
-import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
+import { Title, Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title, Meta } from '@angular/platform-browser';
-import CONSTANTS from 'src/app/config/constants';
+import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'deals',
   templateUrl: 'deals.html',
-  styleUrls: ['deals.scss'],
+  styleUrls: [],
   encapsulation: ViewEncapsulation.None
 })
 export class DealsComponent {

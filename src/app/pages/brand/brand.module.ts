@@ -1,14 +1,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {routing} from "./brand.routing";
+import { routing as BrandRouting } from "./brand.routing";
 import { MetaModule } from '@ngx-meta/core';
 import {BrandComponent} from "./brand.component";
 import {ObjectToArrayPipeModule} from "@app/utils/pipes/object-to-array.pipe";
-import { NgxImageZoomModule } from 'ngx-image-zoom';
-import { PaginationModule } from "@app/modules/pagination/pagination.module";
 import { BreadCrumpModule } from '@app/modules/breadcrump/breadcrump.module';
 import { ProductListModule } from '@app/modules/productList/productList.module';
-// import { PageSizeModule } from "@app/modules/pageSize/pageSize.module";
 import { LoaderModule } from '@app/modules/loader/loader.module';
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
@@ -16,20 +13,18 @@ import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
-import { FilterModule } from '@app/modules/filter/filter.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     imports: [
         CmsModule,
-        routing,
+        BrandRouting,
         LoaderModule,
         CommonModule,
-        FilterModule,
-        PaginationModule,
         BreadCrumpModule,
+        NgxPaginationModule,
         ReplacePipeModule,
         ProductListModule,
-        NgxImageZoomModule,
         MathFloorPipeModule,
         MetaModule.forRoot(),
         NgxPageScrollCoreModule,
@@ -40,6 +35,8 @@ import { FilterModule } from '@app/modules/filter/filter.module';
     declarations: [
         BrandComponent,
     ],
+    providers: [
+    ]
 })
 
 export class BrandModule{}

@@ -16,8 +16,6 @@ import { RouterModule } from '@angular/router';
     declarations: [
         CategoryComponent
     ],
-    providers: [
-    ]
 })
 export class CategoryModule {}
 

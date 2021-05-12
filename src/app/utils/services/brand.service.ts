@@ -8,6 +8,7 @@ export class BrandService {
 
   constructor(private _dataService: DataService) {
   }
+  
 
   getBrandByName(brandName) {
     return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/brand/getBrandByName', { params: { name: brandName } })
@@ -20,4 +21,6 @@ export class BrandService {
   getBrandLogo() {
     return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/category/getparentcategoryjsonbody?requestType=brand-store');
   }
+
+  
 }

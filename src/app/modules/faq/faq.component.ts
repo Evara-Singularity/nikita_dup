@@ -6,7 +6,7 @@ import { faqData } from './faq.data';
 import { FooterService } from '../../utils/services/footer.service';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { ClientUtility } from '../../utils/client.utility';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 import { FAQDATA } from './faq.mock';
 declare let $: any;
 

@@ -46,7 +46,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   isBrowser: boolean
   //conditions vars
   rawProductData: any = null;
-  showLoader: boolean = true;
   uniqueRequestNo: number = 0;
   currentAddedProduct: any;
   cartSession: any;
@@ -279,17 +278,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
         } else {
-          this.showLoader = false;
+          this.commonService.showLoader = false;
           this.globalLoader.setLoaderState(false);
           this.productNotFound = true;
         }
       } else {
         this.productNotFound = true;
       }
-      this.showLoader = false;
+      this.commonService.showLoader = false;
       this.globalLoader.setLoaderState(false);
     }, error => {
-      this.showLoader = false;
+      this.commonService.showLoader = false;
       this.globalLoader.setLoaderState(false);
       console.log('getProductApiData error', error);
     });
@@ -297,7 +296,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   updateAttr(productId) {
     this.removeRfqForm();
-    this.showLoader = true;
+    this.commonService.showLoader = true;
     this.productService.getGroupProductObj(productId).subscribe(productData => {
       if (productData['status'] == true) {
         this.processProductData({
@@ -305,7 +304,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           refreshCrousel: true,
           subGroupMsnId: productId,
         },productData);
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       } else {
         // console.log('updateAttr productData status', productData);
       }
@@ -443,7 +442,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     // this.setSimilarProducts(this.productName, this.productCategoryDetails['categoryCode']);
     this.fetchFBTProducts(rawData);
     this.updateBulkPriceDiscount();
-    this.showLoader = false;
+    this.commonService.showLoader = false;
     
     // analytics calls moved to this function incase PDP is redirecte to PDP
     this.callAnalyticForVisit(); 
@@ -695,7 +694,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         const request = { idUser: user.userId, userType: "business" };
 
         this.productService.getPurchaseList(request).subscribe((res) => {
-          this.showLoader = false;
+          this.commonService.showLoader = false;
           if (res['status'] && res['statusCode'] == 200) {
             let purchaseLists: Array<any> = []
             purchaseLists = res['data'];
@@ -728,9 +727,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
             "brand": this.productBrandDetails['brandName'],
             "category": this.productCategoryDetails['categoryCode'],
           };
-          this.showLoader = true;
+          this.commonService.showLoader = true;
           this.productService.addToPurchaseList(obj).subscribe((res) => {
-            this.showLoader = false;
+            this.commonService.showLoader = false;
             if (res["status"]) {
               this._tms.show({ type: 'success', text: 'Successfully added to WishList' });
             }
@@ -745,7 +744,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   // TODO : these function is not used in PWA,remove after confirming with team
   removeItemFromPurchaseList() {
-    this.showLoader = true;
+    this.commonService.showLoader = true;
     let userSession = this.localAuthService.getUserSession();
     let obj = {
       "idUser": userSession.userId,
@@ -761,15 +760,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       res => {
         if (res["status"]) {
           this._tms.show({ type: 'success', text: 'Successfully removed from WishList' });
-          this.showLoader = false;
+          this.commonService.showLoader = false;
           this.getPurchaseList();
         }
         else {
-          this.showLoader = false;
+          this.commonService.showLoader = false;
         }
       },
       err => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       }
     )
   }
@@ -784,10 +783,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
       if (rootProduct['status'] && rootvalidation) {
         let productId = rootProduct['productBO']['partNumber'];
         this.productService.getFBTProducts(productId).subscribe((response) => {
-          this.showLoader = false;
+          this.commonService.showLoader = false;
           this.processFBTResponse(rootProduct, response);
         }, error => {
-          this.showLoader = false;
+          this.commonService.showLoader = false;
           this.fbtFlag = false;
         });
       }
@@ -953,7 +952,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       this.dataService.sendMessage(trackingData);
 
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       sessionDetails["cart"]["buyNow"] = buyNow;
       sessionDetails["itemsList"] = checkAddToCartData.itemlist;
       sessionDetails = this.cartService.updateCart(sessionDetails);
@@ -977,12 +976,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });   //this redirect to quick order page
         return;
       }
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       this.cartService.updateCartSessions(routerLink, sessionDetails, buyNow).subscribe(data => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
         this.updateCartSessions(data, routerLink, buyNow);
       }, err => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
         this.updateCartSessions(null, routerLink);
       });
       if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
@@ -1239,9 +1238,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async loadAllSimilar(similarProducts) {
     if (!this.similarAllInstance) {
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       const { SimilarProductsPopupComponent } = await import('../../components/similar-products-popup/similar-products-popup.component').finally(() => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(SimilarProductsPopupComponent);
       this.similarAllInstance = this.similarAllContainerRef.createComponent(factory, null, this.injector);
@@ -1268,9 +1267,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async loadAllRecent(recentProducts) {
     if (!this.recentAllInstance) {
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       const { RecentViewedPopupComponent } = await import('../../components/recent-viewed-popup/recent-viewed-popup.component').finally(() => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(RecentViewedPopupComponent);
       this.recentAllInstance = this.recentAllContainerRef.createComponent(factory, null, this.injector);
@@ -1321,7 +1320,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   toggleLoader(status) {
     // console.log('toggleLoader called', status);
-    this.showLoader = status;
+    this.commonService.showLoader = status;
   }
 
     // product-rfq 
@@ -1374,9 +1373,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     closeRFQAlert(){this.isRFQSuccessfull = false}
   
   async getPincodeForm() {
-    this.showLoader = true;
+    this.commonService.showLoader = true;
     const { ProductCheckPincodeComponent } = await import('../../components/product-check-pincode/product-check-pincode.component').finally(() => {
-      this.showLoader = false;
+      this.commonService.showLoader = false;
     });
     const factory = this.cfr.resolveComponentFactory(ProductCheckPincodeComponent);
     this.pincodeFormInstance = this.pincodeFormContainerRef.createComponent(factory, null, this.injector);
@@ -1421,9 +1420,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   async viewPopUpOpen(data) {
     console.log('viewPopUpOpen', data);
     if (!this.offerPopupInstance) {
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       const { ProductOfferPopupComponent } = await import('../../components/product-offer-popup/product-offer-popup.component').finally(() => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(ProductOfferPopupComponent);
       this.offerPopupInstance = this.offerPopupContainerRef.createComponent(factory, null, this.injector);
@@ -1441,10 +1440,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async emiComparePopUpOpen(status) {
     if (!this.offerComparePopupInstance && status) {
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       const quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);
       const { ProductOfferComparisionComponent } = await import('../../components/product-offer-comparision/product-offer-comparision.component').finally(() => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(ProductOfferComparisionComponent);
       this.offerComparePopupInstance = this.offerComparePopupContainerRef.createComponent(factory, null, this.injector);
@@ -1500,9 +1499,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (user && user.authenticated == "true") {
 
       if (!this.writeReviewPopupInstance) {
-        this.showLoader = true;
+        this.commonService.showLoader = true;
         const { PostProductReviewPopupComponent } = await import('../../components/post-product-review-popup/post-product-review-popup.component').finally(() => {
-          this.showLoader = false;
+          this.commonService.showLoader = false;
         });
         const factory = this.cfr.resolveComponentFactory(PostProductReviewPopupComponent);
         this.writeReviewPopupInstance = this.writeReviewPopupContainerRef.createComponent(factory, null, this.injector);
@@ -1534,9 +1533,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async openPopUpcrousel(slideNumber: number = 1) {
     if (!this.popupCrouselInstance) {
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       const { ProductCrouselPopupComponent } = await import('../../components/product-crousel-popup/product-crousel-popup.component').finally(() => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(ProductCrouselPopupComponent);
       this.popupCrouselInstance = this.popupCrouselContainerRef.createComponent(factory, null, this.injector);
@@ -1561,9 +1560,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async loadAlertBox(mainText, subText = null, extraSectionName: string = null) {
     if (!this.alertBoxInstance) {
-      this.showLoader = true;
+      this.commonService.showLoader = true;
       const { AlertBoxToastComponent } = await import('../../components/alert-box-toast/alert-box-toast.component').finally(() => {
-        this.showLoader = false;
+        this.commonService.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(AlertBoxToastComponent);
       this.alertBoxInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);

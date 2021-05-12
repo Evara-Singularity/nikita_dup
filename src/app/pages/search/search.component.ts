@@ -5,7 +5,6 @@ import { CommonService } from "@app/utils/services/common.service";
 import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs/Subject";
 import { SortByComponent } from "@app/modules/sortBy/sortBy.component";
-
 import { CONSTANTS } from "@app/config/constants";
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Meta } from '@angular/platform-browser';

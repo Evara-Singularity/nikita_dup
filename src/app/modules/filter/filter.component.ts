@@ -4,7 +4,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
-import { SortByComponent } from '../sortBy/sortBy.component';
+import { SortByComponent } from '@app/modules/sortBy/sortBy.component';
 declare let dataLayer;
 import { CONSTANTS } from '@app/config/constants';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
@@ -15,7 +15,7 @@ const ISMOB: any = makeStateKey<boolean>('ISMOB'); // ISMOB: IS MOBILE
     selector: 'filter',
     templateUrl: 'filter.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./filter.scss']
+    styleUrls: ['./filter.scss'],    
 })
 
 export class FilterComponent implements OnInit, AfterViewInit {
@@ -59,10 +59,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        // console.clear();
-        console.log(this.bucketsUpdated);
-        console.log(this.pageName);
-        console.log(this.sortByComponentUpdated);
 
         if (this._ts.hasKey(RPRK)) {
             const response = this._ts.get(RPRK, {});

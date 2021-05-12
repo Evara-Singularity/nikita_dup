@@ -15,7 +15,7 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { ProductListModule } from '@app/modules/productList/productList.module'
-import {SortByModule} from "@app/modules/sortBy/sortBy.module";
+// import {SortByModule} from "@app/modules/sortBy/sortBy.module";
 // import { PageSizeModule } from "@app/modules/pageSize/pageSize.module";
 import { LoaderModule } from '@app/modules/loader/loader.module';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
@@ -41,7 +41,7 @@ import { CmsModule } from '../../modules/cms/cms.module';
         NgxPageScrollCoreModule,
         NgxPageScrollModule,
         PaginationModule,
-        SortByModule,
+        // SortByModule,
         // PageSizeModule,
         LoaderModule,
         MetaModule.forRoot(),

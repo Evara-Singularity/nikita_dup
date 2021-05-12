@@ -3,7 +3,6 @@ import {CommonModule} from "@angular/common";
 import {routing} from "./brand.routing";
 import { MetaModule } from '@ngx-meta/core';
 import {BrandComponent} from "./brand.component";
-import {BrandService} from "./brand.service";
 import {ObjectToArrayPipeModule} from "@app/utils/pipes/object-to-array.pipe";
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { PaginationModule } from "@app/modules/pagination/pagination.module";
@@ -17,33 +16,30 @@ import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
+import { FilterModule } from '@app/modules/filter/filter.module';
 
 @NgModule({
     imports: [
-        CommonModule,
         CmsModule,
         routing,
-        NgxImageZoomModule,
-        ObserveVisibilityDirectiveModule,
-        // ImageZoomModule,
-        NgxPageScrollCoreModule,
-        ObjectToArrayPipeModule,
+        LoaderModule,
+        CommonModule,
+        FilterModule,
+        PaginationModule,
         BreadCrumpModule,
         ReplacePipeModule,
         ProductListModule,
-        PaginationModule,
-        // PageSizeModule,
-        LoaderModule,
-        KpToggleDirectiveModule,
+        NgxImageZoomModule,
+        MathFloorPipeModule,
         MetaModule.forRoot(),
-        MathFloorPipeModule
+        NgxPageScrollCoreModule,
+        ObjectToArrayPipeModule,
+        KpToggleDirectiveModule,
+        ObserveVisibilityDirectiveModule,
     ],
     declarations: [
         BrandComponent,
     ],
-    providers: [
-        BrandService,
-    ]
 })
 
 export class BrandModule{}

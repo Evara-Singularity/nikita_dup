@@ -7,7 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
-
+import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from './cart.service';
 import { DataService } from "./data.service";
 import { CheckoutService } from './checkout.service';
@@ -25,6 +25,7 @@ export class CommonService {
     public cashOnDeliveryStatus = { isEnable: true, message: "" };
     public myRfqParameters = { "productName": null, "brandName": null };
     private searchResultsTrackingData: { 'search-query': string, 'search-results': string };
+    public showLoader = true;
 
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
@@ -265,8 +266,8 @@ export class CommonService {
         return fragment.length > 0 ? fragment : null;
     }
 
-    refreshProducts(): Observable<any> {
-        return Observable.create(observer => {
+    refreshProducts(flagFromResolver?: boolean): Observable<any> {
+        return (new Observable(observer => {
             const defaultParams = this.defaultParams;
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
@@ -292,13 +293,13 @@ export class CommonService {
             } else if (defaultParams["pageName"] == "BRAND") {
                 if (this.currentRequest != undefined)
                     this.currentRequest.unsubscribe();
-                // alert(this._activatedRouteSnapshot.params['brand']);
                     this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
                     .pipe(
                         map((res) => {
                             res.buckets.map((bucket) => {
                                 bucket['collFilter'] = true;
                             })
+                            res['flag'] = !!flagFromResolver;
                             return res;
                         })
                     )
@@ -360,7 +361,7 @@ export class CommonService {
             if (this.isBrowser && sessionStorage.getItem('listing-page')) {
                 this.setSectionClick(sessionStorage.getItem('listing-page'));
             }
-        });
+        }));
     }
 
     isBrowser: boolean;
@@ -413,7 +414,6 @@ export class CommonService {
             if (params["category"]){
                 actualParams['category'] = params["category"];
             }
-            console.log(actualParams);
             actualParams['brand'] = params.brand ? params.brand.toLowerCase() : '';
         } else if (params.pageName == "SEARCH") {
             /**
@@ -781,6 +781,12 @@ export class CommonService {
         if (this.isBrowser && sectionName && identifier) {
             sessionStorage.removeItem(identifier + 'page');
             sessionStorage.setItem(identifier + '-page', sectionName);
+        }
+    }
+
+    scrollTo(event) {
+        if (this.isBrowser) {
+            ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
         }
     }
 }

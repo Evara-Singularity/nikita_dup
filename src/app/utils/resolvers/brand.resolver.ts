@@ -7,11 +7,9 @@ import {
     ActivatedRoute
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators'
+import { catchError, map, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
-import { ENDPOINTS } from '@app/config/endpoints';
-import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
 
@@ -19,7 +17,7 @@ import { CommonService } from '../services/common.service';
     providedIn: 'root'
 })
 export class BrandResolver implements Resolve<object> {
-    pageName;
+    private pageName;
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
@@ -83,37 +81,32 @@ export class BrandResolver implements Resolve<object> {
         }
 
         newParams["pageName"] = this.pageName;
-        console.log(newParams);
 
         return newParams;
     }
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
-
+        this._commonService.showLoader = true;
         const defaultParams = this.createDefaultParams(_activatedRouteSnapshot.params.brand);
         this._commonService.updateDefaultParamsNew(defaultParams);
         const fragment = this._activatedRoute.snapshot.fragment;
         const RPRK: any = makeStateKey<{}>("RPRK");
 
-        if (
-            this.transferState.hasKey(RPRK) && !fragment
-        ) {
+        if (this.transferState.hasKey(RPRK) && !fragment) {
             this.loaderService.setLoaderState(false);
-            const response = this.transferState.get(RPRK, {});
-            this.transferState.remove(RPRK);
-            // this.initiallizeData(response, true);
             const listingObj = this.transferState.get<object>(RPRK, null);
+            listingObj['flag'] = true;
             return of([listingObj]);
         } else {
-            return forkJoin([this._commonService.refreshProducts()]).pipe(
+            return forkJoin([this._commonService.refreshProducts(true)]).pipe(
                 catchError((err) => {
                     this.loaderService.setLoaderState(false);
-                    console.log('err', err);
                     return of(err);
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
+                        result['flag'] = true;
                         this.transferState.set(RPRK, result[0]);
                         this.loaderService.setLoaderState(false);
                     }

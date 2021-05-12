@@ -117,6 +117,106 @@ const routes: Routes = [
         }
       },
       {
+        path: 'brand-store/bosch',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Bosch',
+          moreOpt: true,
+          layoutId: 'cm755792'
+        }
+      },
+      {
+        path: 'brand-store/godrej',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Godrej',
+          moreOpt: true,
+          layoutId: 'cm104867'
+        }
+      },
+      {
+        path: 'brand-store/3m',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: '3M',
+          moreOpt: true,
+          layoutId: 'cm909874'
+        }
+      },
+      {
+        path: 'brand-store/philips',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Philips',
+          moreOpt: true,
+          layoutId: 'cm645889'
+        }
+      },
+      {
+        path: 'brand-store/havells',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Havells',
+          moreOpt: true,
+          layoutId: 'cm484415'
+        }
+      },
+      {
+        path: 'brand-store/vguard',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'VGuard',
+          moreOpt: true,
+          layoutId: 'cm987844',
+        }
+      },
+      {
+        path: 'brand-store/eveready',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          title: 'Eveready',
+          moreOpt: true,
+          layoutId: 'cm604845'
+        }
+      },
+      {
+        path: 'brand-store/luminous',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm849659'
+        }
+      },
+      {
+        path: 'brand-store/makita',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm106721'
+        }
+      },
+      {
+        path: 'brand-store/karam',
+        loadChildren: () => import('../components/brand-store/store.module').then(m => m.StoreModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm338483'
+        }
+      },
+      {
         path: 'covid-19-essentials',
         loadChildren: () => import('./covid19essentials/covid19.module').then(m => m.Covid19Module),
         data: {
@@ -124,6 +224,35 @@ const routes: Routes = [
           logo: true,
           moreOpt: true,
           layoutId: 'cm661682'
+        }
+      },
+      {
+        path: 'store-front/shoe',
+        loadChildren: () => import('./storefront/shoe/shoe.module').then(m => m.ShoeModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm226668'
+        }
+      },
+      {
+        path: 'store-front/power-tools',
+        loadChildren: () => import('./storefront/power-tools/power-tools.module').then(m => m.PowerToolsModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm400124'
+        }
+      },
+      {
+        path: 'faq',
+        loadChildren: () => import('../modules/faq/faq.module').then(m => m.FaqModule),
+        data: {
+          footer: true,
+          logo: true,
+          moreOpt: true
         }
       },
       {
@@ -284,8 +413,7 @@ const routes: Routes = [
       }
     ]
   }
-];
-
+]
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

@@ -4,8 +4,6 @@ import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from 'src/app/config/constants';
 
-declare let $: any;
-
 @Component({
   selector: 'deals',
   templateUrl: 'deals.html',
@@ -35,8 +33,6 @@ export class DealsComponent {
 
   }
 
-
-
   getDealsData() {
     // data received by layout resolver
     this.route.data.subscribe((rawData) => {
@@ -60,12 +56,10 @@ export class DealsComponent {
     }, error => {
       console.log('DealsComponent API data catch error', error);
     });
-
   }
 
   reinsertLinks() {
     const links = <HTMLAnchorElement[]>this.elementRef.nativeElement.getElementsByTagName('a');
-
     if (links) {
       const linksInitialLength = links.length;
       for (let i = 0; i < linksInitialLength; i++) {
@@ -98,8 +92,5 @@ export class DealsComponent {
     links.rel = "canonical";
     links.href = CONSTANTS.PROD + this.router.url;
     this._renderer2.appendChild(this._document.head, links);
-
   }
-
-
 }

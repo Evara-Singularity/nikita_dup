@@ -1,86 +1,74 @@
-/**
- * Created by Abhishek on 19/12/17.
- */
-
-import {Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef} from '@angular/core';
-import { Router} from '@angular/router';
+import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { Title, makeStateKey, TransferState} from '@angular/platform-browser';
-import { CommonDealsService } from '../common-deals.service';
-const BSDD = makeStateKey<any>('bestdealdata');
-
-// import $ from "jquery";
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'best-deal',
-  templateUrl: 'bestDeals.html',
-  styleUrls: ['bestDeals.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: "best-deal",
+  templateUrl: "bestDeals.html",
+  styleUrls: ["bestDeals.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
-
 export class BestDealComponent {
   isServer: boolean;
   isBrowser: boolean;
-  bestDealData:any;
-  constructor(private elementRef: ElementRef,private _renderer2: Renderer2,private _tState: TransferState,  @Inject(PLATFORM_ID) private platformId: Object, private title:Title,public router: Router,private dealsService:CommonDealsService){
+  bestDealData: any;
+
+  constructor(
+    private elementRef: ElementRef,
+    private _renderer2: Renderer2,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private title: Title,
+    public router: Router,
+    private route: ActivatedRoute) {
+
     this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId); 
+    this.isBrowser = isPlatformBrowser(platformId);
     this.getBestDealData();
   }
 
-  ngOnInit(){
-
-  }
-
-  getBestDealData(){
-    if (this._tState.hasKey(BSDD)) {
-      this.bestDealData = this._tState.get(BSDD, {data : ""}).data;
-      setTimeout(() => {
-				// wait for DOM rendering
-				this.reinsertLinks();
-			},0);
-		}
-		else {
-      this.dealsService.getBestDealData({ headerData: {'Content-Type':'text/html'} }).subscribe(
-        data=>{
-          this.bestDealData = data;
-          if(this.isServer){
-            this._tState.set(BSDD, { data: "'" + this.bestDealData + "'"});
-          }
+  getBestDealData() {
+    // data received by layout resolver
+    this.route.data.subscribe(
+      (rawData) => {
+        if (rawData && !rawData["data"]["error"]) {
+          this.bestDealData = rawData["data"][0];
           setTimeout(() => {
-            // wait for DOM rendering
             this.reinsertLinks();
-          },0);
-          // this.bestDealData=data.text();
+          }, 0);
+
+        } else {
+          console.log("BestDealComponent API data error", rawData);
+          this.router.navigateByUrl("/");
         }
-      )
-    }
+      },
+      (error) => {
+        console.log("BestDealComponent API data catch error", error);
+      }
+    );
   }
+
   reinsertLinks() {
-		const links = <HTMLAnchorElement[]>this.elementRef.nativeElement.getElementsByTagName('a');
-	
-		if (links) {
-		  const linksInitialLength = links.length;
-		  for (let i = 0; i < linksInitialLength; i++) {
-			const link = links[i];
-	
-			if (link.host === window.location.host) {
-			  this._renderer2.listen(link, 'click', event => {
-				event.preventDefault();
-				this.router.navigate([
-				  link.href
-					.replace(link.host, '')
-					.replace(link.protocol, '')
-					.replace('//', '')
-				]);
-			  });
-			}
-		  }
-		}
-  }
-  ngAfterViewInit() {
-    if (this.isBrowser) {
-      this._tState.remove(BSDD);
+    const links = <HTMLAnchorElement[]>(
+      this.elementRef.nativeElement.getElementsByTagName("a")
+    );
+    if (links) {
+      const linksInitialLength = links.length;
+      for (let i = 0; i < linksInitialLength; i++) {
+        const link = links[i];
+
+        if (link.host === window.location.host) {
+          this._renderer2.listen(link, "click", (event) => {
+            event.preventDefault();
+            this.router.navigate([
+              link.href
+                .replace(link.host, "")
+                .replace(link.protocol, "")
+                .replace("//", ""),
+            ]);
+          });
+        }
+      }
     }
   }
 }

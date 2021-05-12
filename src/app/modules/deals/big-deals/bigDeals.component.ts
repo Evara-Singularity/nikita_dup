@@ -1,83 +1,76 @@
-/**
- * Created by Abhishek on 19/12/17.
- */
-
-import {Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef} from '@angular/core';
-import { Router} from '@angular/router';
+import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { Title, makeStateKey, TransferState} from '@angular/platform-browser';
-import { CommonDealsService } from '../common-deals.service';
+import { Title, makeStateKey, TransferState } from '@angular/platform-browser';
 const BDD = makeStateKey<any>('bigdealdata');
 
-// import $ from "jquery";
-
 @Component({
-  selector: 'big-deal',
-  templateUrl: 'bigDeals.html',
-  styleUrls: ['bigDeals.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: "big-deal",
+  templateUrl: "bigDeals.html",
+  styleUrls: ["bigDeals.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
-
 export class BigDealComponent {
   isServer: boolean;
   isBrowser: boolean;
-  bigDealData:any;
-  constructor(private elementRef: ElementRef,private _renderer2: Renderer2, private _tState: TransferState,  @Inject(PLATFORM_ID) private platformId: Object, private title:Title,public router: Router,private dealsService:CommonDealsService){
+  bigDealData: any;
+
+  constructor(
+    private elementRef: ElementRef,
+    private _renderer2: Renderer2,
+    private _tState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    public router: Router,
+    private route: ActivatedRoute) {
+
     this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId); 
+    this.isBrowser = isPlatformBrowser(platformId);
     this.getBigDealData();
   }
 
-  ngOnInit(){
+  getBigDealData() {
+    // data received by layout resolver
+    this.route.data.subscribe((rawData) => {
+      if (rawData && !rawData['data']['error']) {
+        this.bigDealData = rawData['data'][0];
+        setTimeout(() => {
+          this.reinsertLinks();
+        }, 0);
 
+      } else {
+        console.log('BigDealComponent API data error', rawData);
+        this.router.navigateByUrl('/');
+      }
+    }, error => {
+      console.log('BigDealComponent API data catch error', error);
+    });
   }
 
-  getBigDealData(){
-    if (this._tState.hasKey(BDD)) {
-      this.bigDealData = this._tState.get(BDD, {data : ""}).data;
-      setTimeout(() => {
-        // wait for DOM rendering
-        this.reinsertLinks();
-      },0);
-		}
-		else {
-      this.dealsService.getBigDealData({ headerData: {'Content-Type':'text/html'} }).subscribe(
-        data=>{
-          this.bigDealData = data;
-          if(this.isServer){
-            this._tState.set(BDD, {data : "'" + this.bigDealData + "'"});
-          }
-          setTimeout(() => {
-            // wait for DOM rendering
-            this.reinsertLinks();
-          },0);
-          // this.bigDealData=data.text();
+  reinsertLinks() {
+    const links = <HTMLAnchorElement[]>(
+      this.elementRef.nativeElement.getElementsByTagName("a")
+    );
+
+    if (links) {
+      const linksInitialLength = links.length;
+      for (let i = 0; i < linksInitialLength; i++) {
+        const link = links[i];
+
+        if (link.host === window.location.host) {
+          this._renderer2.listen(link, "click", (event) => {
+            event.preventDefault();
+            this.router.navigate([
+              link.href
+                .replace(link.host, "")
+                .replace(link.protocol, "")
+                .replace("//", ""),
+            ]);
+          });
         }
-      )
+      }
     }
   }
-  reinsertLinks() {
-		const links = <HTMLAnchorElement[]>this.elementRef.nativeElement.getElementsByTagName('a');
-	
-		if (links) {
-		  const linksInitialLength = links.length;
-		  for (let i = 0; i < linksInitialLength; i++) {
-			const link = links[i];
-	
-			if (link.host === window.location.host) {
-			  this._renderer2.listen(link, 'click', event => {
-				event.preventDefault();
-				this.router.navigate([
-				  link.href
-					.replace(link.host, '')
-					.replace(link.protocol, '')
-					.replace('//', '')
-				]);
-			  });
-			}
-		  }
-		}
-  }
+
   ngAfterViewInit() {
     if (this.isBrowser) {
       this._tState.remove(BDD);

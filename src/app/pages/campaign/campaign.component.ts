@@ -44,42 +44,6 @@ export class CampaignComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser) {
       this.autoPlaySiema();
-      /* jquery custom*/
-
-      // $('#bannermoglixhainalightSlider').lightSlider({
-      //             gallery: true,
-      //             item: 1,
-      //             loop:true,
-      //             slideMargin: 0,
-      //             thumbItem: 1,
-      //             enableDrag:false,
-      //             auto: true,
-      //             cssEasing:'easing',
-      //             easing:'easeInOutExpo',
-      //             pause: 3000,
-      // 			speed:1600,
-      //         });
-      //   $('#toprotateslide').lightSlider({
-      //       gallery: true,
-      //       item: 1,
-      //       loop:true,
-      //       slideMargin: 0,
-      //       thumbItem: 1,
-      //       mode:'fade',
-      //       enableDrag:false,
-      //       controls:false,
-      //       auto: true,
-      // cssEasing:'easing',
-      //       easing:'easeInOutExpo',
-      //       pause: 3000,
-      //   });
-      // $(document).ready(function () {
-      //   $('.lightslider-banner li,.slidewrap').css('height', $(window).height() - 100)
-      //   $('lightslider-banner li,.rotating').css({ 'width': $(window).height() + 150, 'height': $(window).height() + 150 });
-      //   $('.lSPager').remove();
-
-      // })
-
       $(window).resize(function () {
         $('.lightslider-banner li,.slidewrap').css('height', $(window).height() - 100)
       })

@@ -1,8 +1,8 @@
-<loader [showLoader]="showLoader"></loader>
+<loader [showLoader]="_commonService?.showLoader"></loader>
 <div class="cat_filter_wrap">
     <div class="prod_filter">
-        <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName"
-            [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter>
+        <ng-container *ngIf="isBrowser" #filter></ng-container>
+        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter> -->
     </div>
 </div>
 
@@ -36,71 +36,6 @@
     </div>
 </ng-container>
 
-<!-- <div class="row splnewpage" *ngIf="isSLPPage && firstPageContent">
-    <section class="safetyban">
-        <h1 class="slp-heading">
-            SAFETY SHOES
-        </h1>
-        <p>Safety shoes are very important for all industries. Depending on the type of industry, different safety boots are
-        available that offer foot protection. You can choose industrial safety shoes, construction shoes, electric-resistant
-        shoes, waterproof shoes and more online at low prices.</p>
-        <h2>Quick Links</h2>
-        <ul *ngIf="extrasBlock && extrasBlock.general_block && extrasBlock.general_block.length">
-            <li *ngFor="let item of extrasBlock.general_block"><a [href]="item.element_url">{{item.element_name}}</a></li>
-        </ul>
-        <a (click)="scrollToResults()" class="viewall">View All Products </a>
-    </section>
-    <section class="safetyban" *ngIf="extrasBlock && extrasBlock.brand_block && extrasBlock.brand_block.length">
-        <div class="safetyshopbywrap">
-            <h2 class="slp-heading">
-                Shop By Brand
-            </h2>            
-            <div class="brandslogorow">
-                <ul class="brandslogo clearfix">
-                    <li *ngFor="let item of extrasBlock.brand_block"><a [href]="item.brand_url"><img src="{{imagePath}}{{item.brand_image}}" alt ="{{getAltName(item.brandName)}}"/></a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <section class="bscategory" *ngIf="extrasBlock && extrasBlock.product_data && extrasBlock.product_data.length">
-        <div class="bscatwrap">
-            <h2 class="slp-heading clearfix">BestSellers 
-                <a (click)="openPopup=true;" class="viewallbs">VIEW ALL</a>
-            </h2> 
-            <div class="bsrow clearfix">
-                    <div class="bs_item" *ngFor="let product of extrasBlock.product_data | slice:0:4">
-                        <div class="bs_item_img">
-                            <a href="{{API.BASE_URLS.PROD}}/{{product.productlink}}"><img src="{{imagePath}}{{product.imageLink_medium}}" alt="{{product.productName}}" />
-                            </a>
-                        </div>
-                        <div class="bs_item_desc">
-                            <h3>{{product.productName | slice:0:30}} </h3>
-                            <p class="safetysh_discount"><span>₹{{product.mrp}}</span> {{product.discount_percentage}}% OFF</p>
-                            <p class="safetysh_price">₹{{product.pricewithouttax}}</p>  
-                            <p class="brandname">By: <span>{{product.descriptionObj.Brand}}</span></p>                         
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </section>
-    <section class="safetysh_sect1 clearfix"  *ngIf="extrasBlock && extrasBlock.image_block && extrasBlock.image_block.length">            
-        <div class="safetysh-shopby row">  
-            <h2 class="slp-heading">SHOP BY</h2>     
-            <div class="clearfix shopbyrow">              
-                <div class="shopbycol" *ngFor="let product of extrasBlock.image_block">
-                    <div class="shopbywrap">
-                        <h3>{{product.image_title}}</h3>
-                        <div class="shopbyimgwrap"><img src="{{imagePath}}{{product.image_name}}" alt="Shop by {{product.image_title}}"></div>
-                        <ul *ngIf="product && product.image_general && product.image_general.length">
-                            <li *ngFor="let imggen of product.image_general| slice:0:4"><a href="{{imggen.general_url}}">{{imggen.general_text | slice:0:20}}<ng-container *ngIf="imggen.general_text.length>20">...</ng-container>
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div> -->
 <div class="container-fluid category">
     <div class="row">
         <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
@@ -134,16 +69,19 @@
                     <span *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
             </button>
 
-            <button type="button" (click)="sortByOpt = true">
+            <button type="button" (click)="toggleSortBy(true)">
                 <i class="icon-sort-by" aria-hidden="true"></i>
                 <span class="txt">SORT BY</span>
             </button>
         </div>
-        <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
+        <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
+        <ng-container *ngIf="isBrowser" #sortBy></ng-container>
         <div>
-            <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated"
+            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)" ></span>
+            <ng-template *ngIf="isBrowser" #pagination></ng-template>
+            <!-- <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated"
                 [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
-                (onPageChange)="pageChanged($event)"></pagination>
+                (onPageChange)="pageChanged($event)"></pagination> -->
         </div>
     </div>
 

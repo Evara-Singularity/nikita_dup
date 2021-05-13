@@ -87,6 +87,7 @@ export class BrandResolver implements Resolve<object> {
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
+        this.loaderService.setLoaderState(true);
         this._commonService.showLoader = true;
         const defaultParams = this.createDefaultParams(_activatedRouteSnapshot.params.brand);
         this._commonService.updateDefaultParamsNew(defaultParams);

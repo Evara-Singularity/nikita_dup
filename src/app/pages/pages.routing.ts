@@ -13,15 +13,15 @@ const routes: Routes = [
         matcher: productMatch,
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
       },
-      // {
-      //   matcher: categoriesMatcher,
-      //   loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),
-      //   data: {
-      //     footer: false,
-      //     logo: true,
-      //     moreOpt: true
-      //   }
-      // },
+      {
+        matcher: categoriesMatcher,
+        loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
       {
         path: 'brands/:brand',
         loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule),

@@ -271,7 +271,6 @@ export class CommonService {
             const defaultParams = this.defaultParams;
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
-                alert('CATEGORY');
                 if (this.currentRequest !== undefined)
                     this.currentRequest.unsubscribe();
 
@@ -291,32 +290,32 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
-                if (this.currentRequest != undefined)
+                if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
-                    this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
-                    .pipe(
-                        map((res) => {
-                            res.buckets.map((bucket) => {
-                                bucket['collFilter'] = true;
-                            })
-                            res['flag'] = !!flagFromResolver;
-                            return res;
+                }
+                this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
+                .pipe(
+                    map((res) => {
+                        res.buckets.map((bucket) => {
+                            bucket['collFilter'] = true;
                         })
-                    )
-                    .subscribe((response) => {
-                        if (this._router.url.search('#') < 0) {
-                            this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
-                                if (res['status']) {
-                                    this.cmsData = res['data']['data'];
-                                }
-                            });
-                        } else {
-                            this.cmsData = null;
-                            this.replaceHeading = false;
-                        }
-                        observer.next(response);
-                        observer.complete();
-                    });
+                        res['flag'] = !!flagFromResolver;
+                        return res;
+                    })
+                ).subscribe((response) => {
+                    if (this._router.url.search('#') < 0) {
+                        this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
+                            if (res['status']) {
+                                this.cmsData = res['data']['data'];
+                            }
+                        });
+                    } else {
+                        this.cmsData = null;
+                        this.replaceHeading = false;
+                    }
+                    observer.next(response);
+                    observer.complete();
+                });
             } else if (defaultParams["pageName"] == "SEARCH") {
                 alert('SEARCH');
                 if (this.currentRequest != undefined)

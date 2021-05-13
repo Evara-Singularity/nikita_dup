@@ -1,10 +1,14 @@
 import {Routes, RouterModule} from '@angular/router';
-import {CategoryComponent} from "./category.component";
+import { CategoryResolver } from '@app/utils/resolvers/category.resolver';
+import { CategoryComponent } from "./category.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: CategoryComponent
+        component: CategoryComponent,
+        resolve: {
+            brand: CategoryResolver
+        }
     }
 ];
 

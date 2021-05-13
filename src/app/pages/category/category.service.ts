@@ -6,7 +6,9 @@ import { catchError } from 'rxjs/operators/catchError';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from '@app/utils/services/data.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class CategoryService {
 
     constructor(private _dataService: DataService) {

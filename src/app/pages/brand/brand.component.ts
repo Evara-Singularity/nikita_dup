@@ -127,13 +127,13 @@ export class BrandComponent {
         // Set footers
         this.footerService.setMobileFoooters();
 
-        // this._activatedRoute.queryParams.subscribe(data => {
-        //     if (data['page'] == undefined || data['page'] == 1) {
-        //         this.firstPageContent = true;
-        //     } else {
-        //         this.firstPageContent = false;
-        //     }
-        // });
+        this._activatedRoute.queryParams.subscribe(data => {
+            if (data['page'] == undefined || data['page'] == 1) {
+                this.firstPageContent = true;
+            } else {
+                this.firstPageContent = false;
+            }
+        });
     }
 
     ngAfterViewInit() {
@@ -147,11 +147,11 @@ export class BrandComponent {
     private refreshProductsBasedOnRouteChange(){
         this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
             () => {
-                alert('aaaa');
                 this._commonService.showLoader = true;
                 this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
                     this._commonService.showLoader = false;
                     this.paginationData = { itemCount: response.productSearchResult.totalCount };
+                    this.paginationUpdated.next(this.paginationData);
                     // this.sortByUpdated.next();
                     this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
                     this.filterData = response.buckets;
@@ -185,7 +185,8 @@ export class BrandComponent {
 
         // Set sort by, filters and listing products 
         if (flag) {
-            this.paginationData = { itemCount: response.productSearchResult['totalCount'] };
+            this.paginationData = { itemCount: response.productSearchResult.totalCount };
+            this.paginationUpdated.next(this.paginationData);
             // this.sortByUpdated.next();
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
             this.filterData = response.buckets;
@@ -640,8 +641,6 @@ export class BrandComponent {
             }
         }
 
-        console.clear();
-        console.log(page);
         if (page != "1") {
             newQueryParams["page"] = page;
         } else if (newQueryParams["page"] != undefined) {
@@ -653,8 +652,6 @@ export class BrandComponent {
         else
             extras.queryParams = {};
 
-        console.log(currentRoute);
-        console.log(extras);
         this._router.navigate([currentRoute], extras);
     }
 

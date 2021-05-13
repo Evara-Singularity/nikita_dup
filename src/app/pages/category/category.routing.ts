@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: CategoryComponent,
         resolve: {
-            brand: CategoryResolver
+            category: CategoryResolver
         }
     }
 ];

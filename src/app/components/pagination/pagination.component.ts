@@ -8,7 +8,7 @@ import { Subject } from "rxjs/Subject";
 import {ActivatedRoute,Router} from "@angular/router";
 import {CommonService} from "@app/utils/services/common.service";
 import {GLOBAL_CONSTANT} from "@app/config/global.constant";
-import {SortByComponent} from "@app/modules/sortBy/sortBy.component";
+import {SortByComponent} from "@app/components/sortBy/sortBy.component";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';

@@ -7,13 +7,10 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Subject } from 'rxjs/Subject';
-import { SortByComponent } from '@app/modules/sortBy/sortBy.component';
+import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { ClientUtility } from '@app/utils/client.utility';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
@@ -51,7 +48,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     sortByUpdated: Subject<any> = new Subject<any>();
-    bucketsUpdated: Subject<any> = new Subject<any>();
     breadcrumpUpdated: Subject<any> = new Subject<any>();
     relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
     categoryDataName: Subject<any> = new Subject<any>();
@@ -143,7 +139,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     async onVisiblePagination(event) {
         if (!this.paginationInstance) {
             this._commonService.showLoader = true;
-            const { PaginationComponent } = await import('@app/modules/pagination/pagination.component').finally(() => {
+            const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
                 this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
@@ -168,7 +164,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.sortByOpt = data.sortByOpt;
 
             if (!this.sortByInstance) {
-                const { SortByComponent } = await import('@app/modules/sortBy/sortBy.component').finally(() => {
+                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
                     this._commonService.showLoader = false;
                 });
                 const factory = this.cfr.resolveComponentFactory(SortByComponent);
@@ -193,7 +189,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (this.isBrowser) {
             if (!this.filterInstance) {
                 this._commonService.showLoader = true;
-                const { FilterComponent } = await import('@app/modules/filter/filter.component').finally(() => {
+                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
                     this._commonService.showLoader = false;
                 });
                 const factory = this.cfr.resolveComponentFactory(FilterComponent);
@@ -276,7 +272,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     this.paginationUpdated.next(this.paginationData);
                     this.sortByUpdated.next();
                     this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    this.bucketsUpdated.next(response.buckets);
+                    this.filterData = response.buckets;
+                    // this.bucketsUpdated.next(response.buckets);
                     this.productsUpdated.next(response.productSearchResult.products);
                     this.buckets = response['buckets'];
                     this.productSearchResult = response.productSearchResult;
@@ -292,9 +289,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         const res = this._activatedRoute.snapshot.data;
-        console.clear();
-        console.log(res);
-        this.setDataAfterGettingDataFromResolver(res.brand);
+        this.setDataAfterGettingDataFromResolver(res.category);
         
     }
 
@@ -469,7 +464,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
             this.paginationUpdated.next(this.paginationData);
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.bucketsUpdated.next(response.buckets);
+            this.filterData = response.buckets;
+            // this.bucketsUpdated.next(response.buckets);
             this.productsUpdated.next(response.productSearchResult.products);
         }
         this.buckets = response.buckets;
@@ -919,16 +915,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     private initiallizeRelatedCategories(response, flag) {
-        alert('initiallizeRelatedCategories');
-        console.clear();
-        console.log(response[0]);
 
         this.getRelatedCatgory = response[0];
         const categoryData = response[1];
 
         let qps = this._activatedRoute.snapshot.queryParams;
-        // console.log(this._tState.get(GRCRK, {}));
-        // console.log("category details:" + JSON.stringify(this.getRelatedCatgory.categoryDetails));
 
         if (this.getRelatedCatgory.categoryDetails.active) {
             const categoryName = this.getRelatedCatgory.categoryDetails.categoryName;

@@ -1,6 +1,3 @@
-/**
- * Created by kuldeep on 09/06/17.
- */
 import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { OrderSummaryService } from './orderSummary.service';
 import { Subject } from 'rxjs/Subject';

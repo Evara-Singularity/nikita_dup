@@ -191,13 +191,11 @@ export class CommonService {
     }
 
     private getPopularSeachData(type, curl, params) {
-        console.log('getPopularSeachData');
         let formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams });
     }
     
-    private getSearchData(type, curl, params) {
-        console.log('getSearchData');
+    private getSearchData(type, curl, params): Observable<any> {
         const formattedParams = this.formatParams(params);
         // console.log(formattedParams);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
@@ -317,9 +315,9 @@ export class CommonService {
                     observer.complete();
                 });
             } else if (defaultParams["pageName"] == "SEARCH") {
-                alert('SEARCH');
-                if (this.currentRequest != undefined)
+                if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
+                }
                 this.currentRequest = this.getSearchData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)
                     .pipe(
                         map((res) => {
@@ -331,13 +329,13 @@ export class CommonService {
                         })
                     )
                     .subscribe((response) => {
-
+                        console.log(response);
+                        console.log('=====================================');
                         observer.next(response);
                         observer.complete();
                     });
 
             } else if (defaultParams["pageName"] == "POPULAR SEARCH") {
-                alert('POPULAR SEARCH');
                 if (this.currentRequest != undefined)
                     this.currentRequest.unsubscribe();
                 this.currentRequest = this.getPopularSeachData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)

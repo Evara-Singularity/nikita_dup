@@ -10,6 +10,7 @@ import { ModalModule } from '../../modules/modal/modal.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import CONSTANTS from '../../config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'fbt',
@@ -31,7 +32,6 @@ export class FbtComponent implements OnInit
     fixedCartProductMappings = null;
     dynamicCartProductMapping = null;
     dynamicCartKeys = [];
-    showLoader = false;
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     fbtSubscription: Subscription = null;
     rootProductSubscription = null;
@@ -43,6 +43,7 @@ export class FbtComponent implements OnInit
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         private cartService: CartService, 
+        private _commonService: CommonService,
         private productUtil: ProductUtilsService, 
         private router: Router){
         this.isBrowser = isPlatformBrowser(platformId);
@@ -296,7 +297,7 @@ export class FbtComponent implements OnInit
     updateCartSessions(sessionDetails)
     {
 
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         let cartObject = {
             "cart": sessionDetails["cart"],
             "itemsList": sessionDetails["itemsList"],
@@ -313,9 +314,9 @@ export class FbtComponent implements OnInit
                     this.router.navigate(['/quickorder']);
                 }
                 this.closePopup$.emit();
-                this.showLoader = false;
+                this._commonService.showLoader = false;
             },
-            err => { this.showLoader = false; this.closePopup$.emit(); }
+            err => { this._commonService.showLoader = false; this.closePopup$.emit(); }
         );
     }
 

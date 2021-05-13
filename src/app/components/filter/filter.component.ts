@@ -4,7 +4,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
-import { SortByComponent } from '@app/modules/sortBy/sortBy.component';
+import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 declare let dataLayer;
 import { CONSTANTS } from '@app/config/constants';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
@@ -82,8 +82,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         });
 
         this.sortByComponentUpdated.subscribe((data) => {
-            alert('a');
-            console.log(data);
             this.initializeSortByData(data);
             this._cd.markForCheck();
         });
@@ -422,3 +420,31 @@ const lev6 = createArray({ right: true }, 25);
 const lev7 = createArray({ right: true }, 25);
 const lev8 = createArray({ right: true }, 25);
 const lev9 = createArray({ right: true }, 25);
+
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'
+import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
+import { FilterSearchBoxDirectiveModule } from '@app/utils/directives/filterSearchBox.directive';
+import { CategoryModule as FilterCategoryModule } from '@app/components/filter/category/category.module';
+import { AddRupaySymbolPipeModule } from "./pipes/add-rupay-symbol";
+
+@NgModule({
+    imports: [
+        CommonModule,
+        RouterModule,
+        FilterCategoryModule,
+        ObjectToArrayPipeModule,
+        AddRupaySymbolPipeModule,
+        FilterSearchBoxDirectiveModule,
+    ],
+    exports: [
+        FilterComponent
+    ],
+    declarations: [
+        FilterComponent
+    ],
+})
+export class BrandModule { }
+export class CategoryModule extends BrandModule { }

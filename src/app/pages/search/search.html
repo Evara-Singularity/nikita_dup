@@ -1,8 +1,6 @@
-<loader [showLoader]="showLoader"></loader>
 <div class="cat_filter_wrap">
     <div class="prod_filter">
-        <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName"
-            [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter>
+        <ng-container *ngIf="isBrowser" #filter></ng-container>
     </div>
 </div>
 <div class="products-container">
@@ -58,16 +56,19 @@
                         <span *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
                 </button>
 
-                <button type="button" (click)="sortByOpt = true">
+                <button type="button" (click)="toggleSortBy(true)">
                     <i class="icon-sort-by" aria-hidden="true"></i>
                     <span class="txt">SORT BY</span>
                 </button>
             </div>
-            <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
+            <ng-container *ngIf="isBrowser" #sortBy></ng-container>
+            <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
         </div>
         <div class="card mt-15" [ngClass]="{'hide': !productSearchResult || !productSearchResult['totalCount']}">
-            <pagination class="block o-hidden h-auto-xs" [position]="'BOTTOM'" [paginationUpdated]="paginationUpdated"
-                [sortByComponentUpdated]="sortByComponentUpdated" (onPageChange)="pageChanged($event)"></pagination>
+            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)" ></span>
+            <ng-template *ngIf="isBrowser" #pagination></ng-template>
+            <!-- <pagination class="block o-hidden h-auto-xs" [position]="'BOTTOM'" [paginationUpdated]="paginationUpdated"
+                [sortByComponentUpdated]="sortByComponentUpdated" (onPageChange)="pageChanged($event)"></pagination> -->
         </div>
     </div>
 </div>

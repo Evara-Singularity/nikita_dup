@@ -40,15 +40,15 @@ const routes: Routes = [
           moreOpt: true
         }
       },
-      // {
-      //   path: 'search',
-      //   loadChildren: () => import('./search/search.module').then(m => m.SearchModule),
-      //   data: {
-      //     footer: false,
-      //     logo: true,
-      //     moreOpt: true
-      //   }
-      // },
+      {
+        path: 'search',
+        loadChildren: () => import('./search/search.module').then(m => m.SearchModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
       {
         path: 'quickorder',
         loadChildren: () => import('./quickOrder/quickOrder.module').then(m => m.QuickOrderModule),

@@ -1,6 +1,3 @@
-/**
- * Created by kuldeep on 09/05/17.
- */
 import { Component, EventEmitter, Output, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import CONSTANTS from '../../config/constants';

@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { routing as CategoryRouting } from "./category.routing";
 import { MetaModule } from '@ngx-meta/core';
 import { CategoryComponent } from "./category.component";
-import { FilterModule } from "@app/modules/filter/filter.module";
 import { CategoryService } from "./category.service";
 import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
 import { SubCategoryService } from "./subCategory/subCategory.service";
@@ -35,7 +34,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
         ObjectToArrayPipeModule,
         RouterModule,
         BreadCrumpModule,
-        FilterModule,
         ProductListModule,
         NgxPageScrollModule,
         ObserveVisibilityDirectiveModule,

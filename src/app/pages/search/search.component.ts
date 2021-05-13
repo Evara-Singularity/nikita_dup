@@ -1,37 +1,45 @@
 import { FooterService } from '@app/utils/services/footer.service';
-import { Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit } from '@angular/core';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, ViewContainerRef, Injector, ComponentFactoryResolver } from '@angular/core';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { CommonService } from "@app/utils/services/common.service";
 import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs/Subject";
-import { SortByComponent } from "@app/modules/sortBy/sortBy.component";
+import { SortByComponent } from "@app/components/sortBy/sortBy.component";
 import { CONSTANTS } from "@app/config/constants";
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Meta } from '@angular/platform-browser';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
+import { BehaviorSubject } from 'rxjs';
 
 declare let dataLayer;
 declare var digitalData: {};
 declare let _satellite;
 
-// const REFRESH_PRODUCTS_RESPONSE_KEY: any = makeStateKey<{}>("refreshProductsResponse");
-
-
 @Component({
     selector: 'search',
     templateUrl: './search.html',
-    styleUrls: ['./search.scss']
+    styleUrls: ['./../category/category.scss', './search.scss']
 })
 
 export class SearchComponent implements OnInit, AfterViewInit {
+    paginationInstance = null;
+    @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
+    filterInstance = null;
+    @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
+    sortByInstance = null;
+    @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
+
+    filterData: Array<any> = [];
+    sortByData: Array<any> = [];
+    paginationData: any = {};
+
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     showLoader: boolean;
-    productsUpdated: Subject<any> = new Subject<any>();
-    paginationUpdated: Subject<any> = new Subject<any>();
+    productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     sortByUpdated: Subject<any> = new Subject<any>();
-    pageSizeUpdated: Subject<any> = new Subject<any>();
-    bucketsUpdated: Subject<any> = new Subject<any>();
+    // bucketsUpdated: Subject<any> = new Subject<any>();
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     windowWidth: number;
     pageName: string;
@@ -55,10 +63,12 @@ export class SearchComponent implements OnInit, AfterViewInit {
     refreshProductsUnsub$;
     refreshProductsUnsub;
 
-    constructor(public dataService: DataService, public localStorageService: LocalStorageService, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document,
+    constructor(public dataService: DataService, public localStorageService: LocalStorageService, private meta: Meta, private _renderer2: Renderer2, 
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector,
+        @Inject(DOCUMENT) private _document,
         @Inject(PLATFORM_ID) platformId, private footerService: FooterService, private _router: Router,
         private _activatedRoute: ActivatedRoute, private _commonService: CommonService) {
-        this.showLoader = false;
         this.windowLoaded = 0;
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
@@ -68,58 +78,27 @@ export class SearchComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 
-        if (this.isBrowser) {
-            this.windowWidth = window.innerWidth;
-            window.onresize = () => {
-                this.windowWidth = window.innerWidth;
-            };
-        }
-        // console.log(this.buckets);
-        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
-            (params) => {
-                this.showLoader = true;
-                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                    this.showLoader = false;
-                    this.paginationUpdated.next({ itemCount: response.productSearchResult["totalCount"] });
-                    this.sortByUpdated.next();
-                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    this.bucketsUpdated.next(response.buckets);
-                    this.productsUpdated.next(response.productSearchResult.products);
-                    // console.log(response.productSearchResult.products);
-                    this.relatedSearches = response.relatedSearches;
-
-                    this.productSearchResult = response.productSearchResult;
-                    const qp = this._activatedRoute.snapshot.queryParams;
-
-                    if (qp['didYouMean'] !== undefined) {
-                        this.didYouMean = queryParams['didYouMean'];
-                    }
-                });
-            }
-        );
-
-        // Empty the setSearchResultsTrackingData initially.
-        this._commonService.setSearchResultsTrackingData({});
-
         const queryParams = this._activatedRoute.snapshot.queryParams;
+
         if (this.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
             (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
-        }
-        if (this.isBrowser && window.outerWidth >= 768) {
-            this.footerService.setFooterObj({ footerData: false });
-            this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
-        } else {
-            this.footerService.setMobileFoooters();
-        }
-        // console.log("ngOnInit Called");
+        }        
+        
+        this.setProductsAfterResolverData();
+        
+        this.footerService.setMobileFoooters();
 
-        combineLatest(this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment).subscribe(data => {
-            // alert();
-            this.windowLoaded = this.windowLoaded + 1;
-            // console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDdd", data, this.windowLoaded);
-            this.refreshProducts();
-        });
+        this.refreshProductsBasedOnRouteChange();
+        
+        this.windowLoaded = this.windowLoaded + 1;
+        
+        this._commonService.setSearchResultsTrackingData({});
 
+        this.setDigitalData();
+
+    }
+
+    setDigitalData() {
         const user = this.localStorageService.retrieve('user');
         let page = {
             'pageName': "Search Listing Page",
@@ -134,33 +113,52 @@ export class SearchComponent implements OnInit, AfterViewInit {
             'customerType': (user && user["userType"]) ? user["userType"] : '',
         }
         let order = {}
+        let digitalData = {};
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
     }
 
     ngAfterViewInit() {
-        // console.log("ngAfterViewInit Called");
         this.sortByComponentUpdated.next(this.sortByComponent);
-        /*Remove key set on server side to avoid api on dom load of frontend side*/
-        // if(this.isBrowser){
-        //     this.transferState.remove(REFRESH_PRODUCTS_RESPONSE_KEY)
-        // }
     }
 
-    refreshProducts() {
-        this.showLoader = true;
-        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
-        const defaultParams = this.createDefaultParams();
-        this._commonService.updateDefaultParamsNew(defaultParams);
+    private refreshProductsBasedOnRouteChange() {
+        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
+            (params) => {
+                this._commonService.showLoader = true;
+                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+                    this._commonService.showLoader = false;
+                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
+                    this.paginationUpdated.next(this.paginationData);
+                    this.sortByUpdated.next();
+                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
+                    this.filterData = response.buckets;
+                    // this.bucketsUpdated.next(response.buckets);
+                    this.productsUpdated.next(response.productSearchResult.products);
+                    // console.log(response.productSearchResult.products);
+                    this.relatedSearches = response.relatedSearches;
 
-        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-            this.showLoader = false;
-            const extra = { oldDefaultParams: oldDefaultParams };
-            this.initiallizeData(response, extra, true);
-            if (response.productSearchResult.highlightedSearchString)
-                this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
-        });
+                    this.productSearchResult = response.productSearchResult;
+                    const qp = this._activatedRoute.snapshot.queryParams;
+
+                    if (qp['didYouMean'] !== undefined) {
+                        this.didYouMean = qp['didYouMean'];
+                    }
+                });
+            }
+        );
+    }
+
+    setProductsAfterResolverData() {
+        const response = this._activatedRoute.snapshot.data['search'][0];
+        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
+        this._commonService.showLoader = false;
+        const extra = { oldDefaultParams: oldDefaultParams };
+        this.initiallizeData(response, extra, true);
+        if (response.productSearchResult.highlightedSearchString) {
+            this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
+        }
     }
     onFilterSelected(count) {
         this.filterCounts = count;
@@ -201,10 +199,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
             }
 
             const products = response.productSearchResult.products;
-
             if (this.isBrowser) {
-                // digitalData = {page: {}};
-
+                digitalData = { page: {} };
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData['page']['searchTerm'] = products[0].moglixPartNumber;
                 digitalData['page']['suggestionClicked'] = queryParams['lsource'] && queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
@@ -227,7 +223,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
 
             if (this.isBrowser) {
-                //digitalData = {page: {}};
+                digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData['page']['searchTerm'] = queryParams['search_query'];
                 digitalData['page']['suggestionClicked'] = queryParams['lsource'] && queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
@@ -235,11 +231,12 @@ export class SearchComponent implements OnInit, AfterViewInit {
             }
 
             if (flag) {
-                // console.log("******************Pagination Updated called***************");
-                this.paginationUpdated.next({ itemCount: response.productSearchResult["totalCount"] });
+                this.paginationData = { itemCount: response.productSearchResult.totalCount };
+                this.paginationUpdated.next(this.paginationData);
                 this.sortByUpdated.next();
                 this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                this.bucketsUpdated.next(response.buckets);
+                this.filterData = response.buckets;
+                    // this.bucketsUpdated.next(response.buckets);
                 this.productsUpdated.next(response.productSearchResult.products);
             }
             this.relatedSearches = response.relatedSearches;
@@ -282,9 +279,133 @@ export class SearchComponent implements OnInit, AfterViewInit {
             this._renderer2.appendChild(this._document.head, links);
         }
     }
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
+
+    pageChanged(page) {
+        let extras: NavigationExtras = {};
+        let currentRoute = this._commonService.getCurrentRoute(this._router.url);
+        // let fragmentString = this._commonService.generateFragmentString();
+        let fragmentString = this._activatedRoute.snapshot.fragment;
+        if (fragmentString != null) {
+            extras.fragment = fragmentString;
+            //console.log(extras);
+        }
+
+        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+        let newQueryParams: {} = {};
+        if (Object.keys(currentQueryParams).length) {
+            for (let key in currentQueryParams) {
+                //console.log(key);
+                newQueryParams[key] = currentQueryParams[key];
+            }
+        }
+
+        if (page != "1") {
+            newQueryParams["page"] = page;
+        } else if (newQueryParams["page"] != undefined) {
+            delete newQueryParams["page"];
+        }
+
+        if (Object.keys(newQueryParams).length > 0)
+            extras.queryParams = newQueryParams;
+        else
+            extras.queryParams = {};
+
+        this._router.navigate([currentRoute], extras);
     }
+
+    async onVisiblePagination(event) {
+        if (!this.paginationInstance) {
+            this._commonService.showLoader = true;
+            const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(PaginationComponent);
+            this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
+            this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
+            this.paginationUpdated.next(this.paginationData);
+            this.paginationInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+            this.paginationInstance.instance['sortByComponentUpdated'].next(this.sortByComponent);
+            this.paginationInstance.instance['position'] = 'BOTTOM';
+
+            if (this.paginationInstance) {
+                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
+                    this.pageChanged(data);
+                });
+            }
+
+        }
+    }
+
+    async toggleSortBy(data) {
+        if (this.isBrowser) {
+            this.sortByOpt = data.sortByOpt;
+
+            if (!this.sortByInstance) {
+                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
+                    this._commonService.showLoader = false;
+                });
+                const factory = this.cfr.resolveComponentFactory(SortByComponent);
+                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+
+                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
+                    this.toggleSortBy(data);
+                });
+
+            }
+
+            const sortByFilter = document.querySelector('sort-by');
+
+            if (sortByFilter) {
+                sortByFilter.classList.toggle('open');
+            }
+        }
+    }
+
+    async filterUp() {
+        if (this.isBrowser) {
+            if (!this.filterInstance) {
+                this._commonService.showLoader = true;
+                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                    this._commonService.showLoader = false;
+                });
+                const factory = this.cfr.resolveComponentFactory(FilterComponent);
+                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+                this.filterInstance.instance['pageName'] = this.pageName;
+                this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+                this.filterInstance.instance['sortByComponent'] = this.sortByComponentUpdated;
+            }
+
+            const mob_filter = document.querySelector('.mob_filter');
+
+            if (mob_filter) {
+                if (mob_filter.classList.contains('upTrans')) {
+                    mob_filter.classList.remove('upTrans');
+                } else {
+                    mob_filter.classList.add('upTrans');
+                }
+            }
+        }
+
+    }
+
+
+    getQueryParams(newQueryParams?) {
+        let qp = this._commonService.getDefaultParams().queryParams;
+        let queryParams = this._commonService.generateQueryParams(qp);
+
+        if (newQueryParams != undefined) {
+            for (let key in newQueryParams) {
+                queryParams[key] = newQueryParams[key].toLowerCase();
+            }
+        }
+
+        if (Object.keys(queryParams).length > 0)
+            return queryParams;
+        return {};
+    }
+
     createDefaultParams() {
         let newParams: any = {
             queryParams: {}
@@ -336,67 +457,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
         return newParams;
     }
 
-    pageChanged(page) {
-        let extras: NavigationExtras = {};
-        let currentRoute = this._commonService.getCurrentRoute(this._router.url);
-        // let fragmentString = this._commonService.generateFragmentString();
-        let fragmentString = this._activatedRoute.snapshot.fragment;
-        if (fragmentString != null) {
-            extras.fragment = fragmentString;
-            //console.log(extras);
-        }
-
-        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
-        let newQueryParams: {} = {};
-        if (Object.keys(currentQueryParams).length) {
-            for (let key in currentQueryParams) {
-                //console.log(key);
-                newQueryParams[key] = currentQueryParams[key];
-            }
-        }
-
-        if (page != "1") {
-            newQueryParams["page"] = page;
-        } else if (newQueryParams["page"] != undefined) {
-            delete newQueryParams["page"];
-        }
-
-        if (Object.keys(newQueryParams).length > 0)
-            extras.queryParams = newQueryParams;
-        else
-            extras.queryParams = {};
-
-        this._router.navigate([currentRoute], extras);
-    }
-
-    filterUp() {
-        if (this.isBrowser) {
-            if (document.querySelector('.mob_filter').classList.contains('upTrans')) {
-                document.querySelector('.mob_filter').classList.remove('upTrans');
-            } else {
-                document.querySelector('.mob_filter').classList.add('upTrans');
-            }
-        }
-    }
-
-
-    getQueryParams(newQueryParams?) {
-        let qp = this._commonService.getDefaultParams().queryParams;
-        let queryParams = this._commonService.generateQueryParams(qp);
-
-        if (newQueryParams != undefined) {
-            for (let key in newQueryParams) {
-                queryParams[key] = newQueryParams[key].toLowerCase();
-            }
-        }
-
-        if (Object.keys(queryParams).length > 0)
-            return queryParams;
-        return {};
-    }
-
     redirectWithNoPreProcessRequiredParam(searchTerm: string) {
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         let oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
         let defaultParams = this.createDefaultParams();
         defaultParams['queryParams']['search_query'] = searchTerm;
@@ -410,7 +472,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
             if (response.productSearchResult.highlightedSearchString) {
                 this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
             }
-            this.showLoader = false;
+            this._commonService.showLoader = false;
         });
     }
 

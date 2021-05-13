@@ -1,7 +1,4 @@
 import { ViewEncapsulation } from '@angular/core';
-/**
- * Created by kuldeep on 09/05/17.
- */
 import { Component, Input, EventEmitter, Output, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';

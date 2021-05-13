@@ -1,6 +1,3 @@
-/**
- * Created by kuldeep on 09/05/17.
- */
 import {
   Component, ViewEncapsulation, Input, Output, ChangeDetectionStrategy, EventEmitter,
   ChangeDetectorRef, PLATFORM_ID, Inject
@@ -111,3 +108,4 @@ export class SortByComponent {
     }
   }
 }
+

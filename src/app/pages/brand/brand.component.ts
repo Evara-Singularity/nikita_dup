@@ -4,7 +4,7 @@ import { Location, isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angula
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { CommonService } from "@app/utils/services/common.service";
 import { Subject } from "rxjs/Subject";
-import { SortByComponent } from "@app/modules/sortBy/sortBy.component";
+import { SortByComponent } from "@app/components/sortBy/sortBy.component";
 import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-browser';
 import { CONSTANTS } from "@app/config/constants";
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
@@ -19,7 +19,7 @@ declare let _satellite;
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
-    styleUrls: ['./brand.scss'],
+    styleUrls: ['./../category/category.scss'],
 })
 
 export class BrandComponent {
@@ -524,7 +524,7 @@ export class BrandComponent {
     async onVisiblePagination(event) {
         if (!this.paginationInstance) {
             this._commonService.showLoader = true;
-            const { PaginationComponent } = await import('@app/modules/pagination/pagination.component').finally(() => {
+            const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
                 this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
@@ -548,7 +548,7 @@ export class BrandComponent {
         if (this.isBrowser) {
             if (!this.filterInstance) {
                 this._commonService.showLoader = true;
-                const { FilterComponent } = await import('@app/modules/filter/filter.component').finally(() => {
+                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
                     this._commonService.showLoader = false;
                 });
                 const factory = this.cfr.resolveComponentFactory(FilterComponent);
@@ -577,7 +577,7 @@ export class BrandComponent {
             this.sortByOpt = data.sortByOpt;
 
             if (!this.sortByInstance) {
-                const { SortByComponent } = await import('@app/modules/sortBy/sortBy.component').finally(() => {
+                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
                     this._commonService.showLoader = false;
                 });
                 const factory = this.cfr.resolveComponentFactory(SortByComponent);

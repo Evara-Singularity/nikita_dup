@@ -52,7 +52,6 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
     verifiedGSTINDetails = null;
     isGSTINVerified = false;
     addressLineKeys = ['bno', 'flno', 'bnm', 'st', 'loc'];
-    showLoader = false;
     gstinSubscriber: Subscription;
 
     constructor(
@@ -281,7 +280,7 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
     //10766
     verifyGSTIN()
     {
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         this._billingAddressService.getGSTINDetails(this.gstin.value).subscribe(
             (response) =>
             {
@@ -292,9 +291,9 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
                 } else {
                     this.resetGSTINVarification(response['message']);
                 }
-                this.showLoader = false;
+                this._commonService.showLoader = false;
             },
-            (error) => { this.showLoader = false; }
+            (error) => { this._commonService.showLoader = false; }
         );
     }
 

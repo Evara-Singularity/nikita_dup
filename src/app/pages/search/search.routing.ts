@@ -1,10 +1,14 @@
 import {Routes, RouterModule} from '@angular/router';
+import { SearchResolver } from '@app/utils/resolvers/search.resolver';
 import {SearchComponent} from "./search.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: SearchComponent
+        component: SearchComponent,
+        resolve: {
+            search: SearchResolver
+        }
     }
 ];
 

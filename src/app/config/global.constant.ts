@@ -1,6 +1,3 @@
-/**
- * Created by kuldeep on 12/6/17.
- */
 export const GLOBAL_CONSTANT = {
     loginByEmail: 1,
     loginByPhone: 2,

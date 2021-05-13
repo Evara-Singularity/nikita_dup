@@ -4,6 +4,9 @@
         .scrolled-search {
             display: none;
         }
+        .inner_head+div {
+            padding-top: 50px;
+        }
         &.scrolled.home-page {
             @extend %box-shadow;
             background: $txt-color;
@@ -203,7 +206,7 @@
         &>* {
             float: left;
             margin-left: 12px;
-            font-size: $extra-large-font;
+            font-size: 20px;
             padding: 10px 5px;
             position: relative;
             color: #fff;

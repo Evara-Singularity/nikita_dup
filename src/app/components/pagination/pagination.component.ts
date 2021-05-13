@@ -12,10 +12,10 @@ import {SortByComponent} from "@app/components/sortBy/sortBy.component";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxPaginationModule, PaginationService } from "ngx-pagination";
+import { NgxPaginationModule } from "ngx-pagination";
 import { RouterModule } from '@angular/router';
 
-const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
+const RPRK: any = makeStateKey<{}>("RPRK")
 
 @Component({
     selector: 'pagination',

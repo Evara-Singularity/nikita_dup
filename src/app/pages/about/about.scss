@@ -1,6 +1,4 @@
-
 @import '../../scss/variables';
-
 #about_us_page * {
     color: #343434;
 }
@@ -8,7 +6,6 @@
 #about_us_page {
     margin: 0px auto;
     padding: 0px;
-    // font-family: Roboto;
     overflow-x: hidden;
 }
 
@@ -23,24 +20,25 @@
         padding: 70px 20px 35px 20px;
         background: radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
     }
-    .about-text{
-        p{
-            &:first-child{
+    .about-text {
+        p {
+            &:first-child {
                 padding: 40px 0 0px 0;
-             }
-            padding-top:15px; 
+            }
+            padding-top:15px;
             font-size: 14px;
             color: #2d2d2d;
             line-height: 28px;
-         }
-     }
- }
+        }
+    }
+}
 
 a {
     text-decoration: none;
 }
-.text-white{
-    color:#fff;
+
+.text-white {
+    color: #fff;
 }
 
 img {
@@ -52,7 +50,6 @@ img {
 //     right: 15px;
 //     width: auto !important;
 // }
-
 .about_first {
     /*background-image:
     linear-gradient(
@@ -82,15 +79,15 @@ img {
         display: flex;
         justify-content: center;
         align-items: center;
-        img{
-            width:150px;
+        img {
+            width: 150px;
         }
     }
     h4 {
         position: relative;
         left: 0px;
         top: 50px;
-        font-size:16px;
+        font-size: 16px;
         text-transform: uppercase;
     }
     .abt-span {
@@ -109,7 +106,7 @@ img {
         line-height: 15px;
         font-weight: 600;
     }
-    &:after{
+    &:after {
         width: 30px;
         height: 6px;
         position: absolute;
@@ -118,7 +115,7 @@ img {
         content: "";
         background: #343434;
     }
-    &:before{
+    &:before {
         width: 30px;
         height: 6px;
         position: absolute;
@@ -126,7 +123,7 @@ img {
         top: 0;
         content: "";
         background: #343434;
-    }    
+    }
 }
 
 .about-video {
@@ -142,7 +139,7 @@ img {
             line-height: 30px;
         }
     }
-    h1{
+    h1 {
         font-size: 18px;
         color: #fff !important;
         text-align: center;
@@ -205,27 +202,27 @@ img {
         line-height: 23px;
         padding: 10px 0;
     }
-    .about-people-wrap{padding-bottom: 12px;box-sizing: border-box;}
+    .about-people-wrap {
+        padding-bottom: 12px;
+        box-sizing: border-box;
+    }
 }
 
 .center-block {
     .segment {
         display: flex;
         justify-content: space-between;
-     
         .about-people-section {
             flex-basis: 50%;
             flex: 1;
             padding-bottom: 20px;
-           
-           &:nth-child(even) {
-            padding: 0 0px 0px 20px;}
-                
+            &:nth-child(even) {
+                padding: 0 0px 0px 20px;
+            }
             img {
-                 width: 100%;
-                 display: block;
-               }
-               
+                width: 100%;
+                display: block;
+            }
             p {
                 background: #dc1410;
                 height: 75px;
@@ -237,14 +234,12 @@ img {
                     font-size: 12px;
                     line-height: 13px;
                     color: #ffffff !important;
-                    font-weight:normal; 
+                    font-weight: normal;
                 }
             }
-            
         }
     }
 }
-
 
 .about-pointer h4 {
     position: absolute;

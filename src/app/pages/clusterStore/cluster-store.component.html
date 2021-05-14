@@ -1,7 +1,7 @@
-<div *ngIf ="data" class="l0CategoryContainer">
+<div *ngIf="data" class="l0CategoryContainer">
     <app-cluster-category *ngIf="data['category_cluster'] && data['category_cluster']['data'].length > 0" [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category>
     <div class ="cluster-body">
-        <div class="lazy-components" *ngIf="data['main_banner'] && data['main_banner']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleAppBanner()" >
+        <div *ngIf="data['main_banner'] && data['main_banner']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleAppBanner()" >
             <ng-container #BannerComponent></ng-container>
         </div>
         <div class="lazy-components" *ngIf="data['all_categories'] && data['all_categories']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleAllCategoryComponent()" >

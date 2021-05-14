@@ -39,7 +39,6 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.iData);
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh

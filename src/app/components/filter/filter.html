@@ -4,11 +4,10 @@
         <span class="txt-name">FILTER</span>
         <span (click)="applyMobileFilter({productFilterData: {}})" class="clear-filter">CLEAR ALL</span>
     </div>
-    <button class="apply-filter continue-btn" (click)="applyMobileFilter()">APPLY</button>
+    <button class="apply-filter btn continue-btn" (click)="applyMobileFilter()">APPLY</button>
     <div class="filters-content">
         <ul class="side-filters">
-            <li *ngFor="let bucket of buckets; let i = index;" (click)="updateFilterActiveIndex(i)"
-                [class.active]="filterActiveIndex == i">
+            <li *ngFor="let bucket of buckets; let i = index;" (click)="updateFilterActiveIndex(i)" [class.active]="filterActiveIndex == i">
                 <div class="filter-label">
                     <span class="filter-parent">{{ bucket.name }}<span
                             *ngIf="bucket.count>0">({{ bucket.count }})</span></span>
@@ -19,8 +18,7 @@
                     </ng-container>
                     <ng-container *ngIf="bucket.name != 'category'">
                         <div class="filter-list">
-                            <div class="filter-search"
-                                *ngIf="bucket.name != 'availability' && bucket.name != 'discount' && bucket.name != 'price'">
+                            <div class="filter-search" *ngIf="bucket.name != 'availability' && bucket.name != 'discount' && bucket.name != 'price'">
                                 <input type="text" placeholder="Search" filterSearchBox>
                                 <i class="icon-search"></i>
                             </div>

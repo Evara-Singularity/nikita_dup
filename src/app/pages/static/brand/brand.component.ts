@@ -4,6 +4,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from "@angular/common";
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 @Component({
   selector: 'brand',
@@ -22,9 +23,11 @@ export class BrandComponent{
   alphabet_arr = CONSTANTS.alphabet_arr;
   total_count: any;
   brand_url: any;
-  isShowLoader: boolean;
   brandsLogo;
-  constructor(private title: Title, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, public _router: Router, private route: ActivatedRoute) {
+  set updateLoaderStatus(value) {
+    this.loaderService.setLoaderState(value);
+  }
+  constructor(private title: Title, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, public _router: Router, private route: ActivatedRoute, private loaderService: GlobalLoaderService) {
     this.API = CONSTANTS;
     this.title.setTitle("Moglix Brand Store");
     this.meta.addTag({ "property": "og:title", "content": "Moglix Brand Store" });
@@ -36,7 +39,7 @@ export class BrandComponent{
     links.rel = "canonical";
     links.href = CONSTANTS.PROD + "/brand-store";
     this._renderer2.appendChild(this._document.head, links);
-    this.isShowLoader = true;
+    this.updateLoaderStatus(true);
 
   }
   ngOnInit(){
@@ -45,7 +48,7 @@ export class BrandComponent{
         // this.fetchHomePageData(rawData.homeData);
         const brandData = rawData['brandData'];
         this.brandsLogo = brandData[0]["data"][0]['block_data']['all_brand_store']['data'];
-        this.isShowLoader = false;
+        this.updateLoaderStatus(false);
           this.total_count = brandData[1]['totalCount'];
           this.final_arr1 = brandData[1]['brands'].sort(this.compare);
           this.final_arr1.forEach(element => {

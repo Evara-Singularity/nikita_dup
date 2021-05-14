@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import CONSTANTS from 'src/app/config/constants';
 import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 import { ClusterStoreService } from './cluster-store.service';
 
 const l0Data = makeStateKey<any>('l0Data');
@@ -54,11 +55,13 @@ export class ClusterStoreComponent implements OnInit {
     data: {};
     isShowLoader: boolean;
     clusterStoreUrl = CONSTANTS.PROD;
-
-    constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _cls: ClusterStoreService, private _tState: TransferState, @Inject(PLATFORM_ID) platformId, public title: Title, public meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private toastMessageService: ToastMessageService, private cfr: ComponentFactoryResolver, private injector: Injector) {
+    set updateLoaderStatus(value) {
+        this.loaderService.setLoaderState(value);
+      }
+    constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _cls: ClusterStoreService, private _tState: TransferState, @Inject(PLATFORM_ID) platformId, public title: Title, public meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private toastMessageService: ToastMessageService, private cfr: ComponentFactoryResolver, private injector: Injector, private loaderService: GlobalLoaderService) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
-        this.isShowLoader = false;
+        this.updateLoaderStatus(false);
     }
 
     ngOnInit() {

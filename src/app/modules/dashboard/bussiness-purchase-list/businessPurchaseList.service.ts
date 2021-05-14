@@ -24,23 +24,4 @@ export class BusinessPurchaseListService {
     let url = CONSTANTS.NEW_MOGLIX_API + "/purchase/removePurchaseList";
     return this.dataService.callRestful("POST", url, { body: data });
   }
-
-  getReviewsRating(obj) {
-    let url = CONSTANTS.NEW_MOGLIX_API + "/reviews/getReviews";
-    return this.dataService.callRestful("POST", url, { body: obj });
-  }
-
-  addMatCode(obj) {
-    let url = CONSTANTS.NEW_MOGLIX_API + "/purchase/addMatCode";
-    return this.dataService
-      .callRestful("POST", url, { body: obj })
-      .pipe(map((res) => res));
-  }
-
-  deleteMatCode(obj) {
-    let url = CONSTANTS.NEW_MOGLIX_API + "/purchase/deleteMatCode";
-    return this.dataService
-      .callRestful("POST", url, { body: obj })
-      .pipe(map((res) => res));
-  }
 }

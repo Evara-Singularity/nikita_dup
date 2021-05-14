@@ -38,13 +38,12 @@ export class BussinessInfoComponent {
     private _cartService: CartService,
     private _localAuthService: LocalAuthService,
     public localStorageService: LocalStorageService,
-    private _dashboardService: DashboardService
-  ) {
+    private _dashboardService: DashboardService) {
+
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
-    this._state.subscribe("menu.isCollapsed", (isCollapsed) => {
-      this.isMenuCollapsed = isCollapsed;
-    });
+    this._state.subscribe("menu.isCollapsed", (isCollapsed) => { this.isMenuCollapsed = isCollapsed; });
+
     if (this._router.url == "/") {
       this.isHomePage = true;
       this.currentRoute = "home";
@@ -75,35 +74,6 @@ export class BussinessInfoComponent {
     });
   }
 
-  onSubmit(data) {
-    let userSession = this._localAuthService.getUserSession();
-    this.showLoader = true;
-    let user = this.localStorageService.retrieve("user");
-    let obj = {
-      userid: user.userId,
-      pname: data.fname,
-      lname: data.lname,
-    };
-
-    this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
-      this.showLoader = false;
-      if (res["status"]) {
-        this.error = false;
-        this.errorMsg = res["statusDescription"];
-        if (this.localStorageService.retrieve("user")) {
-          let user = this.localStorageService.retrieve("user");
-          if (user.authenticated == "true") {
-            userSession.userName = data.fname + " " + data.lname;
-            this._localAuthService.setUserSession(userSession);
-            this._localAuthService.login$.next();
-          }
-        }
-      } else {
-        this.error = true;
-        this.errorMsg = "Something went wrong";
-      }
-    });
-  }
   logout() {
     this._commonService.logout().subscribe((response) => {
       this._localStorageService.clear("user");
@@ -144,6 +114,36 @@ export class BussinessInfoComponent {
           this._location.replaceState("/"); // clears browser history so they can't navigate with back button
           this._router.navigateByUrl("/");
         }, 1000);
+      }
+    });
+  }
+
+  onSubmit(data) {
+    let userSession = this._localAuthService.getUserSession();
+    this.showLoader = true;
+    let user = this.localStorageService.retrieve("user");
+    let obj = {
+      userid: user.userId,
+      pname: data.fname,
+      lname: data.lname,
+    };
+
+    this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
+      this.showLoader = false;
+      if (res["status"]) {
+        this.error = false;
+        this.errorMsg = res["statusDescription"];
+        if (this.localStorageService.retrieve("user")) {
+          let user = this.localStorageService.retrieve("user");
+          if (user.authenticated == "true") {
+            userSession.userName = data.fname + " " + data.lname;
+            this._localAuthService.setUserSession(userSession);
+            this._localAuthService.login$.next();
+          }
+        }
+      } else {
+        this.error = true;
+        this.errorMsg = "Something went wrong";
       }
     });
   }

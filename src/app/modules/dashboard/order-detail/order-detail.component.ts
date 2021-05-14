@@ -1,11 +1,10 @@
 import { Subject } from 'rxjs/Subject';
-import { BusinessOrderService } from '../bussiness-order/businessOrder.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe, formatDate } from '@angular/common';
-import { Bank } from './bank.validate';
+import { Bank } from '../../../utils/validators/bank.validate';
 import { TrackOrderComponent } from './track-order/track-order.component';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ModalService } from 'src/app/modules/modal/modal.service';
@@ -13,6 +12,7 @@ import { LocalAuthService } from 'src/app/utils/services/auth.service';
 import CONSTANTS from 'src/app/config/constants';
 import { PopUpComponent } from 'src/app/modules/popUp/pop-up.component';
 import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
+import { OrderDetailService } from './order-detail.service';
 
 declare var digitalData: {};
 declare let _satellite;
@@ -97,7 +97,7 @@ export class OrderDetailComponent implements OnInit {
     private datePipe: DatePipe,
     private _formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private _businessOrderService: BusinessOrderService,
+    private _OrderService: OrderDetailService,
     private _localAuthService: LocalAuthService,
     private _router: Router,
     private _tms: ToastMessageService,
@@ -121,7 +121,7 @@ export class OrderDetailComponent implements OnInit {
 
     this.getOrderDetail(this.orderId);
 
-    this._businessOrderService.getCancelReasons().subscribe((cancelReasons) => {
+    this._OrderService.getCancelReasons().subscribe((cancelReasons) => {
       if (cancelReasons != undefined && cancelReasons != null && Array.isArray(cancelReasons)) {
         this.cancelReasons = cancelReasons;
       }
@@ -203,7 +203,7 @@ export class OrderDetailComponent implements OnInit {
 
   getOrderDetail(orderId) {
     this.showLoader = true;
-    this._businessOrderService.getOrderDetail(orderId, this.user["userId"]).pipe(map((cr) => {
+    this._OrderService.getOrderDetail(orderId, this.user["userId"]).pipe(map((cr) => {
       if (cr != undefined && cr != null && cr != '' && Array.isArray(cr) && cr.length > 0) {
         for (let i = 0; i < cr.length; i++) {
           cr[i]["cancelReasonId"] = "";
@@ -322,7 +322,7 @@ export class OrderDetailComponent implements OnInit {
     if (detail.cancelReasonId == undefined || detail.cancelReasonId == null || detail.cancelReasonId == "")
       return;
     let data = { customer_id: detail.customer_id, item_id: detail.item_id, reason_id: detail.cancelReasonId };
-    this._businessOrderService.cancelOrder(data).subscribe((response) => {
+    this._OrderService.cancelOrder(data).subscribe((response) => {
       this.cancel_step = 2;
       for (let i = 0; i < this.orderDetail[this.orderId].length; i++) {
         if (this.orderDetail[this.orderId][i]["item_id"] == detail["item_id"]) {
@@ -391,7 +391,7 @@ export class OrderDetailComponent implements OnInit {
 
   getRefundTransactionId(rData, userId) {
     if (rData && userId) {
-      this._businessOrderService.getTransactionId({ userId: userId }).subscribe(res => {
+      this._OrderService.getTransactionId({ userId: userId }).subscribe(res => {
         if (res && res['status']) {
           rData.transactionId = res['data']['transactionId'];
           rData.orderId = this.detail.order_id;
@@ -403,7 +403,7 @@ export class OrderDetailComponent implements OnInit {
 
   returnRefund(rData) {
     if (rData) {
-      this._businessOrderService.returnItem(rData).subscribe((res) => {
+      this._OrderService.returnItem(rData).subscribe((res) => {
         if (res['status']) {
           if (this.detail['item_id'] == rData['itemId']) {
             for (let i = 0; i < this.orderDetail[this.orderId].length; i++) {
@@ -441,7 +441,7 @@ export class OrderDetailComponent implements OnInit {
 
     const fData = new FormData();
     fData.append('productImage', event.target.files[0]);
-    this._businessOrderService.uploadImage(fData).then((res) => {
+    this._OrderService.uploadImage(fData).then((res) => {
       this.showFileError = false;
       this.itemImages.push({ file: event.target.files[0], url: JSON.parse(res['response'])['data'] });
       this.showLoader = false;
@@ -453,7 +453,7 @@ export class OrderDetailComponent implements OnInit {
     const fData = new FormData();
     fData.append('productImage', event.target.files[0]);
 
-    this._businessOrderService.uploadImage(fData).then((res) => {
+    this._OrderService.uploadImage(fData).then((res) => {
       this.showFileError = false;
       this.chequeImage = { file: event.target.files[0], url: JSON.parse(res['response'])['data'] };
     });
@@ -493,7 +493,7 @@ export class OrderDetailComponent implements OnInit {
       this.spp = true;
     } else {
       this.showLoader = true;
-      this._businessOrderService.getOrderTracking(itemDetails['shipment_detail']['shipment_id'])
+      this._OrderService.getOrderTracking(itemDetails['shipment_detail']['shipment_id'])
         .pipe(
           takeUntil(this.cDistryoyed)
         ).subscribe(
@@ -537,7 +537,7 @@ export class OrderDetailComponent implements OnInit {
         }
         lOrderScans.splice(deliveryIndex, 1);
       }
-      itemDetails['groupByDate'] = this._businessOrderService.groupBy(lOrderScans, 'mDate');
+      itemDetails['groupByDate'] = this._OrderService.groupBy(lOrderScans, 'mDate');
       itemDetails['groupByDateKeys'] = Object.keys(itemDetails['groupByDate']);
       itemDetails['hasInfo'] = true;
     }

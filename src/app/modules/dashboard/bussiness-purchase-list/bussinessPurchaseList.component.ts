@@ -103,54 +103,6 @@ export class BussinessPurchaseListComponent {
     _satellite.track("genericPageLoad");
   }
 
-  deleteMatCode(productBO, index, dIndex) {
-    index = dIndex;
-
-    let userSession = this._localAuthService.getUserSession();
-    let mcData = {
-      idUser: userSession.userId,
-      userType: userSession.userType,
-      idProduct: productBO["partNumber"],
-    };
-    this._businessPurchaseListService.deleteMatCode(mcData).subscribe((res) => {
-      if (res["status"] && res["statusCode"] == 200) {
-        this.purchaseLists[index]["matCodeMode"] = false;
-        this.purchaseLists[index]["matCodeFlag"] = false;
-        const itemRowsControl = this.addMatCodeForm.controls["itemRows"];
-        itemRowsControl["controls"][index].controls["matCode"].value = null;
-      }
-    });
-  }
-
-  clearMatCode(productBO, index, dIndex) {
-    index = dIndex;
-
-    this.purchaseLists[index]["matCodeMode"] = false;
-    this.purchaseLists[index]["matCodeFlag"] = false;
-    const itemRowsControl = this.addMatCodeForm.controls["itemRows"];
-    itemRowsControl["controls"][index].reset();
-  }
-
-  addMatCode(data, productBO, index, dIndex) {
-    index = dIndex;
-    let userSession = this._localAuthService.getUserSession();
-
-    let mcData = {
-      idUser: userSession.userId,
-      userType: userSession.userType,
-      idProduct: productBO["partNumber"],
-      matCode: data["itemRows"][index]["matCode"],
-    };
-    this._businessPurchaseListService.addMatCode(mcData).subscribe((res) => {
-      if (res["status"] && res["statusCode"] == 200) {
-        this.purchaseLists[index]["matCode"] =
-          data["itemRows"][index]["matCode"];
-        this.purchaseLists[index]["matCodeMode"] = false;
-        this.purchaseLists[index]["matCodeFlag"] = true;
-      }
-    });
-  }
-
   getPurcahseList() {
     this.showLoader = true;
     let userSession = this._localAuthService.getUserSession();
@@ -204,21 +156,6 @@ export class BussinessPurchaseListComponent {
           : null,
         [Validators.required],
       ],
-    });
-  }
-
-  getReview(partNumber, index) {
-    let obj = {
-      review_type: "PRODUCT_REVIEW",
-      item_type: "PRODUCT",
-      item_id: partNumber,
-      user_id: " ",
-    };
-    this._businessPurchaseListService.getReviewsRating(obj).subscribe((res) => {
-      if (res["code"] == "200") {
-        this.purchaseLists[index]["rating"] =
-          res["data"]["summaryData"]["final_average_rating"];
-      }
     });
   }
 

@@ -18,14 +18,18 @@ export class BussinessRfqComponent {
   myRfqList: any;
   showLoader: boolean = true;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+
   constructor(
     private _localAuthService: LocalAuthService,
     private localStorageService: LocalStorageService,
-    private _dashboardService: DashboardService
-  ) {}
+    private _dashboardService: DashboardService) {
 
-  ngOnInit() {
     this.getMyRfqList();
+    this.setData();
+
+  }
+
+  setData() {
     let userSession = this._localAuthService.getUserSession();
 
     let pageData = {
@@ -34,8 +38,8 @@ export class BussinessRfqComponent {
       subSection: "moglix:account dashboard-myrfq",
       loginStatus:
         userSession &&
-        userSession.authenticated &&
-        userSession.authenticated == "true"
+          userSession.authenticated &&
+          userSession.authenticated == "true"
           ? "registered user"
           : "guest",
     };

@@ -1,0 +1,27 @@
+@import '../../scss/variables';
+.page-not-found{
+  background: $white;
+  img{
+    margin: 50px 0 30px 0;
+  }
+}
+.categories-list{
+  li{
+    margin-bottom: 30px;
+    @include gridForCategory('3' , '20');
+    i{
+      width: 75px;
+      height: 75px;
+      display: block;
+      margin: auto;
+      background: $gray-color;
+      border-radius: 50%;
+      font-size: 35px;
+      line-height: 75px;
+      margin-bottom: 5px;
+    }
+    span{
+      font-size: $large-font;
+    }
+  }
+}

@@ -25,7 +25,7 @@ export class TrackOrderComponent implements OnInit {
   deliveredInfo = null;
 
   constructor() { }
-  
+
 
   ngOnInit() {
     this.displayScans = this.itemDetails["hasInfo"];
@@ -68,5 +68,4 @@ export class TrackOrderComponent implements OnInit {
     }
     return true;
   }
-  
 }

@@ -24,7 +24,4 @@ export class RetailAddressComponent {
   constructor(public _dashboardService: DashboardService) {
     this.invoiceType = "retail";
   }
-
-  ngOnInit() {
-  }
 }

@@ -1,0 +1,93 @@
+@import '../../scss/variables';
+
+.testimonial-container{
+	padding-top: 28px;
+}
+.testimonial{
+	background: $white;
+	padding: 75px 15px 15px 15px;
+	margin-bottom: 50px;
+	position: relative;	
+	@extend %border-radius;
+	.head-strip{
+		width: 70%;
+		padding: 9px 20px 10px 10px;
+		font-size: 20px;
+		position: absolute;
+		top:-10px;
+		background: #FAFAFA;
+		img{
+			position: relative;
+			z-index: 2;
+		}
+		h3 , p{
+			position: relative;
+			z-index: 2;
+		}
+		h3{
+			color: $logo-color;
+			font-size: $extra-large-font
+		}
+		p{
+			font-size: $medium-font;
+		}
+		&:after{
+			content: " ";
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			z-index: 1;
+			background: #FAFAFA;
+			
+		}
+		&.left-arrow{
+			left:0px;
+			border-radius: 3px 0px 0px 0px;
+
+			&::after{
+				transform-origin: bottom left;
+				-ms-transform: skew(-30deg, 0deg);
+				-webkit-transform: skew(-30deg, 0deg);
+				transform: skew(-30deg, 0deg);
+				-moz-box-shadow: 4px 4px 5px rgba(0,0,0,.16);
+				-webkit-box-shadow: 4px 4px 5px rgba(0,0,0,.16);
+				box-shadow: 4px 4px 5px rgba(0,0,0,.16);
+			}
+		}
+		&.right-arrow{
+			right: 0px;
+			border-radius: 0 3px 0px 0px;
+			text-align: right;
+			&::after{
+				transform-origin: bottom right;
+				-ms-transform: skew(30deg, 0deg);
+				-webkit-transform: skew(30deg, 0deg);
+				transform: skew(30deg, 0deg);
+				-moz-box-shadow: -4px 4px 5px rgba(0,0,0,.16);
+			-webkit-box-shadow: -4px 4px 5px rgba(0,0,0,.16);
+			box-shadow: -4px 4px 5px rgba(0,0,0,.16);
+			}
+		}
+	}
+	.content{
+		text-align: left;
+		line-height: 25px;
+		font-size: $large-font;
+		p , ul{
+			margin-bottom: 15px;
+		}
+		p:last-child , ul:last-child{
+			margin-bottom: 0;
+		}
+		.no-list{
+			list-style: decimal;
+			padding-left: 16px;
+			li{
+				padding: 5px;
+			}
+		}
+	}
+}

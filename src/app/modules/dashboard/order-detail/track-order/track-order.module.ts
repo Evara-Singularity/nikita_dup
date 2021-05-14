@@ -6,7 +6,7 @@ import { TrackOrderComponent } from './track-order.component';
     declarations: [TrackOrderComponent],
     imports: [CommonModule],
     entryComponents: [TrackOrderComponent],
-    providers:[]
+    providers: []
 
 })
 export class TrackOrderModule { }

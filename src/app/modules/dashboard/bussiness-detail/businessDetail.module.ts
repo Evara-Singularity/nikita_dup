@@ -22,4 +22,4 @@ import { PincodePipeModule } from "src/app/utils/pipes/pincode-error.pipe";
   exports: [],
   providers: [BusinessDetailService],
 })
-export class BusinessDeatailDashboardModule {}
+export class BusinessDeatailDashboardModule { }

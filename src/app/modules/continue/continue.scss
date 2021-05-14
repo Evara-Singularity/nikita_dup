@@ -1,0 +1,32 @@
+@import '../../scss/variables';
+
+button.btn[disabled] {
+    background: #bdbdbd;
+}
+.animateClass{
+    @extend %transition;
+}
+.continue-button {
+  p {
+    line-height: 20px;
+  }
+  .payable-amnt{
+    display: block;
+    font-size:$large-font;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: #3030308c;
+    padding-bottom: 4px;
+    img{
+        vertical-align: middle;
+    }
+  }
+}
+@media screen and (max-width:320px) {
+  .continue-button{
+    .payable-amnt{
+      font-size:$medium-font;
+    }
+  }
+}
+

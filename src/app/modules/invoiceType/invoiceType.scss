@@ -1,0 +1,65 @@
+@import '../../scss/variables';
+
+.invoice-container{
+  background: $white;
+  padding:15px;
+  margin-top: 10px;
+  @extend %cards;
+  .invoice-select{
+    // margin-top: 15px;
+    @extend %clear-fix;
+    position: relative;
+    label{
+      // padding: 10px;
+      width:20px;
+      // @include gridForCategory('1' , null);
+      @extend %custom-check-box-checkout;
+      &.selected{
+        // background: $selected-color;
+      }
+      
+    }
+    .chk-txt{
+      font-size: $medium-font;
+      width: calc(100% - 25px);
+      float: right;
+      .heading{
+        font-weight: 500; 
+        display: block;
+        font-size:$large-font;
+      }
+      .txt{
+        font-size:$medium-font;
+        line-height:14px;
+        padding-top:5px;
+      }
+    }
+  }
+}
+.info-ico{
+  vertical-align:middle;
+  img{
+    width:18px;
+    vertical-align:middle;
+  }
+}
+.gstToolTipBox {
+    width:272px;
+    background: #f5f8ff;
+    box-shadow: 0px 3px 6px #00000029;
+    border: 0.2px solid #e0e9ff;
+    padding: 10px;
+    border-radius: 2px;
+    position: absolute;
+    right: 15px;
+    top: 6px;
+  p {
+    color: #797979;
+    font-size: $medium-font;
+    line-height: 20px;
+    width:calc(100% - 25px);
+  }
+  i{
+    font-size: $large-font;
+  }
+}

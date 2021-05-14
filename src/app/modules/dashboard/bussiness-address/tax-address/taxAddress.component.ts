@@ -22,8 +22,7 @@ export class TaxAddressComponent {
   invoiceType: string;
 
   constructor(public _dashboardService: DashboardService) {
+    
     this.invoiceType = "tax";
   }
-
-  ngOnInit() { }
 }

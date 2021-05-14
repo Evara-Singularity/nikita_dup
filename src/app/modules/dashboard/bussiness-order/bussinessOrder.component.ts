@@ -148,14 +148,6 @@ export class BussinessOrderComponent {
   clearPosParam() {
     this._router.navigate([this.currentRoute]);
   }
-  getOrderDetail(Id) {
-    let obj = {};
-    obj["orderId"] = Id;
-    obj["userId"] = this.user["userId"];
-    this._dashboardService.getOrderDetail(obj)
-      .subscribe(response => {
-      });
-  }
 
   showOrder(orderId, index) {
     this.showLoader = true;
@@ -224,21 +216,7 @@ export class BussinessOrderComponent {
     return emidiscountCharge;
   }
 
-  cancelOrder(detail, orderId) {
-    if (detail.cancelReasonId == undefined || detail.cancelReasonId == null || detail.cancelReasonId == "")
-      return;
-    let data = { customer_id: detail.customer_id, item_id: detail.item_id, reason_id: detail.cancelReasonId };
-    this._businessOrderService.cancelOrder(data).subscribe((response) => {
-      for (let i = 0; i < this.orderDetail[orderId].length; i++) {
-        if (this.orderDetail[orderId][i]["item_id"] == detail["item_id"]) {
-          this.orderDetail[orderId][i]["isCanceled"] = true;
-        }
-      }
-    })
-  }
-
   changePagination(page) {
-    let defaultParams = this._commonService.getDefaultParams();
     let extras: NavigationExtras = {};
     let currentRoute = this._commonService.getCurrentRoute(this._router.url);
     let fragmentString = this._activatedRoute.snapshot.fragment;

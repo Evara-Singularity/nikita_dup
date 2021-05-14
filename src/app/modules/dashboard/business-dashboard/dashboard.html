@@ -1,43 +1,58 @@
 <section class="bussiness-dashboard">
   <div class="row">
     <div class="col-sm-12 pad-lr-xs-0">
-      <h3  class="text-center text-uppercase text-400 f-size-20 pad-b-10 wp-95 center-block" >{{ businessName }}</h3>
+      <h3 class="text-center text-uppercase text-400 f-size-20 pad-b-10 wp-95 center-block">{{ businessName }}</h3>
 
-      <div class="dash_msz_alert yellow_info mar-b-15" *ngIf="showProfileIncompleteStrip">Your profile details are incomplete, <span [routerLink]="['/dashboard/business-detail']">CLICK HERE</span> to update</div>
+      <div class="dash_msz_alert yellow_info mar-b-15" *ngIf="showProfileIncompleteStrip">Your profile details are
+        incomplete, <span [routerLink]="['/dashboard/business-detail']">CLICK HERE</span> to update</div>
 
       <div class="wp-70 wp-xs-100 text-center center-block o-hidden dashboard_wrap">
-        <span class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/order']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/order']">
           <span class="icon_block order"></span>
           <h3 class="f-size-16 text-400 pad-b-5">My Orders</h3>
           <h5 class="f-size-13 text-400 pad-t-2">View total orders placed</h5>
         </span>
-          <span class="inline-block dash-block box-shadow h-180 w-180 f-left-xs wp-xs-46 bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/rfq']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 f-left-xs wp-xs-46 bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/rfq']">
           <span class="icon_block rfq"></span>
           <h3 class="f-size-16 text-400 pad-b-5">My RFQs</h3>
           <h5 class="f-size-13 text-400 pad-t-2">View request for quotations</h5>
         </span>
-        <span class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/purchase-list']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/purchase-list']">
           <span class="icon_block purchase"></span>
           <h3 class="f-size-16 text-400 pad-b-5">WishList</h3>
           <h5 class="f-size-13 text-400 pad-t-2">Products you have saved</h5>
         </span>
-        <span class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/business-detail']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/business-detail']">
           <span class="icon_block bussiness"></span>
           <h3 class="f-size-16 text-400 pad-b-5">Business Details</h3>
           <h5 class="f-size-13 text-400 pad-t-2">View your business details</h5>
         </span>
-        <span class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 dash-block box-shadow wp-xs-45 bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/info']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 dash-block box-shadow wp-xs-45 bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/info']">
           <span class="icon_block personal"></span>
           <h3 class="f-size-16 text-400 pad-b-5">User Settings</h3>
           <h5 class="f-size-13 text-400 pad-t-2">View/Edit your information</h5>
         </span>
 
-        <span class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/password']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/password']">
           <span class="icon_block password"></span>
           <h3 class="f-size-16 text-400 pad-b-5">Password</h3>
           <h5 class="f-size-13 text-400 pad-t-2">View/Edit your password</h5>
         </span>
-        <span class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10" [routerLink]="['/dashboard/address']">
+        <span
+          class="inline-block dash-block box-shadow h-180 w-180 wp-xs-46 f-left-xs bg-white mar-lr-5 mar-tb-10 pad-lr-xs-10"
+          [routerLink]="['/dashboard/address']">
           <span class="icon_block address"></span>
           <h3 class="f-size-16 text-400 pad-b-5">Address</h3>
           <h5 class="f-size-13 text-400 pad-t-2">View/Edit your address</h5>
@@ -48,8 +63,9 @@
   </div>
 
   <div class="row mar-t-20">
-      <div class="col-sm-12 text-center">
-        <span class="f-size-14 text-blue text-500 text-uppercase" href="#" [routerLink]="['/']">Start Shopping Now <i class="fa fa-angle-double-right text-blue"></i></span>
-      </div>
+    <div class="col-sm-12 text-center">
+      <span class="f-size-14 text-blue text-500 text-uppercase" href="#" [routerLink]="['/']">Start Shopping Now <i
+          class="fa fa-angle-double-right text-blue"></i></span>
     </div>
+  </div>
 </section>

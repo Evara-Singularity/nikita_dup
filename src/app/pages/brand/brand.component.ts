@@ -10,8 +10,7 @@ import { CONSTANTS } from "@app/config/constants";
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
-import { BehaviorSubject, combineLatest, forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
 declare var digitalData: {};

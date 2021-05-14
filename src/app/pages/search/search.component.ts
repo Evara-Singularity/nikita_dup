@@ -9,7 +9,7 @@ import { CONSTANTS } from "@app/config/constants";
 import { Meta } from '@angular/platform-browser';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -18,7 +18,7 @@ declare let _satellite;
 @Component({
     selector: 'search',
     templateUrl: './search.html',
-    styleUrls: ['./../category/category.scss']
+    styleUrls: ['./../category/category.scss', './search.scss']
 })
 
 export class SearchComponent implements OnInit, AfterViewInit {
@@ -123,31 +123,47 @@ export class SearchComponent implements OnInit, AfterViewInit {
         this.sortByComponentUpdated.next(this.sortByComponent);
     }
 
+    refreshProducts() {
+        this._commonService.showLoader = true;
+        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
+        const defaultParams = this.createDefaultParams();
+        this._commonService.updateDefaultParamsNew(defaultParams);
+
+        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+            this._commonService.showLoader = false;
+            const extra = { oldDefaultParams: oldDefaultParams };
+            this.initiallizeData(response, extra, true);
+            if (response.productSearchResult.highlightedSearchString)
+                this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
+        });
+    }
+
     private refreshProductsBasedOnRouteChange() {
-        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
-            (params) => {
-                this._commonService.showLoader = true;
-                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                    this._commonService.showLoader = false;
-                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                    this.paginationUpdated.next(this.paginationData);
-                    this.sortByUpdated.next();
-                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    this.filterData = response.buckets;
-                    // this.bucketsUpdated.next(response.buckets);
-                    this.productsUpdated.next(response.productSearchResult.products);
-                    // console.log(response.productSearchResult.products);
-                    this.relatedSearches = response.relatedSearches;
+        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
+            this.refreshProducts();
+        });
 
-                    this.productSearchResult = response.productSearchResult;
-                    const qp = this._activatedRoute.snapshot.queryParams;
+        // this._commonService.showLoader = true;
+        
+        // this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+        //     this._commonService.showLoader = false;
+        //     this.paginationData = { itemCount: response.productSearchResult.totalCount };
+        //     this.paginationUpdated.next(this.paginationData);
+        //     this.sortByUpdated.next();
+        //     this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
+        //     this.filterData = response.buckets;
+        //     // this.bucketsUpdated.next(response.buckets);
+        //     this.productsUpdated.next(response.productSearchResult.products);
+        //     // console.log(response.productSearchResult.products);
+        //     this.relatedSearches = response.relatedSearches;
 
-                    if (qp['didYouMean'] !== undefined) {
-                        this.didYouMean = qp['didYouMean'];
-                    }
-                });
-            }
-        );
+        //     this.productSearchResult = response.productSearchResult;
+        //     const qp = this._activatedRoute.snapshot.queryParams;
+
+        //     if (qp['didYouMean'] !== undefined) {
+        //         this.didYouMean = qp['didYouMean'];
+        //     }
+        // });
     }
 
     setProductsAfterResolverData() {
@@ -363,31 +379,30 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     async filterUp() {
-        if (this.isBrowser) {
-            if (!this.filterInstance) {
-                this._commonService.showLoader = true;
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    this._commonService.showLoader = false;
-                });
-                const factory = this.cfr.resolveComponentFactory(FilterComponent);
-                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-                this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
-                this.filterInstance.instance['sortByComponent'] = this.sortByComponentUpdated;
-            }
-
+        if (!this.filterInstance) {
+            this._commonService.showLoader = true;
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                this._commonService.showLoader = false;
+                setTimeout(() => {
+                    const mob_filter = document.querySelector('.mob_filter');
+                    if (mob_filter) {
+                        mob_filter.classList.add('upTrans');
+                    }
+                }, 0);
+            });
+            const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+            this.filterInstance.instance['pageName'] = this.pageName;
+            this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
+            this.filterInstance.instance['sortByComponent'] = this.sortByComponentUpdated;
+        } else {
             const mob_filter = document.querySelector('.mob_filter');
 
             if (mob_filter) {
-                if (mob_filter.classList.contains('upTrans')) {
-                    mob_filter.classList.remove('upTrans');
-                } else {
-                    mob_filter.classList.add('upTrans');
-                }
+                mob_filter.classList.toggle('upTrans');
             }
         }
-
     }
 
 

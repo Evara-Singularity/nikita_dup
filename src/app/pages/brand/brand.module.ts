@@ -11,14 +11,12 @@ import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SortByModule } from '@app/components/sortBy/sortBy.module';
 
 @NgModule({
     imports: [
         CmsModule,
         BrandRouting,
         CommonModule,
-        SortByModule,
         ReplacePipeModule,
         ProductListModule,
         MathFloorPipeModule,

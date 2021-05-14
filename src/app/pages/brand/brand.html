@@ -61,13 +61,13 @@
             <span class="txt"> FILTER</span>
         </button>
 
-        <button type="button" (click)="toggleSortBy(true)">
+        <button type="button" (click)="toggleSortBy($event)">
             <i class="icon-sort-by" aria-hidden="true"></i>
             <span class="txt">SORT BY</span>
         </button>
     </div>
-    <!-- <ng-container *ngIf="isBrowser" #sortBy></ng-container> -->
-    <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
+    <ng-container *ngIf="isBrowser" #sortBy></ng-container>
+    <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
     <div>
         <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
         <ng-template *ngIf="isBrowser" #pagination></ng-template>

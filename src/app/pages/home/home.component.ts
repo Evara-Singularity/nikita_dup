@@ -33,12 +33,10 @@ import { FooterService } from "src/app/utils/services/footer.service";
 import { LocalAuthService } from "src/app/utils/services/auth.service";
 import { CommonService } from "src/app/utils/services/common.service";
 import { ActivatedRoute } from "@angular/router";
+import { GlobalAnalyticsService } from "src/app/utils/services/global-analytics.service";
 
 const FDK = makeStateKey<string>("flyout");
-
 declare let dataLayer;
-declare var digitalData: {};
-declare let _satellite;
 
 @Component({
   selector: "home",
@@ -122,7 +120,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private cfr: ComponentFactoryResolver,
     private _commonService: CommonService,
     private injector: Injector,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private analytics: GlobalAnalyticsService
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -340,16 +339,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       userSession.authenticated == "true"
     ) {
       /*Start Criteo DataLayer Tags */
-      dataLayer.push({
+      const obj = {
         event: "viewHome",
         email: userSession && userSession.email ? userSession.email : "",
-      });
+      };
+      this.analytics.sendGTMCall(obj);
       /*End Criteo DataLayer Tags */
     } else {
-      dataLayer.push({
+      const obj = {
         event: "viewHome",
         email: "",
-      });
+      }
+      this.analytics.sendGTMCall(obj);
     }
     /*Start Adobe Analytics Tags */
     let page = {
@@ -374,9 +375,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         userSession && userSession["userType"] ? userSession["userType"] : "",
     };
     let order = {};
+    let digitalData: any;
     digitalData["page"] = page;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
+    this.analytics.sendAdobeCall(digitalData);
   }
 
   initConstructorData() {
@@ -538,7 +541,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onVisibleFeaturedBrands(htmlElement) {
     
-    const { FeaturedBrands } = await import('./featuredBrands/featuredBrands.component');
+    const { FeaturedBrands } = await import('../../modules/featuredBrands/featuredBrands.component');
     const factory = this.cfr.resolveComponentFactory(FeaturedBrands);
     this.featuredBrandsInstance = this.featuredBrandsContainerRef.createComponent(factory, null, this.injector);
     this.featuredBrandsInstance.instance['featureBrandData'] = this.featureBrandData;
@@ -547,7 +550,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onVisibleCategories(htmlElement) {
-    const { Categories } = await import('./categories/categories.component');
+    const { Categories } = await import('../../modules/categories/categories.component');
     const factory = this.cfr.resolveComponentFactory(Categories);
     this.categoriesInstance = this.fCategoriesContainerRef.createComponent(factory, null, this.injector);
     this.categoriesInstance.instance['middleImageJsonData'] = this.middleImageJsonData;
@@ -562,7 +565,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onVisibleFeaturedArrivals(htmlElement) {
-    const { FeaturedArrivals } = await import('./featuredArrivals/featuredArrivals.component');
+    const { FeaturedArrivals } = await import('../../modules/featuredArrivals/featuredArrivals.component');
     const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
     this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(factory, null, this.injector);
     this.featuredArrivalsInstance.instance['featureArrivalData'] = this.featureArrivalData;

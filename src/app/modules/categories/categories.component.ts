@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter, NgModule, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { CommonService } from "../../../utils/services/common.service";
+import { CommonService } from "../../utils/services/common.service";
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { ObserveVisibilityDirectiveModule } from "../../../utils/directives/observe-visibility.directive";
+import { ObserveVisibilityDirectiveModule } from "../../utils/directives/observe-visibility.directive";
 
 
 @Component({
@@ -91,7 +91,7 @@ export class Categories {
     return newValue;
   }
     async onVisibleCarousel(htmlElement) {
-      const { RecentlyViewedCarouselComponent } = await import('../../../components/recentlyViewedCarousel/recentlyViewedCarousel.component');
+      const { RecentlyViewedCarouselComponent } = await import('../../components/recentlyViewedCarousel/recentlyViewedCarousel.component');
       const factory = this.cfr.resolveComponentFactory(RecentlyViewedCarouselComponent);
       this.carouselInstance = this.carouselContainerRef.createComponent(factory, null, this.injector);
       this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';

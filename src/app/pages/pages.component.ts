@@ -33,9 +33,9 @@ export class PagesComponent implements OnInit {
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
-    this.router.events.subscribe(res=>{
+    this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
-  })
+    })
   }
 
   ngOnInit() {
@@ -92,27 +92,27 @@ export class PagesComponent implements OnInit {
 
   createHeaderData(_aRoute) {
     of(_aRoute)
-        .pipe(
-            map((route) => {
-                while (route.firstChild) {
-                    route = route.firstChild;
-                }
-                return route;
-            }),
-            filter((route) => route.outlet === 'primary'),
-            mergeMap((route) => route.data)
-        )
-        .subscribe((rData) => {
-            this.iData = rData;
-        });
-}
+      .pipe(
+        map((route) => {
+          while (route.firstChild) {
+            route = route.firstChild;
+          }
+          return route;
+        }),
+        filter((route) => route.outlet === 'primary'),
+        mergeMap((route) => route.data)
+      )
+      .subscribe((rData) => {
+        this.iData = rData;
+      });
+  }
 
   clickFooter() {
     this.footerVisible = !this.footerVisible;
     if (this.footerVisible) {
-        let footerOffset = document.getElementById('footerContainer').offsetTop;
-        ClientUtility.scrollToTop(1000, footerOffset - 50);
+      let footerOffset = document.getElementById('footerContainer').offsetTop;
+      ClientUtility.scrollToTop(1000, footerOffset - 50);
     }
-}
+  }
 
 }

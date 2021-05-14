@@ -29,6 +29,8 @@ export class BrandComponent {
     @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
     paginationInstance = null;
     @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
+    brandDetailsFooterInstance = null;
+    @ViewChild('brandDetailsFooter', { read: ViewContainerRef }) brandDetailsFooterContainerRef: ViewContainerRef;
     
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -519,6 +521,34 @@ export class BrandComponent {
 
     private capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    async onVisiblebrandDetailsFooter(event) {
+        console.clear();
+        console.log(event);
+        if (!this.brandDetailsFooterInstance) {
+            this._commonService.showLoader = true;
+            const { BrandDetailsFooterComponent } = await import('@app/pages/brand/brand-details-footer/brand-details-footer.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(BrandDetailsFooterComponent);
+            this.brandDetailsFooterInstance = this.brandDetailsFooterContainerRef.createComponent(factory, null, this.injector);
+            this.brandDetailsFooterInstance.instance['brandDetailsFooterData'] = {
+                brandCatDesc: this.brandCatDesc,
+                brandShortDesc: this.brandShortDesc,
+                brandContent: this.brandContent,
+                iba: this.iba,
+                productSearchResult: this.productSearchResult,
+                productSearchResultSEO: this.productSearchResultSEO,
+                heading: this.heading,
+                productCount: this.productCount,
+                brand: this.brand,
+                productCategoryNames: this.productCategoryNames,
+                categoryLinkLists: this.categoryLinkLists,
+                categoryNames: this.categoryNames,
+                todayDate: this.todayDate
+            };
+        }
     }
 
     async onVisiblePagination(event) {

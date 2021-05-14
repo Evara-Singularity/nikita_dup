@@ -1,0 +1,79 @@
+<div class="brandsSection" *ngIf="brandDetailsFooterData?.productCategoryNames.length > 0" >
+    <div class="innerBrandSection">
+        <h4>Popular Categories</h4>
+        <span class="border-bottom"></span>
+        <a *ngFor="let category of brandDetailsFooterData?.productCategoryNames;last as isLast" href="{{brandDetailsFooterData?.categoryLinkLists[category]}}"
+            class="brandList">{{category}} <span *ngIf="!(isLast)">. </span></a>
+    </div>
+</div>
+
+<div class="body-bg pt-1">
+        <div *ngIf="brandDetailsFooterData?.brandCatDesc || brandDetailsFooterData?.brandShortDesc || brandDetailsFooterData?.brandContent" class="container-fluid pad-lr-0"
+            [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
+            <div class="panel-head">
+                <div class="container">
+                    <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
+                        [appKpToggle]="{idName: 'openCat3' , iconMode : true}">
+                        More About Brand
+                    </h3>
+                </div>
+            </div>
+
+            <div id="openCat3" class="category_data" style="display: block">
+                <div class="container cms-content">
+                    <div [innerHTML]="((brandDetailsFooterData?.brandCatDesc !== null && brandDetailsFooterData?.brandCatDesc !== '') ? brandDetailsFooterData?.brandCatDesc : (brandDetailsFooterData?.showDesc == true ? brandDetailsFooterData?.brandShortDesc : '<h2> Genuine Products from '+ brandDetailsFooterData?.brand + ' at the Best Prices Online at Moglix </h2>
+
+            <p> '+ brandDetailsFooterData?.brand + ' products are procured through reliable distributors and dealers in India and several other countries worldwide. We, at Moglix, offer more than
+            ' + brandDetailsFooterData?.productCount + ' products by '+ brandDetailsFooterData?.brand + ' that are listed on our online store. These are suitable for personal or commercial use in various industries, homes, businesses and offices. These listings have been properly curated and arranged in various product categories such as ' +   brandDetailsFooterData?.categoryNames + ' to provide easy navigation and seamless user experience.</p><br />
+            
+            <p>Moglix is one stop solution if you are looking online for best deals and offers on '+ brandDetailsFooterData?.brand + ' products. We also offer the option of bulk buying or wholesale prices on these products. Having a pan India presence including major cities like Delhi NCR, Mumbai, Chennai, Bengaluru, Kolkata, Chennai, Pune, Jaipur, Hyderabad, and Ahmedabad, Moglix provides timely doorstep delivery nation-wide.</p>
+            
+            ')) "></div>
+                </div>
+            </div>
+        </div>
+        <div class="cat_seo" *ngIf="brandDetailsFooterData?.productSearchResult && brandDetailsFooterData?.productSearchResult['products'].length>0">
+            <div *ngIf="brandDetailsFooterData?.productSearchResultSEO.length">
+                <div class="panel-head">
+                    <div class="container">
+                        <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
+                            [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
+                            <p>
+                                Top Selling {{ brandDetailsFooterData?.heading ? (brandDetailsFooterData?.heading | removeHTML) : brandDetailsFooterData?.brand}} Price
+                                List in India
+                            </p>
+                        </h3>
+                    </div>
+                </div>
+
+                <div id="openCat4" style="display: block" class="brand-tbl">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <th>Latest Models</th>
+                                <th>Expected Price</th>
+                                <th>Discount</th>
+                            </tr>
+                            <ng-container *ngFor="let product of brandDetailsFooterData?.productSearchResultSEO | slice:0:10, let i=index">
+                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                                    <td>
+                                        <a href="{{product.productUrl}}">{{product.productName}}</a>
+                                    </td>
+                                    <td>
+                                        Rs. {{product.priceWithoutTax | mathFloor | number :
+                                        '1.0-0'}}
+                                    </td>
+                                    <td>
+                                        {{ product.discount == 0? "-": ((product.mrp -
+                                        product.priceWithoutTax)/product.mrp)*100 | mathFloor |
+                                        number : '1.0-0'}} % off
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                    <span class="date-text">This data was last updated on {{ brandDetailsFooterData?.todayDate | date:'shortDate'}}.</span>
+                </div>
+            </div>
+        </div>
+    </div>

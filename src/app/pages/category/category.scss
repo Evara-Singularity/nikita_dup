@@ -1,7 +1,6 @@
 @import '../../scss/variables';
 :host {
     display: block;
-    margin: 55px 0px;
     .slide-up {
         transform: translateY(0);
     }
@@ -85,6 +84,9 @@
     margin-bottom: 65px;
     .sub-cate-container {
         background: #E9F0F4;
+        h1 {
+            font-size: 16px;
+        }
     }
     .card-head {
         border-bottom: 1px solid $border-color;

@@ -1,3 +1,75 @@
-a{
+@import '../../scss/variables';
+a {
     color: #366090;
+}
+
+.static-container {
+    .head {
+        background: #366090;
+        padding: 30px 0 60px 0;
+        color: white;
+        i {
+            font-size: 50px;
+        }
+    }
+    .container {
+        margin: -30px auto 20px auto;
+        line-height: 19px;
+        .card {
+            margin-top: 10px;
+            border-color: #366090;
+            color: #366090;
+            padding: 15px;
+            p {
+                padding-left: 36px;
+                font-size: 14px;
+                b {
+                    display: block;
+                }
+            }
+        }
+        .heading {
+            color: #366090;
+            i {
+                margin-right: 10px;
+                font-size: 25px;
+                float: left;
+                line-height: 26px;
+            }
+            span {
+                float: left;
+                line-height: 26px;
+            }
+        }
+    }
+}
+
+.pwapage-wrap {
+    background: #F5F5F5;
+    padding: 0px;
+    position: relative;
+}
+
+.pwapghead {
+    background: #425291;
+    padding: 20px 0px 60px;
+    color: $white;
+    text-align: center;
+    i {
+        font-size: 50px;
+    }
+    h1 {
+        font-size: $extra-large-font;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+}
+
+.upper-case {
+    text-transform: uppercase;
+}
+
+.card-30 {
+    @extend %cards;
+    padding: 30px 15px;
 }

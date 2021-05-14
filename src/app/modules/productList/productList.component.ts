@@ -1,9 +1,8 @@
 import {
     Component, ElementRef, ViewEncapsulation, Input, ChangeDetectorRef,
     ChangeDetectionStrategy,
-    PLATFORM_ID, Inject, SimpleChanges
+    PLATFORM_ID, Inject
 } from '@angular/core';
-// import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import {CommonService} from "@app/utils/services/common.service";
@@ -13,7 +12,7 @@ import { CONSTANTS } from "@app/config/constants";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 declare let dataLayer;
 declare let $:any;
-// const PRODUCTS_KEY: any = makeStateKey<{}>("products")
+
 const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
 const GRCRK: any = makeStateKey<{}>("GRCRK")// GRCRK: Get Related Category Result Key
 

@@ -1,7 +1,7 @@
 <loader [showLoader]="showLoader"></loader>
 <div class=" ">
   <div *ngIf="myRfqList && myRfqList.length > 0">
-    <div class="orderbox" *ngFor="let list of myRfqList" (click)="list.toggle = !list.toggle">
+    <div class="orderbox" *ngFor="let list of myRfqList; index as i;" (click)="list.toggle = !list.toggle">
       <div class="orderIdtab" data-toggle="collapse" [attr.data-target]="'#demo' + i">
         <div class="orderSum">
           <span class="orderId">RFQ Id : {{list.id}}</span>

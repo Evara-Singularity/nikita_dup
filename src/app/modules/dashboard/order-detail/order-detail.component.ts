@@ -27,6 +27,7 @@ export class OrderDetailComponent implements OnInit {
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;
   cancelReasons: Array<{}>;
+  reason_id: any;
   status: any;
   priceOfProduct: any;
   user: { authenticated: string };

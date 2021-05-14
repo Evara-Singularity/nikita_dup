@@ -17,6 +17,7 @@ export class BussinessRfqComponent {
   IsHidden: boolean = true;
   isActive = false;
   myRfqList: any;
+  i:any;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   set showLoader(value){
     this.loaderService.setLoaderState(value);

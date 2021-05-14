@@ -25,6 +25,7 @@ export class BussinessOrderComponent {
   IsHidden: boolean = true;
   orderArray: Array<any> = [];
   user: { authenticated: string };
+  i:any;
   orders: Array<{}>;
   orderDetail: any;
   cancelReasons: Array<{}>;

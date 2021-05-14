@@ -4,7 +4,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from "@angular/common";
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 
 @Component({
   selector: 'brand',

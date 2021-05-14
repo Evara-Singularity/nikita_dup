@@ -3,9 +3,9 @@ import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM
 import { makeStateKey, Meta, Title, TransferState } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
-import CONSTANTS from 'src/app/config/constants';
-import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import CONSTANTS from '../../config/constants';
+import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { ClusterStoreService } from './cluster-store.service';
 
 const l0Data = makeStateKey<any>('l0Data');
@@ -53,7 +53,6 @@ export class ClusterStoreComponent implements OnInit {
     extraData: {};
     private cDistryoyed = new Subject();
     data: {};
-    isShowLoader: boolean;
     clusterStoreUrl = CONSTANTS.PROD;
     set updateLoaderStatus(value) {
         this.loaderService.setLoaderState(value);

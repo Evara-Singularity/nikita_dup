@@ -166,3 +166,18 @@ input[type=number] {
 option {
     padding: 5px;
 }
+
+//Cards
+.card {
+    @extend %cards;
+    padding: 0;
+}
+
+.card-head {
+    @extend %clear-fix;
+    .icon-grid-view,
+    .icon-list-view {
+        font-size: 21px;
+        margin-top: 11px;
+    }
+}

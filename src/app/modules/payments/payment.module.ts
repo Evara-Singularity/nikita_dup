@@ -10,7 +10,6 @@ import { EmiModule } from '../emi/emi.module';
 import { CashOnDeliveryModule } from '../cashOnDelivery/cashOnDelivery.module';
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
 import { SavedCardModule } from '../savedCard/savedCard.module';
-import { LoaderModule } from '../loader/loader.module';
 import { UpiModule } from '../upi/upi.module';
 import { PaytmUpiModule } from '../paytmUpi/paytmUpi.module';
 import { PopUpModule } from '../popUp/pop-up.module';
@@ -29,7 +28,6 @@ import { PaymentComponent } from './payment.component';
         CashOnDeliveryModule,
         RazorPayFormModule,
         SavedCardModule,
-        LoaderModule,
         UpiModule,
         PaytmUpiModule,
         PopUpModule

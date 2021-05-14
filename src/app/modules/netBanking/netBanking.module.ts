@@ -7,7 +7,6 @@ import {PayuFormModule} from "../payuForm/payuForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
-import { LoaderModule } from '../loader/loader.module';
 
 @NgModule({
     imports: [
@@ -18,7 +17,6 @@ import { LoaderModule } from '../loader/loader.module';
         PayuFormModule,
         RazorPayFormModule,
         MathCeilPipeModule,
-        LoaderModule
     ],
     declarations: [
         NetBankingComponent,

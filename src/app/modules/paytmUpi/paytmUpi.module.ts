@@ -5,7 +5,6 @@ import {CommonModule} from "@angular/common";
 import {PaytmUpiComponent} from "./paytmUpi.component";
 import {PaytmUpiService} from "./paytmUpi.service";
 import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
-import { LoaderModule } from '../loader/loader.module';
 import { PaytmUpiFormModule } from '../paytmUpiForm/paytmUpiForm.module';
 
 @NgModule({
@@ -14,7 +13,6 @@ import { PaytmUpiFormModule } from '../paytmUpiForm/paytmUpiForm.module';
         FormsModule,
         ReactiveFormsModule,
         MathCeilPipeModule,
-        LoaderModule,
         PaytmUpiFormModule
     ],
     declarations: [

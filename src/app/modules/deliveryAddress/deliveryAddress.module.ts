@@ -15,7 +15,6 @@ import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { ClickOutsideDirectiveModule } from '../../utils/directives/clickOutside.directive';
 import { PopUpModule } from '../popUp/pop-up.module';
 import { PopUpVariant2Module } from '../pop-up-variant2/pop-up-variant2.module';
-import { LoaderModule } from '../loader/loader.module';
 
 
 @NgModule({
@@ -30,7 +29,6 @@ import { LoaderModule } from '../loader/loader.module';
         AddressListModule,
         ShippingBillingAddressModule,
         ContinueModule,
-        LoaderModule,
         MathCeilPipeModule,
         ClickOutsideDirectiveModule,
         InvoiceTypeModule,

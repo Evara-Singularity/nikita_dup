@@ -12,7 +12,7 @@
 </div> -->
 
 <div *ngIf="orders && orders.length>0">
-    <div class="orderbox" *ngFor="let order of orders;let i=index">
+    <div class="orderbox" *ngFor="let order of orders; index as i">
         <div class="orderIdtab" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
             <div class="orderSum">
                 <span class="orderId">Order ID : {{order.orderId}}</span>

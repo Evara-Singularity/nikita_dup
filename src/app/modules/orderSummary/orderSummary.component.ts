@@ -1,6 +1,3 @@
-/**
- * Created by kuldeep on 09/06/17.
- */
 import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { OrderSummaryService } from './orderSummary.service';
 import { Subject } from 'rxjs/Subject';
@@ -9,9 +6,8 @@ import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '../../utils/services/data.service';
 import { CartService } from '../../utils/services/cart.service';
-import { GlobalState } from '../../utils/global.state';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 declare let dataLayer: any;
-// import * as $ from 'jquery';
 
 
 @Component({
@@ -19,7 +15,6 @@ declare let dataLayer: any;
     selector: 'order-summary',
     styleUrls: ['./orderSummary.scss'],
 })
-
 export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // isOrderSummaryVisible:boolean=false
@@ -34,11 +29,13 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() cartSessionUpdated$: Subject<any>;
     netAmount: number;
     noOfCart: number;
-    isShowLoader: boolean;
     appliedPromoCode = { promoCode: null, promoDescription: null };
     isServer: boolean = typeof window !== 'undefined' ? false : true;
     vof: boolean;
     pad: { type?: string, text?: string }; // pad: promo apply data
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     constructor(
         public router: Router,
@@ -47,7 +44,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
         public _cartService: CartService,
         private _tms: ToastMessageService,
         private localStorageService: LocalStorageService,
-        private _gState: GlobalState) {
+        private loaderService: GlobalLoaderService) {
 
         this.shippingCharges = 0;
         this.errorMeesage = '';

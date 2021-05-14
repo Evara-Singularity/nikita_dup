@@ -1,16 +1,15 @@
 import { Component, Output, Input, EventEmitter, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
-import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, of, Subject, Subscription } from 'rxjs';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DeliveryAddressService } from './deliveryAddress.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { ProductService } from 'src/app/utils/services/product.service';
-import { CheckoutService } from 'src/app/utils/services/checkout.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CommonService } from 'src/app/utils/services/common.service';
+import { CartService } from '../../utils/services/cart.service';
+import { CheckoutService } from '../../utils/services/checkout.service';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { CommonService } from '../../utils/services/common.service';
 import { AddressListService } from '../addressList/address-list.service';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '../../config/constants';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 
 declare let dataLayer;
@@ -42,7 +41,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     @Input() deliverHereCTAText: string;
 
     private cDistryoyed = new Subject();
-    showLoader: boolean = true;
     tabIndex: number;
 
     country: string; state: string;
@@ -78,17 +76,19 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     shippingAddressList = [];
     showRadio: boolean;
     editBillingSubscriber: Subscription = null;
+    set showLoader(value) {
+        this._loaderService.setLoaderState(value);
+    }
 
     constructor(
         private _router: Router,
         private cartService: CartService,
-        private _productService: ProductService,
         public _checkoutService: CheckoutService,
         private _addressService: DeliveryAddressService,
         private _localAuthService: LocalAuthService,
         private _commonService: CommonService,
-        private _localStorageService: LocalStorageService,
         private _addressListService: AddressListService,
+        private _loaderService: GlobalLoaderService,
         private _deliveryAddressService: DeliveryAddressService) {
         this.addressList = [];
         this.salpu = {

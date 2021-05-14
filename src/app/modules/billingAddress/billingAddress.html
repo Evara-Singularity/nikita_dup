@@ -1,5 +1,4 @@
 <!-- <div class="pad-b-40 f-size-16 text-uppercase text-500 pad-lr-xs-15" *ngIf="addressHeading?.length > 0">{{addressHeading}}</div> -->
-<loader [showLoader]="showLoader"></loader>
 <form [formGroup]="addressForm" (ngSubmit)="this.onSubmit(this.addressForm.value, this.addressForm.valid)" class="material-form">
 
     <div formGroupName="businessDetail">

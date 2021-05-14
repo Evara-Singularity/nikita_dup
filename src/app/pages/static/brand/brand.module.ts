@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { routing } from "./brand.routing";
 import {BrandComponent} from "./brand.component";
 import { KpToggleDirectiveModule } from 'src/app/utils/directives/kp-toggle.directive';
-import { LoaderModule } from 'src/app/modules/loader/loader.module';
 
 @NgModule({
     imports:[
@@ -12,7 +11,6 @@ import { LoaderModule } from 'src/app/modules/loader/loader.module';
         routing,
         RouterModule,
         KpToggleDirectiveModule,
-        LoaderModule
     ],
     declarations:[
       BrandComponent

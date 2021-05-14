@@ -36,9 +36,6 @@ const CONSTANTS = {
         ROBOT1: 'noindex,follow',
         ROBOT2: 'noindex,nofollow'
     },
-    pwaImages: {
-        imgFolder: 'b/I/P/B/d'
-    },
 	CMS_TEXT: {
 		HEADER_TOP_TEXT: "Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100",
 		CART_PAYMENT_METHOD_TEXT:"Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100"

@@ -1,11 +1,14 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';
-import { GlobalLoaderService } from '../utils/services/global-loader.service';
+import * as kfooter from '../config/k.footer';
+import { ClientUtility } from '../utils/client.utility';
+import { filter, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-pages',
@@ -16,19 +19,27 @@ export class PagesComponent implements OnInit {
 
   isServer: boolean = false;
   isBrowser: boolean = false;
+  iData: { footer?: true, logo?: boolean, title?: string };
+  isFooter: boolean = true;
+  kfooter: any = kfooter;
+  footerVisible = false;
   constructor(
     private _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
-    private loaderService: GlobalLoaderService,
+    private _aRoute: ActivatedRoute,
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
+    this.router.events.subscribe(res=>{
+      this.createHeaderData(this._aRoute);
+  })
   }
 
   ngOnInit() {
+    console.log(this.iData);
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
@@ -79,5 +90,30 @@ export class PagesComponent implements OnInit {
       }
     });
   }
+
+  createHeaderData(_aRoute) {
+    of(_aRoute)
+        .pipe(
+            map((route) => {
+                while (route.firstChild) {
+                    route = route.firstChild;
+                }
+                return route;
+            }),
+            filter((route) => route.outlet === 'primary'),
+            mergeMap((route) => route.data)
+        )
+        .subscribe((rData) => {
+            this.iData = rData;
+        });
+}
+
+  clickFooter() {
+    this.footerVisible = !this.footerVisible;
+    if (this.footerVisible) {
+        let footerOffset = document.getElementById('footerContainer').offsetTop;
+        ClientUtility.scrollToTop(1000, footerOffset - 50);
+    }
+}
 
 }

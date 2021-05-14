@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClusterStoreService } from './cluster-store.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { LoaderModule } from '../../modules/loader/loader.module';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 import { ClusterCategoryComponent } from 'src/app/components/cluster-store/cluster-category/cluster-category.component';
 import { ClusterStoreResolver } from './cluster-store.resolver';
@@ -20,7 +19,6 @@ import { ClusterStoreResolver } from './cluster-store.resolver';
     RouterModule,
     routing,
     LazyLoadImageModule,
-    LoaderModule,
     ObserveVisibilityDirectiveModule
   ],
 providers:[

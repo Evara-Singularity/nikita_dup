@@ -59,36 +59,5 @@
 <div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div> 
-<!-- Pop up -->
 
-<!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:categoryNameFromHomePage}">
-    <div class="content-popup card-30" content>
-        <ul class="view-products no-border list" [class.border-top]="categoryNameFromHomePage !== ''">
-            <li *ngFor="let item of carouselData[dataKeyToPopUpPage]['data']['product_data']">
-                <a [routerLink]="item.productlink" class="clearfix">
-                    <div class="product-img">
-                        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.imageLink_medium"
-                            alt="product Image">
-                    </div>
-                    <div class="product-description">
-                        <p class="description-txt">{{item.productName | slice:0:60}}
-                            <span *ngIf="item.productName.length>60">...</span>
-                        </p>
-                        <p class="price">
-                            <span
-                                class="before-discount">₹{{beforeDiscount(item.pricewithouttax,item.discount_percentage)}}
-                            </span>
-                            <span class="discount">{{item.discount_percentage | mathCeil}}% OFF</span>
-                            <span class="after-discount">{{item.pricewithouttax | currency: 'INR' : 'symbol' :
-                                '1.0-0'}}</span>
-                        </p>
-                        <p class="seller">
-                            <span>By :</span> {{getBrandName(item.short_description)}}
-                        </p>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-</app-pop-up> -->
+<ng-container #HomePopupComponet></ng-container>

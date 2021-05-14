@@ -1,9 +1,4 @@
-import {
-  Title,
-  Meta,
-  TransferState,
-  makeStateKey,
-} from "@angular/platform-browser";
+import { Title, Meta } from "@angular/platform-browser";
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from "@angular/common";
 import {
   Component,
@@ -16,16 +11,14 @@ import {
   AfterViewInit,
   OnDestroy,
   Input,
-  Output,
   EventEmitter,
   ViewContainerRef,
   ComponentFactoryResolver,
   Injector,
 } from "@angular/core";
-import { LocalStorageService, LocalStorage } from "ngx-webstorage";
+import { LocalStorageService } from "ngx-webstorage";
 import { Subject } from "rxjs";
 import { fade } from "src/app/pages/animation/animations";
-import { SiemaCarouselComponent } from "src/app/modules/siemaCarousel/siemaCarousel.component";
 import CONSTANTS from "src/app/config/constants";
 import { DataService } from "src/app/utils/services/data.service";
 import { CartService } from "src/app/utils/services/cart.service";
@@ -34,10 +27,6 @@ import { LocalAuthService } from "src/app/utils/services/auth.service";
 import { CommonService } from "src/app/utils/services/common.service";
 import { ActivatedRoute } from "@angular/router";
 import { GlobalAnalyticsService } from "src/app/utils/services/global-analytics.service";
-
-const FDK = makeStateKey<string>("flyout");
-declare let dataLayer;
-
 @Component({
   selector: "home",
   templateUrl: "./home.html",
@@ -46,19 +35,14 @@ declare let dataLayer;
   encapsulation: ViewEncapsulation.None,
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(SiemaCarouselComponent)
-  _siemaCarouselComponent: SiemaCarouselComponent;
   @Input() data;
-  @Output() outData$: EventEmitter<{}>;
   isServer: boolean;
   bannerDataJson: any = {};
   bannerImagesScroll: any = {};
   middleImageJsonData: any = [];
   middleImageJsonDataLink: any = [];
-
   featureBrandData: any = [];
   featureArrivalData: any = [];
-
   dataKeyToPopUpPage: any;
   categoryNameFromHomePage: any;
   openPopup: boolean;
@@ -73,7 +57,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   MOBILE_IMAGE_CATEGORY = "381";
   defaultImage = CONSTANTS.IMAGE_BASE_URL + "assets/img/home_card.webp";
   defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + "image_placeholder.jpg";
-  @LocalStorage()
   tocd: {};
   options = {
     interval: 5000,
@@ -103,11 +86,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('FeaturedArrivals', { read: ViewContainerRef }) featuredArrivalsContainerRef: ViewContainerRef;
   // ondemad loaded components: PWA Categories
   categoriesInstance = null;
-  @ViewChild('Categories', { read: ViewContainerRef }) fCategoriesContainerRef: ViewContainerRef;
+  @ViewChild('Categories', { read: ViewContainerRef }) CategoriesContainerRef: ViewContainerRef;
+   // ondemad loaded components: PWA Categories
+   popUpInstance = null;
+   @ViewChild('HomePopupComponet', { read: ViewContainerRef }) HomePopupComponetContainerRef: ViewContainerRef;
 
   constructor(
     public dataService: DataService,
-    private _tState: TransferState,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
     private title: Title,
@@ -388,7 +373,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.topOptions.navHide = true;
     this.topOptions.autoPlay = false;
     this.openPopup = false;
-    this.outData$ = new EventEmitter();
     this.appendSiemaItemSubjects = {};
     this.appendSiemaItemSubjects["bannerData"] = new Subject<Array<{}>>();
     this.appendSiemaItemSubjects["bestSellerData"] = new Subject<Array<{}>>();
@@ -505,38 +489,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.footerService.setMobileFoooters();
   }
 
-  beforeDiscount(afterDiscountPrice, discount_percentage) {
-    const val = 100 / (100 - discount_percentage);
-    const val2 = Math.round(val * 100) / 100;
-    const original = afterDiscountPrice * val2;
-    const removeDecimal = Math.round(original * 100) / 100;
-    const newValue = Math.round(0.0 + removeDecimal);
-    return newValue;
-  }
-
-  outData(data) {
-    if (Object.keys(data).indexOf("hide") !== -1) {
-      this.openPopup = !data.hide;
-      this.arrivalPopup = !data.hide;
-    }
-  }
-
   sendDataToPopUP(getDataKey) {
     this.dataKeyToPopUpPage = getDataKey;
-    setTimeout(() => {
-      document
-        .querySelector(
-          ".screen-view.popup.info-update-popup.payment-popup .container .content-popup"
-        )
-        .addEventListener(
-          "scroll",
-          () => {
-            window.scrollTo(window.scrollX, window.scrollY + 1);
-            window.scrollTo(window.scrollX, window.scrollY - 1);
-          },
-          { passive: true }
-        );
-    }, 100);
+    // setTimeout(() => {
+    //   document
+    //     .querySelector(
+    //       ".screen-view.popup.info-update-popup.payment-popup .container .content-popup"
+    //     )
+    //     .addEventListener(
+    //       "scroll",
+    //       () => {
+    //         window.scrollTo(window.scrollX, window.scrollY + 1);
+    //         window.scrollTo(window.scrollX, window.scrollY - 1);
+    //       },
+    //       { passive: true }
+    //     );
+    // }, 100);
   }
 
   async onVisibleFeaturedBrands(htmlElement) {
@@ -552,7 +520,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   async onVisibleCategories(htmlElement) {
     const { Categories } = await import('../../modules/categories/categories.component');
     const factory = this.cfr.resolveComponentFactory(Categories);
-    this.categoriesInstance = this.fCategoriesContainerRef.createComponent(factory, null, this.injector);
+    this.categoriesInstance = this.CategoriesContainerRef.createComponent(factory, null, this.injector);
     this.categoriesInstance.instance['middleImageJsonData'] = this.middleImageJsonData;
     this.categoriesInstance.instance['categories'] = this.categories;
     this.categoriesInstance.instance['carouselData'] = this.carouselData;
@@ -561,6 +529,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.categoriesInstance.instance['recentProductList'] = this.recentProductList;
     (this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>).subscribe((popupData) => {
       this.sendDataToPopUP(popupData);
+      this.onOpenPopup(null);
     })
   }
 
@@ -573,27 +542,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
   }
 
-
-
-  getBrandName(brand_description) {
-    const ParsebrandName = brand_description.split("||");
-    const brandName = ParsebrandName[0]; // brandName i,e Brand: ABC at 0th Position
-    const afterRemoveBrandWord = brandName.replace("Brand:", "");
-    return afterRemoveBrandWord;
-  }
-
-  setCookieLink(catName, categoryCodeorBannerName, type) {
-    this._commonService.setSectionClickInformation("homepage", type);
-    var date = new Date();
-    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
-    document.cookie =
-      "adobeClick=" +
-      catName +
-      "_" +
-      categoryCodeorBannerName +
-      "; expires=" +
-      date.toUTCString() +
-      ";path=/";
+  async onOpenPopup(htmlElement) {
+    const { HomePopupComponet } = await import('../../components/home-popup/home.popup.component');
+    const factory = this.cfr.resolveComponentFactory(HomePopupComponet);
+    this.popUpInstance = this.HomePopupComponetContainerRef.createComponent(factory, null, this.injector);
+    this.popUpInstance.instance['openPopup'] = true;
+    this.popUpInstance.instance['arrivalPopup'] = this.arrivalPopup;
+    this.popUpInstance.instance['dataKeyToPopUpPage'] = this.dataKeyToPopUpPage;
+    this.popUpInstance.instance['defaultImage'] = this.defaultImage;
+    this.popUpInstance.instance['carouselData'] = this.carouselData;
+    this.popUpInstance.instance['imagePath'] = this.imagePath;
+    this.popUpInstance.instance['categoryNameFromHomePage'] = this.categoryNameFromHomePage;
   }
 
 }

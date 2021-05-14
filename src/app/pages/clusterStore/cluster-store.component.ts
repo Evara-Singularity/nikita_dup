@@ -53,13 +53,13 @@ export class ClusterStoreComponent implements OnInit {
     private cDistryoyed = new Subject();
     data: {};
     clusterStoreUrl = CONSTANTS.PROD;
-    set updateLoaderStatus(value) {
+    set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
       }
     constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _cls: ClusterStoreService, private _tState: TransferState, @Inject(PLATFORM_ID) platformId, public title: Title, public meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private toastMessageService: ToastMessageService, private cfr: ComponentFactoryResolver, private injector: Injector, private loaderService: GlobalLoaderService) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
-        this.updateLoaderStatus(false);
+        this.isShowLoader = false;
     }
 
     ngOnInit() {

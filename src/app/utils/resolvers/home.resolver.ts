@@ -16,7 +16,7 @@ import { GlobalLoaderService } from '../services/global-loader.service';
   providedIn: 'root'
 })
 export class HomeResolver implements Resolve<object> {
-  set UpdateLoaderStatus(value) {
+  set isShowLoader(value) {
     this.loaderService.setLoaderState(value)
   }
   constructor(
@@ -26,7 +26,7 @@ export class HomeResolver implements Resolve<object> {
     private loaderService: GlobalLoaderService
   ) { }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-    this.UpdateLoaderStatus(true);
+    this.isShowLoader = true;
     const layoutData = makeStateKey<object>('layout');
 
     const layOutJSON = environment.BASE_URL + '/homepage/layoutbyjson?requestType=mobile';
@@ -36,12 +36,12 @@ export class HomeResolver implements Resolve<object> {
     return JSONdata.pipe(
       catchError((err) => {
         console.log('err', err);
-        this.UpdateLoaderStatus(false);
+        this.isShowLoader = false;
         return of(err);
       }),
       tap(result => {
         this.transferState.set(layoutData, JSONdata);
-        this.UpdateLoaderStatus(false);
+        this.isShowLoader = false;
       })
     )
   }

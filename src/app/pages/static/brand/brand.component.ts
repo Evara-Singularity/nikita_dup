@@ -24,7 +24,7 @@ export class BrandComponent{
   total_count: any;
   brand_url: any;
   brandsLogo;
-  set updateLoaderStatus(value) {
+  set isShowLoader(value) {
     this.loaderService.setLoaderState(value);
   }
   constructor(private title: Title, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, public _router: Router, private route: ActivatedRoute, private loaderService: GlobalLoaderService) {
@@ -39,7 +39,7 @@ export class BrandComponent{
     links.rel = "canonical";
     links.href = CONSTANTS.PROD + "/brand-store";
     this._renderer2.appendChild(this._document.head, links);
-    this.updateLoaderStatus(true);
+    this.isShowLoader = true;
 
   }
   ngOnInit(){
@@ -48,7 +48,7 @@ export class BrandComponent{
         // this.fetchHomePageData(rawData.homeData);
         const brandData = rawData['brandData'];
         this.brandsLogo = brandData[0]["data"][0]['block_data']['all_brand_store']['data'];
-        this.updateLoaderStatus(false);
+        this.isShowLoader = false;
           this.total_count = brandData[1]['totalCount'];
           this.final_arr1 = brandData[1]['brands'].sort(this.compare);
           this.final_arr1.forEach(element => {

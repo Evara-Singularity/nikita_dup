@@ -9,7 +9,8 @@ import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { CommonService } from '../../utils/services/common.service';
-import { Bajaj_CCNumValidator } from '@app/utils/bajajCCNum';
+import { Bajaj_CCNumValidator } from '../../utils/bajajCCNum';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 
@@ -38,16 +39,18 @@ export class EmiComponent {
     duration:any=0;
     isEmiEnable: boolean = true;
     blockIndex: number = 1;
-    isShowLoader:boolean=false;
     totalPayableAmount: number = 0;
     nocostEmiDiscount: number = 0;
     step: number;
     disableInterest;
     bajajFinservField
     bankMap = {7:"AXIS",15:"HDFC",21:"ICICI"};
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
 
-    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray, private _emiService: EmiService, private elementRef: ElementRef) {
+    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray, private _emiService: EmiService, private elementRef: ElementRef, private loaderService: GlobalLoaderService) {
         this.step=0;
         this.payuData = {};
         this.API = CONSTANTS;

@@ -12,7 +12,8 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
-import { Step } from '@app/utils/validators/step.validate';
+import { Step } from 'src/app/utils/validators/step.validate';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 declare let $: any;
 
@@ -54,6 +55,10 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
     addressLineKeys = ['bno', 'flno', 'bnm', 'st', 'loc'];
     gstinSubscriber: Subscription;
 
+    set showLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
+
     constructor(
         private _localStorageService: LocalStorageService,
         private _billingAddressService: BillingAddressService,
@@ -61,6 +66,7 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
         private _localAuthService: LocalAuthService,
         private _addressService: BillingAddressService,
         private _commonService: CommonService,
+        private _loaderService: GlobalLoaderService,
         private formBuilder: FormBuilder,
         private tms: ToastMessageService) {
 

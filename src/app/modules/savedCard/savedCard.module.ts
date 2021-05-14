@@ -5,9 +5,8 @@ import {SavedCardService} from "./savedCard.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PayuFormModule} from "../payuForm/payuForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
-import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
-import { LoaderModule } from '../loader/loader.module';
-import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
+import { ObjectToArrayPipeModule } from 'src/app/utils/pipes/object-to-array.pipe';
+import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
 
 @NgModule({
     imports: [
@@ -17,7 +16,6 @@ import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
         ObjectToArrayPipeModule,
         PayuFormModule,
         RazorPayFormModule,
-        LoaderModule,
         MathCeilPipeModule
     ],
     declarations: [

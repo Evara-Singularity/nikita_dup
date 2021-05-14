@@ -3,11 +3,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PaytmUpiService } from "./paytmUpi.service";
 import { Subscription } from 'rxjs/Subscription';
 import { LocalStorageService } from 'ngx-webstorage';
-import { CheckoutService } from '@app/utils/services/checkout.service';
-import { CartService } from '@app/utils/services/cart.service';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { CommonService } from '@app/utils/services/common.service';
-import CONSTANTS from '@app/config/constants';
+import { CheckoutService } from 'src/app/utils/services/checkout.service';
+import { CartService } from 'src/app/utils/services/cart.service';
+import { LocalAuthService } from 'src/app/utils/services/auth.service';
+import { CommonService } from 'src/app/utils/services/common.service';
+import CONSTANTS from 'src/app/config/constants';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 
@@ -24,7 +25,6 @@ export class PaytmUpiComponent {
     upiTez: number;
     upiForm: FormGroup;
     upiData: {};
-    isShowLoader: boolean = false;
     upiChecked: boolean;
     @Input() type:any;
     cartSesssion: any;
@@ -35,8 +35,11 @@ export class PaytmUpiComponent {
     imageFolder = CONSTANTS.pwaImages.imgFolder;
     upiError:any;
     validUpi:boolean;
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
     
-    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: PaytmUpiService, private _formBuilder: FormBuilder,private _paytmUpiService:PaytmUpiService) {
+    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: PaytmUpiService, private _formBuilder: FormBuilder, private _paytmUpiService: PaytmUpiService) {
         this.upiData = {};
         this.isValid = false;
         this.uType = CONSTANTS.GLOBAL.paytmUpi;

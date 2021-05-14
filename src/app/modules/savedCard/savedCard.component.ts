@@ -10,6 +10,7 @@ import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { CommonService } from '../../utils/services/common.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
 import CONSTANTS from '../../config/constants';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 
@@ -17,9 +18,8 @@ declare var dataLayer;
     selector: 'saved-card',
     templateUrl: './savedCard.html',
     styleUrls: ['./savedCard.component.scss'],
-    
-})
 
+})
 export class SavedCardComponent {
 
     selectedBankCode: String;
@@ -27,9 +27,8 @@ export class SavedCardComponent {
     isValid: boolean;
     payuData: {};
     savedCards: Array<{}>;
-    @Input() savedCardsData:any;
+    @Input() savedCardsData: any;
     selectedCardIndex: number;
-    isShowLoader: boolean;
     cartSesssion: any;
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
@@ -37,7 +36,11 @@ export class SavedCardComponent {
     @Output() removeTab$: EventEmitter<any>;
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     @Input() type;
-    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _objectToArray: ObjectToArray, private _savedCardService: SavedCardService, private _formBuilder: FormBuilder) {
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
+
+    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _objectToArray: ObjectToArray, private _savedCardService: SavedCardService, private _formBuilder: FormBuilder) {
         this.removeTab$ = new EventEmitter<any>();
         this.savedCards = [];
         // this.selectedCardIndex = 0;
@@ -58,32 +61,32 @@ export class SavedCardComponent {
         const userSession = this._localAuthService.getUserSession();
 
         let data = {};
-        if(this.type == "tax"){
+        if (this.type == "tax") {
             data["userId"] = userSession["userId"];
-        }else{
+        } else {
             data['userEmail'] = (userSession && userSession["email"]) ? userSession["email"] : userSession["phone"]
         }
         // this._savedCardService.getSavedCards(data).subscribe((res) => {
 
-            // if (res['status'] === true) {
-                // if (res['data']['user_cards'] !== undefined && res['data']['user_cards'] !== null) {
-                    this.savedCards = this._objectToArray.transform(this.savedCardsData);
-                    this.savedCardForm = this._formBuilder.group({
-                        cards: this._formBuilder.array(this.createSavedCardForm(this.savedCards))
-                    });
-                    this.getPrePaidDiscount(0);
-                // }
-            // }
-            this.isShowLoader = false;
+        // if (res['status'] === true) {
+        // if (res['data']['user_cards'] !== undefined && res['data']['user_cards'] !== null) {
+        this.savedCards = this._objectToArray.transform(this.savedCardsData);
+        this.savedCardForm = this._formBuilder.group({
+            cards: this._formBuilder.array(this.createSavedCardForm(this.savedCards))
+        });
+        this.getPrePaidDiscount(0);
+        // }
+        // }
+        this.isShowLoader = false;
         // })
-       
+
     }
 
     ngAfterViewInit() {
     }
-    payEnable=false;
-    checkpayEnable(val){
-        if(val) this.payEnable = true
+    payEnable = false;
+    checkpayEnable(val) {
+        if (val) this.payEnable = true
         else this.payEnable = false;
     }
     updateSavedCardBank(selectedBank) {
@@ -108,12 +111,12 @@ export class SavedCardComponent {
         let data = {
             userEmail: userSession["email"] ? userSession["email"] : userSession["phone"],
             cardToken: this.savedCards[index]['card_token'],
-            userId :  userSession["userId"]
+            userId: userSession["userId"]
         };
-        if(this.type == "tax"){
-            data["gateWay"] =  "razorpay";
-        }else{
-            data["gateWay"] =  "payu";            
+        if (this.type == "tax") {
+            data["gateWay"] = "razorpay";
+        } else {
+            data["gateWay"] = "payu";
         }
         this._savedCardService.deleteSavedCard(data).subscribe((res) => {
             if (res['status'] == true) {//delete card
@@ -205,42 +208,42 @@ export class SavedCardComponent {
             paymentId: this.savedCards[this.selectedCardIndex]['card_mode'] == 'CC' ? 9 : 2,
             addressList: addressList
         };
-        if(this.type == 'tax')
-            extra["paymentId"] = data.mode=="CC" ?  131 : 130;            
+        if (this.type == 'tax')
+            extra["paymentId"] = data.mode == "CC" ? 131 : 130;
 
-            let newdata = {
-                "platformCode": "online",
-                "mode": extra.mode,
-                "paymentId": extra.paymentId,
-                "paymentGateway": "",
-                "isSavedCard": true,
-                "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+        let newdata = {
+            "platformCode": "online",
+            "mode": extra.mode,
+            "paymentId": extra.paymentId,
+            "paymentGateway": "",
+            "isSavedCard": true,
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+        };
+        if (this.type == "tax") {
+            newdata["requestParams"] = {};
+            newdata["paymentGateway"] = "razorpay";
+            newdata["requestParams"]["ccvv"] = data['cards'][this.selectedCardIndex]['cvv'];
+            newdata["requestParams"]["card_token"] = this.savedCards[this.selectedCardIndex]['card_token'];
+            newdata["requestParams"]["store_card"] = "false";
+            newdata["requestParams"]["user_id"] = userSession["userId"];
+
+        } else {
+            newdata["requestParams"] = {
+                "firstname": addressList["addressCustomerName"].split(' ').slice(0, -1).join(' '),
+                "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
+                "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
+                "ccexpyr": this.savedCards[this.selectedCardIndex]['expiry_year'],
+                "ccnum": this.savedCards[this.selectedCardIndex]['card_no'],
+                "ccexpmon": this.savedCards[this.selectedCardIndex]['expiry_month'],
+                "productinfo": "PayUMoney product information",
+                "ccname": this.savedCards[this.selectedCardIndex]['name_on_card'],
+                "bankcode": this.savedCards[this.selectedCardIndex]['card_brand'],
+                "ccvv": data['cards'][this.selectedCardIndex]['cvv'],
+                "user_id": userSession["userId"],
+                "store_card": "false",
+                "card_token": this.savedCards[this.selectedCardIndex]['card_token']
             };
-            if(this.type == "tax"){
-                newdata["requestParams"] = {};
-                newdata["paymentGateway"]="razorpay";
-                newdata["requestParams"]["ccvv"] = data['cards'][this.selectedCardIndex]['cvv'];
-                newdata["requestParams"]["card_token"] = this.savedCards[this.selectedCardIndex]['card_token'];
-                newdata["requestParams"]["store_card"] =  "false";
-                newdata["requestParams"]["user_id"] =   userSession["userId"];
-           
-            }else{
-                newdata["requestParams"]= {
-                    "firstname": addressList["addressCustomerName"].split(' ').slice(0, -1).join(' '),
-                    "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
-                    "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
-                    "ccexpyr": this.savedCards[this.selectedCardIndex]['expiry_year'],
-                    "ccnum": this.savedCards[this.selectedCardIndex]['card_no'],
-                    "ccexpmon": this.savedCards[this.selectedCardIndex]['expiry_month'],
-                    "productinfo": "PayUMoney product information",
-                    "ccname": this.savedCards[this.selectedCardIndex]['name_on_card'],
-                    "bankcode": this.savedCards[this.selectedCardIndex]['card_brand'],
-                    "ccvv": data['cards'][this.selectedCardIndex]['cvv'],
-                    "user_id": userSession["userId"],
-                    "store_card": "false",
-                    "card_token": this.savedCards[this.selectedCardIndex]['card_token']
-                };
-            }
+        }
         this.isShowLoader = true;
 
         this._savedCardService.pay(newdata).subscribe((res): void => {
@@ -253,9 +256,9 @@ export class SavedCardComponent {
 
             data = res['data'];
 
-          
+
             let payuData;
-            if(this.type == "retail"){
+            if (this.type == "retail") {
                 payuData = {
                     formUrl: data.formUrl,
                     key: (data.key != undefined && data.key != null) ? data.key : "",
@@ -280,7 +283,7 @@ export class SavedCardComponent {
                     user_credentials: data.user_credentials
                 };
                 this.payuData = payuData;
-            }else{
+            } else {
                 this.payuData = data;
             }
 
@@ -294,11 +297,11 @@ export class SavedCardComponent {
     }
 
 
-     /**
-     * Set buyNow state to localstorage for removing buyNow 
-     * item from cart after successfull/failure of payment.
-     * also remove existing buynow flag, if user tries to place order without buynow.
-     */
+    /**
+    * Set buyNow state to localstorage for removing buyNow 
+    * item from cart after successfull/failure of payment.
+    * also remove existing buynow flag, if user tries to place order without buynow.
+    */
     updateBuyNowToLocalStorage() {
         const buyNow = this._cartService.buyNow;
         if (buyNow) {
@@ -320,7 +323,7 @@ export class SavedCardComponent {
         this.payEnable = false;
         this.savedCardForm.reset();
     }
-    stop(e){
+    stop(e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
     }

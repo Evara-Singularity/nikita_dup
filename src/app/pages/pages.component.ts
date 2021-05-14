@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';
+import { GlobalLoaderService } from '../utils/services/global-loader.service';
 
 @Component({
   selector: 'app-pages',
@@ -21,6 +22,7 @@ export class PagesComponent implements OnInit {
     private _cartService: CartService,
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
+    private loaderService: GlobalLoaderService,
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -51,6 +53,7 @@ export class PagesComponent implements OnInit {
         });
     }
   }
+
 
   updateCartSession() {
     const userSession = this._localAuthService.getUserSession();

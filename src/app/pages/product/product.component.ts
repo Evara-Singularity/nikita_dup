@@ -113,6 +113,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // Q&A vars
   questionMessage: string;
   listOfGroupedCategoriesForCanonicalUrl = ['116111700'];
+  set showLoader(value) {
+    this.loaderService.setLoaderState(value);
+  }
 
   // ondemand loaded components for share module
   productShareInstance = null;
@@ -204,6 +207,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private analytics: GlobalAnalyticsService,
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) private platformId: Object,
+    private loaderService: GlobalLoaderService,
     private _pageScrollService: PageScrollService
   ) {
     this.isServer = isPlatformServer(platformId);

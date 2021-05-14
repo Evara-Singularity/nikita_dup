@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import { CheckoutLoginService } from '../../utils/services/checkout-login.service';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 const IDENTIFIER = {
   EMAIL: 'e',
@@ -33,14 +34,17 @@ export class CheckoutLoginComponent implements OnInit {
   identifierType: string;
   isIdentifierVerified: boolean; // to hold verify customer API state
   isNewUser: boolean; // After verify API to hold if user new or existing 
-  showLoader: boolean;
   currentSection: string = SECTIONS.LOGIN
+  set showLoader(value) {
+    this.loaderService.setLoaderState(value);
+  }
 
   constructor(
     private checkoutLoginService: CheckoutLoginService,
     private tms: ToastMessageService,
     private localAuthService: LocalAuthService,
     private router: Router,
+    private loaderService: GlobalLoaderService,
   ) { }
 
   ngOnInit(): void {

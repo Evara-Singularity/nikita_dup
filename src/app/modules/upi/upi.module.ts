@@ -6,8 +6,7 @@ import {UpiComponent} from "./upi.component";
 import {UpiService} from "./upi.service";
 import {TezUpiFormModule} from "../tezUpiForm/tezUpiForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
-import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
-import { LoaderModule } from '../loader/loader.module';
+import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
 
 @NgModule({
     imports: [
@@ -16,7 +15,6 @@ import { LoaderModule } from '../loader/loader.module';
         ReactiveFormsModule,
         TezUpiFormModule,
         MathCeilPipeModule,
-        LoaderModule,
         RazorPayFormModule
     ],
     declarations: [

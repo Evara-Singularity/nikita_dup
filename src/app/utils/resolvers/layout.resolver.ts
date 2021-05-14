@@ -26,7 +26,6 @@ export class LayoutResolver implements Resolve<object> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-    
     /**
      * For using this reolver please pass layoutId from pages.routing 
      * Check example for /covid19essentials
@@ -41,24 +40,25 @@ export class LayoutResolver implements Resolve<object> {
     if (this.transferState.hasKey(STATE_KEY)) {
       const stateObj = this.transferState.get<object>(STATE_KEY, null);
       this.transferState.remove(STATE_KEY);
-      this.loaderService.setLoaderState(false);
       return of([stateObj]);
     } else {
-
+      console.log('layout resovlver ==>', 'called');
+      this.loaderService.setLoaderState(true);
       const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-
       const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT + `?id=${LAYOUT_ID}`;
       const stateObs = this.http.get(LAYOUT_URL, { headers, responseType: 'text' });
 
       // forkJoin is implemented as we might need to add more APIs to resolvers
       return forkJoin([stateObs]).pipe(
         catchError((err) => {
-          this.loaderService.setLoaderState(false);
+          // this.loaderService.setLoaderState(false);
           // console.log('err', err);
           return of(err);
         }),
         tap(result => {
+          this.loaderService.setLoaderState(true);
           if (isPlatformServer(this.platformId)) {
+            //this.loaderService.setLoaderState(false);
             this.transferState.set(STATE_KEY, result[0]);
           }
         })

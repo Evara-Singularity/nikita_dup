@@ -1,4 +1,3 @@
-<loader [showLoader]="isShowLoader"></loader>
 <div *ngIf="noOfCart>0">
     <div class="apply-promo no-border">
         <app-promo-apply (updateCartSession$)="updateCartSession($event)" (outData$)="outData($event)" [iData]="pad"></app-promo-apply>

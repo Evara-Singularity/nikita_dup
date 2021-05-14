@@ -17,6 +17,7 @@ import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 @Component({
     selector: 'app-shared-signup',
@@ -40,12 +41,14 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     isServer: boolean;
     isTicking = false;
     isBrowser: boolean;
-    isReqProcessing = false;
     isPasswordType = true;
     isOTPLimitExceeded = false;
     isOTPValidated = false;
     isEmailExists = false;
     isSubmitted: boolean = false;
+    set isReqProcessing(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     //checkout flow helpers
     @Input() isCheckoutModule: boolean = false;
@@ -68,9 +71,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private cartService: CartService,
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,
-        //private checkoutLoginService: CheckoutLoginService
-    )
-    {
+        private loaderService: GlobalLoaderService
+    ){
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
     }

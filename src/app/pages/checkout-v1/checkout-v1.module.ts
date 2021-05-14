@@ -13,7 +13,6 @@ import { ContinueModule } from '../../modules/continue/continue.module';
 import { LoginModule } from '../login/login.module';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { RouterModule } from '@angular/router';
-import { LoaderModule } from '../../modules/loader/loader.module';
 import { InvoiceTypeModule } from '../../modules/invoiceType/invoiceType.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
@@ -39,7 +38,6 @@ import { ModalService } from '@app/modules/modal/modal.service';
     LoginModule,
     NgxPageScrollCoreModule,
     RouterModule,
-    LoaderModule,
     InvoiceTypeModule,
     CartUpdatesModule,
     UnAvailableItemsModule,

@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.setMetaData();
-
+    this.footerService.setFooterObj({ footerData: true });
     if (this.isBrowser) {
       this.isMobile = true;
       var trackData = {
@@ -132,7 +132,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         page_type: "home_page",
       };
       this.dataService.sendMessage(trackData);
-      this.cartService.homePageFlyOut.next(false);
       this.setAnalyticTags();
       setTimeout(() => {
         if (document.querySelector("#search-input")) {
@@ -142,8 +141,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }, 0);
     }
-
-    this.footerService.setFooterObj({ footerData: true });
   }
 
   fetchHomePageData(response) {
@@ -481,7 +478,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.cartService.homePageFlyOut.next(true);
     const footerObj = this.footerService.getFooterObj();
     for (let key in footerObj) {
       footerObj[key] = true;

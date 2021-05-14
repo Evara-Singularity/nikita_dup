@@ -46,13 +46,9 @@
                 Moglix offers superior quality and genuine
                 <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
                     {{brandCategoryName}}
-                </a>
-                from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our
-                assortment and explore more about price,
-                specifications, availability, and deals online for {{(heading |
-                removeHTML)}}. Buy these products at best prices and get them delivered
-                at your doorstep across India.
+                </a> from a renowned brand
+                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(heading | removeHTML)}}. Buy these products
+                at best prices and get them delivered at your doorstep across India.
             </p>
         </div>
     </div>
@@ -75,7 +71,7 @@
     <!-- <ng-container *ngIf="isBrowser" #sortBy></ng-container> -->
     <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
     <div>
-        <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)" ></span>
+        <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
         <ng-template *ngIf="isBrowser" #pagination></ng-template>
 
         <!-- <pagination class="block o-hidden h-54 h-auto-xs" [paginationUpdated]="paginationUpdated"
@@ -84,7 +80,7 @@
         </pagination> -->
     </div>
 
-    <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)" ></span>
+    <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
     <ng-template *ngIf="isBrowser && firstPageContent" #brandDetailsFooter></ng-template>
-    
+
 </div>

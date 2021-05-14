@@ -660,6 +660,7 @@ body {
 .card {
     @extend %cards;
     padding: 0;
+    background: red;
 }
 
 .card-30 {

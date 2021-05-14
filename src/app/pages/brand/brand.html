@@ -1,5 +1,3 @@
-<loader [showLoader]="_commonService.showLoader"></loader>
-
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <ng-container *ngIf="isBrowser" #filter></ng-container>
@@ -81,6 +79,6 @@
     </div>
 
     <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
-    <ng-template *ngIf="isBrowser && firstPageContent" #brandDetailsFooter></ng-template>
+    <ng-template *ngIf="isBrowser" #brandDetailsFooter></ng-template>
 
 </div>

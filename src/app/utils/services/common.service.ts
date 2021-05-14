@@ -151,7 +151,6 @@ export class CommonService {
     // brandName: string;
 
     private getBrandData(type, curl, params) {
-        alert('cms getBrandData');
         const formattedParams = this.formatParams(params);
 
         return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + '/brand/getBrandByName', { params: { name: formattedParams['brand'] } })
@@ -289,7 +288,6 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
-                alert('cms');
                 if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
                 }

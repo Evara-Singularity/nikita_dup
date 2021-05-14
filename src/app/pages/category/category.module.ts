@@ -30,6 +30,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         CommonModule,
         CategoryRouting,
         NgxPaginationModule,
+        BreadCrumpModule,
         CmsModule,
         ObjectToArrayPipeModule,
         RouterModule,

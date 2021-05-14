@@ -10,7 +10,8 @@ import { CONSTANTS } from "@app/config/constants";
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
 declare var digitalData: {};
@@ -144,25 +145,93 @@ export class BrandComponent {
     }
 
     ngAfterViewInit() {
-        console.log('===========1===============');
-        console.log(this.sortByComponent);
-        console.log('============3==============');
         /* Remove key set on server side to avoid api on dom load of frontend side */
         if (this.isBrowser) {
             this._tState.remove(RPRK);
         }
     }
 
+    createDefaultParams() {
+        let newParams: any = {
+            queryParams: {}
+        };
+
+        let defaultParams = this._commonService.getDefaultParams();
+        /**
+         *  Below code is added to maintain the state of sortBy : STARTS
+         */
+        if (defaultParams['queryParams']['orderBy'] != undefined)
+            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
+        if (defaultParams['queryParams']['orderWay'] != undefined)
+            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
+        /**
+         *  maintain the state of sortBy : ENDS
+         */
+
+        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+
+        // Object.assign(newParams["queryParams"], currentQueryParams);
+
+        for (let key in currentQueryParams) {
+            newParams.queryParams[key] = currentQueryParams[key];
+        }
+
+        // newParams["queryParams"] = queryParams;
+        newParams["filter"] = {};
+
+        let params = this._activatedRoute.snapshot.params;
+        newParams["brand"] = params['brand'];
+        if (params['category'])
+            newParams["category"] = params['category'];
+        else {
+            this._commonService.deleteDefaultParam('category');
+        }
+        let fragment = this._activatedRoute.snapshot.fragment;
+        if (fragment != undefined && fragment != null && fragment.length > 0) {
+            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+            currentUrlFilterData = currentUrlFilterData.split("/");
+            if (currentUrlFilterData.length > 0) {
+                const filter = {};
+                for (let i = 0; i < currentUrlFilterData.length; i++) {
+                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
+                    filter[filterName] = filterData;
+                }
+                newParams["filter"] = filter;
+            }
+        }
+
+        newParams["pageName"] = this.pageName;
+
+        return newParams;
+    }
+
+    refreshProducts() {
+
+        const defaultParams = this.createDefaultParams();
+        this._commonService.updateDefaultParamsNew(defaultParams);
+        const fragment = this._activatedRoute.snapshot.fragment;
+
+        if (this._tState.hasKey(RPRK) && !fragment) {
+            const response = this._tState.get(RPRK, {});
+            this.initiallizeData(response, false);
+        } else {
+            if (this.isBrowser) {
+                this._commonService.showLoader = true;
+            }
+            this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+                if (this.isServer) {
+                    this._tState.set(RPRK, response);
+                }
+                this.initiallizeData(response, true);
+            });
+        }
+    }
+
     private refreshProductsBasedOnRouteChange(){
-        this._commonService.showLoader = true;
-        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-            this._commonService.showLoader = false;
-            // this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            // this.paginationUpdated.next(this.paginationData);
-            // this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            // this.filterData = response.buckets;
-            // this.productsUpdated.next(response.productSearchResult.products);
-            this.initiallizeData(response, true);
+        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
+            this.refreshProducts();
         });
     }
     
@@ -538,6 +607,7 @@ export class BrandComponent {
                 brandShortDesc: this.brandShortDesc,
                 brandContent: this.brandContent,
                 iba: this.iba,
+                firstPageContent:  this.firstPageContent,
                 productSearchResult: this.productSearchResult,
                 productSearchResultSEO: this.productSearchResultSEO,
                 heading: this.heading,
@@ -562,7 +632,7 @@ export class BrandComponent {
             this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
             this.paginationUpdated.next(this.paginationData);
             this.paginationInstance.instance['position'] = 'BOTTOM';
-            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
             this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
 
             if (this.paginationInstance) {

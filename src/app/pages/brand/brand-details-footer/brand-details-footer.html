@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="body-bg pt-1">
+<div class="body-bg pt-1" *ngIf="brandDetailsFooterData?.firstPageContent">
         <div *ngIf="brandDetailsFooterData?.brandCatDesc || brandDetailsFooterData?.brandShortDesc || brandDetailsFooterData?.brandContent" class="container-fluid pad-lr-0"
             [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
             <div class="panel-head">

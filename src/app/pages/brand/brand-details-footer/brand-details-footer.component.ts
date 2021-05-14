@@ -10,6 +10,7 @@ export interface BrandDetailsFooterData{
 	brandShortDesc: any;
 	brandContent: any;
 	iba: boolean;
+	firstPageContent: boolean;
 	productSearchResult: any;
 	productSearchResultSEO: any;
 	heading: string;
@@ -33,6 +34,7 @@ export class BrandDetailsFooterComponent {
 	constructor(public _commonService: CommonService) {
 		this.brandDetailsFooterData = {
 			brandCatDesc: {},
+			firstPageContent: true,
 			brandShortDesc: {},
 			brandContent: {},
 			categoryLinkLists: {},

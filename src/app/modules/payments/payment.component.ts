@@ -1,12 +1,13 @@
 import { FormGroup } from '@angular/forms';
 import { Component, EventEmitter, AfterViewInit, OnInit, ElementRef } from '@angular/core';
 import { PaymentService } from './payment.service';
-import CONSTANTS from 'src/app/config/constants';
-import { CommonService } from 'src/app/utils/services/common.service';
-import { CheckoutService } from 'src/app/utils/services/checkout.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { DataService } from 'src/app/utils/services/data.service';
-import { CartService } from 'src/app/utils/services/cart.service';
+import CONSTANTS from '../../config/constants';
+import { CommonService } from '../../utils/services/common.service';
+import { CheckoutService } from '../../utils/services/checkout.service';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { DataService } from '../../utils/services/data.service';
+import { CartService } from '../../utils/services/cart.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 @Component({
     selector: 'payment',
@@ -20,7 +21,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     paymentBlock: number;
     globalConstants: {};
     isSavedCardExist: boolean;
-    isShowLoader: boolean;
     savedCardsData: any;
     updateTabIndex: EventEmitter<number> = new EventEmitter();
     spp: boolean; // spp: Show Payment Popup
@@ -35,11 +35,13 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     paymentForm: FormGroup;
     isPaymentSelected: boolean = false;
     canNEFT_RTGS = true;
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
-    constructor(public _dataService: DataService, public cartService: CartService, private _paymentService: PaymentService, private _localAuthService: LocalAuthService, public checkOutService: CheckoutService, public commonService: CommonService, private elementRef: ElementRef) {
+    constructor(public _dataService: DataService, private loaderService: GlobalLoaderService, public cartService: CartService, private _paymentService: PaymentService, private _localAuthService: LocalAuthService, public checkOutService: CheckoutService, public commonService: CommonService, private elementRef: ElementRef) {
         this.globalConstants = CONSTANTS.GLOBAL;
         this.isSavedCardExist = false;
-        // this.paymentBlock = this.globalConstants['creditDebitCard'];
         this.isShowLoader = true;
     }
 

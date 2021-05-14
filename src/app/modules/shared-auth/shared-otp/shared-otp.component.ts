@@ -13,6 +13,7 @@ import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { CartService } from '../../../utils/services/cart.service';
 import { CommonService } from '../../../utils/services/common.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 
 @Component({
     selector: 'app-shared-otp',
@@ -32,7 +33,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
     otpSubscriber: Subscription = null;
     paramsSubscriber: Subscription = null;
     //flags
-    isReqProcessing = false;
     isTicking = false;
     isOTPLimitExceeded = false;
     isOTPValidated = false;
@@ -45,6 +45,9 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
     isSubmitted: boolean = false;
     cartSession = null;
     @ViewChild('otpField') otpField: ElementRef<HTMLInputElement>;
+    set isReqProcessing(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     constructor(
         private title: Title,
@@ -58,7 +61,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         private commonService: CommonService,
         private activatedRoute: ActivatedRoute,
         private authService: SharedAuthService,
-        //private checkoutLoginService: CheckoutLoginService
+        private loaderService: GlobalLoaderService,
     ) {
         this.isBrowser = isPlatformBrowser(platformId);
     }

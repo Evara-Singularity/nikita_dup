@@ -5,7 +5,6 @@ import {CreditDebitCardComponent} from "./creditDebitCard.component";
 import {CreditDebitCardService} from "./creditDebitCard.service";
 import {PayuFormModule} from "../payuForm/payuForm.module";
 import {RazorPayFormModule} from "../razorPayForm/razorPayForm.module";
-import { LoaderModule } from '../loader/loader.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutocompleteOff.directive';
 
@@ -16,7 +15,6 @@ import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutoc
         ReactiveFormsModule,
         PayuFormModule,
         RazorPayFormModule,
-        LoaderModule,
         MathCeilPipeModule,
         KpAutocompleteOffDirectiveModule
     ],

@@ -3,12 +3,12 @@ import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { makeStateKey, Title, TransferState } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PageScrollService } from 'ngx-page-scroll-core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { of, Subject } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import CONSTANTS from 'src/app/config/constants';
-import { UnAvailableItemsComponent } from 'src/app/modules/unAvailableItems/unAvailableItems.component';
+import CONSTANTS from '../../config/constants';
+import { UnAvailableItemsComponent } from '../../modules/unAvailableItems/unAvailableItems.component';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { DeliveryAddressService } from '../../modules/deliveryAddress/deliveryAddress.service';
 import { ModalService } from '../../modules/modal/modal.service';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
@@ -53,7 +53,6 @@ export class CheckoutV1Component implements OnInit {
   headerText: string = CONSTANTS.CMS_TEXT.CART_PAYMENT_METHOD_TEXT;
   isServer: boolean;
   isBrowser: boolean;
-  showLoader: boolean = false;
   shippingAddressPincode;
   headerStep = 1;
   // invoiceTypeForm: FormGroup;
@@ -62,6 +61,9 @@ export class CheckoutV1Component implements OnInit {
   buyNow: boolean;
   @Input() checkoutBackPath: Subject<any>;
   isContinue = true;
+  set showLoader(value) {
+    this.loaderService.setLoaderState(value);
+  }
 
   constructor(
     private _modalService: ModalService,
@@ -76,11 +78,11 @@ export class CheckoutV1Component implements OnInit {
     public router: Router,
     private title: Title,
     public footerService: FooterService,
-    private _pageScrollService: PageScrollService,
     @Inject(DOCUMENT) private _document: any,
     private _localStorageService: LocalStorageService,
     private _localAuthService: LocalAuthService,
     private _commonService: CommonService,
+    private loaderService: GlobalLoaderService,
     private _checkoutService: CheckoutService,
     private _deliveryAddressService: DeliveryAddressService,
     private _tms: ToastMessageService) {

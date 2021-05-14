@@ -9,7 +9,6 @@ import { PromoOfferModule } from '../promoOffers/promo-offer.module';
 import { PromoApplyModule } from '../promoApply/promo-apply.module';
 import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
 import { MathFloorPipeModule } from 'src/app/utils/pipes/math-floor';
-import { LoaderModule } from '../loader/loader.module';
 
 @NgModule({
     imports: [
@@ -19,7 +18,6 @@ import { LoaderModule } from '../loader/loader.module';
         MathCeilPipeModule,
         MathFloorPipeModule,
         RouterModule,
-        LoaderModule,
         PromoOfferModule,
         PromoApplyModule
     ],

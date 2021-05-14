@@ -8,7 +8,6 @@ import {MobikwikWalletFormModule} from "../mobikwikWalletForm/mobikwikWalletForm
 import {PayuWalletFormModule} from "../payuWalletForm/payuWalletForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
-import { LoaderModule } from '../loader/loader.module';
 
 
 @NgModule({
@@ -21,7 +20,6 @@ import { LoaderModule } from '../loader/loader.module';
         RazorPayFormModule,
         MathCeilPipeModule,
         MobikwikWalletFormModule,
-        LoaderModule
     ],
     declarations: [
         WalletComponent

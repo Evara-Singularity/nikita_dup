@@ -12,8 +12,9 @@ import { CommonService } from '../../../utils/services/common.service';
 import CONSTANTS from '../../../config/constants';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { SharedLoginUtilService } from './shared-login-util.service';
-import { UsernameValidator } from 'src/app/utils/validators/username.validator';
+import { UsernameValidator } from '../../../utils/validators/username.validator';
 import { SharedAuthService } from '../shared-auth.service';
+import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 const TABLIST = ['LOGIN', 'SIGNUP', 'OTP'];
 
 @Component({
@@ -41,9 +42,11 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
     redirectUrl = '';
     isServer: boolean;
     isBrowser: boolean;
-    isReqProcessing: boolean;
     isUserExists = false;
     isSubmitted: boolean = false;
+    set isReqProcessing(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     constructor(
         private title: Title,
@@ -56,6 +59,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         private localAuthService: LocalAuthService,
         @Inject(PLATFORM_ID) platformId,
         private commonService: CommonService,
+        private loaderService: GlobalLoaderService,
         private tms: ToastMessageService) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);

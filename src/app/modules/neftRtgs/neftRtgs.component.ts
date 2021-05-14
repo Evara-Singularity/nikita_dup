@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {NeftRtgsService} from "./neftRtgs.service";
 import {Router} from "@angular/router";
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -8,6 +7,7 @@ import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 
@@ -22,10 +22,13 @@ export class NeftRtgsComponent{
     API: {};
     message: string;
     isNeftEnable: boolean = true;
-    isShowLoader:boolean=false;
     invoiceType: string;
     totalPayableAmount: number = 0;
     type:any;
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
+
     constructor(
         private _localStorageService: LocalStorageService,
         private _checkoutService: CheckoutService,
@@ -33,7 +36,7 @@ export class NeftRtgsComponent{
         private _router: Router,
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
-        private _neftRtgsService: NeftRtgsService) {
+        private loaderService: GlobalLoaderService) {
         this.type = _checkoutService.getInvoiceType();
         this.API = CONSTANTS;
     }

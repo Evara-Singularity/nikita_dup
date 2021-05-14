@@ -11,6 +11,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 
@@ -31,7 +32,6 @@ export class NetBankingComponent {
     isValid: boolean;
     payuData: {};
     dataNBTop: Array<{}>;
-    isShowLoader: boolean = false;
     selectedBankName:any;
     prepaidDiscount:number=0;
     totalPayableAmount:number=0;
@@ -39,20 +39,21 @@ export class NetBankingComponent {
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
     @Input() type : any;
+    set isShowLoader(value) {
+        this._loaderService.setLoaderState(value);
+    }
+
     constructor(
-        private _localStorageService: LocalStorageService, 
-        private _checkoutService: CheckoutService,  
-        private _commonService: CommonService, 
-        private _localAuthService: LocalAuthService, 
-        private _cartService: CartService, 
-        private _objectToArray: ObjectToArray, 
+        private _localStorageService: LocalStorageService,
+        private _checkoutService: CheckoutService,
+        private _commonService: CommonService,
+        private _localAuthService: LocalAuthService,
+        private _cartService: CartService,
+        private _objectToArray: ObjectToArray,
+        private _loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder) {
-        
         this.payuData = {};
         this.selectedBankCode = 'AXIB';
-
-        
-
         // //console.log(this.dataNB);
         this.isValid = false;
     }

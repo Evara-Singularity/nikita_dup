@@ -23,9 +23,11 @@ export class HomeResolver implements Resolve<object> {
     private http: HttpClient,
     private loaderService: GlobalLoaderService
   ) { }
-
+  set loaderStatus(value) {
+    this.loaderService.setLoaderState(value)
+  }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-    this.loaderService.setLoaderState(true);
+    this.loaderStatus(true);
     const layoutData = makeStateKey<object>('layout');
 
     const layOutJSON = environment.BASE_URL + '/homepage/layoutbyjson?requestType=mobile';
@@ -35,12 +37,12 @@ export class HomeResolver implements Resolve<object> {
     return JSONdata.pipe(
       catchError((err) => {
         console.log('err', err);
-        this.loaderService.setLoaderState(false);
+        this.loaderStatus(false);
         return of(err);
       }),
       tap(result => {
         this.transferState.set(layoutData, JSONdata);
-        this.loaderService.setLoaderState(false);
+        this.loaderStatus(false);
       })
     )
   }

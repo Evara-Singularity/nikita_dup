@@ -1,0 +1,29 @@
+<div class="productdetails-article">
+    <div class="view-all" *ngIf="listOfProducts?.length > 6">
+        <span *ngIf="!viewAll" (click)="$event.stopPropagation; viewAll = true">view all</span> 
+        <span *ngIf="viewAll" (click)="$event.stopPropagation; viewAll = false">view less</span> 
+    </div>
+    <p class="attributeHeading">{{title}}</p>
+    <ng-container *ngFor="let product of listOfProducts; let i = index;">
+        <div class="innerContentWrapper" *ngIf="(i < 6 || (i > 6 && viewAll))" >
+            <ul>
+                <li (click)="$event.stopPropagation;navigateTo(product['productlink'])">
+                    <div class="reviewRatingWrap">
+                        <img class="product-img" src="{{imagePath + product['imageLink_small']}}" [alt]="product['productName']">
+                    </div>
+                    <div class="rightSide">
+                        <p class="productName">{{product['productName'] | slice:0:64}}
+                            <span *ngIf="product.productName.length>64">...</span>
+                        </p>
+                        <p class="productBrand" *ngIf="product['brandName']">{{product['brandName']}}</p>
+                        <span class="pricedetails">
+                        <span>₹{{product['mrp']}}</span>
+                        <strong>{{product['discount_percentage']}}% OFF</strong>
+                        </span>
+                        <p class="fixedPrice">₹{{product['pricewithouttax']}}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </ng-container>
+</div>

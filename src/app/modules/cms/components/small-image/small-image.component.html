@@ -1,0 +1,8 @@
+<div class="smallimages-articlewrap">
+    <!-- {{listOfImgs.length}} -->
+    <div [style.width.px]="listOfImgs.length * 135" class="smallimages-articlewrap-inner">
+        <div class="smallimages-article" *ngFor="let item of listOfImgs">
+            <img src="{{imagePath + item['imageLink_m']}}" [alt]="item['imageTitle']" (click)="$event.stopPropagation();navigateTo(item['redirectPageLink'])" />
+        </div>
+    </div>
+</div>

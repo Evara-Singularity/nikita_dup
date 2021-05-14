@@ -1,0 +1,124 @@
+@import '../../scss/variables';
+
+.greengst-banner-max{
+  background:url("#{$cdn_url}img/others/e-background-banner.jpg") no-repeat;
+  background-size: cover;
+  padding: 25px;
+  position:relative;
+  padding-bottom: 76px !important;
+}
+.green-tick-img-max{
+  padding-top:30px;
+  padding-left:35px !important;
+}
+.green-tick-img-max li{
+  list-style:none;
+  padding-bottom:20px;
+  font-size:26px !important;
+  color:#fff !important;
+  
+}
+.green-tick-img-max li:before{
+  content:"";
+  position:absolute;
+  left: 22px;
+  background:url("#{$cdn_url}img/others/landingpage_check.svg") no-repeat;
+  width:32px;
+  height:40px;
+  background-size:100%;
+  
+}
+.buy-nw-btn{
+  font-family: arial;
+  background-color: #29ac4e;
+  text-decoration: none;
+  color: #fff !important;
+  font-weight: bold;
+  text-align: center;
+  padding: 11px 59px;
+  border-radius: 2px;
+  border: 2px solid #29ac4e;
+  margin: 0px auto;
+  z-index: 8;
+  font-size: 16px;
+  margin-left: 48px;
+  margin-top: 25px;
+  display: inline-block;
+}
+.quote-div{
+  background-color:#f8f8f8;
+  text-align:center;
+  padding: 55px 150px;
+}
+.quote-div p{
+  font-size:16px;
+}
+.quote-div p:first-child:before{
+  background: url(#{$cdn_url}img/others/e-quote_start.svg) no-repeat;
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  content: "";
+  margin-top: -11px;
+  margin-left: -39px;
+  background-size: 100%;
+  
+  
+}
+.quote-div p:last-child:after{
+  background:url(#{$cdn_url}img/others/e-quote_end.svg) no-repeat;
+  position:absolute;
+  width: 30px;
+  height:40px;
+  content:"";
+  margin-top: 10px;
+  margin-left: 10px;
+  background-size: 100%
+}
+@media only screen and (max-width:768px) {
+  .spcl-discount{
+    display:none;
+  }
+  .greengst-banner-max{
+    padding-bottom:0px;
+  }
+  .first-half-max{
+    width:100%;
+  }
+  .logo-div-max img{
+    max-width:100%;
+  }
+  .quote-div{
+    padding: 34px 20px 34px 20px;
+    font-size:14px;
+    font-style: italic;
+  }
+  
+  .green-tick-img-max{
+    padding-left: 50px;
+  }
+  .green-tick-img-max li{
+    font-size: 21px !important;
+    line-height: 29px;
+  }
+  .quote-div{
+    padding: 34px 20px 34px 20px;
+    font-size:14px;
+    font-style: italic;
+  }
+  .quote-div p:first-child:before{
+    width: 22px;
+    height: 20px;
+    margin-top: -27px;
+    text-align: center;
+    margin-left: 128px;
+  }
+  .quote-div p:last-child:after{
+    width: 25px;
+    height: 19px;
+    margin-top: 27px;
+    margin-left: -159px;
+    background-size: 100%;
+  }
+  
+}

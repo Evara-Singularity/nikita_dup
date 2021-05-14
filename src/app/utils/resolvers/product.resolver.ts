@@ -63,6 +63,7 @@ export class ProductResolver implements Resolve<object> {
       this.transferState.remove(PRODUCT_Q_AND_A_KEY);
       this.transferState.remove(PRODUCT_FBT);
       this.transferState.remove(PRODUCT_STATUS_COUNT);
+      
       this.loaderService.setLoaderState(false);
       return of([productObj, productReviewObj, productCrumbObj, productQuesAnsObj, productFbtObj, productStatusCountObj]);
     } else {

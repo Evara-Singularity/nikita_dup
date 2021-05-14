@@ -70,28 +70,10 @@ export class BankNamePipe implements PipeTransform {
             return value;
         }
 
-//         SCB
-// INDUS
-// YES
-// ICICID
-// KOTAK
-// HSBC
-// RBL
-
-//         HSBC Bank
-// ICICI Bank
-// IndusInd Bank
-// Kotak Mahindra Bank
-// RBL Bank
-// Standard Chartered Bank
-// YES Bank
     }
 }
 
 import { NgModule } from '@angular/core';
-
-// import { NameComponent } from './name.component';
-
 @NgModule({
     imports: [],
     exports: [BankNamePipe],

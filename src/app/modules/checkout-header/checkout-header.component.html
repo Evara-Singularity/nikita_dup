@@ -1,0 +1,17 @@
+<div class="trackStatusWrap">
+    <ul class="trackStatusline clearfix">
+        <li [style.width.%]="33.3">
+            <span [ngClass]="{'green': ( step >=1 && isUser ) }" class="green-txt trackerStatusHeading">SIGN IN</span>
+            <span [ngClass]="{'activeTracker': ( step >=1 && isUser ) }" class="st_trackerline"></span>
+        </li>
+        <li class="grsolid" [style.width.%]="33.3">
+            <span class="trackerStatusHeading" [ngClass]="{'green':step >=2}">ADDRESS</span>
+            <span class="clearfix"></span>
+            <span [ngClass]="{'activeTracker':step >=2}" class="st_trackerline "></span>
+        </li>
+        <li class="grsolid" [style.width.%]="33.3">
+            <span class="trackerStatusHeading" [ngClass]="{'green':step >=4}">PAYMENT</span>
+            <span [ngClass]="{'activeTracker':step >=4}" class="st_trackerline"></span>
+        </li>
+    </ul>
+</div>

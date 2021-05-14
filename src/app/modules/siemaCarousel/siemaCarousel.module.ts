@@ -14,14 +14,13 @@ import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
         MathCeilPipeModule,
         MathFloorPipeModule,
         RouterModule,
-        CommonModule, 
-        NgxSiemaModule.forRoot(), 
-        LazyLoadImageModule,
+        CommonModule,
+        NgxSiemaModule.forRoot(),
+        //LazyLoadImageModule,
         YTThumnailPipeModule
     ],
     exports: [SiemaCarouselComponent],
     entryComponents: [SiemaSlideComponent],
     declarations: [SiemaCarouselComponent, SiemaSlideComponent],
 })
-
-export class SiemaCarouselModule{}
+export class SiemaCarouselModule { }

@@ -8,7 +8,6 @@ import { ProductRoutingModule } from './product-routing.module';
 import { BreadcrumbNavModule } from '../../modules/breadcrumb-nav/breadcrumb-nav.module';
 import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
 import { ModalModule } from '../../modules/modal/modal.module';
-import { LoaderModule } from '../../modules/loader/loader.module';
 import { ToastMessageModule } from '../../modules/toastMessage/toast-message.module';
 
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
@@ -28,7 +27,6 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
     CommonModule,
     ProductRoutingModule,
     BreadcrumbNavModule,
-    LoaderModule,
     SiemaCarouselModule,
     ModalModule,
     ObjectToArrayPipeModule,

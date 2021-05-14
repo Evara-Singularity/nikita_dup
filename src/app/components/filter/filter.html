@@ -14,9 +14,9 @@
                             *ngIf="bucket.count>0">({{ bucket.count }})</span></span>
                 </div>
                 <div class="filter-options">
-                    <!-- <ng-container *ngIf="bucket.name === 'category'">
+                    <ng-container *ngIf="bucket.name === 'category'">
                         <app-f-category [terms]="bucket.terms"></app-f-category>
-                    </ng-container> -->
+                    </ng-container>
                     <ng-container *ngIf="bucket.name != 'category'">
                         <div class="filter-list">
                             <div class="filter-search"

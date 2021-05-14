@@ -311,8 +311,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
-        console.clear();
-        console.log(this.sortByComponent);
         if (this.sortByComponent) {
             this._cs.updateSortByState(this.sortByComponent.sortBy);
         }
@@ -448,3 +446,4 @@ import { AddRupaySymbolPipeModule } from "./pipes/add-rupay-symbol";
 })
 export class BrandModule { }
 export class CategoryModule extends BrandModule { }
+export class SearchModule extends BrandModule { }

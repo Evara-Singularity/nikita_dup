@@ -11,6 +11,7 @@ export class BrandService {
   
 
   getBrandByName(brandName) {
+    alert('called getBrandByName');
     return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/brand/getBrandByName', { params: { name: brandName } })
   }
 

@@ -36,7 +36,6 @@ export class PaginationComponent{
     @Input() position: string;
     pageSize: number;
     pager: any = {};
-    // p: number = 1;
     pages: any[] = [];
     isServer: boolean;
     isBrowser: boolean;
@@ -45,70 +44,39 @@ export class PaginationComponent{
     constructor(private _router: Router,private _tState: TransferState, @Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, private _commonService: CommonService, public _activatedRoute: ActivatedRoute, private _pagerService: PagerService, private elementRef: ElementRef){
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
-        //console.log("pagination page");
-        //console.log(this.sortByComponent);
     };
 
     ngOnInit(){
         this.currRoute = this._router.url.split("?")[0];
-        //console.log("Pagination Component: ngOnInit", this.paginationUpdated);
-
-        // if(this.isBrowser && this.transferState.hasKey(PAGINATION_DATA_KEY))
-        //     this.initializePaginationData(this.transferState.get(PAGINATION_DATA_KEY, {}));
-
-        //console.log("Pagination Component *******************");
-        //console.log(this.transferState.get(PAGINATION_DATA_KEY, {}));
-
-        // if(this.isBrowser && this.transferState.hasKey(SORTBY_DATA_KEY))
-        //     this.initializeSortByData(this.transferState.get(SORTBY_DATA_KEY, {}));
 
         if (this._tState.hasKey(RPRK)) {
             let response = this._tState.get(RPRK, {});
             this.initializePaginationData({ itemCount: response["productSearchResult"]["totalCount"] });
-            // if(this.isBrowser)
-                // console.log({ itemCount: response["productSearchResult"]["totalCount"] }, "pagination pagination pagination pagination");                
         }
 
         this.paginationUpdated.subscribe((data)=>{
-
             this.initializePaginationData(data);
-
-            /*if(this.isServer)
-                this.transferState.set(PAGINATION_DATA_KEY, data);*/
-
-            //console.log("Completed setting pagination data key")
-            // this.setDefaultPage(this.page);
             this.cd.markForCheck(); // marks path
         });
 
 
         this.sortByComponentUpdated.subscribe((data)=>{
             this.initializeSortByData(data);
-            // if(this.isServer)
-            //     this.transferState.set(SORTBY_DATA_KEY, data);
             this.cd.markForCheck();
         })
     }
 
     private initializeSortByData(data){
-        //console.log("sortByComponentUpdated **********", data);
-
         this.sortByComponent = data;
     }
 
     private initializePaginationData(data){
-        // console.log(data, "datadatadatadatadatadatadata")
-        // alert();
-        // console.log(data);
-        //console.log("Pagination Component: ngOnInit: paginationUpdated.subscribe", data);
         let queryParams = data["queryParams"] ? data["queryParams"] : this._commonService.getDefaultParams().queryParams;
 
         if(data["pageSize"])
             this.pageSize = data["pageSize"];
         else
             this.pageSize = (queryParams["pageSize"] != undefined && queryParams["pageSize"] != GLOBAL_CONSTANT.default.pageSize+"") ? queryParams["pageSize"] : GLOBAL_CONSTANT.default.pageSize+"";
-        // this.itemCount = data.itemCount;
-        // console.log("Pagination Component: ngOnInit: paginationUpdated.subscribe", queryParams);
 
         if(queryParams["page"] != undefined)
             this.page = parseInt(queryParams["page"]);
@@ -125,11 +93,6 @@ export class PaginationComponent{
         this.itemCount = data.itemCount;
     }
 
-    ngAfterViewInit(){
-    }
-
-    checkSortBy(){
-    }
     ngOnChanges(changes: SimpleChanges){
 
         if(Object.keys(changes).length > 0 && changes["sortByComponent"]){
@@ -157,6 +120,7 @@ export class PaginationComponent{
         page = parseInt(page) + 1;
         this.setPage(page);
     }
+    
     decreamentPage(page: any){
         page = parseInt(page) - 1
         this.setPage(page);

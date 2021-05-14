@@ -7,7 +7,7 @@ import {
     ActivatedRoute
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
@@ -102,14 +102,14 @@ export class BrandResolver implements Resolve<object> {
         } else {
             return forkJoin([this._commonService.refreshProducts(true)]).pipe(
                 catchError((err) => {
-                    this.loaderService.setLoaderState(false);
+                    this._commonService.showLoader = false;
                     return of(err);
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
                         result['flag'] = true;
                         this.transferState.set(RPRK, result[0]);
-                        this.loaderService.setLoaderState(false);
+                        this._commonService.showLoader = false;
                     }
                 })
             );

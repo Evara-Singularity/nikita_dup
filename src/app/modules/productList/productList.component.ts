@@ -34,7 +34,6 @@ export class ProductListComponent{
     isServer: boolean;
     isBrowser: boolean;
     defaultImage = CONSTANTS.IMAGE_BASE_URL + 'img/others/Card.jpg';
-    // image = 'https://images.unsplash.com/photo-1443890923422-7819ed4101c0?fm=jpg';
     offset = 100;
     currentUrl: string;
     imagePath = CONSTANTS.IMAGE_BASE_URL;

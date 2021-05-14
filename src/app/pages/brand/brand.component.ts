@@ -33,6 +33,9 @@ export class BrandComponent {
     @ViewChild('brandDetailsFooter', { read: ViewContainerRef }) brandDetailsFooterContainerRef: ViewContainerRef;
     
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
+    
+    sortByComponentUpdated: BehaviorSubject<SortByComponent>;
+
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     
     paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -40,8 +43,6 @@ export class BrandComponent {
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     
     sortByUpdated: Subject<any> = new Subject<any>();
-
-    sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
@@ -138,8 +139,14 @@ export class BrandComponent {
         });
     }
 
+    onUpdaet(data) {
+        this.sortByOpt = data.sortByOpt;
+    }
+
     ngAfterViewInit() {
-        this.sortByComponentUpdated.next(this.sortByComponent);
+        console.log('===========1===============');
+        console.log(this.sortByComponent);
+        console.log('============3==============');
         /* Remove key set on server side to avoid api on dom load of frontend side */
         if (this.isBrowser) {
             this._tState.remove(RPRK);
@@ -147,25 +154,20 @@ export class BrandComponent {
     }
 
     private refreshProductsBasedOnRouteChange(){
-        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
-            () => {
-                this._commonService.showLoader = true;
-                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                    this._commonService.showLoader = false;
-                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                    this.paginationUpdated.next(this.paginationData);
-                    // this.sortByUpdated.next();
-                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    this.filterData = response.buckets;
-                    this.productsUpdated.next(response.productSearchResult.products);
-                });
-            }
-        );
+        this._commonService.showLoader = true;
+        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+            this._commonService.showLoader = false;
+            // this.paginationData = { itemCount: response.productSearchResult.totalCount };
+            // this.paginationUpdated.next(this.paginationData);
+            // this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
+            // this.filterData = response.buckets;
+            // this.productsUpdated.next(response.productSearchResult.products);
+            this.initiallizeData(response, true);
+        });
     }
+    
 
     private initiallizeData(response: any, flag: boolean) {
-        this._commonService.showLoader = false;
-
         // Check if brand is Active 
         this.iba = response['brandDetails']['active'];
 
@@ -220,7 +222,7 @@ export class BrandComponent {
         
         // update brand name based on API response
         this.brand = response.brandDetails.brandName;
-
+        this._commonService.removeLoader();
         this.setTrackingData(response);
     }
 
@@ -524,8 +526,6 @@ export class BrandComponent {
     }
 
     async onVisiblebrandDetailsFooter(event) {
-        console.clear();
-        console.log(event);
         if (!this.brandDetailsFooterInstance) {
             this._commonService.showLoader = true;
             const { BrandDetailsFooterComponent } = await import('@app/pages/brand/brand-details-footer/brand-details-footer.component').finally(() => {
@@ -561,9 +561,9 @@ export class BrandComponent {
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
             this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
             this.paginationUpdated.next(this.paginationData);
-            this.paginationInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
-            this.paginationInstance.instance['sortByComponentUpdated'].next(this.sortByComponent);
             this.paginationInstance.instance['position'] = 'BOTTOM';
+            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
 
             if (this.paginationInstance) {
                 (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
@@ -580,24 +580,26 @@ export class BrandComponent {
                 this._commonService.showLoader = true;
                 const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
                     this._commonService.showLoader = false;
+                    setTimeout(() => {
+                        const mob_filter = document.querySelector('.mob_filter');
+                        if (mob_filter) {
+                            mob_filter.classList.add('upTrans');
+                        }
+                    }, 0);
                 });
                 const factory = this.cfr.resolveComponentFactory(FilterComponent);
                 this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
                 this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
-                this.filterInstance.instance['sortByComponent'] = this.sortByComponentUpdated;
-            }
-
-            const mob_filter = document.querySelector('.mob_filter');
-
-            if (mob_filter) {
-                if (mob_filter.classList.contains('upTrans')) {
-                    mob_filter.classList.remove('upTrans');
-                } else {
-                    mob_filter.classList.add('upTrans');
+                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+                this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            } else {
+                const mob_filter = document.querySelector('.mob_filter');
+    
+                if (mob_filter) {
+                    mob_filter.classList.toggle('upTrans');
                 }
             }
+
         }
 
     }
@@ -605,8 +607,8 @@ export class BrandComponent {
     async toggleSortBy(data) {
         if (this.isBrowser) {
             this.sortByOpt = data.sortByOpt;
-
             if (!this.sortByInstance) {
+                this._commonService.showLoader = true;
                 const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
                     this._commonService.showLoader = false;
                 });

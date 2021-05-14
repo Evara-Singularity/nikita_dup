@@ -2,18 +2,13 @@ import {
   Component, ViewEncapsulation, Input, Output, ChangeDetectionStrategy, EventEmitter,
   ChangeDetectorRef, PLATFORM_ID, Inject
 } from '@angular/core';
-// import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { CommonService } from "@app/utils/services/common.service";
 import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs/Subject";
 import { TransferState, makeStateKey } from '@angular/platform-browser';
-// const SORTBY_KEY: any = makeStateKey<{}>("sortby");
-const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
-declare let $: any;
-declare let scrollToTop: any;
-const slpPagesExtrasIdMap = { "116111700": "safety" };
 
+const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
 
 @Component({
   selector: 'sort-by',

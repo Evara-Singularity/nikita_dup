@@ -19,7 +19,7 @@ declare let _satellite;
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
-    styleUrls: ['./../category/category.scss'],
+    styleUrls: ['./../category/category.scss']
 })
 
 export class BrandComponent {

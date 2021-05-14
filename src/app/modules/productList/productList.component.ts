@@ -22,7 +22,7 @@ const GRCRK: any = makeStateKey<{}>("GRCRK")// GRCRK: Get Related Category Resul
     selector: 'product-list',
     templateUrl: 'productList.html',
     styleUrls: [
-        './productList.scss'
+        '../../pages/category/category.scss'
     ],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,

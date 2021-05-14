@@ -18,7 +18,7 @@ declare let _satellite;
 @Component({
     selector: 'search',
     templateUrl: './search.html',
-    styleUrls: ['./../category/category.scss', './search.scss']
+    styleUrls: ['./../category/category.scss']
 })
 
 export class SearchComponent implements OnInit, AfterViewInit {

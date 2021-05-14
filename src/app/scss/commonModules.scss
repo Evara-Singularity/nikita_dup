@@ -166,3 +166,10 @@ input[type=number] {
 option {
     padding: 5px;
 }
+
+//Cards
+.card {
+    @extend %cards;
+    padding: 0;
+    background: red;
+}

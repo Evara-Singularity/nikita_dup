@@ -46,13 +46,9 @@
                 Moglix offers superior quality and genuine
                 <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
                     {{brandCategoryName}}
-                </a>
-                from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our
-                assortment and explore more about price,
-                specifications, availability, and deals online for {{(heading |
-                removeHTML)}}. Buy these products at best prices and get them delivered
-                at your doorstep across India.
+                </a> from a renowned brand
+                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(heading | removeHTML)}}. Buy these products
+                at best prices and get them delivered at your doorstep across India.
             </p>
         </div>
     </div>
@@ -75,7 +71,7 @@
     <ng-container *ngIf="isBrowser" #sortBy></ng-container>
     <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
     <div>
-        <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)" ></span>
+        <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
         <ng-template *ngIf="isBrowser" #pagination></ng-template>
 
         <!-- <pagination class="block o-hidden h-54 h-auto-xs" [paginationUpdated]="paginationUpdated"
@@ -84,22 +80,18 @@
         </pagination> -->
     </div>
 
-    <div class="brandsSection" *ngIf="productCategoryNames.length>0">
+    <div class="brandsSection card" *ngIf="productCategoryNames.length>0">
         <div class="innerBrandSection">
-            <h4>Popular Categories</h4>
-            <span class="border-bottom"></span>
-            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}"
-                class="brandList">{{category}} <span *ngIf="!(isLast)">. </span></a>
+            <h4 class="heading-3">Popular Categories</h4>
+            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}" class="brandList">{{category}} <span *ngIf="!(isLast)">. </span></a>
         </div>
     </div>
 
     <div class="body-bg pt-1" *ngIf="firstPageContent">
-        <div *ngIf="brandCatDesc || brandShortDesc || brandContent" class="container-fluid pad-lr-0"
-            [ngClass]="{'notFoundEl' : !iba }">
+        <div *ngIf="brandCatDesc || brandShortDesc || brandContent" class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !iba }">
             <div class="panel-head">
                 <div class="container">
-                    <h3 class="heading titleCategory" (click)="scrollTop($event)"
-                        [appKpToggle]="{idName: 'openCat3' , iconMode : true}">
+                    <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat3' , iconMode : true}">
                         More About Brand
                     </h3>
                 </div>
@@ -122,11 +114,9 @@
             <div *ngIf="productSearchResultSEO.length">
                 <div class="panel-head">
                     <div class="container">
-                        <h3 class="heading titleCategory" (click)="scrollTop($event)"
-                            [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
+                        <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
                             <p>
-                                Top Selling {{heading ? (heading | removeHTML) : brand}} Price
-                                List in India
+                                Top Selling {{heading ? (heading | removeHTML) : brand}} Price List in India
                             </p>
                         </h3>
                     </div>
@@ -146,13 +136,10 @@
                                         <a href="{{product.productUrl}}">{{product.productName}}</a>
                                     </td>
                                     <td>
-                                        Rs. {{product.priceWithoutTax | mathFloor | number :
-                                        '1.0-0'}}
+                                        Rs. {{product.priceWithoutTax | mathFloor | number : '1.0-0'}}
                                     </td>
                                     <td>
-                                        {{product.discount == 0? "-": ((product.mrp -
-                                        product.priceWithoutTax)/product.mrp)*100 | mathFloor |
-                                        number : '1.0-0'}} % off
+                                        {{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
                                     </td>
                                 </tr>
                             </ng-container>

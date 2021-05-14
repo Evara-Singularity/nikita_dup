@@ -10,6 +10,7 @@ import { CheckoutService } from '../../utils/services/checkout.service';
 import { CommonService } from '../../utils/services/common.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 @Component({
@@ -23,15 +24,17 @@ export class CashOnDeliveryComponent {
     currUser;
     isCODEnable: boolean = true;
     message: string = '';
-    isShowLoader: boolean;
     globalConstants: {};
     verifyOtp: boolean = false;
     userEmail: string;
     totalPayableAmount: number = 0;
     submittedOnce = false;
     transactionId: string;
+    set isShowLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
 
-    constructor(private _localStorageService: LocalStorageService, private _tms: ToastMessageService, private _checkoutService: CheckoutService,  private _commonService: CommonService, private _router: Router, private _localAuthService: LocalAuthService, private _cartService: CartService, private _cashOnDeliveryService: CashOnDeliveryService) {
+    constructor(private _localStorageService: LocalStorageService, private _tms: ToastMessageService, private _checkoutService: CheckoutService,  private _commonService: CommonService, private _router: Router, private _localAuthService: LocalAuthService, private _cartService: CartService, private _cashOnDeliveryService: CashOnDeliveryService, private _loaderService: GlobalLoaderService) {
         this.transactionId = null;
         this.isShowLoader = false;
     }

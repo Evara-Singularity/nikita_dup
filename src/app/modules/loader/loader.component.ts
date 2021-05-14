@@ -13,9 +13,11 @@ export class LoaderComponent implements OnInit {
     offerHeader: string;
     @Input() showLoader:boolean;
     isServer:boolean = typeof window != 'undefined' ? false : true;
+
     ngOnInit() {
         if(!this.isServer){
             this.offerHeader = localStorage.getItem('offerHeader');
         }
     }
+    
 }

@@ -4,6 +4,7 @@ import { LocalStorageService } from "ngx-webstorage";
 import { map } from "rxjs/operators/map";
 import CONSTANTS from "src/app/config/constants";
 import { LocalAuthService } from "src/app/utils/services/auth.service";
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -16,17 +17,20 @@ export class BussinessRfqComponent {
   IsHidden: boolean = true;
   isActive = false;
   myRfqList: any;
-  showLoader: boolean = true;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  set showLoader(value){
+    this.loaderService.setLoaderState(value);
+  }
 
   constructor(
     private _localAuthService: LocalAuthService,
     private localStorageService: LocalStorageService,
-    private _dashboardService: DashboardService) {
+    private _dashboardService: DashboardService,
+    private loaderService:GlobalLoaderService) {
 
     this.getMyRfqList();
     this.setData();
-
+    this.showLoader = true;
   }
 
   setData() {

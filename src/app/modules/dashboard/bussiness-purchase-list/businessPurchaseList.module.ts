@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BussinessPurchaseListComponent } from "./bussinessPurchaseList.component";
 import { routing } from "./businessPurchaseList.routing";
 import { BusinessPurchaseListService } from "./businessPurchaseList.service";
-import { LoaderModule } from "src/app/modules/loader/loader.module";
 import { OrderSummaryService } from "src/app/modules/orderSummary/orderSummary.service";
 import { ProductService } from "src/app/utils/services/product.service";
 import { MathCeilPipeModule } from "src/app/utils/pipes/math-ceil";
@@ -17,7 +16,6 @@ import { MathCeilPipeModule } from "src/app/utils/pipes/math-ceil";
     FormsModule,
     ReactiveFormsModule,
     routing,
-    LoaderModule,
     MathCeilPipeModule,
   ],
   declarations: [BussinessPurchaseListComponent],

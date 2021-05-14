@@ -10,6 +10,7 @@ import { LocalAuthService } from "src/app/utils/services/auth.service";
 import { CartService } from "src/app/utils/services/cart.service";
 import { CommonService } from "src/app/utils/services/common.service";
 import { GlobalState } from "src/app/utils/global.state";
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 @Component({
   selector: "bussiness-info",
@@ -20,13 +21,15 @@ export class BussinessInfoComponent {
   error: boolean = true;
   errorMsg: string = "";
   userInfo;
-  showLoader: boolean = true;
   isBrowser: boolean;
   user: any;
   isServer: boolean;
   isHomePage: boolean;
   public isMenuCollapsed: boolean = false;
   currentRoute: string;
+  set showLoader(value){
+    this.loaderService.setLoaderState(value);
+  }
 
   constructor(
     private _state: GlobalState,
@@ -38,8 +41,10 @@ export class BussinessInfoComponent {
     private _cartService: CartService,
     private _localAuthService: LocalAuthService,
     public localStorageService: LocalStorageService,
-    private _dashboardService: DashboardService) {
-
+    private _dashboardService: DashboardService,
+    private loaderService:GlobalLoaderService) {
+    
+    this.showLoader=false;
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
     this._state.subscribe("menu.isCollapsed", (isCollapsed) => { this.isMenuCollapsed = isCollapsed; });

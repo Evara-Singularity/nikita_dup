@@ -13,6 +13,7 @@ import { stateList } from 'src/app/utils/data/state';
 import { Step } from 'src/app/utils/validators/step.validate';
 import { CartService } from 'src/app/utils/services/cart.service';
 import { GLOBAL_CONSTANT } from 'src/app/config/global.constant';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -22,13 +23,7 @@ declare let _satellite;
   styleUrls: ["bussinessDetail.component.scss"],
 })
 export class BussinessDetailComponent implements OnDestroy {
-  businessDetail: {
-    companyName: string;
-    gstin: string;
-    isGstInvoice: boolean;
-    pan: string;
-  };
-  showLoader: boolean = false;
+
   error: boolean = true;
   businessDetailForm: FormGroup;
   successfulMessage: boolean;
@@ -43,6 +38,15 @@ export class BussinessDetailComponent implements OnDestroy {
   isGSTINVerified = false;
   addressLineKeys = ["bno", "flno", "bnm", "st", "loc"];
   gstinSubscriber: Subscription = null;
+  set showLoader(value) {
+    this.loaderService.setLoaderState(value);
+  } 
+  businessDetail: {
+    companyName: string;
+    gstin: string;
+    isGstInvoice: boolean;
+    pan: string;
+  }; 
 
   constructor(
     private _localAuthService: LocalAuthService,
@@ -52,11 +56,13 @@ export class BussinessDetailComponent implements OnDestroy {
     private _localStorageService: LocalStorageService,
     private _formBuilder: FormBuilder,
     private _businessDetailService: BusinessDetailService,
-    private tms: ToastMessageService) {
+    private tms: ToastMessageService,
+    private loaderService:GlobalLoaderService) {
 
     this.successfulMessage = false;
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
+    this.showLoader = false;
   }
 
   ngOnInit() {

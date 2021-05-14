@@ -1,5 +1,4 @@
 <div class="orderdtDesc clearfix" *ngIf="detail">
-    <loader [showLoader]="showLoader"></loader>
     <div class="orderdtBoxinner">
         <div class="orderproImg">
             <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
@@ -260,7 +259,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
                                 <label class="upload-img" *ngIf="chequeImage">
                                     <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc [itemImage]="chequeImage['file']">
-                                    <i class="icon-circle-delete" (click)="removeChequeImage(i)"></i>
+                                    <i class="icon-circle-delete" (click)="removeChequeImage()"></i>
                                 </label>
                             </div>
                             <!-- <i class="icon-circle-next prev active" (click)="step = 1"></i> -->

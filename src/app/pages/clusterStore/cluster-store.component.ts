@@ -1,6 +1,6 @@
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, Renderer2, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { makeStateKey, Meta, Title, TransferState } from '@angular/platform-browser';
+import { Meta, Title, TransferState } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import CONSTANTS from '../../config/constants';
@@ -8,7 +8,6 @@ import { ToastMessageService } from '../../modules/toastMessage/toast-message.se
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { ClusterStoreService } from './cluster-store.service';
 
-const l0Data = makeStateKey<any>('l0Data');
 
 @Component({
     selector: 'app-cluster-store',

@@ -103,7 +103,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public footerService: FooterService,
     private _localAuthService: LocalAuthService,
     private cfr: ComponentFactoryResolver,
-    private _commonService: CommonService,
     private injector: Injector,
     private route: ActivatedRoute,
     private analytics: GlobalAnalyticsService
@@ -487,20 +486,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sendDataToPopUP(getDataKey) {
     this.dataKeyToPopUpPage = getDataKey;
-    // setTimeout(() => {
-    //   document
-    //     .querySelector(
-    //       ".screen-view.popup.info-update-popup.payment-popup .container .content-popup"
-    //     )
-    //     .addEventListener(
-    //       "scroll",
-    //       () => {
-    //         window.scrollTo(window.scrollX, window.scrollY + 1);
-    //         window.scrollTo(window.scrollX, window.scrollY - 1);
-    //       },
-    //       { passive: true }
-    //     );
-    // }, 100);
   }
 
   async onVisibleFeaturedBrands(htmlElement) {

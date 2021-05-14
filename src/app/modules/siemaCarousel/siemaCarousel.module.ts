@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
 import { SiemaSlideComponent } from './siemaSlide.component';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
+import { ModalService } from '../modal/modal.service';
 
 @NgModule({
     imports: [
@@ -16,11 +16,11 @@ import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
         RouterModule,
         CommonModule,
         NgxSiemaModule.forRoot(),
-        //LazyLoadImageModule,
         YTThumnailPipeModule
     ],
     exports: [SiemaCarouselComponent],
     entryComponents: [SiemaSlideComponent],
     declarations: [SiemaCarouselComponent, SiemaSlideComponent],
+    providers: [ModalService]
 })
 export class SiemaCarouselModule { }

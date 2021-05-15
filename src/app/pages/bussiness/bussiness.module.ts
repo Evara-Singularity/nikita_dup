@@ -7,10 +7,15 @@ import { BusinessService } from "./business.service";
 import { LoaderModule } from "src/app/modules/loader/loader.module";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, routing, LoaderModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    routing,
+    LoaderModule
+  ],
   declarations: [DashboardBussinessComponent],
   providers: [BusinessService],
 })
 export class BusinessModule {
-  constructor() {}
+  constructor() { }
 }

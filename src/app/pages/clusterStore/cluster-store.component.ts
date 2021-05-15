@@ -2,7 +2,7 @@ import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, Renderer2, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { Meta, Title, TransferState } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';

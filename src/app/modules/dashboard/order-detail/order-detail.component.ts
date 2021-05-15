@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';

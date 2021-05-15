@@ -69,23 +69,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		autoPlay: false,
 	};
 	topOptions: any = this.options;
+
 	clustorCategories = CONSTANTS.clusterCategories;
+
 	categories: Array<{}> = CONSTANTS.siemaCategories;
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
 	imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
 	pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
 	appendSiemaItemSubjects: {};
-
+	showRecentlyViewedCarousel = true;
 	// ondemad loaded components: feature brands
 	featuredBrandsInstance = null;
 	@ViewChild('FeaturedBrands', { read: ViewContainerRef })
 	featuredBrandsContainerRef: ViewContainerRef;
-
 	// ondemad loaded components: Feature Arrivals
 	featuredArrivalsInstance = null;
 	@ViewChild('FeaturedArrivals', { read: ViewContainerRef })
 	featuredArrivalsContainerRef: ViewContainerRef;
-	showRecentlyViewedCarousel = true;
 	// ondemad loaded components: PWA Categories
 	categoriesInstance = null;
 	@ViewChild('Categories', { read: ViewContainerRef })
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngOnInit() {
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
-				this.fetchHomePageData(rawData.homeData);
+				this.fetchHomePageData(rawData.homeData[0]);
 			}
 		});
 
@@ -363,7 +363,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				userSession && userSession['userType'] ? userSession['userType'] : '',
 		};
 		let order = {};
-		let digitalData: any;
+		let digitalData = {};
 		digitalData['page'] = page;
 		digitalData['custData'] = custData;
 		digitalData['order'] = order;

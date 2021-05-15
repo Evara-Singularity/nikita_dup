@@ -1,4 +1,4 @@
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import { CONSTANTS } from "@config/constants";
 import { Meta } from '@angular/platform-browser';
 import { LocalStorageService } from 'ngx-webstorage';

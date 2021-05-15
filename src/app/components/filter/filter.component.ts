@@ -3,7 +3,7 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { CommonService } from '@app/utils/services/common.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 declare let dataLayer;
 import { CONSTANTS } from '@app/config/constants';

@@ -8,7 +8,6 @@ import {RazorPayFormModule} from "../razorPayForm/razorPayForm.module";
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 import { BankNamePipeModule } from '../../utils/pipes/bank.pipe';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
-import { LoaderModule } from '../loader/loader.module';
 import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutocompleteOff.directive';
 
 
@@ -22,7 +21,6 @@ import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutoc
         RazorPayFormModule,
         BankNamePipeModule,
         MathCeilPipeModule,
-        LoaderModule,
         KpAutocompleteOffDirectiveModule
     ],
     declarations: [

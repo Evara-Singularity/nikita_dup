@@ -1,0 +1,38 @@
+<div *ngIf="data" class="l0CategoryContainer">
+    <app-cluster-category *ngIf="data['category_cluster'] && data['category_cluster']['data'].length > 0" [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category>
+    <div class ="cluster-body">
+        <div *ngIf="data['main_banner'] && data['main_banner']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleAppBanner()" >
+            <ng-container #BannerComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['all_categories'] && data['all_categories']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleAllCategoryComponent()" >
+            <ng-container #AllCategoryComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['new_arrival'] && data['new_arrival']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleNewArrivals()" >
+            <ng-container #NewArrivalComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['trending_categories'] && data['trending_categories']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleTrendingCategories()" >
+            <ng-container #TrendingCategoryComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['featured_brands'] && data['featured_brands']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleFeaturedBrands()" >
+            <ng-container #FeaturedBrandComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['featured_brands'] && data['featured_brands']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleFeaturedBrands()" >
+            <ng-container #FeaturedBrandComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['secondary_banner'] && data['secondary_banner']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleFeatureBanner()" >
+            <ng-container #FeatureBannerComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['bestseller'] && data['bestseller']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleBestSeller()" >
+            <ng-container #BestSellerComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['featured_categories'] && data['featured_categories']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleFeturedCategories()" >
+            <ng-container #FeaturedCategoryComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['video_block'] && data['video_block']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleClusterVideo()" >
+            <ng-container #ClusterVideoComponent></ng-container>
+        </div>
+        <div class="lazy-components" *ngIf="data['footer_data'] && data['footer_data']['data'].length > 0" observeVisibility [debounceTime]="100" (visible)="onVisibleFooter()" >
+            <ng-container #ClusterFooterComponent></ng-container>
+        </div>
+    </div>
+</div>

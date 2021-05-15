@@ -210,9 +210,30 @@ a {
         font-size: $large-font;
         font-weight: 600;
     }
-} //Common Margin & padding classes 
+}
+
+//Hide & Show
+// .hide {
+//     display: none;
+// }
+//Common Margin & padding classes 
 .pt-10 {
     padding-top: 10px
+}
+
+.pad-tb-15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.pad-lr-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.mar-tb-15 {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .mb-15 {
@@ -225,6 +246,33 @@ a {
 
 .mb-65 {
     margin-bottom: 65px;
+}
+
+//Common background
+.bg-white {
+    background: $white;
+}
+
+//Common Heading
+.heading-3,
+h3 {
+    font-size: 14px;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+// Common Header Css
+header-nav {
+    &.inner_head {
+        &+div {
+            padding-top: 50px;
+        }
+    }
+}
+
+// 
+.align-center {
+    text-align: center;
 }
 
 // icons

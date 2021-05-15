@@ -10,6 +10,7 @@ import { CheckoutService } from 'src/app/utils/services/checkout.service';
 import { CreditDebitCardService } from "./creditDebitCard.service";
 import { CreditCardValidator } from 'ng2-cc-library';
 import * as creditCardType from 'credit-card-type';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 @Component({
@@ -27,13 +28,15 @@ export class CreditDebitCardComponent {
     cart: {};
     cartItems: Array<{}>;
     expYrs: Array<number>;
-    isShowLoader: boolean = false;
     cartSession: any;
     expMons: Array<{ key: string, value: string }>;
     cartSessionObject: any;
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     @Input()type:any;
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     constructor(
         private _localStorageService: LocalStorageService, 
@@ -42,6 +45,7 @@ export class CreditDebitCardComponent {
         private _localAuthService: LocalAuthService, 
         private _cartService: CartService, 
         private _creditDebitService: CreditDebitCardService, 
+        private loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder) {
 
         this.API = CONSTANTS;

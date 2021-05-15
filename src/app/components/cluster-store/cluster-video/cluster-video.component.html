@@ -1,0 +1,14 @@
+<div class="youtubeWrap">
+    <h4 class="yotubeHeading">{{title | titlecase}}</h4>
+    <div class="categoryOverBlk">
+        <div [style.width.px]="listOfVideos.length * 252" class="clearfix" #videosDiv>
+            <div class="commonCategorySlide"  *ngFor="let item of listOfVideos;index as frameIndex;">
+                <div class="youtubeVideoWrap"> 
+                    <iframe width="100%" height="100%" [src]="item['image_link']" frameborder="0" class="access-class"  
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="1"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

@@ -8,6 +8,7 @@ import { CheckoutService } from '../../utils/services/checkout.service';
 import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare let Razorpay: any;
 
@@ -21,7 +22,6 @@ export class RazorPayFormComponent {
   isValid: boolean;
   razorPayData: {};
   pType: number;
-  isShowLoader: boolean = false;
   razorPayForm: FormGroup;
   razorPay: number;
   API: any;
@@ -31,6 +31,9 @@ export class RazorPayFormComponent {
   prepaidDiscount: number = 0;
   prepaidsubscription: Subscription;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  set isShowLoader(value) {
+    this.loaderService.setLoaderState(value);
+  }
 
   @Input() data: {} = {};
   isServer: boolean;
@@ -40,7 +43,7 @@ export class RazorPayFormComponent {
       private _commonService: CommonService, 
       private _localAuthService: LocalAuthService, 
       private _cartService: CartService, 
-      private _razorPayFormService: RazorPayFormService, 
+      private loaderService: GlobalLoaderService,
       private _formBuilder: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
     this.API = CONSTANTS;
     this.isServer = isPlatformServer(platformId);

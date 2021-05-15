@@ -8,6 +8,7 @@ import { PasswordValidator } from '../../../utils/validators/password.validator'
 import { LocalAuthService } from '../../../utils/services/auth.service';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 
 @Component({
     selector: 'app-shared-forgot-password',
@@ -32,13 +33,15 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
     isOTPLimitExceeded = false;
     isOTPValidated = false;
     isPasswordType = true;
-    isReqProcessing = false;
     //others
     timerLabel = '00:45';
     invalidOTPMessage: string = null;
     usernameType = 'p';
     cartSession = null;
     isSubmitted: boolean = false;
+    set isReqProcessing(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     constructor(
         private meta: Meta,
@@ -47,6 +50,7 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
         private localAuthService: LocalAuthService,
         private authService: SharedAuthService,
         private toastService: ToastMessageService,
+        private loaderService: GlobalLoaderService,
         //private checkoutLoginService: CheckoutLoginService
     ) { }
 

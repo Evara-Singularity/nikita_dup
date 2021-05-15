@@ -3,11 +3,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UpiService } from "./upi.service";
 import { Subscription } from 'rxjs/Subscription';
 import { LocalStorageService } from 'ngx-webstorage';
-import CONSTANTS from 'src/app/config/constants';
-import { CheckoutService } from 'src/app/utils/services/checkout.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CommonService } from 'src/app/utils/services/common.service';
+import CONSTANTS from '../../config/constants';
+import { CheckoutService } from '../../utils/services/checkout.service';
+import { CartService } from '../../utils/services/cart.service';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { CommonService } from '../../utils/services/common.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare var dataLayer;
 
@@ -23,7 +24,6 @@ export class UpiComponent {
     upiTez: number;
     upiForm: FormGroup;
     upiData: {};
-    isShowLoader: boolean = false;
     upiChecked: boolean;
     @Input() type:any;
     cartSesssion: any;
@@ -32,8 +32,11 @@ export class UpiComponent {
     prepaidsubscription: Subscription;
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
+    set isShowLoader(value) {
+        this.loaderService.setLoaderState(value);
+    }
     
-    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: UpiService, private _formBuilder: FormBuilder) {
+    constructor(private _localStorageService: LocalStorageService,private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: UpiService, private _formBuilder: FormBuilder) {
         this.upiData = {};
         this.isValid = false;
         this.uType = CONSTANTS.GLOBAL.upiTez;

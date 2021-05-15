@@ -18,7 +18,6 @@ export class Covid19Component {
   isServer: boolean;
   isBrowser: boolean;
   specialData: any;
-  isShowLoader: boolean;
 
   constructor(
     private elementRef: ElementRef,
@@ -33,7 +32,6 @@ export class Covid19Component {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
-    this.isShowLoader = true;
 
   }
 
@@ -68,7 +66,6 @@ export class Covid19Component {
     this.route.data.subscribe((rawData) => {
       if (rawData && !rawData['data']['error']) {
         this.specialData = rawData['data'][0];
-        this.isShowLoader = false;
         setTimeout(() => {
           // wait for DOM rendering
           this.reinsertLinks();
@@ -78,7 +75,6 @@ export class Covid19Component {
         this.router.navigateByUrl('/');
       }
     }, error => {
-      this.isShowLoader = false;
       this.globalLoader.setLoaderState(false);
       console.log('Covid19Component API data catch error', error);
     });

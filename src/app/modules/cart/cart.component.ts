@@ -25,6 +25,7 @@ import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { FooterService } from '../../utils/services/footer.service';
 import { GlobalState } from '../../utils/global.state';
 import { ENDPOINTS } from '../../config/endpoints';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 
 const PD = makeStateKey<{}>('pdata');//PD: ProductData
@@ -105,7 +106,6 @@ export class CartComponent {
     messages: Array<any> = [];
     isPaymentValid: boolean = false;
     paymnetValidationMessage: string = '';
-    isShowLoader: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
     api: any = {};
@@ -126,6 +126,9 @@ export class CartComponent {
     checkoutAddressIndex: number;
     showLink;
     selectedBillingAddress: number;
+    set isShowLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
 
     constructor(
         private _location: Location,
@@ -147,6 +150,7 @@ export class CartComponent {
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _productService: ProductService,
+        private _loaderService: GlobalLoaderService,
         private _tms: ToastMessageService) {
 
         this.isServer = isPlatformServer(platformId);

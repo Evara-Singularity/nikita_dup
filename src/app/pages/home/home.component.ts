@@ -118,7 +118,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.route.data.subscribe((rawData) => {
       if (!rawData['homeData']['error']) {
-        this.fetchHomePageData(rawData.homeData)
+        this.fetchHomePageData(rawData.homeData[0])
       }
     });
 

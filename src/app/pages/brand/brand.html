@@ -7,7 +7,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
+        <cms *ngIf="_commonService?.cmsData" [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
     </div>
 </div>
 

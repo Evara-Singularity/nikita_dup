@@ -23,6 +23,25 @@ const routes: Routes = [
         }
       },
       {
+        matcher: popularProductsMatcher,
+        loadChildren: () => import('./popular/popularProduct/popularProduct.module').then(m => m.PopularProductModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'categorystore/safety/safetyshoes',
+        loadChildren: () => import('@pages/storefront/shoe/shoe.module').then(m => m.ShoeModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm226668'
+        }
+      },
+      {
         path: 'brands/:brand',
         loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule),
         data: {
@@ -458,6 +477,15 @@ export function brandCategoriesMatcher(url: UrlSegment[]): any {
     const brandParam = url[0].toString();
     if (lastParam.match(/^\d{9}$/) && brandParam === 'brands') {
       return ({ consumed: url, posParams: { category: url[urlLength - 1], brand: url[1] } });
+    }
+  }
+}
+
+
+export function popularProductsMatcher(url: UrlSegment[]): any {
+  if (url.length > 1) {
+    if (url[0].toString() === 'q') {
+      return ({ consumed: url, posParams: { searchString: url[1] } });
     }
   }
 }

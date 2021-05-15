@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
-import { CheckoutLoginService } from '../../utils/services/checkout-login.service';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { CheckoutLoginService } from '@services/checkout-login.service';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 const IDENTIFIER = {
   EMAIL: 'e',

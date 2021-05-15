@@ -1,6 +1,7 @@
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <ng-container *ngIf="isBrowser" #filter></ng-container>
+        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"  (filterSelected)="onFilterSelected($event)"></filter> -->
     </div>
 </div>
 <div class="products-container">
@@ -14,16 +15,15 @@
                         <span class="">Showing results for
                             <i>{{productSearchResult.correctedSearchString}}</i></span><br />
                         <a class="blue-text"
-                            (click)="redirectWithNoPreProcessRequiredParam(productSearchResult?.inputSearchString)">Search
-                            instead for {{productSearchResult?.inputSearchString}}</a>
+                            (click)="redirectWithNoPreProcessRequiredParam(productSearchResult.inputSearchString)">Search
+                            instead for {{productSearchResult.inputSearchString}}</a>
                     </p>
 
                     <p class="f-left"
                         *ngIf="(productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation == 'or'">
                         <span>
                             Showing {{productSearchResult.totalCount}} results for
-                            "{{productSearchResult.displayString}}"
-                        </span>
+                            "{{productSearchResult.displayString}}"</span>
                     </p>
                     <p class="f-left"
                         *ngIf="(productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation != 'or'">
@@ -31,7 +31,7 @@
                             "{{(productSearchResult.displayString != undefined &&
                             productSearchResult.displayString != null) ?
                             productSearchResult.displayString :
-                            productSearchResult?.inputSearchString}}"</span>
+                            productSearchResult.inputSearchString}}"</span>
                     </p>
                 </div>
 
@@ -56,7 +56,7 @@
                         <span *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
                 </button>
 
-                <button type="button" (click)="toggleSortBy(true)">
+                <button type="button" (click)="toggleSortBy($event)">
                     <i class="icon-sort-by" aria-hidden="true"></i>
                     <span class="txt">SORT BY</span>
                 </button>
@@ -65,7 +65,7 @@
             <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
         </div>
         <div class="card mt-15" [ngClass]="{'hide': !productSearchResult || !productSearchResult['totalCount']}">
-            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)" ></span>
+            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
             <ng-template *ngIf="isBrowser" #pagination></ng-template>
             <!-- <pagination class="block o-hidden h-auto-xs" [position]="'BOTTOM'" [paginationUpdated]="paginationUpdated"
                 [sortByComponentUpdated]="sortByComponentUpdated" (onPageChange)="pageChanged($event)"></pagination> -->

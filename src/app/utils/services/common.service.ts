@@ -15,6 +15,7 @@ import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import CONSTANTS from '../../config/constants';
+import { GlobalLoaderService } from './global-loader.service';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +26,10 @@ export class CommonService {
     public cashOnDeliveryStatus = { isEnable: true, message: "" };
     public myRfqParameters = { "productName": null, "brandName": null };
     private searchResultsTrackingData: { 'search-query': string, 'search-results': string };
-    public showLoader = true;
+
+    set showLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
 
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
@@ -35,6 +39,8 @@ export class CommonService {
     currentRequest: any;
     cmsData: any;
     replaceHeading: boolean = false;
+    abTesting: any;
+
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
@@ -42,7 +48,9 @@ export class CommonService {
 
     private routeData: { currentUrl: string, previousUrl: string };
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService, private _router: Router) {
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService, 
+    private _loaderService: GlobalLoaderService,
+    private _router: Router) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
@@ -329,8 +337,6 @@ export class CommonService {
                         })
                     )
                     .subscribe((response) => {
-                        console.log(response);
-                        console.log('=====================================');
                         observer.next(response);
                         observer.complete();
                     });
@@ -384,6 +390,7 @@ export class CommonService {
 
 
         actualParams['type'] = 'm';
+        actualParams['abt'] = 'y';
 
         if (queryParams['preProcessRequired']) {
             actualParams['preProcessRequired'] = queryParams['preProcessRequired'];
@@ -494,7 +501,6 @@ export class CommonService {
     }
 
     subscribeCredit(data) {
-        //console.log(data);
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/rfq/addEpayLater", { body: data });
     }
 
@@ -543,7 +549,6 @@ export class CommonService {
             .pipe(
                 map((res: any) => res),
                 mergeMap((d) => {
-                    // console.log(d);
                     let bd: any = null;
                     if (d && d.status && d.statusCode == 200) {
                         bd = {
@@ -552,7 +557,6 @@ export class CommonService {
                             "is_gstin": d["data"]["isGstInvoice"]
                         };
                     }
-                    // console.log(pdata);
                     pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
                     return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/payment/pay", { body: pdata })
                         .pipe(
@@ -574,13 +578,10 @@ export class CommonService {
         let cartItems = cartSession["itemsList"];
         let billingAddress: any = this.checkoutService.getBillingAddress();
 
-        //console.log("**************", cartSession, cartSession["offersList"]);
-
         let offersList: Array<{}> = [];
 
         Object.assign(offersList, cartSession["offersList"]);
 
-        //console.log("tearajflkasjdlfjalj", offersList);
         if (offersList != undefined && offersList.length > 0) {
             for (let key in offersList) {
                 delete offersList[key]["createdAt"];
@@ -637,20 +638,13 @@ export class CommonService {
                 "offersList": (offersList != undefined && offersList.length > 0) ? offersList : null,
                 "extraOffer": cartSession["extraOffer"] ? cartSession["extraOffer"] : null,
                 "device": CONSTANTS.DEVICE.device,
-                // "businessDetails": this._cartService.getPayBusinessDetails()
-                /*"offersList": [
-                 {
-                 "offerId": 15,
-                 "type": "15"
-                 }
-                 ]*/
             }
         };
 
         if (cart['buyNow']) {
             obj['shoppingCartDto']['cart']['buyNow'] = cart['buyNow'];
         }
-        // console.log("hello", obj);
+ 
         if (billingAddress !== undefined && billingAddress !== null) {
             obj.shoppingCartDto.addressList.push(
                 {
@@ -664,7 +658,7 @@ export class CommonService {
     }
 
     getItemsList(cartItems) {
-        //console.log("get Item List", cartItems);
+
         let itemsList = [];
         if (cartItems != undefined && cartItems != null && cartItems.length > 0) {
             for (let i = 0; i < cartItems.length; i++) {
@@ -697,7 +691,6 @@ export class CommonService {
                 itemsList.push(item);
             }
         }
-        //console.log(itemsList);
 
         return itemsList;
     }
@@ -707,7 +700,7 @@ export class CommonService {
     }
 
     updateSortByState(sortByState) {
-        // this.useLastSortByState=true;
+
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
         let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
         this.defaultParams.queryParams["orderBy"] = orderBy;
@@ -720,7 +713,7 @@ export class CommonService {
             .pipe(
                 map((res: any) => res),
                 mergeMap((d) => {
-                    // console.log(d);
+
                     let bd: any = null;
                     if (d && d.status && d.statusCode == 200) {
                         bd = {
@@ -729,7 +722,7 @@ export class CommonService {
                             "is_gstin": d["data"]["isGstInvoice"]
                         };
                     }
-                    // console.log(obj);
+
                     obj["shoppingCartDto"]["businessDetails"] = bd;
                     return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/validation/validate", { body: obj })
                         .pipe(
@@ -743,9 +736,7 @@ export class CommonService {
                 })
             )
 
-        /* let url = CONSTANTS.NEW_MOGLIX_API + "/validation/validate";
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/validation/validate", { body: obj }); */
-    }
+        }
 
     testApi() {
         return this._dataService.callRestful("GET", "https://newmoglix.moglix.com/test/testgetresponse");
@@ -762,7 +753,6 @@ export class CommonService {
 
     sectionClicked: string = '';
     setSectionClick(section) {
-        console.log('set to ' + section);
         this.sectionClicked = section;
     }
 

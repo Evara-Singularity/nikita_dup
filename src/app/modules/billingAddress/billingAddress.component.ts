@@ -12,8 +12,8 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
-import { Step } from 'src/app/utils/validators/step.validate';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { Step } from '@utils/validators/step.validate';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 declare let $: any;
 

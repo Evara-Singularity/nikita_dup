@@ -12,7 +12,6 @@ import { BreadCrumpModule } from '@app/modules/breadcrump/breadcrump.module';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { ProductListModule } from '@app/modules/productList/productList.module'
-import { LoaderModule } from '@app/modules/loader/loader.module';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
@@ -38,7 +37,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
         ProductListModule,
         NgxPageScrollModule,
         ObserveVisibilityDirectiveModule,
-        LoaderModule,
         MetaModule.forRoot(),
         PopUpModule,
         LazyLoadImageModule,

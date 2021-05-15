@@ -3,7 +3,14 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@app/*": ["app/*"]
+      "@app/*": ["app/*"],
+      "@config/*": ["app/config/*"],
+      "@modules/*": ["app/modules/*"],
+      "@utils/*": ["app/utils/*"],
+      "@pages/*": ["app/pages/*"],
+      "@components/*": ["app/components/*"],
+      "@pipes/*": ["app/utils/pipes/*"],
+      "@services/*": ["app/utils/services/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

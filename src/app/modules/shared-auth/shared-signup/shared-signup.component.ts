@@ -17,7 +17,7 @@ import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 @Component({
     selector: 'app-shared-signup',

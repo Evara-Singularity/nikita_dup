@@ -6,7 +6,7 @@ import { ArticleService } from './article.service';
 import { ArticlesRoutingModule } from './articles-routing.module';
 import { CmsModule } from '../../modules/cms/cms.module';
 import { ArticleComponent } from './article.component';
-import { ToastMessageModule } from 'src/app/modules/toastMessage/toast-message.module';
+import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 
 @NgModule({
     declarations: [

@@ -259,7 +259,6 @@ export class BrandComponent {
         if (flag) {
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
             this.paginationUpdated.next(this.paginationData);
-            // this.sortByUpdated.next();
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
             this.filterData = response.buckets;
             this.productsUpdated.next(response.productSearchResult.products);
@@ -663,7 +662,7 @@ export class BrandComponent {
                 this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
             } else {
                 const mob_filter = document.querySelector('.mob_filter');
-    
+
                 if (mob_filter) {
                     mob_filter.classList.toggle('upTrans');
                 }
@@ -768,6 +767,10 @@ export class BrandComponent {
         if (this.sortByInstance) {
             this.sortByInstance = null;
             this.sortByContainerRef.remove();
+        }
+        if (this.paginationInstance) {
+            this.paginationInstance = null;
+            this.paginationContainerRef.remove();
         }
     }
 

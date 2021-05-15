@@ -447,3 +447,4 @@ import { AddRupaySymbolPipeModule } from "./pipes/add-rupay-symbol";
 export class BrandModule { }
 export class CategoryModule extends BrandModule { }
 export class SearchModule extends BrandModule { }
+export class PopularProductModule extends BrandModule { }

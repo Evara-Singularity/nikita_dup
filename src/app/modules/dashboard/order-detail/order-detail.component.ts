@@ -13,6 +13,7 @@ import CONSTANTS from '@app/config/constants';
 import { PopUpComponent } from '@app/modules/popUp/pop-up.component';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { OrderDetailService } from './order-detail.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 declare var digitalData: {};
 declare let _satellite;
@@ -26,9 +27,9 @@ export class OrderDetailComponent implements OnInit {
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;
   cancelReasons: Array<{}>;
+  reason_id: any;
   status: any;
   priceOfProduct: any;
-  showLoader: boolean = true;
   user: { authenticated: string };
   openPopup: string;
   openCancel: boolean;
@@ -89,10 +90,14 @@ export class OrderDetailComponent implements OnInit {
   itemImages: Array<{}>;
   chequeImage: {};
   private cDistryoyed = new Subject();
+  set showLoader(value){
+    this.loaderService.setLoaderState(value);
+  }
 
   readonly validBuyAgainStatus = ['DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
   readonly validTrackingStatus = ['SHIPPED', 'DELIVERED'];
   readonly trackingMessage = 'Tracking information from courier partner is not available at the moment.';
+  
   constructor(
     private datePipe: DatePipe,
     private _formBuilder: FormBuilder,
@@ -102,8 +107,10 @@ export class OrderDetailComponent implements OnInit {
     private _router: Router,
     private _tms: ToastMessageService,
     private _modalService: ModalService,
-    public localStorageService: LocalStorageService
-  ) {
+    public localStorageService: LocalStorageService,
+    private loaderService:GlobalLoaderService) {
+
+    this.showLoader = true;
     this.showFileError = false;
     this.openCancel = false;
     this.returnReasons = [];

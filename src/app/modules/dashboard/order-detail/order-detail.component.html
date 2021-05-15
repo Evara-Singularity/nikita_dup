@@ -1,4 +1,4 @@
-<div class="orderdtDesc clearfix" *ngIf="detail">    
+<div class="orderdtDesc clearfix" *ngIf="detail">
     <div class="orderdtBoxinner">
         <div class="orderproImg">
             <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
@@ -210,9 +210,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <input type="text" onPaste="return false" onCopy="return false" formControlName="bankName" #bankName>
                                     <span class="label">Bank Name*</span>
                                 </label>
-                                <p *ngIf="returnForm.controls['bankDetail'].controls['bankName'].touched && !returnForm.controls['bankDetail'].controls['bankName'].valid && returnForm.controls['bankDetail'].controls['bankName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm.get['bankDetail'].get['bankName'].touched && !returnForm.get['bankDetail'].get['bankName'].valid && returnForm.get['bankDetail'].get['bankName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                                <p *ngIf="returnForm['controls']['bankDetail'].controls['bankName'].touched && !returnForm.controls['bankDetail'].controls['bankName'].valid && returnForm.controls['bankDetail'].controls['bankName'].errors.invalidBankName && returnForm.controls['bankDetail'].controls['bankName'].value.length>0"
+                                <p *ngIf="returnForm['controls']['bankDetail'].get['bankName'].touched && !returnForm.get['bankDetail'].get['bankName'].valid && returnForm.get['bankDetail'].get['bankName'].errors.invalidBankName && returnForm.get['bankDetail'].get['bankName'].value.length>0"
                                     class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name is invalid</p>
                             </div>
 
@@ -221,9 +221,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <input type="text"  style="text-transform:uppercase" onPaste="return false" onCopy="return false" formControlName="ifscCode" #IFSCCode>
                                     <span class="label">IFSC Code(11-digit)*</span>
                                 </label>
-                                <p *ngIf="returnForm.controls['bankDetail'].controls['ifscCode'].touched && !returnForm.controls['bankDetail'].controls['ifscCode'].valid && returnForm.controls['bankDetail'].controls['ifscCode'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm.get['bankDetail'].get['ifscCode'].touched && !returnForm.get['bankDetail'].get['ifscCode'].valid && returnForm.get['bankDetail'].get['ifscCode'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                                <p *ngIf="returnForm['controls']['bankDetail'].controls['ifscCode'].touched && !returnForm.controls['bankDetail'].controls['ifscCode'].valid && returnForm.controls['bankDetail'].controls['ifscCode'].errors.invalidIfsc && returnForm.controls['bankDetail'].controls['ifscCode'].value.length>0"
+                                <p *ngIf="returnForm['controls']['bankDetail'].get['ifscCode'].touched && !returnForm.get['bankDetail'].get['ifscCode'].valid && returnForm.get['bankDetail'].get['ifscCode'].errors.invalidIfsc && returnForm.get['bankDetail'].get['ifscCode'].value.length>0"
                                     class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Only alpha-numerical values allowed</p>
                             </div>
 
@@ -232,9 +232,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <input type="text"  style="text-transform:uppercase" onPaste="return false" onCopy="return false" formControlName="acountName" #accountName>
                                     <span class="label">Account Holder Name*</span>
                                 </label>
-                                <p *ngIf="returnForm.controls['bankDetail'].controls['acountName'].touched && !returnForm.controls['bankDetail'].controls['acountName'].valid && returnForm.controls['bankDetail'].controls['acountName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm.get['bankDetail'].get['acountName'].touched && !returnForm.get['bankDetail'].get['acountName'].valid && returnForm.get['bankDetail'].get['acountName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                                <p *ngIf="returnForm['controls']['bankDetail'].controls['acountName'].touched && !returnForm.controls['bankDetail'].controls['acountName'].valid && returnForm.controls['bankDetail'].controls['acountName'].errors.invalidBankName && returnForm.controls['bankDetail'].controls['acountName'].value.length>0"
+                                <p *ngIf="returnForm['controls']['bankDetail'].get['acountName'].touched && !returnForm.get['bankDetail'].get['acountName'].valid && returnForm.get['bankDetail'].controls['acountName'].errors.invalidBankName && returnForm.get['bankDetail'].get['acountName'].value.length>0"
                                     class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid name</p>
 
 
@@ -245,9 +245,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <input type="text" onPaste="return false" onCopy="return false" formControlName="acountNo" #accountNum>
                                     <span class="label">Account Number*</span>
                                 </label>
-                                <p *ngIf="returnForm.controls['bankDetail'].controls['acountNo'].touched && !returnForm.controls['bankDetail'].controls['acountNo'].valid && returnForm.controls['bankDetail'].controls['acountNo'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm.get['bankDetail'].get['acountNo'].touched && !returnForm.get['bankDetail'].get['acountNo'].valid && returnForm.get['bankDetail'].get['acountNo'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                                <p *ngIf="returnForm['controls']['bankDetail'].controls['acountNo'].touched && !returnForm.controls['bankDetail'].controls['acountNo'].valid && returnForm.controls['bankDetail'].controls['acountNo'].errors.invalidAccount && returnForm.controls['bankDetail'].controls['acountNo'].value.length>0"
+                                <p *ngIf="returnForm['controls']['bankDetail'].get['acountNo'].touched && !returnForm.get['bankDetail'].get['acountNo'].valid && returnForm.get['bankDetail'].get['acountNo'].errors.invalidAccount && returnForm.get['bankDetail'].get['acountNo'].value.length>0"
                                     class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
                             </div>
                             <div class="clearfix">
@@ -259,7 +259,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
                                 <label class="upload-img" *ngIf="chequeImage">
                                     <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc [itemImage]="chequeImage['file']">
-                                    <i class="icon-circle-delete" (click)="removeChequeImage(i)"></i>
+                                    <i class="icon-circle-delete" (click)="removeChequeImage()"></i>
                                 </label>
                             </div>
                             <!-- <i class="icon-circle-next prev active" (click)="step = 1"></i> -->

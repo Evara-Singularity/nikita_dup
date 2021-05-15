@@ -12,6 +12,7 @@ import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
+import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -26,7 +27,6 @@ export class BussinessPurchaseListComponent {
   IsHidden: boolean = true;
 
   purchaseLists: Array<any>;
-  showLoader: boolean = false;
   productResult: any;
   productId: any;
   successMessage: number = -1;
@@ -45,6 +45,9 @@ export class BussinessPurchaseListComponent {
   scForm: FormGroup;
   spli: Array<{}>;
   spp: boolean = false;
+  set showLoader(value){
+    this.loaderService.setLoaderState(value);
+  }
 
   constructor(
     private meta: Meta,
@@ -57,8 +60,10 @@ export class BussinessPurchaseListComponent {
     private commonService: CommonService,
     private orderSummaryService: OrderSummaryService,
     private _productService: ProductService,
-    private _tms: ToastMessageService
-  ) {
+    private _tms: ToastMessageService,
+    private loaderService:GlobalLoaderService) {
+    
+    this.showLoader = false;
     this.spli = [];
     this.getSession();
   }

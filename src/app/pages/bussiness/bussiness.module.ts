@@ -4,12 +4,9 @@ import { RouterModule } from "@angular/router";
 import { routing } from "./bussiness.routing";
 import { DashboardBussinessComponent } from "./bussiness.component";
 import { BusinessService } from "./business.service";
+
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    routing,
-  ],
+  imports: [CommonModule, RouterModule, routing],
   declarations: [DashboardBussinessComponent],
   providers: [BusinessService],
 })

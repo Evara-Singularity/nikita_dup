@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { RetailAddressComponent } from "./retailAddress.component";
 import { routing } from "./retailAddress.routing";
 import { DashboardService } from './../../dashboard.service';
-import { DeliveryAddressModule } from 'src/app/modules/deliveryAddress/deliveryAddress.module';
+import { DeliveryAddressModule } from '@app/modules/deliveryAddress/deliveryAddress.module';
 
 @NgModule({
   imports: [

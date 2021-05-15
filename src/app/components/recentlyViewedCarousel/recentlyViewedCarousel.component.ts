@@ -13,7 +13,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pipe';
-import { DataService } from 'src/app/utils/services/data.service';
+import { DataService } from '@app/utils/services/data.service';
 
 @Component({
     selector: 'recently-viewed-carousel',

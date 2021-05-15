@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '../services/global-loader.service';
 import { isPlatformServer } from '@angular/common';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 
 @Injectable({
   providedIn: 'root'

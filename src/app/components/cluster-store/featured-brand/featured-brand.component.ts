@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Input, NgModule } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: 'app-featured-brand',

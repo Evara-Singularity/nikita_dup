@@ -6,10 +6,10 @@ import { mergeMap } from "rxjs/operators/mergeMap";
 import { Location, isPlatformServer, isPlatformBrowser } from "@angular/common";
 import { Router } from "@angular/router";
 import { Component, PLATFORM_ID, Inject } from "@angular/core";
-import { LocalAuthService } from "src/app/utils/services/auth.service";
-import { CartService } from "src/app/utils/services/cart.service";
-import { CommonService } from "src/app/utils/services/common.service";
-import { GlobalState } from "src/app/utils/global.state";
+import { LocalAuthService } from "@app/utils/services/auth.service";
+import { CartService } from "@app/utils/services/cart.service";
+import { CommonService } from "@app/utils/services/common.service";
+import { GlobalState } from "@app/utils/global.state";
 
 @Component({
   selector: "bussiness-info",

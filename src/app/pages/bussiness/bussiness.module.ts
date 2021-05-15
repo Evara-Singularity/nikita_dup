@@ -4,7 +4,7 @@ import { RouterModule } from "@angular/router";
 import { routing } from "./bussiness.routing";
 import { DashboardBussinessComponent } from "./bussiness.component";
 import { BusinessService } from "./business.service";
-import { LoaderModule } from "src/app/modules/loader/loader.module";
+import { LoaderModule } from "@app/modules/loader/loader.module";
 
 @NgModule({
   imports: [

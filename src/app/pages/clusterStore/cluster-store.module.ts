@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ClusterStoreService } from './cluster-store.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
-import { ClusterCategoryComponent } from 'src/app/components/cluster-store/cluster-category/cluster-category.component';
+import { ClusterCategoryComponent } from '@app/components/cluster-store/cluster-category/cluster-category.component';
 import { ClusterStoreResolver } from './cluster-store.resolver';
 
 @NgModule({

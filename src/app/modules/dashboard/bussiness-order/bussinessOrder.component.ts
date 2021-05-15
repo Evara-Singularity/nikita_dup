@@ -8,9 +8,9 @@ import { Router, ActivatedRoute, NavigationEnd, NavigationExtras } from '@angula
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { LocalStorageService } from 'ngx-webstorage';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import CONSTANTS from 'src/app/config/constants';
-import { CommonService } from 'src/app/utils/services/common.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 declare var digitalData: {};
 declare let _satellite;

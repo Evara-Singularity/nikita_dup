@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from '@angular/router';
 import { routing } from "./brand.routing";
 import {BrandComponent} from "./brand.component";
-import { KpToggleDirectiveModule } from 'src/app/utils/directives/kp-toggle.directive';
+import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 
 @NgModule({
     imports:[

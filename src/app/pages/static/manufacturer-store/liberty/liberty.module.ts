@@ -4,7 +4,7 @@ import { LibertyComponent } from './liberty.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { routing } from "./liberty.routing";
-import { SiemaCarouselModule } from 'src/app/modules/siemaCarousel/siemaCarousel.module';
+import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.module';
 @NgModule({
   declarations: [LibertyComponent],
   imports: [

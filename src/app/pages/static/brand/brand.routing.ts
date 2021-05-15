@@ -1,5 +1,5 @@
 import {Routes, RouterModule} from '@angular/router';
-import { BrandStoreResolver } from 'src/app/utils/resolvers/brandstore.resolver';
+import { BrandStoreResolver } from '@app/utils/resolvers/brandstore.resolver';
 import {BrandComponent} from "./brand.component";
 
 const routes: Routes = [

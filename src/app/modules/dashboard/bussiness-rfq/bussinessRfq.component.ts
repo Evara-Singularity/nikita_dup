@@ -2,8 +2,8 @@ import { Component } from "@angular/core";
 import { DashboardService } from "../dashboard.service";
 import { LocalStorageService } from "ngx-webstorage";
 import { map } from "rxjs/operators/map";
-import CONSTANTS from "src/app/config/constants";
-import { LocalAuthService } from "src/app/utils/services/auth.service";
+import CONSTANTS from "@app/config/constants";
+import { LocalAuthService } from "@app/utils/services/auth.service";
 declare var digitalData: {};
 declare let _satellite;
 

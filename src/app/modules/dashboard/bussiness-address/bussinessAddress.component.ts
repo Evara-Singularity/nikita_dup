@@ -4,8 +4,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators/filter';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Meta } from '@angular/platform-browser';
-import CONSTANTS from 'src/app/config/constants';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
+import CONSTANTS from '@app/config/constants';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 declare var digitalData: {};
 declare let _satellite;
 

@@ -7,11 +7,11 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Bank } from '../../../utils/validators/bank.validate';
 import { TrackOrderComponent } from './track-order/track-order.component';
 import { LocalStorageService } from 'ngx-webstorage';
-import { ModalService } from 'src/app/modules/modal/modal.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import CONSTANTS from 'src/app/config/constants';
-import { PopUpComponent } from 'src/app/modules/popUp/pop-up.component';
-import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
+import { ModalService } from '@app/modules/modal/modal.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import CONSTANTS from '@app/config/constants';
+import { PopUpComponent } from '@app/modules/popUp/pop-up.component';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { OrderDetailService } from './order-detail.service';
 
 declare var digitalData: {};

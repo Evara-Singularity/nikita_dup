@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Component, OnInit, ViewChild, PLATFORM_ID, Inject } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { SiemaCarouselComponent } from 'src/app/modules/siemaCarousel/siemaCarousel.component';
-import CONSTANTS from 'src/app/config/constants';
+import { SiemaCarouselComponent } from '@app/modules/siemaCarousel/siemaCarousel.component';
+import CONSTANTS from '@app/config/constants';
 
 
 

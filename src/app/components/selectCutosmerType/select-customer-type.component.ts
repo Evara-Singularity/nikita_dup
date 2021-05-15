@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import CONSTANTS from 'src/app/config/constants';
-import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
+import CONSTANTS from '@app/config/constants';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 
 @Component({
     selector: 'app-select-customer-type',

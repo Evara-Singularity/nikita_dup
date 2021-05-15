@@ -5,14 +5,14 @@ import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from
 import { BusinessDetailService } from './businessDetail.service';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Meta } from '@angular/platform-browser';
-import { SpaceValidator } from 'src/app/utils/validators/space';
-import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
-import CONSTANTS from 'src/app/config/constants';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { stateList } from 'src/app/utils/data/state';
-import { Step } from 'src/app/utils/validators/step.validate';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { GLOBAL_CONSTANT } from 'src/app/config/global.constant';
+import { SpaceValidator } from '@app/utils/validators/space';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import CONSTANTS from '@app/config/constants';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { stateList } from '@app/utils/data/state';
+import { Step } from '@app/utils/validators/step.validate';
+import { CartService } from '@app/utils/services/cart.service';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 declare var digitalData: {};
 declare let _satellite;
 

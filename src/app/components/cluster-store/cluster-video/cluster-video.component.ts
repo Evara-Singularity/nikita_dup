@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Inject,
 import { DomSanitizer } from '@angular/platform-browser';
 import { PlatformLocation, isPlatformBrowser, CommonModule } from '@angular/common';
 import { NgxSiemaOptions } from 'ngx-siema';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 import { RouterModule } from '@angular/router';
 
 

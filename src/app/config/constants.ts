@@ -2,7 +2,7 @@ let siemaOptionsObject: {
     outerWrapperClass: ['product_block_container'],
     innerWrapperClass: ['product_block']
 };
-const CONSTANTS = {
+export const CONSTANTS = {
     PROD: "https://www.moglix.com",
     NEW_MOGLIX: 'https://beta.moglix.com',
     //NEW_MOGLIX_API: 'https://apinew.moglix.com/nodeApi/v1',

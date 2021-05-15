@@ -5,7 +5,7 @@ import {
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { CommonService } from "@app/utils/services/common.service";
 import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key

@@ -77,6 +77,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
   pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
   appendSiemaItemSubjects: {};
+  showRecentlyViewedCarousel = true;
   // ondemad loaded components: feature brands
   featuredBrandsInstance = null;
   @ViewChild('FeaturedBrands', { read: ViewContainerRef }) featuredBrandsContainerRef: ViewContainerRef;
@@ -118,7 +119,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.route.data.subscribe((rawData) => {
       if (!rawData['homeData']['error']) {
-        this.fetchHomePageData(rawData.homeData)
+        this.fetchHomePageData(rawData.homeData[0])
       }
     });
 
@@ -545,6 +546,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
     this.carouselInstance.instance['showHeading'] = true;
     this.carouselInstance.instance['prodList'] = this.recentProductList;
+    (this.carouselInstance.instance['isDataAvailable'] as EventEmitter<any>).subscribe((value) => {
+      this.showRecentlyViewedCarousel = value;
+    })
   }
 
 }

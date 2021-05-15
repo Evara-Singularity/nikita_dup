@@ -19,8 +19,7 @@ export class ClusterStoreResolver implements Resolve<any> {
 
     }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
-    {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>{
         let cType = (route.params['type'] as string).trim();
         const CLSUTER_STORE_KEY = makeStateKey<any>('CSSK');
         if (this.transferState.hasKey(CLSUTER_STORE_KEY)) {

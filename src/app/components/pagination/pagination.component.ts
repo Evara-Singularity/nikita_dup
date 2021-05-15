@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {PagerService} from "./pager.service";
 import {isPlatformServer, isPlatformBrowser} from '@angular/common';
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import {ActivatedRoute,Router} from "@angular/router";
 import {CommonService} from "@app/utils/services/common.service";
 import {GLOBAL_CONSTANT} from "@app/config/global.constant";

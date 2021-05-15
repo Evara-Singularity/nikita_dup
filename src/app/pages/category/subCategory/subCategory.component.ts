@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { CategoryService } from '../category.service';
 import { SubCategoryService } from "./subCategory.service";
 import { CONSTANTS } from '@app/config/constants';
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import { fade } from '@app/utils/animations/animation'
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@app/utils/services/common.service';

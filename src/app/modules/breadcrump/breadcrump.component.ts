@@ -5,7 +5,7 @@ import { BreadcrumpService } from './breadcrump.service';
 import { CommonService } from "@app/utils/services/common.service";
 import { CONSTANTS } from '@app/config/constants';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 const BRK = makeStateKey<any>('BRK');
 

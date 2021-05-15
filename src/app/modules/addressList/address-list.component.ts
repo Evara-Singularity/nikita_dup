@@ -1,5 +1,5 @@
 import { Component, Output, Input, EventEmitter, Inject, OnInit, AfterViewInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectionStrategy, PLATFORM_ID, ViewChild } from '@angular/core';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { delay } from 'rxjs/operators';
 import { AddressListService } from './address-list.service';

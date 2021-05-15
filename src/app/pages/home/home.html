@@ -52,8 +52,8 @@
     </div>
 </div>
 
-<div observeVisibility class="categories-container" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
-    <ng-container #RecentlyViewedCarouselComponent></ng-container>
+<div observeVisibility class="categories-container" *ngIf="showRecentlyViewedCarousel" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
+    <ng-container #RecentlyViewedCarouselComponent ></ng-container>
 </div>
 
 <div observeVisibility class="categories-container clearfix" [debounceTime]="100"

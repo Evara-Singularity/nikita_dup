@@ -6,7 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';

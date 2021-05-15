@@ -85,12 +85,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	featuredArrivalsInstance = null;
 	@ViewChild('FeaturedArrivals', { read: ViewContainerRef })
 	featuredArrivalsContainerRef: ViewContainerRef;
-
+	showRecentlyViewedCarousel = true;
 	// ondemad loaded components: PWA Categories
 	categoriesInstance = null;
 	@ViewChild('Categories', { read: ViewContainerRef })
 	CategoriesContainerRef: ViewContainerRef;
-
 	// ondemad loaded components: PWA Categories
 	popUpInstance = null;
 	@ViewChild('HomePopupComponet', { read: ViewContainerRef })
@@ -594,5 +593,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
 		this.carouselInstance.instance['showHeading'] = true;
 		this.carouselInstance.instance['prodList'] = this.recentProductList;
+		(
+			this.carouselInstance.instance['isDataAvailable'] as EventEmitter<any>
+		).subscribe((value) => {
+			this.showRecentlyViewedCarousel = value;
+		});
 	}
 }

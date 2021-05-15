@@ -1,4 +1,12 @@
-import { Component, Input, PLATFORM_ID, Inject, NgModule } from '@angular/core';
+import {
+	Component,
+	Input,
+	PLATFORM_ID,
+	Inject,
+	NgModule,
+	Output,
+	EventEmitter,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import {
@@ -26,14 +34,16 @@ import { DataService } from '@app/utils/services/data.service';
 })
 export class RecentlyViewedCarouselComponent {
 	@Input() clickFromSection: String;
+	@Output() isDataAvailable: EventEmitter<boolean> = new EventEmitter<
+		boolean
+	>();
+	@Input() prodList: any;
+	@Input() showHeading: boolean = true;
 	options;
 	openPopup: boolean;
 	isBrowser: boolean;
 	categoryNameFromHomePage;
 	isServer: boolean = typeof window !== 'undefined' ? false : true;
-
-	@Input() prodList: any;
-	@Input() showHeading: boolean = true;
 	isMobile: boolean;
 	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -97,6 +107,8 @@ export class RecentlyViewedCarouselComponent {
 						this.recentProductList = res['data'];
 						this.prodList = this.recentProductList;
 						if (this.prodList && this.prodList.length > 0) {
+							this.isDataAvailable.emit(true);
+							console.log('data hai');
 							if (this.prodList.length > this.options.perPage) {
 								this.options.loop = true;
 							}
@@ -116,11 +128,12 @@ export class RecentlyViewedCarouselComponent {
 								}
 							});
 							this.shortDescParsed = true;
+						} else {
+							this.isDataAvailable.emit(false);
 						}
 					}
 				});
 		}
-		const userSession = this._localAuthService.getUserSession();
 	}
 
 	outData(data) {

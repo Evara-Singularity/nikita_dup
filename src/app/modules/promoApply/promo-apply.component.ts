@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, E
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LocalStorageService } from 'ngx-webstorage';
 import { PromoApplyService } from './promo-apply.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import { CartService } from '../../utils/services/cart.service';
 

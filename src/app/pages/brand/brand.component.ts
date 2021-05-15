@@ -3,14 +3,13 @@ import { Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewCon
 import { Location, isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { CommonService } from "@app/utils/services/common.service";
-import { Subject } from "rxjs/Subject";
 import { SortByComponent } from "@app/components/sortBy/sortBy.component";
 import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-browser';
 import { CONSTANTS } from "@app/config/constants";
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '@app/utils/services/data.service';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
 declare var digitalData: {};

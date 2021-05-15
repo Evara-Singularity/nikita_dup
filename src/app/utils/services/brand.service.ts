@@ -1,4 +1,3 @@
-import { of } from 'rxjs/observable/of';
 import { CONSTANTS } from '@app/config/constants';
 import { Injectable } from "@angular/core";
 import { DataService } from "@app/utils/services/data.service";

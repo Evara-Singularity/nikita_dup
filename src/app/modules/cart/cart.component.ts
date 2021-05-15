@@ -1,6 +1,6 @@
 
 import { isPlatformServer, isPlatformBrowser, DOCUMENT, Location } from '@angular/common';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { ViewChild, Renderer2 } from '@angular/core';

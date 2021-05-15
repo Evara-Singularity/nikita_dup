@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { OrderSummaryService } from './orderSummary.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';

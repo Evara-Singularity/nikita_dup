@@ -1,0 +1,50 @@
+<loader [showLoader]="showLoader"></loader>
+<div class=" ">
+  <div *ngIf="myRfqList && myRfqList.length > 0">
+    <div class="orderbox" *ngFor="let list of myRfqList; index as i;" (click)="list.toggle = !list.toggle">
+      <div class="orderIdtab" data-toggle="collapse" [attr.data-target]="'#demo' + i">
+        <div class="orderSum">
+          <span class="orderId">RFQ Id : {{list.id}}</span>
+          <span class="orderOthDet">
+            <span class="ordernoItems">{{list.itemData.length}} Item |</span>
+            <span class="orderDate">
+              Placed on {{list.createdDate | date:'shortDate'}}
+            </span>
+          </span>
+
+        </div>
+      </div>
+      <!-- ====================== RFQ Detailed Data ========================= -->
+      <div *ngIf="list.toggle" [attr.id]="'demo' + i" [class.in]="i == 0" class="collapse">
+        <div class="orderdtBox" id="one">
+          <div class="orderdtBoxinner">
+            <div class="orderdtDesc clearfix" *ngFor="let data of list.itemData">
+              <div class="orderproImg">
+                <img src="{{imagePath}}web/dist/assets/img/placeholder.svg">
+              </div>
+              <div class="orderproDesc">
+                <!--ODP-303-->
+                <p>
+                  Product:
+                  <span *ngIf="data.prodReference == null; else productLink">{{ data.productName }}</span>
+                  <ng-template #productLink><a [routerLink]="'/'+data.productURL"> {{ data.productName }}</a>
+                  </ng-template>
+                </p>
+                <span class="orderstatus"><span>Brand:</span> {{ data.brand }} </span>
+
+                <div class="orderqty clearfix">
+                  <span class="qtyleft">Qty :{{data.quantity }}</span>
+                  <span class="priceright">Status :<span *ngIf="data.customerStatusText=='New'"
+                      class="text-green">Created</span>
+                    <span *ngIf="data.customerStatusText!=='New'" class="text-green">{{data.customerStatusText}}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ====================== RFQ Detailed Data ========================= -->
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, UrlSegment } from '@angular/router';
 import { IsNotAuthenticatedGuard } from '../utils/guards/is-not-authenticated.guard';
+import { MyAccountGuard } from '../utils/guards/myAccount.guard';
 import { PagesComponent } from './pages.component';
 
 const routes: Routes = [
@@ -78,6 +79,11 @@ const routes: Routes = [
           moreOpt: true
         },
         canActivate: [IsNotAuthenticatedGuard]
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./bussiness/bussiness.module').then(m => m.BusinessModule),
+        canActivate: [MyAccountGuard]
       },
       {
         path: 'brand-store',
@@ -436,6 +442,7 @@ const routes: Routes = [
           moreOpt: false
         }
       }
+
     ]
   }
 ]

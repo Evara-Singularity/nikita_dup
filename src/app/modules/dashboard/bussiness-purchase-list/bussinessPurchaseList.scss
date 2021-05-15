@@ -1,0 +1,96 @@
+@import "src/app/scss/_variables.scss";
+.purchase-list {
+  @extend %cards;
+  padding: 0;
+  background: none;
+  border-bottom: none;
+  label {
+    @extend %custom-check-box;
+    width: 20px;
+    float: left;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 24px;
+    font-size: 20px;
+  }
+  label + div {
+    float: right;
+    width: calc(100% - 30px);
+  }
+  .p-name {
+    @extend %clear-fix;
+    .description-txt {
+      width: 85%;
+      width: calc(100% -25px);
+      min-height: 40px;
+    }
+    .icon-dot {
+      font-size: 17px;
+      margin-top: 3px;
+    }
+  }
+  ul {
+    & > li {
+      background: #fff;
+      p.price {
+        width: 69%;
+        display: inline-block;
+      }
+      .cart {
+        float: right;
+        font-weight: 600;
+        font-size: $medium-font;
+        color: $blue-link-color;
+        margin-top: 5px;
+        &.grayLabel {
+          color: #999;
+        }
+      }
+      .bottom-options {
+        li {
+          border: none;
+        }
+      }
+    }
+  }
+}
+.add-to-cart {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  @extend %cards;
+  p {
+    font-size: $extra-large-font;
+    line-height: 55px;
+    font-weight: 600;
+    float: left;
+    margin-left: 30px;
+  }
+  button {
+    height: 55px;
+    width: 45%;
+  }
+}
+.remove {
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.cancel {
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.remove:hover {
+  background: #e7e7e7;
+}
+.cancel:hover {
+  background: #e7e7e7;
+}
+.price {
+  .after-discount {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 3px 0 0;
+  }
+}

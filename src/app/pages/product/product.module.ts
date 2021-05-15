@@ -34,7 +34,8 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
     ReactiveFormsModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
-    NgxPageScrollCoreModule
+    NgxPageScrollCoreModule,
+    ObserveVisibilityDirectiveModule
   ],
   exports: [],
   providers: [

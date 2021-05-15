@@ -1,0 +1,42 @@
+
+
+.commonCategory{
+    box-shadow: 0px 3px 6px #00000029; 
+    padding: 10px 10px;
+    background:#F8F8F8;
+    .categoryOverBlk{
+        overflow-y:hidden;
+        overflow-x:scroll;
+        width:auto;
+    }
+    .commonCategorySlide{
+        background:#fff;
+        width:180px;
+        float: left;
+        border: 1px solid #E8E7E7;
+        border-radius:6px;
+        padding:10px 8px;
+        margin-right:8px;
+        &.selected{
+            border: 1px solid #D9232D;
+            background: #F4E1E5;
+        }
+    }
+    .categoryImg{
+        width:60px;
+        height:40px;
+        float: left;
+        img{
+            max-width: 100%;
+            max-height: 100%;
+            width:100%;
+        }
+    }
+    .categoryName{
+      font-size:12px;
+      float: right;
+      font-weight:500;
+      width:calc(100% - 65px);
+      margin-top:5px; 
+    }
+}

@@ -1,0 +1,9 @@
+@import "../../../scss/_variables.scss";
+.business-form {
+  @extend %cards;
+  padding: 15px 0 30px;
+  margin-bottom: 10px;
+  form {
+    @extend %container;
+  }
+}

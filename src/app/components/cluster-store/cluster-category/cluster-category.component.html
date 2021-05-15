@@ -1,0 +1,14 @@
+<div class="commonCategory">
+  <div class="categoryOverBlk">
+      <div [style.width.px]="data['data'].length * 198" class="clearfix">
+          <div (click)="link(item.category_url)" class="commonCategorySlide"  [class.selected]="extraData && extraData['currentRoute'] && extraData['currentRoute'] == item['category_url']" *ngFor="let item of  data['data'];let i=index">
+                  <div class="categoryImg">
+                    <img alt={{item.CategoryName}} src="{{imagePath + item.category_image}}">
+                  </div>
+                  <div class="categoryName">
+                      <span>{{item.CategoryName}}</span>
+                  </div>
+          </div>
+      </div>
+  </div>
+</div>

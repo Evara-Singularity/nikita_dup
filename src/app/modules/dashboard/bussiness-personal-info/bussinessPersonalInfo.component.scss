@@ -1,0 +1,89 @@
+@import "src/app/scss/_variables.scss";
+.material-form {
+  position: relative;
+  .card {
+    padding: 20px 0 1px 0;
+    position: relative;
+    label:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+  .edit-form {
+    position: absolute;
+    top: 17px;
+    z-index: 1;
+    right: 10px;
+    background: none;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.card {
+  margin-top: 10px;
+  position: relative;
+  .edit-form {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    z-index: 1;
+  }
+  &.logout {
+    margin-bottom: 10px;
+  }
+}
+.preference-container {
+  .item-2 {
+    margin-top: 15px;
+    ul {
+      margin: 5px 0;
+      li {
+        @extend %clear-fix;
+        i {
+          font-size: 22px;
+          float: left;
+          line-height: 26px;
+        }
+        .txt {
+          float: left;
+          line-height: 26px;
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+}
+.edit-btn {
+  cursor: pointer;
+}
+
+.edit-btn,
+.edit-form {
+  color: $blue-link-color;
+  font-size: $large-font;
+  font-weight: 600;
+  padding: 10px 0;
+}
+.info-update-popup {
+  .head-sec {
+    @extend %ico-txt;
+    margin: 20px 0;
+    .txt {
+      font-size: $extra-large-font;
+      font-weight: 600;
+      line-height: 21px;
+      margin-left: 20px;
+    }
+  }
+  .input-field {
+    margin-bottom: 20px;
+  }
+  .help-txt {
+    position: absolute;
+    right: 0;
+    top: 24px;
+    font-size: 14px;
+    color: $blue-link-color;
+  }
+}

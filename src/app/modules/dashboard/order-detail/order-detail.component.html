@@ -1,5 +1,4 @@
-<div class="orderdtDesc clearfix" *ngIf="detail">
-    <loader [showLoader]="showLoader"></loader>
+<div class="orderdtDesc clearfix" *ngIf="detail">    
     <div class="orderdtBoxinner">
         <div class="orderproImg">
             <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">

@@ -1,4 +1,3 @@
-<loader *ngIf="isBrowser" [showLoader]="showLoader"></loader>
 <section *ngIf="isBrowser" class="business-form">
     <form [formGroup]="businessDetailForm"
         (ngSubmit)="this.onSubmit(this.businessDetailForm.value, this.businessDetailForm.valid)" class="material-form"

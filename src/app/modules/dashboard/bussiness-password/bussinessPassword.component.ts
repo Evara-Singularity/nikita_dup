@@ -1,6 +1,7 @@
 import { DashboardService } from "./../dashboard.service";
 import { Component } from "@angular/core";
 import { LocalStorageService } from "ngx-webstorage";
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 @Component({
   selector: "bussiness-password",
@@ -8,16 +9,21 @@ import { LocalStorageService } from "ngx-webstorage";
   styleUrls: ["bussinessPassword.component.scss"],
 })
 export class BussinessPasswordComponent {
-  showLoader: boolean = true;
   error: boolean = true;
   errorMsg: string;
   userInfo;
   userPasswordInfo;
+  set showLoader(value) {
+    this.loaderService.setLoaderState(value);
+  }
 
   constructor(
     public localStorageService: LocalStorageService,
-    public dashboardService: DashboardService
-  ) {}
+    public dashboardService: DashboardService,
+    private loaderService:GlobalLoaderService) {
+
+    this.showLoader = false;
+  }
 
   ngOnInit() {
     let obj = {};

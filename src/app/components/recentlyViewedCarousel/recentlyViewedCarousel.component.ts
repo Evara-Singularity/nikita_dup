@@ -98,7 +98,6 @@ export class RecentlyViewedCarouselComponent {
                         this.shortDescParsed = true;
                     } else {
                         this.isDataAvailable.emit(false);
-                        console.log('no data');
                     }
                 }
             });

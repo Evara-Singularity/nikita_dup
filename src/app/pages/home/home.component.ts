@@ -548,7 +548,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.carouselInstance.instance['prodList'] = this.recentProductList;
     (this.carouselInstance.instance['isDataAvailable'] as EventEmitter<any>).subscribe((value) => {
       this.showRecentlyViewedCarousel = value;
-      console.log(value);
     })
   }
 

@@ -24,7 +24,9 @@
             font-size: 16px;
             font-weight: 500;
             text-align: center;
-            i {}
+            i {
+                padding-right: 10px;
+            }
         }
     }
 }
@@ -183,4 +185,23 @@
         line-height: 21px;
         padding: 5px 0 0;
     }
+}
+
+// Brand Specific BreadCrumb
+.bread-head {
+    background-color: white;
+    padding: 10px;
+}
+
+.bread-head li {
+    list-style: none;
+    display: inline;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.bread-head li:not(:last-child):after {
+    content: ">";
+    margin-left: 10px;
+    margin-right: -5px;
 }

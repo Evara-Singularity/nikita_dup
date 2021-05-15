@@ -23,10 +23,6 @@ const routes: Routes = [
                 data: { title: 'My Order', menuBar: true }
             },
             {
-                path: 'insight',
-                loadChildren: () => import('../../modules/dashboard/bussiness-insight/businessInsight.module').then(m => m.BusinessInsightModule)
-            },
-            {
                 path: 'password',
                 loadChildren: () => import('../../modules/dashboard/bussiness-password/businessPassword.module').then(m => m.BusinessPasswordModule),
                 data: { title: 'Change Password' }
@@ -45,10 +41,6 @@ const routes: Routes = [
                 path: 'rfq',
                 loadChildren: () => import('../../modules/dashboard/bussiness-rfq/businessRfq.module').then(m => m.BusinessRfqModule),
                 data: { title: 'My RFQ', addRfq: true, menuBar: true }
-            },
-            {
-                path: 'business-insight',
-                loadChildren: () => import('../../modules/dashboard/bussiness-insight/businessInsight.module').then(m => m.BusinessInsightModule)
             },
             {
                 path: 'order-detail',

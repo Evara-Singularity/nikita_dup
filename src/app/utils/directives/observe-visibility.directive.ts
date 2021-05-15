@@ -107,7 +107,9 @@ export class ObserveVisibilityDirective
 
 //exporting directive as an module
 @NgModule({
-  declarations: [ObserveVisibilityDirective],
+  declarations: [
+    ObserveVisibilityDirective
+  ],
   imports: [
       CommonModule
   ],

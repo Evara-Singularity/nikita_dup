@@ -24,7 +24,7 @@ export class PagesComponent implements OnInit {
   kfooter: any = kfooter;
   footerVisible = false;
   constructor(
-    private _commonService: CommonService,
+    public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
     @Inject(PLATFORM_ID) platformId,

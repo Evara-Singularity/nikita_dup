@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import CONSTANTS from "../../config/constants";
-import { DataService } from "src/app/utils/services/data.service";
+import { DataService } from "@app/utils/services/data.service";
 
 @Injectable()
 export class NetBankingService{

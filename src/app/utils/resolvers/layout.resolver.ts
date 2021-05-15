@@ -9,8 +9,8 @@ import {
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { ENDPOINTS } from 'src/app/config/endpoints';
-import { environment } from 'src/environments/environment';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { environment } from '@app/../environments/environment';
 import { GlobalLoaderService } from '../services/global-loader.service';
 
 @Injectable({

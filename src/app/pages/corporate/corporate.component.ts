@@ -2,9 +2,9 @@ import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID } from '@a
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, makeStateKey, Meta, TransferState } from '@angular/platform-browser';
-import { FooterService } from 'src/app/utils/services/footer.service';
-import CONSTANTS from 'src/app/config/constants';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { FooterService } from '@app/utils/services/footer.service';
+import CONSTANTS from '@app/config/constants';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 const CD = makeStateKey<any>('corporatedata');
 declare let $: any;
 

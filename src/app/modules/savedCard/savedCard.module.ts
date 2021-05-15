@@ -5,8 +5,8 @@ import {SavedCardService} from "./savedCard.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PayuFormModule} from "../payuForm/payuForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
-import { ObjectToArrayPipeModule } from 'src/app/utils/pipes/object-to-array.pipe';
-import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
+import { ObjectToArrayPipeModule } from '@pipes/object-to-array.pipe';
+import { MathCeilPipeModule } from '@pipes/math-ceil';
 
 @NgModule({
     imports: [

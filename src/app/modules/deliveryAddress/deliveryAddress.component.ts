@@ -118,7 +118,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         this.showAddressForm = false;
         this.checkoutAddress = {};
 
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         this.getAddressListApi();
         this.countryList = [];
         this._commonService.getCountryList().subscribe((rd) => {
@@ -146,7 +146,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         debugger;
         const userSession = this._localAuthService.getUserSession();
         const params = { customerId: userSession.userId, invoiceType: this.invoiceType };
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         this._commonService.getAddressList(params).subscribe((rd) => {
             if (rd['statusCode'] === 200) {
                 this.user = userSession;
@@ -163,7 +163,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
             } else if (rd['statusCode'] === 500) { // Error in api
 
             }
-            // this.showLoader = false;
+            // this._commonService.showLoader = false;
             // $('#page-loader').hide();
         });
     }
@@ -178,7 +178,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         this.billingAddressList = [];
 
         if (this.addressList.length === 0) {
-            this.showLoader = false;
+            this._commonService.showLoader = false;
             let itemsValidationMessage = this._commonService.itemsValidationMessage;
             itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
             this._commonService.itemsValidationMessage = [...itemsValidationMessage];
@@ -197,7 +197,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
             this.updateCheckoutAddress$.emit('noAddr');
             this.salpu.billing = false;
             this.salpu.shipping = false;
-            this.showLoader = false;
+            this._commonService.showLoader = false;
         } else {
             /**
              * Business logic :: 
@@ -260,7 +260,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                     this._checkoutService.setBillingAddress(null);
                 }
             }
-            // this.showLoader = false;
+            // this._commonService.showLoader = false;
             // debugger;
             this.updateCheckoutAddress$.emit({});
             this.checkServiceability();
@@ -425,7 +425,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         };
 
         postDeleteAddress['invoiceType'] = this.invoiceType;
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         //  $('#page-loader').show();
         this._addressService.postAddress(postDeleteAddress).subscribe((rd) => {
             if (rd['statusCode'] === 200) {
@@ -434,7 +434,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
             } else if (rd['statusCode'] === 500) {// Error in api
 
             }
-            // this.showLoader = false;
+            // this._commonService.showLoader = false;
         });
     }
 
@@ -534,7 +534,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
 
     checkPinCodeAddressApi(): any {
         // debugger;
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         let checkPinCodeAddressObservable = [];
         const ca = this._checkoutService.getCheckoutAddress();
         const sba = this._checkoutService.getBillingAddress();
@@ -741,11 +741,11 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         ]).pipe(
             takeUntil(this.cDistryoyed),
             catchError((err) => {
-                this.showLoader = false;
+                this._commonService.showLoader = false;
                 return of(null);
             })
         ).subscribe((pincodeRes) => {
-            this.showLoader = false;
+            this._commonService.showLoader = false;
             let isValidPincodeRes = true;
             for (let res of pincodeRes) {
                 if (res == null) {

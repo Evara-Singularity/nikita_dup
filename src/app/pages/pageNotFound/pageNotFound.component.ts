@@ -2,8 +2,8 @@
 import { Component, PLATFORM_ID, Inject, Optional } from '@angular/core';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { FooterService } from 'src/app/utils/services/footer.service';
-import CONSTANTS from 'src/app/config/constants';
+import { FooterService } from '@app/utils/services/footer.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'pagenot-found',

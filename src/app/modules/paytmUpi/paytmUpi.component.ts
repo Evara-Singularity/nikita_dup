@@ -3,12 +3,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PaytmUpiService } from "./paytmUpi.service";
 import { Subscription } from 'rxjs/Subscription';
 import { LocalStorageService } from 'ngx-webstorage';
-import { CheckoutService } from 'src/app/utils/services/checkout.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CommonService } from 'src/app/utils/services/common.service';
-import CONSTANTS from 'src/app/config/constants';
-import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { CheckoutService } from '@services/checkout.service';
+import { CartService } from '@services/cart.service';
+import { LocalAuthService } from '@services/auth.service';
+import { CommonService } from '@services/common.service';
+import CONSTANTS from '@config/constants';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 declare var dataLayer;
 

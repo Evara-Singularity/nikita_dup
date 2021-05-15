@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRe
 import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: "fresh",

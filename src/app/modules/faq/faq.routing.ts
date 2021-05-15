@@ -1,7 +1,3 @@
-/**
- * Created by kuldeep on 4/4/17.
- */
-
 import { Routes, RouterModule } from '@angular/router';
 import { FaqComponent } from "./faq.component";
 import { CustomReturnComponent } from './custom-return.component';

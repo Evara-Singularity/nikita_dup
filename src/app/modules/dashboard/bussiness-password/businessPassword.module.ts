@@ -5,8 +5,7 @@ import { RouterModule } from "@angular/router";
 import { BussinessPasswordComponent } from "./bussinessPassword.component";
 import { routing } from "./businessPassword.routing";
 import { FormsModule } from "@angular/forms";
-import { PasswordPipeModule } from "src/app/utils/pipes/password-error.pipe";
-import { LoaderModule } from "src/app/modules/loader/loader.module";
+import { PasswordPipeModule } from "@app/utils/pipes/password-error.pipe";
 
 @NgModule({
   imports: [
@@ -14,7 +13,6 @@ import { LoaderModule } from "src/app/modules/loader/loader.module";
     RouterModule,
     FormsModule,
     routing,
-    LoaderModule,
     PasswordPipeModule,
   ],
   declarations: [BussinessPasswordComponent],

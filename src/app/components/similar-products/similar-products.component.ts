@@ -5,7 +5,7 @@ import { ProductService } from '../../utils/services/product.service';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { CommonService } from '../../utils/services/common.service';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'app-similar-products',

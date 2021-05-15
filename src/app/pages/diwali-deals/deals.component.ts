@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID } from '@a
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta, makeStateKey } from '@angular/platform-browser';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 const DSD = makeStateKey<any>('dealsdata');
 
 declare let $: any;

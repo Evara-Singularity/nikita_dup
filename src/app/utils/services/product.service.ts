@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 
 import { DataService } from './data.service';
 import CONSTANTS from '../../config/constants';
-import { ENDPOINTS } from 'src/app/config/endpoints';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: 'root'

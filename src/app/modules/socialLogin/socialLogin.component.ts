@@ -1,4 +1,3 @@
-
 import {Component, EventEmitter, Output, PLATFORM_ID, Inject} from '@angular/core';
 import {SocialLoginService} from './socialLogin.service';
 import { AuthService } from 'angular2-social-login';

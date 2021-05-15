@@ -5,8 +5,7 @@ import { BussinessDetailComponent } from "./bussinessDetail.component";
 import { routing } from "./businessDetail.routing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BusinessDetailService } from "./businessDetail.service";
-import { LoaderModule } from "src/app/modules/loader/loader.module";
-import { PincodePipeModule } from "src/app/utils/pipes/pincode-error.pipe";
+import { PincodePipeModule } from "@app/utils/pipes/pincode-error.pipe";
 
 @NgModule({
   imports: [
@@ -15,7 +14,6 @@ import { PincodePipeModule } from "src/app/utils/pipes/pincode-error.pipe";
     FormsModule,
     ReactiveFormsModule,
     routing,
-    LoaderModule,
     PincodePipeModule,
   ],
   declarations: [BussinessDetailComponent],

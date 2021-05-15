@@ -4,10 +4,9 @@ import { RouterModule } from "@angular/router";
 import { BussinessRfqComponent } from "./bussinessRfq.component";
 import { routing } from "./businessRfq.routing";
 import { DashboardService } from "../dashboard.service";
-import { LoaderModule } from "src/app/modules/loader/loader.module";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, routing, LoaderModule],
+  imports: [CommonModule, RouterModule, routing],
   declarations: [BussinessRfqComponent],
   exports: [],
   providers: [DashboardService],

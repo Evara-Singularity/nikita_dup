@@ -18,15 +18,14 @@ import {
 } from "@angular/core";
 import { LocalStorageService } from "ngx-webstorage";
 import { Subject } from "rxjs";
-import { fade } from "src/app/pages/animation/animations";
-import CONSTANTS from "src/app/config/constants";
-import { DataService } from "src/app/utils/services/data.service";
-import { CartService } from "src/app/utils/services/cart.service";
-import { FooterService } from "src/app/utils/services/footer.service";
-import { LocalAuthService } from "src/app/utils/services/auth.service";
-import { CommonService } from "src/app/utils/services/common.service";
+import { fade } from "@app/pages/animation/animations";
+import CONSTANTS from "@app/config/constants";
+import { DataService } from "@app/utils/services/data.service";
+import { CartService } from "@app/utils/services/cart.service";
+import { FooterService } from "@app/utils/services/footer.service";
+import { LocalAuthService } from "@app/utils/services/auth.service";
 import { ActivatedRoute } from "@angular/router";
-import { GlobalAnalyticsService } from "src/app/utils/services/global-analytics.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 @Component({
   selector: "home",
   templateUrl: "./home.html",

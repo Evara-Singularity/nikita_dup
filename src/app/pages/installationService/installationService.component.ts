@@ -1,8 +1,8 @@
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import CONSTANTS from 'src/app/config/constants';
-import { FooterService } from 'src/app/utils/services/footer.service';
+import CONSTANTS from '@app/config/constants';
+import { FooterService } from '@app/utils/services/footer.service';
 
 declare let $: any;
 

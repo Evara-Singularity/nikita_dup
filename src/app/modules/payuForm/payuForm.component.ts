@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'payu-form',

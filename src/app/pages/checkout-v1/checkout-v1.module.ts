@@ -19,7 +19,7 @@ import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailab
 import { SharedAuthModule } from '../../modules/shared-auth/shared-auth.module';
 import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-header.module';
 import { CheckoutLoginModule } from '../../modules/checkout-login/checkout-login.module';
-import { ModalService } from 'src/app/modules/modal/modal.service';
+import { ModalService } from '@app/modules/modal/modal.service';
 
 
 @NgModule({

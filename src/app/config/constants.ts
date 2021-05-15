@@ -2,7 +2,7 @@ let siemaOptionsObject: {
     outerWrapperClass: ['product_block_container'],
     innerWrapperClass: ['product_block']
 };
-const CONSTANTS = {
+export const CONSTANTS = {
     PROD: "https://www.moglix.com",
     NEW_MOGLIX: 'https://beta.moglix.com',
     //NEW_MOGLIX_API: 'https://apinew.moglix.com/nodeApi/v1',
@@ -40,6 +40,7 @@ const CONSTANTS = {
 		HEADER_TOP_TEXT: "Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100",
 		CART_PAYMENT_METHOD_TEXT:"Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100"
 	},
+    FILTER_GA_ID: [114000000, 116111700, 211000000],
     CONST_VAR: {
         shippingcharge: '99',
         FreeShippingMinAmount: '999',

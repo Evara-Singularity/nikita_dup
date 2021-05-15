@@ -172,12 +172,3 @@ option {
     @extend %cards;
     padding: 0;
 }
-
-.card-head {
-    @extend %clear-fix;
-    .icon-grid-view,
-    .icon-list-view {
-        font-size: 21px;
-        margin-top: 11px;
-    }
-}

@@ -1,21 +1,6 @@
-<loader [showLoader]="showLoader"></loader>
-<!-- <div *ngIf="showLoader" class="page-loader">
-    <svg class="divi" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
-        style="enable-background:new 0 0 200 200" xml:space="preserve">
-        <g>
-            <circle class="outer" cx="100" cy="100" r="70"></circle>
-            <path class="outer" d="M100.2,6C47.8,6,5.4,48.5,5.4,100.8s42.5,94.8,94.8,94.8s94.8-42.5,94.8-94.8S152.5,6,100.2,6z M100.2,185.7 		c-46.9,0-84.8-38-84.8-84.8S53.3,16,100.2,16S185,54,185,100.8S147,185.7,100.2,185.7z"></path>
-            <image class="inner" x="65" y="68" width="75" height="75" attr.xlink:href="{{imagePath}}mob/assets/img/loader.svg"
-                clip-path="url(#circleView)" />
-        </g>
-    </svg>
-</div> -->
-
 <div *ngIf="orders && orders.length>0">
-    <div class="orderbox" *ngFor="let order of orders; index as i;">
-        
-        <div class="orderIdtab" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#"
-            aria-expanded="false" aria-controls="footwear">
+    <div class="orderbox" *ngFor="let order of orders; index as i">
+        <div class="orderIdtab" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
             <div class="orderSum">
                 <span class="orderId">Order ID : {{order.orderId}}</span>
                 <span class="orderOthDet">

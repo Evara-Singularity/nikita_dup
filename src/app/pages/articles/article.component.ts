@@ -2,8 +2,8 @@ import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import CONSTANTS from 'src/app/config/constants';
-import { ToastMessageService } from 'src/app/modules/toastMessage/toast-message.service';
+import CONSTANTS from '@app/config/constants';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ArticleUtilService } from './article-util.service';
 
 @Component({

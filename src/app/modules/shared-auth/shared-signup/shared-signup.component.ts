@@ -9,15 +9,15 @@ import { mergeMap } from 'rxjs/operators/mergeMap';
 import { Subscription } from 'rxjs/Subscription';
 import { SharedSignUtilService } from './shared-sign-util.service';
 import { debounceTime } from 'rxjs/operators';
-import CONSTANTS from 'src/app/config/constants';
-import { UsernameValidator } from 'src/app/utils/validators/username.validator';
-import { PasswordValidator } from 'src/app/utils/validators/password.validator';
-import { CommonService } from 'src/app/utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
+import { PasswordValidator } from '@app/utils/validators/password.validator';
+import { CommonService } from '@app/utils/services/common.service';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CartService } from 'src/app/utils/services/cart.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 @Component({
     selector: 'app-shared-signup',

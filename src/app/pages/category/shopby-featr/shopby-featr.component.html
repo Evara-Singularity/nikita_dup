@@ -1,0 +1,21 @@
+<section class="safetysh_sect1 clearfix">
+    <div class="safetysh-shopby row">
+        <h2 class="slp-heading">SHOP BY</h2>
+        <div class="clearfix shopbyrow">
+            <div class="shopbycol" *ngFor="let product of shopBy_Data">
+                <div class="shopbywrap">
+                    <h3>{{product.image_title}}</h3>
+                    <div class="shopbyimgwrap">
+                        <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.image_name}}"
+                            alt="Shop by {{product.image_title}}">
+                    </div>
+                    <ul *ngIf="product && product.image_general && product.image_general.length">
+                        <li *ngFor="let imggen of product.image_general| slice:0:4"><a href="{{imggen.general_url}}">
+                                {{imggen.general_text | slice:0:20}}<ng-container *ngIf="imggen.general_text.length>20">
+                                    ...</ng-container>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>

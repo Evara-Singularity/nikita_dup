@@ -11,7 +11,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { TrendingSearchModule } from '../../modules/trendingSearch/trending-search.module';
 import { SearchHistoryModule } from '../../modules/searchHistory/search-history.module';
 import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 import { BrowserModule } from '@angular/platform-browser';
 
 @Component({

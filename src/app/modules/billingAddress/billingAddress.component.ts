@@ -12,8 +12,8 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
-import { Step } from 'src/app/utils/validators/step.validate';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { Step } from '@utils/validators/step.validate';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 declare let $: any;
 
@@ -286,7 +286,7 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
     //10766
     verifyGSTIN()
     {
-        this.showLoader = true;
+        this._commonService.showLoader = true;
         this._billingAddressService.getGSTINDetails(this.gstin.value).subscribe(
             (response) =>
             {
@@ -297,9 +297,9 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
                 } else {
                     this.resetGSTINVarification(response['message']);
                 }
-                this.showLoader = false;
+                this._commonService.showLoader = false;
             },
-            (error) => { this.showLoader = false; }
+            (error) => { this._commonService.showLoader = false; }
         );
     }
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AmazingDealsComponent } from './amazingDeals.component';
-import { LayoutResolver } from 'src/app/utils/resolvers/layout.resolver';
+import { LayoutResolver } from '@app/utils/resolvers/layout.resolver';
 
 const routes: Routes = [
   {

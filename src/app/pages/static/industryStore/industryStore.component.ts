@@ -3,9 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { FooterService } from 'src/app/utils/services/footer.service';
-import { DataService } from 'src/app/utils/services/data.service';
-import CONSTANTS from 'src/app/config/constants';
+import { FooterService } from '@app/utils/services/footer.service';
+import { DataService } from '@app/utils/services/data.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'industry-store',

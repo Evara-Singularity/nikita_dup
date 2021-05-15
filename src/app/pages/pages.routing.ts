@@ -23,6 +23,61 @@ const routes: Routes = [
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
       },
       {
+        matcher: categoriesMatcher,
+        loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        matcher: popularProductsMatcher,
+        loadChildren: () => import('./popular/popularProduct/popularProduct.module').then(m => m.PopularProductModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
+        path: 'categorystore/safety/safetyshoes',
+        loadChildren: () => import('@pages/storefront/shoe/shoe.module').then(m => m.ShoeModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true,
+          layoutId: 'cm226668'
+        }
+      },
+      {
+        path: 'brands/:brand',
+        loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule),
+        data: {
+          footer: false,
+          title: 'Brands',
+          moreOpt: true
+        }
+      },
+      {
+        matcher: brandCategoriesMatcher,
+        loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule),
+        data: {
+          footer: false,
+          title: 'Brand',
+          moreOpt: true
+        }
+      },
+      {
+        path: 'search',
+        loadChildren: () => import('./search/search.module').then(m => m.SearchModule),
+        data: {
+          footer: false,
+          logo: true,
+          moreOpt: true
+        }
+      },
+      {
         path: 'quickorder',
         loadChildren: () => import('./quickOrder/quickOrder.module').then(m => m.QuickOrderModule),
         data: {
@@ -463,3 +518,33 @@ function productMatch(url: UrlSegment[]): any {
   }
 }
 
+export function categoriesMatcher(url: UrlSegment[]): any {
+  const urlLength = url.length;
+  if (urlLength > 0) {
+    const lastParam = url[urlLength - 1].toString();
+    const brandParam = url[0].toString();
+    if (lastParam.match(/^\d{9}$/) && brandParam !== 'brands') {
+      return ({ consumed: url, posParams: { id: url[urlLength - 1] } });
+    }
+  }
+}
+
+export function brandCategoriesMatcher(url: UrlSegment[]): any {
+  const urlLength = url.length;
+  if (urlLength > 0) {
+    const lastParam = url[urlLength - 1].toString();
+    const brandParam = url[0].toString();
+    if (lastParam.match(/^\d{9}$/) && brandParam === 'brands') {
+      return ({ consumed: url, posParams: { category: url[urlLength - 1], brand: url[1] } });
+    }
+  }
+}
+
+
+export function popularProductsMatcher(url: UrlSegment[]): any {
+  if (url.length > 1) {
+    if (url[0].toString() === 'q') {
+      return ({ consumed: url, posParams: { searchString: url[1] } });
+    }
+  }
+}

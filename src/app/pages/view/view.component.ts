@@ -3,10 +3,9 @@ import { Title, Meta } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { ViewService } from './view.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CommonService } from 'src/app/utils/services/common.service';
-import CONSTANTS from 'src/app/config/constants';
-import { allCategoriesData } from 'src/app/config/all-categories';
+import { CommonService } from '@app/utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
+import { allCategoriesData } from '@app/config/all-categories';
 
 
 declare let $: any;

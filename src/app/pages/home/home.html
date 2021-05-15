@@ -46,7 +46,7 @@
 </section>
 
 <!-- Section for feature Brands -->
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)" >
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)">
     <div>
         <ng-container #FeaturedBrands></ng-container>
     </div>
@@ -56,12 +56,13 @@
     <ng-container #RecentlyViewedCarouselComponent ></ng-container>
 </div>
 
-<div observeVisibility class="categories-container clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
+<div observeVisibility class="categories-container clearfix" [debounceTime]="100"
+    (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
- 
+
 <div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
-</div> 
+</div>
 
 <ng-container #HomePopupComponet></ng-container>

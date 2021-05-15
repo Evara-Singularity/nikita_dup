@@ -12,8 +12,8 @@
         <h3 class="heading titleBrand" [appKpToggle]="{idName: 'letterContainer',iconMode :true}">
             ALL BRANDS
             <span class="iconaccordian">
-        <i class="icon-expand"></i>
-      </span>
+                <i class="icon-expand"></i>
+            </span>
         </h3>
     </div>
     <div id="letterContainer" style="display:none;">
@@ -28,7 +28,8 @@
         </div>
         <div id="letterName" class="row bg-white nameBlock">
             <p>Showing
-                <span>{{total_count}}</span>&nbsp;Brands</p>
+                <span>{{total_count}}</span>&nbsp;Brands
+            </p>
             <div id="alphabet_{{i}}" class="fullNameBlock clearfix" *ngFor="let brand of final_arr;let i = index;">
                 <span class="letter">{{brand['letter']}}</span>
                 <ul>

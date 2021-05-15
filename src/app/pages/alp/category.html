@@ -1,11 +1,12 @@
-<loader [showLoader]="showLoader"></loader>
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName"
             [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter>
     </div>
 </div>
+
 <breadcrump [breadcrumpUpdated]="breadcrumpUpdated" [type]="'category'" [pageTitle]="titleHeading"></breadcrump>
+
 <div class="attributeListingGroup">
     <h1 class="attributeHeading">{{titleHeading}}</h1>
     <p class="attributeContent" [innerHTML]="titleDescription" *ngIf="firstPageContent"></p>
@@ -24,6 +25,7 @@
         </ngx-siema-slide>
     </ngx-siema>
 </ng-container>
+
 <div class="cate-container" id=category-cards-section>
     <div class="bg_white">
         <div class="clearfix"></div>

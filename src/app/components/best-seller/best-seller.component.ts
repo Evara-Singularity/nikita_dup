@@ -10,6 +10,7 @@ export class BestSellerComponent implements OnInit {
 
     @Input('items') items: any[] = [];
     openPopup: boolean;
+    viewAll: any;
     @Input('titleName') titleName = '';
     defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
 

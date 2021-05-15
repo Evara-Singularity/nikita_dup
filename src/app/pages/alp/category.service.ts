@@ -8,7 +8,7 @@ import CONSTANTS from "src/app/config/constants";
 
 @Injectable()
 export class CategoryService {
-  constructor(private _dataService: DataService) {}
+  constructor(private _dataService: DataService) { }
 
   getRelatedCategories(categoryId): Observable<any> {
     const url =
@@ -24,17 +24,11 @@ export class CategoryService {
       })
     );
   }
+  
   getCategoryExtraData(categoryId): Observable<any> {
     let url =
       CONSTANTS.NEW_MOGLIX_API +
       "/category/getcategoryExtras?requestType=" +
-      categoryId;
-    return this._dataService.callRestful("GET", url);
-  }
-  getFaqApi(categoryId): Observable<any> {
-    let url =
-      CONSTANTS.NEW_MOGLIX_API +
-      "/quest/getCategorySchema?categoryCode=" +
       categoryId;
     return this._dataService.callRestful("GET", url);
   }
@@ -43,8 +37,8 @@ export class CategoryService {
     return this._dataService.callRestful(
       "GET",
       CONSTANTS.NEW_MOGLIX_API +
-        "/cmsApi/getAttributesListingPage?friendlyUrl=" +
-        attribute
+      "/cmsApi/getAttributesListingPage?friendlyUrl=" +
+      attribute
     );
   }
 

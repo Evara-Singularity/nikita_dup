@@ -14,7 +14,7 @@ const BRK = makeStateKey<any>('BRK');
 @Component({
     selector: 'breadcrump',
     templateUrl: './breadcrump.component.html',
-    styleUrls: ['./breadcrump.component.css'],
+    styleUrls: ['./breadcrump.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 

@@ -1,0 +1,17 @@
+.featuredBanner{
+    .featrBannerBlock{
+        overflow-y:hidden;
+        overflow-x:scroll;
+        width:auto;
+        padding: 10px 5px;
+        background: #fff;
+    }
+    .featrBannerSlide{
+        float: left;
+        margin-right:10px;
+        width: 340px;
+            img{
+                width:100%;
+            }
+        }
+    }

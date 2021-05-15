@@ -1,0 +1,6 @@
+<div  *ngIf ="data['data'].length > 0" class="l0_footer_data">
+    <div class ="footer_section">
+        <div *ngFor="let item of data['data'];let i=index" [innerHTML]="item.element_url" class="col-md-12">
+        </div>
+    </div>
+  </div>

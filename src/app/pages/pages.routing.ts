@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, UrlSegment } from '@angular/router';
 import { IsNotAuthenticatedGuard } from '../utils/guards/is-not-authenticated.guard';
+import { MyAccountGuard } from '../utils/guards/myAccount.guard';
 import { PagesComponent } from './pages.component';
 
 const routes: Routes = [
@@ -8,7 +9,15 @@ const routes: Routes = [
     path: '',
     component: PagesComponent,
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      {
+        path: '',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+        data: {
+          footer: true,
+          logo: true,
+          moreOpt: true
+        }
+      },
       {
         matcher: productMatch,
         loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
@@ -127,12 +136,61 @@ const routes: Routes = [
         canActivate: [IsNotAuthenticatedGuard]
       },
       {
+        path: 'dashboard',
+        loadChildren: () => import('./bussiness/bussiness.module').then(m => m.BusinessModule),
+        canActivate: [MyAccountGuard]
+      },
+      {
+        path: 'brand-store',
+        loadChildren: () => import('./static/brand/brand.module').then(m => m.BrandModule),
+        data: {
+          footer: false,
+          title: 'Brand Store',
+          moreOpt: true
+        }
+      },
+      {
         path: 'articles/:name',
         loadChildren: () => import('./articles/articles.module').then(m => m.ArticlesModule),
         data: {
           footer: false,
           logo: true,
           moreOpt: true
+        }
+      },
+      {
+        path: 'all-categories',
+        loadChildren: () => import('./view/view.module').then(m => m.ViewModule),
+        data: {
+            footer: false,
+            logo: true
+        }
+      },
+      {
+        path: 'industrystore',
+        loadChildren: () => import('./static/industryStore/industryStore.module').then(m => m.IndustryStoreModule),
+        data: {
+            footer: true,
+            title: 'Industry Store',
+            moreOpt: true
+        }
+      },
+      {
+        path: 'manufacturer-store/:manufacturer',
+        loadChildren: () => import('./static/manufacturer-store/liberty/liberty.module').then(m => m.LibertyModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true
+        }
+      },
+      {
+        path: 'store/:type',
+        loadChildren: () => import('./clusterStore/cluster-store.module').then(m => m.ClusterStoreModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true
         }
       },
       {
@@ -439,6 +497,7 @@ const routes: Routes = [
           moreOpt: false
         }
       }
+
     ]
   }
 ]

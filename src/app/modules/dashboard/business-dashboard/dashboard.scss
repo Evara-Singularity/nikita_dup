@@ -1,0 +1,75 @@
+@import "../../../scss/variables";
+
+.dash-block {
+  transition: 0.3s;
+  text-align: center;
+  &:hover {
+    background: #f8f8f8;
+    transform: scale(1.025);
+    cursor: pointer;
+  }
+  .icon_block {
+    margin: 25px auto;
+    display: block;
+    height: 60px;
+    width: 65px;
+    background: url("#{$cdn_url}mob/assets/img/businessIcons.svg");
+    &.order {
+      background-position: -37px -26px;
+    }
+    &.rfq {
+      background-position: -123px -26px;
+    }
+    &.purchase {
+      background-position: -222px -26px;
+    }
+    &.bussiness {
+      background-position: -322px -26px;
+    }
+    &.personal {
+      background-position: -409px -26px;
+    }
+    &.password {
+      background-position: -511px -26px;
+    }
+    &.address {
+      background-position: -621px -26px;
+    }
+    &.insight {
+      background-position: -727px -25px;
+    }
+  }
+}
+
+.dashboard_wrap {
+  div {
+    padding: 10px;
+  }
+}
+
+.dash_msz_alert {
+  max-width: 450px;
+  margin: auto;
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  z-index: 9;
+}
+
+.yellow_info {
+  background: #fef2a4;
+  border: 1px solid #b7b06c;
+  color: #000;
+  a {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 769px) {
+  .dash-block {
+    .icon_block {
+      margin: 20px auto;
+    }
+  }
+}

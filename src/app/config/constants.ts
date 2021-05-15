@@ -1,3 +1,7 @@
+let siemaOptionsObject: {
+    outerWrapperClass: ['product_block_container'],
+    innerWrapperClass: ['product_block']
+};
 export const CONSTANTS = {
     PROD: "https://www.moglix.com",
     NEW_MOGLIX: 'https://beta.moglix.com',
@@ -8,6 +12,13 @@ export const CONSTANTS = {
     IMAGE_BASE_URL: 'https://cdn.moglix.com/',
     IMG_URL: 'https://img.moglimg.com/',
     DOCUMENT_URL: 'https://document.moglix.com/',
+    URLS:{
+		HOMEPAGE : '/homepage/layoutbyjson?requestType=mobile',
+		SUGGESTIONS : '/homepage/getsuggestion'
+	},
+	pwaImages:{
+		imgFolder:'b/I/P/B/d'
+	},
     DEVICE: {
         device: 'mobile'
     },
@@ -24,9 +35,6 @@ export const CONSTANTS = {
         ROBOT: 'index,follow',
         ROBOT1: 'noindex,follow',
         ROBOT2: 'noindex,nofollow'
-    },
-    pwaImages: {
-        imgFolder: 'b/I/P/B/d'
     },
 	CMS_TEXT: {
 		HEADER_TOP_TEXT: "Flat Rs.100 OFF on First Order Above Rs.499 | USE CODE: WELCOME100",
@@ -185,6 +193,141 @@ export const CONSTANTS = {
             '/order-confirmation',
             '/search'
         ]
-    }
+    },
+    IDS_MAP:{
+        //new ids for mobile
+        
+        'cm136360':'BEST_SELLER',
+        'cm915657':'BANNER',
+        //'CM881267':'FANS_BLOWER',
+        'cm325516':'SAFETY',
+        'cm889618':'FLY_OUT',
+        'cm814985':'CAT_B',
+        'cm196070':'CAT_C',
+        'cm454649':'CAT_D',
+        'cm358138':'CAT_E', 
+        'cm933249':'CAT_F',
+        'cm416640':'CAT_G',
+        'cm973381':'MIDDLE_BANNER_ADS',
+        'cm334468':'FEATURE_BRANDS',
+        'cm977811':'FEATURE_ARRIVAL'
+
+    },
+    CMS_IDS:{
+		// new layout ids for mobile
+		BEST_SELLER : 'id=cm136360',
+        BANNER: 'id=cm915657',
+        //FANS_BLOWER :'id=cm881267',
+        SAFETY: 'id=cm325516',
+        FLY_OUT : 'id=cm889618',
+        CAT_A : 'id=cm325516',
+        CAT_B : 'id=cm814985',
+        CAT_C : 'id=cm196070',
+        CAT_D : 'id=cm454649',
+        CAT_E : 'id=cm358138', 
+        CAT_F : 'id=cm933249',
+        CAT_G : 'id=cm416640',
+		CAT_H : 'id=cm814985',
+		MIDDLE_BANNER_ADS :'cm973381',
+		CATEGORY_EXTRAS: 'cm867481',
+		FEATURE_BRANDS:'cm334468',
+		FEATURE_ARRIVAL:'cm977811',
+		MANUFACTURER_STORE:'macizo_m',
+		MANUFACTURER_STORE_BRAND:'macizo'
+	},
+    clusterCategories: [
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Safety & PPE Supplies",
+            "category_image":"safety.png",
+            "category_url":"store/safety-ppe-supplies"
+        },
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Office Stationery & Supplies",
+            "category_image":"3 (1).png",
+            "category_url":"store/office-stationery-supplies"
+        },
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Electrical Tools & Equipment",
+            "category_image":"electricals-1@2x.png",
+            "category_url":"store/electrical-tools-equipment"
+        },
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Industrial Tools & Equipment",
+            "category_image":"power_tool.png",
+            "category_url":"store/industrial-tools-equipment"
+        },
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Lab & Scientific Equipment",
+            "category_image":"electricals-2.png",
+            "category_url":"store/lab-scientific-equipment"
+        },
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Medical Care & Hospital Supplies",
+            "category_image":"medical.png",
+            "category_url":"store/medical-equipment-hospital-supplies"
+        },
+        {
+            "idCategory":"116000000",
+            "CategoryName":"Hardware & Plumbing Supplies",
+            "category_image":"plumbing-materials.png",
+            "category_url":"store/hardware-plumbing-supplies"
+        },
+    ],
+    siemaCategories: [
+        {
+            label: 'Bestsellers',
+            dataKey: 'bestSellerData',
+            options: { selector: '.best-seller-siema', ...siemaOptionsObject }
+        },
+        {
+            label: 'SAFETY',
+            dataKey: 'safetyData',
+            options: { selector: '.safety-siema', ...siemaOptionsObject },
+            viewAllLink: ['/medical-supplies/215000000'],
+        },
+        {
+            label: 'Power Tools',
+            dataKey: 'powerData',
+            options: { selector: '.power-siema', ...siemaOptionsObject },
+            viewAllLink: ['/medical-supplies/diagnostic-instruments/thermometers/115251300'],
+        },
+        {
+            label: 'Pumps & motors',
+            dataKey: 'pumpData',
+            options: { selector: '.pump-siema', ...siemaOptionsObject },
+            viewAllLink: ['/medical-supplies/diagnostic-instruments/respiratory-care-products/115251700'],
+        },
+        {
+            label: 'ELECTRICALS',
+            dataKey: 'electricalData',
+            options: { selector: '.electrical-siema', ...siemaOptionsObject },
+            viewAllLink: ['/safety-and-security/respiratory-masks/116111600'],
+        },
+        {
+            label: 'OFFICE STATIONERY & SUPPLIES',
+            dataKey: 'officeData',
+            options: { selector: '.office-siema', ...siemaOptionsObject },
+            viewAllLink: ['/office-supplies/214000000'],
+        },
+        {
+            label: 'Medical Supplies',
+            dataKey: 'medicalData',
+            options: { selector: '.medical-siema', ...siemaOptionsObject },
+            viewAllLink: ['/medical-supplies/215000000'],
+        },
+        {
+            label: 'LED & LIGHTING',
+            dataKey: 'lightData',
+            options: { selector: '.light-siema', ...siemaOptionsObject },
+            viewAllLink: ['/lighting-luminaries/212000000'],
+        }
+    ],
+    alphabet_arr: ['0-9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 }
 export default CONSTANTS;

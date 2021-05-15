@@ -227,7 +227,8 @@ export class SearchComponent implements OnInit {
             }
 
             if (flag) {
-                this.paginationUpdated.next({ itemCount: response.productSearchResult["totalCount"] });
+                this.paginationData = { itemCount: response.productSearchResult.totalCount };
+                this.paginationUpdated.next(this.paginationData);
                 this.sortByUpdated.next();
                 this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
                 // this.bucketsUpdated.next(response.buckets);

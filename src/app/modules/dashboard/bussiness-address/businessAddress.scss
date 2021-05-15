@@ -1,0 +1,50 @@
+.address_menu {
+  li {
+    transition: 0.6s;
+    cursor: pointer;
+    &:hover {
+      padding-left: 22px !important;
+      background: #f8f8f8;
+    }
+  }
+}
+.tabs-data {
+  position: relative;
+  cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -12px;
+    width: 100%;
+    left: 0;
+    height: 1px;
+    background: transparent;
+  }
+  &.active {
+    color: #d50915;
+    &::after {
+      background: #d50915;
+    }
+  }
+}
+.address-breadcrumbs {
+  color: #323232;
+}
+.clear {
+  content: "";
+  width: 100%;
+  float: none;
+  clear: both;
+}
+@media (max-width: 500px) {
+  .header-tabs {
+    h2 {
+      width: 100%;
+      padding-left: 0 !important;
+    }
+    .tabs-data {
+      width: 50%;
+      margin: 10px 0 0 0 !important;
+    }
+  }
+}

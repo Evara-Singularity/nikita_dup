@@ -10,20 +10,14 @@ import { ClusterCategoryComponent } from '@app/components/cluster-store/cluster-
 import { ClusterStoreResolver } from './cluster-store.resolver';
 
 @NgModule({
-  declarations: [
-    ClusterStoreComponent,
-    ClusterCategoryComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    routing,
-    LazyLoadImageModule,
-    ObserveVisibilityDirectiveModule
-  ],
-  providers: [
-    ClusterStoreService,
-    ClusterStoreResolver
-  ],
+	declarations: [ClusterStoreComponent, ClusterCategoryComponent],
+	imports: [
+		CommonModule,
+		RouterModule,
+		routing,
+		LazyLoadImageModule,
+		ObserveVisibilityDirectiveModule,
+	],
+	providers: [ClusterStoreService, ClusterStoreResolver],
 })
-export class ClusterStoreModule { }
+export class ClusterStoreModule {}

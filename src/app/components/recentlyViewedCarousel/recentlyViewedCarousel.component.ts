@@ -1,7 +1,11 @@
 import { Component, Input, PLATFORM_ID, Inject, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalStorageService } from "ngx-webstorage";
-import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
+import { LocalStorageService } from 'ngx-webstorage';
+import {
+	isPlatformServer,
+	isPlatformBrowser,
+	CommonModule,
+} from '@angular/common';
 import CONSTANTS from '../../config/constants';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
@@ -16,133 +20,171 @@ import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pip
 import { DataService } from '@app/utils/services/data.service';
 
 @Component({
-    selector: 'recently-viewed-carousel',
-    templateUrl: './recentlyViewedCarousel.html',
-    styleUrls: ['./recentlyViewedCarousel.scss'],
+	selector: 'recently-viewed-carousel',
+	templateUrl: './recentlyViewedCarousel.html',
+	styleUrls: ['./recentlyViewedCarousel.scss'],
 })
 export class RecentlyViewedCarouselComponent {
-    @Input() clickFromSection: String;
-    options;
-    openPopup: boolean;
-    isBrowser: boolean;
-    categoryNameFromHomePage;
-    isServer: boolean = typeof window !== "undefined" ? false : true;
+	@Input() clickFromSection: String;
+	options;
+	openPopup: boolean;
+	isBrowser: boolean;
+	categoryNameFromHomePage;
+	isServer: boolean = typeof window !== 'undefined' ? false : true;
 
-    @Input() prodList: any;
-    @Input() showHeading: boolean = true;
-    isMobile: boolean;
-    defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
-    shortDescParsed: boolean = false;
-    recentProductList: Array<any> = [];
-    setCId;
+	@Input() prodList: any;
+	@Input() showHeading: boolean = true;
+	isMobile: boolean;
+	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+	imagePath = CONSTANTS.IMAGE_BASE_URL;
+	shortDescParsed: boolean = false;
+	recentProductList: Array<any> = [];
+	setCId;
 
-    constructor(public localStorageService: LocalStorageService, private _localAuthService: LocalAuthService, public _commonService: CommonService, public router: Router, @Inject(PLATFORM_ID) private platformId: Object, private _dataservice: DataService) {
-        this.isServer = isPlatformServer(platformId);
-        this.openPopup = false;
-        this.isBrowser = isPlatformBrowser(platformId);
-    };
-    
-    ngOnInit() {
-        if (!this.isServer) {
-            if (window.outerWidth < 768) {
-                this.isMobile = true;
-            } else {
-                this.isMobile = false;
-            }
+	constructor(
+		public localStorageService: LocalStorageService,
+		private _localAuthService: LocalAuthService,
+		public _commonService: CommonService,
+		public router: Router,
+		@Inject(PLATFORM_ID) private platformId: Object,
+		private _dataservice: DataService
+	) {
+		this.isServer = isPlatformServer(platformId);
+		this.openPopup = false;
+		this.isBrowser = isPlatformBrowser(platformId);
+	}
 
-        }
-        this.options = {
-            selector: '.recently-viewed-component',
-            duration: 500,
-            easing: 'ease-out',
-            perPage: 7,
-            startIndex: 0,
-            draggable: false,
-            threshold: 20,
-            loop: false,
-            recently: true
-        }
-        if (this.isMobile) {
+	ngOnInit() {
+		if (!this.isServer) {
+			if (window.outerWidth < 768) {
+				this.isMobile = true;
+			} else {
+				this.isMobile = false;
+			}
+		}
+		this.options = {
+			selector: '.recently-viewed-component',
+			duration: 500,
+			easing: 'ease-out',
+			perPage: 7,
+			startIndex: 0,
+			draggable: false,
+			threshold: 20,
+			loop: false,
+			recently: true,
+		};
+		if (this.isMobile) {
+			this.options.perPage = 2;
+		}
+		if (this.isBrowser) {
+			let user_id = this.localStorageService.retrieve('user');
 
-            this.options.perPage = 2;
-        }
-        if (this.isBrowser) {
-            let user_id = this.localStorageService.retrieve('user');
+			if (user_id && user_id['userId']) {
+				this.setCId = user_id['userId'];
+			} else {
+				this.setCId = null;
+			}
 
-            if (user_id && user_id['userId']) {
-                this.setCId = user_id['userId'];
-            } else {
-                this.setCId = null;
-            }
+			this._dataservice
+				.callRestful(
+					'GET',
+					CONSTANTS.NEW_MOGLIX_API +
+						'/recentlyviewed/getRecentlyViewd?customerId=' +
+						this.setCId
+				)
+				.subscribe((res) => {
+					if (res['statusCode'] === 200) {
+						this.recentProductList = res['data'];
+						this.prodList = this.recentProductList;
+						if (this.prodList && this.prodList.length > 0) {
+							if (this.prodList.length > this.options.perPage) {
+								this.options.loop = true;
+							}
+							this.prodList.map((product) => {
+								if (
+									product &&
+									product.shortDesc &&
+									typeof product.shortDesc === 'string'
+								) {
+									let shortDesc = [];
+									let result = product.shortDesc.split('||');
+									result.forEach((element) => {
+										let keyvalue = element.split(':');
+										shortDesc.push({ key: keyvalue[0], value: keyvalue[1] });
+									});
+									product.shortDesc = shortDesc;
+								}
+							});
+							this.shortDescParsed = true;
+						}
+					}
+				});
+		}
+		const userSession = this._localAuthService.getUserSession();
+	}
 
-            this._dataservice.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/recentlyviewed/getRecentlyViewd?customerId=" + this.setCId).subscribe((res) => {
-                if (res['statusCode'] === 200) {
-                    this.recentProductList = res['data'];
-                    this.prodList = this.recentProductList;
-                    if (this.prodList && this.prodList.length > 0) {
+	outData(data) {
+		this[data.selector] = !this[data.selector];
+	}
 
-                        if (this.prodList.length > this.options.perPage) {
-                            this.options.loop = true;
-                        }
-                        this.prodList.map(product => {
-                            if (product && product.shortDesc && typeof product.shortDesc === "string") {
-                                let shortDesc = [];
-                                let result = product.shortDesc.split("||");
-                                result.forEach(element => {
-                                    let keyvalue = element.split(':');
-                                    shortDesc.push({ 'key': keyvalue[0], 'value': keyvalue[1] });
-                                });
-                                product.shortDesc = shortDesc;
-                            }
-                        });
-                        this.shortDescParsed = true;
-                    }
-                }
-            });
+	viewAllClicked() {
+		setTimeout(() => {
+			document
+				.querySelector(
+					'.screen-view.popup.info-update-popup.payment-popup .container .content-popup'
+				)
+				.addEventListener(
+					'scroll',
+					() => {
+						window.scrollTo(window.scrollX, window.scrollY + 1);
+						window.scrollTo(window.scrollX, window.scrollY - 1);
+					},
+					{ passive: true }
+				);
+		}, 0);
+		setTimeout(() => {
+			window.scrollTo(window.scrollX, window.scrollY + 1);
+			window.scrollTo(window.scrollX, window.scrollY - 1);
+			window.dispatchEvent(new Event('resize'));
+		}, 100);
+	}
 
-        }
-        const userSession = this._localAuthService.getUserSession();
-    }
+	goToProducturl(url) {
+		this._commonService.setGaGtmData({ list: 'home-recently viewed' });
+		this._commonService.setSectionClickInformation(
+			this.clickFromSection,
+			'pdp'
+		);
+		this.router.navigateByUrl(url);
+	}
 
-    outData(data) {
-        this[data.selector] = !this[data.selector];
-    }
-
-    viewAllClicked() {
-        setTimeout(() => {
-            document.querySelector('.screen-view.popup.info-update-popup.payment-popup .container .content-popup').addEventListener('scroll', () => {
-                window.scrollTo(window.scrollX, window.scrollY + 1);
-                window.scrollTo(window.scrollX, window.scrollY - 1);
-            }, { passive: true });
-        }, 0);
-        setTimeout(() => {
-            window.scrollTo(window.scrollX, window.scrollY + 1);
-            window.scrollTo(window.scrollX, window.scrollY - 1);
-            window.dispatchEvent(new Event('resize'));
-        }, 100);
-    }
-
-    goToProducturl(url) {
-        this._commonService.setGaGtmData({ "list": "home-recently viewed" });
-        this._commonService.setSectionClickInformation(this.clickFromSection, 'pdp')
-        this.router.navigateByUrl(url);
-    }
-
-    setCookieLink(catName, categoryCodeorBannerName) {
-        var date = new Date();
-        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
-        document.cookie = "adobeClick=" + catName + "_" + categoryCodeorBannerName + "; expires=" + date.toUTCString() + ";path=/";
-    }
+	setCookieLink(catName, categoryCodeorBannerName) {
+		var date = new Date();
+		date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
+		document.cookie =
+			'adobeClick=' +
+			catName +
+			'_' +
+			categoryCodeorBannerName +
+			'; expires=' +
+			date.toUTCString() +
+			';path=/';
+	}
 }
 
 @NgModule({
-    declarations: [
-        RecentlyViewedCarouselComponent
-    ],
-    imports: [
-        CommonModule, MathFloorPipeModule, PopUpModule, RouterModule, CharacterremovePipeModule, LazyLoadImageModule, SiemaCarouselModule, MathCeilPipeModule, PopUpModule
-    ],
-    providers: []
+	declarations: [RecentlyViewedCarouselComponent],
+	imports: [
+		CommonModule,
+		MathFloorPipeModule,
+		PopUpModule,
+		RouterModule,
+		CharacterremovePipeModule,
+		LazyLoadImageModule,
+		SiemaCarouselModule,
+		MathCeilPipeModule,
+		PopUpModule,
+	],
+	providers: [],
 })
-export class RecentlyViewedCarouselModule { }
+export class RecentlyViewedCarouselModule {}

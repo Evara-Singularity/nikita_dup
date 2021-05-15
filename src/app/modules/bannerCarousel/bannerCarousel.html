@@ -1,0 +1,29 @@
+<div class="row pad-t-10 pad-lr-15 pad-lr-xs-0 pad-t-xs-0 pad-t-md-0">
+  <!--Below flyout is only for browser app, to avoid multiple calls on server side-->
+  <div class="col-sm-12 bg-grey no-padding-sm wp-100 wp-xs-100 pad-lr-10 h-auto-xs pad-l-md-0">
+    <div class="h-315 bg-white h-auto-xs o-hidden">
+      <owl-carousel *ngIf="!isMobile" #owlElement [options]="{items: 1, autoplay: true, autoplayTimeout: 5000, autoplaySpeed: 300, dots: false,touchDrag: false, mouseDrag: false, nav: true,loop: true, navText: ['<i class=\'icon-home_back_arrow f-size-15\' aria-hidden=\'true\'></i>','<i class=\'icon-home_next_arrow f-size-15\' aria-hidden=\'true\'></i>'], responsive:{ '100': {  items: 1,touchDrag: true, mouseDrag: true, autoplay: true, autoplayTimeout: 4000, autoplaySpeed: 700 },'600': { items: 1,touchDrag: true, mouseDrag: true },'1000': { items: 1 }}}"
+        [items]="bannerData[0]" [carouselClasses]="['owl-theme','main_banner',  'sliding']">
+        <ng-container *ngFor="let banner of bannerData[0] | orderByLink; let i = index;">
+          <div @fade class="item i">
+            <a href="{{ banner.link | getBeforeComma }}" target="_blank" data="" (click)="setGaGtmData()" class="relative block">
+              <img *ngIf="isBrowser" [src]="API.BASE_URLS.IMAGE_BASE_URL + 'min_images/' + banner.image" attr.data-url="{{ API.BASE_URLS.IMAGE_BASE_URL + banner.image }}"
+                class="img-fluid h-315 h-auto-xs high_res_img">
+            </a>
+          </div>
+        </ng-container>
+      </owl-carousel>
+      <owl-carousel *ngIf="isMobile" #owlElement [options]="{items: 1, autoplay: true, autoplayTimeout: 5000, autoplaySpeed: 300, dots: false,touchDrag: false, mouseDrag: false, nav: true,loop: true, navText: ['<i class=\'icon-home_back_arrow f-size-15\' aria-hidden=\'true\'></i>','<i class=\'icon-home_next_arrow f-size-15\' aria-hidden=\'true\'></i>'], responsive:{ '100': {  items: 1,touchDrag: true, mouseDrag: true, autoplay: true, autoplayTimeout: 4000, autoplaySpeed: 700 },'600': { items: 1,touchDrag: true, mouseDrag: true },'1000': { items: 1 }}}"
+        [items]="bannerData[2]" [carouselClasses]="['owl-theme','main_banner',  'sliding']">
+        <ng-container *ngFor="let banner of bannerData[2] | orderByLink; let i = index;">
+          <div @fade class="item i">
+            <a href="{{ banner.link | getBeforeComma }}" target="_blank" data="" (click)="setGaGtmData()" class="relative block">
+              <img *ngIf="isBrowser" [src]="API.BASE_URLS.IMAGE_BASE_URL + 'min_images/' + banner.image" attr.data-url="{{ API.BASE_URLS.IMAGE_BASE_URL + banner.image }}"
+                class="img-fluid h-315 h-auto-xs high_res_img">
+            </a>
+          </div>
+        </ng-container>
+      </owl-carousel>
+    </div>
+  </div>
+</div>

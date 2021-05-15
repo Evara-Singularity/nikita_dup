@@ -15,14 +15,13 @@ import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
-import { ObserveVisibilityDirective } from '../../utils/directives/observe-visibility.directive';
+import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 
 import { ModalService } from '../../modules/modal/modal.service';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 @NgModule({
   declarations: [
     ProductComponent,
-    ObserveVisibilityDirective
   ],
   imports: [
     CommonModule,
@@ -37,7 +36,8 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
     ReactiveFormsModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
-    NgxPageScrollCoreModule
+    NgxPageScrollCoreModule,
+    ObserveVisibilityDirectiveModule
   ],
   exports: [],
   providers: [

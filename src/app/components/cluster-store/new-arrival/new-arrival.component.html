@@ -1,0 +1,77 @@
+<div class="row prod_list newArrivalsSection">
+    <div class="clearfix product_h3">
+        <h3 class="f-left">{{data.title}}</h3>
+        <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="btn-red f-right">View All</a>
+    </div>
+<ul class="view-products grid border-top">
+    <ng-container *ngFor="let product of data['data'] | slice:0:4; let i = index">
+        <li>
+            <a [routerLink]="['/'+product.productlink]" class="clearfix">
+                <div class="product-img">
+                    <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
+                </div>
+                <div class="product-description">
+                    <p class="description-txt">
+                        {{product.productName | slice:0:27 }}
+                        <span *ngIf ="product.productName.length >27">...</span>
+                    </p>
+                    <p class="price">
+                        <span class="before-discount">
+                            {{product.mrp | currency:'INR': 'symbol': '1.0-0'}}
+                        </span>
+                        <span class="discount">
+                            {{product.discount_percentage}} % OFF
+                            <!-- {{((product.mrp -
+                  product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}}% OFF -->
+                        </span>
+                        <span class="after-discount">
+                            {{product.pricewithouttax | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                        </span>
+                    </p>
+                    <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">
+                            <p class="seller" *ngIf="i<1"> <span>By :</span> {{ item.value}} </p>
+                    </ng-container>
+                </div>
+            </a>
+        </li>
+    </ng-container>
+</ul>
+</div>
+
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+    <div class="content-popup otherCategoryBlock grey_bg" content>
+        <ul class="view-products grid border-top">
+            <ng-container *ngFor="let product of data['data']; let i = index">
+                <li>
+                    <a [routerLink]="['/'+product.productlink]" class="clearfix">
+                        <div class="product-img">
+                            <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
+                        </div>
+                        <div class="product-description">
+                            <p class="description-txt">
+                                {{product.productName | slice:0:27 }}
+                                <span *ngIf ="product.productName.length >27">...</span>
+                            </p>
+                            <p class="price">
+                                <span class="before-discount">
+                                    {{product.mrp | currency:'INR': 'symbol': '1.0-0'}}
+                                </span>
+                                <span class="discount">
+                                    {{product.discount_percentage}} % OFF
+                                    <!-- {{((product.mrp -
+                          product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}}% OFF -->
+                                </span>
+                                <span class="after-discount">
+                                    {{product.pricewithouttax | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                                </span>
+                            </p>
+                            <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">
+                                    <p class="seller" *ngIf="i<1"> <span>By :</span> {{ item.value}} </p>
+                            </ng-container>
+                        </div>
+                    </a>
+                </li>
+            </ng-container>
+        </ul>
+    </div>
+</app-pop-up>

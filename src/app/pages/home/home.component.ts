@@ -70,23 +70,25 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     autoPlay: false,
   };
   topOptions: any = this.options;
-
   clustorCategories = CONSTANTS.clusterCategories;
-
   categories: Array<{}> = CONSTANTS.siemaCategories;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
   pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
   appendSiemaItemSubjects: {};
+
   // ondemad loaded components: feature brands
   featuredBrandsInstance = null;
   @ViewChild('FeaturedBrands', { read: ViewContainerRef }) featuredBrandsContainerRef: ViewContainerRef;
+
   // ondemad loaded components: Feature Arrivals
   featuredArrivalsInstance = null;
   @ViewChild('FeaturedArrivals', { read: ViewContainerRef }) featuredArrivalsContainerRef: ViewContainerRef;
+
   // ondemad loaded components: PWA Categories
   categoriesInstance = null;
   @ViewChild('Categories', { read: ViewContainerRef }) CategoriesContainerRef: ViewContainerRef;
+
   // ondemad loaded components: PWA Categories
   popUpInstance = null;
   @ViewChild('HomePopupComponet', { read: ViewContainerRef }) HomePopupComponetContainerRef: ViewContainerRef;
@@ -116,7 +118,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.route.data.subscribe((rawData) => {
       if (!rawData['homeData']['error']) {
         this.fetchHomePageData(rawData.homeData)

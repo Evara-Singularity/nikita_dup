@@ -17,6 +17,7 @@ import { FooterService } from 'src/app/utils/services/footer.service';
 import { SortByComponent } from 'src/app/modules/sortBy/sortBy.component';
 import CONSTANTS from 'src/app/config/constants';
 import { DataService } from 'src/app/utils/services/data.service';
+import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -118,7 +119,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         private localStorageService: LocalStorageService,
         private _commonService: CommonService,
         private _categoryService: CategoryService,
-        private _pageScrollService: PageScrollService
+        private _pageScrollService: PageScrollService,
         private loaderService:GlobalLoaderService) {
 
         this.showLoader=false;

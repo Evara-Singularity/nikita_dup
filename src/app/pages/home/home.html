@@ -52,7 +52,11 @@
     </div>
 </div>
 
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
+<div observeVisibility class="categories-container" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
+    <ng-container #RecentlyViewedCarouselComponent ></ng-container>
+</div>
+
+<div observeVisibility class="categories-container clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
  

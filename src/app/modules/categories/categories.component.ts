@@ -13,7 +13,7 @@ import { ModalService } from "../modal/modal.service";
   styleUrls: ['./categories.component.scss'],
 })
 export class Categories {
-  
+
   @Input('middleImageJsonData') middleImageJsonData;
   @Input('categories') categories;
   @Input('carouselData') carouselData;
@@ -21,9 +21,7 @@ export class Categories {
   @Input('imagePath') imagePath;
   @Input('recentProductList') recentProductList;
   @Output('sendDataToPopUP') sendDataToPopUP = new EventEmitter();
-  // ondemad loaded components: Feature Arrivals
-  carouselInstance = null;
-  @ViewChild('RecentlyViewedCarouselComponent', { read: ViewContainerRef }) carouselContainerRef: ViewContainerRef;
+
   openPopup;
   categoryNameFromHomePage;
 
@@ -91,14 +89,7 @@ export class Categories {
     const newValue = Math.round(0.0 + removeDecimal);
     return newValue;
   }
-    async onVisibleCarousel(htmlElement) {
-      const { RecentlyViewedCarouselComponent } = await import('../../components/recentlyViewedCarousel/recentlyViewedCarousel.component');
-      const factory = this.cfr.resolveComponentFactory(RecentlyViewedCarouselComponent);
-      this.carouselInstance = this.carouselContainerRef.createComponent(factory, null, this.injector);
-      this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
-      this.carouselInstance.instance['showHeading'] = true;
-      this.carouselInstance.instance['prodList'] = this.recentProductList;
-    }
+
 }
 
 @NgModule({

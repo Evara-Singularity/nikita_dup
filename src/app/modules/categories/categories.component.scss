@@ -1,36 +1,35 @@
 @import '../../scss/variables.scss';
-.categories-container {
-    .banner-ad{
-        margin:10px 0px;
-    a{
-        display:block;
-    }  
-    img{
-        width: 100%;
-    }
-    &.bulk{
-        margin-bottom:0px;
-    }
-    }
 
-    .deals-offers {
-        margin-top:0px;
-        margin-bottom:10px;
-    }
+.banner-ad{
+    margin:10px 0px;
+a{
+    display:block;
+}  
+img{
+    width: 100%;
+}
+&.bulk{
+    margin-bottom:0px;
+}
+}
 
-    .category-brand{
-        margin: 5px 0 0 0;
-        padding-bottom: 5px;
-        border-bottom: 1px solid $border-color;
-        li{
-        font-size: 12px;
-        text-align: center;
-        padding: 5px;
-        @include gridForCategory('4' , null);
-            img{
-                margin-bottom: 10px;
-                width: 100%;
-            }      
-        }
+.deals-offers {
+    margin-top:0px;
+    margin-bottom:10px;
+}
+
+.category-brand{
+    margin: 5px 0 0 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid $border-color;
+    li{
+    font-size: 12px;
+    text-align: center;
+    padding: 5px;
+    @include gridForCategory('4' , null);
+        img{
+            margin-bottom: 10px;
+            width: 100%;
+        }      
     }
 }

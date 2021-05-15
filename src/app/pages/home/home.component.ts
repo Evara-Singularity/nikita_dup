@@ -87,9 +87,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   // ondemad loaded components: PWA Categories
   categoriesInstance = null;
   @ViewChild('Categories', { read: ViewContainerRef }) CategoriesContainerRef: ViewContainerRef;
-   // ondemad loaded components: PWA Categories
-   popUpInstance = null;
-   @ViewChild('HomePopupComponet', { read: ViewContainerRef }) HomePopupComponetContainerRef: ViewContainerRef;
+  // ondemad loaded components: PWA Categories
+  popUpInstance = null;
+  @ViewChild('HomePopupComponet', { read: ViewContainerRef }) HomePopupComponetContainerRef: ViewContainerRef;
+
+  carouselInstance = null;
+  @ViewChild('RecentlyViewedCarouselComponent', { read: ViewContainerRef }) carouselContainerRef: ViewContainerRef;
 
   constructor(
     public dataService: DataService,
@@ -489,7 +492,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onVisibleFeaturedBrands(htmlElement) {
-    
+
     const { FeaturedBrands } = await import('../../modules/featuredBrands/featuredBrands.component');
     const factory = this.cfr.resolveComponentFactory(FeaturedBrands);
     this.featuredBrandsInstance = this.featuredBrandsContainerRef.createComponent(factory, null, this.injector);
@@ -534,6 +537,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.popUpInstance.instance['carouselData'] = this.carouselData;
     this.popUpInstance.instance['imagePath'] = this.imagePath;
     this.popUpInstance.instance['categoryNameFromHomePage'] = this.categoryNameFromHomePage;
+  }
+
+  async onVisibleCarousel(htmlElement) {
+    const { RecentlyViewedCarouselComponent } = await import('../../components/recentlyViewedCarousel/recentlyViewedCarousel.component');
+    const factory = this.cfr.resolveComponentFactory(RecentlyViewedCarouselComponent);
+    this.carouselInstance = this.carouselContainerRef.createComponent(factory, null, this.injector);
+    this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
+    this.carouselInstance.instance['showHeading'] = true;
+    this.carouselInstance.instance['prodList'] = this.recentProductList;
   }
 
 }

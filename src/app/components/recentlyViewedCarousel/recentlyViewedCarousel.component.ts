@@ -1,27 +1,25 @@
-import { Component, ElementRef, Input, PLATFORM_ID, Inject, NgModule } from '@angular/core';
+import { Component, Input, PLATFORM_ID, Inject, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { RecentlyViewedCarouselService } from "./recentlyViewedCarousel.service";
 import { LocalStorageService } from "ngx-webstorage";
 import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
 import CONSTANTS from '../../config/constants';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
-
-//Module Imports
 import { RouterModule } from '@angular/router';
+
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pipe';
+import { DataService } from 'src/app/utils/services/data.service';
 
 @Component({
     selector: 'recently-viewed-carousel',
     templateUrl: './recentlyViewedCarousel.html',
     styleUrls: ['./recentlyViewedCarousel.scss'],
 })
-
 export class RecentlyViewedCarouselComponent {
     @Input() clickFromSection: String;
     options;
@@ -29,11 +27,7 @@ export class RecentlyViewedCarouselComponent {
     isBrowser: boolean;
     categoryNameFromHomePage;
     isServer: boolean = typeof window !== "undefined" ? false : true;
-    constructor(public localStorageService: LocalStorageService, private _localAuthService: LocalAuthService, public _commonService: CommonService, public router: Router, private _recentlyViewedCarouselService: RecentlyViewedCarouselService, private elementRef: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {
-        this.isServer = isPlatformServer(platformId);
-        this.openPopup = false;
-        this.isBrowser = isPlatformBrowser(platformId);
-    };
+
     @Input() prodList: any;
     @Input() showHeading: boolean = true;
     isMobile: boolean;
@@ -42,6 +36,13 @@ export class RecentlyViewedCarouselComponent {
     shortDescParsed: boolean = false;
     recentProductList: Array<any> = [];
     setCId;
+
+    constructor(public localStorageService: LocalStorageService, private _localAuthService: LocalAuthService, public _commonService: CommonService, public router: Router, @Inject(PLATFORM_ID) private platformId: Object, private _dataservice: DataService) {
+        this.isServer = isPlatformServer(platformId);
+        this.openPopup = false;
+        this.isBrowser = isPlatformBrowser(platformId);
+    };
+    
     ngOnInit() {
         if (!this.isServer) {
             if (window.outerWidth < 768) {
@@ -74,7 +75,8 @@ export class RecentlyViewedCarouselComponent {
             } else {
                 this.setCId = null;
             }
-            this._recentlyViewedCarouselService.getrecentProdutc(this.setCId).subscribe((res) => {
+
+            this._dataservice.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/recentlyviewed/getRecentlyViewd?customerId=" + this.setCId).subscribe((res) => {
                 if (res['statusCode'] === 200) {
                     this.recentProductList = res['data'];
                     this.prodList = this.recentProductList;
@@ -98,9 +100,11 @@ export class RecentlyViewedCarouselComponent {
                     }
                 }
             });
+
         }
         const userSession = this._localAuthService.getUserSession();
     }
+
     outData(data) {
         this[data.selector] = !this[data.selector];
     }
@@ -134,10 +138,11 @@ export class RecentlyViewedCarouselComponent {
 
 @NgModule({
     declarations: [
-      RecentlyViewedCarouselComponent
+        RecentlyViewedCarouselComponent
     ],
     imports: [
-      CommonModule, MathFloorPipeModule, PopUpModule, RouterModule, CharacterremovePipeModule, LazyLoadImageModule, SiemaCarouselModule, MathCeilPipeModule, PopUpModule
+        CommonModule, MathFloorPipeModule, PopUpModule, RouterModule, CharacterremovePipeModule, LazyLoadImageModule, SiemaCarouselModule, MathCeilPipeModule, PopUpModule
     ],
-  })
-  export class RecentlyViewedCarouselModule { }
+    providers: []
+})
+export class RecentlyViewedCarouselModule { }

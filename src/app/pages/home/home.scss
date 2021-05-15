@@ -2,6 +2,10 @@
 @import '../../scss/variables';
 /*Top Widgets*/
 
+.categories-container {
+    min-height: 300px;
+}
+
 .top-widgets{
   li{
     width: 24.5%;

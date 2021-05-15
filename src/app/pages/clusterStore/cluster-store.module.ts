@@ -13,7 +13,7 @@ import { ClusterStoreResolver } from './cluster-store.resolver';
   declarations: [
     ClusterStoreComponent,
     ClusterCategoryComponent
-    ],
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -21,9 +21,9 @@ import { ClusterStoreResolver } from './cluster-store.resolver';
     LazyLoadImageModule,
     ObserveVisibilityDirectiveModule
   ],
-providers:[
-  ClusterStoreService,
-  ClusterStoreResolver
+  providers: [
+    ClusterStoreService,
+    ClusterStoreResolver
   ],
 })
 export class ClusterStoreModule { }

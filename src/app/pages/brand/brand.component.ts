@@ -21,8 +21,6 @@ declare let _satellite;
     selector: 'brand',
     templateUrl: './brand.html',
     styleUrls: ['./brand.scss'],
-    // encapsulation: ViewEncapsulation.None
-
 })
 
 export class BrandComponent {
@@ -823,6 +821,26 @@ export class BrandComponent {
     togglets() {
         this.toggletsWrap = !this.toggletsWrap;
     }
+
+    resetLazyComponents() {
+        if (this.filterInstance) {
+            this.filterInstance = null;
+            this.filterContainerRef.remove();
+        }
+        if (this.sortByInstance) {
+            this.sortByInstance = null;
+            this.sortByContainerRef.remove();
+        }
+        if (this.paginationInstance) {
+            this.paginationInstance = null;
+            this.paginationContainerRef.remove();
+        }
+        if (this.brandDetailsFooterInstance) {
+            this.brandDetailsFooterInstance = null;
+            this.brandDetailsFooterContainerRef.remove();
+        }
+    }
+
     ngOnDestroy() {
         if (this.refreshProductsUnsub$) {
             this.refreshProductsUnsub$.unsubscribe();
@@ -830,6 +848,7 @@ export class BrandComponent {
         if (this.refreshProductsUnsub) {
             this.refreshProductsUnsub.unsubscribe();
         }
+        this.resetLazyComponents();
     }
 
 }

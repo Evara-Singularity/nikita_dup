@@ -6,7 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, forkJoin, Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -15,11 +15,10 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
 import { map } from 'rxjs/operators';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
-declare let dataLayer;
-declare var digitalData: {};
-declare let _satellite;
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
+
 const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
 const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
 const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
@@ -38,6 +37,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
     sortByInstance = null;
     @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
+    subCategoryInstance = null;
+    @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
 
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
@@ -65,8 +66,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     productListLength: number;
     showSubcategoty: boolean;
     currentRequestGetRelatedCategories: any;
-    isServer: boolean;
-    isBrowser: boolean;
     productSearchResult: {
         products: []
     };
@@ -107,75 +106,109 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     reqArray = [];
     PRTA = [];
     categoryId: string;
-    constructor(@Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2,
+    constructor(
+        @Optional() @Inject(RESPONSE) private _response, 
+        private _tState: TransferState, 
+        private _renderer2: Renderer2,
+        private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
         private injector: Injector,
         public dataService: DataService,
         private cfr: ComponentFactoryResolver,
-        public pageTitle: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService,
-        public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
-        public _commonService: CommonService, private _categoryService: CategoryService, private _pageScrollService: PageScrollService) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
-        this.showSubcategoty = true;
-        this._commonService.showLoader = false;
-        this.getRelatedCatgory = {};
-        this.todayDate = Date.now();
-        this.pageName = 'CATEGORY';
-        this.subCategoryCount = 0;
+        public pageTitle: Title, 
+        private meta: Meta, 
+        @Inject(PLATFORM_ID) platformId, 
+        public footerService: FooterService,
+        public _router: Router, 
+        public _activatedRoute: ActivatedRoute, 
+        private localStorageService: LocalStorageService,
+        public _commonService: CommonService, 
+        private _categoryService: CategoryService, 
+        private _pageScrollService: PageScrollService) {
+            this.showSubcategoty = true;
+            this.subCategoryCount = 0;
+            this.getRelatedCatgory = {};
+            this.todayDate = Date.now();
+            this.pageName = 'CATEGORY';
     }
 
     ngOnInit() {
-        this._activatedRoute.queryParams.subscribe(data => {
-            this.trendingSearchData = data;
-            this.pageNo = data['page'];
-            if (data['page'] > 1) {
-                this.showSubcategoty = false;
-            } else {
-                this.showSubcategoty = true;
-            }
-            if (data['page'] == undefined || data['page'] == 1) {
-                this.firstPageContent = true;
-            } else {
-                this.firstPageContent = false;
-            }
-        });
+        // Set config based on query params change
+        const queryParamsData = this._activatedRoute.snapshot.queryParams;
+        this.updateConfigBasedOnQueryParams(queryParamsData);
+        
+        // Set config based on params change
+        const paramsData = this._activatedRoute.snapshot.params;
+        this.updateConfigBasedOnParams(paramsData);
 
-        this._activatedRoute.params.subscribe((data) => {
-            this.layoutType = 0;
-            if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
-                this.isSLPPage = true;
-                this.getExtraCategoryData(data).subscribe((data) => {
+        // Category Data after you got it from resolver 
+        this.setCategoryDataFromResolver();
 
-                    if (data && data['status'] && data['data'] && data['data'].length) {
-                        if (this.isServer) {
-                            this._tState.set(EDK, data);
-                        }
-                        this.parseData(data['data']);
-                    }
-
-                    this.layoutType = data['layoutType'];
-                    this.page_title = data['pageTitle'];
-                    this.brand_Dt = data['data'][0].block_data.brand_block;
-                    this.bestSeller_Dt = data['data'][0].block_data.product_data;
-                    this.shopBy_Dt = data['data'][0].block_data.image_block;
-                    this.static_Dt = data['data'][0].block_data.general_block;
-
-                });
-            } else {
-                this.isSLPPage = false;
-            }
-        });
-
-        this.refreshProductAndLoadCmsData();
-
+        // Set footers
         this.footerService.setMobileFoooters();
 
+        // Subscribe to future route events
         this.refreshProductsBasedOnRouteChange();
     }
 
-    private refreshProductAndLoadCmsData() {
-        if (this.isBrowser) {
+    private updateConfigBasedOnParams(data) {
+        this.layoutType = 0;
+        if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
+            this.isSLPPage = true;
+            this.getExtraCategoryData(data).subscribe((data) => {
+
+                if (data && data['status'] && data['data'] && data['data'].length) {
+                    if (this._commonService.isServer) {
+                        this._tState.set(EDK, data);
+                    }
+                    this.parseData(data['data']);
+                }
+
+                this.layoutType = data['layoutType'];
+                this.page_title = data['pageTitle'];
+                this.brand_Dt = data['data'][0].block_data.brand_block;
+                this.bestSeller_Dt = data['data'][0].block_data.product_data;
+                this.shopBy_Dt = data['data'][0].block_data.image_block;
+                this.static_Dt = data['data'][0].block_data.general_block;
+
+            });
+        } else {
+            this.isSLPPage = false;
+        }
+    }
+
+    private updateConfigBasedOnQueryParams(data) {
+        this.trendingSearchData = data;
+        this.pageNo = data['page'];
+        if (data['page'] > 1) {
+            this.showSubcategoty = false;
+        } else {
+            this.showSubcategoty = true;
+            setTimeout(() => {
+                this.createSubcategoryComponent();
+            }, 0);
+        }
+        if (data['page'] == undefined || data['page'] == 1) {
+            this.firstPageContent = true;
+        } else {
+            this.firstPageContent = false;
+        }
+    }
+
+    async createSubcategoryComponent() {
+        this.subCategoryInstance = null;
+        this.subCategoryContainerRef ? this.subCategoryContainerRef.remove() : null;
+        this._commonService.showLoader = true;
+        const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
+            this._commonService.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
+        this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
+        this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
+    }
+
+    private setCategoryDataFromResolver() {
+        if (this._commonService.isBrowser) {
             this._commonService.showLoader = true;
         }
 
@@ -185,7 +218,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     setDataAfterGettingDataFromResolver(res) {
-        // ict : isCategoryActive
 
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
@@ -195,7 +227,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         if (!ict || res[1]['productSearchResult']['totalCount'] === 0) {
-            if (this.isServer) {
+            if (this._commonService.isServer) {
                 let httpStatus = 404;
                 if (res[0]['httpStatus']) {
                     httpStatus = res[0]['httpStatus'];
@@ -206,7 +238,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             }
             res[1] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
         }
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             this._commonService.showLoader = false;
         }
 
@@ -218,7 +250,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (this._tState.hasKey(GRCRK)) {
             this.initiallizeRelatedCategories(res, false);
         } else {
-            if (this.isServer) {
+            if (this._commonService.isServer) {
                 this._tState.set(GRCRK, res[0]);
             }
             this.initiallizeRelatedCategories(res, true);
@@ -232,15 +264,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (this._tState.hasKey(RPRK) && !fragment) {
             this.initiallizeData(res[1], false);
         } else {
-            if (this.isServer) {
+            if (this._commonService.isServer) {
                 this._tState.set(RPRK, res[1]);
             }
             this.initiallizeData(res[1], true);
         }
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             this.setTrackingData(res);
         }
-        if (this.isBrowser && (ict && res[1]['productSearchResult']['totalCount'] > 0)) {
+        if (this._commonService.isBrowser && (ict && res[1]['productSearchResult']['totalCount'] > 0)) {
             this.fireTags(res[1]);
         }
 
@@ -250,7 +282,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (this._tState.hasKey(GFAQK)) {
             this.faqData = res[2];
         } else {
-            if (this.isServer) {
+            if (this._commonService.isServer) {
                 this._tState.set(GFAQK, res[2]);
                 this.setFaqSchema(res[2]);
             }
@@ -259,20 +291,115 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         //ENDS
     }
 
+    refreshProductListBasedOnRouteUpdate() {
+        this.categoryId = this._activatedRoute.snapshot.params['id'];
+        let getRelatedCategories = this.getRelatedCategories(this.categoryId).pipe(map(res => res));
+        let refreshProducts = this.refreshProducts().pipe(map(res => res));
+        let getFAQ = this.getFAQ(this.categoryId);
+        let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data']));
+
+        let apiList = [getRelatedCategories, refreshProducts, getFAQ];
+
+        if (this._router.url.search('#') < 0) {
+            apiList.push(getCmsDynamicDataForCategoryAndBrand)
+        } else {
+            this._commonService.cmsData = null;
+            this._commonService.replaceHeading = false;
+        }
+
+        if (this._commonService.isBrowser) {
+            this._commonService.showLoader = true;
+        }
+        this.forkJoinUnsub = forkJoin(apiList)
+            .subscribe((res) => {
+                if (this._tState.hasKey(GFAQK)) {
+                    this.faqData = res[2];
+                } else {
+                    if (this._commonService.isServer) {
+                        this._tState.set(GFAQK, res[2]);
+                        this.setFaqSchema(res[2]);
+                    }
+                    this.faqData = res[2];
+                }
+                const ict = res[0]['categoryDetails']['active'];
+                const canonicalURL = res[0]['categoryDetails']['canonicalURL']
+                const chk = this.isUrlEqual(canonicalURL, this._router.url);
+                if (!chk) {
+                    this._router.navigateByUrl("/" + canonicalURL);;
+                }
+
+                if (!ict || res[1]['productSearchResult']['totalCount'] === 0) {
+                    if (this._commonService.isServer) {
+                        let httpStatus = 404;
+                        if (res[0]['httpStatus']) {
+                            httpStatus = res[0]['httpStatus'];
+                        } else if (res[1]['httpStatus']) {
+                            httpStatus = res[1]['httpStatus'];
+                        }
+                        this._response.status(httpStatus);
+                    }
+                    res[1] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
+                }
+                if (this._commonService.isBrowser) {
+                    this._commonService.showLoader = false;
+                }
+
+                if (res[3] && res[3]['data']) {
+                    this._commonService.cmsData = res[3]['data'];
+                    this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
+                }
+
+                // console.log(res, ict, "resresresresres");
+                /**
+                 * For related categories
+                 */
+                if (this._tState.hasKey(GRCRK)) {
+                    this.initiallizeRelatedCategories(res, false);
+                } else {
+                    if (this._commonService.isServer) {
+                        this._tState.set(GRCRK, res[0]);
+                    }
+                    this.initiallizeRelatedCategories(res, true);
+                }
+
+                /**
+                 * For refresh products
+                 */
+                const fragment = this._activatedRoute.snapshot.fragment;
+
+                if (this._tState.hasKey(RPRK) && !fragment) {
+                    this.initiallizeData(res[1], false);
+                } else {
+                    if (this._commonService.isServer) {
+                        this._tState.set(RPRK, res[1]);
+                    }
+                    this.initiallizeData(res[1], true);
+                }
+                if (this._commonService.isBrowser) {
+                    this.setTrackingData(res);
+                }
+                if (this._commonService.isBrowser && (ict && res[1]['productSearchResult']['totalCount'] > 0)) {
+                    this.fireTags(res[1]);
+                }
+            });
+    }
 
     refreshProductsBasedOnRouteChangeFlag: number = 0;
     private refreshProductsBasedOnRouteChange() {
         combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
             // to avoid first time call of API on route change subscription
-            if (this.refreshProductsBasedOnRouteChangeFlag) {
-                this.refreshProducts();
+
+            // Show hide Subcategory based on 
+            if (this.refreshProductsBasedOnRouteChangeFlag != 0) {
+                this.updateConfigBasedOnParams(res[0]);
+                this.updateConfigBasedOnQueryParams(res[1]);
+                this.refreshProductListBasedOnRouteUpdate();
             }
             this.refreshProductsBasedOnRouteChangeFlag++;
         });
     }
 
     setTrackingData(res) {
-        // console.log("categorypage" ,this._activatedRoute.snapshot.queryParams);
         var taxonomy = res[0]["categoryDetails"]['taxonomy'];
         var trackData = {
             event_type: "page_load",
@@ -331,24 +458,32 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             });
         }
         this.extrasBlock = relevantObj.block_data;
-        // console.log(this.extrasBlock);
     }
     ngAfterViewInit() {
-        // console.log("category page : ngAfeterViewinit");
-        // console.log(this.sortByComponent);
         this.sortByComponentUpdated.next(this.sortByComponent);
         /*Remove key set on server side to avoid api on dom load of frontend side*/
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             this._tState.remove(GRCRK);
             this._tState.remove(RPRK);
             this._tState.remove(GFAQK);
         }
     }
 
+    getRelatedCategories(categoryID): Observable<{}> {
+        if (this.currentRequestGetRelatedCategories !== undefined) {
+            this.currentRequestGetRelatedCategories.unsubscribe();
+        }
+
+        if (this._tState.hasKey(GRCRK)) {
+            return of(this._tState.get(GRCRK, {}));
+        } else {
+            return this._categoryService.getRelatedCategories(categoryID);
+        }
+    }
+
     refreshProducts(): Observable<{}> {
         const defaultParams = this.createDefaultParams();
         this._commonService.updateDefaultParamsNew(defaultParams);
-        // if (!this.transferState.hasKey(REFRESH_PRODUCTS_RESPONSE_KEY)) {
         const fragment = this._activatedRoute.snapshot.fragment;
 
         if (this._tState.hasKey(RPRK) && !fragment) {
@@ -393,8 +528,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             }
         }
 
-        //console.log("set cano func",response);
-
     }
     /* 
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
@@ -424,7 +557,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 this.wb.push(buckets[i]); //wb(wanted bucket)
             }
         }
-        this.wb.map(m => console.log(m))
+
         this.PRTA = [];                        //PRTA(Product Range Table Array):-array which stores final data after computation , is reset for when component is instantiated again
         this.priceRangeData();               //proceeding calculations
         this.wb = [];                          //wb(wanted bucket):-array which stores bucket data excluding price , discount , badges , availability.
@@ -534,7 +667,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
 
     createCategorySchema(productArray) {
-        if (this.isServer) {
+        if (this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {
@@ -567,9 +700,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     private setCanonicalUrls(response) {
 
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
-        if (this.isServer) {
+        if (this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
-            //console.log("links ",links);
             links.rel = 'canonical';
             if (this.pageNo == undefined || this.pageNo == 1) {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
@@ -577,18 +709,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             else {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
             }
-            // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
-            //console.log("links.href", links.href)
             this._renderer2.appendChild(this._document.head, links);
         }
 
-
-
-
-        // console.log("amplink",ampLink);
-
         if (this.pageNo == undefined || this.pageNo == 1) {
-            if (this.isServer) {
+            if (this._commonService.isServer) {
                 let ampLink;
                 ampLink = this._renderer2.createElement('link');
                 ampLink.rel = 'amphtml';
@@ -598,30 +723,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                  * Below if condition is just a temporary solution.
                  * Strictly remove if condtion, once amp of drill(114160000) page is completed.
                  */
-                // if(this._activatedRoute.snapshot.params.id != "114160000"){
                 this._renderer2.appendChild(this._document.head, ampLink);
-                // }
-                //console.log("ampLink",ampLink);
             }
         }
 
-
-
-
-
-
-        // console.log(" ampLink.href", ampLink.href);
-        // this._renderer2.appendChild(this._document.head, ampLink);
-
-        // Start Canonical URL
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
-        // console.log("Current router:" + currentRoute);
         const pageCountQ = response.productSearchResult.totalCount / 10;
         const currentPageP = parseInt(currentQueryParams['page']);
 
         if (pageCountQ > 1 && (currentPageP === 1 || isNaN(currentPageP))) {
-            // console.log("hello");
-            //console.log("current page",currentPageP);
             let links = this._renderer2.createElement('link');
             links.rel = 'next';
             links.href = CONSTANTS.PROD + currentRoute + '?page=2';
@@ -652,13 +762,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         let fragmentString = this._activatedRoute.snapshot.fragment;
         if (fragmentString != null || !isNaN(currentPageP)) {
             this.scrollToResults();
-            //console.log(extras);
         }
-        // console.log("Current route params:" + JSON.stringify(currentQueryParams));
-        // console.log("Pagechijkllads:" + currentQueryParams["page"]);
-        // console.log("Response Page Count: " + JSON.stringify(response.productSearchResult.totalCount));
-        // End Canonical url
     }
+
     scrollToResults() {
         this._pageScrollService.scroll({
             document: this._document,
@@ -667,7 +773,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         });
     }
     fireTags(response) {
-
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
         cr = cr.split('/');
@@ -694,12 +799,12 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             criteoItem.push(psrp[p].moglixPartNumber);
         }
 
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             let user;
             if (this.localStorageService.retrieve('user')) {
                 user = this.localStorageService.retrieve('user');
             }
-            dataLayer.push({
+            this.analytics.sendGTMCall({
                 'event': 'pr-impressions',
                 'ecommerce': {
                     'currencyCode': 'INR',                       // Local currency is optional.
@@ -713,7 +818,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 ecomm_totalvalue: ''
             };
 
-            dataLayer.push({
+            this.analytics.sendGTMCall({
                 'event': 'dyn_remk',
                 'ecomm_prodid': google_tag_params.ecomm_prodid,
                 'ecomm_pagetype': google_tag_params.ecomm_pagetype,
@@ -723,7 +828,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
             /*Start Criteo DataLayer Tags */
 
-            dataLayer.push({
+            this.analytics.sendGTMCall({
                 'event': 'viewList',
                 'email': (user && user.email) ? user.email : '',
                 'ProductIDList': criteoItem,
@@ -757,6 +862,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 'productCategoryL3': this.taxo3
             }
 
+            let digitalData = {};
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
@@ -778,7 +884,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData["page"]["suggestionClicked"] = 'yes';
             }
-            _satellite.track('genericPageLoad');
+            this.analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */
         }
     }
@@ -812,7 +918,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     async filterUp() {
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             if (!this.filterInstance) {
                 this._commonService.showLoader = true;
                 const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
@@ -842,7 +948,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     async toggleSortBy(data) {
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             this.sortByOpt = data.sortByOpt;
             if (!this.sortByInstance) {
                 this._commonService.showLoader = true;
@@ -889,10 +995,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
 
-        // console.log("*****************Query Params************");
-        // console.log(currentQueryParams);
-        // Object.assign(newParams["queryParams"], currentQueryParams);
-
         for (let key in currentQueryParams) {
             newParams.queryParams[key] = currentQueryParams[key];
         }
@@ -901,20 +1003,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         newParams['filter'] = {};
 
         const params = this._activatedRoute.snapshot.params;
-        // console.log("*****************Params************");
-        // console.log(params);
 
         newParams['category'] = params['id'];
 
         const fragment = this._activatedRoute.snapshot.fragment;
-        // console.log("*****************Fragments************");
-        // console.log(fragment);
-
-        //console.log(this._router.url);
 
         if (fragment !== undefined && fragment != null && fragment.length > 0) {
             let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            // console.log(currentUrlFilterData);
             currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
 
 
@@ -922,9 +1017,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             let newCurrentUrlFilterData = '';
             for (let i = 0; i < currentUrlFilterData.length; i++) {
                 if (currentUrlFilterData[i] === '/' && /^\d+$/.test(currentUrlFilterData[i + 1])) {
-                    // console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
                     newCurrentUrlFilterData = newCurrentUrlFilterData + '$';
-                    // console.log(newCurrentUrlFilterData);
                 } else {
                     newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
                 }
@@ -935,7 +1028,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 const filter = {};
                 for (let i = 0; i < currentUrlFilterData.length; i++) {
                     const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
-                    // ["101 - 500", "501 - 1000"]
                     const filterData = currentUrlFilterData[i]
                         .replace('$', '/')
                         .substr(currentUrlFilterData[i]
@@ -947,37 +1039,17 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         newParams['pageName'] = this.pageName;
-        // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-        // console.log(newParams);
         return newParams;
     }
+
     getExtraCategoryData(data): Observable<{}> {
-
-        // if (this.currentRequestGetRelatedCategories != undefined)
-        // this.currentRequestGetRelatedCategories.unsubscribe();
-
         if (this._tState.hasKey(EDK)) {
             return of(this._tState.get(EDK, {}));
         } else {
             return this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]);
         }
     }
-
-
-    getRelatedCategories(categoryID): Observable<{}> {
-
-        if (this.currentRequestGetRelatedCategories !== undefined) {
-            this.currentRequestGetRelatedCategories.unsubscribe();
-        }
-
-        if (this._tState.hasKey(GRCRK)) {
-            // this.initiallizeRelatedCategories(this._tState.get(GRCRK, {}), false);
-            return of(this._tState.get(GRCRK, {}));
-        } else {
-            return this._categoryService.getRelatedCategories(categoryID);
-        }
-    }
-
+    
     private getFAQ(categoryID): Observable<{}> {
         if (this._tState.hasKey(GFAQK)) {
             return of(this._tState.get(GFAQK, []));
@@ -987,7 +1059,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     private setFaqSchema(faqData) {
-        if (this.isServer) {
+        if (this._commonService.isServer) {
             if (faqData && faqData.length > 0) {
                 const qaSchema = [];
                 faqData.forEach((element, index) => {
@@ -1013,14 +1085,10 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     private initiallizeRelatedCategories(response, flag) {
 
-        // console.log("Initializing Related Categories for below");
-        // console.log(this.isServer ? "**********Server********" : "**********Browser********");
         this.getRelatedCatgory = response[0];
         const categoryData = response[1];
 
         let qps = this._activatedRoute.snapshot.queryParams;
-        // console.log(this._tState.get(GRCRK, {}));
-        // console.log("category details:" + JSON.stringify(this.getRelatedCatgory.categoryDetails));
 
         if (this.getRelatedCatgory.categoryDetails.active) {
             const categoryName = this.getRelatedCatgory.categoryDetails.categoryName;
@@ -1045,36 +1113,20 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
-                //console.log('spl_subCategory_Dt spl_subCategory_Dt',this.spl_subCategory_Dt);            
-                // console.log(this.isServer ? "server" : "browser");
-                // console.log("Getting breadcrumb data on");
-                // console.log(this.breadcrumpComponent);
                 const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
                 this.breadcrumpUpdated.next(bData);
-                // this.breadcrumpComponent.getBreadCrumpHttp(this.getRelatedCatgory.categoryDetails.categoryLink, "category");
             }
         } else {
             this.relatedCatgoryListUpdated.next([]);
         }
     }
 
-    getCategoryBySubCategory(event) {
-        // alert(JSON.stringify(event));
-    }
-
     pageChanged(page) {
-
-        // console.log("Event page changed called");
-
-        // this._commonService.updateDefaultParamsNew({ pageIndex: page });
-
         const extras: NavigationExtras = {};
         const currentRoute = this._commonService.getCurrentRoute(this._router.url);
-        // let fragmentString = this._commonService.generateFragmentString();
         const fragmentString = this._activatedRoute.snapshot.fragment;
         if (fragmentString != null) {
             extras.fragment = fragmentString;
-            // console.log(extras);
         }
 
 
@@ -1082,7 +1134,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         const newQueryParams: {} = {};
         if (Object.keys(currentQueryParams).length) {
             for (let key in currentQueryParams) {
-                // console.log(key);
                 newQueryParams[key] = currentQueryParams[key];
             }
         }
@@ -1092,9 +1143,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         } else if (newQueryParams['page'] !== undefined) {
             delete newQueryParams['page'];
         }
-
-        // console.log("New Query Params pagination", newQueryParams);
-        // newQueryParams["page"] = page;
 
         if (Object.keys(newQueryParams).length > 0) {
             extras.queryParams = newQueryParams;
@@ -1110,16 +1158,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     getTopTenBrandName(buckets: Array<{}>) {
-        /* buckets.map((item)=>{
-            return item['name']=='brand';
-        }); */
-
         let bNames = null;
 
         if (buckets === undefined || buckets === null || (buckets && buckets.length === 0)) {
             return '';
         }
-        // console.log(buckets, "bucketsbucketsbuckets");
         for (let i = 0; i < buckets.length; i++) {
             if (buckets[i]['name'] === 'brand') {
                 for (let j = 0; j < buckets[i]['terms'].length; j++) {
@@ -1136,7 +1179,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             }
         }
         return bNames;
-        // console.log(buckets, "bucketsbucketsbuckets");
     }
 
     getFeaturedProducts(products: Array<{}>) {
@@ -1154,12 +1196,27 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
         return fProducts;
     }
-    scrollTop(eve) {
-        // console.log(eve)
-        if (this.isBrowser) {
-            ClientUtility.scrollToTop(500, eve.target.offsetTop - 50);
+
+    resetLazyComponents() {
+        if (this.filterInstance) {
+            this.filterInstance = null;
+            this.filterContainerRef.remove();
+        }
+        if (this.sortByInstance) {
+            this.sortByInstance = null;
+            this.sortByContainerRef.remove();
+        }
+        if (this.paginationInstance) {
+            this.paginationInstance = null;
+            this.paginationContainerRef.remove();
+        }
+        if (this.subCategoryInstance) {
+            this.subCategoryInstance = null;
+            this.subCategoryContainerRef.remove();
         }
     }
+
+
     ngOnDestroy() {
         if (this.refreshProductsUnsub$) {
             this.refreshProductsUnsub$.unsubscribe();
@@ -1189,7 +1246,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     isUrlEqual(url1: string, url2: string): boolean {
-        console.log("url2.indexOf(url1)", url2.indexOf(url1));
         if (url2.indexOf(url1) !== -1) {
             return true;
         }

@@ -1,7 +1,7 @@
 <div class="cat_filter_wrap">
     <div class="prod_filter">
-        <ng-container *ngIf="isBrowser" #filter></ng-container>
-        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter> -->
+        <ng-container *ngIf="_commonService?.isBrowser" #filter></ng-container>
+        <!-- <filter *ngIf="_commonService?.isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter> -->
     </div>
 </div>
 
@@ -46,7 +46,8 @@
                     <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
                         Categories)</span>
                 </p>
-                <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category>
+                <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
+                <!-- <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category> -->
             </div>
         </div>
         <div class="clearfix"></div>
@@ -63,10 +64,10 @@
             </button>
         </div>
         <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
-        <ng-container *ngIf="isBrowser" #sortBy></ng-container>
+        <ng-container *ngIf="_commonService?.isBrowser" #sortBy></ng-container>
         <div>
             <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
-            <ng-template *ngIf="isBrowser" #pagination></ng-template>
+            <ng-template *ngIf="_commonService?.isBrowser" #pagination></ng-template>
             <!-- <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated" [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'" (onPageChange)="pageChanged($event)"></pagination> -->
         </div>
     </div>
@@ -82,14 +83,6 @@
         <ng-container #recentArticles></ng-container>
     </div>
 
-
-   <!-- <div class="panel-head" *ngIf="firstPageContent">
-        <div class="container">
-            <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat3' , iconMode : true}" *ngIf="(productSearchResult && productSearchResult['products'].length>0 && getRelatedCatgory.categoryDetails && getRelatedCatgory.categoryDetails.desc)">
-                More About category
-            </h3>
-        </div>
-    </div>  -->
     <ng-container *ngIf="firstPageContent">
         <div id="openCat3" style="" *ngIf="(productSearchResult && productSearchResult['products'].length>0 && getRelatedCatgory.categoryDetails && getRelatedCatgory.categoryDetails.desc) else noCategoryDesc" class="category_data pad-t-15 pad-b-30 pad-lr-15"
             [innerHTML]="getRelatedCatgory?.categoryDetails?.desc"></div>
@@ -97,7 +90,7 @@
         <ng-template #noCategoryDesc>
             <div *ngIf="productSearchResult && productSearchResult['products'].length>0" class="container">
 
-                <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat' , iconMode : true}">
+                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat' , iconMode : true}">
                     Buy {{getRelatedCatgory?.categoryDetails?.categoryName}} Online at Moglix India
                     <span class="inv_span"></span>
                 </h3>
@@ -112,7 +105,7 @@
     <div *ngIf="faqData && faqData.length>0 && firstPageContent" [ngClass]="{'hide': !(faqData && faqData.length>0)}" class="body-bg">
     <div class="panel-head" [ngClass]="{'hide': !(productSearchResult && productSearchResult['products'].length>0)}">
         <div class="container">
-            <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently
+            <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently
                 Asked Questions about {{getRelatedCatgory?.categoryDetails?.categoryName}}
                 <span class="iconaccordian">
                     <i class="icon-expand"></i>
@@ -125,13 +118,12 @@
                 <p class="m_faqAnswer">{{fd["answerText"]}}</p>
             </div>
         </div>
-        <!-- <span (click)="togglets()" class="showtsWrap">{{ !toggletsWrap? 'Show More':'Show Less'}}</span> -->
     </div>
     </div>
     <div class="body-bg" *ngIf="firstPageContent">
         <div class="panel-head" *ngIf="productSearchResult && productSearchResult['products'].length>0">
             <div class="container">
-                <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
+                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
                 </h3>
             </div>
             <div id="openCat2" style="display:block" [ngClass]="{'more': toggletsWrap}" class="">
@@ -158,11 +150,8 @@
     <div class="body-bg" *ngIf="PRTA.length>0 && firstPageContent">
         <div class="panel-head" >
             <div class="container">
-                <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
+                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
                     <h2>{{getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h2>
-                    <!-- <span class="iconaccordian">
-                        <i class="icon-expand"></i>
-                    </span> -->
                 </h3>
             </div>
             <div id="openCat2" style="display:block" [ngClass]="{'more': toggletsWrap}" class="">

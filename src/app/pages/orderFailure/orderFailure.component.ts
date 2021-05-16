@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { CONSTANTS } from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { FooterService } from '@app/utils/services/footer.service';

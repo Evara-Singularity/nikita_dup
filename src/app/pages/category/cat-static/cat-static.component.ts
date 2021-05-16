@@ -1,8 +1,8 @@
 import { CONSTANTS } from '@config/constants';
-import { Component,Input,Inject } from '@angular/core';
+import { Component,Input,Inject, NgModule } from '@angular/core';
 import { PageScrollService } from 'ngx-page-scroll-core';
-import { DOCUMENT } from "@angular/common";
-
+import { CommonModule, DOCUMENT } from "@angular/common";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'cat-static',
@@ -25,3 +25,14 @@ export class CatStaticComponent {
   }
 
 }
+@NgModule({
+  declarations: [
+    CatStaticComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+  ]
+})
+export class CatStaticModule { }
+export class CategoryModule extends CatStaticModule { }

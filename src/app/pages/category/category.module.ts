@@ -12,15 +12,9 @@ import { ProductListModule } from '@app/modules/productList/productList.module'
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { CatBestsellerComponent } from './cat-bestseller/cat-bestseller.component';
-import { CatStaticComponent } from './cat-static/cat-static.component';
-import { ShopbyBrandComponent } from './shopby-brand/shopby-brand.component';
-import { ShopbyFeatrComponent } from './shopby-featr/shopby-featr.component';
-import { SlpSubCategoryComponent } from './slp-sub-category/slp-sub-category.component';
 import { CmsModule } from '../../modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { CategoryService } from '@app/utils/services/category.service';
 
 @NgModule({
     imports: [
@@ -43,11 +37,6 @@ import { CategoryService } from '@app/utils/services/category.service';
     ],
     declarations: [
         CategoryComponent,
-        CatBestsellerComponent,
-        CatStaticComponent,
-        ShopbyBrandComponent,
-        ShopbyFeatrComponent,
-        SlpSubCategoryComponent,
     ],
 })
 

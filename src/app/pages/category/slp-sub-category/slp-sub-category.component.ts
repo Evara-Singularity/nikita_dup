@@ -1,6 +1,10 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, ViewChild } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CONSTANTS } from '@config/constants';
 import { PopUpComponent } from '@modules/popUp/pop-up.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 
 
@@ -33,3 +37,17 @@ export class SlpSubCategoryComponent {
   }
 
 }
+
+@NgModule({
+  declarations: [
+    SlpSubCategoryComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    PopUpModule,
+    LazyLoadImageModule,
+  ]
+})
+export class SlpSubCategoryModule { }
+export class CategoryModule extends SlpSubCategoryModule { }

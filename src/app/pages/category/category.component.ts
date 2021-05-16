@@ -1,5 +1,5 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { CategoryService } from '@utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -9,7 +9,6 @@ import { FooterService } from '@app/utils/services/footer.service';
 import { combineLatest, forkJoin, Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
-import { ClientUtility } from '@app/utils/client.utility';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
@@ -39,11 +38,24 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
     subCategoryInstance = null;
     @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
+    catBestSellerInstance = null;
+    @ViewChild('catBestSeller', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
+    shopByBrandInstance = null;
+    @ViewChild('shopByBrand', { read: ViewContainerRef }) shopByBrandContainerRef: ViewContainerRef;
+    catStaticInstance = null;
+    @ViewChild('catStatic', { read: ViewContainerRef }) catStaticContainerRef: ViewContainerRef;
+    slpSubCategoryInstance = null;
+    @ViewChild('slpSubCategory', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
+    shopbyFeatrInstance = null;
+    @ViewChild('shopbyFeatr', { read: ViewContainerRef }) shopbyFeatrContainerRef: ViewContainerRef;
+    cmsInstance = null;
+    @ViewChild('cms', { read: ViewContainerRef }) cmsContainerRef: ViewContainerRef;
+    cateoryFooterInstance = null;
+    @ViewChild('cateoryFooter', { read: ViewContainerRef }) cateoryFooterContainerRef: ViewContainerRef;
 
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
     paginationData: any = {};
-    options;
     isLast;
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -89,7 +101,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     imagePath = CONSTANTS.IMG_URL;
     firstPageContent: boolean = false;
     brand_Dt;
-    bestSeller_Dt;
+    catBestSeller_Dt;
     shopBy_Dt;
     static_Dt;
     layoutType;
@@ -167,9 +179,22 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 this.layoutType = data['layoutType'];
                 this.page_title = data['pageTitle'];
                 this.brand_Dt = data['data'][0].block_data.brand_block;
-                this.bestSeller_Dt = data['data'][0].block_data.product_data;
+                this.catBestSeller_Dt = data['data'][0].block_data.product_data;
+                if (this.brand_Dt) {
+                    this.createDynamicComponent('shopByBrand');
+                }
+                if (this.catBestSeller_Dt) {
+                    this.createDynamicComponent('bestseller');
+                }
                 this.shopBy_Dt = data['data'][0].block_data.image_block;
+                if (this.shopBy_Dt) {
+                    this.createDynamicComponent('shopbyFeatr');
+                }
+
                 this.static_Dt = data['data'][0].block_data.general_block;
+                if (this.static_Dt) {
+                    this.createDynamicComponent('catStatic');
+                }
 
             });
         } else {
@@ -185,7 +210,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         } else {
             this.showSubcategoty = true;
             setTimeout(() => {
-                this.createSubcategoryComponent();
+                this.createDynamicComponent('subCategory');
             }, 0);
         }
         if (data['page'] == undefined || data['page'] == 1) {
@@ -195,16 +220,80 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
     }
 
-    async createSubcategoryComponent() {
-        this.subCategoryInstance = null;
-        this.subCategoryContainerRef ? this.subCategoryContainerRef.remove() : null;
+    async onVisibleCateoryFooter(event) {
+        if (!this.cateoryFooterInstance) {
+            const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
+            this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
+            this.cateoryFooterInstance.instance['categoryFooterData'] = {
+                firstPageContent: this.firstPageContent,
+                productSearchResult: this.productSearchResult,
+                getRelatedCatgory: this.getRelatedCatgory,
+                toggletsWrap: this.toggletsWrap,
+                faqData: this.faqData,
+                todayDate: this.todayDate,
+                buckets: this.buckets,
+                PRTA: this.PRTA
+            };
+        }
+    }
+
+    async createDynamicComponent(name) {
         this._commonService.showLoader = true;
-        const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
-            this._commonService.showLoader = false;
-        });
-        const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
-        this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
-        this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
+        if (name === 'bestseller') {
+            const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
+            this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
+            this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
+        } else if (name === 'subCategory') {
+            const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
+            this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
+            this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
+        } else if (name === 'shopByBrand') {
+            const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(ShopbyBrandComponent);
+            this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
+            this.shopByBrandInstance.instance['brand_Data'] = this.relatedCatgoryListUpdated;
+        } else if (name === 'catStatic') {
+            const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(CatStaticComponent);
+            this.catStaticInstance = this.catStaticContainerRef.createComponent(factory, null, this.injector);
+            this.catStaticInstance.instance['page_title'] = this.page_title;
+            this.catStaticInstance.instance['static_data'] = this.static_Dt;
+        } else if (name === 'slpSubCategory') {
+            const { SlpSubCategoryComponent } = await import('@app/pages/category/slp-sub-category/slp-sub-category.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(SlpSubCategoryComponent);
+            this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
+            this.slpSubCategoryInstance.instance['sub_category_Data'] = this.spl_subCategory_Dt;
+        } else if (name === 'shopbyFeatr') {
+            const { ShopbyFeatrComponent } = await import('@app/pages/category/shopby-featr/shopby-featr.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(ShopbyFeatrComponent);
+            this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
+            this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopBy_Dt;
+        } else if (name === 'cms') {
+            const { CmsWrapperComponent } = await import('@modules/cms/cms.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(CmsWrapperComponent);
+            this.cmsInstance = this.cmsContainerRef.createComponent(factory, null, this.injector);
+            this.cmsInstance.instance['cmsData'] = this._commonService.cmsData;
+            this.cmsInstance.instance['background'] = 'bg-trans';
+        }
     }
 
     private setCategoryDataFromResolver() {
@@ -346,6 +435,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
                 if (res[3] && res[3]['data']) {
                     this._commonService.cmsData = res[3]['data'];
+                    if (this._commonService.cmsData) {
+                        this.createDynamicComponent('cms');
+                    }
                     this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
                 }
 
@@ -1109,7 +1201,12 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             } else {
                 this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
             }
+            
             this.spl_subCategory_Dt = this.getRelatedCatgory.children;
+            
+            if (this.spl_subCategory_Dt && this.layoutType === 2) {
+                this.createDynamicComponent('slpSubCategory');
+            }
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
@@ -1155,30 +1252,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     updateSubCategoryCount(count) {
         this.subCategoryCount = count;
-    }
-
-    getTopTenBrandName(buckets: Array<{}>) {
-        let bNames = null;
-
-        if (buckets === undefined || buckets === null || (buckets && buckets.length === 0)) {
-            return '';
-        }
-        for (let i = 0; i < buckets.length; i++) {
-            if (buckets[i]['name'] === 'brand') {
-                for (let j = 0; j < buckets[i]['terms'].length; j++) {
-                    if (bNames === null) {
-                        bNames = buckets[i]['terms'][j]['term'];
-                    } else {
-                        bNames = bNames + ', ' + buckets[i]['terms'][j]['term'];
-                    }
-                    if (j === 9) {
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return bNames;
     }
 
     getFeaturedProducts(products: Array<{}>) {

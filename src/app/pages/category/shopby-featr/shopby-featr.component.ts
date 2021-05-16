@@ -1,5 +1,8 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule} from '@angular/core';
 import { CONSTANTS } from '@config/constants';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 
 
 @Component({
@@ -14,3 +17,15 @@ export class ShopbyFeatrComponent {
   defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
   
 }
+
+@NgModule({
+  declarations: [
+    ShopbyFeatrComponent
+  ],
+  imports: [
+    CommonModule,
+    LazyLoadImageModule,
+  ]
+})
+export class ShopbyFeatrModule { }
+export class CategoryModule extends ShopbyFeatrModule { }

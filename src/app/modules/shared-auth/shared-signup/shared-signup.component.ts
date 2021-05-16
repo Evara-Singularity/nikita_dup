@@ -9,14 +9,15 @@ import { mergeMap } from 'rxjs/operators/mergeMap';
 import { Subscription } from 'rxjs/Subscription';
 import { SharedSignUtilService } from './shared-sign-util.service';
 import { debounceTime } from 'rxjs/operators';
-import CONSTANTS from 'src/app/config/constants';
-import { UsernameValidator } from 'src/app/utils/validators/username.validator';
-import { PasswordValidator } from 'src/app/utils/validators/password.validator';
-import { CommonService } from 'src/app/utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
+import { PasswordValidator } from '@app/utils/validators/password.validator';
+import { CommonService } from '@app/utils/services/common.service';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CartService } from 'src/app/utils/services/cart.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { GlobalLoaderService } from '@services/global-loader.service';
 
 @Component({
     selector: 'app-shared-signup',
@@ -40,12 +41,14 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     isServer: boolean;
     isTicking = false;
     isBrowser: boolean;
-    isReqProcessing = false;
     isPasswordType = true;
     isOTPLimitExceeded = false;
     isOTPValidated = false;
     isEmailExists = false;
     isSubmitted: boolean = false;
+    set isReqProcessing(value) {
+        this.loaderService.setLoaderState(value);
+    }
 
     //checkout flow helpers
     @Input() isCheckoutModule: boolean = false;
@@ -68,9 +71,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private cartService: CartService,
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,
-        //private checkoutLoginService: CheckoutLoginService
-    )
-    {
+        private loaderService: GlobalLoaderService
+    ){
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
     }

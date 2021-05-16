@@ -6,12 +6,13 @@ import { map, mergeMap } from 'rxjs/operators';
 
 import { Meta } from '@angular/platform-browser';
 import { SharedCheckoutLoginUtilService } from './shared-checkout-login-util.service';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import { UsernameValidator } from 'src/app/utils/validators/username.validator';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { SharedAuthService } from '../shared-auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 const IDENTIFIER = { EMAIL: 'e', PHONE: 'p', }
 const SECTIONS = { 'LOGIN': 'LOGIN', 'FORGET_PASSWORD': 'FORGET_PASSWORD', 'VERIFY_OTP': 'VERIFY_OTP', 'SIGN_UP': 'SIGN_UP' }
 
@@ -46,6 +47,7 @@ export class SharedCheckoutLoginComponent implements OnInit
         private tms: ToastMessageService,
         private localAuthService: LocalAuthService,
         private router: Router,
+        private commonService: CommonService,
         private cartService: CartService,
         private checkoutUtilService: SharedCheckoutLoginUtilService,
         private meta: Meta,
@@ -155,11 +157,11 @@ export class SharedCheckoutLoginComponent implements OnInit
             phone: (identifierType == IDENTIFIER.PHONE) ? value : '',
             type: identifierType
         };
-        this.showLoader = true;
+        this.commonService.showLoader = true;
         this.authService.isUserExist(userInfo).subscribe(
             (response) =>
             {
-                this.showLoader = false;
+                this.commonService.showLoader = false;
                 if (response['statusCode'] == 200) {
                     this.checkoutUtilService.sendUserExistsAdobeAnalysis();
                     this.updateVerifyCustomerState(response, identifierType);
@@ -168,7 +170,7 @@ export class SharedCheckoutLoginComponent implements OnInit
                 }
             },
             (error) => { this.tms.show({ type: 'error', text: 'Service is temporarily unavailable' }) },
-            () => { this.showLoader = false; }
+            () => { this.commonService.showLoader = false; }
         );
     }
 
@@ -184,7 +186,7 @@ export class SharedCheckoutLoginComponent implements OnInit
 
     switchToSignUp()
     {
-        this.showLoader = true;
+        this.commonService.showLoader = true;
         const value = this.identifierForm.controls['identifier'].value;
         const identifierType = (value && value.indexOf('@')) > -1 ? IDENTIFIER.EMAIL : IDENTIFIER.PHONE;
         this.identifierType = identifierType;
@@ -218,7 +220,7 @@ export class SharedCheckoutLoginComponent implements OnInit
                     }
                 },
                 (error) => { this.tms.show({ type: 'error', text: 'Service is temporarily unavailable' }) },
-                () => { this.showLoader = false; }
+                () => { this.commonService.showLoader = false; }
             );
         } else {
             this.signUpSendOTP(bodyOtp)
@@ -230,7 +232,7 @@ export class SharedCheckoutLoginComponent implements OnInit
     {
         this.authService.sendOtp(bodyOtp).subscribe((response) =>
         {
-            this.showLoader = false;
+            this.commonService.showLoader = false;
             if (response['statusCode'] === 200) {
                 this.localAuthService.setPageInfo('signup', { mobile: (bodyOtp.phone) ? bodyOtp.phone : '', email: (bodyOtp.email) ? bodyOtp.email : '' }); // required to set values in signup form
                 this.changeTab$.emit(SECTIONS.SIGN_UP);
@@ -252,7 +254,7 @@ export class SharedCheckoutLoginComponent implements OnInit
         const password = this.passwordFrom.controls['password'].value;
         const body = { email, phone, type: this.identifierType, password, buildVersion: '1.1' };
 
-        this.showLoader = true;
+        this.commonService.showLoader = true;
         this.authService.authenticate(body).subscribe((response) =>
         {
             if (response['statusCode'] !== undefined && response['statusCode'] != 200) {
@@ -312,7 +314,7 @@ export class SharedCheckoutLoginComponent implements OnInit
                         // incase of checkout module only we need to check buynow flow
                         const sessionDetails = this.cartService.getCartSession();
                         sessionDetails['cart']['userId'] = userSession.userId;
-                        this.showLoader = true;
+                        this.commonService.showLoader = true;
                         this.cartService.updateCartSessions(null, sessionDetails).subscribe((data) =>
                         {
                             this.localAuthService.login$.next(this.router.url);
@@ -320,7 +322,7 @@ export class SharedCheckoutLoginComponent implements OnInit
                             this.cartService.setCartSession(data);
                             this.cartService.orderSummary.next(data);
                             this.cartService.cart.next(data.noOfItems);
-                            this.showLoader = false;
+                            this.commonService.showLoader = false;
                             this.updatedStepShared$.emit(2);
                             this.tms.show({ type: 'success', text: 'Sign in successful' });
                         });
@@ -350,7 +352,7 @@ export class SharedCheckoutLoginComponent implements OnInit
         }
         this.authService.sendOtp(body).subscribe((response) =>
         {
-            this.showLoader = false;
+            this.commonService.showLoader = false;
             if (response['statusCode'] === 200) {
                 this.localAuthService.setPageInfo('login', { username: this.identifierForm.controls['identifier'].value }); // required to autofill identifier value in forgot password section 
                 this.changeTab$.emit(SECTIONS.FORGET_PASSWORD);
@@ -378,7 +380,7 @@ export class SharedCheckoutLoginComponent implements OnInit
         }
         this.authService.sendOtp(body).subscribe((response) =>
         {
-            this.showLoader = false;
+            this.commonService.showLoader = false;
             if (response['statusCode'] === 200) {
                 this.localAuthService.setPageInfo('login', { username: this.identifierForm.controls['identifier'].value }); // required to autofill identifier value in forgot password section 
                 this.changeTab$.emit(SECTIONS.VERIFY_OTP);

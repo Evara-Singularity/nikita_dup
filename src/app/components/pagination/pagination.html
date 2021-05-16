@@ -1,0 +1,5 @@
+<ul *ngIf="pages != undefined && itemCount != undefined && itemCount > pageSize" class="f-right">
+    <a [routerLink]="[currRoute]" [queryParams]="{page: i+1}" *ngFor="let item of pages | paginate: { itemsPerPage: pageSize, currentPage: page }; let i = index"></a>
+</ul>
+
+<pagination-controls class="border-t border-b pad-tb-10"  *ngIf="pages != undefined && itemCount != undefined && itemCount > pageSize" (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>

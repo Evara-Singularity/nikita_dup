@@ -1,0 +1,48 @@
+<div class="container-fluid pad-t-15 mar-r-15 no-margin-xs mar-lr-xs--15">
+    <div class="row row-eq-height mar-b-15">
+        <div class="col-md-2 pad-r-5">
+            <div class="container-fluid bg-white prod_filter hp-100">
+                <ng-container *ngIf="isBrowser" #filter></ng-container>
+                <!-- <filter [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"></filter> -->
+            </div>
+        </div>
+        <div class="col-sm-10 bg-white pad-tb-10 no-padding-sm mar-b-xs-category25">
+            <div class="container-fluid">
+                <div class="row o-hidden border-b prod_nav hidden-sm-down">
+                    <div class="col-sm-6 no-padding">
+                        <h1 class="f-size-18 pad-r-5 b-text text-400 inline-block f-left">
+                            <span style="text-transform: capitalize">{{inputQueryString}}</span>
+                        </h1>
+                    </div>
+                </div>
+                <product-list [productsUpdated]="productsUpdated"></product-list>
+                <div class="filter_wrapper wp-100 border-light-bottom o-hidden hidden-sm-up" style="position: fixed; bottom: -10px; z-index: 9;
+left:0px; width: 100%; box-shadow:1px 1px 8px #cecece;">
+                    <button
+                        class="text-white wp-50 h-65 text-500 bg-white f-size-16 no-border btn-trans f-left filter_btn  text-black"
+                        type="button" (click)="filterUp()"><i class="fa fa-filter" aria-hidden="true"
+                            style="padding-right: 5px;"></i> FILTER<p class="pad-tb-5 f-size-13"
+                            style="text-transform: capitalize !important;">Select</p></button>
+                    <button
+                        class="text-white wp-50 h-65 text-500 f-size-16  border-light-r no-border bg-white f-left text-black"
+                        type="button" (click)="toggleSortBy(true)">
+                        <i class="fa fa-sort-amount-asc" style="padding-right:5px;" aria-hidden="true"></i>
+                        SORT BY
+                        <ng-container *ngIf="isBrowser" #sortBy></ng-container>
+                        <!-- <sort-by [sortByUpdated]="sortByUpdated"></sort-by> -->
+                    </button>
+                </div>
+                <div *ngIf="productListLength!=0" class="row o-hidden pad-tb-10 prod_nav mar-t-30">
+                    <div class="colcre-sm-12 no-padding text-right">
+                        <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
+                        <ng-template *ngIf="isBrowser" #pagination></ng-template>
+                        <!-- <pagination class="block o-hidden h-auto-xs" [paginationUpdated]="paginationUpdated"
+                            [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
+                            (onPageChange)="pageChanged($event)"></pagination> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="keywordDescription?.desc"></div>

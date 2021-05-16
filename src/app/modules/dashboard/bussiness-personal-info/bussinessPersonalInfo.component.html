@@ -1,0 +1,84 @@
+<form #personalInfodForm="ngForm" (ngSubmit)="onSubmit(personalInfodForm.value)" class="material-form" novalidate>
+
+  <div class="card">
+    <div class="container input-field">
+      <label [class.is-focus]="userInfo?.pname">
+        <input type="text" name="fname" [ngModel]="userInfo?.pname">
+        <span class="label">First Name *</span>
+      </label>
+
+      <label [class.is-focus]="userInfo?.lname">
+        <input type="text" name="lname" [ngModel]="userInfo?.lname">
+        <span class="label">Last Name</span>
+      </label>
+    </div>
+  </div>
+  <div>
+    <button class="edit-form">UPDATE</button>
+  </div>
+</form>
+
+<!-- email and phone -->
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form" novalidate>
+  <div class="card">
+    <div class="container input-field">
+      <label class="is-focus">
+        <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
+        <span class="label">Email *</span>
+      </label>
+      <label class="is-focus">
+        <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
+        <span class="label">Phone No. *</span>
+      </label>
+    </div>
+  </div>
+</form>
+
+<div class="card" (click)="toPasswordPage()">
+  <a class="other-strip">
+    <h3>Change Password</h3>
+    <i class="icon-next"></i>
+  </a>
+</div>
+
+<div class="card logout" (click)="logout()">
+  <a class="other-strip">
+    <h3>Logout</h3>
+    <i class="icon-logout"></i>
+  </a>
+</div>
+
+<!--Search Popup-->
+<section class="screen-view popup info-update-popup">
+  <div class="container">
+    <div class="head-sec">
+      <i class="icon-circle-delete f-left"></i>
+      <p class="txt">Mobile/Email Update</p>
+    </div>
+
+    <form class="material-form">
+      <div class="input-field">
+        <label [class.is-focus]="isMobile.value.length > 0">
+          <input type="number" #isMobile>
+          <span class="label">Phone No</span>
+        </label>
+      </div>
+      <div class="input-field">
+        <label [class.is-focus]="isEmail.value.length > 0">
+          <input type="text" #isEmail>
+          <span class="label">Email</span>
+        </label>
+      </div>
+      <div class="input-field">
+        <label [class.is-focus]="isFocus.value.length > 0">
+          <input type="text" #isFocus>
+          <span class="label">Enter OTP</span>
+          <span class="help-txt">Resend OTP</span>
+        </label>
+        <p class="error-txt" *ngIf="isFocus.value != 12345 &&  isFocus.value">You have entered a Wrong OTP </p>
+      </div>
+
+      <p>An OTP has been Sent To +91 {{isMobile}} / {{isEmail}}</p>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,127 @@
+@import '../../scss/variables';
+
+.shipping-container{
+  margin-top: 10px;
+  @extend %cards;
+  padding: 0  0 10px 0;
+  border: 0;
+  .sub-strip{
+    background: $selected-color;
+    padding: 15px 10px;
+    border: 0;
+    &:not(:first-child){
+      margin-top: 20px;
+    }
+    h4{
+      float: left;
+      font-weight: 500;
+      // color: $blue-link-color;
+      color:$txt-color;
+      i{
+        font-size: 14px;
+        margin-left: 5px;
+      }
+    }
+  }
+  .addButtonContainer{
+    padding: 15px 10px;
+  }
+}
+.address-list{
+  @extend %clear-fix;
+  @extend %container;
+  label{
+    padding: 10px 0;
+    display: block;
+    // @extend %custom-check-box;
+    @extend %custom-radio-checkout;
+    @extend %clear-fix;
+    .chk-txt{
+      font-size: $medium-font;
+      width: calc(100% - 36px);
+      .heading-container{
+        display: block;
+        @extend %clear-fix;
+        margin-bottom: 5px;
+        .heading{
+          font-weight: 500; 
+          float: left;
+          line-height: 20px;
+        }
+        .icon-dot{
+          line-height: 26px;
+          float: right;
+        }
+      }
+      .txt{
+        display: block;
+        font-size: $large-font;
+        width: 65%;
+        line-height: 21px;
+      }
+    }
+  }
+}
+.add-address{
+  &::before{
+    content: '+';
+    margin-right: 5px;
+    display: inline-block;
+    font-size: 18px;
+  }
+  float: right;
+  font-size: 16px;
+  font-weight: 600;
+  color: $blue-link-color;
+}
+.add-address-substrip{
+  background:#F2F2F2;
+  text-align:center;
+  padding:15px;
+  .blue-border-btn-full{
+    font-size:$large-font;
+    padding:10px;
+    border-radius: 0px;
+  }
+}
+.addAddressPopup{
+  background: #fff !important;;
+  .head-sec{
+    background:$logo-color !important;
+    i{
+      color:$white
+    }
+  }
+}
+.continue-btn{
+  height: 60px;
+  @extend %ripple;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+.addAddressPopup{
+  .content-popup{
+    height: calc(100% - 100px);
+    margin-top:0px;
+    .address-list{
+      padding:15px;
+    }
+  }
+} 
+
+.header_add_edit{
+  background: #d9232d !important;
+}
+
+.white_text{
+  color: #fff !important;
+}
+
+.header_text {
+  line-height: 26px !important;
+}
+
+
+

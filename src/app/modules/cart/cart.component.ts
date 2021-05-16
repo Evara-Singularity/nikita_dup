@@ -25,6 +25,7 @@ import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { FooterService } from '../../utils/services/footer.service';
 import { GlobalState } from '../../utils/global.state';
 import { ENDPOINTS } from '../../config/endpoints';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 
 const PD = makeStateKey<{}>('pdata');//PD: ProductData
@@ -84,7 +85,6 @@ export class CartComponent {
     productSizes: Array<any> = [];
     userSession: any;
     productId: string;
-    showLoader: boolean = true;
     productResult: any;
     isPurcahseListProduct: boolean = false;
     allCharges: Array<Boolean> = new Array();
@@ -105,7 +105,6 @@ export class CartComponent {
     messages: Array<any> = [];
     isPaymentValid: boolean = false;
     paymnetValidationMessage: string = '';
-    isShowLoader: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
     api: any = {};
@@ -126,6 +125,9 @@ export class CartComponent {
     checkoutAddressIndex: number;
     showLink;
     selectedBillingAddress: number;
+    set isShowLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
 
     constructor(
         private _location: Location,
@@ -147,6 +149,7 @@ export class CartComponent {
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _productService: ProductService,
+        private _loaderService: GlobalLoaderService,
         private _tms: ToastMessageService) {
 
         this.isServer = isPlatformServer(platformId);
@@ -2190,7 +2193,7 @@ export class CartComponent {
     }
 
     removeItemFromPurchaseList() {
-        this.showLoader = true;
+        this.commonService.showLoader = true;
         const userSession = this._localAuthService.getUserSession();
 
         const obj = {
@@ -2212,20 +2215,20 @@ export class CartComponent {
                     });
                     this.getPurchaseList();
                 } else {
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                 }
             },
             err => {
-                this.showLoader = false;
+                this.commonService.showLoader = false;
             }
         )
     }
     getGroupedProduct() {
         // console.log(" get grouped product");
-        this.showLoader = true;
+        this.commonService.showLoader = true;
 
         if (this._tState.hasKey(PD)) {
-            this.showLoader = false;
+            this.commonService.showLoader = false;
             const productResponse = this._tState.get(PD, {});
             this.setProductDetails(productResponse);
         } else {
@@ -2234,7 +2237,7 @@ export class CartComponent {
             this._productService.getGroupProductObj(this.productId).subscribe(
                 (r) => {
                     // console.log("r data",r)
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                     // if (r['status']) {
                     if (this.isServer) {
                         this._tState.set(PD, r);
@@ -2244,7 +2247,7 @@ export class CartComponent {
                     // }
                 }, error => {
                     // console.log("in error",error);
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                 });
         }
     }
@@ -2852,7 +2855,7 @@ export class CartComponent {
             }
             // }
             if (this.isBrowser) {
-                this.showLoader = false;
+                this.commonService.showLoader = false;
             }
 
         }
@@ -2868,7 +2871,7 @@ export class CartComponent {
             if (user.authenticated == "true") {
                 let request = { idUser: user.userId, userType: "business" };
                 this._productService.getPurchaseList(request).subscribe((res) => {
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                     if (res['status'] && res['statusCode'] == 200) {
                         let purchaseLists: Array<any> = []
                         purchaseLists = res['data'];

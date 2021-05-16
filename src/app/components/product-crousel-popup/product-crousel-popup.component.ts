@@ -8,8 +8,8 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ModalService } from '../../modules/modal/modal.service';
 import { ModalModule } from '../../modules/modal/modal.module';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
-import { SiemaCarouselModule } from 'src/app/modules/siemaCarousel/siemaCarousel.module';
-import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
+import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.module';
+import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
 
 @Component({

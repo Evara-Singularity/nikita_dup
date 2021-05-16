@@ -1,8 +1,17 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@config/*": ["app/config/*"],
+      "@modules/*": ["app/modules/*"],
+      "@utils/*": ["app/utils/*"],
+      "@pages/*": ["app/pages/*"],
+      "@components/*": ["app/components/*"],
+      "@pipes/*": ["app/utils/pipes/*"],
+      "@services/*": ["app/utils/services/*"]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     // TODO(gkalpak): Fix the code and enable this.

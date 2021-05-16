@@ -1,12 +1,12 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, ViewEncapsulation, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
-import { CategoryService } from './category.service';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { CategoryService } from '@utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -14,6 +14,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
+import { map } from 'rxjs/operators';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -27,7 +28,7 @@ const GFAQK: any = makeStateKey<{}>("GFAQK")// GFAQK: Get Frequently Asked Quest
 @Component({
     selector: 'category',
     templateUrl: './category.html',
-    styleUrls: ['./category.scss'],
+    styleUrls: ['./category.scss',]
 })
 
 export class CategoryComponent implements OnInit, AfterViewInit {
@@ -41,16 +42,19 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
     paginationData: any = {};
-
+    options;
     isLast;
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    sortByUpdated: Subject<any> = new Subject<any>();
-    breadcrumpUpdated: Subject<any> = new Subject<any>();
-    relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
-    categoryDataName: Subject<any> = new Subject<any>();
+    recentArticlesInstance = null;
+    @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
+    showLoader: boolean;
+    sortByUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    breadcrumpUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    categoryDataName: BehaviorSubject<any> = new BehaviorSubject<any>({});
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     pageName: string;
     buckets = [];
@@ -71,8 +75,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterCounts;
     todayDate: number;
     spl_subCategory_Dt: any;
-    options;
-    defaultImage;
+
     refreshProductsUnsub$: any;
     refreshProductsUnsub: any;
     _activatedRouteUnsub: any;
@@ -97,18 +100,18 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     taxo3: any;
     trendingSearchData;
     faqData;
+    defaultImage: string = '';
     productCategoryNames = [];
     categoryLinkLists = {};
     wb = [];
     reqArray = [];
     PRTA = [];
-
-    constructor(@Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, 
-        private _renderer2: Renderer2,
-        private cfr: ComponentFactoryResolver,
-        private injector: Injector,
+    categoryId: string;
+    constructor(@Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2,
         @Inject(DOCUMENT) private _document,
+        private injector: Injector,
         public dataService: DataService,
+        private cfr: ComponentFactoryResolver,
         public pageTitle: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService,
         public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
         public _commonService: CommonService, private _categoryService: CategoryService, private _pageScrollService: PageScrollService) {
@@ -116,109 +119,32 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.isBrowser = isPlatformBrowser(platformId);
         this.showSubcategoty = true;
         this._commonService.showLoader = false;
+        this.getRelatedCatgory = {};
         this.todayDate = Date.now();
         this.pageName = 'CATEGORY';
-        this.getRelatedCatgory = {};
         this.subCategoryCount = 0;
     }
 
     ngOnInit() {
-
-        this.subscribeQueryParams();
-        
-        this.subscribeParams();
-
-        this.refreshProductAndLoadCmsData();
-        
-        this.refreshProductsBasedOnRouteChange();
-
-        this.footerService.setMobileFoooters();
-
-    }
-
-    async onVisiblePagination(event) {
-        if (!this.paginationInstance) {
-            this._commonService.showLoader = true;
-            const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
-                this._commonService.showLoader = false;
-            });
-            const factory = this.cfr.resolveComponentFactory(PaginationComponent);
-            this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
-            this.paginationUpdated.next(this.paginationData);
-            this.paginationInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
-            this.paginationInstance.instance['sortByComponentUpdated'].next(this.sortByComponent);
-            this.paginationInstance.instance['position'] = 'BOTTOM';
-
-            if (this.paginationInstance) {
-                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
-                    this.pageChanged(data);
-                });
+        this._activatedRoute.queryParams.subscribe(data => {
+            this.trendingSearchData = data;
+            this.pageNo = data['page'];
+            if (data['page'] > 1) {
+                this.showSubcategoty = false;
+            } else {
+                this.showSubcategoty = true;
             }
-
-        }
-    }
-
-    async toggleSortBy(data) {
-        if (this.isBrowser) {
-            this.sortByOpt = data.sortByOpt;
-
-            if (!this.sortByInstance) {
-                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
-                    this._commonService.showLoader = false;
-                });
-                const factory = this.cfr.resolveComponentFactory(SortByComponent);
-                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
-
-                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                    this.toggleSortBy(data);
-                });
-
+            if (data['page'] == undefined || data['page'] == 1) {
+                this.firstPageContent = true;
+            } else {
+                this.firstPageContent = false;
             }
+        });
 
-            const sortByFilter = document.querySelector('sort-by');
-
-            if (sortByFilter) {
-                sortByFilter.classList.toggle('open');
-            }
-        }
-    }
-
-    async filterUp() {
-        if (this.isBrowser) {
-            if (!this.filterInstance) {
-                this._commonService.showLoader = true;
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    this._commonService.showLoader = false;
-                });
-                const factory = this.cfr.resolveComponentFactory(FilterComponent);
-                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-                this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['sortByComponentUpdated'] = this.sortByComponentUpdated;
-                this.filterInstance.instance['sortByComponent'] = this.sortByComponentUpdated;
-            }
-
-            const mob_filter = document.querySelector('.mob_filter');
-
-            if (mob_filter) {
-                if (mob_filter.classList.contains('upTrans')) {
-                    mob_filter.classList.remove('upTrans');
-                } else {
-                    mob_filter.classList.add('upTrans');
-                }
-            }
-        }
-
-    }
-
-    private subscribeParams(){
         this._activatedRoute.params.subscribe((data) => {
             this.layoutType = 0;
             if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
                 this.isSLPPage = true;
-                // this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]).subscribe((data)=>{
                 this.getExtraCategoryData(data).subscribe((data) => {
 
                     if (data && data['status'] && data['data'] && data['data'].length) {
@@ -240,60 +166,25 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 this.isSLPPage = false;
             }
         });
+
+        this.refreshProductAndLoadCmsData();
+
+        this.footerService.setMobileFoooters();
+
+        this.refreshProductsBasedOnRouteChange();
     }
 
-    private subscribeQueryParams(){
-        this._activatedRouteUnsub = this._activatedRoute.queryParams.subscribe((params: Params) => {
-            this.trendingSearchData = params;
-            this.pageNo = params['page'];
-            if (params['page'] > 1) {
-                this.showSubcategoty = false;
-            } else {
-                this.showSubcategoty = true;
-            }
-            if (params['page'] == undefined || params['page'] == 1) {
-                this.firstPageContent = true;
-            } else {
-                this.firstPageContent = false;
-            }
-        });
-    }
-
-    private refreshProductsBasedOnRouteChange() {
-        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
-            () => {
-                this._commonService.showLoader = true;
-                this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                    //  $("#page-loader").hide();
-                    this._commonService.showLoader = false;
-                    // this.setLinks();
-                    this.productListLength = response.productSearchResult['products'].length;
-                    this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                    this.paginationUpdated.next(this.paginationData);
-                    this.sortByUpdated.next();
-                    this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                    this.filterData = response.buckets;
-                    // this.bucketsUpdated.next(response.buckets);
-                    this.productsUpdated.next(response.productSearchResult.products);
-                    this.buckets = response['buckets'];
-                    this.productSearchResult = response.productSearchResult;
-
-                });
-            }
-        );
-    }
-
-    private refreshProductAndLoadCmsData(){
+    private refreshProductAndLoadCmsData() {
         if (this.isBrowser) {
             this._commonService.showLoader = true;
         }
 
         const res = this._activatedRoute.snapshot.data;
         this.setDataAfterGettingDataFromResolver(res.category);
-        
+
     }
 
-    setDataAfterGettingDataFromResolver(res){
+    setDataAfterGettingDataFromResolver(res) {
         // ict : isCategoryActive
 
         const ict = res[0]['categoryDetails']['active'];
@@ -368,6 +259,18 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         //ENDS
     }
 
+
+    refreshProductsBasedOnRouteChangeFlag: number = 0;
+    private refreshProductsBasedOnRouteChange() {
+        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
+            // to avoid first time call of API on route change subscription
+            if (this.refreshProductsBasedOnRouteChangeFlag) {
+                this.refreshProducts();
+            }
+            this.refreshProductsBasedOnRouteChangeFlag++;
+        });
+    }
+
     setTrackingData(res) {
         // console.log("categorypage" ,this._activatedRoute.snapshot.queryParams);
         var taxonomy = res[0]["categoryDetails"]['taxonomy'];
@@ -400,20 +303,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.toggletsWrap = !this.toggletsWrap;
     }
     parseData(data) {
-        // console.log("data =  = ", data);
         let relevantObj: any = {};
         data.forEach(obj => {
-            // if(obj && obj.hasOwnProperty('layout_code') && obj.layout_code == API.CMS_IDS.CATEGORY_EXTRAS){
             relevantObj = obj;
-            // }
         });
-        // console.log("relevant obj = ", relevantObj);
         if (relevantObj.block_data && relevantObj.block_data.product_data) {
             relevantObj.block_data.product_data.forEach(product => {
                 if (product.discount_percentage && product.pricewithouttax && parseInt(product.discount_percentage) < 100) {
                     product.discount_percentage = parseInt(product.discount_percentage);
                     product.pricewithouttax = parseInt(product.pricewithouttax);
-                    //product.priceAfterDiscount = Math.floor((100-product.discount_percentage)*product.pricewithouttax/100);
                 }
                 let desc = {
                     Brand: ""
@@ -446,8 +344,18 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this._tState.remove(GFAQK);
         }
     }
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
+
+    refreshProducts(): Observable<{}> {
+        const defaultParams = this.createDefaultParams();
+        this._commonService.updateDefaultParamsNew(defaultParams);
+        // if (!this.transferState.hasKey(REFRESH_PRODUCTS_RESPONSE_KEY)) {
+        const fragment = this._activatedRoute.snapshot.fragment;
+
+        if (this._tState.hasKey(RPRK) && !fragment) {
+            return of(this._tState.get(RPRK, {}));
+        } else {
+            return this._commonService.refreshProducts();
+        }
     }
 
     /**
@@ -460,12 +368,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.productListLength = response.productSearchResult['products'].length;
         this.createCategorySchema(response.productSearchResult['products']); // ODP-684
         if (flag) {
-            this.sortByUpdated.next();
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
             this.paginationUpdated.next(this.paginationData);
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.filterData = response.buckets;
             // this.bucketsUpdated.next(response.buckets);
+            this.filterData = response.buckets;
             this.productsUpdated.next(response.productSearchResult.products);
         }
         this.buckets = response.buckets;
@@ -643,7 +550,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     "@context": "https://schema.org",
                     "@type": "ItemList",
                     "numberOfItems": productArray.length,
-                    "url": CONSTANTS.PROD + '/' + this._router.url,
+                    "url": CONSTANTS.PROD + this._router.url,
                     "name": this.getRelatedCatgory?.categoryDetails?.categoryName,
                     "itemListElement": productList
                 }
@@ -659,21 +566,21 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     private setCanonicalUrls(response) {
 
-
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
-
-        const links = this._renderer2.createElement('link');
-        //console.log("links ",links);
-        links.rel = 'canonical';
-        if (this.pageNo == undefined || this.pageNo == 1) {
-            links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
+        if (this.isServer) {
+            const links = this._renderer2.createElement('link');
+            //console.log("links ",links);
+            links.rel = 'canonical';
+            if (this.pageNo == undefined || this.pageNo == 1) {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
+            }
+            else {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
+            }
+            // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
+            //console.log("links.href", links.href)
+            this._renderer2.appendChild(this._document.head, links);
         }
-        else {
-            links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
-        }
-        // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
-        //console.log("links.href", links.href)
-        this._renderer2.appendChild(this._document.head, links);
 
 
 
@@ -681,20 +588,21 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         // console.log("amplink",ampLink);
 
         if (this.pageNo == undefined || this.pageNo == 1) {
+            if (this.isServer) {
+                let ampLink;
+                ampLink = this._renderer2.createElement('link');
+                ampLink.rel = 'amphtml';
+                ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
 
-            let ampLink;
-            ampLink = this._renderer2.createElement('link');
-            ampLink.rel = 'amphtml';
-            ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
-
-            /**
-             * Below if condition is just a temporary solution.
-             * Strictly remove if condtion, once amp of drill(114160000) page is completed.
-             */
-            // if(this._activatedRoute.snapshot.params.id != "114160000"){
-            this._renderer2.appendChild(this._document.head, ampLink);
-            // }
-            //console.log("ampLink",ampLink);
+                /**
+                 * Below if condition is just a temporary solution.
+                 * Strictly remove if condtion, once amp of drill(114160000) page is completed.
+                 */
+                // if(this._activatedRoute.snapshot.params.id != "114160000"){
+                this._renderer2.appendChild(this._document.head, ampLink);
+                // }
+                //console.log("ampLink",ampLink);
+            }
         }
 
 
@@ -880,12 +788,201 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         // this.seoService.setLink("<link rel='canonical' href=" + this.seoService.baseUrl + "" + this._router.url + ">");
     }
 
+    async onVisiblePagination(event) {
+        if (!this.paginationInstance) {
+            this._commonService.showLoader = true;
+            const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
+                this._commonService.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(PaginationComponent);
+            this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
+            this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
+            this.paginationUpdated.next(this.paginationData);
+            this.paginationInstance.instance['position'] = 'BOTTOM';
+            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
+
+            if (this.paginationInstance) {
+                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
+                    this.pageChanged(data);
+                });
+            }
+
+        }
+    }
+
+    async filterUp() {
+        if (this.isBrowser) {
+            if (!this.filterInstance) {
+                this._commonService.showLoader = true;
+                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                    this._commonService.showLoader = false;
+                    setTimeout(() => {
+                        const mob_filter = document.querySelector('.mob_filter');
+                        if (mob_filter) {
+                            mob_filter.classList.add('upTrans');
+                        }
+                    }, 0);
+                });
+                const factory = this.cfr.resolveComponentFactory(FilterComponent);
+                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+                this.filterInstance.instance['pageName'] = this.pageName;
+                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+                this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            } else {
+                const mob_filter = document.querySelector('.mob_filter');
+
+                if (mob_filter) {
+                    mob_filter.classList.toggle('upTrans');
+                }
+            }
+
+        }
+
+    }
+
+    async toggleSortBy(data) {
+        if (this.isBrowser) {
+            this.sortByOpt = data.sortByOpt;
+            if (!this.sortByInstance) {
+                this._commonService.showLoader = true;
+                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
+                    this._commonService.showLoader = false;
+                });
+                const factory = this.cfr.resolveComponentFactory(SortByComponent);
+                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+
+                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
+                    this.toggleSortBy(data);
+                });
+
+            }
+
+            const sortByFilter = document.querySelector('sort-by');
+
+            if (sortByFilter) {
+                sortByFilter.classList.toggle('open');
+            }
+        }
+    }
+
+    createDefaultParams() {
+
+        const newParams: any = {
+            queryParams: {}
+        };
+
+        const defaultParams = this._commonService.getDefaultParams();
+        /**
+         *  Below code is added to maintain the state of sortBy : STARTS
+         */
+        if (defaultParams['queryParams']['orderBy'] !== undefined) {
+            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
+        }
+        if (defaultParams['queryParams']['orderWay'] !== undefined) {
+            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
+        }
+        /**
+         *  maintain the state of sortBy : ENDS
+         */
+
+        const currentQueryParams = this._activatedRoute.snapshot.queryParams;
+
+        // console.log("*****************Query Params************");
+        // console.log(currentQueryParams);
+        // Object.assign(newParams["queryParams"], currentQueryParams);
+
+        for (let key in currentQueryParams) {
+            newParams.queryParams[key] = currentQueryParams[key];
+        }
+
+        // newParams["queryParams"] = queryParams;
+        newParams['filter'] = {};
+
+        const params = this._activatedRoute.snapshot.params;
+        // console.log("*****************Params************");
+        // console.log(params);
+
+        newParams['category'] = params['id'];
+
+        const fragment = this._activatedRoute.snapshot.fragment;
+        // console.log("*****************Fragments************");
+        // console.log(fragment);
+
+        //console.log(this._router.url);
+
+        if (fragment !== undefined && fragment != null && fragment.length > 0) {
+            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+            // console.log(currentUrlFilterData);
+            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+
+
+            /*Below newCurrentUrlFilterData and for loop is added for a special case, / is coming also in voltage filter part*/
+            let newCurrentUrlFilterData = '';
+            for (let i = 0; i < currentUrlFilterData.length; i++) {
+                if (currentUrlFilterData[i] === '/' && /^\d+$/.test(currentUrlFilterData[i + 1])) {
+                    // console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
+                    newCurrentUrlFilterData = newCurrentUrlFilterData + '$';
+                    // console.log(newCurrentUrlFilterData);
+                } else {
+                    newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
+                }
+            }
+
+            currentUrlFilterData = newCurrentUrlFilterData.split('/');
+            if (currentUrlFilterData.length > 0) {
+                const filter = {};
+                for (let i = 0; i < currentUrlFilterData.length; i++) {
+                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+                    // ["101 - 500", "501 - 1000"]
+                    const filterData = currentUrlFilterData[i]
+                        .replace('$', '/')
+                        .substr(currentUrlFilterData[i]
+                            .indexOf('-') + 1).split('||');
+                    filter[filterName] = filterData;
+                }
+                newParams['filter'] = filter;
+            }
+        }
+
+        newParams['pageName'] = this.pageName;
+        // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        // console.log(newParams);
+        return newParams;
+    }
     getExtraCategoryData(data): Observable<{}> {
+
+        // if (this.currentRequestGetRelatedCategories != undefined)
+        // this.currentRequestGetRelatedCategories.unsubscribe();
 
         if (this._tState.hasKey(EDK)) {
             return of(this._tState.get(EDK, {}));
         } else {
             return this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]);
+        }
+    }
+
+
+    getRelatedCategories(categoryID): Observable<{}> {
+
+        if (this.currentRequestGetRelatedCategories !== undefined) {
+            this.currentRequestGetRelatedCategories.unsubscribe();
+        }
+
+        if (this._tState.hasKey(GRCRK)) {
+            // this.initiallizeRelatedCategories(this._tState.get(GRCRK, {}), false);
+            return of(this._tState.get(GRCRK, {}));
+        } else {
+            return this._categoryService.getRelatedCategories(categoryID);
+        }
+    }
+
+    private getFAQ(categoryID): Observable<{}> {
+        if (this._tState.hasKey(GFAQK)) {
+            return of(this._tState.get(GFAQK, []));
+        } else {
+            return this._categoryService.getFaqApi(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
         }
     }
 
@@ -916,10 +1013,14 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     private initiallizeRelatedCategories(response, flag) {
 
+        // console.log("Initializing Related Categories for below");
+        // console.log(this.isServer ? "**********Server********" : "**********Browser********");
         this.getRelatedCatgory = response[0];
         const categoryData = response[1];
 
         let qps = this._activatedRoute.snapshot.queryParams;
+        // console.log(this._tState.get(GRCRK, {}));
+        // console.log("category details:" + JSON.stringify(this.getRelatedCatgory.categoryDetails));
 
         if (this.getRelatedCatgory.categoryDetails.active) {
             const categoryName = this.getRelatedCatgory.categoryDetails.categoryName;
@@ -944,8 +1045,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
+                //console.log('spl_subCategory_Dt spl_subCategory_Dt',this.spl_subCategory_Dt);            
+                // console.log(this.isServer ? "server" : "browser");
+                // console.log("Getting breadcrumb data on");
+                // console.log(this.breadcrumpComponent);
                 const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
                 this.breadcrumpUpdated.next(bData);
+                // this.breadcrumpComponent.getBreadCrumpHttp(this.getRelatedCatgory.categoryDetails.categoryLink, "category");
             }
         } else {
             this.relatedCatgoryListUpdated.next([]);
@@ -1088,5 +1194,21 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             return true;
         }
         return false;
+    }
+
+    async onVisibleRecentArticles(htmlElement) {
+        if (this.productListLength) {
+            const { RecentArticles } = await import('./recent-articles/recent-articles.component');
+            const factory = this.cfr.resolveComponentFactory(RecentArticles);
+            this.recentArticlesInstance = this.recentArticlesContainerRef.createComponent(factory, null, this.injector);
+            let articlesData = [];
+            this._categoryService.getRelatedArticles(this.categoryId).subscribe(res => {
+                if (res && res['status'] && res['statusCode'] == 200) {
+                    articlesData = res['data'];
+                    this.recentArticlesInstance.instance['recentArticles'] = articlesData;
+                    this.recentArticlesInstance.instance['title'] = this.getRelatedCatgory?.categoryDetails?.categoryName
+                }
+            });
+        }
     }
 }

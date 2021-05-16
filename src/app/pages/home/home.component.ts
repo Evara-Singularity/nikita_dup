@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
-import { fade } from '@app/pages/animation/animations';
+import { fade } from '@utils/animations/animation';
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';
 import { CartService } from '@app/utils/services/cart.service';

@@ -4,9 +4,7 @@ import { RouterModule } from '@angular/router';
 import { routing as CategoryRouting } from "./category.routing";
 import { MetaModule } from '@ngx-meta/core';
 import { CategoryComponent } from "./category.component";
-import { CategoryService } from "./category.service";
 import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
-import { SubCategoryService } from "./subCategory/subCategory.service";
 import { SubCategoryComponent } from "./subCategory/subCategory.component";
 import { BreadCrumpModule } from '@app/modules/breadcrump/breadcrump.module';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
@@ -23,6 +21,7 @@ import { SlpSubCategoryComponent } from './slp-sub-category/slp-sub-category.com
 import { CmsModule } from '../../modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CategoryService } from '@app/utils/services/category.service';
 
 @NgModule({
     imports: [
@@ -52,10 +51,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
         ShopbyFeatrComponent,
         SlpSubCategoryComponent,
     ],
-    providers: [
-        CategoryService,
-        SubCategoryService
-    ]
 })
 
-export class CategoryModule{}
+export class CategoryModule { }

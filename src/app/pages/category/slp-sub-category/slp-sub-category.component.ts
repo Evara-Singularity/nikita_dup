@@ -1,14 +1,16 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { CONSTANTS } from '@app/config/constants';
-import { PopUpComponent } from '@app/modules/popUp/pop-up.component';
+import { Component, Input, ViewChild } from '@angular/core';
+import { CONSTANTS } from '@config/constants';
+import { PopUpComponent } from '@modules/popUp/pop-up.component';
+
+
+
 
 @Component({
   selector: 'slp-sub-category',
   templateUrl: './slp-sub-category.component.html',
   styleUrls: ['./slp-sub-category.component.scss']
 })
-export class SlpSubCategoryComponent implements OnInit {
-
+export class SlpSubCategoryComponent {
   @Input('sub_category_Data') sub_category_Data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
@@ -18,10 +20,6 @@ export class SlpSubCategoryComponent implements OnInit {
 
   constructor() {
     this.openPopup = false;
-  }
-
-  ngOnInit() {
-
   }
 
   outData(data) {

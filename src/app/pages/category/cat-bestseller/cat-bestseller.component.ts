@@ -1,14 +1,13 @@
+import { CONSTANTS } from '@config/constants';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { CONSTANTS } from '@app/config/constants';
-import { PopUpComponent } from '@app/modules/popUp/pop-up.component';
+import { PopUpComponent } from '@modules/popUp/pop-up.component';
 
 
 @Component({
   selector: 'cat-bestseller',
   templateUrl: './cat-bestseller.component.html',
-  styleUrls: []
 })
-export class CatBestsellerComponent implements OnInit {
+export class CatBestsellerComponent {
 
 
   @Input('bestSeller_Data') bestSeller_Data;
@@ -26,11 +25,6 @@ export class CatBestsellerComponent implements OnInit {
     this.openPopup = false;
   }
 
-
-  ngOnInit() {
-
-  }
-
   getBrandBy(brandName) {
     this.descArr = brandName.split(":");
     return this.descArr[1];
@@ -46,8 +40,4 @@ export class CatBestsellerComponent implements OnInit {
   customClose() {
     this._popupComponent.closePopup();
   }
-
-
-
-
 }

@@ -33,15 +33,15 @@ export class BrandDetailsFooterComponent {
 	@Input('brandDetailsFooterData') brandDetailsFooterData: BrandDetailsFooterData;
 	constructor(public _commonService: CommonService) {
 		this.brandDetailsFooterData = {
-			brandCatDesc: {},
+			brandCatDesc: null,
 			firstPageContent: true,
-			brandShortDesc: {},
-			brandContent: {},
-			categoryLinkLists: {},
-			productCategoryNames: {},
-			categoryNames: {},
+			brandShortDesc: null,
+			brandContent: null,
+			categoryLinkLists: null,
+			productCategoryNames: null,
+			categoryNames: null,
 			iba: true,
-			showDesc: {},
+			showDesc: null,
 			productSearchResult: '',
 			productSearchResultSEO: '',
 			productCount: '',

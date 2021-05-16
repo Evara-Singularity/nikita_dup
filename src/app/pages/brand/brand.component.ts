@@ -1,15 +1,17 @@
-import { FooterService } from '@app/utils/services/footer.service';
-import { Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
-import { Location, isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { CommonService } from "@app/utils/services/common.service";
-import { SortByComponent } from "@app/components/sortBy/sortBy.component";
-import { Title, Meta, TransferState, makeStateKey } from '@angular/platform-browser';
-import { CONSTANTS } from "@app/config/constants";
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
+import { FooterService } from '@app/utils/services/footer.service';
+import { combineLatest, Subject } from 'rxjs';
+import { SortByComponent } from '@app/components/sortBy/sortBy.component';
+import { CONSTANTS } from '@app/config/constants';
+import { ClientUtility } from '@app/utils/client.utility';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@app/utils/services/data.service';
-import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
 declare var digitalData: {};
@@ -18,7 +20,9 @@ declare let _satellite;
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
-    styleUrls: ['./../category/category.scss']
+    styleUrls: ['./brand.scss'],
+    // encapsulation: ViewEncapsulation.None
+
 })
 
 export class BrandComponent {
@@ -30,23 +34,23 @@ export class BrandComponent {
     @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
     brandDetailsFooterInstance = null;
     @ViewChild('brandDetailsFooter', { read: ViewContainerRef }) brandDetailsFooterContainerRef: ViewContainerRef;
-    
+
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
-    
+
     sortByComponentUpdated: BehaviorSubject<SortByComponent>;
 
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    
+
     paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    
+
     sortByUpdated: Subject<any> = new Subject<any>();
-    
+
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
-    paginationData: any= {};
-    
+    paginationData: any = {};
+
     pageName: string;
     buckets = [];
     brand: string;
@@ -69,6 +73,7 @@ export class BrandComponent {
     productSearchResult: {};
     productSearchResultSEO: Array<any> = [];
     todayDate: number;
+    toggletsWrap: boolean;
     pageNo;
     itemsList;
     friendlyUrl;
@@ -80,48 +85,37 @@ export class BrandComponent {
     trendingSearchData;
     productCategoryNames = [];
     categoryNameinAPI;
-    refreshProductsUnsub$: any;
 
-    constructor(
-        public dataService: DataService, 
-        @Optional() @Inject(RESPONSE)  private _response,
-        private _tState: TransferState, 
-        private _renderer2: Renderer2, @Inject(DOCUMENT) 
-        private _document, private title: Title, 
-        private meta: Meta, @Inject(PLATFORM_ID) platformId, 
-        public footerService: FooterService, 
-        public location: Location, 
-        public _router: Router, 
-        public _activatedRoute: ActivatedRoute, 
+
+    refreshProductsUnsub$: any;
+    constructor(public dataService: DataService, 
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
-        public _commonService: CommonService, 
-        private localStorageService: LocalStorageService
-    ) {
+        private router: Router, @Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private title: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService, public location: Location, public _router: Router, public _activatedRoute: ActivatedRoute, public _commonService: CommonService, private localStorageService: LocalStorageService) {
         // detect if its a browser or desktop
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
-        
+
         // set page name
         this.pageName = "BRAND";
 
         // Set today's date
         this.todayDate = Date.now();
     }
-    
 
     ngOnInit() {
         // set some extra meta tags if brand is a category page
         if (this._activatedRoute.snapshot.queryParams['category']) {
             this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
         }
-        
+
         // Set brand of the page
         this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);
 
         // Get data from resolver and render the view
         const resolverData = this._activatedRoute.snapshot.data;
         this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
+        console.log(resolverData['brand'][0]);
 
         // surbscribe to route change and based on that refresh products
         this.refreshProductsBasedOnRouteChange();
@@ -138,194 +132,14 @@ export class BrandComponent {
         });
     }
 
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
-    }
-
-    ngAfterViewInit() {
-        /* Remove key set on server side to avoid api on dom load of frontend side */
-        if (this.isBrowser) {
-            this._tState.remove(RPRK);
-        }
-    }
-
-    createDefaultParams() {
-        let newParams: any = {
-            queryParams: {}
-        };
-
-        let defaultParams = this._commonService.getDefaultParams();
-        /**
-         *  Below code is added to maintain the state of sortBy : STARTS
-         */
-        if (defaultParams['queryParams']['orderBy'] != undefined)
-            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
-        if (defaultParams['queryParams']['orderWay'] != undefined)
-            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
-        /**
-         *  maintain the state of sortBy : ENDS
-         */
-
-        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
-
-        // Object.assign(newParams["queryParams"], currentQueryParams);
-
-        for (let key in currentQueryParams) {
-            newParams.queryParams[key] = currentQueryParams[key];
-        }
-
-        // newParams["queryParams"] = queryParams;
-        newParams["filter"] = {};
-
-        let params = this._activatedRoute.snapshot.params;
-        newParams["brand"] = params['brand'];
-        if (params['category'])
-            newParams["category"] = params['category'];
-        else {
-            this._commonService.deleteDefaultParam('category');
-        }
-        let fragment = this._activatedRoute.snapshot.fragment;
-        if (fragment != undefined && fragment != null && fragment.length > 0) {
-            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
-            currentUrlFilterData = currentUrlFilterData.split("/");
-            if (currentUrlFilterData.length > 0) {
-                const filter = {};
-                for (let i = 0; i < currentUrlFilterData.length; i++) {
-                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
-                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
-                    filter[filterName] = filterData;
-                }
-                newParams["filter"] = filter;
-            }
-        }
-
-        newParams["pageName"] = this.pageName;
-
-        return newParams;
-    }
-
-    refreshProducts() {
-
-        const defaultParams = this.createDefaultParams();
-        this._commonService.updateDefaultParamsNew(defaultParams);
-        const fragment = this._activatedRoute.snapshot.fragment;
-
-        if (this._tState.hasKey(RPRK) && !fragment) {
-            const response = this._tState.get(RPRK, {});
-            this.initiallizeData(response, false);
-        } else {
-            if (this.isBrowser) {
-                this._commonService.showLoader = true;
-            }
-            this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                if (this.isServer) {
-                    this._tState.set(RPRK, response);
-                }
-                this.initiallizeData(response, true);
-            });
-        }
-    }
-
-    private refreshProductsBasedOnRouteChange(){
-        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
-            this.refreshProducts();
-        });
-    }
-    
-
-    private initiallizeData(response: any, flag: boolean) {
-        // Check if brand is Active 
-        this.iba = response['brandDetails']['active'];
-
-        // If brand is inactive or num of products = 0 redirect to page not found
-        if (!this.iba || response['productSearchResult']['totalCount'] === 0) {
-            if (this.isServer) {
-                let httpStatus = 404;
-                if (response['httpStatus']) {
-                    httpStatus = response['httpStatus'];
-                }
-                this._response.status(httpStatus);
-            }
-        }
-
-        /* Only set links if brand is active */
-        if (this.iba) {
-            this.setLinks(response);
-        }
-
-        // Set sort by, filters and listing products 
-        if (flag) {
-            this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            this.paginationUpdated.next(this.paginationData);
-            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.filterData = response.buckets;
-            this.productsUpdated.next(response.productSearchResult.products);
-        }
-        this.productSearchResult = response.productSearchResult;
-
-        this.productSearchResultSEO = [];
-        for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
-            if (response.productSearchResult.products[p].salesPrice > 0 && response.productSearchResult.products[p].priceWithoutTax > 0) {
-                this.productSearchResultSEO.push(response.productSearchResult.products[p]);
-
-            }
-        }
-        if (response['category'] !== "undefined") {
-            this.brandcatFlag = true;
-            this.brandCatDesc = response.desciption;
-            this.categoryNameinAPI = response.categoryName
-            this.heading = response.heading;
-            this.shortDesciption = response.shortDesciption;
-            if (response.categoryName) {
-                this.brandCategoryName = response.categoryName
-            }
-            this.friendlyUrl = response.brandDetails.friendlyUrl;
-
-        } else {
-            this.heading = 'shop ' + this.brand + ' products online.';
-        }
-        
-        // update brand name based on API response
-        this.brand = response.brandDetails.brandName;
-        this._commonService.removeLoader();
-        this.setTrackingData(response);
-    }
-
-    private setTrackingData(response){
-        if (this.isBrowser) {
-            let trackingData = {
-                event_type: "page_load",
-                label: "view",
-                channel: "Listing",
-                page_type: "brand_page",
-                brand: this.brand,
-                filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
-                product_count: response.productSearchResult.totalCount
-
-            }
-            this.dataService.sendMessage(trackingData);
-        }
-        if (response.brandDetails.brandDesc !== null && response.brandDetails.brandDesc !== '') {
-            this.brandShortDesc = response.brandDetails.brandDesc;
-            this.showDesc = true;
-        }
-
-        // Set amp tag only for brand-category page.
-        const params = this._activatedRoute.snapshot.params;
-        if (params['category']) {
-            this.catUrlName = this._router.url.split("/brands/" + this._activatedRoute.snapshot.params["brand"])[1];
-            this.setAmpTag('brand-category');
-        } else {
-            this.setAmpTag('brand');
-        }
-    }
-
-    private setLinks(response) {
+    setLinks(response) {
         let qp = this._activatedRoute.snapshot.queryParams;
+        //console.log("paramssss",qp);
+        //console.log("qp",qp['page']);
         this.pageNo = qp['page'];
         if (response["title"]) {
             this.brandCatName = this.heading.replace(/(<([^>]+)>)/ig, '');
+            // let title = "Buy " + this.capitalizeFirstLetter(this.brandCatName) + "Online at Best Price - Moglix.com";
             this.title.setTitle(response["title"]);
             this.meta.addTag({ "name": "og:title", "content": response["title"] });
         } else {
@@ -348,22 +162,23 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": "https://www.moglix.com" + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
+        if (this.isServer) {
+            let links = this._renderer2.createElement('link');
+            links.rel = "canonical";
+            let href = CONSTANTS.PROD + this._router.url.split("?")[0].split("#")[0].toLowerCase();
+            //console.log("href",href);
 
-        let links = this._renderer2.createElement('link');
-        links.rel = "canonical";
-        let href = CONSTANTS.PROD + this._router.url.split("?")[0].split("#")[0].toLowerCase();
-        //console.log("href",href);
+            if (qp['page'] == 1 || qp['page'] == undefined) {
+                links.href = href;
+            }
+            else {
+                links.href = href + "?page=" + qp['page'];
 
-        if (qp['page'] == 1 || qp['page'] == undefined) {
-            links.href = href;
+            }
+
+
+            this._renderer2.appendChild(this._document.head, links);
         }
-        else {
-            links.href = href + "?page=" + qp['page'];
-
-        }
-
-
-        this._renderer2.appendChild(this._document.head, links);
         if (this.brandCategoryName) {
 
             this.itemsList = [{
@@ -544,7 +359,7 @@ export class BrandComponent {
                 page = {
                     'pageName': "moglix:" + this.brand + ": listing",
                     'channel': "brand",
-                    'subSection': "moglix:" + this.brand + ": listing "  + this._commonService.getSectionClick().toLowerCase(),
+                    'subSection': "moglix:" + this.brand + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
                 }
                 custData = {
@@ -572,7 +387,7 @@ export class BrandComponent {
             }
 
             if (this.trendingSearchData['sC'] && this.trendingSearchData['sC'] === 'no') {
-                digitalData["page"]["trendingSearch"] = 'no';            
+                digitalData["page"]["trendingSearch"] = 'no';
                 digitalData["page"]["suggestionClicked"] = 'no';
             }
             else if (this.trendingSearchData['sC'] && this.trendingSearchData['sC'] === 'yes') {
@@ -585,10 +400,14 @@ export class BrandComponent {
             // }
             /*End Adobe Analytics Tags */
         }
-    }
-
-    private capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        /* Setting of product schema for products */
+        if (this.isServer) {
+            const products = response.productSearchResult.products || [];
+            if (products && products.length) {
+                const categoryName = qp && qp['categoryName'];
+                this.createProductsSchema(products, categoryName);
+            }
+        }
     }
 
     async onVisiblebrandDetailsFooter(event) {
@@ -604,7 +423,7 @@ export class BrandComponent {
                 brandShortDesc: this.brandShortDesc,
                 brandContent: this.brandContent,
                 iba: this.iba,
-                firstPageContent:  this.firstPageContent,
+                firstPageContent: this.firstPageContent,
                 productSearchResult: this.productSearchResult,
                 productSearchResultSEO: this.productSearchResultSEO,
                 heading: this.heading,
@@ -682,11 +501,11 @@ export class BrandComponent {
                 const factory = this.cfr.resolveComponentFactory(SortByComponent);
                 this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
                 this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
-    
+
                 (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
                     this.toggleSortBy(data);
                 });
-    
+
             }
 
             const sortByFilter = document.querySelector('sort-by');
@@ -697,7 +516,177 @@ export class BrandComponent {
         }
     }
 
-    private setAmpTag(page) {
+    createProductsSchema(productArray, categoryName) {
+        if (this.isServer) {
+            if (productArray.length > 0) {
+                const productList = [];
+                productArray.forEach((product, index) => {
+                    productList.push({
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "url": CONSTANTS.PROD + '/' + product.productUrl,
+                        "name": product.productName,
+                        "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
+                    })
+                });
+                const schemaObj = {
+                    "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "numberOfItems": productArray.length,
+                    "url": CONSTANTS.PROD + this._router.url,
+                    "name": categoryName,
+                    "itemListElement": productList
+                }
+                let s = this._renderer2.createElement('script');
+                s.type = "application/ld+json";
+
+                s.text = JSON.stringify(schemaObj);
+                this._renderer2.appendChild(this._document.head, s);
+            }
+        }
+    }
+
+    refreshProductsBasedOnRouteChangeFlag: number = 0;
+    private refreshProductsBasedOnRouteChange() {
+        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
+            // to avoid first time call of API on route change subscription
+            if (this.refreshProductsBasedOnRouteChangeFlag) {
+                this.refreshProducts();
+            }
+            this.refreshProductsBasedOnRouteChangeFlag++;
+        });
+    }
+
+    capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    ngAfterViewInit() {
+        if (this.isBrowser) {
+            this._tState.remove(RPRK);
+        }
+    }
+
+    refreshProducts() {
+        const defaultParams = this.createDefaultParams();
+        this._commonService.updateDefaultParamsNew(defaultParams);
+        const fragment = this._activatedRoute.snapshot.fragment;
+
+        if (this._tState.hasKey(RPRK) && !fragment) {
+            const response = this._tState.get(RPRK, {});
+            this.initiallizeData(response, false);
+        } else {
+            if (this.isBrowser) {
+                this._commonService.showLoader = true;
+            }
+            this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+                if (this.isServer) {
+                    this._tState.set(RPRK, response);
+                }
+                this.initiallizeData(response, true);
+            });
+        }
+    }
+
+    private initiallizeData(response: any, flag: boolean) {
+        this._commonService.showLoader = false;
+        this.iba = response['brandDetails']['active'];
+        if (!this.iba || response['productSearchResult']['totalCount'] === 0) {
+            if (this.isServer) {
+                let httpStatus = 404;
+                if (response['httpStatus']) {
+                    httpStatus = response['httpStatus'];
+                }
+                this._response.status(httpStatus);
+            }
+            // response = {brandDetails: response['brandDetails'], buckets: [], productSearchResult: {products: [], totalCount: 0}};
+        }
+        if (flag) {
+            this.paginationData = { itemCount: response.productSearchResult.totalCount };
+            this.paginationUpdated.next(this.paginationData);
+            this.sortByUpdated.next();
+            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
+            this.filterData = response.buckets;
+            this.productsUpdated.next(response.productSearchResult.products);
+        }
+        this.productSearchResult = response.productSearchResult;
+        this.productSearchResultSEO = [];
+        for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
+            if (response.productSearchResult.products[p].salesPrice > 0 && response.productSearchResult.products[p].priceWithoutTax > 0) {
+                this.productSearchResultSEO.push(response.productSearchResult.products[p]);
+
+            }
+        }
+        if (response['category'] !== "undefined") {
+            this.brandcatFlag = true;
+            this.brandCatDesc = response.desciption;
+            this.categoryNameinAPI = response.categoryName
+            this.heading = response.heading;
+            this.shortDesciption = response.shortDesciption;
+            if (response.categoryName) {
+                this.brandCategoryName = response.categoryName
+            }
+            this.friendlyUrl = response.brandDetails.friendlyUrl;
+            //console.log(" this.heading",this.heading );
+
+
+            if (this.isBrowser) {
+
+                setTimeout(() => {
+                    if (document.querySelector('h3 .inv_span')) {
+                        document.querySelector('h3 .inv_span').addEventListener('click', function () {
+                            if (parseInt((<HTMLElement>document.querySelector('.show-mobile')).style.opacity) > 0) {
+                                ClientUtility.fadeOut(document.querySelector('.show-mobile'));
+                            } else {
+                                ClientUtility.fadeIn(document.querySelector('.show-mobile'));
+                            }
+                            document.querySelector('.showplus').classList.toggle('showminus');
+                        }, { passive: true });
+                    }
+                }, 3000);
+            }
+
+        } else {
+            this.heading = 'shop ' + this.brand + ' products online.';
+        }
+        this.brand = response.brandDetails.brandName;
+        //console.log("this.brand 2",this.brand);
+        if (this.isBrowser) {
+            var trackingData = {
+                event_type: "page_load",
+                label: "view",
+                channel: "Listing",
+                page_type: "brand_page",
+                brand: this.brand,
+                filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
+                product_count: response.productSearchResult.totalCount
+
+            }
+            this.dataService.sendMessage(trackingData);
+        }
+        // this.brandShortDesc = response.brandDetails.brandDesc;
+        if (response.brandDetails.brandDesc !== null && response.brandDetails.brandDesc !== '') {
+            this.brandShortDesc = response.brandDetails.brandDesc;
+            this.showDesc = true;
+        }
+        /* Only set links if brand is active */
+        if (this.iba) {
+            this.setLinks(response);
+        }
+
+        // Set amp tag only for brand-category page.
+        if (this.isServer) {
+            const params = this._activatedRoute.snapshot.params;
+            if (params['category']) {
+                this.catUrlName = this._router.url.split("/brands/" + this._activatedRoute.snapshot.params["brand"])[1];
+                this.setAmpTag('brand-category');
+            } else {
+                this.setAmpTag('brand');
+            }
+        }
+    }
+
+    setAmpTag(page) {
         // console.log("page33",page);
         let currentRoute = this._router.url.split("?")[0].split("#")[0];
         let ampLink;
@@ -724,18 +713,83 @@ export class BrandComponent {
 
     }
 
-    private pageChanged(page) {
+    createDefaultParams() {
+        let newParams: any = {
+            queryParams: {}
+        };
+
+        let defaultParams = this._commonService.getDefaultParams();
+        /**
+         *  Below code is added to maintain the state of sortBy : STARTS
+         */
+        if (defaultParams['queryParams']['orderBy'] != undefined)
+            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
+        if (defaultParams['queryParams']['orderWay'] != undefined)
+            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
+        /**
+         *  maintain the state of sortBy : ENDS
+         */
+
+        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+
+        // Object.assign(newParams["queryParams"], currentQueryParams);
+
+        for (let key in currentQueryParams) {
+            newParams.queryParams[key] = currentQueryParams[key];
+        }
+
+        // newParams["queryParams"] = queryParams;
+        newParams["filter"] = {};
+
+        let params = this._activatedRoute.snapshot.params;
+        newParams["brand"] = params['brand'];
+        if (params['category'])
+            newParams["category"] = params['category'];
+        else {
+            this._commonService.deleteDefaultParam('category');
+        }
+        let fragment = this._activatedRoute.snapshot.fragment;
+        if (fragment != undefined && fragment != null && fragment.length > 0) {
+            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+            currentUrlFilterData = currentUrlFilterData.split("/");
+            if (currentUrlFilterData.length > 0) {
+                const filter = {};
+                for (let i = 0; i < currentUrlFilterData.length; i++) {
+                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
+                    filter[filterName] = filterData;
+                }
+                newParams["filter"] = filter;
+            }
+        }
+
+        newParams["pageName"] = this.pageName;
+
+        return newParams;
+    }
+
+
+    pageChanged(page) {
+        //console.log("Event page changed called");
+
+        //this._commonService.updateDefaultParamsNew({ pageIndex: page });
+
         let extras: NavigationExtras = {};
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);
+        //let fragmentString = this._commonService.generateFragmentString();
         let fragmentString = this._activatedRoute.snapshot.fragment;
         if (fragmentString != null) {
             extras.fragment = fragmentString;
+            //console.log(extras);
         }
+
 
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let newQueryParams: {} = {};
         if (Object.keys(currentQueryParams).length) {
             for (let key in currentQueryParams) {
+                //console.log(key);
                 newQueryParams[key] = currentQueryParams[key];
             }
         }
@@ -746,6 +800,9 @@ export class BrandComponent {
             delete newQueryParams["page"];
         }
 
+        //console.log("New Query Params pagination", newQueryParams);
+        //newQueryParams["page"] = page;
+
         if (Object.keys(newQueryParams).length > 0)
             extras.queryParams = newQueryParams;
         else
@@ -754,25 +811,18 @@ export class BrandComponent {
         this._router.navigate([currentRoute], extras);
     }
 
-    public scrollTop(event) {
-        this._commonService.scrollTo(event);
+    onUpdaet(data) {
+        this.sortByOpt = data.sortByOpt;
     }
 
-    resetLazyComponents(){
-        if (this.filterInstance) {
-            this.filterInstance = null;
-            this.filterContainerRef.remove();
-        }
-        if (this.sortByInstance) {
-            this.sortByInstance = null;
-            this.sortByContainerRef.remove();
-        }
-        if (this.paginationInstance) {
-            this.paginationInstance = null;
-            this.paginationContainerRef.remove();
+    scrollTop(eve) {
+        if (this.isBrowser) {
+            ClientUtility.scrollToTop(500, eve.target.offsetTop - 50);
         }
     }
-
+    togglets() {
+        this.toggletsWrap = !this.toggletsWrap;
+    }
     ngOnDestroy() {
         if (this.refreshProductsUnsub$) {
             this.refreshProductsUnsub$.unsubscribe();
@@ -780,7 +830,6 @@ export class BrandComponent {
         if (this.refreshProductsUnsub) {
             this.refreshProductsUnsub.unsubscribe();
         }
-        this.resetLazyComponents();
     }
 
 }

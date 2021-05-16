@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, UrlSegment } from '@angular/router';
-import { IsNotAuthenticatedGuard } from '../utils/guards/is-not-authenticated.guard';
-import { MyAccountGuard } from '../utils/guards/myAccount.guard';
 import { PagesComponent } from './pages.component';
+import { Routes, RouterModule, UrlSegment } from '@angular/router';
+import { MyAccountGuard } from '@utils/guards/myAccount.guard';
+import { IsNotAuthenticatedGuard } from '@utils/guards/is-not-authenticated.guard';
 
 const routes: Routes = [
   {

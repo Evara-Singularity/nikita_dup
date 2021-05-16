@@ -17,6 +17,7 @@
     <div *ngIf="relatedCatgoryList!==null && relatedCatgoryList.length > 3">
         <a pageScroll  [pageScrollOffset]="230" (click)="showList()" class="btn show-more" href="#subcCategoryTop">
             {{moreLessCategoryText}}
+            <!-- <button type="button" (click)="showList()"></button> -->
         </a>
     </div>
 </div>

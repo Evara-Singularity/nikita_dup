@@ -1,9 +1,12 @@
 @import "../../scss/variables";
+
 :host {
     display: block;
+
     .slide-up {
         transform: translateY(0);
     }
+
     .filter-wrapper {
         position: fixed;
         bottom: 0;
@@ -12,9 +15,11 @@
         width: 100%;
         box-shadow: 1px -3px 8px #cecece;
         background: #fff;
+
         &.slide-up {
             bottom: 0;
         }
+
         button {
             width: 50%;
             height: 54px;
@@ -24,6 +29,7 @@
             font-size: 16px;
             font-weight: 500;
             text-align: center;
+
             i {
                 padding-right: 10px;
             }
@@ -34,23 +40,27 @@
 // Listing Cards Section
 .view-products {
     padding-bottom: 0;
+
     li {
         @extend %clear-fix;
         padding: 10px;
         position: relative;
         background: white;
         margin-bottom: 2px;
+
         .product-img {
             img {
                 max-width: 100%;
                 max-height: 100%;
             }
         }
+
         .description-txt {
             font-size: 14px;
             margin-bottom: 4px;
             line-height: 20px;
         }
+
         .request-text {
             font-weight: bold;
             font-size: 16px;
@@ -58,21 +68,26 @@
             margin-top: 5px;
         }
     }
+
     li:last-child {
         border-bottom: none !important;
     }
+
     &.list {
         li {
             width: 100%;
             border-bottom: 1px solid $border-color;
+
             a {
                 display: block;
             }
+
             .product-img {
                 width: 84px;
                 height: 84px;
                 float: left;
             }
+
             .product-description {
                 float: right;
                 width: 75%;
@@ -85,12 +100,15 @@
 .cate-container {
     background: #fff;
     margin-bottom: 65px;
+
     .sub-cate-container {
         background: #e9f0f4;
+
         h1 {
             font-size: 16px;
         }
     }
+
     .card-head {
         border-bottom: 1px solid $border-color;
     }
@@ -101,6 +119,7 @@
     width: 70px;
     top: 10px;
     left: 0px;
+
     img {
         max-width: 100%;
     }
@@ -108,6 +127,7 @@
 
 .card-head {
     @extend %clear-fix;
+
     .icon-grid-view,
     .icon-list-view {
         font-size: 21px;
@@ -122,11 +142,13 @@
         display: block;
         margin: 5px 0 5px 0;
     }
+
     .before-discount {
         text-decoration: line-through;
         opacity: 0.5;
         margin: 0 6px 0 0;
     }
+
     .discount {
         color: $green-color;
         font-weight: bold;
@@ -135,6 +157,7 @@
 
 .seller {
     margin-top: 10px;
+
     span {
         color: #9e9d9d;
     }
@@ -148,6 +171,7 @@
 
 .reviewRatingWrap {
     padding-bottom: 8px;
+
     .reviewRating {
         background: #458d00;
         color: #fff;
@@ -156,10 +180,12 @@
         font-size: 10px;
         font-weight: 500;
         margin-right: 5px;
+
         img {
             width: 10px;
         }
     }
+
     .ratingCount {
         color: #c0c0c0;
         font-size: 10px;
@@ -170,16 +196,19 @@
 .brandsSection {
     padding: 15px;
     background: #f2f2f2;
+
     .heading-3 {
         border-bottom: 1px solid #ddd;
         margin-bottom: 10px;
     }
+
     .innerBrandSection {
         box-shadow: 0px 3px 6px #0000001a;
         border-radius: 4px;
         background: $white;
         padding: 15px 30px;
     }
+
     .brandList {
         font-size: 13px;
         line-height: 21px;

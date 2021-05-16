@@ -5,8 +5,7 @@
     <div class="outerBlock pad-lr-5" *ngFor="let subCategory of sub_category_Data | slice:0:4">
       <div class="subCatBlock">
         <a [routerLink]="'/'+subCategory?.categoryDetails?.categoryLink">
-          <img [src]="defaultImage" lazyLoad="{{imagePath}}{{subCategory.categoryDetails.mainImageLink}}"
-            alt="{{subCategory.categoryDetails.categoryName}}">
+          <img [src]="defaultImage" lazyLoad="{{imagePath}}{{subCategory.categoryDetails.mainImageLink}}" alt = "{{subCategory.categoryDetails.categoryName}}"> 
           <p>{{subCategory.categoryDetails.categoryName}}</p>
         </a>
       </div>
@@ -23,7 +22,7 @@
     <div class="sub-categoryRow popRow">
       <div class="outerBlock pad-lr-5" *ngFor="let subCat of sub_category_Data">
         <div class="subCatBlock">
-          <a [routerLink]="'/'+subCat?.categoryDetails?.categoryLink">
+            <a [routerLink]="'/'+subCat?.categoryDetails?.categoryLink">
             <img [src]="defaultImage" lazyLoad="{{imagePath}}{{subCat.categoryDetails.mainImageLink}}">
             <p>{{subCat.categoryDetails.categoryName}}</p>
           </a>

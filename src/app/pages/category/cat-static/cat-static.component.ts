@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
-import { CONSTANTS } from '@app/config/constants';
+import { CONSTANTS } from '@config/constants';
+import { Component,Input,Inject } from '@angular/core';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DOCUMENT } from "@angular/common";
 
@@ -9,18 +9,14 @@ import { DOCUMENT } from "@angular/common";
   templateUrl: './cat-static.component.html',
   styleUrls: ['./cat-static.component.scss']
 })
-export class CatStaticComponent implements OnInit {
+export class CatStaticComponent {
 
   @Input('static_data') static_data;
-  @Input('page_title') page_title;
+  @Input('page_title') page_title ;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
-  constructor(@Inject(DOCUMENT) private _document, private _pageScrollService: PageScrollService) { }
-
-  ngOnInit() {
-  }
-
-  scrollToResults() {
+  constructor(@Inject(DOCUMENT) private _document,private _pageScrollService: PageScrollService) { }
+  scrollToResults(){
     this._pageScrollService.scroll({
       document: this._document,
       scrollTarget: '#category-cards-section',

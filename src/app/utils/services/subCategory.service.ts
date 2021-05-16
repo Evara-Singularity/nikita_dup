@@ -1,8 +1,10 @@
 import {Injectable, EventEmitter} from "@angular/core";
-import { DataService } from "@app/utils/services/data.service";
-import { CONSTANTS } from '@app/config/constants';
+import {DataService} from "@services/data.service";
+import {CONSTANTS} from "@config/constants";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root' 
+})
 export class SubCategoryService{
     public updateSubCategoryData$ = new EventEmitter();
     public refreshSubCategoryData$ = new EventEmitter();

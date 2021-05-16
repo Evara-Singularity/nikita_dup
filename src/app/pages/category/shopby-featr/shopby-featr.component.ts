@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { CONSTANTS } from '@app/config/constants';
+import { Component, OnInit, Input} from '@angular/core';
+import { CONSTANTS } from '@config/constants';
 
 
 @Component({
@@ -7,16 +7,10 @@ import { CONSTANTS } from '@app/config/constants';
   templateUrl: './shopby-featr.component.html',
   styleUrls: ['./shopby-featr.component.scss']
 })
-export class ShopbyFeatrComponent implements OnInit {
+export class ShopbyFeatrComponent {
 
   @Input('shopBy_Data') shopBy_Data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
-
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
+  
 }

@@ -4,15 +4,13 @@ import {
     Resolve,
     RouterStateSnapshot,
     ActivatedRouteSnapshot,
-    ActivatedRoute
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
-import { CategoryService } from '@app/pages/category/category.service';
+import { CategoryService } from '@services/category.service';
 import { Router } from '@angular/router';
 
 const GFAQK: any = makeStateKey<{}>("GFAQK")// GFAQK: Get Frequently Asked Question Key

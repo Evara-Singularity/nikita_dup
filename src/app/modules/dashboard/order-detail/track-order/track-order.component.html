@@ -1,0 +1,69 @@
+<section class="orderPopup">
+    <div class="container-head-sec">
+        <p class="txt">Track Your Product
+            <span>
+                {{itemDetails.product_name}}
+            </span>
+        </p>
+        <i (click)="closeModal()" class="icon-circle-delete f-right"></i>
+    </div>
+    <div class="track-id-info">
+        <span *ngIf="displayScans" class="track_id">Track ID : &nbsp;{{shipmentDetail.awb}}</span>
+        <span *ngIf="displayScans" class="track_id">Courier By: &nbsp;{{shipmentDetail['shipper_name']}}</span>
+    </div>
+    <div *ngIf="displayScans; else messageSection" class="trackNewWrap">
+        <ul>
+            <li class="track_li">
+                <div *ngIf="deliveredInfo !=null" class="clearfix mar-b-5 firstTrackLi">
+                    <div class="left-content f-left">
+                        <strong>{{deliveredInfo['date'] | date:'EEEE, dd MMM yyyy' : 'en-IN'}}</strong>
+                    </div>
+                    <div *ngIf="deliveredInfo && deliveredInfo" class="right-content f-right"
+                        [ngClass]="{'grey-border': !deliveredInfo.flag}">
+                        <strong class=""> {{deliveredInfo?.flag ? 'Delivered' : 'Estimated Delivery'}}</strong>
+
+                        <span class="track_span track_top"></span>
+                    </div>
+                </div>
+
+                <div class="inner-date-list">
+                    <ul [ngClass]="{'trackerDot':deliveredInfo ==null}">
+                        <ng-container *ngFor="let key of itemDetails['groupByDateKeys'];let i = index;first as isFirst">
+                            <li *ngIf="checkOutForDsiplay(key)">
+                                <div class="inner-left-content f-left ">
+                                    <strong>{{key | date:'EEEE, dd MMM yyyy' : 'en-IN'}}</strong>
+                                </div>
+                                <div class="inner-right-content f-right">
+                                </div>
+                            </li>
+                            <li *ngFor="let item of groupByDate[key]">
+                                <div class="clearfix">
+                                    <div class="inner-left-content f-left ">
+                                        <span> {{item['statusUpdateTime'] | date:'hh:mm a' : 'en-IN'}}</span>
+                                    </div>
+                                    <div class="inner-right-content f-right ">
+                                        <span class="inner-status ">{{item['status']}}</span>
+                                        <small>{{item['location']}}</small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </li>
+            <li *ngFor="let item of shippedDates" class="track_li ">
+                <div class="left-content f-left ">
+                    <strong>{{item['date'] | date:'EEEE, dd MMM yyyy' : 'en-IN'}}</strong>
+                </div>
+                <div class="right-content f-right ">
+                    <strong>{{item['status']}}</strong>
+                    <span class="track_span "></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <ng-template #messageSection>
+        <div class="orderNullMessage" [innerHTML]="itemDetails['customMsg']">
+        </div>
+    </ng-template>
+</section>

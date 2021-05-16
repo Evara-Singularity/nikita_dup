@@ -5,7 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from "../../utils/services/data.service";
 import CONSTANTS from "../../config/constants";
-import { ENDPOINTS } from "src/app/config/endpoints";
+import { ENDPOINTS } from "@app/config/endpoints";
 @Injectable()
 export class OrderSummaryService {
 

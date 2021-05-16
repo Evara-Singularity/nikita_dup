@@ -1,0 +1,67 @@
+<div class="css-banner-component">
+    <div class="internalBanner h-auto-xs o-hidden relative">
+        <!-- <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
+            <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
+                [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+            </siema-carousel>
+        </ng-container> -->
+    </div>
+</div>
+
+<div class="allCategory">
+    <div class="categoryOverBlk">
+        <div class="clearfix">
+            <div class="commonCategorySlide" *ngFor="let item of clustorCategories | slice:0:5">
+                <div class="innerSlide">
+                    <a [routerLink]="['/'+item.category_url]">
+                        <div class="categoryImg">
+                            <img src="{{imagePath + 'img/cluster/'+item.category_image}}">
+                        </div>
+                        <div class="categoryName">
+                            <span>{{item['CategoryName']}}</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="commonCategorySlide">
+                <div class="innerSlide">
+                    <a [routerLink]="['/all-categories']">
+                        <div class="categoryImg view_all_img">
+                            <img src="{{imagePath + 'img/cluster/Group 10310.svg'}}">
+                        </div>
+                        <div class="categoryName">
+                            <span>View All Categories </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="banner-ad" *ngFor="let im of middleImageJsonData;let i = index;">
+    <a *ngIf="i==0" href="{{im.image_link}}">
+        <img [src]="imagePath + im.image_name" alt="banner add">
+    </a>
+</section>
+
+<!-- Section for feature Brands -->
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)" >
+    <div>
+        <ng-container #FeaturedBrands></ng-container>
+    </div>
+</div>
+
+<div observeVisibility class="categories-container" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
+    <ng-container #RecentlyViewedCarouselComponent ></ng-container>
+</div>
+
+<div observeVisibility class="categories-container clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
+    <ng-container #Categories></ng-container>
+</div>
+ 
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
+    <ng-container #FeaturedArrivals></ng-container>
+</div> 
+
+<ng-container #HomePopupComponet></ng-container>

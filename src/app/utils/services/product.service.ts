@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 
 import { DataService } from './data.service';
 import CONSTANTS from '../../config/constants';
-import { ENDPOINTS } from 'src/app/config/endpoints';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: 'root'
@@ -141,4 +141,11 @@ export class ProductService {
             );
     }
 
+    getSession() {
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession");
+    }
+
+    getCartBySession(params) {
+         return this._dataService.callRestful("GET", this.basePath + "/cart/getCartBySession", { params: params });
+    }
 }

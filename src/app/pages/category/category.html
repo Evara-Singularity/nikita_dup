@@ -1,0 +1,256 @@
+<div class="cat_filter_wrap">
+    <div class="prod_filter">
+        <ng-container *ngIf="isBrowser" #filter></ng-container>
+        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter> -->
+    </div>
+</div>
+
+<breadcrump [breadcrumpUpdated]="breadcrumpUpdated" [hideUI]="false" [type]="'category'"></breadcrump>
+
+<ng-container *ngIf="layoutType == 1 && firstPageContent">
+    <!-- && categoryPage hide  -->
+    <div class="row splnewpage" *ngIf="isSLPPage">
+        <div class="container-fluid safetyshoebannersrow">
+            <cat-static [page_title]="page_title" [static_data]="static_Dt"></cat-static>
+            <shopby-brand [brand_Data]="brand_Dt"></shopby-brand>
+            <cat-bestseller [bestSlroptions]="options" [bestSeller_Data]="bestSeller_Dt"></cat-bestseller>
+        </div>
+        <div class="container-fluid safetyshshopbytype">
+            <shopby-featr [shopBy_Data]="shopBy_Dt"></shopby-featr>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="layoutType == 2 && firstPageContent">
+    <!-- && categoryPage hide  -->
+    <div class="row splnewpage layout2" *ngIf="isSLPPage">
+        <div class="container-fluid safetyshoebannersrow">
+            <cat-static [page_title]="page_title" [static_data]="static_Dt"></cat-static>
+            <slp-sub-category [sub_category_Data]="spl_subCategory_Dt"></slp-sub-category>
+            <shopby-brand [brand_Data]="brand_Dt"></shopby-brand>
+            <cat-bestseller [bestSlroptions]="options" [bestSeller_Data]="bestSeller_Dt"></cat-bestseller>
+        </div>
+        <div class="container-fluid safetyshshopbytype">
+            <shopby-featr [shopBy_Data]="shopBy_Dt"></shopby-featr>
+        </div>
+    </div>
+</ng-container>
+
+<div class="container-fluid category">
+    <div class="row">
+        <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
+    </div>
+</div>
+
+<div class="cate-container" id="category-cards-section">
+    <div class="bg_white">
+        <div class="sub-cate-container" *ngIf="layoutType != 2">
+            <div *ngIf="showSubcategoty" [class.hidden-sm-up]="getRelatedCatgory?.children==null" class="container pt-10">
+                <p *ngIf="getRelatedCatgory?.children!==undefined && getRelatedCatgory?.children!==null" class="f-16 bold-txt pad-tb-10">
+                    {{getRelatedCatgory?.categoryDetails?.categoryName}}
+                    <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
+                        Categories)</span>
+                </p>
+                <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></product-list>
+        <div class="filter-wrapper">
+            <button type="button" (click)="filterUp()">
+                <i class="icon-filter" aria-hidden="true"></i>
+                <span class="txt">
+                    FILTER
+                    <span *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
+            </button>
+
+            <button type="button" (click)="toggleSortBy(true)">
+                <i class="icon-sort-by" aria-hidden="true"></i>
+                <span class="txt">SORT BY</span>
+            </button>
+        </div>
+        <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
+        <ng-container *ngIf="isBrowser" #sortBy></ng-container>
+        <div>
+            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
+            <ng-template *ngIf="isBrowser" #pagination></ng-template>
+            <!-- <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated"
+                [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
+                (onPageChange)="pageChanged($event)"></pagination> -->
+        </div>
+    </div>
+
+    <div class="brandsSection" *ngIf="buckets.length > 0">
+        <h4 class="heading-3">Popular Brands</h4>
+        <a *ngFor="let category of productCategoryNames" href="{{categoryLinkLists[category]}}">{{category}} <span
+                *ngIf="!(isLast)"> . </span></a>
+    </div>
+
+    <div class="panel-head" *ngIf="firstPageContent">
+        <div class="container">
+            <h3 class="heading titleCategory" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat3' , iconMode : true}" *ngIf="(productSearchResult && productSearchResult['products'].length>0 && getRelatedCatgory.categoryDetails && getRelatedCatgory.categoryDetails.desc)">
+                More About category
+            </h3>
+        </div>
+    </div>
+
+    <div id="openCat3" style="" *ngIf="(productSearchResult && productSearchResult['products'].length>0 && getRelatedCatgory.categoryDetails && getRelatedCatgory.categoryDetails.desc) else noCategoryDesc " class="category_data pad-t-15 pad-b-30 pad-lr-15"
+        [innerHTML]="getRelatedCatgory?.categoryDetails?.desc"></div>
+
+    <ng-template #noCategoryDesc>
+        <div *ngIf="productSearchResult && productSearchResult['products'].length>0" class="container">
+            <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat' , iconMode : true}">
+                <!-- {{getRelatedCatgory | json}} -->
+                Buy {{getRelatedCatgory?.categoryDetails?.categoryName}} Online at Moglix India
+                <span class="inv_span"></span>
+                <!-- <span class="iconaccordian">
+                    <i class="icon-expand"></i>
+                </span> -->
+            </h3>
+            <p id="openCat" style="display: block" class="mb-15 lh-18">
+                You can easily buy {{getRelatedCatgory?.categoryDetails?.categoryName}} at Moglix. Shop online for {{getRelatedCatgory?.categoryDetails?.categoryName}} units by browsing through the extensive collection at Moglix.com. The products featured on our online
+                store are from highly reputed brands such as {{getTopTenBrandName(buckets)}} and many more. The collection consists of {{getFeaturedProducts(productSearchResult?.products)}} and more. You can now buy branded {{getRelatedCatgory?.categoryDetails?.categoryName}}
+                online at attractive prices with special discounts from Moglix.com. If you have been shirking from buying branded {{getRelatedCatgory?.categoryDetails?.categoryName}} because of the prices, here is your chance to bag a great deal! Save
+                loads of money by buying {{getRelatedCatgory?.categoryDetails?.categoryName}} online from Moglix.
+            </p>
+        </div>
+    </ng-template>
+    <!-- FAQ Data STARTS -->
+    <div *ngIf="faqData && faqData.length>0" class="body-bg">
+        <div class="panel-head" *ngIf="productSearchResult && productSearchResult['products'].length>0">
+            <div class="container">
+                <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">
+                    Frequently Asked Questions about {{getRelatedCatgory?.categoryDetails?.categoryName}}
+                    <span class="iconaccordian">
+                        <i class="icon-expand"></i>
+                    </span>
+                </h3>
+            </div>
+            <div id="openFaq" style="display: block" [ngClass]="{'more': toggletsWrap}" class="body-bg pad-lr-15">
+                <ng-container *ngFor="let fd of faqData">
+                    <h2 class="m_faqQuestion"><strong>{{fd["questionText"]}}</strong></h2>
+                    <p class="m_faqAnswer">{{fd["answerText"]}}</p>
+                </ng-container>
+            </div>
+            <!-- <span (click)="togglets()" class="showtsWrap">{{ !toggletsWrap? 'Show More':'Show Less'}}</span> -->
+        </div>
+    </div>
+    <!-- <ng-container *ngIf="faqData && faqData.length>0">
+        <h2 class="m_faqHeading"><strong>Frequently Asked Questions about {{getRelatedCatgory?.categoryDetails?.categoryName}}</strong></h2>
+        <hr class="deschr">
+        <ng-container *ngFor="let fd of faqData">
+            <p><strong class="m_faqQuestion">{{fd["questionText"]}}</strong></p>
+            <p class="m_faqAnswer">{{fd["answerText"]}}</p>
+        </ng-container>                    
+    </ng-container> -->
+    <!-- ENDS -->
+    <div class="body-bg" *ngIf="firstPageContent">
+        <div class="panel-head" *ngIf="productSearchResult && productSearchResult['products'].length>0">
+            <div class="container">
+                <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
+                    Top Selling {{getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
+                    <!-- <span class="iconaccordian">
+                        <i class="icon-expand"></i>
+                    </span> -->
+                </h3>
+            </div>
+            <div id="openCat2" style="display: block" [ngClass]="{'more': toggletsWrap}" class="">
+                <table width="100%" class="category-tbl body-bg">
+                    <tbody>
+                        <tr>
+                            <th>
+                                Latest {{getRelatedCatgory?.categoryDetails?.categoryName}} Models
+                            </th>
+                            <th>Expected Price</th>
+                            <th>Discount</th>
+                        </tr>
+                        <ng-container *ngFor="let product of productSearchResultSEO | slice:0:10, let i=index">
+                            <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                                <td>
+                                    <a href="{{product.productUrl}}">{{product.productName}}</a>
+                                </td>
+                                <td>₹{{product.priceWithoutTax | mathFloor}}</td>
+                                <td>
+                                    {{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <!-- <span class="date-text">This data was last updated on {{todayDate | date:'shortDate'}}.</span> -->
+            </div>
+            <!-- <span (click)="togglets()" class="showtsWrap">{{ !toggletsWrap? 'Show More':'Show Less'}}</span> -->
+        </div>
+    </div>
+
+    <div class="body-bg" *ngIf="PRTA.length>0">
+        <div class="panel-head">
+            <div class="container">
+                <h3 class="heading" (click)="scrollTop($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
+                    <h2>
+                        {{getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range
+                    </h2>
+                    <!-- <span class="iconaccordian">
+                        <i class="icon-expand"></i>
+                    </span> -->
+                </h3>
+            </div>
+            <div id="openCat2" style="display: block" [ngClass]="{'more': toggletsWrap}" class="">
+                <table width="100%" class="category-tbl body-bg">
+                    <tbody>
+                        <tr>
+                            <th>
+                                <h4>{{getRelatedCatgory?.categoryDetails?.categoryName}}</h4>
+                            </th>
+                            <th>
+                                <h4>Min Price</h4>
+                            </th>
+                            <th>
+                                <h4>Max Price</h4>
+                            </th>
+                        </tr>
+                        <ng-container *ngFor="let PRTA of PRTA | slice:0:100, let i=index">
+                            <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
+                                <td>
+                                    <a>{{PRTA.newName}}</a>
+                                </td>
+                                <td>₹{{PRTA.minPrice}}</td>
+                                <td>₹{{PRTA.maxPrice}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <span class="date-text">This data was last updated on {{todayDate | date:'shortDate'}}.</span>
+            </div>
+            <!-- <span (click)="togglets()" class="showtsWrap">{{ !toggletsWrap? 'Show More':'Show Less'}}</span> -->
+        </div>
+    </div>
+</div>
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+    <div class="content-popup" content>
+        <!-- <p class="pad-10 f-14 bold-txt upper-case">{{categoryNameFromHomePage}}</p> -->
+        <ul class="view-products no-border list border-top">
+            <li *ngFor="let product of extrasBlock.product_data">
+                <a [routerLink]="product.productlink" class="clearfix">
+                    <div class="product-img">
+                        <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}" alt="{{product.productName}}e" />
+                    </div>
+                    <div class="product-description">
+                        <p class="description-txt">
+                            {{product.productName | slice:0:60}}
+                            <span *ngIf="product.productName.length>60">...</span>
+                        </p>
+                        <p class="price">
+                            <span class="before-discount">₹{{product.mrp}} </span>
+                            <span class="discount">{{product.discount_percentage}}% OFF</span>
+                            <span class="after-discount">{{product.pricewithouttax}}</span>
+                        </p>
+                        <p class="seller">
+                            <span>By :</span> {{product.descriptionObj.Brand}}
+                        </p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</app-pop-up>

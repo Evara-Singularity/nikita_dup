@@ -1,0 +1,14 @@
+<!--https://www.mobikwik.com/wallet-->
+<!--https://test.mobikwik.com/wallet-->
+<form action="{{data['formUrl']}}" method="post" id="mobikwik_wallet_form" name="mobikwik_wallet_form">
+    <input type="hidden" name="mid" [value]="data['mid']" />
+    <input type="hidden" name="orderid" [value]="data['orderid']" />
+    <input type="hidden" name="redirecturl" [value]="data['redirecturl']" />
+    <input type="hidden" name="merchantname" [value]="data['merchantname']" />
+    <input type="hidden" name="email" [value]="data['email']" />
+    <input type="hidden" name="amount" [value]="data['amount']" />
+    <input type="hidden" name="cell" [value]="data['cell']" />
+    <input type="hidden" name="checksum" [value]="data['checksum']" />
+    <input type="hidden" name="version" [value]="data['version']" />
+</form>
+

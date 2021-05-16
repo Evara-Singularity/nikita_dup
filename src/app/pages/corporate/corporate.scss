@@ -1,0 +1,122 @@
+@import '../../scss/variables';
+
+#corporate{
+  .box1_white{
+    background: $white;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+  .row.pad_bott_15::after{
+    content: '';
+    clear: both;
+    display: block; 
+  }
+  .stationery{
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .column_4.column_4_img{
+    width: 48%;
+    float: left;
+    text-align: center;
+    margin-bottom: 15px;
+    &:nth-child(even){
+      float: right;
+    }
+  }
+
+.box2_black{
+    background: url("#{$cdn_url}img/others/corporate/content-bg.jpg");
+    background-repeat: no-repeat;
+    margin: 0px;
+    padding: 0px;
+    background-position: center;
+    background-size: cover;
+  }
+  .box2_black p{
+    font-size: $large-font;
+    line-height: 34px;
+    text-align: center;
+    color: $white;
+    padding: 30px !important;
+  }
+
+  .box2_black h1{
+    color: #fff;
+    font-weight: bold;
+    line-height: 1.56;
+    text-align: center;
+    padding:  0 30px 30px 30px !important;
+  }
+  .box2_black h1 a{
+    color:$white;
+    text-decoration:none;
+    display: block
+
+  }
+  h2{
+    font-size: $extra-large-font;
+  }
+  .column_3.column_3_img{
+    width: 80%;
+    margin: 0 auto 15px auto;
+    text-align: center;
+  }
+  .column_2.column_2_img{
+    width: 80%;
+    margin: 0 auto 15px auto;
+    text-align: center;
+    div{
+      margin-bottom: 20px;
+    }
+  }
+
+  .box_last p{
+    font-size: 22px;
+    line-height: 34px;
+    color: #fff;
+    padding: 20px 30px 15px 30px;
+    margin-bottom: 25px;
+  }
+  .box_last{
+    background:#3f4c58;
+    margin: 0px 0px 10px 0px;
+    padding: 20px 20px 50px 20px;
+    text-align: center;
+  }
+  .box_last .btn-red{
+    border-radius: 3px;
+    background-color: #f17a24;
+    padding:  15px 25px;
+    color: #fff;
+    border:none;
+    
+    font-size: $extra-large-font;
+  }
+  .category_data{
+    padding: 15px;
+    h2 {
+      font-size: $extra-large-font;
+      padding-bottom: 10px;
+      font-weight: 400;
+      padding-top: 10px;
+  }
+  ul{
+
+   li {
+    padding: 2px 0;
+    font-size: 12px!important;
+  }
+}
+  }
+  .pad-t-20 {
+    padding-top: 20px!important;
+  }
+  .lh-22 {
+    line-height: 22px!important;
+  }
+  .text-500 {
+    font-weight: 500!important;
+  }
+}
+

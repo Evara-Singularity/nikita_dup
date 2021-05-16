@@ -1,0 +1,270 @@
+@import '../../scss/variables';
+#about_us_page * {
+    color: #343434;
+}
+
+#about_us_page {
+    margin: 0px auto;
+    padding: 0px;
+    overflow-x: hidden;
+}
+
+#about_us_page .about-video-div {
+    padding-top: 80px;
+}
+
+#wrapper {
+    margin: 0px auto;
+    overflow: hidden;
+    .about_fstwrp {
+        padding: 70px 20px 35px 20px;
+        background: radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
+    }
+    .about-text {
+        p {
+            &:first-child {
+                padding: 40px 0 0px 0;
+            }
+            padding-top:15px;
+            font-size: 14px;
+            color: #2d2d2d;
+            line-height: 28px;
+        }
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+.text-white {
+    color: #fff;
+}
+
+img {
+    max-width: 100%;
+}
+
+// .about-us {
+//     left: 15px;
+//     right: 15px;
+//     width: auto !important;
+// }
+.about_first {
+    /*background-image:
+    linear-gradient(
+		150deg, #ebebeb, #ffffff
+	);	*/
+    background: radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
+}
+
+.about_text {
+    clear: both;
+}
+
+.abt-logo {
+    border-left: 6px solid #343434;
+    text-align: center;
+    height: 120px;
+    position: relative;
+    color: #2d2d2d;
+    border-bottom: 6px solid #343434;
+    border-right: 6px solid #343434;
+    h2 {
+        position: absolute;
+        top: -22px;
+        left: 0px;
+        right: 0;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+            width: 150px;
+        }
+    }
+    h4 {
+        position: relative;
+        left: 0px;
+        top: 50px;
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+    .abt-span {
+        position: absolute;
+        bottom: -18px;
+        right: 0;
+        left: 0;
+        width: 67%;
+        margin: 0 auto;
+        background: #DB1510;
+        padding: 8px 0px;
+        border-radius: 17px;
+        text-align: center;
+        color: #fff;
+        font-size: 12px;
+        line-height: 15px;
+        font-weight: 600;
+    }
+    &:after {
+        width: 30px;
+        height: 6px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        content: "";
+        background: #343434;
+    }
+    &:before {
+        width: 30px;
+        height: 6px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: "";
+        background: #343434;
+    }
+}
+
+.about-video {
+    background: #dc1410;
+    padding: 40px 20px 0 20px;
+    .about-video-div {
+        padding: 30px 0px;
+        .text-white {
+            text-align: left;
+            width: 90%;
+            margin: 0px auto !important;
+            font-size: 14px;
+            line-height: 30px;
+        }
+    }
+    h1 {
+        font-size: 18px;
+        color: #fff !important;
+        text-align: center;
+        text-transform: uppercase;
+        padding: 0 0 10px 0;
+    }
+}
+
+.about-wall {
+    background:url("#{$cdn_url}img/others/2018/May/about-page/wall-bg.jpg") repeat top left;
+    padding: 30px 20px 10px 20px;
+    h1 {
+        font-size: 18px;
+        text-align: center;
+    }
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        margin: 16px 0;
+    }
+}
+
+.about-pointer {
+    background:url("#{$cdn_url}img/others/about/pointer_background.jpg");
+    position: relative;
+    padding: 30px 20px;
+    text-align: center;
+    h2 {
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        margin: 0 0 35px 0;
+        font-weight: normal;
+    }
+    .abt_number {
+        margin: 0 0 35px 0;
+        &:first-child {
+            margin: 0;
+        }
+    }
+}
+
+.count {
+    color: red !important;
+    font-size: 35px;
+}
+
+.about-people {
+    padding: 20px 20px 0 20px;
+    h3 {
+        font-size: 18px;
+        color: #dc1410 !important;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    p {
+        font-size: 14px;
+        line-height: 23px;
+        padding: 10px 0;
+    }
+    .about-people-wrap {
+        padding-bottom: 12px;
+        box-sizing: border-box;
+    }
+}
+
+.center-block {
+    .segment {
+        display: flex;
+        justify-content: space-between;
+        .about-people-section {
+            flex-basis: 50%;
+            flex: 1;
+            padding-bottom: 20px;
+            &:nth-child(even) {
+                padding: 0 0px 0px 20px;
+            }
+            img {
+                width: 100%;
+                display: block;
+            }
+            p {
+                background: #dc1410;
+                height: 75px;
+                padding-top: 5px;
+                text-align: center;
+                font-weight: bold;
+                span {
+                    display: block;
+                    font-size: 12px;
+                    line-height: 13px;
+                    color: #ffffff !important;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+}
+
+.about-pointer h4 {
+    position: absolute;
+    content: "";
+    left: 201px;
+    right: 0px;
+    color: #dc1410 !important;
+    top: -8px;
+    bottom: 0px;
+    font-size: 49px;
+}
+
+.text-arrange1 {
+    font-size: 14px;
+}
+
+.pad-t-30 {
+    padding: 30px 0 15px 0;
+}
+
+.pad-t-60 {
+    padding-top: 60px !important;
+}
+
+.abt_number span::after {
+    content: "+";
+    padding-left: 10px;
+}

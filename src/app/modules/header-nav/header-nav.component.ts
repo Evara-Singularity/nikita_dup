@@ -317,7 +317,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
       this.hideElLogin = false;
       this.changeDetectorRef.detectChanges();
-      console.log('refreshIcon 3', this.router.url);
+      // console.log('refreshIcon 3', this.router.url);
 
       if (this.router.url.includes('/quickorder')) {
         if (this.noOfCart && this.noOfCart != 0) {

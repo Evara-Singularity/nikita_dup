@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedAuthModule } from 'src/app/modules/shared-auth/shared-auth.module';
+import { SharedAuthModule } from '@app/modules/shared-auth/shared-auth.module';
 import { SignUpRoutingModule } from './sign-up-routing.module';
 import { SignUpComponent } from './sign-up.component';
 

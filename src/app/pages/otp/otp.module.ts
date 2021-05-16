@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedAuthModule } from 'src/app/modules/shared-auth/shared-auth.module';
+import { SharedAuthModule } from '@app/modules/shared-auth/shared-auth.module';
 import { OtpRoutingModule } from './otp-routing.module';
 import { OtpComponent } from './otp.component';
 

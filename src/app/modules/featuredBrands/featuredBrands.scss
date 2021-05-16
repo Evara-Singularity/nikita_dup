@@ -1,0 +1,13 @@
+.banner_container{
+    .featr_Banner{
+        width:50%;
+        float:left;
+        padding:5px;
+        &:first-child{
+          width:100%;   
+        }
+        img{
+          width:100%;
+        }  
+    }
+  }

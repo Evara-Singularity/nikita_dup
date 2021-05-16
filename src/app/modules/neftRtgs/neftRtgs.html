@@ -1,0 +1,39 @@
+<div *ngIf="!isNeftEnable" class="f-size-16 text-red"> {{message}}</div>
+<section *ngIf="isNeftEnable" id="neft_block" class="neft-container container">
+    <div *ngIf="invoiceType == 'retail'" class="">
+        <ul class="txt-list bold-txt f-14">
+            <li><span class="tag-label">Beneficiary Name</span> <span class="tag-value">Mogli Labs India Pvt Ltd</span></li>
+            <li><span class="tag-label">Beneficiary A/C No.</span> <span class="tag-value">0712753994</span></li>
+            <li><span class="tag-label">Bank Name</span> <span class="tag-value">Citibank N.A.</span></li>
+            <li><span class="tag-label">Branch</span> <span class="tag-value">Citibank N.A., D.N. Road, Mumbai</span></li>
+            <li><span class="tag-label">IFSC Code</span> <span class="tag-value">CITI0100000</span></li>
+        </ul>
+
+        <div class="continue-button">
+                <div class="container">
+                    <p class="total-mount" *ngIf="totalPayableAmount>0">
+                        <span class="payable-amnt">Payable Amount</span>
+                         ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
+                    <button type="submit" (click)="pay()" class="btn">PLACE ORDER</button>
+                </div>
+            </div>
+    </div>
+    <div *ngIf="invoiceType == 'tax'" class="">
+        <ul class="txt-list bold-txt f-14">
+            <li><span class="tag-label">Beneficiary Name</span> <span class="tag-value">Mogli Labs India Pvt Ltd</span></li>
+            <li><span class="tag-label">Beneficiary A/C No.</span> <span class="tag-value">0712753005</span></li>
+            <li><span class="tag-label">Bank Name</span> <span class="tag-value">Citibank N.A.</span></li>
+            <li><span class="tag-label">Branch</span> <span class="tag-value">Citibank N.A., New Delhi</span></li>
+            <li><span class="tag-label">IFSC Code</span> <span class="tag-value">CITI0000002</span></li>
+        </ul>
+
+        <div class="continue-button">
+                <div class="container">
+                    <p class="total-mount" *ngIf="totalPayableAmount>0">
+                        <span class="payable-amnt">Payable Amount</span>
+                         ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
+                    <button type="submit" (click)="pay()" class="btn">PLACE ORDER</button>
+                </div>
+            </div>
+    </div>
+</section>

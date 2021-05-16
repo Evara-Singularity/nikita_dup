@@ -1,7 +1,3 @@
-/**
- * Created by kuldeep on 09/06/17.
- */
-
 import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { Subject } from "rxjs";

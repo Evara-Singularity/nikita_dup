@@ -1,0 +1,32 @@
+.bread-head {
+    padding: 10px;
+    background: #fff;
+    /*border-bottom: 1px solid #eaeaea;*/
+}
+
+.bread-head li {
+    font-weight: 400;
+    list-style: none;
+    display: inline;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 12px !important;
+}
+
+.bread-head li:hover {
+    color: #0061d5 !important;
+}
+
+.bread-head li:not(:last-child):after {
+    content: "\e95c";
+    font-family: 'icomooon_pwa' !important;
+    font-weight: bolder;
+    font-size: 8px !important;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.bread-head li:last-child {
+    cursor: default;
+    color: black !important;
+}

@@ -1,0 +1,269 @@
+<section class="shipping-forms">
+        <!-- <div class="pad-b-40 f-size-16 text-uppercase text-500 pad-lr-xs-15">Add Shipping Address</div> -->
+        <form class="material-form" [formGroup]="addressForm" (ngSubmit)="onSubmit(addressForm.value, addressForm.valid)">
+            <div class="form-container">
+                <div class="container">
+                    <div formGroupName="shippingAddress">
+                        <input formControlName="idAddress" type="hidden">
+                        <div class="input-field">
+                            <label [class.is-focus]="isFill.value.length!=0">
+                                <input formControlName="addressCustomerName" type="text" placeholder="" #isFill>
+                                <span class="label">Name*</span>
+                            </label>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['addressCustomerName'].touched && !addressForm['controls'].shippingAddress['controls']['addressCustomerName'].valid && addressForm['controls'].shippingAddress['controls']['addressCustomerName'].errors['required']"
+                                class="error-txt">Kindly enter your full name</p>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['addressCustomerName'].touched && !addressForm['controls'].shippingAddress['controls']['addressCustomerName'].valid && addressForm['controls'].shippingAddress['controls']['addressCustomerName'].errors['pattern']"
+                                class="error-txt">Name cannot contain numeric values</p>
+                        </div>
+                        <div class="input-field">
+                            <label [class.is-focus]="isEmail.value.length!=0">
+                                <input formControlName="email" type="text" placeholder="" #isEmail>
+                                <span class="label">Email*</span>
+                            </label>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['email'].touched && !addressForm['controls'].shippingAddress['controls']['email'].valid && addressForm['controls'].shippingAddress['controls']['email'].errors['required']"
+                                class="error-txt">Kindly enter your email</p>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['email'].touched && !addressForm['controls'].shippingAddress['controls']['email'].valid && addressForm['controls'].shippingAddress['controls']['email'].errors['invalidCharT'] && addressForm['controls'].shippingAddress['controls']['email'].value.length>0"
+                                class="error-txt">Enter valid email</p>
+                        </div>
+                        <div class="input-field">
+                            <label [class.is-focus]="isPhone.value.length!=0">
+                                <input formControlName="phone" type="number" placeholder="" #isPhone>
+                                <span class="label">Phone No*</span>
+                            </label>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['phone'].touched && !addressForm['controls'].shippingAddress['controls']['phone'].valid && addressForm['controls'].shippingAddress['controls']['phone'].errors['required']"
+                                class="error-txt">Kindly enter your 10 digit contact number</p>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['phone'].touched && !addressForm['controls'].shippingAddress['controls']['phone'].valid && addressForm['controls'].shippingAddress['controls']['phone'].errors['invalidPhone'] && addressForm['controls'].shippingAddress['controls']['phone'].value.length>0"
+                                class="error-txt">Kindly enter your 10 digit contact no.</p>
+                        </div>
+    
+                        <div class="input-field">
+                            <label [class.is-focus]="isAddress.value.length!=0">
+                                <input formControlName="addressLine" type="text" placeholder="" #isAddress maxlength="150">
+                                <span class="label">Address*</span>
+                            </label>
+                            <p *ngIf="addressForm['controls'].shippingAddress['controls']['addressLine'].touched && !addressForm['controls'].shippingAddress['controls']['addressLine'].valid && addressForm['controls'].shippingAddress['controls']['addressLine'].errors['required']"
+                                class="error-txt">Kindly enter your address</p>
+                        </div>
+                        <div class="column-field">
+                            <div class="input-field w-65">
+                                <label [class.is-focus]="isCountry.value!='Select Country' && isCountry.value!=''">
+                                    <select formControlName="idCountry" (change)="onCountryChange($event)" #isCountry>
+                                        <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">{{country.name}}</option>
+                                    </select>
+                                    <i class="icon-down"></i>
+                                    <span class="label">Country*</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].shippingAddress['controls']['idCountry'].touched && !addressForm['controls'].shippingAddress['controls']['idCountry'].valid && addressForm['controls'].shippingAddress['controls']['idCountry'].errors['required']"
+                                    class="error-txt">Kindly select your country</p>
+                            </div>
+                            <div class="input-field w-30">
+                                <label [class.is-focus]="isPincodeSec.value.length!=0">
+                                    <input (keypress)="checkQuantityCode($event);getCityByPincode('shipping')"
+                                        formControlName="postCode" type="number" placeholder="" #isPincodeSec>
+                                    <span class="label">Pin Code*</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].shippingAddress['controls']['postCode'].touched && !addressForm['controls'].shippingAddress['controls']['postCode'].valid && addressForm['controls'].shippingAddress['controls']['postCode'].errors['required']"
+                                    class="error-txt">Kindly enter your pincode</p>
+                                <p *ngIf="addressForm['controls'].shippingAddress['controls']['postCode'].touched && !addressForm['controls'].shippingAddress['controls']['postCode'].valid && addressForm['controls'].shippingAddress['controls']['postCode'].errors['invalidPostCode'] && addressForm['controls'].shippingAddress['controls']['postCode'].value.length>0"
+                                    class="error-txt">Pincode should contain 6 digits</p>
+                                <p *ngIf="addressForm['controls'].shippingAddress['controls']['postCode'].valid && !isPinCodeAvailble"
+                                    class="error-txt">Please enter a valid digit pincode.</p>
+                            </div>
+                        </div>
+    
+                       
+                            <div class="input-field">
+                                <label [class.is-focus]="isState.value!='Select State' && isState.value!=''">
+                                    <select formControlName="idState" (change)="changeState($event)" #isState>
+                                        <option value="Select State" selected></option>
+                                        <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
+                                    </select>
+                                    <i class="icon-down"></i>
+                                    <span class="label">State*</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].shippingAddress['controls']['idState'].touched && !addressForm['controls'].shippingAddress['controls']['idState'].valid && addressForm['controls'].shippingAddress['controls']['idState'].errors['required']"
+                                    class="error-txt">Kindly select your state</p>
+                            </div>
+                            <div class="input-field">
+                                <label [class.is-focus]="isCity.value.length!=0">
+                                    <input formControlName="city" type="text" placeholder="" #isCity>
+                                    <span class="label">City*</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].shippingAddress['controls']['city'].touched && !addressForm['controls'].shippingAddress['controls']['city'].valid && addressForm['controls'].shippingAddress['controls']['city'].errors['required']"
+                                    class="error-txt">Kindly enter your city/district/town</p>
+                            </div>
+                        
+    
+                        <div class="input-field">
+                            <label [class.is-focus]="isLandmark.value.length != 0">
+                                <input formControlName="landmark" class="form-control no-border border-dark-b border-r-0 mar-b-10 pad-l-0"
+                                    type="text" placeholder="" #isLandmark>
+                                <span class="label">Landmark (Optional)</span>
+                            </label>
+                        </div>
+                        <div class="input-field">
+                            <label [class.is-focus]="gstinSec.value.length != 0">
+                                <input formControlName="gstin" #gstin type="text" placeholder="" #gstinSec>
+                                <span class="label">GSTIN*</span>
+                            </label>
+                            <p class="error-txt" *ngIf="addressForm['controls'].shippingAddress['controls']['gstin'].touched && addressForm['controls'].shippingAddress['controls']['gstin'].hasError('required')">Kindly
+                                enter your GSTIN </p>
+                            <p class="error-txt" *ngIf="addressForm['controls'].shippingAddress['controls']['gstin'].touched && addressForm['controls'].shippingAddress['controls']['gstin'].hasError('pattern')">Kindly
+                                enter valid GSTIN</p>
+                        </div>
+                        <!--<div class="col-sm-12 pad-tb-5 pad-r-xs-0 check_sec">
+                    <label class="pointer">
+                        <input type="checkbox" name="">
+                        <span class="checkbox"></span>
+                        <span class="f-size-12 inline-block">Make this my default Address</span>
+                    </label>
+                </div>-->
+    
+                        <div *ngIf="isShowInvoiceGst">
+                            <label class="pointer">
+                                <input formControlName="isGstInvoice" type="checkbox" name="" checked>
+                                <span class="checkbox icon-font"></span>
+                                <span class="f-size-12 inline-block">Need GST compliant invoice for my purchases</span>
+                            </label>
+                        </div>
+                    </div>
+    
+                    <div formGroupName="businessDetail">
+                        <h3>Add Business Details</h3>
+                        <div class="input-field">
+                            <label [class.is-focus]="isCompanyNameFocused.value.length!=0">
+                                <input maxlength="75" type="text" formControlName="companyName" #isCompanyNameFocused>
+                                <span class="label">Business Name*</span>
+                            </label>
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['companyName'].touched && addressForm['controls'].businessDetail['controls']['companyName'].hasError('required')">Kindly
+                                enter your business entity name</p>
+                        </div>
+    
+                        <div class="input-field">
+                            <label [class.is-focus]="isGstin.value.length!=0">
+                                <input type="text" formControlName="companyName" #isGstin formControlName="gstin">
+                                <span class="label">GSTIN*</span>
+                            </label>
+    
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['gstin'].touched &&  addressForm['controls'].businessDetail['controls']['gstin'].hasError('required')">Kindly
+                                enter your GSTIN </p>
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['gstin'].touched &&  addressForm['controls'].businessDetail['controls']['gstin'].hasError('pattern')">Kindly
+                                enter valid GSTIN</p>
+                        </div>
+                        <div class="input-field">
+                            <label [class.is-focus]="isbusinesscontFocused.value.length!=0">
+                                <input formControlName="email" type="text" #isbusinesscontFocused>
+                                <span class="label">Business Email*</span>
+                            </label>
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['email'].touched && addressForm['controls'].businessDetail['controls']['email'].hasError('required')">Kindly
+                                enter your business email id</p>
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['email'].touched && !addressForm['controls'].businessDetail['controls']['email'].hasError('required') && addressForm['controls'].businessDetail['controls']['email'].hasError('invalidCharT')">Kindly
+                                enter valid email</p>
+                        </div>
+                        <div class="input-field">
+                            <label [class.is-focus]="isbusinessphFocused.value.length!=0">
+                                <input formControlName="phone" type="number" #isbusinessphFocused>
+                                <span class="label">Business Phone*</span>
+                            </label>
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['phone'].touched && addressForm['controls'].businessDetail['controls']['phone'].hasError('required')">Kindly
+                                enter your business phone number</p>
+                            <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['phone'].touched && !addressForm['controls'].businessDetail['controls']['phone'].hasError('required') && addressForm['controls'].businessDetail['controls']['phone'].hasError('invalidPhone')">Kindly
+                                enter valid phone number</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-container mt-10">
+    
+                <div class="container">
+                    <div class="custom-cbox">
+                        <label>
+                            <input type="checkbox" (change)="setBillingSameAsShipping($event)" class="hidden">
+                            <span class="custom-box icon-box"></span>
+                            <span class="chk-txt">Billing Address same as Shipping Address</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-container mt-10">
+    
+                <div class="container">
+                    <div formGroupName="billingAddress">
+    
+    
+                        <input formControlName="idAddress" type="hidden">
+    
+                        <div class="input-field">
+                            <label [class.is-focus]="isAddressSec.value.length!=0">
+                                <input formControlName="addressLine" type="text" placeholder="" #isAddressSec>
+                                <span class="label">Address*</span>
+                            </label>
+                            <p *ngIf="addressForm['controls'].billingAddress['controls']['addressLine'].touched && !addressForm['controls'].billingAddress['controls']['addressLine'].valid && addressForm['controls'].billingAddress['controls']['addressLine'].errors['required']"
+                                class="error-txt">Kindly enter your address</p>
+                        </div>
+                        <div class="column-field">
+                            <div class="input-field w-65">
+                                <label [class.is-focus]="isCountrySec.value!='Select Country' && isCountrySec.value!=''">
+                                    <!--<input formControlName="name"  class="form-control no-border border-dark-b border-r-0 mar-b-10 pad-l-0" type="text" placeholder="">-->
+                                    <span class="label">Country*</span>
+                                    <select formControlName="idCountry" (change)="onCountryChange($event)" #isCountrySec>
+                                        <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">{{country.name}}</option>
+                                    </select>
+                                    <i class="icon-down"></i>
+                                </label>
+                                <p *ngIf="addressForm['controls'].billingAddress['controls']['idCountry'].touched && !addressForm['controls'].billingAddress['controls']['idCountry'].valid && addressForm['controls'].billingAddress['controls']['idCountry'].errors['required']"
+                                    class="error-txt">Kindly select your country</p>
+                            </div>
+                            <div class="input-field w-30">
+                                <label [class.is-focus]="isPincode.value.length!=0">
+                                    <input (keypress)="checkQuantityCode($event);getCityByPincode('billing')"
+                                        formControlName="postCode" type="number" placeholder="" #isPincode>
+                                    <span class="label">Pincode *</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].touched && !addressForm['controls'].billingAddress['controls']['postCode'].valid && addressForm['controls'].billingAddress['controls']['postCode'].errors['required']"
+                                    class="error-txt">Kindly enter your pincode</p>
+                                <p *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].touched && !addressForm['controls'].billingAddress['controls']['postCode'].valid && addressForm['controls'].billingAddress['controls']['postCode'].errors['invalidPostCode'] && addressForm['controls'].billingAddress['controls']['postCode'].value.length>0"
+                                    class="error-txt">Pincode should contain 6 digits</p>
+                                <p class="error-txt" *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].valid && !isPinCodeAvailble">Please
+                                    enter a valid digit pincode.</p>
+                            </div>
+                        </div>
+    
+                        
+                            <div class="input-field">
+                                <label [class.is-focus]="isStateSec.value!='Select State' && isStateSec.value!=''">
+                                    <!--<input formControlName="name"  class="form-control no-border border-dark-b border-r-0 mar-b-10 pad-l-0" type="text" placeholder="">-->
+                                    <select formControlName="idState" (change)="changeState($event)" #isStateSec>
+                                        <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
+                                    </select>
+                                    <i class="icon-down"></i>
+                                    <span class="label">State*</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].billingAddress['controls']['idState'].touched && !addressForm['controls'].billingAddress['controls']['idState'].valid && addressForm['controls'].billingAddress['controls']['idState'].errors['required']"
+                                    class="error-txt">Kindly select your state</p>
+                            </div>
+                            <div class="input-field">
+                                <label [class.is-focus]="isCitySec.value.length!=0">
+                                    <input formControlName="city" type="text" placeholder="" #isCitySec>
+                                    <span class="label">City*</span>
+                                </label>
+                                <p *ngIf="addressForm['controls'].billingAddress['controls']['city'].touched && !addressForm['controls'].billingAddress['controls']['city'].valid && addressForm['controls'].billingAddress['controls']['city'].errors['required']"
+                                    class="error-txt">Kindly enter your city/district/town</p>
+                            </div>
+    
+    
+    
+    
+                        <div class="input-field">
+                            <label [class.is-focus]="isLandmarkSec.value.length != 0">
+                                <input formControlName="landmark" class="form-control no-border border-dark-b border-r-0 mar-b-10 pad-l-0"
+                                    type="text" placeholder="" #isLandmarkSec>
+                                <span class="label">Landmark (Optional)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button [disabled]="!addressForm.valid" type="submit" class="continue-btn btn">{{buttonText}}</button>
+        </form>
+    </section>

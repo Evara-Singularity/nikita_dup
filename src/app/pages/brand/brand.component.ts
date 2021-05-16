@@ -1,5 +1,5 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { Location, isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';

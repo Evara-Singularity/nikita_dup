@@ -145,19 +145,27 @@ export class CategoryResolver implements Resolve<object> {
             this._commonService.replaceHeading = false;
         }
 
-        return forkJoin(apiList).pipe(
-            catchError((err) => {
-                this.loaderService.setLoaderState(false);
-                return of(err);
-            }),
-            tap(result => {
-                if (isPlatformServer(this.platformId)) {
-                    result['flag'] = true;
-                    this.transferState.set(GRCRK, result[0]);
+        const RPRK: any = makeStateKey<{}>("RPRK");
+        if (this.transferState.hasKey(RPRK) && !fragment) {
+            this.loaderService.setLoaderState(false);
+            const listingObj = this.transferState.get<object>(RPRK, null);
+            return of([listingObj]);
+        } else {
+            return forkJoin(apiList).pipe(
+                catchError((err) => {
                     this.loaderService.setLoaderState(false);
-                }
-            })
-        );
+                    return of(err);
+                }),
+                tap(result => {
+                    if (isPlatformServer(this.platformId)) {
+                        result['flag'] = true;
+                        this.transferState.set(GRCRK, result[0]);
+                        this.loaderService.setLoaderState(false);
+                    }
+                })
+            );
+        }
+
 
     }
 }

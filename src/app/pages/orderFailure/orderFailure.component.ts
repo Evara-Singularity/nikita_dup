@@ -1,9 +1,8 @@
 import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import CONSTANTS from "src/app/config/constants";
-import { LocalAuthService } from "src/app/utils/services/auth.service";
-import { CartService } from "src/app/utils/services/cart.service";
-import { FooterService } from "src/app/utils/services/footer.service";
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
+import { FooterService } from '@app/utils/services/footer.service';
 
 declare var digitalData: {};
 declare let _satellite;

@@ -6,7 +6,6 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageScrollService } from 'ngx-page-scroll-core';
-
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { ClientUtility } from '../../utils/client.utility';
 import { ProductService } from '../../utils/services/product.service';

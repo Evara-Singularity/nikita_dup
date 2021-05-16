@@ -86,7 +86,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterCounts;
     todayDate: number;
     spl_subCategory_Dt: any;
-
     refreshProductsUnsub$: any;
     refreshProductsUnsub: any;
     _activatedRouteUnsub: any;
@@ -243,6 +242,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     async createDynamicComponent(name) {
         this._commonService.showLoader = true;
         if (name === 'bestseller') {
+            this.catBestSellerInstance = null;
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -250,6 +250,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
             this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
         } else if (name === 'subCategory') {
+            this.subCategoryInstance = null;
             const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -257,6 +258,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
             this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
         } else if (name === 'shopByBrand') {
+            this.shopByBrandInstance = null;
             const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -264,6 +266,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
             this.shopByBrandInstance.instance['brand_Data'] = this.relatedCatgoryListUpdated;
         } else if (name === 'catStatic') {
+            this.catStaticInstance = null;
             const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -272,6 +275,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.catStaticInstance.instance['page_title'] = this.page_title;
             this.catStaticInstance.instance['static_data'] = this.static_Dt;
         } else if (name === 'slpSubCategory') {
+            this.slpSubCategoryInstance = null;
             const { SlpSubCategoryComponent } = await import('@app/pages/category/slp-sub-category/slp-sub-category.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -279,6 +283,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
             this.slpSubCategoryInstance.instance['sub_category_Data'] = this.spl_subCategory_Dt;
         } else if (name === 'shopbyFeatr') {
+            this.shopbyFeatrInstance = null;
             const { ShopbyFeatrComponent } = await import('@app/pages/category/shopby-featr/shopby-featr.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -286,6 +291,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
             this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopBy_Dt;
         } else if (name === 'cms') {
+            this.cmsInstance = null;
             const { CmsWrapperComponent } = await import('@modules/cms/cms.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -302,6 +308,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         const res = this._activatedRoute.snapshot.data;
+        console.log('==============');
+        console.log(res);
+        console.log('==============');
         this.setDataAfterGettingDataFromResolver(res.category);
 
     }

@@ -13,9 +13,10 @@ import { CommonService } from '../services/common.service';
 import { CategoryService } from '@services/category.service';
 import { Router } from '@angular/router';
 
-const GFAQK: any = makeStateKey<{}>("GFAQK")// GFAQK: Get Frequently Asked Question Key
+const GFAQK: any = makeStateKey<{}>('GFAQK')// GFAQK: Get Frequently Asked Question Key
 const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
 const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
+const CMSK: any = makeStateKey<{}>('CMSK'); // CMSK: Refresh Product Result Key
 
 @Injectable({
     providedIn: 'root'
@@ -112,45 +113,60 @@ export class CategoryResolver implements Resolve<object> {
             return this._categoryService.getFaqApi(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
         }
     }
+    
+    private getCmsDynamicDataForCategoryAndBrand(categoryID): Observable<{}> {
+        if (this.transferState.hasKey(CMSK)) {
+            return of(this.transferState.get(CMSK, []));
+        } else {
+            return this._commonService.getCmsDynamicDataForCategoryAndBrand(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
+        }
+    }
 
     private refreshProducts(currentQueryParams, params, fragment): Observable<{}> {
-        const defaultParams = this.createDefaultParams(currentQueryParams, params, fragment);
-
-        this._commonService.updateDefaultParamsNew(defaultParams);
-
-        if (this.transferState.hasKey(RPRK) && !fragment) {
-            return of(this.transferState.get(RPRK, {}));
+        if (this.transferState.hasKey(RPRK)) {
+            return of(this.transferState.get(RPRK, []));
         } else {
+            const defaultParams = this.createDefaultParams(currentQueryParams, params, fragment);
+            this._commonService.updateDefaultParamsNew(defaultParams);
             return this._commonService.refreshProducts();
         }
     }
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
-        const currentQueryParams = _activatedRouteSnapshot.queryParams;
-        const categoryId = _activatedRouteSnapshot.params.id;
         const fragment = _activatedRouteSnapshot.fragment;
-        const params = _activatedRouteSnapshot.params;
-        const getRelatedCategoriesObs = this.getRelatedCategories(categoryId).pipe(map(res => res));
-        const getFAQObs = this.getFAQ(categoryId).pipe(map(res => res));
-        const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment).pipe(map(res => res));
-        const getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(categoryId).pipe(map(res => res));
 
-        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs];
-
-        if (this._router.url.search('#') < 0) {
-            apiList.push(getCmsDynamicDataForCategoryAndBrand)
-        } else {
-            this._commonService.cmsData = null;
-            this._commonService.replaceHeading = false;
-        }
-
-        const RPRK: any = makeStateKey<{}>("RPRK");
+        
         if (this.transferState.hasKey(RPRK) && !fragment) {
+            const GRCRKObj = this.transferState.get<object>(GRCRK, null);
+            const RPRKObj = this.transferState.get<object>(RPRK, null);
+            const GFAQKObj = this.transferState.get<object>(GFAQK, null);
+            const CMSKObj = this.transferState.get<object>(CMSK, null);
+            
+            this.transferState.remove(GFAQK);
+            this.transferState.remove(GRCRK);
+            this.transferState.remove(RPRK);
+            this.transferState.remove(CMSK);
+            
             this.loaderService.setLoaderState(false);
-            const listingObj = this.transferState.get<object>(RPRK, null);
-            return of([listingObj]);
+            return of([GRCRKObj, RPRKObj, GFAQKObj, CMSKObj]);
         } else {
+            const currentQueryParams = _activatedRouteSnapshot.queryParams;
+            const categoryId = _activatedRouteSnapshot.params.id;
+            const params = _activatedRouteSnapshot.params;
+            const getRelatedCategoriesObs = this.getRelatedCategories(categoryId).pipe(map(res => res));
+            const getFAQObs = this.getFAQ(categoryId).pipe(map(res => res));
+            const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment).pipe(map(res => res));
+            const getCmsDynamicDataForCategoryAndBrandObs = this.getCmsDynamicDataForCategoryAndBrand(categoryId).pipe(map(res => res));
+
+            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs];
+
+            if (this._router.url.search('#') < 0) {
+                apiList.push(getCmsDynamicDataForCategoryAndBrandObs)
+            } else {
+                this._commonService.cmsData = null;
+                this._commonService.replaceHeading = false;
+            }
             return forkJoin(apiList).pipe(
                 catchError((err) => {
                     this.loaderService.setLoaderState(false);
@@ -158,8 +174,10 @@ export class CategoryResolver implements Resolve<object> {
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
-                        result['flag'] = true;
                         this.transferState.set(GRCRK, result[0]);
+                        this.transferState.set(RPRK, result[1]);
+                        this.transferState.set(GFAQK, result[2]);
+                        this.transferState.set(CMSK, result[3]);
                         this.loaderService.setLoaderState(false);
                     }
                 })

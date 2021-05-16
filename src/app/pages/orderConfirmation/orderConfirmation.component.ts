@@ -3,11 +3,12 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OrderConfirmationService } from './orderConfirmation.service';
-import { FooterService } from 'src/app/utils/services/footer.service';
-import { LocalAuthService } from 'src/app/utils/services/auth.service';
-import { CartService } from 'src/app/utils/services/cart.service';
-import CONSTANTS from 'src/app/config/constants';
-import { DataService } from 'src/app/utils/services/data.service';
+import CONSTANTS from '@app/config/constants';
+import { DataService } from '@app/utils/services/data.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
+import { FooterService } from '@app/utils/services/footer.service';
+
 declare let dataLayer;
 declare var ADMITAD;
 declare var digitalData: {};

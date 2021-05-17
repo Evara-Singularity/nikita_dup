@@ -224,7 +224,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     async onVisibleCateoryFooter(event) {
         if (!this.cateoryFooterInstance) {
             const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
             this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
@@ -241,31 +241,31 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     async createDynamicComponent(name) {
-        this._commonService.showLoader = true;
+        // this._commonService.showLoader = true;
         if (name === 'catBestseller') {
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
             this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
             this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
         } else if (name === 'subCategory') {
             const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
             this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
             this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
         } else if (name === 'shopByBrand') {
             const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(ShopbyBrandComponent);
             this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
             this.shopByBrandInstance.instance['brand_Data'] = this.brand_Dt;
         } else if (name === 'catStatic') {
             const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(CatStaticComponent);
             this.catStaticInstance = this.catStaticContainerRef.createComponent(factory, null, this.injector);
@@ -274,7 +274,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         } else if (name === 'slpSubCategory') {
             this.slpSubCategoryInstance = null;
             const { SlpSubCategoryComponent } = await import('@app/pages/category/slp-sub-category/slp-sub-category.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(SlpSubCategoryComponent);
             this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
@@ -282,7 +282,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         } else if (name === 'shopbyFeatr') {
             this.shopbyFeatrInstance = null;
             const { ShopbyFeatrComponent } = await import('@app/pages/category/shopby-featr/shopby-featr.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(ShopbyFeatrComponent);
             this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
@@ -290,7 +290,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         } else if (name === 'cms') {
             this.cmsInstance = null;
             const { CmsWrapperComponent } = await import('@modules/cms/cms.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(CmsWrapperComponent);
             this.cmsInstance = this.cmsContainerRef.createComponent(factory, null, this.injector);
@@ -301,7 +301,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     private setCategoryDataFromResolver() {
         if (this._commonService.isBrowser) {
-            this._commonService.showLoader = true;
+            // this._commonService.showLoader = true;
         }
 
         const res = this._activatedRoute.snapshot.data;
@@ -331,7 +331,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             res[1] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
         }
         if (this._commonService.isBrowser) {
-            this._commonService.showLoader = false;
+            // this._commonService.showLoader = false;
         }
 
         if (res[4] && res[4]['data']) {
@@ -406,7 +406,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         if (this._commonService.isBrowser) {
-            this._commonService.showLoader = true;
+            // this._commonService.showLoader = true;
         }
         this.forkJoinUnsub = forkJoin(apiList)
             .subscribe((res) => {
@@ -439,7 +439,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     res[1] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
                 }
                 if (this._commonService.isBrowser) {
-                    this._commonService.showLoader = false;
+                    // this._commonService.showLoader = false;
                 }
 
                 if (res[3] && res[3]['data']) {
@@ -598,7 +598,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
      * @param flag : true, if TrasnferState exist.
      */
     private initiallizeData(response: any, flag: boolean) {
-        this._commonService.showLoader = false;
+        // this._commonService.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.createCategorySchema(response.productSearchResult['products']); // ODP-684
         if (flag) {
@@ -995,9 +995,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     async onVisiblePagination(event) {
         if (!this.paginationInstance) {
-            this._commonService.showLoader = true;
+            // this._commonService.showLoader = true;
             const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
-                this._commonService.showLoader = false;
+                // this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
@@ -1019,9 +1019,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     async filterUp() {
         if (this._commonService.isBrowser) {
             if (!this.filterInstance) {
-                this._commonService.showLoader = true;
+                // this._commonService.showLoader = true;
                 const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    this._commonService.showLoader = false;
+                    // this._commonService.showLoader = false;
                     setTimeout(() => {
                         const mob_filter = document.querySelector('.mob_filter');
                         if (mob_filter) {
@@ -1050,9 +1050,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (this._commonService.isBrowser) {
             this.sortByOpt = data.sortByOpt;
             if (!this.sortByInstance) {
-                this._commonService.showLoader = true;
+                // this._commonService.showLoader = true;
                 const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
-                    this._commonService.showLoader = false;
+                    // this._commonService.showLoader = false;
                 });
                 const factory = this.cfr.resolveComponentFactory(SortByComponent);
                 this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);

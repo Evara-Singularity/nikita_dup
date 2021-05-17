@@ -488,6 +488,15 @@ const routes: Routes = [
         }
       },
       {
+          path: 'buyer-guide',
+          loadChildren: () => import('./buyer/buyer.module').then(m => m.BuyerModule),
+          data: {
+              footer: false,
+              title: 'Buying Guide',
+              moreOpt: true
+          }
+      },
+      {
         path: '**',
         loadChildren: () => import('./pageNotFound/pageNotFound.module').then(m => m.PageNotFoundModule),
         data: {

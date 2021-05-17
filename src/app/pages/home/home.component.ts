@@ -417,11 +417,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			content:
 				'Moglix, industrial equipment, industrial tools, industrial products, industrial supplies',
 		});
-		const links = this._renderer2.createElement('link');
-		this.webSiteSchema();
-		links.rel = 'canonical';
-		links.href = CONSTANTS.PROD;
-		this._renderer2.appendChild(this._document.head, links);
+		if (this.isServer) {
+			const links = this._renderer2.createElement('link');
+			this.webSiteSchema();
+			links.rel = 'canonical';
+			links.href = CONSTANTS.PROD;
+			this._renderer2.appendChild(this._document.head, links);
+		}
 	}
 
 	parseAndOrderBannerData(data) {

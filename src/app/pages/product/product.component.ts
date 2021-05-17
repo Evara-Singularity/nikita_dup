@@ -1671,7 +1671,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.meta.addTag({ "name": "og:image", "content": this.productDefaultImage })
     this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT });
     this.meta.addTag({ "name": "keywords", "content": this.productName + ", " + this.productCategoryDetails['categoryName'] + ", " + this.productBrandDetails['brandName'] });
-
+   if (this.isServer) {
     const links = this.renderer2.createElement('link');
 
     links.rel = "canonical";
@@ -1687,6 +1687,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     links.href = CONSTANTS.PROD + "/" + url;
     this.renderer2.appendChild(this.document.head, links);
+   }
 
   }
 

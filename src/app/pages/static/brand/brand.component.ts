@@ -1,7 +1,7 @@
-import { Component, Renderer2, Inject } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformServer } from '@angular/common';
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
@@ -22,6 +22,7 @@ export class BrandComponent {
 	total_count: any;
 	brand_url: any;
 	brandsLogo;
+	isServer: boolean
 	set isShowLoader(value) {
 		this.loaderService.setLoaderState(value);
 	}
@@ -32,8 +33,10 @@ export class BrandComponent {
 		@Inject(DOCUMENT) private _document,
 		public _router: Router,
 		private route: ActivatedRoute,
-		private loaderService: GlobalLoaderService
+		private loaderService: GlobalLoaderService,
+		@Inject(PLATFORM_ID) private platformId
 	) {
+		this.isServer = isPlatformServer(platformId);
 		this.API = CONSTANTS;
 		this.title.setTitle('Moglix Brand Store');
 		this.meta.addTag({ property: 'og:title', content: 'Moglix Brand Store' });
@@ -51,11 +54,13 @@ export class BrandComponent {
 			content:
 				'Get access to exclusive brands at Moglix brand store. Shop for products from your favorite brands inclusing Bosch, Eveready, Havells, V-Guard, Makita, Karam and more.',
 		});
-		let links = this._renderer2.createElement('link');
-		links.rel = 'canonical';
-		links.href = CONSTANTS.PROD + '/brand-store';
-		this._renderer2.appendChild(this._document.head, links);
-		this.isShowLoader = true;
+		if (this.isServer) {
+			let links = this._renderer2.createElement('link');
+			links.rel = 'canonical';
+			links.href = CONSTANTS.PROD + '/brand-store';
+			this._renderer2.appendChild(this._document.head, links);
+			this.isShowLoader = true;
+		}
 	}
 
 	ngOnInit() {

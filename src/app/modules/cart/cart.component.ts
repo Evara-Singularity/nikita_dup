@@ -2509,19 +2509,16 @@ export class CartComponent {
         this.meta.addTag({ "name": "og:image", "content": this.productResult['productImage'] })
         this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT });
         this.meta.addTag({ "name": "keywords", "content": this.productResult['productName'] + ", " + this.productResult['categoryName'] + ", " + this.productResult['brand'] });
-
-        let links = this._renderer2.createElement('link');
-
-        links.rel = "canonical";
-        let url = this.productResult['canonicalUrl'];
-        if (url.substring(url.length - 2, url.length) == "-g") {
-            url = url.substring(0, url.length - 2);
+        if (this.isServer) {
+            let links = this._renderer2.createElement('link');
+            links.rel = "canonical";
+            let url = this.productResult['canonicalUrl'];
+            if (url.substring(url.length - 2, url.length) == "-g") {
+                url = url.substring(0, url.length - 2);
+            }
+            links.href = CONSTANTS.PROD + "/" + url;
+            this._renderer2.appendChild(this._document.head, links);
         }
-        links.href = CONSTANTS.PROD + "/" + url;
-        this._renderer2.appendChild(this._document.head, links);
-
-
-
     }
     rfqUrl: Array<any> = [];
     filterName = "filtername";

@@ -767,6 +767,14 @@ export class CommonService {
         }
     }
 
+    getBreadcrumpData(link, type, pageTitle?): Observable<any> {
+        let curl = CONSTANTS.NEW_MOGLIX_API + "/homepage/getbreadcrumb?source=" + link + "&type=" + type;
+        if (pageTitle) {
+            curl += "&pagetitle=" + pageTitle;
+        }
+        return this._dataService.callRestful("GET", curl);
+    }
+
     removeLoader() {
         setTimeout(() => {
             this.showLoader = false;

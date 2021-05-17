@@ -17,6 +17,7 @@ const GFAQK: any = makeStateKey<{}>('GFAQK')// GFAQK: Get Frequently Asked Quest
 const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
 const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
 const CMSK: any = makeStateKey<{}>('CMSK'); // CMSK: Refresh Product Result Key
+const BRDK: any = makeStateKey<{}>('BRDK'); // BRDK: Refresh Product Result Key
 
 @Injectable({
     providedIn: 'root'
@@ -121,6 +122,14 @@ export class CategoryResolver implements Resolve<object> {
             return this._commonService.getCmsDynamicDataForCategoryAndBrand(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
         }
     }
+    
+    private getBreadCrumpData(categoryID): Observable<{}> {
+        if (this.transferState.hasKey(BRDK)) {
+            return of(this.transferState.get(BRDK, []));
+        } else {
+            return this._commonService.getBreadcrumpData(this._router.url, 'category').pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
+        }
+    }
 
     private refreshProducts(currentQueryParams, params, fragment): Observable<{}> {
         if (this.transferState.hasKey(RPRK)) {
@@ -135,21 +144,22 @@ export class CategoryResolver implements Resolve<object> {
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
         const fragment = _activatedRouteSnapshot.fragment;
-
         
         if (this.transferState.hasKey(RPRK) && !fragment) {
             const GRCRKObj = this.transferState.get<object>(GRCRK, null);
             const RPRKObj = this.transferState.get<object>(RPRK, null);
             const GFAQKObj = this.transferState.get<object>(GFAQK, null);
             const CMSKObj = this.transferState.get<object>(CMSK, null);
+            const BRDKObj = this.transferState.get<object>(BRDK, null);
             
             this.transferState.remove(GFAQK);
             this.transferState.remove(GRCRK);
             this.transferState.remove(RPRK);
             this.transferState.remove(CMSK);
+            this.transferState.remove(BRDK);
             
             this.loaderService.setLoaderState(false);
-            return of([GRCRKObj, RPRKObj, GFAQKObj, CMSKObj]);
+            return of([GRCRKObj, RPRKObj, GFAQKObj, CMSKObj, BRDKObj]);
         } else {
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
             const categoryId = _activatedRouteSnapshot.params.id;
@@ -158,8 +168,9 @@ export class CategoryResolver implements Resolve<object> {
             const getFAQObs = this.getFAQ(categoryId).pipe(map(res => res));
             const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment).pipe(map(res => res));
             const getCmsDynamicDataForCategoryAndBrandObs = this.getCmsDynamicDataForCategoryAndBrand(categoryId).pipe(map(res => res));
+            const getBreadCrump = this.getBreadCrumpData(categoryId);
 
-            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs];
+            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump];
 
             if (this._router.url.search('#') < 0) {
                 apiList.push(getCmsDynamicDataForCategoryAndBrandObs)
@@ -174,10 +185,15 @@ export class CategoryResolver implements Resolve<object> {
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
+                        console.log('============================');
+                        console.log(result);
+                        
+                        console.log('============================');
                         this.transferState.set(GRCRK, result[0]);
                         this.transferState.set(RPRK, result[1]);
                         this.transferState.set(GFAQK, result[2]);
-                        this.transferState.set(CMSK, result[3]);
+                        this.transferState.set(BRDK, result[3]);
+                        this.transferState.set(CMSK, result[4]);
                         this.loaderService.setLoaderState(false);
                     }
                 })

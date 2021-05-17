@@ -1,6 +1,7 @@
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, Input, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'breadcrumb-nav',
@@ -8,19 +9,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./breadcrumb-nav.component.scss']
 })
 export class BreadcrumbNavComponent implements OnInit {
-
   @Input() breadcrumb: [] = null;
-  isServer: boolean;
-  isBrowser: boolean;
 
   constructor(
     private renderer2: Renderer2,
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) platformId,
-    private router: Router
+    private router: Router,
+    private _commonService: CommonService
   ) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
@@ -29,7 +26,7 @@ export class BreadcrumbNavComponent implements OnInit {
 
 
   breadCrumpCategorySchema() {
-    if (this.isServer && this.breadcrumb.length > 0) {
+    if (this._commonService.isServer && this.breadcrumb.length > 0) {
       let itemsList = [{
         "@type": "ListItem",
         "position": 0,

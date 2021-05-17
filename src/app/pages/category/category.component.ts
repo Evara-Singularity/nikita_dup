@@ -55,16 +55,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
     paginationData: any = {};
-    isLast;
+    breadcrumbData: any;
+    isLast: any;
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     recentArticlesInstance = null;
     @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
-    showLoader: boolean;
     sortByUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    breadcrumpUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     categoryDataName: BehaviorSubject<any> = new BehaviorSubject<any>({});
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
@@ -217,14 +216,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     async onVisibleCateoryFooter(event) {
-        if (!this.cateoryFooterInstance && this.firstPageContent) {
+        if (!this.cateoryFooterInstance) {
             const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component').finally(() => {
                 this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
             this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
             this.cateoryFooterInstance.instance['categoryFooterData'] = {
-                firstPageContent: this.firstPageContent,
                 productSearchResult: this.productSearchResult,
                 getRelatedCatgory: this.getRelatedCatgory,
                 toggletsWrap: this.toggletsWrap,
@@ -335,9 +333,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this._commonService.showLoader = false;
         }
 
-        if (res[3] && res[3]['data']) {
+        if (res[4] && res[4]['data']) {
             this._commonService.cmsData = res[3]['data'];
             this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
+        }
+
+        console.log(res);
+
+        if (res[3]){
+            this.breadcrumbData = res[3];
         }
 
         if (this._tState.hasKey(GRCRK)) {
@@ -1214,8 +1218,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
-                const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
-                this.breadcrumpUpdated.next(bData);
+                // const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
+                // this.breadcrumpUpdated.next(bData);
             }
         } else {
             this.relatedCatgoryListUpdated.next([]);

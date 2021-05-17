@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, NgModule} from '@angular/core';
 import { CONSTANTS } from '@config/constants';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-
-
 
 @Component({
   selector: 'shopby-featr',
   templateUrl: './shopby-featr.component.html',
-  styleUrls: ['./shopby-featr.component.scss']
+  styleUrls: ['./shopby-featr.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopbyFeatrComponent {
 

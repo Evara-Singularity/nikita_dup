@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, NgModule } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, NgModule } from "@angular/core";
 import { KpToggleDirectiveModule } from "@app/utils/directives/kp-toggle.directive";
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
@@ -7,7 +7,8 @@ import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
     selector: 'category-footer',
-    templateUrl: './category-footer.component.html'
+    templateUrl: './category-footer.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;

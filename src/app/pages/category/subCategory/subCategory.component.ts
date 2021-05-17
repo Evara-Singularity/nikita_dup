@@ -1,5 +1,5 @@
 import {
-    Component, ViewEncapsulation, Input, EventEmitter, Output,
+    Component, Input, EventEmitter, Output,
     ChangeDetectorRef, ChangeDetectionStrategy, PLATFORM_ID, Inject, NgModule
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
@@ -23,9 +23,7 @@ const GRCRK: any = makeStateKey<{}>("GRCRK")// GRCRK: Get Related Category Resul
     styleUrls: [
         './subCategory.scss'
     ],
-    providers:[],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
     animations: [
         fade
     ]

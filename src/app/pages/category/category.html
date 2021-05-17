@@ -6,9 +6,8 @@
 </div>
 
 <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
-
-<ng-container [class.visibility]="!((layoutType == 1 || layoutType == 2) && firstPageContent)">
-    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.layout2]="layoutType == 2">
+<div [class.visibility]="!((layoutType == 1 || layoutType == 2) && firstPageContent)">
+    <div class="row splnewpage" [class.visibility]="!isSLPPage " [class.layout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
@@ -24,7 +23,7 @@
             <!-- <shopby-featr [shopBy_Data]="shopBy_Dt"></shopby-featr> -->
         </div>
     </div>
-</ng-container>
+</div>
 
 <div class="container-fluid category">
     <div class="row">

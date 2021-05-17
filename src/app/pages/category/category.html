@@ -5,10 +5,10 @@
     </div>
 </div>
 
-<breadcrump [breadcrumpUpdated]="breadcrumpUpdated" [hideUI]="false" [type]="'category'"></breadcrump>
+<breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
 
-<ng-container *ngIf="(layoutType == 1 || layoutType == 2) && firstPageContent">
-    <div class="row splnewpage" *ngIf="isSLPPage" [class.layout2]="layoutType == 2">
+<ng-container [class.visibility]="!((layoutType == 1 || layoutType == 2) && firstPageContent)">
+    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.layout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
@@ -35,7 +35,7 @@
 
 <div class="cate-container" id=category-cards-section>
     <div class="bg_white">
-        <div class="sub-cate-container" *ngIf="layoutType != 2">
+        <div class="sub-cate-container" [class.visibility]="!(layoutType != 2)">
             <div *ngIf="showSubcategoty" [class.hidden-sm-up]="getRelatedCatgory?.children==null" class="container pt-10">
                 <p *ngIf="getRelatedCatgory?.children!==undefined && getRelatedCatgory?.children!==null" class="f-16 bold-txt pad-tb-10">{{getRelatedCatgory?.categoryDetails?.categoryName}}
                     <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
@@ -77,8 +77,10 @@
         <ng-container #recentArticles></ng-container>
     </div>
 
-    <span observeVisibility [debounceTime]="100" (visible)="onVisibleCateoryFooter($event)"></span>
-    <ng-template *ngIf="_commonService?.isBrowser && firstPageContent" #cateoryFooter></ng-template>
+    <div [class.visibility]="!firstPageContent">
+        <span observeVisibility [debounceTime]="100" (visible)="onVisibleCateoryFooter($event)"></span>
+        <ng-template *ngIf="_commonService?.isBrowser" #cateoryFooter></ng-template>
+    </div>
 </div>
 <!-- 
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">

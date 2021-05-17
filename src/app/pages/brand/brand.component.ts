@@ -9,13 +9,12 @@ import { combineLatest, Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@app/utils/services/data.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 const RPRK: any = makeStateKey<{}>("RPRK");
-declare var digitalData: {};
-declare let _satellite;
 
 @Component({
     selector: 'brand',
@@ -88,6 +87,7 @@ export class BrandComponent {
     refreshProductsUnsub$: any;
     constructor(public dataService: DataService, 
         private cfr: ComponentFactoryResolver,
+        private analytics: GlobalAnalyticsService,
         private injector: Injector,
         private router: Router, @Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private title: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService, public location: Location, public _router: Router, public _activatedRoute: ActivatedRoute, public _commonService: CommonService, private localStorageService: LocalStorageService) {
         // detect if its a browser or desktop
@@ -371,6 +371,7 @@ export class BrandComponent {
                 }
             }
 
+            let digitalData = {};
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
@@ -393,9 +394,7 @@ export class BrandComponent {
                 digitalData["page"]["suggestionClicked"] = 'yes';
             }
 
-            // if (typeof _satellite !== "undefined") {
-            _satellite.track("genericPageLoad");
-            // }
+            this.analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */
         }
         /* Setting of product schema for products */

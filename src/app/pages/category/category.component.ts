@@ -6,14 +6,13 @@ import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
-import { combineLatest, forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, combineLatest, forkJoin, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
-import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
-import { map } from 'rxjs/operators';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
@@ -56,16 +55,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
     paginationData: any = {};
-    isLast;
+    breadcrumbData: any;
+    isLast: any;
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     recentArticlesInstance = null;
     @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
-    showLoader: boolean;
     sortByUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    breadcrumpUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     categoryDataName: BehaviorSubject<any> = new BehaviorSubject<any>({});
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
@@ -218,14 +216,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     async onVisibleCateoryFooter(event) {
-        if (!this.cateoryFooterInstance && this.firstPageContent) {
+        if (!this.cateoryFooterInstance) {
             const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component').finally(() => {
                 this._commonService.showLoader = false;
             });
             const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
             this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
             this.cateoryFooterInstance.instance['categoryFooterData'] = {
-                firstPageContent: this.firstPageContent,
                 productSearchResult: this.productSearchResult,
                 getRelatedCatgory: this.getRelatedCatgory,
                 toggletsWrap: this.toggletsWrap,
@@ -240,7 +237,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     async createDynamicComponent(name) {
         this._commonService.showLoader = true;
         if (name === 'bestseller') {
-            this.catBestSellerInstance = null;
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -248,8 +244,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
             this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
         } else if (name === 'subCategory') {
-            this.subCategoryInstance = null;
-            this.subCategoryContainerRef.remove();
             const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -257,7 +251,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
             this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
         } else if (name === 'shopByBrand') {
-            this.shopByBrandInstance = null;
             const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -265,7 +258,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
             this.shopByBrandInstance.instance['brand_Data'] = this.relatedCatgoryListUpdated;
         } else if (name === 'catStatic') {
-            this.catStaticInstance = null;
             const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -336,9 +328,14 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this._commonService.showLoader = false;
         }
 
-        if (res[3] && res[3]['data']) {
+        if (res[4] && res[4]['data']) {
             this._commonService.cmsData = res[3]['data'];
             this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
+        }
+
+
+        if (res[3]){
+            this.breadcrumbData = res[3];
         }
 
         if (this._tState.hasKey(GRCRK)) {
@@ -391,6 +388,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         let refreshProducts = this.refreshProducts().pipe(map(res => res));
         let getFAQ = this.getFAQ(this.categoryId);
         let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data']));
+        // let getBreadCrumpDataFromAPI = this._commonService.getCmsDynamicDataForCategoryAndBrand(window.location.pathname.replace('/',''), 'category');
 
         let apiList = [getRelatedCategories, refreshProducts, getFAQ];
 
@@ -440,9 +438,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
                 if (res[3] && res[3]['data']) {
                     this._commonService.cmsData = res[3]['data'];
-                    if (this._commonService.cmsData) {
-                        this.createDynamicComponent('cms');
-                    }
+                    this.createDynamicComponent('cms');
                     this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
                 }
 
@@ -1215,8 +1211,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
-                const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
-                this.breadcrumpUpdated.next(bData);
+                // const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
+                // this.breadcrumpUpdated.next(bData);
             }
         } else {
             this.relatedCatgoryListUpdated.next([]);

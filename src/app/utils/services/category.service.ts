@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '@services/data.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CONSTANTS } from '@config/constants';
-import { catchError } from 'rxjs/operators/catchError';
+import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { HttpErrorResponse } from '@angular/common/http';
 

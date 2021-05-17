@@ -224,7 +224,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     this.localAuthService.login$.subscribe(
       (data) => {
-        console.log('localAuthService login', data);
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin = true;
       }
@@ -232,7 +231,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     this.localAuthService.logout$.subscribe(
       (data) => {
-        console.log('localAuthService logout', data);
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin = false;
       }

@@ -1,4 +1,5 @@
-import { Component, Input } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Component, Input, NgModule } from "@angular/core";
 import { Router } from "@angular/router";
 import { CONSTANTS } from '@config/constants';
 
@@ -18,3 +19,10 @@ export class RecentArticles {
         this.router.navigateByUrl('/articles/' + article.friendlyUrl)
     }
 }
+
+@NgModule({
+    declarations: [RecentArticles],
+    imports: [CommonModule]
+})
+export class RecentArticlesModule {}
+export class CategoryModule extends RecentArticlesModule {}

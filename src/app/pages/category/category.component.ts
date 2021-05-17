@@ -86,8 +86,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterCounts;
     todayDate: number;
     spl_subCategory_Dt: any;
-    refreshProductsUnsub$: any;
-    refreshProductsUnsub: any;
     _activatedRouteUnsub: any;
     forkJoinUnsub: any;
     combineLatestUnsub: any;
@@ -220,7 +218,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     async onVisibleCateoryFooter(event) {
-        if (!this.cateoryFooterInstance) {
+        if (!this.cateoryFooterInstance && this.firstPageContent) {
             const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -251,6 +249,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
         } else if (name === 'subCategory') {
             this.subCategoryInstance = null;
+            this.subCategoryContainerRef.remove();
             const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -308,9 +307,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         const res = this._activatedRoute.snapshot.data;
-        console.log('==============');
-        console.log(res);
-        console.log('==============');
         this.setDataAfterGettingDataFromResolver(res.category);
 
     }
@@ -1279,44 +1275,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         return fProducts;
     }
 
-    resetLazyComponents() {
-        if (this.filterInstance) {
-            this.filterInstance = null;
-            this.filterContainerRef.remove();
-        }
-        if (this.sortByInstance) {
-            this.sortByInstance = null;
-            this.sortByContainerRef.remove();
-        }
-        if (this.paginationInstance) {
-            this.paginationInstance = null;
-            this.paginationContainerRef.remove();
-        }
-        if (this.subCategoryInstance) {
-            this.subCategoryInstance = null;
-            this.subCategoryContainerRef.remove();
-        }
-    }
-
-
-    ngOnDestroy() {
-        if (this.refreshProductsUnsub$) {
-            this.refreshProductsUnsub$.unsubscribe();
-        }
-        if (this.refreshProductsUnsub) {
-            this.refreshProductsUnsub.unsubscribe();
-        }
-        if (this._activatedRouteUnsub) {
-            this._activatedRouteUnsub.unsubscribe();
-        }
-        if (this.combineLatestUnsub) {
-            this.combineLatestUnsub.unsubscribe()
-        }
-        if (this.forkJoinUnsub) {
-            this.forkJoinUnsub.unsubscribe();
-        }
-
-    }
     getAltName(brandName) {
         if (brandName == null || brandName == undefined) {
             return 'safety shoes';
@@ -1349,4 +1307,71 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             });
         }
     }
+
+    resetLazyComponents() {
+        if (this.filterInstance) {
+            this.filterInstance = null;
+            this.filterContainerRef.remove();
+        }
+        if (this.sortByInstance) {
+            this.sortByInstance = null;
+            this.sortByContainerRef.remove();
+        }
+        if (this.paginationInstance) {
+            this.paginationInstance = null;
+            this.paginationContainerRef.remove();
+        }
+        if (this.subCategoryInstance) {
+            this.subCategoryInstance = null;
+            this.subCategoryContainerRef.remove();
+        }
+        if (this.catBestSellerInstance){
+            this.catBestSellerInstance = null;
+            this.catBestSellerContainerRef.remove();
+        }
+        if (this.shopByBrandInstance) {
+            this.shopByBrandInstance = null;
+            this.shopByBrandContainerRef.remove();
+        }
+        if (this.catStaticInstance) {
+            this.catStaticInstance = null;
+            this.catStaticContainerRef.remove();
+        }
+        if (this.shopbyFeatrInstance) {
+            this.shopbyFeatrInstance = null;
+            this.shopbyFeatrContainerRef.remove();
+        }
+        if (this.shopbyFeatrInstance) {
+            this.shopbyFeatrInstance = null;
+            this.shopbyFeatrContainerRef.remove();
+        }
+        if (this.slpSubCategoryInstance) {
+            this.slpSubCategoryInstance = null;
+            this.slpSubCategoryContainerRef.remove();
+        }
+        if (this.cmsInstance) {
+            this.cmsInstance = null;
+            this.cmsContainerRef.remove();
+        }
+        if(this.cateoryFooterInstance) {
+            this.cateoryFooterInstance = null;
+            this.cateoryFooterContainerRef.remove();
+        }
+    }
+
+    ngOnDestroy() {
+        if (this._activatedRouteUnsub) {
+            this._activatedRouteUnsub.unsubscribe();
+        }
+        if (this.combineLatestUnsub) {
+            this.combineLatestUnsub.unsubscribe()
+        }
+        if (this.forkJoinUnsub) {
+            this.forkJoinUnsub.unsubscribe();
+        }
+
+        this.resetLazyComponents();
+
+    }
+    
 }

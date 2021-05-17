@@ -78,7 +78,7 @@
     </div>
 
     <span observeVisibility [debounceTime]="100" (visible)="onVisibleCateoryFooter($event)"></span>
-    <ng-template *ngIf="_commonService?.isBrowser" #cateoryFooter></ng-template>
+    <ng-template *ngIf="_commonService?.isBrowser && firstPageContent" #cateoryFooter></ng-template>
 </div>
 <!-- 
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">

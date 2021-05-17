@@ -1,7 +1,6 @@
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <ng-container *ngIf="_commonService?.isBrowser" #filter></ng-container>
-        <!-- <filter *ngIf="_commonService?.isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter> -->
     </div>
 </div>
 
@@ -11,16 +10,11 @@
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
-        <!-- <slp-sub-category *ngIf="layoutType == 2" [sub_category_Data]="spl_subCategory_Dt"></slp-sub-category> -->
             <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
-            <!-- <cat-static [page_title]="page_title" [static_data]="static_Dt"></cat-static> -->
-            <!-- <shopby-brand [brand_Data]="brand_Dt"></shopby-brand> -->
-            <!-- <cat-bestseller [bestSeller_Data]="bestSeller_Dt"></cat-bestseller> -->
         </div>
         <div class="container-fluid safetyshshopbytype">
             <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
-            <!-- <shopby-featr [shopBy_Data]="shopBy_Dt"></shopby-featr> -->
         </div>
     </div>
 </div>
@@ -28,7 +22,6 @@
 <div class="container-fluid category">
     <div class="row">
         <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
-        <!-- <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms> -->
     </div>
 </div>
 
@@ -41,7 +34,6 @@
                         Categories)</span>
                 </p>
                 <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
-                <!-- <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category> -->
             </div>
         </div>
         <div class="clearfix"></div>
@@ -57,12 +49,10 @@
                 <span class="txt">SORT BY</span>
             </button>
         </div>
-        <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
         <ng-container *ngIf="_commonService?.isBrowser" #sortBy></ng-container>
         <div>
             <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
             <ng-template *ngIf="_commonService?.isBrowser" #pagination></ng-template>
-            <!-- <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated" [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'" (onPageChange)="pageChanged($event)"></pagination> -->
         </div>
     </div>
 
@@ -81,28 +71,3 @@
         <ng-template *ngIf="_commonService?.isBrowser" #cateoryFooter></ng-template>
     </div>
 </div>
-<!-- 
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
-    <div class="content-popup" content>
-        <ul class="view-products no-border list border-top">
-            <li *ngFor="let product of extrasBlock.product_data">
-                <a [routerLink]="product.productlink" class="clearfix">
-                    <div class="product-img">
-                        <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}" alt="{{product.productName}}e">
-                    </div>
-                    <div class="product-description">
-                        <p class="description-txt">{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></p>
-                        <p class="price">
-                            <span class="before-discount">₹{{product.mrp}}
-                            </span>
-                            <span class="discount">{{product.discount_percentage}}% OFF</span>
-                            <span class="after-discount">{{product.pricewithouttax}}</span>
-                        </p>
-                        <p class="seller">
-                            <span>By :</span> {{product.descriptionObj.Brand}}</p>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-</app-pop-up> -->

@@ -145,6 +145,15 @@ const routes: Routes = [
         }
       },
       {
+        path: 'order-confirmation',
+        loadChildren: () => import('./orderConfirmation/orderConfirmation.module').then(m => m.OrderConfirmationModule),
+        data: {
+          footer: false,
+          logo: true,
+          menuBar: true
+        }
+      },
+      {
         path: 'dashboard',
         loadChildren: () => import('./bussiness/bussiness.module').then(m => m.BusinessModule),
         canActivate: [MyAccountGuard]

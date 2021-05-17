@@ -11,13 +11,13 @@ import {
 	ViewContainerRef,
 	ViewEncapsulation,
 } from '@angular/core';
-import { Meta, Title, TransferState } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClientUtility } from '@app/utils/client.utility';
 import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { ClusterStoreService } from './cluster-store.service';
 
 @Component({
 	selector: 'app-cluster-store',
@@ -79,8 +79,6 @@ export class ClusterStoreComponent implements OnInit {
 	constructor(
 		private _router: Router,
 		private _activatedRoute: ActivatedRoute,
-		private _cls: ClusterStoreService,
-		private _tState: TransferState,
 		@Inject(PLATFORM_ID) platformId,
 		public title: Title,
 		public meta: Meta,
@@ -126,6 +124,7 @@ export class ClusterStoreComponent implements OnInit {
 			response['data'][0]['block_data']['category_cluster']
 		);
 		this.data = response['data'][0]['block_data'];
+		this.reInitializeLazyComponents();
 		if (this.isServer) {
 			this.setMetaInformation(
 				response['metaTitle'],
@@ -307,8 +306,83 @@ export class ClusterStoreComponent implements OnInit {
 		this.clusterFooterInstance.instance['data'] = this.data['footer_data'];
 	}
 
+	reInitializeLazyComponents(initComponent = true) {
+		ClientUtility.scrollToTop(0);
+		if (this.appBannerInstance) {
+			this.appBannerInstance = null;
+			this.appBannerContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleAppBanner();
+			}
+		}
+		if (this.allcategoriesInstance) {
+			this.allcategoriesInstance = null;
+			this.allCategoriesContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleAllCategoryComponent();
+			}
+		}
+		if (this.newArrivalInstance) {
+			this.newArrivalInstance = null;
+			this.newArrivalContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleNewArrivals();
+			}
+		}
+		if (this.trendingCategoryInstance) {
+			this.trendingCategoryInstance = null;
+			this.trendingCategoryContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleTrendingCategories();
+			}
+		}
+		if (this.featuredBrandInstance) {
+			this.featuredBrandInstance = null;
+			this.featuredBrandContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleFeaturedBrands();
+			}
+		}
+		if (this.featureBannerInstance) {
+			this.featureBannerInstance = null;
+			this.featureBannerContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleFeatureBanner();
+			}
+		}
+		if (this.bestSellerInstance) {
+			this.bestSellerInstance = null;
+			this.bestSellerContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleBestSeller();
+			}
+		}
+		if (this.featuredCategoriesInstance) {
+			this.featuredCategoriesInstance = null;
+			this.featuredCategoriesContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleFeturedCategories();
+			}
+		}
+		if (this.clusterVideoInstance) {
+			this.clusterVideoInstance = null;
+			this.clusterVideoContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleClusterVideo();
+			}
+		}
+		if (this.clusterFooterInstance) {
+			this.clusterFooterInstance = null;
+			this.clusterFooterContainerRef.remove();
+			if (initComponent) {
+				this.onVisibleFooter();
+			}
+		}
+	}
+
 	ngOnDestroy() {
 		this.cDistryoyed.next();
 		this.cDistryoyed.unsubscribe();
+		this.reInitializeLazyComponents(false);
 	}
 }

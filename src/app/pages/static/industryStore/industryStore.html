@@ -15,7 +15,9 @@
         <div *ngIf="elementData && elementData.length > 0" class="col-md-12 outerIndustryWrap">
             <div *ngFor="let element of elementData;let i = index;" class="col-md-6">
                 <ng-container>
-                    <div [routerLink]="[ '/'+element.image_title]" [ngStyle]="{ 'background-color': element.image_link} " class="firstInnerWrap" style="margin-bottom: 10px;">
+                    <div [routerLink]="[ '/'+element.image_title]"
+                        [ngStyle]="{ 'background-color': element.image_link} " class="firstInnerWrap"
+                        style="margin-bottom: 10px;">
                         <div [routerLink]="['/'+element.image_title]">
                             <img src="{{API[ 'IMAGE_BASE_URL']}}{{element.image_name}}" class="industryImg">
                         </div>

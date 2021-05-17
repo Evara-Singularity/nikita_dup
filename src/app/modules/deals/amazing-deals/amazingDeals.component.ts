@@ -35,10 +35,12 @@ export class AmazingDealsComponent {
   setMetas() {
     this.title.setTitle("Amazing Deals and Offers on Moglix.com");
     this.meta.addTag({ "name": "description", "content": "Amazing deals and offers on all industrial tools and equipment at Moglix.com." });
-    let links = this._renderer2.createElement('link');
-    links.rel = "canonical";
-    links.href = CONSTANTS.PROD + this._router.url;
-    this._renderer2.appendChild(this._document.head, links);
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this._router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    }
   }
 
 

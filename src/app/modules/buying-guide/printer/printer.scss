@@ -1,0 +1,60 @@
+@import "../../../scss/static.scss";
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 400;
+}
+
+.h1,
+h1 {
+  font-size: 1.5rem;
+}
+p {
+  line-height: 24px;
+}
+.h3,
+h3 {
+  font-size: 1.15rem;
+}
+
+.lh-24 {
+  line-height: 24px;
+}
+
+.mar-tb-10 {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+.bg-sidebar {
+  padding: 15px 0;
+  h2 {
+    padding: 10px 0px 0;
+  }
+  ul {
+    li {
+      margin: 0 0 10px;
+      list-style: none;
+      a {
+        color: #366090;
+      }
+    }
+  }
+}
+.bg-grey {
+  padding: 10px;
+  h2 {
+    margin: 10px 0;
+  }
+  h1.headingmain {
+    font-weight: 400 !important;
+    font-size: 1.35rem;
+  }
+}
+
+.card {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+}

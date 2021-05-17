@@ -38,7 +38,7 @@
         "ngx-page-scroll-core": "^7.0.4",
         "ngx-pagination": "^3.2.1",
         "ngx-siema": "git+https://github.com/Yogender-moglix/ngx-siema.git",
-        "ngx-socket-io": "^4.0.0",
+        "ngx-socket-io": "^3.0.1",
         "ngx-webstorage": "^7.0.1",
         "pinch-zoom-js": "^2.3.4",
         "rxjs": "^6.6.7",

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PaytmUpiService } from "./paytmUpi.service";
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CheckoutService } from '@services/checkout.service';
 import { CartService } from '@services/cart.service';

@@ -1,8 +1,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
-import { DataService } from 'src/app/utils/services/data.service';
-import CONSTANTS from 'src/app/config/constants';
+import { DataService } from '../../utils/services/data.service';
+import CONSTANTS from '../../config/constants';
 
 @Injectable()
 export class OrderConfirmationService {

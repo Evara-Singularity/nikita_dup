@@ -43,11 +43,12 @@ export class MonsoonSaleComponent {
       property: "og:url",
       content: "https://www.moglix.com/deals/emailer-deals",
     });
-
-    let links = this._renderer2.createElement("link");
-    links.rel = "canonical";
-    links.href = CONSTANTS.PROD + this._router.url;
-    this._renderer2.appendChild(this._document.head, links);
+    if (this.isServer) {
+      let links = this._renderer2.createElement("link");
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this._router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    }
   }
 
   getMonsoonSaleData() {

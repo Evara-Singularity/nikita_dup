@@ -24,5 +24,4 @@ export class SafeUrl implements PipeTransform {
         ]
     }
 )
-
 export class SafeUrlPipeModule {}

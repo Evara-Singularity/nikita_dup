@@ -29,3 +29,4 @@ import { ShowAvailableOnRequestLastPipeModule } from "@app/utils/pipes/show-avai
     providers: [ProductListService],
 })
 export class ProductListModule { }
+export class CategoryModule extends ProductListModule { }

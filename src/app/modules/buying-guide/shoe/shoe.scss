@@ -1,0 +1,87 @@
+@import "../../../scss/static.scss";
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 400;
+}
+
+.h1,
+h1 {
+  font-size: 2.5rem;
+}
+
+.h3,
+h3 {
+  font-size: 1.25rem;
+}
+
+.lh-24 {
+  line-height: 24px;
+}
+
+.mar-tb-10 {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+.bg-sidebar {
+  padding-bottom: 15px;
+  h2 {
+    padding: 10px 0px 0;
+  }
+  ul {
+    li {
+      list-style: none;
+      margin: 0 0 10px;
+      a {
+        color: #366090 !important;
+      }
+    }
+  }
+}
+.bg-grey {
+  h2 {
+    margin: 10px 0;
+  }
+  ul {
+    li {
+      margin: 0 0 10px;
+      line-height: 24px;
+    }
+  }
+  p {
+    margin-bottom: 10px !important;
+  }
+  h1.headingmain {
+    font-weight: 400 !important;
+    font-size: 1.75rem;
+  }
+}
+
+.safetyshoes {
+  text-align: center;
+  li {
+    width: 33.33%;
+    display: inline-block;
+    padding: 0 10px 10px;
+    vertical-align: top;
+    img {
+      width: 100%;
+    }
+    h4 {
+      font-size: 12px;
+    }
+  }
+}
+.majorpoints {
+  padding-left: 15px;
+}
+.card {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+}
+.mainWrap {
+  padding: 10px;
+}

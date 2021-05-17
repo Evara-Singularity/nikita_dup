@@ -10,10 +10,10 @@ import { SortByComponent } from "@components/sortBy/sortBy.component";
 import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, ViewChild, EventEmitter, PLATFORM_ID, Inject, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare let dataLayer;
-declare var digitalData: {};
-declare let _satellite;
+let digitalData: {};
 
 interface ProductSearchResult {
     highlightedSearchString: any,
@@ -74,6 +74,7 @@ export class SearchComponent implements OnInit {
 
     constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
+        private analytics: GlobalAnalyticsService,
         private injector: Injector,
         public localStorageService: LocalStorageService, private meta: Meta, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document,
         @Inject(PLATFORM_ID) platformId, private footerService: FooterService, private _router: Router,
@@ -186,7 +187,7 @@ export class SearchComponent implements OnInit {
             if (this.isBrowser && !oldDefaultParams['queryParams'].hasOwnProperty("search_query") || oldDefaultParams['queryParams']['search_query'] != dp['queryParams']['search_query']) {
                 this._commonService.setSearchResultsTrackingData({ 'search-query': dp["queryParams"]["search_query"], 'search-results': '1' });
                 setTimeout(() => {
-                    dataLayer.push({
+                    this.analytics.sendGTMCall({
                         'event': 'search-results',
                         'search-query': dp['queryParams']['search_query'],
                         'search-results': '1'
@@ -201,7 +202,7 @@ export class SearchComponent implements OnInit {
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData['page']['searchTerm'] = products[0].moglixPartNumber;
                 digitalData['page']['suggestionClicked'] = queryParams['lsource'] && queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
-                _satellite.track("genericPageLoad");
+                this.analytics.sendAdobeCall(digitalData);
             }
 
             this._router.navigate([products[0].productUrl], { replaceUrl: true });
@@ -209,7 +210,7 @@ export class SearchComponent implements OnInit {
             if (this.isBrowser && !oldDefaultParams["queryParams"].hasOwnProperty("search_query") || oldDefaultParams["queryParams"]["search_query"] != dp["queryParams"]["search_query"]) {
                 this._commonService.setSearchResultsTrackingData({ 'search-query': dp["queryParams"]["search_query"], 'search-results': '' + response.productSearchResult["totalCount"] });
                 setTimeout(() => {
-                    dataLayer.push({
+                    this.analytics.sendGTMCall({
                         'event': 'search-results',
                         'search-query': dp["queryParams"]["search_query"],
                         'search-results': '' + response.productSearchResult["totalCount"]
@@ -223,7 +224,7 @@ export class SearchComponent implements OnInit {
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData['page']['searchTerm'] = queryParams['search_query'];
                 digitalData['page']['suggestionClicked'] = queryParams['lsource'] && queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
-                _satellite.track("genericPageLoad");
+                this.analytics.sendAdobeCall(digitalData);
             }
 
             if (flag) {

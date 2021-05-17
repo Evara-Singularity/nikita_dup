@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Input, NgModule } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 
 
@@ -10,7 +9,7 @@ import CONSTANTS from '@app/config/constants';
   templateUrl: './cluster-category.component.html',
   styleUrls: ['./cluster-category.component.scss']
 })
-export class ClusterCategoryComponent implements OnInit {
+export class ClusterCategoryComponent {
   @Input('data') data;
   @Input() extraData;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -19,9 +18,6 @@ export class ClusterCategoryComponent implements OnInit {
   constructor(
     private router: Router
   ) { }
-  
-  ngOnInit() {
-  }
 
   link(url){
     this.router.navigateByUrl('/'+url);

@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { PromoOfferService } from './promo-offer.service';
 import { cartSession } from '../../utils/models/cart.initial';

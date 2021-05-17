@@ -1,7 +1,3 @@
-/**
- * Created by Kuldeep on 17/5/17.
- */
-
 import { Pipe, PipeTransform, NgModule } from '@angular/core'
 @Pipe({
     name: "showAvailableOnRequestLast"

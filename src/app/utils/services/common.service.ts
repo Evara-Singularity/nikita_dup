@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from './cart.service';
@@ -30,7 +30,8 @@ export class CommonService {
     set showLoader(status: boolean) {
         this._loaderService.setLoaderState(status)
     }
-
+    public isBrowser: boolean;
+    public isServer: boolean;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -58,6 +59,7 @@ export class CommonService {
         this.routeData = { currentUrl: "", previousUrl: "" };
         this.itemsValidationMessage = [];
         this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = isPlatformServer(platformId);
     }
 
     get itemsValidationMessage() {
@@ -78,7 +80,6 @@ export class CommonService {
 
     setRouteData(data) {
         Object.assign(this.routeData, data);
-        // console.log(this.routeData);
     }
 
     getRouteData() {
@@ -99,19 +100,15 @@ export class CommonService {
     }
 
     setGaGtmData(data: {}) {
-        // this.gaGtmData = data;
         if (Object.keys(data).length === 0)
             this.gaGtmData = {};
         else
             Object.assign(this.gaGtmData, data);
         this._localStorageService.store('gaGtmData', this.gaGtmData);
-        //console.log(this.gaGtmData);
-        //console.log("this.gaGtmDatathis.gaGtmDatathis.gaGtmData", this.gaGtmData, data);
     }
 
     getGaGtmData() {
         return this._localStorageService.retrieve('gaGtmData');
-        // return this.gaGtmData;
     }
 
     setMyRfqParameters() {
@@ -128,7 +125,6 @@ export class CommonService {
         }
         if (updatedParams != undefined && Object.keys(updatedParams).length > 0) {
             for (let key in updatedParams) {
-                //console.log("!!!!!!!!!!!!!!!!!!!!!!!!111", key)
                 this.defaultParams[key] = updatedParams[key];
             }
         }
@@ -146,7 +142,6 @@ export class CommonService {
     }
 
     private getCategoryData(type, curl, params) {
-        console.log('getCategoryData', type, curl, params);
         const formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
             .pipe(
@@ -205,7 +200,6 @@ export class CommonService {
     
     private getSearchData(type, curl, params): Observable<any> {
         const formattedParams = this.formatParams(params);
-        // console.log(formattedParams);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -251,13 +245,11 @@ export class CommonService {
         let fragment = "";
         if (Object.keys(productFilterData).length > 0) {
             let filter = productFilterData;
-            //console.log("Filter :::::::::::::::::::::::::::", filter);
             let keys = Object.keys(filter);
 
             for (let i = 0; i < keys.length; i++) {
 
                 if (filter[keys[i]].length > 0) {
-                    ////console.log(key, value);
                     if (fragment.length == 0)
                         fragment = fragment + keys[i] + '-' + filter[keys[i]].join("||");
                     else
@@ -268,7 +260,6 @@ export class CommonService {
             }
         }
 
-        //console.log("fragmentfragmentfragmentfragmentfragment", fragment);
         return fragment.length > 0 ? fragment : null;
     }
 
@@ -367,7 +358,6 @@ export class CommonService {
         }));
     }
 
-    isBrowser: boolean;
     getCmsDynamicDataForCategoryAndBrand(categoryCode?, brandName?) {
         let url = CONSTANTS.NEW_MOGLIX_API + "/cmsapi/getCmsControlledPage?requestParam=article-1";
         if (brandName) {
@@ -775,6 +765,14 @@ export class CommonService {
         if (this.isBrowser) {
             ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
         }
+    }
+
+    getBreadcrumpData(link, type, pageTitle?): Observable<any> {
+        let curl = CONSTANTS.NEW_MOGLIX_API + "/homepage/getbreadcrumb?source=" + link + "&type=" + type;
+        if (pageTitle) {
+            curl += "&pagetitle=" + pageTitle;
+        }
+        return this._dataService.callRestful("GET", curl);
     }
 
     removeLoader() {

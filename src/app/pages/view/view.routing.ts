@@ -1,11 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
-import { ViewComponent } from "./view.component";
+import { ViewComponent } from './view.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: ViewComponent
-    }
+	{
+		path: '',
+		component: ViewComponent,
+	},
 ];
 
 export const routing = RouterModule.forChild(routes);

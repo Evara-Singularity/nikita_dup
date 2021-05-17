@@ -6,7 +6,7 @@ import {
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import {CommonService} from "@app/utils/services/common.service";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import { fade } from '@app/utils/animations/animation';
 import { CONSTANTS } from "@app/config/constants";
 import { makeStateKey, TransferState } from '@angular/platform-browser';

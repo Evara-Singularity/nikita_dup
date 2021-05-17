@@ -37,11 +37,13 @@ export class FreshComponent {
     this.meta.addTag({ property: "og:description", content: "The special offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ property: "og:url", content: "https://www.moglix.com/deals/fresh-arrivals" });
     this.meta.addTag({ name: "description", content: "The special offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
-    let links = this._renderer2.createElement("link");
-    links.rel = "canonical";
-    let href = CONSTANTS.PROD + this.router.url.split("?")[0].split("#")[0].toLowerCase();
-    links.href = href;
-    this._renderer2.appendChild(this._document.head, links);
+    if (this.isServer) {
+      let links = this._renderer2.createElement("link");
+      links.rel = "canonical";
+      let href = CONSTANTS.PROD + this.router.url.split("?")[0].split("#")[0].toLowerCase();
+      links.href = href;
+      this._renderer2.appendChild(this._document.head, links);
+    }
   }
 
   initializeClicks() {

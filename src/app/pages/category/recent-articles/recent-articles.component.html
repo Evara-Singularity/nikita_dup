@@ -1,0 +1,13 @@
+<div class="recent-article-section" *ngIf="recentArticles?.length">
+    <h1>Related {{ title }} Article</h1>
+    <div id="articles-carousel" class="carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner">
+            <div class="carousel-item active" *ngFor="let article of recentArticles" (click)="navigateToArticlePage(article)">
+                <img [src]="article?.thumbnailImage ? imageBaseUrl + article?.thumbnailImage : defaultImage">
+                <p>{{ article?.title }}</p>
+            </div>
+        </div>
+
+    </div>
+</div>

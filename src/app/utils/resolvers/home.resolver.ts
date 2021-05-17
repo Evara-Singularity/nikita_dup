@@ -5,45 +5,50 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { GlobalLoaderService } from '../services/global-loader.service';
-
+import { isPlatformServer } from '@angular/common';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeResolver implements Resolve<object> {
-  set isShowLoader(value) {
-    this.loaderService.setLoaderState(value)
-  }
+
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
     private http: HttpClient,
-    private loaderService: GlobalLoaderService
   ) { }
+
+
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-    this.isShowLoader = true;
-    const layoutData = makeStateKey<object>('layout');
 
-    const layOutJSON = environment.BASE_URL + '/homepage/layoutbyjson?requestType=mobile';
+    const STATE_KEY = makeStateKey<object>('layout-homepage');
 
-    const JSONdata = this.http.get(layOutJSON);
+    if (this.transferState.hasKey(STATE_KEY)) {
+      const stateObj = this.transferState.get<object>(STATE_KEY, null);
+      this.transferState.remove(STATE_KEY);
+      return of([stateObj]);
+    } else {
+      const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT_HOME;
+      const stateObs = this.http.get(LAYOUT_URL);
+      // forkJoin is implemented as we might need to add more APIs to resolvers
+      return forkJoin([stateObs]).pipe(
+        catchError((err) => {
+          return of(err);
+        }),
+        tap(result => {
+          if (isPlatformServer(this.platformId)) {
+            //this.loaderService.setLoaderState(false);
+            this.transferState.set(STATE_KEY, result[0]);
+          }
+        })
+      )
+    }
 
-    return JSONdata.pipe(
-      catchError((err) => {
-        console.log('err', err);
-        this.isShowLoader = false;
-        return of(err);
-      }),
-      tap(result => {
-        this.transferState.set(layoutData, JSONdata);
-        this.isShowLoader = false;
-      })
-    )
   }
 
 }

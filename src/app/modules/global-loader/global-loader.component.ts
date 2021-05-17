@@ -19,7 +19,6 @@ export class GlobalLoaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loaderUnsubcribe = this.globalLoaderService.getLoaderState().subscribe(status => {
-      console.log('status ==>', status);
       this.showLoader = status;
     })
   }

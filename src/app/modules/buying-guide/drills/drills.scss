@@ -1,0 +1,40 @@
+@import "../../../scss/static.scss";
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 400;
+}
+
+.h3,
+h3 {
+  font-size: 1.15rem;
+}
+h4 {
+  font-size: 1rem !important;
+}
+
+.lh-24 {
+  line-height: 24px;
+}
+
+.bg-sidebar h2 {
+  padding: 10px 15px 0;
+}
+.bg-grey {
+  padding: 10px;
+  h1.headingmain {
+    font-weight: 400 !important;
+    font-size: 20px;
+  }
+}
+
+.border {
+  margin: 15px 0;
+}
+.card {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+}

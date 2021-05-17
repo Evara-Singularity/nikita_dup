@@ -1,17 +1,17 @@
 <section class="safetyban">
   <p class="slp-heading">
-    {{ page_title }}
+    {{page_title}}
   </p>
-  <p>{{ static_data[0].element_url }}</p>
+  <p>{{static_data[0].element_url}}</p>
   <h2>Quick Links</h2>
   <ul>
-    <li *ngFor="let item of static_data | slice: 1">
-      <a [routerLink]="'/' + item.element_url">
-        {{ item.element_name }}
-      </a>
+    <li *ngFor="let item of static_data |slice:1">
+      <a [routerLink]="'/'+item.element_url">
+        {{item.element_name}}</a>
     </li>
   </ul>
   <a (click)="scrollToResults()" class="viewall">View All Products
     <i class="icon-next"></i>
   </a>
+
 </section>

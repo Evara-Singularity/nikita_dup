@@ -1,10 +1,13 @@
 @import "../../scss/variables";
+
 :host {
   display: block;
-  margin: 55px 0px;
+  margin: 0px 0px 55px 0px;
+
   .slide-up {
     transform: translateY(0);
   }
+
   .filter-wrapper {
     position: fixed;
     bottom: 0;
@@ -13,9 +16,11 @@
     width: 100%;
     box-shadow: 1px -3px 8px #cecece;
     background: #fff;
+
     &.slide-up {
       bottom: 0;
     }
+
     button {
       width: 50%;
       height: 54px;

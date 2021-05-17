@@ -1,18 +1,17 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { CONSTANTS } from '@app/config/constants';
-import { PopUpComponent } from '@app/modules/popUp/pop-up.component';
-
+import { CONSTANTS } from '@config/constants';
+import { Component, Input, NgModule, ViewChild } from '@angular/core';
+import { PopUpComponent } from '@modules/popUp/pop-up.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { PopUpModule } from "@modules/popUp/pop-up.module";
 
 @Component({
   selector: 'cat-bestseller',
   templateUrl: './cat-bestseller.component.html',
-  styleUrls: []
 })
-export class CatBestsellerComponent implements OnInit {
-
-
+export class CatBestsellerComponent {
   @Input('bestSeller_Data') bestSeller_Data;
-  @Input('bestSlroptions') bestSlroptions;
   baseURL = CONSTANTS.PROD;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
@@ -24,11 +23,6 @@ export class CatBestsellerComponent implements OnInit {
 
   constructor() {
     this.openPopup = false;
-  }
-
-
-  ngOnInit() {
-
   }
 
   getBrandBy(brandName) {
@@ -46,8 +40,19 @@ export class CatBestsellerComponent implements OnInit {
   customClose() {
     this._popupComponent.closePopup();
   }
-
-
-
-
 }
+
+@NgModule({
+  declarations: [
+    CatBestsellerComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    LazyLoadImageModule,
+    PopUpModule
+  ]
+})
+export class CategoryBestSellerModule { }
+export class CategoryModule extends CategoryBestSellerModule { }
+

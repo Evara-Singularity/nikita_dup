@@ -18,4 +18,5 @@ export const ENDPOINTS = {
         getPromoCodeDetails: '/promoCode/getPromoCodeDetails'
     },
     GET_LAYOUT: '/homepage/layoutbycode',
+    GET_LAYOUT_HOME: '/homepage/layoutbyjson?requestType=mobile',
 }

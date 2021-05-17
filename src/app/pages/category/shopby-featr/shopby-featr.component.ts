@@ -1,5 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { CONSTANTS } from '@app/config/constants';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule} from '@angular/core';
+import { CONSTANTS } from '@config/constants';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 
 
 @Component({
@@ -7,16 +10,22 @@ import { CONSTANTS } from '@app/config/constants';
   templateUrl: './shopby-featr.component.html',
   styleUrls: ['./shopby-featr.component.scss']
 })
-export class ShopbyFeatrComponent implements OnInit {
+export class ShopbyFeatrComponent {
 
   @Input('shopBy_Data') shopBy_Data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
-
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
+  
 }
+
+@NgModule({
+  declarations: [
+    ShopbyFeatrComponent
+  ],
+  imports: [
+    CommonModule,
+    LazyLoadImageModule,
+  ]
+})
+export class ShopbyFeatrModule { }
+export class CategoryModule extends ShopbyFeatrModule { }

@@ -42,6 +42,5 @@ import { SiemaCarouselModule } from "../siemaCarousel/siemaCarousel.module";
     ]
 })
 
-export class CmsModule {
-    constructor(){}
-}
+export class CmsModule {}
+export class CategoryModule extends CmsModule {}

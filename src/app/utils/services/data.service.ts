@@ -69,6 +69,11 @@ export class DataService {
     sendMessage(msg: any) {
         if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
             var userSession = this._localAuthService.getUserSession();
+            const previousUrl = localStorage.getItem("previousUrl");
+            let prevUrl;
+            if (previousUrl) {
+                prevUrl = previousUrl.split("$$$").length >= 2 ? localStorage.getItem("previousUrl").split("$$$")[1] : "";
+            }
             var trackingData = {
                 message: (msg.message) ? msg.message : "tracking",
                 session_id: userSession ? userSession.sessionId : null,
@@ -80,7 +85,7 @@ export class DataService {
                 user_agent: navigator.userAgent,
                 timestamp: new Date().getTime(),
                 referrer: document.referrer,
-                previous_url: localStorage.getItem("previousUrl").split("$$$").length >= 2 ? localStorage.getItem("previousUrl").split("$$$")[1] : ""
+                previous_url: prevUrl
             }
             this.socket.emit("track", { ...trackingData, ...msg });
         }

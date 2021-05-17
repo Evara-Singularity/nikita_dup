@@ -2,7 +2,7 @@ import { Component, Input, PLATFORM_ID, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from "./wallet.service";
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../config/constants';
 import { CheckoutService } from '../../utils/services/checkout.service';

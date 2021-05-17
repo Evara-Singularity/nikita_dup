@@ -31,4 +31,4 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ],
 })
 
-export class BrandModule{}
+export class BrandModule { }

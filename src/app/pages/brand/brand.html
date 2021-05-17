@@ -1,3 +1,4 @@
+<!-- Filter section of brand page -->
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <ng-container *ngIf="isBrowser" #filter></ng-container>
@@ -5,16 +6,16 @@
     </div>
 </div>
 
+<!-- CMS content of Brand page -->
 <div class="container-fluid">
     <div class="row">
-        <cms *ngIf="_commonService?.cmsData" [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
+        <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
     </div>
 </div>
 
+<!-- Breadcrump of brand page -->
 <ul class="bread-head no-margin mar-b-15 hidden-sm-down" [ngClass]="{'notFoundEl' : !iba }">
-    <li [routerLink]="['/']" href="https://www.moglix.com" class="f-size-12">
-        Home
-    </li>
+    <li [routerLink]="['/']" href="https://www.moglix.com" class="f-size-12">Home</li>
     <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
     <li class="item f-size-12">
         <a [routerLink]="['/brands',friendlyUrl]" style="text-transform: capitalize">
@@ -26,39 +27,42 @@
     </li>
 </ul>
 
+<!-- Brand Product List Data -->
 <div class="cate-container">
     <div class="sub-cate-container">
         <div class="container pt-10">
-            <!--<h1 class="f-16 pad-tb-10">Shop {{brand}} Products</h1>-->
             <h1 *ngIf="!brandCategoryName" style="text-transform: capitalize" class="f-16 pad-tb-10 bold-txt">
-                {{heading ? (heading | removeHTML) : brand}} Products
+                Shop {{heading ? (heading | removeHTML) : brand}} Products
             </h1>
 
             <h1 *ngIf="brandCategoryName" style="text-transform: capitalize" class="f-16 pad-tb-10 bold-txt">
                 Shop {{heading ? (heading | removeHTML) : brand}} Online
             </h1>
+
         </div>
         <div class="container pt-10">
-            <!-- <p *ngIf="shortDesciption != null" class="desc-brand f-12 pb-10 lh-18" [innerHTML]="shortDesciption"></p> -->
-            <p *ngIf="brandCategoryName && firstPageContent" class="desc-brand f-12 pb-10 lh-18">
-                Moglix offers superior quality and genuine
+            <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand f-12 pb-10 lh-18">Moglix offers superior
+                quality and genuine
                 <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
                     {{brandCategoryName}}
                 </a> from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(heading | removeHTML)}}. Buy these products
+                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our
+                assortment and explore more about price, specifications, availability, and deals online for {{(heading |
+                removeHTML)}}. Buy these products
                 at best prices and get them delivered at your doorstep across India.
             </p>
+
         </div>
     </div>
-
     <div class="clearfix"></div>
+
+
 
     <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
 
     <div class="filter-wrapper">
         <button type="button" (click)="filterUp()">
-            <i class="icon-filter" aria-hidden="true"></i>
-            <span class="txt"> FILTER</span>
+            <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
         </button>
 
         <button type="button" (click)="toggleSortBy($event)">
@@ -71,8 +75,7 @@
     <div>
         <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
         <ng-template *ngIf="isBrowser" #pagination></ng-template>
-
-        <!-- <pagination class="block o-hidden h-54 h-auto-xs" [paginationUpdated]="paginationUpdated"
+        <!-- <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated"
             [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
             (onPageChange)="pageChanged($event)">
         </pagination> -->
@@ -80,5 +83,4 @@
 
     <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
     <ng-template *ngIf="isBrowser" #brandDetailsFooter></ng-template>
-
 </div>

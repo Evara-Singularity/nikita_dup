@@ -4,7 +4,7 @@ import { Component, ViewEncapsulation, Input, PLATFORM_ID, Inject } from '@angul
 import { Meta } from '@angular/platform-browser';
 import { QuickOrderService } from './quickOrder.service';
 import { Title } from '@angular/platform-browser';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { map } from 'rxjs/operators/map';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';

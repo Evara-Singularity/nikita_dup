@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { SavedCardService } from './savedCard.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 
 import { CartService } from '../../utils/services/cart.service';

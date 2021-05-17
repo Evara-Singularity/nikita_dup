@@ -136,6 +136,15 @@ const routes: Routes = [
         canActivate: [IsNotAuthenticatedGuard]
       },
       {
+        path: 'order-failure',
+        loadChildren: () => import('./orderFailure/orderFailure.module').then(m => m.OrderFailureModule),
+        data: {
+          footer: false,
+          logo: true,
+          menuBar: true
+        }
+      },
+      {
         path: 'dashboard',
         loadChildren: () => import('./bussiness/bussiness.module').then(m => m.BusinessModule),
         canActivate: [MyAccountGuard]
@@ -162,35 +171,35 @@ const routes: Routes = [
         path: 'all-categories',
         loadChildren: () => import('./view/view.module').then(m => m.ViewModule),
         data: {
-            footer: false,
-            logo: true
+          footer: false,
+          logo: true
         }
       },
       {
         path: 'industrystore',
         loadChildren: () => import('./static/industryStore/industryStore.module').then(m => m.IndustryStoreModule),
         data: {
-            footer: true,
-            title: 'Industry Store',
-            moreOpt: true
+          footer: true,
+          title: 'Industry Store',
+          moreOpt: true
         }
       },
       {
         path: 'manufacturer-store/:manufacturer',
         loadChildren: () => import('./static/manufacturer-store/liberty/liberty.module').then(m => m.LibertyModule),
         data: {
-            footer: false,
-            logo: true,
-            moreOpt: true
+          footer: false,
+          logo: true,
+          moreOpt: true
         }
       },
       {
         path: 'store/:type',
         loadChildren: () => import('./clusterStore/cluster-store.module').then(m => m.ClusterStoreModule),
         data: {
-            footer: false,
-            logo: true,
-            moreOpt: true
+          footer: false,
+          logo: true,
+          moreOpt: true
         }
       },
       {
@@ -488,13 +497,13 @@ const routes: Routes = [
         }
       },
       {
-          path: 'buyer-guide',
-          loadChildren: () => import('./buyer/buyer.module').then(m => m.BuyerModule),
-          data: {
-              footer: false,
-              title: 'Buying Guide',
-              moreOpt: true
-          }
+        path: 'buyer-guide',
+        loadChildren: () => import('./buyer/buyer.module').then(m => m.BuyerModule),
+        data: {
+          footer: false,
+          title: 'Buying Guide',
+          moreOpt: true
+        }
       },
       {
         path: '**',

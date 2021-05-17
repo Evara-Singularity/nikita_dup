@@ -4,7 +4,10 @@ import { routing } from "./orderFailure";
 import { OrderFailureComponent } from "./orderFailure.component";
 
 @NgModule({
-  imports: [CommonModule, routing],
+  imports: [
+    CommonModule, 
+    routing
+  ],
   declarations: [OrderFailureComponent],
   providers: [],
 })

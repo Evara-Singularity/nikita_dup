@@ -1,9 +1,5 @@
 import {Directive, ElementRef} from "@angular/core";
 
-/**
- * Created by Kuldeep on 23/7/18.
- */
-
 @Directive({
     selector:'[clickOutside]',
     host: {

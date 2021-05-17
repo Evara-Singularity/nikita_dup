@@ -62,21 +62,23 @@ export class FaqComponent {
 			property: 'og:url',
 			content: 'https://www.moglix.com/faq',
 		});
-		let links = this._renderer2.createElement('link');
-		let url = this._router.url as string;
-		if (url.indexOf(';') > -1) {
-			url = url.split(';')[0];
+		if (this.isServer) {
+			let links = this._renderer2.createElement('link');
+			let url = this._router.url as string;
+			if (url.indexOf(';') > -1) {
+				url = url.split(';')[0];
+			}
+			links.rel = 'canonical';
+			links.href =
+				CONSTANTS.PROD +
+				this._router.url
+					.split('?')[0]
+					.split('#')[0]
+					.split(':')[0]
+					.split(';')[0]
+					.toLowerCase();
+			this._renderer2.appendChild(this._document.head, links);
 		}
-		links.rel = 'canonical';
-		links.href =
-			CONSTANTS.PROD +
-			this._router.url
-				.split('?')[0]
-				.split('#')[0]
-				.split(':')[0]
-				.split(';')[0]
-				.toLowerCase();
-		this._renderer2.appendChild(this._document.head, links);
 	}
 
 	ngOnInit() {

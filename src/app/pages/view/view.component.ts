@@ -58,13 +58,15 @@ export class ViewComponent {
 		/**
 		 * Set canonical starts
 		 */
-		let links = this._renderer2.createElement('link');
-		links.rel = 'canonical';
-		let href =
-			CONSTANTS.PROD +
-			this._router.url.split('?')[0].split('#')[0].toLowerCase();
-		links.href = href;
-		this._renderer2.appendChild(this._document.head, links);
+		if (this.isServer) {
+			let links = this._renderer2.createElement('link');
+			links.rel = 'canonical';
+			let href =
+				CONSTANTS.PROD +
+				this._router.url.split('?')[0].split('#')[0].toLowerCase();
+			links.href = href;
+			this._renderer2.appendChild(this._document.head, links);
+		}
 
 		this._title.setTitle('All Categories - Moglix');
 		this._meta.addTag({ name: 'og:title', content: 'All Categories - Moglix' });

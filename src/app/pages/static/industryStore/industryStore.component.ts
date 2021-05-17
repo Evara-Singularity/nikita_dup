@@ -70,14 +70,12 @@ export class IndustryStoreComponent {
 	ngOnInit() {
 		this.API = CONSTANTS;
 		this.getStoreData();
-		if (this.isBrowser) {
-			// window.addEventListener('scroll', this.scrollHandler, {passive: true});
+		if (this.isServer) {
+			let links = this._renderer2.createElement('link');
+			links.rel = 'canonical';
+			links.href = CONSTANTS.PROD + this._router.url;
+			this._renderer2.appendChild(this._document.head, links);
 		}
-		let links = this._renderer2.createElement('link');
-		links.rel = 'canonical';
-		links.href = CONSTANTS.PROD + this._router.url;
-		this._renderer2.appendChild(this._document.head, links);
-
 		if (this.isBrowser) {
 			if (window.outerWidth <= 768) {
 				this.footerService.setFooterObj({ footerData: false });

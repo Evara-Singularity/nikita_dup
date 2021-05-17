@@ -127,7 +127,7 @@ export class CategoryResolver implements Resolve<object> {
         if (this.transferState.hasKey(BRDK)) {
             return of(this.transferState.get(BRDK, []));
         } else {
-            return this._commonService.getBreadcrumpData(this._router.url, 'category').pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
+            return this._commonService.getBreadcrumpData(window.location.pathname.replace('/',''), 'category');
         }
     }
 
@@ -187,7 +187,7 @@ export class CategoryResolver implements Resolve<object> {
                     if (isPlatformServer(this.platformId)) {
                         console.log('============================');
                         console.log(result);
-                        
+
                         console.log('============================');
                         this.transferState.set(GRCRK, result[0]);
                         this.transferState.set(RPRK, result[1]);

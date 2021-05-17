@@ -237,7 +237,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     async createDynamicComponent(name) {
         this._commonService.showLoader = true;
         if (name === 'bestseller') {
-            this.catBestSellerInstance = null;
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -245,8 +244,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
             this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
         } else if (name === 'subCategory') {
-            this.subCategoryInstance = null;
-            this.subCategoryContainerRef.remove();
             const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -254,7 +251,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
             this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
         } else if (name === 'shopByBrand') {
-            this.shopByBrandInstance = null;
             const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -262,7 +258,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
             this.shopByBrandInstance.instance['brand_Data'] = this.relatedCatgoryListUpdated;
         } else if (name === 'catStatic') {
-            this.catStaticInstance = null;
             const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -338,7 +333,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
         }
 
-        console.log(res);
 
         if (res[3]){
             this.breadcrumbData = res[3];
@@ -394,6 +388,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         let refreshProducts = this.refreshProducts().pipe(map(res => res));
         let getFAQ = this.getFAQ(this.categoryId);
         let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data']));
+        // let getBreadCrumpDataFromAPI = this._commonService.getCmsDynamicDataForCategoryAndBrand(window.location.pathname.replace('/',''), 'category');
 
         let apiList = [getRelatedCategories, refreshProducts, getFAQ];
 
@@ -443,9 +438,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
                 if (res[3] && res[3]['data']) {
                     this._commonService.cmsData = res[3]['data'];
-                    if (this._commonService.cmsData) {
-                        this.createDynamicComponent('cms');
-                    }
+                    this.createDynamicComponent('cms');
                     this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
                 }
 

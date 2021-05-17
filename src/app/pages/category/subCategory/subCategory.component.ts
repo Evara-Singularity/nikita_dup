@@ -11,7 +11,6 @@ import { fade } from '@utils/animations/animation'
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
-import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 
@@ -85,6 +84,9 @@ export class SubCategoryComponent {
         NgxPageScrollModule,
         LazyLoadImageModule,
         RouterModule,
+    ],
+    exports: [
+        SubCategoryComponent
     ]
 })
 export class SubCategoryModule {}

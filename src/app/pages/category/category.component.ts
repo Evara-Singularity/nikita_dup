@@ -57,7 +57,7 @@ export class CategoryComponent implements OnInit {
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     
-    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
 
     paginationUpdated: Subject<any> = new Subject<any>();
     
@@ -187,9 +187,6 @@ export class CategoryComponent implements OnInit {
             this.showSubcategoty = false;
         } else {
             this.showSubcategoty = true;
-            setTimeout(() => {
-                this.createDynamicComponent('subCategory');
-            }, 0);
         }
         if (data['page'] == undefined || data['page'] == 1) {
             this.firstPageContent = true;
@@ -265,7 +262,6 @@ export class CategoryComponent implements OnInit {
     }
 
     setDataAfterGettingDataFromResolver(res) {
-
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -337,53 +333,7 @@ export class CategoryComponent implements OnInit {
         this._commonService.showLoader = true;
         this.forkJoinUnsub = forkJoin(apiList)
             .subscribe((res) => {
-                this.setFaqSchema(res[2]);
-                this.faqData = res[2];
-                const ict = res[0]['categoryDetails']['active'];
-                const canonicalURL = res[0]['categoryDetails']['canonicalURL']
-                const chk = this.isUrlEqual(canonicalURL, this._router.url);
-                if (!chk) {
-                    this._router.navigateByUrl("/" + canonicalURL);;
-                }
-
-                if (!ict || res[1]['productSearchResult']['totalCount'] === 0) {
-                    if (this._commonService.isServer) {
-                        let httpStatus = 404;
-                        if (res[0]['httpStatus']) {
-                            httpStatus = res[0]['httpStatus'];
-                        } else if (res[1]['httpStatus']) {
-                            httpStatus = res[1]['httpStatus'];
-                        }
-                        this._response.status(httpStatus);
-                    }
-                    res[1] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
-                }
-                
-                this._commonService.showLoader = false;
-
-                if (res[3] && res[3]['data']) {
-                    this._commonService.cmsData = res[3]['data'];
-                    this.createDynamicComponent('cms');
-                    this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
-                }
-
-                // console.log(res, ict, "resresresresres");
-                /**
-                 * For related categories
-                 */
-                this.initiallizeRelatedCategories(res, true);
-
-                /**
-                 * For refresh products
-                 */
-                const fragment = this._activatedRoute.snapshot.fragment;
-                
-                this.initiallizeData(res[1], !fragment);
-                
-                this.setTrackingData(res);
-                if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
-                    this.fireTags(res[1]);
-                }
+                this.setDataAfterGettingDataFromResolver(res);
             });
     }
 
@@ -856,8 +806,8 @@ export class CategoryComponent implements OnInit {
 
     async filterUp() {
         if (!this.filterInstance) {
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    setTimeout(() => {
+                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(function() {
+                    setTimeout(function(){
                         const mob_filter = document.querySelector('.mob_filter');
                         if (mob_filter) {
                             mob_filter.classList.add('upTrans');

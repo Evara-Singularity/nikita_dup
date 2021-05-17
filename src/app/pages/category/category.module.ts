@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { routing as CategoryRouting } from "./category.routing";
 import { MetaModule } from '@ngx-meta/core';
 import { CategoryComponent } from "./category.component";
+import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
 import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
@@ -22,6 +23,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         NgxPaginationModule,
         BreadcrumbNavModule,
         CmsModule,
+        ObjectToArrayPipeModule,
         RouterModule,
         ProductListModule,
         NgxPageScrollModule,

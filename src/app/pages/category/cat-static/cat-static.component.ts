@@ -1,5 +1,5 @@
 import { CONSTANTS } from '@config/constants';
-import { Component,Input,Inject, NgModule, ChangeDetectionStrategy } from '@angular/core';
+import { Component,Input,Inject, NgModule } from '@angular/core';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { CommonModule, DOCUMENT } from "@angular/common";
 import { RouterModule } from '@angular/router';
@@ -7,8 +7,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'cat-static',
   templateUrl: './cat-static.component.html',
-  styleUrls: ['./cat-static.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./cat-static.component.scss']
 })
 export class CatStaticComponent {
 

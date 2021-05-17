@@ -1,6 +1,6 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector, ChangeDetectionStrategy } from '@angular/core';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { CategoryService } from '@utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -25,8 +25,7 @@ const GFAQK: any = makeStateKey<{}>("GFAQK")// GFAQK: Get Frequently Asked Quest
 @Component({
     selector: 'category',
     templateUrl: './category.html',
-    styleUrls: ['./category.scss',],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./category.scss',]
 })
 
 export class CategoryComponent implements OnInit, AfterViewInit {
@@ -70,7 +69,10 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     pageName: string;
     buckets = [];
+    subCategoryCount: number;
+    session: {};
     getRelatedCatgory: any;
+    toggletsWrap: boolean;
     productListLength: number;
     showSubcategoty: boolean;
     currentRequestGetRelatedCategories: any;
@@ -99,6 +101,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     static_Dt;
     layoutType;
     page_title;
+    taxo1: any;
+    taxo2: any;
+    taxo3: any;
     trendingSearchData;
     faqData;
     defaultImage: string = '';
@@ -128,6 +133,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         private _categoryService: CategoryService, 
         private _pageScrollService: PageScrollService) {
             this.showSubcategoty = true;
+            this.subCategoryCount = 0;
             this.getRelatedCatgory = {};
             this.todayDate = Date.now();
             this.pageName = 'CATEGORY';
@@ -225,6 +231,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.cateoryFooterInstance.instance['categoryFooterData'] = {
                 productSearchResult: this.productSearchResult,
                 getRelatedCatgory: this.getRelatedCatgory,
+                toggletsWrap: this.toggletsWrap,
                 faqData: this.faqData,
                 todayDate: this.todayDate,
                 buckets: this.buckets,
@@ -366,6 +373,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.fireTags(res[1]);
         }
 
+        /**
+             * STARTS Frequently Asked Questions
+             */
         if (this._tState.hasKey(GFAQK)) {
             this.faqData = res[2];
         } else {
@@ -375,6 +385,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             }
             this.faqData = res[2];
         }
+        //ENDS
     }
 
     refreshProductListBasedOnRouteUpdate() {
@@ -505,7 +516,18 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
         this.dataService.sendMessage(trackData);
     }
-    
+    outData(data) {
+        // alert();
+        if (Object.keys(data).indexOf('hide') !== -1) {
+            this.openPopup = !data.hide;
+        }
+    }
+    onFilterSelected(count) {
+        this.filterCounts = count;
+    }
+    togglets() {
+        this.toggletsWrap = !this.toggletsWrap;
+    }
     parseData(data) {
         let relevantObj: any = {};
         data.forEach(obj => {
@@ -537,6 +559,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         this.extrasBlock = relevantObj.block_data;
     }
     ngAfterViewInit() {
+        this.sortByComponentUpdated.next(this.sortByComponent);
         /*Remove key set on server side to avoid api on dom load of frontend side*/
         if (this._commonService.isBrowser) {
             this._tState.remove(GRCRK);
@@ -649,9 +672,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 */
 
                 if (this.wb[i].name === "category") {
-                    this.getCategoryData(this.wb[i].terms); // calling reccursive function to find out specific page category data
+                    this.getCategoryData(this.wb[i].terms);                // calling reccursive function to find out specific page category data
                     if (this.reqArray !== null) {
-                        for (let val of this.reqArray) { // added "newName" to value we got from "getCategoryData" , to tackle difficulty faced in getting "other custom filters"(below)
+                        for (let val of this.reqArray) {                       // added "newName" to value we got from "getCategoryData" , to tackle difficulty faced in getting "other custom filters"(below)
                             val.newName = val.term
                         }
                         temp = this.reqArray;
@@ -662,9 +685,10 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                             this.PRTA.push(temp[i])
                         }
                     }
-                    this.PRTA.filter(x => !!x) //removing null values from array
+                    this.PRTA.filter(x => !!x)                               //removing null values from array
                     temp = [];
                 }
+
 
                 /* 
                 *to get brand data in price range table
@@ -686,14 +710,21 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     }
                     this.PRTA.filter(x => !!x)                                                                                        //removing null values from array
                     temp = [];
-                } else {
+                }
+
+                /* 
+                *to get other filter data in price range table
+                */
+
+                else {
                     let str = ""
                     let temp = [];
                     for (let j = 0; j < this.wb[i].terms.length && temp.length < 4; j++) {                                                        //getting top four values with non-zero min , max price for each "other filters"
                         if (this.wb[i].terms[j].minPrice > 0 && this.wb[i].terms[j].maxPrice > 0) {
                             this.wb[i].terms[j].newName = "";
+                            //this.wb[i].terms[j].newName=this.wb[i].terms[j].term+" "+this.wb[i].name+" "+this.getRelatedCatgory?.categoryDetails?.categoryName;
                             str = this.wb[i].name + " - " + this.wb[i].terms[j].term + " " + this.getRelatedCatgory?.categoryDetails?.categoryName;
-                            this.wb[i].terms[j].newName = str;
+                            this.wb[i].terms[j].newName = this.camalize(str);
                             temp.push(this.wb[i].terms[j]);
                         }
                     }
@@ -709,9 +740,20 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
     }
 
+    camalize(str) {
+        return str.toLowerCase().replace(/^\w|\s\w/g, function (letter) {
+            return letter.toUpperCase();
+        }
+        );
+    }
+
+    /*
+     *  Reccursive function to find out specific page category data .
+     */
+
     getCategoryData(obj: any[]) {
         for (let i = 0; i < obj.length; i++) {
-            if (obj[i].term === this.getRelatedCatgory.categoryDetails?.categoryName) {
+            if (obj[i].term === this.getRelatedCatgory?.categoryDetails?.categoryName) {
                 this.reqArray = obj[i].childCategoryList;                              //Base condition.
                 break;
             }
@@ -741,7 +783,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     "@type": "ItemList",
                     "numberOfItems": productArray.length,
                     "url": CONSTANTS.PROD + this._router.url,
-                    "name": this.getRelatedCatgory.categoryDetails.categoryName,
+                    "name": this.getRelatedCatgory?.categoryDetails?.categoryName,
                     "itemListElement": productList
                 }
                 let s = this._renderer2.createElement('script');
@@ -775,6 +817,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 ampLink = this._renderer2.createElement('link');
                 ampLink.rel = 'amphtml';
                 ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
+
+                /**
+                 * Below if condition is just a temporary solution.
+                 * Strictly remove if condtion, once amp of drill(114160000) page is completed.
+                 */
                 this._renderer2.appendChild(this._document.head, ampLink);
             }
         }
@@ -810,6 +857,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             this._renderer2.appendChild(this._document.head, links);
         }
+        // let 
         let fragmentString = this._activatedRoute.snapshot.fragment;
         if (fragmentString != null || !isNaN(currentPageP)) {
             this.scrollToResults();
@@ -823,7 +871,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             scrollOffset: 30
         });
     }
-
     fireTags(response) {
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
@@ -859,7 +906,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.analytics.sendGTMCall({
                 'event': 'pr-impressions',
                 'ecommerce': {
-                    'currencyCode': 'INR',
+                    'currencyCode': 'INR',                       // Local currency is optional.
                     'impressions': dlp,
                 },
             });
@@ -891,18 +938,15 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             /*End Criteo DataLayer Tags */
 
             /*Start Adobe Analytics Tags */
-            let taxo1 = '';
-            let taxo2 = '';
-            let taxo3 = '';
             if (this.getRelatedCatgory.categoryDetails.taxonomy) {
-                taxo1 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[0] || '';
-                taxo2 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[1] || '';
-                taxo3 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[2] || '';
+                this.taxo1 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[0] || '';
+                this.taxo2 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[1] || '';
+                this.taxo3 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[2] || '';
             }
             let page = {
-                'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+                'pageName': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
                 'channel': "listing",
-                'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
+                'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
             }
             let custData = {
@@ -912,9 +956,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 'customerType': (user && user["userType"]) ? user["userType"] : '',
             }
             let order = {
-                'productCategoryL1': taxo1,
-                'productCategoryL2': taxo2,
-                'productCategoryL3': taxo3
+                'productCategoryL1': this.taxo1,
+                'productCategoryL2': this.taxo2,
+                'productCategoryL3': this.taxo3
             }
 
             let digitalData = {};
@@ -942,6 +986,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this.analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */
         }
+    }
+
+    setLinks() {
+        // this.seoService.setLink("<meta property='og:url' content=" + this.apiConfig.BASE_URLS.PROD + "" + this._router.url + ">");
+        // this.seoService.setLink("<link rel='canonical' href=" + this.seoService.baseUrl + "" + this._router.url + ">");
     }
 
     async onVisiblePagination(event) {
@@ -1202,6 +1251,36 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
 
         this._router.navigate([currentRoute], extras);
+    }
+
+    updateSubCategoryCount(count) {
+        this.subCategoryCount = count;
+    }
+
+    getFeaturedProducts(products: Array<{}>) {
+        let fProducts = null;
+        if (products == undefined || products == null || (products && products.length == 0))
+            return "";
+
+        for (let i = 0; i < products.length; i++) {
+            if (fProducts == null)
+                fProducts = products[i]['productName'];
+            else
+                fProducts = fProducts + ", " + products[i]['productName'];
+            if (i == 5)
+                break;
+        }
+        return fProducts;
+    }
+
+    getAltName(brandName) {
+        if (brandName == null || brandName == undefined) {
+            return 'safety shoes';
+        }
+        else {
+            return brandName + " safety shoes";
+        }
+
     }
 
     isUrlEqual(url1: string, url2: string): boolean {

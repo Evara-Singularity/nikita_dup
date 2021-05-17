@@ -42,7 +42,7 @@
                     </span>
                 </h3>
             </div>
-            <div id="openFaq" style="display: block;"
+            <div id="openFaq" style="display: block;" [ngClass]="{'more': categoryFooterData?.toggletsWrap}"
                 class="body-bg pad-lr-15">
                 <div *ngFor="let fd of categoryFooterData?.faqData">
                     <h2 class="m_faqQuestion"><strong>{{fd["questionText"]}}</strong></h2>
@@ -60,7 +60,7 @@
                     {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
                 </h3>
             </div>
-            <div id="openCat2" style="display:block">
+            <div id="openCat2" style="display:block" [ngClass]="{'more': categoryFooterData?.toggletsWrap}" class="">
                 <table width="100%" class="category-tbl body-bg">
                     <tbody>
                         <tr>
@@ -93,7 +93,7 @@
                     <h2>{{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h2>
                 </h3>
             </div>
-            <div id="openCat2" style="display:block">
+            <div id="openCat2" style="display:block" [ngClass]="{'more': categoryFooterData?.toggletsWrap}" class="">
                 <table width="100%" class="category-tbl body-bg">
                     <tbody>
                         <tr>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit ,Input, NgModule, ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit ,Input, NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CONSTANTS } from '@config/constants';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
@@ -7,7 +7,6 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 @Component({
   selector: 'shopby-brand',
   templateUrl: './shopby-brand.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopbyBrandComponent {
   defaultImage;

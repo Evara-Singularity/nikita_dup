@@ -1,5 +1,5 @@
 import { CONSTANTS } from '@config/constants';
-import { ChangeDetectionStrategy, Component, Input, NgModule, ViewChild } from '@angular/core';
+import { Component, Input, NgModule, ViewChild } from '@angular/core';
 import { PopUpComponent } from '@modules/popUp/pop-up.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,6 @@ import { PopUpModule } from "@modules/popUp/pop-up.module";
 @Component({
   selector: 'cat-bestseller',
   templateUrl: './cat-bestseller.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CatBestsellerComponent {
   @Input('bestSeller_Data') bestSeller_Data;

@@ -11,14 +11,14 @@
     <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.layout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
+            <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
+        <!-- <slp-sub-category *ngIf="layoutType == 2" [sub_category_Data]="spl_subCategory_Dt"></slp-sub-category> -->
             <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
-            <ng-container *ngIf="_commonService?.isBrowser" #catBestseller></ng-container>
+            <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
             <!-- <cat-static [page_title]="page_title" [static_data]="static_Dt"></cat-static> -->
             <!-- <shopby-brand [brand_Data]="brand_Dt"></shopby-brand> -->
             <!-- <cat-bestseller [bestSeller_Data]="bestSeller_Dt"></cat-bestseller> -->
         </div>
-        <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategory></ng-container>
-        <!-- <slp-sub-category *ngIf="layoutType == 2" [sub_category_Data]="spl_subCategory_Dt"></slp-sub-category> -->
         <div class="container-fluid safetyshshopbytype">
             <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
             <!-- <shopby-featr [shopBy_Data]="shopBy_Dt"></shopby-featr> -->

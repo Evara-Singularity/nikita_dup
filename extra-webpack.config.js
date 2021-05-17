@@ -7,7 +7,3 @@
 //         new PreloadWebpackPlugin({})
 //     ]
 // };
-
-module.exports = {
-    externals: [/node_modules/, 'bufferutil', 'utf-8-validate'],
-};

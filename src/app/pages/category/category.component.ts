@@ -38,13 +38,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     subCategoryInstance = null;
     @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
     catBestSellerInstance = null;
-    @ViewChild('catBestSeller', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
+    @ViewChild('catBestsellers', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
     shopByBrandInstance = null;
     @ViewChild('shopByBrand', { read: ViewContainerRef }) shopByBrandContainerRef: ViewContainerRef;
     catStaticInstance = null;
     @ViewChild('catStatic', { read: ViewContainerRef }) catStaticContainerRef: ViewContainerRef;
     slpSubCategoryInstance = null;
-    @ViewChild('slpSubCategory', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
+    @ViewChild('slpSubCategoryRef', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
     shopbyFeatrInstance = null;
     @ViewChild('shopbyFeatr', { read: ViewContainerRef }) shopbyFeatrContainerRef: ViewContainerRef;
     cmsInstance = null;
@@ -171,7 +171,13 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     this.parseData(data['data']);
                 }
 
+                
+                
                 this.layoutType = data['layoutType'];
+                if (this.spl_subCategory_Dt && this.layoutType == 2) {
+                    this.createDynamicComponent('slpSubCategory');
+                }
+
                 this.page_title = data['pageTitle'];
                 this.brand_Dt = data['data'][0].block_data.brand_block;
                 this.catBestSeller_Dt = data['data'][0].block_data.product_data;
@@ -179,7 +185,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                     this.createDynamicComponent('shopByBrand');
                 }
                 if (this.catBestSeller_Dt) {
-                    this.createDynamicComponent('bestseller');
+                    this.createDynamicComponent('catBestseller');
                 }
                 this.shopBy_Dt = data['data'][0].block_data.image_block;
                 if (this.shopBy_Dt) {
@@ -236,7 +242,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     async createDynamicComponent(name) {
         this._commonService.showLoader = true;
-        if (name === 'bestseller') {
+        if (name === 'catBestseller') {
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component').finally(() => {
                 this._commonService.showLoader = false;
             });
@@ -256,7 +262,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             });
             const factory = this.cfr.resolveComponentFactory(ShopbyBrandComponent);
             this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
-            this.shopByBrandInstance.instance['brand_Data'] = this.relatedCatgoryListUpdated;
+            this.shopByBrandInstance.instance['brand_Data'] = this.brand_Dt;
         } else if (name === 'catStatic') {
             const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component').finally(() => {
                 this._commonService.showLoader = false;
@@ -1204,10 +1210,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             }
             
             this.spl_subCategory_Dt = this.getRelatedCatgory.children;
-            
-            if (this.spl_subCategory_Dt && this.layoutType === 2) {
-                this.createDynamicComponent('slpSubCategory');
-            }
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);

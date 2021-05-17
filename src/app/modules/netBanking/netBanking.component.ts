@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DATA_NB } from "./netBanking";
 import { DATA_NB_RAZ } from "./netBankingRazor";
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../config/constants';
 import { CheckoutService } from '../../utils/services/checkout.service';

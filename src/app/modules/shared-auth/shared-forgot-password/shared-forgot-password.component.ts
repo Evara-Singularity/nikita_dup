@@ -2,13 +2,13 @@ import { Component, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/cor
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import CONSTANTS from '../../../config/constants';
-import { PasswordValidator } from '../../../utils/validators/password.validator';
-import { LocalAuthService } from '../../../utils/services/auth.service';
+import { Subscription } from 'rxjs';
+import { CONSTANTS } from '@config/constants';
+import { PasswordValidator } from '@utils/validators/password.validator';
+import { LocalAuthService } from '@utils/services/auth.service';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
+import { GlobalLoaderService } from '@utils/services/global-loader.service';
 
 @Component({
     selector: 'app-shared-forgot-password',

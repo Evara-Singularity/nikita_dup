@@ -6,14 +6,13 @@ import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
-import { combineLatest, forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, combineLatest, forkJoin, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
-import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
-import { map } from 'rxjs/operators';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };

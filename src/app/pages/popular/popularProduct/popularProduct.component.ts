@@ -6,13 +6,8 @@ import { PopularProductService } from './popularProduct.service';
 import { SortByComponent } from "@components/sortBy/sortBy.component";
 import { CONSTANTS } from '@config/constants';
 import { Title, Meta } from '@angular/platform-browser';
-import { Subject } from "rxjs";
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { BehaviorSubject } from 'rxjs';
-
-declare let $: any;
-
-// const REFRESH_PRODUCTS_RESPONSE_KEY: any = makeStateKey<{}>("refreshProductsResponse");
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'popular-product',

@@ -129,37 +129,22 @@ export class CategoryComponent implements OnInit {
         ClientUtility.scrollToTop(1000);
         if (this._commonService.isBrowser) {
             // Set config based on query params change
-            let updateConfigBasedOnQueryParams0 = performance.now();
             const queryParamsData = this._activatedRoute.snapshot.queryParams;
             this.updateConfigBasedOnQueryParams(queryParamsData);
-            let updateConfigBasedOnQueryParams1 = performance.now()
-            console.log("updateConfigBasedOnQueryParams took " + (updateConfigBasedOnQueryParams1 - updateConfigBasedOnQueryParams0) + " milliseconds.")
             
             // Set config based on params change
-            let updateConfigBasedOnParams0 = performance.now();
             const paramsData = this._activatedRoute.snapshot.params;
             this.updateConfigBasedOnParams(paramsData);
-            let updateConfigBasedOnParams1 = performance.now()
-            console.log("updateConfigBasedOnParams took " + (updateConfigBasedOnParams1 - updateConfigBasedOnParams0) + " milliseconds.")
     
 
             // Category Data after you got it from resolver 
-            let setCategoryDataFromResolver0 = performance.now();
             this.setCategoryDataFromResolver();
-            let setCategoryDataFromResolver1 = performance.now();
-            console.log("setCategoryDataFromResolver took " + (setCategoryDataFromResolver1 - setCategoryDataFromResolver0) + " milliseconds.")
     
             // Set footers
-            let setMobileFoooters0 = performance.now();
             this.footerService.setMobileFoooters();
-            let setMobileFoooters1 = performance.now();
-            console.log("setMobileFoooters took " + (setMobileFoooters1 - setMobileFoooters0) + " milliseconds.")
     
             // Subscribe to future route events
-            let refreshProductsBasedOnRouteChange0 = performance.now();
             this.refreshProductsBasedOnRouteChange();
-            let refreshProductsBasedOnRouteChange1 = performance.now();
-            console.log("refreshProductsBasedOnRouteChange took " + (refreshProductsBasedOnRouteChange1 - refreshProductsBasedOnRouteChange0) + " milliseconds.")
         }
     }
 
@@ -378,7 +363,7 @@ export class CategoryComponent implements OnInit {
             // to avoid first time call of API on route change subscription
 
             // Show hide Subcategory based on 
-            if (this.refreshProductsBasedOnRouteChangeFlag > 1) {
+            if (this.refreshProductsBasedOnRouteChangeFlag > 0) {
                 this.updateConfigBasedOnParams(res[0]);
                 this.updateConfigBasedOnQueryParams(res[1]);
                 this.refreshProductListBasedOnRouteUpdate();

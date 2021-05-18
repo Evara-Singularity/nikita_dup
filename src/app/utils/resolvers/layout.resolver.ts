@@ -42,7 +42,6 @@ export class LayoutResolver implements Resolve<object> {
       this.transferState.remove(STATE_KEY);
       return of([stateObj]);
     } else {
-      console.log('layout resovlver ==>', 'called');
       this.loaderService.setLoaderState(true);
       const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
       const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT + `?id=${LAYOUT_ID}`;

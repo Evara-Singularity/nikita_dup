@@ -1,6 +1,6 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector, Input } from '@angular/core';
 import { CategoryService } from '@utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -25,6 +25,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 })
 
 export class CategoryComponent implements OnInit {
+    @Input() data;
     paginationInstance = null;
     @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
     filterInstance = null;
@@ -58,7 +59,7 @@ export class CategoryComponent implements OnInit {
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     
-    relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
+    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     paginationUpdated: Subject<any> = new Subject<any>();
     
@@ -129,10 +130,8 @@ export class CategoryComponent implements OnInit {
         if (this._commonService.isBrowser) {
             // Set config based on query params change
             let updateConfigBasedOnQueryParams0 = performance.now();
-            
             const queryParamsData = this._activatedRoute.snapshot.queryParams;
             this.updateConfigBasedOnQueryParams(queryParamsData);
-            
             let updateConfigBasedOnQueryParams1 = performance.now()
             console.log("updateConfigBasedOnQueryParams took " + (updateConfigBasedOnQueryParams1 - updateConfigBasedOnQueryParams0) + " milliseconds.")
             
@@ -140,7 +139,6 @@ export class CategoryComponent implements OnInit {
             let updateConfigBasedOnParams0 = performance.now();
             const paramsData = this._activatedRoute.snapshot.params;
             this.updateConfigBasedOnParams(paramsData);
-
             let updateConfigBasedOnParams1 = performance.now()
             console.log("updateConfigBasedOnParams took " + (updateConfigBasedOnParams1 - updateConfigBasedOnParams0) + " milliseconds.")
     
@@ -159,7 +157,7 @@ export class CategoryComponent implements OnInit {
     
             // Subscribe to future route events
             let refreshProductsBasedOnRouteChange0 = performance.now();
-            // this.refreshProductsBasedOnRouteChange();
+            this.refreshProductsBasedOnRouteChange();
             let refreshProductsBasedOnRouteChange1 = performance.now();
             console.log("refreshProductsBasedOnRouteChange took " + (refreshProductsBasedOnRouteChange1 - refreshProductsBasedOnRouteChange0) + " milliseconds.")
         }
@@ -209,6 +207,9 @@ export class CategoryComponent implements OnInit {
             this.showSubcategoty = false;
         } else {
             this.showSubcategoty = true;
+            setTimeout(() => {
+                this.createDynamicComponent('subCategory');
+            }, 0);
         }
         if (data['page'] == undefined || data['page'] == 1) {
             this.firstPageContent = true;
@@ -321,6 +322,7 @@ export class CategoryComponent implements OnInit {
         }
         
         //  taking 2sec
+        console.log(res);
         this.initiallizeRelatedCategories(res, true);
         
         
@@ -379,7 +381,7 @@ export class CategoryComponent implements OnInit {
             if (this.refreshProductsBasedOnRouteChangeFlag > 1) {
                 this.updateConfigBasedOnParams(res[0]);
                 this.updateConfigBasedOnQueryParams(res[1]);
-                // this.refreshProductListBasedOnRouteUpdate();
+                this.refreshProductListBasedOnRouteUpdate();
             }
             this.refreshProductsBasedOnRouteChangeFlag++;
         });
@@ -1030,8 +1032,6 @@ export class CategoryComponent implements OnInit {
 
             if (flag) {
                 this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
-                // const bData = { categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink, page: "category" };
-                // this.breadcrumpUpdated.next(bData);
             }
         } else {
             this.relatedCatgoryListUpdated.next([]);

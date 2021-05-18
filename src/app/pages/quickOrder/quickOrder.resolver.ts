@@ -4,7 +4,7 @@ import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from "@a
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { map } from 'rxjs/operators/map';
 import { mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { CommonService } from '../../utils/services/common.service';
 import { DataService } from '../../utils/services/data.service';

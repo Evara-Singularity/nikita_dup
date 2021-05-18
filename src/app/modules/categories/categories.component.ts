@@ -115,6 +115,6 @@ export class Categories {
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
 	],
-	providers: [ModalService],
+	providers: [],
 })
 export class FeaturedArrivalModule {}

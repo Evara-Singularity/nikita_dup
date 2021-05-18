@@ -5,7 +5,7 @@ import { ModalService } from './modal.service';
 import { ModalDirective } from './modal.directive';
 
 @Component({
-    selector: 'app-modal-v2',
+    selector: 'app-modal',
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.scss']
 })

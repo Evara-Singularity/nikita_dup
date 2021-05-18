@@ -1,7 +1,3 @@
-/**
- * Created by Kuldeep on 17/5/17.
- */
-
 import { Pipe, PipeTransform, NgModule, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 declare let $: any;

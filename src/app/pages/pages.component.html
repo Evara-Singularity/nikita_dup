@@ -3,6 +3,7 @@
 <div>
     <router-outlet></router-outlet>
 </div>
+<app-modal></app-modal>
 <section *ngIf="iData && iData.footer && isFooter" class="test toggle-panel mt-10 about_moglix" id="footerContainer">
     <div class="toggle-head pad-lr-0">
         <div class="container" (click)="clickFooter()">

@@ -6,7 +6,7 @@
                 <div class="sub-cat-product">
                     <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
                         <div class="prod-image">
-                            <img [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}">
+                            <img style="height: 78px; width: 78px;" [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}">
                         </div>
                         <h4>{{item?.categoryDetails?.categoryName}}</h4>
                     </a>

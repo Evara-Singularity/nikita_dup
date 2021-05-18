@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
 	defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + 'image_placeholder.jpg';
 	tocd: {};
+	flyOutData: any;
 	options = {
 		interval: 5000,
 		selector: this.bannerCarouselSelector,
@@ -99,6 +100,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('RecentlyViewedCarouselComponent', { read: ViewContainerRef })
 	carouselContainerRef: ViewContainerRef;
 
+	// ondemad loaded components: PWA Categories
+	trendingCategoriesInstance = null;
+	@ViewChild('TrendingCategories', { read: ViewContainerRef })
+	trendingCategoriesContainerRef: ViewContainerRef;
+
 	constructor(
 		public dataService: DataService,
 		private _renderer2: Renderer2,
@@ -124,6 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
+				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];
 			}
 		});
 
@@ -491,6 +498,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			footerObj[key] = true;
 		}
 		this.footerService.setMobileFoooters();
+		this.destroyLazyComponents();
 	}
 
 	sendDataToPopUP(getDataKey) {
@@ -536,7 +544,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		] = this.recentProductList;
 		(
 			this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>
-		).subscribe((popupData) => {
+			).subscribe((popupData) => {
 			this.sendDataToPopUP(popupData);
 			this.onOpenPopup(null);
 		});
@@ -557,6 +565,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		] = this.featureArrivalData;
 		this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
 		this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
+	}
+
+	async onVisibleTrendingCategories(htmlElement) {
+		const { TrendingCategoriesComponent } = await import(
+			'../../components/ternding-categories/trending-categories.component'
+		);
+		const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
+		this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
+			factory,
+			null,
+			this.injector
+		);
+		this.trendingCategoriesInstance.instance[
+			'flyOutData'
+		] = this.flyOutData;
+		this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
 	}
 
 	async onOpenPopup(htmlElement) {
@@ -600,5 +624,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		).subscribe((value) => {
 			this.showRecentlyViewedCarousel = value;
 		});
+	}
+	destroyLazyComponents() {
+		if (this.featuredBrandsInstance) {
+			this.featuredBrandsInstance = null;
+			this.featuredBrandsContainerRef.remove();
+		}
+		if (this.featuredArrivalsInstance) {
+			this.featuredArrivalsInstance = null;
+			this.featuredArrivalsContainerRef.remove();
+		}
+		if (this.categoriesInstance) {
+			this.categoriesInstance = null;
+			this.CategoriesContainerRef.remove();
+		}
+		if (this.popUpInstance) {
+			this.popUpInstance = null;
+			this.HomePopupComponetContainerRef.remove();
+		}
+		if (this.trendingCategoriesInstance) {
+			this.trendingCategoriesInstance = null;
+			this.trendingCategoriesContainerRef.remove();
+		}
 	}
 }

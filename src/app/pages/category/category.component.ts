@@ -159,7 +159,7 @@ export class CategoryComponent implements OnInit {
     
             // Subscribe to future route events
             let refreshProductsBasedOnRouteChange0 = performance.now();
-            this.refreshProductsBasedOnRouteChange();
+            // this.refreshProductsBasedOnRouteChange();
             let refreshProductsBasedOnRouteChange1 = performance.now();
             console.log("refreshProductsBasedOnRouteChange took " + (refreshProductsBasedOnRouteChange1 - refreshProductsBasedOnRouteChange0) + " milliseconds.")
         }
@@ -376,10 +376,10 @@ export class CategoryComponent implements OnInit {
             // to avoid first time call of API on route change subscription
 
             // Show hide Subcategory based on 
-            if (this.refreshProductsBasedOnRouteChangeFlag != 0) {
+            if (this.refreshProductsBasedOnRouteChangeFlag > 1) {
                 this.updateConfigBasedOnParams(res[0]);
                 this.updateConfigBasedOnQueryParams(res[1]);
-                this.refreshProductListBasedOnRouteUpdate();
+                // this.refreshProductListBasedOnRouteUpdate();
             }
             this.refreshProductsBasedOnRouteChangeFlag++;
         });

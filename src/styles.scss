@@ -76,16 +76,15 @@ h3 {
 
 /* Navigation link styles */
 
-nav a {
-    padding: 5px 10px;
-    text-decoration: none;
-    margin-right: 10px;
-    margin-top: 10px;
-    display: inline-block;
-    background-color: #eee;
-    border-radius: 4px;
-}
-
+// nav a {
+//     padding: 5px 10px;
+//     text-decoration: none;
+//     margin-right: 10px;
+//     margin-top: 10px;
+//     display: inline-block;
+//     background-color: #eee;
+//     border-radius: 4px;
+// }
 
 /*Heading Classes*/
 
@@ -184,6 +183,15 @@ a {
     height: 45px;
     border: 1px solid $btn-color;
     font-size: $large-font;
+}
+
+// Fixed Button
+.bottom-stick {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    z-index: 2;
 }
 
 .promo-code {

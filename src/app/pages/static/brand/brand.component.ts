@@ -5,6 +5,7 @@ import { DOCUMENT, isPlatformServer } from '@angular/common';
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
 	selector: 'brand',
@@ -47,7 +48,7 @@ export class BrandComponent {
 		});
 		this.meta.addTag({
 			property: 'og:url',
-			content: 'https://www.moglix.com/brand-store',
+			content: CONSTANTS.PROD+ENDPOINTS.BRAND_STORE,
 		});
 		this.meta.addTag({
 			name: 'description',
@@ -57,7 +58,7 @@ export class BrandComponent {
 		if (this.isServer) {
 			let links = this._renderer2.createElement('link');
 			links.rel = 'canonical';
-			links.href = CONSTANTS.PROD + '/brand-store';
+			links.href = CONSTANTS.PROD + ENDPOINTS.BRAND_STORE;
 			this._renderer2.appendChild(this._document.head, links);
 			this.isShowLoader = true;
 		}

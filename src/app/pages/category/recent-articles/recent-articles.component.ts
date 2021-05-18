@@ -14,7 +14,7 @@ export class RecentArticles {
     @Input() recentArticles;
     @Input() title;
     imageBaseUrl = CONSTANTS.IMAGE_BASE_URL;
-    defaultImage = this.imageBaseUrl +'assets/img/home_card.webp';
+    defaultImage = this.imageBaseUrl + CONSTANTS.ASSET_IMG;
     navigateToArticlePage(article) {
         this.router.navigateByUrl('/articles/' + article.friendlyUrl)
     }

@@ -671,9 +671,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       };
       this.productShareInstance.instance['btmMenu'] = true;
       this.productShareInstance.instance['productResult'] = productResult;
-      this.productShareInstance.instance['shareFbUrl'] = "https://www.facebook.com/dialog/share?app_id=775243655917959%20&display=popup&href=" + shareURL + "&redirect_uri=https://www.moglix.com";;
-      this.productShareInstance.instance['shareTwitterUrl'] = "https://twitter.com/intent/tweet?url=" + shareURL;
-      this.productShareInstance.instance['shareLinkedInUrl'] = "https://www.linkedin.com/shareArticle?url=" + shareURL;
+      this.productShareInstance.instance['shareFbUrl'] = CONSTANTS.FB_URL + shareURL + "&redirect_uri="+CONSTANTS.PROD;;
+      this.productShareInstance.instance['shareTwitterUrl'] = CONSTANTS.TWITTER_URL + shareURL;
+      this.productShareInstance.instance['shareLinkedInUrl'] = CONSTANTS.LINKEDIN_URL + shareURL;
       this.productShareInstance.instance['shareWhatsappUrl'] = this.sanitizer.bypassSecurityTrustUrl("whatsapp://send?text=" + encodeURIComponent(shareURL));
       (this.productShareInstance.instance['removed'] as EventEmitter<boolean>).subscribe(status => {
         this.productShareInstance = null;
@@ -1712,7 +1712,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           })
           let qna = this.renderer2.createElement('script');
           qna.type = "application/ld+json";
-          qna.text = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": qaSchema });
+          qna.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "FAQPage", "mainEntity": qaSchema });
           this.renderer2.appendChild(this.document.head, qna);
         }
       }
@@ -1729,7 +1729,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       imageSchema.type = "application/ld+json";
 
       imageSchema.text = JSON.stringify({
-        "@context": "http://schema.org",
+        "@context": CONSTANTS.SCHEMA,
         "@type": "ImageObject",
         "url": this.productDefaultImage,
         "name": this.productName,
@@ -1747,7 +1747,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           desc = `${this.productName} is a premium quality ${this.productCategoryDetails['categoryName']} from ${this.productBrandDetails['brandName']}. Moglix is a well-known ecommerce platform for qualitative range of ${this.productCategoryDetails['categoryName']}. All ${this.productName} are manufactured by using quality assured material and advanced techniques, which make them up to the standard in this highly challenging field. The materials utilized to manufacture ${this.productName}, are sourced from the most reliable and official ${this.productCategoryDetails['categoryName']} vendors, chosen after performing detailed market surveys. Thus, ${this.productBrandDetails['brandName']} products are widely acknowledged in the market for their high quality. We are dedicatedly involved in providing an excellent quality array of ${this.productBrandDetails['brandName']} ${this.productCategoryDetails['categoryName']}.`;
         }
         let schema = {
-          "@context": "https://schema.org",
+          "@context": CONSTANTS.SCHEMA,
           "@type": "Product",
           "name": this.productName,
           "image": [this.productDefaultImage],
@@ -1767,10 +1767,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
           },
           "offers": {
             "@type": "Offer",
-            "url": "https://www.moglix.com/" + this.productUrl,
+            "url": CONSTANTS.PROD + this.productUrl,
             "priceCurrency": "INR",
             "price": (this.productPrice * this.productMinimmumQuantity).toString(),
-            "itemCondition": "https://schema.org/NewCondition",
+            "itemCondition": CONSTANTS.SCHEMA + "/NewCondition",
             "availability": inStock,
             "seller": {
               "@type": "Organization",
@@ -1779,23 +1779,23 @@ export class ProductComponent implements OnInit, AfterViewInit {
             "acceptedPaymentMethod": [
               {
                 "@type": "PaymentMethod",
-                "@id": "http://purl.org/goodrelations/v1#ByBankTransferInAdvance"
+                "@id": CONSTANTS.ByBankTransferInAdvance
               },
               {
                 "@type": "PaymentMethod",
-                "@id": "http://purl.org/goodrelations/v1#COD"
+                "@id": CONSTANTS.ByCOD
               },
               {
                 "@type": "PaymentMethod",
-                "@id": "http://purl.org/goodrelations/v1#PaymentMethodCreditCard"
+                "@id": CONSTANTS.ByPaymentMethodCreditCard
               },
               {
                 "@type": "PaymentMethod",
-                "@id": "http://purl.org/goodrelations/v1#MasterCard"
+                "@id": CONSTANTS.ByMasterCard
               },
               {
                 "@type": "PaymentMethod",
-                "@id": "http://purl.org/goodrelations/v1#VISA"
+                "@id": CONSTANTS.ByVISA
               }
             ]
           }

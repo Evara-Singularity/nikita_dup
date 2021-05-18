@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
   selector: "exclusive",
@@ -36,7 +37,7 @@ export class ExclusiveComponent {
     this.title.setTitle("Avail Exclusive Offers and Deals at Moglix.com");
     this.meta.addTag({ property: "og:title", content: "Avail Exclusive Offers and Deals at Moglix.com" });
     this.meta.addTag({ property: "og:description", content: "The exclusive offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
-    this.meta.addTag({ property: "og:url", content: "https://www.moglix.com/deals/exclusive-offers" });
+    this.meta.addTag({ property: "og:url", content: CONSTANTS.PROD + ENDPOINTS.EXCLU_OFF });
     this.meta.addTag({ name: "description", content: "The exclusive offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     if (this.isServer) {
       let links = this._renderer2.createElement("link");

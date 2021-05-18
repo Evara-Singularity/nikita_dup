@@ -28,13 +28,13 @@ export class ContactComponent {
     this.title.setTitle("Contact Us - Moglix - Call 955 5988 544");
     this.meta.addTag({ "property": "og:title", "content": "Contact Us - Moglix - Call 955 5988 544" });
     this.meta.addTag({ "property": "og:description", "content": "Write to us at care[at]moglix.com or contact customer care at 9555-988-544. We are happy to help you round the clock to the best of our ability." });
-    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/contact" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/contact" });
     this.meta.addTag({ "name": "description", "content": "Write to us at care[at]moglix.com or contact customer care at 9555-988-544. We are happy to help you round the clock to the best of our ability." });
 
     if (this.isServer) {
       let links = this._renderer2.createElement('link');
       links.rel = "canonical";
-      links.href = "https://www.moglix.com/contact";
+      links.href = CONSTANTS.PROD+"/contact";
       this._renderer2.appendChild(this._document.head, links);
     }
 
@@ -46,9 +46,9 @@ export class ContactComponent {
     this.contactUsSchema.text = JSON.stringify(
       {
 
-        "@context": "https://schema.org", "@type": "Organization",
+        "@context": CONSTANTS.SCHEMA, "@type": "Organization",
         "name": "Moglix",
-        "url": "https://www.moglix.com",
+        "url": CONSTANTS.PROD,
         "logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
         "contactPoint":
           [{

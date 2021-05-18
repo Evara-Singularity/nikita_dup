@@ -35,7 +35,7 @@ export class DealsComponent {
     this.title.setTitle("Pre Diwali Offers on Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Pre Diwali Offers on Moglix.com." });
     this.meta.addTag({ "property": "og:description", "content": "Presenting pre Diwali sale with special Diwali offers on the best industrial products. Get lowest price deals on our top picks of the day and brands." });
-    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/diwali-deals" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/diwali-deals" });
     this.meta.addTag({ "name": "description", "content": "Presenting pre Diwali sale with special Diwali offers on the best industrial products. Get lowest price deals on our top picks of the day and brands." });
     if (this.isServer) {
       let links = this._renderer2.createElement('link');

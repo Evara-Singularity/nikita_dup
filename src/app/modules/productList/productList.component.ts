@@ -10,6 +10,7 @@ import {Subject} from "rxjs";
 import { fade } from '@app/utils/animations/animation';
 import { CONSTANTS } from "@app/config/constants";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { ENDPOINTS } from '@app/config/endpoints';
 declare let dataLayer;
 declare let $:any;
 
@@ -33,7 +34,7 @@ const GRCRK: any = makeStateKey<{}>("GRCRK")// GRCRK: Get Related Category Resul
 export class ProductListComponent{
     isServer: boolean;
     isBrowser: boolean;
-    defaultImage = CONSTANTS.IMAGE_BASE_URL + 'img/others/Card.jpg';
+    defaultImage = CONSTANTS.IMAGE_BASE_URL + ENDPOINTS.CARD.IMAGE;
     offset = 100;
     currentUrl: string;
     imagePath = CONSTANTS.IMAGE_BASE_URL;

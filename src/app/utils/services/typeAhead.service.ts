@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DataService } from './data.service';
 import CONSTANTS from '../../config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,12 @@ export class TypeAheadService {
       );
   }
   goToDirectBrandCatPage(term) {
-    let url = CONSTANTS.NEW_MOGLIX_API + '/search/isBrandCategory?str=' + term;
+    let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.IS_BRAND_CATEGORY + '?str=' + term;
     return this._dataService.callRestful('GET', url);
   }
 
   getTrendingCategories() {
-    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/category/trendingCategory");
+    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TRENDING_CATEGORY);
   }
 
 }

@@ -837,7 +837,7 @@ export class CartComponent {
     public reviewLength: number = 0;
 
     getBusinessDetail(data) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/customer/getCustomerBusinessDetails";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
         return this.dataService.callRestful("GET", url, { params: data });
     }
 
@@ -2335,14 +2335,14 @@ export class CartComponent {
                 element['totalReview'] = element['yes'] + element['no']
             });
         }
-        let inStock = this.productResult['quantity'] > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
+        let inStock = this.productResult['quantity'] > 0 ? CONSTANTS.SCHEMA + "/InStock" : CONSTANTS.SCHEMA + "/OutOfStock";
         let reviewCount = this.reviews.summaryData.review_count > 0 ? this.reviews.summaryData.review_count : 1;
         let ratingValue = this.reviews.summaryData.final_average_rating > 0 ? this.reviews.summaryData.final_average_rating : 3.5;
 
         if (this.isServer) {
             let s = this._renderer2.createElement('script');
             s.type = "application/ld+json";
-            s.text = JSON.stringify({ "@context": "https://schema.org", "@type": "Product", "name": this.productResult['productName'], "image": this.productResult['productImage'], "description": this.productResult['fulldescription'], "brand": this.productResult['brand'], "offers": { "@type": "Offer", "price": (this.productResult['price'] * this.productResult['minimal_quantity']).toString(), "priceCurrency": "INR", "availability": inStock, "url": "https://www.moglix.com/" + this.productResult['url'], "ItemOffered": "Product", "areaServed": "IN", "itemCondition": "https://schema.org/NewCondition", "sku": this.productId, "acceptedPaymentMethod": [{ "name": "COD" }, { "name": "ByBankTransferInAdvance" }, { "name": "PaymentMethodCreditCard" }, { "name": "MasterCard" }, { "name": "VISA" }] }, "aggregateRating": { "@type": "AggregateRating", "ratingValue": ratingValue, "ratingCount": reviewCount, "bestRating": "5", "worstRating": "1" } });
+            s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "Product", "name": this.productResult['productName'], "image": this.productResult['productImage'], "description": this.productResult['fulldescription'], "brand": this.productResult['brand'], "offers": { "@type": "Offer", "price": (this.productResult['price'] * this.productResult['minimal_quantity']).toString(), "priceCurrency": "INR", "availability": inStock, "url": CONSTANTS.PROD + this.productResult['url'], "ItemOffered": "Product", "areaServed": "IN", "itemCondition": CONSTANTS.SCHEMA + "/NewCondition", "sku": this.productId, "acceptedPaymentMethod": [{ "name": "COD" }, { "name": "ByBankTransferInAdvance" }, { "name": "PaymentMethodCreditCard" }, { "name": "MasterCard" }, { "name": "VISA" }] }, "aggregateRating": { "@type": "AggregateRating", "ratingValue": ratingValue, "ratingCount": reviewCount, "bestRating": "5", "worstRating": "1" } });
             this._renderer2.appendChild(this._document.head, s);
         }
 

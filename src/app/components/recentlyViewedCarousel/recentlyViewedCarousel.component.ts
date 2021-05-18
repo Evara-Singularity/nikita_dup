@@ -26,6 +26,7 @@ import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.m
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pipe';
 import { DataService } from '@app/utils/services/data.service';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
 	selector: 'recently-viewed-carousel',
@@ -45,7 +46,7 @@ export class RecentlyViewedCarouselComponent {
 	categoryNameFromHomePage;
 	isServer: boolean = typeof window !== 'undefined' ? false : true;
 	isMobile: boolean;
-	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
 	shortDescParsed: boolean = false;
 	recentProductList: Array<any> = [];
@@ -99,7 +100,7 @@ export class RecentlyViewedCarouselComponent {
 				.callRestful(
 					'GET',
 					CONSTANTS.NEW_MOGLIX_API +
-						'/recentlyviewed/getRecentlyViewd?customerId=' +
+						ENDPOINTS.RECENTLY_VIEWED +
 						this.setCId
 				)
 				.subscribe((res) => {

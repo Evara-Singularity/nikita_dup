@@ -57,15 +57,15 @@ export class RazorPayFormComponent {
     //this.createForm();
     if (this.isBrowser) {
       let script = document.createElement('script');
-      script.src = "https://checkout.razorpay.com/v1/razorpay.js";
+      script.src = CONSTANTS.RAZORPAY.CHECKOUT;
       script.type = "text/javascript";
       const that = this;
       script.onload = function () {
         that.razorpay = new Razorpay({
           key: that.data['razorpay_key'],
           // logo, we'll display it in payment processing popup
-          image: 'https://i.imgur.com/n5tjHFD.png',
-          callback_url: CONSTANTS.NEW_MOGLIX_API + "/paymentRazorPayWallet/success",
+          image: CONSTANTS.RAZORPAY.IMAGE,
+          callback_url: CONSTANTS.NEW_MOGLIX_API + CONSTANTS.RAZORPAY.SUCCESS,
           redirect: true
         });
         that.razorpay.once('ready', function (response) {

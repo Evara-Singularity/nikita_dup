@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	selectedBanner: Number = 0;
 	carouselData: any = {};
 	MOBILE_IMAGE_CATEGORY = '381';
-	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 	defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + 'image_placeholder.jpg';
 	tocd: {};
 	options = {
@@ -393,7 +393,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.meta.addTag({ property: 'og:description', content: description });
 		this.meta.addTag({ property: 'og:title', content: title });
 		this.meta.addTag({ property: 'og:site_name', content: 'Moglix.com' });
-		this.meta.addTag({ property: 'og:url', content: 'https://www.moglix.com' });
+		this.meta.addTag({ property: 'og:url', content: CONSTANTS.PROD });
 		this.meta.addTag({ name: 'twitter:card', content: 'Summary' });
 		this.meta.addTag({ name: 'twitter:card', content: 'Summary' });
 		this.meta.addTag({ name: 'twitter:site', content: '@moglix' });
@@ -405,7 +405,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.meta.addTag({ name: 'twitter:creator', content: '@moglix' });
 		this.meta.addTag({
 			name: 'twitter:url',
-			content: 'https://www.moglix.com',
+			content: CONSTANTS.PROD,
 		});
 		this.meta.addTag({
 			name: 'twitter:image:src',
@@ -458,13 +458,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			const s = this._renderer2.createElement('script');
 			s.type = 'application/ld+json';
 			s.text = JSON.stringify({
-				'@context': 'https://schema.org',
+				'@context': CONSTANTS.SCHEMA,
 				'@type': 'WebSite',
-				url: 'https://www.moglix.com/',
+				url: CONSTANTS.PROD,
 				potentialAction: {
 					'@type': 'SearchAction',
 					target:
-						'https://www.moglix.com/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
+					CONSTANTS.PROD+'/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
 					'query-input': 'required name=search_term_string',
 				},
 			});

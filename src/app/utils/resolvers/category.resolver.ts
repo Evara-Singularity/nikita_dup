@@ -149,13 +149,14 @@ export class CategoryResolver implements Resolve<object> {
         this.loaderService.setLoaderState(true);
         const fragment = _activatedRouteSnapshot.fragment;
         const categoryId = _activatedRouteSnapshot.params.id;
-        let GFAQK: any = makeStateKey<{}>('GFAQK-' + categoryId)// GFAQK: Get Frequently Asked Question Key
-        let GRCRK: any = makeStateKey<{}>('GRCRK-' + categoryId); // GRCRK: Get Related Category Result Key
-        let RPRK: any = makeStateKey<{}>('RPRK-' + categoryId); // RPRK: Refresh Product Result Key
-        let CMSK: any = makeStateKey<{}>('CMSK-' + categoryId); // CMSK: Refresh Product Result Key
-        let BRDK: any = makeStateKey<{}>('BRDK-' + categoryId); // BRDK: Refresh Product Result Key
+        let GFAQK: any = makeStateKey<{}>('GFAQK-' + categoryId)    // GFAQK: Get Frequently Asked Question Key
+        let GRCRK: any = makeStateKey<{}>('GRCRK-' + categoryId);   // GRCRK: Get Related Category Result Key
+        let RPRK: any = makeStateKey<{}>('RPRK-' + categoryId);     // RPRK: Refresh Product Result Key
+        let CMSK: any = makeStateKey<{}>('CMSK-' + categoryId);     // CMSK: Refresh Product Result Key
+        let BRDK: any = makeStateKey<{}>('BRDK-' + categoryId);     // BRDK: Refresh Product Result Key
         
         if (this.transferState.hasKey(GRCRK) && this.transferState.hasKey(RPRK) && this.transferState.hasKey(GFAQK) && this.transferState.hasKey(CMSK) && this.transferState.hasKey(BRDK)) {
+            alert('if : ');
             const GRCRKObj = this.transferState.get<object>(GRCRK, null);
             const RPRKObj = this.transferState.get<object>(RPRK, null);
             const GFAQKObj = this.transferState.get<object>(GFAQK, null);
@@ -171,6 +172,7 @@ export class CategoryResolver implements Resolve<object> {
             this.loaderService.setLoaderState(false);
             return of([GRCRKObj, RPRKObj, GFAQKObj, CMSKObj, BRDKObj]);
         } else {
+            alert('else : ');
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
             const params = _activatedRouteSnapshot.params;
             const getRelatedCategoriesObs = this.getRelatedCategories(categoryId).pipe(map(res => res));

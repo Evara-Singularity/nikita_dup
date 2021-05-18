@@ -14,6 +14,7 @@ import { CategoryService } from '@services/category.service';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { HttpClient } from '@angular/common/http';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: 'root'
@@ -131,10 +132,10 @@ export class CategoryResolver implements Resolve<object> {
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
             const params = _activatedRouteSnapshot.params;
 
-            const get_rel_cat_url = CONSTANTS.NEW_MOGLIX_API + '/category/getcategorybyid?catId=' + categoryId;
-            const faq_url = CONSTANTS.NEW_MOGLIX_API + "/quest/getCategorySchema?categoryCode=" + categoryId;
-            const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + "/homepage/getbreadcrumb?source=/power-tools/114000000&type=category";
-            const cms_url = CONSTANTS.NEW_MOGLIX_API + "/cmsapi/getCmsControlledPage?requestParam=article-1&categoryCode=" + categoryId;
+            const get_rel_cat_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
+            const faq_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
+            const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=/power-tools/114000000&type=category";
+            const cms_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
 
             const getRelatedCategoriesObs = this.http.get(get_rel_cat_url);
             const getFAQObs = this.http.get(faq_url);

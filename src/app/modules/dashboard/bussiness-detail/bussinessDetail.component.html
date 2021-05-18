@@ -1,7 +1,5 @@
 <section *ngIf="isBrowser" class="business-form">
-    <form [formGroup]="businessDetailForm"
-        (ngSubmit)="this.onSubmit(this.businessDetailForm.value, this.businessDetailForm.valid)" class="material-form"
-        novalidate>
+    <form [formGroup]="businessDetailForm" (ngSubmit)="this.onSubmit(this.businessDetailForm.value, this.businessDetailForm.valid)" class="material-form" novalidate>
         <div>
             <div>
                 <!--GSTIN-->
@@ -39,8 +37,7 @@
                 </div>
                 <!--Business Email Id-->
                 <div class="input-field">
-                    <label [class.is-focus]="email.value != null && email.value.length!=0"
-                        [class.disableInput]="!(isGSTINVerified)">
+                    <label [class.is-focus]="email.value != null && email.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="email" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Email Id (Optional)</span>
                     </label>
@@ -52,8 +49,7 @@
                 </div>
                 <!--Business  Phone No.-->
                 <div class="input-field">
-                    <label [class.is-focus]="phone.value != null && phone.value.length!=0"
-                        [class.disableInput]="!(isGSTINVerified)">
+                    <label [class.is-focus]="phone.value != null && phone.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Phone No.*</span>
                     </label>
@@ -68,8 +64,7 @@
                 </div>
                 <!--PIN-->
                 <div class="input-field">
-                    <label [class.is-focus]="postCode.value != null && postCode.value.length!=0"
-                        [class.disableInput]="!(isGSTINVerified)">
+                    <label [class.is-focus]="postCode.value != null && postCode.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="postCode" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">PIN*</span>
                     </label>
@@ -87,8 +82,7 @@
                 <div formGroupName="address">
                     <!--Registered Address-->
                     <div class="input-field">
-                        <label [class.is-focus]="addressLine.value != null && addressLine.value.length!=0"
-                            [class.disableInput]="!(isGSTINVerified)">
+                        <label [class.is-focus]="addressLine.value != null && addressLine.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                             <input formControlName="addressLine" type="text" [readonly]="!(isGSTINVerified)">
                             <span class="label">Registered Address*</span>
                         </label>
@@ -124,7 +118,6 @@
         <div *ngIf="successfulMessage">
             <p>Data is successfully saved</p>
         </div>
-        <button [disabled]="!(canSave)" class="continue-btn bottom-stick" [class.disabledButton]="!(canSave)"
-            type="submit">SAVE</button>
+        <button [disabled]="!(canSave)" class="btn continue-btn bottom-stick" [class.disabledButton]="!(canSave)" type="submit">SAVE</button>
     </form>
 </section>

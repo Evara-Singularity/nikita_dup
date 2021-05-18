@@ -167,6 +167,12 @@ option {
     padding: 5px;
 }
 
+// Error Mesgs
+.error-txt {
+    color: $error-color;
+    margin-top: 5px;
+}
+
 //Cards
 .card {
     @extend %cards;

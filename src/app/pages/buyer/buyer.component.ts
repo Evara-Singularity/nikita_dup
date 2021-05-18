@@ -1,7 +1,7 @@
 import { Component, Renderer2, Inject } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser'; import { DOCUMENT } from "@angular/common";
-import { filter } from 'rxjs/operators/filter';
+import { filter } from 'rxjs/operators';
 import CONSTANTS from '@app/config/constants';
 
 @Component({

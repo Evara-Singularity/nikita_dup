@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { of } from 'rxjs/observable/of';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { delay } from 'rxjs/operators/delay';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pop-up-variant2',

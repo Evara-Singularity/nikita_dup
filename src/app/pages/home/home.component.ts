@@ -17,7 +17,7 @@ import {
 	Injector,
 } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { fade } from '@utils/animations/animation';
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';
@@ -30,8 +30,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 	selector: 'home',
 	templateUrl: './home.html',
 	styleUrls: ['./home.scss'],
-	animations: [fade],
-	encapsulation: ViewEncapsulation.None,
+	animations: [fade]
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;
@@ -322,7 +321,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.appendSiemaItemSubjects['bannerData'].next(
 					data['bannerData']['data'].filter((item, i) => i >= 1)
 				);
-			}, 1000);
+			}, 0);
 		}
 	}
 

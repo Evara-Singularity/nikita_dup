@@ -31,8 +31,10 @@ export class HomeResolver implements Resolve<object> {
 
     if (this.transferState.hasKey(STATE_KEY) && this.transferState.hasKey(FDK)) {
       const stateObj = this.transferState.get<object>(STATE_KEY, null);
+      const FDKobj = this.transferState.get<object>(FDK, null);
       this.transferState.remove(STATE_KEY);
-      return of([stateObj, FDK]);
+      this.transferState.remove(FDK);
+      return of([stateObj, FDKobj]);
     } else {
       const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT_HOME;
       const stateObs = this.http.get(LAYOUT_URL);

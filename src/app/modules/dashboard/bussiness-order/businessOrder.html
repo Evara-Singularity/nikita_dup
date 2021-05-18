@@ -112,3 +112,14 @@
         </ul>
     </div>
 </div>
+
+<div>
+    <ng-container *ngIf="pages>0">
+        <div>
+            <ul class="paginate">
+                <li [ngClass]="{'active': currentPage==i}" (click)="changePagination(i)" *ngFor="let item of pagesArray | paginate: { itemsPerPage: 10, currentPage: currentPage }"></li>
+            </ul>
+            <pagination-controls (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </div>
+    </ng-container>
+</div>

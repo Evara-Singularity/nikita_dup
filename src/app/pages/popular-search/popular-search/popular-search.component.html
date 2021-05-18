@@ -1,0 +1,15 @@
+<div class="category-wrapper">
+    <div class="channel-title">
+        <h1>Browse Popular Search Terms by Category</h1>
+    </div>
+    <div class="channel-content" *ngFor="let category of categories;">
+        <h4>{{category.categoryName}}</h4>
+        <p>
+            <span *ngFor="let item of category['data'];last as isLast">
+                <a href="{{'./alp/' + item.friendlyUrl}}" [title]="item.searchTerm" target="_self">{{item.searchTerm |
+                    titlecase}}</a>
+                <span *ngIf="!isLast"> ,</span>
+            </span>
+        </p>
+    </div>
+</div>

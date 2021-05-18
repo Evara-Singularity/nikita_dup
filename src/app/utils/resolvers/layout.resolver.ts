@@ -56,7 +56,7 @@ export class LayoutResolver implements Resolve<object> {
           return of(err);
         }),
         tap(result => {
-          this.loaderService.setLoaderState(true);
+          this.loaderService.setLoaderState(false);
           if (isPlatformServer(this.platformId)) {
             //this.loaderService.setLoaderState(false);
             this.transferState.set(STATE_KEY, result[0]);

@@ -127,7 +127,11 @@ export class CategoryResolver implements Resolve<object> {
         if (this.transferState.hasKey(BRDK)) {
             return of(this.transferState.get(BRDK, []));
         } else {
-            return this._commonService.getBreadcrumpData(window.location.pathname.replace('/',''), 'category');
+            let src= window.location.pathname.replace('/','');
+            if (!src) {
+                src = localStorage.getItem('src');
+            }
+            return this._commonService.getBreadcrumpData(src, 'category');
         }
     }
 

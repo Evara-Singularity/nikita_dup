@@ -15,6 +15,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { CmsModule } from '../../modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SubCategoryModule } from './subCategory/subCategory.component';
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         RouterModule,
         ProductListModule,
         NgxPageScrollModule,
+        SubCategoryModule,
         ObserveVisibilityDirectiveModule,
         MetaModule.forRoot(),
         PopUpModule,

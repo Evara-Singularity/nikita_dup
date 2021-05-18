@@ -7,7 +7,6 @@ import { SiemaSlideComponent } from './siemaSlide.component';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
-import { ModalService } from '../modal/modal.service';
 
 @NgModule({
     imports: [
@@ -21,6 +20,6 @@ import { ModalService } from '../modal/modal.service';
     exports: [SiemaCarouselComponent],
     entryComponents: [SiemaSlideComponent],
     declarations: [SiemaCarouselComponent, SiemaSlideComponent],
-    providers: [ModalService]
+    providers: []
 })
 export class SiemaCarouselModule { }

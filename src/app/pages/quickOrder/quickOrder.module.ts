@@ -12,7 +12,6 @@ import { CartModule } from '../../modules/cart/cart.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
 import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
-import { ModalService } from '../../modules/modal/modal.service';
 import { ModalModule } from '../../modules/modal/modal.module';
 
 @NgModule({
@@ -34,7 +33,6 @@ import { ModalModule } from '../../modules/modal/modal.module';
     providers: [
         QuickOrderResolver,
         QuickOrderService,
-        ModalService
     ]
 })
 

@@ -11,7 +11,10 @@ import { CommonService } from "@app/utils/services/common.service";
 })
 export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;
-    constructor(public _commonService: CommonService){}
+    todayDate;
+    constructor(public _commonService: CommonService){
+        this.todayDate = Date.now();
+    }
 
     getTopTenBrandName(buckets: Array<{}>) {
         let bNames = null;

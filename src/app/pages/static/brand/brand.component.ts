@@ -1,4 +1,4 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformServer } from '@angular/common';
@@ -12,7 +12,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 	templateUrl: 'brand.html',
 	styleUrls: ['brand.scss'],
 })
-export class BrandComponent {
+export class BrandComponent{
 	API: {};
 	brandData: any;
 	val: any;
@@ -79,27 +79,6 @@ export class BrandComponent {
 				});
 			}
 		});
-		var scrollFixedVal = 0;
-		window.addEventListener(
-			'scroll',
-			function (e) {
-				var letterId = document.getElementById('letterId');
-				var elOfset = letterId.offsetTop;
-				var window_position = window.scrollY + 52;
-				if (
-					window_position > elOfset &&
-					scrollFixedVal == 0 &&
-					window_position > 300
-				) {
-					letterId.classList.add('sticky');
-					scrollFixedVal = window_position;
-				} else if (scrollFixedVal > window_position) {
-					letterId.classList.remove('sticky');
-					scrollFixedVal = 0;
-				}
-			},
-			{ passive: true }
-		);
 	}
 
 	scrollToList(getAlphabet) {

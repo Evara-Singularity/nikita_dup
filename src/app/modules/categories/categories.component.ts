@@ -101,6 +101,10 @@ export class Categories {
 		const newValue = Math.round(0.0 + removeDecimal);
 		return newValue;
 	}
+
+	setSourceLink(url) {
+		localStorage.setItem('src', url);
+	}
 }
 
 @NgModule({
@@ -111,6 +115,6 @@ export class Categories {
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
 	],
-	providers: [ModalService],
+	providers: [],
 })
 export class FeaturedArrivalModule {}

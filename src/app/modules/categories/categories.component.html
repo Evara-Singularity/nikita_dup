@@ -11,7 +11,7 @@
         <div class="container clearfix pad-tb-10">
             <h2 class="f-left f-14 pad-tb-10 upper-case">{{carouselData[category.dataKey]['layout_name']}}</h2>
             <a *ngIf="category.viewAllLink; else showPop"
-                [routerLink]="'/'+carouselData[category.dataKey]['layout_url']" routerLinkActive="router-link-active"
+                [routerLink]="'/'+carouselData[category.dataKey]['layout_url']" (click)="setSourceLink(carouselData[category.dataKey]['layout_url'])" routerLinkActive="router-link-active"
                 class="btn-red f-right">VIEW ALL
             </a>
             <ng-template #showPop>
@@ -33,8 +33,6 @@
                             <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+item.category_image"
                                 alt="category image" class="category-img">
                             <p>{{item['CategoryName']}}</p>
-
-
                         </a>
                     </li>
                 </div>

@@ -41,12 +41,14 @@ export class DealsComponent {
         setTimeout(() => {
           this.reinsertLinks();
         }, 0);
-
+        
         if (!this.isServer) {
           setTimeout(() => {
-            document.querySelector(".moglix-adv").addEventListener('click', (e) => {
-              this.router.navigateByUrl('/electricals/fans/211530000?campname=Fans&Blowers-ViewAll&camplink=Home-Page-CategoryProduct#');
-            });
+            if (document.querySelector(".moglix-adv")) {
+              document.querySelector(".moglix-adv").addEventListener('click', (e) => {
+                this.router.navigateByUrl('/electricals/fans/211530000?campname=Fans&Blowers-ViewAll&camplink=Home-Page-CategoryProduct#');
+              });
+            }
           }, 1000);
         }
       } else {

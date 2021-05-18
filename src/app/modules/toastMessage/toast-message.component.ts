@@ -5,11 +5,12 @@ import { ToastMessage } from './toast-message.module';
 import { ToastMessageService } from './toast-message.service';
 
 @Component({
-    selector: 'app-toast-message',
+    selector: 'toast-message',
     templateUrl: './toast-message.component.html',
     styleUrls: ['./toast-message.component.scss']
 })
 export class ToastMessageComponent implements OnInit {
+
     @Input() iData: {};
     toasts: Array<ToastMessage>;
 
@@ -41,4 +42,5 @@ export class ToastMessageComponent implements OnInit {
             });
         });
     }
+    
 }

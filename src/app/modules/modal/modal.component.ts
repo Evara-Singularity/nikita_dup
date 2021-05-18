@@ -5,7 +5,7 @@ import { ModalService } from './modal.service';
 import { ModalDirective } from './modal.directive';
 
 @Component({
-    selector: 'app-modal-v2',
+    selector: 'app-modal',
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.scss']
 })
@@ -25,7 +25,6 @@ export class ModalComponent implements OnInit {
         private injector: Injector, private _ms: ModalService) {
         this.modals = {};
         this.showModal = false;
-        console.log('ModalComponent v1', 'called');
     }
 
     ngOnInit(): void {

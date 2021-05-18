@@ -31,7 +31,7 @@ export class DealsComponent {
     this.isBrowser = isPlatformBrowser(platformId);
 
     this.getDealsData();
-    
+
     this.title.setTitle("Pre Diwali Offers on Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Pre Diwali Offers on Moglix.com." });
     this.meta.addTag({ "property": "og:description", "content": "Presenting pre Diwali sale with special Diwali offers on the best industrial products. Get lowest price deals on our top picks of the day and brands." });
@@ -51,9 +51,11 @@ export class DealsComponent {
         this.dealsData = rawData['data'][0];;
         if (!this.isServer) {
           setTimeout(() => {
-            document.querySelector(".moglix-adv").addEventListener('click', (e) => {
-              this.router.navigateByUrl('/electricals/fans/211530000?campname=Fans&Blowers-ViewAll&camplink=Home-Page-CategoryProduct#');
-            });
+            if (document.querySelector(".moglix-adv")) {
+              document.querySelector(".moglix-adv").addEventListener('click', (e) => {
+                this.router.navigateByUrl('/electricals/fans/211530000?campname=Fans&Blowers-ViewAll&camplink=Home-Page-CategoryProduct#');
+              });
+            }
           }, 1000);
         }
       } else {

@@ -33,7 +33,6 @@ export class AppModule {
     @Inject(APP_ID) private appId: string) {
     const platform = isPlatformBrowser(platformId) ?
       'in the browser' : 'on the server';
-    console.clear();
     console.log(`Running ${platform} with appId=${appId}`);
   }
 }

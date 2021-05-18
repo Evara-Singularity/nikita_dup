@@ -1,3 +1,6 @@
+{{ item | json }}
+{{ options | json }}
+
 <ng-container *ngIf="options.productNew">
     <ng-container *ngIf="contentType=='IMAGE'">
         <div [attr.id]="'prodImg' + itemIndex" class="img-block" (click)="clicked()" >

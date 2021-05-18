@@ -6,7 +6,6 @@ import { SharedSignupComponent } from './shared-signup/shared-signup.component';
 import { SharedOtpComponent } from './shared-otp/shared-otp.component';
 import { SharedForgotPasswordComponent } from './shared-forgot-password/shared-forgot-password.component';
 import { SharedCheckoutLoginComponent } from './shared-checkout-login/shared-checkout-login.component';
-import { ToastMessageModule } from '../toastMessage/toast-message.module';
 import { SharedAuthService } from './shared-auth.service';
 import { SocialLoginModule } from '../socialLogin/socialLogin.module';
 import { SharedSignUtilService } from './shared-signup/shared-sign-util.service';
@@ -27,7 +26,6 @@ import { SharedLoginUtilService } from './shared-login/shared-login-util.service
     SocialLoginModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastMessageModule
   ],
   exports: [
     SharedLoginComponent,

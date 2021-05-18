@@ -33,7 +33,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
   hideElLogin: boolean = false;
   searhNav: any;
   cartHeaderText: string = '';
-
+  currentUrl: string;
   checkoutTabMap = {
     1: "Login",
     2: "Checkout",
@@ -41,7 +41,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     4: "Payment"
   };
   staticPages = ['/faq', '/max', '/diwali-deals', '/deals', '/brand-store', '/buyer-guide', '/copyright', '/privacy', '/terms', '/testimonials', '/compliance', '/press', '/about', '/corporate-gifting', '/services', '/career', '/affiliate', '/moglix-originals', '/contact']
-
+  isLoginPage: boolean = false;
 
   constructor(
     @Inject(PLATFORM_ID) platformId,
@@ -199,7 +199,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
-      ).subscribe((evt) => {
+      ).subscribe((evt: any) => {
+        this.currentUrl = evt.url;
+        this.backRedirectUrl = this.currentUrl || '';
+        localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
       if(evt instanceof NavigationEnd){
         this.refreshIcon();
       }
@@ -215,12 +218,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         }
         this.setHeader();
     });
-
-    this.route.queryParams.subscribe(
-      data => {
-        this.backRedirectUrl = data['redirectUrl'];
-      }
-    );
 
     this.localAuthService.login$.subscribe(
       (data) => {
@@ -263,7 +260,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.backRedirectUrl) {
+    this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
+    if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
       this.location.back();
     } else {
       if (this.staticPages.indexOf(window.location.pathname) !== -1) {
@@ -292,7 +290,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         this._state.notifyData("routeChanged", route - 2);
         this.refreshIcon();
       } else {
-        this.location.back();
+        /**
+         * Fix for ODP-57
+         * if user directly enter certain pages, we are sending user to home page on back button click
+         */
+        this.router.navigate(['/']);
       }
     }
   }
@@ -304,6 +306,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
   }
 
   setHeader() {
+    this.isLoginPage = false;
     if (
       this.router.url.includes('/forgot-password') ||
       this.router.url.includes('/login') ||
@@ -312,7 +315,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
       this.router.url.includes('/online-assist') ||
       this.router.url.includes('/forgot-password') ||
       this.router.url.includes('/sign-up')) {
-
+      this.isLoginPage = true;
       this.hideElLogin = false;
       this.changeDetectorRef.detectChanges();
       // console.log('refreshIcon 3', this.router.url);

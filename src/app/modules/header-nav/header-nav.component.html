@@ -3,7 +3,7 @@
         <div class="head-strip container">
             <div class="f-left logo-container">
                 <i *ngIf="isHomePage || (routerData && routerData['menuBar']) " class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
-                <a [routerLink]="['/']" class="icon-logo" *ngIf="isHomePage || (routerData && routerData['menuBar'])"></a>
+                <a [routerLink]="['/']" class="icon-logo" *ngIf="(isHomePage || (routerData && routerData['menuBar']) && !(routerData && routerData['title']))"></a>
                 <i *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="goBack()" class="icon-back" id="icon-back"></i>
                 <p class="f-left page-name f-16 pt-10" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</p>
             </div>

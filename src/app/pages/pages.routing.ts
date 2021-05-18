@@ -488,6 +488,15 @@ const routes: Routes = [
         }
       },
       {
+        path: 'popular-search',
+        loadChildren: () => import('./popular-search/popular-search.module').then(m => m.PopularSearchModule),
+        data: {
+            footer: false,
+            logo: true,
+            moreOpt: true
+        }
+      },
+      {
         path: '**',
         loadChildren: () => import('./pageNotFound/pageNotFound.module').then(m => m.PageNotFoundModule),
         data: {
@@ -497,7 +506,6 @@ const routes: Routes = [
           moreOpt: false
         }
       }
-
     ]
   }
 ]

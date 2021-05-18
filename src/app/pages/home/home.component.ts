@@ -30,7 +30,8 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 	selector: 'home',
 	templateUrl: './home.html',
 	styleUrls: ['./home.scss'],
-	animations: [fade]
+	animations: [fade],
+	
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;

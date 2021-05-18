@@ -487,7 +487,7 @@ export class CategoryComponent implements OnInit {
                     let temp = [];
                     for (let j = 0; j < this.wb[i].terms.length && temp.length < 4; j++) {                                                      //getting top four values with non-zero min , max price 
                         if (this.wb[i].terms[j].minPrice > 0 && this.wb[i].terms[j].maxPrice > 0) {
-                            this.wb[i].terms[j].term = this.wb[i].terms[j].term + " " + this.getRelatedCatgory?.categoryDetails?.categoryName;
+                            this.wb[i].terms[j].term = this.wb[i].terms[j].term + " " + this.getRelatedCatgory.categoryDetails.categoryName;
                             temp.push(this.wb[i].terms[j]);
                         }
                     }
@@ -511,8 +511,7 @@ export class CategoryComponent implements OnInit {
                     for (let j = 0; j < this.wb[i].terms.length && temp.length < 4; j++) {                                                        //getting top four values with non-zero min , max price for each "other filters"
                         if (this.wb[i].terms[j].minPrice > 0 && this.wb[i].terms[j].maxPrice > 0) {
                             this.wb[i].terms[j].newName = "";
-                            //this.wb[i].terms[j].newName=this.wb[i].terms[j].term+" "+this.wb[i].name+" "+this.getRelatedCatgory?.categoryDetails?.categoryName;
-                            str = this.wb[i].name + " - " + this.wb[i].terms[j].term + " " + this.getRelatedCatgory?.categoryDetails?.categoryName;
+                            str = this.wb[i].name + " - " + this.wb[i].terms[j].term + " " + this.getRelatedCatgory.categoryDetails.categoryName;
                             this.wb[i].terms[j].newName = this.camalize(str);
                             temp.push(this.wb[i].terms[j]);
                         }
@@ -542,7 +541,7 @@ export class CategoryComponent implements OnInit {
 
     getCategoryData(obj: any[]) {
         for (let i = 0; i < obj.length; i++) {
-            if (obj[i].term === this.getRelatedCatgory?.categoryDetails?.categoryName) {
+            if (obj[i].term === this.getRelatedCatgory.categoryDetails.categoryName) {
                 this.reqArray = obj[i].childCategoryList;                              //Base condition.
                 break;
             }
@@ -572,7 +571,7 @@ export class CategoryComponent implements OnInit {
                     "@type": "ItemList",
                     "numberOfItems": productArray.length,
                     "url": CONSTANTS.PROD + this._router.url,
-                    "name": this.getRelatedCatgory?.categoryDetails?.categoryName,
+                    "name": this.getRelatedCatgory.categoryDetails.categoryName,
                     "itemListElement": productList
                 }
                 let s = this._renderer2.createElement('script');
@@ -1066,7 +1065,7 @@ export class CategoryComponent implements OnInit {
                 if (res && res['status'] && res['statusCode'] == 200) {
                     articlesData = res['data'];
                     this.recentArticlesInstance.instance['recentArticles'] = articlesData;
-                    this.recentArticlesInstance.instance['title'] = this.getRelatedCatgory?.categoryDetails?.categoryName
+                    this.recentArticlesInstance.instance['title'] = this.getRelatedCatgory.categoryDetails.categoryName
                 }
             });
         }

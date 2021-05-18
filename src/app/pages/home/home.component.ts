@@ -498,6 +498,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			footerObj[key] = true;
 		}
 		this.footerService.setMobileFoooters();
+		this.destroyLazyComponents();
 	}
 
 	sendDataToPopUP(getDataKey) {
@@ -623,5 +624,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		).subscribe((value) => {
 			this.showRecentlyViewedCarousel = value;
 		});
+	}
+	destroyLazyComponents() {
+		if (this.featuredBrandsInstance) {
+			this.featuredBrandsInstance = null;
+			this.featuredBrandsContainerRef.remove();
+		}
+		if (this.featuredArrivalsInstance) {
+			this.featuredArrivalsInstance = null;
+			this.featuredArrivalsContainerRef.remove();
+		}
+		if (this.categoriesInstance) {
+			this.categoriesInstance = null;
+			this.CategoriesContainerRef.remove();
+		}
+		if (this.popUpInstance) {
+			this.popUpInstance = null;
+			this.HomePopupComponetContainerRef.remove();
+		}
+		if (this.trendingCategoriesInstance) {
+			this.trendingCategoriesInstance = null;
+			this.trendingCategoriesContainerRef.remove();
+		}
 	}
 }

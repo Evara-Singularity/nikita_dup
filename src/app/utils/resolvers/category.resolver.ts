@@ -13,11 +13,11 @@ import { CommonService } from '../services/common.service';
 import { CategoryService } from '@services/category.service';
 import { Router } from '@angular/router';
 
-const GFAQK: any = makeStateKey<{}>('GFAQK')// GFAQK: Get Frequently Asked Question Key
-const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
-const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
-const CMSK: any = makeStateKey<{}>('CMSK'); // CMSK: Refresh Product Result Key
-const BRDK: any = makeStateKey<{}>('BRDK'); // BRDK: Refresh Product Result Key
+let GFAQK: any = makeStateKey<{}>('GFAQK')// GFAQK: Get Frequently Asked Question Key
+let GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
+let RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
+let CMSK: any = makeStateKey<{}>('CMSK'); // CMSK: Refresh Product Result Key
+let BRDK: any = makeStateKey<{}>('BRDK'); // BRDK: Refresh Product Result Key
 
 @Injectable({
     providedIn: 'root'
@@ -148,6 +148,12 @@ export class CategoryResolver implements Resolve<object> {
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
         const fragment = _activatedRouteSnapshot.fragment;
+        const categoryId = _activatedRouteSnapshot.params.id;
+        let GFAQK: any = makeStateKey<{}>('GFAQK-' + categoryId)// GFAQK: Get Frequently Asked Question Key
+        let GRCRK: any = makeStateKey<{}>('GRCRK-' + categoryId); // GRCRK: Get Related Category Result Key
+        let RPRK: any = makeStateKey<{}>('RPRK-' + categoryId); // RPRK: Refresh Product Result Key
+        let CMSK: any = makeStateKey<{}>('CMSK-' + categoryId); // CMSK: Refresh Product Result Key
+        let BRDK: any = makeStateKey<{}>('BRDK-' + categoryId); // BRDK: Refresh Product Result Key
         
         if (this.transferState.hasKey(GRCRK) && this.transferState.hasKey(RPRK) && this.transferState.hasKey(GFAQK) && this.transferState.hasKey(CMSK) && this.transferState.hasKey(BRDK)) {
             const GRCRKObj = this.transferState.get<object>(GRCRK, null);
@@ -166,7 +172,6 @@ export class CategoryResolver implements Resolve<object> {
             return of([GRCRKObj, RPRKObj, GFAQKObj, CMSKObj, BRDKObj]);
         } else {
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
-            const categoryId = _activatedRouteSnapshot.params.id;
             const params = _activatedRouteSnapshot.params;
             const getRelatedCategoriesObs = this.getRelatedCategories(categoryId).pipe(map(res => res));
             const getFAQObs = this.getFAQ(categoryId).pipe(map(res => res));
@@ -189,10 +194,6 @@ export class CategoryResolver implements Resolve<object> {
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
-                        console.log('============================');
-                        console.log(result);
-
-                        console.log('============================');
                         this.transferState.set(GRCRK, result[0]);
                         this.transferState.set(RPRK, result[1]);
                         this.transferState.set(GFAQK, result[2]);

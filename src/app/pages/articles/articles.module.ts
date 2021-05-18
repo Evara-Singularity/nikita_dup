@@ -5,7 +5,6 @@ import { ArticleResolver } from './article.resolver';
 import { ArticleService } from './article.service';
 import { ArticlesRoutingModule } from './articles-routing.module';
 import { CmsModule } from '../../modules/cms/cms.module';
-import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 import { ArticleComponent } from './article.component';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { ArticleComponent } from './article.component';
         CommonModule,
         ArticlesRoutingModule,
         CmsModule,
-        ToastMessageModule
     ],
     providers: [
         ArticleService,

@@ -25,7 +25,6 @@ export class ModalComponent implements OnInit {
         private injector: Injector, private _ms: ModalService) {
         this.modals = {};
         this.showModal = false;
-        console.log('ModalComponent v1', 'called');
     }
 
     ngOnInit(): void {

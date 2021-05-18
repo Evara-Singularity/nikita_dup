@@ -19,8 +19,3 @@ import { ModalDirective } from './modal.directive';
     ],
 })
 export class ModalModule {}
-
-export class ModalMessage {
-    type: string;
-    text: string;
-}

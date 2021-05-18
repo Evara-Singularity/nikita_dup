@@ -1,8 +1,9 @@
 import { Injectable, ComponentFactoryResolver, ApplicationRef, Injector } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-// import { ModalMessage } from './modal.module';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class ModalService {
     private subject = new Subject<{}>();
     private hideModalSub = new Subject<boolean>();

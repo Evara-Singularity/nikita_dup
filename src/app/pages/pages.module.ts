@@ -5,6 +5,7 @@ import { PagesComponent } from './pages.component';
 import { HeaderNavModule } from '../modules/header-nav/header-nav.module';
 import { GlobalLoaderModule } from '../modules/global-loader/global-loader.module';
 import { MyAccountGuard } from '../utils/guards/myAccount.guard'
+import { ModalModule } from '@app/modules/modal/modal.module';
 
 @NgModule({
   declarations: [PagesComponent],
@@ -12,7 +13,8 @@ import { MyAccountGuard } from '../utils/guards/myAccount.guard'
     CommonModule,
     PagesRoutingModule,
     HeaderNavModule,
-    GlobalLoaderModule
+    GlobalLoaderModule,
+    ModalModule
   ],
   providers: [MyAccountGuard]
 })

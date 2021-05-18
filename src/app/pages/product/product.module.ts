@@ -13,7 +13,6 @@ import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
-import { ModalService } from '../../modules/modal/modal.service';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 
 @NgModule({
@@ -39,7 +38,6 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
   ],
   exports: [],
   providers: [
-    ModalService
   ]
 })
 export class ProductModule { }

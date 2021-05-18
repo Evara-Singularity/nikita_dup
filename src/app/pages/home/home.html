@@ -44,6 +44,12 @@
         <img [src]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
+<!-- section for trending categories-->
+<div observeVisibility class="categories-container" [debounceTime]="100" (visible)="onVisibleTrendingCategories($event)">
+    <div>
+        <ng-container #TrendingCategories></ng-container>
+    </div>
+</div>
 
 <!-- Section for feature Brands -->
 <div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)">

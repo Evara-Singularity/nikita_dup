@@ -1,7 +1,7 @@
 <div *ngIf="show" class="bottom-options open">
     <div class="overlay" (click)="hide()"></div>
     <div class="content-box social-links">
-        <ul class="share-container"> 
+        <ul class="share-container">
             <li>
                 <a [attr.href]="'mailto:?subject=' + productResult['productName'] + '&body=' + productResult['productName'] + 'is available on Moglix.Here is the link to check prices and specification:'+API.PROD+'/'+productResult['canonicalUrl']" target="_blank">
                     <i class="icon-mail"></i>

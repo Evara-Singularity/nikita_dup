@@ -14,6 +14,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ClientUtility } from '@app/utils/client.utility';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 
@@ -140,6 +141,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        ClientUtility.scrollToTop(1000);
         // Set config based on query params change
         const queryParamsData = this._activatedRoute.snapshot.queryParams;
         this.updateConfigBasedOnQueryParams(queryParamsData);

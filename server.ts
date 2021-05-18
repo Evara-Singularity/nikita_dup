@@ -53,7 +53,7 @@ function shouldCompress (req, res) {
 }
 
 function run() {
-  const port = process.env.PORT || 4200;
+  const port = process.env.PORT || 5000;
 
   // Start up the Node server
   const server = app();

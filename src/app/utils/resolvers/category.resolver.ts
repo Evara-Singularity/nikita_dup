@@ -145,7 +145,7 @@ export class CategoryResolver implements Resolve<object> {
         this.loaderService.setLoaderState(true);
         const fragment = _activatedRouteSnapshot.fragment;
         
-        if (this.transferState.hasKey(RPRK) && !fragment) {
+        if (this.transferState.hasKey(GRCRK) && this.transferState.hasKey(RPRK) && this.transferState.hasKey(GFAQK) && this.transferState.hasKey(CMSK) && this.transferState.hasKey(BRDK)) {
             const GRCRKObj = this.transferState.get<object>(GRCRK, null);
             const RPRKObj = this.transferState.get<object>(RPRK, null);
             const GFAQKObj = this.transferState.get<object>(GFAQK, null);

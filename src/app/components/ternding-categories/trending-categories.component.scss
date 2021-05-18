@@ -1,0 +1,35 @@
+/*Trending Categories*/
+@import '../../scss/variables';
+
+.trending-container {
+    padding: 0 0 0px 0;
+    margin-bottom: 10px;
+    .trending-categories {
+        border-top: 1px solid $border-color;
+        li {
+            border-bottom: 1px solid $border-color;
+            border-right: 1px solid $border-color;
+            padding: 10px;
+            text-align: center;
+            min-height: 140px;
+            p {
+                font-size: 11px;
+                color: #000;
+            }
+            &:nth-child(3n+0) {
+                border-right: none;
+            }
+            a {
+                img {
+                    width: 84px;
+                    height: 84px;
+                }
+            }
+            p {
+                word-break: break-all;
+            }
+            @include gridForCategory('3', null);
+        }
+    }
+    @extend %cards;
+}

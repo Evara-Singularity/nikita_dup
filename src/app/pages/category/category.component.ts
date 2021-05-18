@@ -126,21 +126,40 @@ export class CategoryComponent implements OnInit {
     ngOnInit() {
         if (this._commonService.isBrowser) {
             // Set config based on query params change
+            let updateConfigBasedOnQueryParams0 = performance.now();
+            
             const queryParamsData = this._activatedRoute.snapshot.queryParams;
             this.updateConfigBasedOnQueryParams(queryParamsData);
             
+            let updateConfigBasedOnQueryParams1 = performance.now()
+            console.log("updateConfigBasedOnQueryParams took " + (updateConfigBasedOnQueryParams1 - updateConfigBasedOnQueryParams0) + " milliseconds.")
+            
             // Set config based on params change
+            let updateConfigBasedOnParams0 = performance.now();
             const paramsData = this._activatedRoute.snapshot.params;
             this.updateConfigBasedOnParams(paramsData);
+
+            let updateConfigBasedOnParams1 = performance.now()
+            console.log("updateConfigBasedOnParams took " + (updateConfigBasedOnParams1 - updateConfigBasedOnParams0) + " milliseconds.")
     
+
             // Category Data after you got it from resolver 
+            let setCategoryDataFromResolver0 = performance.now();
             this.setCategoryDataFromResolver();
+            let setCategoryDataFromResolver1 = performance.now();
+            console.log("setCategoryDataFromResolver took " + (setCategoryDataFromResolver1 - setCategoryDataFromResolver0) + " milliseconds.")
     
             // Set footers
+            let setMobileFoooters0 = performance.now();
             this.footerService.setMobileFoooters();
+            let setMobileFoooters1 = performance.now();
+            console.log("setMobileFoooters took " + (setMobileFoooters1 - setMobileFoooters0) + " milliseconds.")
     
             // Subscribe to future route events
+            let refreshProductsBasedOnRouteChange0 = performance.now();
             this.refreshProductsBasedOnRouteChange();
+            let refreshProductsBasedOnRouteChange1 = performance.now();
+            console.log("refreshProductsBasedOnRouteChange took " + (refreshProductsBasedOnRouteChange1 - refreshProductsBasedOnRouteChange0) + " milliseconds.")
         }
     }
 
@@ -181,6 +200,7 @@ export class CategoryComponent implements OnInit {
     }
 
     private updateConfigBasedOnQueryParams(data) {
+        // alert('updateConfigBasedOnQueryParams');
         this.trendingSearchData = data;
         this.pageNo = data['page'];
         if (data['page'] > 1) {
@@ -196,6 +216,7 @@ export class CategoryComponent implements OnInit {
     }
 
     async onVisibleCateoryFooter(event) {
+        // alert('onVisibleCateoryFooter');
         if (!this.cateoryFooterInstance) {
             const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component');
             const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
@@ -211,6 +232,7 @@ export class CategoryComponent implements OnInit {
     }
 
     async createDynamicComponent(name) {
+        // alert('createDynamicComponent');
         if (name === 'catBestseller') {
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component');
             const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
@@ -255,6 +277,7 @@ export class CategoryComponent implements OnInit {
     }
 
     private setCategoryDataFromResolver() {
+        // alert('setCategoryDataFromResolver');
         this._commonService.showLoader = true;
         const res = this._activatedRoute.snapshot.data;
         this.setDataAfterGettingDataFromResolver(res.category);
@@ -262,13 +285,15 @@ export class CategoryComponent implements OnInit {
     }
 
     setDataAfterGettingDataFromResolver(res) {
+        // alert('setDataAfterGettingDataFromResolver');
+        this._commonService.showLoader = false;
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
         if (!chk) {
             this._router.navigateByUrl("/" + canonicalURL);;
         }
-
+        
         if (!ict || res[1]['productSearchResult']['totalCount'] === 0) {
             if (this._commonService.isServer) {
                 let httpStatus = 404;
@@ -281,9 +306,8 @@ export class CategoryComponent implements OnInit {
             }
             res[1] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
         }
-
-        this._commonService.showLoader = false;
-
+        
+        
         if (res[4] && res[4]['data']) {
             this._commonService.cmsData = res[3]['data'];
             this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
@@ -293,16 +317,19 @@ export class CategoryComponent implements OnInit {
         if (res[3]){
             this.breadcrumbData = res[3];
         }
-
+        
+        //  taking 2sec
         this.initiallizeRelatedCategories(res, true);
-
+        
+        
         /**
          * For refresh products
          */
         const fragment = this._activatedRoute.snapshot.fragment;
-
+        
+        const t1 = performance.now();
         this.initiallizeData(res[1], !fragment);
-
+        
         this.setTrackingData(res);
         
         if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
@@ -311,9 +338,12 @@ export class CategoryComponent implements OnInit {
 
         this.setFaqSchema(res[2]);
         this.faqData = res[2];
+        const t2 = performance.now();
+        console.log('time taken : ' + (t2 - t1));
     }
 
     refreshProductListBasedOnRouteUpdate() {
+        // alert('refreshProductListBasedOnRouteUpdate');
         this.categoryId = this._activatedRoute.snapshot.params['id'];
         let getRelatedCategories = this.getRelatedCategories(this.categoryId);
         let refreshProducts = this.refreshProducts();
@@ -339,6 +369,7 @@ export class CategoryComponent implements OnInit {
 
     refreshProductsBasedOnRouteChangeFlag: number = 0;
     private refreshProductsBasedOnRouteChange() {
+        // alert('refreshProductsBasedOnRouteChange');
         this.combineLatestUnsub = combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
             // to avoid first time call of API on route change subscription
 
@@ -353,6 +384,7 @@ export class CategoryComponent implements OnInit {
     }
 
     setTrackingData(res) {
+        // alert('setTrackingData');
         var taxonomy = res[0]["categoryDetails"]['taxonomy'];
         var trackData = {
             event_type: "page_load",
@@ -372,10 +404,12 @@ export class CategoryComponent implements OnInit {
     }
     
     onFilterSelected(count) {
+        // alert('onFilterSelected');
         this.filterCounts = count;
     }
 
     getRelatedCategories(categoryID): Observable<{}> {
+        // alert('getRelatedCategories');
         if (this.currentRequestGetRelatedCategories !== undefined) {
             this.currentRequestGetRelatedCategories.unsubscribe();
         }
@@ -383,6 +417,7 @@ export class CategoryComponent implements OnInit {
     }
 
     refreshProducts(): Observable<{}> {
+        // alert('refreshProducts');
         const defaultParams = this.createDefaultParams();
         this._commonService.updateDefaultParamsNew(defaultParams);
         return this._commonService.refreshProducts();
@@ -395,6 +430,7 @@ export class CategoryComponent implements OnInit {
      * @param flag : true, if TrasnferState exist.
      */
     private initiallizeData(response: any, flag: boolean) {
+        // alert('initiallizeData');
         // this._commonService.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.createCategorySchema(response.productSearchResult['products']); // ODP-684
@@ -421,6 +457,7 @@ export class CategoryComponent implements OnInit {
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
      */
     priceRangeTable(res) {
+        // alert('priceRangeTable');
         let count = 0;
         for (let val of res.productSearchResult.products) {
             if (val.quantityAvailable === 0) {
@@ -437,6 +474,7 @@ export class CategoryComponent implements OnInit {
    */
 
     getBucketForPriceRangeTable(buckets: any) {
+        // alert('getBucketForPriceRangeTable');
         for (let i = 0; i < buckets.length; i++) {
             if (buckets[i].name !== "price" &&
                 buckets[i].name !== "discount" &&
@@ -452,6 +490,7 @@ export class CategoryComponent implements OnInit {
     }
 
     priceRangeData() {
+        // alert('priceRangeData');
         let temp = [];
         if (this.wb.length > 0) {
             for (let i = 0; i < this.wb.length; i++) {
@@ -529,6 +568,7 @@ export class CategoryComponent implements OnInit {
     }
 
     camalize(str) {
+        // alert('camalize');
         return str.toLowerCase().replace(/^\w|\s\w/g, function (letter) {
             return letter.toUpperCase();
         }
@@ -540,6 +580,7 @@ export class CategoryComponent implements OnInit {
      */
 
     getCategoryData(obj: any[]) {
+        // alert('getCategoryData');
         for (let i = 0; i < obj.length; i++) {
             if (obj[i].term === this.getRelatedCatgory.categoryDetails.categoryName) {
                 this.reqArray = obj[i].childCategoryList;                              //Base condition.
@@ -554,6 +595,7 @@ export class CategoryComponent implements OnInit {
 
 
     createCategorySchema(productArray) {
+        // alert('createCategorySchema');
         if (this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
@@ -585,7 +627,7 @@ export class CategoryComponent implements OnInit {
 
 
     private setCanonicalUrls(response) {
-
+        // alert('setCanonicalUrls');
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
         if (this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
@@ -653,6 +695,7 @@ export class CategoryComponent implements OnInit {
     }
 
     scrollToResults() {
+        // alert('scrollToResults');
         this._pageScrollService.scroll({
             document: this._document,
             scrollTarget: '.cate-container',
@@ -660,6 +703,7 @@ export class CategoryComponent implements OnInit {
         });
     }
     fireTags(response) {
+        // alert('fireTags');
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
         cr = cr.split('/');
@@ -778,12 +822,8 @@ export class CategoryComponent implements OnInit {
         
     }
 
-    setLinks() {
-        // this.seoService.setLink("<meta property='og:url' content=" + this.apiConfig.BASE_URLS.PROD + "" + this._router.url + ">");
-        // this.seoService.setLink("<link rel='canonical' href=" + this.seoService.baseUrl + "" + this._router.url + ">");
-    }
-
     async onVisiblePagination(event) {
+        // alert('onVisiblePagination');
         if (!this.paginationInstance) {
             const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
@@ -804,6 +844,7 @@ export class CategoryComponent implements OnInit {
     }
 
     async filterUp() {
+        // alert('filterUp');
         if (!this.filterInstance) {
                 const { FilterComponent } = await import('@app/components/filter/filter.component').finally(function() {
                     setTimeout(function(){
@@ -831,6 +872,7 @@ export class CategoryComponent implements OnInit {
     }
 
     async toggleSortBy(data) {
+        // alert('toggleSortBy');
         if (!this.sortByInstance) {
                 const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
                 const factory = this.cfr.resolveComponentFactory(SortByComponent);
@@ -850,6 +892,7 @@ export class CategoryComponent implements OnInit {
     }
 
     createDefaultParams() {
+        // alert('createDefaultParams');
 
         const newParams: any = {
             queryParams: {}
@@ -919,14 +962,17 @@ export class CategoryComponent implements OnInit {
     }
 
     getExtraCategoryData(data): Observable<{}> {
+        // alert('getExtraCategoryData');
         return this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]);
     }
     
     private getFAQ(categoryID): Observable<{}> {
+        // alert('getFAQ');
         return this._categoryService.getFaqApi(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
     }
 
     private setFaqSchema(faqData) {
+        // alert('setFaqSchema');
         if (this._commonService.isServer) {
             if (faqData && faqData.length > 0) {
                 const qaSchema = [];
@@ -952,7 +998,7 @@ export class CategoryComponent implements OnInit {
     }
 
     private initiallizeRelatedCategories(response, flag) {
-
+        // alert('initiallizeRelatedCategories');
         this.getRelatedCatgory = response[0];
         const categoryData = response[1];
 
@@ -991,6 +1037,7 @@ export class CategoryComponent implements OnInit {
     }
 
     pageChanged(page) {
+        // alert('pageChanged');
         const extras: NavigationExtras = {};
         const currentRoute = this._commonService.getCurrentRoute(this._router.url);
         const fragmentString = this._activatedRoute.snapshot.fragment;
@@ -1023,6 +1070,7 @@ export class CategoryComponent implements OnInit {
     }
 
     getFeaturedProducts(products: Array<{}>) {
+        // alert('getFeaturedProducts');
         let fProducts = null;
         if (products == undefined || products == null || (products && products.length == 0))
             return "";
@@ -1039,6 +1087,7 @@ export class CategoryComponent implements OnInit {
     }
 
     getAltName(brandName) {
+        // alert('getAltName');
         if (brandName == null || brandName == undefined) {
             return 'safety shoes';
         }
@@ -1049,6 +1098,7 @@ export class CategoryComponent implements OnInit {
     }
 
     isUrlEqual(url1: string, url2: string): boolean {
+        // alert('isUrlEqual');
         if (url2.indexOf(url1) !== -1) {
             return true;
         }
@@ -1056,6 +1106,7 @@ export class CategoryComponent implements OnInit {
     }
 
     async onVisibleRecentArticles(htmlElement) {
+        // alert('onVisibleRecentArticles');
         if (this.productListLength) {
             const { RecentArticles } = await import('./recent-articles/recent-articles.component');
             const factory = this.cfr.resolveComponentFactory(RecentArticles);
@@ -1072,6 +1123,7 @@ export class CategoryComponent implements OnInit {
     }
 
     resetLazyComponents() {
+        // alert('resetLazyComponents');
         if (this.filterInstance) {
             this.filterInstance = null;
             this.filterContainerRef.remove();
@@ -1123,6 +1175,7 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        // alert('ngOnDestroy');
         if (this.combineLatestUnsub) {
             this.combineLatestUnsub.unsubscribe()
         }

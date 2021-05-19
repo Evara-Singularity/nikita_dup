@@ -6,10 +6,8 @@
             <input formControlName="addressCustomerName" type="text" placeholder="" #isFill>
             <span class="label">Name*</span>
         </label>
-        <p *ngIf="addressForm.controls['addressCustomerName'].touched && !addressForm.controls['addressCustomerName'].valid && addressForm.controls['addressCustomerName'].errors['required']"
-            class="error-txt">Kindly enter your full name</p>
-        <p *ngIf="addressForm.controls['addressCustomerName'].touched && !addressForm.controls['addressCustomerName'].valid && addressForm.controls['addressCustomerName'].errors['pattern']"
-            class="error-txt">Name cannot contain numeric values</p>
+        <p *ngIf="addressForm.controls['addressCustomerName'].touched && !addressForm.controls['addressCustomerName'].valid && addressForm.controls['addressCustomerName'].errors['required']" class="error-txt">Kindly enter your full name</p>
+        <p *ngIf="addressForm.controls['addressCustomerName'].touched && !addressForm.controls['addressCustomerName'].valid && addressForm.controls['addressCustomerName'].errors['pattern']" class="error-txt">Name cannot contain numeric values</p>
     </div>
 
     <div class="input-field">
@@ -17,20 +15,16 @@
             <input formControlName="email" type="text" placeholder="" #isEmail>
             <span class="label">Email (Optional)</span>
         </label>
-        <p *ngIf="addressForm.controls['email'].touched && !addressForm.controls['email'].valid && addressForm.controls['email'].errors['required']"
-            class="error-txt">Kindly enter your email</p>
-        <p *ngIf="addressForm.controls['email'].touched && !addressForm.controls['email'].valid && addressForm.controls['email'].errors['invalidEmail'] && addressForm.controls['email'].value.length>0"
-            class="error-txt">Enter valid email</p>
+        <p *ngIf="addressForm.controls['email'].touched && !addressForm.controls['email'].valid && addressForm.controls['email'].errors['required']" class="error-txt">Kindly enter your email</p>
+        <p *ngIf="addressForm.controls['email'].touched && !addressForm.controls['email'].valid && addressForm.controls['email'].errors['invalidEmail'] && addressForm.controls['email'].value.length>0" class="error-txt">Enter valid email</p>
     </div>
     <div class="input-field">
         <label [class.is-focus]="isPhone.value.length!=0">
             <input formControlName="phone" type="text" placeholder="" #isPhone>
             <span class="label">Phone Number*</span>
         </label>
-        <p *ngIf="addressForm.controls['phone'].touched && !addressForm.controls['phone'].valid && addressForm.controls['phone'].errors['required']"
-            class="error-txt">Kindly enter your 10 digit contact number</p>
-        <p *ngIf="addressForm.controls['phone'].touched && !addressForm.controls['phone'].valid && addressForm.controls['phone'].errors['invalidPhone'] && addressForm.controls['phone'].value.length>0"
-            class="error-txt">Kindly enter your 10 digit contact no.</p>
+        <p *ngIf="addressForm.controls['phone'].touched && !addressForm.controls['phone'].valid && addressForm.controls['phone'].errors['required']" class="error-txt">Kindly enter your 10 digit contact number</p>
+        <p *ngIf="addressForm.controls['phone'].touched && !addressForm.controls['phone'].valid && addressForm.controls['phone'].errors['invalidPhone'] && addressForm.controls['phone'].value.length>0" class="error-txt">Kindly enter your 10 digit contact no.</p>
     </div>
 
     <div class="input-field">
@@ -38,10 +32,8 @@
             <input formControlName="addressLine" type="text" placeholder="" #isAddress maxlength="150">
             <span class="label">Address*</span>
         </label>
-        <p *ngIf="addressForm.controls['addressLine'].touched && !addressForm.controls['addressLine'].valid && addressForm.controls['addressLine'].errors['required']"
-            class="error-txt">Kindly enter your address</p>
-        <p *ngIf="addressForm.controls['addressLine'].touched && !addressForm.controls['addressLine'].valid && addressForm.controls['addressLine'].errors['pattern']"
-            class="error-txt">Special characters are not allowed in address.</p>
+        <p *ngIf="addressForm.controls['addressLine'].touched && !addressForm.controls['addressLine'].valid && addressForm.controls['addressLine'].errors['required']" class="error-txt">Kindly enter your address</p>
+        <p *ngIf="addressForm.controls['addressLine'].touched && !addressForm.controls['addressLine'].valid && addressForm.controls['addressLine'].errors['pattern']" class="error-txt">Special characters are not allowed in address.</p>
     </div>
 
     <div class="column-field clearfix">
@@ -54,8 +46,7 @@
                 <i class="icon-down"></i>
                 <span class="label">Country*</span>
             </label>
-            <p *ngIf="addressForm.controls['idCountry'].touched && !addressForm.controls['idCountry'].valid && addressForm.controls['idCountry'].errors['required']"
-                class="error-txt">Kindly select your country</p>
+            <p *ngIf="addressForm.controls['idCountry'].touched && !addressForm.controls['idCountry'].valid && addressForm.controls['idCountry'].errors['required']" class="error-txt">Kindly select your country</p>
         </div>
         <div class="input-field w-30">
             <label [class.is-focus]="isPincodeSec.value.length!=0">
@@ -63,11 +54,9 @@
                     #isPincodeSec>
                 <span class="label">Pin Code*</span>
             </label>
-            <p *ngIf="addressForm.controls['postCode'].touched && !addressForm.controls['postCode'].valid && addressForm.controls['postCode'].errors['required']"
-                class="error-txt">Kindly enter your pincode</p>
+            <p *ngIf="addressForm.controls['postCode'].touched && !addressForm.controls['postCode'].valid && addressForm.controls['postCode'].errors['required']" class="error-txt">Kindly enter your pincode</p>
             <!-- {{addressForm.controls['postCode'].errors | json}} -->
-            <p *ngIf="addressForm.controls['postCode'].touched && addressForm.controls['postCode'].errors && addressForm.controls['postCode'].errors['invalidPostCode']"
-                class="error-txt">Pincode should contain valid 6 digits</p>
+            <p *ngIf="addressForm.controls['postCode'].touched && addressForm.controls['postCode'].errors && addressForm.controls['postCode'].errors['invalidPostCode']" class="error-txt">Pincode should contain valid 6 digits</p>
             <p class="error-txt" *ngIf="!addressForm.controls['postCode'].valid && addressForm.controls['postCode'].touched">Please enter a valid digit pincode.</p>
 
             <p *ngIf="addressForm.controls['postCode'].valid && !isPinCodeApiValid" class="error-txt">Invalid Pincode
@@ -84,8 +73,7 @@
             <i class="icon-down"></i>
             <span class="label">State*</span>
         </label>
-        <p *ngIf="addressForm.controls['idState'].touched && !addressForm.controls['idState'].valid && addressForm.controls['idState'].errors['required']"
-            class="error-txt">Kindly select your state</p>
+        <p *ngIf="addressForm.controls['idState'].touched && !addressForm.controls['idState'].valid && addressForm.controls['idState'].errors['required']" class="error-txt">Kindly select your state</p>
 
     </div>
 
@@ -94,10 +82,8 @@
             <input formControlName="city" type="text" placeholder="" #isCity disabled>
             <span class="label">City*</span>
         </label>
-        <p *ngIf="addressForm.controls['city'].touched && !addressForm.controls['city'].valid && addressForm.controls['city'].errors['required']"
-            class="error-txt">Kindly enter your city/district/town</p>
-        <p *ngIf="addressForm.controls['city'].touched && !addressForm.controls['city'].valid && addressForm.controls['city'].errors['pattern']"
-            class="error-txt">Special characters not allowed in city/district/town</p>
+        <p *ngIf="addressForm.controls['city'].touched && !addressForm.controls['city'].valid && addressForm.controls['city'].errors['required']" class="error-txt">Kindly enter your city/district/town</p>
+        <p *ngIf="addressForm.controls['city'].touched && !addressForm.controls['city'].valid && addressForm.controls['city'].errors['pattern']" class="error-txt">Special characters not allowed in city/district/town</p>
     </div>
 
     <div class="input-field">
@@ -108,8 +94,7 @@
 
         <!-- {{addressForm.controls['landmark'].errors | json}} -->
         <!-- {{addressForm.controls['landmark'].valid}} -->
-        <p *ngIf="addressForm.controls['landmark'].touched && !addressForm.controls['landmark'].valid && addressForm.controls['landmark'].errors['pattern']"
-            class="error-txt">Special Characters are not allowed.</p>
+        <p *ngIf="addressForm.controls['landmark'].touched && !addressForm.controls['landmark'].valid && addressForm.controls['landmark'].errors['pattern']" class="error-txt">Special Characters are not allowed.</p>
 
     </div>
 
@@ -136,6 +121,6 @@
 
     <div class="clearfix"></div>
     <div class="col-sm-12 mar-t-5 pad-lr-xs-5 o-hidden">
-        <button [disabled]="!addressForm.valid" type="submit" class="continue-btn">{{buttonText}}</button>
+        <button [disabled]="!addressForm.valid" type="submit" class="btn continue-btn">{{buttonText}}</button>
     </div>
-</form>   
+</form>

@@ -36,6 +36,7 @@ export class GlobalAnalyticsService {
   sendToClicstreamViaSocket(data) {
     if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
       const user = this.localStorageService.retrieve('user');
+      const previousUrl = localStorage.getItem("previousUrl");
       var trackingData = {
         message: (data.message) ? data.message : "tracking",
         session_id: user ? user.sessionId : null,
@@ -47,7 +48,7 @@ export class GlobalAnalyticsService {
         user_agent: navigator.userAgent,
         timestamp: new Date().getTime(),
         referrer: document.referrer,
-        previous_url: localStorage.getItem("previousUrl").split("$$$").length >= 2 ? localStorage.getItem("previousUrl").split("$$$")[1] : ""
+        previous_url:( previousUrl &&  previousUrl.split("$$$").length >= 2) ? localStorage.getItem("previousUrl").split("$$$")[1] : ""
       }
       this.socket.emit("track", { ...trackingData, ...data });
     }

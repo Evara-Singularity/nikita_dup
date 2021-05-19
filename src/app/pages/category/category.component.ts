@@ -221,40 +221,40 @@ export class CategoryComponent implements OnInit {
 
     async createDynamicComponent(name) {
         // alert('createDynamicComponent');
-        if (name === 'catBestseller') {
+        if (name === 'catBestseller' && !this.catBestSellerInstance) {
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component');
             const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
             this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
             this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
-        } else if (name === 'subCategory') {
+        } else if (name === 'subCategory' && !this.subCategoryInstance) {
             const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component');
             const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
             this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
             this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
-        } else if (name === 'shopByBrand') {
+        } else if (name === 'shopByBrand' && !this.shopByBrandInstance) {
             const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component');
             const factory = this.cfr.resolveComponentFactory(ShopbyBrandComponent);
             this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
             this.shopByBrandInstance.instance['brand_Data'] = this.brand_Dt;
-        } else if (name === 'catStatic') {
+        } else if (name === 'catStatic' && !this.catStaticInstance) {
             const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component');
             const factory = this.cfr.resolveComponentFactory(CatStaticComponent);
             this.catStaticInstance = this.catStaticContainerRef.createComponent(factory, null, this.injector);
             this.catStaticInstance.instance['page_title'] = this.page_title;
             this.catStaticInstance.instance['static_data'] = this.static_Dt;
-        } else if (name === 'slpSubCategory') {
+        } else if (name === 'slpSubCategory' && !this.slpSubCategoryInstance) {
             this.slpSubCategoryInstance = null;
             const { SlpSubCategoryComponent } = await import('@app/pages/category/slp-sub-category/slp-sub-category.component');
             const factory = this.cfr.resolveComponentFactory(SlpSubCategoryComponent);
             this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
             this.slpSubCategoryInstance.instance['sub_category_Data'] = this.spl_subCategory_Dt;
-        } else if (name === 'shopbyFeatr') {
+        } else if (name === 'shopbyFeatr' && !this.shopbyFeatrInstance) {
             this.shopbyFeatrInstance = null;
             const { ShopbyFeatrComponent } = await import('@app/pages/category/shopby-featr/shopby-featr.component');
             const factory = this.cfr.resolveComponentFactory(ShopbyFeatrComponent);
             this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
             this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopBy_Dt;
-        } else if (name === 'cms') {
+        } else if (name === 'cms' && !this.cmsInstance) {
             this.cmsInstance = null;
             const { CmsWrapperComponent } = await import('@modules/cms/cms.component');
             const factory = this.cfr.resolveComponentFactory(CmsWrapperComponent);

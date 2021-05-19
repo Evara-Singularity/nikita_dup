@@ -3,8 +3,8 @@ import {SocialLoginService} from './socialLogin.service';
 import { AuthService } from 'angular2-social-login';
 import {ActivatedRoute, Router} from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { map } from 'rxjs/operators/map';
-import { mergeMap } from 'rxjs/operators/mergeMap';
+import { map } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '../../utils/services/common.service';

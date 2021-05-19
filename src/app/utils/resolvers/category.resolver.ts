@@ -12,8 +12,10 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
 import { CategoryService } from '@services/category.service';
 import { Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
+import { HttpClient } from '@angular/common/http';
+import { ENDPOINTS } from '@app/config/endpoints';
 
-let GFAQK, GRCRK, RPRK, CMSK, BRDK;
 @Injectable({
     providedIn: 'root'
 })
@@ -25,8 +27,8 @@ export class CategoryResolver implements Resolve<object> {
         public _router: Router,
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
-        private _categoryService: CategoryService
-    ) {
+        private http: HttpClient,
+        ) {
         this.pageName = "CATEGORY";
     }
 
@@ -93,88 +95,56 @@ export class CategoryResolver implements Resolve<object> {
         newParams['pageName'] = this.pageName;
         return newParams;
     }
-
-    private getRelatedCategories(categoryID): Observable<{}> {
-        if (this.transferState.hasKey(GRCRK)) {
-            return of(this.transferState.get(GRCRK, {}));
-        } else {
-            return this._categoryService.getRelatedCategories(categoryID);
-        }
-    }
-
-    private getFAQ(categoryID): Observable<{}> {
-        if (this.transferState.hasKey(GFAQK)) {
-            return of(this.transferState.get(GFAQK, []));
-        } else {
-            return this._categoryService.getFaqApi(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
-        }
-    }
     
-    private getCmsDynamicDataForCategoryAndBrand(categoryID): Observable<{}> {
-        if (this.transferState.hasKey(CMSK)) {
-            return of(this.transferState.get(CMSK, []));
-        } else {
-            return this._commonService.getCmsDynamicDataForCategoryAndBrand(categoryID).pipe(map(res => res['status'] && res['code'] == 200 ? res['data'] : []));
-        }
-    }
-    
-    private getBreadCrumpData(categoryID): Observable<{}> {
-        if (this.transferState.hasKey(BRDK)) {
-            return of(this.transferState.get(BRDK, []));
-        } else {
-            let src= window.location.pathname.replace('/','');
-            if (!src) {
-                src = localStorage.getItem('src');
-            }
-            return this._commonService.getBreadcrumpData(src, 'category');
-        }
-    }
-
     private refreshProducts(currentQueryParams, params, fragment): Observable<{}> {
-        if (this.transferState.hasKey(RPRK)) {
-            return of(this.transferState.get(RPRK, []));
-        } else {
-            const defaultParams = this.createDefaultParams(currentQueryParams, params, fragment);
-            this._commonService.updateDefaultParamsNew(defaultParams);
-            return this._commonService.refreshProducts();
-        }
+        const defaultParams = this.createDefaultParams(currentQueryParams, params, fragment);
+        this._commonService.updateDefaultParamsNew(defaultParams);
+        return this._commonService.refreshProducts();
     }
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this.loaderService.setLoaderState(true);
         const fragment = _activatedRouteSnapshot.fragment;
         const categoryId = _activatedRouteSnapshot.params.id;
-        GFAQK = makeStateKey<{}>('GFAQK-' + categoryId)    // GFAQK: Get Frequently Asked Question Key
-        GRCRK = makeStateKey<{}>('GRCRK-' + categoryId);   // GRCRK: Get Related Category Result Key
-        RPRK = makeStateKey<{}>('RPRK-' + categoryId);     // RPRK: Refresh Product Result Key
-        CMSK = makeStateKey<{}>('CMSK-' + categoryId);     // CMSK: Refresh Product Result Key
-        BRDK = makeStateKey<{}>('BRDK-' + categoryId);     // BRDK: Refresh Product Result Key
         
-        if (this.transferState.hasKey(GRCRK) && this.transferState.hasKey(RPRK) && this.transferState.hasKey(GFAQK) && this.transferState.hasKey(CMSK) && this.transferState.hasKey(BRDK)) {
-            const GRCRKObj = this.transferState.get<object>(GRCRK, null);
-            const RPRKObj = this.transferState.get<object>(RPRK, null);
-            const GFAQKObj = this.transferState.get<object>(GFAQK, null);
-            const CMSKObj = this.transferState.get<object>(CMSK, null);
-            const BRDKObj = this.transferState.get<object>(BRDK, null);
+        const GET_RELATED_CATEGORY_KEY: any = makeStateKey<{}>('get_related-' + categoryId);
+        const REFRESH_KEY: any = makeStateKey<{}>('refresh-' + categoryId);
+        const FAQ_KEY: any = makeStateKey<{}>('faq-' + categoryId);
+        const BREADCRUMP_KEY: any = makeStateKey<{}>('breadcrump-' + categoryId);
+        const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
+        
+        if (this.transferState.hasKey(GET_RELATED_CATEGORY_KEY) && this.transferState.hasKey(REFRESH_KEY) && this.transferState.hasKey(FAQ_KEY) && this.transferState.hasKey(BREADCRUMP_KEY) && this.transferState.hasKey(CMS_KEY)) {
+            const GET_RELATED_CATEGORY_KEY_OBJ = this.transferState.get<{}>(GET_RELATED_CATEGORY_KEY, null);
+            const REFRESH_KEY_OBJ = this.transferState.get<{}>(REFRESH_KEY, null);
+            const FAQ_KEY_OBJ = this.transferState.get<{}>(FAQ_KEY, null);
+            const BREADCRUMP_KEY_OBJ = this.transferState.get<{}>(BREADCRUMP_KEY, null);
+            const CMS_KEY_OBJ = this.transferState.get<{}>(CMS_KEY, null);
             
-            this.transferState.remove(GFAQK);
-            this.transferState.remove(GRCRK);
-            this.transferState.remove(RPRK);
-            this.transferState.remove(CMSK);
-            this.transferState.remove(BRDK);
+            this.transferState.remove(GET_RELATED_CATEGORY_KEY);
+            this.transferState.remove(REFRESH_KEY);
+            this.transferState.remove(FAQ_KEY);
+            this.transferState.remove(BREADCRUMP_KEY);
+            this.transferState.remove(CMS_KEY);
             
             this.loaderService.setLoaderState(false);
-            return of([GRCRKObj, RPRKObj, GFAQKObj, CMSKObj, BRDKObj]);
+            return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ]);
         } else {
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
             const params = _activatedRouteSnapshot.params;
-            const getRelatedCategoriesObs = this.getRelatedCategories(categoryId).pipe(map(res => res));
-            const getFAQObs = this.getFAQ(categoryId).pipe(map(res => res));
-            const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment).pipe(map(res => res));
-            const getCmsDynamicDataForCategoryAndBrandObs = this.getCmsDynamicDataForCategoryAndBrand(categoryId).pipe(map(res => res));
-            const getBreadCrump = this.getBreadCrumpData(categoryId);
 
-            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump];
+            const get_rel_cat_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
+            const faq_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
+            const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=/power-tools/114000000&type=category";
+            const cms_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
+
+            const getRelatedCategoriesObs = this.http.get(get_rel_cat_url);
+            const getFAQObs = this.http.get(faq_url);
+            const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment);
+            const getBreadCrump = this.http.get(breadcrump_url);
+            const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url);
+
+
+            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getCmsDynamicDataForCategoryAndBrandObs];
 
             if (this._router.url.search('#') < 0) {
                 apiList.push(getCmsDynamicDataForCategoryAndBrandObs)
@@ -182,6 +152,7 @@ export class CategoryResolver implements Resolve<object> {
                 this._commonService.cmsData = null;
                 this._commonService.replaceHeading = false;
             }
+
             return forkJoin(apiList).pipe(
                 catchError((err) => {
                     this.loaderService.setLoaderState(false);
@@ -189,11 +160,11 @@ export class CategoryResolver implements Resolve<object> {
                 }),
                 tap(result => {
                     if (isPlatformServer(this.platformId)) {
-                        this.transferState.set(GRCRK, result[0]);
-                        this.transferState.set(RPRK, result[1]);
-                        this.transferState.set(GFAQK, result[2]);
-                        this.transferState.set(BRDK, result[3]);
-                        this.transferState.set(CMSK, result[4]);
+                        this.transferState.set(GET_RELATED_CATEGORY_KEY, result[0]);
+                        this.transferState.set(REFRESH_KEY, result[1]);
+                        this.transferState.set(FAQ_KEY, result[2]);
+                        this.transferState.set(BREADCRUMP_KEY, result[3]);
+                        this.transferState.set(CMS_KEY, result[4] || []);
                         this.loaderService.setLoaderState(false);
                     }
                 })

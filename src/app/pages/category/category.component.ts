@@ -59,7 +59,7 @@ export class CategoryComponent implements OnInit {
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     
-    relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
+    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     paginationUpdated: Subject<any> = new Subject<any>();
     

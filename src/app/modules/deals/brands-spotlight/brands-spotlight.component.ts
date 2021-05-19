@@ -71,7 +71,6 @@ export class BrandSpotlightComponent {
   getBrandData() {
     // data received by layout resolver
     this.route.data.subscribe((rawData) => {
-      console.log(JSON.stringify(rawData, null, 2))
       if (rawData && !rawData['data']['error']) {
         this.brandSpotlightData = rawData['data'][0];
         setTimeout(() => {

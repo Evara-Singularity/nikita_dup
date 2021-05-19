@@ -59,7 +59,7 @@ export class CategoryComponent implements OnInit {
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     
-    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
 
     paginationUpdated: Subject<any> = new Subject<any>();
     
@@ -192,9 +192,9 @@ export class CategoryComponent implements OnInit {
             this.showSubcategoty = false;
         } else {
             this.showSubcategoty = true;
-            setTimeout(() => {
-                this.createDynamicComponent('subCategory');
-            }, 0);
+            // setTimeout(() => {
+            //     this.createDynamicComponent('subCategory');
+            // }, 0);
         }
         if (data['page'] == undefined || data['page'] == 1) {
             this.firstPageContent = true;
@@ -308,7 +308,7 @@ export class CategoryComponent implements OnInit {
         
         //  taking 2sec
         console.log(res);
-        this.initiallizeRelatedCategories(res, true);
+        this.initiallizeRelatedCategories(res);
         
         
         /**
@@ -986,7 +986,7 @@ export class CategoryComponent implements OnInit {
         }
     }
 
-    private initiallizeRelatedCategories(response, flag) {
+    private initiallizeRelatedCategories(response) {
         // alert('initiallizeRelatedCategories');
         this.getRelatedCatgory = response[0];
         const categoryData = response[1];
@@ -1015,9 +1015,8 @@ export class CategoryComponent implements OnInit {
             
             this.spl_subCategory_Dt = this.getRelatedCatgory.children;
 
-            if (flag) {
-                this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
-            }
+            alert('a');
+            this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
         } else {
             this.relatedCatgoryListUpdated.next([]);
         }

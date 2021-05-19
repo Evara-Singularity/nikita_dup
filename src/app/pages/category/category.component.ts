@@ -192,9 +192,9 @@ export class CategoryComponent implements OnInit {
             this.showSubcategoty = false;
         } else {
             this.showSubcategoty = true;
-            // setTimeout(() => {
-            //     this.createDynamicComponent('subCategory');
-            // }, 0);
+            setTimeout(() => {
+                this.createDynamicComponent('subCategory');
+            }, 0);
         }
         if (data['page'] == undefined || data['page'] == 1) {
             this.firstPageContent = true;
@@ -1014,8 +1014,6 @@ export class CategoryComponent implements OnInit {
             }
             
             this.spl_subCategory_Dt = this.getRelatedCatgory.children;
-
-            alert('a');
             this.relatedCatgoryListUpdated.next(this.getRelatedCatgory);
         } else {
             this.relatedCatgoryListUpdated.next([]);

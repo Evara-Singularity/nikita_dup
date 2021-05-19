@@ -1075,7 +1075,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         if (checkProductQuantity > Number(this.priceQuantityCountry['quantityAvailable'])) {
           element.productQuantity = element.productQuantity;
           this.uniqueRequestNo = 0;
-          this._tms.show({ type: 'error', text: "Quantity not available" });
+          this._tms.show({type: 'error', text: this.priceQuantityCountry['quantityAvailable']+' is the maximum quantity available.'});
           isOrderValid = false;
         }
         else {
@@ -1096,7 +1096,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       let quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);
       if (addToCartItem.productQuantity > Number(this.priceQuantityCountry['quantityAvailable'])) {
         this.uniqueRequestNo = 0;
-        this._tms.show({ type: 'error', text: "Quantity not available" });
+        this._tms.show({type: 'error', text: this.priceQuantityCountry['quantityAvailable']+' is the maximum quantity available.'});
         isOrderValid = false;
       }
       else if (!isNaN(quantity) && quantity < this.productMinimmumQuantity) {
@@ -1185,7 +1185,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
         (<HTMLInputElement>document.querySelector("#product_quantity")).value = this.productMinimmumQuantity;
       }
     }
-
+    if(Number((<HTMLInputElement>document.querySelector("#product_quantity")).value) > this.priceQuantityCountry['quantityAvailable']){
+      this._tms.show({type: 'error', text: this.priceQuantityCountry['quantityAvailable']+' is the maximum quantity available.'});
+    }
   }
 
   removePromoCode(cartSession) {

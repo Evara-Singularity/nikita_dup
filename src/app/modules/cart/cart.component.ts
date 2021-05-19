@@ -1323,6 +1323,7 @@ export class CartComponent {
                 //Do not update cart object if isQuantityAvailable returns false and revert the entered quantity to previous.
                 else {
                     $event.target.value = this.itemsList[i]['productQuantity'];
+                    this._tms.show({type: 'error', text: productPriceQuantity.quantityAvailable+' is the maximum quantity available.'});
                 }
             });
         }
@@ -1568,7 +1569,7 @@ export class CartComponent {
         if (updatedQuantity > productPriceQuantity.quantityAvailable) {
             // alert("Quantity not available");
             this.isShowLoader = false;
-            this.itemsList[index]['message'] = "Quantity not available";
+            this.itemsList[index]['message'] =  productPriceQuantity.quantityAvailable+' is the maximum quantity available.';
             this._tms.show({ type: 'success', text: this.itemsList[index]['message'] });
             return { status: false, message: "Quantity not available" };
 

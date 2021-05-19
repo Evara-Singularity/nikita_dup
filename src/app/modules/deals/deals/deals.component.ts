@@ -7,7 +7,7 @@ import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRe
 @Component({
   selector: 'deals',
   templateUrl: 'deals.html',
-  styleUrls: [],
+  styleUrls: ['deals.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class DealsComponent {

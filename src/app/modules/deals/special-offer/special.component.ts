@@ -7,7 +7,7 @@ import { Title, Meta } from '@angular/platform-browser';
   selector: "special",
   templateUrl: "special.html",
   styleUrls: ["special.scss"],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
 })
 export class SpecialComponent {
   isServer: boolean;

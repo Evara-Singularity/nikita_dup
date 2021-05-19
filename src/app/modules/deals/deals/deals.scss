@@ -1,0 +1,25 @@
+/*new css 19-05-2021*/
+#corporate{
+    width: 100%; margin-left: auto; margin-right: auto;
+    .hidden-sm-down{display: none;}
+    .hidden-sm-up a {
+      display: block;
+  }
+  .col-sm-12{
+    h3{ padding: 10px 10px 15px;}
+  }
+  .wp-100{
+    .col-xs-6 {width: 50%; float: left;padding:10px;}
+  }
+  .col-sm-6{padding:10px;}
+  .wp-100 {
+    &.pad-l-10{padding-left: 10px;padding-right: 10px;}
+    .col-xs-4{
+        width: 28%; float: left; margin: 10px 0; padding: 10px 0;
+        &:nth-of-type(3n+2) {
+            margin: 10px 8%;
+        }
+    }
+  }
+  }
+  

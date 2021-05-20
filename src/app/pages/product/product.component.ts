@@ -214,6 +214,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    ClientUtility.scrollToTop(100);
     this.intializeForm();
     this.getProductApiData();
     this.addSubcriber();

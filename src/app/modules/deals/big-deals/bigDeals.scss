@@ -1,9 +1,26 @@
-.wp-xs-100{
-  width: 90%;
-  float: none;
-  margin: 0 auto;
-  display: block;
+// .wp-xs-100{
+//   width: 90%;
+//   float: none;
+//   margin: 0 auto;
+//   display: block;
+// }
+// .h-300 a{
+//   display: block;
+// }
+
+
+/*new css 19-05-2021*/
+#emailer{
+  width: 100%; margin-left: auto; margin-right: auto;
+  .hidden-sm-down{display: none;}
+  .hidden-sm-up a {
+    display: block;
 }
-.h-300 a{
-  display: block;
+h3{ padding: 10px 10px 20px;}
+.col-sm-6{
+  padding: 0 10px; margin-bottom: 15px;
+  &::after{
+      clear: both; content: '';display: block;
+  }
+}
 }

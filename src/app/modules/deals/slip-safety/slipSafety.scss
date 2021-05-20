@@ -1,54 +1,88 @@
-#emailer {
-  h3 {
-    display: block !important;
-  }
-  .container-fluid {
-    background: white;
-    padding: 0px;
-  }
-  .wp-100 {
-    background: white;
-  }
-  .emailer-tab {
-    box-shadow: 0px 2px 6px #dedede;
-    overflow: hidden;
-    li {
-      float: left;
-      width: 16.6%;
-      text-align: center;
-      padding: 20px 0px;
-      cursor: pointer;
-      &.active {
-        border-bottom: 2px solid #e1443b;
-        color: #e1443b !important;
-        font-weight: 500;
-        cursor: pointer;
-      }
-    }
-  }
-  .wp-20 {
-    .prod_grid {
-      height: 330px;
-      padding: 15px;
-      &:hover {
-        -webkit-box-shadow: 0px -1px 15px 0px rgba(80, 80, 80, 0.23) !important;
-        -moz-box-shadow: 0px -1px 15px 0px rgba(80, 80, 80, 0.23) !important;
-        box-shadow: 0px -1px 15px 0px rgba(80, 80, 80, 0.23) !important;
-      }
+// #emailer {
+//   h3 {
+//     display: block !important;
+//   }
+//   .container-fluid {
+//     background: white;
+//     padding: 0px;
+//   }
+//   .wp-100 {
+//     background: white;
+//   }
+//   .emailer-tab {
+//     box-shadow: 0px 2px 6px #dedede;
+//     overflow: hidden;
+//     li {
+//       float: left;
+//       width: 16.6%;
+//       text-align: center;
+//       padding: 20px 0px;
+//       cursor: pointer;
+//       &.active {
+//         border-bottom: 2px solid #e1443b;
+//         color: #e1443b !important;
+//         font-weight: 500;
+//         cursor: pointer;
+//       }
+//     }
+//   }
+//   .wp-20 {
+//     .prod_grid {
+//       height: 330px;
+//       padding: 15px;
+//       &:hover {
+//         -webkit-box-shadow: 0px -1px 15px 0px rgba(80, 80, 80, 0.23) !important;
+//         -moz-box-shadow: 0px -1px 15px 0px rgba(80, 80, 80, 0.23) !important;
+//         box-shadow: 0px -1px 15px 0px rgba(80, 80, 80, 0.23) !important;
+//       }
+//     }
+//   }
+// }
+
+// @media only screen and (max-width: 768px) {
+//   #emailer {
+//     ul.emailer-tab li {
+//       float: left;
+//       width: 33.3% !important;
+//       text-align: center;
+//       padding: 20px 0px;
+//       height: 55px;
+//       overflow: hidden;
+//       cursor: pointer;
+//     }
+//   }
+// }
+
+/*new css 19-05-2021*/
+#emailer{
+  width: 100%; margin-left: auto; margin-right: auto;
+  .hidden-sm-down{display: none;}
+  .hidden-sm-up a {
+    display: block;
+}
+.tab_num{
+  padding: 0 10px;
+  .power{
+    &:after{
+      clear: both; content: '';display: block;
     }
   }
 }
-
-@media only screen and (max-width: 768px) {
-  #emailer {
-    ul.emailer-tab li {
-      float: left;
-      width: 33.3% !important;
-      text-align: center;
-      padding: 20px 0px;
-      height: 55px;
-      overflow: hidden;
-      cursor: pointer;
-    }
+.wp-xs-50 {width: 50%;}
+.prod_img { margin-bottom: 10px;}
+.prod_detail{
+    h3 {font-weight: 400;line-height: 16px;  padding: 0; color: #3875fd;  }
+    .prod_block { position: relative;   margin-top: 10px;  }
+    .prod_price { font-size: 16px; font-weight: 500; }
+    .line-through { text-decoration: line-through;  color: #737373!important; font-size: 12px;
+      font-weight: 400; }
+    .prod_discount { position: absolute; top: 24px!important; right: 0; color: #3b9e26; }
+     h5 { font-weight: 600; color: #737373!important;  font-size: 14px;  }
+  } 
+  .wp-20{
+    .prod_grid {
+      height: 330px;
+      padding: 15px;
   }
+  } 
 }

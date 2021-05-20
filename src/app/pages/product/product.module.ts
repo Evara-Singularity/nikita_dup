@@ -5,7 +5,6 @@ import { ProductComponent } from './product.component';
 import { ProductRoutingModule } from './product-routing.module';
 import { BreadcrumbNavModule } from '../../modules/breadcrumb-nav/breadcrumb-nav.module';
 import { SiemaCarouselModule } from '@modules/siemaCarousel/siemaCarousel.module';
-import { ModalModule } from '../../modules/modal/modal.module';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
@@ -31,7 +30,8 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
     ReactiveFormsModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
-    ObserveVisibilityDirectiveModule
+    ObserveVisibilityDirectiveModule,
+    NgxPageScrollCoreModule
   ],
   exports: [],
   providers: [

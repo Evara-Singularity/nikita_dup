@@ -169,6 +169,8 @@
 }
 
 .brandsSection {
+    border-radius: 4px;
+    opacity: 1;
     padding: 15px;
     background: #f2f2f2;
     .heading-3 {
@@ -180,11 +182,24 @@
         border-radius: 4px;
         background: $white;
         padding: 15px 30px;
+        margin: 0px 15px;
+    }
+    h4 {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 19px;
+        padding-bottom: 18px;
     }
     .brandList {
-        font-size: 13px;
-        line-height: 21px;
-        padding: 5px 0 0;
+        color: #3c3c3c;
+        border: 1px solid #fff;
+        background: #fff;
+        padding: 8px;
+        border-radius: 6px;
+        display: inline-block;
+        margin: 0 10px 10px 0;
+        width: auto;
+        font-size: 14px;
     }
 }
 

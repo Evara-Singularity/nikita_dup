@@ -1,6 +1,7 @@
 @import '../../scss/variables';
 
 .select-offers{
+
     .head-sec {
     }
     .promo-code{
@@ -44,3 +45,44 @@
      }
    }
   }
+
+  /*new css 20-09-2021*/
+
+.popup {
+  position: fixed;
+  // display: none;
+  z-index: 99;
+  &.screen-view {
+      width: 100%;
+      height: 100%;
+      top: 120%;
+      left: 0;
+      background: $white;
+      @extend %transition;
+      &.open{
+        top:0;
+      }
+      .head-sec {
+          padding: 12px 0; margin: 0;z-index: 5; position: relative;
+          &:after{
+            clear: both; content: ''; display: block;
+          }
+          i {
+              font-size: 20px;
+              line-height: 24px;float: left;
+          }
+          i+.page-name {
+              font-size: $extra-large-font;
+              margin-left: 10px;
+          }
+          .txt {
+              font-size: 16px;
+              font-weight: 600;
+              line-height: 21px;
+              margin-left: 20px;
+              float: left;
+          }
+      }
+    
+  }
+}

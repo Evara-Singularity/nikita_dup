@@ -143,7 +143,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
 
     getAddressListApi() {
-        debugger;
+        // debugger;
         const userSession = this._localAuthService.getUserSession();
         const params = { customerId: userSession.userId, invoiceType: this.invoiceType };
         this._commonService.showLoader = true;
@@ -569,7 +569,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                 [item['productId']]: item,
             };
         }, {});
-        debugger;
+        // debugger;
         if (pincodeRes && pincodeRes['statusCode'] == 200) {
             for (let productId in pincodeRes['data']) {
                 // this.isPincodeAvailble = true;
@@ -673,7 +673,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
 
     outData(data) {
-        debugger;
+        // debugger;
         console.log(data);
         if (data.ua) {
             if (data.ua.index !== undefined) {
@@ -734,7 +734,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
 
     checkServiceability() {
-        debugger;
+        // debugger;
         /// console.log("[checkServiceability]..................");
         forkJoin([
             ...this.checkPinCodeAddressApi()

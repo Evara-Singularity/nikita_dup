@@ -1,4 +1,4 @@
-<header [ngClass]="isHomePage ? 'home-page':'inner-pages'" [class.inner_head]="router.url !== '/'">
+<header class="inner-pages" >
     <div class="style-1">
         <div class="head-strip container">
             <div class="f-left logo-container">
@@ -7,7 +7,7 @@
                 <i *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="goBack()" class="icon-back" id="icon-back"></i>
                 <p class="f-left page-name f-16 pt-10" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</p>
             </div>
-            <div class="search_open_mini f-left scrolled-search">
+            <div class="search_open_mini f-left scrolled-search" >
                 <div class="head-popup clearfix">
                     <div class="container" id="search-input-block">
                         <i class="icon-search"></i>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <!--Search Popup-->
-        <div *ngIf="isHomePage" class="search_open_mini second-scroll bottom-search">
+        <div *ngIf="isHomePage" [ngClass]="{'headerFixed': isScrolledHeader}" class="search_open_mini second-scroll bottom-search ">
             <div class="head-popup clearfix">
                 <div class="container" id="search-input-block">
                     <i class="icon-search"></i>

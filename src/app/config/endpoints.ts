@@ -1,5 +1,4 @@
 export const ENDPOINTS = {
-
   PRODUCT_INFO: "/product/getProductGroup",
   PRODUCT_REVIEW: "/reviews/getReviews",
   PRODUCT_FBT: "/product/getProductFbtDetails",
@@ -70,7 +69,7 @@ export const ENDPOINTS = {
   GET_GetCartValidationMessages: "/cart/getCartValidationMessages",
   SET_SetCartValidationMessages: "/cart/setCartValidationMessages",
   VALIDATE_CART: "/cart/validateCart",
-  GET_CartByUser:"/cart/getCartByUser",
+  GET_CartByUser: "/cart/getCartByUser",
   GET_ShippingValue: "/shipping/getShippingValue",
   GET_CategoryById: "/category/getcategorybyid",
   GET_CategoryExtras: "/category/getcategoryExtras?requestType=",
@@ -86,16 +85,16 @@ export const ENDPOINTS = {
   LOGOUT: "/login/logout",
   GET_StateList: "/address/getStateList",
   GET_CountryList: "/address/getCountryList",
-  LOGIN_SUBSCRIPTION:"/login/subscription",
+  LOGIN_SUBSCRIPTION: "/login/subscription",
   EPAY_LATER: "/rfq/addEpayLater",
   VALIDATE_BD: "/validation/validate",
-  HOMEPAGE_FOOTER:"/homepage/footercode",
-  TRENDING_CATEGORY:"/category/trendingCategory",
-  ADD_PURCHASE_LIST:"/purchase/addPurchaseList",
+  HOMEPAGE_FOOTER: "/homepage/footercode",
+  TRENDING_CATEGORY: "/category/trendingCategory",
+  ADD_PURCHASE_LIST: "/purchase/addPurchaseList",
   SIMILAR_PRODUCTS: "/search/similarproducts",
   SET_REVIEWS: "/reviews/setReviews",
   IS_REVIEW_HELPFUL: "/reviews/isReviewHelpful",
   SET_QUEST: "/quest/setQuest",
-  GET_CartBySession:"/cart/getCartBySession",
-  IS_BRAND_CATEGORY:"/search/isBrandCategory"
+  GET_CartBySession: "/cart/getCartBySession",
+  IS_BRAND_CATEGORY: "/search/isBrandCategory"
 };

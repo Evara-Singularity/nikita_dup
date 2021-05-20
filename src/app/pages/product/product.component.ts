@@ -40,7 +40,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   readonly baseDomain = CONSTANTS.PROD;
-  readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL
+  readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
+  readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+
   isServer: boolean;
   isBrowser: boolean
   //conditions vars

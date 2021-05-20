@@ -1,14 +1,6 @@
 /* below code for top widgets and trending categories*/
 
 @import '../../scss/variables';
-home {
-    h2 {
-        text-transform: uppercase;
-        font-size: $medium-font;
-        font-weight: bold;
-    }
-}
-
 ::ng-deep {
     .btn-red {
         border: 1px solid $logo-color;

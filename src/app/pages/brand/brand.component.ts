@@ -102,6 +102,7 @@ export class BrandComponent {
     }
 
     ngOnInit() {
+        ClientUtility.scrollToTop(1000);
         // set some extra meta tags if brand is a category page
         if (this._activatedRoute.snapshot.queryParams['category']) {
             this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });

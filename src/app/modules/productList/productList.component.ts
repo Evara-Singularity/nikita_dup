@@ -45,6 +45,8 @@ export class ProductListComponent{
     productCount:any;
     firstImage = '';
     API = CONSTANTS;
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    
     constructor(private cd: ChangeDetectorRef, public _router: Router, public _commonService: CommonService, private elementRef: ElementRef, private analytics: GlobalAnalyticsService){
     };
 

@@ -32,7 +32,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    // font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
@@ -69,8 +69,6 @@ a {
 h2,
 h3 {
     color: #444;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: lighter;
 }
 
 
@@ -147,7 +145,6 @@ a {
     outline: 0;
     font-size: $extra-large-font;
     font-weight: 600;
-    text-transform: uppercase;
     @extend %border-radius;
     @extend %box-shadow;
     border: 0;
@@ -275,7 +272,7 @@ h3 {
 header-nav {
     &.inner_head {
         &+div {
-            padding-top: 50px;
+            margin-top: 52px;
         }
     }
 }
@@ -283,6 +280,15 @@ header-nav {
 // 
 .align-center {
     text-align: center;
+}
+
+//Common Order Status
+.green-txt {
+    color: #3b9e26;
+}
+
+.red-txt {
+    color: $logo-color;
 }
 
 // icons

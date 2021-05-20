@@ -103,7 +103,6 @@ export class CategoryComponent implements OnInit {
     categoryId: string;
     constructor(
         @Optional() @Inject(RESPONSE) private _response, 
-        private _tState: TransferState, 
         private _renderer2: Renderer2,
         private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
@@ -149,6 +148,7 @@ export class CategoryComponent implements OnInit {
     }
 
     private updateConfigBasedOnParams(data) {
+        console.log(data);
         this.layoutType = 0;
         if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
             this.isSLPPage = true;
@@ -188,7 +188,7 @@ export class CategoryComponent implements OnInit {
         // alert('updateConfigBasedOnQueryParams');
         this.trendingSearchData = data;
         this.pageNo = data['page'];
-        if (data['page'] > 1) {
+        if (data['page'] > 1 || this._router.url.split('/').length > 3) {
             this.showSubcategoty = false;
         } else {
             this.showSubcategoty = true;
@@ -316,7 +316,6 @@ export class CategoryComponent implements OnInit {
          */
         const fragment = this._activatedRoute.snapshot.fragment;
         
-        const t1 = performance.now();
         this.initiallizeData(res[1], !fragment);
         
         this.setTrackingData(res);
@@ -327,8 +326,6 @@ export class CategoryComponent implements OnInit {
 
         this.setFaqSchema(res[2]);
         this.faqData = res[2];
-        const t2 = performance.now();
-        console.log('time taken : ' + (t2 - t1));
     }
 
     refreshProductListBasedOnRouteUpdate() {

@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '@app/utils/services/data.service';
-import { CONSTANTS } from '@app/config/constants';
-import { Observable } from "rxjs/Observable";
+import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { DataService } from '@app/utils/services/data.service';
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class BreadcrumpService {
 
     constructor(public _dataService: DataService) {
-
     }
 
     getBreadcrumpData(link, type ,pageTitle): Observable<any> {
@@ -16,11 +15,7 @@ export class BreadcrumpService {
          if(pageTitle){
             curl +="&pagetitle=" +pageTitle;  
         }
-        // return this.dataService.callRestful("GET", url);
         return this._dataService.callRestful("GET", curl);
     }
 
-    getBreadCrumpHttpApi(type, url){
-        return this._dataService.callRestful("GET", url);
-    }
 }

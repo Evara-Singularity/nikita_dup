@@ -10,6 +10,7 @@ import { Subject} from "rxjs";
 import { fade } from '@app/utils/animations/animation';
 import { CONSTANTS } from "@app/config/constants";
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
     selector: 'product-list',
@@ -25,7 +26,9 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 })
 
 export class ProductListComponent{
-    defaultImage = CONSTANTS.IMAGE_BASE_URL + 'img/others/Card.jpg';
+    isServer: boolean;
+    isBrowser: boolean;
+    defaultImage = CONSTANTS.IMAGE_BASE_URL + ENDPOINTS.CARD.IMAGE;
     offset = 100;
     currentUrl: string;
     imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -42,6 +45,8 @@ export class ProductListComponent{
     productCount:any;
     firstImage = '';
     API = CONSTANTS;
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    
     constructor(private cd: ChangeDetectorRef, public _router: Router, public _commonService: CommonService, private elementRef: ElementRef, private analytics: GlobalAnalyticsService){
     };
 

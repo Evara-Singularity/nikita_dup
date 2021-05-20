@@ -31,7 +31,7 @@
                             (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId)"
                             *ngFor="let prod of suggestionList | slice:0:5; let i = index" [attr.data-index]="i">
                             {{prod.term}}
-                            <img src="./assets/img/interface.png" class="interfaceIcon">
+                            <img src="{{imageAssetPath}}assets/img/interface.png" class="interfaceIcon">
                         </li>
                     </ul>
                     <h4 class="heading-4 popularCategoryHeading" *ngIf="categorySuggestionList.length">Product
@@ -46,7 +46,7 @@
                             </div>
                             <span class="prodText">{{prod.term}}</span>
 
-                            <img src="./assets/img/interface.png" class="interfaceIcon">
+                            <img src="{{imageAssetPath}}/img/interface.png" class="interfaceIcon">
                         </li>
                     </ul>
                     <h4 class="heading-4 popularCategoryHeading" *ngIf="brandSuggestionList.length">Popular Brands </h4>

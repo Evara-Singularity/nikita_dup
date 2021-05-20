@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { FooterService } from '../../utils/services/footer.service';
 
 @Injectable()
@@ -23,7 +24,7 @@ export class ArticleUtilService
     getArticlesSchema(schema)
     {
         let schemaObj = {
-            "@context": "https://schema.org",
+            "@context": CONSTANTS.SCHEMA,
             "@type": "Article",
             "headline": schema['metaTitle'],
             "url": schema['url'],
@@ -35,7 +36,7 @@ export class ArticleUtilService
                 "name": "Moglix",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": "https://statics.moglix.com/img/newsletter/int/2021/january/210121/moglixhaina_logo.png"
+                    "url": CONSTANTS.MOGLIX_HAINA_LOGO
                 }
             }
         }
@@ -45,10 +46,10 @@ export class ArticleUtilService
     getBreadcrumbSchema(title, articleUrl)
     {
         let schemaObj = {
-            "@context": "https://schema.org",
+            "@context": CONSTANTS.SCHEMA,
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 0, "item": { "@id": "https://www.moglix.com", "name": "Home" } },
+                { "@type": "ListItem", "position": 0, "item": { "@id": CONSTANTS.PROD, "name": "Home" } },
                 { "@type": "ListItem", "position": 1, "item": { "@id": "#", "name": "Articles" } },
                 { "@type": "ListItem", "position": 2, "item": { "@id": articleUrl, "name": title } }
             ]

@@ -118,7 +118,7 @@ export class IndustryStoreComponent {
 		return this.dataService.callRestful(
 			'GET',
 			CONSTANTS.NEW_MOGLIX_API +
-				'/category/getparentcategoryjsonbody?requestType=industry-store_m'
+			CONSTANTS.GET_PARENT_CAT+'industry-store_m'
 		);
 	}
 

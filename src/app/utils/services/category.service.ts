@@ -5,6 +5,7 @@ import { CONSTANTS } from '@config/constants';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class CategoryService {
     constructor(private _dataService: DataService) {}
 
     getRelatedCategories(categoryId): Observable<any> {
-        const url = CONSTANTS.NEW_MOGLIX_API + '/category/getcategorybyid?catId=' + categoryId;
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryById + '?catId' + categoryId;
         return this._dataService.callRestful('GET', url)
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -23,15 +24,15 @@ export class CategoryService {
             );
     }
     getCategoryExtraData(categoryId): Observable<any> {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/category/getcategoryExtras?requestType=" + categoryId;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + categoryId;
         return this._dataService.callRestful("GET", url);
     }
     getFaqApi(categoryId): Observable<any> {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/quest/getCategorySchema?categoryCode=" + categoryId;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategorySchema + categoryId;
         return this._dataService.callRestful("GET", url);
     }
     getRelatedArticles(categoryId): Observable<any> {
-        let url = CONSTANTS.NEW_MOGLIX_API + `/cmsApi/getArticlesListByCategory?categoryCode=${categoryId}`;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ArticlesListByCategory + `${categoryId}`;
         return this._dataService.callRestful("GET", url);
     }
 }

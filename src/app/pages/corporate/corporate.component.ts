@@ -50,7 +50,7 @@ export class CorporateComponent {
     this.meta.addTag({ name: "description", content: "Moglix, introduces you to its world of innovative corporate gifting solutions, to help corporate race, celebrate every occasion with a broad exuberance." });
     this.meta.addTag({ name: "og:description", content: "Moglix, introduces you to its world of innovative corporate gifting solutions, to help corporate race, celebrate every occasion with a broad exuberance." });
     this.meta.addTag({ name: "og:title", content: "Corporate Gifting Solutiions" });
-    this.meta.addTag({ name: "og:url", content: "https://www.moglix.com/corporate-gifting" });
+    this.meta.addTag({ name: "og:url", content: CONSTANTS.PROD+"/corporate-gifting" });
 
     // set canonical URL
     if (this.isServer) {

@@ -159,7 +159,7 @@ export class BrandComponent {
         }
 
         //this.meta.addTag({ "name": "og:title", "content": title });
-        this.meta.addTag({ "name": "og:url", "content": "https://www.moglix.com" + this._router.url });
+        this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
         if (this.isServer) {
             let links = this._renderer2.createElement('link');
@@ -185,7 +185,7 @@ export class BrandComponent {
                 "position": 0,
                 "item":
                 {
-                    "@id": "https://www.moglix.com",
+                    "@id": CONSTANTS.PROD,
                     "name": "Home"
                 }
             },
@@ -194,7 +194,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": "https://www.moglix.com/brand-store",
+                    "@id": CONSTANTS.PROD+"/brand-store",
                     "name": "Brand"
                 }
             },
@@ -203,7 +203,7 @@ export class BrandComponent {
                 "position": 2,
                 "item":
                 {
-                    "@id": "https://www.moglix.com/" + this.friendlyUrl,
+                    "@id": CONSTANTS.PROD + this.friendlyUrl,
                     "name": this.brand
                 }
             },
@@ -212,7 +212,7 @@ export class BrandComponent {
                 "position": 3,
                 "item":
                 {
-                    "@id": "https://www.moglix.com" + this._router.url,
+                    "@id": CONSTANTS.PROD + this._router.url,
                     "name": this.brandCategoryName
                 }
             }
@@ -224,7 +224,7 @@ export class BrandComponent {
                 "position": 0,
                 "item":
                 {
-                    "@id": "https://www.moglix.com",
+                    "@id": CONSTANTS.PROD,
                     "name": "Home"
                 }
             },
@@ -233,7 +233,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": "https://www.moglix.com/brand-store",
+                    "@id": CONSTANTS.PROD+"/brand-store",
                     "name": "Brand"
                 }
             },
@@ -242,7 +242,7 @@ export class BrandComponent {
                 "position": 2,
                 "item":
                 {
-                    "@id": "https://www.moglix.com" + this._router.url,
+                    "@id": CONSTANTS.PROD + this._router.url,
                     "name": this.brand
                 }
             },
@@ -256,7 +256,7 @@ export class BrandComponent {
             let s = this._renderer2.createElement('script');
             s.type = "application/ld+json";
 
-            s.text = JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": this.itemsList });
+            s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": this.itemsList });
             this._renderer2.appendChild(this._document.head, s);
         }
 
@@ -528,7 +528,7 @@ export class BrandComponent {
                     })
                 });
                 const schemaObj = {
-                    "@context": "https://schema.org",
+                    "@context": CONSTANTS.SCHEMA,
                     "@type": "ItemList",
                     "numberOfItems": productArray.length,
                     "url": CONSTANTS.PROD + this._router.url,

@@ -75,7 +75,7 @@
 
             <!--recently bought product section -->
             <div class="recent-bought-wrap" *ngIf="recentBoughtOrderCount">
-                <img src="assets/img/coupon-3-fill.png">
+                <img src="{{imagePathAsset}}assets/img/coupon-3-fill.png">
                 <span class="inner-text">{{recentBoughtOrderCount}} people bought this recently</span>
             </div>
             
@@ -175,7 +175,7 @@
             <ul class="deals-list">
                 <li class="clearfix">
                     <!-- <i class="icon-combo ico_offer"></i> -->
-                    <img class="ofr_img" height="25" width="25" src="/assets/img/rfq-header.svg">
+                    <img class="ofr_img" height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
                     <div class="ofr_txt">
                         <strong class="text-black">Want to buy even more quantity</strong>
                         <small>Get quick quotes for bulk queries</small>
@@ -206,7 +206,7 @@
                 <div [style.width.px]="4 * 120">
                     <div class="returnPolicyInner" (click)="$event.stopPropagation(); navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="/assets/img/return_policy/undo-button.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px" width="16px">
                         </span>
                         <span class="returnTxt">
                             Upto 7 days <br /> returnable
@@ -214,7 +214,7 @@
                     </div>
                     <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="/assets/img/return_policy/box.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/box.svg" height="16px" width="16px">
                         </span>
                         <span class="returnTxt">
                             Wrong <br /> Product
@@ -222,7 +222,7 @@
                     </div>
                     <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="/assets/img/return_policy/fragile.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/fragile.svg" height="16px" width="16px">
                         </span>
                         <span class="returnTxt">
                             Damaged <br /> Product
@@ -230,7 +230,7 @@
                     </div>
                     <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="/assets/img/return_policy/thumb-down-button.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/thumb-down-button.svg" height="16px" width="16px">
                         </span>
                         <span class="returnTxt">
                             Defective <br />Product
@@ -250,7 +250,7 @@
             <ul class="deals-list">
                 <li class="clearfix">
                     <span class="gst-icon">
-                        <img src="/assets/img/poc/gst-invoice.svg" height="20" width="18">
+                        <img src="{{imagePathAsset}}assets/img/poc/gst-invoice.svg" height="20" width="18">
                     </span>
                     <div class="coupon-txt">
                         <p>100% Original Products and Secure Payments</p>
@@ -326,7 +326,7 @@
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
                     <div *ngFor="let video of productVideos" class="prod-desc-video">
-                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])" type="image" src="/assets/img/youtube_icon.svg" border="border of the image" alt="text">
+                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])" type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg" border="border of the image" alt="text">
                         <img [src]="video['link'] | ytthumbnail:'hqdefault'">
                     </div>
                 </div>
@@ -344,7 +344,7 @@
                     <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
                         <div class="pdf_link clearfix">
                             <span class="pdf-img">
-                                <img src="/assets/img/download.svg">
+                                <img src="{{imagePathAsset}}assets/img/download.svg">
                             </span>
                             <div class="pdf-text">
                                 <h4>{{pdf.name}}</h4>
@@ -365,26 +365,24 @@
                     <p>More from {{productBrandDetails['brandName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
-                <img src="/assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24" >
+                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24" >
             </a> -->
 
             <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
-                <!-- <img src="assets/img/karam.png"> -->
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
-                <img src="/assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
             <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items" [routerLink]="['/'+productBrandCategoryUrl]">
-                <!-- <img src="assets/img/karam.png"> -->
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <!-- <span>From ₹999</span> -->
-                <img src="/assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
         </section>
 
@@ -566,7 +564,7 @@
     <div class="content-area bottom-layout ">
         <div class="rfq-thanks-popup ">
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
-            <img src="/assets/img/checkbox-circle-fill-m.png ">
+            <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
             <p class="rfq-thanks-title">Thanks for submitting the query.</p>
             <p class="rfq-support-txt">Our support member will get in touch with you within 24 hours. For further assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.</p>
             <div class="alert-btn-row">

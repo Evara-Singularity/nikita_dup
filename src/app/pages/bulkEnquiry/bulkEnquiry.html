@@ -1,0 +1,194 @@
+<div class=" bulk-enquiry">
+    <router-outlet></router-outlet>
+    <div id="accordion">
+        <div class="rfq-panel tabH">
+            <div class="panel-head" [appKpToggle]="{idName: 'howItsWork' , iconMode : true}">
+                <p class="heading">How It Works</p>
+            </div>
+            <div class="panel-body" id="howItsWork">
+                <div class="how-it-works">
+                    <div class="container">
+                        <div class="working-step">
+                            <div class="icon-blk">
+                                <i class="icon-rfq-request-raise"></i>
+                            </div>
+                            <div class="steps-container pull-right">
+                                <div class="txt-blk clearfix">
+                                    <i class="icon-rfq-request-raise"></i>
+                                    <p>Fill in the form / Or</p>
+                                </div>
+                                <div class="txt-blk clearfix">
+                                    <i class="icon-call"></i>
+                                    <p>Or <i class="icon-whatsapp"></i> +91-9599975784
+                                    </p>
+                                </div>
+                                <div class="txt-blk clearfix">
+                                    <i class="icon-mail"></i>
+                                    <p>business@moglix.com</p>
+                                </div>
+                                <div class="txt-blk clearfix">
+                                    <i class="icon-support"></i>
+                                    <p>Request for a callback</p>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="step-arrow icon-arrow-d"></i>
+
+                        <div class="working-step clearfix">
+                            <div class="icon-blk">
+                                <i class="icon-rfq-in-process"></i>
+                            </div>
+                            <div class="steps-container">
+                                <p>Receive the best quotations within 48 working hours.</p>
+                            </div>
+                        </div>
+                        <i class="step-arrow icon-arrow-d"></i>
+
+                        <div class="working-step clearfix">
+                            <div class="icon-blk">
+                                <i class="icon-rfq-confirmation"></i>
+                            </div>
+                            <div class="steps-container">
+                                <p>Place your order once you receive the quotations</p>
+                            </div>
+                        </div>
+                        <i class="step-arrow icon-arrow-d"></i>
+                        <div class="working-step clearfix">
+                            <div class="icon-blk">
+                                <i class="icon-rfq-delivery
+                                            "></i>
+                            </div>
+                            <div class="steps-container small-block">
+                                <p>Your order will be delieverd at your doorstep within the committed timeline.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="rfq-panel tabH">
+            <div class="panel-head" (click)="openSiema = !openSiema"
+                [appKpToggle]="{idName: 'testimonial' , iconMode : true}">
+                <p class="heading">Customer Testimonials</p>
+            </div>
+            <div class="panel-body" id="testimonial" style="display:none;">
+                <div class="customer-review">
+                    <ng-container *ngIf="optionsCustomer.testimonial && openSiema">
+                        <siema-carousel [options]="optionsCustomer" [items]="testimonial"></siema-carousel>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="rfq-panel tabH">
+            <div class="panel-head" [appKpToggle]="{idName: 'faQ' , iconMode : true}">
+                <p class="heading">Frequently Asked Questions</p>
+            </div>
+            <div class="panel-body" id="faQ" style="display:none;">
+                <div id="faqAccordion">
+                    <div class="container">
+                        <div class="faq-panel">
+                            <div class="qnumber">Q</div>
+                            <div class="panel-head" [appKpToggle]="{idName: 'answer1' , iconMode : true}">
+                                <p>How do I submit a RFQ?</p>
+                            </div>
+                            <div class="panel-body" id="answer1">
+                                <p class="panelAns">
+                                    An RFQ (Request for Quote) is a purchase request by the buyer to request quotes from
+                                    Moglix. You submit all the detail information of your wanted product in a purchase
+                                    request, and our team of executives will source the products you want to buy. Moglix
+                                    can save you a lot of time compared to searching your products directly. Fill in the
+                                    required fields on the RFQ page and our team will contact you in due time.
+
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="faq-panel">
+                            <div class="qnumber">Q</div>
+                            <div class="panel-head" [appKpToggle]="{idName: 'answer2' , iconMode : true}">
+                                <p>What kind of RFQs will not be accepted?</p>
+                            </div>
+                            <div class="panel-body" id="answer2" style="display:none;">
+                                <p class="panelAns">
+                                    1. Requests not sent from a verified email address: The buyer’s email address should
+                                    be verified before posting a buying request.
+
+                                </p>
+                                <p class="panelAns">
+                                    2. Lack of key information: Necessary information: product name included in the
+                                    subject, and other product details in the body part, such as size, color, type, and
+                                    any other specifications. The more descriptive you can be the better. </p>
+
+                                <p class="panelAns">
+                                    3. Banned or restricted products (including trademarked/branded goods): It is highly
+                                    suggested to contact the owner or authorized distributor of any trademarked/branded
+                                    product to buy it.
+
+                                </p>
+                                <p class="panelAns">
+                                    4. Duplicate Buying Request regarding the same product.
+
+                                </p>
+                                <p class="panelAns">
+                                    5. Small order quantity: Larger MOQ (minimum order quantity) orders tend to be
+                                    preferred. Note that MOQ will vary depending on the product type.
+
+                                </p>
+                                <p class="panelAns">
+                                    6. Make sure you provide your company’s GSTIN and PAN No. correctly.
+
+                                </p>
+                            </div>
+                        </div>
+                        <div class="faq-panel">
+                            <div class="qnumber">Q</div>
+                            <div class="panel-head" [appKpToggle]="{idName: 'answer3' , iconMode : true}">
+                                <p>Why can’t I submit a RFQ?</p>
+                            </div>
+                            <div class="panel-body" id="answer3">
+                                <p class="panelAns">
+                                    1. There might be some blank(s) left. Please double check and fill in all the fields
+                                    with product details as required.
+
+                                </p>
+                                <p class="panelAns">
+                                    2. There might be some problem with the browser. Please use another browser or clear
+                                    the cache and cookies to try again.
+
+                                </p>
+
+
+                            </div>
+                        </div>
+                        <div class="faq-panel">
+                            <div class="qnumber">Q</div>
+                            <div class="panel-head" [appKpToggle]="{idName: 'answer' , iconMode : true}">
+                                <p>When will I receive a quote for my RFQ?</p>
+                            </div>
+                            <div class="panel-body" id="answer">
+                                <p class="panelAns">
+                                    As soon as you submit your query our team of executives will get on the job to
+                                    providing you with best possible quote. Once the request is shared by the buyer our
+                                    team will get in touch with you within 24hours to get a better understanding of your
+                                    request. As soon as the request gets finalized our team will provide you with the
+                                    best priced quote within 48hours and once all the payment terms are finalized
+                                    products get delivered to your doorstep within 10-15 days.
+
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="brandslider">
+        <ng-container *ngIf="options.brandCarousel">
+            <siema-carousel [options]="options" [items]="brandCarousel"></siema-carousel>
+        </ng-container>
+    </div>
+
+</div>

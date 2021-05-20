@@ -31,7 +31,7 @@ export class AboutComponent {
     this.title.setTitle("Know More About the Moglix.com Team");
     this.meta.addTag({ "property": "og:title", "content": "Know More About the Moglix.com Team" });
     this.meta.addTag({ "property": "og:description", "content": "Learn more about the Moglix brand and the team behind the leading online marketplace for business and industry essential supplies." });
-    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/about" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/about" });
     this.meta.addTag({ "name": "description", "content": "Learn more about the Moglix brand and the team behind the leading online marketplace for business and industry essential supplies." });
 
     if (this.isServer) {

@@ -1,0 +1,173 @@
+<div id="create_rfq">
+    <!-- New Html PWA -->
+
+    <div class="create-rfq">
+        <div class="request-callback">
+            <p class="heading">
+                Buying for Your Business?
+                <span>Get the Best Quotes</span>
+            </p>
+            <p class="heading-4">Share your requirements in the form below</p>
+        </div>
+        <!-- Request Callback Screen -->
+
+        <div class="tabs-rfq">
+            <div class="tabs-head clearfix">
+                <div class="tab " (click)="tabOpen = 'productDetail'">
+                    <p class="heading-tab">Fill Product Details</p>
+                </div>
+            </div>
+            <div class="tab_one " *ngIf="tabOpen == 'productDetail'">
+                <div class="rfq-product">
+                    <div class="prod-detail">
+                        <form [formGroup]="bulkEnquiryForm" class="rfq-form" novalidate>
+                            <div class="new-prod-blk container" formArrayName="products">
+                                <div class="newproduct"
+                                    *ngFor="let product of bulkEnquiryForm.controls['products']['controls'];let i=index"
+                                    [formGroupName]="i">
+                                    <div class="input-field">
+                                        <input type="text" formControlName="productName"
+                                            placeholder="Product/Category Details*" id="prod_detail">
+                                        <div class="error-txt"
+                                            *ngIf="product.controls['productName']?.dirty && product.controls['productName'].hasError('required')">
+                                            Kindly enter product/category details</div>
+                                    </div>
+                                    <div class="clearfix second-row">
+                                        <div class="inpt-brand input-field">
+                                            <input type="text" formControlName="brand" placeholder="Brand*"
+                                                name="brand">
+                                            <div class="error-txt"
+                                                *ngIf="product.controls['brand']?.dirty && product.controls['brand'].hasError('required')">
+                                                Kindly specify the brand name</div>
+                                        </div>
+                                        <div class="inpt-qty input-field">
+                                            <input type="number" min="1" maxlength="3"
+                                                (keypress)="checkQuantityCode($event)" formControlName="quantity"
+                                                placeholder="Qty*" id="prod_qty">
+                                            <div class="error-txt"
+                                                *ngIf="product.controls['quantity']?.dirty && product.controls['quantity'].hasError('required')">
+                                                Kindly enter min. desired quantity</div>
+                                        </div>
+                                        <span class="deleterow"
+                                            *ngIf="bulkEnquiryForm.controls['products']['controls'].length != 1"
+                                            (click)="removeProduct(i)">Remove</span>
+                                    </div>
+                                </div>
+                                <div *ngIf="rfqlimit" class="f-size-12 text-red pad-t-5 pad-l-5">Maximum 5 queries are
+                                    allowed only.
+                                </div>
+                                <div class="add_prod_blk clearfix">
+                                    <button class="add-prod"
+                                        [class.disabled]="!bulkEnquiryForm.controls['products'].valid || rfqlimit"
+                                        (click)="addProduct()">+ Add Products</button>
+                                </div>
+                            </div>
+
+                            <div class="personal-details container">
+                                <h3 class="heading">Fill Personal Details</h3>
+                                <div class="businessCust">
+                                    <label>
+                                        <input type="checkbox" [checked]="isChecked" (change)="changeOosUserType()">
+                                        <span class="custChck">I am a business customer</span>
+                                    </label>
+                                </div>
+                                <div *ngIf="isChecked">
+                                    <div class="input-field">
+                                        <input class="form-control f-size-13" placeholder="Business Name" type="text"
+                                            formControlName="company_name" placeholder="Business Name"
+                                            name="company_name">
+                                    </div>
+                                    <div class="input-field pos-rel">
+                                        <label class="indusrty">
+                                            <select formControlName="buyertype">
+                                                <option selected="" value="">Industry</option>
+                                                <option *ngFor="let item of buyerList" [value]="item.buyerId">
+                                                    {{item.buyerType}}</option>
+                                            </select>
+                                            <i class="icon-down"></i>
+                                        </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input
+                                            class="form-control f-size-13 text-grey pad-tb-5  b-l-0 text-400 h-40 relative "
+                                            type="text" maxlength="30" formControlName="tin"
+                                            placeholder="GSTIN (Optional)">
+                                        <p *ngIf="bulkEnquiryForm.controls['tin']?.dirty" class="error-msg">Please
+                                            provide valid GSTIN NO</p>
+                                    </div>
+                                    <div class="input-field">
+                                        <input class="form-control f-size-13" type="text" formControlName="panno"
+                                            placeholder="PAN no (Optional)" name="panno">
+                                    </div>
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" formControlName="firstname" placeholder="First Name*">
+                                    <div class="error-txt"
+                                        *ngIf="bulkEnquiryForm.controls['firstname']?.dirty && bulkEnquiryForm.controls['firstname'].hasError('required')">
+                                        Kindly enter your first name</div>
+                                </div>
+
+                                <div class="input-field">
+                                    <input type="email" formControlName="email" placeholder="Email*">
+                                    <div *ngIf="bulkEnquiryForm.controls['email']?.dirty && bulkEnquiryForm.controls['email'].hasError('required')"
+                                        class="error-txt">Email Id can't be blank</div>
+                                    <div class="error-txt"
+                                        *ngIf="!bulkEnquiryForm.controls['email'].hasError('required') && bulkEnquiryForm.controls['email'].hasError('invalidCharT')">
+                                        Kindly enter valid email ID. Ex: abc@xxx.com</div>
+                                    <div class="error-txt"
+                                        *ngIf="bulkEnquiryForm.controls['email'].hasError('required') && bulkEnquiryForm.controls['email']?.dirty">
+                                        Kindly enter email ID.</div>
+                                </div>
+
+                                <div class="input-field">
+                                    <input type="number" (keypress)="checkQuantityCode($event)"
+                                        formControlName="phoneno" maxlength="10" minlength="10" id="pwd"
+                                        placeholder="Phone No*">
+                                    <div *ngIf="bulkEnquiryForm.controls['phoneno']?.dirty && bulkEnquiryForm.controls['phoneno'].hasError('required')"
+                                        class="error-txt">Kindly enter your phone no.</div>
+                                    <div *ngIf="!bulkEnquiryForm.controls['phoneno'].hasError('required') && bulkEnquiryForm.controls['phoneno'].hasError('minlength')"
+                                        class="error-txt">Kindly enter 10 digit contact no.</div>
+
+                                </div>
+
+                                <div class="input-field">
+                                    <textarea formControlName="description" placeholder="Write product description here"
+                                        maxlength="250"></textarea>
+                                </div>
+                            </div>
+                            <button [disabled]="bulkEnquiryForm.invalid" class="btn submit-btn" type="submit"
+                                (click)="sendBulkEnquiry()">SUBMIT RFQ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab_two" *ngIf="tabOpen == 'uploadAttachment'">
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-box" *ngIf="showThanksPopup">
+        <div class="overlay"></div>
+        <div class="content-area">
+            <div class="green-block">
+                <i class="del-ico icon-circle-delete" (click)="closeAlert()"></i>
+                <div class="inner-txt">
+                    <i class="icon-done"></i>
+                    <p class="info-title">Quotation Submitted Successfully</p>
+                </div>
+            </div>
+            <div class="detail-info">
+                <p class="support-txt">Our support member will get in touch with you within 24 hours.</p>
+                <div class="contact-detail">
+                    <p>For further assistance either</p>
+                    <p>call or Whatsapp
+                        <a href="tel:+91 9999644044">@ +91 9999644044</a>
+                    </p>
+                    <p>You can also mail us at
+                        <a href="mailto:salesenquiry@moglix.com">salesenquiry@moglix.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>

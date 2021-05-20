@@ -44,5 +44,48 @@
                 }
             }
         }
+        &.addAddressPopup {
+            background: #fff !important;
+            &.screen-view {
+                .head-sec {
+                    background: $logo-color !important;
+                    i {
+                        color: $white
+                    }
+                }
+                 ::ng-deep {
+                    .content-popup {
+                        height: calc(100% - 100px);
+                        overflow: auto;
+                        .address-list {
+                            padding: 15px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.info-update-popup {
+    .head-sec {
+        @extend %ico-txt;
+        margin: 20px 0;
+        .txt {
+            font-size: $extra-large-font;
+            font-weight: 600;
+            line-height: 21px;
+            margin-left: 20px;
+        }
+    }
+    .input-field {
+        margin-bottom: 20px;
+    }
+    .help-txt {
+        position: absolute;
+        right: 0;
+        top: 24px;
+        font-size: 14px;
+        color: $blue-link-color;
     }
 }

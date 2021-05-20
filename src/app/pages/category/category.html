@@ -6,7 +6,7 @@
 
 <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
 <div [class.visibility]="!((layoutType == 1 || layoutType == 2) && firstPageContent)">
-    <div class="row splnewpage" [class.visibility]="!isSLPPage " [class.layout2]="layoutType == 2">
+    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1" [class.slpLayout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
@@ -63,8 +63,8 @@
     </div>
 
 
-    <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)" >
-        <ng-container  *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
+    <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)">
+        <ng-container *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
     </div>
 
     <div [class.visibility]="!firstPageContent">

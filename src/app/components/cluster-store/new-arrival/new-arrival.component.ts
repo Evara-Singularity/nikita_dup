@@ -16,7 +16,7 @@ export class NewArrivalComponent implements OnInit {
   openPopup: boolean;
   @Input('data') data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
+  defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   constructor() {
     this.openPopup = false;
    }

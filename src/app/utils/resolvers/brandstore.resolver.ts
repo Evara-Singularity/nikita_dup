@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '../services/global-loader.service';
 import { isPlatformServer } from '@angular/common';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,8 @@ export class BrandStoreResolver implements Resolve<object> {
       this.transferState.remove(logosObj);
       return of([logosData, brandData]);
     } else {
-      const logosUrl = environment.BASE_URL + '/category/getparentcategoryjsonbody?requestType=brand-store';
-      const brandurl = CONSTANTS.NEW_MOGLIX_API + '/search/getAllBrands';
+      const logosUrl = environment.BASE_URL + CONSTANTS.GET_PARENT_CAT+'brand-store';
+      const brandurl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ALL_BRANDS;
 
       const LogosData = this.http.get(logosUrl);
       const brandsData = this.http.get(brandurl);

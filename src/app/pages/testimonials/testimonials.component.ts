@@ -35,7 +35,7 @@ export class TestimonialsComponent {
     this.title.setTitle("Customer Reviews - Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Customer Reviews - Moglix.com" });
     this.meta.addTag({ "property": "og:description", "content": "Read what our customers think about commitment and services at Moglix.com. We would love to hear your feedback." });
-    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/testimonials" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/testimonials" });
     this.meta.addTag({ "name": "description", "content": "Read what our customers think about commitment and services at Moglix.com. We would love to hear your feedback." });
 
     if (this.isServer) {

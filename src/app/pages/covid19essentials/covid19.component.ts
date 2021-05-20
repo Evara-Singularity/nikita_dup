@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 const SPD = makeStateKey<any>('specialdata');
 
 declare let $: any;
@@ -108,7 +110,7 @@ export class Covid19Component {
     this.meta.addTag({ "name": "description", "content": "Shop online for personal protective equipment to contain the spread of COVID 19. Send in your inquiries today." });
     this.meta.addTag({ "name": "og:description", "content": "Shop online for personal protective equipment to contain the spread of COVID 19. Send in your inquiries today." });
     this.meta.addTag({ "name": "og:title", "content": "Buy COVID 19 Essential Supplies at Moglix" });
-    this.meta.addTag({ "name": "og:url", "content": "https://www.moglix.com/deals/special-offer" });
+    this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD+ENDPOINTS.SPL_OFFR });
   }
 
 }

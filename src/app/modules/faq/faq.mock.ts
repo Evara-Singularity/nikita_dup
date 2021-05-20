@@ -1,5 +1,7 @@
+import CONSTANTS from '@app/config/constants';
+
 export const FAQDATA = {
-	'@context': 'https://schema.org',
+	'@context': CONSTANTS.SCHEMA,
 	'@type': 'FAQPage',
 	mainEntity: [
 		{

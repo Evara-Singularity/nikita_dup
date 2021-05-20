@@ -125,7 +125,7 @@ export class StoreComponent {
 		this.meta.addTag({ property: 'og:description', content: description });
 		this.meta.addTag({
 			property: 'og:url',
-			content: 'https://www.moglix.com/brand-store/' + path[2],
+			content: CONSTANTS.PROD + '/brand-store/' + path[2],
 		});
 		this.meta.addTag({
 			name: 'description',

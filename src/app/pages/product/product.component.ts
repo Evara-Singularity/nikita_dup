@@ -1860,12 +1860,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getProductURL() {
-    const productURL = this.rawProductData.productPartDetails[this.productSubPartNumber]['canonicalUrl'];
-    const finalURL = productURL ? productURL : this.productUrl;
-    return finalURL;
-  }
-
   setSessionForClickSection() {
     if (this.isBrowser && sessionStorage.getItem('pdp-page')) {
         this.commonService.setSectionClick(sessionStorage.getItem('pdp-page'));

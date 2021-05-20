@@ -1666,7 +1666,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.meta.addTag({ "name": "description", "content": metaDescription });
 
     this.meta.addTag({ "name": "og:description", "content": metaDescription })
-    this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + "/" + this.productUrl })
+    this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + "/" + this.getProductURL() })
     this.meta.addTag({ "name": "og:title", "content": title })
     this.meta.addTag({ "name": "og:image", "content": this.productDefaultImage })
     this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT });
@@ -1752,8 +1752,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "name": this.productName,
           "image": [this.productDefaultImage],
           "description": desc,
-          "sku": this.defaultPartNumber,
-          "mpn": this.defaultPartNumber,
+          "sku": this.productSubPartNumber,
+          "mpn": this.productSubPartNumber,
           "brand": {
             "@type": "Thing",
             "name": this.productBrandDetails['brandName'],
@@ -1767,7 +1767,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           },
           "offers": {
             "@type": "Offer",
-            "url": "https://www.moglix.com/" + this.productUrl,
+            "url": "https://www.moglix.com/" + this.getProductURL(),
             "priceCurrency": "INR",
             "price": (this.productPrice * this.productMinimmumQuantity).toString(),
             "itemCondition": "https://schema.org/NewCondition",
@@ -1836,6 +1836,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productVisitViaSocket();
       this.productVisitViaAPI();
     }
+  }
+
+  getProductURL() {
+    const productURL = this.rawProductData.productPartDetails[this.productSubPartNumber]['canonicalUrl'];
+    const finalURL = productURL ? productURL : this.productUrl;
+    return finalURL;
   }
 
   setSessionForClickSection() {

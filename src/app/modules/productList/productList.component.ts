@@ -10,6 +10,7 @@ import { Subject} from "rxjs";
 import { fade } from '@app/utils/animations/animation';
 import { CONSTANTS } from "@app/config/constants";
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
     selector: 'product-list',

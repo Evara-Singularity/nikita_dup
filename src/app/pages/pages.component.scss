@@ -1,4 +1,5 @@
 @import '../scss/variables';
+@import '../../app/pages/home/common_grid.scss';
 footer {
     font-size: $large-font;
     &.card-30 {
@@ -149,4 +150,11 @@ footer {
 
 .block {
     display: block;
+}
+
+//Popup
+.open {
+    .screen-view {
+        top: 0 !important;
+    }
 }

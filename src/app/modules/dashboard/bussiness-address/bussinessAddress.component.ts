@@ -1,7 +1,7 @@
 import { Component, PLATFORM_ID, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators/filter';
+import { filter } from 'rxjs/operators';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';

@@ -3,7 +3,7 @@ import { DataService } from '@services/data.service';
 import { Observable } from 'rxjs';
 import { CONSTANTS } from '@config/constants';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ENDPOINTS } from '@app/config/endpoints';
 

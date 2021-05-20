@@ -5,7 +5,7 @@ import { stateList } from "./state";
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ShippingBillingAddressService } from './shippingBillingAddress.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { map } from 'rxjs/operators/map';
+import { map } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';

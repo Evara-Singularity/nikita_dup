@@ -194,6 +194,18 @@ a {
     z-index: 2;
 }
 
+// Blue btn
+.blue-border-btn-full {
+    color: $blue-link-color;
+    border: 1px solid #278BED;
+    padding: 8px 10px;
+    width: 100%;
+    text-align: center;
+    background: $white;
+    font-weight: 600;
+    font-size: $medium-font;
+}
+
 .promo-code {
     input {
         float: left;

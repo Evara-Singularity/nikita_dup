@@ -21,8 +21,8 @@
                     </ng-container>
 
                     <div class="product-img">
-                        <img style="height: '85px'; width: 85px;" *ngIf="isBrowser && i == 0" [alt]="product.productName" [src]="defaultImage" lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid" />
-                        <img style="height: '85px'; width: 85px;" *ngIf="isServer && i == 0" [alt]="product.productName" [src]="firstImage" lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid" />
+                        <img style="height: '85px'; width: 85px;" *ngIf="_commonService?.isBrowser && i == 0" [alt]="product.productName" [src]="defaultImage" lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid" />
+                        <img style="height: '85px'; width: 85px;" *ngIf="_commonService?.isServer && i == 0" [alt]="product.productName" [src]="firstImage" lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid" />
                         <img style="height: '85px'; width: 85px;" *ngIf="i > 0" [alt]="product.productName" [src]="defaultImage" lazyLoad="{{imagePath}}{{product.mainImageLink}}" [offset]="offset" class="img-fluid" />
                     </div>
                     <div class="product-description">

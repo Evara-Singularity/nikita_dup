@@ -1,4 +1,5 @@
 export const ENDPOINTS = {
+
   PRODUCT_INFO: "/product/getProductGroup",
   PRODUCT_REVIEW: "/reviews/getReviews",
   PRODUCT_FBT: "/product/getProductFbtDetails",
@@ -19,6 +20,10 @@ export const ENDPOINTS = {
   },
   GET_LAYOUT: "/homepage/layoutbycode",
   GET_LAYOUT_HOME: "/homepage/layoutbyjson?requestType=mobile",
+  GET_FDK_HOME: '/homepage/flyout?type=m',
+  GET_CATEGORY_BY_ID: '/category/getcategorybyid',
+  GET_CATEGORY_SCHEMA: '/quest/getCategorySchema',
+  GET_CMS_CONTROLLED: '/cmsapi/getCmsControlledPage',
   RECENTLY_VIEWED: "/recentlyviewed/getRecentlyViewd?customerId=",
   POST_ADD: "/address/postAddress",
   CITY_BY_PIN: "/address/getcitystatebyPincode?pin=",

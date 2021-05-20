@@ -3,7 +3,7 @@ import { BusinessPurchaseListService } from "./businessPurchaseList.service";
 import { LocalStorageService } from "ngx-webstorage";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { map } from "rxjs/operators/map";
+import { map } from "rxjs/operators";
 import { Meta } from "@angular/platform-browser";
 import { OrderSummaryService } from "@app/modules/orderSummary/orderSummary.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";

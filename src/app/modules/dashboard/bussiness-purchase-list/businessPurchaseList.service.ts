@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators/map";
+import { map } from "rxjs/operators";
 import CONSTANTS from "@app/config/constants";
 import { DataService } from "@app/utils/services/data.service";
 import { ENDPOINTS } from '@app/config/endpoints';

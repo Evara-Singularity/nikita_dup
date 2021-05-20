@@ -1,6 +1,3 @@
-{{ item | json }}
-{{ options | json }}
-
 <ng-container *ngIf="options.productNew">
     <ng-container *ngIf="contentType=='IMAGE'">
         <div [attr.id]="'prodImg' + itemIndex" class="img-block" (click)="clicked()" >
@@ -22,4 +19,21 @@
             </div>
         </div>
     </ng-container>
+</ng-container>
+<!-- slider for home siema -->
+<ng-container *ngIf="options?.topCarousel">
+    <div class="item pointer wp-100">
+        <a [routerLink]="item?.link" (click)="setBannerCookie(item?.caption)">
+            <img *ngIf="itemIndex == 0" src="{{item.image_name}}" class="wp-100" alt="Banner">
+            <img *ngIf="itemIndex > 0" id="{{item.image_name}}" class="wp-100" alt="Banner">
+
+        </a>
+    </div>
+</ng-container>
+<!-- slider for manufacturer store -->
+<ng-container *ngIf="options.manufacturer">
+    <div class="supplier_review_section center-block">
+        <p>{{item?.image_general[0]?.general_text}}</p>
+        <p class="author">{{item?.image_general[0]?.general_url}}</p>
+    </div>
 </ng-container>

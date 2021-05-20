@@ -1,8 +1,8 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { DashboardService } from "../dashboard.service";
-import { map } from "rxjs/operators/map";
-import { delay } from "rxjs/operators/delay";
-import { mergeMap } from "rxjs/operators/mergeMap";
+import { map } from "rxjs/operators";
+import { delay } from "rxjs/operators";
+import { mergeMap } from "rxjs/operators";
 import { Location, isPlatformServer, isPlatformBrowser } from "@angular/common";
 import { Router } from "@angular/router";
 import { Component, PLATFORM_ID, Inject } from "@angular/core";

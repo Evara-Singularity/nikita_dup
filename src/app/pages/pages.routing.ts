@@ -171,6 +171,15 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'order-confirmation',
+				loadChildren: () => import('./orderConfirmation/orderConfirmation.module').then(m => m.OrderConfirmationModule),
+				data: {
+					footer: false,
+					logo: true,
+					menuBar: true
+				}
+			},
+			{
 				path: 'dashboard',
 				loadChildren: () =>
 					import('./bussiness/bussiness.module').then((m) => m.BusinessModule),
@@ -637,7 +646,7 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class PagesRoutingModule {}
+export class PagesRoutingModule { }
 
 function productMatch(url: UrlSegment[]): any {
 	const urlLength = url.length;

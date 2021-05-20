@@ -1,0 +1,277 @@
+@import '../../app/scss/variables';
+// Forms
+.material-form {
+    .input-field {
+        margin-bottom: 30px;
+        label {
+            display: block;
+            position: relative;
+            input,
+            select {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 45px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+            }
+            textarea {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 65px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+            }
+            .input-value {
+                font-size: $extra-large-font;
+                padding-top: 20px;
+                display: block;
+            }
+            select+.icon-down {
+                position: absolute;
+                right: 6px;
+                top: 23px;
+                font-size: $large-font;
+            }
+            select:disabled+.icon-down {
+                color: #898989;
+            }
+            .label {
+                position: absolute;
+                left: 0;
+                font-size: $large-font;
+                top: 20px;
+                color: $disabled;
+                @extend %transition;
+            }
+            &.is-focus .label,
+            input:focus+.label,
+            select:focus+.label {
+                font-size: $medium-font;
+                top: 5px;
+            }
+            textarea:focus+.label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+            input:focus,
+            textarea:focus {
+                border-color: $active-border-color;
+                &+.label {
+                    color: $active-border-color;
+                }
+            }
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+                &.verified {
+                    color: #36BD40;
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
+}
+
+.input-sec {
+    display: block;
+    position: relative;
+    input {
+        width: 100%;
+        border: solid $border-sec-color;
+        border-width: 0 0 1px 0;
+        height: 45px;
+        padding: 14px 25px 0 0;
+        font-size: $large-font;
+    }
+    .label {
+        position: absolute;
+        left: 0;
+        font-size: $large-font;
+        top: 20px;
+        color: $disabled;
+        @extend %transition;
+    }
+    &.is-focus .label,
+    input:focus+.label {
+        font-size: $medium-font;
+        top: 5px;
+    }
+    input:focus {
+        border-color: $active-border-color;
+        &+.label {
+            color: $active-border-color;
+        }
+    }
+}
+
+textarea,
+input.text,
+input,
+select,
+.input-checkbox {
+    -webkit-appearance: none;
+    border-radius: 0;
+    outline: none;
+}
+
+input,
+select {
+    background-image: none;
+    background: none;
+    line-height: 18px;
+    position: relative;
+}
+
+select {
+    z-index: 2;
+}
+
+select.select-form {
+    width: 100%;
+    border: 1px solid #343434;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 1px;
+}
+
+select.select-form+.icon-down {
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    font-size: 14px;
+}
+
+input[type=text],
+input[type=number] {
+    font-size: $large-font !important;
+}
+
+option {
+    padding: 5px;
+}
+
+// Error Mesgs
+.error-txt {
+    color: $error-color;
+    margin-top: 5px;
+}
+
+//Cards
+.card {
+    @extend %cards;
+    padding: 0;
+}
+
+// Toggle
+.toggle-panel {
+    width: 100%;
+    &.about_moglix {
+        .toggle-head {
+            background: $white-color;
+            border: 0;
+        }
+        .toggle-content {
+            margin: 0;
+            border: 0;
+        }
+    }
+    .toggle-head {
+        border: solid $border-color;
+        border-width: 1px 0 1px 0;
+        padding: 15px 10px;
+        background: $gray-color;
+        @extend %clear-fix;
+        p {
+            font-weight: 600;
+        }
+        i {
+            font-size: 16px;
+        }
+    }
+    .toggle-content {
+        margin-top: 10px;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.20);
+    width: 100%;
+    height: 100%;
+}
+
+//Bottom Popup Design 
+.bottom-options {
+    .overlay-bg {
+        z-index: 13;
+        top: 120%;
+    }
+    .content-box {
+        position: fixed;
+        bottom: -100%;
+        left: 0;
+        padding: 15px 0;
+        background: $white;
+        z-index: 14;
+        width: 100%;
+        max-height: 40%;
+        overflow: auto;
+        @extend %transition;
+        li {
+            padding: 10px 0;
+            font-size: $extra-large-font;
+        }
+        .container-head-sec {
+            @extend %ico-txt-right;
+            margin-bottom: 10px;
+            .txt {
+                font-size: $extra-large-font;
+                font-weight: 700;
+                line-height: 21px;
+                span {
+                    display: block;
+                    font-size: $medium-font;
+                    font-weight: 400;
+                    padding-top: 5px;
+                }
+            }
+        }
+    }
+    &.open {
+        .overlay-bg {
+            top: 0;
+        }
+        .content-box {
+            bottom: 0;
+        }
+    }
+}
+
+// Sort By Filter
+.custom-cbox {
+    label {
+        display: block;
+        padding: 10px 0;
+        @extend %clear-fix;
+        @extend %custom-check-box;
+    }
+}

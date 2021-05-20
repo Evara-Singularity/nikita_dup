@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
-import CONSTANTS from 'src/app/config/constants';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: 'app-product-share',

@@ -165,6 +165,8 @@ export class SiemaCarouselComponent {
         }
 
         this.initialized = true;
+        console.log(this.initialized);
+        console.log(this.items);
         setTimeout(() => {
             this.scrollInitialize();
         }, 1000);

@@ -4,10 +4,10 @@ import { mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
-
+import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from './cart.service';
 import { DataService } from "./data.service";
 import { CheckoutService } from './checkout.service';
@@ -15,6 +15,7 @@ import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import CONSTANTS from '../../config/constants';
+import { GlobalLoaderService } from './global-loader.service';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +27,11 @@ export class CommonService {
     public myRfqParameters = { "productName": null, "brandName": null };
     private searchResultsTrackingData: { 'search-query': string, 'search-results': string };
 
+    set showLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
+    public isBrowser: boolean;
+    public isServer: boolean;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -34,6 +40,8 @@ export class CommonService {
     currentRequest: any;
     cmsData: any;
     replaceHeading: boolean = false;
+    abTesting: any;
+
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
@@ -41,7 +49,9 @@ export class CommonService {
 
     private routeData: { currentUrl: string, previousUrl: string };
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService, private _router: Router) {
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService, 
+    private _loaderService: GlobalLoaderService,
+    private _router: Router) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
@@ -49,6 +59,7 @@ export class CommonService {
         this.routeData = { currentUrl: "", previousUrl: "" };
         this.itemsValidationMessage = [];
         this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = isPlatformServer(platformId);
     }
 
     get itemsValidationMessage() {
@@ -69,7 +80,6 @@ export class CommonService {
 
     setRouteData(data) {
         Object.assign(this.routeData, data);
-        // console.log(this.routeData);
     }
 
     getRouteData() {
@@ -90,19 +100,15 @@ export class CommonService {
     }
 
     setGaGtmData(data: {}) {
-        // this.gaGtmData = data;
         if (Object.keys(data).length === 0)
             this.gaGtmData = {};
         else
             Object.assign(this.gaGtmData, data);
         this._localStorageService.store('gaGtmData', this.gaGtmData);
-        //console.log(this.gaGtmData);
-        //console.log("this.gaGtmDatathis.gaGtmDatathis.gaGtmData", this.gaGtmData, data);
     }
 
     getGaGtmData() {
         return this._localStorageService.retrieve('gaGtmData');
-        // return this.gaGtmData;
     }
 
     setMyRfqParameters() {
@@ -119,7 +125,6 @@ export class CommonService {
         }
         if (updatedParams != undefined && Object.keys(updatedParams).length > 0) {
             for (let key in updatedParams) {
-                //console.log("!!!!!!!!!!!!!!!!!!!!!!!!111", key)
                 this.defaultParams[key] = updatedParams[key];
             }
         }
@@ -192,10 +197,9 @@ export class CommonService {
         let formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams });
     }
-
-    private getSearchData(type, curl, params) {
+    
+    private getSearchData(type, curl, params): Observable<any> {
         const formattedParams = this.formatParams(params);
-        // console.log(formattedParams);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -241,13 +245,11 @@ export class CommonService {
         let fragment = "";
         if (Object.keys(productFilterData).length > 0) {
             let filter = productFilterData;
-            //console.log("Filter :::::::::::::::::::::::::::", filter);
             let keys = Object.keys(filter);
 
             for (let i = 0; i < keys.length; i++) {
 
                 if (filter[keys[i]].length > 0) {
-                    ////console.log(key, value);
                     if (fragment.length == 0)
                         fragment = fragment + keys[i] + '-' + filter[keys[i]].join("||");
                     else
@@ -258,12 +260,11 @@ export class CommonService {
             }
         }
 
-        //console.log("fragmentfragmentfragmentfragmentfragment", fragment);
         return fragment.length > 0 ? fragment : null;
     }
 
-    refreshProducts(): Observable<any> {
-        return Observable.create(observer => {
+    refreshProducts(flagFromResolver?: boolean): Observable<any> {
+        return (new Observable(observer => {
             const defaultParams = this.defaultParams;
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
@@ -286,37 +287,37 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
-                if (this.currentRequest != undefined)
+                if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
+                }
                 this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
-                    .pipe(
-                        map((res) => {
-                            res.buckets.map((bucket) => {
-                                bucket['collFilter'] = true;
-                            })
-                            return res;
+                .pipe(
+                    map((res) => {
+                        console.log(res);
+                        res.buckets.map((bucket) => {
+                            bucket['collFilter'] = true;
                         })
-                    )
-                    .subscribe((response) => {
-                        /*if(defaultParams["queryParams"]["category"] != 'undefined') {
-                            response.category = defaultParams["queryParams"]["category"];
-                        }*/
-                        if (this._router.url.search('#') < 0) {
-                            this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
-                                if (res['status']) {
-                                    this.cmsData = res['data']['data'];
-                                }
-                            });
-                        } else {
-                            this.cmsData = null;
-                            this.replaceHeading = false;
-                        }
-                        observer.next(response);
-                        observer.complete();
-                    });
+                        res['flag'] = !!flagFromResolver;
+                        return res;
+                    })
+                ).subscribe((response) => {
+                    if (this._router.url.search('#') < 0) {
+                        this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
+                            if (res['status']) {
+                                this.cmsData = res['data']['data'];
+                            }
+                        });
+                    } else {
+                        this.cmsData = null;
+                        this.replaceHeading = false;
+                    }
+                    observer.next(response);
+                    observer.complete();
+                });
             } else if (defaultParams["pageName"] == "SEARCH") {
-                if (this.currentRequest != undefined)
+                if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
+                }
                 this.currentRequest = this.getSearchData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)
                     .pipe(
                         map((res) => {
@@ -328,7 +329,6 @@ export class CommonService {
                         })
                     )
                     .subscribe((response) => {
-
                         observer.next(response);
                         observer.complete();
                     });
@@ -356,10 +356,9 @@ export class CommonService {
             if (this.isBrowser && sessionStorage.getItem('listing-page')) {
                 this.setSectionClick(sessionStorage.getItem('listing-page'));
             }
-        });
+        }));
     }
 
-    isBrowser: boolean;
     getCmsDynamicDataForCategoryAndBrand(categoryCode?, brandName?) {
         let url = CONSTANTS.NEW_MOGLIX_API + "/cmsapi/getCmsControlledPage?requestParam=article-1";
         if (brandName) {
@@ -382,6 +381,7 @@ export class CommonService {
 
 
         actualParams['type'] = 'm';
+        actualParams['abt'] = 'y';
 
         if (queryParams['preProcessRequired']) {
             actualParams['preProcessRequired'] = queryParams['preProcessRequired'];
@@ -406,9 +406,10 @@ export class CommonService {
             if (queryParams["str"] != undefined)
                 actualParams['str'] = queryParams["str"];
         } else if (params.pageName == "BRAND") {
-            if (params["category"])
+            if (params["category"]){
                 actualParams['category'] = params["category"];
-            actualParams['brand'] = params.brand.toLowerCase();
+            }
+            actualParams['brand'] = params.brand ? params.brand.toLowerCase() : '';
         } else if (params.pageName == "SEARCH") {
             /**
              * Below first if is only appending didYouMean when calling api and not appending for further routes on page
@@ -445,14 +446,10 @@ export class CommonService {
         return actualParams;
     }
 
-    /* getSession() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession");
-    } */
-
     getSession(): Observable<{}> {
         let user = this._localStorageService.retrieve('user');
-        // alert(user);
-        if (user) {//return current local session if exist
+        // return user from localstorage OR call API
+        if (user) {
             return of(user);
         }
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession")
@@ -495,7 +492,6 @@ export class CommonService {
     }
 
     subscribeCredit(data) {
-        //console.log(data);
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/rfq/addEpayLater", { body: data });
     }
 
@@ -544,7 +540,6 @@ export class CommonService {
             .pipe(
                 map((res: any) => res),
                 mergeMap((d) => {
-                    // console.log(d);
                     let bd: any = null;
                     if (d && d.status && d.statusCode == 200) {
                         bd = {
@@ -553,7 +548,6 @@ export class CommonService {
                             "is_gstin": d["data"]["isGstInvoice"]
                         };
                     }
-                    // console.log(pdata);
                     pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
                     return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/payment/pay", { body: pdata })
                         .pipe(
@@ -575,13 +569,10 @@ export class CommonService {
         let cartItems = cartSession["itemsList"];
         let billingAddress: any = this.checkoutService.getBillingAddress();
 
-        //console.log("**************", cartSession, cartSession["offersList"]);
-
         let offersList: Array<{}> = [];
 
         Object.assign(offersList, cartSession["offersList"]);
 
-        //console.log("tearajflkasjdlfjalj", offersList);
         if (offersList != undefined && offersList.length > 0) {
             for (let key in offersList) {
                 delete offersList[key]["createdAt"];
@@ -638,20 +629,13 @@ export class CommonService {
                 "offersList": (offersList != undefined && offersList.length > 0) ? offersList : null,
                 "extraOffer": cartSession["extraOffer"] ? cartSession["extraOffer"] : null,
                 "device": CONSTANTS.DEVICE.device,
-                // "businessDetails": this._cartService.getPayBusinessDetails()
-                /*"offersList": [
-                 {
-                 "offerId": 15,
-                 "type": "15"
-                 }
-                 ]*/
             }
         };
 
         if (cart['buyNow']) {
             obj['shoppingCartDto']['cart']['buyNow'] = cart['buyNow'];
         }
-        // console.log("hello", obj);
+ 
         if (billingAddress !== undefined && billingAddress !== null) {
             obj.shoppingCartDto.addressList.push(
                 {
@@ -665,7 +649,7 @@ export class CommonService {
     }
 
     getItemsList(cartItems) {
-        //console.log("get Item List", cartItems);
+
         let itemsList = [];
         if (cartItems != undefined && cartItems != null && cartItems.length > 0) {
             for (let i = 0; i < cartItems.length; i++) {
@@ -698,7 +682,6 @@ export class CommonService {
                 itemsList.push(item);
             }
         }
-        //console.log(itemsList);
 
         return itemsList;
     }
@@ -708,7 +691,7 @@ export class CommonService {
     }
 
     updateSortByState(sortByState) {
-        // this.useLastSortByState=true;
+
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
         let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
         this.defaultParams.queryParams["orderBy"] = orderBy;
@@ -721,7 +704,7 @@ export class CommonService {
             .pipe(
                 map((res: any) => res),
                 mergeMap((d) => {
-                    // console.log(d);
+
                     let bd: any = null;
                     if (d && d.status && d.statusCode == 200) {
                         bd = {
@@ -730,7 +713,7 @@ export class CommonService {
                             "is_gstin": d["data"]["isGstInvoice"]
                         };
                     }
-                    // console.log(obj);
+
                     obj["shoppingCartDto"]["businessDetails"] = bd;
                     return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/validation/validate", { body: obj })
                         .pipe(
@@ -744,9 +727,7 @@ export class CommonService {
                 })
             )
 
-        /* let url = CONSTANTS.NEW_MOGLIX_API + "/validation/validate";
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/validation/validate", { body: obj }); */
-    }
+        }
 
     testApi() {
         return this._dataService.callRestful("GET", "https://newmoglix.moglix.com/test/testgetresponse");
@@ -763,7 +744,6 @@ export class CommonService {
 
     sectionClicked: string = '';
     setSectionClick(section) {
-        console.log('set to ' + section);
         this.sectionClicked = section;
     }
 
@@ -780,5 +760,25 @@ export class CommonService {
             sessionStorage.removeItem(identifier + 'page');
             sessionStorage.setItem(identifier + '-page', sectionName);
         }
+    }
+
+    scrollTo(event) {
+        if (this.isBrowser) {
+            ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+        }
+    }
+
+    getBreadcrumpData(link, type, pageTitle?): Observable<any> {
+        let curl = CONSTANTS.NEW_MOGLIX_API + "/homepage/getbreadcrumb?source=" + link + "&type=" + type;
+        if (pageTitle) {
+            curl += "&pagetitle=" + pageTitle;
+        }
+        return this._dataService.callRestful("GET", curl);
+    }
+
+    removeLoader() {
+        setTimeout(() => {
+            this.showLoader = false;
+        }, 0);
     }
 }

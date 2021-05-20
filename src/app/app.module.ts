@@ -3,17 +3,19 @@ import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-bro
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import CONSTANTS from './config/constants';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL_, options: {} };
+const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'ssr-pwa' }),
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
     AppRoutingModule,
     BrowserTransferStateModule,
     HttpClientModule,

@@ -1,0 +1,100 @@
+@import '../../scss/variables';
+.view-products {
+    padding-bottom: 0;
+    li {
+        @extend %clear-fix;
+        padding: 10px;
+        position: relative;
+        background: white;
+        margin-bottom: 2px;
+        .product-img {
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+        .description-txt {
+            font-size: 14px;
+            margin-bottom: 4px;
+            line-height: 20px;
+        }
+        .request-text {
+            font-weight: bold;
+            font-size: 16px;
+            color: $black;
+            margin-top: 5px;
+        }
+    }
+    li:last-child {
+        border-bottom: none !important;
+    }
+    &.list {
+        li {
+            width: 100%;
+            border-bottom: 1px solid $border-color;
+            a {
+                display: block;
+            }
+            .product-img {
+                width: 84px;
+                height: 84px;
+                float: left;
+            }
+            .product-description {
+                float: right;
+                width: 75%;
+                width: calc(100% - 104px);
+            }
+        }
+    }
+    &.grid {
+        li {
+            width: 50%;
+            float: left;
+            border-bottom: 1px solid $border-color;
+            height: 260px;
+            position: relative;
+            &:nth-child(2n+1) {
+                border-right: 1px solid $border-color;
+            }
+            .product-img {
+                display: block;
+                margin-bottom: 10px;
+                height: 115px;
+                text-align: center;
+            }
+            .product-description {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            .price {
+                display: block;
+            }
+        }
+    }
+}
+
+.price {
+    .after-discount {
+        font-weight: bold;
+        font-size: 20px;
+        display: block;
+        margin: 5px 0 5px 0;
+    }
+    .before-discount {
+        text-decoration: line-through;
+        opacity: 0.5;
+        margin: 0 6px 0 0;
+    }
+    .discount {
+        color: $green-color;
+        font-weight: bold;
+    }
+}
+
+.seller {
+    margin-top: 10px;
+    span {
+        color: #9e9d9d;
+    }
+}

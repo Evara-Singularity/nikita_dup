@@ -12,6 +12,7 @@ import { CartModule } from '../../modules/cart/cart.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
 import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
+import { ModalModule } from '../../modules/modal/modal.module';
 
 @NgModule({
     imports: [
@@ -23,14 +24,15 @@ import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.modu
         FormsModule,
         CartModule,
         CartUpdatesModule,
-        UnAvailableItemsModule
+        UnAvailableItemsModule,
+        ModalModule
     ],
     declarations: [
         QuickOrderComponent,
     ],
     providers: [
         QuickOrderResolver,
-        QuickOrderService
+        QuickOrderService,
     ]
 })
 

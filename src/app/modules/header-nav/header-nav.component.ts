@@ -224,7 +224,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     this.localAuthService.login$.subscribe(
       (data) => {
-        console.log('localAuthService login', data);
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin = true;
       }
@@ -232,7 +231,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     this.localAuthService.logout$.subscribe(
       (data) => {
-        console.log('localAuthService logout', data);
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin = false;
       }
@@ -317,7 +315,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
       this.hideElLogin = false;
       this.changeDetectorRef.detectChanges();
-      console.log('refreshIcon 3', this.router.url);
+      // console.log('refreshIcon 3', this.router.url);
 
       if (this.router.url.includes('/quickorder')) {
         if (this.noOfCart && this.noOfCart != 0) {

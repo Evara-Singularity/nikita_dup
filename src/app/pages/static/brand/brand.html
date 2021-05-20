@@ -1,0 +1,43 @@
+<section class="brands-container bg-white brandBlock">
+    <div *ngIf="brandsLogo && brandsLogo.length > 0" class="container">
+        <ul class="brands-logo">
+            <li *ngFor="let brand of brandsLogo">
+                <a [routerLink]="'/'+brand.image_link">
+                    <img src="{{API['IMAGE_BASE_URL']}}{{brand.image_name}}">
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="panel-head">
+        <h3 class="heading titleBrand" [appKpToggle]="{idName: 'letterContainer',iconMode :true}">
+            ALL BRANDS
+            <span class="iconaccordian">
+                <i class="icon-expand"></i>
+            </span>
+        </h3>
+    </div>
+    <div id="letterContainer" style="display:none;">
+        <div id="letterId" class="row bg-lightGrey alphabetBlock">
+            <div class="innerBlock">
+                <ul>
+                    <li *ngFor="let letter of final_arr;let j= index;">
+                        <a (click)="scrollToList(j)">{{letter['letter']}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="letterName" class="row bg-white nameBlock">
+            <p>Showing
+                <span>{{total_count}}</span>&nbsp;Brands
+            </p>
+            <div id="alphabet_{{i}}" class="fullNameBlock clearfix" *ngFor="let brand of final_arr;let i = index;">
+                <span class="letter">{{brand['letter']}}</span>
+                <ul>
+                    <li *ngFor="let nameA of brand.nameArr">
+                        <a href="{{nameA.link}}">{{nameA.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

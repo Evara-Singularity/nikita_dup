@@ -1,6 +1,6 @@
 
 import { isPlatformServer, isPlatformBrowser, DOCUMENT, Location } from '@angular/common';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { ViewChild, Renderer2 } from '@angular/core';
@@ -25,6 +25,7 @@ import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { FooterService } from '../../utils/services/footer.service';
 import { GlobalState } from '../../utils/global.state';
 import { ENDPOINTS } from '../../config/endpoints';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 
 const PD = makeStateKey<{}>('pdata');//PD: ProductData
@@ -84,7 +85,6 @@ export class CartComponent {
     productSizes: Array<any> = [];
     userSession: any;
     productId: string;
-    showLoader: boolean = true;
     productResult: any;
     isPurcahseListProduct: boolean = false;
     allCharges: Array<Boolean> = new Array();
@@ -105,7 +105,6 @@ export class CartComponent {
     messages: Array<any> = [];
     isPaymentValid: boolean = false;
     paymnetValidationMessage: string = '';
-    isShowLoader: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
     api: any = {};
@@ -126,6 +125,9 @@ export class CartComponent {
     checkoutAddressIndex: number;
     showLink;
     selectedBillingAddress: number;
+    set isShowLoader(status: boolean) {
+        this._loaderService.setLoaderState(status)
+    }
 
     constructor(
         private _location: Location,
@@ -147,6 +149,7 @@ export class CartComponent {
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _productService: ProductService,
+        private _loaderService: GlobalLoaderService,
         private _tms: ToastMessageService) {
 
         this.isServer = isPlatformServer(platformId);
@@ -2190,7 +2193,7 @@ export class CartComponent {
     }
 
     removeItemFromPurchaseList() {
-        this.showLoader = true;
+        this.commonService.showLoader = true;
         const userSession = this._localAuthService.getUserSession();
 
         const obj = {
@@ -2212,20 +2215,20 @@ export class CartComponent {
                     });
                     this.getPurchaseList();
                 } else {
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                 }
             },
             err => {
-                this.showLoader = false;
+                this.commonService.showLoader = false;
             }
         )
     }
     getGroupedProduct() {
         // console.log(" get grouped product");
-        this.showLoader = true;
+        this.commonService.showLoader = true;
 
         if (this._tState.hasKey(PD)) {
-            this.showLoader = false;
+            this.commonService.showLoader = false;
             const productResponse = this._tState.get(PD, {});
             this.setProductDetails(productResponse);
         } else {
@@ -2234,7 +2237,7 @@ export class CartComponent {
             this._productService.getGroupProductObj(this.productId).subscribe(
                 (r) => {
                     // console.log("r data",r)
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                     // if (r['status']) {
                     if (this.isServer) {
                         this._tState.set(PD, r);
@@ -2244,7 +2247,7 @@ export class CartComponent {
                     // }
                 }, error => {
                     // console.log("in error",error);
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                 });
         }
     }
@@ -2506,19 +2509,16 @@ export class CartComponent {
         this.meta.addTag({ "name": "og:image", "content": this.productResult['productImage'] })
         this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT });
         this.meta.addTag({ "name": "keywords", "content": this.productResult['productName'] + ", " + this.productResult['categoryName'] + ", " + this.productResult['brand'] });
-
-        let links = this._renderer2.createElement('link');
-
-        links.rel = "canonical";
-        let url = this.productResult['canonicalUrl'];
-        if (url.substring(url.length - 2, url.length) == "-g") {
-            url = url.substring(0, url.length - 2);
+        if (this.isServer) {
+            let links = this._renderer2.createElement('link');
+            links.rel = "canonical";
+            let url = this.productResult['canonicalUrl'];
+            if (url.substring(url.length - 2, url.length) == "-g") {
+                url = url.substring(0, url.length - 2);
+            }
+            links.href = CONSTANTS.PROD + "/" + url;
+            this._renderer2.appendChild(this._document.head, links);
         }
-        links.href = CONSTANTS.PROD + "/" + url;
-        this._renderer2.appendChild(this._document.head, links);
-
-
-
     }
     rfqUrl: Array<any> = [];
     filterName = "filtername";
@@ -2852,7 +2852,7 @@ export class CartComponent {
             }
             // }
             if (this.isBrowser) {
-                this.showLoader = false;
+                this.commonService.showLoader = false;
             }
 
         }
@@ -2868,7 +2868,7 @@ export class CartComponent {
             if (user.authenticated == "true") {
                 let request = { idUser: user.userId, userType: "business" };
                 this._productService.getPurchaseList(request).subscribe((res) => {
-                    this.showLoader = false;
+                    this.commonService.showLoader = false;
                     if (res['status'] && res['statusCode'] == 200) {
                         let purchaseLists: Array<any> = []
                         purchaseLists = res['data'];

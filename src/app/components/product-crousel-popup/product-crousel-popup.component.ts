@@ -8,9 +8,11 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ModalService } from '../../modules/modal/modal.service';
 import { ModalModule } from '../../modules/modal/modal.module';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
-import { SiemaCarouselModule } from 'src/app/modules/siemaCarousel/siemaCarousel.module';
-import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
+import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.module';
+import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
+import { environment } from 'environments/environment';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: 'app-product-crousel-popup',
@@ -26,6 +28,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   @Output() currentSlide: EventEmitter<any> =  new EventEmitter<any>();
   ngxSiemaOptions: NgxSiemaOptions
   readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
+  readonly imageURL = CONSTANTS.IMAGE_ASSET_URL
   
   constructor(
     private ngxSiemaService: NgxSiemaService,

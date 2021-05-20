@@ -1,0 +1,53 @@
+@import './../../../scss/variables';
+
+#subcCategoryTop {
+
+  padding: 15px 0;
+
+  li {
+    @include gridForCategory('3', '40');
+    margin-bottom: 20px;
+
+    &:nth-child(3n + 2) {
+      margin: 0 20px 20px 20px;
+
+    }
+
+    &:nth-child(3n) {
+      clear: right;
+    }
+
+    &:nth-child(3n + 1) {
+      clear: left;
+    }
+
+    .prod-image {
+      padding: 10px;
+      background: $white;
+      @extend %box-shadow;
+      min-height: 92px;
+      ;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    h4 {
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+}
+
+.show-more {
+  display: block;
+  width: 80%;
+  font-size: $extra-large-font;
+  text-align: center;
+  color: $white !important;
+  background: $link-color;
+  margin: 0 auto;
+}

@@ -1,0 +1,14 @@
+<form action="{{data['formUrl']}}" method="post" id="paytm_wallet_form" name="paytm_wallet_form">
+    <input type="hidden" name="MID" [value]="data['mid']">
+    <input type="hidden" name="ORDER_ID" [value]="data['order_ID']" />
+    <input type="hidden" name="WEBSITE" [value]="data['website']">
+    <input type="hidden" name="INDUSTRY_TYPE_ID" [value]="data['industry_TYPE_ID']">
+    <input type="hidden" name="CHANNEL_ID" [value]="data['channel_ID']">
+    <input type="hidden" name="TXN_AMOUNT" [value]="data['txn_AMOUNT']">
+    <input type="hidden" name="EMAIL" [value]="data['email']">
+    <input type="hidden" name="CUST_ID" [value]="data['cust_ID']">
+    <input type="hidden" name="MOBILE_NO" [value]="data['mobile_NO']">
+    <input type="hidden" name="txnDate" [value]="data['todayDate']">
+    <input type="hidden" name="CHECKSUMHASH" [value]="data['checksumhash']">
+    <input type="hidden" name="CALLBACK_URL" [value]="data['callback_URL']">
+</form>

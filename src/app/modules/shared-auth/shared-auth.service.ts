@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ENDPOINTS } from 'src/app/config/endpoints';
+import { ENDPOINTS } from '@app/config/endpoints';
 import CONSTANTS from '../../config/constants';
 import { DataService } from '../../utils/services/data.service';
 

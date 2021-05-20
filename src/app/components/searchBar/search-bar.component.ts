@@ -2,7 +2,6 @@ import { Component, ViewEncapsulation, Input, OnInit, PLATFORM_ID, Inject, ViewC
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
@@ -11,8 +10,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { TrendingSearchModule } from '../../modules/trendingSearch/trending-search.module';
 import { SearchHistoryModule } from '../../modules/searchHistory/search-history.module';
 import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive';
-import CONSTANTS from 'src/app/config/constants';
-import { BrowserModule } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'app-search-bar',

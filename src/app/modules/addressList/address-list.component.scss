@@ -1,0 +1,25 @@
+@import '../../scss/variables';
+.persnName {
+    &:after {
+        content: "|";
+        padding: 0px 10px;
+        position: absolute;
+    }
+    &+span {
+        padding-left: 10px;
+    }
+}
+
+.multiple-address {
+    @extend %clear-fix;
+    label {
+        float: left;
+        width: 95%
+    }
+    .icon-dot {
+        float: right;
+        text-align: right;
+        padding: 10px 0;
+        width: 5%
+    }
+}

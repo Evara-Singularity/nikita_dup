@@ -4,14 +4,13 @@ import { Component, ViewEncapsulation, Input, PLATFORM_ID, Inject } from '@angul
 import { Meta } from '@angular/platform-browser';
 import { QuickOrderService } from './quickOrder.service';
 import { Title } from '@angular/platform-browser';
-import {Subject} from 'rxjs/Subject';
-import { mergeMap} from 'rxjs/operators/mergeMap';
-import { map } from 'rxjs/operators/map';
+import { Subject } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs/observable/of';
-import { takeUntil } from 'rxjs/operators';
-import CONSTANTS from '../..//config/constants';
+import { of } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { CONSTANTS } from '@config/constants';
 import { GlobalState } from '../..//utils/global.state';
 import { LocalAuthService } from '../..//utils/services/auth.service';
 import { FooterService } from '../..//utils/services/footer.service';
@@ -38,8 +37,6 @@ export class QuickOrderComponent {
     signInText;
     private cDistryoyed = new Subject();
     itemsValidationMessage: Array<{}>;
-   // @ViewChild('quantityTarget') quantityTarget: HTMLInputElement;
-    //recentProductList: Array<any>;
 
     constructor(
         private _gState: GlobalState,
@@ -93,18 +90,12 @@ export class QuickOrderComponent {
     }
 
     getRecentProduct() {
-        // if (this.localStorageService.retrieve('recentproduct')) {
-        //     this.recentProductList = this.localStorageService.retrieve('recentproduct');
-        // }
     }
 
 
     ngOnInit() {
-       
-        
         this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
-        //this.getRecentProduct();
-        this.footerService.setFooterObj({footerData: false});
+        this.footerService.setFooterObj({ footerData: false });
         this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
 
         this.cartService.orderSummary.subscribe(
@@ -113,56 +104,55 @@ export class QuickOrderComponent {
             }
         );
 
-        this._activatedRoute.data
-        .pipe(
-            map(data => data.qores),
-            mergeMap((cartSession: any) => {
-                debugger;
-                if (this.isServer) {
-                    return of(null);
+        this._activatedRoute.data.pipe(
+                mergeMap((data: any) => {
+                    const cartSession = data.qores;
+                    debugger;
+                    if (this.isServer) {
+                        return of(null);
+                    }
+                    /**
+                     * return cartsession, if session id missmatch
+                     */
+                    if (cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
+                        return of(cartSession);
+                    }
+                    return this.getShippingValue(cartSession);
+                }),
+            ).subscribe((cartSession) => {
+                this.isShowLoader = true;
+                if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 200) {
+                    cartSession = this.cartService.updateCart(cartSession);
+                    this.cartService.setCartSession(cartSession);
+                    this.cart = cartSession['cart'];
+                    if (cartSession['itemsList'] == null) {
+                        this.itemsList = [];
+                    } else {
+                        this.itemsList = cartSession['itemsList'];
+                    }
+                    setTimeout(() => {
+                        this.cartSessionUpdated$.next(cartSession);
+                        this.cartService.orderSummary.next(cartSession);
+                        this.cartService.cart.next(cartSession['cart'] !== undefined ? cartSession['noOfItems'] : 0);
+                    }, 0)
+                } else if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
+                    const cs = this.cartService.updateCart(cartSession['cart']);
+                    this.cartService.setCartSession(cs);
+                    this.cart = cs;
+                    if (cs['itemsList'] == null) {
+                        this.itemsList = [];
+                    } else {
+                        this.itemsList = cs['itemsList'];
+                    }
+                    setTimeout(() => {
+                        this.cartSessionUpdated$.next(cs);
+                        this.cartService.orderSummary.next(cs);
+                        this.cartService.cart.next(cs['cart'] !== undefined ? cs['noOfItems'] : 0);
+                    }, 0)
+                    this._localAuthService.setUserSession(cartSession['userData']);
+                    this._localAuthService.logout$.emit();
                 }
-                /**
-                 * return cartsession, if session id missmatch
-                 */
-                if (cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
-                    return of(cartSession);
-                }
-                return this.getShippingValue(cartSession);
-            })
-        ).subscribe((cartSession) => {
-            this.isShowLoader = true;
-            if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 200) {
-                cartSession = this.cartService.updateCart(cartSession);
-                this.cartService.setCartSession(cartSession);
-                this.cart = cartSession['cart'];
-                if (cartSession['itemsList'] == null) {
-                    this.itemsList = [];
-                } else {
-                    this.itemsList = cartSession['itemsList'];
-                }
-                setTimeout(()=>{
-                    this.cartSessionUpdated$.next(cartSession);
-                    this.cartService.orderSummary.next(cartSession);
-                    this.cartService.cart.next(cartSession['cart'] !== undefined ? cartSession['noOfItems'] : 0);
-                }, 0)                
-            } else if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
-                const cs = this.cartService.updateCart(cartSession['cart']);
-                this.cartService.setCartSession(cs);
-                this.cart = cs;
-                if (cs['itemsList'] == null) {
-                    this.itemsList = [];
-                } else {
-                    this.itemsList = cs['itemsList'];
-                }
-                setTimeout(()=>{
-                    this.cartSessionUpdated$.next(cs);
-                    this.cartService.orderSummary.next(cs);
-                    this.cartService.cart.next(cs['cart'] !== undefined ? cs['noOfItems'] : 0);
-                },0)                
-                this._localAuthService.setUserSession(cartSession['userData']);
-                this._localAuthService.logout$.emit();
-            }
-        });
+            });
 
         this.sessionCart = this._localAuthService.getUserSession();
 
@@ -184,24 +174,26 @@ export class QuickOrderComponent {
         this.itemsValidationMessage = itemsValidationMessage;
     }
 
-    getShippingValue(cartSession){
+    getShippingValue(cartSession) {
+        console.log('getShippingValue cartSession', cartSession);
         let sro = this.cartService.getShippingObj(cartSession);
         return this.cartService.getShippingValue(sro)
-                    .pipe(
-                        map((sv: any) => {
-                            if(sv && sv['status'] && sv['statusCode'] == 200){
-                                cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
-                                if(sv['data']['totalShippingAmount'] != undefined && sv['data']['totalShippingAmount'] != null){
-                                    let itemsList = cartSession['itemsList'];
-                                    for(let i=0; i<itemsList.length; i++){
-                                        cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
-                                    }
-                                }
+            .pipe(
+                map((sv: any) => {
+                    if (sv && sv['status'] && sv['statusCode'] == 200) {
+                        cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
+                        if (sv['data']['totalShippingAmount'] != undefined && sv['data']['totalShippingAmount'] != null) {
+                            let itemsList = cartSession['itemsList'];
+                            for (let i = 0; i < itemsList.length; i++) {
+                                cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
                             }
-                            return cartSession;
-                        })
-                    );
+                        }
+                    }
+                    return cartSession;
+                })
+            );
     }
+
     deleteProduct(index) {
         this.itemsList.splice(index, 1);
         this.cart = this._quickOrderService.updateCart(this.itemsList, this.cart);
@@ -219,12 +211,10 @@ export class QuickOrderComponent {
 
     incrementQuantity(event, i) {
         this.updateQuantity(Number(event) + 1, i);
-
     }
 
 
     updateQuantity(event, i) {
-
         let updatedQuantity = event;
         let productBO = {};
         let item = this.itemsList[i];
@@ -234,7 +224,7 @@ export class QuickOrderComponent {
             if (updatedQuantity > productPriceQuantity.quantityAvailable) {
                 alert('Quantity not available');
                 let id = '#quantityInput' + i;
-                if(!this.isServer){
+                if (!this.isServer) {
                     (<HTMLInputElement>document.querySelector(id)).value = this.itemsList[i]['productQuantity'];
                 }
                 this.itemsList[i]['productQuantity'] = item['productQuantity'];
@@ -242,7 +232,7 @@ export class QuickOrderComponent {
             else if (updatedQuantity < productPriceQuantity.moq) {
                 alert('Minimum quantity is ' + productPriceQuantity.moq);
                 let id = '#quantityInput' + i;
-                if(!this.isServer){
+                if (!this.isServer) {
                     (<HTMLInputElement>document.querySelector(id)).value = this.itemsList[i]['productQuantity'];
                 }
 
@@ -271,26 +261,23 @@ export class QuickOrderComponent {
         this.sessionCart['cart'] = this.cart;
 
         this._quickOrderService.updateCartSession(this.sessionCart).subscribe(res => {
- 
+
             if (res['statusCode'] == 200) {
                 alert('Cart quantity updated successfully');
                 this.cartService.cart.next(res['noOfItems']);
             }
         });
     }
-    placeOrder(){
-          const user = this.localStorageService.retrieve('user');
-          if (user && user.authenticated == "true"){
-              console.log(this._gState);
-             this.router.navigateByUrl('/checkout');
-          }
-          else {
-              this._gState.notifyDataChanged('loginPopup.open',{redirectUrl:'/checkout', template: 2});
-          }
-     }
+
+    placeOrder() {
+        const user = this.localStorageService.retrieve('user');
+        if (user && user.authenticated == "true") {
+            console.log(this._gState);
+            this.router.navigateByUrl('/checkout');
+        }
+        else {
+            this._gState.notifyDataChanged('loginPopup.open', { redirectUrl: '/checkout', template: 2 });
+        }
     }
 
-
-
-
-
+}

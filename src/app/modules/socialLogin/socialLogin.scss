@@ -1,5 +1,4 @@
 @import "../../scss/variables";
-
 .btn {
     width: 49%;
     width: calc(50% - 5px);
@@ -36,6 +35,7 @@
         padding: 15px;
         img {
             vertical-align: middle;
+            width: 17px;
         }
         .txt {
             margin-left: 10px;

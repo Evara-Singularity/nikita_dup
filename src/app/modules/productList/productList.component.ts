@@ -3,30 +3,28 @@ import {
     ChangeDetectionStrategy,
     PLATFORM_ID, Inject
 } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
-import { Subject } from "rxjs/Subject";
-import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { CommonService } from 'src/app/utils/services/common.service';
-import CONSTANTS from 'src/app/config/constants';
-declare let dataLayer;
-const RPRK: any = makeStateKey<{}>("RPRK")                       //RPRK: Refresh Product Result Key
-const GRCRK: any = makeStateKey<{}>("GRCRK")                     // GRCRK: Get Related Category Result Key
 
+import { Router } from '@angular/router';
+import { CommonService } from "@app/utils/services/common.service";
+import { Subject} from "rxjs";
+import { fade } from '@app/utils/animations/animation';
+import { CONSTANTS } from "@app/config/constants";
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
     selector: 'product-list',
     templateUrl: 'productList.html',
     styleUrls: [
-        './productList.scss'
+        '../../pages/category/category.scss'
     ],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        fade
+    ]
 })
 
-export class ProductListComponent {
-    isServer: boolean;
-    isBrowser: boolean;
+export class ProductListComponent{
     defaultImage = CONSTANTS.IMAGE_BASE_URL + 'img/others/Card.jpg';
     offset = 100;
     currentUrl: string;
@@ -38,86 +36,82 @@ export class ProductListComponent {
     @Input() relatedCatgoryListUpdated: Subject<any>;
     @Input('isDisplayCategoryName') isDisplayCategoryName = true;
     products;
-    categoryDataResponse: any;
-    categoryDataName: any;
-    displayCategoryName: any;
-    productCount: any;
+    categoryDataResponse:any;
+    categoryDataName:any;
+    displayCategoryName:any;
+    productCount:any;
     firstImage = '';
     API = CONSTANTS;
-    constructor(private _tState: TransferState, @Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public _router: Router, private _commonService: CommonService, private elementRef: ElementRef) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+    constructor(private cd: ChangeDetectorRef, public _router: Router, public _commonService: CommonService, private elementRef: ElementRef, private analytics: GlobalAnalyticsService){
     };
 
-    ngOnInit() {
-        if (this.isBrowser) {
-            if (window.outerWidth >= 768) {
-                this.blank = '_blank';
-            }
-        }
+    ngOnInit(){
+
         this.currentUrl = this._router.url;
-        if (this.isBrowser && document.querySelector('a[target="_blank"]')) {
+        if (this._commonService.isBrowser && document.querySelector('a[target="_blank"]')) {
             document.querySelector('a[target="_blank"]').removeAttribute('target');
         }
-        if (this._tState.hasKey(RPRK)) {
-            const response = this._tState.get(RPRK, {});
-            this.products = response['productSearchResult']['products'];
-            this.productCount = response['productSearchResult']['totalCount'];
-        }
-        this.productsUpdated.subscribe((products) => {
+
+        this.productsUpdated.subscribe((products)=>{
             this.products = products;
-            if (this.products.length)
+            if(this.products.length)
                 this.firstImage = CONSTANTS.IMAGE_BASE_URL + products[0].mainImageLink;
-            this.cd.markForCheck();        // marks path
+            this.cd.markForCheck(); // marks path
         });
-        if (this.productsCount && this.productsCount.subscribe) {
-            this.productsCount.subscribe((productsCount) => {
+        
+        if(this.productsCount && this.productsCount.subscribe){
+            this.productsCount.subscribe((productsCount)=>{
                 this.productCount = productsCount.itemCount;
             })
         }
-        if (this._tState.hasKey(GRCRK)) {
-            let response = this._tState.get(GRCRK, {});
-            this.displayCategoryName = response['categoryDetails'].categoryName;
-        }
+
         if (this.relatedCatgoryListUpdated && this.relatedCatgoryListUpdated.subscribe) {
-            this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList) => {
+            this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList)=>{
                 this.displayCategoryName = relatedCatgoryList['categoryDetails'].categoryName;
-                this.cd.markForCheck();    // marks path
+                this.cd.markForCheck(); // marks path
             })
         }
     }
-
     goToProducDetailPage(url) {
         this._router.navigate([url]);
     }
 
-    execGaGTm(product, index) {
+    execGaGTm(product, index){
         let defaultParams = this._commonService.getDefaultParams();
         this._commonService.setSectionClickInformation(defaultParams['pageName'], 'pdp');
         let searchResultsTrackingData = this._commonService.getSearchResultsTrackingData();
-        if (defaultParams['pageName'] == "SEARCH") {
-            dataLayer.push({
-                'event': 'search-results-click',
-                'search-query': searchResultsTrackingData['search-query'],
-                'search-results': searchResultsTrackingData['search-results'],
-                'click-result': product.productName,
-                'search-click-category': 'pdp'
+        if(defaultParams['pageName'] == "SEARCH"){
+            this.analytics.sendGTMCall({
+                'event':'search-results-click',
+                'search-query':searchResultsTrackingData['search-query'],
+                'search-results':searchResultsTrackingData['search-results'],
+                'click-result':product.productName,
+                'search-click-category':'pdp'
             });
         }
 
-        let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
-        if (defaultParams['pageName'] == "SEARCH") {
+        let cr: any = this._router.url.replace(/\//,' ').replace(/-/g,' ');
+        if(defaultParams['pageName'] == "SEARCH"){
             cr = defaultParams['queryParams']['search_query'];
-        } else {
+        }else{
+            //console.log(cr);
             cr = cr.split('/');
-            cr.splice(cr.length - 1, 1);
-            let list = cr[cr.length - 1].replace(/ /g, ' and ');
+            //console.log("cr after split", cr);
+            cr.splice(cr.length-1, 1);
+           //console.log("cr after splice", cr);
+            let list = cr[cr.length-1].replace(/ /g,' and ');
+            //console.log("cr after replace", cr, list);
             cr = cr.join('/');
+            //console.log("cr after join", cr, list);
         }
 
+
+
         let gaGtmData = this._commonService.getGaGtmData();
-        this._commonService.setGaGtmData({ category: cr });
-        dataLayer.push({
+        this._commonService.setGaGtmData({category: cr});
+
+
+        this.analytics.sendGTMCall({
             'event': 'productClick',
             'ecommerce': {
                 'click': {
@@ -131,7 +125,7 @@ export class ProductListComponent {
                         'brand': product.brandName,
                         'category': cr,
                         'variant': '',
-                        'position': index + 1
+                        'position': index+1
                     }]
                 }
             },
@@ -139,7 +133,7 @@ export class ProductListComponent {
     }
 
     ngOnDestroy() {
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             sessionStorage.removeItem('listing-page');
         }
     }

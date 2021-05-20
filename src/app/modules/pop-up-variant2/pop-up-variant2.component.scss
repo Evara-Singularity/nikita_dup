@@ -1,0 +1,49 @@
+@import '../../scss/variables';
+.container {
+    height: 100%;
+}
+
+.popup {
+    position: fixed;
+    // display: none;
+    z-index: 99;
+    &.screen-view {
+        width: 100%;
+        height: 100%;
+        top: 120%;
+        left: 0;
+        background: $white;
+        @extend %transition;
+        &.payment-popup {
+            background: $body-color;
+            &>.container {
+                width: 100%;
+            }
+             ::ng-deep {
+                .head-sec {
+                    padding: 12px 0;
+                    margin: 0;
+                    @extend %box-shadow;
+                    background: $white;
+                    i {
+                        font-size: 20px;
+                        line-height: 24px;
+                    }
+                    i+.page-name {
+                        font-size: $extra-large-font;
+                        margin-left: 20px;
+                        color: $white;
+                    }
+                }
+            }
+             ::ng-deep {
+                .content-popup {
+                    height: 85%;
+                    height: calc(100% - 100px);
+                    overflow: auto;
+                    padding: 15px;
+                }
+            }
+        }
+    }
+}

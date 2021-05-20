@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import CONSTANTS from "src/app/config/constants";
+import CONSTANTS from "@app/config/constants";
 import { DataService } from "../../utils/services/data.service";
 
 @Injectable()

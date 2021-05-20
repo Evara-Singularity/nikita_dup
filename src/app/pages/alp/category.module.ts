@@ -8,18 +8,16 @@ import {CategoryService} from "./category.service";
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgxSiemaModule } from 'ngx-siema';
-import { FilterModule } from 'src/app/modules/filter/filter.module';
-import { MathFloorPipeModule } from 'src/app/utils/pipes/math-floor';
-import { MathCeilPipeModule } from 'src/app/utils/pipes/math-ceil';
-import { DiscountPipeModule } from 'src/app/utils/pipes/discount.pipe';
-import { PaginationModule } from 'src/app/modules/pagination/pagination.module';
-import { BreadCrumpModule } from 'src/app/modules/breadcrump/breadcrump.module';
-import { PopUpModule } from 'src/app/modules/popUp/pop-up.module';
-//import { LoaderModule } from 'src/app/modules/loader/loader.module';
-import { SortByModule } from 'src/app/modules/sortBy/sortBy.module';
-import { ProductListModule } from 'src/app/modules/productList/productList.module';
-import { GroupByComponent } from 'src/app/components/group-by/group-by.component';
-import { BestSellerComponent } from 'src/app/components/best-seller/best-seller.component';
+import { FilterModule } from '@modules/filter/filter.module';
+import { MathCeilPipeModule } from '@utils/pipes/math-ceil';
+import { DiscountPipeModule } from '@utils/pipes/discount.pipe';
+import { PaginationModule } from '@modules/pagination/pagination.module';
+import { BreadCrumpModule } from '@modules/breadcrump/breadcrump.module';
+import { PopUpModule } from '@modules/popUp/pop-up.module';
+import { SortByModule } from '@modules/sortBy/sortBy.module';
+import { ProductListModule } from '@modules/productList/productList.module';
+import { GroupByComponent } from '@components/group-by/group-by.component';
+import { BestSellerComponent } from '@components/best-seller/best-seller.component';
 
 @NgModule({
     imports: [

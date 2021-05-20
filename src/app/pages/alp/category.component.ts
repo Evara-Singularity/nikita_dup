@@ -12,12 +12,12 @@ import { map } from 'rxjs/operators';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { PageScrollService } from 'ngx-page-scroll-core';
 import { NgxSiemaOptions } from 'ngx-siema';
-import { CommonService } from 'src/app/utils/services/common.service';
-import { FooterService } from 'src/app/utils/services/footer.service';
-import { SortByComponent } from 'src/app/modules/sortBy/sortBy.component';
-import CONSTANTS from 'src/app/config/constants';
-import { DataService } from 'src/app/utils/services/data.service';
-import { GlobalLoaderService } from 'src/app/utils/services/global-loader.service';
+import { CommonService } from '@utils/services/common.service';
+import { FooterService } from '@utils/services/footer.service';
+import { SortByComponent } from '@modules/sortBy/sortBy.component';
+import CONSTANTS from '@config/constants';
+import { DataService } from '@utils/services/data.service';
+import { GlobalLoaderService } from '@utils/services/global-loader.service';
 
 declare let dataLayer;
 declare var digitalData: {};

@@ -3,11 +3,11 @@ import { ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, I
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
-// import { CheckoutLoginService } from '../../utils/services/checkout.service';
 import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { GlobalState } from '../../utils/global.state';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 
 @Component({
   selector: 'header-nav',
@@ -50,7 +50,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     private localAuthService: LocalAuthService,
     private cartService: CartService,
     private location: Location,
-    // private checkoutLoginService: CheckoutLoginService,
+    private checkoutLoginService: CheckoutLoginService,
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private ngZone: NgZone,
@@ -273,20 +273,20 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         (window.location.pathname == "/checkout" && window.location.search == "?index=2") ||
         (window.location.pathname == "/checkout")
       ) {
-        // if (this.checkoutLoginService.isAtFirstSection) {
-        //   let route = parseInt(window.location.search.split("=")[1]);
-        //   if(isNaN(route)){
-        //     this.location.back();
-        //   }else if(route == 1){
-        //     this.location.back();
-        //   }else if(route == 2){
-        //     this.location.back();
-        //   }else{
-        //     this._state.notifyData("routeChanged", route - 2);
-        //   }
-        // } else {
-        //   this.checkoutLoginService.enableResetTabSateSub(true);
-        // }
+        if (this.checkoutLoginService.isAtFirstSection) {
+          let route = parseInt(window.location.search.split("=")[1]);
+          if(isNaN(route)){
+            this.location.back();
+          }else if(route == 1){
+            this.location.back();
+          }else if(route == 2){
+            this.location.back();
+          }else{
+            this._state.notifyData("routeChanged", route - 2);
+          }
+        } else {
+          this.checkoutLoginService.enableResetTabSateSub(true);
+        }
       } else if (window.location.pathname == "/checkout" && window.location.search != "?index=2" && window.location.search != "?index=1") {
         let route = parseInt(window.location.search.split("=")[1]);
         this._state.notifyData("routeChanged", route - 2);

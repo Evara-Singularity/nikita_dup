@@ -17,10 +17,11 @@ import CONSTANTS from '@app/config/constants';
     templateUrl: './search-bar.component.html',
     styleUrls: ['./search-bar.component.scss'],
     encapsulation: ViewEncapsulation.None
-
 })
 export class SearchBarComponent implements OnInit {
+
     imagePath = CONSTANTS.IMAGE_BASE_URL;
+    imageAssetPath = CONSTANTS.IMAGE_ASSET_URL;
     @Input() ssp: boolean = true; // ssp: show search popup
     @Input() data: { type: string };
     @Output() out: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -34,6 +35,7 @@ export class SearchBarComponent implements OnInit {
     topProducts;
     isServer: boolean;
     isBrowser: boolean;
+
 
     constructor(
         private _cs: CommonService,

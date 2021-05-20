@@ -16,7 +16,7 @@
                     <div class="img-block">
                         <div class="inner_block">
                             <div class="inner_element" style="transform-origin: 0% 0%;">
-                                <input class="youtube_icon" type="image" src="/assets/img/youtube_icon.svg" (click)="$event.stopPropagation();showYTVideo(item['video'])" border="border of the image" alt="text">
+                                <input class="youtube_icon" type="image" src="{{imageAssetURL}}assets/img/youtube_icon.svg" (click)="$event.stopPropagation();showYTVideo(item['video'])" border="border of the image" alt="text">
                                 <img [src]="item['video'] | ytthumbnail:'hqdefault'">
                             </div>
                         </div>

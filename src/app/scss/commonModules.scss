@@ -219,7 +219,7 @@ option {
     height: 100%;
 }
 
-//Bottom Menu 
+//Bottom Popup Design 
 .bottom-options {
     .overlay-bg {
         z-index: 13;
@@ -263,5 +263,15 @@ option {
         .content-box {
             bottom: 0;
         }
+    }
+}
+
+// Sort By Filter
+.custom-cbox {
+    label {
+        display: block;
+        padding: 10px 0;
+        @extend %clear-fix;
+        @extend %custom-check-box;
     }
 }

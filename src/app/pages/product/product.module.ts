@@ -22,16 +22,15 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
     ObserveVisibilityDirectiveModule,
     CommonModule,
     ProductRoutingModule,
+    // Directives
     BreadcrumbNavModule,
     SiemaCarouselModule,
-    ModalModule,
     ObjectToArrayPipeModule,
     MathFloorPipeModule,
     MathCeilPipeModule,
     ReactiveFormsModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
-    NgxPageScrollCoreModule,
     ObserveVisibilityDirectiveModule
   ],
   exports: [],

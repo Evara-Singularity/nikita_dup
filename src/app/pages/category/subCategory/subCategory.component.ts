@@ -47,7 +47,6 @@ export class SubCategoryComponent {
 
         this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList)=>{
             this.showList(false);
-            alert('a');
             this.relatedCatgoryList = relatedCatgoryList["children"];
             this.cd.markForCheck(); // marks path
         })

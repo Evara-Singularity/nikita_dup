@@ -8,7 +8,7 @@ import CONSTANTS from '@app/config/constants';
   selector: "fresh",
   templateUrl: "fresh.html",
   styleUrls: ["fresh.scss"],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
 })
 export class FreshComponent {
   isServer: boolean;

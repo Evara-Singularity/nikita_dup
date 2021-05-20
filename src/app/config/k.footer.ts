@@ -1,5 +1,5 @@
-export function footerData(){
-    return `
+export function footerData() {
+  return `
   <p class="align-center socsharehead">Stay Connected</p>
 
   <ul class="social-links pb-15 clearfix">
@@ -57,5 +57,5 @@ export function footerData(){
 
     </div>
   `;
-    
+
 }

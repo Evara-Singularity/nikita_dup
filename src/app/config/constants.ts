@@ -1,35 +1,23 @@
+import { environment } from "environments/environment";
+
 let siemaOptionsObject: {
     outerWrapperClass: ['product_block_container'],
     innerWrapperClass: ['product_block']
 };
+
 export const CONSTANTS = {
-    PROD: "https://www.moglix.com",
-    NEW_MOGLIX: 'https://beta.moglix.com',
-    //NEW_MOGLIX_API: 'https://apinew.moglix.com/nodeApi/v1',
-    NEW_MOGLIX_API: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
-    MOGLIX_API: 'https://apiqa.moglilabs.com',
-    SOCKET_URL_: "https://socketqa.moglilabs.com",
-    IMAGE_BASE_URL: 'https://cdn.moglix.com/',
-    IMG_URL: 'https://img.moglimg.com/',
-    DOCUMENT_URL: 'https://document.moglix.com/',
-    URLS:{
-		HOMEPAGE : '/homepage/layoutbyjson?requestType=mobile',
-		SUGGESTIONS : '/homepage/getsuggestion'
-	},
+    PROD: environment.PROD_NAME,
+    NEW_MOGLIX_API: environment.BASE_URL,
+    IMAGE_ASSET_URL: environment.IMAGE_ASSET_URL,
+    SOCKET_URL: environment.SOCKET_URL,
+    IMAGE_BASE_URL: environment.IMAGE_BASE_URL,
+    DOCUMENT_URL: environment.DOCUMENT_URL,
+    SOCIAL_LOGIN: environment.SOCIAL_LOGIN,
 	pwaImages:{
 		imgFolder:'b/I/P/B/d'
 	},
     DEVICE: {
         device: 'mobile'
-    },
-    SOCIAL_LOGIN: {
-        "google": {
-            "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"
-        },
-        "facebook": {
-            "clientId": "775243655917959",
-            "apiVersion": "v2.4"
-        }
     },
     META: {
         ROBOT: 'index,follow',

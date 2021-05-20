@@ -75,13 +75,11 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        debugger
         of(null)
             .pipe(
                 delay(200)
             )
             .subscribe(() => {
-                debugger;
                 if (this.isBrowser && document.getElementsByClassName('open').length === 0) {
                     (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
                     this.enableScroll();

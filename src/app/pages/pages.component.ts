@@ -1,6 +1,6 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
@@ -25,6 +25,7 @@ export class PagesComponent implements OnInit {
   isFooter: boolean = true;
   kfooter: any = kfooter;
   footerVisible = false;
+  isHomePage: boolean;
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -37,6 +38,13 @@ export class PagesComponent implements OnInit {
     this.isBrowser = isPlatformBrowser(platformId);
     this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
+      if (res instanceof NavigationEnd) {
+        if (res['url'] === '/') {
+          this.isHomePage = true;
+        } else {
+          this.isHomePage = false;
+        }
+      }
     })
   }
 
@@ -106,7 +114,7 @@ export class PagesComponent implements OnInit {
       )
       .subscribe((rData) => {
         this.iData = rData;
-      });
+      })
   }
 
   clickFooter() {

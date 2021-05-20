@@ -14,6 +14,7 @@ import { ProductService } from '../../utils/services/product.service';
 import { Step } from '../../utils/validators/step.validate';
 import { ProductUtilsService } from './../../utils/services/product-utils.service';
 import { CommonService } from '@app/utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'product-rfq',
@@ -65,6 +66,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         isPincodeUnKnown: new FormControl(false),
         isBusinessCustomer: new FormControl(false),
     });
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private localStorageService: LocalStorageService, private globalState: GlobalState, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
         @Inject(PLATFORM_ID) private platformId: Object, private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService)

@@ -136,7 +136,7 @@ export const GLOBAL_CONSTANT = {
         pageSize: 10
     },
     codMin: 300,
-    codMax: 20000,
+    codMax: 25000,
     userType: {
         business: 'business',
         online: 'online'

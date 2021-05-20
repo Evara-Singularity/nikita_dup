@@ -1,0 +1,36 @@
+<div class="bottom-options sort-by" id="sortBy">
+  <div class="overlay" (click)="updateParent({sortByOpt : false})"></div>
+  <div class="content-box">
+    <div class="container">
+      <h3 class="heading">SORT BY</h3>
+      <div class="custom-cbox">
+        <label>
+          <span class="chk-box">
+            <input class="hidden" type="radio" name="sortBy" [checked]="sortBy == 'popularity'"
+              (change)="updateSortBy('popularity')">
+            <span class="custom-box icon-box"></span>
+          </span>
+          <span class="chk-txt">Popularity</span>
+        </label>
+
+        <label>
+          <span class="chk-box">
+            <input class="hidden" type="radio" name="sortBy" [checked]="sortBy == 'lowPrice'"
+              (change)="updateSortBy('lowPrice')">
+            <span class="custom-box icon-box"></span>
+          </span>
+          <span class="chk-txt">Low Price</span>
+        </label>
+
+        <label>
+          <span class="chk-box">
+            <input class="hidden" type="radio" name="sortBy" [checked]="sortBy == 'highPrice'"
+              (change)="updateSortBy('highPrice')">
+            <span class="custom-box icon-box"></span>
+          </span>
+          <span class="chk-txt">High Price</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

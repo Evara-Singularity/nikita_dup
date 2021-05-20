@@ -10,7 +10,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL_, options: {} };
+const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'ssr-pwa' }),

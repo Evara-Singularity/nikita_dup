@@ -37,3 +37,29 @@
         <p class="author">{{item?.image_general[0]?.general_url}}</p>
     </div>
 </ng-container>
+<!-- RFQ brand slides -->
+<ng-container *ngIf="options.brandCarousel">
+    <div class="no-hover pad-lr-5 block pointer">
+        <div class="text-center">
+            <div class="img_block pad-tb-xs-15">
+                <img src="{{item.src}}" class="img-responsive">
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="options.testimonial">
+    <div class="inner-container test">
+        <div>
+            <p class="comp-name"><img src="{{item.src}}"></p>
+            <p class="cust-name test1">{{item.name}} |
+                <span>{{item.company}}</span>
+            </p>
+            <p class="revw-txt">{{item.review}}</p>
+        </div>
+        <div class="dots">
+            <button class="tsbtn" [class.active]="itemIndex ==  0" (click)="goTo(0,'.testimonial-siema')"></button>
+            <button class="tsbtn" [class.active]="itemIndex ==  1" (click)="goTo(1,'.testimonial-siema')"></button>
+        </div>
+    </div>
+</ng-container>
+<!-- End RFQ brand slides -->

@@ -627,6 +627,15 @@ const routes: Routes = [
 				},
 			},
 			{
+                path: 'rfq',
+                loadChildren: () => import('./bulkEnquiry/bulkEnquiry.module').then(m => m.BulkEnquiryModule),
+                data: {
+                    footer: false,
+                    title: 'RFQ',
+                    moreOpt: false
+                }
+            },
+			{
 				path: '**',
 				loadChildren: () =>
 					import('./pageNotFound/pageNotFound.module').then(

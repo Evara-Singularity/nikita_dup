@@ -207,7 +207,9 @@ export class CreateEnquiryComponent {
 
           
           // analytics
-          const analyticObj = {}
+          const analyticObj: any = {
+            page: {}
+          }
           analyticObj['page']['linkPageName'] = "moglix:bulk query form",
           analyticObj['page']['linkName'] = 'Submit RFQ',
           analyticObj['page']['pageName'] = '',

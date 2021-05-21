@@ -7,6 +7,11 @@ const routes: Routes = [
         component: DashboardBussinessComponent,
         children: [
             {
+                path: '',
+                loadChildren: () => import('../../modules/dashboard/bussiness-personal-info/businessInfo.module').then(m => m.BusinessInfoModule),
+                data: { title: 'My Profile', menuBar: true }
+            },
+            {
                 path: 'business-detail',
                 loadChildren: () => import('../../modules/dashboard/bussiness-detail/businessDetail.module').then(m => m.BusinessDeatailDashboardModule),
                 data: { title: 'My Business Details', menuBar: true }

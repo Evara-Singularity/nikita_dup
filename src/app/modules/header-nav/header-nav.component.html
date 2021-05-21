@@ -1,11 +1,13 @@
 <header class="inner-pages" >
     <div class="style-1">
-        <div class="head-strip container">
+        <div *ngIf="isHomePage && !isScrolledHeader" class="head-strip container">
             <div class="f-left logo-container">
                 <i *ngIf="isHomePage || (routerData && routerData['menuBar']) " class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
-                <a [routerLink]="['/']" class="icon-logo" *ngIf="(isHomePage || (routerData && routerData['menuBar']) && !(routerData && routerData['title']))"></a>
                 <i *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="goBack()" class="icon-back" id="icon-back"></i>
-                <p class="f-left page-name f-16 pt-10" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</p>
+                <a [routerLink]="['/']" class="icon-logo" *ngIf="(routerData && routerData['logo']) && isHomePage"></a>
+                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" [routerLink]="['/']" class="moglix-app-logo">
+                    <img src="/assets/img/moglix-logo.svg">
+                </a>
             </div>
             <div class="search_open_mini f-left scrolled-search" >
                 <div class="head-popup clearfix">
@@ -15,15 +17,36 @@
                     </div>
                 </div>
             </div>
-            <div class="f-right head-icons" *ngIf="hideElLogin">
+            <div class="f-right head-icons" [ngClass]="{'home-icons': isHomePage}" *ngIf="hideElLogin">
                 <a [routerLink]="['/login']" *ngIf="isHomePage && (isUserLogin == 'false' || !isUserLogin )" class="f-size-16 login-txt text-500">Login</a>
                 <a [routerLink]="['/deals']" *ngIf="isHomePage" class="icon-home-deal red-txt"></a>
-                <a *ngIf="!isHomePage" (click)="loadSearchNav()" class="icon-search red-txt"></a>
+                <!-- <a *ngIf="!isHomePage" (click)="loadSearchNav()" class="icon-search red-txt"></a> -->
+                <div class="search-bar" *ngIf="!isHomePage">
+                    <i class="icon-search"></i>
+                    <input type="text" placeholder="Search Product/Category" (click)="loadSearchNav()">
+                </div>
                 <a [routerLink]="['/quickorder']" class="icon-cart-header">
                     <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
                 </a>
                 <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-dot"></a>
             </div>
+        </div>
+        <div class="common-header container">
+            <i *ngIf="!isHomePage && router.url.includes('dashboard/')" class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
+            <i *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')" [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()" class="icon-back" id="icon-back"></i>
+            <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</span>
+            <a *ngIf="!isHomePage && !(routerData && routerData['title'])" [routerLink]="['/']" class="moglix-app-logo">
+                <img src="/assets/img/moglix-logo.svg">
+            </a>
+            <a class="search-bar" *ngIf="!isHomePage && !isLoginPage && !(routerData && routerData['title'])">
+                <i class="icon-search"></i>
+                <input type="text" placeholder="Search Product/Category" (click)="loadSearchNav()">
+            </a>
+            <a *ngIf="!isHomePage  && !isLoginPage && (routerData && routerData['title'])" (click)="loadSearchNav()" class="icon-search red-txt"></a>
+            <a *ngIf="!isHomePage && !isLoginPage" [routerLink]="['/quickorder']" class="icon-cart-header">
+                <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
+            </a>
+            <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-dot"></a>
         </div>
         <!--Search Popup-->
         <div *ngIf="isHomePage" [ngClass]="{'headerFixed': isScrolledHeader}" class="search_open_mini second-scroll bottom-search ">

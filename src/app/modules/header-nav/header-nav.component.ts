@@ -1,13 +1,13 @@
 import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, Inject, Injector, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
-// import { CheckoutLoginService } from '../../utils/services/checkout.service';
 import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { GlobalState } from '../../utils/global.state';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 
 @Component({
   selector: 'header-nav',
@@ -34,7 +34,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
   hideElLogin: boolean = false;
   searhNav: any;
   cartHeaderText: string = '';
-
+  currentUrl: string;
   checkoutTabMap = {
     1: "Login",
     2: "Checkout",
@@ -42,7 +42,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     4: "Payment"
   };
   staticPages = ['/faq', '/max', '/diwali-deals', '/deals', '/brand-store', '/buyer-guide', '/copyright', '/privacy', '/terms', '/testimonials', '/compliance', '/press', '/about', '/corporate-gifting', '/services', '/career', '/affiliate', '/moglix-originals', '/contact']
-
+  isLoginPage: boolean = false;
 
   constructor(
     @Inject(PLATFORM_ID) platformId,
@@ -51,7 +51,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     private localAuthService: LocalAuthService,
     private cartService: CartService,
     private location: Location,
-    // private checkoutLoginService: CheckoutLoginService,
+    private checkoutLoginService: CheckoutLoginService,
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private ngZone: NgZone,
@@ -164,7 +164,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
-      ).subscribe((evt) => {
+      ).subscribe((evt: any) => {
+        this.currentUrl = evt.url;
+        this.backRedirectUrl = this.currentUrl || '';
+        localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
       if(evt instanceof NavigationEnd){
         this.refreshIcon();
       }
@@ -180,12 +183,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.setHeader();
     });
-
-    this.route.queryParams.subscribe(
-      data => {
-        this.backRedirectUrl = data['redirectUrl'];
-      }
-    );
 
     this.localAuthService.login$.subscribe(
       (data) => {
@@ -228,7 +225,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goBack() {
-    if (this.backRedirectUrl) {
+    this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
+    if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
       this.location.back();
     } else {
       if (this.staticPages.indexOf(window.location.pathname) !== -1) {
@@ -238,26 +236,30 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         (window.location.pathname == "/checkout" && window.location.search == "?index=2") ||
         (window.location.pathname == "/checkout")
       ) {
-        // if (this.checkoutLoginService.isAtFirstSection) {
-        //   let route = parseInt(window.location.search.split("=")[1]);
-        //   if(isNaN(route)){
-        //     this.location.back();
-        //   }else if(route == 1){
-        //     this.location.back();
-        //   }else if(route == 2){
-        //     this.location.back();
-        //   }else{
-        //     this._state.notifyData("routeChanged", route - 2);
-        //   }
-        // } else {
-        //   this.checkoutLoginService.enableResetTabSateSub(true);
-        // }
+        if (this.checkoutLoginService.isAtFirstSection) {
+          let route = parseInt(window.location.search.split("=")[1]);
+          if(isNaN(route)){
+            this.location.back();
+          }else if(route == 1){
+            this.location.back();
+          }else if(route == 2){
+            this.location.back();
+          }else{
+            this._state.notifyData("routeChanged", route - 2);
+          }
+        } else {
+          this.checkoutLoginService.enableResetTabSateSub(true);
+        }
       } else if (window.location.pathname == "/checkout" && window.location.search != "?index=2" && window.location.search != "?index=1") {
         let route = parseInt(window.location.search.split("=")[1]);
         this._state.notifyData("routeChanged", route - 2);
         this.refreshIcon();
       } else {
-        this.location.back();
+        /**
+         * Fix for ODP-57
+         * if user directly enter certain pages, we are sending user to home page on back button click
+         */
+        this.router.navigate(['/']);
       }
     }
   }
@@ -269,6 +271,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   setHeader() {
+    this.isLoginPage = false;
     if (
       this.router.url.includes('/forgot-password') ||
       this.router.url.includes('/login') ||
@@ -277,7 +280,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.url.includes('/online-assist') ||
       this.router.url.includes('/forgot-password') ||
       this.router.url.includes('/sign-up')) {
-
+      this.isLoginPage = true;
       this.hideElLogin = false;
       this.changeDetectorRef.detectChanges();
       // console.log('refreshIcon 3', this.router.url);

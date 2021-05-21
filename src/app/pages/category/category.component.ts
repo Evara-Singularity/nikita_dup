@@ -148,7 +148,6 @@ export class CategoryComponent implements OnInit {
     }
 
     private updateConfigBasedOnParams(data) {
-        console.log(data);
         this.layoutType = 0;
         if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
             this.isSLPPage = true;
@@ -188,7 +187,7 @@ export class CategoryComponent implements OnInit {
         // alert('updateConfigBasedOnQueryParams');
         this.trendingSearchData = data;
         this.pageNo = data['page'];
-        if (data['page'] > 1 || this._router.url.split('/').length > 3) {
+        if (data['page'] > 1) {
             this.showSubcategoty = false;
         } else {
             this.showSubcategoty = true;
@@ -301,13 +300,11 @@ export class CategoryComponent implements OnInit {
             this._commonService.replaceHeading = this._commonService.cmsData.find(x => x.componentLabel === 'text_component') ? true : false;
         }
 
-
         if (res[3]){
             this.breadcrumbData = res[3];
         }
         
         //  taking 2sec
-        console.log(res);
         this.initiallizeRelatedCategories(res);
         
         
@@ -334,10 +331,11 @@ export class CategoryComponent implements OnInit {
         let getRelatedCategories = this.getRelatedCategories(this.categoryId);
         let refreshProducts = this.refreshProducts();
         let getFAQ = this.getFAQ(this.categoryId);
+        const source = this._activatedRoute.snapshot['_routerState']['url'].split('#')[0].split('?')[0];
         let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data']));
-        // let getBreadCrumpDataFromAPI = this._commonService.getCmsDynamicDataForCategoryAndBrand(window.location.pathname.replace('/',''), 'category');
+        let getBreadCrumpDataFromAPI = this._commonService.getBreadcrumpData(source, 'category');
 
-        let apiList = [getRelatedCategories, refreshProducts, getFAQ];
+        let apiList = [getRelatedCategories, refreshProducts, getFAQ, getBreadCrumpDataFromAPI];
 
         if (this._router.url.search('#') < 0) {
             apiList.push(getCmsDynamicDataForCategoryAndBrand)

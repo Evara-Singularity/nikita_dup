@@ -1,7 +1,7 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, ViewChild, ViewEncapsulation, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional } from '@angular/core';
-import { CategoryService } from './category.service';
+import { CategoryService } from './alp.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
 import { Subject } from 'rxjs/Subject';

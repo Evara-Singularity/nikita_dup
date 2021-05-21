@@ -15,7 +15,7 @@ export class CategoryService {
     constructor(private _dataService: DataService) {}
 
     getRelatedCategories(categoryId): Observable<any> {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryById + '?catId' + categoryId;
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
         return this._dataService.callRestful('GET', url)
             .pipe(
                 catchError((res: HttpErrorResponse) => {

@@ -18,7 +18,8 @@ export class SubCategoryService{
     }
 
     refreshSubCategoryData(params){
-        this.getSubCategoryData('GET', CONSTANTS.NEW_MOGLIX_API+ ENDPOINTS.GET_CategoryById, params).subscribe((response) => {
+        console.log('refreshSubCategoryData : ' + params);
+        this.getSubCategoryData('GET', CONSTANTS.NEW_MOGLIX_API+ ENDPOINTS.GET_CATEGORY_BY_ID, params).subscribe((response) => {
             this.updateSubCategoryData$.emit(response);
         });
     }

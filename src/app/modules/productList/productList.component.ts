@@ -72,6 +72,7 @@ export class ProductListComponent{
 
         if (this.relatedCatgoryListUpdated && this.relatedCatgoryListUpdated.subscribe) {
             this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList)=>{
+                console.log(relatedCatgoryList);
                 this.displayCategoryName = relatedCatgoryList['categoryDetails'].categoryName;
                 this.cd.markForCheck(); // marks path
             })

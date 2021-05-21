@@ -10,7 +10,6 @@ import { catchError, map, tap } from 'rxjs/operators'
 import { isPlatformServer } from '@angular/common';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
-import { CategoryService } from '@services/category.service';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { HttpClient } from '@angular/common/http';
@@ -131,10 +130,11 @@ export class CategoryResolver implements Resolve<object> {
         } else {
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
             const params = _activatedRouteSnapshot.params;
-
+            const source = _activatedRouteSnapshot['_routerState']['url'].split('#')[0].split('?')[0];
+            
             const get_rel_cat_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
             const faq_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
-            const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=/power-tools/114000000&type=category";
+            const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
             const cms_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
 
             const getRelatedCategoriesObs = this.http.get(get_rel_cat_url);
@@ -170,7 +170,6 @@ export class CategoryResolver implements Resolve<object> {
                 })
             );
         }
-
-
     }
+    
 }

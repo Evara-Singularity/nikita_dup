@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { RouterModule } from '@angular/router';
-import { routing } from "./category.routing";
+import { routing } from "./alp.routing";
 import { MetaModule } from '@ngx-meta/core';
-import {CategoryComponent} from "./category.component";
-import {CategoryService} from "./category.service";
+import {CategoryComponent} from "./alp.component";
+import {CategoryService} from "./alp.service";
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgxSiemaModule } from 'ngx-siema';

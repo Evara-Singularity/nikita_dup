@@ -1,5 +1,5 @@
 import {Routes, RouterModule} from '@angular/router';
-import {CategoryComponent} from "./category.component";
+import {CategoryComponent} from "./alp.component";
 
 const routes: Routes = [
     {

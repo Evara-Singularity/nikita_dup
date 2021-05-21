@@ -3,8 +3,8 @@ import { Observable } from "rxjs/Observable";
 import { catchError } from "rxjs/operators/catchError";
 import { of } from "rxjs/observable/of";
 import { HttpErrorResponse } from "@angular/common/http";
-import { DataService } from "src/app/utils/services/data.service";
-import CONSTANTS from "src/app/config/constants";
+import { DataService } from "@services/data.service";
+import CONSTANTS from "@config/constants";
 
 @Injectable()
 export class CategoryService {

@@ -71,7 +71,6 @@ export const ENDPOINTS = {
   VALIDATE_CART: "/cart/validateCart",
   GET_CartByUser: "/cart/getCartByUser",
   GET_ShippingValue: "/shipping/getShippingValue",
-  GET_CategoryById: "/category/getcategorybyid",
   GET_CategoryExtras: "/category/getcategoryExtras?requestType=",
   GET_CategorySchema: "/quest/getCategorySchema?categoryCode=",
   GET_ArticlesListByCategory: "/cmsApi/getArticlesListByCategory?categoryCode=",

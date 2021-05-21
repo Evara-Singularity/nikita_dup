@@ -73,7 +73,7 @@ const routes: Routes = [
       },
       {
           path: 'alp/:attribute',
-          loadChildren: () => import('./alp/category.module').then(m => m.CategoryModule),
+          loadChildren: () => import('./alp/alp.module').then(m => m.CategoryModule),
           data: {
               footer: false,
               logo: true,

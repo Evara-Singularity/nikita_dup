@@ -13,9 +13,9 @@
         "dev:ssr": "ng run ssr-pwa:serve-ssr",
         "serve:ssr": "node dist/server/main.js",
         "build:ssr": "ng build && ng run ssr-pwa:server:production",
-        "build:ssr:qa": "ng build --configuration=qa && ng run ssr-pwa:server:production",
-        "build:ssr:vpn": "ng build --configuration=vpn && ng run ssr-pwa:server:production",
-        "build:ssr:prod": "ng build --prod && ng run ssr-pwa:server:production",
+        "build:ssr:qa": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa/bundles/ && ng run ssr-pwa:server:production",
+        "build:ssr:vpn": "ng build --configuration=vpn --deploy-url=https://cdn.moglix.com/online/vpn/pwa/bundles/ && ng run ssr-pwa:server:production",
+        "build:ssr:prod": "ng build --prod --deploy-url=https://cdn.moglix.com/online/prod/pwa/bundles/ && ng run ssr-pwa:server:production",
         "prerender": "ng run ssr-pwa:prerender"
     },
     "private": true,

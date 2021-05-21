@@ -675,6 +675,7 @@ body {
 
 .card-head {
     @extend %clear-fix;
+    border-bottom: 1px solid #e6e6e6;
     .icon-grid-view,
     .icon-list-view {
         font-size: 21px;

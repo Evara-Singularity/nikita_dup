@@ -7,7 +7,8 @@ import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
     selector: 'category-footer',
-    templateUrl: './category-footer.component.html'
+    templateUrl: './category-footer.component.html',
+    styleUrls:  ['./category-footer.scss']
 })
 export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;

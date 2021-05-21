@@ -294,7 +294,6 @@ export class CommonService {
                 this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRANDS, defaultParams)
                 .pipe(
                     map((res) => {
-                        console.log(res);
                         res.buckets.map((bucket) => {
                             bucket['collFilter'] = true;
                         })

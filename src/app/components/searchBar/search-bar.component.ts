@@ -146,7 +146,6 @@ export class SearchBarComponent implements OnInit {
     }
 
     searchData(dataD, isValid) {
-        debugger;
         this.service.goToDirectBrandCatPage(dataD.searchTerm).subscribe(
             (data) => {
 

@@ -46,7 +46,6 @@ export class BrandStoreResolver implements Resolve<object> {
       return forkJoin([LogosData, brandsData]).pipe(
         catchError((err) => {
           this.loaderService.setLoaderState(false);
-          console.log('err', err);
           return of(err);
         }),
         tap(result => {

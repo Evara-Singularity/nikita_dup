@@ -112,7 +112,6 @@ export class BrandComponent {
         // Get data from resolver and render the view
         const resolverData = this._activatedRoute.snapshot.data;
         this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
-        console.log(resolverData['brand'][0]);
 
         // surbscribe to route change and based on that refresh products
         this.refreshProductsBasedOnRouteChange();

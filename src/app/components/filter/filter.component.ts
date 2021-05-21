@@ -249,6 +249,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 }
             }
         }
+
         this.filterSelected.emit(Object.keys(productFilterData).length);
         return productFilterData;
     }

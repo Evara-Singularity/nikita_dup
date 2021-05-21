@@ -151,7 +151,7 @@ export class SocialLoginComponent {
                                 })
                             )
                             .subscribe((res) => {
-                                debugger;
+                                 ;
                                 if (res.statusCode != undefined && res.statusCode == 200) {
                                     let cs = this._cartService.updateCart(res);
                                     this._cartService.setCartSession(cs);

@@ -39,7 +39,7 @@ export class CartUpdatesComponent {
     };
 
     ngOnInit() {
-        //debugger;
+        // ;
     }
 
     ngAfterViewInit() {
@@ -47,7 +47,7 @@ export class CartUpdatesComponent {
     }
 
     viewUnavailableItems() {
-        debugger;
+         ;
         const cartSession = JSON.parse(JSON.stringify(this._cartService.getCartSession()));
         let itemsList = cartSession['itemsList']; 
         const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))

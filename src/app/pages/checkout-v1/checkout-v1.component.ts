@@ -179,7 +179,7 @@ export class CheckoutV1Component implements OnInit {
     }
 
     this._state.subscribe("routeChanged", (tab) => {
-      // debugger;
+      //  ;
       if (tab > 1) {
         this.tabIndex = tab;
         this.changeParams();
@@ -264,7 +264,7 @@ export class CheckoutV1Component implements OnInit {
       .pipe(
         map((res) => res),
         mergeMap((gs) => {
-          // debugger;
+          //  ;
           this._localAuthService.setUserSession(gs);
           let params = { "sessionid": gs["sessionId"] };
           if (this.buyNow) {
@@ -273,7 +273,7 @@ export class CheckoutV1Component implements OnInit {
           return this._cartService.getCartBySession(params);
         }),
         mergeMap((cartSession) => {
-          // debugger;
+          //  ;
           this.isCheckoutResolved = true;
           if (this.isServer)
             return of(null);
@@ -282,12 +282,12 @@ export class CheckoutV1Component implements OnInit {
            */
           if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 202)
             return of(cartSession);
-          // debugger                                
+          //                                  
           return this.getShippingValue(cartSession);
         }),
       )
       .subscribe((cartSession) => {
-        // debugger;
+        //  ;
         if (cartSession && cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
           console.log('checkout cs', cartSession);
           const cs = this._cartService.updateCart(cartSession);
@@ -486,7 +486,7 @@ export class CheckoutV1Component implements OnInit {
   }
 
   viewUnavailableItems() {
-    // debugger;
+    //  ;
     const cartSession = JSON.parse(JSON.stringify(this._cartService.getCartSession()));
     let itemsList = cartSession['itemsList'];
     const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))

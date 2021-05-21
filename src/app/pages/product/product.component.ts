@@ -1037,7 +1037,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       // this.sessionDetails = data;
       this.uniqueRequestNo = 0;
       this.cartService.setCartSession(data);
-      // debugger;
+      //  ;
       this.cartService.cart.next({ count: data['noOfItems'], currentlyAdded: this.currentAddedProduct });
       this.showAddToCartToast();
 

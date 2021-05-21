@@ -352,7 +352,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     outData(data: {}) {
-        debugger;
+         ;
         if (data && data['pcd']) {
             this.pad = Object.assign({}, this.pad, data['pcd']);
             // console.log(data['pcd'], this.pad, "outData", "orderSummary");

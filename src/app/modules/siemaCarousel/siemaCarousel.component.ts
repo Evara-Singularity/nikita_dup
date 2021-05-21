@@ -76,7 +76,7 @@ export class SiemaCarouselComponent {
                     .pipe(
                         takeUntil(this.cDistryoyed)
                     ).subscribe((data) => {
-                        // debugger;
+                        //  ;
                         this.refreshSiema(data['items']);
                         this._cdr.markForCheck(); // marks path 
                     });

@@ -180,7 +180,6 @@ export class DataService {
             });
         }
         else if (error.status == 401) {
-            debugger;
             if (this.getSessionApi == undefined) {
                 this.getSessionApi = this.getSession();
                 this._localStorageService.clear("user");

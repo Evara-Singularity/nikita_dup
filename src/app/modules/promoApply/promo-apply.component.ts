@@ -123,7 +123,7 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                             },
                                         });
                                         if (resp['data']['discount'] <= cartSession['cart']['totalAmount']) {
-                                            // debugger;
+                                            //  ;
                                             this.iData.isApplied = true;
                                             // this.iData.text =
                                             // pcd : promo code detail

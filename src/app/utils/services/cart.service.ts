@@ -82,7 +82,7 @@ export class CartService {
     }
 
     set buyNow(buyNow) {
-        // debugger;
+        //  ;
         this._buyNow = buyNow;
     }
 

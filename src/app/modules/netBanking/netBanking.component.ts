@@ -64,7 +64,7 @@ export class NetBankingComponent {
 
         // this.dataNB = DATA_NB;
         // //console.log(res);
-        // debugger;
+        //  ;
         if (this.type === 'retail') {
             this.dataNB = this._objectToArray.transform(DATA_NB["NB"], "associative");
             this.dataNBTop = this._objectToArray.transform(DATA_NB["NB-top"], "associative");    

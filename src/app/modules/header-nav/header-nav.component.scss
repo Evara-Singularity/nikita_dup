@@ -232,68 +232,67 @@ header {
         font-size: 16px;
         color: $white;
     }
-//     .icon-cart-header {
-//         font-size: 18px;
-//     }
-//     .page-name {
-//         width: 80%;
-//         padding: 12px 5px 12px 0px;
-//     }
-//     .brand-page-name {
-//         width: auto !important;
-//     }
-//     .login-back-icon {
-//         width: 5%;
-//     }
-// }
+    .icon-cart-header {
+        font-size: 18px;
+    }
+    .page-name {
+        width: 80%;
+        padding: 12px 5px 12px 0px;
+    }
+    .brand-page-name {
+        width: auto !important;
+    }
+    .login-back-icon {
+        width: 5%;
+    }
 
-// .moglix-app-logo {
-//     padding-right: 15px !important;
-//     img {
-//         width: 24px;
-//         vertical-align: middle;
-//         display: inline-block;
-//     }
-// }
+.moglix-app-logo {
+    padding-right: 15px !important;
+    img {
+        width: 24px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+}
 
-// .search-bar {
-//     position: relative;
-//     width: 80%;
-//     input {
-//         background: #fff;
-//         border: none;
-//         font-size: 13px !important;
-//         color: #898989;
-//         font-weight: 400;
-//         height: 30px;
-//         width: 100%;
-//         padding: 0px 5px 0 30px;
-//         border-radius: 3px;
-//     }
-//     i {
-//         color: #303030 !important;
-//         font-size: 15px;
-//         position: absolute;
-//         z-index: 1;
-//         left: 16px;
-//         top: 20px;
-//         border-radius: 6px 0 0 6px;
-//     }
-//      ::placeholder {
-//         font-size: 13px;
-//         color: #898989
-//     }
-// }
+.search-bar {
+    position: relative;
+    width: 80%;
+    input {
+        background: #fff;
+        border: none;
+        font-size: 13px !important;
+        color: #898989;
+        font-weight: 400;
+        height: 30px;
+        width: 100%;
+        padding: 0px 5px 0 30px;
+        border-radius: 3px;
+    }
+    i {
+        color: #303030 !important;
+        font-size: 15px;
+        position: absolute;
+        z-index: 1;
+        left: 16px;
+        top: 20px;
+        border-radius: 6px 0 0 6px;
+    }
+     ::placeholder {
+        font-size: 13px;
+        color: #898989
+    }
+}
 
 
 // /*search bar css*/
 
-// .logo-wrapper {
-//     display: inline-block;
-//     img {
-//         vertical-align: top;
-//     }
-// }
+.logo-wrapper {
+    display: inline-block;
+    img {
+        vertical-align: top;
+    }
+}
     
     .head-icons {
         &>* {

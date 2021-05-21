@@ -29,7 +29,7 @@
     <div class="bg_white">
         <div class="sub-cate-container">
             <div [class.visibility]="!showSubcategoty" class="container pt-10">
-                <p *ngIf="getRelatedCatgory?.children!==undefined && getRelatedCatgory?.children!==null" class="f-16 bold-txt pad-tb-10">{{getRelatedCatgory?.categoryDetails?.categoryName}}
+                <p *ngIf="getRelatedCatgory?.children!==undefined && getRelatedCatgory?.children!==null" class="sub_category_heading">{{getRelatedCatgory?.categoryDetails?.categoryName}}
                     <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
                         Categories)</span>
                 </p>
@@ -57,9 +57,9 @@
         </div>
     </div>
 
-    <div class="brandsSection" *ngIf="buckets.length > 0 && firstPageContent">
+    <div class="quickLinksSection" *ngIf="buckets.length > 0 && firstPageContent">
         <h4>Quick Links</h4>
-        <a *ngFor="let category of productCategoryNames" href="{{categoryLinkLists[category]}}" class="brandList">{{category}}</a>
+        <a *ngFor="let category of productCategoryNames" href="{{categoryLinkLists[category]}}" class="quickLinkList">{{category}}</a>
     </div>
 
 

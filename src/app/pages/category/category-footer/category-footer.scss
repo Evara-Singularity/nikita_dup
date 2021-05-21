@@ -1,0 +1,20 @@
+::ng-deep {
+    .category_data {
+        padding: 0px 15px;
+        background: #f2f2f2;
+        h2 {
+            font-size: 16px;
+            padding: 10px 0;
+        }
+        p {
+            font-size: 12px;
+            line-height: 18px;
+        }
+        a {
+            color: #0061d5 !important
+        }
+    }
+    .body-bg {
+        background: #f2f2f2;
+    }
+}

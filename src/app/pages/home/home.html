@@ -1,8 +1,7 @@
 <div class="css-banner-component">
     <div class="internalBanner h-auto-xs o-hidden relative">
         <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
-            <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+            <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options" [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
             </siema-carousel>
         </ng-container>
     </div>
@@ -59,15 +58,14 @@
 </div>
 
 <div observeVisibility class="categories-container" *ngIf="showRecentlyViewedCarousel" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
-    <ng-container #RecentlyViewedCarouselComponent ></ng-container>
+    <ng-container #RecentlyViewedCarouselComponent></ng-container>
 </div>
 
-<div observeVisibility class="categories-container clearfix" [debounceTime]="100"
-    (visible)="onVisibleCategories($event)">
+<div observeVisibility class="categories-container clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
 
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
+<div observeVisibility class="featr_arrival clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div>
 

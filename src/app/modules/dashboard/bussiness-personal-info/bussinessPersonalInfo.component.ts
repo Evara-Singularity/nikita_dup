@@ -11,6 +11,7 @@ import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalState } from "@app/utils/global.state";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 
 @Component({
   selector: "bussiness-info",
@@ -42,7 +43,8 @@ export class BussinessInfoComponent {
     private _localAuthService: LocalAuthService,
     public localStorageService: LocalStorageService,
     private _dashboardService: DashboardService,
-    private loaderService:GlobalLoaderService) {
+    private loaderService:GlobalLoaderService,
+    private _tms: ToastMessageService) {
     
     this.showLoader=false;
     this.isServer = isPlatformServer(platformId);
@@ -138,6 +140,7 @@ export class BussinessInfoComponent {
       if (res["status"]) {
         this.error = false;
         this.errorMsg = res["statusDescription"];
+        this._tms.show({type: 'success', text: 'Profile updated successfully.'});
         if (this.localStorageService.retrieve("user")) {
           let user = this.localStorageService.retrieve("user");
           if (user.authenticated == "true") {

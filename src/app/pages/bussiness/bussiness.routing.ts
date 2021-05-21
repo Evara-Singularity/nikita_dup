@@ -6,7 +6,6 @@ const routes: Routes = [
         path: '',
         component: DashboardBussinessComponent,
         children: [
-            { path: '', loadChildren: () => import('../../modules/dashboard/business-dashboard/dashboard.module').then(m => m.BusinessDashboardModule) },
             {
                 path: 'business-detail',
                 loadChildren: () => import('../../modules/dashboard/bussiness-detail/businessDetail.module').then(m => m.BusinessDeatailDashboardModule),
@@ -46,7 +45,20 @@ const routes: Routes = [
                 path: 'order-detail',
                 loadChildren: () => import('../../modules/dashboard/order-detail/order-detail.module').then(m => m.OrderDetailModule),
                 data: { title: 'Order Detail' }
-            }
+            },
+            {
+				path: '**',
+				loadChildren: () =>
+					import('../pageNotFound/pageNotFound.module').then(
+						(m) => m.PageNotFoundModule
+					),
+				data: {
+					footer: true,
+					logo: true,
+					menuBar: true,
+					moreOpt: false,
+				}
+			}
         ]
     },
 ];

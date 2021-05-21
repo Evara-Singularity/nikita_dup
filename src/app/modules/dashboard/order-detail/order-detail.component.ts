@@ -229,7 +229,7 @@ export class OrderDetailComponent implements OnInit {
             this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
           }
           this.returnReasons = this.getReturnReasons(item.dates.delivered.date);
-          let deliveryDate = this.datePipe.transform(item.dates.delivered.date, 'yyyy-mm-dd');
+          let deliveryDate = this.datePipe.transform(item.dates.delivered.date, 'yyyy-MM-dd');
           let crrDate = new Date(deliveryDate);
           crrDate.setDate(crrDate.getDate() + 7);
           this.returnEndDate = this.datePipe.transform(crrDate, 'dd-MM-yyyy');

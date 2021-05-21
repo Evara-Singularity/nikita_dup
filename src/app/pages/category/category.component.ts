@@ -269,10 +269,11 @@ export class CategoryComponent implements OnInit {
         this._commonService.showLoader = true;
         const res = this._activatedRoute.snapshot.data;
         this.setDataAfterGettingDataFromResolver(res.category);
-
     }
 
     setDataAfterGettingDataFromResolver(res) {
+        console.clear();
+        console.log(res);
         // alert('setDataAfterGettingDataFromResolver');
         this._commonService.showLoader = false;
         const ict = res[0]['categoryDetails']['active'];
@@ -312,9 +313,7 @@ export class CategoryComponent implements OnInit {
         /**
          * For refresh products
          */
-        const fragment = this._activatedRoute.snapshot.fragment;
-        
-        this.initiallizeData(res[1], !fragment);
+        this.initiallizeData(res[1], true);
         
         this.setTrackingData(res);
         
@@ -418,6 +417,7 @@ export class CategoryComponent implements OnInit {
      * @param flag : true, if TrasnferState exist.
      */
     private initiallizeData(response: any, flag: boolean) {
+        console.log(response);
         // alert('initiallizeData');
         // this._commonService.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;

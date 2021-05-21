@@ -237,6 +237,9 @@ export class SearchComponent implements OnInit {
                 this.filterData = response.buckets;
                 this.productsUpdated.next(response.productSearchResult.products);
             }
+            if (this.filterInstance) {
+                this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+            }
             this.relatedSearches = response.relatedSearches;
 
             this.productSearchResult = response.productSearchResult;

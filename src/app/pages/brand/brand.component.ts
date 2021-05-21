@@ -588,6 +588,9 @@ export class BrandComponent {
             this.filterData = response.buckets;
             this.productsUpdated.next(response.productSearchResult.products);
         }
+        if (this.filterInstance) {
+            this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+        }
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
         for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {

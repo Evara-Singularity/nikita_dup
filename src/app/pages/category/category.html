@@ -42,7 +42,7 @@
         <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></product-list>
         <div class="filter-wrapper">
             <button type="button" (click)="filterUp()">
-                <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER <span *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
+                <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER <span *ngIf="filterCounts && filterCounts>0">({{ filterCounts }})</span></span>
             </button>
 
             <button type="button" (click)="toggleSortBy(true)">

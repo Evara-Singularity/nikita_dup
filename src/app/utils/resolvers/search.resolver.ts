@@ -57,7 +57,6 @@ export class SearchResolver implements Resolve<object> {
 
         if (fragment != undefined && fragment != null && fragment.length > 0) {
             let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            ////console.log(currentUrlFilterData);
             currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
             currentUrlFilterData = currentUrlFilterData.split("/");
             if (currentUrlFilterData.length > 0) {

@@ -87,7 +87,6 @@ export class ProductResolver implements Resolve<object> {
       return forkJoin([productObs, productReviewObs, productCrumb, product_Q_AND_A, product_fbt, product_status_count]).pipe(
         catchError((err)=>{
           this.loaderService.setLoaderState(false);
-          console.log('err', err);
           return of(err);
         }),
         tap(result => {

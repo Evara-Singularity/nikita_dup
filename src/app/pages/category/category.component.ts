@@ -75,7 +75,7 @@ export class CategoryComponent implements OnInit {
         products: []
     };
 
-
+    productSearchResultSEO: Array<any> = [];
     filterCounts: number;
     spl_subCategory_Dt: any;
     forkJoinUnsub: any;
@@ -211,6 +211,7 @@ export class CategoryComponent implements OnInit {
             this.cateoryFooterInstance.instance['categoryFooterData'] = {
                 productSearchResult: this.productSearchResult,
                 getRelatedCatgory: this.getRelatedCatgory,
+                productSearchResultSEO: this.productSearchResultSEO,
                 faqData: this.faqData,
                 buckets: this.buckets,
                 PRTA: this.PRTA
@@ -345,6 +346,7 @@ export class CategoryComponent implements OnInit {
         }
 
         this._commonService.showLoader = true;
+        
         this.forkJoinUnsub = forkJoin(apiList)
             .subscribe((res) => {
                 this.setDataAfterGettingDataFromResolver(res);
@@ -389,8 +391,9 @@ export class CategoryComponent implements OnInit {
     }
     
     onFilterSelected(count) {
-        // alert('onFilterSelected');
-        this.filterCounts = count;
+        setTimeout(() => {
+            this.filterCounts = count;
+        }, 0);
     }
 
     getRelatedCategories(categoryID): Observable<{}> {
@@ -428,6 +431,12 @@ export class CategoryComponent implements OnInit {
         this.buckets = response.buckets;
         this.priceRangeTable(response);      //price range table code starts here
         this.productSearchResult = response.productSearchResult;
+        this.productSearchResultSEO = [];
+        for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
+            if (response.productSearchResult.products[p].salesPrice > 0 && response.productSearchResult.products[p].priceWithoutTax > 0) {
+                this.productSearchResultSEO.push(response.productSearchResult.products[p]);
+            }
+        }
         this.setCanonicalUrls(response);
         this.categoryLinkLists = response.categoryLinkList;
         this.productCategoryNames = [];

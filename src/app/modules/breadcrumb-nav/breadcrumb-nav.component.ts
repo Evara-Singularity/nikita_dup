@@ -1,6 +1,7 @@
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, Input, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -32,7 +33,7 @@ export class BreadcrumbNavComponent implements OnInit {
         "position": 0,
         "item":
         {
-          "@id": "https://www.moglix.com",
+          "@id": CONSTANTS.PROD,
           "name": "Home"
         }
       }];
@@ -42,7 +43,7 @@ export class BreadcrumbNavComponent implements OnInit {
           "position": index + 1,
           "item":
           {
-            "@id": "https://www.moglix.com/" + element['categoryLink'],
+            "@id": CONSTANTS.PROD + element['categoryLink'],
             "name": element['categoryName']
           }
         })
@@ -51,7 +52,7 @@ export class BreadcrumbNavComponent implements OnInit {
       let s = this.renderer2.createElement('script');
       s.type = "application/ld+json";
 
-      s.text = JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": itemsList });
+      s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA , "@type": "BreadcrumbList", "itemListElement": itemsList });
       this.renderer2.appendChild(this.document.head, s);
     }
   }

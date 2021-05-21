@@ -10,7 +10,7 @@ export class ClusterStoreService {
 		return this._dataService.callRestful(
 			'GET',
 			CONSTANTS.NEW_MOGLIX_API +
-				'/category/getparentcategoryjsonbody?requestType=' +
+				CONSTANTS.GET_PARENT_CAT +
 				cType +
 				'_m'
 		);

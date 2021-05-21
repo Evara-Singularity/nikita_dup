@@ -12,13 +12,15 @@
   left: 0;
   z-index: 2;
   text-transform:uppercase;
+  font-weight: 600;
+  color: #fff;
 }
 .emptycart{
   background:#fff;
   padding:10% 0;
   img{
     margin:auto;
-    display: block;
+    display: block;width: auto;
   }
 }
 .catlink{

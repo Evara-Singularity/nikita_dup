@@ -172,12 +172,15 @@ const routes: Routes = [
 			},
 			{
 				path: 'order-confirmation',
-				loadChildren: () => import('./orderConfirmation/orderConfirmation.module').then(m => m.OrderConfirmationModule),
+				loadChildren: () =>
+					import('./orderConfirmation/orderConfirmation.module').then(
+						(m) => m.OrderConfirmationModule
+					),
 				data: {
 					footer: false,
 					logo: true,
-					menuBar: true
-				}
+					menuBar: true,
+				},
 			},
 			{
 				path: 'dashboard',
@@ -627,6 +630,18 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'rfq',
+				loadChildren: () =>
+					import('./bulkEnquiry/bulkEnquiry.module').then(
+						(m) => m.BulkEnquiryModule
+					),
+				data: {
+					footer: false,
+					title: 'RFQ',
+					moreOpt: false,
+				},
+			},
+			{
 				path: '**',
 				loadChildren: () =>
 					import('./pageNotFound/pageNotFound.module').then(
@@ -646,7 +661,7 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class PagesRoutingModule { }
+export class PagesRoutingModule {}
 
 function productMatch(url: UrlSegment[]): any {
 	const urlLength = url.length;

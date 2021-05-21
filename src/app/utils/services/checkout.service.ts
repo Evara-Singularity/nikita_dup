@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 
 import CONSTANTS from "../../config/constants";
 import { DataService } from "./data.service";
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: "root"
@@ -45,7 +46,7 @@ export class CheckoutService {
     }
 
     getBusinessDetail(id) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/businessdetails/getbyid?id=" + id;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BD + id;
         return this.dataService.callRestful("GET", url).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
@@ -54,7 +55,7 @@ export class CheckoutService {
     }
 
     getPrepaidDiscountUpdate(body) {
-        return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/payment/getPrepaidDiscount", { body: body }).pipe(
+        return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PrepaidDiscount , { body: body }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
             })

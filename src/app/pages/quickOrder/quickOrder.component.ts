@@ -107,7 +107,7 @@ export class QuickOrderComponent {
         this._activatedRoute.data.pipe(
                 mergeMap((data: any) => {
                     const cartSession = data.qores;
-                    debugger;
+                    // debugger;
                     if (this.isServer) {
                         return of(null);
                     }

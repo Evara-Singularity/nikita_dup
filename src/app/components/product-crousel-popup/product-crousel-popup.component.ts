@@ -28,7 +28,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   @Output() currentSlide: EventEmitter<any> =  new EventEmitter<any>();
   ngxSiemaOptions: NgxSiemaOptions
   readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
-  readonly imageURL = CONSTANTS.IMAGE_ASSET_URL
+  readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
   
   constructor(
     private ngxSiemaService: NgxSiemaService,

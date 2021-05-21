@@ -166,7 +166,7 @@ export class CartComponent {
          * rui: remove unavailable items
          */
         this._state.subscribe('cart.rui', (items) => {
-            debugger;
+            // debugger;
             this.removeUnavailableItems(items);
         });
 
@@ -227,9 +227,9 @@ export class CartComponent {
         this.invoiceType = this.checkOutService.getInvoiceType();
         let params = { customerId: userSession.userId, invoiceType: this.invoiceType }
 
-        debugger;
+        // debugger;
         this.cartSessionUpdated$.subscribe((cs) => {
-            debugger;
+            // debugger;
             this.cartSession = JSON.parse(JSON.stringify(cs));
             this.cart = cs['cart'];
             this.itemsList = (cs['itemsList'] !== undefined && cs['itemsList'] != null) ? cs['itemsList'] : [];
@@ -370,7 +370,7 @@ export class CartComponent {
         if (buyNow) {
             vcmData['buyNow'] = buyNow;
         }
-        debugger;
+        // debugger;
         /* reqobj['shoppingCartDto']['itemsList'][3]['priceWithoutTax'] = 989;
         reqobj['shoppingCartDto']['itemsList'][3]['bulkPrice'] = 734;
         reqobj['shoppingCartDto']['itemsList'][3]['bulkPriceWithoutTax'] = 680; */
@@ -430,7 +430,7 @@ export class CartComponent {
 
                     let items = reqobj.shoppingCartDto['itemsList'];
                     const msns: Array<string> = res[0]['data'] ? Object.keys(res[0]['data']) : [];
-                    debugger;
+                    // debugger;
                     if (items && items.length > 0) {
                         //Below function is used to show price update at item level if any validation message is present corresponding to item.
                         items = this.addPriceUpdateToCart(items, itemsValidationMessage);
@@ -506,7 +506,7 @@ export class CartComponent {
     }
 
     addPriceUpdateToCart(itemsList, itemsValidationMessage) {
-        debugger;
+        // debugger;
         // console.log(itemsValidationMessage);
         let itemsListNew = JSON.parse(JSON.stringify(itemsList));
         let itemsValidationMessageT = {}; //Transformed Items validation messages;
@@ -837,7 +837,7 @@ export class CartComponent {
     public reviewLength: number = 0;
 
     getBusinessDetail(data) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/customer/getCustomerBusinessDetails";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
         return this.dataService.callRestful("GET", url, { params: data });
     }
 
@@ -896,7 +896,7 @@ export class CartComponent {
         });
     }
     deleteProduct(index) {
-        debugger;
+        // debugger;
         this.isShowLoader = true;
         var taxonomy = this.cartSession["itemsList"][index]['taxonomyCode'];
         var trackingData = {
@@ -1323,6 +1323,7 @@ export class CartComponent {
                 //Do not update cart object if isQuantityAvailable returns false and revert the entered quantity to previous.
                 else {
                     $event.target.value = this.itemsList[i]['productQuantity'];
+                    this._tms.show({type: 'error', text: productPriceQuantity.quantityAvailable+' is the maximum quantity available.'});
                 }
             });
         }
@@ -1351,7 +1352,7 @@ export class CartComponent {
     }
 
     incrementQuantity(quantityTarget, i) {
-        debugger;
+        // debugger;
         let cartSession = this._cartService.getCartSession();
         // console.log(cartSession, "incrementQuantityincrementQuantity")
         let itemsList = cartSession["itemsList"];
@@ -1382,7 +1383,7 @@ export class CartComponent {
             let item = itemsList[i];
             let productBO = {};
             //  $("#page-loader").show();
-            debugger;
+            // debugger;
             const itemsValidationMessage = this.deleteValidationMessageLocalstorage(item);
             this.itemsValidationMessage = itemsValidationMessage;
             this.commonService.itemsValidationMessage = itemsValidationMessage;
@@ -1568,7 +1569,7 @@ export class CartComponent {
         if (updatedQuantity > productPriceQuantity.quantityAvailable) {
             // alert("Quantity not available");
             this.isShowLoader = false;
-            this.itemsList[index]['message'] = "Quantity not available";
+            this.itemsList[index]['message'] =  productPriceQuantity.quantityAvailable+' is the maximum quantity available.';
             this._tms.show({ type: 'success', text: this.itemsList[index]['message'] });
             return { status: false, message: "Quantity not available" };
 
@@ -1676,7 +1677,7 @@ export class CartComponent {
     }
 
     updateCartSessions() {
-        debugger;
+        // debugger;
         if (!this.isShowLoader)
             this.isShowLoader = true;
         if (!this.isServer) {
@@ -1764,7 +1765,7 @@ export class CartComponent {
         const removedItem = itemsList.filter(item => unAvailableItemsIndex.indexOf(item['productId']) != -1);
 
         itemsList = itemsList.filter(item => unAvailableItemsIndex.indexOf(item['productId']) == -1)
-        debugger;
+        // debugger;
         // const removedItem = itemsList.splice(index, 1);
 
         let itemsValidationMessage = [];
@@ -1982,7 +1983,7 @@ export class CartComponent {
             return element.serviceAvailable == true;
         })
         let codAvailable: boolean = pinCodeStatus.every((element) => {
-            debugger;
+            // debugger;
             return element.codAvailable == true;
         });
         this.commonService.cashOnDeliveryStatus.isEnable = codAvailable;
@@ -2335,14 +2336,14 @@ export class CartComponent {
                 element['totalReview'] = element['yes'] + element['no']
             });
         }
-        let inStock = this.productResult['quantity'] > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
+        let inStock = this.productResult['quantity'] > 0 ? CONSTANTS.SCHEMA + "/InStock" : CONSTANTS.SCHEMA + "/OutOfStock";
         let reviewCount = this.reviews.summaryData.review_count > 0 ? this.reviews.summaryData.review_count : 1;
         let ratingValue = this.reviews.summaryData.final_average_rating > 0 ? this.reviews.summaryData.final_average_rating : 3.5;
 
         if (this.isServer) {
             let s = this._renderer2.createElement('script');
             s.type = "application/ld+json";
-            s.text = JSON.stringify({ "@context": "https://schema.org", "@type": "Product", "name": this.productResult['productName'], "image": this.productResult['productImage'], "description": this.productResult['fulldescription'], "brand": this.productResult['brand'], "offers": { "@type": "Offer", "price": (this.productResult['price'] * this.productResult['minimal_quantity']).toString(), "priceCurrency": "INR", "availability": inStock, "url": "https://www.moglix.com/" + this.productResult['url'], "ItemOffered": "Product", "areaServed": "IN", "itemCondition": "https://schema.org/NewCondition", "sku": this.productId, "acceptedPaymentMethod": [{ "name": "COD" }, { "name": "ByBankTransferInAdvance" }, { "name": "PaymentMethodCreditCard" }, { "name": "MasterCard" }, { "name": "VISA" }] }, "aggregateRating": { "@type": "AggregateRating", "ratingValue": ratingValue, "ratingCount": reviewCount, "bestRating": "5", "worstRating": "1" } });
+            s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "Product", "name": this.productResult['productName'], "image": this.productResult['productImage'], "description": this.productResult['fulldescription'], "brand": this.productResult['brand'], "offers": { "@type": "Offer", "price": (this.productResult['price'] * this.productResult['minimal_quantity']).toString(), "priceCurrency": "INR", "availability": inStock, "url": CONSTANTS.PROD + this.productResult['url'], "ItemOffered": "Product", "areaServed": "IN", "itemCondition": CONSTANTS.SCHEMA + "/NewCondition", "sku": this.productId, "acceptedPaymentMethod": [{ "name": "COD" }, { "name": "ByBankTransferInAdvance" }, { "name": "PaymentMethodCreditCard" }, { "name": "MasterCard" }, { "name": "VISA" }] }, "aggregateRating": { "@type": "AggregateRating", "ratingValue": ratingValue, "ratingCount": reviewCount, "bestRating": "5", "worstRating": "1" } });
             this._renderer2.appendChild(this._document.head, s);
         }
 
@@ -2885,7 +2886,7 @@ export class CartComponent {
         }
     }
     checkPinCodeAddress(index, continueToNextTab) {
-        debugger;
+        // debugger;
         let itemsList: Array<any> = (this.cartSession["itemsList"] != undefined && this.cartSession["itemsList"] != null) ? this.cartSession["itemsList"] : [];
         let allPinCodeStatus: Array<any> = [];
         let codNotAvailable: Array<any> = [];

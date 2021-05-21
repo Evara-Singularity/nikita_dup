@@ -10,8 +10,8 @@
                 <span class="orderDate">
                         Placed on : {{order.createdOn | date : 'dd-MM-yyyy'}}
                     </span>
-                <span class="ico-order" *ngIf="order.isOrderVisible"><img src ="../../../../../assets/icons/collaps.png"></span>
-                <span class="ico-order" *ngIf="!order.isOrderVisible"><img src ="../../../../../assets/icons/expand.png"></span>
+                <span class="ico-order" *ngIf="order.isOrderVisible"><img src ="../../../../../assets/img/icons/collaps.png"></span>
+                <span class="ico-order" *ngIf="!order.isOrderVisible"><img src ="../../../../../assets/img/icons/expand.png"></span>
                 </span>
             </div>
         </div>
@@ -51,7 +51,7 @@
                         <div class="chargestext clearfix">Total Shipping:
                             <span>₹ {{currentOrderShippingCharges}}</span>
                         </div>
-                        
+
                         <div class="chargestext">Total Discount:
                             <span class="textgreen">₹ {{currentOrderDiscountCharges + currentOrderNoEMIDiscountCharges}}</span>
                         </div>

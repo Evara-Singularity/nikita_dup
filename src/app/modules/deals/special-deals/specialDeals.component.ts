@@ -2,6 +2,8 @@ import { Component, ViewEncapsulation, Inject, PLATFORM_ID, ElementRef, Renderer
 import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 @Component({
   selector: "special-deal",
   templateUrl: "specialDeals.html",
@@ -65,7 +67,7 @@ export class SpecialDealsComponent {
   setMetas() {
     this.title.setTitle("Special Deals - Moglix.com");
     this.meta.addTag({ property: "og:title", content: "Special Deals - Moglix.com", });
-    this.meta.addTag({ property: "og:url",   content: "https://www.moglix.com/deals/special-deals",
+    this.meta.addTag({ property: "og:url",   content: CONSTANTS.PROD+ ENDPOINTS.SPL_DEALS,
     });
   }
 

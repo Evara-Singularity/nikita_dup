@@ -144,6 +144,8 @@ export class SiemaSlideComponent {
         })
     }
 
-    
+    goTo(index, selector) {
+        this.ngxSiemaService.goTo(index, selector);
+    }
 
 }

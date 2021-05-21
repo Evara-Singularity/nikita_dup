@@ -1,5 +1,5 @@
 <div *ngIf="isIframeNotLoaded" class="videoLoader">
-    <img src="/assets/img/loader_new.gif" />
+    <img src="{{imagePathAsset}}assets/img/loader_new.gif" />
 </div>
 <div class="youtube_player" [style.display]="isIframeNotLoaded?'none':'block'">
     <i (click)="$event.stopPropagation();closeModal()" class="icon-delete"></i>

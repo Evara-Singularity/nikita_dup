@@ -596,7 +596,7 @@ export class CategoryComponent implements OnInit {
                     })
                 });
                 const schemaObj = {
-                    "@context": "https://schema.org",
+                    "@context": CONSTANTS.SCHEMA,
                     "@type": "ItemList",
                     "numberOfItems": productArray.length,
                     "url": CONSTANTS.PROD + this._router.url,
@@ -978,7 +978,7 @@ export class CategoryComponent implements OnInit {
                 })
                 let qna = this._renderer2.createElement('script');
                 qna.type = "application/ld+json";
-                qna.text = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": qaSchema });
+                qna.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "FAQPage", "mainEntity": qaSchema });
                 this._renderer2.appendChild(this._document.head, qna);
             }
         }
@@ -998,7 +998,7 @@ export class CategoryComponent implements OnInit {
             this.meta.addTag({ 'name': 'description', 'content': metaDescription });
             this.meta.addTag({ 'name': 'og:title', 'content': title });
             this.meta.addTag({ 'name': 'og:description', 'content': metaDescription });
-            this.meta.addTag({ 'name': 'og:url', 'content': 'https://www.moglix.com' + this._router.url });
+            this.meta.addTag({ 'name': 'og:url', 'content': CONSTANTS.PROD + this._router.url });
             this.meta.addTag({
                 'name': 'keywords',
                 'content': categoryName + ', ' + categoryName + ' online, buy ' + categoryName + ', industrial ' + categoryName

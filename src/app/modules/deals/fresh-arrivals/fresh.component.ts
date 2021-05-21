@@ -8,7 +8,7 @@ import CONSTANTS from '@app/config/constants';
   selector: "fresh",
   templateUrl: "fresh.html",
   styleUrls: ["fresh.scss"],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
 })
 export class FreshComponent {
   isServer: boolean;
@@ -35,7 +35,7 @@ export class FreshComponent {
     this.title.setTitle("Avail Special Offers and Deals at Moglix.com");
     this.meta.addTag({ property: "og:title", content: "Avail Special Offers and Deals at Moglix.com", });
     this.meta.addTag({ property: "og:description", content: "The special offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
-    this.meta.addTag({ property: "og:url", content: "https://www.moglix.com/deals/fresh-arrivals" });
+    this.meta.addTag({ property: "og:url", content: CONSTANTS.PROD+"/deals/fresh-arrivals" });
     this.meta.addTag({ name: "description", content: "The special offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     if (this.isServer) {
       let links = this._renderer2.createElement("link");

@@ -22,7 +22,7 @@ export class LibertyComponent implements OnInit {
 	@ViewChild(SiemaCarouselComponent)
 	_siemaCarouselComponent: SiemaCarouselComponent;
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
-	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 	appendSiemaItemSubject$ = new Subject<Array<{}>>();
 	supplierReviewsSiemaItems$ = new Subject<Array<{}>>();
 	manufacturerBestSellerSiemaItems$ = new Subject<Array<{}>>();

@@ -1,6 +1,6 @@
 <global-loader></global-loader>
 <header-nav class="show inner_head"></header-nav>
-<div>
+<div [ngClass]="{'ishomepage': isHomePage}">
     <router-outlet></router-outlet>
 </div>
 <section *ngIf="iData && iData.footer && isFooter" class="test toggle-panel mt-10 about_moglix" id="footerContainer">

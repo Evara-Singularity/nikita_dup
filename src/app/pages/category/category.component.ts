@@ -429,6 +429,9 @@ export class CategoryComponent implements OnInit {
             this.productsUpdated.next(response.productSearchResult.products);
         }
         this.buckets = response.buckets;
+        if (this.filterInstance) {
+            this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+        }
         this.priceRangeTable(response);      //price range table code starts here
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];

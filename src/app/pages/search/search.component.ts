@@ -11,6 +11,7 @@ import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, ViewChild, EventEmitter, PLATFORM_ID, Inject, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ClientUtility } from "@app/utils/client.utility";
 
 declare let dataLayer;
 let digitalData: {};
@@ -87,7 +88,7 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        ClientUtility.scrollToTop(1000);
         // Set Meta data
         this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 

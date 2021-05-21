@@ -27,7 +27,7 @@ export class CareerComponent {
     this.title.setTitle("Explore Career Opportunities at Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Explore Career Opportunities at Moglix.com" });
     this.meta.addTag({ "property": "og:description", "content": "We would like you to come and work with us and share your unique experience, skills and passion. Write to us at talent[at]moglix.com." });
-    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/career" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/career" });
     this.meta.addTag({ "name": "description", "content": "We would like you to come and work with us and share your unique experience, skills and passion. Write to us at talent[at]moglix.com." });
 
     if (this.isServer) {

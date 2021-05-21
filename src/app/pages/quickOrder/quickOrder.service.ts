@@ -37,6 +37,6 @@ export class QuickOrderService {
     }
 
     updateCartSession(sessionCart) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/cart/updateCart", { body: sessionCart });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPD_CART, { body: sessionCart });
     }
 }

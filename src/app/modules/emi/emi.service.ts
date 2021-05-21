@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from "../../utils/services/data.service";
 import CONSTANTS from "../../config/constants";
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable()
 export class EmiService{
@@ -13,7 +14,7 @@ export class EmiService{
     }
 
     getEmiValues(data){
-        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API+"/payment/getEMIValues", {params:data}).pipe(
+        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_EMI_VAL, {params:data}).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({status: false, statusCode: res.status});
             })
@@ -21,6 +22,6 @@ export class EmiService{
     }
 
     pay(data){
-        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API+"/payment/pay", {body:data});
+        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {body:data});
     }
 }

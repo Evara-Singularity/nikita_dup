@@ -32,7 +32,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    // font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
@@ -69,8 +69,6 @@ a {
 h2,
 h3 {
     color: #444;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: lighter;
 }
 
 
@@ -147,7 +145,6 @@ a {
     outline: 0;
     font-size: $extra-large-font;
     font-weight: 600;
-    text-transform: uppercase;
     @extend %border-radius;
     @extend %box-shadow;
     border: 0;
@@ -192,6 +189,18 @@ a {
     width: 100%;
     bottom: 0;
     z-index: 2;
+}
+
+// Blue btn
+.blue-border-btn-full {
+    color: $blue-link-color;
+    border: 1px solid #278BED;
+    padding: 8px 10px;
+    width: 100%;
+    text-align: center;
+    background: $white;
+    font-weight: 600;
+    font-size: $medium-font;
 }
 
 .promo-code {
@@ -263,7 +272,7 @@ h3 {
 header-nav {
     &.inner_head {
         &+div {
-            padding-top: 50px;
+            margin-top: 52px;
         }
     }
 }
@@ -271,6 +280,15 @@ header-nav {
 // 
 .align-center {
     text-align: center;
+}
+
+//Common Order Status
+.green-txt {
+    color: #3b9e26;
+}
+
+.red-txt {
+    color: $logo-color;
 }
 
 // icons

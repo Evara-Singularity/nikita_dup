@@ -5,13 +5,12 @@ import { Meta } from '@angular/platform-browser';
 import { QuickOrderService } from './quickOrder.service';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { mergeMap } from 'rxjs/operators/mergeMap';
-import { map } from 'rxjs/operators/map';
+import { mergeMap } from 'rxjs/operators';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs/observable/of';
-import { takeUntil } from 'rxjs/operators';
-import CONSTANTS from '../..//config/constants';
+import { of } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { CONSTANTS } from '@config/constants';
 import { GlobalState } from '../..//utils/global.state';
 import { LocalAuthService } from '../..//utils/services/auth.service';
 import { FooterService } from '../..//utils/services/footer.service';
@@ -105,11 +104,10 @@ export class QuickOrderComponent {
             }
         );
 
-        this._activatedRoute.data
-            .pipe(
-                map(data => data.qores),
-                mergeMap((cartSession: any) => {
-                    debugger;
+        this._activatedRoute.data.pipe(
+                mergeMap((data: any) => {
+                    const cartSession = data.qores;
+                    // debugger;
                     if (this.isServer) {
                         return of(null);
                     }
@@ -120,7 +118,7 @@ export class QuickOrderComponent {
                         return of(cartSession);
                     }
                     return this.getShippingValue(cartSession);
-                })
+                }),
             ).subscribe((cartSession) => {
                 this.isShowLoader = true;
                 if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 200) {

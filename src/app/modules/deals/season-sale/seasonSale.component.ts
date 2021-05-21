@@ -4,7 +4,7 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 @Component({
   selector: "amazing-deal",
   templateUrl: "seasonSale.html",
-  styleUrls: ["seasonSale.scss"],
+  styleUrls: ["./seasonSale.scss"],
   encapsulation: ViewEncapsulation.None,
 })
 export class SeasonSaleComponent {

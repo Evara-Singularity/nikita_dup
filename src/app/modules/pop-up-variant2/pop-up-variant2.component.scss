@@ -1,4 +1,38 @@
+@import "../../scss/variables";
 .container{
     height: 100%;
-    padding-top: 1px;
+}
+
+.popup {
+    position: fixed;
+    // display: none;
+    z-index: 99;
+    &.screen-view {
+        width: 100%;
+        height: 100%;
+        top: 120%;
+        left: 0;
+        background: $white;
+        @extend %transition;
+        .head-sec {
+            padding: 12px 0; margin: 0;z-index: 5; position: relative;
+            @extend %box-shadow; background: $white;
+            i {
+                font-size: 20px;
+                line-height: 24px;
+            }
+            i+.page-name {
+                font-size: $extra-large-font;
+                margin-left: 10px;
+            }
+            .txt {
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 21px;
+                margin-left: 20px;
+            }
+        }        
+       
+       
+    }
 }

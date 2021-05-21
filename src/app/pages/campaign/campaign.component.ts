@@ -3,6 +3,7 @@ import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, OnInit, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import * as $ from 'jquery';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 
 @Component({
@@ -56,12 +57,11 @@ export class CampaignComponent implements OnInit {
 
 
       /*moglixhainavideo banner */
-      var url1 = 'https://www.youtube.com/embed/TddxyWx5g0o';
-      var url2 = 'https://www.youtube.com/embed/1d-sZmcyOnc';
-      var url3 = 'https://www.youtube.com/embed/V7vw4qFHp0E';
-      var url4 = 'https://www.youtube.com/embed/6trNPkCGejc';
-      var url5 = 'https://www.youtube.com/embed/yyVtU7wsqtQ';
-
+      var url1 = CONSTANTS.MOGLIX_HAINA_VIDEO.url1;
+      var url2 = CONSTANTS.MOGLIX_HAINA_VIDEO.url2;
+      var url3 = CONSTANTS.MOGLIX_HAINA_VIDEO.url3;
+      var url4 = CONSTANTS.MOGLIX_HAINA_VIDEO.url4;
+      var url5 = CONSTANTS.MOGLIX_HAINA_VIDEO.url5;
 
       $('.watch-now').click(function () {
         //alert('show')

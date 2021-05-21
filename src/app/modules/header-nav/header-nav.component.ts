@@ -1,5 +1,5 @@
 import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, Inject, Injector, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { GlobalState } from '../../utils/global.state';
   templateUrl: './header-nav.component.html',
   styleUrls: ['./header-nav.component.scss']
 })
-export class HeaderNavComponent implements OnInit, OnDestroy {
+export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isHomePage: boolean;
   routerData: any = null;
@@ -25,6 +25,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
   backRedirectUrl: string = null;
   sideNavInstance = null;
   isUserLogin: any;
+  isScrolledHeader:boolean =  false;
   @ViewChild('sideMenu', { read: ViewContainerRef }) sideMenuContainerRef: ViewContainerRef;
   searchBarInstance = null;
   @ViewChild('searchBar', { read: ViewContainerRef }) searhNavContainerRef: ViewContainerRef;
@@ -70,55 +71,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
       this.browserCalc();
       this.refreshIcon();
       this.addBrowserSubcribers();
-      window.addEventListener('scroll', (event) => {
-        let scrollEl = document.scrollingElement || document.documentElement;
-        let scroll = scrollEl.scrollTop;
-        if (scroll > 150) {
-          if (this.isHomePage) {
-            (<HTMLElement>document.querySelector("header-nav")).classList.add("slideHeader");
-            if(document.querySelector("header-nav + div")){
-              (<HTMLElement>document.querySelector("header-nav + div")).style.marginTop = (<HTMLElement>document.getElementsByTagName("header-nav")[0]).offsetHeight + 'px';
-          }
-            if (document.querySelector('header-nav header') && !document.getElementById('body').classList.contains('stop-scroll')) {
-              (<HTMLElement>document.querySelector("header-nav header")).classList.add('scrolled');
-            }
-            (<HTMLElement>document.querySelector("header-nav")).style.position = "fixed";
-            (<HTMLElement>document.querySelector("header-nav")).style.width = "100%";
-            (<HTMLElement>document.querySelector("header-nav")).style.top = "0px";
-            (<HTMLElement>document.querySelector("header-nav")).style.left = "0px";
-            (<HTMLElement>document.querySelector("header-nav")).style.zIndex = "89";
-          }
-          if (document.querySelector(".filter-wrapper")) {
-            (<HTMLElement>document.querySelector(".filter-wrapper")).classList.add('slide-up');
-          }
-          if (document.getElementById("search-input-block")) {
-            (<HTMLElement>document.getElementById("search-input-block")).classList.remove("col-xs-12");
-            (<HTMLElement>document.getElementById("search-input-block")).classList.add("col-xs-10");
-          }
-        } else {
-          if (this.isHomePage) {
-            (<HTMLElement>document.querySelector("header-nav")).classList.remove("slideHeader");
-            if (document.querySelector("header-nav header") && !document.getElementById('body').classList.contains('stop-scroll')) {
-              (<HTMLElement>document.querySelector("header-nav header")).classList.remove('scrolled');
-            }
-            (<HTMLElement>document.querySelector("header-nav")).style.position = "static";
-            if (document.querySelector("header-nav + div")) {
-              (<HTMLElement>document.querySelector("header-nav + div")).style.marginTop = "0px";
-            }
-          }
-
-          if (document.getElementById("search-input-block")) {
-            (<HTMLElement>document.getElementById("search-input-block")).classList.add("col-xs-10");
-            (<HTMLElement>document.getElementById("search-input-block")).classList.remove("col-xs-12");
-          }
-          if (document.querySelector(".filter-wrapper")) {
-            (<HTMLElement>document.querySelector(".filter-wrapper")).classList.remove('slide-up');
-
-          }
-        }
-
-      }, { passive: true });
     }
+  }
+
+
+  ngAfterViewInit() {
+    window.addEventListener('scroll', (event) => {
+      let scrollE = document.scrollingElement || document.documentElement;
+      if (scrollE['scrollTop'] > 120) {
+        this.isScrolledHeader = true;
+      }else{
+        this.isScrolledHeader = false;
+      }
+    });
   }
 
   ngOnDestroy() {

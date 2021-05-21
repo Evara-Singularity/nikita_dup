@@ -89,12 +89,12 @@ export class BrandResolver implements Resolve<object> {
         this._commonService.showLoader = true;
         const defaultParams = this.createDefaultParams(_activatedRouteSnapshot.params.brand);
         this._commonService.updateDefaultParamsNew(defaultParams);
-        const fragment = this._activatedRoute.snapshot.fragment;
         const RPRK: any = makeStateKey<{}>("RPRK");
 
-        if (this.transferState.hasKey(RPRK) && !fragment) {
+        if (this.transferState.hasKey(RPRK)) {
             this.loaderService.setLoaderState(false);
             const listingObj = this.transferState.get<object>(RPRK, null);
+            this.transferState.remove(RPRK);
             listingObj['flag'] = true;
             return of([listingObj]);
         } else {

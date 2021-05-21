@@ -1,13 +1,18 @@
 /* below code for top widgets and trending categories*/
 
 @import '../../scss/variables';
-home {
-    h2 {
+::ng-deep {
+    .btn-red {
+        border: 1px solid $logo-color;
+        padding: 7px 9px;
+        color: $logo-color;
+        border-radius: 2px;
+        font-weight: 600;
+        border-radius: 2px;
         text-transform: uppercase;
-        font-size: $medium-font;
-        font-weight: bold;
     }
 }
+
 
 /*Top Widgets*/
 
@@ -462,11 +467,4 @@ home {
 
 .Recently-view {
     margin-top: 0px;
-}
-
-.btn-red {
-    border: 1px solid $logo-color;
-    padding: 7px 9px;
-    color: $logo-color;
-    border-radius: 2px;
 }

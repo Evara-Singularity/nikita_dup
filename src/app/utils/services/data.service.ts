@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 import { LocalAuthService } from './auth.service';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 
 declare let $: any;
@@ -279,7 +280,7 @@ export class DataService {
     }
 
     getSession() {
-        return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession");
+        return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
 }

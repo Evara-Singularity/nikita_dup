@@ -20,7 +20,7 @@ import CONSTANTS from '../../config/constants';
 
 export class SiemaSlideComponent {
     @Input() options: any;
-    @Input() item: {};
+    @Input() item: any;
     @Input() imagePath: any;
     image_Path = CONSTANTS.IMAGE_BASE_URL;
     @Input() defaultImage: any;
@@ -144,6 +144,8 @@ export class SiemaSlideComponent {
         })
     }
 
-    
+    goTo(index, selector) {
+        this.ngxSiemaService.goTo(index, selector);
+    }
 
 }

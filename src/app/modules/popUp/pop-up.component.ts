@@ -1,12 +1,13 @@
 import { delay } from 'rxjs/operators';
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'app-pop-up',
     templateUrl: './pop-up.component.html',
-    styleUrls: ['./pop-up.component.scss']
+    styleUrls: ['./pop-up.component.scss'],    
+    encapsulation: ViewEncapsulation.None
 })
 export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -75,13 +76,11 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        debugger
         of(null)
             .pipe(
                 delay(200)
             )
             .subscribe(() => {
-                debugger;
                 if (this.isBrowser && document.getElementsByClassName('open').length === 0) {
                     (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
                     this.enableScroll();

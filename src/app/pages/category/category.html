@@ -6,7 +6,7 @@
 
 <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
 <div [class.visibility]="!((layoutType == 1 || layoutType == 2) && firstPageContent)">
-    <div class="row splnewpage" [class.visibility]="!isSLPPage " [class.layout2]="layoutType == 2">
+    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1" [class.slpLayout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
@@ -27,14 +27,14 @@
 
 <div class="cate-container" id=category-cards-section>
     <div class="bg_white">
-        <div class="sub-cate-container" [class.visibility]="!(layoutType != 2)">
-            <div *ngIf="showSubcategoty" [class.hidden-sm-up]="getRelatedCatgory?.children==null" class="container pt-10">
+        <div class="sub-cate-container">
+            <div [class.visibility]="!showSubcategoty" class="container pt-10">
                 <p *ngIf="getRelatedCatgory?.children!==undefined && getRelatedCatgory?.children!==null" class="f-16 bold-txt pad-tb-10">{{getRelatedCatgory?.categoryDetails?.categoryName}}
                     <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
                         Categories)</span>
                 </p>
-                <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category>
-                <!-- <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container> -->
+                <!-- <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category> -->
+                <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -63,8 +63,8 @@
     </div>
 
 
-    <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)" >
-        <ng-container  *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
+    <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)">
+        <ng-container *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
     </div>
 
     <div [class.visibility]="!firstPageContent">

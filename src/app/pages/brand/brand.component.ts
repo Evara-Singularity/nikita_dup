@@ -14,8 +14,6 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
-const RPRK: any = makeStateKey<{}>("RPRK");
-
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
@@ -102,6 +100,7 @@ export class BrandComponent {
     }
 
     ngOnInit() {
+        ClientUtility.scrollToTop(1000);
         // set some extra meta tags if brand is a category page
         if (this._activatedRoute.snapshot.queryParams['category']) {
             this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
@@ -158,7 +157,7 @@ export class BrandComponent {
         }
 
         //this.meta.addTag({ "name": "og:title", "content": title });
-        this.meta.addTag({ "name": "og:url", "content": "https://www.moglix.com" + this._router.url });
+        this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
         if (this.isServer) {
             let links = this._renderer2.createElement('link');
@@ -184,7 +183,7 @@ export class BrandComponent {
                 "position": 0,
                 "item":
                 {
-                    "@id": "https://www.moglix.com",
+                    "@id": CONSTANTS.PROD,
                     "name": "Home"
                 }
             },
@@ -193,7 +192,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": "https://www.moglix.com/brand-store",
+                    "@id": CONSTANTS.PROD+"/brand-store",
                     "name": "Brand"
                 }
             },
@@ -202,7 +201,7 @@ export class BrandComponent {
                 "position": 2,
                 "item":
                 {
-                    "@id": "https://www.moglix.com/" + this.friendlyUrl,
+                    "@id": CONSTANTS.PROD + this.friendlyUrl,
                     "name": this.brand
                 }
             },
@@ -211,7 +210,7 @@ export class BrandComponent {
                 "position": 3,
                 "item":
                 {
-                    "@id": "https://www.moglix.com" + this._router.url,
+                    "@id": CONSTANTS.PROD + this._router.url,
                     "name": this.brandCategoryName
                 }
             }
@@ -223,7 +222,7 @@ export class BrandComponent {
                 "position": 0,
                 "item":
                 {
-                    "@id": "https://www.moglix.com",
+                    "@id": CONSTANTS.PROD,
                     "name": "Home"
                 }
             },
@@ -232,7 +231,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": "https://www.moglix.com/brand-store",
+                    "@id": CONSTANTS.PROD+"/brand-store",
                     "name": "Brand"
                 }
             },
@@ -241,7 +240,7 @@ export class BrandComponent {
                 "position": 2,
                 "item":
                 {
-                    "@id": "https://www.moglix.com" + this._router.url,
+                    "@id": CONSTANTS.PROD + this._router.url,
                     "name": this.brand
                 }
             },
@@ -255,7 +254,7 @@ export class BrandComponent {
             let s = this._renderer2.createElement('script');
             s.type = "application/ld+json";
 
-            s.text = JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": this.itemsList });
+            s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": this.itemsList });
             this._renderer2.appendChild(this._document.head, s);
         }
 
@@ -527,7 +526,7 @@ export class BrandComponent {
                     })
                 });
                 const schemaObj = {
-                    "@context": "https://schema.org",
+                    "@context": CONSTANTS.SCHEMA,
                     "@type": "ItemList",
                     "numberOfItems": productArray.length,
                     "url": CONSTANTS.PROD + this._router.url,
@@ -550,6 +549,7 @@ export class BrandComponent {
             if (this.refreshProductsBasedOnRouteChangeFlag) {
                 this.refreshProducts();
             }
+            ClientUtility.scrollToTop(1000);
             this.refreshProductsBasedOnRouteChangeFlag++;
         });
     }
@@ -558,31 +558,14 @@ export class BrandComponent {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    ngAfterViewInit() {
-        if (this.isBrowser) {
-            this._tState.remove(RPRK);
-        }
-    }
-
     refreshProducts() {
         const defaultParams = this.createDefaultParams();
         this._commonService.updateDefaultParamsNew(defaultParams);
-        const fragment = this._activatedRoute.snapshot.fragment;
 
-        if (this._tState.hasKey(RPRK) && !fragment) {
-            const response = this._tState.get(RPRK, {});
-            this.initiallizeData(response, false);
-        } else {
-            if (this.isBrowser) {
-                this._commonService.showLoader = true;
-            }
-            this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                if (this.isServer) {
-                    this._tState.set(RPRK, response);
-                }
-                this.initiallizeData(response, true);
-            });
-        }
+        this._commonService.showLoader = true;
+        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+            this.initiallizeData(response, true);
+        });
     }
 
     private initiallizeData(response: any, flag: boolean) {
@@ -627,27 +610,26 @@ export class BrandComponent {
             //console.log(" this.heading",this.heading );
 
 
-            if (this.isBrowser) {
+            // if (this.isBrowser) {
 
-                setTimeout(() => {
-                    if (document.querySelector('h3 .inv_span')) {
-                        document.querySelector('h3 .inv_span').addEventListener('click', function () {
-                            if (parseInt((<HTMLElement>document.querySelector('.show-mobile')).style.opacity) > 0) {
-                                ClientUtility.fadeOut(document.querySelector('.show-mobile'));
-                            } else {
-                                ClientUtility.fadeIn(document.querySelector('.show-mobile'));
-                            }
-                            document.querySelector('.showplus').classList.toggle('showminus');
-                        }, { passive: true });
-                    }
-                }, 3000);
-            }
+            //     setTimeout(() => {
+            //         if (document.querySelector('h3 .inv_span')) {
+            //             document.querySelector('h3 .inv_span').addEventListener('click', function () {
+            //                 if (parseInt((<HTMLElement>document.querySelector('.show-mobile')).style.opacity) > 0) {
+            //                     ClientUtility.fadeOut(document.querySelector('.show-mobile'));
+            //                 } else {
+            //                     ClientUtility.fadeIn(document.querySelector('.show-mobile'));
+            //                 }
+            //                 document.querySelector('.showplus').classList.toggle('showminus');
+            //             }, { passive: true });
+            //         }
+            //     }, 3000);
+            // }
 
         } else {
             this.heading = 'shop ' + this.brand + ' products online.';
         }
         this.brand = response.brandDetails.brandName;
-        //console.log("this.brand 2",this.brand);
         if (this.isBrowser) {
             var trackingData = {
                 event_type: "page_load",

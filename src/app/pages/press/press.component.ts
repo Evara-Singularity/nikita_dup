@@ -34,7 +34,7 @@ export class PressComponent {
     this.title.setTitle("Press Release - Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Press Release - Moglix.com" });
     this.meta.addTag({ "property": "og:description", "content": "Read about the latest news and development at Moglix in our press release section." });
-    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/press" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/press" });
     this.meta.addTag({ "name": "description", "content": "Read about the latest news and development at Moglix in our press release section." })
     
     if (this.isServer) {

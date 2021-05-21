@@ -17,7 +17,7 @@ export class ProductService {
     }
 
     getPurchaseList(data) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/purchase/getPurchaseList";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
         return this._dataService.callRestful("GET", url, { params: data })
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -27,21 +27,21 @@ export class ProductService {
     }
 
     addToPurchaseList(obj) {
-        let url = this.basePath + "/purchase/addPurchaseList";
+        let url = this.basePath + ENDPOINTS.ADD_PURCHASE_LIST;
         return this._dataService.callRestful("POST", url, { body: obj });
     }
 
     removePurchaseList(data) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/purchase/removePurchaseList";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RM_PCR_LIST;
         return this._dataService.callRestful("POST", url, { body: data });
     }
 
     getFBTProducts(msn) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/product/getProductFbtDetails?productId=' + msn);
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_FBT + '?productId=' + msn);
     }
 
     getSimilarProducts(productName, categoryId) {
-        const URL = this.basePath + '/search/similarproducts?str=' + productName + '&category=' + categoryId;
+        const URL = this.basePath + ENDPOINTS.SIMILAR_PRODUCTS +'?str=' + productName + '&category=' + categoryId;
         return this._dataService.callRestful('GET', URL)
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -51,11 +51,11 @@ export class ProductService {
     }
 
     getrecentProduct(user_id) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/recentlyviewed/getRecentlyViewd?customerId=" + user_id);
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RECENTLY_VIEWED + user_id);
     }
 
     getGSTINDetails(gstin) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/address/getTaxpayerByGstin?gstin=" + gstin);
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TAXPAYER_BY_TIN + gstin);
     }
 
     postBulkEnquiry(obj) {
@@ -64,7 +64,7 @@ export class ProductService {
     }
 
     getStateCityByPinCode(pinCode) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/address/getcitystatebyPincode?pin=" + pinCode);
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CITY_BY_PIN + pinCode);
     }
 
     getLogisticAvailability(data) {
@@ -73,17 +73,17 @@ export class ProductService {
     }
 
     getAllOffers() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/category/getcategoryExtras?requestType=mobikwikpdp");
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp");
     }
 
     getEmiPlans(price) {
-        let url = this.basePath + "/payment/getEMIValues?price=" + price;
+        let url = this.basePath + ENDPOINTS.GET_EMI_VAL + "?price=" + price;
         return this._dataService.callRestful("GET", url);
     }
 
 
     getGroupProductObj(productID) {
-        const url = this.basePath + '/product/getProductGroup?productId=' + productID + '&fetchGroup=true';
+        const url = this.basePath + ENDPOINTS.PRODUCT_INFO + '?productId=' + productID + '&fetchGroup=true';
         return this._dataService.callRestful('GET', url)
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -93,7 +93,7 @@ export class ProductService {
     }
 
     postReview(obj) {
-        const url = this.basePath + '/reviews/setReviews';
+        const url = this.basePath + ENDPOINTS.SET_REVIEWS;
         return this._dataService.callRestful('POST', url, { body: obj })
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -103,7 +103,7 @@ export class ProductService {
     }
 
     postHelpful(obj) {
-        const url = this.basePath + '/reviews/isReviewHelpful';
+        const url = this.basePath + ENDPOINTS.IS_REVIEW_HELPFUL;
         return this._dataService.callRestful('POST', url, { body: obj })
             .pipe(
                 catchError((res: HttpErrorResponse) => {
@@ -113,12 +113,12 @@ export class ProductService {
     }
 
     postQuestion(obj) {
-        let url = this.basePath + "/quest/setQuest";
+        let url = this.basePath + ENDPOINTS.SET_QUEST;
         return this._dataService.callRestful("POST", url, { body: obj });
     }
 
     getRecentlyBoughtProducts(msn) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/cmsApi/productStatusCount?timeInterval=10&productId=" + msn);
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_STATUS_COUNT + "?timeInterval=10&productId=" + msn);
     }
 
     getReviewsRating(obj) {
@@ -142,10 +142,10 @@ export class ProductService {
     }
 
     getSession() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession");
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
     getCartBySession(params) {
-         return this._dataService.callRestful("GET", this.basePath + "/cart/getCartBySession", { params: params });
+         return this._dataService.callRestful("GET", this.basePath + ENDPOINTS.GET_CartBySession, { params: params });
     }
 }

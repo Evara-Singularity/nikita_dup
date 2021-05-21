@@ -265,16 +265,12 @@ export class CategoryComponent implements OnInit {
     }
 
     private setCategoryDataFromResolver() {
-        // alert('setCategoryDataFromResolver');
         this._commonService.showLoader = true;
         const res = this._activatedRoute.snapshot.data;
         this.setDataAfterGettingDataFromResolver(res.category);
     }
 
     setDataAfterGettingDataFromResolver(res) {
-        console.clear();
-        console.log(res);
-        // alert('setDataAfterGettingDataFromResolver');
         this._commonService.showLoader = false;
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
@@ -417,8 +413,6 @@ export class CategoryComponent implements OnInit {
      * @param flag : true, if TrasnferState exist.
      */
     private initiallizeData(response: any, flag: boolean) {
-        console.log(response);
-        // alert('initiallizeData');
         // this._commonService.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.createCategorySchema(response.productSearchResult['products']); // ODP-684

@@ -38,7 +38,6 @@
             </div>
         </div>
         <div class="clearfix"></div>
-
         <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></product-list>
         <div class="filter-wrapper">
             <button type="button" (click)="filterUp()">
@@ -51,7 +50,7 @@
             </button>
         </div>
         <ng-container *ngIf="_commonService?.isBrowser" #sortBy></ng-container>
-        <div>
+        <div [class.visibility]="this.paginationData?.itemCount == 0">
             <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
             <ng-template *ngIf="_commonService?.isBrowser" #pagination></ng-template>
         </div>
@@ -66,7 +65,6 @@
     <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)">
         <ng-container *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
     </div>
-
     <div [class.visibility]="!firstPageContent">
         <span observeVisibility [debounceTime]="100" (visible)="onVisibleCateoryFooter($event)"></span>
         <ng-template *ngIf="_commonService?.isBrowser" #cateoryFooter></ng-template>

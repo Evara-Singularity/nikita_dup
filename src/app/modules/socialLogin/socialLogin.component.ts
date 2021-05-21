@@ -53,7 +53,7 @@ export class SocialLoginComponent {
     }
 
     signIn(provider){
-        this.logout();
+        // this.logout();
         this.sub = this._auth.login(provider).subscribe(
             (data) => {
                 

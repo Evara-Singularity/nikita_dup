@@ -5,7 +5,6 @@ import { SocialLoginService } from "./socialLogin.service";
 import { Angular2SocialLoginModule } from 'angular2-social-login';
 import CONSTANTS from '../../config/constants';
 
-
 @NgModule({
     imports: [CommonModule, Angular2SocialLoginModule],
     declarations: [
@@ -22,7 +21,5 @@ export class SocialLoginModule {
 
 }
 
-if (typeof window != 'undefined') {
-    Angular2SocialLoginModule.loadProvidersScripts(CONSTANTS.SOCIAL_LOGIN);
-}
+Angular2SocialLoginModule.loadProvidersScripts(CONSTANTS.SOCIAL_LOGIN);
 

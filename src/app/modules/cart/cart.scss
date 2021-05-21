@@ -147,12 +147,18 @@
       @extend %container;
       li{
         padding: 6px 0;
+        &::after{
+          clear:both; content: ''; display: block;
+        }
+        .tag-label {float: left;}
+        .tag-value{float: right;}
         &.green-txt{
           color: $green-color;
           font-weight: 600;
         }
         &.bold-txt{
           font-size: $large-font;
+          span{font-weight: 600}
         }
       }
     }
@@ -378,5 +384,27 @@
   img {
     width: 80%;
   margin: 10%;
+  }
+}
+
+
+/*new css 20-05-2021*/
+.card{
+  .container.pb-15{padding-bottom: 15px;}
+}
+.alert-box{
+  .content-area { transform: translateY(-50%); position: fixed; top: 50%; left: 7.5%;  width: 85%;
+    background: #fff;  z-index: 12; font-size: 14px; border-radius: 3px;
+    .info-area {  padding: 25px;  
+      .info { line-height: 20px; font-size: 14px; }
+      .info-title { margin-bottom: 10px; line-height: 19px;  font-size: 16px; font-weight: 500; }
+    }
+    .button-area { border-top: 1px solid #e6e6e6; position: relative;
+      button {
+        border: 0; background: #fff; height: 50px; text-align: center;  width: 50%; float: left;
+        font-weight: 600; font-size: 14px;
+            &.continue { color: #3875fd;  border-left: 1px solid #e6e6e6; }
+         }
+      }
   }
 }

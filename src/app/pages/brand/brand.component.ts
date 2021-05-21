@@ -14,8 +14,6 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
-const RPRK: any = makeStateKey<{}>("RPRK");
-
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
@@ -551,6 +549,7 @@ export class BrandComponent {
             if (this.refreshProductsBasedOnRouteChangeFlag) {
                 this.refreshProducts();
             }
+            ClientUtility.scrollToTop(1000);
             this.refreshProductsBasedOnRouteChangeFlag++;
         });
     }
@@ -559,31 +558,14 @@ export class BrandComponent {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    ngAfterViewInit() {
-        if (this.isBrowser) {
-            this._tState.remove(RPRK);
-        }
-    }
-
     refreshProducts() {
         const defaultParams = this.createDefaultParams();
         this._commonService.updateDefaultParamsNew(defaultParams);
-        const fragment = this._activatedRoute.snapshot.fragment;
 
-        if (this._tState.hasKey(RPRK) && !fragment) {
-            const response = this._tState.get(RPRK, {});
-            this.initiallizeData(response, false);
-        } else {
-            if (this.isBrowser) {
-                this._commonService.showLoader = true;
-            }
-            this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-                if (this.isServer) {
-                    this._tState.set(RPRK, response);
-                }
-                this.initiallizeData(response, true);
-            });
-        }
+        this._commonService.showLoader = true;
+        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
+            this.initiallizeData(response, true);
+        });
     }
 
     private initiallizeData(response: any, flag: boolean) {
@@ -628,27 +610,26 @@ export class BrandComponent {
             //console.log(" this.heading",this.heading );
 
 
-            if (this.isBrowser) {
+            // if (this.isBrowser) {
 
-                setTimeout(() => {
-                    if (document.querySelector('h3 .inv_span')) {
-                        document.querySelector('h3 .inv_span').addEventListener('click', function () {
-                            if (parseInt((<HTMLElement>document.querySelector('.show-mobile')).style.opacity) > 0) {
-                                ClientUtility.fadeOut(document.querySelector('.show-mobile'));
-                            } else {
-                                ClientUtility.fadeIn(document.querySelector('.show-mobile'));
-                            }
-                            document.querySelector('.showplus').classList.toggle('showminus');
-                        }, { passive: true });
-                    }
-                }, 3000);
-            }
+            //     setTimeout(() => {
+            //         if (document.querySelector('h3 .inv_span')) {
+            //             document.querySelector('h3 .inv_span').addEventListener('click', function () {
+            //                 if (parseInt((<HTMLElement>document.querySelector('.show-mobile')).style.opacity) > 0) {
+            //                     ClientUtility.fadeOut(document.querySelector('.show-mobile'));
+            //                 } else {
+            //                     ClientUtility.fadeIn(document.querySelector('.show-mobile'));
+            //                 }
+            //                 document.querySelector('.showplus').classList.toggle('showminus');
+            //             }, { passive: true });
+            //         }
+            //     }, 3000);
+            // }
 
         } else {
             this.heading = 'shop ' + this.brand + ' products online.';
         }
         this.brand = response.brandDetails.brandName;
-        //console.log("this.brand 2",this.brand);
         if (this.isBrowser) {
             var trackingData = {
                 event_type: "page_load",

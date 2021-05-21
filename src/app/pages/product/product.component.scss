@@ -237,8 +237,9 @@
             background: $white;
             border: 0;
             width: calc(40% - 4px);
-            height: 100%;
+            height: 100%;font-weight: 600;
             color: #F2720F;
+            margin-left: 5px;
         }
         .buy-now {
             width: calc(40% - 4px);
@@ -307,6 +308,7 @@
         }
         .update-quantity {
             overflow: auto;
+            scrollbar-width: none; /* Firefox 64 */
             margin-bottom: 15px;
             .bul-qty-head {
                 h4 {
@@ -371,6 +373,7 @@
             .blk-contain {
                 overflow-y: hidden;
                 overflow-x: scroll;
+                scrollbar-width: none; /* Firefox 64 */
                 width: auto;
                 .inner-blk-contain {
                     //  width: 210%;
@@ -1249,6 +1252,7 @@
 .dark-green-txt {
     color: #309615;
 }
+.green-txt{color: #3b9e26;}
 
 .light-green {
     background: #6BCF1B;
@@ -1676,6 +1680,7 @@
         overflow-y: hidden;
         overflow-x: scroll;
         width: auto;
+        scrollbar-width: none; /* Firefox 64 */
         padding-bottom: 15px;
         .returnPolicyInner {
             width: 120px;
@@ -1770,17 +1775,15 @@
 .widget-container {
     display: flex;
     flex-flow: column wrap;
-    padding: 10px 0 0;
     .widget-items {
-        display: inline-flex;
-        justify-content: space-between;
+        display: flex;
         background: #fff;
         border-bottom: 1px solid #EFEFF4;
         padding: 20px 22px;
-        flex: 1;
         &:last-child {
             border-bottom: 0;
         }
+         & > img{ margin-left: auto;  width: 24px;  display: flex;  }
         p {
             color: #303030;
             font-size: 14px;
@@ -1794,7 +1797,7 @@
             vertical-align: bottom;
         }
         .contentWrap {
-            width: 45%;
+            display: flex; flex-direction: column; flex: 1;
         }
     }
 }
@@ -2038,4 +2041,9 @@
             }
         }
     }
+}
+
+/*new css 20-05-2021*/
+.fbtSection{
+    margin-top: 10px; margin-bottom: 10px; border: none;
 }

@@ -5,6 +5,7 @@ import { DOCUMENT, isPlatformServer } from '@angular/common';
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
@@ -23,7 +24,6 @@ export class BrandComponent{
 	total_count: any;
 	brand_url: any;
 	brandsLogo;
-	isServer: boolean
 	set isShowLoader(value) {
 		this.loaderService.setLoaderState(value);
 	}
@@ -32,12 +32,12 @@ export class BrandComponent{
 		private meta: Meta,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
+		private _commonService: CommonService,
 		public _router: Router,
 		private route: ActivatedRoute,
 		private loaderService: GlobalLoaderService,
 		@Inject(PLATFORM_ID) private platformId
 	) {
-		this.isServer = isPlatformServer(platformId);
 		this.API = CONSTANTS;
 		this.title.setTitle('Moglix Brand Store');
 		this.meta.addTag({ property: 'og:title', content: 'Moglix Brand Store' });
@@ -55,7 +55,7 @@ export class BrandComponent{
 			content:
 				'Get access to exclusive brands at Moglix brand store. Shop for products from your favorite brands inclusing Bosch, Eveready, Havells, V-Guard, Makita, Karam and more.',
 		});
-		if (this.isServer) {
+		if (this._commonService.isServer) {
 			let links = this._renderer2.createElement('link');
 			links.rel = 'canonical';
 			links.href = CONSTANTS.PROD + ENDPOINTS.BRAND_STORE;

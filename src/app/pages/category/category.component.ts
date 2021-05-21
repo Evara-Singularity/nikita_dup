@@ -364,6 +364,7 @@ export class CategoryComponent implements OnInit {
                 this.updateConfigBasedOnParams(res[0]);
                 this.updateConfigBasedOnQueryParams(res[1]);
                 this.refreshProductListBasedOnRouteUpdate();
+                ClientUtility.scrollToTop(2000);
             }
             this.refreshProductsBasedOnRouteChangeFlag++;
         });

@@ -6,7 +6,7 @@ import {
     ActivatedRouteSnapshot,
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, map, share, tap } from 'rxjs/operators'
 import { isPlatformServer } from '@angular/common';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
@@ -137,11 +137,11 @@ export class CategoryResolver implements Resolve<object> {
             const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
             const cms_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
 
-            const getRelatedCategoriesObs = this.http.get(get_rel_cat_url);
-            const getFAQObs = this.http.get(faq_url);
-            const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment);
-            const getBreadCrump = this.http.get(breadcrump_url);
-            const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url);
+            const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());
+            const getFAQObs = this.http.get(faq_url).pipe(share());
+            const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment).pipe(share());
+            const getBreadCrump = this.http.get(breadcrump_url).pipe(share());
+            const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share());
 
 
             const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getCmsDynamicDataForCategoryAndBrandObs];

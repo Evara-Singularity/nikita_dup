@@ -7,6 +7,7 @@ const routes: Routes = [
     {
         path: '',
         component: CategoryComponent,
+        runGuardsAndResolvers: 'always',
         resolve: {
             category: CategoryResolver
         },

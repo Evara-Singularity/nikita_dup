@@ -13,9 +13,6 @@ import { Component, ViewChild, EventEmitter, PLATFORM_ID, Inject, Renderer2, OnI
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from "@app/utils/client.utility";
 
-declare let dataLayer;
-let digitalData: {};
-
 interface ProductSearchResult {
     highlightedSearchString: any,
     totalCount: any,
@@ -142,6 +139,8 @@ export class SearchComponent implements OnInit {
             'customerType': (user && user["userType"]) ? user["userType"] : '',
         }
         let order = {}
+        let digitalData = {}
+        
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
@@ -197,7 +196,7 @@ export class SearchComponent implements OnInit {
             }
 
             const products = response.productSearchResult.products;
-
+            let digitalData = {};
             if (this.isBrowser) {
                 digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';
@@ -220,6 +219,7 @@ export class SearchComponent implements OnInit {
             }
 
 
+            let digitalData = {};
             if (this.isBrowser) {
                 digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';

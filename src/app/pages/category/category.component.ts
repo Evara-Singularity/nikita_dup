@@ -7,7 +7,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
 import { BehaviorSubject, Observable, of, combineLatest, forkJoin, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map, share } from 'rxjs/operators';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
@@ -127,14 +127,6 @@ export class CategoryComponent implements OnInit {
     ngOnInit() {
         ClientUtility.scrollToTop(1000);
         if (this._commonService.isBrowser) {
-            // Set config based on query params change
-            const queryParamsData = this._activatedRoute.snapshot.queryParams;
-            this.updateConfigBasedOnQueryParams(queryParamsData);
-            
-            // Set config based on params change
-            const paramsData = this._activatedRoute.snapshot.params;
-            this.updateConfigBasedOnParams(paramsData);
-    
 
             // Category Data after you got it from resolver 
             this.setCategoryDataFromResolver();
@@ -143,7 +135,7 @@ export class CategoryComponent implements OnInit {
             this.footerService.setMobileFoooters();
     
             // Subscribe to future route events
-            this.refreshProductsBasedOnRouteChange();
+            // this.refreshProductsBasedOnRouteChange();
         }
     }
 
@@ -184,7 +176,6 @@ export class CategoryComponent implements OnInit {
     }
 
     private updateConfigBasedOnQueryParams(data) {
-        // alert('updateConfigBasedOnQueryParams');
         this.trendingSearchData = data;
         this.pageNo = data['page'];
         if (data['page'] > 1) {
@@ -203,7 +194,6 @@ export class CategoryComponent implements OnInit {
     }
 
     async onVisibleCateoryFooter(event) {
-        // alert('onVisibleCateoryFooter');
         if (!this.cateoryFooterInstance) {
             const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component');
             const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
@@ -220,7 +210,6 @@ export class CategoryComponent implements OnInit {
     }
 
     async createDynamicComponent(name) {
-        // alert('createDynamicComponent');
         if (name === 'catBestseller' && !this.catBestSellerInstance) {
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component');
             const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
@@ -266,8 +255,17 @@ export class CategoryComponent implements OnInit {
 
     private setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
-        const res = this._activatedRoute.snapshot.data;
-        this.setDataAfterGettingDataFromResolver(res.category);
+        this._activatedRoute.data.subscribe(res => {
+            // Set config based on query params change
+            const queryParamsData = this._activatedRoute.snapshot.queryParams;
+            this.updateConfigBasedOnQueryParams(queryParamsData);
+
+            // Set config based on params change
+            const paramsData = this._activatedRoute.snapshot.params;
+            this.updateConfigBasedOnParams(paramsData);
+            
+            this.setDataAfterGettingDataFromResolver(res.category);
+        });
     }
 
     setDataAfterGettingDataFromResolver(res) {
@@ -322,14 +320,13 @@ export class CategoryComponent implements OnInit {
     }
 
     refreshProductListBasedOnRouteUpdate() {
-        // alert('refreshProductListBasedOnRouteUpdate');
         this.categoryId = this._activatedRoute.snapshot.params['id'];
-        let getRelatedCategories = this.getRelatedCategories(this.categoryId);
-        let refreshProducts = this.refreshProducts();
-        let getFAQ = this.getFAQ(this.categoryId);
+        let getRelatedCategories = this.getRelatedCategories(this.categoryId).pipe(share());
+        let refreshProducts = this.refreshProducts().pipe(share());
+        let getFAQ = this.getFAQ(this.categoryId).pipe(share());
         const source = this._activatedRoute.snapshot['_routerState']['url'].split('#')[0].split('?')[0];
-        let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data']));
-        let getBreadCrumpDataFromAPI = this._commonService.getBreadcrumpData(source, 'category');
+        let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data'])).pipe(share());
+        let getBreadCrumpDataFromAPI = this._commonService.getBreadcrumpData(source, 'category').pipe(share());
 
         let apiList = [getRelatedCategories, refreshProducts, getFAQ, getBreadCrumpDataFromAPI];
 
@@ -340,18 +337,17 @@ export class CategoryComponent implements OnInit {
             this._commonService.replaceHeading = false;
         }
 
-        this._commonService.showLoader = true;
-        
+        // this._commonService.showLoader = true;
         this.forkJoinUnsub = forkJoin(apiList)
             .subscribe((res) => {
                 this.setDataAfterGettingDataFromResolver(res);
-            });
+        });
+        
     }
 
     refreshProductsBasedOnRouteChangeFlag: number = 0;
     private refreshProductsBasedOnRouteChange() {
-        // alert('refreshProductsBasedOnRouteChange');
-        this.combineLatestUnsub = combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
+        this.combineLatestUnsub = combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).pipe(debounceTime(0)).subscribe(res => {
             // to avoid first time call of API on route change subscription
 
             // Show hide Subcategory based on 
@@ -361,12 +357,12 @@ export class CategoryComponent implements OnInit {
                 this.refreshProductListBasedOnRouteUpdate();
                 ClientUtility.scrollToTop(2000);
             }
+
             this.refreshProductsBasedOnRouteChangeFlag++;
         });
     }
 
     setTrackingData(res) {
-        // alert('setTrackingData');
         var taxonomy = res[0]["categoryDetails"]['taxonomy'];
         var trackData = {
             event_type: "page_load",
@@ -392,7 +388,6 @@ export class CategoryComponent implements OnInit {
     }
 
     getRelatedCategories(categoryID): Observable<{}> {
-        // alert('getRelatedCategories');
         if (this.currentRequestGetRelatedCategories !== undefined) {
             this.currentRequestGetRelatedCategories.unsubscribe();
         }
@@ -400,7 +395,6 @@ export class CategoryComponent implements OnInit {
     }
 
     refreshProducts(): Observable<{}> {
-        // alert('refreshProducts');
         const defaultParams = this.createDefaultParams();
         this._commonService.updateDefaultParamsNew(defaultParams);
         return this._commonService.refreshProducts();

@@ -33,7 +33,6 @@
                     <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
                         Categories)</span>
                 </p>
-                <!-- <sub-category [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></sub-category> -->
                 <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
             </div>
         </div>

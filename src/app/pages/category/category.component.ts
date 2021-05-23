@@ -125,17 +125,12 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
-        ClientUtility.scrollToTop(1000);
         if (this._commonService.isBrowser) {
-
             // Category Data after you got it from resolver 
             this.setCategoryDataFromResolver();
     
             // Set footers
             this.footerService.setMobileFoooters();
-    
-            // Subscribe to future route events
-            // this.refreshProductsBasedOnRouteChange();
         }
     }
 
@@ -263,13 +258,14 @@ export class CategoryComponent implements OnInit {
             // Set config based on params change
             const paramsData = this._activatedRoute.snapshot.params;
             this.updateConfigBasedOnParams(paramsData);
-            
+
             this.setDataAfterGettingDataFromResolver(res.category);
         });
     }
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
+        ClientUtility.scrollToTop(2000);
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -317,49 +313,6 @@ export class CategoryComponent implements OnInit {
 
         this.setFaqSchema(res[2]);
         this.faqData = res[2];
-    }
-
-    refreshProductListBasedOnRouteUpdate() {
-        this.categoryId = this._activatedRoute.snapshot.params['id'];
-        let getRelatedCategories = this.getRelatedCategories(this.categoryId).pipe(share());
-        let refreshProducts = this.refreshProducts().pipe(share());
-        let getFAQ = this.getFAQ(this.categoryId).pipe(share());
-        const source = this._activatedRoute.snapshot['_routerState']['url'].split('#')[0].split('?')[0];
-        let getCmsDynamicDataForCategoryAndBrand = this._commonService.getCmsDynamicDataForCategoryAndBrand(this.categoryId).pipe(map(res => res['data'])).pipe(share());
-        let getBreadCrumpDataFromAPI = this._commonService.getBreadcrumpData(source, 'category').pipe(share());
-
-        let apiList = [getRelatedCategories, refreshProducts, getFAQ, getBreadCrumpDataFromAPI];
-
-        if (this._router.url.search('#') < 0) {
-            apiList.push(getCmsDynamicDataForCategoryAndBrand)
-        } else {
-            this._commonService.cmsData = null;
-            this._commonService.replaceHeading = false;
-        }
-
-        // this._commonService.showLoader = true;
-        this.forkJoinUnsub = forkJoin(apiList)
-            .subscribe((res) => {
-                this.setDataAfterGettingDataFromResolver(res);
-        });
-        
-    }
-
-    refreshProductsBasedOnRouteChangeFlag: number = 0;
-    private refreshProductsBasedOnRouteChange() {
-        this.combineLatestUnsub = combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).pipe(debounceTime(0)).subscribe(res => {
-            // to avoid first time call of API on route change subscription
-
-            // Show hide Subcategory based on 
-            if (this.refreshProductsBasedOnRouteChangeFlag > 0) {
-                this.updateConfigBasedOnParams(res[0]);
-                this.updateConfigBasedOnQueryParams(res[1]);
-                this.refreshProductListBasedOnRouteUpdate();
-                ClientUtility.scrollToTop(2000);
-            }
-
-            this.refreshProductsBasedOnRouteChangeFlag++;
-        });
     }
 
     setTrackingData(res) {
@@ -1155,16 +1108,7 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        // alert('ngOnDestroy');
-        if (this.combineLatestUnsub) {
-            this.combineLatestUnsub.unsubscribe()
-        }
-        if (this.forkJoinUnsub) {
-            this.forkJoinUnsub.unsubscribe();
-        }
-
         this.resetLazyComponents();
-
     }
     
 }

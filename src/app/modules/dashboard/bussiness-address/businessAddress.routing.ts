@@ -7,14 +7,6 @@ const routes: Routes = [
         component: BussinessAddressComponent,
         children: [
             {
-                path: 'retail',
-                loadChildren: () => import('./retail-address/retailAddress.module').then(m => m.RetailAddressModule)
-            },
-            {
-                path: 'tax',
-                loadChildren: () => import('./tax-address/taxAddress.module').then(m => m.TaxAddressModule)
-            },
-            {
                 path: '',
                 loadChildren: () => import('./retail-address/retailAddress.module').then(m => m.RetailAddressModule)
             }

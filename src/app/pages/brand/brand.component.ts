@@ -100,31 +100,35 @@ export class BrandComponent {
     }
 
     ngOnInit() {
-        ClientUtility.scrollToTop(1000);
-        // set some extra meta tags if brand is a category page
-        if (this._activatedRoute.snapshot.queryParams['category']) {
-            this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
-        }
-
-        // Set brand of the page
-        this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);
-
-        // Get data from resolver and render the view
-        const resolverData = this._activatedRoute.snapshot.data;
-        this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
-
-        // surbscribe to route change and based on that refresh products
-        this.refreshProductsBasedOnRouteChange();
-
-        // Set footers
-        this.footerService.setMobileFoooters();
-
-        this._activatedRoute.queryParams.subscribe(data => {
-            if (data['page'] == undefined || data['page'] == 1) {
-                this.firstPageContent = true;
-            } else {
-                this.firstPageContent = false;
+        if (this._commonService.isBrowser) {
+            
+            // set some extra meta tags if brand is a category page
+            if (this._activatedRoute.snapshot.queryParams['category']) {
+                this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
             }
+
+            this.setCategoryDataFromResolver();
+    
+            // Set brand of the page
+            this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);    
+            
+            this._activatedRoute.queryParams.subscribe(data => {
+                if (data['page'] == undefined || data['page'] == 1) {
+                    this.firstPageContent = true;
+                } else {
+                    this.firstPageContent = false;
+                }
+            });
+
+            // Set footers
+            this.footerService.setMobileFoooters();
+        }
+    }
+
+    setCategoryDataFromResolver() {
+        // Get data from resolver and render the view
+        this._activatedRoute.data.subscribe(resolverData => {
+            this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }
 
@@ -580,7 +584,6 @@ export class BrandComponent {
         }
         if (flag) {
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            this.paginationUpdated.next(this.paginationData);
             this.sortByUpdated.next();
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
             this.filterData = response.buckets;

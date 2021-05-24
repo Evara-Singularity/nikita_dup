@@ -1,5 +1,5 @@
 @import "../../scss/variables";
-.container{
+.container {
     height: 100%;
 }
 
@@ -15,8 +15,12 @@
         background: $white;
         @extend %transition;
         .head-sec {
-            padding: 12px 0; margin: 0;z-index: 5; position: relative;
-            @extend %box-shadow; background: $white;
+            padding: 12px 0;
+            margin: 0;
+            z-index: 5;
+            position: relative;
+            @extend %box-shadow;
+            background: $white;
             i {
                 font-size: 20px;
                 line-height: 24px;
@@ -31,8 +35,24 @@
                 line-height: 21px;
                 margin-left: 20px;
             }
-        }        
-       
-       
+        }
+        &.addAddressPopup {
+            background: #fff !important;
+            &.screen-view {
+                .head-sec {
+                    background: $logo-color !important;
+                    i {
+                        color: $white
+                    }
+                }
+                .content-popup {
+                    height: calc(100% - 100px);
+                    overflow: auto;
+                    .address-list {
+                        padding: 15px;
+                    }
+                }
+            }
+        }
     }
 }

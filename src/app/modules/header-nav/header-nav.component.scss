@@ -245,55 +245,49 @@ header {
     .login-back-icon {
         width: 5%;
     }
-
-.moglix-app-logo {
-    padding-right: 15px !important;
-    img {
-        width: 24px;
-        vertical-align: middle;
+    .moglix-app-logo {
+        padding-right: 15px !important;
+        img {
+            width: 24px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+    .search-bar {
+        position: relative;
+        width: 80%;
+        input {
+            background: #fff;
+            border: none;
+            font-size: 13px !important;
+            color: #898989;
+            font-weight: 400;
+            height: 30px;
+            width: 100%;
+            padding: 0px 5px 0 30px;
+            border-radius: 3px;
+        }
+        i {
+            color: #303030 !important;
+            font-size: 15px;
+            position: absolute;
+            z-index: 1;
+            left: 16px;
+            top: 20px;
+            border-radius: 6px 0 0 6px;
+        }
+         ::placeholder {
+            font-size: 13px;
+            color: #898989
+        }
+    }
+    // /*search bar css*/
+    .logo-wrapper {
         display: inline-block;
+        img {
+            vertical-align: top;
+        }
     }
-}
-
-.search-bar {
-    position: relative;
-    width: 80%;
-    input {
-        background: #fff;
-        border: none;
-        font-size: 13px !important;
-        color: #898989;
-        font-weight: 400;
-        height: 30px;
-        width: 100%;
-        padding: 0px 5px 0 30px;
-        border-radius: 3px;
-    }
-    i {
-        color: #303030 !important;
-        font-size: 15px;
-        position: absolute;
-        z-index: 1;
-        left: 16px;
-        top: 20px;
-        border-radius: 6px 0 0 6px;
-    }
-     ::placeholder {
-        font-size: 13px;
-        color: #898989
-    }
-}
-
-
-// /*search bar css*/
-
-.logo-wrapper {
-    display: inline-block;
-    img {
-        vertical-align: top;
-    }
-}
-    
     .head-icons {
         &>* {
             float: left;
@@ -318,13 +312,53 @@ header {
             font-family: 'Roboto', sans-serif;
         }
     }
+}
 
-.headerFixed{
+.headerFixed {
     position: fixed;
     width: 100%;
     top: 0px;
     left: 0px;
     z-index: 89;
+    .icon-menu {
+        position: initial;
+        text-align: center;
+        width: 15%;
+        color: #fff;
+        float: left;
+        font-size: 16px;
+        line-height: 50px;
+    }
+    #search-input-block {
+        display: block;
+        margin: 4px 0;
+        width: 70%;
+        float: left;
+        i {
+            position: absolute;
+        }
+    }
+    .icon-cart-header {
+        width: 15%;
+        text-align: center;
+        color: #fff;
+        float: left;
+        font-size: 20px;
+        line-height: 50px;
+        position: relative;
+        .badge {
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            text-align: center;
+            line-height: 18px;
+            border-radius: 50%;
+            color: $logo-color;
+            background: $white;
+            font-size: 11px;
+            font-family: 'Roboto', sans-serif;
+        }
+    }
 }
-}
-    

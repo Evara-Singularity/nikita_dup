@@ -30,9 +30,9 @@ const EDK: any = makeStateKey<{}>('EDK');               //EDK:Extra Data Key
 const GFAQK: any = makeStateKey<{}>("GFAQK")            // GFAQK: Get Frequently Asked Question Key
 
 @Component({
-    selector: "category",
-    templateUrl: "./category.html",
-    styleUrls: ["./category.scss"],
+    selector: "alp",
+    templateUrl: "./alp.component.html",
+    styleUrls: ["./alp.scss"],
     encapsulation: ViewEncapsulation.None,
 })
 export class CategoryComponent implements OnInit, AfterViewInit {

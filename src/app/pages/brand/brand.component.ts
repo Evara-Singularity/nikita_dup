@@ -83,7 +83,7 @@ export class BrandComponent {
 
 
     refreshProductsUnsub$: any;
-    constructor(public dataService: DataService, 
+    constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
         private analytics: GlobalAnalyticsService,
         private injector: Injector,
@@ -191,7 +191,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": CONSTANTS.PROD+"/brand-store",
+                    "@id": CONSTANTS.PROD + "/brand-store",
                     "name": "Brand"
                 }
             },
@@ -230,7 +230,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": CONSTANTS.PROD+"/brand-store",
+                    "@id": CONSTANTS.PROD + "/brand-store",
                     "name": "Brand"
                 }
             },
@@ -456,32 +456,30 @@ export class BrandComponent {
     }
 
     async filterUp() {
-        if (this.isBrowser) {
-            if (!this.filterInstance) {
-                this._commonService.showLoader = true;
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    this._commonService.showLoader = false;
-                    setTimeout(() => {
-                        const mob_filter = document.querySelector('.mob_filter');
-                        if (mob_filter) {
-                            mob_filter.classList.add('upTrans');
-                        }
-                    }, 0);
-                });
-                const factory = this.cfr.resolveComponentFactory(FilterComponent);
-                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-                this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            } else {
-                const mob_filter = document.querySelector('.mob_filter');
+        if (!this.filterInstance) {
+            this._commonService.showLoader = true;
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                this._commonService.showLoader = false;
+                setTimeout(() => {
+                    const mob_filter = document.querySelector('.mob_filter');
+                    if (mob_filter) {
+                        mob_filter.classList.add('upTrans');
+                    }
+                }, 0);
+            });
+            const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+            this.filterInstance.instance['pageName'] = this.pageName;
+            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+        } else {
+            const mob_filter = document.querySelector('.mob_filter');
 
-                if (mob_filter) {
-                    mob_filter.classList.toggle('upTrans');
-                }
+            if (mob_filter) {
+                mob_filter.classList.toggle('upTrans');
             }
-
         }
+
 
     }
 
@@ -589,7 +587,10 @@ export class BrandComponent {
             this.productsUpdated.next(response.productSearchResult.products);
         }
         if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+            this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
+        }
+        if (this.paginationInstance) {
+            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];

@@ -109,6 +109,7 @@ export class PaginationComponent {
 
 
     setPage(page: number) {
+
         if (page < 1 || page > this.pager.totalPages) {
             return;
         }
@@ -127,6 +128,7 @@ export class PaginationComponent {
     }
 
     pageChanged(newPage) {
+        console.log('newPage : ' + newPage);
         if (this.sortByComponent)
             this._commonService.updateSortByState(this.sortByComponent.sortBy);
         this.page = newPage;

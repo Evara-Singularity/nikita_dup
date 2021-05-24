@@ -81,7 +81,14 @@
         </pagination> -->
     </div>
 
-    <div [class.visibility]="firstPageContent">
+    <div class="popularCategories" *ngIf="productCategoryNames.length>0">
+        <div class="innerPopularSection">
+            <h4 class="heading-3">Popular Categories</h4>
+            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+        </div>
+    </div>
+
+    <div [class.visibility]="!firstPageContent">
         <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
         <ng-template *ngIf="isBrowser" #brandDetailsFooter></ng-template>
     </div>

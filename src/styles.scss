@@ -248,6 +248,10 @@ a {
 }
 
 //Common Margin & padding classes 
+.pad-15 {
+    padding: 15px !important;
+}
+
 .pt-10 {
     padding-top: 10px
 }
@@ -328,6 +332,35 @@ header-nav {
 
 .orange-txt {
     color: $btn-color;
+}
+
+//head icons
+.head-icons {
+    &>* {
+        float: left;
+        margin-left: 5px;
+        font-size: 20px;
+        padding: 10px 5px;
+        position: relative;
+        color: $white;
+    }
+}
+
+.home-icons {
+    &>* {
+        margin-left: 12px !important;
+    }
+}
+
+.page-name {
+    line-height: 26px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: $white;
+}
+
+.page-name-black {
+    color: $black;
 }
 
 // icons

@@ -1,16 +1,16 @@
 @import '../../scss/variables';
-   .wallet-container{
-    label{
-      padding: 10px 15px;
-      border-bottom: 1px solid $border-color;
-      &:last-child{
-        border-bottom: 0;
-      }
-      img{
-        height: 34px;
-      }
-      .custom-box{
-        margin-top: 10px;
-      }
+.wallet-container {
+    label {
+        padding: 10px 15px;
+        border-bottom: 1px solid $border-color;
+        &:last-child {
+            border-bottom: 0;
+        }
+        img {
+            width: 130px;
+        }
+        .custom-box {
+            margin-top: 10px;
+        }
     }
-  }
+}

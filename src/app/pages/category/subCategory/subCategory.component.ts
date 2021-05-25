@@ -35,7 +35,7 @@ export class SubCategoryComponent {
     catdata;
     imageBasePath: string;
     public isAllListShow:boolean;
-    moreLessCategoryText:string="Show more";
+    moreLessCategoryText:string="SHOW MORE";
     @Input() relatedCatgoryListUpdated: Subject<any>;
     defaultImage;
 
@@ -62,10 +62,10 @@ export class SubCategoryComponent {
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {
-            this.moreLessCategoryText="Show less";
+            this.moreLessCategoryText="SHOW lESS";
         }
         else{
-            this.moreLessCategoryText="Show more";
+            this.moreLessCategoryText="SHOW MORE";
         }
     }
 }

@@ -2901,6 +2901,8 @@ export class CartComponent {
         const checkoutAddress = this.checkOutService.getCheckoutAddress();
         let pinCode = checkoutAddress['postCode'];
         const msnArr = itemsList.map(item => item.productId);
+        // console.log('validate API called ==>', 'called');
+        this.isShowLoader = true;
         this.commonService.checkPincodeApi({ productId: msnArr, toPincode: pinCode })
             .pipe(
                 takeUntil(this.cDistryoyed),
@@ -2910,6 +2912,7 @@ export class CartComponent {
             )
             .subscribe((res) => {
                 if (res && res.status && res.statusCode == 200) {
+                    this.isShowLoader = false;
                     for (let productId in res["data"]) {
                         const partNumber = res["data"][productId];
                         let pinCodeStatus = { codAvailable: true, serviceAvailable: true };

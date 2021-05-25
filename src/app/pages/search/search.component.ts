@@ -85,42 +85,41 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
-        ClientUtility.scrollToTop(1000);
-        // Set Meta data
-        this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
+        if (this._commonService.isBrowser) {
+            // Set Meta data
+            this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 
-        // Get data from resolver and render the view
-        const resolverData = this._activatedRoute.snapshot.data;        
-        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
-        this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);
+            this.setCategoryDataFromResolver();
+    
+            // Set Foooters
+            this.footerService.setMobileFoooters();
 
-        // Empty the setSearchResultsTrackingData initially.
-        this._commonService.setSearchResultsTrackingData({});
-
-        // Remove spacing from input search input value
-        if (this.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
-            const queryParams = this._activatedRoute.snapshot.queryParams;
-            (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
         }
-
-        // Set Foooters
-        this.footerService.setMobileFoooters();
-
-        // Set Adobe tracking and other tasks
-        this.setAdobeTracking();
-
-        // surbscribe to route change and based on that refresh products
-        this.refreshProductsBasedOnRouteChange();
     }
 
-    refreshProductsBasedOnRouteChangeFlag = 0;
-    refreshProductsBasedOnRouteChange() {
-        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
-            this.windowLoaded = this.windowLoaded + 1;
-            if (this.refreshProductsBasedOnRouteChangeFlag) {
-                this.refreshProducts();
+    setCategoryDataFromResolver() {
+        this._commonService.showLoader = true;
+        // Get data from resolver and render the view
+        this._activatedRoute.data.subscribe(resolverData => {
+
+            const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
+            this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);
+            
+            // Empty the setSearchResultsTrackingData initially.
+            this._commonService.setSearchResultsTrackingData({});
+
+            // Remove spacing from input search input value
+            if (this.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
+                const queryParams = this._activatedRoute.snapshot.queryParams;
+                (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
             }
-            this.refreshProductsBasedOnRouteChangeFlag++;
+
+            
+            // Set Adobe tracking and other tasks
+            this.setAdobeTracking();
+            
+            // hide loader
+            this._commonService.showLoader = false;
         });
     }
 
@@ -161,7 +160,9 @@ export class SearchComponent implements OnInit {
         });
     }
     onFilterSelected(count) {
-        this.filterCounts = count;
+        setTimeout(() => {
+            this.filterCounts = count;
+        }, 0);
     }
     topFunction() {
         document.body.scrollTop = document.getElementById('related-list').offsetTop;
@@ -169,6 +170,7 @@ export class SearchComponent implements OnInit {
     }
 
     private initiallizeData(response: any, extra: {}, flag: boolean) {
+        ClientUtility.scrollToTop(2000);
         const oldDefaultParams = extra['oldDefaultParams'];
         const dp = this._commonService.getDefaultParams();
         const fragment = this._activatedRoute.snapshot.fragment;
@@ -230,15 +232,16 @@ export class SearchComponent implements OnInit {
 
             if (flag) {
                 this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                this.paginationUpdated.next(this.paginationData);
                 this.sortByUpdated.next();
                 this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                // this.bucketsUpdated.next(response.buckets);
                 this.filterData = response.buckets;
                 this.productsUpdated.next(response.productSearchResult.products);
             }
+            if (this.paginationInstance) {
+                this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
+            }
             if (this.filterInstance) {
-                this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+                this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
             }
             this.relatedSearches = response.relatedSearches;
 
@@ -393,9 +396,7 @@ export class SearchComponent implements OnInit {
     }
 
     async filterUp() {
-        if (this.isBrowser) {
             if (!this.filterInstance) {
-                this._commonService.showLoader = true;
                 const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
                     this._commonService.showLoader = false;
                     setTimeout(() => {
@@ -410,6 +411,9 @@ export class SearchComponent implements OnInit {
                 this.filterInstance.instance['pageName'] = this.pageName;
                 this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
                 this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+                (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
+                    this.onFilterSelected(data);
+                });
             } else {
                 const mob_filter = document.querySelector('.mob_filter');
 
@@ -417,9 +421,6 @@ export class SearchComponent implements OnInit {
                     mob_filter.classList.toggle('upTrans');
                 }
             }
-
-        }
-
     }
 
     async toggleSortBy(data) {

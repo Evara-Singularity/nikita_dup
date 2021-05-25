@@ -36,7 +36,7 @@ export class BrandComponent {
 
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
-    paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    paginationUpdated: Subject<any> = new Subject<any>();
 
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
@@ -83,7 +83,7 @@ export class BrandComponent {
 
 
     refreshProductsUnsub$: any;
-    constructor(public dataService: DataService, 
+    constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
         private analytics: GlobalAnalyticsService,
         private injector: Injector,
@@ -100,31 +100,38 @@ export class BrandComponent {
     }
 
     ngOnInit() {
-        ClientUtility.scrollToTop(1000);
-        // set some extra meta tags if brand is a category page
-        if (this._activatedRoute.snapshot.queryParams['category']) {
-            this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
+        if (this._commonService.isBrowser) {
+            
+            // set some extra meta tags if brand is a category page
+            if (this._activatedRoute.snapshot.queryParams['category']) {
+                this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
+            }
+
+            this.setCategoryDataFromResolver();
+    
+            // Set brand of the page
+            this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);    
+
+            // Set footers
+            this.footerService.setMobileFoooters();
         }
+    }
 
-        // Set brand of the page
-        this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);
-
+    setCategoryDataFromResolver() {
         // Get data from resolver and render the view
-        const resolverData = this._activatedRoute.snapshot.data;
-        this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
-
-        // surbscribe to route change and based on that refresh products
-        this.refreshProductsBasedOnRouteChange();
-
-        // Set footers
-        this.footerService.setMobileFoooters();
-
         this._activatedRoute.queryParams.subscribe(data => {
             if (data['page'] == undefined || data['page'] == 1) {
                 this.firstPageContent = true;
             } else {
                 this.firstPageContent = false;
             }
+        });
+
+        this._activatedRoute.data.subscribe(resolverData => {
+            ClientUtility.scrollToTop(2000);
+            const defaultParams = this.createDefaultParams();
+            this._commonService.updateDefaultParamsNew(defaultParams);
+            this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }
 
@@ -191,7 +198,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": CONSTANTS.PROD+"/brand-store",
+                    "@id": CONSTANTS.PROD + "/brand-store",
                     "name": "Brand"
                 }
             },
@@ -230,7 +237,7 @@ export class BrandComponent {
                 "position": 1,
                 "item":
                 {
-                    "@id": CONSTANTS.PROD+"/brand-store",
+                    "@id": CONSTANTS.PROD + "/brand-store",
                     "name": "Brand"
                 }
             },
@@ -407,10 +414,7 @@ export class BrandComponent {
 
     async onVisiblebrandDetailsFooter(event) {
         if (!this.brandDetailsFooterInstance) {
-            this._commonService.showLoader = true;
-            const { BrandDetailsFooterComponent } = await import('@app/pages/brand/brand-details-footer/brand-details-footer.component').finally(() => {
-                this._commonService.showLoader = false;
-            });
+            const { BrandDetailsFooterComponent } = await import('@app/pages/brand/brand-details-footer/brand-details-footer.component');
             const factory = this.cfr.resolveComponentFactory(BrandDetailsFooterComponent);
             this.brandDetailsFooterInstance = this.brandDetailsFooterContainerRef.createComponent(factory, null, this.injector);
             this.brandDetailsFooterInstance.instance['brandDetailsFooterData'] = {
@@ -434,13 +438,11 @@ export class BrandComponent {
 
     async onVisiblePagination(event) {
         if (!this.paginationInstance) {
-            this._commonService.showLoader = true;
-            const { PaginationComponent } = await import('@app/components/pagination/pagination.component').finally(() => {
-                this._commonService.showLoader = false;
-            });
+            const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
+            this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject({});
+            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
             this.paginationUpdated.next(this.paginationData);
             this.paginationInstance.instance['position'] = 'BOTTOM';
             this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
@@ -456,32 +458,28 @@ export class BrandComponent {
     }
 
     async filterUp() {
-        if (this.isBrowser) {
-            if (!this.filterInstance) {
-                this._commonService.showLoader = true;
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    this._commonService.showLoader = false;
-                    setTimeout(() => {
-                        const mob_filter = document.querySelector('.mob_filter');
-                        if (mob_filter) {
-                            mob_filter.classList.add('upTrans');
-                        }
-                    }, 0);
-                });
-                const factory = this.cfr.resolveComponentFactory(FilterComponent);
-                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-                this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            } else {
-                const mob_filter = document.querySelector('.mob_filter');
+        if (!this.filterInstance) {
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                setTimeout(() => {
+                    const mob_filter = document.querySelector('.mob_filter');
+                    if (mob_filter) {
+                        mob_filter.classList.add('upTrans');
+                    }
+                }, 0);
+            });
+            const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+            this.filterInstance.instance['pageName'] = this.pageName;
+            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
+            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+        } else {
+            const mob_filter = document.querySelector('.mob_filter');
 
-                if (mob_filter) {
-                    mob_filter.classList.toggle('upTrans');
-                }
+            if (mob_filter) {
+                mob_filter.classList.toggle('upTrans');
             }
-
         }
+
 
     }
 
@@ -489,10 +487,7 @@ export class BrandComponent {
         if (this.isBrowser) {
             this.sortByOpt = data.sortByOpt;
             if (!this.sortByInstance) {
-                this._commonService.showLoader = true;
-                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
-                    this._commonService.showLoader = false;
-                });
+                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
                 const factory = this.cfr.resolveComponentFactory(SortByComponent);
                 this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
                 this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
@@ -541,30 +536,8 @@ export class BrandComponent {
         }
     }
 
-    refreshProductsBasedOnRouteChangeFlag: number = 0;
-    private refreshProductsBasedOnRouteChange() {
-        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
-            // to avoid first time call of API on route change subscription
-            if (this.refreshProductsBasedOnRouteChangeFlag) {
-                this.refreshProducts();
-            }
-            ClientUtility.scrollToTop(1000);
-            this.refreshProductsBasedOnRouteChangeFlag++;
-        });
-    }
-
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
-    refreshProducts() {
-        const defaultParams = this.createDefaultParams();
-        this._commonService.updateDefaultParamsNew(defaultParams);
-
-        this._commonService.showLoader = true;
-        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-            this.initiallizeData(response, true);
-        });
     }
 
     private initiallizeData(response: any, flag: boolean) {
@@ -580,17 +553,21 @@ export class BrandComponent {
             }
             // response = {brandDetails: response['brandDetails'], buckets: [], productSearchResult: {products: [], totalCount: 0}};
         }
-        if (flag) {
-            this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            this.paginationUpdated.next(this.paginationData);
-            this.sortByUpdated.next();
-            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.filterData = response.buckets;
-            this.productsUpdated.next(response.productSearchResult.products);
-        }
+        this.paginationData = { itemCount: response.productSearchResult.totalCount };
+        this.paginationUpdated.next(this.paginationData);
+        this.sortByUpdated.next();
+        this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
+        this.filterData = response.buckets;
+        this.productsUpdated.next(response.productSearchResult.products);
+    
+        
         if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+            this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
         }
+        if (this.paginationInstance) {
+            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
+        }
+        this.paginationUpdated.next(this.paginationData);
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
         for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
@@ -752,7 +729,6 @@ export class BrandComponent {
 
 
     pageChanged(page) {
-        //console.log("Event page changed called");
 
         //this._commonService.updateDefaultParamsNew({ pageIndex: page });
 

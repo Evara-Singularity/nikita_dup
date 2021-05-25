@@ -1,10 +1,3 @@
-<div class="popularCategories" *ngIf="brandDetailsFooterData?.productCategoryNames.length>0">
-    <div class="innerPopularSection">
-        <h4 class="heading-3">Popular Categories</h4>
-        <a *ngFor="let category of brandDetailsFooterData?.productCategoryNames;last as isLast" href="{{brandDetailsFooterData?.categoryLinkLists[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
-    </div>
-</div>
-
 <div class="body-bg pt-1" *ngIf="brandDetailsFooterData?.firstPageContent">
     <div *ngIf="brandDetailsFooterData?.brandCatDesc || brandDetailsFooterData?.brandShortDesc || brandDetailsFooterData?.brandContent" class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
         <div id="openCat3" class="category_data" style="display: block;">

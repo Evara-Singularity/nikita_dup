@@ -1,10 +1,11 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Input, EventEmitter, Output, ViewEncapsulation, Inject } from '@angular/core';
 import { LocalStorageService } from "ngx-webstorage";
-import CONSTANTS from '../../config/constants';
+import { CONSTANTS } from '../../config/constants';
 import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { ClientUtility } from '@app/utils/client.utility';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'continue',
@@ -23,6 +24,7 @@ export class ContinueComponent {
     totalAmount: number = 0;
     globalConstants: {};
     userLoggedIn: any = false;
+    imgAssetPath: string = environment.IMAGE_ASSET_URL
 
     constructor(
         public cartService: CartService,

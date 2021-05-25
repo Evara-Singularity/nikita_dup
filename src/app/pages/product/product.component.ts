@@ -48,7 +48,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   rawProductData: any = null;
   rawProductFbtData: any = null;
   rawProductCountData: any = null;
-  showLoader: boolean = true;
   uniqueRequestNo: number = 0;
   currentAddedProduct: any;
   cartSession: any;
@@ -182,6 +181,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     "Waterproof": "waterproof"
   };
 
+  set showLoader(value: boolean) {
+    this.globalLoader.setLoaderState(value);
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -213,7 +216,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    ClientUtility.scrollToTop(100);
+    if (this.isBrowser) {
+      ClientUtility.scrollToTop(100);
+    }
     this.intializeForm();
     this.getProductApiData();
     this.addSubcriber();

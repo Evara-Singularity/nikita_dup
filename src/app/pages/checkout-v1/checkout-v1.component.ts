@@ -343,6 +343,8 @@ export class CheckoutV1Component implements OnInit {
 
   tabIndexUpdated(index): void {
 
+    // console.log('continue tabIndexUpdated ==>', index);
+
     const invoiceType = this._checkoutService.getInvoiceType();
     const checkoutAddress = this._checkoutService.getCheckoutAddress();
     const billingAddress = this._checkoutService.getBillingAddress();
@@ -486,7 +488,8 @@ export class CheckoutV1Component implements OnInit {
   }
 
   viewUnavailableItems() {
-    //  ;
+    // console.log('continue viewUnavailableItems ==>', 'called');
+
     const cartSession = JSON.parse(JSON.stringify(this._cartService.getCartSession()));
     let itemsList = cartSession['itemsList'];
     const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))

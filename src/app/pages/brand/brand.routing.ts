@@ -6,6 +6,7 @@ const routes: Routes = [
     {
         path: '',
         component: BrandComponent,
+        runGuardsAndResolvers: 'always',
         resolve: {
             brand: BrandResolver
         }

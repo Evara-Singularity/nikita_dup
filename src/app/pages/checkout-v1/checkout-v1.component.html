@@ -22,7 +22,9 @@
 
         <cart (itemsValidationMessage$)="itemsValidationMessageUpdated($event)"
             (updateTabIndex)="tabIndexUpdated($event)" [cartSessionUpdated$]="cartSessionUpdated$"></cart>
-        <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
+        <div class="ordersummary-container">
+            <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
+        </div>
     </div>
 
     <div *ngIf="tabIndex===4" id="paymentMethod">

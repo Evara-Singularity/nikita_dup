@@ -2,12 +2,11 @@
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <ng-container *ngIf="isBrowser" #filter></ng-container>
-        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"></filter> -->
     </div>
 </div>
 
 <!-- CMS content of Brand page -->
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="_commonService?.cmsData">
     <div class="row">
         <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
     </div>

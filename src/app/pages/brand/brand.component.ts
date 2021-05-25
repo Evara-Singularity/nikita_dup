@@ -36,7 +36,7 @@ export class BrandComponent {
 
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
-    paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    paginationUpdated: Subject<any> = new Subject<any>();
 
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
@@ -443,6 +443,7 @@ export class BrandComponent {
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
             this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject({});
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
+            this.paginationUpdated.next(this.paginationData);
             this.paginationInstance.instance['position'] = 'BOTTOM';
             this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
             this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
@@ -553,6 +554,7 @@ export class BrandComponent {
             // response = {brandDetails: response['brandDetails'], buckets: [], productSearchResult: {products: [], totalCount: 0}};
         }
         this.paginationData = { itemCount: response.productSearchResult.totalCount };
+        this.paginationUpdated.next(this.paginationData);
         this.sortByUpdated.next();
         this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
         this.filterData = response.buckets;
@@ -565,6 +567,7 @@ export class BrandComponent {
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }
+        this.paginationUpdated.next(this.paginationData);
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
         for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {

@@ -288,6 +288,7 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
+                this.cmsData = null;
                 if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
                 }

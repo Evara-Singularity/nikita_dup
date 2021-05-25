@@ -11,7 +11,6 @@ import { debounceTime, map, share } from 'rxjs/operators';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -117,8 +116,7 @@ export class CategoryComponent implements OnInit {
         public _activatedRoute: ActivatedRoute, 
         private localStorageService: LocalStorageService,
         public _commonService: CommonService, 
-        private _categoryService: CategoryService, 
-        private _pageScrollService: PageScrollService) {
+        private _categoryService: CategoryService,) {
             this.showSubcategoty = true;
             this.getRelatedCatgory = {};
             this.pageName = 'CATEGORY';
@@ -633,12 +631,8 @@ export class CategoryComponent implements OnInit {
     }
 
     scrollToResults() {
-        // alert('scrollToResults');
-        this._pageScrollService.scroll({
-            document: this._document,
-            scrollTarget: '.cate-container',
-            scrollOffset: 30
-        });
+        let footerOffset = document.getElementById('.cate-container').offsetTop;
+        ClientUtility.scrollToTop(1000,footerOffset - 30);
     }
     fireTags(response) {
         // alert('fireTags');

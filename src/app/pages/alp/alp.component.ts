@@ -10,7 +10,6 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { PageScrollService } from 'ngx-page-scroll-core';
 import { NgxSiemaOptions } from 'ngx-siema';
 import { CommonService } from '@utils/services/common.service';
 import { FooterService } from '@utils/services/footer.service';
@@ -18,6 +17,7 @@ import { SortByComponent } from '@modules/sortBy/sortBy.component';
 import CONSTANTS from '@config/constants';
 import { DataService } from '@utils/services/data.service';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
+import { ClientUtility } from '@app/utils/client.utility';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -119,7 +119,6 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         private localStorageService: LocalStorageService,
         private _commonService: CommonService,
         private _categoryService: CategoryService,
-        private _pageScrollService: PageScrollService,
         private loaderService:GlobalLoaderService) {
 
         this.showLoader=false;
@@ -471,11 +470,8 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     }
 
     scrollToResults() {
-        this._pageScrollService.scroll({
-            document: this._document,
-            scrollTarget: ".cate-container",
-            scrollOffset: 30,
-        });
+        let footerOffset = document.getElementById('.cate-container').offsetTop;
+        ClientUtility.scrollToTop(1000,footerOffset - 30);
     }
 
     fireTags(response) {

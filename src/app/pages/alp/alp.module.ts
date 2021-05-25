@@ -5,7 +5,6 @@ import { routing } from "./alp.routing";
 import { MetaModule } from '@ngx-meta/core';
 import {CategoryComponent} from "./alp.component";
 import {CategoryService} from "./alp.service";
-import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgxSiemaModule } from 'ngx-siema';
 import { FilterModule } from '@modules/filter/filter.module';
@@ -27,7 +26,6 @@ import { BestSellerComponent } from '@components/best-seller/best-seller.compone
         BreadCrumpModule,
         FilterModule,
         ProductListModule,
-        NgxPageScrollModule,
         PaginationModule,
         SortByModule,
         //LoaderModule,

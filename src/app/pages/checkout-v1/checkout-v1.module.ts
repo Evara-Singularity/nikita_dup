@@ -11,7 +11,6 @@ import { PaymentModule } from '../../modules/payments/payment.module';
 import { DeliveryAddressModule } from '../../modules/deliveryAddress/deliveryAddress.module';
 import { ContinueModule } from '../../modules/continue/continue.module';
 import { LoginModule } from '../login/login.module';
-import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { RouterModule } from '@angular/router';
 import { InvoiceTypeModule } from '../../modules/invoiceType/invoiceType.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
@@ -35,7 +34,6 @@ import { CheckoutLoginModule } from '../../modules/checkout-login/checkout-login
     DeliveryAddressModule,
     ContinueModule,
     LoginModule,
-    NgxPageScrollCoreModule,
     RouterModule,
     InvoiceTypeModule,
     CartUpdatesModule,

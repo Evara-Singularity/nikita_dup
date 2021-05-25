@@ -12,8 +12,6 @@ import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { NgxPageScrollModule } from 'ngx-page-scroll';
-
 @Component({
     selector: 'sub-category',
     templateUrl: 'subCategory.html',
@@ -75,7 +73,6 @@ export class SubCategoryComponent {
     declarations: [SubCategoryComponent],
     imports: [
         CommonModule,
-        NgxPageScrollModule,
         LazyLoadImageModule,
         RouterModule,
     ],

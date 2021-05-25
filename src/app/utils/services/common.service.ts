@@ -695,6 +695,8 @@ export class CommonService {
         this.defaultParams.queryParams["orderWay"] = orderWay;
     }
 
+    updateSortBy: Subject<string> = new Subject();
+
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');
         return this.getBusinessDetail({ customerId: userSession.userId })

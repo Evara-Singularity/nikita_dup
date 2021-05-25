@@ -288,7 +288,6 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
-                this.cmsData = null;
                 if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
                 }
@@ -690,7 +689,6 @@ export class CommonService {
     }
 
     updateSortByState(sortByState) {
-
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
         let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
         this.defaultParams.queryParams["orderBy"] = orderBy;

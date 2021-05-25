@@ -28,6 +28,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 export class ProductListComponent{
     isServer: boolean;
     isBrowser: boolean;
+    @Input('itemCount') itemCount: number;
     defaultImage = CONSTANTS.IMAGE_BASE_URL + ENDPOINTS.CARD.IMAGE;
     offset = 100;
     currentUrl: string;

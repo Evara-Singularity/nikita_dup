@@ -57,11 +57,11 @@
 
 
 
-    <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
+    <product-list [itemCount]="this.paginationData?.itemCount" [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
 
     <div class="filter-wrapper">
         <button type="button" (click)="filterUp()">
-            <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
+            <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER  <span *ngIf="filterCounts">({{ filterCounts }})</span></span>
         </button>
 
         <button type="button" (click)="toggleSortBy($event)">

@@ -40,10 +40,8 @@ export class SortByComponent {
     });
 
     this._commonService.updateSortBy.subscribe(data => {
-      alert('got');
-      console.log(data);
       this.sortBy = data;
-    })
+    });
   }
   updateParent(data) {
     this.outData$.emit(data)

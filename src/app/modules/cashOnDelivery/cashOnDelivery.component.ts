@@ -149,7 +149,7 @@ export class CashOnDeliveryComponent {
             if (res.status != true) {
                 this.submittedOnce = false;
                 this.isShowLoader = false;
-                alert(res.description);
+                // alert(res.description);
                 return;
             }
 

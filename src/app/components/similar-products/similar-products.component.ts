@@ -6,6 +6,7 @@ import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
+import { ClientUtility } from '@app/utils/client.utility';
 
 @Component({
     selector: 'app-similar-products',
@@ -77,6 +78,9 @@ export class SimilarProductsComponent implements OnInit
     navigateTo(url){
         this.commonService.setSectionClickInformation(this.outOfStock ? 'similar_product_oos' : 'similar_products', 'pdp')
         this.router.navigateByUrl(url);
+        if (this.commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
+        }
     }
 
 }

@@ -689,12 +689,13 @@ export class CommonService {
     }
 
     updateSortByState(sortByState) {
-
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
         let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
         this.defaultParams.queryParams["orderBy"] = orderBy;
         this.defaultParams.queryParams["orderWay"] = orderWay;
     }
+
+    updateSortBy: Subject<string> = new Subject();
 
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');

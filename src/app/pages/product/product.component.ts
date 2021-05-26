@@ -15,7 +15,6 @@ import { DataService } from '../../utils/services/data.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { SiemaCrouselService } from '../../utils/services/siema-crousel.service';
 import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
-import { PageScrollService } from 'ngx-page-scroll-core';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -211,9 +210,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private analytics: GlobalAnalyticsService,
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) private platformId: Object,
-    @Optional() @Inject (RESPONSE) private _response: any,
-    private _pageScrollService: PageScrollService
-  ) {
+    @Optional() @Inject (RESPONSE) private _response: any  ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -2235,11 +2232,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   scrollToResults(id: string) {
-    this.isRFQSuccessfull = false;
-    this._pageScrollService.scroll({
-      document: this.document,
-      scrollTarget: id,
-    });
+    // this.isRFQSuccessfull = false;
+    // this._pageScrollService.scroll({
+    //   document: this.document,
+    //   scrollTarget: id,
+    // });
+    let footerOffset = document.getElementById('.id').offsetTop;
+    ClientUtility.scrollToTop(1000,footerOffset - 30);
   }
 
   pseudoFnc() {

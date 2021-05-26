@@ -36,7 +36,7 @@ export class BrandComponent {
 
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
-    paginationUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    paginationUpdated: Subject<any> = new Subject<any>();
 
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
@@ -45,6 +45,7 @@ export class BrandComponent {
     filterData: Array<any> = [];
     sortByData: Array<any> = [];
     paginationData: any = {};
+    filterCounts: number;
 
     pageName: string;
     buckets = [];
@@ -129,8 +130,6 @@ export class BrandComponent {
 
         this._activatedRoute.data.subscribe(resolverData => {
             ClientUtility.scrollToTop(2000);
-            const defaultParams = this.createDefaultParams();
-            this._commonService.updateDefaultParamsNew(defaultParams);
             this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }
@@ -443,6 +442,7 @@ export class BrandComponent {
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
             this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject({});
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
+            this.paginationUpdated.next(this.paginationData);
             this.paginationInstance.instance['position'] = 'BOTTOM';
             this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
             this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
@@ -471,6 +471,9 @@ export class BrandComponent {
             this.filterInstance.instance['pageName'] = this.pageName;
             this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
             this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
+                this.onFilterSelected(data);
+            });
         } else {
             const mob_filter = document.querySelector('.mob_filter');
 
@@ -553,18 +556,19 @@ export class BrandComponent {
             // response = {brandDetails: response['brandDetails'], buckets: [], productSearchResult: {products: [], totalCount: 0}};
         }
         this.paginationData = { itemCount: response.productSearchResult.totalCount };
+        this.paginationUpdated.next(this.paginationData);
         this.sortByUpdated.next();
         this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
         this.filterData = response.buckets;
         this.productsUpdated.next(response.productSearchResult.products);
     
-        
         if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
+            this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
         }
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }
+        this.paginationUpdated.next(this.paginationData);
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
         for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
@@ -668,62 +672,11 @@ export class BrandComponent {
 
     }
 
-    createDefaultParams() {
-        let newParams: any = {
-            queryParams: {}
-        };
-
-        let defaultParams = this._commonService.getDefaultParams();
-        /**
-         *  Below code is added to maintain the state of sortBy : STARTS
-         */
-        if (defaultParams['queryParams']['orderBy'] != undefined)
-            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
-        if (defaultParams['queryParams']['orderWay'] != undefined)
-            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
-        /**
-         *  maintain the state of sortBy : ENDS
-         */
-
-        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
-
-        // Object.assign(newParams["queryParams"], currentQueryParams);
-
-        for (let key in currentQueryParams) {
-            newParams.queryParams[key] = currentQueryParams[key];
-        }
-
-        // newParams["queryParams"] = queryParams;
-        newParams["filter"] = {};
-
-        let params = this._activatedRoute.snapshot.params;
-        newParams["brand"] = params['brand'];
-        if (params['category'])
-            newParams["category"] = params['category'];
-        else {
-            this._commonService.deleteDefaultParam('category');
-        }
-        let fragment = this._activatedRoute.snapshot.fragment;
-        if (fragment != undefined && fragment != null && fragment.length > 0) {
-            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
-            currentUrlFilterData = currentUrlFilterData.split("/");
-            if (currentUrlFilterData.length > 0) {
-                const filter = {};
-                for (let i = 0; i < currentUrlFilterData.length; i++) {
-                    const filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
-                    const filterData = currentUrlFilterData[i].substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
-                    filter[filterName] = filterData;
-                }
-                newParams["filter"] = filter;
-            }
-        }
-
-        newParams["pageName"] = this.pageName;
-
-        return newParams;
+    onFilterSelected(count) {
+        setTimeout(() => {
+            this.filterCounts = count;
+        }, 0);
     }
-
 
     pageChanged(page) {
 

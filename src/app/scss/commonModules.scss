@@ -266,6 +266,17 @@ option {
     }
 }
 
+.open {
+    .bottom-options {
+        .overlay {
+            top: 0;
+        }
+        .content-box {
+            bottom: 0;
+        }
+    }
+}
+
 // Sort By Filter
 .custom-cbox {
     label {

@@ -1,7 +1,7 @@
 import { Component, Renderer2, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
@@ -9,7 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
-	selector: 'brand',
+	selector: 'brand-store',
 	templateUrl: 'brand.html',
 	styleUrls: ['brand.scss'],
 })
@@ -65,6 +65,9 @@ export class BrandComponent{
 	}
 
 	ngOnInit() {
+		if (this._commonService.isBrowser) {
+			ClientUtility.scrollToTop(100);
+		}
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['brandData']['error'] && rawData['brandData'].length) {
 				// this.fetchHomePageData(rawData.homeData);

@@ -1,4 +1,3 @@
-import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { NgModule } from '@angular/core';
 
 import { ContinueComponent } from './continue.component';
@@ -10,7 +9,6 @@ import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
     imports: [
         CommonModule,
         MathCeilPipeModule,
-        NgxPageScrollCoreModule
     ],
     exports: [ContinueComponent],
     declarations: [ContinueComponent],

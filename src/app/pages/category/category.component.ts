@@ -10,7 +10,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
 import { CONSTANTS } from '@app/config/constants';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { PageScrollService } from 'ngx-page-scroll-core';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -116,8 +115,7 @@ export class CategoryComponent implements OnInit {
         public _activatedRoute: ActivatedRoute, 
         private localStorageService: LocalStorageService,
         public _commonService: CommonService, 
-        private _categoryService: CategoryService, 
-        private _pageScrollService: PageScrollService) {
+        private _categoryService: CategoryService,) {
             this.showSubcategoty = true;
             this.getRelatedCatgory = {};
             this.pageName = 'CATEGORY';
@@ -366,8 +364,10 @@ export class CategoryComponent implements OnInit {
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
             this.productsUpdated.next(response.productSearchResult.products);
+            this.paginationUpdated.next(this.paginationData);
         }
         this.buckets = response.buckets;
+
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }
@@ -627,11 +627,8 @@ export class CategoryComponent implements OnInit {
     }
 
     scrollToResults() {
-        this._pageScrollService.scroll({
-            document: this._document,
-            scrollTarget: '.cate-container',
-            scrollOffset: 30
-        });
+        // let footerOffset = document.querySelector('.cate-container')[0].offsetTop;
+        // ClientUtility.scrollToTop(1000,footerOffset - 30);
     }
     fireTags(response) {
         /**************************GTM START*****************************/

@@ -12,8 +12,7 @@ import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { NgxPageScrollModule } from 'ngx-page-scroll';
-
+import { ClientUtility } from '@app/utils/client.utility';
 @Component({
     selector: 'sub-category',
     templateUrl: 'subCategory.html',
@@ -59,6 +58,7 @@ export class SubCategoryComponent {
     }
 
     showList(flag?) {
+        ClientUtility.scrollToTop(2000);
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {
@@ -75,7 +75,6 @@ export class SubCategoryComponent {
     declarations: [SubCategoryComponent],
     imports: [
         CommonModule,
-        NgxPageScrollModule,
         LazyLoadImageModule,
         RouterModule,
     ],

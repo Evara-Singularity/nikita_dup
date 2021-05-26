@@ -14,6 +14,7 @@ declare let $: any;
 
 export class TermsComponent {
     API: {};
+    imagePath = CONSTANTS.IMAGE_BASE_URL;
     isBrowser: boolean;
     isServer: boolean;
     constructor(

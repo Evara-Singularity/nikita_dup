@@ -435,7 +435,7 @@ export class BussinessPurchaseListComponent {
         ) {
           element.productQuantity = element.productQuantity;
           this.uniqueRequestNo = 0;
-          alert("No more product is Available");
+          // alert("No more product is Available");
           isOrderValid = false;
         } else {
           this.changeBulkPriceQuantity(element.productQuantity);
@@ -461,17 +461,17 @@ export class BussinessPurchaseListComponent {
         Number(this.productResult["quantity_avail"])
       ) {
         this.uniqueRequestNo = 0;
-        alert("Product is out of stock");
+        // alert("Product is out of stock");
         isOrderValid = false;
       } else if (
         !isNaN(this.productResult["minimal_quantity"]) &&
         this.productResult["minimal_quantity"] <
           this.productResult["minimal_quantity"]
       ) {
-        alert(
-          "order quantity should be greater than " +
-            this.productResult["minimal_quantity"]
-        );
+        // alert(
+        //   "order quantity should be greater than " +
+        //     this.productResult["minimal_quantity"]
+        // );
         isOrderValid = false;
         this.uniqueRequestNo = 0;
       } else if (

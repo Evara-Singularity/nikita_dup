@@ -364,8 +364,10 @@ export class CategoryComponent implements OnInit {
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
             this.productsUpdated.next(response.productSearchResult.products);
+            this.paginationUpdated.next(this.paginationData);
         }
         this.buckets = response.buckets;
+
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }
@@ -625,8 +627,8 @@ export class CategoryComponent implements OnInit {
     }
 
     scrollToResults() {
-        let footerOffset = document.getElementById('.cate-container').offsetTop;
-        ClientUtility.scrollToTop(1000,footerOffset - 30);
+        // let footerOffset = document.querySelector('.cate-container')[0].offsetTop;
+        // ClientUtility.scrollToTop(1000,footerOffset - 30);
     }
     fireTags(response) {
         /**************************GTM START*****************************/

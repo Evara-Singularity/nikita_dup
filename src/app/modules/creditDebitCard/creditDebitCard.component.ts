@@ -173,7 +173,7 @@ export class CreditDebitCardComponent {
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
-                alert(res.description);
+                // alert(res.description);
                 return;
             }
 

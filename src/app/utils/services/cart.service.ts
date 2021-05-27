@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { cartSession } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Observer, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -91,7 +91,7 @@ export class CartService {
     }
 
     test() {
-        return Observable.create(observer => {
+        return new Observable((observer: Observer<any>) => {
             observer.next(90);
             observer.complete();
         })

@@ -37,8 +37,6 @@
         "jquery": "^3.5.1",
         "ng-lazyload-image": "^9.1.0",
         "ng2-cc-library": "^1.0.1",
-        "ngx-page-scroll": "^7.0.4",
-        "ngx-page-scroll-core": "^7.0.4",
         "ngx-pagination": "^3.2.1",
         "ngx-siema": "git+https://github.com/Yogender-moglix/ngx-siema.git",
         "ngx-socket-io": "^3.0.1",

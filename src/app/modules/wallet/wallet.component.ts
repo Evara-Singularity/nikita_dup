@@ -148,7 +148,6 @@ export class WalletComponent {
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
-                alert(res.description);
                 return;
             }
 

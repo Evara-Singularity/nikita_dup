@@ -37,7 +37,10 @@ export class CategoryResolver implements Resolve<object> {
             queryParams: {}
         };
 
+        
+
         const defaultParams = this._commonService.getDefaultParams();
+
         /**
          *  Below code is added to maintain the state of sortBy : STARTS
          */
@@ -50,6 +53,11 @@ export class CategoryResolver implements Resolve<object> {
         /**
          *  maintain the state of sortBy : ENDS
          */
+
+        if (Object.keys(currentQueryParams).length > 0) {
+            this._commonService.deleteDefaultQueryParams(['orderWay', 'orderBy']);
+            // this._commonService.updateSortBy.next('popularity');
+        }
 
 
         for (let key in currentQueryParams) {

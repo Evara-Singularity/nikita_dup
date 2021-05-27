@@ -309,7 +309,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (data !== undefined && data.productFilterData !== undefined) {
             this.productFilterData = data.productFilterData;
         }
-
+        
         const currentRoute = this._cs.getCurrentRoute(this._router.url);
         const extras: NavigationExtras = this.getExtras();
         if (this.sortByComponent) {

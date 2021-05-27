@@ -27,7 +27,7 @@ export class BrandResolver implements Resolve<object> {
         this.pageName = "BRAND";
     }
 
-    createDefaultParams(brandNameFromRoute) {
+    createDefaultParams(paramsObj, currentQueryParams, fragment) {
         let newParams: any = {
             queryParams: {}
         };
@@ -44,25 +44,24 @@ export class BrandResolver implements Resolve<object> {
          *  maintain the state of sortBy : ENDS
          */
 
-        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
-
-        // Object.assign(newParams["queryParams"], currentQueryParams);
 
         for (let key in currentQueryParams) {
             newParams.queryParams[key] = currentQueryParams[key];
         }
 
+
         // newParams["queryParams"] = queryParams;
         newParams["filter"] = {};
 
-        let params = {brand: brandNameFromRoute};
+        let params = paramsObj;
         newParams["brand"] = params['brand'];
+
         if (params['category'])
             newParams["category"] = params['category'];
         else {
             this._commonService.deleteDefaultParam('category');
         }
-        let fragment = this._activatedRoute.snapshot.fragment;
+
         if (fragment != undefined && fragment != null && fragment.length > 0) {
             let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
             currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
@@ -84,10 +83,8 @@ export class BrandResolver implements Resolve<object> {
     }
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
-        this.loaderService.setLoaderState(true);
-        this.loaderService.setLoaderState(true);
         this._commonService.showLoader = true;
-        const defaultParams = this.createDefaultParams(_activatedRouteSnapshot.params.brand);
+        const defaultParams = this.createDefaultParams(_activatedRouteSnapshot.params, _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment);
         this._commonService.updateDefaultParamsNew(defaultParams);
         const RPRK: any = makeStateKey<{}>("RPRK");
 

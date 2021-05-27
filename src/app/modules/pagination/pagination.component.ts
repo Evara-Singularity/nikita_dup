@@ -6,9 +6,9 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Subject } from "rxjs/Subject";
 import { ActivatedRoute, Router } from "@angular/router";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { CommonService } from 'src/app/utils/services/common.service';
-import { GLOBAL_CONSTANT } from 'src/app/config/global.constant';
 import { SortByComponent } from '../sortBy/sortBy.component';
+import { CommonService } from '@app/utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
 const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
 
 @Component({
@@ -18,7 +18,6 @@ const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
     styleUrls: ['./pagination.scss'],
     encapsulation: ViewEncapsulation.None
 })
-
 export class PaginationComponent {
     @Output() onPageChange: EventEmitter<any> = new EventEmitter<any>();
     @Input() paginationUpdated: Subject<any>;
@@ -68,7 +67,7 @@ export class PaginationComponent {
         if (data["pageSize"])
             this.pageSize = data["pageSize"];
         else
-            this.pageSize = (queryParams["pageSize"] != undefined && queryParams["pageSize"] != GLOBAL_CONSTANT.default.pageSize + "") ? queryParams["pageSize"] : GLOBAL_CONSTANT.default.pageSize + "";
+            this.pageSize = (queryParams["pageSize"] != undefined && queryParams["pageSize"] != CONSTANTS.GLOBAL.default.pageSize + "") ? queryParams["pageSize"] : CONSTANTS.GLOBAL.default.pageSize + "";
 
         if (queryParams["page"] != undefined)
             this.page = parseInt(queryParams["page"]);

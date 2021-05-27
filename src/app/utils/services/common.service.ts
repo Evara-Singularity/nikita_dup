@@ -1,7 +1,7 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observer, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -510,7 +510,7 @@ export class CommonService {
     getBusinessDetails() {
 
         let user = this._localStorageService.retrieve('user');
-        return Observable.create(observer => {
+        return new Observable((observer: Observer<any>) => {
             this.getBusinessDetail(user.userId).subscribe(data => {
                 let businessDeatils = data;
                 if (businessDeatils) {
@@ -689,12 +689,13 @@ export class CommonService {
     }
 
     updateSortByState(sortByState) {
-
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
         let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
         this.defaultParams.queryParams["orderBy"] = orderBy;
         this.defaultParams.queryParams["orderWay"] = orderWay;
     }
+
+    updateSortBy: Subject<string> = new Subject();
 
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');

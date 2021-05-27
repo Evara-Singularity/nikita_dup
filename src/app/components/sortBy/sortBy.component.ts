@@ -8,8 +8,6 @@ import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
-const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key
-
 @Component({
   selector: 'sort-by',
   templateUrl: 'sortBy.html',
@@ -26,7 +24,6 @@ export class SortByComponent {
   isServer: boolean;
   isBrowser: boolean;
   sortByOpt: boolean;
-  categoryId: any;
   @Output() outData$: EventEmitter<{}>;
   constructor(private _tState: TransferState, @Inject(PLATFORM_ID) platformId, private _activatedRoute: ActivatedRoute, private cd: ChangeDetectorRef, private _commonService: CommonService, private router: Router, private route: ActivatedRoute) {
     this.sortBy = 'popularity';
@@ -36,19 +33,15 @@ export class SortByComponent {
 
   };
 
-
-
   ngOnInit() {
-    this._activatedRoute.params.subscribe((data) => {
-      this.categoryId = data.id;
-    });
-    if (this._tState.hasKey(RPRK)) {
-      this.initializeData();
-    }
     this.sortByUpdated.subscribe(() => {
       this.initializeData();
       this.cd.markForCheck(); // marks path
-    })
+    });
+
+    this._commonService.updateSortBy.subscribe(data => {
+      this.sortBy = data;
+    });
   }
   updateParent(data) {
     this.outData$.emit(data)
@@ -61,9 +54,10 @@ export class SortByComponent {
         this.sortBy = 'lowPrice';
       else
         this.sortBy = 'highPrice';
-    }
-    else
+    } else {
       this.sortBy = 'popularity';
+    }
+
 
     this._commonService.deleteDefaultQueryParams(['orderWay', 'orderBy']);
   }
@@ -95,11 +89,6 @@ export class SortByComponent {
         this._commonService.updateDefaultParamsNew(extras);
         this._commonService.refreshProducts$.next();
       })
-      // if(!this.isServer && !slpPagesExtrasIdMap.hasOwnProperty(this.categoryId)){
-      //   ClientUtility.scrollToTop(2000, 100);
-      //   // $('html,body').animate({ scrollTop: 100 }, 2000);
-      // }
-
     }
   }
 }

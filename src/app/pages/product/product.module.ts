@@ -11,8 +11,6 @@ import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
-import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
-
 @NgModule({
   declarations: [
     ProductComponent,
@@ -30,9 +28,7 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
     ReactiveFormsModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
-    ObserveVisibilityDirectiveModule,
-    NgxPageScrollCoreModule
-  ],
+    ObserveVisibilityDirectiveModule,  ],
   exports: [],
   providers: [
   ]

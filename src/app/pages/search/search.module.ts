@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
-import { SortByModule } from "@components/sortBy/sortBy.module";
 import { SearchComponent } from "@pages/search/search.component";
 import { ObjectToArrayPipeModule } from "@pipes/object-to-array.pipe";
 import { routing as SearchRouting } from "@pages/search/search.routing";
@@ -15,7 +14,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
         ObjectToArrayPipeModule,
         ProductListModule,
         NgxPaginationModule,
-        SortByModule,
         ObserveVisibilityDirectiveModule,
     ],
     declarations: [

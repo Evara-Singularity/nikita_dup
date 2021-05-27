@@ -13,6 +13,7 @@ import { Component, ViewChild, EventEmitter, PLATFORM_ID, Inject, Renderer2, OnI
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from "@app/utils/client.utility";
 
+
 interface ProductSearchResult {
     highlightedSearchString: any,
     totalCount: any,

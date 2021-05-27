@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { routing } from './faq.routing';
-import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { CustomReturnComponent } from './custom-return.component';
 import { OrderTrackingComponent } from './order-tracking.component';
 import { PaymentOptionsComponent } from './payment-options.component';
@@ -17,7 +16,6 @@ import { FilterPipe, GetQuesPipe, SplitPipe } from './faq.pipe';
 		CommonModule,
 		routing,
 		RouterModule,
-		NgxPageScrollCoreModule,
 		FormsModule,
 		KpToggleDirectiveModule,
 	],

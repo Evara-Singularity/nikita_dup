@@ -179,6 +179,7 @@ a {
     width: 100%;
     height: 45px;
     @extend %ripple;
+    font-weight: 800;
     &.disabledButton {
         border-color: $disabled;
         color: #fff;
@@ -311,7 +312,7 @@ h3 {
 header-nav {
     &.inner_head {
         &+div {
-            margin-top: 52px;
+            margin-top: 50px;
         }
     }
 }
@@ -323,7 +324,7 @@ header-nav {
 
 //Common Order Status
 .green-txt {
-    color: #3b9e26;
+    color: $green-color;
 }
 
 .red-txt {
@@ -332,6 +333,11 @@ header-nav {
 
 .orange-txt {
     color: $btn-color;
+}
+
+.success-txt {
+    color: $green-color;
+    margin: 5px 0;
 }
 
 //head icons

@@ -33,7 +33,7 @@ export class BrandStoreResolver implements Resolve<object> {
     if (this.transferState.hasKey(logosObj) && this.transferState.hasKey(brandsObj)) {
       const logosData = this.transferState.get<object>(logosObj, null);
       const brandData = this.transferState.get<object>(brandsObj, null);
-      this.transferState.remove(logosObj);
+      this.transferState.remove(brandsObj);
       this.transferState.remove(logosObj);
       return of([logosData, brandData]);
     } else {

@@ -36,6 +36,32 @@
                 margin-left: 20px;
             }
         }
+        &.payment-popup {
+            background: $body-color;
+            .head-sec {
+                @extend %box-shadow;
+                background: $white;
+            }
+            &>.container {
+                width: 100%;
+            }
+            .head-sec {
+                padding: 12px 0;
+                margin: 0;
+                @extend %box-shadow;
+                background: $white;
+                i {
+                    font-size: 20px;
+                    line-height: 24px;
+                }
+                i+.page-name {
+                    font-size: $extra-large-font;
+                    margin-left: 10px;
+                    line-height: 26px;
+                    color: #fff;
+                }
+            }
+        }
         &.addAddressPopup {
             background: #fff !important;
             &.screen-view {
@@ -54,5 +80,28 @@
                 }
             }
         }
+    }
+}
+
+.info-update-popup {
+    .head-sec {
+        @extend %ico-txt;
+        margin: 20px 0;
+        .txt {
+            font-size: $extra-large-font;
+            font-weight: 600;
+            line-height: 21px;
+            margin-left: 20px;
+        }
+    }
+    .input-field {
+        margin-bottom: 20px;
+    }
+    .help-txt {
+        position: absolute;
+        right: 0;
+        top: 24px;
+        font-size: 14px;
+        color: $blue-link-color;
     }
 }

@@ -1,9 +1,13 @@
 <div class="css-banner-component">
-    <div class="internalBanner h-auto-xs o-hidden relative">
+    <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isBrowser">
         <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
             <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options" [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
             </siema-carousel>
         </ng-container>
+    </div>
+    <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isServer">
+        <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0" [src]="carouselData.bannerData.data[0].image_name" alt="banner">
+        <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)" [src]="defaultBannerImage" alt="banner">
     </div>
 </div>
 

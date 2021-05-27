@@ -28,8 +28,8 @@ export class BrandStoreResolver implements Resolve<object> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
 
     this.loaderService.setLoaderState(true);
-    const logosObj = makeStateKey<object>('logosObj' + Math.random());
-    const brandsObj = makeStateKey<object>('brandsObj' + Math.random());
+    const logosObj = makeStateKey<object>('logosObj');
+    const brandsObj = makeStateKey<object>('brandsObj');
     if (this.transferState.hasKey(logosObj) && this.transferState.hasKey(brandsObj)) {
       const logosData = this.transferState.get<object>(logosObj, null);
       const brandData = this.transferState.get<object>(brandsObj, null);

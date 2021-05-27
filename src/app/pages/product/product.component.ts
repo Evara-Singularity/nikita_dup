@@ -216,6 +216,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     if (this.isBrowser) {
       ClientUtility.scrollToTop(100);
     }
@@ -229,6 +230,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.getPurchaseList();
+    this.resetLazyComponents();
   }
 
   createSiemaOption() {
@@ -446,7 +448,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     // product media processing
-    this.resetLazyComponents();
     this.setProductImages(this.rawProductData['productPartDetails'][partNumber]['images']);
     this.setProductVideo(this.rawProductData['videosInfo']);
     if (args.refreshCrousel) { 

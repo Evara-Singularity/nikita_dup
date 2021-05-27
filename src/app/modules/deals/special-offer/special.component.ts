@@ -9,7 +9,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
   selector: "special",
   templateUrl: "special.html",
   styleUrls: ["special.scss"],
-  // encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
 })
 export class SpecialComponent {
   isServer: boolean;
@@ -71,7 +71,7 @@ export class SpecialComponent {
     // data received by layout resolver
     this.route.data.subscribe(
       (rawData) => {
-        console.log(JSON.stringify(rawData, null, 2));
+        // console.log(JSON.stringify(rawData, null, 2));
         if (rawData && !rawData["data"]["error"]) {
           this.specialData = rawData["data"][0];
           setTimeout(() => {

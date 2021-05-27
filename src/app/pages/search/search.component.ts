@@ -68,8 +68,8 @@ export class SearchComponent implements OnInit {
     isBrowser: boolean;
     sortByOpt = false;
     filterCounts;
-    refreshProductsUnsub$;
-    refreshProductsUnsub;
+    relatedSearchResult: any;
+    // relatedSearchResult: any = [{ "categoryName": "Chain Saws", "categoryId": "114143100", "Confidence": 0.5 }, { "categoryName": "Circular Saws", "categoryId": "114143500", "Confidence": 0.5 }, { "categoryName": "Hand Blenders", "categoryId": "214195640", "Confidence": 0.5 }, { "categoryName": "Hand Dryers", "categoryId": "121210000", "Confidence": 0.5 }];
 
     constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
@@ -146,20 +146,6 @@ export class SearchComponent implements OnInit {
         digitalData["order"] = order;
     }
 
-    refreshProducts() {
-        this._commonService.showLoader = true;
-        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
-        const defaultParams = this.createDefaultParams();
-        this._commonService.updateDefaultParamsNew(defaultParams);
-
-        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-            this._commonService.showLoader = false;
-            const extra = { oldDefaultParams: oldDefaultParams };
-            this.initiallizeData(response, extra, true);
-            if (response.productSearchResult.highlightedSearchString)
-                this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
-        });
-    }
     onFilterSelected(count) {
         setTimeout(() => {
             this.filterCounts = count;
@@ -248,7 +234,8 @@ export class SearchComponent implements OnInit {
 
             this.productSearchResult = response.productSearchResult;
 
-            // let queryParams = this._activatedRoute.snapshot.queryParams;
+            this.relatedSearchResult = response.categoriesRecommended;
+
             if (queryParams["didYouMean"] != undefined)
                 this.didYouMean = queryParams["didYouMean"];
         }
@@ -493,6 +480,14 @@ export class SearchComponent implements OnInit {
         return null;
     }
 
+    goToRecommendedCategory(categoryId) {
+        let extras = {
+            queryParams: { ...this._activatedRoute.snapshot.queryParams }
+        };
+        extras['queryParams']['category'] = categoryId;
+        this._router.navigate(['search'], extras);
+    }
+
     resetLazyComponents() {
         if (this.filterInstance) {
             this.filterInstance = null;
@@ -509,14 +504,6 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        if (this.refreshProductsUnsub$) {
-            this.refreshProductsUnsub$.unsubscribe();
-        }
-        if (this.refreshProductsUnsub) {
-            this.refreshProductsUnsub.unsubscribe();
-        }
-
-
         this.resetLazyComponents();
     }
 }

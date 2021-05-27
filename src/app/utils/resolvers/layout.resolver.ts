@@ -45,7 +45,6 @@ export class LayoutResolver implements Resolve<object> {
       this.loaderService.setLoaderState(true);
       const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
       const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT + `?id=${LAYOUT_ID}`;
-      console.log('LAYOUT_URL ==> url', LAYOUT_URL);
       const stateObs = this.http.get(LAYOUT_URL, { headers, responseType: 'text' });
 
       // forkJoin is implemented as we might need to add more APIs to resolvers

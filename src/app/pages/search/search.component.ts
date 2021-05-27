@@ -234,7 +234,7 @@ export class SearchComponent implements OnInit {
 
             this.productSearchResult = response.productSearchResult;
 
-            this.relatedSearchResult = response.recommedned_categories;
+            this.relatedSearchResult = response.categoriesRecommended;
 
             if (queryParams["didYouMean"] != undefined)
                 this.didYouMean = queryParams["didYouMean"];

@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { delay } from 'rxjs/operators';
 
@@ -75,7 +75,6 @@ export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy() {
-     
     of(null)
       .pipe(
         delay(200)

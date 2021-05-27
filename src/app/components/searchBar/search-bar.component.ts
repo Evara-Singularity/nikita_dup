@@ -226,7 +226,7 @@ export class SearchBarComponent implements OnInit {
         // this.out.emit(true);
     }
 
-    navigateTo(page, data, redirectUrl, categoryId) {
+    navigateTo(page, data, redirectUrl, categoryId, attributes) {
         this.enableScroll();
         this.resetSearchBar();
         this.showSuggestionBlock = false;
@@ -235,7 +235,7 @@ export class SearchBarComponent implements OnInit {
             this._r.navigate([redirectUrl], { queryParams: { sC: 'yes' } });
         }
         else if (page === 'SEARCH') {
-            const extras = {
+            let extras = {
                 queryParams: {
                     controller: 'search',
                     orderby: 'position',
@@ -246,6 +246,9 @@ export class SearchBarComponent implements OnInit {
                     category: categoryId
                 }
             };
+            if (attributes) {
+                extras['fragment'] = this._cs.generateFragmentString(attributes);
+            }
             this._cs.setGaGtmData({ list: 'Site Search' });
             this.addSearchToLocalStorage(data, extras);
             this._r.navigate(['search'], extras);

@@ -44,28 +44,28 @@
     </a>
 </section>
 <!-- section for trending categories-->
-<div observeVisibility class="categories-container" [debounceTime]="100" (visible)="onVisibleTrendingCategories($event)">
+<div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
     <div>
         <ng-container #TrendingCategories></ng-container>
     </div>
 </div>
 
 <!-- Section for feature Brands -->
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)">
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
     <div>
         <ng-container #FeaturedBrands></ng-container>
     </div>
 </div>
 
-<div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}" *ngIf="showRecentlyViewedCarousel" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
+<div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}" *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
     <ng-container #RecentlyViewedCarouselComponent></ng-container>
 </div>
 
-<div observeVisibility class="categories-container clearfix" [debounceTime]="100" (visible)="onVisibleCategories($event)">
+<div observeVisibility class="categories-container clearfix" [debounceTime]="50" (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
 
-<div observeVisibility class="featr_arrival clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
+<div observeVisibility class="featr_arrival clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div>
 

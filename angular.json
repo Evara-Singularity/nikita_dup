@@ -198,6 +198,34 @@
               ],
               "sourceMap": false,
               "optimization": true
+            },
+            "local": {
+              "outputHashing": "media",
+              "fileReplacements": [],
+              "sourceMap": false,
+              "optimization": true
+            },
+            "qa": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            },
+            "vpn": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vpn.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
             }
           }
         },
@@ -211,6 +239,18 @@
             "production": {
               "browserTarget": "ssr-pwa:build:production",
               "serverTarget": "ssr-pwa:server:production"
+            },
+            "local": {
+              "browserTarget": "ssr-pwa:build:local",
+              "serverTarget": "ssr-pwa:server:local"
+            },
+            "qa": {
+              "browserTarget": "ssr-pwa:build:qa",
+              "serverTarget": "ssr-pwa:server:qa"
+            },
+            "vpn": {
+              "browserTarget": "ssr-pwa:build:vpn",
+              "serverTarget": "ssr-pwa:server:vpn"
             }
           }
         },

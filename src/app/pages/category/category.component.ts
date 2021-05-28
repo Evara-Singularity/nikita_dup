@@ -122,16 +122,18 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             // Category Data after you got it from resolver 
-            this.setCategoryDataFromResolver();
     
             // Set footers
             this.footerService.setMobileFoooters();
         }
+        this.onVisibleCateoryFooter_v1();
     }
 
     private updateConfigBasedOnParams(data) {
+        this.categoryId = data['id'];
         this.layoutType = 0;
         if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
             this.isSLPPage = true;
@@ -201,6 +203,23 @@ export class CategoryComponent implements OnInit {
         }
     }
 
+    async onVisibleCateoryFooter_v1()
+    {
+        console.log(this.cateoryFooterContainerRef);
+        const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component');
+        const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
+        this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
+        this.cateoryFooterInstance.instance['categoryFooterData'] = {
+            productSearchResult: this.productSearchResult,
+            getRelatedCatgory: this.getRelatedCatgory,
+            productSearchResultSEO: this.productSearchResultSEO,
+            faqData: this.faqData,
+            buckets: this.buckets,
+            PRTA: this.PRTA
+        };
+    }
+
+
     async createDynamicComponent(name) {
         if (name === 'catBestseller' && !this.catBestSellerInstance) {
             const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component');
@@ -262,7 +281,9 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
-        ClientUtility.scrollToTop(2000);
+        if(this._commonService.isBrowser){
+            ClientUtility.scrollToTop(2000);
+        }
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -301,13 +322,13 @@ export class CategoryComponent implements OnInit {
          * For refresh products
          */
         this.initiallizeData(res[1], true);
-        
-        this.setTrackingData(res);
-        
-        if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
-            this.fireTags(res[1]);
+        if (this._commonService.isBrowser) {
+            this.setTrackingData(res);
+            if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
+                this.fireTags(res[1]);
+            }
         }
-
+        
         this.setFaqSchema(res[2]);
         this.faqData = res[2];
     }

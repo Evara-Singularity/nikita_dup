@@ -80,6 +80,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.setProductDetails();
         this.userSession = this.localStorageService.retrieve('user');
         this.isUserLoggedIn = (this.userSession && this.userSession.authenticated == 'true');
+        console.log(JSON.stringify(this.userSession));
         console.log('oninitBefore ===>  ' + this.isUserLoggedIn);
         if (this.isUserLoggedIn) {
             console.log('oninitinside ===>  ' + this.isUserLoggedIn);
@@ -96,7 +97,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     {
         this.loginSubscriber = this.localAuthService.login$.subscribe((value) =>
         {
+            console.log('inside login')
             this.isUserLoggedIn = true;
+            console.log('login value ==>  ' + this.isUserLoggedIn);
             this.setUserDetails();
             this.userSession = this.localStorageService.retrieve('user');
             this.getBusinessDetail(this.userSession);
@@ -111,6 +114,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         {
             this.rfqForm.reset();
             this.quantity.setValue(this.productMOQ ? this.productMOQ : 1);
+            console.log('inside logout')
+            this.isUserLoggedIn = true;
+            console.log('logout value ==>  ' + this.isUserLoggedIn);
             this.isUserLoggedIn = false;
         })
     }

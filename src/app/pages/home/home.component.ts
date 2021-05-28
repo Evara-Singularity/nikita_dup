@@ -26,6 +26,7 @@ import { FooterService } from '@app/utils/services/footer.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ClientUtility } from '@app/utils/client.utility';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
@@ -388,6 +389,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.appendSiemaItemSubjects = {};
 		this.appendSiemaItemSubjects['bannerData'] = new Subject<Array<{}>>();
 		this.appendSiemaItemSubjects['bestSellerData'] = new Subject<Array<{}>>();
+		if (this.isBrowser) {
+			ClientUtility.scrollToTop(100);
+		}
 	}
 
 	setMetaData() {

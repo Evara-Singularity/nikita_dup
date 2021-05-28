@@ -182,7 +182,7 @@ export class CheckoutV1Component implements OnInit {
       //  ;
       if (tab > 1) {
         this.tabIndex = tab;
-        this.changeParams();
+        // this.changeParams();
         if (this.tabIndex == 2) {
           this.headerStep = 1;
         }
@@ -231,33 +231,11 @@ export class CheckoutV1Component implements OnInit {
     const user = this._localStorageService.retrieve('user');
     if (user && user.authenticated === 'true') {
       this.tabIndex = 2;
-      this.changeParams();
+      // this.changeParams();
     }
   }
 
-  changeParams() {
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this._activatedRoute,
-        replaceUrl: true,
-        queryParams: { index: this.tabIndex },
-        queryParamsHandling: "merge"
-      })
-    if (this.tabIndex == 2) {
-      let page = {};
-      digitalData["page"] = page;
-      digitalData["page"]["pageName"] = "moglix: order checkout: product summary & address details",
-        digitalData["page"]["channel"] = "checkout",
-        digitalData["page"]["subSection"] = "moglix: order checkout: product summary & address details"
-      digitalData['page']['linkName'] = '',
-        digitalData['page']['linkPageName'] = ''
-      // if(typeof _satellite !== "undefined"){
-      _satellite.track("genericPageLoad");
-      // } 
-    }
 
-  }
 
   getSession() {
     this._commonService.getSession()
@@ -342,8 +320,6 @@ export class CheckoutV1Component implements OnInit {
   }
 
   tabIndexUpdated(index): void {
-
-    // console.log('continue tabIndexUpdated ==>', index);
 
     const invoiceType = this._checkoutService.getInvoiceType();
     const checkoutAddress = this._checkoutService.getCheckoutAddress();
@@ -484,7 +460,32 @@ export class CheckoutV1Component implements OnInit {
       this.tabIndex = 4;
     }
 
-    this.changeParams();
+    // this.changeParams();
+  }
+
+  changeParams() {
+    console.log('continue tabIndexUpdated this.index==>', this.tabIndex);
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this._activatedRoute,
+        replaceUrl: true,
+        queryParams: { index: this.tabIndex },
+        queryParamsHandling: "merge"
+      })
+    if (this.tabIndex == 2) {
+      let page = {};
+      digitalData["page"] = page;
+      digitalData["page"]["pageName"] = "moglix: order checkout: product summary & address details",
+        digitalData["page"]["channel"] = "checkout",
+        digitalData["page"]["subSection"] = "moglix: order checkout: product summary & address details"
+      digitalData['page']['linkName'] = '',
+        digitalData['page']['linkPageName'] = ''
+      // if(typeof _satellite !== "undefined"){
+      _satellite.track("genericPageLoad");
+      // } 
+    }
+
   }
 
   viewUnavailableItems() {
@@ -513,14 +514,14 @@ export class CheckoutV1Component implements OnInit {
   }
 
   updatedStep(data) {
-    // alert(data);
+    //console.log('continue login using cred step update ==>', data);
     this.tabIndex = data;
-
     this.changeParams();
   }
 
   slWorking(data) {
     if (!data) {
+      //console.log('continue login using social step update ==>', data);
       this.updatedStep(2);
     }
   }

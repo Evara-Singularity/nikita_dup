@@ -35,6 +35,11 @@
                 line-height: 21px;
                 margin-left: 20px;
                 float: left;
+                span.subtxt {
+                    display: block;
+                    font-weight: normal;
+                    font-size: $large-font;
+                }
             }
         }
         &.payment-popup {
@@ -86,6 +91,9 @@
             height: 85%;
             height: calc(100% - 54px);
             overflow: auto;
+            &.bulkRequest {
+                height: calc(100% - 120px);
+            }
         }
     }
 }
@@ -118,4 +126,8 @@
         border: 0;
         padding-top: 5px;
     }
+}
+
+.bulkRequest {
+    height: calc(100% - 120px);
 }

@@ -1,6 +1,6 @@
 import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, Inject, Injector, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { CartService } from '../../utils/services/cart.service';
@@ -76,7 +76,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 		private checkoutLoginService: CheckoutLoginService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
-		private ngZone: NgZone,
 		private changeDetectorRef: ChangeDetectorRef,
 		private globalLoader: GlobalLoaderService,
 		private _state: GlobalState
@@ -197,6 +196,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
 	commonSubcribers() {
 		this.router.events.subscribe((val) => {
+			this.createHeaderData(this.route);
 			if (val instanceof NavigationEnd) {
 				if (val['url'] === '/') {
 					this.isHomePage = true;
@@ -204,7 +204,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 					this.isHomePage = false;
 					// (<HTMLElement>document.querySelector('header-nav + div'))['style']['marginTop'] = '';
 				}
-				this.createHeaderData(this.route);
 			}
 		});
 	}

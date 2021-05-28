@@ -99,7 +99,7 @@ export class CategoryComponent implements OnInit {
     reqArray: Array<any> = [];
     PRTA: Array<any> = [];
     categoryId: string;
-    //Abhishek:added below variables
+    //ODP-1221:added below variables
     categoryFooterData:any;
     constructor(
         @Optional() @Inject(RESPONSE) private _response, 
@@ -124,7 +124,7 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
-        //Abhishek:moved "setCategoryDataFromResolver" from browser conditino
+        //ODP-1221:moved "setCategoryDataFromResolver" from browser conditino
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             // Set footers
@@ -264,7 +264,7 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
-        //Abhishek:Added condition to fix SSR issue
+        //ODP-1221:Added condition to fix SSR issue
         if(this._commonService.isBrowser){
             ClientUtility.scrollToTop(2000);
         }
@@ -306,7 +306,7 @@ export class CategoryComponent implements OnInit {
          * For refresh products
          */
         this.initiallizeData(res[1], true);
-        //Abhishek:added condition to fix SSR
+        //ODP-1221:added condition to fix SSR
         if (this._commonService.isBrowser) {
             this.setTrackingData(res);
             if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {

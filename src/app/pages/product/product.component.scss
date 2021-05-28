@@ -1864,7 +1864,7 @@
 
 // RFQ Thanks popup
 .recent-bought-wrap {
-    display: block;
+    display: inline-block;
     background: #d9232d30;
     border-radius: 2px;
     padding: 5px;
@@ -1872,6 +1872,8 @@
     width: 175px;
     img {
         vertical-align: middle;
+        width: 15px;
+        height: 15px;
     }
     .inner-text {
         color: #D9232D;

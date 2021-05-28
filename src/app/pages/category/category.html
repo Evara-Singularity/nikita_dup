@@ -63,8 +63,8 @@
     <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)">
         <ng-container *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
     </div>
-    <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
-    <!-- <div [class.visibility]="!firstPageContent">
-        <ng-template #cateoryFooter></ng-template>
-    </div> -->
+    <!--Abhishek-->
+    <div [class.visibility]="!firstPageContent">
+        <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+    </div>
 </div>

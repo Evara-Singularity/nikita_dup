@@ -99,6 +99,8 @@ export class CategoryComponent implements OnInit {
     reqArray: Array<any> = [];
     PRTA: Array<any> = [];
     categoryId: string;
+    //Abhishek:added below variables
+    categoryFooterData:any;
     constructor(
         @Optional() @Inject(RESPONSE) private _response, 
         private _renderer2: Renderer2,
@@ -122,10 +124,9 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
+        //Abhishek:moved "setCategoryDataFromResolver" from browser conditino
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
-            // Category Data after you got it from resolver 
-    
             // Set footers
             this.footerService.setMobileFoooters();
         }
@@ -189,25 +190,7 @@ export class CategoryComponent implements OnInit {
         }
     }
 
-    async onVisibleCateoryFooter(event) {
-        if (!this.cateoryFooterInstance) {
-            const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component');
-            const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
-            this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
-            this.cateoryFooterInstance.instance['categoryFooterData'] = {
-                productSearchResult: this.productSearchResult,
-                getRelatedCatgory: this.getRelatedCatgory,
-                productSearchResultSEO: this.productSearchResultSEO,
-                faqData: this.faqData,
-                buckets: this.buckets,
-                PRTA: this.PRTA
-            };
-        }
-    }
-
-    categoryFooterData
-    onVisibleCateoryFooter_v1()
-    {
+    onVisibleCateoryFooter() {
         this.categoryFooterData = {
             productSearchResult: this.productSearchResult,
             getRelatedCatgory: this.getRelatedCatgory,
@@ -217,7 +200,6 @@ export class CategoryComponent implements OnInit {
             PRTA: this.PRTA
         };
     }
-
 
     async createDynamicComponent(name) {
         if (this._commonService.isBrowser) {
@@ -282,6 +264,7 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
+        //Abhishek:Added condition to fix SSR issue
         if(this._commonService.isBrowser){
             ClientUtility.scrollToTop(2000);
         }
@@ -323,6 +306,7 @@ export class CategoryComponent implements OnInit {
          * For refresh products
          */
         this.initiallizeData(res[1], true);
+        //Abhishek:added condition to fix SSR
         if (this._commonService.isBrowser) {
             this.setTrackingData(res);
             if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
@@ -412,8 +396,7 @@ export class CategoryComponent implements OnInit {
                 this.productCategoryNames.push(key);
             }
         }
-
-        this.onVisibleCateoryFooter_v1();
+        this.onVisibleCateoryFooter();
     }
     /* 
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.

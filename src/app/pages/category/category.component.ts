@@ -373,6 +373,8 @@ export class CategoryComponent implements OnInit {
         }
         if (this.filterInstance) {
             this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+        } else {
+            this.filterCounts = this._commonService.calculateFilterCount(this.buckets);
         }
         this.priceRangeTable(response);      //price range table code starts here
         this.productSearchResult = response.productSearchResult;

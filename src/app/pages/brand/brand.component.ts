@@ -564,6 +564,8 @@ export class BrandComponent {
     
         if (this.filterInstance) {
             this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
+        } else {
+            this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
         }
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);

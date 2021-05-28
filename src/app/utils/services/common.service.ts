@@ -775,6 +775,19 @@ export class CommonService {
         return this._dataService.callRestful("GET", curl);
     }
 
+    calculateFilterCount(data){
+        let count = 0;
+        data.forEach((el) => {
+            for (let i = 0; i < el.terms.length; i++) {
+                if (el.terms[i].selected) {
+                    count++;
+                    break;
+                }
+            }
+        });
+        return count;
+    }
+
     removeLoader() {
         setTimeout(() => {
             this.showLoader = false;

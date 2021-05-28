@@ -229,7 +229,10 @@ export class SearchComponent implements OnInit {
             }
             if (this.filterInstance) {
                 this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
+            } else {
+                this.filterCounts = this._commonService.calculateFilterCount(this.filterData);
             }
+
             this.relatedSearches = response.relatedSearches;
 
             this.productSearchResult = response.productSearchResult;

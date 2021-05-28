@@ -178,7 +178,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 	}
 
 	async loadBottomSheet() {
-		console.log("heyyyyyy",this.bottomSheetInstance)
 		if (!this.bottomSheetInstance) {
 			const { NavBottomSheetComponent } = await import(
 				'./../../components/nav-bottom-sheet/nav-bottom-sheet.component'

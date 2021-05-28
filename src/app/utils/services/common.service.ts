@@ -43,6 +43,8 @@ export class CommonService {
     replaceHeading: boolean = false;
     abTesting: any;
 
+    updateSortBy: Subject<string> = new Subject();
+
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
@@ -694,8 +696,6 @@ export class CommonService {
         this.defaultParams.queryParams["orderBy"] = orderBy;
         this.defaultParams.queryParams["orderWay"] = orderWay;
     }
-
-    updateSortBy: Subject<string> = new Subject();
 
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');

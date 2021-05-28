@@ -40,7 +40,7 @@ export class SortByComponent {
     });
 
     this._commonService.updateSortBy.subscribe(data => {
-      this.sortBy = data;
+      this.updateSortBy(data);
     });
   }
   updateParent(data) {

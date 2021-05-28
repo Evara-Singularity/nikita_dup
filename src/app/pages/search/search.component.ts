@@ -167,7 +167,7 @@ export class SearchComponent implements OnInit {
             label: "view",
             channel: "Search Listing",
             page_type: "search page",
-            search_query: queryParams['search_query'].trim(),
+            search_query: queryParams['search_query'] ? queryParams['search_query'].trim() : queryParams['search_query'],
             filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
             product_count: response.productSearchResult.totalCount
         }
@@ -507,6 +507,7 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 }

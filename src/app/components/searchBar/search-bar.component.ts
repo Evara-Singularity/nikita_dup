@@ -90,7 +90,7 @@ export class SearchBarComponent implements OnInit {
                                 this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
                                 this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
                                 this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
-                                if (cTerm.length > 2) {
+                                if (cTerm && cTerm.length > 2) {
                                     this.showSuggestionBlock = true;
                                 }
                             }

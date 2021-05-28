@@ -49,6 +49,7 @@ export class SiemaSlideComponent {
     pzInstance: any;
     @ViewChild('pinchZoom') pinchZoom: ElementRef;
     readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
+    readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,

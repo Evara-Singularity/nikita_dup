@@ -190,8 +190,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 			this.bottomSheetInstance.instance['sbm'] = true;
 		} else {
 			//toggle side menu
-			this.bottomSheetInstance.instance['sbm'] = true;
+			this.bottomSheetInstance.instance['sbm'] = !(this.bottomSheetInstance.instance['sbm']);
 		}
+
 	}
 
 	commonSubcribers() {

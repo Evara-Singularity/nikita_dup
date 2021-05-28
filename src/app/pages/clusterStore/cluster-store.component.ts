@@ -134,8 +134,8 @@ export class ClusterStoreComponent implements OnInit {
 		} else {
 			this.title.setTitle(response['metaTitle']);
 		}
+		this.onVisibleFooter();
 	}
-
 	setMetaInformation(title, description) {
 		this.meta.addTag({ name: 'robots', content: CONSTANTS.META.ROBOT });
 		this.title.setTitle(title);

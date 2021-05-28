@@ -62,7 +62,7 @@ export class SubCategoryComponent {
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {
-            this.moreLessCategoryText="SHOW lESS";
+            this.moreLessCategoryText="SHOW LESS";
         }
         else{
             this.moreLessCategoryText="SHOW MORE";

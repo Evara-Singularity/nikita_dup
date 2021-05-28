@@ -132,7 +132,14 @@ const routes: Routes = [
                 data: {
                     layoutId: 'cm483590'
                 }
-            }                          
+            },
+            {
+                path: 'emailer-deals',
+                loadChildren: () => import('../../modules/deals/emailer-deals/emailer.module').then(m => m.EmailerModule),
+                data: {
+                    layoutId: 'cm511920'
+                }
+            },                        
         ]
     }
 ];

@@ -8,6 +8,7 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
+import { environment } from 'environments/environment';
 
 @Component({
 	selector: 'header-nav',
@@ -65,6 +66,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 		'/contact',
 	];
 	isLoginPage: boolean = false;
+	imgAssetPath: string = environment.IMAGE_ASSET_URL
 
 	constructor(
 		@Inject(PLATFORM_ID) platformId,

@@ -47,28 +47,38 @@ export class FreshComponent {
   }
 
   initializeClicks() {
-    setTimeout(function () {
-      (<HTMLElement>document.querySelector(".tab_num > div")).style.display =
-        "none"; 
-      (<HTMLElement>(
-        document.querySelector(".tab_num > div:first-child")
-      )).style.display = "block"; 
-      document.querySelector("li:first-child").classList.add("active");
-      document.querySelector("li").addEventListener("click", (e) => {
-        let className = (<HTMLElement>e.currentTarget).className;
-        let class_num = className.split(" ");
-        if (class_num.length == 1) {
-          (<HTMLElement>(
-            document.querySelector(".tab_num .wp-100")
-          )).style.display = "none"; 
-          (<HTMLElement>(
-            document.querySelector(".tab_num div." + className)
-          )).style.display = "block"; 
-          document.querySelector("li").classList.remove("active");
-          document.querySelector("li." + className).classList.add("active");
-        }
-      });
-    }, 3000);
+    let tab = this.activatedRoute.snapshot.queryParams['tab'] || 1;
+    if (tab < 1 || tab > 6)
+      tab = 1;
+    if (!this.isServer) {
+      if ((<HTMLElement>document.querySelector('.tab_num > div')))
+        (<HTMLElement>document.querySelector('.tab_num > div')).style.display = "none";//.hide();
+      if ((<HTMLElement>document.querySelector('.tab_num > div:first-child')))
+        (<HTMLElement>document.querySelector('.tab_num > div:first-child')).style.display = "block";//.show();
+      document.querySelector('li:first-child').classList.add('active');
+      if (document.querySelector('ul.emailer-tab')) {
+        document.querySelector("ul.emailer-tab").addEventListener('click', function (e) {
+          if (e.target && (<HTMLElement>e.target).matches("li")) {
+            var className = (<HTMLElement>e.target).className;
+            var class_num = className.split(" ");
+            if (class_num.length == 1) {
+              if ((document.querySelectorAll('.tab_num .wp-100'))) {
+                Array.prototype.map.call(document.querySelectorAll('.tab_num .wp-100'), element => {
+                  element.style.display = "none";
+                })
+              }
+              if ((<HTMLElement>document.querySelector('.tab_num div.' + className)))
+                (<HTMLElement>document.querySelector('.tab_num div.' + className)).style.display = "block";//.show();
+              var elems = document.querySelectorAll("ul.emailer-tab li");
+              [].forEach.call(elems, function (el) {
+                el.classList.remove("active");
+              });
+              document.querySelector('li.' + className).classList.add('active');
+            }
+          }
+        });
+      }
+    }
   }
 
   getFreshData() {

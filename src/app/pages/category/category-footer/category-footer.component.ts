@@ -51,7 +51,10 @@ export class CategoryFooterComponent{
         CommonModule,
         MathFloorPipeModule,
         KpToggleDirectiveModule,
+    ],
+    exports: [
+        CategoryFooterComponent
     ]
 })
 export class CategoryFooterModule { }
-export class CategoryModule extends CategoryFooterModule { }
+// export class CategoryModule extends CategoryFooterModule { }

@@ -1749,7 +1749,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setProductSeoSchema() {
 
-    if (this.isServer && this.rawProductData) {
+    if (true && this.rawProductData) {
       let inStock = (!this.productOutOfStock) ? "http://schema.org/InStock" : "http://schema.org/OutOfStock";
       let reviewCount = this.reviews.summaryData.review_count > 0 ? this.reviews.summaryData.review_count : 1;
       let ratingValue = this.reviews.summaryData.final_average_rating > 0 ? this.reviews.summaryData.final_average_rating : 3.5;
@@ -1795,7 +1795,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           },
           "offers": {
             "@type": "Offer",
-            "url": CONSTANTS.PROD + this.productUrl,
+            "url": CONSTANTS.PROD + '/' + this.productUrl,
             "priceCurrency": "INR",
             "price": (this.productPrice * this.productMinimmumQuantity).toString(),
             "itemCondition": CONSTANTS.SCHEMA + "/NewCondition",

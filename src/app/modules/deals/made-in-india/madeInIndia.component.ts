@@ -43,6 +43,7 @@ export class MadeInIndiaComponent {
         if (rawData && !rawData["data"]["error"]) {
           this.madeInIndiaData = rawData["data"][0];
           setTimeout(() => {
+            this.initializeClicks();
             this.reinsertLinks();
           }, 0);
         } else {

@@ -3,8 +3,8 @@ import {
     ChangeDetectorRef, ChangeDetectionStrategy, PLATFORM_ID, Inject, NgModule
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CategoryService } from '../../../utils/services/category.service';
-import { SubCategoryService } from "../../../utils/services/subCategory.service";
+import { CategoryService } from '@utils/services/category.service';
+import { SubCategoryService } from "@utils/services/subCategory.service";
 import { CONSTANTS } from "@config/constants";
 import {Subject} from "rxjs";
 import { fade } from '@utils/animations/animation'

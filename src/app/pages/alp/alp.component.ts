@@ -1,49 +1,76 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Component, ViewChild, ViewEncapsulation, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional } from '@angular/core';
-import { CategoryService } from './alp.service';
+import { EventEmitter, Component, ViewChild, ViewEncapsulation, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { AlpService } from './alp.service';
+import { CommonService } from '@services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
+import { FooterService } from '@services/footer.service';
 import { Subject } from 'rxjs/Subject';
+import { SortByComponent } from '@components/sortBy/sortBy.component';
+import { CONSTANTS } from '@config/constants';
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { ClientUtility } from '@utils/client.utility';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { NgxSiemaOptions } from 'ngx-siema';
-import { CommonService } from '@utils/services/common.service';
-import { FooterService } from '@utils/services/footer.service';
-import { SortByComponent } from '@modules/sortBy/sortBy.component';
-import CONSTANTS from '@config/constants';
-import { DataService } from '@utils/services/data.service';
-import { GlobalLoaderService } from '@utils/services/global-loader.service';
-import { ClientUtility } from '@app/utils/client.utility';
+import { DataService } from '@services/data.service';
+import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 
 declare let dataLayer;
 declare var digitalData: {};
 declare let _satellite;
+
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
-const ALPARK: any = makeStateKey<{}>("ALPARK");         //ALP Attrtibute Listing Result Key
-const GRCRK: any = makeStateKey<{}>('GRCRK');           // GRCRK: Get Related Category Result Key
-const RPRK: any = makeStateKey<{}>('RPRK');             // RPRK: Refresh Product Result Key
-const EDK: any = makeStateKey<{}>('EDK');               //EDK:Extra Data Key
-const GFAQK: any = makeStateKey<{}>("GFAQK")            // GFAQK: Get Frequently Asked Question Key
+const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
+const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
+const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
 
 @Component({
-    selector: "alp",
-    templateUrl: "./alp.component.html",
-    styleUrls: ["./alp.scss"],
-    encapsulation: ViewEncapsulation.None,
+    selector: 'alp',
+    templateUrl: './alp.html',
+    styleUrls: ['./alp.scss'],
 })
-export class CategoryComponent implements OnInit, AfterViewInit {
+
+export class AlpComponent implements OnInit {
+    paginationInstance = null;
+    @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
+    filterInstance = null;
+    @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
+    sortByInstance = null;
+    @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
+    subCategoryInstance = null;
+    @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
+    catBestSellerInstance = null;
+    @ViewChild('catBestsellers', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
+    shopByBrandInstance = null;
+    @ViewChild('shopByBrand', { read: ViewContainerRef }) shopByBrandContainerRef: ViewContainerRef;
+    catStaticInstance = null;
+    @ViewChild('catStatic', { read: ViewContainerRef }) catStaticContainerRef: ViewContainerRef;
+    slpSubCategoryInstance = null;
+    @ViewChild('slpSubCategoryRef', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
+    shopbyFeatrInstance = null;
+    @ViewChild('shopbyFeatr', { read: ViewContainerRef }) shopbyFeatrContainerRef: ViewContainerRef;
+    cmsInstance = null;
+    @ViewChild('cms', { read: ViewContainerRef }) cmsContainerRef: ViewContainerRef;
+    cateoryFooterInstance = null;
+    @ViewChild('cateoryFooter', { read: ViewContainerRef }) cateoryFooterContainerRef: ViewContainerRef;
+    recentArticlesInstance = null;
+    @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
+
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
-    productsUpdated: Subject<any> = new Subject<any>();
+
+    paginationData: any = {};
+    breadcrumbData: any;
+    productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    showLoader: boolean;
     paginationUpdated: Subject<any> = new Subject<any>();
     sortByUpdated: Subject<any> = new Subject<any>();
-    pageSizeUpdated: Subject<any> = new Subject<any>();
     bucketsUpdated: Subject<any> = new Subject<any>();
     breadcrumpUpdated: Subject<any> = new Subject<any>();
-    relatedCatgoryListUpdated: Subject<any> = new Subject<any>();
     categoryDataName: Subject<any> = new Subject<any>();
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     pageName: string;
@@ -51,6 +78,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     subCategoryCount: number;
     session: {};
     getRelatedCatgory: any;
+    toggletsWrap: boolean;
     productListLength: number;
     showSubcategoty: boolean;
     currentRequestGetRelatedCategories: any;
@@ -62,6 +90,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     filterCounts;
     todayDate: number;
     spl_subCategory_Dt: any;
+
     refreshProductsUnsub$: any;
     refreshProductsUnsub: any;
     _activatedRouteUnsub: any;
@@ -73,7 +102,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     isSLPPage: boolean = false;
     API = CONSTANTS;
     openPopup: boolean;
-    imagePath = CONSTANTS.IMG_URL;
+    imagePath = CONSTANTS.IMAGE_BASE_URL;
     firstPageContent: boolean = false;
     page_title;
     taxo1: any;
@@ -83,212 +112,150 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     faqData;
     excludeAttributes: string[] = [];
     attributeListingData = null;
-    titleHeading = "";
-    titleDescription = "";
-    pageDescription = "";
-    metaTitle = "";
-    metaDescription = "";
+    titleHeading = '';
+    titleDescription = '';
+    pageDescription = '';
+    metaTitle = '';
+    metaDescription = '';    
     groupedProductNames = [];
     groupedProducts = {};
     displayGroupBy = false;
     bestSellerProducts: any[] = [];
     groupedBrandSiema: NgxSiemaOptions = {
-        selector: ".group-brand-siema",
+        selector: '.group-brand-siema',
         duration: 200,
         threshold: 10,
         startIndex: 0,
         perPage: 1.2,
-    };
-    bestSellerTitle = "";
-    set showLoader(value) {
-        this.loaderService.setLoaderState(value);
-    } 
+    }
+    bestSellerTitle = '';
 
-    constructor(
-        @Optional() @Inject(RESPONSE) private _response,
-        private _tState: TransferState,
-        private _renderer2: Renderer2,
+    constructor(@Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2,
+        private injector: Injector,
+        private cfr: ComponentFactoryResolver,
         @Inject(DOCUMENT) private _document,
         public dataService: DataService,
-        public pageTitle: Title,
-        private meta: Meta,
-        @Inject(PLATFORM_ID) platformId,
-        public footerService: FooterService,
-        public _router: Router,
-        public _activatedRoute: ActivatedRoute,
-        private localStorageService: LocalStorageService,
-        private _commonService: CommonService,
-        private _categoryService: CategoryService,
-        private loaderService:GlobalLoaderService) {
-
-        this.showLoader=false;
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
-        this.showSubcategoty = true;
-        this.showLoader = false;
+        public pageTitle: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService,
+        public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
+        public _commonService: CommonService, private _categoryService: AlpService, private ngxSiemaService: NgxSiemaService)
+    {
+        this.showSubcategoty = true;        
+        this.getRelatedCatgory = {};
+        this.todayDate = Date.now();
+        this.pageName = 'ATTRIBUTE';
+        this.subCategoryCount = 0;
     }
 
     ngOnInit() {
-        this._activatedRoute.queryParams.subscribe((queryParams) => {
-            this.trendingSearchData = queryParams;
-        });
-        this.getRelatedCatgory = {};
-        this.todayDate = Date.now();
-        this.pageName = "ATTRIBUTE";
-        this.subCategoryCount = 0;
-        this._activatedRoute.params.subscribe((data) => {
-            if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
-                this.isSLPPage = true;
-                this.getExtraCategoryData(data).subscribe((data) => {
-                    if (data && data["status"] && data["data"] && data["data"].length) {
-                        if (this.isServer) {
-                            this._tState.set(EDK, data);
-                        }
-                        this.parseData(data["data"]);
-                    }
-                    this.page_title = data["pageTitle"];
-                });
-            } else {
-                this.isSLPPage = false;
-            }
-        });
-        this.refreshProductsUnsub$ = this._commonService.refreshProducts$.subscribe(
-            () => {
-                this.showLoader = true;
-                this.refreshProductsUnsub = this._commonService
-                    .refreshProducts()
-                    .subscribe((response) => {
-                        this.showLoader = false;
-                        this.productListLength =
-                            response.productSearchResult["products"].length;
-                        this.paginationUpdated.next({
-                            itemCount: response.productSearchResult["totalCount"],
-                        });
-                        this.sortByUpdated.next();
-                        this.pageSizeUpdated.next({
-                            productSearchResult: response.productSearchResult,
-                        });
-                        let buckets = this.filterBuckets(response.buckets);
-                        this.bucketsUpdated.next(buckets);
-                        this.productsUpdated.next(response.productSearchResult.products);
-                        this.productSearchResult = response.productSearchResult;
-                    });
-            }
-        );
+        this.setCategoryDataFromResolver();
 
-        this._activatedRouteUnsub = this._activatedRoute.queryParams.subscribe(
-            (params: Params) => {
-                this.pageNo = params["page"];
-                this.displayGroupBy = params["page"] == 1;
-            }
-        );
         this.footerService.setMobileFoooters();
-        this.combineLatestUnsub = combineLatest(
-            this._activatedRoute.params,
-            this._activatedRoute.queryParams,
-            this._activatedRoute.fragment
-        ).subscribe((data) => {
-            if (this.isBrowser) {
-                this.showLoader = true;
-            }
-            if (this._tState.hasKey(ALPARK)) {
-                this.setAttributeListingInfo(this._tState.get(ALPARK, {}));
-            } else {
-                this._categoryService
-                    .getCIMSAttributeListingInfo(data[0]["attribute"])
-                    .subscribe((response) => {
-                        this.setAttributeListingInfo(response["data"]);
-                    });
-            }
+
+    }
+
+    setDataAfterGettingDataFromResolver(res) {
+        ClientUtility.scrollToTop(600);
+        this.setAttributeListingInfo(res);
+    }
+
+    setCategoryDataFromResolver() {
+        this._commonService.showLoader = true;
+        this._activatedRoute.data.subscribe(res => {
+            // Set config based on query params change
+            const queryParamsData = this._activatedRoute.snapshot.queryParams;
+            this.updateConfigBasedOnQueryParams(queryParamsData);
+
+            // Set config based on params change
+            const paramsData = this._activatedRoute.snapshot.params;
+            this.updateConfigBasedOnParams(paramsData);
+
+            this.setDataAfterGettingDataFromResolver(res.alp);
         });
-        this._activatedRoute.queryParams.subscribe((data) => {
-            if (data["page"] == undefined || data["page"] == 1) {
-                this.firstPageContent = true;
-            } else {
-                this.firstPageContent = false;
-            }
-        });
+    }
+
+    updateConfigBasedOnQueryParams(queryParamsData){
+        this.pageNo = queryParamsData['page'];
+        this.displayGroupBy = (queryParamsData['page'] == 1);
+        this.trendingSearchData = queryParamsData;
+
+        if (queryParamsData['page'] == undefined || queryParamsData['page'] == 1) {
+            this.firstPageContent = true;
+        } else {
+            this.firstPageContent = false;
+        }
+    }
+    
+    updateConfigBasedOnParams(paramsData){
+        if (paramsData && paramsData.id && slpPagesExtrasIdMap.hasOwnProperty(paramsData.id)) {
+            this.isSLPPage = true;
+            this.getExtraCategoryData(paramsData).subscribe((paramsData) => {
+                if (paramsData && paramsData['status'] && paramsData['data'] && paramsData['data'].length) {
+                    if (this._commonService.isServer) {
+                        this._tState.set(EDK, paramsData);
+                    }
+                    this.parseData(paramsData['data']);
+                }
+                this.page_title = paramsData['pageTitle'];
+            });
+        } else {
+            this.isSLPPage = false;
+        }
     }
 
     setAttributeListingInfo(data) {
-        this.attributeListingData = data;
-        let defaultParams = this.attributeListingData["defaultParams"];
-        let categoryCode = defaultParams["category"];
-        let attributeListing = this.attributeListingData["attributesListing"];
-        this.titleHeading = attributeListing["title"];
-        this.titleDescription = attributeListing["titleDescription"];
-        this.pageDescription = attributeListing["pageDescription"];
-        this.metaTitle = attributeListing["metaTitle"];
-        this.metaDescription = attributeListing["metaDescription"];
-        this.excludeAttributes = attributeListing["attributes"];
-        this.bestSellerProducts = this.attributeListingData["bestSellersProducts"];
-        this.bestSellerTitle = attributeListing["categoryName"];
-        if (this.isServer) {
-            this._tState.set(ALPARK, data);
-        }
-        this.fetchCIMSRelatedData(categoryCode, defaultParams);
+        this.attributeListingData = data[0]['data'];
+        let attributeListing = this.attributeListingData['attributesListing'];
+        this.titleHeading = attributeListing['title']
+        this.titleDescription = attributeListing['titleDescription'];
+        this.pageDescription = attributeListing['pageDescription'];
+        this.metaTitle = attributeListing['metaTitle'];
+        this.metaDescription = attributeListing['metaDescription'];
+        this.excludeAttributes = attributeListing['attributes'];
+        this.bestSellerProducts = this.attributeListingData['bestSellersProducts'];
+        this.bestSellerTitle = attributeListing['categoryName'];
+        this.fetchCIMSRelatedData(data[1]);
     }
 
-    fetchCIMSRelatedData(categoryCode, defaultParams) {
-        this.forkJoinUnsub = forkJoin([
-            this.getRelatedCategories(categoryCode).pipe(map((res) => res)),
-            this.refreshProducts(defaultParams).pipe(map((res) => res)),
-        ]).subscribe((res) => {
-            const ict = res[0]["categoryDetails"]["active"]; // ict : isCategoryActive
-            let productSearchResult = res[1]["productSearchResult"];
-            this.groupByBrandName(productSearchResult["products"]);
-            if (!ict || res[1]["productSearchResult"]["totalCount"] === 0) {
-                if (this.isServer) {
+    fetchCIMSRelatedData(res) {
+        this._commonService.showLoader = false;
+        this.breadcrumbData = res[1];
+        const ict = res[0]['categoryDetails']['active'];
+            let productSearchResult = res[2]["productSearchResult"];
+            this.groupByBrandName(productSearchResult['products']);
+
+            if (!ict || res[2]['productSearchResult']['totalCount'] === 0) {
+                if (this._commonService.isServer) {
                     let httpStatus = 404;
-                    if (res[0]["httpStatus"]) {
-                        httpStatus = res[0]["httpStatus"];
-                    } else if (res[1]["httpStatus"]) {
-                        httpStatus = res[1]["httpStatus"];
+                    if (res[0]['httpStatus']) {
+                        httpStatus = res[0]['httpStatus'];
+                    } else if (res[2]['httpStatus']) {
+                        httpStatus = res[2]['httpStatus'];
                     }
                     this._response.status(httpStatus);
                 }
-                res[1] = {
-                    buckets: [],
-                    productSearchResult: { products: [], totalCount: 0 },
-                };
+                res[2] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
             }
             if (this.isBrowser) {
                 this.showLoader = false;
             }
-            if (this._tState.hasKey(GRCRK)) {
-                this.initiallizeRelatedCategories(res, false);
-            } else {
-                if (this.isServer) {
-                    this._tState.set(GRCRK, res[0]);
-                }
-                this.initiallizeRelatedCategories(res, true);
-            }
-            const fragment = this._activatedRoute.snapshot.fragment;
 
-            if (this._tState.hasKey(RPRK) && !fragment) {
-                this.initiallizeData(res[1], false);
-            } else {
-                if (this.isServer) {
-                    res[1]["buckets"] = this.filterBuckets(res[1]["buckets"]);
-                    this._tState.set(RPRK, res[1]);
-                }
-                this.initiallizeData(res[1], true);
+        this.initiallizeRelatedCategories(res, true);
+
+            if (this._commonService.isServer) {
+                res[2]['buckets'] = this.filterBuckets(res[2]['buckets']);
+                this._tState.set(RPRK, res[2]);
             }
+            this.initiallizeData(res[2], true);
             if (this.isBrowser) {
                 this.setTrackingData(res);
             }
-            if (
-                this.isBrowser &&
-                ict &&
-                res[1]["productSearchResult"]["totalCount"] > 0
-            ) {
-                this.fireTags(res[1]);
+            if (this.isBrowser && (ict && res[2]['productSearchResult']['totalCount'] > 0)) {
+                this.fireTags(res[2]);
             }
-        });
     }
 
-    setTrackingData(res) {
-        var taxonomy = res[0]["categoryDetails"]["taxonomy"];
+
+    setTrackingData(res) {        var taxonomy = res[0]["categoryDetails"]['taxonomy'];
         var trackData = {
             event_type: "page_load",
             label: "view",
@@ -299,49 +266,47 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             channel: "Listing",
             search_query: null,
             suggestion_click: null,
-            filter_added: !!window.location.hash.substr(1) ? "true" : "false",
+            filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
             url_complete_load_time: null,
-            page_type: "Category",
-        };
+            page_type: "Category"
+        }
         this.dataService.sendMessage(trackData);
     }
-
     outData(data) {
-        if (Object.keys(data).indexOf("hide") !== -1) {
+        if (Object.keys(data).indexOf('hide') !== -1) {
             this.openPopup = !data.hide;
         }
     }
-
     onFilterSelected(count) {
-        this.filterCounts = count;
+        setTimeout(() => {
+            this.filterCounts = count;
+        }, 0);
     }
-
+    togglets() {
+        this.toggletsWrap = !this.toggletsWrap;
+    }
     parseData(data) {
         let relevantObj: any = {};
-        data.forEach((obj) => {
+        data.forEach(obj => {
             relevantObj = obj;
         });
+
         if (relevantObj.block_data && relevantObj.block_data.product_data) {
-            relevantObj.block_data.product_data.forEach((product) => {
-                if (
-                    product.discount_percentage &&
-                    product.pricewithouttax &&
-                    parseInt(product.discount_percentage) < 100
-                ) {
+            relevantObj.block_data.product_data.forEach(product =>
+            {
+                if (product.discount_percentage && product.pricewithouttax && parseInt(product.discount_percentage) < 100) {
                     product.discount_percentage = parseInt(product.discount_percentage);
                     product.pricewithouttax = parseInt(product.pricewithouttax);
                 }
                 let desc = {
-                    Brand: "",
+                    Brand: ""
                 };
                 if (product && product.short_description) {
                     let descArr = product.short_description.split("||");
-                    descArr.forEach((element) => {
+                    descArr.forEach(element =>
+                    {
                         let splitEl = element.split(":");
-                        if (
-                            splitEl[0].toLowerCase() == "brand" ||
-                            splitEl[0].toLowerCase() == "by"
-                        ) {
+                        if (splitEl[0].toLowerCase() == "brand" || splitEl[0].toLowerCase() == "by") {
                             desc.Brand = splitEl[1];
                         } else {
                             desc[splitEl[0]] = splitEl[1];
@@ -353,135 +318,187 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         }
         this.extrasBlock = relevantObj.block_data;
     }
-
-    ngAfterViewInit() {
-        this.sortByComponentUpdated.next(this.sortByComponent);
-        if (this.isBrowser) {
-            this._tState.remove(GRCRK);
-            this._tState.remove(RPRK);
-            this._tState.remove(GFAQK);
-        }
-    }
-
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
-    }
-
-    refreshProducts(defaultApiParams): Observable<{}> {
-        const defaultParams = this.createDefaultParams(defaultApiParams);
-        this._commonService.updateDefaultParamsNew(defaultParams);
-        const fragment = this._activatedRoute.snapshot.fragment;
-        if (this._tState.hasKey(RPRK) && !fragment) {
-            return of(this._tState.get(RPRK, {}));
-        } else {
-            if (this.isBrowser) {
-                this.showLoader = true;
-            }
-            return this._commonService.refreshProducts();
-        }
-    }
-
+    
     /**
+     *
      * @param response : returned data from category api or transfer state
-     * @param flag     : true, if TrasnferState exist.
+     * @param flag : true, if TrasnferState exist.
      */
-
-    private initiallizeData(response: any, flag: boolean) {
+    private initiallizeData(response: any, flag: boolean)
+    {
         this.showLoader = false;
-        this.productListLength = response.productSearchResult["products"].length;
+        this.productListLength = response.productSearchResult['products'].length;
         if (flag) {
             this.sortByUpdated.next();
-            this.paginationUpdated.next({
-                itemCount: response.productSearchResult["totalCount"],
-            });
-            this.pageSizeUpdated.next({
-                productSearchResult: response.productSearchResult,
-            });
+            this.paginationData = { itemCount: response.productSearchResult.totalCount };
+            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
             this.bucketsUpdated.next(this.filterBuckets(response.buckets));
             this.productsUpdated.next(response.productSearchResult.products);
+            this.paginationUpdated.next(this.paginationData);
         }
+
+        if (this.filterInstance) {
+            this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
+        } else {
+            this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
+        }
+
+        this.buckets = this.filterBuckets(response.buckets);
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
-        for (
-            let p = 0;
-            p < response.productSearchResult.products.length && p < 10;
-            p++
-        ) {
-            if (
-                response.productSearchResult.products[p].salesPrice > 0 &&
-                response.productSearchResult.products[p].priceWithoutTax > 0
-            ) {
-                this.productSearchResultSEO.push(
-                    response.productSearchResult.products[p]
-                );
+        for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
+            if (response.productSearchResult.products[p].salesPrice > 0 && response.productSearchResult.products[p].priceWithoutTax > 0) {
+                this.productSearchResultSEO.push(response.productSearchResult.products[p]);
             }
         }
         this.setCanonicalUrls(response);
+        const products = response.productSearchResult.products || [];
+        if (products && products.length) {
+            this.createProductsSchema(products);
+        }
+        //console.log("set cano func",response);
+    }
+    createProductsSchema(productArray) {
+        if (this._commonService.isServer) {
+            if (productArray.length > 0) {
+                const productList = [];
+                productArray.forEach((product, index) => {
+                    productList.push({
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "url": CONSTANTS.PROD + '/' + product.productUrl,
+                        "name": product.productName,
+                        "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
+                    })
+                });
+                const schemaObj = {
+                    "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "numberOfItems": productArray.length,
+                    "url": CONSTANTS.PROD + this._router.url,
+                    "name": this.getRelatedCatgory?.categoryDetails?.categoryName,
+                    "itemListElement": productList
+                }
+                let s = this._renderer2.createElement('script');
+                s.type = "application/ld+json";
+
+                s.text = JSON.stringify(schemaObj);
+                this._renderer2.appendChild(this._document.head, s);
+            }
+        }
     }
 
-    private setCanonicalUrls(response) {
-        const currentRoute = this._router.url.split("?")[0].split("#")[0];
-        const links = this._renderer2.createElement("link");
-        links.rel = "canonical";
+    private setCanonicalUrls(response)
+    {
+
+        const currentRoute = this._router.url.split('?')[0].split('#')[0];
+        if (this._commonService.isServer) {
+
+        const links = this._renderer2.createElement('link');
+        //console.log("links ",links);
+        links.rel = 'canonical';
         if (this.pageNo == undefined || this.pageNo == 1) {
             links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
-        } else {
-            links.href =
-                CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
         }
+        else {
+            links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
+        }
+        // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
+        //console.log("links.href", links.href)
         this._renderer2.appendChild(this._document.head, links);
-        this.setAmpTag("alp");
+        this.setAmpTag('alp');
+        }
+
+
+
+        // console.log("amplink",ampLink);
+
+        // if (this.pageNo == undefined || this.pageNo == 1) {
+
+        //     let ampLink;
+        //     ampLink = this._renderer2.createElement('link');
+        //     ampLink.rel = 'amphtml';
+        //     ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
+
+        //     /**
+        //      * Below if condition is just a temporary solution.
+        //      * Strictly remove if condtion, once amp of drill(114160000) page is completed.
+        //      */
+        //     // if(this._activatedRoute.snapshot.params.id != "114160000"){
+        //     this._renderer2.appendChild(this._document.head, ampLink);
+        //     // }
+        //     //console.log("ampLink",ampLink);
+        // }
+
+
+
+
+
+
+        // console.log(" ampLink.href", ampLink.href);
+        // this._renderer2.appendChild(this._document.head, ampLink);
+
+        // Start Canonical URL
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
+        // console.log("Current router:" + currentRoute);
         const pageCountQ = response.productSearchResult.totalCount / 10;
-        const currentPageP = parseInt(currentQueryParams["page"]);
+        const currentPageP = parseInt(currentQueryParams['page']);
+
         if (pageCountQ > 1 && (currentPageP === 1 || isNaN(currentPageP))) {
-            let links = this._renderer2.createElement("link");
-            links.rel = "next";
-            links.href = CONSTANTS.PROD + currentRoute + "?page=2";
+            // console.log("hello");
+            //console.log("current page",currentPageP);
+            let links = this._renderer2.createElement('link');
+            links.rel = 'next';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=2';
             this._renderer2.appendChild(this._document.head, links);
+
         } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
-            let links = this._renderer2.createElement("link");
-            links.rel = "prev";
+            let links = this._renderer2.createElement('link');
+            links.rel = 'prev';
             if (currentPageP === 2) {
                 links.href = CONSTANTS.PROD + currentRoute;
             } else {
-                links.href =
-                    CONSTANTS.PROD + currentRoute + "?page=" + (currentPageP - 1);
+                links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             }
 
             this._renderer2.appendChild(this._document.head, links);
 
-            links = this._renderer2.createElement("link");
-            links.rel = "next";
-            links.href =
-                CONSTANTS.PROD + currentRoute + "?page=" + (currentPageP + 1);
+            links = this._renderer2.createElement('link');
+            links.rel = 'next';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
             this._renderer2.appendChild(this._document.head, links);
         } else if (currentPageP > 1 && pageCountQ + 1 >= currentPageP) {
-            let links = this._renderer2.createElement("link");
-            links.rel = "prev";
-            links.href =
-                CONSTANTS.PROD + currentRoute + "?page=" + (currentPageP - 1);
+            let links = this._renderer2.createElement('link');
+            links.rel = 'prev';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             this._renderer2.appendChild(this._document.head, links);
         }
+        // let 
         let fragmentString = this._activatedRoute.snapshot.fragment;
         if (fragmentString != null || !isNaN(currentPageP)) {
             this.scrollToResults();
+            //console.log(extras);
         }
+        // console.log("Current route params:" + JSON.stringify(currentQueryParams));
+        // console.log("Pagechijkllads:" + currentQueryParams["page"]);
+        // console.log("Response Page Count: " + JSON.stringify(response.productSearchResult.totalCount));
+        // End Canonical url
     }
-
     scrollToResults() {
-        let footerOffset = document.getElementById('.cate-container').offsetTop;
-        ClientUtility.scrollToTop(1000,footerOffset - 30);
-    }
 
-    fireTags(response) {
+    }
+    fireTags(response)
+    {
+
         /**************************GTM START*****************************/
-        let cr: any = this._router.url.replace(/\//, " ").replace(/-/g, " ");
-        cr = cr.split("/");
+        let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
+        cr = cr.split('/');
         cr.splice(cr.length - 1, 1);
-        cr = cr.join("/");
+
+        cr = cr.join('/');
         const gaGtmData = this._commonService.getGaGtmData();
         const psrp = response.productSearchResult.products;
+
         const dlp = [];
         const criteoItem = [];
         for (let p = 0; p < response.productSearchResult.products.length; p++) {
@@ -491,203 +508,224 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 price: psrp[p].priceWithoutTax,
                 brand: psrp[p].brandName,
                 category: cr,
-                variant: "",
-                list: gaGtmData && gaGtmData["list"] ? gaGtmData["list"] : "",
-                position: p + 1,
+                variant: '',
+                list: (gaGtmData && gaGtmData['list']) ? gaGtmData['list'] : '',
+                position: p + 1
             };
             dlp.push(product);
             criteoItem.push(psrp[p].moglixPartNumber);
         }
+
         if (this.isBrowser) {
             let user;
-            if (this.localStorageService.retrieve("user")) {
-                user = this.localStorageService.retrieve("user");
+            if (this.localStorageService.retrieve('user')) {
+                user = this.localStorageService.retrieve('user');
             }
             dataLayer.push({
-                event: "pr-impressions",
-                ecommerce: {
-                    currencyCode: "INR", // Local currency is optional.
-                    impressions: dlp,
+                'event': 'pr-impressions',
+                'ecommerce': {
+                    'currencyCode': 'INR',                       // Local currency is optional.
+                    'impressions': dlp,
                 },
             });
 
             const google_tag_params = {
-                ecomm_prodid: "",
-                ecomm_pagetype: "category",
-                ecomm_totalvalue: "",
+                ecomm_prodid: '',
+                ecomm_pagetype: 'category',
+                ecomm_totalvalue: ''
             };
 
             dataLayer.push({
-                event: "dyn_remk",
-                ecomm_prodid: google_tag_params.ecomm_prodid,
-                ecomm_pagetype: google_tag_params.ecomm_pagetype,
-                ecomm_totalvalue: google_tag_params.ecomm_totalvalue,
-                google_tag_params: google_tag_params,
+                'event': 'dyn_remk',
+                'ecomm_prodid': google_tag_params.ecomm_prodid,
+                'ecomm_pagetype': google_tag_params.ecomm_pagetype,
+                'ecomm_totalvalue': google_tag_params.ecomm_totalvalue,
+                'google_tag_params': google_tag_params
             });
 
-            /*
-             *Start Criteo DataLayer Tags
-             */
+            /*Start Criteo DataLayer Tags */
+
             dataLayer.push({
-                event: "viewList",
-                email: user && user.email ? user.email : "",
-                ProductIDList: criteoItem,
-                CategoryId: this.getRelatedCatgory.categoryDetails.taxonomy,
-                CategoryName: this.getRelatedCatgory.categoryDetails.canonicalURL,
+                'event': 'viewList',
+                'email': (user && user.email) ? user.email : '',
+                'ProductIDList': criteoItem,
+                'CategoryId': this.getRelatedCatgory.categoryDetails.taxonomy,
+                'CategoryName': this.getRelatedCatgory.categoryDetails.canonicalURL
             });
 
             /*End Criteo DataLayer Tags */
+
             /*Start Adobe Analytics Tags */
             if (this.getRelatedCatgory.categoryDetails.taxonomy) {
-                this.taxo1 =
-                    this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[0] || "";
-                this.taxo2 =
-                    this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[1] || "";
-                this.taxo3 =
-                    this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[2] || "";
+                this.taxo1 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[0] || '';
+                this.taxo2 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[1] || '';
+                this.taxo3 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[2] || '';
             }
             let page = {
-                pageName:
-                    "moglix:" +
-                    this.taxo1 +
-                    ":" +
-                    this.taxo2 +
-                    ":" +
-                    this.taxo3 +
-                    ": listing",
-                channel: "listing",
-                subSection:
-                    "moglix:" +
-                    this.taxo1 +
-                    ":" +
-                    this.taxo2 +
-                    ":" +
-                    this.taxo3 +
-                    ": listing",
-                loginStatus:
-                    user && user["authenticated"] == "true" ? "registered user" : "guest",
-            };
+                'pageName': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
+                'channel': "listing",
+                'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
+                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            }
             let custData = {
-                customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-                emailID: user && user["email"] ? btoa(user["email"]) : "",
-                mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-                customerType: user && user["userType"] ? user["userType"] : "",
-            };
+                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+                'customerType': (user && user["userType"]) ? user["userType"] : '',
+            }
             let order = {
-                productCategoryL1: this.taxo1,
-                productCategoryL2: this.taxo2,
-                productCategoryL3: this.taxo3,
-            };
+                'productCategoryL1': this.taxo1,
+                'productCategoryL2': this.taxo2,
+                'productCategoryL3': this.taxo3
+            }
+
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
-            if (
-                this.trendingSearchData["tS"] &&
-                this.trendingSearchData["tS"] === "no"
-            ) {
-                digitalData["page"]["trendingSearch"] = "no";
-                digitalData["page"]["suggestionClicked"] = "no";
-            } else if (
-                this.trendingSearchData["tS"] &&
-                this.trendingSearchData["tS"] === "yes"
-            ) {
-                digitalData["page"]["trendingSearch"] = "yes";
-                digitalData["page"]["suggestionClicked"] = "yes";
+
+            if (this.trendingSearchData['tS'] && this.trendingSearchData['tS'] === 'no') {
+                digitalData["page"]["trendingSearch"] = 'no';
+                digitalData["page"]["suggestionClicked"] = 'no';
             }
-            if (
-                this.trendingSearchData["sC"] &&
-                this.trendingSearchData["sC"] === "no"
-            ) {
-                digitalData["page"]["trendingSearch"] = "no";
-                digitalData["page"]["suggestionClicked"] = "no";
-            } else if (
-                this.trendingSearchData["sC"] &&
-                this.trendingSearchData["sC"] === "yes"
-            ) {
-                digitalData["page"]["trendingSearch"] = "no";
-                digitalData["page"]["suggestionClicked"] = "yes";
+            else if (this.trendingSearchData['tS'] && this.trendingSearchData['tS'] === 'yes') {
+                digitalData["page"]["trendingSearch"] = 'yes';
+                digitalData["page"]["suggestionClicked"] = 'yes';
             }
-            _satellite.track("genericPageLoad");
+
+            if (this.trendingSearchData['sC'] && this.trendingSearchData['sC'] === 'no') {
+                digitalData["page"]["trendingSearch"] = 'no';
+                digitalData["page"]["suggestionClicked"] = 'no';
+            }
+            else if (this.trendingSearchData['sC'] && this.trendingSearchData['sC'] === 'yes') {
+                digitalData["page"]["trendingSearch"] = 'no';
+                digitalData["page"]["suggestionClicked"] = 'yes';
+            }
+            _satellite.track('genericPageLoad');
             /*End Adobe Analytics Tags */
         }
     }
 
-    filterUp() {
-        if (this.isBrowser) {
-            if (
-                document.querySelector(".mob_filter") &&
-                document.querySelector(".mob_filter").classList.contains("upTrans")
-            ) {
-                document.querySelector(".mob_filter").classList.remove("upTrans");
-            } else {
-                document.querySelector(".mob_filter").classList.add("upTrans");
+    async onVisiblePagination(event) {
+        if (!this.paginationInstance) {
+            const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
+            const factory = this.cfr.resolveComponentFactory(PaginationComponent);
+            this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
+            this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject<any>({});
+            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
+            this.paginationInstance.instance['position'] = 'BOTTOM';
+            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
+
+            if (this.paginationInstance) {
+                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
+                    this.pageChanged(data);
+                });
+            }
+
+        }
+    }
+
+    async filterUp() {
+        if (!this.filterInstance) {
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(function () {
+                setTimeout(function () {
+                    const mob_filter = document.querySelector('.mob_filter');
+                    if (mob_filter) {
+                        mob_filter.classList.add('upTrans');
+                    }
+                }, 0);
+            });
+            const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+            this.filterInstance.instance['pageName'] = this.pageName;
+            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.buckets);
+            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+            (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
+                this.onFilterSelected(data);
+            });
+        } else {
+            const mob_filter = document.querySelector('.mob_filter');
+
+            if (mob_filter) {
+                mob_filter.classList.toggle('upTrans');
             }
         }
     }
 
-    createDefaultParams(defaultApiParams) {
-        let newParams = {
-            category: defaultApiParams["category"],
-            pageName: "ATTRIBUTE",
-            queryParams: {},
-            filter: {},
-        };
-        if (defaultApiParams["str"]) {
-            //api params/filters
-            newParams.queryParams["str"] = defaultApiParams["str"];
+    async toggleSortBy(data) {
+        if (!this.sortByInstance) {
+            const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+            const factory = this.cfr.resolveComponentFactory(SortByComponent);
+            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+            this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+            (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy(data);
+            });
         }
-        if (defaultApiParams["filter"]) {
-            let filterTemp = JSON.parse(
-                decodeURIComponent(defaultApiParams["filter"])
-            );
-            filterTemp = JSON.stringify(filterTemp).replace(/[+]/g, " ");
+
+        const sortByFilter = document.querySelector('sort-by');
+
+        if (sortByFilter) {
+            sortByFilter.classList.toggle('open');
+        }
+
+    }
+
+    createDefaultParams(defaultApiParams)
+    {
+
+        let newParams = {
+            category: defaultApiParams['category'], pageName: 'ATTRIBUTE', queryParams: {}, filter: {}
+        }
+        //api params/filters
+        if (defaultApiParams['str']) {
+            newParams.queryParams['str'] = defaultApiParams['str'];
+        }
+        if (defaultApiParams['filter']) {
+            let filterTemp = JSON.parse(decodeURIComponent(defaultApiParams['filter']));
+            filterTemp = JSON.stringify(filterTemp).replace(/[+]/g, ' ');
             newParams.filter = JSON.parse(filterTemp);
         }
         let defaultParams = this._commonService.getDefaultParams();
-        if (defaultParams["queryParams"]["orderBy"] != undefined) {
-            newParams.queryParams["orderBy"] =
-                defaultParams["queryParams"]["orderBy"];
+        if (defaultParams['queryParams']['orderBy'] != undefined) {
+            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
         }
-        if (defaultParams["queryParams"]["orderWay"] != undefined) {
-            newParams.queryParams["orderWay"] =
-                defaultParams["queryParams"]["orderWay"];
+        if (defaultParams['queryParams']['orderWay'] != undefined) {
+            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
         }
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         for (let key in currentQueryParams) {
             newParams.queryParams[key] = currentQueryParams[key];
         }
+
         let fragment = this._activatedRoute.snapshot.fragment;
         if (fragment != undefined && fragment != null && fragment.length > 0) {
-            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, "");
-            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, "");
-            let newCurrentUrlFilterData = ""; //newCurrentUrlFilterData and for loop is added for a special case, / is coming also in voltage filter part
+            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+            ////console.log(currentUrlFilterData);
+            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+            /*Below newCurrentUrlFilterData and for loop is added for a special case, / is coming also in voltage filter part*/
+            let newCurrentUrlFilterData = "";
             for (let i = 0; i < currentUrlFilterData.length; i++) {
-                if (
-                    currentUrlFilterData[i] == "/" &&
-                    /^\d+$/.test(currentUrlFilterData[i + 1])
-                ) {
+                if (currentUrlFilterData[i] == "/" && /^\d+$/.test(currentUrlFilterData[i + 1])) {
+                    //console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
                     newCurrentUrlFilterData = newCurrentUrlFilterData + "$";
+                    //console.log(newCurrentUrlFilterData);
                 } else {
-                    newCurrentUrlFilterData =
-                        newCurrentUrlFilterData + currentUrlFilterData[i];
+                    newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
                 }
             }
             currentUrlFilterData = newCurrentUrlFilterData.split("/");
             if (currentUrlFilterData.length > 0) {
                 var filter = {};
                 for (var i = 0; i < currentUrlFilterData.length; i++) {
-                    var filterName = currentUrlFilterData[i]
-                        .substr(0, currentUrlFilterData[i].indexOf("-"))
-                        .toLowerCase(); // "price"
-                    var filterData = currentUrlFilterData[i]
-                        .replace("$", "/")
-                        .substr(currentUrlFilterData[i].indexOf("-") + 1)
-                        .split("||"); // ["101 - 500", "501 - 1000"]
+                    var filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+                    var filterData = currentUrlFilterData[i].replace("$", "/").substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
                     filter[filterName] = filterData;
                 }
                 newParams["filter"] = Object.assign({}, newParams["filter"], filter);
             }
         }
+        // console.log('New Params', JSON.stringify(newParams));
         return newParams;
     }
 
@@ -695,16 +733,16 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (this._tState.hasKey(EDK)) {
             return of(this._tState.get(EDK, {}));
         } else {
-            return this._categoryService.getCategoryExtraData(
-                slpPagesExtrasIdMap[data.id]
-            );
+            return this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]);
         }
     }
+
 
     getRelatedCategories(categoryID): Observable<{}> {
         if (this.currentRequestGetRelatedCategories !== undefined) {
             this.currentRequestGetRelatedCategories.unsubscribe();
         }
+
         if (this._tState.hasKey(GRCRK)) {
             return of(this._tState.get(GRCRK, {}));
         } else {
@@ -714,45 +752,27 @@ export class CategoryComponent implements OnInit, AfterViewInit {
 
     private initiallizeRelatedCategories(response, flag) {
         this.getRelatedCatgory = response[0];
-        const categoryData = response[1];
+        const categoryData = response[2];
+
         let qps = this._activatedRoute.snapshot.queryParams;
+
         if (this.getRelatedCatgory.categoryDetails.active) {
-            const categoryName = this.getRelatedCatgory.categoryDetails.categoryName;
-            this.meta.addTag({ name: "description", content: this.metaDescription });
-            this.meta.addTag({ name: "og:title", content: this.metaTitle });
-            this.meta.addTag({
-                name: "og:description",
-                content: this.metaDescription,
-            });
-            this.meta.addTag({
-                name: "og:url",
-                content: "https://www.moglix.com" + this._router.url,
-            });
+            this.meta.addTag({ 'name': 'description', 'content': this.metaDescription });
+            this.meta.addTag({ 'name': 'og:title', 'content': this.metaTitle });
+            this.meta.addTag({ 'name': 'og:description', 'content': this.metaDescription });
+            this.meta.addTag({ 'name': 'og:url', 'content': 'https://www.moglix.com' + this._router.url });
             this.pageTitle.setTitle(this.metaTitle);
-            if (
-                categoryData["productSearchResult"]["products"] &&
-                categoryData["productSearchResult"]["products"].length > 0
-            ) {
-                this.meta.addTag({
-                    name: "robots",
-                    content:
-                        qps["page"] && parseInt(qps["page"]) > 1
-                            ? CONSTANTS.META.ROBOT1
-                            : CONSTANTS.META.ROBOT,
-                });
+
+            if (categoryData['productSearchResult']['products'] && categoryData['productSearchResult']['products'].length > 0) {
+                this.meta.addTag({ 'name': 'robots', 'content': (qps["page"] && parseInt(qps["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
             } else {
-                this.meta.addTag({ name: "robots", content: CONSTANTS.META.ROBOT2 });
+                this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
             }
             this.spl_subCategory_Dt = this.getRelatedCatgory.children;
-            if (flag) {
-                const bData = {
-                    categoryLink: this.getRelatedCatgory.categoryDetails.categoryLink,
-                    page: "category",
-                };
-                this.breadcrumpUpdated.next(bData);
-            }
+
         }
     }
+
 
     pageChanged(page) {
         const extras: NavigationExtras = {};
@@ -761,6 +781,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         if (fragmentString != null) {
             extras.fragment = fragmentString;
         }
+
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
         const newQueryParams: {} = {};
         if (Object.keys(currentQueryParams).length) {
@@ -768,10 +789,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
                 newQueryParams[key] = currentQueryParams[key];
             }
         }
-        if (page !== "1") {
-            newQueryParams["page"] = page;
-        } else if (newQueryParams["page"] !== undefined) {
-            delete newQueryParams["page"];
+
+        if (page !== '1') {
+            newQueryParams['page'] = page;
+        } else if (newQueryParams['page'] !== undefined) {
+            delete newQueryParams['page'];
         }
 
         if (Object.keys(newQueryParams).length > 0) {
@@ -779,9 +801,61 @@ export class CategoryComponent implements OnInit, AfterViewInit {
         } else {
             extras.queryParams = {};
         }
+
         this._router.navigate([currentRoute], extras);
     }
 
+    updateSubCategoryCount(count) {
+        this.subCategoryCount = count;
+    }
+
+    getTopTenBrandName(buckets: Array<{}>) {
+        let bNames = null;
+
+        if (buckets === undefined || buckets === null || (buckets && buckets.length === 0)) {
+            return '';
+        }
+        
+        for (let i = 0; i < buckets.length; i++) {
+            if (buckets[i]['name'] === 'brand') {
+                for (let j = 0; j < buckets[i]['terms'].length; j++) {
+                    if (bNames === null) {
+                        bNames = buckets[i]['terms'][j]['term'];
+                    } else {
+                        bNames = bNames + ', ' + buckets[i]['terms'][j]['term'];
+                    }
+                    if (j === 9) {
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return bNames;
+        // console.log(buckets, "bucketsbucketsbuckets");
+    }
+
+    getFeaturedProducts(products: Array<{}>)
+    {
+        let fProducts = null;
+        if (products == undefined || products == null || (products && products.length == 0))
+            return "";
+
+        for (let i = 0; i < products.length; i++) {
+            if (fProducts == null)
+                fProducts = products[i]['productName'];
+            else
+                fProducts = fProducts + ", " + products[i]['productName'];
+            if (i == 5)
+                break;
+        }
+        return fProducts;
+    }
+    scrollTop(eve) {
+        if (this.isBrowser) {
+            ClientUtility.scrollToTop(500, eve.target.offsetTop - 50);
+        }
+    }
     ngOnDestroy() {
         if (this.refreshProductsUnsub$) {
             this.refreshProductsUnsub$.unsubscribe();
@@ -793,47 +867,105 @@ export class CategoryComponent implements OnInit, AfterViewInit {
             this._activatedRouteUnsub.unsubscribe();
         }
         if (this.combineLatestUnsub) {
-            this.combineLatestUnsub.unsubscribe();
+            this.combineLatestUnsub.unsubscribe()
         }
         if (this.forkJoinUnsub) {
             this.forkJoinUnsub.unsubscribe();
         }
+        this.resetLazyComponents();
+    }
+    getAltName(brandName) {
+        if (brandName == null || brandName == undefined) {
+            return 'safety shoes';
+        }
+        else {
+            return brandName + " safety shoes";
+        }
     }
 
-    filterBuckets(buckets: any[]) {
+    filterBuckets(buckets: any[])
+    {
         if (this.excludeAttributes.length > 0) {
-            return buckets.filter(
-                (bucket) => this.excludeAttributes.indexOf(bucket.name) == -1
-            );
+            return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
         }
         return buckets;
     }
 
-    /**
-     * @description:to group products depending on brandname && total count >2.
-     * @description::if products length > 2 then only apply group by otherwise not required
-     * @param=>products:products array
-     */
-    groupByBrandName(products: any[]) {
-        this.groupedProducts = this._categoryService.getGroupedProducts(
-            products,
-            "brandName",
-            2
-        );
+    /** 
+    * @description:to group products depending on brandname && total count >2.
+    * @description::if products length > 2 then only apply group by otherwise not required
+    * @param=>products:products array
+   */
+    groupByBrandName(products: any[])
+    {
+        this.groupedProducts = this._categoryService.getGroupedProducts(products, 'brandName', 2);
         this.groupedProductNames = Object.keys(this.groupedProducts);
-        this.displayGroupBy =
-            this.groupedProductNames.length > 1 &&
-            (this.pageNo == 1 || this.pageNo == undefined);
+        this.displayGroupBy = this.groupedProductNames.length > 1 && (this.pageNo == 1 || this.pageNo == undefined);
     }
 
-    setAmpTag(page) {
+    changeBanner(direction)
+    {
+        this.ngxSiemaService[direction](1, this.groupedBrandSiema.selector);
+    }
+    setAmpTag(page){
         let currentRoute = this._router.url.split("?")[0].split("#")[0];
         let ampLink;
-        ampLink = this._renderer2.createElement("link");
-        ampLink.rel = "amphtml";
-        if (page == "alp") {
-            ampLink.href = CONSTANTS.PROD + "/ampl" + currentRoute.toLowerCase();
-            this._renderer2.appendChild(this._document.head, ampLink);
+        ampLink = this._renderer2.createElement('link');
+        ampLink.rel = 'amphtml';
+        if (page == "alp"){
+             ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
+             this._renderer2.appendChild(this._document.head, ampLink);
+        }
+    }
+
+    resetLazyComponents() {
+        if (this.filterInstance) {
+            this.filterInstance = null;
+            this.filterContainerRef.remove();
+        }
+        if (this.sortByInstance) {
+            this.sortByInstance = null;
+            this.sortByContainerRef.remove();
+        }
+        if (this.paginationInstance) {
+            this.paginationInstance = null;
+            this.paginationContainerRef.remove();
+        }
+        if (this.subCategoryInstance) {
+            this.subCategoryInstance = null;
+            this.subCategoryContainerRef.remove();
+        }
+        if (this.catBestSellerInstance) {
+            this.catBestSellerInstance = null;
+            this.catBestSellerContainerRef.remove();
+        }
+        if (this.shopByBrandInstance) {
+            this.shopByBrandInstance = null;
+            this.shopByBrandContainerRef.remove();
+        }
+        if (this.catStaticInstance) {
+            this.catStaticInstance = null;
+            this.catStaticContainerRef.remove();
+        }
+        if (this.shopbyFeatrInstance) {
+            this.shopbyFeatrInstance = null;
+            this.shopbyFeatrContainerRef.remove();
+        }
+        if (this.shopbyFeatrInstance) {
+            this.shopbyFeatrInstance = null;
+            this.shopbyFeatrContainerRef.remove();
+        }
+        if (this.slpSubCategoryInstance) {
+            this.slpSubCategoryInstance = null;
+            this.slpSubCategoryContainerRef.remove();
+        }
+        if (this.cmsInstance) {
+            this.cmsInstance = null;
+            this.cmsContainerRef.remove();
+        }
+        if (this.cateoryFooterInstance) {
+            this.cateoryFooterInstance = null;
+            this.cateoryFooterContainerRef.remove();
         }
     }
 }

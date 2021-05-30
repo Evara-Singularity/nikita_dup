@@ -3,43 +3,54 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from '@angular/router';
 import { routing } from "./alp.routing";
 import { MetaModule } from '@ngx-meta/core';
-import {CategoryComponent} from "./alp.component";
-import {CategoryService} from "./alp.service";
+import { AlpComponent } from "./alp.component";
+import { AlpService } from "./alp.service";
+import { ObjectToArrayPipeModule } from "@pipes/object-to-array.pipe";
+import { PaginationModule } from "@modules/pagination/pagination.module";
+import { MathFloorPipeModule } from "@pipes/math-floor";
+import { ProductListModule } from '@modules/productList/productList.module'
+import { SortByModule } from "@components/sortBy/sortBy.module";
+import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
+import { PopUpModule } from '@modules/popUp/pop-up.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { NgxSiemaModule } from 'ngx-siema';
-import { MathCeilPipeModule } from '@utils/pipes/math-ceil';
-import { DiscountPipeModule } from '@utils/pipes/discount.pipe';
-import { PaginationModule } from '@modules/pagination/pagination.module';
-import { BreadCrumpModule } from '@modules/breadcrump/breadcrump.module';
-import { PopUpModule } from '@modules/popUp/pop-up.module';
-import { ProductListModule } from '@modules/productList/productList.module';
-import { GroupByComponent } from '@components/group-by/group-by.component';
-import { BestSellerComponent } from '@components/best-seller/best-seller.component';
+import { MathCeilPipeModule } from '@pipes/math-ceil';
+import { DiscountPipeModule } from '@pipes/discount.pipe';
+import { GroupByComponent } from './group-by/group-by.component';
+import { BestSellerComponent } from './best-seller/best-seller.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
+import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
 
 @NgModule({
     imports: [
         CommonModule,
         routing,
+        ObjectToArrayPipeModule,
         RouterModule,
-        BreadCrumpModule,
         ProductListModule,
         PaginationModule,
-        //LoaderModule,
+        SortByModule,
+        NgxPaginationModule,
+        ObserveVisibilityDirectiveModule,
         MetaModule.forRoot(),
         PopUpModule,
         LazyLoadImageModule,
+        BreadcrumbNavModule,
+        KpToggleDirectiveModule,
+        MathFloorPipeModule,
         NgxSiemaModule.forRoot(),
         MathCeilPipeModule,
         DiscountPipeModule,
     ],
     declarations: [
-        CategoryComponent,
+        AlpComponent,
         GroupByComponent,
         BestSellerComponent,
     ],
     providers: [
-        CategoryService
+        AlpService,
     ]
 })
 
-export class CategoryModule{}
+export class AlpModule { }

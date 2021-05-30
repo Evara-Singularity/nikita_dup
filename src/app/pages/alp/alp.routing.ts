@@ -1,10 +1,15 @@
-import {Routes, RouterModule} from '@angular/router';
-import {CategoryComponent} from "./alp.component";
+import { Routes, RouterModule } from '@angular/router';
+import { AlpResolver } from '@app/utils/resolvers/alp.resolver';
+import { AlpComponent } from "./alp.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: CategoryComponent
+        component: AlpComponent,
+        runGuardsAndResolvers: 'always',
+        resolve: {
+            alp: AlpResolver
+        },
     }
 ];
 

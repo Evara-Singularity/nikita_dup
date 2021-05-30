@@ -1,0 +1,37 @@
+<div class="BestSellerHeading">
+    <h3>Best Selling {{titleName | titlecase}}<span (click)="$event.stopPropagation();openPopup=true">View all</span>
+    </h3>
+</div>
+<ng-container *ngFor="let item of items;index as i;">
+    <div class="bestSellerSection" *ngIf="i<5">
+        <a [href]="item.productUrl">
+            <div class="bestSellerImg  clearfix">
+                <img class="brandImage bestSellerImg" [src]="defaultImage" [lazyLoad]="item.productImage" [alt]="item.productName" />
+            </div>
+            <div class="bestSellerDetails clearfix">
+                    <h5>{{item.productName}}</h5>
+                    <p class="brandName">By : {{item.brandName}}</p>                   
+            </div>
+        </a>
+    </div>
+</ng-container>
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
+    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+    <div class="content-popup" content>
+        <ul class="view-products no-border list border-top">
+            <li *ngFor="let product of items">
+                <a [href]="product.productUrl" class="clearfix">
+                    <div class="product-img">
+                        <img  [alt]="product.brandName" [src]="product.productImage">
+                    </div>
+                    <div class="product-description">
+                        <p class="description-txt">{{product.productName | slice:0:60}} <span
+                                *ngIf="product.productName.length>60">...</span></p>
+                        <p class="seller">
+                            <span>By :</span> {{product.brandName}}</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</app-pop-up>

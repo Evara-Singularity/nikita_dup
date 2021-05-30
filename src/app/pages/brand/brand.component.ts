@@ -126,7 +126,7 @@ export class BrandComponent {
         });
 
         this._activatedRoute.data.subscribe(resolverData => {
-            ClientUtility.scrollToTop(2000);
+            ClientUtility.scrollToTop(600);
             this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }

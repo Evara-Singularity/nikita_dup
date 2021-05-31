@@ -40,14 +40,11 @@
 
         </div>
         <div class="container pt-10">
-            <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand f-12 pb-10 lh-18">Moglix offers superior
-                quality and genuine
+            <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand">Moglix offers superior quality and genuine
                 <a class="text-blue" [routerLink]="['/'+catUrlName]" style="text-transform: capitalize">
                     {{brandCategoryName}}
                 </a> from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our
-                assortment and explore more about price, specifications, availability, and deals online for {{(heading |
-                removeHTML)}}. Buy these products
+                <a class="text-blue" [routerLink]="['/brands',friendlyUrl]">{{brand}}</a>. Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(heading | removeHTML)}}. Buy these products
                 at best prices and get them delivered at your doorstep across India.
             </p>
 

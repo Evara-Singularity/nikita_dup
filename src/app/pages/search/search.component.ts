@@ -157,7 +157,7 @@ export class SearchComponent implements OnInit {
     }
 
     private initiallizeData(response: any, extra: {}, flag: boolean) {
-        ClientUtility.scrollToTop(600);
+        this._commonService.scrollToTop();
         const oldDefaultParams = extra['oldDefaultParams'];
         const dp = this._commonService.getDefaultParams();
         const fragment = this._activatedRoute.snapshot.fragment;

@@ -261,10 +261,7 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
-
-        if(this._commonService.isBrowser){
-            ClientUtility.scrollToTop(1000);
-        }
+        this._commonService.scrollToTop();
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -794,20 +791,21 @@ export class CategoryComponent implements OnInit {
 
     async toggleSortBy(data) {
         if (!this.sortByInstance) {
-                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
-                const factory = this.cfr.resolveComponentFactory(SortByComponent);
-                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
-                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                    this.toggleSortBy(data);
-                });
+            const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+            const factory = this.cfr.resolveComponentFactory(SortByComponent);
+            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+            this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+            (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy(data);
+            });
+        } else {
+            const sortByFilter = document.querySelector('sort-by');
+    
+            if (sortByFilter) {
+                sortByFilter.classList.toggle('open');
             }
-
-        const sortByFilter = document.querySelector('sort-by');
-
-        if (sortByFilter) {
-            sortByFilter.classList.toggle('open');
         }
+
         
     }
 

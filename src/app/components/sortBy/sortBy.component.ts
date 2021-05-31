@@ -25,7 +25,9 @@ export class SortByComponent {
   isBrowser: boolean;
   sortByOpt: boolean;
   @Output() outData$: EventEmitter<{}>;
-  constructor(private _tState: TransferState, @Inject(PLATFORM_ID) platformId, private _activatedRoute: ActivatedRoute, private cd: ChangeDetectorRef, private _commonService: CommonService, private router: Router, private route: ActivatedRoute) {
+  constructor(private _tState: TransferState, 
+    private _cd: ChangeDetectorRef, 
+    @Inject(PLATFORM_ID) platformId, private _activatedRoute: ActivatedRoute, private cd: ChangeDetectorRef, private _commonService: CommonService, private router: Router, private route: ActivatedRoute) {
     this.sortBy = 'popularity';
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -41,6 +43,7 @@ export class SortByComponent {
 
     this._commonService.updateSortBy.subscribe(data => {
       this.updateSortBy(data);
+      this._cd.markForCheck();
     });
   }
   updateParent(data) {

@@ -26,7 +26,7 @@
                             "{{productSearchResult.displayString}}"</span>
                     </p>
                     <p class="f-left"
-                        *ngIf="(productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation != 'or'">
+                        *ngIf="relatedSearchResult && ((productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation != 'or')">
                         <span>Showing {{productSearchResult.totalCount}} results for
                             "{{ productSearchResult.displayString ?
                             productSearchResult.displayString :

@@ -251,10 +251,6 @@ export class CommonService {
             let keys = Object.keys(filter);
 
             for (let i = 0; i < keys.length; i++) {
-                console.log('fragment : ' + fragment);
-                console.log('k : ' + keys[i]);
-                console.log('fk : ' + filter[keys[i]]);
-                console.log('filter : ' + filter);
 
                 if (filter[keys[i]].length > 0) {
                     if (fragment.length == 0){

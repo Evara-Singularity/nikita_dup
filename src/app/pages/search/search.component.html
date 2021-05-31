@@ -12,7 +12,7 @@
                     *ngIf="(didYouMean == undefined || didYouMean == '') && productSearchResult != undefined">
                     <p class="f-left"
                         *ngIf="productSearchResult.correctedSearchString != undefined && productSearchResult.correctedSearchString !== null">
-                        <span class="">Showing results for
+                        <span>Showing results for
                             <i>{{productSearchResult.correctedSearchString}}</i></span><br />
                         <a class="blue-text"
                             (click)="redirectWithNoPreProcessRequiredParam(productSearchResult.inputSearchString)">Search
@@ -28,24 +28,14 @@
                     <p class="f-left"
                         *ngIf="(productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation != 'or'">
                         <span>Showing {{productSearchResult.totalCount}} results for
-                            "{{(productSearchResult.displayString != undefined &&
-                            productSearchResult.displayString != null) ?
+                            "{{ productSearchResult.displayString ?
                             productSearchResult.displayString :
                             productSearchResult.inputSearchString}}"</span>
                     </p>
                 </div>
-
-                <!-- <div class="related-search" *ngIf="relatedSearches != null && relatedSearches.length">
-                    <p class="f-left">
-                        View Related searches:
-                        <span *ngFor="let relatedSearch of relatedSearches; let i = index"><a [routerLink]="['/search']"
-                                [queryParams]="getQueryParams({search_query: relatedSearch.term})"
-                                [fragment]="getFragments()">{{relatedSearch.term}},
-                            </a></span>
-                    </p>
-                </div> -->
             </div>
         </div>
+
         <div class="mixed_category_result"  *ngIf="relatedSearchResult">
             <h3 class="heading-3">Are you looking for…</h3>
             <ng-container *ngFor="let category of relatedSearchResult; let i = index;" >
@@ -55,7 +45,7 @@
             </ng-container>
         </div>
         <div class="search-res">
-            <product-list [productsUpdated]="productsUpdated"></product-list>
+            <product-list [itemCount]="this.paginationData?.itemCount" [productsUpdated]="productsUpdated"></product-list>
             <div class="filter-wrapper">
                 <button type="button" (click)="filterUp()">
                     <i class="icon-filter" aria-hidden="true"></i>
@@ -70,13 +60,10 @@
                 </button>
             </div>
             <ng-container *ngIf="isBrowser" #sortBy></ng-container>
-            <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
         </div>
         <div class="card mt-15" [ngClass]="{'hide': !productSearchResult || !productSearchResult['totalCount']}">
             <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
             <ng-template *ngIf="isBrowser" #pagination></ng-template>
-            <!-- <pagination class="block o-hidden h-auto-xs" [position]="'BOTTOM'" [paginationUpdated]="paginationUpdated"
-                [sortByComponentUpdated]="sortByComponentUpdated" (onPageChange)="pageChanged($event)"></pagination> -->
         </div>
     </div>
 </div>

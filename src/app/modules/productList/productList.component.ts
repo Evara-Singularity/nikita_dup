@@ -52,7 +52,6 @@ export class ProductListComponent{
     };
 
     ngOnInit(){
-
         this.currentUrl = this._router.url;
         if (this._commonService.isBrowser && document.querySelector('a[target="_blank"]')) {
             document.querySelector('a[target="_blank"]').removeAttribute('target');

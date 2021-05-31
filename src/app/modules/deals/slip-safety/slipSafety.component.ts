@@ -62,8 +62,8 @@ export class SlipSafetyComponent {
     this.title.setTitle("Avail SlipSafety Offers and Deals at Moglix.com");
     this.meta.addTag({ name: "description", content: "The slipSafety offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ name: "og:description", content: "The slipSafety offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
-    this.meta.addTag({ name: "og:title", content: "Avail SlipSafety Offers and Deals at Moglix.com" });
-    this.meta.addTag({ name: "og:url", content: CONSTANTS.PROD+"/deals/slipSafety-offer" });
+    this.meta.addTag({ name: "og:title", content: "Avail Safety Products Offers and Deals at Moglix.com" });
+    this.meta.addTag({ name: "og:url", content: CONSTANTS.PROD+"/deals/slpsafety" });
   }
 
   getSlipSafetyData() {

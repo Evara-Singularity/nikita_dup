@@ -14,7 +14,6 @@
         h4 {
             float: left;
             font-weight: 500;
-            // color: $blue-link-color;
             color: $txt-color;
             i {
                 font-size: 14px;
@@ -33,7 +32,6 @@
     label {
         padding: 10px 0;
         display: block;
-        // @extend %custom-check-box;
         @extend %custom-radio-checkout;
         @extend %clear-fix;
         .chk-txt {
@@ -86,6 +84,16 @@
         border-radius: 0px;
     }
 }
+
+.addAddressPopup{
+    background: #fff !important;;
+    .head-sec{
+      background:$logo-color !important;
+      i{
+        color:$white
+      }
+    }
+  }
 
 .continue-btn {
     height: 60px;

@@ -65,7 +65,7 @@ const routes: Routes = [
             },
             {
                 path: 'fresh-arrivals',
-                loadChildren: () => import('../../modules/deals/free-shipping/free-shipping.module').then(m => m.FreeShippingModule),
+                loadChildren: () => import('../../modules/deals/fresh-arrivals/fresh-arrival.module').then(m => m.FreshArrivalModule),
                 data: {
                     layoutId: 'cm582807'
                 }

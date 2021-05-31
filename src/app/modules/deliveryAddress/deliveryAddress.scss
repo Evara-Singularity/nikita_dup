@@ -85,16 +85,15 @@
     }
 }
 
-.addAddressPopup{
-    background: #fff !important;;
-    .head-sec{
-      background:$logo-color !important;
-      i{
-        color:$white
-      }
-    }
-  }
-
+// .addAddressPopup{
+//     background: #fff !important;;
+//     .head-sec{
+//       background:$logo-color !important;
+//       i{
+//         color:$white
+//       }
+//     }
+//   }
 .continue-btn {
     height: 60px;
     @extend %ripple;

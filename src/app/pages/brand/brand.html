@@ -85,7 +85,6 @@
     </div>
 
     <div [class.visibility]="!firstPageContent">
-        <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
-        <ng-template *ngIf="isBrowser" #brandDetailsFooter></ng-template>
+        <brand-details-footer [brandDetailsFooterData]="brandFooterData"></brand-details-footer>
     </div>
 </div>

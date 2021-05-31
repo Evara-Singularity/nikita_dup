@@ -4,6 +4,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.'
+import { Subject } from 'rxjs/Subject';
 
 export interface BrandDetailsFooterData{
 	brandCatDesc: any;
@@ -17,7 +18,7 @@ export interface BrandDetailsFooterData{
 	brand: string;
 	productCount: any;
 	todayDate: any;
-	showDesc: any;
+	showDesc: boolean;
 	categoryNames: any;
 	categoryLinkLists: any;
 	productCategoryNames: any;
@@ -30,6 +31,7 @@ export interface BrandDetailsFooterData{
 })
 
 export class BrandDetailsFooterComponent {
+    @Input('footerData') footerData: Subject<any>;
 	@Input('brandDetailsFooterData') brandDetailsFooterData: BrandDetailsFooterData;
 	constructor(public _commonService: CommonService) {
 		this.brandDetailsFooterData = {
@@ -41,7 +43,7 @@ export class BrandDetailsFooterComponent {
 			productCategoryNames: null,
 			categoryNames: null,
 			iba: true,
-			showDesc: null,
+			showDesc: false,
 			productSearchResult: '',
 			productSearchResultSEO: '',
 			productCount: '',
@@ -61,6 +63,7 @@ export class BrandDetailsFooterComponent {
 	],
 	declarations: [
 		BrandDetailsFooterComponent
-	]
+	],
+    exports:[BrandDetailsFooterComponent]
 })
-export class BrandModule{}
+export class BrandFooterModule{}

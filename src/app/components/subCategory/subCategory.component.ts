@@ -3,8 +3,8 @@ import {
     ChangeDetectorRef, ChangeDetectionStrategy, PLATFORM_ID, Inject, NgModule
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { CategoryService } from '../../../utils/services/category.service';
-import { SubCategoryService } from "../../../utils/services/subCategory.service";
+import { CategoryService } from '@utils/services/category.service';
+import { SubCategoryService } from "@utils/services/subCategory.service";
 import { CONSTANTS } from "@config/constants";
 import {Subject} from "rxjs";
 import { fade } from '@utils/animations/animation'
@@ -62,7 +62,7 @@ export class SubCategoryComponent {
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {
-            this.moreLessCategoryText="SHOW lESS";
+            this.moreLessCategoryText="SHOW LESS";
         }
         else{
             this.moreLessCategoryText="SHOW MORE";

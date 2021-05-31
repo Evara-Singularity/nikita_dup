@@ -1,4 +1,43 @@
-@import '../../scss/variables';
+@import "../../scss/variables";
+
+:host {
+    display: block;
+
+    .slide-up {
+        transform: translateY(0);
+    }
+
+    .filter-wrapper {
+        position: fixed;
+        bottom: 0;
+        z-index: 5;
+        left: 0;
+        width: 100%;
+        box-shadow: 1px -3px 8px #cecece;
+        background: #fff;
+
+        &.slide-up {
+            bottom: 0;
+        }
+
+        button {
+            width: 50%;
+            height: 54px;
+            border: none;
+            background: transparent;
+            float: left;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+
+            i {
+                padding-right: 10px;
+            }
+        }
+    }
+}
+
+
 .layout2 {
     .safetyshoebannersrow {
         background: url('/assets/img/bg_mobile.png')no-repeat center top;

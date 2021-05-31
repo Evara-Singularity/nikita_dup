@@ -1,12 +1,9 @@
 <div class="cat_filter_wrap">
     <div class="prod_filter">
-        <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName"
-            [sortByComponentUpdated]="sortByComponentUpdated" (filterSelected)="onFilterSelected($event)"></filter>
+        <ng-container *ngIf="_commonService?.isBrowser" #filter></ng-container>
     </div>
 </div>
-
-<breadcrump [breadcrumpUpdated]="breadcrumpUpdated" [type]="'category'" [pageTitle]="titleHeading"></breadcrump>
-
+<breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
 <div class="attributeListingGroup">
     <h1 class="attributeHeading">{{titleHeading}}</h1>
     <p class="attributeContent" [innerHTML]="titleDescription" *ngIf="firstPageContent"></p>
@@ -25,33 +22,29 @@
         </ngx-siema-slide>
     </ngx-siema>
 </ng-container>
-
 <div class="cate-container" id=category-cards-section>
     <div class="bg_white">
         <div class="clearfix"></div>
-        <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"
-            [relatedCatgoryListUpdated]="relatedCatgoryListUpdated" [isDisplayCategoryName]="false"></product-list>
+        <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated" [isDisplayCategoryName]="false"></product-list>
         <div class="filter-wrapper">
             <button type="button" (click)="filterUp()">
                 <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER <span
                         *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
             </button>
 
-            <button type="button" (click)="sortByOpt = true">
+            <button type="button" (click)="toggleSortBy(true)">
                 <i class="icon-sort-by" aria-hidden="true"></i>
                 <span class="txt">SORT BY</span>
             </button>
         </div>
-        <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by>
-        <div>
-            <pagination class="block o-hidden" [paginationUpdated]="paginationUpdated"
-                [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
-                (onPageChange)="pageChanged($event)"></pagination>
+        <ng-container *ngIf="_commonService?.isBrowser" #sortBy></ng-container>
+        <div [class.visibility]="this.paginationData?.itemCount == 0">
+            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
+            <ng-template *ngIf="_commonService?.isBrowser" #pagination></ng-template>
         </div>
     </div>
     <ng-container *ngIf="!showLoader && bestSellerProducts.length>0">
         <best-seller [items]="bestSellerProducts" [titleName]="bestSellerTitle"></best-seller>
     </ng-container>
-    <div id="openCat3" *ngIf="firstPageContent && productSearchResult && productSearchResult['products'].length>0"
-        class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
+    <div id="openCat3" *ngIf="firstPageContent && productSearchResult && productSearchResult['products'].length>0" class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
 </div>

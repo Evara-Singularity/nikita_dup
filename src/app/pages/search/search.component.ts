@@ -157,7 +157,7 @@ export class SearchComponent implements OnInit {
     }
 
     private initiallizeData(response: any, extra: {}, flag: boolean) {
-        ClientUtility.scrollToTop(2000);
+        ClientUtility.scrollToTop(600);
         const oldDefaultParams = extra['oldDefaultParams'];
         const dp = this._commonService.getDefaultParams();
         const fragment = this._activatedRoute.snapshot.fragment;
@@ -167,7 +167,7 @@ export class SearchComponent implements OnInit {
             label: "view",
             channel: "Search Listing",
             page_type: "search page",
-            search_query: queryParams['search_query'].trim(),
+            search_query: queryParams['search_query'] ? queryParams['search_query'].trim() : queryParams['search_query'],
             filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
             product_count: response.productSearchResult.totalCount
         }
@@ -229,7 +229,10 @@ export class SearchComponent implements OnInit {
             }
             if (this.filterInstance) {
                 this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
+            } else {
+                this.filterCounts = this._commonService.calculateFilterCount(this.filterData);
             }
+
             this.relatedSearches = response.relatedSearches;
 
             this.productSearchResult = response.productSearchResult;
@@ -504,6 +507,7 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 }

@@ -17,6 +17,7 @@ export const ENDPOINTS = {
     getAllActivePromoCodes: "/promoCode/getAllActivePromoCodes",
     getPromoCodeDetails: "/promoCode/getPromoCodeDetails",
   },
+  GET_CIMS_ATTRIBUTE: '/cmsApi/getAttributesListingPage',
   GET_LAYOUT: "/homepage/layoutbycode",
   GET_LAYOUT_HOME: "/homepage/layoutbyjson?requestType=mobile",
   GET_FDK_HOME: '/homepage/flyout?type=m',

@@ -35,6 +35,15 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'alp/:attribute',
+				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true
+				}
+			},
+			{
 				matcher: popularProductsMatcher,
 				loadChildren: () =>
 					import('./popular/popularProduct/popularProduct.module').then(

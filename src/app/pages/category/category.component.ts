@@ -23,7 +23,6 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 })
 
 export class CategoryComponent implements OnInit {
-    @Input() data;
     paginationInstance = null;
     @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
     filterInstance = null;
@@ -51,13 +50,12 @@ export class CategoryComponent implements OnInit {
 
     paginationData: any = {};
     breadcrumbData: any;
+    productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
+    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
 
-    productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
-    
-    relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     paginationUpdated: Subject<any> = new Subject<any>();
     
@@ -99,13 +97,14 @@ export class CategoryComponent implements OnInit {
     reqArray: Array<any> = [];
     PRTA: Array<any> = [];
     categoryId: string;
+    categoryFooterData:any;
     constructor(
         @Optional() @Inject(RESPONSE) private _response, 
         private _renderer2: Renderer2,
         private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
-        private injector: Injector,
         public dataService: DataService,
+        private injector: Injector,
         private cfr: ComponentFactoryResolver,
         public pageTitle: Title, 
         private meta: Meta, 
@@ -122,16 +121,16 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
-            // Category Data after you got it from resolver 
-            this.setCategoryDataFromResolver();
-    
             // Set footers
             this.footerService.setMobileFoooters();
         }
     }
 
+
     private updateConfigBasedOnParams(data) {
+        this.categoryId = data['id'];
         this.layoutType = 0;
         if (data && data.id && slpPagesExtrasIdMap.hasOwnProperty(data.id)) {
             this.isSLPPage = true;
@@ -170,13 +169,15 @@ export class CategoryComponent implements OnInit {
     private updateConfigBasedOnQueryParams(data) {
         this.trendingSearchData = data;
         this.pageNo = data['page'];
-        if (data['page'] > 1) {
-            this.showSubcategoty = false;
-        } else {
-            this.showSubcategoty = true;
-            setTimeout(() => {
-                this.createDynamicComponent('subCategory');
-            }, 0);
+        if (this._commonService.isBrowser) {
+            if (data['page'] > 1) {
+                this.showSubcategoty = false;
+            } else {
+                this.showSubcategoty = true;
+                setTimeout(() => {
+                    this.createDynamicComponent('subCategory');
+                }, 0);
+            }
         }
         if (data['page'] == undefined || data['page'] == 1) {
             this.firstPageContent = true;
@@ -185,63 +186,60 @@ export class CategoryComponent implements OnInit {
         }
     }
 
-    async onVisibleCateoryFooter(event) {
-        if (!this.cateoryFooterInstance) {
-            const { CategoryFooterComponent } = await import('@app/pages/category/category-footer/category-footer.component');
-            const factory = this.cfr.resolveComponentFactory(CategoryFooterComponent);
-            this.cateoryFooterInstance = this.cateoryFooterContainerRef.createComponent(factory, null, this.injector);
-            this.cateoryFooterInstance.instance['categoryFooterData'] = {
-                productSearchResult: this.productSearchResult,
-                getRelatedCatgory: this.getRelatedCatgory,
-                productSearchResultSEO: this.productSearchResultSEO,
-                faqData: this.faqData,
-                buckets: this.buckets,
-                PRTA: this.PRTA
-            };
-        }
+    onVisibleCateoryFooter() {
+        this.categoryFooterData = {
+            productSearchResult: this.productSearchResult,
+            getRelatedCatgory: this.getRelatedCatgory,
+            productSearchResultSEO: this.productSearchResultSEO,
+            faqData: this.faqData,
+            buckets: this.buckets,
+            PRTA: this.PRTA
+        };
     }
 
     async createDynamicComponent(name) {
-        if (name === 'catBestseller' && !this.catBestSellerInstance) {
-            const { CatBestsellerComponent } = await import('@app/pages/category/cat-bestseller/cat-bestseller.component');
-            const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
-            this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
-            this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
-        } else if (name === 'subCategory' && !this.subCategoryInstance) {
-            const { SubCategoryComponent } = await import('@app/pages/category/subCategory/subCategory.component');
-            const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
-            this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
-            this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
-        } else if (name === 'shopByBrand' && !this.shopByBrandInstance) {
-            const { ShopbyBrandComponent } = await import('@app/pages/category/shopby-brand/shopby-brand.component');
-            const factory = this.cfr.resolveComponentFactory(ShopbyBrandComponent);
-            this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
-            this.shopByBrandInstance.instance['brand_Data'] = this.brand_Dt;
-        } else if (name === 'catStatic' && !this.catStaticInstance) {
-            const { CatStaticComponent } = await import('@app/pages/category/cat-static/cat-static.component');
-            const factory = this.cfr.resolveComponentFactory(CatStaticComponent);
-            this.catStaticInstance = this.catStaticContainerRef.createComponent(factory, null, this.injector);
-            this.catStaticInstance.instance['page_title'] = this.page_title;
-            this.catStaticInstance.instance['static_data'] = this.static_Dt;
-        } else if (name === 'slpSubCategory' && !this.slpSubCategoryInstance) {
-            this.slpSubCategoryInstance = null;
-            const { SlpSubCategoryComponent } = await import('@app/pages/category/slp-sub-category/slp-sub-category.component');
-            const factory = this.cfr.resolveComponentFactory(SlpSubCategoryComponent);
-            this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
-            this.slpSubCategoryInstance.instance['sub_category_Data'] = this.spl_subCategory_Dt;
-        } else if (name === 'shopbyFeatr' && !this.shopbyFeatrInstance) {
-            this.shopbyFeatrInstance = null;
-            const { ShopbyFeatrComponent } = await import('@app/pages/category/shopby-featr/shopby-featr.component');
-            const factory = this.cfr.resolveComponentFactory(ShopbyFeatrComponent);
-            this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
-            this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopBy_Dt;
-        } else if (name === 'cms' && !this.cmsInstance) {
-            this.cmsInstance = null;
-            const { CmsWrapperComponent } = await import('@modules/cms/cms.component');
-            const factory = this.cfr.resolveComponentFactory(CmsWrapperComponent);
-            this.cmsInstance = this.cmsContainerRef.createComponent(factory, null, this.injector);
-            this.cmsInstance.instance['cmsData'] = this._commonService.cmsData;
-            this.cmsInstance.instance['background'] = 'bg-trans';
+        if (this._commonService.isBrowser) {
+            if (name === 'catBestseller' && !this.catBestSellerInstance) {
+                const { CatBestsellerComponent } = await import('@components/cat-bestseller/cat-bestseller.component');
+                const factory = this.cfr.resolveComponentFactory(CatBestsellerComponent);
+                this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
+                this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestSeller_Dt;
+            } else if (name === 'subCategory' && !this.subCategoryInstance) {
+                const { SubCategoryComponent } = await import('@components/subCategory/subCategory.component');
+                const factory = this.cfr.resolveComponentFactory(SubCategoryComponent);
+                this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
+                this.subCategoryInstance.instance['relatedCatgoryListUpdated'] = this.relatedCatgoryListUpdated;
+            } else if (name === 'shopByBrand' && !this.shopByBrandInstance) {
+                const { ShopbyBrandComponent } = await import('@components/shopby-brand/shopby-brand.component');
+                const factory = this.cfr.resolveComponentFactory(ShopbyBrandComponent);
+                this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
+                this.shopByBrandInstance.instance['brand_Data'] = this.brand_Dt;
+            } else if (name === 'catStatic' && !this.catStaticInstance) {
+                const { CatStaticComponent } = await import('@components/cat-static/cat-static.component');
+                const factory = this.cfr.resolveComponentFactory(CatStaticComponent);
+                this.catStaticInstance = this.catStaticContainerRef.createComponent(factory, null, this.injector);
+                this.catStaticInstance.instance['page_title'] = this.page_title;
+                this.catStaticInstance.instance['static_data'] = this.static_Dt;
+            } else if (name === 'slpSubCategory' && !this.slpSubCategoryInstance) {
+                this.slpSubCategoryInstance = null;
+                const { SlpSubCategoryComponent } = await import('@components/slp-sub-category/slp-sub-category.component');
+                const factory = this.cfr.resolveComponentFactory(SlpSubCategoryComponent);
+                this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
+                this.slpSubCategoryInstance.instance['sub_category_Data'] = this.spl_subCategory_Dt;
+            } else if (name === 'shopbyFeatr' && !this.shopbyFeatrInstance) {
+                this.shopbyFeatrInstance = null;
+                const { ShopbyFeatrComponent } = await import('@components/shopby-featr/shopby-featr.component');
+                const factory = this.cfr.resolveComponentFactory(ShopbyFeatrComponent);
+                this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
+                this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopBy_Dt;
+            } else if (name === 'cms' && !this.cmsInstance) {
+                this.cmsInstance = null;
+                const { CmsWrapperComponent } = await import('@modules/cms/cms.component');
+                const factory = this.cfr.resolveComponentFactory(CmsWrapperComponent);
+                this.cmsInstance = this.cmsContainerRef.createComponent(factory, null, this.injector);
+                this.cmsInstance.instance['cmsData'] = this._commonService.cmsData;
+                this.cmsInstance.instance['background'] = 'bg-trans';
+            }
         }
     }
 
@@ -262,7 +260,10 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
-        ClientUtility.scrollToTop(2000);
+
+        if(this._commonService.isBrowser){
+            ClientUtility.scrollToTop(600);
+        }
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -301,13 +302,14 @@ export class CategoryComponent implements OnInit {
          * For refresh products
          */
         this.initiallizeData(res[1], true);
-        
-        this.setTrackingData(res);
-        
-        if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
-            this.fireTags(res[1]);
-        }
 
+        if (this._commonService.isBrowser) {
+            this.setTrackingData(res);
+            if ((ict && res[1]['productSearchResult']['totalCount'] > 0)) {
+                this.fireTags(res[1]);
+            }
+        }
+        
         this.setFaqSchema(res[2]);
         this.faqData = res[2];
     }
@@ -373,6 +375,8 @@ export class CategoryComponent implements OnInit {
         }
         if (this.filterInstance) {
             this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
+        } else {
+            this.filterCounts = this._commonService.calculateFilterCount(this.buckets);
         }
         this.priceRangeTable(response);      //price range table code starts here
         this.productSearchResult = response.productSearchResult;
@@ -390,7 +394,7 @@ export class CategoryComponent implements OnInit {
                 this.productCategoryNames.push(key);
             }
         }
-
+        this.onVisibleCateoryFooter();
     }
     /* 
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
@@ -619,17 +623,8 @@ export class CategoryComponent implements OnInit {
             links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             this._renderer2.appendChild(this._document.head, links);
         }
-        // let 
-        let fragmentString = this._activatedRoute.snapshot.fragment;
-        if (fragmentString != null || !isNaN(currentPageP)) {
-            this.scrollToResults();
-        }
     }
 
-    scrollToResults() {
-        // let footerOffset = document.querySelector('.cate-container')[0].offsetTop;
-        // ClientUtility.scrollToTop(1000,footerOffset - 30);
-    }
     fireTags(response) {
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
@@ -1014,7 +1009,7 @@ export class CategoryComponent implements OnInit {
 
     async onVisibleRecentArticles(htmlElement) {
         if (this.productListLength) {
-            const { RecentArticles } = await import('./recent-articles/recent-articles.component');
+            const { RecentArticles } = await import('@components/recent-articles/recent-articles.component');
             const factory = this.cfr.resolveComponentFactory(RecentArticles);
             this.recentArticlesInstance = this.recentArticlesContainerRef.createComponent(factory, null, this.injector);
             let articlesData = [];
@@ -1080,6 +1075,7 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
     

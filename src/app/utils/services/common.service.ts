@@ -43,6 +43,8 @@ export class CommonService {
     replaceHeading: boolean = false;
     abTesting: any;
 
+    updateSortBy: Subject<string> = new Subject();
+
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
@@ -695,8 +697,6 @@ export class CommonService {
         this.defaultParams.queryParams["orderWay"] = orderWay;
     }
 
-    updateSortBy: Subject<string> = new Subject();
-
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');
         return this.getBusinessDetail({ customerId: userSession.userId })
@@ -773,6 +773,19 @@ export class CommonService {
             curl += "&pagetitle=" + pageTitle;
         }
         return this._dataService.callRestful("GET", curl);
+    }
+
+    calculateFilterCount(data){
+        let count = 0;
+        data.forEach((el) => {
+            for (let i = 0; i < el.terms.length; i++) {
+                if (el.terms[i].selected) {
+                    count++;
+                    break;
+                }
+            }
+        });
+        return count;
     }
 
     removeLoader() {

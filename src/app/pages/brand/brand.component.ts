@@ -65,7 +65,6 @@ export class BrandComponent {
     isBrowser: boolean;
     sortByOpt: boolean;
     iba: boolean; //isBrandActive
-    refreshProductsUnsub: any;
     productSearchResult: {};
     productSearchResultSEO: Array<any> = [];
     todayDate: number;
@@ -82,8 +81,6 @@ export class BrandComponent {
     productCategoryNames = [];
     categoryNameinAPI;
 
-
-    refreshProductsUnsub$: any;
     constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
         private analytics: GlobalAnalyticsService,
@@ -129,7 +126,7 @@ export class BrandComponent {
         });
 
         this._activatedRoute.data.subscribe(resolverData => {
-            ClientUtility.scrollToTop(2000);
+            ClientUtility.scrollToTop(600);
             this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }
@@ -564,6 +561,8 @@ export class BrandComponent {
     
         if (this.filterInstance) {
             this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
+        } else {
+            this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
         }
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
@@ -751,12 +750,7 @@ export class BrandComponent {
     }
 
     ngOnDestroy() {
-        if (this.refreshProductsUnsub$) {
-            this.refreshProductsUnsub$.unsubscribe();
-        }
-        if (this.refreshProductsUnsub) {
-            this.refreshProductsUnsub.unsubscribe();
-        }
+        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 

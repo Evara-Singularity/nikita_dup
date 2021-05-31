@@ -6,7 +6,7 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Subject } from "rxjs/Subject";
 import { ActivatedRoute, Router } from "@angular/router";
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { SortByComponent } from '../sortBy/sortBy.component';
+import { SortByComponent } from '@components/sortBy/sortBy.component';
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
 const RPRK: any = makeStateKey<{}>("RPRK") //RPRK: Refresh Product Result Key

@@ -13,7 +13,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { CmsModule } from '../../modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SubCategoryModule } from './subCategory/subCategory.component';
+import { SubCategoryModule } from '@components/subCategory/subCategory.component';
+import { CategoryFooterModule } from '@components/category-footer/category-footer.component';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { SubCategoryModule } from './subCategory/subCategory.component';
         ObjectToArrayPipeModule,
         ProductListModule,
         SubCategoryModule,
+        CategoryFooterModule,
         ObserveVisibilityDirectiveModule,
         MetaModule.forRoot(),
         PopUpModule,

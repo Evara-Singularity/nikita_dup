@@ -1,4 +1,4 @@
-<checkout-header [step]="tabIndex"></checkout-header>
+<checkout-header [step]="(tabIndex - 1)"></checkout-header>
 <ng-container *ngIf="isBrowser && isCheckoutResolved">
     <!-- <h1>isContinue {{isContinue}}</h1> -->
     <continue *ngIf="tabIndex<4" [isContinue]="isContinue" [tabIndex]="tabIndexList.invoiceType"

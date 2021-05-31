@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormGroup, ValidatorFn, AbstractControl } from
 import { countryList } from './country';
 import { stateList } from './state';
 import { BillingAddressService } from './billingAddress.service';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';

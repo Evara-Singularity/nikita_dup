@@ -210,22 +210,12 @@ export class DataService {
     }
 
     showMessage(cssClass, msg) {
-        if (!this.isServer) {
-            const x = document.getElementById('alert-box');
-            let classType = '';
-            x.innerHTML = msg;
-            if (cssClass === 'error') {
-                classType = 'show-error';
-            }
-            if (cssClass === 'success') {
-                classType = 'show-sucess';
-            }
-            x.className = classType;
-            setTimeout(function () {
-                x.className = x.className.replace(classType, '');
-            }, 5000);
-        }
-
+        /**
+         * we have on purpose remove yellow notification 
+         * that was used to display when API fails, 
+         * we are now only toast module to display notification
+         */
+        this._tms.show(msg);
     }
 
     public getCookie(name: string) {

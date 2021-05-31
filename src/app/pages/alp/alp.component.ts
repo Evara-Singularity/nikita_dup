@@ -1,6 +1,6 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, ViewEncapsulation, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { AlpService } from './alp.service';
 import { CommonService } from '@services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -9,14 +9,12 @@ import { FooterService } from '@services/footer.service';
 import { Subject } from 'rxjs/Subject';
 import { SortByComponent } from '@components/sortBy/sortBy.component';
 import { CONSTANTS } from '@config/constants';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { ClientUtility } from '@utils/client.utility';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@services/data.service';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
+import { GlobalAnalyticsService } from '@services/global-analytics.service';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -69,8 +67,7 @@ export class AlpComponent implements OnInit {
     showLoader: boolean;
     paginationUpdated: Subject<any> = new Subject<any>();
     sortByUpdated: Subject<any> = new Subject<any>();
-    bucketsUpdated: Subject<any> = new Subject<any>();
-    breadcrumpUpdated: Subject<any> = new Subject<any>();
+    
     categoryDataName: Subject<any> = new Subject<any>();
     sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     pageName: string;
@@ -116,7 +113,7 @@ export class AlpComponent implements OnInit {
     titleDescription = '';
     pageDescription = '';
     metaTitle = '';
-    metaDescription = '';    
+    metaDescription = '';
     groupedProductNames = [];
     groupedProducts = {};
     displayGroupBy = false;
@@ -133,13 +130,13 @@ export class AlpComponent implements OnInit {
     constructor(@Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2,
         private injector: Injector,
         private cfr: ComponentFactoryResolver,
+        private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
         public dataService: DataService,
         public pageTitle: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService,
         public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
-        public _commonService: CommonService, private _categoryService: AlpService, private ngxSiemaService: NgxSiemaService)
-    {
-        this.showSubcategoty = true;        
+        public _commonService: CommonService, private _categoryService: AlpService, private ngxSiemaService: NgxSiemaService) {
+        this.showSubcategoty = true;
         this.getRelatedCatgory = {};
         this.todayDate = Date.now();
         this.pageName = 'ATTRIBUTE';
@@ -173,7 +170,7 @@ export class AlpComponent implements OnInit {
         });
     }
 
-    updateConfigBasedOnQueryParams(queryParamsData){
+    updateConfigBasedOnQueryParams(queryParamsData) {
         this.pageNo = queryParamsData['page'];
         this.displayGroupBy = (queryParamsData['page'] == 1);
         this.trendingSearchData = queryParamsData;
@@ -184,8 +181,8 @@ export class AlpComponent implements OnInit {
             this.firstPageContent = false;
         }
     }
-    
-    updateConfigBasedOnParams(paramsData){
+
+    updateConfigBasedOnParams(paramsData) {
         if (paramsData && paramsData.id && slpPagesExtrasIdMap.hasOwnProperty(paramsData.id)) {
             this.isSLPPage = true;
             this.getExtraCategoryData(paramsData).subscribe((paramsData) => {
@@ -220,42 +217,45 @@ export class AlpComponent implements OnInit {
         this._commonService.showLoader = false;
         this.breadcrumbData = res[1];
         const ict = res[0]['categoryDetails']['active'];
-            let productSearchResult = res[2]["productSearchResult"];
-            this.groupByBrandName(productSearchResult['products']);
+        let productSearchResult = res[2]["productSearchResult"];
+        this.groupByBrandName(productSearchResult['products']);
 
-            if (!ict || res[2]['productSearchResult']['totalCount'] === 0) {
-                if (this._commonService.isServer) {
-                    let httpStatus = 404;
-                    if (res[0]['httpStatus']) {
-                        httpStatus = res[0]['httpStatus'];
-                    } else if (res[2]['httpStatus']) {
-                        httpStatus = res[2]['httpStatus'];
-                    }
-                    this._response.status(httpStatus);
+        if (!ict || res[2]['productSearchResult']['totalCount'] === 0) {
+            if (this._commonService.isServer) {
+                let httpStatus = 404;
+                if (res[0]['httpStatus']) {
+                    httpStatus = res[0]['httpStatus'];
+                } else if (res[2]['httpStatus']) {
+                    httpStatus = res[2]['httpStatus'];
                 }
-                res[2] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
+                this._response.status(httpStatus);
             }
-            if (this.isBrowser) {
-                this.showLoader = false;
-            }
+            res[2] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
+        }
+        if (this.isBrowser) {
+            this.showLoader = false;
+        }
 
         this.initiallizeRelatedCategories(res, true);
 
-            if (this._commonService.isServer) {
-                res[2]['buckets'] = this.filterBuckets(res[2]['buckets']);
-                this._tState.set(RPRK, res[2]);
-            }
-            this.initiallizeData(res[2], true);
-            if (this.isBrowser) {
-                this.setTrackingData(res);
-            }
-            if (this.isBrowser && (ict && res[2]['productSearchResult']['totalCount'] > 0)) {
-                this.fireTags(res[2]);
-            }
+        if (this._commonService.isServer) {
+            res[2]['buckets'] = this.filterBuckets(res[2]['buckets']);
+        }
+
+        this.initiallizeData(res[2], true);
+
+        if (this.isBrowser) {
+            this.setTrackingData(res);
+        }
+
+        if (this.isBrowser && (ict && res[2]['productSearchResult']['totalCount'] > 0)) {
+            this.fireTags(res[2]);
+        }
     }
 
 
-    setTrackingData(res) {        var taxonomy = res[0]["categoryDetails"]['taxonomy'];
+    setTrackingData(res) {
+        var taxonomy = res[0]["categoryDetails"]['taxonomy'];
         var trackData = {
             event_type: "page_load",
             label: "view",
@@ -292,8 +292,7 @@ export class AlpComponent implements OnInit {
         });
 
         if (relevantObj.block_data && relevantObj.block_data.product_data) {
-            relevantObj.block_data.product_data.forEach(product =>
-            {
+            relevantObj.block_data.product_data.forEach(product => {
                 if (product.discount_percentage && product.pricewithouttax && parseInt(product.discount_percentage) < 100) {
                     product.discount_percentage = parseInt(product.discount_percentage);
                     product.pricewithouttax = parseInt(product.pricewithouttax);
@@ -303,8 +302,7 @@ export class AlpComponent implements OnInit {
                 };
                 if (product && product.short_description) {
                     let descArr = product.short_description.split("||");
-                    descArr.forEach(element =>
-                    {
+                    descArr.forEach(element => {
                         let splitEl = element.split(":");
                         if (splitEl[0].toLowerCase() == "brand" || splitEl[0].toLowerCase() == "by") {
                             desc.Brand = splitEl[1];
@@ -318,21 +316,20 @@ export class AlpComponent implements OnInit {
         }
         this.extrasBlock = relevantObj.block_data;
     }
+
     
     /**
      *
      * @param response : returned data from category api or transfer state
      * @param flag : true, if TrasnferState exist.
      */
-    private initiallizeData(response: any, flag: boolean)
-    {
+    private initiallizeData(response: any, flag: boolean) {
         this.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         if (flag) {
             this.sortByUpdated.next();
             this.paginationData = { itemCount: response.productSearchResult.totalCount };
             this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.bucketsUpdated.next(this.filterBuckets(response.buckets));
             this.productsUpdated.next(response.productSearchResult.products);
             this.paginationUpdated.next(this.paginationData);
         }
@@ -388,25 +385,24 @@ export class AlpComponent implements OnInit {
         }
     }
 
-    private setCanonicalUrls(response)
-    {
+    private setCanonicalUrls(response) {
 
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
         if (this._commonService.isServer) {
 
-        const links = this._renderer2.createElement('link');
-        //console.log("links ",links);
-        links.rel = 'canonical';
-        if (this.pageNo == undefined || this.pageNo == 1) {
-            links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
-        }
-        else {
-            links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
-        }
-        // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
-        //console.log("links.href", links.href)
-        this._renderer2.appendChild(this._document.head, links);
-        this.setAmpTag('alp');
+            const links = this._renderer2.createElement('link');
+            //console.log("links ",links);
+            links.rel = 'canonical';
+            if (this.pageNo == undefined || this.pageNo == 1) {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
+            }
+            else {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
+            }
+            // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
+            //console.log("links.href", links.href)
+            this._renderer2.appendChild(this._document.head, links);
+            this.setAmpTag('alp');
         }
 
 
@@ -473,22 +469,9 @@ export class AlpComponent implements OnInit {
             links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             this._renderer2.appendChild(this._document.head, links);
         }
-        // let 
-        let fragmentString = this._activatedRoute.snapshot.fragment;
-        if (fragmentString != null || !isNaN(currentPageP)) {
-            this.scrollToResults();
-            //console.log(extras);
-        }
-        // console.log("Current route params:" + JSON.stringify(currentQueryParams));
-        // console.log("Pagechijkllads:" + currentQueryParams["page"]);
-        // console.log("Response Page Count: " + JSON.stringify(response.productSearchResult.totalCount));
-        // End Canonical url
     }
-    scrollToResults() {
 
-    }
-    fireTags(response)
-    {
+    fireTags(response) {
 
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
@@ -521,7 +504,7 @@ export class AlpComponent implements OnInit {
             if (this.localStorageService.retrieve('user')) {
                 user = this.localStorageService.retrieve('user');
             }
-            dataLayer.push({
+            this.analytics.sendGTMCall({
                 'event': 'pr-impressions',
                 'ecommerce': {
                     'currencyCode': 'INR',                       // Local currency is optional.
@@ -535,7 +518,7 @@ export class AlpComponent implements OnInit {
                 ecomm_totalvalue: ''
             };
 
-            dataLayer.push({
+            this.analytics.sendGTMCall({
                 'event': 'dyn_remk',
                 'ecomm_prodid': google_tag_params.ecomm_prodid,
                 'ecomm_pagetype': google_tag_params.ecomm_pagetype,
@@ -545,7 +528,7 @@ export class AlpComponent implements OnInit {
 
             /*Start Criteo DataLayer Tags */
 
-            dataLayer.push({
+            this.analytics.sendGTMCall({
                 'event': 'viewList',
                 'email': (user && user.email) ? user.email : '',
                 'ProductIDList': criteoItem,
@@ -579,6 +562,7 @@ export class AlpComponent implements OnInit {
                 'productCategoryL3': this.taxo3
             }
 
+            let digitalData = {};
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
@@ -600,7 +584,7 @@ export class AlpComponent implements OnInit {
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData["page"]["suggestionClicked"] = 'yes';
             }
-            _satellite.track('genericPageLoad');
+            this.analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */
         }
     }
@@ -636,6 +620,8 @@ export class AlpComponent implements OnInit {
                 }, 0);
             });
             const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            console.clear();
+            console.log(this.buckets);
             this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
             this.filterInstance.instance['pageName'] = this.pageName;
             this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.buckets);
@@ -671,8 +657,7 @@ export class AlpComponent implements OnInit {
 
     }
 
-    createDefaultParams(defaultApiParams)
-    {
+    createDefaultParams(defaultApiParams) {
 
         let newParams = {
             category: defaultApiParams['category'], pageName: 'ATTRIBUTE', queryParams: {}, filter: {}
@@ -815,7 +800,7 @@ export class AlpComponent implements OnInit {
         if (buckets === undefined || buckets === null || (buckets && buckets.length === 0)) {
             return '';
         }
-        
+
         for (let i = 0; i < buckets.length; i++) {
             if (buckets[i]['name'] === 'brand') {
                 for (let j = 0; j < buckets[i]['terms'].length; j++) {
@@ -835,8 +820,7 @@ export class AlpComponent implements OnInit {
         // console.log(buckets, "bucketsbucketsbuckets");
     }
 
-    getFeaturedProducts(products: Array<{}>)
-    {
+    getFeaturedProducts(products: Array<{}>) {
         let fProducts = null;
         if (products == undefined || products == null || (products && products.length == 0))
             return "";
@@ -883,8 +867,7 @@ export class AlpComponent implements OnInit {
         }
     }
 
-    filterBuckets(buckets: any[])
-    {
+    filterBuckets(buckets: any[]) {
         if (this.excludeAttributes.length > 0) {
             return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
         }
@@ -896,25 +879,23 @@ export class AlpComponent implements OnInit {
     * @description::if products length > 2 then only apply group by otherwise not required
     * @param=>products:products array
    */
-    groupByBrandName(products: any[])
-    {
+    groupByBrandName(products: any[]) {
         this.groupedProducts = this._categoryService.getGroupedProducts(products, 'brandName', 2);
         this.groupedProductNames = Object.keys(this.groupedProducts);
         this.displayGroupBy = this.groupedProductNames.length > 1 && (this.pageNo == 1 || this.pageNo == undefined);
     }
 
-    changeBanner(direction)
-    {
+    changeBanner(direction) {
         this.ngxSiemaService[direction](1, this.groupedBrandSiema.selector);
     }
-    setAmpTag(page){
+    setAmpTag(page) {
         let currentRoute = this._router.url.split("?")[0].split("#")[0];
         let ampLink;
         ampLink = this._renderer2.createElement('link');
         ampLink.rel = 'amphtml';
-        if (page == "alp"){
-             ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
-             this._renderer2.appendChild(this._document.head, ampLink);
+        if (page == "alp") {
+            ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
+            this._renderer2.appendChild(this._document.head, ampLink);
         }
     }
 

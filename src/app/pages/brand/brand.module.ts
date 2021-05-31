@@ -11,6 +11,7 @@ import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BrandFooterModule } from '@app/components/brand-details-footer/brand-details-footer.component';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         ObjectToArrayPipeModule,
         KpToggleDirectiveModule,
         ObserveVisibilityDirectiveModule,
+        BrandFooterModule
     ],
     declarations: [
         BrandComponent,

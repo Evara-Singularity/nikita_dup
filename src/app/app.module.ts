@@ -9,6 +9,8 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
@@ -21,6 +23,12 @@ const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
     SocketIoModule.forRoot(config),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   declarations: [
     AppComponent,

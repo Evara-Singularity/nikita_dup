@@ -131,3 +131,124 @@
 .bulkRequest {
     height: calc(100% - 120px);
 }
+
+.alert-box {
+    .overlay {
+        z-index: 11;
+    }
+    .content-area {
+        @include translate(0, -50%);
+        position: fixed;
+        top: 50%;
+        left: 7.5%;
+        width: 85%;
+        background: $white;
+        z-index: 12;
+        font-size: $large-font;
+        @extend %border-radius;
+        @extend %clear-fix;
+        .green-block {
+            background: #36BD40;
+            .del-ico {
+                color: white;
+                font-size: 20px;
+                padding: 10px 0px 0px 10px;
+                display: inline-block;
+            }
+            .inner-txt {
+                padding: 10px 0px 50px 0px;
+                text-align: center;
+                color: white;
+                .info-title {
+                    font-weight: 600;
+                    color: white;
+                    font-size: 16px;
+                    letter-spacing: 0.5px;
+                }
+                i {
+                    font-size: 35px;
+                    display: inline-block;
+                    padding-bottom: 15px;
+                }
+            }
+        }
+        .info-area {
+            padding: 25px;
+            .info-title {
+                margin-bottom: 10px;
+                line-height: 19px;
+                font-size: $extra-large-font;
+                font-weight: 500;
+            }
+            .info {
+                line-height: 20px;
+                font-size: $large-font;
+            }
+        }
+        .button-area {
+            border-top: 1px solid $border-color;
+            position: relative;
+            button {
+                border: 0;
+                background: $white;
+                height: 50px;
+                text-align: center;
+                width: 50%;
+                float: left;
+                font-weight: 600;
+                font-size: $large-font;
+                &.continue {
+                    color: $blue-link-color;
+                    border-left: 1px solid $border-color;
+                }
+            }
+        }
+        &.bottom-layout {
+            transform: none;
+            bottom: 0px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            top: auto;
+        }
+        .rfq-thanks-popup {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+            i {
+                position: absolute;
+                right: 15px;
+                top: 15px;
+            }
+            img {
+                width: 110px;
+            }
+            .rfq-thanks-title {
+                color: #393939;
+                font-size: $medium-font;
+                margin-top: 30px;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+            .rfq-support-txt {
+                font-size: 10px;
+                color: RGBA(57, 57, 57, 0.5);
+                line-height: 14px;
+            }
+            .alert-btn-row {
+                margin-top: 30px;
+                button {
+                    font-size: 12px;
+                    font-weight: bold;
+                    background: #F2720F;
+                    padding: 10px 20px;
+                }
+                p {
+                    margin-top: 20px;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

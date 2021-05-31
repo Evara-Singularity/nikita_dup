@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject, ViewEncapsulation } from '@angular/core';
 import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { delay } from 'rxjs/operators';
@@ -6,7 +6,8 @@ import { delay } from 'rxjs/operators';
 @Component({
   selector: 'app-pop-up-variant2',
   templateUrl: './pop-up-variant2.component.html',
-  styleUrls: ['./pop-up-variant2.component.scss']
+  styleUrls: ['./pop-up-variant2.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy {
 

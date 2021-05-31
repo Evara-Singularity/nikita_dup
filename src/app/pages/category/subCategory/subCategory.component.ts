@@ -12,10 +12,7 @@ import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { NgxPageScrollModule } from 'ngx-page-scroll';
-
-const GRCRK: any = makeStateKey<{}>("GRCRK")// GRCRK: Get Related Category Result Key
-
+import { ClientUtility } from '@app/utils/client.utility';
 @Component({
     selector: 'sub-category',
     templateUrl: 'subCategory.html',
@@ -37,7 +34,7 @@ export class SubCategoryComponent {
     catdata;
     imageBasePath: string;
     public isAllListShow:boolean;
-    moreLessCategoryText:string="Show more";
+    moreLessCategoryText:string="SHOW MORE";
     @Input() relatedCatgoryListUpdated: Subject<any>;
     defaultImage;
 
@@ -47,10 +44,6 @@ export class SubCategoryComponent {
     ngOnInit() {
         this.imageBasePath = CONSTANTS.IMAGE_BASE_URL;
 
-        if (this._tState.hasKey(GRCRK)) {
-            let response = this._tState.get(GRCRK, {});
-            this.relatedCatgoryList = response["children"];
-        }
         this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList)=>{
             this.showList(false);
             this.relatedCatgoryList = relatedCatgoryList["children"];
@@ -65,13 +58,14 @@ export class SubCategoryComponent {
     }
 
     showList(flag?) {
+        ClientUtility.scrollToTop(2000);
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {
-            this.moreLessCategoryText="Show less";
+            this.moreLessCategoryText="SHOW lESS";
         }
         else{
-            this.moreLessCategoryText="Show more";
+            this.moreLessCategoryText="SHOW MORE";
         }
     }
 }
@@ -81,7 +75,6 @@ export class SubCategoryComponent {
     declarations: [SubCategoryComponent],
     imports: [
         CommonModule,
-        NgxPageScrollModule,
         LazyLoadImageModule,
         RouterModule,
     ],

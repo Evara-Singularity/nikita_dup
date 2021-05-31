@@ -179,10 +179,10 @@ export class CheckoutV1Component implements OnInit {
     }
 
     this._state.subscribe("routeChanged", (tab) => {
-      debugger;
+      //  ;
       if (tab > 1) {
         this.tabIndex = tab;
-        this.changeParams();
+        // this.changeParams();
         if (this.tabIndex == 2) {
           this.headerStep = 1;
         }
@@ -231,40 +231,18 @@ export class CheckoutV1Component implements OnInit {
     const user = this._localStorageService.retrieve('user');
     if (user && user.authenticated === 'true') {
       this.tabIndex = 2;
-      this.changeParams();
+      // this.changeParams();
     }
   }
 
-  changeParams() {
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this._activatedRoute,
-        replaceUrl: true,
-        queryParams: { index: this.tabIndex },
-        queryParamsHandling: "merge"
-      })
-    if (this.tabIndex == 2) {
-      let page = {};
-      digitalData["page"] = page;
-      digitalData["page"]["pageName"] = "moglix: order checkout: product summary & address details",
-        digitalData["page"]["channel"] = "checkout",
-        digitalData["page"]["subSection"] = "moglix: order checkout: product summary & address details"
-      digitalData['page']['linkName'] = '',
-        digitalData['page']['linkPageName'] = ''
-      // if(typeof _satellite !== "undefined"){
-      _satellite.track("genericPageLoad");
-      // } 
-    }
 
-  }
 
   getSession() {
     this._commonService.getSession()
       .pipe(
         map((res) => res),
         mergeMap((gs) => {
-          debugger;
+          //  ;
           this._localAuthService.setUserSession(gs);
           let params = { "sessionid": gs["sessionId"] };
           if (this.buyNow) {
@@ -273,7 +251,7 @@ export class CheckoutV1Component implements OnInit {
           return this._cartService.getCartBySession(params);
         }),
         mergeMap((cartSession) => {
-          debugger;
+          //  ;
           this.isCheckoutResolved = true;
           if (this.isServer)
             return of(null);
@@ -282,12 +260,12 @@ export class CheckoutV1Component implements OnInit {
            */
           if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 202)
             return of(cartSession);
-          // debugger                                
+          //                                  
           return this.getShippingValue(cartSession);
         }),
       )
       .subscribe((cartSession) => {
-        debugger;
+        //  ;
         if (cartSession && cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
           console.log('checkout cs', cartSession);
           const cs = this._cartService.updateCart(cartSession);
@@ -482,11 +460,37 @@ export class CheckoutV1Component implements OnInit {
       this.tabIndex = 4;
     }
 
-    this.changeParams();
+    // this.changeParams();
+  }
+
+  changeParams() {
+    console.log('continue tabIndexUpdated this.index==>', this.tabIndex);
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this._activatedRoute,
+        replaceUrl: true,
+        queryParams: { index: this.tabIndex },
+        queryParamsHandling: "merge"
+      })
+    if (this.tabIndex == 2) {
+      let page = {};
+      digitalData["page"] = page;
+      digitalData["page"]["pageName"] = "moglix: order checkout: product summary & address details",
+        digitalData["page"]["channel"] = "checkout",
+        digitalData["page"]["subSection"] = "moglix: order checkout: product summary & address details"
+      digitalData['page']['linkName'] = '',
+        digitalData['page']['linkPageName'] = ''
+      // if(typeof _satellite !== "undefined"){
+      _satellite.track("genericPageLoad");
+      // } 
+    }
+
   }
 
   viewUnavailableItems() {
-    debugger;
+    // console.log('continue viewUnavailableItems ==>', 'called');
+
     const cartSession = JSON.parse(JSON.stringify(this._cartService.getCartSession()));
     let itemsList = cartSession['itemsList'];
     const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))
@@ -510,14 +514,14 @@ export class CheckoutV1Component implements OnInit {
   }
 
   updatedStep(data) {
-    // alert(data);
+    //console.log('continue login using cred step update ==>', data);
     this.tabIndex = data;
-
     this.changeParams();
   }
 
   slWorking(data) {
     if (!data) {
+      //console.log('continue login using social step update ==>', data);
       this.updatedStep(2);
     }
   }

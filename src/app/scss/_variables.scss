@@ -1,5 +1,4 @@
 $cdn_url: "https://cdn.moglix.com/";
-
 $font-family: 'Roboto',
 sans-serif;
 $cdn_url: "#{$cdn_url}";
@@ -341,6 +340,46 @@ $extra-large-font: 16px;
         transform: scale(0, 0);
         opacity: .3;
         transition: 0s;
+    }
+}
+
+// Custom Check Box
+%custom-check-box {
+    input[type='checkbox'] {
+        display: none;
+        &:checked+.custom-box::before {
+            content: "\e912";
+            color: $active-color;
+        }
+    }
+    input[type='radio'] {
+        display: none;
+        &:checked+.custom-box::before {
+            content: "\e912";
+            color: $green-color;
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        font-size: 18px;
+        line-height: 20px;
+        margin-right: 5px;
+        @extend %transition;
+        &::before {
+            font-family: 'icomooon_pwa';
+            content: "\e912";
+            color: #B9B9B9;
+        }
+    }
+    .chk-txt {
+        font-size: 15px;
+        float: left;
+        margin-left: 10px;
+        line-height: 20px;
+        width: calc(100% - 38px);
     }
 }
 

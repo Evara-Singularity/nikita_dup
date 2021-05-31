@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 @Component({
   selector: "monsoon-sale",
   templateUrl: "monsoonSale.html",
@@ -41,7 +42,7 @@ export class MonsoonSaleComponent {
 
     this.meta.addTag({
       property: "og:url",
-      content: "https://www.moglix.com/deals/emailer-deals",
+      content: CONSTANTS.PROD +ENDPOINTS.EXCLU_OFF,
     });
     if (this.isServer) {
       let links = this._renderer2.createElement("link");
@@ -55,7 +56,6 @@ export class MonsoonSaleComponent {
     // data received by layout resolver
     this.route.data.subscribe(
       (rawData) => {
-        console.log(JSON.stringify(rawData, null, 2));
         if (rawData && !rawData["data"]["error"]) {
           this.monsoonSaleData = rawData["data"][0];
           setTimeout(() => {

@@ -30,20 +30,18 @@ export class PromoApplyComponent implements OnInit, OnChanges {
 
     constructor(private _tms: ToastMessageService, private _cdr: ChangeDetectorRef, private _pas: PromoApplyService,
         private _fb: FormBuilder, private _cs: CartService, private _lss: LocalStorageService) {
+
         this.iData = { type: null, text: null, isApplied: false };
         this.updateCartSession$ = new EventEmitter();
         this.itemsList = [];
         this.isShowLoader = false;
-        // this.errorMeesage = '';
         this.outData$ = new EventEmitter();
-
         this.promoCodeGroup = this._fb.group(
             {
                 promoCode: [this.iData && this.iData.text ? this.iData.text : null, [Validators.required]]
             }
         );
 
-        // console.log("constructor called", this.iData);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -76,29 +74,23 @@ export class PromoApplyComponent implements OnInit, OnChanges {
         this.updateCartSession$.next({});
         this.isShowLoader = true;
         this.promoCodeResponse = null;
-        // $("#page-loader").show();
-        // this.errorMeesage = '';
         if (this._lss.retrieve('user')) {
             const cartSession = this._cs.getCartSession();
             cartSession['extraOffer'] = null;
             const userData = this._lss.retrieve('user');
             if (userData.authenticated === 'true') {
-                // this.cartSession['cart']['userId']=userData.userId;
                 let obj: Array<any>;
                 if (promocode) {
                     obj = promocode;
                 } else {
-
                     this._pas.getPromoCodeDetailByName(this.promoCodeGroup.controls['promoCode'].value).subscribe(res => {
-
                         this.promoCodeResponse = res;
                         if (res['status']) {
                             obj = [{
                                 offerId: res['data']['promoAttributes']['promoId'],
                                 type: '15'
                             }];
-                            // this.appliedPromoCode.promoCode = res.data.promoAttributes.promoCode;
-                            // this.appliedPromoCode.promoDescription = res.data.promoAttributes.promoDescription;
+
                             cartSession['offersList'] = obj;
 
                             const reqobj = {
@@ -123,7 +115,7 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                             },
                                         });
                                         if (resp['data']['discount'] <= cartSession['cart']['totalAmount']) {
-                                            // debugger;
+                                            //  ;
                                             this.iData.isApplied = true;
                                             // this.iData.text =
                                             // pcd : promo code detail
@@ -147,13 +139,9 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                                     return item['offer'] = null;
                                                 }
                                             });
-                                            // console.log(itemsList, "itemsListitemsListitemsList, ordersummary");
 
                                             this.itemsList = itemsList;
                                             cartSession['itemsList'] = itemsList;
-
-                                            // this.errorMeesage = resp['statusDescription'];
-                                            // this._tms.show({type: 'error', text: 'asdfafadfasfafafd'});
 
                                             this._cs.updateCartSession(cartSession).subscribe(
                                                 data => {
@@ -181,12 +169,6 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                             cartSession['itemsList'] = itemLists;
 
 
-
-                                            /* this.itemsList = cartSession["itemsList"];
-                                            this.itemsList.forEach((element,index)=>
-                                            {
-                                                cartSession["itemsList"][index]['offer']=null;
-                                            }); */
                                             this.appliedPromoCode.promoCode = null;
                                             this.appliedPromoCode.promoDescription = null;
                                             this._cs.updateCartSession(cartSession).subscribe(
@@ -202,22 +184,15 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                                     }, 500);
                                                 }
                                             );
-                                            // this.errorMeesage = 'Your cart amount is less than ' + resp['data']['discount'];
 
                                         }
                                     } else {
-                                        // this._tms.show({type: 'error', text: resp['statusDescription']});
                                         this.appliedPromoCode.promoCode = null;
                                         this.appliedPromoCode.promoDescription = null;
                                         cartSession['cart']['totalOffer'] = 0;
                                         cartSession['offersList'] = [];
-                                        // this.itemsList = cartSession["itemsList"];
                                         const itemLists: Array<{}> = cartSession['itemsList'];
                                         itemLists.map((item) => item['offer'] = 0);
-                                        /* this.itemsList.forEach((element,index)=>
-                                        {
-                                            cartSession["itemsList"][index]['offer']=null;
-                                        }); */
                                         this.itemsList = itemLists;
                                         cartSession['itemsList'] = itemLists;
 
@@ -234,15 +209,12 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                                 }, 500);
                                             }
                                         );
-                                        // this.errorMeesage = resp['statusDescription']; 
                                     }
                                 }
                             );
                         } else {
                             this.isShowLoader = false;
                             this._tms.show({ type: 'error', text: this.promoCodeResponse.statusDescription });
-                            // this._tms.show({type: 'error', text: "error"});
-                            // this.errorMeesage = this.promoCodeResponse.statusDescription;
                         }
                     });
                 }

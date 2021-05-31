@@ -26,11 +26,13 @@ import { FooterService } from '@app/utils/services/footer.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ClientUtility } from '@app/utils/client.utility';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
 	styleUrls: ['./home.scss'],
-	animations: [fade]
+	animations: [fade],
+	
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;
@@ -53,7 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	selectedBanner: Number = 0;
 	carouselData: any = {};
 	MOBILE_IMAGE_CATEGORY = '381';
-	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 	defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + 'image_placeholder.jpg';
 	tocd: {};
 	flyOutData: any;
@@ -289,7 +291,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.bannerDataJson['data'].length
 			) {
 				this.bannerDataJson['data'].map((bdj) => {
-					bdj.image_name = this.imagePathBanner + bdj.image_name;
+					if (!bdj.image_name.includes(this.imagePathBanner)) {
+						bdj.image_name = this.imagePathBanner + bdj.image_name;
+					}
 				});
 				this.bannerImagesScroll = this.bannerDataJson;
 			}
@@ -385,6 +389,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.appendSiemaItemSubjects = {};
 		this.appendSiemaItemSubjects['bannerData'] = new Subject<Array<{}>>();
 		this.appendSiemaItemSubjects['bestSellerData'] = new Subject<Array<{}>>();
+		if (this.isBrowser) {
+			ClientUtility.scrollToTop(100);
+		}
 	}
 
 	setMetaData() {
@@ -399,7 +406,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.meta.addTag({ property: 'og:description', content: description });
 		this.meta.addTag({ property: 'og:title', content: title });
 		this.meta.addTag({ property: 'og:site_name', content: 'Moglix.com' });
-		this.meta.addTag({ property: 'og:url', content: 'https://www.moglix.com' });
+		this.meta.addTag({ property: 'og:url', content: CONSTANTS.PROD });
 		this.meta.addTag({ name: 'twitter:card', content: 'Summary' });
 		this.meta.addTag({ name: 'twitter:card', content: 'Summary' });
 		this.meta.addTag({ name: 'twitter:site', content: '@moglix' });
@@ -411,7 +418,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.meta.addTag({ name: 'twitter:creator', content: '@moglix' });
 		this.meta.addTag({
 			name: 'twitter:url',
-			content: 'https://www.moglix.com',
+			content: CONSTANTS.PROD,
 		});
 		this.meta.addTag({
 			name: 'twitter:image:src',
@@ -464,13 +471,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			const s = this._renderer2.createElement('script');
 			s.type = 'application/ld+json';
 			s.text = JSON.stringify({
-				'@context': 'https://schema.org',
+				'@context': CONSTANTS.SCHEMA,
 				'@type': 'WebSite',
-				url: 'https://www.moglix.com/',
+				url: CONSTANTS.PROD,
 				potentialAction: {
 					'@type': 'SearchAction',
 					target:
-						'https://www.moglix.com/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
+					CONSTANTS.PROD+'/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
 					'query-input': 'required name=search_term_string',
 				},
 			});
@@ -505,124 +512,136 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	async onVisibleFeaturedBrands(htmlElement) {
-		const { FeaturedBrands } = await import(
-			'../../modules/featuredBrands/featuredBrands.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(FeaturedBrands);
-		this.featuredBrandsInstance = this.featuredBrandsContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.featuredBrandsInstance.instance[
-			'featureBrandData'
-		] = this.featureBrandData;
-		this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
-		this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
+		if (!this.featuredBrandsInstance) {
+			const { FeaturedBrands } = await import(
+				'../../modules/featuredBrands/featuredBrands.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(FeaturedBrands);
+			this.featuredBrandsInstance = this.featuredBrandsContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.featuredBrandsInstance.instance[
+				'featureBrandData'
+			] = this.featureBrandData;
+			this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
+			this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
+		}
 	}
 
 	async onVisibleCategories(htmlElement) {
-		const { Categories } = await import(
-			'../../modules/categories/categories.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(Categories);
-		this.categoriesInstance = this.CategoriesContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.categoriesInstance.instance[
-			'middleImageJsonData'
-		] = this.middleImageJsonData;
-		this.categoriesInstance.instance['categories'] = this.categories;
-		this.categoriesInstance.instance['carouselData'] = this.carouselData;
-		this.categoriesInstance.instance['defaultImage'] = this.defaultImage;
-		this.categoriesInstance.instance['imagePath'] = this.imagePath;
-		this.categoriesInstance.instance[
-			'recentProductList'
-		] = this.recentProductList;
-		(
-			this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>
-			).subscribe((popupData) => {
-			this.sendDataToPopUP(popupData);
-			this.onOpenPopup(null);
-		});
+		if (!this.categoriesInstance) {
+			const { Categories } = await import(
+				'../../modules/categories/categories.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(Categories);
+			this.categoriesInstance = this.CategoriesContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.categoriesInstance.instance[
+				'middleImageJsonData'
+			] = this.middleImageJsonData;
+			this.categoriesInstance.instance['categories'] = this.categories;
+			this.categoriesInstance.instance['carouselData'] = this.carouselData;
+			this.categoriesInstance.instance['defaultImage'] = this.defaultImage;
+			this.categoriesInstance.instance['imagePath'] = this.imagePath;
+			this.categoriesInstance.instance[
+				'recentProductList'
+			] = this.recentProductList;
+			(
+				this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>
+				).subscribe((popupData) => {
+				this.sendDataToPopUP(popupData);
+				this.onOpenPopup(null);
+			});
+		}
 	}
 
 	async onVisibleFeaturedArrivals(htmlElement) {
-		const { FeaturedArrivals } = await import(
-			'../../modules/featuredArrivals/featuredArrivals.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
-		this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.featuredArrivalsInstance.instance[
-			'featureArrivalData'
-		] = this.featureArrivalData;
-		this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
-		this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
+		if (!this.featuredArrivalsInstance) {
+			const { FeaturedArrivals } = await import(
+				'../../modules/featuredArrivals/featuredArrivals.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(FeaturedArrivals);
+			this.featuredArrivalsInstance = this.featuredArrivalsContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.featuredArrivalsInstance.instance[
+				'featureArrivalData'
+			] = this.featureArrivalData;
+			this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
+			this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
+		}
 	}
 
 	async onVisibleTrendingCategories(htmlElement) {
-		const { TrendingCategoriesComponent } = await import(
-			'../../components/ternding-categories/trending-categories.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
-		this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.trendingCategoriesInstance.instance[
-			'flyOutData'
-		] = this.flyOutData;
-		this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
+		if (!this.trendingCategoriesInstance) {
+			const { TrendingCategoriesComponent } = await import(
+				'../../components/ternding-categories/trending-categories.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
+			this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.trendingCategoriesInstance.instance[
+				'flyOutData'
+			] = this.flyOutData;
+			this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
+		}
 	}
 
 	async onOpenPopup(htmlElement) {
-		const { HomePopupComponet } = await import(
-			'../../components/home-popup/home.popup.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(HomePopupComponet);
-		this.popUpInstance = this.HomePopupComponetContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.popUpInstance.instance['openPopup'] = true;
-		this.popUpInstance.instance['arrivalPopup'] = this.arrivalPopup;
-		this.popUpInstance.instance['dataKeyToPopUpPage'] = this.dataKeyToPopUpPage;
-		this.popUpInstance.instance['defaultImage'] = this.defaultImage;
-		this.popUpInstance.instance['carouselData'] = this.carouselData;
-		this.popUpInstance.instance['imagePath'] = this.imagePath;
-		this.popUpInstance.instance[
-			'categoryNameFromHomePage'
-		] = this.categoryNameFromHomePage;
+		if (!this.popUpInstance) {
+			const { HomePopupComponet } = await import(
+				'../../components/home-popup/home.popup.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(HomePopupComponet);
+			this.popUpInstance = this.HomePopupComponetContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.popUpInstance.instance['openPopup'] = true;
+			this.popUpInstance.instance['arrivalPopup'] = this.arrivalPopup;
+			this.popUpInstance.instance['dataKeyToPopUpPage'] = this.dataKeyToPopUpPage;
+			this.popUpInstance.instance['defaultImage'] = this.defaultImage;
+			this.popUpInstance.instance['carouselData'] = this.carouselData;
+			this.popUpInstance.instance['imagePath'] = this.imagePath;
+			this.popUpInstance.instance[
+				'categoryNameFromHomePage'
+			] = this.categoryNameFromHomePage;
+		}
 	}
 
 	async onVisibleCarousel(htmlElement) {
-		const { RecentlyViewedCarouselComponent } = await import(
-			'../../components/recentlyViewedCarousel/recentlyViewedCarousel.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(
-			RecentlyViewedCarouselComponent
-		);
-		this.carouselInstance = this.carouselContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
-		this.carouselInstance.instance['showHeading'] = true;
-		this.carouselInstance.instance['prodList'] = this.recentProductList;
-		(
-			this.carouselInstance.instance['isDataAvailable'] as EventEmitter<any>
-		).subscribe((value) => {
-			this.showRecentlyViewedCarousel = value;
-		});
+		if (!this.carouselInstance) {
+			const { RecentlyViewedCarouselComponent } = await import(
+				'../../components/recentlyViewedCarousel/recentlyViewedCarousel.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(
+				RecentlyViewedCarouselComponent
+			);
+			this.carouselInstance = this.carouselContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
+			this.carouselInstance.instance['showHeading'] = true;
+			this.carouselInstance.instance['prodList'] = this.recentProductList;
+			(
+				this.carouselInstance.instance['isDataAvailable'] as EventEmitter<any>
+			).subscribe((value) => {
+				this.showRecentlyViewedCarousel = value;
+			});
+		}
 	}
 	destroyLazyComponents() {
 		if (this.featuredBrandsInstance) {

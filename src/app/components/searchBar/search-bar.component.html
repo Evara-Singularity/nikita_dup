@@ -28,35 +28,40 @@
                 <div>
                     <ul class="plan-list">
                         <li class="ac_even" type="suggestionList"
-                            (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId)"
+                            (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes )"
                             *ngFor="let prod of suggestionList | slice:0:5; let i = index" [attr.data-index]="i">
                             {{prod.term}}
-                            <img src="./assets/img/interface.png" class="interfaceIcon">
+                            <img src="{{imageAssetPath}}assets/img/interface.png" class="interfaceIcon">
                         </li>
                     </ul>
-                    <h4 class="heading-4 popularCategoryHeading" *ngIf="categorySuggestionList.length">Product
-                        Categories</h4>
-                    <ul class="plan-list">
-                        <li class="ac_even" type="suggestionList"
-                            (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null)"
-                            *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index"
-                            [attr.data-index]="i">
-                            <div class="productImage">
-                                <img src="{{imagePath + prod.imageLink}}" class="productCategory">
-                            </div>
-                            <span class="prodText">{{prod.term}}</span>
-
-                            <img src="./assets/img/interface.png" class="interfaceIcon">
-                        </li>
-                    </ul>
-                    <h4 class="heading-4 popularCategoryHeading" *ngIf="brandSuggestionList.length">Popular Brands </h4>
-                    <ul class="plan-list">
-                        <li class="ac_even" type="suggestionList"
-                            (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null)"
-                            *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
-                            {{prod.term}}
-                        </li>
-                    </ul>
+                    <!--categories-->
+                    <ng-container *ngIf="categorySuggestionList.length">
+                        <h4 class="heading-4 popularCategoryHeading">Product Categories</h4>
+                        <ul class="plan-list">
+                            <li class="ac_even" type="suggestionList"
+                                (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)"
+                                *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index"
+                                [attr.data-index]="i">
+                                <div class="productImage">
+                                    <img src="{{imagePath + prod.imageLink}}" class="productCategory">
+                                </div>
+                                <span class="prodText">{{prod.term}}</span>
+    
+                                <img src="{{imageAssetPath}}assets/img/interface.png" class="interfaceIcon">
+                            </li>
+                        </ul>
+                    </ng-container>
+                    <!--Brands-->
+                    <ng-container *ngIf="brandSuggestionList.length">
+                        <h4 class="heading-4 popularCategoryHeading" >Popular Brands </h4>
+                        <ul class="plan-list">
+                            <li class="ac_even" type="suggestionList"
+                                (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)"
+                                *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
+                                {{prod.term}}
+                            </li>
+                        </ul>
+                    </ng-container>
                 </div>
             </div>
         </div>

@@ -32,7 +32,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    // font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
@@ -44,6 +44,15 @@ body {
     font-size: 12px;
     color: $txt-color;
     font-family: $font-family;
+}
+
+.btn-red {
+    border: 1px solid $logo-color;
+    padding: 7px 9px;
+    color: $logo-color;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 .clearfix,
@@ -69,8 +78,6 @@ a {
 h2,
 h3 {
     color: #444;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: lighter;
 }
 
 
@@ -139,6 +146,11 @@ a {
     float: right;
 }
 
+// border
+.border-top {
+    border-top: 1px solid $border-color;
+}
+
 // Buttons
 .btn {
     padding: 7px 9px;
@@ -147,7 +159,6 @@ a {
     outline: 0;
     font-size: $extra-large-font;
     font-weight: 600;
-    text-transform: uppercase;
     @extend %border-radius;
     @extend %box-shadow;
     border: 0;
@@ -168,6 +179,7 @@ a {
     width: 100%;
     height: 45px;
     @extend %ripple;
+    font-weight: 800;
     &.disabledButton {
         border-color: $disabled;
         color: #fff;
@@ -192,6 +204,18 @@ a {
     width: 100%;
     bottom: 0;
     z-index: 2;
+}
+
+// Blue btn
+.blue-border-btn-full {
+    color: $blue-link-color;
+    border: 1px solid #278BED;
+    padding: 8px 10px;
+    width: 100%;
+    text-align: center;
+    background: $white;
+    font-weight: 600;
+    font-size: $medium-font;
 }
 
 .promo-code {
@@ -220,18 +244,43 @@ a {
     }
 }
 
-//Hide & Show
-// .hide {
-//     display: none;
-// }
+.hide {
+    display: none;
+}
+
 //Common Margin & padding classes 
+.pad-15 {
+    padding: 15px !important;
+}
+
 .pt-10 {
     padding-top: 10px
+}
+
+.pt-15 {
+    padding-top: 15px;
+}
+
+.pb-15 {
+    padding-bottom: 15px;
 }
 
 .pad-tb-10 {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.pad-tb-15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-15 {
+    margin-top: 15px;
 }
 
 .mb-15 {
@@ -263,7 +312,7 @@ h3 {
 header-nav {
     &.inner_head {
         &+div {
-            padding-top: 50px;
+            margin-top: 50px;
         }
     }
 }
@@ -271,6 +320,53 @@ header-nav {
 // 
 .align-center {
     text-align: center;
+}
+
+//Common Order Status
+.green-txt {
+    color: $green-color;
+}
+
+.red-txt {
+    color: $logo-color;
+}
+
+.orange-txt {
+    color: $btn-color;
+}
+
+.success-txt {
+    color: $green-color;
+    margin: 5px 0;
+}
+
+//head icons
+.head-icons {
+    &>* {
+        float: left;
+        margin-left: 5px;
+        font-size: 20px;
+        padding: 10px 5px;
+        position: relative;
+        color: $white;
+    }
+}
+
+.home-icons {
+    &>* {
+        margin-left: 12px !important;
+    }
+}
+
+.page-name {
+    line-height: 26px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: $white;
+}
+
+.page-name-black {
+    color: $black;
 }
 
 // icons

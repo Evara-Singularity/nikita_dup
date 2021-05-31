@@ -307,7 +307,9 @@ export class ClusterStoreComponent implements OnInit {
 	}
 
 	reInitializeLazyComponents(initComponent = true) {
-		ClientUtility.scrollToTop(0);
+		if(this.isBrowser) {
+			ClientUtility.scrollToTop(0);
+		}
 		if (this.appBannerInstance) {
 			this.appBannerInstance = null;
 			this.appBannerContainerRef.remove();

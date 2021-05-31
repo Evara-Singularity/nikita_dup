@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRe
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: "slipSafety",
@@ -62,7 +63,7 @@ export class SlipSafetyComponent {
     this.meta.addTag({ name: "description", content: "The slipSafety offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ name: "og:description", content: "The slipSafety offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ name: "og:title", content: "Avail SlipSafety Offers and Deals at Moglix.com" });
-    this.meta.addTag({ name: "og:url", content: "https://www.moglix.com/deals/slipSafety-offer" });
+    this.meta.addTag({ name: "og:url", content: CONSTANTS.PROD+"/deals/slipSafety-offer" });
   }
 
   getSlipSafetyData() {

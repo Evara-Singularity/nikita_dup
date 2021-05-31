@@ -1,13 +1,15 @@
 import { Component, Renderer2, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import CONSTANTS from '../../../config/constants';
 import { ClientUtility } from '../../../utils/client.utility';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
-	selector: 'brand',
+	selector: 'brand-store',
 	templateUrl: 'brand.html',
 	styleUrls: ['brand.scss'],
 })
@@ -22,7 +24,6 @@ export class BrandComponent{
 	total_count: any;
 	brand_url: any;
 	brandsLogo;
-	isServer: boolean
 	set isShowLoader(value) {
 		this.loaderService.setLoaderState(value);
 	}
@@ -31,12 +32,12 @@ export class BrandComponent{
 		private meta: Meta,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
+		private _commonService: CommonService,
 		public _router: Router,
 		private route: ActivatedRoute,
 		private loaderService: GlobalLoaderService,
 		@Inject(PLATFORM_ID) private platformId
 	) {
-		this.isServer = isPlatformServer(platformId);
 		this.API = CONSTANTS;
 		this.title.setTitle('Moglix Brand Store');
 		this.meta.addTag({ property: 'og:title', content: 'Moglix Brand Store' });
@@ -47,23 +48,26 @@ export class BrandComponent{
 		});
 		this.meta.addTag({
 			property: 'og:url',
-			content: 'https://www.moglix.com/brand-store',
+			content: CONSTANTS.PROD+ENDPOINTS.BRAND_STORE,
 		});
 		this.meta.addTag({
 			name: 'description',
 			content:
 				'Get access to exclusive brands at Moglix brand store. Shop for products from your favorite brands inclusing Bosch, Eveready, Havells, V-Guard, Makita, Karam and more.',
 		});
-		if (this.isServer) {
+		if (this._commonService.isServer) {
 			let links = this._renderer2.createElement('link');
 			links.rel = 'canonical';
-			links.href = CONSTANTS.PROD + '/brand-store';
+			links.href = CONSTANTS.PROD + ENDPOINTS.BRAND_STORE;
 			this._renderer2.appendChild(this._document.head, links);
 			this.isShowLoader = true;
 		}
 	}
 
 	ngOnInit() {
+		if (this._commonService.isBrowser) {
+			ClientUtility.scrollToTop(100);
+		}
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['brandData']['error'] && rawData['brandData'].length) {
 				// this.fetchHomePageData(rawData.homeData);

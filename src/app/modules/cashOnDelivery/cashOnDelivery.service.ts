@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
-import { catchError } from 'rxjs/operators/catchError';
+import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from "../../utils/services/data.service";
 import CONSTANTS from "../../config/constants";
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable()
 export class CashOnDeliveryService{
@@ -14,7 +15,7 @@ export class CashOnDeliveryService{
 
     pay(data){
         // (<HTMLElement>document.querySelector('#page-loader')).style.display = "block";
-        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API+"/payment/pay", {body:data});
+        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {body:data});
     }
 
     sendOtp(data){
@@ -34,12 +35,12 @@ export class CashOnDeliveryService{
     getAddreddList(id)
     {
        
-        let url = CONSTANTS.NEW_MOGLIX_API + "/address/getAddressList?customerId="+id;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ADD_LIST +'?customerId=' +id;
         return this._dataService.callRestful("GET", url);
     }
 
     postAddress(address) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/address/postAddress", { body: address }).pipe(
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD, { body: address }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({status: false, statusCode: res.status});
             })

@@ -60,7 +60,7 @@ export class FaqComponent {
 		this.meta.addTag({ property: 'og:title', content: 'FAQ - Moglix.com' });
 		this.meta.addTag({
 			property: 'og:url',
-			content: 'https://www.moglix.com/faq',
+			content: CONSTANTS.PROD+'/faq',
 		});
 		if (this.isServer) {
 			let links = this._renderer2.createElement('link');

@@ -76,7 +76,7 @@ export class SiemaCarouselComponent {
                     .pipe(
                         takeUntil(this.cDistryoyed)
                     ).subscribe((data) => {
-                        // debugger;
+                        //  ;
                         this.refreshSiema(data['items']);
                         this._cdr.markForCheck(); // marks path 
                     });
@@ -120,12 +120,10 @@ export class SiemaCarouselComponent {
         let loop = false;
         if (this.items && this.items.length && this.items.length > this.options.perPage) {
             loop = true;
-            // console.log(this.items,"items");
         }
         if (this.options.loop !== "undefined") {
             loop = this.options.loop;
         }
-        // console.log("options",this.options);
         if (this.isBrowser) {
             if (document.querySelector(this.options.selector)) {
                 this.scrollTarget = document.querySelector(this.options.selector).firstElementChild;
@@ -165,8 +163,7 @@ export class SiemaCarouselComponent {
         }
 
         this.initialized = true;
-        console.log(this.initialized);
-        console.log(this.items);
+
         setTimeout(() => {
             this.scrollInitialize();
         }, 1000);

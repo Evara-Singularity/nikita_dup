@@ -20,7 +20,7 @@ import CONSTANTS from '../../config/constants';
 
 export class SiemaSlideComponent {
     @Input() options: any;
-    @Input() item: {};
+    @Input() item: any;
     @Input() imagePath: any;
     image_Path = CONSTANTS.IMAGE_BASE_URL;
     @Input() defaultImage: any;
@@ -49,6 +49,7 @@ export class SiemaSlideComponent {
     pzInstance: any;
     @ViewChild('pinchZoom') pinchZoom: ElementRef;
     readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
+    readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
@@ -144,6 +145,8 @@ export class SiemaSlideComponent {
         })
     }
 
-    
+    goTo(index, selector) {
+        this.ngxSiemaService.goTo(index, selector);
+    }
 
 }

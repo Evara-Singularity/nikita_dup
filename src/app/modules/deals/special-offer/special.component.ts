@@ -2,6 +2,8 @@ import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRe
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
   selector: "special",
@@ -62,14 +64,14 @@ export class SpecialComponent {
     this.meta.addTag({ name: "description", content: "The special offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ name: "og:description", content: "The special offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ name: "og:title", content: "Avail Special Offers and Deals at Moglix.com" });
-    this.meta.addTag({ name: "og:url", content: "https://www.moglix.com/deals/special-offer" });
+    this.meta.addTag({ name: "og:url", content: CONSTANTS.PROD+ENDPOINTS.SPL_OFFR });
   }
 
   getSpecialData() {
     // data received by layout resolver
     this.route.data.subscribe(
       (rawData) => {
-        console.log(JSON.stringify(rawData, null, 2));
+        // console.log(JSON.stringify(rawData, null, 2));
         if (rawData && !rawData["data"]["error"]) {
           this.specialData = rawData["data"][0];
           setTimeout(() => {

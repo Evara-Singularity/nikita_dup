@@ -3,9 +3,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { cartSession } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Observer, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 
 export class CartServiceConfig {
@@ -81,7 +82,7 @@ export class CartService {
     }
 
     set buyNow(buyNow) {
-        // debugger;
+        //  ;
         this._buyNow = buyNow;
     }
 
@@ -90,7 +91,7 @@ export class CartService {
     }
 
     test() {
-        return Observable.create(observer => {
+        return new Observable((observer: Observer<any>) => {
             observer.next(90);
             observer.complete();
         })
@@ -161,7 +162,7 @@ export class CartService {
         delete sessionCart['cart']['tpt'];
         // console.log(sessionCart, 'sessionCartsessionCartsessionCart');
 
-        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + '/cart/updateCart', { body: sessionCart })
+        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPD_CART, { body: sessionCart })
         .pipe(
             map((d) => {
                 if (d['status']) {
@@ -214,13 +215,13 @@ export class CartService {
 
     getValidateCartMessageApi(params){
         // return of({statusCode: 200, data: [{"msnid":"MSNO5WNXD26L51","data":{"productName":"Honeywell SHST00201 S1 Grey & Blue Light Weight Sporty Safety Shoes, Size: 4","text1":" price has been updated from ","text2":"to","oPrice":2848,"nPrice":4500},"type":"price"},{"msnid":"MSNE5N8EJGXGKL","data":{"productName":"Honeywell Powercoat 950-20 Neo Fit Safety Gloves, 2095020-11","text1":" price has been updated from ","text2":"to","oPrice":151,"nPrice":1200},"type":"price"}]});
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/cart/getCartValidationMessages", { params: params });
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_GetCartValidationMessages, { params: params });
 
     }
     
     setValidateCartMessageApi(data){
         // return of(null);
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/cart/setCartValidationMessages", { body: data });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SET_SetCartValidationMessages, { body: data });
     }
 
     getBuyNowItem(itemsList){
@@ -316,14 +317,14 @@ export class CartService {
         //     "status": 200
         // });
         const cartN = JSON.parse(JSON.stringify(cart));
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/cart/validateCart", { body: this.buyNow ? cartN : cart });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart });
     }
 
     getSessionByUserId(cart) {
         /*let url = CONSTANTS.NEW_MOGLIX_API + "/cart/getCartByUser";
          return this._dataService.callRestful("POST", url, { body: cart });*/
 
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/cart/getCartByUser", { body: cart });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartByUser, { body: cart });
         /*.map((cbsd)=> cbsd
             .mergeMap((cartSession:any)=>{
                 Object.assign(this.cartSession, cartSession);
@@ -365,7 +366,7 @@ export class CartService {
      */
     getCartBySession(params) {
         // console.log(params, "params");
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/cart/getCartBySession", { params: params })
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartBySession, { params: params })
         .pipe(
             map((d) => {
 
@@ -418,7 +419,7 @@ export class CartService {
     }
 
     getShippingValue(cartSession) {
-        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/shipping/getShippingValue", { body: cartSession }).pipe(
+        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ShippingValue, { body: cartSession }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({status: false, statusCode: res.status});
             })

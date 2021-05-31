@@ -12,7 +12,6 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { stateList } from '@app/utils/data/state';
 import { Step } from '@app/utils/validators/step.validate';
 import { CartService } from '@app/utils/services/cart.service';
-import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 declare var digitalData: {};
 declare let _satellite;
@@ -69,7 +68,7 @@ export class BussinessDetailComponent implements OnDestroy {
     this.meta.addTag({ name: "robots", content: CONSTANTS.META.ROBOT2 });
     this.stateList = stateList["dataList"];
     let user = this._localStorageService.retrieve("user");
-    let globalConstant = GLOBAL_CONSTANT;
+    let globalConstant = CONSTANTS.GLOBAL;
 
     // Avoid  calling logic on server side.
     if (this.isServer) {

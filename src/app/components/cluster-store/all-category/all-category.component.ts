@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Input, NgModule } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
+import {CONSTANTS} from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 
 @Component({
@@ -14,7 +14,7 @@ export class AllCategoryComponent implements OnInit {
   openPopup: boolean;
   @Input('data') data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
+  defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   constructor() { 
     this.openPopup = false;
   }

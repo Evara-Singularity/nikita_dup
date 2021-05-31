@@ -1,0 +1,55 @@
+<section class="order-container container mt-10">
+    <div class="card-30 pad-lr-15 align-center">
+        <p class="green-txt mb-15 f-16"><i class="icon-done"></i> <span class="txt"> Order Successful</span></p>
+        <p class="f-14">Your order has been successfully placed.</p>
+        <img class="mt-15 main-img" src="{{imagePath}}img/others/order_successfull.png">
+
+        <div class="order-detail mt-15 f-14">
+            <h3 class="heading mb-15">ORDER DETAILS</h3>
+            <p><span class="bold-txt">Order Id :</span> <span>{{orderId}}</span></p>
+            <ul class="txt-list mar-tb-15">
+                <li>
+                    <span class="tag-label">1 Items</span>
+                    <span class="tag-value">₹ {{amount}}</span>
+                </li>
+
+                <li>
+                    <span class="tag-label">Payment Mode</span>
+                    <span *ngIf="queryParams['mode'] == 'CC'" class="tag-value">Credit Card</span>
+                    <span *ngIf="queryParams['mode'] == 'DC'" class="tag-value">Debit Card</span>
+                    <span *ngIf="queryParams['mode'] == 'COD'" class="tag-value">Cash On Delivery</span>
+                    <span *ngIf="queryParams['mode'] == 'NEFT'" class="tag-value">NEFT</span>
+                    <span *ngIf="queryParams['mode'] == 'NB'" class="tag-value">Net Banking</span>
+                    <span *ngIf="queryParams['mode'] == 'WALLET'" class="tag-value">Wallet</span>
+                    <span *ngIf="queryParams['mode'] == 'PAYTM'" class="tag-value">Paytm</span>
+                    <span *ngIf="queryParams['mode'] == 'PAYTM-UPI'" class="tag-value">Paytm UPI</span>
+                    <span *ngIf="queryParams['mode'] == 'MOBIKWIK'" class="tag-value">Mobikwik</span>
+                    <span *ngIf="queryParams['mode'] == 'UPI'" class="tag-value">UPI [Tez]</span>
+                    <span *ngIf="queryParams['mode'] == 'CASH'" class="tag-value">PayU Wallet</span>
+                    <span *ngIf="queryParams['mode'] == 'RAZORPAY'" class="tag-value">RazorPay</span>
+                </li>
+            </ul>
+
+            <p class="f-12">Your order is currently being processed. You will receive an order confirmation email
+                shortly with the expected delivery date for your items.</p>
+        </div>
+    </div>
+
+    <div class="card mt-10 pad-15">
+        <p><b>Note:</b> We do not demand your banking and credit card details verbally or telephnocially. Please do not
+            divulge your details to fraudsters falsely claming to be calling on moglix’s behalf.</p>
+    </div>
+    <div class="continue-button">
+        <div class="container">
+            <p class="orange-txt mt-5 ml-15" (click)="navigateTo('/')"> CONTINUE <br> SHOPPING</p>
+            <button class="btn" (click)="navigateTo('dashboard/order')">VIEW ORDER</button>
+        </div>
+    </div>
+</section>
+
+<iframe *ngIf="iFrameUrl != undefined && afType != undefined && afType=='iFrame' && id=='undefined'"
+    [src]="iFrameUrl | safeUrl" width="1" height="1"></iframe>
+<iframe *ngIf="iFrameUrl != undefined && afType != undefined && afType=='iFrame' && id!='undefined'" id="pixelcodeurl"
+    [src]="iFrameUrl | safeUrl" width="1" height="1"></iframe>
+
+<img *ngIf="iFrameUrl != undefined && afType != undefined && afType=='image'" [src]="iFrameUrl" width="1" height="1">

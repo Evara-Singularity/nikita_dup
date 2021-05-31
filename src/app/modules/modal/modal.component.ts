@@ -38,10 +38,10 @@ export class ModalComponent implements OnInit {
         // )
         .subscribe((data) => {
             console.log("ModalComponentdata",data);
-            debugger;
+             ;
             this.showModal = true;
             // Add Unique id for each toast in array
-            // debugger;
+            //  ;
             let componentConfig = {
                 inputs: data.inputs,
                 outputs: data.outputs,
@@ -67,7 +67,7 @@ export class ModalComponent implements OnInit {
             .resolveComponentFactory(child)
             .create(this.injector); */
 
-        // debugger;
+        //  ;
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(child);
 
         // console.log(this.modalHost);

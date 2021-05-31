@@ -131,7 +131,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
 
     updatePaymentBlock(block, mode?, elementId?) {
-        debugger;
+         ;
 
         let cart = this.cartService.getCartSession();
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
@@ -243,5 +243,4 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         }
         this.showPopup = true;
     }
-
 }

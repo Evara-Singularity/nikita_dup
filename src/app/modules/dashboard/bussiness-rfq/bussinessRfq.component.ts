@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { DashboardService } from "../dashboard.service";
 import { LocalStorageService } from "ngx-webstorage";
-import { map } from "rxjs/operators/map";
+import { map } from "rxjs/operators";
 import CONSTANTS from "@app/config/constants";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";

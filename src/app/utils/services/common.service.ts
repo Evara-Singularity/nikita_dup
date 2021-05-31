@@ -1,7 +1,7 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observer, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from './global-loader.service';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: 'root'
@@ -41,6 +42,8 @@ export class CommonService {
     cmsData: any;
     replaceHeading: boolean = false;
     abTesting: any;
+
+    updateSortBy: Subject<string> = new Subject();
 
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
@@ -87,7 +90,7 @@ export class CommonService {
     }
 
     checkPincodeApi(data) {
-        const url = CONSTANTS.NEW_MOGLIX_API + "/logistics/validateProductsService";
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_PRODUCT_SER;
         return this._dataService.callRestful("POST", url, { body: data });
     }
 
@@ -156,7 +159,7 @@ export class CommonService {
     private getBrandData(type, curl, params) {
         const formattedParams = this.formatParams(params);
 
-        return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + '/brand/getBrandByName', { params: { name: formattedParams['brand'] } })
+        return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRAND_NAME, { params: { name: formattedParams['brand'] } })
             .pipe(
                 map((res: any) => res),
                 mergeMap((data) => {
@@ -271,7 +274,7 @@ export class CommonService {
                 if (this.currentRequest !== undefined)
                     this.currentRequest.unsubscribe();
 
-                this.currentRequest = this.getCategoryData('GET', CONSTANTS.NEW_MOGLIX_API + '/category/getcategory', defaultParams)
+                this.currentRequest = this.getCategoryData('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams)
                     .pipe(
                         map((res) => {
                             res['buckets'].map((bucket) => {
@@ -290,7 +293,7 @@ export class CommonService {
                 if (this.currentRequest != undefined){
                     this.currentRequest.unsubscribe();
                 }
-                this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + '/brand/getbrand', defaultParams)
+                this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRANDS, defaultParams)
                 .pipe(
                     map((res) => {
                         res.buckets.map((bucket) => {
@@ -359,7 +362,7 @@ export class CommonService {
     }
 
     getCmsDynamicDataForCategoryAndBrand(categoryCode?, brandName?) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/cmsapi/getCmsControlledPage?requestParam=article-1";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_CONTROLLED_PAGES;
         if (brandName) {
             url += "&brandName=" + brandName;
         }
@@ -451,7 +454,7 @@ export class CommonService {
         if (user) {
             return of(user);
         }
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/session/getSession")
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION)
             .pipe(
                 map(res => res)
             );
@@ -459,15 +462,15 @@ export class CommonService {
 
 
     getToken() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/token/getToken");
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_TOKKEN);
     }
 
     logout() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/login/logout");
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
     }
 
     getAddressList(params) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/address/getAddressList", { params: params, headerData: { 'If-None-Match': 'W/"2-4KoCHiHd29bYzs7HHpz1ZA"' } }).pipe(
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ADD_LIST, { params: params, headerData: { 'If-None-Match': 'W/"2-4KoCHiHd29bYzs7HHpz1ZA"' } }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status, addressList: [] });
             })
@@ -475,11 +478,11 @@ export class CommonService {
     }
 
     getStateList(countryId) {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/address/getStateList", { params: { countryId: countryId } });
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_StateList, { params: { countryId: countryId } });
     }
 
     getCountryList() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/address/getCountryList").pipe(
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CountryList).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status, dataList: [] });
             })
@@ -487,15 +490,15 @@ export class CommonService {
     }
 
     subscribeEmail(email) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/login/subscription", { body: { email: email, active: true } });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_SUBSCRIPTION, { body: { email: email, active: true } });
     }
 
     subscribeCredit(data) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/rfq/addEpayLater", { body: data });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.EPAY_LATER , { body: data });
     }
 
     getBusinessDetail(data) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/customer/getCustomerBusinessDetails";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
         return this._dataService.callRestful("GET", url, { params: data }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
@@ -509,7 +512,7 @@ export class CommonService {
     getBusinessDetails() {
 
         let user = this._localStorageService.retrieve('user');
-        return Observable.create(observer => {
+        return new Observable((observer: Observer<any>) => {
             this.getBusinessDetail(user.userId).subscribe(data => {
                 let businessDeatils = data;
                 if (businessDeatils) {
@@ -548,7 +551,7 @@ export class CommonService {
                         };
                     }
                     pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
-                    return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/payment/pay", { body: pdata })
+                    return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, { body: pdata })
                         .pipe(
                             catchError((res: HttpErrorResponse) => {
                                 return of({ status: false, statusCode: res.status });
@@ -559,8 +562,6 @@ export class CommonService {
                         )
                 })
             )
-
-        // return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API+"/payment/pay", {body:data});
     }
 
     createValidatorRequest(cartSession, userSession, extra) {
@@ -686,11 +687,10 @@ export class CommonService {
     }
 
     getAll(body) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + "/payment/getAll", { body: body });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ALL_PAYMENT, { body: body });
     }
 
     updateSortByState(sortByState) {
-
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
         let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
         this.defaultParams.queryParams["orderBy"] = orderBy;
@@ -714,7 +714,7 @@ export class CommonService {
                     }
 
                     obj["shoppingCartDto"]["businessDetails"] = bd;
-                    return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + "/validation/validate", { body: obj })
+                    return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_BD, { body: obj })
                         .pipe(
                             catchError((res: HttpErrorResponse) => {
                                 return of({ status: false, statusCode: res.status });
@@ -729,15 +729,15 @@ export class CommonService {
         }
 
     testApi() {
-        return this._dataService.callRestful("GET", "https://newmoglix.moglix.com/test/testgetresponse");
+        return this._dataService.callRestful("GET", CONSTANTS.TEST_API);
     }
 
     getFooter() {
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/homepage/footercode");
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.HOMEPAGE_FOOTER);
     }
     getTrendingCategories() {
 
-        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/category/trendingCategory");
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TRENDING_CATEGORY);
 
     }
 
@@ -768,11 +768,24 @@ export class CommonService {
     }
 
     getBreadcrumpData(link, type, pageTitle?): Observable<any> {
-        let curl = CONSTANTS.NEW_MOGLIX_API + "/homepage/getbreadcrumb?source=" + link + "&type=" + type;
+        let curl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=" + link + "&type=" + type;
         if (pageTitle) {
             curl += "&pagetitle=" + pageTitle;
         }
         return this._dataService.callRestful("GET", curl);
+    }
+
+    calculateFilterCount(data){
+        let count = 0;
+        data.forEach((el) => {
+            for (let i = 0; i < el.terms.length; i++) {
+                if (el.terms[i].selected) {
+                    count++;
+                    break;
+                }
+            }
+        });
+        return count;
     }
 
     removeLoader() {

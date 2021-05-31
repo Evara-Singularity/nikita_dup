@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '../services/global-loader.service';
 import { isPlatformServer } from '@angular/common';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +33,12 @@ export class BrandStoreResolver implements Resolve<object> {
     if (this.transferState.hasKey(logosObj) && this.transferState.hasKey(brandsObj)) {
       const logosData = this.transferState.get<object>(logosObj, null);
       const brandData = this.transferState.get<object>(brandsObj, null);
-      this.transferState.remove(logosObj);
+      this.transferState.remove(brandsObj);
       this.transferState.remove(logosObj);
       return of([logosData, brandData]);
     } else {
-      const logosUrl = environment.BASE_URL + '/category/getparentcategoryjsonbody?requestType=brand-store';
-      const brandurl = CONSTANTS.NEW_MOGLIX_API + '/search/getAllBrands';
+      const logosUrl = environment.BASE_URL + CONSTANTS.GET_PARENT_CAT+'brand-store';
+      const brandurl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ALL_BRANDS;
 
       const LogosData = this.http.get(logosUrl);
       const brandsData = this.http.get(brandurl);
@@ -45,7 +46,6 @@ export class BrandStoreResolver implements Resolve<object> {
       return forkJoin([LogosData, brandsData]).pipe(
         catchError((err) => {
           this.loaderService.setLoaderState(false);
-          console.log('err', err);
           return of(err);
         }),
         tap(result => {

@@ -1,8 +1,8 @@
 import { CONSTANTS } from '@config/constants';
 import { Component,Input,Inject, NgModule } from '@angular/core';
-import { PageScrollService } from 'ngx-page-scroll-core';
 import { CommonModule, DOCUMENT } from "@angular/common";
 import { RouterModule } from '@angular/router';
+import { ClientUtility } from '@app/utils/client.utility';
 
 @Component({
   selector: 'cat-static',
@@ -15,13 +15,15 @@ export class CatStaticComponent {
   @Input('page_title') page_title ;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
-  constructor(@Inject(DOCUMENT) private _document,private _pageScrollService: PageScrollService) { }
+  constructor(@Inject(DOCUMENT) private _document) { }
   scrollToResults(){
-    this._pageScrollService.scroll({
-      document: this._document,
-      scrollTarget: '#category-cards-section',
-      scrollOffset: (<HTMLElement>document.querySelector("#category-cards-section")).offsetTop - 3770
-    });
+    // this._pageScrollService.scroll({
+    //   document: this._document,
+    //   scrollTarget: '#category-cards-section',
+    //   scrollOffset: (<HTMLElement>document.querySelector("#category-cards-section")).offsetTop - 3770
+    // });
+    let footerOffset = document.getElementById('#category-cards-section').offsetTop;
+        ClientUtility.scrollToTop(1000,footerOffset - 30);
   }
 
 }

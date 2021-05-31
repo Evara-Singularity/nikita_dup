@@ -143,7 +143,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
 
     getAddressListApi() {
-        debugger;
+        //  ;
         const userSession = this._localAuthService.getUserSession();
         const params = { customerId: userSession.userId, invoiceType: this.invoiceType };
         this._commonService.showLoader = true;
@@ -261,7 +261,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                 }
             }
             // this._commonService.showLoader = false;
-            // debugger;
+            //  ;
             this.updateCheckoutAddress$.emit({});
             this.checkServiceability();
         }
@@ -533,7 +533,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     //shippingAddressMessage=""
 
     checkPinCodeAddressApi(): any {
-        // debugger;
+        //  ;
         this._commonService.showLoader = true;
         let checkPinCodeAddressObservable = [];
         const ca = this._checkoutService.getCheckoutAddress();
@@ -569,7 +569,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                 [item['productId']]: item,
             };
         }, {});
-        debugger;
+        //  ;
         if (pincodeRes && pincodeRes['statusCode'] == 200) {
             for (let productId in pincodeRes['data']) {
                 // this.isPincodeAvailble = true;
@@ -617,7 +617,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         }
 
         if (this._router.url.indexOf('/checkout') != -1) {
-            // debugger;
+            //  ;
             let itemsValidationMessage = this._commonService.itemsValidationMessage;
             itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
             this._commonService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
@@ -673,7 +673,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
 
     outData(data) {
-        debugger;
+        //  ;
         console.log(data);
         if (data.ua) {
             if (data.ua.index !== undefined) {
@@ -734,7 +734,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
 
     checkServiceability() {
-        debugger;
+        //  ;
         /// console.log("[checkServiceability]..................");
         forkJoin([
             ...this.checkPinCodeAddressApi()

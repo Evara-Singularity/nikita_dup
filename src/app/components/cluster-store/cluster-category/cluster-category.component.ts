@@ -13,7 +13,7 @@ export class ClusterCategoryComponent {
   @Input('data') data;
   @Input() extraData;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  defaultImage = CONSTANTS.IMAGE_BASE_URL+'assets/img/home_card.webp';
+  defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   
   constructor(
     private router: Router

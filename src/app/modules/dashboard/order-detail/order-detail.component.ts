@@ -229,7 +229,7 @@ export class OrderDetailComponent implements OnInit {
             this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
           }
           this.returnReasons = this.getReturnReasons(item.dates.delivered.date);
-          let deliveryDate = this.datePipe.transform(item.dates.delivered.date, 'MM-dd-yyyy')
+          let deliveryDate = this.datePipe.transform(item.dates.delivered.date, 'yyyy-MM-dd');
           let crrDate = new Date(deliveryDate);
           crrDate.setDate(crrDate.getDate() + 7);
           this.returnEndDate = this.datePipe.transform(crrDate, 'dd-MM-yyyy');
@@ -280,11 +280,11 @@ export class OrderDetailComponent implements OnInit {
            */
 
           // console.log(value[key]['date']);
-          // debugger;
+          //  ;
           let accepted = new Date(detail['dates']['accepted']['date']);
           let lastOrderDate = new Date('10-Mar-2020');
 
-          debugger;
+           ;
 
           const diffTime = lastOrderDate.getTime() - accepted.getTime();
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

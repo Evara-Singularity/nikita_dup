@@ -1,5 +1,4 @@
 @import "../../scss/variables";
-
 .rfqForm {
     .rfq_header {
         display: flex;
@@ -116,6 +115,9 @@
                 color: #D7222C;
                 margin-top: 5px;
                 font-weight: normal !important;
+                &.break-line {
+                    padding-left: 40px;
+                }
             }
         }
         span {
@@ -181,11 +183,18 @@
             font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            width: 100%;
         }
     }
     .in-instock {
         background: #fff;
         padding: 0px 8px;
+    }
+    .stickyRfqButton {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        height: 50px;
+        left: 0;
+        right: 0;
     }
 }

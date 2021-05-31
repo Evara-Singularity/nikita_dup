@@ -56,6 +56,10 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
         this.netAmount = 0;
         this.errorMeesage = '';
         this.isShowLoader = false;
+        this.pad = {
+            text: null,
+            type: null,
+        }
     }
 
 
@@ -94,29 +98,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this._dataService.sendMessage(trackData);
             }
-            // alert(JSON.stringify(this.cartSession));
-
-            // this.getShippingCharge(this.cartSession['cart'].totalPayableAmount);
-            // if (this.cartSession['offersList'] !== null && this.cartSession['offersList'] !== null) {
-            //     let offerList = this.cartSession['offersList'];
-            //     if (offerList.length > 0) {
-            //         this.getPromoCodeDetail(offerList[0].offerId);
-            //     }
-            // }
-            // let offerList = this.cartSession['offersList'];
-            // alert(JSON.stringify(this.cartSession['offersList']));
-            // alert(JSON.stringify(offerList));
-            // if (offerList.length > 0) {
-            //     this.getPromoCodeDetail(offerList[0].offerId);
-            // }
-
-            /*this.cartSessionUpdated$.subscribe((cartSession)=>{
-                // alert();
-                // console.log(cartSession, 'updateCartSession$updateCartSession$updateCartSession$');
-                // this.cart = this.cartSession['cart'];
-                this.itemsList = (this.cartSession['itemsList'] != undefined && this.cartSession['itemsList'] != null) ? this.cartSession['itemsList'] : [];
-                this.cd.markForCheck();
-            });*/
 
             this._cartService.extra.subscribe((data) => {
                 if (data && data.errorMessage) {
@@ -231,8 +212,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 });
             }
-
-
         });
     }
 
@@ -247,27 +226,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    /* getShippingCharge(orderValue) {
-        this.isShowLoader=true;
-        this.orderSummaryService.getShippingCharges(orderValue).subscribe(
-            res => {
-                if (res.statusCode == 200) {
-                    this.cartSession = this._cartService.getCartSession();
-
-                    this.cartSession['cart']['shippingCharges'] = res.data;
-                    this.shippingCharges = res.data;
-                    this._cartService.updateCartSession(this.cartSession).subscribe(
-                        data => {
-                            this.isShowLoader=false;
-                        }
-                    );
-
-                    // this.shippingCharges = this.calCulateTotalAmount(this.cartSession['cart'].totalPayableAmount, this.shippingCharges, this.cartSession['cart'].totalPayableAmount)
-                }
-            }
-
-        );
-    } */
 
     deletePromoCode() {
         this.isShowLoader = true;
@@ -352,10 +310,9 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     outData(data: {}) {
-        debugger;
+         ;
         if (data && data['pcd']) {
             this.pad = Object.assign({}, this.pad, data['pcd']);
-            // console.log(data['pcd'], this.pad, "outData", "orderSummary");
         }
 
         // rpc: remove promocode

@@ -35,7 +35,7 @@ export class SharedAuthService {
 
   sendOtp(data): Observable<any> {
     data['device'] = CONSTANTS.DEVICE;
-    return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_OTP, { body: data });
+    return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
   }
 
   signUp(data) {

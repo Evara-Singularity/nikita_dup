@@ -1,6 +1,6 @@
-<checkout-header [step]="headerStep"></checkout-header>
+<checkout-header [step]="tabIndex"></checkout-header>
 <ng-container *ngIf="isBrowser && isCheckoutResolved">
-    <h1>isContinue {{isContinue}}</h1>
+    <!-- <h1>isContinue {{isContinue}}</h1> -->
     <continue *ngIf="tabIndex<4" [isContinue]="isContinue" [tabIndex]="tabIndexList.invoiceType"
         (updateTabIndex)="tabIndexUpdated(tabIndexList.invoiceType+1)"></continue>
 
@@ -22,7 +22,9 @@
 
         <cart (itemsValidationMessage$)="itemsValidationMessageUpdated($event)"
             (updateTabIndex)="tabIndexUpdated($event)" [cartSessionUpdated$]="cartSessionUpdated$"></cart>
-        <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
+        <div class="ordersummary-container">
+            <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
+        </div>
     </div>
 
     <div *ngIf="tabIndex===4" id="paymentMethod">

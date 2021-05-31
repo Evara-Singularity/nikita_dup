@@ -11,9 +11,8 @@ import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, ViewChild, EventEmitter, PLATFORM_ID, Inject, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ClientUtility } from "@app/utils/client.utility";
 
-declare let dataLayer;
-let digitalData: {};
 
 interface ProductSearchResult {
     highlightedSearchString: any,
@@ -69,8 +68,8 @@ export class SearchComponent implements OnInit {
     isBrowser: boolean;
     sortByOpt = false;
     filterCounts;
-    refreshProductsUnsub$;
-    refreshProductsUnsub;
+    relatedSearchResult: any;
+    // relatedSearchResult: any = [{ "categoryName": "Chain Saws", "categoryId": "114143100", "Confidence": 0.5 }, { "categoryName": "Circular Saws", "categoryId": "114143500", "Confidence": 0.5 }, { "categoryName": "Hand Blenders", "categoryId": "214195640", "Confidence": 0.5 }, { "categoryName": "Hand Dryers", "categoryId": "121210000", "Confidence": 0.5 }];
 
     constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
@@ -87,42 +86,41 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this._commonService.isBrowser) {
+            // Set Meta data
+            this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 
-        // Set Meta data
-        this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
+            this.setCategoryDataFromResolver();
+    
+            // Set Foooters
+            this.footerService.setMobileFoooters();
 
-        // Get data from resolver and render the view
-        const resolverData = this._activatedRoute.snapshot.data;        
-        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
-        this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);
-
-        // Empty the setSearchResultsTrackingData initially.
-        this._commonService.setSearchResultsTrackingData({});
-
-        // Remove spacing from input search input value
-        if (this.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
-            const queryParams = this._activatedRoute.snapshot.queryParams;
-            (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
         }
-
-        // Set Foooters
-        this.footerService.setMobileFoooters();
-
-        // Set Adobe tracking and other tasks
-        this.setAdobeTracking();
-
-        // surbscribe to route change and based on that refresh products
-        this.refreshProductsBasedOnRouteChange();
     }
 
-    refreshProductsBasedOnRouteChangeFlag = 0;
-    refreshProductsBasedOnRouteChange() {
-        combineLatest([this._activatedRoute.params, this._activatedRoute.queryParams, this._activatedRoute.fragment]).subscribe(res => {
-            this.windowLoaded = this.windowLoaded + 1;
-            if (this.refreshProductsBasedOnRouteChangeFlag) {
-                this.refreshProducts();
+    setCategoryDataFromResolver() {
+        this._commonService.showLoader = true;
+        // Get data from resolver and render the view
+        this._activatedRoute.data.subscribe(resolverData => {
+
+            const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
+            this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);
+            
+            // Empty the setSearchResultsTrackingData initially.
+            this._commonService.setSearchResultsTrackingData({});
+
+            // Remove spacing from input search input value
+            if (this.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
+                const queryParams = this._activatedRoute.snapshot.queryParams;
+                (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
             }
-            this.refreshProductsBasedOnRouteChangeFlag++;
+
+            
+            // Set Adobe tracking and other tasks
+            this.setAdobeTracking();
+            
+            // hide loader
+            this._commonService.showLoader = false;
         });
     }
 
@@ -141,27 +139,17 @@ export class SearchComponent implements OnInit {
             'customerType': (user && user["userType"]) ? user["userType"] : '',
         }
         let order = {}
+        let digitalData = {}
+        
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
     }
 
-    refreshProducts() {
-        this._commonService.showLoader = true;
-        const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
-        const defaultParams = this.createDefaultParams();
-        this._commonService.updateDefaultParamsNew(defaultParams);
-
-        this.refreshProductsUnsub = this._commonService.refreshProducts().subscribe((response) => {
-            this._commonService.showLoader = false;
-            const extra = { oldDefaultParams: oldDefaultParams };
-            this.initiallizeData(response, extra, true);
-            if (response.productSearchResult.highlightedSearchString)
-                this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
-        });
-    }
     onFilterSelected(count) {
-        this.filterCounts = count;
+        setTimeout(() => {
+            this.filterCounts = count;
+        }, 0);
     }
     topFunction() {
         document.body.scrollTop = document.getElementById('related-list').offsetTop;
@@ -169,6 +157,7 @@ export class SearchComponent implements OnInit {
     }
 
     private initiallizeData(response: any, extra: {}, flag: boolean) {
+        ClientUtility.scrollToTop(2000);
         const oldDefaultParams = extra['oldDefaultParams'];
         const dp = this._commonService.getDefaultParams();
         const fragment = this._activatedRoute.snapshot.fragment;
@@ -178,7 +167,7 @@ export class SearchComponent implements OnInit {
             label: "view",
             channel: "Search Listing",
             page_type: "search page",
-            search_query: queryParams['search_query'].trim(),
+            search_query: queryParams['search_query'] ? queryParams['search_query'].trim() : queryParams['search_query'],
             filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
             product_count: response.productSearchResult.totalCount
         }
@@ -196,7 +185,7 @@ export class SearchComponent implements OnInit {
             }
 
             const products = response.productSearchResult.products;
-
+            let digitalData = {};
             if (this.isBrowser) {
                 digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';
@@ -219,6 +208,7 @@ export class SearchComponent implements OnInit {
             }
 
 
+            let digitalData = {};
             if (this.isBrowser) {
                 digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';
@@ -229,18 +219,26 @@ export class SearchComponent implements OnInit {
 
             if (flag) {
                 this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                this.paginationUpdated.next(this.paginationData);
                 this.sortByUpdated.next();
                 this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                // this.bucketsUpdated.next(response.buckets);
                 this.filterData = response.buckets;
                 this.productsUpdated.next(response.productSearchResult.products);
             }
+            if (this.paginationInstance) {
+                this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
+            }
+            if (this.filterInstance) {
+                this.filterInstance.instance['bucketsUpdated'].next(this.filterData);
+            } else {
+                this.filterCounts = this._commonService.calculateFilterCount(this.filterData);
+            }
+
             this.relatedSearches = response.relatedSearches;
 
             this.productSearchResult = response.productSearchResult;
 
-            // let queryParams = this._activatedRoute.snapshot.queryParams;
+            this.relatedSearchResult = response.categoriesRecommended;
+
             if (queryParams["didYouMean"] != undefined)
                 this.didYouMean = queryParams["didYouMean"];
         }
@@ -389,9 +387,7 @@ export class SearchComponent implements OnInit {
     }
 
     async filterUp() {
-        if (this.isBrowser) {
             if (!this.filterInstance) {
-                this._commonService.showLoader = true;
                 const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
                     this._commonService.showLoader = false;
                     setTimeout(() => {
@@ -406,6 +402,9 @@ export class SearchComponent implements OnInit {
                 this.filterInstance.instance['pageName'] = this.pageName;
                 this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
                 this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
+                (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
+                    this.onFilterSelected(data);
+                });
             } else {
                 const mob_filter = document.querySelector('.mob_filter');
 
@@ -413,9 +412,6 @@ export class SearchComponent implements OnInit {
                     mob_filter.classList.toggle('upTrans');
                 }
             }
-
-        }
-
     }
 
     async toggleSortBy(data) {
@@ -487,6 +483,14 @@ export class SearchComponent implements OnInit {
         return null;
     }
 
+    goToRecommendedCategory(categoryId) {
+        let extras = {
+            queryParams: { ...this._activatedRoute.snapshot.queryParams }
+        };
+        extras['queryParams']['category'] = categoryId;
+        this._router.navigate(['search'], extras);
+    }
+
     resetLazyComponents() {
         if (this.filterInstance) {
             this.filterInstance = null;
@@ -503,14 +507,7 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        if (this.refreshProductsUnsub$) {
-            this.refreshProductsUnsub$.unsubscribe();
-        }
-        if (this.refreshProductsUnsub) {
-            this.refreshProductsUnsub.unsubscribe();
-        }
-
-
+        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 }

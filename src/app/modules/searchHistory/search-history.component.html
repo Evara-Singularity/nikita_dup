@@ -6,10 +6,10 @@
     </div>
     <ul *ngIf="shd && shd.length>0" class="plan-list">
         <li *ngFor="let item of shd">
-            <img src="./assets/img/cross.png" class="crossIcon">
+            <img src="{{imagePathAsset}}assets/img/cross.png" class="crossIcon">
             <a (click)="navigateTo(item.extras)" class="recentSearchProduct">{{item.name}}</a>
 
-            <img src="./assets/img/interface.png" class="interfaceIcon">
+            <img src="{{imagePathAsset}}assets/img/interface.png" class="interfaceIcon">
         </li>        
     </ul>
     <ul *ngIf="shd && shd.length===0" class="plan-list">    

@@ -6,7 +6,7 @@
 
         <!-- <button (click)="placeOrder()" class="continue-btn mt-10">{{signInText}}</button> -->
 
-        <button class="continue-btn mt-10" [routerLink]="['/checkout']">{{signInText}}</button>
+        <button class="btn continue-btn mt-10" [routerLink]="['/checkout']">{{signInText}}</button>
     </div>
     <div class="noitem mb-60" *ngIf="itemsList.length == 0 ">
         <div class="emptycart">

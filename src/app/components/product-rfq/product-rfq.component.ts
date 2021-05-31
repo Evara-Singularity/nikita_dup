@@ -13,6 +13,8 @@ import { BusinessDetailService } from '../../utils/services/business-detail.serv
 import { ProductService } from '../../utils/services/product.service';
 import { Step } from '../../utils/validators/step.validate';
 import { ProductUtilsService } from './../../utils/services/product-utils.service';
+import { CommonService } from '@app/utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'product-rfq',
@@ -51,6 +53,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     userSession = null;
     productMOQ = 1;
     productMAQ = 999;
+    getPincodeSubscriber: Subscription = null;
     rfqForm = new FormGroup({
         quantity: new FormControl(1),
         firstName: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[a-z\s]+$/i)]),
@@ -63,9 +66,10 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         isPincodeUnKnown: new FormControl(false),
         isBusinessCustomer: new FormControl(false),
     });
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private localStorageService: LocalStorageService, private globalState: GlobalState, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
-        @Inject(PLATFORM_ID) private platformId: Object, private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, )
+        @Inject(PLATFORM_ID) private platformId: Object, private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService)
     {
         this.stateList = stateList['dataList'];
         this.isBrowser = isPlatformBrowser(platformId);
@@ -128,6 +132,16 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.firstName.setValue(this.userSession['userName']);
         this.email.setValue(this.userSession.email ? this.userSession.email : '');
         this.mobile.setValue(this.userSession.phone);
+        this.setPincode();
+    }
+
+    setPincode() {
+        let params = { customerId: this.localStorageService.retrieve('user').userId, invoiceType: "retail" };
+        this.getPincodeSubscriber = this._commonService.getAddressList(params).subscribe((res) => {
+            if (res["statusCode"] == 200) {
+                this.pincode.setValue(res["addressList"][0].postCode);
+            }
+        });
     }
 
     setProductDetails()
@@ -375,6 +389,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
         if (this.pincodeSubscriber) {
             this.pincodeSubscriber.unsubscribe();
+        }
+        if(this.getPincodeSubscriber){
+            this.getPincodeSubscriber.unsubscribe();
         }
     }
 }

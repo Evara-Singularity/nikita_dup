@@ -65,7 +65,7 @@ const routes: Routes = [
 					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
-					title: 'Brands',
+					title: '',
 					moreOpt: true,
 				},
 			},
@@ -75,7 +75,7 @@ const routes: Routes = [
 					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
-					title: 'Brand',
+					title: '',
 					moreOpt: true,
 				},
 			},
@@ -163,6 +163,18 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('./orderFailure/orderFailure.module').then(
 						(m) => m.OrderFailureModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					menuBar: true,
+				},
+			},
+			{
+				path: 'order-confirmation',
+				loadChildren: () =>
+					import('./orderConfirmation/orderConfirmation.module').then(
+						(m) => m.OrderConfirmationModule
 					),
 				data: {
 					footer: false,
@@ -615,6 +627,18 @@ const routes: Routes = [
 					footer: false,
 					title: 'Buying Guide',
 					moreOpt: true,
+				},
+			},
+			{
+				path: 'rfq',
+				loadChildren: () =>
+					import('./bulkEnquiry/bulkEnquiry.module').then(
+						(m) => m.BulkEnquiryModule
+					),
+				data: {
+					footer: false,
+					title: 'RFQ',
+					moreOpt: false,
 				},
 			},
 			{

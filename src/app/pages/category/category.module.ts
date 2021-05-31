@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
-import { RouterModule } from '@angular/router';
-import { routing as CategoryRouting } from "./category.routing";
+import { CategoryRoutingModule } from "./category.routing";
 import { MetaModule } from '@ngx-meta/core';
 import { CategoryComponent } from "./category.component";
 import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
 import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
-import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { ProductListModule } from '@app/modules/productList/productList.module'
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
@@ -20,14 +18,12 @@ import { SubCategoryModule } from './subCategory/subCategory.component';
 @NgModule({
     imports: [
         CommonModule,
-        CategoryRouting,
+        CategoryRoutingModule,
         NgxPaginationModule,
         BreadcrumbNavModule,
         CmsModule,
         ObjectToArrayPipeModule,
-        RouterModule,
         ProductListModule,
-        NgxPageScrollModule,
         SubCategoryModule,
         ObserveVisibilityDirectiveModule,
         MetaModule.forRoot(),

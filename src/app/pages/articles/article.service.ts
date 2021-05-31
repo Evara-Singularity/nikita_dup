@@ -3,7 +3,7 @@ import CONSTANTS from '../../config/constants';
 import { DataService } from '../../utils/services/data.service';
 
 const URLS = {
-    ARTICLE: { 'TYPE': 'GET', URL: CONSTANTS.NEW_MOGLIX_API + '/cmsapi/getLayoutJsonByRequestParam?requestParam=' },
+    ARTICLE: { 'TYPE': 'GET', URL: CONSTANTS.NEW_MOGLIX_API + CONSTANTS.GET_LAYOUT },
 }
 
 @Injectable()

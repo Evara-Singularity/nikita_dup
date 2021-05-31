@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { delay } from 'rxjs/operators/delay';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pop-up-variant2',
@@ -75,13 +75,12 @@ export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy() {
-    debugger
     of(null)
       .pipe(
         delay(200)
       )
       .subscribe(() => {
-        debugger;
+         ;
         if (this.isBrowser && document.getElementsByClassName('open').length === 0) {
           (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
           this.enableScroll();

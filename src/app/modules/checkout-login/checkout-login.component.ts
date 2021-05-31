@@ -48,6 +48,7 @@ export class CheckoutLoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.showLoader = false;
     this.loadSubscriber();
   }
 

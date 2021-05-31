@@ -41,8 +41,65 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "index": "src/index/production/index.html",
               "optimization": true,
               "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "50kb"
+                }
+              ]
+            },
+            "qa": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "index": "src/index/qa/index.html",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "50kb"
+                }
+              ]
+            },
+            "vpn": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vpn.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "index": "src/index/vpn/index.html",
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -89,7 +146,8 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.css"
@@ -140,6 +198,34 @@
               ],
               "sourceMap": false,
               "optimization": true
+            },
+            "local": {
+              "outputHashing": "media",
+              "fileReplacements": [],
+              "sourceMap": false,
+              "optimization": true
+            },
+            "qa": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            },
+            "vpn": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.vpn.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
             }
           }
         },
@@ -153,6 +239,18 @@
             "production": {
               "browserTarget": "ssr-pwa:build:production",
               "serverTarget": "ssr-pwa:server:production"
+            },
+            "local": {
+              "browserTarget": "ssr-pwa:build:local",
+              "serverTarget": "ssr-pwa:server:local"
+            },
+            "qa": {
+              "browserTarget": "ssr-pwa:build:qa",
+              "serverTarget": "ssr-pwa:server:qa"
+            },
+            "vpn": {
+              "browserTarget": "ssr-pwa:build:vpn",
+              "serverTarget": "ssr-pwa:server:vpn"
             }
           }
         },

@@ -17,7 +17,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 export class SlpSubCategoryComponent {
   @Input('sub_category_Data') sub_category_Data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+  defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   baseURL = CONSTANTS.PROD;
   openPopup: boolean;
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;

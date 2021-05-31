@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { environment } from 'environments/environment';
 import CONSTANTS from '../../config/constants';
 import { CartService } from '../../utils/services/cart.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
@@ -23,6 +24,7 @@ export class InvoiceTypeComponent implements OnInit, AfterViewInit {
     invoiceTypeForm: FormGroup;
     type;
     showToolTip: boolean;
+    imgAssetPath: string = environment.IMAGE_ASSET_URL
 
     constructor(
         public dataService: DataService,

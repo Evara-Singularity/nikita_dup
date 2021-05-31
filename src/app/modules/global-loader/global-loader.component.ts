@@ -24,7 +24,7 @@ export class GlobalLoaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.loaderUnsubcribe.unsubscribe();
+    // this.loaderUnsubcribe.unsubscribe();
   }
 
 }

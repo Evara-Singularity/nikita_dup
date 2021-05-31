@@ -26,7 +26,7 @@ export interface BrandDetailsFooterData{
 @Component({
 	selector: 'brand-details-footer',
 	templateUrl: 'brand-details-footer.html',
-	styleUrls: ['../../category/category.scss']
+	styleUrls: ['./brand-details-footer.scss']
 })
 
 export class BrandDetailsFooterComponent {

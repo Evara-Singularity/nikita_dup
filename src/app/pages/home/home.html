@@ -1,10 +1,13 @@
 <div class="css-banner-component">
-    <div class="internalBanner h-auto-xs o-hidden relative">
+    <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isBrowser">
         <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
-            <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+            <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options" [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
             </siema-carousel>
         </ng-container>
+    </div>
+    <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isServer">
+        <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0" [src]="carouselData.bannerData.data[0].image_name" alt="banner">
+        <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)" [src]="defaultBannerImage" alt="banner">
     </div>
 </div>
 
@@ -45,29 +48,28 @@
     </a>
 </section>
 <!-- section for trending categories-->
-<div observeVisibility class="categories-container" [debounceTime]="100" (visible)="onVisibleTrendingCategories($event)">
+<div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
     <div>
         <ng-container #TrendingCategories></ng-container>
     </div>
 </div>
 
 <!-- Section for feature Brands -->
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedBrands($event)">
+<div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
     <div>
         <ng-container #FeaturedBrands></ng-container>
     </div>
 </div>
 
-<div observeVisibility class="categories-container" *ngIf="showRecentlyViewedCarousel" [debounceTime]="100" (visible)="onVisibleCarousel($event)">
-    <ng-container #RecentlyViewedCarouselComponent ></ng-container>
+<div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}" *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
+    <ng-container #RecentlyViewedCarouselComponent></ng-container>
 </div>
 
-<div observeVisibility class="categories-container clearfix" [debounceTime]="100"
-    (visible)="onVisibleCategories($event)">
+<div observeVisibility class="categories-container clearfix" [debounceTime]="50" (visible)="onVisibleCategories($event)">
     <ng-container #Categories></ng-container>
 </div>
 
-<div observeVisibility class="featr_brand clearfix" [debounceTime]="100" (visible)="onVisibleFeaturedArrivals($event)">
+<div observeVisibility class="featr_arrival clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
     <ng-container #FeaturedArrivals></ng-container>
 </div>
 

@@ -2,6 +2,8 @@ import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRe
 import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
   selector: "special-deal",
@@ -65,7 +67,7 @@ export class BestOfferComponent {
   setMetas() {
     this.title.setTitle("Explore Best Offers on Moglix.com");
     this.meta.addTag({ property: "og:title", content: "Best offers and deals on products that simplify living. Explore our huge assortment of B2B products and experience unmatched hospitality." });
-    this.meta.addTag({ property: "og:url", content: "https://www.moglix.com/deals/best-offers" });
+    this.meta.addTag({ property: "og:url", content: CONSTANTS.PROD+ENDPOINTS.BST_OFFER });
   }
 
   getBestOfferData() {

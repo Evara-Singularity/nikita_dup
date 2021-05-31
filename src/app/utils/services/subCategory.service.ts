@@ -1,6 +1,7 @@
 import {Injectable, EventEmitter} from "@angular/core";
 import {DataService} from "@services/data.service";
 import {CONSTANTS} from "@config/constants";
+import { ENDPOINTS } from '@app/config/endpoints';
 
 @Injectable({
     providedIn: 'root' 
@@ -17,7 +18,7 @@ export class SubCategoryService{
     }
 
     refreshSubCategoryData(params){
-        this.getSubCategoryData('GET', CONSTANTS.NEW_MOGLIX_API+'/category/getcategorybyid', params).subscribe((response) => {
+        this.getSubCategoryData('GET', CONSTANTS.NEW_MOGLIX_API+ ENDPOINTS.GET_CATEGORY_BY_ID, params).subscribe((response) => {
             this.updateSubCategoryData$.emit(response);
         });
     }

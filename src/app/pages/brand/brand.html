@@ -2,12 +2,11 @@
 <div class="cat_filter_wrap">
     <div class="prod_filter">
         <ng-container *ngIf="isBrowser" #filter></ng-container>
-        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"></filter> -->
     </div>
 </div>
 
 <!-- CMS content of Brand page -->
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="_commonService?.cmsData">
     <div class="row">
         <cms [background]="'bg-trans'" [cmsData]="_commonService?.cmsData"></cms>
     </div>
@@ -58,11 +57,11 @@
 
 
 
-    <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
+    <product-list [itemCount]="this.paginationData?.itemCount" [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
 
     <div class="filter-wrapper">
         <button type="button" (click)="filterUp()">
-            <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER</span>
+            <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER  <span *ngIf="filterCounts">({{ filterCounts }})</span></span>
         </button>
 
         <button type="button" (click)="toggleSortBy($event)">
@@ -81,6 +80,15 @@
         </pagination> -->
     </div>
 
-    <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
-    <ng-template *ngIf="isBrowser" #brandDetailsFooter></ng-template>
+    <div class="popularCategories" *ngIf="productCategoryNames.length>0">
+        <div class="innerPopularSection">
+            <h4 class="heading-3">Popular Categories</h4>
+            <a *ngFor="let category of productCategoryNames;last as isLast" href="{{categoryLinkLists[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+        </div>
+    </div>
+
+    <div [class.visibility]="!firstPageContent">
+        <span observeVisibility [debounceTime]="100" (visible)="onVisiblebrandDetailsFooter($event)"></span>
+        <ng-template *ngIf="isBrowser" #brandDetailsFooter></ng-template>
+    </div>
 </div>

@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta, TransferState } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { ClientUtility } from '@app/utils/client.utility';
 
 @Component({
 	selector: 'store',
@@ -53,6 +54,9 @@ export class StoreComponent {
 				this.storeData = rawData['data'];
 			}
 		});
+		if (this.isBrowser) {
+			ClientUtility.scrollToTop(100);
+		}
 		this.getStoreData(path);
 	}
 
@@ -125,7 +129,7 @@ export class StoreComponent {
 		this.meta.addTag({ property: 'og:description', content: description });
 		this.meta.addTag({
 			property: 'og:url',
-			content: 'https://www.moglix.com/brand-store/' + path[2],
+			content: CONSTANTS.PROD + '/brand-store/' + path[2],
 		});
 		this.meta.addTag({
 			name: 'description',

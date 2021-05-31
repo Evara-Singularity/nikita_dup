@@ -22,7 +22,7 @@ export class ViewComponent {
 	currentL1Index = -1;
 	currentL1Id = -1;
 	clusterCategoryData;
-	defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
+	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 
 	constructor(
 		private categoriesDataService: ViewService,

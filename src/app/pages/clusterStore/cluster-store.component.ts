@@ -63,9 +63,6 @@ export class ClusterStoreComponent implements OnInit {
 	@ViewChild('ClusterVideoComponent', { read: ViewContainerRef })
 	clusterVideoContainerRef: ViewContainerRef;
 
-	clusterFooterInstance = null;
-	@ViewChild('ClusterFooterComponent', { read: ViewContainerRef })
-	clusterFooterContainerRef: ViewContainerRef;
 
 	isServer: boolean;
 	isBrowser: boolean;
@@ -134,7 +131,6 @@ export class ClusterStoreComponent implements OnInit {
 		} else {
 			this.title.setTitle(response['metaTitle']);
 		}
-		this.onVisibleFooter();
 	}
 	setMetaInformation(title, description) {
 		this.meta.addTag({ name: 'robots', content: CONSTANTS.META.ROBOT });
@@ -293,18 +289,6 @@ export class ClusterStoreComponent implements OnInit {
 		];
 	}
 
-	async onVisibleFooter() {
-		const { ClusterFooterComponent } = await import(
-			'../../components/cluster-store/cluster-footer/cluster-footer.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(ClusterFooterComponent);
-		this.clusterFooterInstance = this.clusterFooterContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.clusterFooterInstance.instance['data'] = this.data['footer_data'];
-	}
 
 	reInitializeLazyComponents(initComponent = true) {
 		if(this.isBrowser) {
@@ -371,13 +355,6 @@ export class ClusterStoreComponent implements OnInit {
 			this.clusterVideoContainerRef.remove();
 			if (initComponent) {
 				this.onVisibleClusterVideo();
-			}
-		}
-		if (this.clusterFooterInstance) {
-			this.clusterFooterInstance = null;
-			this.clusterFooterContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleFooter();
 			}
 		}
 	}

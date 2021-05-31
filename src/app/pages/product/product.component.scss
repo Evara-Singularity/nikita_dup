@@ -461,6 +461,9 @@
                     padding-top: 5px;
                     display: block;
                 }
+                &.location-txt {
+                    width: calc(100% - 110px);
+                }
             }
             .ofr_img {
                 width: 25px;

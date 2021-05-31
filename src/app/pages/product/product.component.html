@@ -35,16 +35,14 @@
 </section>
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
-    
+
     <div class="prod-carsl" addClass [ngClass]="[carouselInitialized ? '' : 'before-init']">
-        <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$"
-            [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
+        <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
         </siema-carousel>
         <!-- TODO: check how this section is used in PQA -->
         <ng-container *ngIf="productTags != undefined">
             <div class="image_tag">
-                <div class="tag_container"
-                    *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
+                <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
                     <img src="{{tag.imageUrl}}">
                 </div>
             </div>
@@ -65,10 +63,10 @@
                             Reviews
                         </small>
                     </p>
-                    
+
                 </div>
             </div>
-            
+
             <ng-container *ngIf="productTags != undefined">
                 <div class="prod-tag">
                     <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
@@ -111,10 +109,10 @@
 
             <!--recently bought product section -->
             <div class="recent-bought-wrap" *ngIf="recentBoughtOrderCount">
-                <img src="{{imagePathAsset}}assets/img/icons/coupon-3-fill.png" height="15" width="15" >
+                <img src="{{imagePathAsset}}assets/img/icons/coupon-3-fill.png" height="15" width="15">
                 <span class="inner-text">{{recentBoughtOrderCount}} people bought this recently</span>
             </div>
-            
+
         </div>
         <i class="icon-product_share share-ico" (click)="loadProductShare()"></i>
         <!-- Share section is loaded on demand  -->
@@ -175,8 +173,7 @@
                     </p>
                 </div>
             </div>
-            <div class="bulk-qty" 
-                *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
+            <div class="bulk-qty" *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
@@ -220,8 +217,8 @@
                 </li>
                 <li class="clearfix">
                     <i class="icon-location ico_offer"></i>
-                    <div class="ofr_txt">
-                        <p class="first-txt">Enter Pincode to check availability.</p>
+                    <div class="ofr_txt location-txt">
+                        <p class="first-">Enter Pincode to check availability.</p>
                         <small>Shipping charge as per serviceability</small>
                     </div>
                     <span class="ico-right" (click)="getPincodeForm();">CHECK</span>
@@ -369,7 +366,7 @@
             </div>
         </div>
 
-        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)"  >
+        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
             <ng-container #fbt></ng-container>
         </section>
 
@@ -422,7 +419,7 @@
             </a>
         </section>
 
-        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)" >
+        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>
         </section>
 
@@ -533,7 +530,7 @@
         <section observeVisibility style="margin-top: 10px;" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
             <ng-container #recentProducts></ng-container>
             <div class="loader_container" *ngIf="!recentProductsInstance">
-                <div class="loader" ></div>
+                <div class="loader"></div>
             </div>
         </section>
 
@@ -551,8 +548,8 @@
     <ng-container #offerComparePopup></ng-container>
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
-   
-    
+
+
 
 </div>
 

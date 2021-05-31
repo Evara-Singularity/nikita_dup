@@ -1223,13 +1223,14 @@
         }
     }
     
-    @media (max-width: 480px) {
-        //  background-color: rgb(41, 39, 39),
-        .award-imgs li:last-child {
-            width: 100%
-        }
-        .award-imgs li:last-child>div img {
-            width: 53%;
-            max-width: 100%;
-        }
-    }
+    // @media (max-width: 480px) {
+    //     //  background-color: rgb(41, 39, 39),
+    //     .award-imgs li:last-child {
+    //         width: 100%
+    //     }
+    //     .award-imgs li:last-child>div img {
+    //         width: 53%;
+    //         max-width: 100%;
+    //     }
+    // }
+    

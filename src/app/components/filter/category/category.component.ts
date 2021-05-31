@@ -56,8 +56,6 @@ export class CategoryComponent {
 
     getFragments() {
         const filterData = this._cs.getDefaultParams().filter;
-        console.log(filterData);
-        console.log('--------------------');
         const fragmentString = this._cs.generateFragmentString(filterData);
         if (fragmentString !== null) {
             return fragmentString;

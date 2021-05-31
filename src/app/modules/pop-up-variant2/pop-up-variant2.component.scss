@@ -74,6 +74,8 @@
                 .content-popup {
                     height: calc(100% - 100px);
                     overflow: auto;
+                    margin-top: 0px;
+                    padding-top: 0px;
                     .address-list {
                         padding: 15px;
                     }

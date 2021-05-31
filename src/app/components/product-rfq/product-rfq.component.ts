@@ -90,10 +90,12 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     {
         this.loginSubscriber = this.localAuthService.login$.subscribe((value) =>
         {
-            this.isUserLoggedIn = true;
-            this.setUserDetails();
-            this.userSession = this.localStorageService.retrieve('user');
-            this.getBusinessDetail(this.userSession);
+            if (value) {
+                this.isUserLoggedIn = true;
+                this.setUserDetails();
+                this.userSession = this.localStorageService.retrieve('user');
+                this.getBusinessDetail(this.userSession);
+            }
         })
         this.pincodeSubscriber = this.pincode.valueChanges.subscribe((value: string) =>
         {

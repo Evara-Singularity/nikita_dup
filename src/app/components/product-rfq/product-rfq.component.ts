@@ -80,10 +80,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.setProductDetails();
         this.userSession = this.localStorageService.retrieve('user');
         this.isUserLoggedIn = (this.userSession && this.userSession.authenticated == 'true');
-        console.log(JSON.stringify(this.userSession));
-        console.log('oninitBefore ===>  ' + this.isUserLoggedIn);
         if (this.isUserLoggedIn) {
-            console.log('oninitinside ===>  ' + this.isUserLoggedIn);
             this.setUserDetails();
             this.getBusinessDetail(this.userSession);
         }
@@ -97,13 +94,12 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     {
         this.loginSubscriber = this.localAuthService.login$.subscribe((value) =>
         {
-            console.log('inside login')
-            console.log(JSON.stringify(value));
-            this.isUserLoggedIn = true;
-            console.log('login value ==>  ' + this.isUserLoggedIn);
-            this.setUserDetails();
-            this.userSession = this.localStorageService.retrieve('user');
-            this.getBusinessDetail(this.userSession);
+            if (value) {
+                this.isUserLoggedIn = true;
+                this.setUserDetails();
+                this.userSession = this.localStorageService.retrieve('user');
+                this.getBusinessDetail(this.userSession);
+            }
         })
         this.pincodeSubscriber = this.pincode.valueChanges.subscribe((value: string) =>
         {
@@ -115,9 +111,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         {
             this.rfqForm.reset();
             this.quantity.setValue(this.productMOQ ? this.productMOQ : 1);
-            console.log('inside logout')
             this.isUserLoggedIn = false;
-            console.log('logout value ==>  ' + this.isUserLoggedIn);
         })
     }
 
@@ -143,11 +137,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
 
     setPincode() {
         let params = { customerId: this.localStorageService.retrieve('user').userId, invoiceType: "retail" };
-        console.log('setPincode', this.isUserLoggedIn);
-        console.log('pin ===> ')
-        console.log(JSON.stringify(params))
-        console.log('===> pin')
-
         this.getPincodeSubscriber = this._commonService.getAddressList(params).subscribe((res) => {
             if (res["statusCode"] == 200) {
                 this.pincode.setValue(res["addressList"][0].postCode);
@@ -180,7 +169,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                 this.rfqForm.removeControl('tin');
             }
         } else {
-            console.log('handleBussinessCustomer');
             this.isBusinessCustomer.setValue(false);
             this.initiateLogin();
         }
@@ -201,7 +189,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
             this.pincode.updateValueAndValidity();
             this.city.updateValueAndValidity();
         } else {
-            console.log('handlePingcodeCity');
             this.isPincodeUnKnown.setValue(false);
             this.initiateLogin();
         }
@@ -220,7 +207,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                 }
             }
         } else {
-            console.log('increaseQuantity');
             this.initiateLogin();
         }
     }
@@ -240,7 +226,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                 }
             }
         } else {
-            console.log('decreaseQuantity');
             this.initiateLogin();
         }
     }
@@ -250,10 +235,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     getBusinessDetail(userSession)
     {
         let details = { customerId: userSession.userId, userType: 'business' };
-        console.log('business', this.isUserLoggedIn);
-        console.log('business ===> ')
-        console.log(JSON.stringify(details));
-        console.log('===> business')
         this.businessDetailService.getBusinessDetail(details).subscribe((response) =>
         {
             if (response['statusCode'] == 200) {
@@ -300,7 +281,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         if (this.isUserLoggedIn) {
             this.verifyGSTIN(rfqDetails);
         } else {
-            console.log('processRFQ');
             this.initiateLogin();
         }
     }

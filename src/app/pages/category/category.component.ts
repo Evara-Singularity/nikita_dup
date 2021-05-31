@@ -123,6 +123,7 @@ export class CategoryComponent implements OnInit {
     ngOnInit() {
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
+            
             // Set footers
             this.footerService.setMobileFoooters();
         }
@@ -262,7 +263,7 @@ export class CategoryComponent implements OnInit {
         this._commonService.showLoader = false;
 
         if(this._commonService.isBrowser){
-            ClientUtility.scrollToTop(600);
+            ClientUtility.scrollToTop(1000);
         }
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']

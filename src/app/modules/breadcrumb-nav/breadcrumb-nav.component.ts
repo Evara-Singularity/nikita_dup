@@ -43,7 +43,7 @@ export class BreadcrumbNavComponent implements OnInit {
           "position": index + 1,
           "item":
           {
-            "@id": CONSTANTS.PROD + element['categoryLink'],
+            "@id": CONSTANTS.PROD + '/' + element['categoryLink'],
             "name": element['categoryName']
           }
         })

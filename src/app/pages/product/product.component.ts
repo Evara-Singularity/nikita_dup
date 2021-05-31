@@ -1665,9 +1665,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     if (this.productOutOfStock == true) {
-      this.pageTitle.setTitle("Buy " + title + " Online At Best Price On Moglix");
+      this.pageTitle.setTitle("Buy " + pageTitleName + " Online At Best Price On Moglix");
     } else {
-      this.pageTitle.setTitle("Buy " + title + " Online At Price ₹" + this.productPrice);
+      this.pageTitle.setTitle("Buy " + pageTitleName + " Online At Price ₹" + this.productPrice);
     }
 
     let metaDescription = '';
@@ -1795,7 +1795,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           },
           "offers": {
             "@type": "Offer",
-            "url": CONSTANTS.PROD + this.productUrl,
+            "url": CONSTANTS.PROD + '/' + this.getProductURL(),
             "priceCurrency": "INR",
             "price": (this.productPrice * this.productMinimmumQuantity).toString(),
             "itemCondition": CONSTANTS.SCHEMA + "/NewCondition",

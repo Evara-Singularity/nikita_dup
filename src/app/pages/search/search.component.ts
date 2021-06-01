@@ -492,6 +492,7 @@ export class SearchComponent implements OnInit {
         let extras = {
             queryParams: { ...this._activatedRoute.snapshot.queryParams }
         };
+        extras['queryParams']['search_query'] = this.productSearchResult.correctedSearchString ? this.productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
         extras['queryParams']['category'] = categoryId;
         this._router.navigate(['search'], extras);
     }

@@ -402,7 +402,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					layoutId: 'cm661682',
+					layoutId: 'cm550459',
 				},
 			},
 			{

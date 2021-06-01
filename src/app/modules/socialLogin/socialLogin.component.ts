@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Output, PLATFORM_ID, Inject} from '@angular/core';
 import {SocialLoginService} from './socialLogin.service';
-import { AuthService } from 'angular2-social-login';
 import {ActivatedRoute, Router} from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
+import { SocialAuthService } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '../../utils/services/common.service';
@@ -35,7 +36,7 @@ export class SocialLoginComponent {
         private activatedRoute: ActivatedRoute, private _cartService: CartService,
         private _localAuthService: LocalAuthService, private socialLoginService: SocialLoginService,
         private _tms: ToastMessageService, 
-        private _auth: AuthService, @Inject(PLATFORM_ID) platformId) {
+        private _auth: SocialAuthService, @Inject(PLATFORM_ID) platformId) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
     }
@@ -53,10 +54,9 @@ export class SocialLoginComponent {
     }
 
     signIn(provider){
-        // this.logout();
-        this.sub = this._auth.login(provider).subscribe(
+        this.sub = this._auth.signIn(provider === 'google' ? GoogleLoginProvider.PROVIDER_ID : FacebookLoginProvider.PROVIDER_ID).then(
             (data) => {
-                
+                console.log(data);                
                 let params = {
                     phone: "",
                     email: data["email"],
@@ -235,14 +235,11 @@ export class SocialLoginComponent {
     }
 
     logout(){
-        this._auth.logout().subscribe(
+        this._auth.signOut().then(
             (data)=>{
                 //this.user=null;
             }
         )
-    }
-
-    activateWindow(){
     }
 
 }

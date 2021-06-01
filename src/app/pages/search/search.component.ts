@@ -115,6 +115,9 @@ export class SearchComponent implements OnInit {
                 (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
             }
 
+            if (!this._activatedRoute.snapshot.queryParams.category) {
+                this.toggleRcommendFlag = true;
+            }
             
             // Set Adobe tracking and other tasks
             this.setAdobeTracking();
@@ -483,7 +486,9 @@ export class SearchComponent implements OnInit {
         return null;
     }
 
+    toggleRcommendFlag = true;
     goToRecommendedCategory(categoryId) {
+        this.toggleRcommendFlag = false;
         let extras = {
             queryParams: { ...this._activatedRoute.snapshot.queryParams }
         };

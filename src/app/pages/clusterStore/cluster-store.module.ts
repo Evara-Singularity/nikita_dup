@@ -8,9 +8,10 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 import { ClusterCategoryComponent } from '@app/components/cluster-store/cluster-category/cluster-category.component';
 import { ClusterStoreResolver } from './cluster-store.resolver';
+import { ClusterFooterComponent } from '@app/components/cluster-store/cluster-footer/cluster-footer.component';
 
 @NgModule({
-	declarations: [ClusterStoreComponent, ClusterCategoryComponent],
+	declarations: [ClusterStoreComponent, ClusterCategoryComponent, ClusterFooterComponent],
 	imports: [
 		CommonModule,
 		RouterModule,

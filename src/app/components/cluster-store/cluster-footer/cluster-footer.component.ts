@@ -15,14 +15,3 @@ export class ClusterFooterComponent implements OnInit {
   }
 
 }
-
-@NgModule({
-  declarations: [
-    ClusterFooterComponent
-  ],
-  imports: [
-      CommonModule,
-      RouterModule
-  ],
-})
-export class ClusterFooterModule { }

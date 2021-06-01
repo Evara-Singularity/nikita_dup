@@ -1,6 +1,6 @@
-import { Component, Renderer2, Inject } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Title, Meta } from '@angular/platform-browser'; import { DOCUMENT } from "@angular/common";
+import { Title, Meta } from '@angular/platform-browser'; import { DOCUMENT, isPlatformServer } from "@angular/common";
 import { filter } from 'rxjs/operators';
 import CONSTANTS from '@app/config/constants';
 
@@ -13,6 +13,7 @@ export class BuyerComponent {
   pageTitle;
   buyerPageURL;
   currentRoute: string;
+  isServer: boolean;
   API: {};
 
   constructor(
@@ -21,8 +22,10 @@ export class BuyerComponent {
     private meta: Meta,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
-    private _router: Router) {
+    private _router: Router,
+    @Inject(PLATFORM_ID) platformId: Object) {
 
+    this.isServer = isPlatformServer(platformId);
     this.setMetas();
   }
   
@@ -30,10 +33,12 @@ export class BuyerComponent {
     this.pageTitle = "Buying Guide for Industrial Products";
     let link = CONSTANTS.PROD + this._router.url.split("?")[0].split("#")[0];
     this.meta.addTag({ property: "og:url", content: link });
+    if (this.isServer) {
     let links = this._renderer2.createElement("link");
     links.rel = "canonical";
     links.href = CONSTANTS.PROD + this._router.url.split("?")[0].split("#")[0];
     this._renderer2.appendChild(this._document.head, links);
+    }
 
     this.buyerPageURL = this.router.url;
     if (this.buyerPageURL == "/buyer-guide") {

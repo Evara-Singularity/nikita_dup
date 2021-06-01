@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 @Component({
   selector: "special-deal",
   templateUrl: "brands-spotlight.html",
@@ -21,7 +22,8 @@ export class BrandSpotlightComponent {
     private activatedRoute: ActivatedRoute,
     private title: Title,
     public router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -66,6 +68,12 @@ export class BrandSpotlightComponent {
     this.title.setTitle("Explore Best Offers on Moglix.com");
     this.meta.addTag({ property: "og:title", content: "Best offers and deals on products that simplify living. Explore our huge assortment of B2B products and experience unmatched hospitality." });
     this.meta.addTag({ property: "og:url", content: "www.moglix.com/deals/brands-in-spotlight" });
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    } 
   }
 
   getBrandData() {

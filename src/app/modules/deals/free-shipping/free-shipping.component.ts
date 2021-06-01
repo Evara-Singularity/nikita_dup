@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: "new-year",
@@ -21,7 +22,8 @@ export class FreeShippingComponent {
     private title: Title,
     public router: Router,
     private meta: Meta,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -58,6 +60,12 @@ export class FreeShippingComponent {
   setMetas() {
     this.title.setTitle("Moglix Free Shipping: Pay Rs. 0 for Best Selling Products");
     this.meta.addTag({ name: "description", content: "Deals that make your New Year celebrations awesome. Explore wide range of new year offers and enjoy amazing discounts on industrial supplies." });
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    } 
   }
 
   getFreshData() {

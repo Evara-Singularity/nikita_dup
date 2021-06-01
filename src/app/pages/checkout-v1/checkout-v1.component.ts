@@ -106,11 +106,13 @@ export class CheckoutV1Component implements OnInit {
     }
 
     this.user = this.isBrowser ? this._localAuthService.getUserSession() : null;
-    _activatedRoute.queryParams.subscribe(p => {
-      if (p.index < this.tabIndex) {
-        this.tabIndex = parseInt(p.index);
-      }
-    });
+    //ODP-1244
+    // _activatedRoute.queryParams.subscribe(p => {
+    //   if (p.index < this.tabIndex) {
+    //     this.tabIndex = parseInt(p.index);
+    //     this._checkoutService.setCheckoutTabIndex(this.tabIndex);
+    //   }
+    // });
 
     this.showSocialLogin = true;
     if (this.isBrowser) {
@@ -119,7 +121,9 @@ export class CheckoutV1Component implements OnInit {
     }
     this.title.setTitle('Checkout-Moglix.com');
 
-    this.tabIndex = 1;
+    //ODP-1244
+    // this.tabIndex = 1;
+    // this._checkoutService.setCheckoutTabIndex(this.tabIndex);
     this._cartService.isCartEditButtonClick = false;
 
     /*Subscribe below event when user logged in*/
@@ -144,7 +148,7 @@ export class CheckoutV1Component implements OnInit {
       'email': ['', Validators.required],
       'password': '',
     });
-
+    this.tabIndex = this._checkoutService.getCheckoutTabIndex();
   }
 
   ngOnInit(): void {
@@ -182,6 +186,7 @@ export class CheckoutV1Component implements OnInit {
       //  ;
       if (tab > 1) {
         this.tabIndex = tab;
+        this._checkoutService.setCheckoutTabIndex(this.tabIndex);
         // this.changeParams();
         if (this.tabIndex == 2) {
           this.headerStep = 1;
@@ -212,8 +217,8 @@ export class CheckoutV1Component implements OnInit {
       });
       this._commonService.setWindowLoaded();
     }
-
-    this.tabIndexUpdated(this.tabIndex)
+    
+      
   }
 
   getBusinessDetails() {
@@ -231,6 +236,7 @@ export class CheckoutV1Component implements OnInit {
     const user = this._localStorageService.retrieve('user');
     if (user && user.authenticated === 'true') {
       this.tabIndex = 2;
+      this._checkoutService.setCheckoutTabIndex(this.tabIndex);
       // this.changeParams();
     }
   }
@@ -425,6 +431,7 @@ export class CheckoutV1Component implements OnInit {
     } else if (index != 1) {
       this.tabIndex += 2;
     }
+    this._checkoutService.setCheckoutTabIndex(this.tabIndex);
 
     if (this.tabIndex === 2) {
       // this.scrollToNewTab('#deliveryAddress');
@@ -445,6 +452,7 @@ export class CheckoutV1Component implements OnInit {
     if (this.tabIndex === 4 && index != 5) {
       this.headerStep = 2;
       this.tabIndex = 2;
+      this._checkoutService.setCheckoutTabIndex(this.tabIndex);
       this._state.notifyData('validationCheck', 'validate');
       // this.scrollToNewTab('#productSummary');
     }
@@ -458,6 +466,7 @@ export class CheckoutV1Component implements OnInit {
         digitalData["order"]["invoiceType"] = this.invoiceType;
       _satellite.track("genericPageLoad");
       this.tabIndex = 4;
+      this._checkoutService.setCheckoutTabIndex(this.tabIndex);
     }
 
     // this.changeParams();
@@ -516,6 +525,7 @@ export class CheckoutV1Component implements OnInit {
   updatedStep(data) {
     //console.log('continue login using cred step update ==>', data);
     this.tabIndex = data;
+    this._checkoutService.setCheckoutTabIndex(this.tabIndex);
     this.changeParams();
   }
 

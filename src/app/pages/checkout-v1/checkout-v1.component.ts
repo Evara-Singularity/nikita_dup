@@ -523,7 +523,7 @@ export class CheckoutV1Component implements OnInit {
   }
 
   updatedStep(data) {
-    //console.log('continue login using cred step update ==>', data);
+    console.log('continue login using cred step update ==>', data);
     this.tabIndex = data;
     this._checkoutService.setCheckoutTabIndex(this.tabIndex);
     this.changeParams();

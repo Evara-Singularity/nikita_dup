@@ -27,7 +27,7 @@ export class BreadcrumbNavComponent implements OnInit {
 
 
   breadCrumpCategorySchema() {
-    if (this._commonService.isServer && this.breadcrumb.length > 0) {
+    if (this._commonService.isServer && this.breadcrumb && this.breadcrumb.length > 0) {
       let itemsList = [{
         "@type": "ListItem",
         "position": 0,

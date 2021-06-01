@@ -65,8 +65,8 @@ export class SocialLoginComponent {
                     lastName: "",
                     userId: data["id"],
                     idToken: (data["idToken"]) ? data["idToken"] : '',
-                    source: data["provider"],
-                    buildVersion: '1.1' // for Login OTP for backed end tracking
+                    source: (data["provider"]+'').toLowerCase(),
+                    buildVersion: '1.2' // for Login OTP for backed end tracking
                 };
 
                 this.socialLoginService.authenticate(params).subscribe((res)=>{

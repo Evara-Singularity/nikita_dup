@@ -145,7 +145,7 @@ export class AlpComponent implements OnInit {
     }
 
     setDataAfterGettingDataFromResolver(res) {
-        ClientUtility.scrollToTop(600);
+        this._commonService.scrollToTop();
         this.setAttributeListingInfo(res);
     }
 

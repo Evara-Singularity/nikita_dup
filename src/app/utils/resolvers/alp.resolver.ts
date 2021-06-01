@@ -1,4 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import {
     Resolve,
@@ -14,6 +14,7 @@ import { CommonService } from '../services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpClient } from '@angular/common/http';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +27,8 @@ export class AlpResolver implements Resolve<object> {
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
         private http: HttpClient,
+        @Optional() @Inject(RESPONSE) private _response
+
     ) {
         this.pageName = 'ATTRIBUTE';
     }
@@ -132,7 +135,11 @@ export class AlpResolver implements Resolve<object> {
                     return of(err);
                 }),
                 tap(result => {
-                    if (isPlatformServer(this.platformId)) {
+                    //Abhishek:added condition
+                    this.loaderService.setLoaderState(false);
+                    if(result[0]['data'] == null){
+                        this._response.status(404);
+                    } else if(isPlatformServer(this.platformId)) {
                         this.transferState.set(GET_CIMS_ATTRIBUTE_LISTING, result[0]);
                         this.transferState.set(OTHER_DATA, result[1]);
                     }

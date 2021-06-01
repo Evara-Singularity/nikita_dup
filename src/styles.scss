@@ -369,6 +369,10 @@ header-nav {
     color: $black;
 }
 
+.no-border {
+    border: 0 !important;
+}
+
 // icons
 .icon-instagram:before {
     content: "\e99a";

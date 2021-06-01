@@ -10,12 +10,12 @@
     height:138px;
     padding: 0 0px; box-shadow: 0 3px 5px rgba(0,0,0,0.2); position: relative;
     li {
-       height:52 px;
+       height:70px;
       font-size: 14px;
-      float: left; width: 33.3% !important;  text-align: center; padding: 15px 0px; height: 65px;
+      float: left; width: 33.3% !important;  text-align: center; padding: 15px 0px;
       overflow: hidden; cursor: pointer;
       &.active {
-        height:50 px;
+        // height:50 px;
         border-bottom: 2px solid #e1443b;
         color: #e1443b !important;
         font-weight: 500;

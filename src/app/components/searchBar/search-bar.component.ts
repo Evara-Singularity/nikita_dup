@@ -148,7 +148,7 @@ export class SearchBarComponent implements OnInit {
     searchData(dataD, isValid) {
         this.service.goToDirectBrandCatPage(dataD.searchTerm).subscribe(
             (data) => {
-
+                this._cs.updateSortByFromSearch();
                 this.enableScroll();
                 const extras = {
                     queryParams: {
@@ -226,6 +226,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     navigateTo(page, data, redirectUrl, categoryId, attributes) {
+        this._cs.updateSortByFromSearch();
         this.enableScroll();
         this.resetSearchBar();
         this.showSuggestionBlock = false;

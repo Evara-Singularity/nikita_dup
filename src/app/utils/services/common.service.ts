@@ -73,6 +73,16 @@ export class CommonService {
         this._itemsValidationMessage = ivm;
     }
 
+    updateSortByFromSearch() {
+        this.updateSortBy.next('popularity');
+
+        const sortByFilter = document.querySelector('sort-by');
+
+        if (sortByFilter) {
+            sortByFilter.classList.remove('open');
+        }
+    }
+
     scrollToTop() {
         if (this.isBrowser) {
             window.scrollTo(0,0);

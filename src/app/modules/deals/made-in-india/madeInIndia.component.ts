@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: "made-in-india",
@@ -21,7 +22,8 @@ export class MadeInIndiaComponent {
     private title: Title,
     public router: Router,
     private meta: Meta,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -31,9 +33,13 @@ export class MadeInIndiaComponent {
 
   setMetas() {
     this.title.setTitle("Republic Day Deals - Moglix.com");
-    this.meta.addTag({
-      name: "description", content: "Celebrate India's pride with best Indian brands and products manufactured exclusively in India. Explore the Made in India range at Moglix.com.",
-    });
+    this.meta.addTag({ name: "description", content: "Celebrate India's pride with best Indian brands and products manufactured exclusively in India. Explore the Made in India range at Moglix.com.",});
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    } 
   }
 
   getMadeInIndiaData() {

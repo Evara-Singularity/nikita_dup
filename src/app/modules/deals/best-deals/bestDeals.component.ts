@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: "best-deal",
@@ -20,11 +21,22 @@ export class BestDealComponent {
     @Inject(PLATFORM_ID) private platformId: Object,
     private title: Title,
     public router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
     this.getBestDealData();
+    this.setMetas();
+  }
+
+  setMetas() {
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    }  
   }
 
   getBestDealData() {

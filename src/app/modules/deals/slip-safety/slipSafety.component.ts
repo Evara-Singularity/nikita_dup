@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 
@@ -22,7 +22,8 @@ export class SlipSafetyComponent {
     private meta: Meta,
     private title: Title,
     public router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -64,6 +65,12 @@ export class SlipSafetyComponent {
     this.meta.addTag({ name: "og:description", content: "The slipSafety offers and, deals that you cannot resist are now on Moglix.com. Enjoy lucrative combos and, discounts, daily/weekly, on premium products." });
     this.meta.addTag({ name: "og:title", content: "Avail Safety Products Offers and Deals at Moglix.com" });
     this.meta.addTag({ name: "og:url", content: CONSTANTS.PROD+"/deals/slpsafety" });
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    } 
   }
 
   getSlipSafetyData() {

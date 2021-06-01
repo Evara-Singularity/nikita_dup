@@ -1,10 +1,10 @@
 <!-- New Popup Design -->
 <ng-container *ngIf="itemsList != null && itemsList.length>0">
     <div class="unavailableItems">
-        <div class ="container">
+        <div class="container">
             <div class="container-head-sec">
-                <p class ="txt">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not available
-                  <!-- <span>A item in your order are not deliverable to the selected address.</span> -->
+                <p class="txt">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not available
+                    <!-- <span>A item in your order are not deliverable to the selected address.</span> -->
                 </p>
                 <i (click)="closeModal()" class="icon-circle-delete f-right"></i>
             </div>
@@ -25,8 +25,7 @@
 
                     <p *ngIf="item.bulkPrice !==null" class="price">
                         {{item.bulkPriceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}</p>
-                    <p *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null"
-                        class="price">
+                    <p *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null" class="price">
                         {{item.priceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}
                     </p>
                     <p class="red-text">
@@ -35,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <button (click)="removeUnavailableItems(data.removeUnavailableItems)" class="continue-btn"> REMOVE
+        <button (click)="removeUnavailableItems(data.removeUnavailableItems)" class="continue-btn btn"> REMOVE
             UNAVAILABLE ITEMS</button>
     </div>
 </ng-container>

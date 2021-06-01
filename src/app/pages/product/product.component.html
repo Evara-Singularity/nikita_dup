@@ -506,18 +506,10 @@
                     <button [disabled]="questionAnswerForm.invalid" (click)="postUserQuestion()">SUBMIT</button>
                 </form>
                 <!-- search space  -->
-                <p class="display-qn dummy-class1" *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
+                <p class="display-qn" *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
                     Displaying Questions
                     <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
                     <span>{{questionAnswerList['data']['totalCount']}} </span>
-                </p>
-                <p class="display-qn dummy-class2" [ngClass] = "{'hide-qa': !(questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0)}">
-                    Displaying Questions
-                    <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
-                    <span>{{questionAnswerList['data']['totalCount']}} </span>
-                </p>
-                <p class="display-qn dummy-class3" *ngIf="!(questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0)">
-                   dummy text for question numbers
                 </p>
                 <ng-container *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
                     <div class="qn-block" *ngFor="let item of questionAnswerList['data']['qlist'];let i=index">

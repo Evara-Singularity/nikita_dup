@@ -223,7 +223,6 @@ export class SearchBarComponent implements OnInit {
     resetSearchBar() {
         this.searchForm.reset();
         this.showSuggestionBlock = false;
-        // this.out.emit(true);
     }
 
     navigateTo(page, data, redirectUrl, categoryId, attributes) {
@@ -287,7 +286,6 @@ export class SearchBarComponent implements OnInit {
             this.enableScroll();
             this.resetSearchBar();
             this.ssp = false;
-            console.log(data);
         }
     }
 }

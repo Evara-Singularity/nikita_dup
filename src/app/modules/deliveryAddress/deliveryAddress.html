@@ -76,7 +76,7 @@
         </button>
             </div>
             <app-address-list (outData$)="outData($event)" [addresses]="getAddressList(addressList, 2)" [type]="2" content [showRadio]="true"></app-address-list>
-            <button (click)="selectAddress()" class="continue-btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button>
+            <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button>
         </div>
     </app-pop-up>
 

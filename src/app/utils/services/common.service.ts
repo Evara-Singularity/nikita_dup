@@ -73,6 +73,12 @@ export class CommonService {
         this._itemsValidationMessage = ivm;
     }
 
+    scrollToTop() {
+        if (this.isBrowser) {
+            window.scrollTo(0,0);
+        }
+    }
+
     setWindowLoaded() {
         this.windowLoaded = true;
     }
@@ -691,6 +697,8 @@ export class CommonService {
     getAll(body) {
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ALL_PAYMENT, { body: body });
     }
+
+
 
     updateSortByState(sortByState) {
         let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';

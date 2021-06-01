@@ -1,6 +1,6 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { Location, isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, Optional, ViewContainerRef, ComponentFactoryResolver, Injector, ChangeDetectorRef } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
@@ -80,7 +80,7 @@ export class BrandComponent {
     trendingSearchData;
     productCategoryNames = [];
     categoryNameinAPI;
-
+    brandFooterData: any;
     constructor(public dataService: DataService,
         private cfr: ComponentFactoryResolver,
         private analytics: GlobalAnalyticsService,
@@ -98,6 +98,7 @@ export class BrandComponent {
     }
 
     ngOnInit() {
+        this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             
             // set some extra meta tags if brand is a category page
@@ -105,7 +106,6 @@ export class BrandComponent {
                 this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
             }
 
-            this.setCategoryDataFromResolver();
     
             // Set brand of the page
             this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);    
@@ -126,7 +126,7 @@ export class BrandComponent {
         });
 
         this._activatedRoute.data.subscribe(resolverData => {
-            ClientUtility.scrollToTop(600);
+            this._commonService.scrollToTop();
             this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }
@@ -162,104 +162,89 @@ export class BrandComponent {
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
         if (this.isServer) {
+            //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";
             let href = CONSTANTS.PROD + this._router.url.split("?")[0].split("#")[0].toLowerCase();
-            //console.log("href",href);
-
-            if (qp['page'] == 1 || qp['page'] == undefined) {
-                links.href = href;
+            links.href = (qp['page'] == 1 || qp['page'] == undefined) ? href : href + "?page=" + qp['page'];
+            this._renderer2.appendChild(this._document.head, links);
+            //list schema
+            if (this.brandCategoryName) {
+                this.itemsList = [
+                    {
+                        "@type": "ListItem",
+                        "position": 0,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD,
+                            "name": "Home"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD + "/brand-store",
+                            "name": "Brand"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD + '/' +this.friendlyUrl,
+                            "name": this.brand
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD + this._router.url,
+                            "name": this.brandCategoryName
+                        }
+                    }
+                ];
             }
             else {
-                links.href = href + "?page=" + qp['page'];
-
+                this.itemsList = [
+                    {
+                        "@type": "ListItem",
+                        "position": 0,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD,
+                            "name": "Home"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD + "/brand-store",
+                            "name": "Brand"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "item":
+                        {
+                            "@id": CONSTANTS.PROD + this._router.url,
+                            "name": this.brand
+                        }
+                    },
+                ];
             }
-
-
-            this._renderer2.appendChild(this._document.head, links);
-        }
-        if (this.brandCategoryName) {
-
-            this.itemsList = [{
-                "@type": "ListItem",
-                "position": 0,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD,
-                    "name": "Home"
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD + "/brand-store",
-                    "name": "Brand"
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD + this.friendlyUrl,
-                    "name": this.brand
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD + this._router.url,
-                    "name": this.brandCategoryName
-                }
-            }
-            ];
-        }
-        else {
-            this.itemsList = [{
-                "@type": "ListItem",
-                "position": 0,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD,
-                    "name": "Home"
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD + "/brand-store",
-                    "name": "Brand"
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "item":
-                {
-                    "@id": CONSTANTS.PROD + this._router.url,
-                    "name": this.brand
-                }
-            },
-
-
-            ];
-
-        }
-
-        if (this.isServer) {
             let s = this._renderer2.createElement('script');
             s.type = "application/ld+json";
-
             s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": this.itemsList });
             this._renderer2.appendChild(this._document.head, s);
         }
-
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);
 
@@ -408,29 +393,27 @@ export class BrandComponent {
         }
     }
 
-    async onVisiblebrandDetailsFooter(event) {
-        if (!this.brandDetailsFooterInstance) {
-            const { BrandDetailsFooterComponent } = await import('@app/pages/brand/brand-details-footer/brand-details-footer.component');
-            const factory = this.cfr.resolveComponentFactory(BrandDetailsFooterComponent);
-            this.brandDetailsFooterInstance = this.brandDetailsFooterContainerRef.createComponent(factory, null, this.injector);
-            this.brandDetailsFooterInstance.instance['brandDetailsFooterData'] = {
-                brandCatDesc: this.brandCatDesc,
-                brandShortDesc: this.brandShortDesc,
-                brandContent: this.brandContent,
-                iba: this.iba,
-                firstPageContent: this.firstPageContent,
-                productSearchResult: this.productSearchResult,
-                productSearchResultSEO: this.productSearchResultSEO,
-                heading: this.heading,
-                productCount: this.productCount,
-                brand: this.brand,
-                productCategoryNames: this.productCategoryNames,
-                categoryLinkLists: this.categoryLinkLists,
-                categoryNames: this.categoryNames,
-                todayDate: this.todayDate
-            };
-        }
+    async onVisiblebrandDetailsFooter() {
+        this.brandFooterData = {
+            brandCatDesc: this.brandCatDesc,
+            brandShortDesc: this.brandShortDesc,
+            brandContent: this.brandContent,
+            iba: this.iba,
+            firstPageContent: this.firstPageContent,
+            productSearchResult: this.productSearchResult,
+            productSearchResultSEO: this.productSearchResultSEO,
+            heading: this.heading,
+            productCount: this.productCount,
+            brand: this.brand,
+            productCategoryNames: this.productCategoryNames,
+            categoryLinkLists: this.categoryLinkLists,
+            categoryNames: this.categoryNames,
+            todayDate: this.todayDate,
+            showDesc: this.showDesc
+        };
     }
+
+
 
     async onVisiblePagination(event) {
         if (!this.paginationInstance) {
@@ -642,33 +625,17 @@ export class BrandComponent {
                 this.setAmpTag('brand');
             }
         }
+        this.onVisiblebrandDetailsFooter()
     }
 
     setAmpTag(page) {
-        // console.log("page33",page);
-        let currentRoute = this._router.url.split("?")[0].split("#")[0];
-        let ampLink;
-        ampLink = this._renderer2.createElement('link');
-        ampLink.rel = 'amphtml';
-        if (page == "brand-category") {
-            if (this.pageNo == 1 || this.pageNo == undefined) {
-                ampLink.href = CONSTANTS.PROD + '/ampcb' + currentRoute.toLowerCase();
-                //console.log("ampLink.href in brand category", ampLink.href);
-                //console.log("pageNo in brand category",this.pageNo);
-                this._renderer2.appendChild(this._document.head, ampLink);
-            }
+        if (this.pageNo == 1 || this.pageNo == undefined) {
+            const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
+            const ampLink = this._renderer2.createElement('link');
+            ampLink.rel = 'amphtml';
+            ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
+            this._renderer2.appendChild(this._document.head, ampLink);
         }
-        if (page == "brand") {
-            if (this.pageNo == 1 || this.pageNo == undefined) {
-                ampLink.href = CONSTANTS.PROD + '/ampb' + currentRoute.toLowerCase();
-                //console.log("ampLink.href in brand", ampLink.href);
-                //console.log("pageNo in brand",this.pageNo);
-                this._renderer2.appendChild(this._document.head, ampLink);
-
-            }
-
-        }
-
     }
 
     onFilterSelected(count) {

@@ -31,13 +31,12 @@
                     </div>
                     <div class="continue-button">
                         <div class="container">
-                            <p class="total-mount"> 
-                                <span class="payable-amnt">Payable Amount</span>
-                                ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
+                            <p class="total-mount">
+                                <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
                             <button (click)="confirmOrder()" type="submit" class="btn">Confirm Order</button>
                             <!-- [disabled]="!mobileRef.valid" -->
                         </div>
-                    </div>                    
+                    </div>
                 </form>
             </div>
             <div class="verify_otp pad-tb-30" *ngIf="verifyOtp">
@@ -72,8 +71,8 @@
             <div class="info-area">
                 <p class="info-title">Update Shipping Number</p>
                 <p class="info">The number doesn't match the one, mentioned in your shipping details. If this is your latest number, we'll update it in your shipping details.</p>
-                </div>
-                <div class="button-area">
+            </div>
+            <div class="button-area">
                 <button (click)="removePopup()" class="cancel">CANCEL</button>
                 <button (click)="confirmOrder()" class="continue">UPDATE NUMBER</button>
             </div>

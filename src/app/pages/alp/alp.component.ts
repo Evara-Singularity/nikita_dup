@@ -6,23 +6,17 @@ import { CommonService } from '@services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
 import { FooterService } from '@services/footer.service';
-import { Subject } from 'rxjs/Subject';
 import { SortByComponent } from '@components/sortBy/sortBy.component';
 import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Subject, BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@services/data.service';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
 
-declare let dataLayer;
-declare var digitalData: {};
-declare let _satellite;
-
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
-const RPRK: any = makeStateKey<{}>('RPRK'); // RPRK: Refresh Product Result Key
 const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
 
 @Component({

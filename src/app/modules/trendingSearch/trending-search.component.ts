@@ -23,6 +23,14 @@ export class TrendingSearchComponent {
     }
 
     navigateTo(link, qp) {
+        this._commonService.updateSortBy.next('popularity');
+
+        const sortByFilter = document.querySelector('sort-by');
+
+        if (sortByFilter) {
+            sortByFilter.classList.remove('open');
+        }
+
         this._commonService.setSectionClickInformation('trending_categories_search', 'listing');
         this.outData$.emit('resetAll');
         this._router.navigate([link], { queryParams: qp });

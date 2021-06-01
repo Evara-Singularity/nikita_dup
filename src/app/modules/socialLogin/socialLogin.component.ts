@@ -60,10 +60,10 @@ export class SocialLoginComponent {
                 let params = {
                     phone: "",
                     email: data["email"],
-                    token: data["token"],
+                    token: data["authToken"],
                     firstName: data["name"],
                     lastName: "",
-                    userId: data["uid"],
+                    userId: data["id"],
                     idToken: (data["idToken"]) ? data["idToken"] : '',
                     source: data["provider"],
                     buildVersion: '1.1' // for Login OTP for backed end tracking

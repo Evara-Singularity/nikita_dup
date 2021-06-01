@@ -140,7 +140,18 @@ export class BussinessInfoComponent {
       if (res["status"]) {
         this.error = false;
         this.errorMsg = res["statusDescription"];
-        this._tms.show({type: 'success', text: 'Profile updated successfully.'});
+        this._tms.show({
+          type: "success",
+          text: "Profile updated successfully.",
+        });
+        if (this.localStorageService.retrieve("user")) {
+          let user = this.localStorageService.retrieve("user");
+          if (user.authenticated == "true") {
+            userSession.userName = data.fname + " " + data.lname;
+            this._localAuthService.setUserSession(userSession);
+            this._localAuthService.login$.next();
+          }
+        }
       } else {
         this.error = true;
         this.errorMsg = "Something went wrong";

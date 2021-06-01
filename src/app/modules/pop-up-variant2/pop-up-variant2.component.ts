@@ -7,7 +7,7 @@ import { delay } from 'rxjs/operators';
   selector: 'app-pop-up-variant2',
   templateUrl: './pop-up-variant2.component.html',
   styleUrls: ['./pop-up-variant2.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy {
 

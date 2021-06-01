@@ -90,9 +90,11 @@ export class DealsComponent {
     this.meta.addTag({ "name": "og:description", "content": "Check out the best deals of the day, online offers & discounts on various industrial supplies such as safety, electrical, lighting, gardening, hand tools, power tools, measurement & testing and more." });
     this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this.router.url });
 
-    let links = this._renderer2.createElement('link');
-    links.rel = "canonical";
-    links.href = CONSTANTS.PROD + this.router.url;
-    this._renderer2.appendChild(this._document.head, links);
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    } 
   }
 }

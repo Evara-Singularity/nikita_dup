@@ -1,7 +1,8 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 @Component({
   selector: "winter",
   templateUrl: "winter.html",
@@ -20,7 +21,8 @@ export class WinterComponent {
     private title: Title,
     public router: Router,
     private meta: Meta,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -57,6 +59,12 @@ export class WinterComponent {
   setMetas() {
     this.title.setTitle("Winter Sale - Winter Exclusive Offers and Deals - Moglix.com");
     this.meta.addTag({ name: "description", content: "Get the best delas this winter season on Moglix. Annuncinng price drop alert and heavy discounts on range of products." });
+    if (this.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = CONSTANTS.PROD + this.router.url;
+      this._renderer2.appendChild(this._document.head, links);
+    } 
   }
 
   getWinterData() {

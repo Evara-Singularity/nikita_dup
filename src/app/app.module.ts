@@ -11,6 +11,7 @@ import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ErrorHandlerModule } from './utils/interceptors/error-handler.module';
 
 const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
@@ -29,6 +30,7 @@ const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    ErrorHandlerModule
   ],
   declarations: [
     AppComponent,

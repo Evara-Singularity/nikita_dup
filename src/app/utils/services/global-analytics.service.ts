@@ -30,10 +30,7 @@ export class GlobalAnalyticsService {
   }
 
   sendGTMCall(data: any) {
-    console.log('dataLayer is called');
-    console.log(JSON.stringify(data));
     dataLayer.push(data);
-    console.log('dataLayer is excecuted');
   }
 
   sendToClicstreamViaSocket(data) {

@@ -80,9 +80,9 @@ export class MadeInIndiaComponent {
             var className = (<HTMLElement>e.target).className;
             var class_num = className.split(" ");
             if (class_num.length == 1) {
-              if (document.querySelectorAll(".tab_num .wp-100")) {
+              if (document.querySelectorAll(".tab_num .bg-white")) {
                 Array.prototype.map.call(
-                  document.querySelectorAll(".tab_num .wp-100"),
+                  document.querySelectorAll(".tab_num .bg-white"),
                   (element) => {
                     element.style.display = "none";
                   }

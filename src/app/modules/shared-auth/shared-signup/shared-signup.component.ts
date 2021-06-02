@@ -16,6 +16,7 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { SharedAuthService } from '../shared-auth.service';
 import { GlobalLoaderService } from '@services/global-loader.service';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 
 @Component({
     selector: 'app-shared-signup',
@@ -69,7 +70,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private cartService: CartService,
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,
-        private loaderService: GlobalLoaderService
+        private loaderService: GlobalLoaderService,
+        private checkoutLoginService: CheckoutLoginService
     ){
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
@@ -110,7 +112,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     navigateToLogin()
     {
         if (this.isCheckoutModule) {
-            //this.checkoutLoginService.resetIdentifierInCheckout(true);
+            this.checkoutLoginService.resetIdentifierInCheckout(true);
         } else {
             this.localAuthService.removePageInfo('signup');
             this.localAuthService.setPageInfo('login', { tab: 'SIGNUP' });
@@ -241,7 +243,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 this.isReqProcessing = false;
                 if (response['status'] !== undefined && response['status'] === 500) {
                     if (this.isCheckoutModule) {
-                        //this.checkoutLoginService.signUpCheckout(false);
+                        this.checkoutLoginService.signUpCheckout(false);
                     } else {
                         this.toastService.show({ type: 'error', text: response['message'] });
                     }
@@ -322,13 +324,13 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                                 this.cartService.orderSummary.next(data);
                                 this.cartService.cart.next(data.noOfItems);
                                 this.localAuthService.login$.next(this.redirectUrl);
-                                //this.checkoutLoginService.signUpCheckout(true);
+                                this.checkoutLoginService.signUpCheckout(true);
                                 this.isReqProcessing = false;
                             });
                         } else {
                             // without buynow flow in checkout module
                             this.localAuthService.login$.next(this.redirectUrl);
-                            //this.checkoutLoginService.signUpCheckout(true);
+                            this.checkoutLoginService.signUpCheckout(true);
                         }
                     } else {
                         // normal sign up flow

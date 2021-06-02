@@ -9,6 +9,7 @@ import { LocalAuthService } from '@utils/services/auth.service';
 import { ToastMessageService } from '../../toastMessage/toast-message.service';
 import { SharedAuthService } from '../shared-auth.service';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 
 @Component({
     selector: 'app-shared-forgot-password',
@@ -51,7 +52,7 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
         private authService: SharedAuthService,
         private toastService: ToastMessageService,
         private loaderService: GlobalLoaderService,
-        //private checkoutLoginService: CheckoutLoginService
+        private checkoutLoginService: CheckoutLoginService
     ) { }
 
     ngOnInit() { this.initialize(); }
@@ -105,7 +106,7 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
 
     onEdit() {
         if (this.isCheckoutModule) {
-            //this.checkoutLoginService.resetIdentifierInCheckout(true);
+            this.checkoutLoginService.resetIdentifierInCheckout(true);
         } else {
             this.localAuthService.setPageInfo('login', { tab: 'LOGIN', username: this.username.value });
             this.router.navigate(['login'])
@@ -167,10 +168,10 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
                     this.toastService.show({ type: 'success', text: response['message'] });
                     //@checkout flow need to integrated here
                     if (this.isCheckoutModule) {
-                        // this.checkoutLoginService.setPasswordResetStatus({
-                        //     status: true,
-                        //     message: 'Password reset successfully. Please login to proceed',
-                        // })
+                        this.checkoutLoginService.setPasswordResetStatus({
+                            status: true,
+                            message: 'Password reset successfully. Please login to proceed',
+                        })
                     } else {
                         this.router.navigate(['/login']);
                     }

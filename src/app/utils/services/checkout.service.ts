@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import CONSTANTS from "../../config/constants";
 import { DataService } from "./data.service";
@@ -14,6 +14,9 @@ export class CheckoutService {
     billingAddress: {};
     checkoutAddress: {};
     invoiceType: string;
+    checkoutTabIndex = 1
+    checkoutHeader = new Subject<number>();
+
 
     constructor(public dataService: DataService) {
         this.checkoutAddress = null;
@@ -60,5 +63,14 @@ export class CheckoutService {
                 return of({ status: false, statusCode: res.status });
             })
         );
+    }
+
+    setCheckoutTabIndex(index) { 
+        this.checkoutTabIndex = index; 
+        this.checkoutHeader.next(index);
+    }
+
+    getCheckoutTabIndex() {
+         return this.checkoutTabIndex; 
     }
 }

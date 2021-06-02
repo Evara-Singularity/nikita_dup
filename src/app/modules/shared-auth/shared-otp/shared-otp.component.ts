@@ -14,6 +14,7 @@ import { CartService } from '../../../utils/services/cart.service';
 import { CommonService } from '../../../utils/services/common.service';
 import { SharedAuthService } from '../shared-auth.service';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 
 @Component({
     selector: 'app-shared-otp',
@@ -62,6 +63,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private authService: SharedAuthService,
         private loaderService: GlobalLoaderService,
+        private checkoutLoginService: CheckoutLoginService,
     ) {
         this.isBrowser = isPlatformBrowser(platformId);
     }
@@ -131,7 +133,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onEdit() {
         if (this.isCheckoutModule) {
-            //this.checkoutLoginService.resetIdentifierInCheckout(true);
+            this.checkoutLoginService.resetIdentifierInCheckout(true);
         } else {
             this.localAuthService.setPageInfo('login', { tab: 'LOGIN', username: this.username.value });
             this.router.navigate(['login'])
@@ -264,19 +266,19 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
                                 this.cartService.cart.next(data.noOfItems);
                                 this.localAuthService.login$.next(this.redirectUrl);
                                 this.isReqProcessing = false;
-                                // this.checkoutLoginService.setLoginUsingOTPStatus({
-                                //     status: true,
-                                //     message: 'Sign in successfull'
-                                // })
+                                this.checkoutLoginService.setLoginUsingOTPStatus({
+                                    status: true,
+                                    message: 'Sign in successfull'
+                                })
                             });
                         } else {
                             // without buynow flow in checkout module
                             console.log('shared otp with checkout without buynow', 'called');
                             this.localAuthService.login$.next(this.redirectUrl);
-                            // this.checkoutLoginService.setLoginUsingOTPStatus({
-                            //     status: true,
-                            //     message: 'Sign in successfull'
-                            // })
+                            this.checkoutLoginService.setLoginUsingOTPStatus({
+                                status: true,
+                                message: 'Sign in successfull'
+                            })
                         }
                     } else {
                         // normal sign up flow

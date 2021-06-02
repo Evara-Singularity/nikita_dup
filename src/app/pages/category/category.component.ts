@@ -14,6 +14,7 @@ import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
+let digitalData = {};
 
 @Component({
     selector: 'category',
@@ -721,7 +722,7 @@ export class CategoryComponent implements OnInit {
                 'productCategoryL3': taxo3            
             }
 
-            let digitalData = {};
+            
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;

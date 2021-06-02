@@ -11,8 +11,6 @@ import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Component, ViewChild, EventEmitter, PLATFORM_ID, Inject, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { ClientUtility } from "@app/utils/client.utility";
-
 
 interface ProductSearchResult {
     highlightedSearchString: any,
@@ -24,6 +22,11 @@ interface ProductSearchResult {
     searchDisplayOperation: any;
 }
 
+let digitalData = {
+    page: {},
+    custData: {},
+    order: {}
+};
 @Component({
     selector: 'search',
     templateUrl: './search.component.html',
@@ -90,8 +93,12 @@ export class SearchComponent implements OnInit {
             // Set Meta data
             this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 
+            // Set Adobe tracking and other tasks
+            this.setAdobeTracking();
+
+            // Set data after getting from resolver
             this.setCategoryDataFromResolver();
-    
+
             // Set Foooters
             this.footerService.setMobileFoooters();
 
@@ -117,10 +124,10 @@ export class SearchComponent implements OnInit {
 
             if (!this._activatedRoute.snapshot.queryParams.category) {
                 this.toggleRcommendFlag = true;
+            } else {
+                this.toggleRcommendFlag = false;
+                this.recommendedCategory = '';
             }
-            
-            // Set Adobe tracking and other tasks
-            this.setAdobeTracking();
             
             // hide loader
             this._commonService.showLoader = false;
@@ -132,6 +139,8 @@ export class SearchComponent implements OnInit {
         let page = {
             'pageName': "Search Listing Page",
             'channel': "search",
+            'categoryRecommended': '',
+            'categoryRecSelected': '',
             'subSection': "moglix:search " + this._commonService.getSectionClick().toLowerCase(),
             'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
         }
@@ -142,7 +151,6 @@ export class SearchComponent implements OnInit {
             'customerType': (user && user["userType"]) ? user["userType"] : '',
         }
         let order = {}
-        let digitalData = {}
         
         digitalData["page"] = page;
         digitalData["custData"] = custData;
@@ -175,6 +183,32 @@ export class SearchComponent implements OnInit {
             product_count: response.productSearchResult.totalCount
         }
         this.dataService.sendMessage(trackingData);
+
+        this.relatedSearches = response.relatedSearches;
+
+        this.productSearchResult = response.productSearchResult;
+
+        this.relatedSearchResult = response.categoriesRecommended;
+
+        let relatedSearchResults = '';
+
+        if (this.relatedSearchResult) {
+            this.relatedSearchResult.filter(((r, index) => {
+                if (index < 3) {
+                    if (index === 0) {
+                        relatedSearchResults += r['categoryName'];
+                    } else {
+                        relatedSearchResults += ' | ' + r['categoryName'];
+                    }
+                    return true;
+                }
+                return false;
+            }));
+        }
+        digitalData['page']['categoryRecommended'] = relatedSearchResults;
+        digitalData['page']['categoryRecSelected'] = this.recommendedCategory;
+        digitalData['page']['subSection'] += (response.productSearchResult['products'].length === 0 ? " : ZSR" : '');
+
         if (response.productSearchResult['totalCount'] === 1 && fragment == null) {
             if (this.isBrowser && !oldDefaultParams['queryParams'].hasOwnProperty("search_query") || oldDefaultParams['queryParams']['search_query'] != dp['queryParams']['search_query']) {
                 this._commonService.setSearchResultsTrackingData({ 'search-query': dp["queryParams"]["search_query"], 'search-results': '1' });
@@ -188,9 +222,8 @@ export class SearchComponent implements OnInit {
             }
 
             const products = response.productSearchResult.products;
-            let digitalData = {};
+
             if (this.isBrowser) {
-                digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData['page']['searchTerm'] = products[0].moglixPartNumber;
                 digitalData['page']['suggestionClicked'] = queryParams['lsource'] && queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
@@ -211,9 +244,7 @@ export class SearchComponent implements OnInit {
             }
 
 
-            let digitalData = {};
             if (this.isBrowser) {
-                digitalData = {page: {}};
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData['page']['searchTerm'] = queryParams['search_query'];
                 digitalData['page']['suggestionClicked'] = queryParams['lsource'] && queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
@@ -236,12 +267,6 @@ export class SearchComponent implements OnInit {
                 this.filterCounts = this._commonService.calculateFilterCount(this.filterData);
             }
 
-            this.relatedSearches = response.relatedSearches;
-
-            this.productSearchResult = response.productSearchResult;
-
-            this.relatedSearchResult = response.categoriesRecommended;
-
             if (queryParams["didYouMean"] != undefined)
                 this.didYouMean = queryParams["didYouMean"];
         }
@@ -249,12 +274,11 @@ export class SearchComponent implements OnInit {
         //Start Canonical URL 
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);
-        //console.log("Current router:" + currentRoute);
         let pageCountQ = response.productSearchResult.totalCount / 10;
         let currentPageP = parseInt(currentQueryParams["page"]);
 
         if (pageCountQ > 1 && (currentPageP == 1 || isNaN(currentPageP))) {
-            // console.log("hello");
+
             let links = this._renderer2.createElement('link');
             links.rel = "next";
             links.href = CONSTANTS.PROD + currentRoute + '?page=2';
@@ -315,7 +339,6 @@ export class SearchComponent implements OnInit {
         let fragment = this._activatedRoute.snapshot.fragment;
         if (fragment != undefined && fragment != null && fragment.length > 0) {
             let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            ////console.log(currentUrlFilterData);
             currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
             currentUrlFilterData = currentUrlFilterData.split("/");
             if (currentUrlFilterData.length > 0) {
@@ -336,18 +359,15 @@ export class SearchComponent implements OnInit {
     pageChanged(page) {
         let extras: NavigationExtras = {};
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);
-        // let fragmentString = this._commonService.generateFragmentString();
         let fragmentString = this._activatedRoute.snapshot.fragment;
         if (fragmentString != null) {
             extras.fragment = fragmentString;
-            //console.log(extras);
         }
 
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let newQueryParams: {} = {};
         if (Object.keys(currentQueryParams).length) {
             for (let key in currentQueryParams) {
-                //console.log(key);
                 newQueryParams[key] = currentQueryParams[key];
             }
         }
@@ -487,8 +507,10 @@ export class SearchComponent implements OnInit {
     }
 
     toggleRcommendFlag = true;
-    goToRecommendedCategory(categoryId) {
+    recommendedCategory: string = '';
+    goToRecommendedCategory(categoryId, cat) {
         this.toggleRcommendFlag = false;
+        this.recommendedCategory = cat['categoryName'];
         let extras = {
             queryParams: { ...this._activatedRoute.snapshot.queryParams }
         };

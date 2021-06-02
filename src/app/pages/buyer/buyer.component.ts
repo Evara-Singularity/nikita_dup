@@ -1,4 +1,4 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser'; import { DOCUMENT, isPlatformServer } from "@angular/common";
 import { filter } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import CONSTANTS from '@app/config/constants';
   selector: "buyer",
   templateUrl: "buyer.html",
   styleUrls: ["buyer.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class BuyerComponent {
   pageTitle;

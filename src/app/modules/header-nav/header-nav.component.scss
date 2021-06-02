@@ -1,45 +1,5 @@
 @import '../../scss/variables';
 header {
-    background: $white;
-    .scrolled-search {
-        display: none;
-    }
-    &.scrolled.home-page {
-        @extend %box-shadow;
-        background: $txt-color;
-        .icon-logo,
-        .bottom-search,
-        .icon-home-deal,
-        .login-txt {
-            display: none;
-        }
-        .scrolled-search {
-            display: block;
-            margin: 4px 0;
-            width: 80%;
-        }
-        .icon-menu,
-        .head-icons a {
-            color: $white;
-        }
-        .badge {
-            background: $white;
-            color: $txt-color;
-        }
-        .head-icons a {
-            margin-left: 0;
-            padding-bottom: 0;
-        }
-        .head-icons>* {
-            padding-top: 13px;
-        }
-        // .home-icons a {
-        //     margin-left: 12px !important;
-        // }
-        .icon-cart-header {
-            margin-left: 0px !important;
-        }
-    }
     .style-1 {
         background: $logo-color;
         .head-strip {
@@ -160,51 +120,13 @@ header {
     z-index: 6;
 }
 
-.head-popup {
-    padding: 1px 0;
-    @extend %clear-fix;
-    background: $logo-color;
-    margin-bottom: 0px;
-    .container {
-        position: relative;
-    }
-    i {
-        position: absolute;
-        left: 10px;
-        top: 20px;
-        font-size: 18px;
-        color: #303030;
-        z-index: 1;
-        &.icon-delete {
-            right: 10px;
-            font-size: 14px;
-            left: auto;
-            margin-top: 0px;
-        }
-    }
-    .icon-back {
-        display: none;
-    }
-    input {
-        border-radius: 3px;
-        margin: 10px 0;
-        height: 40px;
-        // line-height: 40px;
-        width: 100%;
-        border: 0;
-        padding: 0 36px 0 40px;
-        background: #fff;
-        font-size: 14px;
-        color: #707070;
-    }
-}
-
 .f-size-16 {
     font-size: 16px;
 }
 
 .head-icons,
-.common-header {
+.common-category-header,
+.scrolledHeader {
     .badge {
         position: absolute;
         top: 4px;
@@ -221,7 +143,7 @@ header {
     }
 }
 
-.common-header {
+.common-category-header {
     display: table;
     &>* {
         padding: 12px 8px;
@@ -253,7 +175,7 @@ header {
             display: inline-block;
         }
     }
-    .search-bar {
+    .search-bar-mini {
         position: relative;
         width: 80%;
         input {
@@ -320,45 +242,76 @@ header {
     top: 0px;
     left: 0px;
     z-index: 89;
-    .icon-menu {
-        position: initial;
-        text-align: center;
-        width: 15%;
-        color: #fff;
-        float: left;
+}
+
+// Common Search Bar
+.search-bar {
+    position: relative;
+    @include placeholder {
+        color: $place-holder-color;
         font-size: 16px;
-        line-height: 50px;
     }
-    #search-input-block {
-        display: block;
-        margin: 4px 0;
-        width: 70%;
-        float: left;
-        i {
-            position: absolute;
-        }
+    .search-bar-input {
+        height: 40px;
+        width: 100%;
+        border: 0;
+        padding: 0 36px 0 40px;
+        background: #fff;
+        letter-spacing: -.2px;
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 3px;
+        background-color: #fff;
+        line-height: 40px;
     }
-    .icon-cart-header {
-        width: 15%;
+    &:after {
+        content: "\e972";
+        font-family: 'icomooon_pwa';
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        color: #303030;
+        font-size: 18px;
+    }
+    &.search-bar-custom {
+        margin: 11px 10px;
+    }
+}
+
+// When Header is scrolled
+.scrolledHeader {
+    width: 100%;
+    height: 54px;
+    display: table;
+    table-layout: fixed;
+    z-index: 90;
+    padding: 5px 0;
+    background: $logo-color;
+    &>* {
+        color: $white;
+    }
+    a {
+        display: table-cell;
+        vertical-align: middle;
         text-align: center;
-        color: #fff;
-        float: left;
-        font-size: 20px;
-        line-height: 50px;
         position: relative;
-        .badge {
-            position: absolute;
-            top: 2px;
-            right: 5px;
-            width: 18px;
-            height: 18px;
-            text-align: center;
-            line-height: 18px;
-            border-radius: 50%;
-            color: $logo-color;
-            background: $white;
-            font-size: 11px;
-            font-family: 'Roboto', sans-serif;
+        display: inline-block;
+        &.search-bar {
+            width: 76%;
+            margin: 2px 0px;
         }
+        &.header-icon {
+            max-width: 48px;
+            width: 12%;
+            font-size: 20px;
+            &.icon-menu {
+                font-size: 15px;
+            }
+        }
+    }
+    .badge {
+        top: -9px;
+        right: 2px;
+        color: #333;
     }
 }

@@ -1,10 +1,24 @@
 @import '../../../../src/app/modules/continue/continue.scss';
 .order-container {
-    padding-bottom: 33px;
+    padding-top: 10px;
+    padding-bottom: 80px;
     .card-30 {
-        padding-top: 10px;
+        padding: 10px 15px 30px;
+    }
+    .f-16 {
+        font-size: 16px;
+    }
+    .f-12 {
+        font-size: 12px;
+    }
+    .f-14 {
+        font-size: 14px;
+    }
+    .bold-txt {
+        font-weight: 600;
     }
     .txt-list {
+        margin: 15px 0px;
         li {
             padding: 2px 0;
             span {

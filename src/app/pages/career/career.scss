@@ -1,5 +1,7 @@
+@import '../../scss/variables';
+
 .cs-section {
-    background-image: url("/assets/img/moglixteam.jpg");
+    background-image: url("#{$cdn_url}mob/assets/img/moglixteam.jpg");
     background-repeat: no-repeat;
     height: 500px;
     background-position: 50% 0%;

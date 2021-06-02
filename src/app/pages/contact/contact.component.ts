@@ -1,4 +1,4 @@
-
+import { environment } from './../../../environments/environment';
 import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformServer } from "@angular/common";
@@ -11,7 +11,7 @@ import CONSTANTS from '@app/config/constants';
 })
 
 export class ContactComponent {
-  imagePath = CONSTANTS.IMAGE_BASE_URL;
+  imgAssetPath: string = environment.IMAGE_ASSET_URL
   contactUsSchema;
   isServer: boolean;
 
@@ -48,7 +48,7 @@ export class ContactComponent {
         "@context": CONSTANTS.SCHEMA, "@type": "Organization",
         "name": "Moglix",
         "url": CONSTANTS.PROD,
-        "logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
+        "logo": `${this.imgAssetPath}assets/img/moglix-logo.jpg`,
         "contactPoint":
           [{
             "@type": "ContactPoint",

@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -10,7 +11,7 @@ import CONSTANTS from '@app/config/constants';
   styleUrls: ['career.scss']
 })
 export class CareerComponent {
-  imagePath = CONSTANTS.IMAGE_BASE_URL;
+  imgAssetPath: string = environment.IMAGE_ASSET_URL
   isServer: boolean;
 
   constructor(

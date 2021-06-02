@@ -10,7 +10,6 @@ import CONSTANTS from '@app/config/constants';
   styleUrls: ['career.scss']
 })
 export class CareerComponent {
-
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   isServer: boolean;
 

@@ -11,7 +11,6 @@ import CONSTANTS from '@app/config/constants';
 })
 
 export class ContactComponent {
-
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   contactUsSchema;
   isServer: boolean;

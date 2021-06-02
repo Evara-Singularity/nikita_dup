@@ -1,6 +1,6 @@
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, AfterViewInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector, Input } from '@angular/core';
+import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { CategoryService } from '@utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -12,7 +12,6 @@ import { CONSTANTS } from '@app/config/constants';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { ClientUtility } from '@app/utils/client.utility';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 
@@ -384,6 +383,7 @@ export class CategoryComponent implements OnInit {
                 this.productSearchResultSEO.push(response.productSearchResult.products[p]);
             }
         }
+        console.log('setting setCanonicalUrls');
         this.setCanonicalUrls(response);
         this.categoryLinkLists = response.categoryLinkList;
         this.productCategoryNames = [];
@@ -563,25 +563,31 @@ export class CategoryComponent implements OnInit {
 
     private setCanonicalUrls(response) {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
+        console.clear();
+        console.log(this._commonService.isServer);
+        console.log(this.pageNo);
+
         if (this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
+            console.log('links creates');
             links.rel = 'canonical';
             if (this.pageNo == undefined || this.pageNo == 1) {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
-            }
-            else {
+            } else {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
             }
+            console.log(links.href);
             this._renderer2.appendChild(this._document.head, links);
         }
 
         if (this.pageNo == undefined || this.pageNo == 1) {
             if (this._commonService.isServer) {
+                console.log('links creates');
                 let ampLink;
                 ampLink = this._renderer2.createElement('link');
                 ampLink.rel = 'amphtml';
                 ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
-
+                console.log(ampLink.href);
                 /**
                  * Below if condition is just a temporary solution.
                  * Strictly remove if condtion, once amp of drill(114160000) page is completed.

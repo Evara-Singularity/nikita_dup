@@ -1,8 +1,7 @@
-
 /*recent articles section- manisha*/
 
 .recent-article-section {
-    padding: 0px 15px 15px 15px;
+    padding: 0 15px 15px;
     margin-left: 15px;
     h1 {
         font-size: 16px;
@@ -37,9 +36,6 @@
             padding: 20px;
             img {
                 margin: auto;
-                width: 100%;
-                height: -webkit-fill-available;
-                max-width: 100%;
             }
             p {
                 color: #278BED;

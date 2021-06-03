@@ -17,7 +17,7 @@ import {
 	Injector,
 } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { fade } from '@utils/animations/animation';
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';

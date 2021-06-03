@@ -55,4 +55,11 @@ ul{
 }
 .no-list-style{
     list-style: none !important;
+    text-align: left;
+    li{
+        text-align: left;
+    }
+}
+.f-size-17{
+    text-align: left;
 }

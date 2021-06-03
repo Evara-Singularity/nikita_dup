@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment';
+
 import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformServer } from "@angular/common";
@@ -11,12 +11,8 @@ import CONSTANTS from '@app/config/constants';
 })
 
 export class ContactComponent {
-<<<<<<< HEAD
-  imgAssetPath: string = environment.IMAGE_ASSET_URL
-=======
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
->>>>>>> parent of ccbb345... added contact and career
   contactUsSchema;
   isServer: boolean;
 
@@ -32,13 +28,13 @@ export class ContactComponent {
     this.title.setTitle("Contact Us - Moglix - Call 955 5988 544");
     this.meta.addTag({ "property": "og:title", "content": "Contact Us - Moglix - Call 955 5988 544" });
     this.meta.addTag({ "property": "og:description", "content": "Write to us at care[at]moglix.com or contact customer care at 9555-988-544. We are happy to help you round the clock to the best of our ability." });
-    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD+"/contact" });
+    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD + "/contact" });
     this.meta.addTag({ "name": "description", "content": "Write to us at care[at]moglix.com or contact customer care at 9555-988-544. We are happy to help you round the clock to the best of our ability." });
 
     if (this.isServer) {
       let links = this._renderer2.createElement('link');
       links.rel = "canonical";
-      links.href = CONSTANTS.PROD+"/contact";
+      links.href = CONSTANTS.PROD + "/contact";
       this._renderer2.appendChild(this._document.head, links);
     }
 
@@ -53,7 +49,7 @@ export class ContactComponent {
         "@context": CONSTANTS.SCHEMA, "@type": "Organization",
         "name": "Moglix",
         "url": CONSTANTS.PROD,
-        "logo": `${this.imgAssetPath}assets/img/moglix-logo.jpg`,
+        "logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
         "contactPoint":
           [{
             "@type": "ContactPoint",

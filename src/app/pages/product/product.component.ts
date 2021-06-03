@@ -895,7 +895,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   addProductInCart(routerLink, sessionCartObject, quantity, buyNow?) {
 
-    // this.analyticAddToCart(routerLink); // since legacy buy  now analytic code is used 
+    this.analyticAddToCart(routerLink); // since legacy buy  now analytic code is used 
 
     const userSession = this.localStorageService.retrieve('user');
     let sessionItemList: Array<any> = [];

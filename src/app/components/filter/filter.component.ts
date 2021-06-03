@@ -315,7 +315,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
         if (this.sortByComponent) {
             this._cs.updateSortByState(this.sortByComponent.sortBy);
         }
+
         this._router.navigate([currentRoute], extras);
+
         if (this.isBrowser) {
             document.querySelector('.mob_filter').classList.toggle('upTrans');
         }

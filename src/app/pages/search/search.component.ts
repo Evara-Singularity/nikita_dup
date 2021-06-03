@@ -480,22 +480,11 @@ export class SearchComponent implements OnInit {
     }
 
     redirectWithNoPreProcessRequiredParam(searchTerm: string) {
-        this._commonService.showLoader = true;
-        let oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
         let defaultParams = this.createDefaultParams();
-        defaultParams['queryParams']['search_query'] = searchTerm;
+        defaultParams['queryParams']['str'] = searchTerm;
         defaultParams['queryParams']['preProcessRequired'] = 'n';
-
         this._commonService.updateDefaultParamsNew(defaultParams);
-
-        this._commonService.refreshProducts().subscribe((response) => {
-            let extra = { oldDefaultParams: oldDefaultParams };
-            this.initiallizeData(response, extra, true);
-            if (response.productSearchResult.highlightedSearchString) {
-                this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
-            }
-            this._commonService.showLoader = false;
-        });
+        this._router.navigate(['search'], this._commonService.getDefaultParams());
     }
 
     getFragments() {

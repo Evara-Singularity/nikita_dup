@@ -2,7 +2,7 @@
     <div class="home_accordian_footer_panel" *ngIf="flyoutData && flyoutData.length">
         <div class="panel-head">
             <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan1' , iconMode : true}">
+                <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan' , iconMode : true}">
                     Trending Categories
                     <span class="icon-accordian">
                         <i class="icon-up"></i>
@@ -10,7 +10,7 @@
                 </h3>
             </div>
         </div>
-        <div id="openHomeAccoridan1" style="display:block;" class="panel-body">
+        <div id="openHomeAccoridan" style="display:block;" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let data of flyoutData; let i = index">
                     <a *ngIf="i < 6" [routerLink]="produrl + '/' + data.link">{{ data.categoryName }}</a>
@@ -18,80 +18,34 @@
             </div>
         </div>
     </div>
-    <div class="home_accordian_footer_panel" *ngIf="carouselData['powerData']">
+    <div class="home_accordian_footer_panel" [routerLink]="produrl+'/brand-store'">
         <div class="panel-head">
             <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan2' , iconMode : true}">
-                    Trending Categories
-                    <span class="icon-accordian">
-                        <i class="icon-up"></i>
-                    </span>
+                <h3 class="heading">
+                    Brand Store
                 </h3>
-            </div>
-        </div>
-        <div id="openHomeAccoridan2" style="display:block;" class="panel-body">
-            <div class="container category_links">
-                <div *ngFor="let data of carouselData['powerData']['data']['brand_block']">
-                    <a [routerLink]="produrl + '/' + data.brand_url">{{ data.brandName }}</a>
-                </div>
             </div>
         </div>
     </div>
-    <!-- <div class="home_accordian_footer_panel" *ngIf="carouselData['officeData']">
-        <div class="panel-head">
-            <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan3' , iconMode : true}">
-                    {{ carouselData['officeData']['layout_name'] }}
-                    <span class="iconaccordian">
-                        <i class="icon-up"></i>
-                    </span>
-                </h3>
+    <ng-container *ngFor="let item of dataArray; let i = index">
+        <div class="home_accordian_footer_panel" *ngIf="carouselData[item] && carouselData[item]?.data?.brand_block.length">
+            <div class="panel-head">
+                <div class="container">
+                    <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan'+i , iconMode : true}">
+                        {{ carouselData[item]['layout_name'] }}
+                        <span class="icon-accordian">
+                            <i class="icon-up"></i>
+                        </span>
+                    </h3>
+                </div>
             </div>
-        </div>
-        <div id="openHomeAccoridan3" style="display:block;" class="panel-body">
-            <div class="container category_links">
-                <div *ngFor="let data of carouselData['officeData']['data']['brand_block']">
-                    <a>{{ data.brandName }}</a>
+            <div [id]="'openHomeAccoridan' + i"  style="display:block;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let data of carouselData[item]['data']['brand_block']">
+                        <a [routerLink]="produrl + '/' + data.brand_url">{{ data.brandName }}</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="home_accordian_footer_panel" *ngIf="carouselData['pumpData']">
-        <div class="panel-head">
-            <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan4' , iconMode : true}">
-                    {{ carouselData['pumpData']['layout_name'] }}
-                    <span class="iconaccordian">
-                        <i class="icon-up"></i>
-                    </span>
-                </h3>
-            </div>
-        </div>
-        <div id="openHomeAccoridan4" style="display:block;" class="panel-body">
-            <div class="container category_links">
-                <div *ngFor="let data of carouselData['pumpData']['data']['brand_block']">
-                    <a>{{ data.brandName }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="home_accordian_footer_panel" *ngIf="carouselData['electricalData']">
-        <div class="panel-head">
-            <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan5' , iconMode : true}">
-                    {{ carouselData['electricalData']['layout_name'] }}
-                    <span class="iconaccordian">
-                        <i class="icon-up"></i>
-                    </span>
-                </h3>
-            </div>
-        </div>
-        <div id="openHomeAccoridan5" style="display:block;" class="panel-body">
-            <div class="container category_links">
-                <div *ngFor="let data of carouselData['electricalData']['data']['brand_block']">
-                    <a>{{ data.brandName }}</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
+    </ng-container>
 </div>

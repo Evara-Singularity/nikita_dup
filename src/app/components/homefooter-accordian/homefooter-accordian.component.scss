@@ -9,20 +9,18 @@
             }
         }
         .panel-body {
-            padding: 10px 5px;
+            padding: 0px 5px 10px;
             background: #fff;
         }
-        .iconaccordian {
+        .icon-accordian {
             float: right;
             i {
                 font-size: 14px;
             }
         }
-        .ico-expand {
-            .icon-expand {
-                &:before {
-                    content: "\e97d";
-                }
+        .ico-up {
+            .icon-accordian {
+                transform: rotate(180deg);
             }
         }
         .category_links {

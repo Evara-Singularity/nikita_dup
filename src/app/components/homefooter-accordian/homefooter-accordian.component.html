@@ -10,7 +10,7 @@
                 </h3>
             </div>
         </div>
-        <div id="openHomeAccoridan" style="display:block;" class="panel-body">
+        <div id="openHomeAccoridan" style="display:none;" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let data of flyoutData; let i = index">
                     <a *ngIf="i < 6" [routerLink]="produrl + '/' + data.link">{{ data.categoryName }}</a>
@@ -39,7 +39,7 @@
                     </h3>
                 </div>
             </div>
-            <div [id]="'openHomeAccoridan' + i"  style="display:block;" class="panel-body">
+            <div [id]="'openHomeAccoridan' + i"  style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let data of carouselData[item]['data']['brand_block']">
                         <a [routerLink]="produrl + '/' + data.brand_url">{{ data.brandName }}</a>

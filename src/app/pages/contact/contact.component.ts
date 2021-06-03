@@ -11,7 +11,12 @@ import CONSTANTS from '@app/config/constants';
 })
 
 export class ContactComponent {
+<<<<<<< HEAD
   imgAssetPath: string = environment.IMAGE_ASSET_URL
+=======
+
+  imagePath = CONSTANTS.IMAGE_BASE_URL;
+>>>>>>> parent of ccbb345... added contact and career
   contactUsSchema;
   isServer: boolean;
 

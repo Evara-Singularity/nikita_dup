@@ -3,9 +3,7 @@
         <cart-updates [itemsValidationMessage]="itemsValidationMessage"></cart-updates>
         <cart (itemsValidationMessage$)="itemsValidationMessageUpdated($event)" [isCheckOut]="false" [isCheckoutPage]="'true'" [cartSessionUpdated$]="cartSessionUpdated$"></cart>
         <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
-
         <!-- <button (click)="placeOrder()" class="continue-btn mt-10">{{signInText}}</button> -->
-
         <button class="btn continue-btn mt-10" [routerLink]="['/checkout']">{{signInText}}</button>
     </div>
     <div class="noitem mb-60" *ngIf="itemsList.length == 0 ">

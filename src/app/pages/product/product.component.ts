@@ -23,6 +23,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { FbtComponent } from './../../components/fbt/fbt.component';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
+import { CheckoutService } from '@app/utils/services/checkout.service';
 
 interface ProductDataArg {
   productBO: string;
@@ -208,6 +209,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public meta: Meta,
     private renderer2: Renderer2,
     private analytics: GlobalAnalyticsService,
+    private checkoutService: CheckoutService,
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject (RESPONSE) private _response: any  ) {
@@ -894,8 +896,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   addProductInCart(routerLink, sessionCartObject, quantity, buyNow?) {
-
-    this.analyticAddToCart(routerLink); // since legacy buy  now analytic code is used 
+    
+    // this.analyticAddToCart(routerLink); // since legacy buy  now analytic code is used 
+    this.checkoutService.setCheckoutTabIndex(1);
 
     const userSession = this.localStorageService.retrieve('user');
     let sessionItemList: Array<any> = [];

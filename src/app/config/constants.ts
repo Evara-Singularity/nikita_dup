@@ -394,5 +394,6 @@ export const CONSTANTS = {
   ByMasterCard: "http://purl.org/goodrelations/v1#MasterCard",
   ByVISA: "http://purl.org/goodrelations/v1#VISA",
   TEST_API: "https://newmoglix.moglix.com/test/testgetresponse",
+  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData']
 };
 export default CONSTANTS;

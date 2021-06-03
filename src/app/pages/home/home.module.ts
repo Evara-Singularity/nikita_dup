@@ -1,3 +1,4 @@
+import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,7 @@ import { HomefooterAccordianComponent } from '@app/components/homefooter-accordi
         SiemaCarouselModule,
         ObserveVisibilityDirectiveModule,
         LazyLoadImageModule,
+        KpToggleDirectiveModule
     ],
     declarations: [
         HomeComponent,

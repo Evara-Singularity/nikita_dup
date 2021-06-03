@@ -1,1 +1,64 @@
-<p>homefooter-accordian works!</p>
+<div class="home_accordian_footer">
+    <div class="home_accordian_footer_panel">
+        <div class="panel-head">
+            <div class="container">
+                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan1' , iconMode : true}">
+                    Trending Categories
+                    <span class="iconaccordian">
+                        <i class="icon-up"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div id="openHomeAccoridan1" style="display:block;" class="panel-body">
+            <div class="container category_links">
+                <div>
+                    <a>Safety</a>
+                </div>
+                <div>
+                    <a>Electricals</a>
+                </div>
+                <div>
+                    <a>Pumps & Motors</a>
+                </div>
+                <div>
+                    <a>Office Stationery & Suppiles</a>
+                </div>
+                <div>
+                    <a>Pumps & Motors</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home_accordian_footer_panel">
+        <div class="panel-head">
+            <div class="container">
+                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openHomeAccoridan2' , iconMode : true}">
+                    Trending Categories
+                    <span class="iconaccordian">
+                        <i class="icon-up"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div id="openHomeAccoridan2" style="display:block;" class="panel-body">
+            <div class="container category_links">
+                <div>
+                    <a>Safety</a>
+                </div>
+                <div>
+                    <a>Electricals</a>
+                </div>
+                <div>
+                    <a>Pumps & Motors</a>
+                </div>
+                <div>
+                    <a>Office Stationery & Suppiles</a>
+                </div>
+                <div>
+                    <a>Pumps & Motors</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

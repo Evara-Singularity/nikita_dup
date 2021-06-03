@@ -1,0 +1,48 @@
+.home_accordian_footer {
+    .home_accordian_footer_panel {
+        margin-top: 1px;
+        .panel-head {
+            background: #fff;
+            h3 {
+                padding: 15px 5px;
+                font-weight: bold;
+            }
+        }
+        .panel-body {
+            padding: 10px 5px;
+            background: #fff;
+        }
+        .iconaccordian {
+            float: right;
+            i {
+                font-size: 14px;
+            }
+        }
+        .ico-expand {
+            .icon-expand {
+                &:before {
+                    content: "\e97d";
+                }
+            }
+        }
+        .category_links {
+            display: flex;
+            flex-wrap: wrap;
+            &>div {
+                display: inline-flex;
+                margin-right: 10px;
+                a {
+                    border: 1px solid #C4C4C4;
+                    margin-bottom: 8px;
+                    padding: 7px 10px;
+                    color: #278BED;
+                    border-radius: 4px;
+                    white-space: nowrap;
+                    font-weight: bold;
+                    font-size: 14px;
+                    background: #fff;
+                }
+            }
+        }
+    }
+}

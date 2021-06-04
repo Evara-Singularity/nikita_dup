@@ -16,9 +16,7 @@ export class ToastMessageService {
     }
 
     show(toast) {
-        setTimeout(() => {
-            this.subject.next(<ToastMessage>toast);
-        }, 0);
+        this.subject.next(<ToastMessage>toast);
     }
 
     remove() {

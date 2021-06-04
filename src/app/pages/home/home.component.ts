@@ -27,6 +27,7 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
@@ -119,7 +120,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _localAuthService: LocalAuthService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
-		private route: ActivatedRoute,
+		private route: ActivatedRoute, 
+		private _commonService: CommonService,
 		private analytics: GlobalAnalyticsService
 	) {
 		this.isServer = isPlatformServer(platformId);
@@ -155,6 +157,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}, 0);
 		}
+		this._commonService.updateSortByFromSearch();
 	}
 
 	fetchHomePageData(response) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { delay, map, debounceTime, first } from 'rxjs/operators';
 import { ToastMessage } from './toast-message.module';
 import { ToastMessageService } from './toast-message.service';
 
@@ -21,7 +21,9 @@ export class ToastMessageComponent implements OnInit {
     ngOnInit(): void {
         this._tms.getToasts()
         .pipe(
-            map(tm => tm)
+            map(tm => tm),
+            first(),
+            debounceTime(600)
         )
         .subscribe((tm: ToastMessage) => {
             // Add Unique id for each toast in array

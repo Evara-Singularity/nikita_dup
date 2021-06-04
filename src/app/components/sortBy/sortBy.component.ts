@@ -1,3 +1,4 @@
+import { debounceTime, first } from 'rxjs/operators';
 import {
   Component, ViewEncapsulation, Input, Output, ChangeDetectionStrategy, EventEmitter,
   ChangeDetectorRef, PLATFORM_ID, Inject
@@ -5,7 +6,7 @@ import {
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { CommonService } from "@app/utils/services/common.service";
 import { NavigationExtras, ActivatedRoute, Router } from "@angular/router";
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { TransferState, makeStateKey } from '@angular/platform-browser';
 
 @Component({
@@ -35,17 +36,19 @@ export class SortByComponent {
 
   };
 
+  
   ngOnInit() {
     this.sortByUpdated.subscribe(() => {
       this.initializeData();
       this.cd.markForCheck(); // marks path
     });
 
-    this._commonService.updateSortBy.subscribe(data => {
+    this._commonService.updateSortBy.pipe(first(),debounceTime(600)).subscribe(data => {
       this.updateSortBy(data);
       this._cd.markForCheck();
     });
   }
+
   updateParent(data) {
     this.outData$.emit(data)
   }

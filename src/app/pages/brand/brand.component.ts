@@ -523,6 +523,7 @@ export class BrandComponent {
     }
 
     private initiallizeData(response: any, flag: boolean) {
+        this._commonService.cmsData = response.cmsData;
         this._commonService.showLoader = false;
         this.iba = response['brandDetails']['active'];
         if (!this.iba || response['productSearchResult']['totalCount'] === 0) {
@@ -717,7 +718,6 @@ export class BrandComponent {
     }
 
     ngOnDestroy() {
-        // this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 

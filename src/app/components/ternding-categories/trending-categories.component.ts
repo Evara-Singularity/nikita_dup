@@ -16,6 +16,7 @@ export class TrendingCategoriesComponent {
 
     setCookieLink(catName,categoryCodeorBannerName, type){
         this._commonService.setSectionClickInformation('homepage', type);
+        this._commonService.updateSortByFromSearch();
         var date = new Date();
         date.setTime(date.getTime()+(30*24*60*60*1000));
         document.cookie = "adobeClick=" + catName+"_"+categoryCodeorBannerName+"; expires=" + date.toUTCString() + ";path=/";

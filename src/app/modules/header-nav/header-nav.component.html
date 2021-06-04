@@ -5,7 +5,7 @@
                 <i *ngIf="isHomePage || (routerData && routerData['menuBar']) " class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
                 <i *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="goBack()" class="icon-back" id="icon-back"></i>
                 <a [routerLink]="['/']" class="icon-logo" *ngIf="(routerData && routerData['logo']) && isHomePage"></a>
-                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" [routerLink]="['/']" class="moglix-app-logo">
+                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']" >
                     <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
                 </a>
             </div>
@@ -31,7 +31,7 @@
             <i *ngIf="!isHomePage && router.url.includes('dashboard/')" class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
             <i *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')" [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()" class="icon-back" id="icon-back"></i>
             <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</span>
-            <a *ngIf="!isHomePage && !(routerData && routerData['title'])" [routerLink]="['/']" class="moglix-app-logo">
+            <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
                 <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
             </a>
             <a class="search-bar-mini" *ngIf="!isHomePage && !isLoginPage && !(routerData && routerData['title'])">

@@ -122,7 +122,7 @@ export class SearchComponent implements OnInit {
                 (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
             }
 
-            if (!this._activatedRoute.snapshot.queryParams.category) {
+            if (!this._activatedRoute.snapshot.queryParams.toggleRcommendFlag) {
                 this.toggleRcommendFlag = true;
             } else {
                 this.toggleRcommendFlag = false;
@@ -505,6 +505,7 @@ export class SearchComponent implements OnInit {
         };
         extras['queryParams']['search_query'] = this.productSearchResult.correctedSearchString ? this.productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
         extras['queryParams']['category'] = categoryId;
+        extras['queryParams']['toggleRcommendFlag'] = true;
         this._router.navigate(['search'], extras);
     }
 

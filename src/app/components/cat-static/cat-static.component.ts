@@ -16,14 +16,10 @@ export class CatStaticComponent {
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
   constructor(@Inject(DOCUMENT) private _document) { }
+
   scrollToResults(){
-    // this._pageScrollService.scroll({
-    //   document: this._document,
-    //   scrollTarget: '#category-cards-section',
-    //   scrollOffset: (<HTMLElement>document.querySelector("#category-cards-section")).offsetTop - 3770
-    // });
-    let footerOffset = document.getElementById('#category-cards-section').offsetTop;
-        ClientUtility.scrollToTop(1000,footerOffset - 30);
+    let footerOffset = document.getElementById('category-cards-section').offsetTop;
+    ClientUtility.scrollToTop(1000,footerOffset - 50);
   }
 
 }

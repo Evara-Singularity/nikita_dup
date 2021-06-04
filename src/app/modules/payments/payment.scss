@@ -58,6 +58,7 @@
 }
 
 .other-strip {
+    @extend %clear-fix;
     &.other-strip-payment {
         display: block;
         position: relative;

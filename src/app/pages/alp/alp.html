@@ -25,7 +25,7 @@
 <div class="cate-container" id=category-cards-section>
     <div class="bg_white">
         <div class="clearfix"></div>
-        <product-list [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated" [isDisplayCategoryName]="false"></product-list>
+        <product-list  [itemCount]="paginationData?.itemCount" [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated" [isDisplayCategoryName]="false"></product-list>
         <div class="filter-wrapper">
             <button type="button" (click)="filterUp()">
                 <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER <span

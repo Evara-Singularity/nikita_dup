@@ -32,11 +32,28 @@ h4 {
 .bg-sidebar {
   padding: 15px 0;
   h2 {
+    font-size: 1rem !important;
     padding: 10px 0px 0;
+    font-weight: normal;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  h4 {
+    font-size: 1rem !important;
+    padding: 10px 0px 0;
+    font-weight: normal;
+    margin-bottom: 20px;
+    text-align: left;
   }
   ul {
+    list-style: none !important;
     li {
       margin: 0 0 10px;
+      text-align: left;
+      a {
+        color: #0061d5 !important;
+        font-size: 12px;
+      }
     }
   }
 }

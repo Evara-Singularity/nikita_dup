@@ -124,6 +124,9 @@ export class SearchComponent implements OnInit {
 
             if (!this._activatedRoute.snapshot.queryParams.toggleRcommendFlag) {
                 this.toggleRcommendFlag = true;
+                if (digitalData['page']) {
+                    digitalData['page']['categoryRecSelected'] = '';
+                }
             } else {
                 this.toggleRcommendFlag = false;
                 this.recommendedCategory = '';

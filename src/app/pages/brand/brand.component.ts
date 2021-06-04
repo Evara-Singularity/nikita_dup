@@ -717,7 +717,7 @@ export class BrandComponent {
     }
 
     ngOnDestroy() {
-        this._commonService.updateSortBy.next('popularity');
+        // this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 

@@ -56,7 +56,6 @@ export class CategoryResolver implements Resolve<object> {
 
         if (Object.keys(currentQueryParams).length > 0) {
             this._commonService.deleteDefaultQueryParams(['orderWay', 'orderBy']);
-            // this._commonService.updateSortBy.next('popularity');
         }
 
 

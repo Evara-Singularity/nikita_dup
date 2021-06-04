@@ -1,3 +1,4 @@
+import { CommonService } from '@app/utils/services/common.service';
 import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
@@ -80,6 +81,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         private checkoutLoginService: CheckoutLoginService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
+        public _commonService: CommonService,
         private changeDetectorRef: ChangeDetectorRef,
         private globalLoader: GlobalLoaderService,
         private _state: GlobalState,

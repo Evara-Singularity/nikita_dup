@@ -564,31 +564,24 @@ export class CategoryComponent implements OnInit {
 
     private setCanonicalUrls(response) {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
-        console.clear();
-        console.log(this._commonService.isServer);
-        console.log(this.pageNo);
 
         if (this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
-            console.log('links creates');
             links.rel = 'canonical';
             if (this.pageNo == undefined || this.pageNo == 1) {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
             } else {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
             }
-            console.log(links.href);
             this._renderer2.appendChild(this._document.head, links);
         }
 
         if (this.pageNo == undefined || this.pageNo == 1) {
             if (this._commonService.isServer) {
-                console.log('links creates');
                 let ampLink;
                 ampLink = this._renderer2.createElement('link');
                 ampLink.rel = 'amphtml';
                 ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
-                console.log(ampLink.href);
                 /**
                  * Below if condition is just a temporary solution.
                  * Strictly remove if condtion, once amp of drill(114160000) page is completed.
@@ -1081,7 +1074,7 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this._commonService.updateSortBy.next('popularity');
+        // this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
     

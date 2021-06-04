@@ -148,7 +148,6 @@ export class SearchBarComponent implements OnInit {
     searchData(dataD, isValid) {
         this.service.goToDirectBrandCatPage(dataD.searchTerm).subscribe(
             (data) => {
-                this._cs.updateSortByFromSearch();
                 this.enableScroll();
                 const extras = {
                     queryParams: {

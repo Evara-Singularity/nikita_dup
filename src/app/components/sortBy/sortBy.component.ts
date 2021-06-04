@@ -66,6 +66,7 @@ export class SortByComponent {
   }
 
   updateSortBy(sortBy) {
+
     if (this.sortBy != sortBy) {
       this.updateParent({ sortByOpt: false });
       this.sortBy = sortBy;

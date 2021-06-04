@@ -3,7 +3,7 @@ export const environment = {
   PROD_NAME: 'https://www.moglix.com', 
   //BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
-  IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/qa/pwa/',
+  IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/qa/pwa/bundles/',
   SOCKET_URL: "https://socketqa.moglilabs.com",
   IMAGE_BASE_URL: 'https://cdn.moglix.com/',
   DOCUMENT_URL: 'https://document.moglix.com/',
@@ -16,4 +16,8 @@ export const environment = {
       "apiVersion": "v2.4"
     }
   },
+  AB_TESTING: {
+		NAME: 'ENV_A',
+		STATUS: false,
+	}
 };

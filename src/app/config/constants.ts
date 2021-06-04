@@ -13,6 +13,7 @@ export const CONSTANTS = {
   IMAGE_BASE_URL: environment.IMAGE_BASE_URL,
   DOCUMENT_URL: environment.DOCUMENT_URL,
   SOCIAL_LOGIN: environment.SOCIAL_LOGIN,
+  AB_TESTING: environment.AB_TESTING,
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },
@@ -383,7 +384,6 @@ export const CONSTANTS = {
     url4: "https://www.youtube.com/embed/6trNPkCGejc",
     url5: "https://www.youtube.com/embed/yyVtU7wsqtQ",
   },
-
   GET_PARENT_CAT: "/category/getparentcategoryjsonbody?requestType=",
   FB_URL: "https://www.facebook.com/dialog/share?app_id=775243655917959%20&display=popup&href=",
   TWITTER_URL: "https://twitter.com/intent/tweet?url=",

@@ -1,50 +1,44 @@
 @import '../../scss/variables';
-
 a {
     color: #366090;
 }
 
 .static-container {
+    .f-14 {
+        font-size: 14px;
+    }
     .head {
         background: #366090;
         padding: 30px 0 60px 0;
         color: white;
-
         i {
             font-size: 50px;
         }
     }
-
     .container {
         margin: -30px auto 20px auto;
         line-height: 19px;
-
         .card {
             margin-top: 10px;
             border-color: #366090;
             color: #366090;
             padding: 15px;
-
             p {
                 padding-left: 36px;
                 font-size: 14px;
-
                 b {
                     display: block;
                 }
             }
         }
-
         .heading {
             color: #366090;
-
             i {
                 margin-right: 10px;
                 font-size: 25px;
                 float: left;
                 line-height: 26px;
             }
-
             span {
                 float: left;
                 line-height: 26px;
@@ -64,11 +58,9 @@ a {
     padding: 20px 0px 60px;
     color: $white;
     text-align: center;
-
     i {
         font-size: 50px;
     }
-
     h1 {
         font-size: $extra-large-font;
         text-transform: uppercase;

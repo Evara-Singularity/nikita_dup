@@ -16,4 +16,8 @@ export const environment = {
       "apiVersion": "v2.4"
     }
   },
+  AB_TESTING: {
+		NAME: 'ENV_A',
+		STATUS: false,
+	}
 };

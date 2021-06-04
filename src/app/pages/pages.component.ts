@@ -9,6 +9,8 @@ import * as kfooter from '../config/k.footer';
 import { ClientUtility } from '../utils/client.utility';
 import { filter, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { DataService } from '@app/utils/services/data.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: 'app-pages',
@@ -33,6 +35,7 @@ export class PagesComponent implements OnInit {
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
+    private dataService: DataService
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -54,6 +57,9 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     this.setUserSession();
+    if(this.isBrowser){
+      this.setEnvIdentiferCookie()
+    }
   }
 
   setUserSession() {
@@ -122,6 +128,24 @@ export class PagesComponent implements OnInit {
     if (this.footerVisible) {
       let footerOffset = document.getElementById('footerContainer').offsetTop;
       ClientUtility.scrollToTop(1000, footerOffset - 50);
+    }
+  }
+
+  setEnvIdentiferCookie() {
+    const abTesting = this.dataService.getCookie('AB_TESTING');
+    const PWA = this.dataService.getCookie('PWA');
+
+    if (!PWA) {
+      this.dataService.setCookie('PWA', 'true', 90);
+    }
+
+    if (abTesting) {
+      if (abTesting != CONSTANTS.AB_TESTING.STATUS.toString()) {
+        this.dataService.deleteCookie('AB_TESTING');
+        this.dataService.setCookie('AB_TESTING', CONSTANTS.AB_TESTING.STATUS.toString(), 90);
+      }
+    } else {
+      this.dataService.setCookie('AB_TESTING', CONSTANTS.AB_TESTING.STATUS.toString(), 90);
     }
   }
 

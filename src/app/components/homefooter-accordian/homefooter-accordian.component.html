@@ -5,7 +5,7 @@
                 <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan' , iconMode : true}">
                     Trending Categories
                     <span class="icon-accordian">
-                        <i class="icon-up"></i>
+                        <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
@@ -13,12 +13,12 @@
         <div id="openHomeAccoridan" style="display:none;" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let data of flyoutData; let i = index">
-                    <a *ngIf="i < 6" [routerLink]="produrl + '/' + data.link">{{ data.categoryName }}</a>
+                    <a *ngIf="i < 6" [routerLink]="['/' + data.link]">{{ data.categoryName }}</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="home_accordian_footer_panel" [routerLink]="produrl+'/brand-store'">
+    <div class="home_accordian_footer_panel" [routerLink]="['/brand-store']">
         <div class="panel-head">
             <div class="container">
                 <h3 class="heading">
@@ -34,15 +34,15 @@
                     <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan'+i , iconMode : true}">
                         {{ carouselData[item]['layout_name'] }}
                         <span class="icon-accordian">
-                            <i class="icon-up"></i>
+                            <i class="icon-down"></i>
                         </span>
                     </h3>
                 </div>
             </div>
-            <div [id]="'openHomeAccoridan' + i"  style="display:none;" class="panel-body">
+            <div [id]="'openHomeAccoridan' + i" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let data of carouselData[item]['data']['brand_block']">
-                        <a [routerLink]="produrl + '/' + data.brand_url">{{ data.brandName }}</a>
+                        <a [routerLink]="['/' + data.brand_url]">{{ data.brandName }}</a>
                     </div>
                 </div>
             </div>

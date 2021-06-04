@@ -26,14 +26,14 @@ export class KpToggleDirective implements AfterViewInit {
             document.getElementById(Id).style.display = 'block';
             if (icon == true) {
                 this._el.nativeElement.classList.add('ico-expand');
-                this._el.nativeElement.classList.remove('ico-up');
+                this._el.nativeElement.classList.add('ico-up');
             }
         }
         else {
             document.getElementById(Id).style.display = 'none';
             if (icon == true) {
                 this._el.nativeElement.classList.remove('ico-expand');
-                this._el.nativeElement.classList.add('ico-up');
+                this._el.nativeElement.classList.remove('ico-up');
             }
         }
     }

@@ -54,6 +54,7 @@ export class SocialLoginComponent {
     }
 
     signIn(provider){
+        this.logout();
         this.sub = this._auth.signIn(provider === 'google' ? GoogleLoginProvider.PROVIDER_ID : FacebookLoginProvider.PROVIDER_ID).then(
             (data) => {
                 console.log(data);                
@@ -151,7 +152,6 @@ export class SocialLoginComponent {
                                 })
                             )
                             .subscribe((res) => {
-                                 ;
                                 if (res.statusCode != undefined && res.statusCode == 200) {
                                     let cs = this._cartService.updateCart(res);
                                     this._cartService.setCartSession(cs);
@@ -181,7 +181,9 @@ export class SocialLoginComponent {
                                     } else {
                                         this._localAuthService.login$.next(this.redirectUrl);
                                         let routeData = this._commonService.getRouteData();
-                                        if (routeData['previousUrl'] && routeData['previousUrl'] === '/') {
+                                        if (this.redirectUrl) {
+                                            this._router.navigateByUrl(this.redirectUrl);
+                                        }else if (routeData['previousUrl'] && routeData['previousUrl'] === '/') {
                                             this._router.navigate(['/']);
                                         } else if (routeData['previousUrl'] && routeData['previousUrl'] !== '' && routeData['previousUrl'] !== '/login') {
                                             this._router.navigateByUrl(routeData['previousUrl']);

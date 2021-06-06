@@ -122,8 +122,7 @@ export class CategoryComponent implements OnInit {
 
     ngOnInit() {
         this.setCategoryDataFromResolver();
-        if (this._commonService.isBrowser) {
-            
+        if (this._commonService.isBrowser) {            
             // Set footers
             this.footerService.setMobileFoooters();
         }
@@ -261,7 +260,6 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
-        this._commonService.scrollToTop();
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -971,22 +969,6 @@ export class CategoryComponent implements OnInit {
         }
 
         this._router.navigate([currentRoute], extras);
-    }
-
-    getFeaturedProducts(products: Array<{}>) {
-        let fProducts = null;
-        if (products == undefined || products == null || (products && products.length == 0))
-            return "";
-
-        for (let i = 0; i < products.length; i++) {
-            if (fProducts == null)
-                fProducts = products[i]['productName'];
-            else
-                fProducts = fProducts + ", " + products[i]['productName'];
-            if (i == 5)
-                break;
-        }
-        return fProducts;
     }
 
     getAltName(brandName) {

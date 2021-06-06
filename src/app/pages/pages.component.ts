@@ -125,7 +125,7 @@ export class PagesComponent implements OnInit {
 
   clickFooter() {
     this.footerVisible = !this.footerVisible;
-    if (this.footerVisible) {
+    if (this.footerVisible && document.getElementById('footerContainer')) {
       let footerOffset = document.getElementById('footerContainer').offsetTop;
       ClientUtility.scrollToTop(1000, footerOffset - 50);
     }

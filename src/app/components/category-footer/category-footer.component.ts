@@ -40,6 +40,22 @@ export class CategoryFooterComponent{
         }
         return bNames;
     }
+
+    getFeaturedProducts(products: Array<{}>) {
+        let fProducts = null;
+        if (products == undefined || products == null || (products && products.length == 0))
+            return "";
+
+        for (let i = 0; i < products.length; i++) {
+            if (fProducts == null)
+                fProducts = products[i]['productName'];
+            else
+                fProducts = fProducts + ", " + products[i]['productName'];
+            if (i == 5)
+                break;
+        }
+        return fProducts;
+    }
 }
 
 

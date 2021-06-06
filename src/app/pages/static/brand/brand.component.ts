@@ -65,9 +65,6 @@ export class BrandComponent{
 	}
 
 	ngOnInit() {
-		if (this._commonService.isBrowser) {
-			ClientUtility.scrollToTop(100);
-		}
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['brandData']['error'] && rawData['brandData'].length) {
 				// this.fetchHomePageData(rawData.homeData);

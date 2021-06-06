@@ -98,6 +98,10 @@ export class BrandComponent {
     }
 
     ngOnInit() {
+        if (this._commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
+        }
+        
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             
@@ -126,7 +130,6 @@ export class BrandComponent {
         });
 
         this._activatedRoute.data.subscribe(resolverData => {
-            this._commonService.scrollToTop();
             this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }

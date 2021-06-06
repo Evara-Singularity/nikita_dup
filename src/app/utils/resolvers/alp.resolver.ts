@@ -34,7 +34,6 @@ export class AlpResolver implements Resolve<object> {
     }
 
     createDefaultParams(defaultApiParams, currentQueryParams, fragment) {
-
         let newParams = {
             category: defaultApiParams['category'], pageName: 'ATTRIBUTE', queryParams: {}, filter: {}
         }
@@ -90,9 +89,9 @@ export class AlpResolver implements Resolve<object> {
     }
 
     private refreshProducts(defaultApiParams, currentQueryParams, fragment): Observable<{}> {
+        defaultApiParams = this.createDefaultParams(defaultApiParams, currentQueryParams, fragment);
         defaultApiParams["pageName"] = 'ATTRIBUTE';
         this._commonService.updateDefaultParamsNew(defaultApiParams);
-        this.createDefaultParams(defaultApiParams, currentQueryParams, fragment);
         return this._commonService.refreshProducts();
     }
 

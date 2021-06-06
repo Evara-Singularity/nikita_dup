@@ -54,21 +54,10 @@ export class CategoryComponent {
         return {};
     }
 
-    //1311=>this code is overriden as below by Pradeep
-    // getFragments()
-    // {
-    //     const filterData = this._cs.getDefaultParams().filter;
-    //     const fragmentString = this._cs.generateFragmentString(filterData);
-    //     if (fragmentString !== null) {
-    //         return fragmentString;
-    //     }
-    //     return null;
-    // }
-
     getFragments() {
         let fragmentString = null;
         const filterData = this._cs.getDefaultParams().filter;
-        if (typeof this._cs.getDefaultParams().filter !== 'string') {
+        if (filterData !== null) {
             fragmentString = this._cs.generateFragmentString(filterData);
         }
         return fragmentString;

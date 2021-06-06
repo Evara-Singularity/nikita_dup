@@ -18,8 +18,10 @@ export class CatStaticComponent {
   constructor(@Inject(DOCUMENT) private _document) { }
 
   scrollToResults(){
-    let footerOffset = document.getElementById('category-cards-section').offsetTop;
-    ClientUtility.scrollToTop(1000,footerOffset - 50);
+    if (document.getElementById('category-cards-section')) {
+      let footerOffset = document.getElementById('category-cards-section').offsetTop;
+      ClientUtility.scrollToTop(1000,footerOffset - 50);
+    }
   }
 
 }

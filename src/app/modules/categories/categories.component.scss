@@ -1,5 +1,11 @@
 @import '../../scss/variables.scss';
 @import '../../pages/home/common_grid.scss';
+
+.pad-tb-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .banner-ad {
     margin: 10px 0px;
     a {

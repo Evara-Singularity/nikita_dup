@@ -13,7 +13,7 @@
     <ul class="view-products list">
         <ng-container *ngFor="let product of products | showAvailableOnRequestLast; let i = index">
             <li @fade>
-                <a [title]="product.productName" [routerLink]="'/'+product.productUrl" (click)="execGaGTm(product, i)" [target]="blank" class="clearfix">
+                <a [title]="product.productName" (click)="execGaGTm(product, i)" [target]="blank" class="clearfix">
                     <ng-container *ngIf="product.productTags && product.productTags != undefined">
                         <div *ngFor="let tag of product.productTags | arrayFilterPipe : 'tagType': 'image': 'object' | slice:0:1; let i = index;" class="productTags">
                             <img style="height: 20px; width:70px;" src="{{tag.tagImageLink}}" />

@@ -386,7 +386,6 @@ export class CategoryComponent implements OnInit {
                 this.productSearchResultSEO.push(response.productSearchResult.products[p]);
             }
         }
-        console.log('setting setCanonicalUrls');
         this.setCanonicalUrls(response);
         this.categoryLinkLists = response.categoryLinkList;
         this.productCategoryNames = [];

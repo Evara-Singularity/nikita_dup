@@ -1,3 +1,4 @@
+import { ClientUtility } from './../../utils/client.utility';
 import { Subject } from "rxjs";
 import { CONSTANTS } from "@config/constants";
 import { Meta } from '@angular/platform-browser';
@@ -89,15 +90,16 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Set data after getting from resolver
+        this.setCategoryDataFromResolver();
+        
         if (this._commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
             // Set Meta data
             this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 
             // Set Adobe tracking and other tasks
             this.setAdobeTracking();
-
-            // Set data after getting from resolver
-            this.setCategoryDataFromResolver();
 
             // Set Foooters
             this.footerService.setMobileFoooters();
@@ -171,7 +173,6 @@ export class SearchComponent implements OnInit {
     }
 
     private initiallizeData(response: any, extra: {}, flag: boolean) {
-        this._commonService.scrollToTop();
         const oldDefaultParams = extra['oldDefaultParams'];
         const dp = this._commonService.getDefaultParams();
         const fragment = this._activatedRoute.snapshot.fragment;

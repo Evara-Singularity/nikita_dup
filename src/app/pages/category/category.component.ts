@@ -1,3 +1,4 @@
+import { ClientUtility } from '@utils/client.utility';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
@@ -121,6 +122,9 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this._commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
+        }
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {            
             // Set footers

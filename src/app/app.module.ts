@@ -30,7 +30,7 @@ const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    ErrorHandlerModule
+    // ErrorHandlerModule
   ],
   declarations: [
     AppComponent,

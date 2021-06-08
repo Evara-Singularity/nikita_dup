@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { ClientUtility } from './../../utils/client.utility';
 import { Subject } from "rxjs";
 import { CONSTANTS } from "@config/constants";
@@ -110,7 +111,7 @@ export class SearchComponent implements OnInit {
     setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
         // Get data from resolver and render the view
-        this._activatedRoute.data.subscribe(resolverData => {
+        this._activatedRoute.data.pipe().subscribe(resolverData => {
 
             const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
             this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);

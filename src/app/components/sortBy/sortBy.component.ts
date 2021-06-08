@@ -69,7 +69,6 @@ export class SortByComponent {
   }
 
   updateSortBy(sortBy) {
-
     if (this.sortBy != sortBy) {
       this.updateParent({ sortByOpt: false });
       this.sortBy = sortBy;
@@ -89,12 +88,10 @@ export class SortByComponent {
       newQueryParams["orderBy"] = orderBy;
       newQueryParams["orderWay"] = orderWay;
       newQueryParams["page"] = 1;
-      this.route.fragment.subscribe((fragment: string) => {
-        this.router.navigate([], { queryParams: newQueryParams, fragment: fragment })
+      this.route.fragment.pipe(first()).subscribe((fragment: string) => {
         extras.queryParams = newQueryParams;
-        // this._commonService.useLastSortByState=true;
         this._commonService.updateDefaultParamsNew(extras);
-        this._commonService.refreshProducts$.next();
+        this.router.navigate([], { queryParams: newQueryParams, fragment: fragment })
       })
     }
   }

@@ -83,16 +83,29 @@ export class SearchResolver implements Resolve<object> {
         const defaultParams = this.createDefaultParams(currentQueryParams, params, fragment);
         this._commonService.updateDefaultParamsNew(defaultParams);
 
-        return forkJoin([this._commonService.refreshProducts()]).pipe(
-            catchError((err) => {
-                this.loaderService.setLoaderState(false);
-                return of(err);
-            }),
-            tap(result => {
-                if (isPlatformServer(this.platformId)) {
-                    this.loaderService.setLoaderState(false);
-                }
-            })
-        );
+        const RPRK: any = makeStateKey<{}>("RPRK");
+
+        if (this.transferState.hasKey(RPRK)) {
+            this.loaderService.setLoaderState(false);
+            const listingObj = this.transferState.get<object>(RPRK, null);
+            this.transferState.remove(RPRK);
+            return of([listingObj]);
+        } else {
+            return forkJoin([this._commonService.refreshProducts()]).pipe(
+                catchError((err) => {
+                    this._commonService.showLoader = false;
+                    console.log(err);
+                    return of(err);
+                }),
+                tap(result => {
+                    this._commonService.showLoader = false;
+                    if (isPlatformServer(this.platformId)) {
+                        this.transferState.set(RPRK, result[0]);
+                    }
+                })
+            );
+        }
+
+
     }
 }

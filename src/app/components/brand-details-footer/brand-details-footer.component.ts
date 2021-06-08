@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
@@ -33,7 +34,7 @@ export interface BrandDetailsFooterData{
 export class BrandDetailsFooterComponent {
     @Input('footerData') footerData: Subject<any>;
 	@Input('brandDetailsFooterData') brandDetailsFooterData: BrandDetailsFooterData;
-	constructor(public _commonService: CommonService) {
+	constructor(private router: Router,public _commonService: CommonService) {
 		this.brandDetailsFooterData = {
 			brandCatDesc: null,
 			firstPageContent: true,
@@ -51,6 +52,10 @@ export class BrandDetailsFooterComponent {
 			brand: '',
 			todayDate: true,
 		};
+	}
+	
+	goToProducturl(url) {
+		this.router.navigateByUrl(url);
 	}
 }
 

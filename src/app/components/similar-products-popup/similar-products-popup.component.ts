@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, Output, EventEmitter } from '@angular/core';
 import CONSTANTS from '../../config/constants';
@@ -17,9 +18,13 @@ export class SimilarProductsPopupComponent implements OnInit {
   @Input() similarProducts: any = null;
   @Output() out: EventEmitter<any> =  new EventEmitter<any>();
 
-  constructor() { }
-
+  constructor(private router: Router) { }
+  
   ngOnInit(): void {
+  }
+
+  goToProducturl(url) {
+    this.router.navigateByUrl(url);
   }
 
   outData(data){

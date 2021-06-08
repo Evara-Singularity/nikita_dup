@@ -82,6 +82,7 @@ export class BrandSpotlightComponent {
       if (rawData && !rawData['data']['error']) {
         this.brandSpotlightData = rawData['data'][0];
         setTimeout(() => {
+          // this.initializeClicks();
           this.reinsertLinks();
         }, 0);
 

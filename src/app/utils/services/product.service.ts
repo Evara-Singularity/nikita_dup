@@ -146,6 +146,6 @@ export class ProductService {
     }
 
     getCartBySession(params) {
-         return this._dataService.callRestful("GET", this.basePath + ENDPOINTS.GET_CartBySession, { params: params });
+        return this._dataService.callRestful("GET", this.basePath + ENDPOINTS.GET_CartBySession, { params: params });
     }
 }

@@ -1,3 +1,4 @@
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { Component, Input, NgModule } from "@angular/core";
 import { KpToggleDirectiveModule } from "@app/utils/directives/kp-toggle.directive";
@@ -13,7 +14,7 @@ import { CommonService } from "@app/utils/services/common.service";
 export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;
     todayDate;
-    constructor(public _commonService: CommonService){
+    constructor(public _commonService: CommonService, private _router: Router){
         this.todayDate = Date.now();
     }
 
@@ -40,6 +41,9 @@ export class CategoryFooterComponent{
         }
         return bNames;
     }
+    navigateTo(url) {
+        this._router.navigate(['\\' + url]);
+    }
 
     getFeaturedProducts(products: Array<{}>) {
         let fProducts = null;
@@ -65,6 +69,7 @@ export class CategoryFooterComponent{
     ],
     imports: [
         CommonModule,
+        RouterModule,
         MathFloorPipeModule,
         KpToggleDirectiveModule,
     ],

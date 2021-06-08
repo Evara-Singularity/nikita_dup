@@ -50,7 +50,7 @@
                         </tr>
                         <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
                             <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                <td> <a href="{{product.productUrl}}">{{product.productName}}</a></td>
+                                <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
                                 <td>₹{{product.priceWithoutTax | mathFloor}}</td>
                                 <td>{{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
                                 </td>

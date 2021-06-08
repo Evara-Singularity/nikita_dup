@@ -1,3 +1,4 @@
+import { TrendingCategoriesModule } from './../../components/ternding-categories/trending-categories.component';
 import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
@@ -15,6 +16,7 @@ import { HomefooterAccordianComponent } from '@app/components/homefooter-accordi
         SiemaCarouselModule,
         ObserveVisibilityDirectiveModule,
         LazyLoadImageModule,
+        TrendingCategoriesModule,
         KpToggleDirectiveModule
     ],
     declarations: [

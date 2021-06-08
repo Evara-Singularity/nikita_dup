@@ -25,6 +25,7 @@ export class TrendingCategoriesComponent {
 
 @NgModule({
     declarations: [TrendingCategoriesComponent],
-    imports: [CommonModule, RouterModule]
+    imports: [CommonModule, RouterModule],
+    exports: [TrendingCategoriesComponent]
 })
 export class TrendingCategoriesModule { }

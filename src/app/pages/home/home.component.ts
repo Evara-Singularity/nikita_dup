@@ -584,23 +584,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	async onVisibleTrendingCategories(htmlElement) {
-		if (!this.trendingCategoriesInstance) {
-			const { TrendingCategoriesComponent } = await import(
-				'../../components/ternding-categories/trending-categories.component'
-			);
-			const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
-			this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
-				factory,
-				null,
-				this.injector
-			);
-			this.trendingCategoriesInstance.instance[
-				'flyOutData'
-			] = this.flyOutData;
-			this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
-		}
-	}
+	// async onVisibleTrendingCategories(htmlElement) {
+	// 	if (!this.trendingCategoriesInstance) {
+	// 		const { TrendingCategoriesComponent } = await import(
+	// 			'../../components/ternding-categories/trending-categories.component'
+	// 		);
+	// 		const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
+	// 		this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
+	// 			factory,
+	// 			null,
+	// 			this.injector
+	// 		);
+	// 		this.trendingCategoriesInstance.instance[
+	// 			'flyOutData'
+	// 		] = this.flyOutData;
+	// 		this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
+	// 	}
+	// }
 
 	async onOpenPopup(htmlElement) {
 		if (!this.popUpInstance) {

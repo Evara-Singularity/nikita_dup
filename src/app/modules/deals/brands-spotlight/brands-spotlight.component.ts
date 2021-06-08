@@ -29,7 +29,7 @@ export class BrandSpotlightComponent {
     this.isBrowser = isPlatformBrowser(platformId);
     this.setMetas();
     this.getBrandData();
-    this.initializeClicks();
+    // this.initializeClicks();
   }
 
   initializeClicks() {
@@ -82,9 +82,9 @@ export class BrandSpotlightComponent {
       if (rawData && !rawData['data']['error']) {
         this.brandSpotlightData = rawData['data'][0];
         setTimeout(() => {
-          // this.initializeClicks();
           this.reinsertLinks();
-        }, 0);
+          this.initializeClicks();
+        }, 1000);
 
       } else {
         console.log('BrandsSpotlightComponent API data error', rawData);
@@ -99,7 +99,6 @@ export class BrandSpotlightComponent {
     const links = <HTMLAnchorElement[]>(
       this.elementRef.nativeElement.getElementsByTagName("a")
     );
-
     if (links) {
       const linksInitialLength = links.length;
       for (let i = 0; i < linksInitialLength; i++) {

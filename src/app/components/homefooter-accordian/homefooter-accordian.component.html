@@ -4,7 +4,7 @@
             <div class="panel-head">
                 <div class="container">
                     <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan'+i , iconMode : true}">
-                        Brands from {{ carouselData[item]['layout_name'] }}
+                        Brands from {{ carouselData[item]['layout_name'] | titlecase }}
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
                         </span>

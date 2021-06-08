@@ -97,7 +97,7 @@ export class OrderDetailComponent implements OnInit {
   readonly validBuyAgainStatus = ['DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
   readonly validTrackingStatus = ['SHIPPED', 'DELIVERED'];
   readonly trackingMessage = 'Tracking information from courier partner is not available at the moment.';
-  
+  readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
   constructor(
     private datePipe: DatePipe,
     private _formBuilder: FormBuilder,

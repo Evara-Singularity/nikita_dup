@@ -40,3 +40,10 @@
         }
     }
 }
+
+.heightFull {
+    .bottom-options .content-box {
+        height: 100%;
+        max-height: 100%;
+    }
+}

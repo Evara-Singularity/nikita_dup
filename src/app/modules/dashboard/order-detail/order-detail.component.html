@@ -132,7 +132,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 <!-- final message after confirmation -->
-
 <app-pop-up *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" class="bs-popup returnPopup" [data]="{selector: 'openPopup', headerText:' Return Order'}">
     <div class="content-popup" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
@@ -167,7 +166,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     <div class="input-field">
                         <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
                             <span class="label">Select Quantity*</span>
-                            <input type="number" formControlName="quantity" #quantity>
+                            <input type="number" formControlName="quantity" min="1" #quantity>
                             <!-- <i class="icon-down"></i> -->
                         </label>
 
@@ -203,7 +202,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
                 </div>
                 <ng-container *ngIf="returnForm['controls']['bankDetail']">
-                    <div formGroupName="bankDetail" class="bankdetail" [ngClass]="{'show': step == 2, 'hide': step !== 2}">
+                    <div formGroupName="bankDetail" class="bankdetail" *ngIf="step == 2">
                         <div class="set-two-form">
                             <div class="input-field">
                                 <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">

@@ -13,6 +13,9 @@ export const CONSTANTS = {
   IMAGE_BASE_URL: environment.IMAGE_BASE_URL,
   DOCUMENT_URL: environment.DOCUMENT_URL,
   SOCIAL_LOGIN: environment.SOCIAL_LOGIN,
+  AB_TESTING: environment.AB_TESTING,
+  IDS_MAP: environment.IDS_MAP,
+  CMS_IDS: environment.CMS_IDS,
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },
@@ -190,46 +193,6 @@ export const CONSTANTS = {
     },
     auos: ["/dashboard", "/login", "/order-confirmation", "/search"],
   },
-  IDS_MAP: {
-    //new ids for mobile
-
-    cm136360: "BEST_SELLER",
-    cm915657: "BANNER",
-    //'CM881267':'FANS_BLOWER',
-    cm325516: "SAFETY",
-    cm889618: "FLY_OUT",
-    cm814985: "CAT_B",
-    cm196070: "CAT_C",
-    cm454649: "CAT_D",
-    cm358138: "CAT_E",
-    cm933249: "CAT_F",
-    cm416640: "CAT_G",
-    cm973381: "MIDDLE_BANNER_ADS",
-    cm334468: "FEATURE_BRANDS",
-    cm977811: "FEATURE_ARRIVAL",
-  },
-  CMS_IDS: {
-    // new layout ids for mobile
-    BEST_SELLER: "id=cm136360",
-    BANNER: "id=cm915657",
-    //FANS_BLOWER :'id=cm881267',
-    SAFETY: "id=cm325516",
-    FLY_OUT: "id=cm889618",
-    CAT_A: "id=cm325516",
-    CAT_B: "id=cm814985",
-    CAT_C: "id=cm196070",
-    CAT_D: "id=cm454649",
-    CAT_E: "id=cm358138",
-    CAT_F: "id=cm933249",
-    CAT_G: "id=cm416640",
-    CAT_H: "id=cm814985",
-    MIDDLE_BANNER_ADS: "cm973381",
-    CATEGORY_EXTRAS: "cm867481",
-    FEATURE_BRANDS: "cm334468",
-    FEATURE_ARRIVAL: "cm977811",
-    MANUFACTURER_STORE: "macizo_m",
-    MANUFACTURER_STORE_BRAND: "macizo",
-  },
   clusterCategories: [
     {
       idCategory: "116000000",
@@ -383,7 +346,6 @@ export const CONSTANTS = {
     url4: "https://www.youtube.com/embed/6trNPkCGejc",
     url5: "https://www.youtube.com/embed/yyVtU7wsqtQ",
   },
-
   GET_PARENT_CAT: "/category/getparentcategoryjsonbody?requestType=",
   FB_URL: "https://www.facebook.com/dialog/share?app_id=775243655917959%20&display=popup&href=",
   TWITTER_URL: "https://twitter.com/intent/tweet?url=",
@@ -394,5 +356,6 @@ export const CONSTANTS = {
   ByMasterCard: "http://purl.org/goodrelations/v1#MasterCard",
   ByVISA: "http://purl.org/goodrelations/v1#VISA",
   TEST_API: "https://newmoglix.moglix.com/test/testgetresponse",
+  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData']
 };
 export default CONSTANTS;

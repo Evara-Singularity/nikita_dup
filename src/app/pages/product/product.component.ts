@@ -23,6 +23,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { FbtComponent } from './../../components/fbt/fbt.component';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
+import { CheckoutService } from '@app/utils/services/checkout.service';
 
 interface ProductDataArg {
   productBO: string;
@@ -208,6 +209,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public meta: Meta,
     private renderer2: Renderer2,
     private analytics: GlobalAnalyticsService,
+    private checkoutService: CheckoutService,
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject (RESPONSE) private _response: any  ) {
@@ -864,6 +866,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     //  to be called on client side only.
     let quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);;
 
+    this.analyticAddToCart(routerlink); // since legacy buy  now analytic code is used 
+    
     if (this.uniqueRequestNo == 0) {
       this.uniqueRequestNo = 1;
 
@@ -894,8 +898,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   addProductInCart(routerLink, sessionCartObject, quantity, buyNow?) {
-
-    // this.analyticAddToCart(routerLink); // since legacy buy  now analytic code is used 
+    
+    this.checkoutService.setCheckoutTabIndex(1);
 
     const userSession = this.localStorageService.retrieve('user');
     let sessionItemList: Array<any> = [];
@@ -2089,21 +2093,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
       },
     })
 
-    var trackingData = {
-      event_type: "click",
-      label: routerlink == "/quickorder" ? "add_to_cart" : "buy_now",
-      product_name: this.productName,
-      msn: this.productSubPartNumber,
-      brand: this.productBrandDetails['brandName'],
-      price: this.productPrice,
-      quantity: Number(this.priceQuantityCountry['quantityAvailable']),
-      channel: "PDP",
-      category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
-      category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
-      category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-      page_type: "product_page"
-    }
-    this.analytics.sendToClicstreamViaSocket(trackingData);
+    /**
+     * /**
+     * this is commented as socket calls are already made directly in addtocart followes function
+     * TODO: need to refactor this 
+     * /
+     */
+    // var trackingData = {
+    //   event_type: "click",
+    //   label: routerlink == "/quickorder" ? "add_to_cart" : "buy_now",
+    //   product_name: this.productName,
+    //   msn: this.productSubPartNumber,
+    //   brand: this.productBrandDetails['brandName'],
+    //   price: this.productPrice,
+    //   quantity: Number(this.priceQuantityCountry['quantityAvailable']),
+    //   channel: "PDP",
+    //   category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
+    //   category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
+    //   category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
+    //   page_type: "product_page"
+    // }
+    // this.analytics.sendToClicstreamViaSocket(trackingData);
 
   }
 

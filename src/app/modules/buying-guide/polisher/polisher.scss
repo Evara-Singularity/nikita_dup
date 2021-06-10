@@ -44,9 +44,20 @@ p {
   h2 {
     padding: 10px 0px 0;
   }
+  h4 {
+    font-size: 1rem !important;
+    padding: 10px 0px 0;
+    font-weight: normal;
+    margin-bottom: 20px;
+  }
   ul {
+    list-style: none !important;
     li {
       margin: 0 0 10px;
+      a {
+        color: #0061d5 !important;
+        font-size: 12px;
+      }
     }
   }
 }

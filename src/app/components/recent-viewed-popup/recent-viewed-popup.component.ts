@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
@@ -17,9 +18,13 @@ export class RecentViewedPopupComponent implements OnInit {
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   @Output() out: EventEmitter<any> =  new EventEmitter<any>();
 
-  constructor(public commonService: CommonService) { }
+  constructor(public commonService: CommonService, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  goToProducturl(url){
+    this.router.navigateByUrl(url);
   }
 
   outData(data){

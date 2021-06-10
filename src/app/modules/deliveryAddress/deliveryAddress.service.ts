@@ -4,7 +4,9 @@ import CONSTANTS from "@app/config/constants";
 import { DataService } from "../../utils/services/data.service";
 import { ENDPOINTS } from '@app/config/endpoints';
 
-@Injectable()
+@Injectable({
+    providedIn: "root"
+})
 export class DeliveryAddressService{
 
     private addNewAddressFormSubject = new Subject<any>();

@@ -16,10 +16,12 @@
         "build:ssr:qa": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa/bundles/ && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
         "build:ssr:vpn": "ng build --configuration=vpn --deploy-url=https://cdn.moglix.com/online/vpn/pwa/bundles/ && ng run ssr-pwa:server:vpn && npm run swupdate:url:vpn",
         "build:ssr:prod": "ng build --prod --deploy-url=https://cdn.moglix.com/online/prod/pwa/bundles/ && ng run ssr-pwa:server:production && npm run swupdate:url:prod",
+        "build:ssr:prodab": "ng build --configuration=prodab --deploy-url=https://cdn.moglix.com/online/prod/pwa-ab/bundles/ && ng run ssr-pwa:server:prodab && npm run swupdate:url:prodab",
         "prerender": "ng run ssr-pwa:prerender",
         "swupdate:url:qa": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/qa/pwa/bundles/",
         "swupdate:url:vpn": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/vpn/pwa/bundles/",
-        "swupdate:url:prod": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa/bundles/"
+        "swupdate:url:prod": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa/bundles/",
+        "swupdate:url:prodab": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa-ab/bundles/"
     },
     "private": true,
     "dependencies": {

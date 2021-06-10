@@ -1,7 +1,7 @@
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit, Output, EventEmitter } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { ProductService } from '../../utils/services/product.service';
 import CONSTANTS from '../../config/constants';
@@ -20,6 +20,7 @@ export class RecentViewedProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    public _router: Router,
     private localStorageService: LocalStorageService
   ) { }
 
@@ -41,6 +42,10 @@ export class RecentViewedProductsComponent implements OnInit {
     this.showAll.emit(this.recentProductList);
   }
 
+  navigateTo(url) {
+    this._router.navigate(['\\' + url]);
+  }
+
 
 }
 
@@ -49,6 +54,7 @@ export class RecentViewedProductsComponent implements OnInit {
     RecentViewedProductsComponent
   ],
   imports: [
+    RouterModule,
     CommonModule,
     MathCeilPipeModule,
     MathFloorPipeModule

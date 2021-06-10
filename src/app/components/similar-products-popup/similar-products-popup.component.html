@@ -3,7 +3,7 @@
     <div class="content-popup card-30" content>
         <ul class="view-products list">
             <li *ngFor="let similarProduct of similarProducts; let i = index;">
-                <a href="{{similarProduct.productUrl}}" class="clearfix">
+                <a (click)="goToProducturl(similarProduct.productUrl)" class="clearfix">
                     <div class="product-img">
                         <img src="{{imagePath+similarProduct.mainImageLink}}" alt="product Image">
                     </div>

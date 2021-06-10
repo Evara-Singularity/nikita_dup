@@ -50,15 +50,6 @@ export class CategoryResolver implements Resolve<object> {
         if (defaultParams['queryParams']['orderWay'] !== undefined) {
             newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
         }
-        /**
-         *  maintain the state of sortBy : ENDS
-         */
-
-        if (Object.keys(currentQueryParams).length > 0) {
-            this._commonService.deleteDefaultQueryParams(['orderWay', 'orderBy']);
-            // this._commonService.updateSortBy.next('popularity');
-        }
-
 
         for (let key in currentQueryParams) {
             newParams.queryParams[key] = currentQueryParams[key];

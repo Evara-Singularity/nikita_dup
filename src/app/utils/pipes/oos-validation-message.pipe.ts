@@ -12,7 +12,7 @@ export class OutOfStockValidationMessage implements PipeTransform {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
     }
-    transform(value: [], fallback: string): any {
+    transform(value: any, fallback: string = null): any {
         //  ;
         let oosMessage = [];
         let isOOS = false;

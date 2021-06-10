@@ -3,6 +3,19 @@
   padding-bottom: 20px;
 }
 
+.col-sm-12 {
+  img {
+    width: 100%;
+  }
+}
+.col-sm-3, .wp-25{
+  text-align: center;
+  img {
+    width: auto;
+    margin: 0 auto;
+  }
+}
+
 .border-white-2 {
   border: 2px solid white;
 }
@@ -18,6 +31,7 @@
 .category-list {
   h5 {
     line-height: 28px;
+    text-align: left;
   }
   a {
     display: block;

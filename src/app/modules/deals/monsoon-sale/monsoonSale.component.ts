@@ -60,6 +60,7 @@ export class MonsoonSaleComponent {
           this.monsoonSaleData = rawData["data"][0];
           setTimeout(() => {
             this.reinsertLinks();
+            this.initializeClicks();
           }, 0);
         } else {
           console.log("MonsoonSaleComponent API data error", rawData);

@@ -48,11 +48,12 @@
     </a>
 </section>
 <!-- section for trending categories-->
-<div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
+<home-trendingcategories [tocd]="tocd" [flyOutData]="flyOutData"></home-trendingcategories>
+<!-- <div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
     <div>
         <ng-container #TrendingCategories></ng-container>
     </div>
-</div>
+</div> -->
 
 <!-- Section for feature Brands -->
 <div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
@@ -74,3 +75,5 @@
 </div>
 
 <ng-container class="bs-popup" #HomePopupComponet></ng-container>
+
+<home-accordians [flyoutData]='flyOutData' [carouselData]="carouselData"></home-accordians>

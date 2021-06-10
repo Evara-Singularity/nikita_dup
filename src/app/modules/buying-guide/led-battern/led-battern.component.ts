@@ -5,7 +5,7 @@ import CONSTANTS from '@app/config/constants';
 @Component({
   selector: 'led-battern',
   templateUrl: 'led-battern.html',
-  styleUrls: ['led-battern.scss']
+  styleUrls: ['led-battern.scss'],
 })
 
 export class BatternComponent {

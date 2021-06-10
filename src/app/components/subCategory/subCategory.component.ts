@@ -58,7 +58,7 @@ export class SubCategoryComponent {
     }
 
     showList(flag?) {
-        ClientUtility.scrollToTop(2000);
+        // ClientUtility.scrollToTop(2000);
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {

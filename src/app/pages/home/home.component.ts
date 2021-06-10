@@ -17,7 +17,7 @@ import {
 	Injector,
 } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { fade } from '@utils/animations/animation';
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';
@@ -27,12 +27,13 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
 	styleUrls: ['./home.scss'],
 	animations: [fade],
-	
+
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;
@@ -120,6 +121,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
 		private route: ActivatedRoute,
+		private _commonService: CommonService,
 		private analytics: GlobalAnalyticsService
 	) {
 		this.isServer = isPlatformServer(platformId);
@@ -155,6 +157,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}, 0);
 		}
+		this._commonService.updateSortByFromSearch();
 	}
 
 	fetchHomePageData(response) {
@@ -198,12 +201,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 							blockData.image_block.length &&
 							block.layout_code == CONSTANTS.CMS_IDS.FEATURE_BRANDS
 						) {
+							console.log('featureBrandData blockData ==>', blockData.image_block);
 							this.featureBrandData = blockData.image_block;
 						} else if (
 							blockData.image_block &&
 							blockData.image_block.length &&
 							block.layout_code == CONSTANTS.CMS_IDS.FEATURE_ARRIVAL
 						) {
+							console.log('featureArrivalData blockData ==>', blockData.image_block);
 							this.featureArrivalData = blockData.image_block;
 						}
 					}
@@ -357,8 +362,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			subSection: 'moglix:home',
 			loginStatus:
 				userSession &&
-				userSession.authenticated &&
-				userSession.authenticated == 'true'
+					userSession.authenticated &&
+					userSession.authenticated == 'true'
 					? 'registered user'
 					: 'guest',
 		};
@@ -477,7 +482,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				potentialAction: {
 					'@type': 'SearchAction',
 					target:
-					CONSTANTS.PROD+'/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
+						CONSTANTS.PROD + '/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
 					'query-input': 'required name=search_term_string',
 				},
 			});
@@ -553,7 +558,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			] = this.recentProductList;
 			(
 				this.categoriesInstance.instance['sendDataToPopUP'] as EventEmitter<any>
-				).subscribe((popupData) => {
+			).subscribe((popupData) => {
 				this.sendDataToPopUP(popupData);
 				this.onOpenPopup(null);
 			});
@@ -579,23 +584,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	async onVisibleTrendingCategories(htmlElement) {
-		if (!this.trendingCategoriesInstance) {
-			const { TrendingCategoriesComponent } = await import(
-				'../../components/ternding-categories/trending-categories.component'
-			);
-			const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
-			this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
-				factory,
-				null,
-				this.injector
-			);
-			this.trendingCategoriesInstance.instance[
-				'flyOutData'
-			] = this.flyOutData;
-			this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
-		}
-	}
+	// async onVisibleTrendingCategories(htmlElement) {
+	// 	if (!this.trendingCategoriesInstance) {
+	// 		const { TrendingCategoriesComponent } = await import(
+	// 			'../../components/ternding-categories/trending-categories.component'
+	// 		);
+	// 		const factory = this.cfr.resolveComponentFactory(TrendingCategoriesComponent);
+	// 		this.trendingCategoriesInstance = this.trendingCategoriesContainerRef.createComponent(
+	// 			factory,
+	// 			null,
+	// 			this.injector
+	// 		);
+	// 		this.trendingCategoriesInstance.instance[
+	// 			'flyOutData'
+	// 		] = this.flyOutData;
+	// 		this.trendingCategoriesInstance.instance['tocd'] = this.tocd;
+	// 	}
+	// }
 
 	async onOpenPopup(htmlElement) {
 		if (!this.popUpInstance) {

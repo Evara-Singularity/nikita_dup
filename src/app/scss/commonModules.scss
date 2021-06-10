@@ -280,6 +280,16 @@ option {
     }
 }
 
+//Promo PopUp
+.select-offers {
+    &.open {
+        background-color: red;
+        .container {
+            height: initial;
+        }
+    }
+}
+
 // Sort By Filter
 .custom-cbox {
     label {

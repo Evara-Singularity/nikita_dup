@@ -1,3 +1,5 @@
+@import '../../scss/variables';
+
 .revamped-contact {
     .top-banner {
         background: #fff;
@@ -141,4 +143,13 @@
     .contact-content {
         width: 79% !important;
     }
+}
+
+.upper-case {
+    text-transform: uppercase;
+}
+
+.card-30 {
+    @extend %cards;
+    padding: 30px 15px;
 }

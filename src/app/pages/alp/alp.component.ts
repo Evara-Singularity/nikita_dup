@@ -139,13 +139,16 @@ export class AlpComponent implements OnInit {
 
     ngOnInit() {
         this.setCategoryDataFromResolver();
+        
+        if (this._commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
+        }
 
         this.footerService.setMobileFoooters();
 
     }
 
     setDataAfterGettingDataFromResolver(res) {
-        this._commonService.scrollToTop();
         this.setAttributeListingInfo(res);
     }
 

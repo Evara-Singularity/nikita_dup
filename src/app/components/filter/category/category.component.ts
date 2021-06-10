@@ -55,12 +55,12 @@ export class CategoryComponent {
     }
 
     getFragments() {
+        let fragmentString = null;
         const filterData = this._cs.getDefaultParams().filter;
-        const fragmentString = this._cs.generateFragmentString(filterData);
-        if (fragmentString !== null) {
-            return fragmentString;
+        if (filterData !== null) {
+            fragmentString = this._cs.generateFragmentString(filterData);
         }
-        return null;
+        return fragmentString;
     }
 
     hideFilter() {

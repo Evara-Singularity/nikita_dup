@@ -1,7 +1,7 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
-import { Observer, of } from 'rxjs';
+import { Observer, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
@@ -74,8 +74,8 @@ export class CommonService {
     }
 
     updateSortByFromSearch() {
+        this.deleteDefaultQueryParams(['orderWay', 'orderBy']);
         this.updateSortBy.next('popularity');
-
         const sortByFilter = document.querySelector('sort-by');
 
         if (sortByFilter) {
@@ -324,15 +324,22 @@ export class CommonService {
                     if (this._router.url.search('#') < 0) {
                         this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
                             if (res['status']) {
-                                this.cmsData = res['data']['data'];
+                                response.cmsData = res['data']['data'];
+                                observer.next(response);
+                                observer.complete();
+                            } else {
+                                observer.next(response);
+                                observer.complete();
                             }
+                        }, err => {
+                            observer.next(response);
+                            observer.complete();
                         });
                     } else {
-                        this.cmsData = null;
                         this.replaceHeading = false;
+                        observer.next(response);
+                        observer.complete();
                     }
-                    observer.next(response);
-                    observer.complete();
                 });
             } else if (defaultParams["pageName"] == "SEARCH") {
                 if (this.currentRequest != undefined){

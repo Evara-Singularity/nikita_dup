@@ -1,3 +1,5 @@
+import { first } from 'rxjs/operators';
+import { ClientUtility } from './../../utils/client.utility';
 import { Subject } from "rxjs";
 import { CONSTANTS } from "@config/constants";
 import { Meta } from '@angular/platform-browser';
@@ -89,15 +91,16 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Set data after getting from resolver
+        this.setCategoryDataFromResolver();
+        
         if (this._commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
             // Set Meta data
             this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
 
             // Set Adobe tracking and other tasks
             this.setAdobeTracking();
-
-            // Set data after getting from resolver
-            this.setCategoryDataFromResolver();
 
             // Set Foooters
             this.footerService.setMobileFoooters();
@@ -108,7 +111,7 @@ export class SearchComponent implements OnInit {
     setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
         // Get data from resolver and render the view
-        this._activatedRoute.data.subscribe(resolverData => {
+        this._activatedRoute.data.pipe().subscribe(resolverData => {
 
             const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
             this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);
@@ -122,8 +125,11 @@ export class SearchComponent implements OnInit {
                 (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
             }
 
-            if (!this._activatedRoute.snapshot.queryParams.category) {
+            if (!this._activatedRoute.snapshot.queryParams.toggleRcommendFlag) {
                 this.toggleRcommendFlag = true;
+                if (digitalData['page']) {
+                    digitalData['page']['categoryRecSelected'] = '';
+                }
             } else {
                 this.toggleRcommendFlag = false;
                 this.recommendedCategory = '';
@@ -168,7 +174,6 @@ export class SearchComponent implements OnInit {
     }
 
     private initiallizeData(response: any, extra: {}, flag: boolean) {
-        this._commonService.scrollToTop();
         const oldDefaultParams = extra['oldDefaultParams'];
         const dp = this._commonService.getDefaultParams();
         const fragment = this._activatedRoute.snapshot.fragment;
@@ -480,22 +485,11 @@ export class SearchComponent implements OnInit {
     }
 
     redirectWithNoPreProcessRequiredParam(searchTerm: string) {
-        this._commonService.showLoader = true;
-        let oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
         let defaultParams = this.createDefaultParams();
-        defaultParams['queryParams']['search_query'] = searchTerm;
+        defaultParams['queryParams']['str'] = searchTerm;
         defaultParams['queryParams']['preProcessRequired'] = 'n';
-
         this._commonService.updateDefaultParamsNew(defaultParams);
-
-        this._commonService.refreshProducts().subscribe((response) => {
-            let extra = { oldDefaultParams: oldDefaultParams };
-            this.initiallizeData(response, extra, true);
-            if (response.productSearchResult.highlightedSearchString) {
-                this.highlightedSearchS = response.productSearchResult.highlightedSearchString.match(/<em>([^<]+)<\/em>/)[1];
-            }
-            this._commonService.showLoader = false;
-        });
+        this._router.navigate(['search'], this._commonService.getDefaultParams());
     }
 
     getFragments() {
@@ -516,6 +510,7 @@ export class SearchComponent implements OnInit {
         };
         extras['queryParams']['search_query'] = this.productSearchResult.correctedSearchString ? this.productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
         extras['queryParams']['category'] = categoryId;
+        extras['queryParams']['toggleRcommendFlag'] = true;
         this._router.navigate(['search'], extras);
     }
 
@@ -535,7 +530,6 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 }

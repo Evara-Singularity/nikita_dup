@@ -1,3 +1,4 @@
+import { ClientUtility } from '@utils/client.utility';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
@@ -121,9 +122,11 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
-            
+            ClientUtility.scrollToTop(100);
+        }
+        this.setCategoryDataFromResolver();
+        if (this._commonService.isBrowser) {            
             // Set footers
             this.footerService.setMobileFoooters();
         }
@@ -261,7 +264,6 @@ export class CategoryComponent implements OnInit {
 
     setDataAfterGettingDataFromResolver(res) {
         this._commonService.showLoader = false;
-        this._commonService.scrollToTop();
         const ict = res[0]['categoryDetails']['active'];
         const canonicalURL = res[0]['categoryDetails']['canonicalURL']
         const chk = this.isUrlEqual(canonicalURL, this._router.url);
@@ -384,7 +386,6 @@ export class CategoryComponent implements OnInit {
                 this.productSearchResultSEO.push(response.productSearchResult.products[p]);
             }
         }
-        console.log('setting setCanonicalUrls');
         this.setCanonicalUrls(response);
         this.categoryLinkLists = response.categoryLinkList;
         this.productCategoryNames = [];
@@ -564,31 +565,24 @@ export class CategoryComponent implements OnInit {
 
     private setCanonicalUrls(response) {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
-        console.clear();
-        console.log(this._commonService.isServer);
-        console.log(this.pageNo);
 
         if (this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
-            console.log('links creates');
             links.rel = 'canonical';
             if (this.pageNo == undefined || this.pageNo == 1) {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
             } else {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
             }
-            console.log(links.href);
             this._renderer2.appendChild(this._document.head, links);
         }
 
         if (this.pageNo == undefined || this.pageNo == 1) {
             if (this._commonService.isServer) {
-                console.log('links creates');
                 let ampLink;
                 ampLink = this._renderer2.createElement('link');
                 ampLink.rel = 'amphtml';
                 ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
-                console.log(ampLink.href);
                 /**
                  * Below if condition is just a temporary solution.
                  * Strictly remove if condtion, once amp of drill(114160000) page is completed.
@@ -980,22 +974,6 @@ export class CategoryComponent implements OnInit {
         this._router.navigate([currentRoute], extras);
     }
 
-    getFeaturedProducts(products: Array<{}>) {
-        let fProducts = null;
-        if (products == undefined || products == null || (products && products.length == 0))
-            return "";
-
-        for (let i = 0; i < products.length; i++) {
-            if (fProducts == null)
-                fProducts = products[i]['productName'];
-            else
-                fProducts = fProducts + ", " + products[i]['productName'];
-            if (i == 5)
-                break;
-        }
-        return fProducts;
-    }
-
     getAltName(brandName) {
         if (brandName == null || brandName == undefined) {
             return 'safety shoes';
@@ -1081,7 +1059,7 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this._commonService.updateSortBy.next('popularity');
+        // this.sortByContainerRef['sortBy'] = 'popularity';
         this.resetLazyComponents();
     }
     

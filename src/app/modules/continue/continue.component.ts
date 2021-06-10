@@ -69,8 +69,10 @@ export class ContinueComponent {
     }
 
     scrollPaymentSummary() {
-        let footerOffset = document.getElementById('payment_summary').offsetTop;
-        ClientUtility.scrollToTop(1000,footerOffset - 30);
+        if (document.getElementById('payment_summary')) {
+            let footerOffset = document.getElementById('payment_summary').offsetTop;
+            ClientUtility.scrollToTop(1000,footerOffset - 30);
+        }
 
     }
 

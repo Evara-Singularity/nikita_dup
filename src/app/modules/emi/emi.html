@@ -40,7 +40,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="pad-lr-15 mt-15" id="emiCardSection" >
+                    <div class="pad-lr-15 mt-15" id="emiCardSection">
                         <h3 *ngIf="step==2">Make Payment Using Credit Card</h3>
                         <div class="input-field" *ngIf="step==2">
                             <label [class.is-focus]="ccNumber.value.length !=0">
@@ -58,8 +58,8 @@
                             </label>
                         </div>
 
-                
-                <div *ngIf="step==2 && bajajFinservField === false">
+
+                        <div class="clearfix" *ngIf="step==2 && bajajFinservField === false">
                             <div class="column-field">
                                 <div class="input-field w-45 f-left">
 
@@ -115,9 +115,7 @@
                         </div>-->
 
                         <div class="pad-tb-15 mt-15 border-top">
-                            <p class="lh-18">Please note.You might be redirected to 3-D secure page to
-                                complete your transaction.By placing this order, you agree to the <a class="text-darkblue"
-                                    href="{{API['PROD']}}/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
+                            <p class="lh-18">Please note.You might be redirected to 3-D secure page to complete your transaction.By placing this order, you agree to the <a class="text-darkblue" href="{{API['PROD']}}/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
                                     href="{{API['PROD']}}/privacy" target="_blank">Privacy Policy</a> of moglix.com
                             </p>
                         </div>
@@ -131,10 +129,11 @@
                             </button>
                         </div> -->
 
-                        
+
 
                         <div class="lh-18 pad-tb-15 mt-15 border-top" *ngIf="step==2 && nocostEmiDiscount > 0">
-                            The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is already discounted from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit will be consumed for your total purchase amount of <b>Rs. {{this.totalPayableAmount | mathCeil | number : '1.2-2'}}</b> , and released after the amount is converted to an EMI.
+                            The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is already discounted from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit
+                            will be consumed for your total purchase amount of <b>Rs. {{this.totalPayableAmount | mathCeil | number : '1.2-2'}}</b> , and released after the amount is converted to an EMI.
                         </div>
                     </div>
                 </div>
@@ -142,16 +141,14 @@
         </form>
 
     </div>
-    <div class="continue-button" >
+    <div class="continue-button">
         <div class="container">
-            <p class="total-mount" *ngIf="totalPayableAmount>0"> 
-                <span class="payable-amnt">Payable Amount</span>
-                ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
+            <p class="total-mount" *ngIf="totalPayableAmount>0">
+                <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | number : '1.2-2'}} </p>
             <button type="submit" [disabled]="!emiForm.valid" (click)="pay(emiForm.value, emiForm.valid)" class="btn">PAY</button>
         </div>
     </div>
 </section>
 
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
-<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData" ></razor-pay>
- 
+<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

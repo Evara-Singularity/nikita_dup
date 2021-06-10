@@ -135,6 +135,8 @@ export class ProductListComponent{
                 }
             },
         });
+
+        this._router.navigate(['/' + product.productUrl]);
     }
 
     ngOnDestroy() {

@@ -98,6 +98,10 @@ export class BrandComponent {
     }
 
     ngOnInit() {
+        if (this._commonService.isBrowser) {
+            ClientUtility.scrollToTop(100);
+        }
+        
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             
@@ -126,7 +130,6 @@ export class BrandComponent {
         });
 
         this._activatedRoute.data.subscribe(resolverData => {
-            this._commonService.scrollToTop();
             this.initiallizeData(resolverData['brand'][0], resolverData['brand'][0]['flag']);
         });
     }
@@ -523,6 +526,7 @@ export class BrandComponent {
     }
 
     private initiallizeData(response: any, flag: boolean) {
+        this._commonService.cmsData = response.cmsData;
         this._commonService.showLoader = false;
         this.iba = response['brandDetails']['active'];
         if (!this.iba || response['productSearchResult']['totalCount'] === 0) {
@@ -717,7 +721,6 @@ export class BrandComponent {
     }
 
     ngOnDestroy() {
-        this._commonService.updateSortBy.next('popularity');
         this.resetLazyComponents();
     }
 

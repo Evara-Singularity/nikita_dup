@@ -14,7 +14,7 @@ export class CheckoutService {
     billingAddress: {};
     checkoutAddress: {};
     invoiceType: string;
-    checkoutTabIndex = 1
+    checkoutTabIndex = 1;
     checkoutHeader = new Subject<number>();
 
 

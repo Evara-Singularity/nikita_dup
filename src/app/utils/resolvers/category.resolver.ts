@@ -36,7 +36,6 @@ export class CategoryResolver implements Resolve<object> {
         const newParams: any = {
             queryParams: {}
         };
-
         
 
         const defaultParams = this._commonService.getDefaultParams();

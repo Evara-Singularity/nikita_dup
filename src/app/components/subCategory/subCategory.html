@@ -4,7 +4,7 @@
         <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
             <li *ngIf="i<3 || isAllListShow" >
                 <div class="sub-cat-product">
-                    <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
+                    <a  (click)="navigateTo('/'+item?.categoryDetails?.categoryLink);commonService.setSectionClickInformation('child_categories', 'listing')">
                         <div class="prod-image">
                             <img style="height: 78px; width: 78px;" [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}">
                         </div>

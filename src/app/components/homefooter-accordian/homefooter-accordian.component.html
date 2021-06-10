@@ -1,7 +1,7 @@
 <div class="home_accordian_footer">
     <ng-container *ngFor="let item of dataArray; let i = index">
         <div class="home_accordian_footer_panel" *ngIf="carouselData[item] && carouselData[item]?.data?.brand_block.length">
-            <div class="panel-head">
+            <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
                     <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan'+i , iconMode : true}">
                         Brands from {{ carouselData[item]['layout_name'] | titlecase }}

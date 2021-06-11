@@ -28,26 +28,6 @@ body {
                 height: 70px;
                 top: 0;
                 color: #db232e !important;
-                &::after {
-                    position: absolute;
-                    width: 70px;
-                    height: 70px;
-                    border-radius: 50%;
-                    background: #fff;
-                    top: 0;
-                    content: '';
-                    bottom: 0;
-                    margin: auto;
-                    z-index: 2
-                }
-                .play-btn {
-                    position: absolute;
-                    top: 22px;
-                    left: 28px;
-                    z-index: 3;
-                    color: #db232e !important;
-                    font-size: 25px;
-                }
             }
             p {
                 width: 90%;

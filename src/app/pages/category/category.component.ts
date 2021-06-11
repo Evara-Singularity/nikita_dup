@@ -999,22 +999,6 @@ export class CategoryComponent implements OnInit {
         return false;
     }
 
-    // async onVisibleRecentArticles(htmlElement) {
-    //     if (this.productListLength) {
-    //         const { RecentArticles } = await import('@components/recent-articles/recent-articles.component');
-    //         const factory = this.cfr.resolveComponentFactory(RecentArticles);
-    //         this.recentArticlesInstance = this.recentArticlesContainerRef.createComponent(factory, null, this.injector);
-    //         let articlesData = [];
-    //         this._categoryService.getRelatedArticles(this.categoryId).subscribe(res => {
-    //             if (res && res['status'] && res['statusCode'] == 200) {
-    //                 articlesData = res['data'];
-    //                 this.recentArticlesInstance.instance['recentArticles'] = articlesData;
-    //                 this.recentArticlesInstance.instance['title'] = this.getRelatedCatgory.categoryDetails.categoryName
-    //             }
-    //         });
-    //     }
-    // }
-
     resetLazyComponents() {
         if (this.filterInstance) {
             this.filterInstance = null;

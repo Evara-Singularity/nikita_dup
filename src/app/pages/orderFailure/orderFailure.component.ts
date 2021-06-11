@@ -85,7 +85,7 @@ export class OrderFailureComponent {
         let page = {
           pageName: "payment-failure",
           channel: "purchase",
-          subsection: "payment failure",
+          subsection: "payment failure" + userSession && userSession["agentId"] ? " | Inside Sales" : '',
         };
         let custData = {
           customerID:
@@ -100,6 +100,10 @@ export class OrderFailureComponent {
             userSession && userSession["phone"]
               ? btoa(userSession["phone"])
               : "",
+          agentId: 
+          userSession && userSession["agentId"] 
+            ? btoa(userSession["agentId"]) 
+            : '',
         };
         let order = {
           transactionID: this.queryParams["orderId"],

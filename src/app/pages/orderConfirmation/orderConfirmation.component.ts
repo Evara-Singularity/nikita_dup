@@ -376,7 +376,7 @@ export class OrderConfirmationComponent implements OnInit {
                             let page = {
                                 pageName: "order-Confirmation",
                                 channel: "purchase",
-                                subsection: "Payment Success",
+                                subsection: "Payment Success" + userSession && userSession["agentId"] ? " | Inside Sales" : '',
                             };
                             let custData = {
                                 customerID:
@@ -392,6 +392,10 @@ export class OrderConfirmationComponent implements OnInit {
                                         ? btoa(userSession["phone"])
                                         : "",
                                 customerType: this.userType,
+                                agentId: 
+                                    userSession && userSession["agentId"] 
+                                    ? btoa(userSession["agentId"]) 
+                                    : '',
                             };
                             let order = {
                                 transactionID: this.queryParams["orderId"],

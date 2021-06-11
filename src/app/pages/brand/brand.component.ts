@@ -383,6 +383,12 @@ export class BrandComponent {
                 digitalData["page"]["suggestionClicked"] = 'yes';
             }
 
+            this.analytics.sendGTMCall({ 
+                'event': 'viewBrand', 
+                'brandName': this.brand,
+                'brandUrl': this._router.url
+            });
+
             this.analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */
         }

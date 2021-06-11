@@ -319,6 +319,24 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   updateAttr(productId) {
+
+    if (this.localStorageService.retrieve('user')) {
+      var user = this.localStorageService.retrieve('user');
+    }
+
+    console.log(this.rawProductData);
+
+    this.analytics.sendGTMCall({
+      'event': 'viewItem',
+      'email': (user && user["email"]) ? user["email"] : '',
+      'ProductID': productId,
+      'Category': this.rawProductData['taxonomy'],
+      'CatID': this.rawProductData['taxonomyCode'],
+      'MRP': this.rawProductData['mrp'],
+      'Discount': Math.floor(this.rawProductData['discount']),
+      'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
+    });
+
     this.removeRfqForm();
     this.showLoader = true;
     this.productService.getGroupProductObj(productId).subscribe(productData => {

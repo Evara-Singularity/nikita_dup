@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, NgModule } from "@angular/core";
+import { Component, Input, NgModule, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CONSTANTS } from '@config/constants';
 
@@ -9,8 +9,12 @@ import { CONSTANTS } from '@config/constants';
     templateUrl: './recent-articles.component.html',
     styleUrls: ['./recent-articles.component.scss'],
 })
-export class RecentArticles {
+export class RecentArticles implements OnInit {
     constructor(private router: Router) {}
+    ngOnInit(): void
+    {
+        console.log(this.recentArticles);
+    }
     @Input() recentArticles;
     @Input() title;
     imageBaseUrl = CONSTANTS.IMAGE_BASE_URL;
@@ -22,7 +26,8 @@ export class RecentArticles {
 
 @NgModule({
     declarations: [RecentArticles],
-    imports: [CommonModule]
+    imports: [CommonModule],
+    exports: [RecentArticles]
 })
 export class RecentArticlesModule {}
 export class CategoryModule extends RecentArticlesModule {}

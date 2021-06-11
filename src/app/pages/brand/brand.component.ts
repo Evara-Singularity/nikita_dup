@@ -386,7 +386,7 @@ export class BrandComponent {
             this.analytics.sendGTMCall({ 
                 'event': 'viewBrand', 
                 'brandName': this.brand,
-                'brandUrl': this._router.url
+                'brandUrl': window.location.origin + window.location.pathname
             });
 
             this.analytics.sendAdobeCall(digitalData);

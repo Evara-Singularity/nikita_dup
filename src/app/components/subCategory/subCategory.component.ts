@@ -51,15 +51,15 @@ export class SubCategoryComponent {
         })
     }
 
-    navigateTo(url) {
-        this.commonService.updateSortBy.next('popularity');
-        const sortByFilter = document.querySelector('sort-by');
+    // navigateTo(url) {
+    //     this.commonService.updateSortBy.next('popularity');
+    //     const sortByFilter = document.querySelector('sort-by');
 
-        if (sortByFilter) {
-            sortByFilter.classList.remove('open');
-        }
-        this.router.navigateByUrl(url);
-    }
+    //     if (sortByFilter) {
+    //         sortByFilter.classList.remove('open');
+    //     }
+    //     this.router.navigateByUrl(url);
+    // }
 
     goToAnother(id,categoryLink) {
         let obj = { "id": id };

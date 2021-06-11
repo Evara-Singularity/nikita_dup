@@ -392,10 +392,6 @@ export class OrderConfirmationComponent implements OnInit {
                                         ? btoa(userSession["phone"])
                                         : "",
                                 customerType: this.userType,
-                                agentId: 
-                                    userSession && userSession["agentId"] 
-                                    ? btoa(userSession["agentId"]) 
-                                    : '',
                             };
                             let order = {
                                 transactionID: this.queryParams["orderId"],

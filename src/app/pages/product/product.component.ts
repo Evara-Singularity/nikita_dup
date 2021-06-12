@@ -359,14 +359,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'brand': this.rawProductData['brand'],
       'price': this.rawProductData['price'],
       'stockStatus': this.rawProductData['outOfStock'] ? "Out of Stock" : "In Stock",
-      'tags': this.tagsForAdobe,
+      'tags': tagsForAdobe,
   }
 
-  digitalData["page"] = page;
-  digitalData["custData"] = custData;
-  digitalData["order"] = order;
-  _satellite.track("genericPageLoad");
-  
+  const anlyticData = { page, custData, order }
+  this.analytics.sendAdobeCall(anlyticData);
+
   this.analytics.sendGTMCall({
       'event': 'viewItem',
       'email': (user && user["email"]) ? user["email"] : '',

@@ -362,8 +362,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'tags': tagsForAdobe,
   }
 
-  const anlyticData = { page, custData, order }
-  this.analytics.sendAdobeCall(anlyticData);
+  this.analytics.sendAdobeCall({ page, custData, order });
 
   this.analytics.sendGTMCall({
       'event': 'viewItem',

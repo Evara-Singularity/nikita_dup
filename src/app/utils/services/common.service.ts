@@ -148,8 +148,6 @@ export class CommonService {
             }
         }
         
-        console.log(updatedParams);
-
         return this.defaultParams;
     }
 

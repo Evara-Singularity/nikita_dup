@@ -1698,6 +1698,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async showYTVideo(link) {
+    console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };

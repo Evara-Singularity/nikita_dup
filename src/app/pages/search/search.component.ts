@@ -458,13 +458,15 @@ export class SearchComponent implements OnInit {
                     this.toggleSortBy(data);
                 });
 
-            }
+            } else {
 
-            const sortByFilter = document.querySelector('sort-by');
-
-            if (sortByFilter) {
-                sortByFilter.classList.toggle('open');
+                const sortByFilter = document.querySelector('sort-by');
+    
+                if (sortByFilter) {
+                    sortByFilter.classList.toggle('open');
+                }
             }
+            this.sortByInstance.instance.initializeData();
         }
     }
 
@@ -511,6 +513,8 @@ export class SearchComponent implements OnInit {
         extras['queryParams']['search_query'] = this.productSearchResult.correctedSearchString ? this.productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
         extras['queryParams']['category'] = categoryId;
         extras['queryParams']['toggleRcommendFlag'] = true;
+        delete extras['queryParams']['orderWay'];
+        delete extras['queryParams']['orderBy'];
         this._router.navigate(['search'], extras);
     }
 

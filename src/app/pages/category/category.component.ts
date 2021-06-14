@@ -801,13 +801,12 @@ export class CategoryComponent implements OnInit {
             });
         } else {
             const sortByFilter = document.querySelector('sort-by');
-    
+            
             if (sortByFilter) {
                 sortByFilter.classList.toggle('open');
             }
-        }
-
-        
+        }        
+        this.sortByInstance.instance.initializeData();
     }
 
     createDefaultParams() {

@@ -40,10 +40,9 @@ export class SortByComponent {
   ngOnInit() {
     this.sortByUpdated.subscribe(() => {
       this.initializeData();
-      this.cd.markForCheck(); // marks path
     });
 
-    this._commonService.updateSortBy.pipe(first(),debounceTime(600)).subscribe(data => {
+    this._commonService.updateSortBy.pipe().subscribe(data => {
       this.updateSortBy(data);
       this._cd.markForCheck();
     });
@@ -54,18 +53,18 @@ export class SortByComponent {
   }
 
   private initializeData() {
-    let queryParams = this._commonService.getDefaultParams().queryParams;
+    let queryParams = this._activatedRoute.snapshot.queryParams;
     if (queryParams['orderBy'] != undefined && queryParams['orderBy'] == 'price') {
       if (queryParams['orderWay'] == 'asc')
-        this.sortBy = 'lowPrice';
+      this.sortBy = 'lowPrice';
       else
-        this.sortBy = 'highPrice';
+      this.sortBy = 'highPrice';
     } else {
       this.sortBy = 'popularity';
     }
-
-
-    this._commonService.deleteDefaultQueryParams(['orderWay', 'orderBy']);
+    
+    this.cd.markForCheck();
+    // this._commonService.deleteDefaultQueryParams(['orderWay', 'orderBy']);
   }
 
   updateSortBy(sortBy) {

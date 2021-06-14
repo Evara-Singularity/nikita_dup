@@ -276,7 +276,7 @@ export class CheckoutV1Component implements OnInit {
           console.log('checkout cs', cartSession);
           const cs = this._cartService.updateCart(cartSession);
           this._cartService.setCartSession(cs);
-          this.cartSessionUpdated$.next(cartSession);
+          // this.cartSessionUpdated$.next(cartSession);
           this._cartService.orderSummary.next(cartSession);
           this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
 

@@ -70,6 +70,8 @@ export class CommonService {
     }
 
     set itemsValidationMessage(ivm) {
+        console.trace(ivm);
+        // debugger;
         this._itemsValidationMessage = ivm;
     }
 

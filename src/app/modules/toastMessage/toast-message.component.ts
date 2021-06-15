@@ -22,7 +22,7 @@ export class ToastMessageComponent implements OnInit {
         this._tms.getToasts()
         .pipe(
             map(tm => tm),
-            first()
+            // first() // removed this as toast was working first time and subsequent subcribers were rejected
         )
         .subscribe((tm: ToastMessage) => {
             // Add Unique id for each toast in array

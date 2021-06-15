@@ -1,4 +1,3 @@
-
 import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformServer } from "@angular/common";
@@ -13,6 +12,7 @@ import CONSTANTS from '@app/config/constants';
 export class ContactComponent {
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  imgAssetPath = CONSTANTS.IMAGE_ASSET_URL;
   contactUsSchema;
   isServer: boolean;
 

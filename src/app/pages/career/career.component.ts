@@ -1,3 +1,5 @@
+import { ModalService } from '@app/modules/modal/modal.service';
+import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -13,11 +15,14 @@ export class CareerComponent {
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   isServer: boolean;
+  // ondemand load of youtube video player in modal
+  youtubeModalInstance = null;
 
   constructor(
     private title: Title,
     private meta: Meta,
     private _renderer2: Renderer2,
+    private modalService: ModalService,
     @Inject(DOCUMENT) private _document,
     private _router: Router,
     @Inject(PLATFORM_ID) private platformId) {
@@ -37,5 +42,21 @@ export class CareerComponent {
       this._renderer2.appendChild(this._document.head, links);
     }
 
+  }
+
+  async showYTVideo(link) {
+    if (!this.youtubeModalInstance) {
+      let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
+      let videoDetails = { url: link, params: ytParams };
+      let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
+      modalData.inputs = { videoDetails: videoDetails };
+      this.modalService.show(modalData);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.youtubeModalInstance) {
+      this.youtubeModalInstance = null;
+    }
   }
 }

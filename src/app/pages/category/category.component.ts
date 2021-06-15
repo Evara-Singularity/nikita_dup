@@ -99,6 +99,8 @@ export class CategoryComponent implements OnInit {
     PRTA: Array<any> = [];
     categoryId: string;
     categoryFooterData:any;
+    recentArticlesData = null;
+    recentArtitlcesTitle = "";
     constructor(
         @Optional() @Inject(RESPONSE) private _response, 
         private _renderer2: Renderer2,
@@ -309,7 +311,6 @@ export class CategoryComponent implements OnInit {
                 this.fireTags(res[1]);
             }
         }
-        
         this.setFaqSchema(res[2]);
         this.faqData = res[2];
     }
@@ -940,6 +941,13 @@ export class CategoryComponent implements OnInit {
         } else {
             this.relatedCatgoryListUpdated.next([]);
         }
+        this.setRelatedArticlesData(response);
+    }
+
+    private setRelatedArticlesData(response){
+        const DATA = response[5];
+        this.recentArticlesData = (DATA && DATA['data']) ? DATA['data'] : [];
+        this.recentArtitlcesTitle = this.getRelatedCatgory.categoryDetails.categoryName;
     }
 
     pageChanged(page) {
@@ -989,22 +997,6 @@ export class CategoryComponent implements OnInit {
             return true;
         }
         return false;
-    }
-
-    async onVisibleRecentArticles(htmlElement) {
-        if (this.productListLength) {
-            const { RecentArticles } = await import('@components/recent-articles/recent-articles.component');
-            const factory = this.cfr.resolveComponentFactory(RecentArticles);
-            this.recentArticlesInstance = this.recentArticlesContainerRef.createComponent(factory, null, this.injector);
-            let articlesData = [];
-            this._categoryService.getRelatedArticles(this.categoryId).subscribe(res => {
-                if (res && res['status'] && res['statusCode'] == 200) {
-                    articlesData = res['data'];
-                    this.recentArticlesInstance.instance['recentArticles'] = articlesData;
-                    this.recentArticlesInstance.instance['title'] = this.getRelatedCatgory.categoryDetails.categoryName
-                }
-            });
-        }
     }
 
     resetLazyComponents() {

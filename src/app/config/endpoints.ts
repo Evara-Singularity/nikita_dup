@@ -74,7 +74,7 @@ export const ENDPOINTS = {
   GET_ShippingValue: "/shipping/getShippingValue",
   GET_CategoryExtras: "/category/getcategoryExtras?requestType=",
   GET_CategorySchema: "/quest/getCategorySchema?categoryCode=",
-  GET_ArticlesListByCategory: "/cmsApi/getArticlesListByCategory?categoryCode=",
+  GET_RELATED_ARTICLES: "/cmsApi/getArticlesListByCategory?categoryCode=",
   GET_PrepaidDiscount: "/payment/getPrepaidDiscount",
   VALIDATE_PRODUCT_SER: "/logistics/validateProductsService",
   GET_CATEGORY: "/category/getcategory",

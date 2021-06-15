@@ -15,6 +15,7 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SubCategoryModule } from '@components/subCategory/subCategory.component';
 import { CategoryFooterModule } from '@components/category-footer/category-footer.component';
+import { RecentArticlesModule } from '@app/components/recent-articles/recent-articles.component';
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import { CategoryFooterModule } from '@components/category-footer/category-foote
         ProductListModule,
         SubCategoryModule,
         CategoryFooterModule,
+        RecentArticlesModule,
         ObserveVisibilityDirectiveModule,
         MetaModule.forRoot(),
         PopUpModule,

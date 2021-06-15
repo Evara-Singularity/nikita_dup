@@ -248,11 +248,10 @@ export class CheckoutV1Component implements OnInit {
       .pipe(
         map((res) => res),
         mergeMap((gs) => {
-          //  ;
           this._localAuthService.setUserSession(gs);
           let params = { "sessionid": gs["sessionId"] };
-          if (this.buyNow) {
-            params['buyNow'] = this.buyNow;
+          if (this._cartService.buyNow) {
+            params['buyNow'] = this._cartService.buyNow;
           }
           return this._cartService.getCartBySession(params);
         }),
@@ -273,10 +272,9 @@ export class CheckoutV1Component implements OnInit {
       .subscribe((cartSession) => {
         //  ;
         if (cartSession && cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
-          console.log('checkout cs', cartSession);
           const cs = this._cartService.updateCart(cartSession);
           this._cartService.setCartSession(cs);
-          this.cartSessionUpdated$.next(cartSession);
+          // this.cartSessionUpdated$.next(cartSession);
           this._cartService.orderSummary.next(cartSession);
           this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
 

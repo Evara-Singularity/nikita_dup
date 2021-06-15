@@ -248,7 +248,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
             request.phone = (request.phone as string).toLowerCase();
         }
         this.isReqProcessing = true;
-        request['buildVersion'] = '1.1';
+        request['buildVersion'] = '2.0';
         this.authService.authenticate(request).subscribe(
             (response) => {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {

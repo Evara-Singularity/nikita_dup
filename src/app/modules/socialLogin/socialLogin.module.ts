@@ -5,6 +5,9 @@ import { SocialLoginService } from "./socialLogin.service";
 import CONSTANTS from '../../config/constants';
 import { SocialLoginModule as Angular2SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
 
+// const googleLoginOptions = {
+//     scope: 'profile email https://www.googleapis.com/auth/contacts.readonly'
+// };
 @NgModule({
     imports: [CommonModule, Angular2SocialLoginModule],
     declarations: [
@@ -22,7 +25,7 @@ import { SocialLoginModule as Angular2SocialLoginModule, SocialAuthServiceConfig
                     {
                         id: GoogleLoginProvider.PROVIDER_ID,
                         provider: new GoogleLoginProvider(
-                            CONSTANTS.SOCIAL_LOGIN.google.clientId
+                            CONSTANTS.SOCIAL_LOGIN.google.clientId,
                         )
                     },
                     {

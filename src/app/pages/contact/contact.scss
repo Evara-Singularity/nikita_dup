@@ -1,70 +1,147 @@
 @import '../../scss/variables';
-a {
-    color: #366090;
-}
 
-.static-container {
-    .f-14 {
-        font-size: 14px;
-    }
-    .head {
-        background: #366090;
-        padding: 30px 0 60px 0;
-        color: white;
-        i {
-            font-size: 50px;
-        }
-    }
-    .container {
-        margin: -30px auto 20px auto;
-        line-height: 19px;
-        .card {
-            margin-top: 10px;
-            border-color: #366090;
-            color: #366090;
-            padding: 15px;
-            p {
-                padding-left: 36px;
-                font-size: 14px;
-                b {
-                    display: block;
+.revamped-contact {
+    .top-banner {
+        background: #fff;
+        border-radius: 8pt;
+        margin: 20px 10px;
+        display: inline-block;
+        .banner-content {
+            text-align: left;
+            display: inline-block;
+            width: 55%;
+            vertical-align: top;
+            padding: 23px 0;
+            span {
+                padding: 20px 15px;
+                display: block;
+                h1 {
+                    font-size: 12pt;
+                    color: #3C3C3C;
+                    font-weight: 600;
+                    line-height: 18px;
+                }
+                p {
+                    font-size: 10pt;
+                    font-weight: 400;
+                    line-height: 16px;
+                    padding-top: 10px;
                 }
             }
         }
-        .heading {
-            color: #366090;
-            i {
-                margin-right: 10px;
-                font-size: 25px;
-                float: left;
-                line-height: 26px;
+        .banner-img {
+            display: inline-block;
+            text-align: right;
+            width: 40%;
+            padding: 20px 0;
+        }
+    }
+    .contact-description {
+        padding: 0 15px;
+        p {
+            font-size: 10pt;
+            color: #3C3C3C;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+    }
+    .contact-info {
+        padding: 15px 10px;
+        .faq-wrap {
+            border: 1px solid #EFEFF4;
+            background: #fff;
+            border-radius: 8pt;
+            padding: 20px 7px;
+            margin-bottom: 15px;
+            &:last-child {
+                margin-bottom: 0;
             }
             span {
-                float: left;
-                line-height: 26px;
+                display: inline-block;
+                h6 {
+                    font-size: 12pt;
+                    color: #303030;
+                    font-weight: 600;
+                    line-height: 18px;
+                }
+                p {
+                    font-size: 9pt;
+                    font-weight: 400;
+                    line-height: 16px;
+                    padding-top: 2px;
+                }
+            }
+            .contact-content {
+                padding: 0px 6px 0 11px;
+                width: 82%;
+            }
+            .right-arrow {
+                float: right;
+                padding: 5px 3px;
+            }
+            .icons {
+                vertical-align: top;
+                img {
+                    width: 21pt;
+                    vertical-align: middle;
+                }
             }
         }
     }
-}
-
-.pwapage-wrap {
-    background: #F5F5F5;
-    padding: 0px;
-    position: relative;
-}
-
-.pwapghead {
-    background: #425291;
-    padding: 20px 0px 60px;
-    color: $white;
-    text-align: center;
-    i {
-        font-size: 50px;
+    .office-address-info,
+    .customer-care {
+        padding: 30px 10px;
+        p {
+            font-size: 12pt;
+            font-weight: 500;
+            line-height: 18px;
+            padding-bottom: 10px;
+        }
+        .international {
+            background: #fff;
+            border-radius: 8pt;
+            padding: 15px;
+            margin-bottom: 15px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            span {
+                background: #EFEFF4;
+                border-radius: 4pt;
+                color: #979797;
+                font-size: 10pt;
+                font-weight: 600;
+                line-height: 16px;
+                padding: 5px 10px;
+                margin-bottom: 12px;
+                display: inline-block;
+            }
+            h6 {
+                color: #3C3C3C;
+                font-size: 12pt;
+                font-weight: 700;
+                line-height: 18px;
+                padding-bottom: 5px;
+            }
+            p {
+                font-size: 10pt;
+                color: #303030;
+                font-weight: 400;
+                line-height: 16px;
+            }
+            .call-timings {
+                padding: 8px 0;
+            }
+        }
     }
-    h1 {
-        font-size: $extra-large-font;
-        text-transform: uppercase;
-        font-weight: 500;
+    .customer-care {
+        padding: 0 10px 30px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .contact-content {
+        width: 79% !important;
     }
 }
 

@@ -230,7 +230,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         }
 
         this.signupUtilService.pushNormalUser();
-        let params = { source: 'signup', email: '', password: '', firstName: '', lastName: '', phone: '', otp: '', userType: 'online', phoneVerified: true, emailVerified: false, buildVersion: '1.1' };
+        let params = { source: 'signup', email: '', password: '', firstName: '', lastName: '', phone: '', otp: '', userType: 'online', phoneVerified: true, emailVerified: false, buildVersion: '2.0' };
         params.email = this.email.value;
         params.password = this.password.value;
         params.firstName = this.name.value;

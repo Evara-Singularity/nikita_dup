@@ -186,7 +186,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         requestData['otp'] = this.otp.value;
         this.cartSession = this.cartService.getCartSession();
         this.isReqProcessing = true;
-        requestData['buildVersion'] = '1.1';
+        requestData['buildVersion'] = '2.0';
         this.authService.authenticate(requestData).subscribe(
             (response) => {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {

@@ -74,7 +74,7 @@ const routes: Routes = [
 					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
-					title: '',
+                    logo: true,
 					moreOpt: true,
 				},
 			},
@@ -84,7 +84,7 @@ const routes: Routes = [
 					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
-					title: '',
+                    logo: true,
 					moreOpt: true,
 				},
 			},

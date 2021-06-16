@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="quickLinksSection" *ngIf="buckets.length > 0 && firstPageContent">
+    <div class="quickLinksSection" *ngIf="firstPageContent && productCategoryNames.length > 0">
         <h4>Quick Links</h4>
         <a *ngFor="let category of productCategoryNames" href="{{categoryLinkLists[category]}}" class="quickLinkList">{{category}}</a>
     </div>

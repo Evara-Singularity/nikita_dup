@@ -9,17 +9,16 @@ import { CONSTANTS } from '@config/constants';
     templateUrl: './recent-articles.component.html',
     styleUrls: ['./recent-articles.component.scss'],
 })
-export class RecentArticles implements OnInit {
-    constructor(private router: Router) {}
-    ngOnInit(): void
-    {
-        console.log(this.recentArticles);
-    }
+export class RecentArticles implements OnInit
+{
+    constructor(private router: Router) { }
+    ngOnInit() { }
     @Input() recentArticles;
     @Input() title;
     imageBaseUrl = CONSTANTS.IMAGE_BASE_URL;
     defaultImage = this.imageBaseUrl + CONSTANTS.ASSET_IMG;
-    navigateToArticlePage(article) {
+    navigateToArticlePage(article)
+    {
         this.router.navigateByUrl('/articles/' + article.friendlyUrl)
     }
 }
@@ -29,5 +28,5 @@ export class RecentArticles implements OnInit {
     imports: [CommonModule],
     exports: [RecentArticles]
 })
-export class RecentArticlesModule {}
-export class CategoryModule extends RecentArticlesModule {}
+export class RecentArticlesModule { }
+export class CategoryModule extends RecentArticlesModule { }

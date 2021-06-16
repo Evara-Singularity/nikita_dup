@@ -232,7 +232,7 @@ export class SharedCheckoutLoginComponent implements OnInit {
         const email = (this.identifierType == IDENTIFIER.EMAIL) ? this.identifierForm.controls['identifier'].value : '';
         const phone = (this.identifierType == IDENTIFIER.PHONE) ? this.identifierForm.controls['identifier'].value : this.phoneFrom.controls['phone'].value;
         const password = this.passwordFrom.controls['password'].value;
-        const body = { email, phone, type: this.identifierType, password, buildVersion: '1.1' };
+        const body = { email, phone, type: this.identifierType, password, buildVersion: '2.0' };
 
         this.commonService.showLoader = true;
         this.authService.authenticate(body).subscribe((response) => {

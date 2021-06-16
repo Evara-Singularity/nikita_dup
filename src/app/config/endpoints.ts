@@ -96,5 +96,6 @@ export const ENDPOINTS = {
   IS_REVIEW_HELPFUL: "/reviews/isReviewHelpful",
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
-  IS_BRAND_CATEGORY: "/search/isBrandCategory"
+  IS_BRAND_CATEGORY: "/search/isBrandCategory",
+  SEARCH: '/search'
 };

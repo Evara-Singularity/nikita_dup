@@ -88,10 +88,20 @@ const routes: Routes = [
 					moreOpt: true,
 				},
 			},
+			// {
+			// 	path: 'search',
+			// 	loadChildren: () =>
+			// 		import('./search/search.module').then((m) => m.SearchModule),
+			// 	data: {
+			// 		footer: false,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 	},
+			// },
 			{
 				path: 'search',
 				loadChildren: () =>
-					import('./search/search.module').then((m) => m.SearchModule),
+					import('./search-v1/search-v1.module').then((m) => m.SearchV1Module),
 				data: {
 					footer: false,
 					logo: true,

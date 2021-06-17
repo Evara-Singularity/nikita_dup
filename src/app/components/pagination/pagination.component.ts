@@ -128,9 +128,6 @@ export class PaginationComponent {
     }
 
     pageChanged(newPage) {
-        console.log('newPage : ' + newPage);
-        if (this.sortByComponent)
-            this._commonService.updateSortByState(this.sortByComponent.sortBy);
         this.page = newPage;
         this.onPageChange.emit(this.page);
     }

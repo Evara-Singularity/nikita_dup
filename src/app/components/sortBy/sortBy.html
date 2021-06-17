@@ -1,12 +1,12 @@
-<div class="bottom-options sort-by" id="sortBy {{ sortBy }} ">
-    <div class="overlay" (click)="updateParent({sortByOpt : false})"></div>
+<div class="bottom-options sort-by" id="sortBy {{ _commonService.selectedFilterData['sortBy'] }} ">
+    <div class="overlay" (click)="toggleFilter.emit(true)"></div>
     <div class="content-box">
       <div class="container">
         <h3 class="heading">SORT BY</h3>
         <div class="custom-cbox">
           <label>
             <span class="chk-box">
-              <input class="hidden" type="radio" name="sortBy" [checked]="sortBy == 'popularity'" (change)="updateSortBy('popularity')">
+              <input class="hidden" type="radio" name="sortBy" [checked]="_commonService.selectedFilterData['sortBy'] == 'popularity'" (change)="toggleFilter.emit(true); _commonService.selectedFilterData['sortBy'] = 'popularity'; _commonService.applyFilter()">
               <span class="custom-box icon-box"></span>
             </span>
             <span class="chk-txt">Popularity</span>
@@ -14,7 +14,7 @@
   
           <label>
             <span class="chk-box">
-              <input class="hidden" type="radio" name="sortBy" [checked]="sortBy == 'lowPrice'" (change)="updateSortBy('lowPrice')">
+              <input class="hidden" type="radio" name="sortBy" [checked]="_commonService.selectedFilterData['sortBy'] == 'lowPrice'" (change)="toggleFilter.emit(true);  _commonService.selectedFilterData['sortBy'] = 'lowPrice'; _commonService.applyFilter()">
               <span class="custom-box icon-box"></span>
             </span>
             <span class="chk-txt">Low To High Price</span>
@@ -22,7 +22,7 @@
   
           <label>
             <span class="chk-box">
-              <input class="hidden" type="radio" name="sortBy" [checked]="sortBy == 'highPrice'" (change)="updateSortBy('highPrice')">
+              <input class="hidden" type="radio" name="sortBy" [checked]="_commonService.selectedFilterData['sortBy'] == 'highPrice'" (change)="toggleFilter.emit(true);  _commonService.selectedFilterData['sortBy'] = 'highPrice'; _commonService.applyFilter()">
               <span class="custom-box icon-box"></span>
             </span>
             <span class="chk-txt">High To Low Price</span>

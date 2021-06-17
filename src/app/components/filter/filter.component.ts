@@ -1,5 +1,5 @@
 import { EventEmitter, Component, Input, OnInit, Output } from '@angular/core';
-import { Router, NavigationExtras, ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -16,15 +16,10 @@ export class FilterComponent implements OnInit {
     @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
 
     public selectedFilterIndex: number = 0;
-    
-    public selectedFilterData: any;
 
     constructor(
-        private _commonService: CommonService,
-        private _router: Router,
-        private _activatedRoute: ActivatedRoute
+        public _commonService: CommonService,
     ) {
-        this.selectedFilterData = {};
     }
 
     ngOnInit(){
@@ -41,15 +36,15 @@ export class FilterComponent implements OnInit {
                 const term = this.filterData[filterKey]['terms'][termKey];
                 if (term['selected']) {
                     this.filterData[filterKey].count = this.filterData[filterKey].count + 1;
-                    if (this.selectedFilterData.hasOwnProperty(this.filterData[filterKey]['name'])) {
-                        this.selectedFilterData[this.filterData[filterKey]['name']].push(term['term']);
+                    if (this._commonService.selectedFilterData.filter.hasOwnProperty(this.filterData[filterKey]['name'])) {
+                        this._commonService.selectedFilterData.filter[this.filterData[filterKey]['name']].push(term['term']);
                     } else {
-                        this.selectedFilterData[this.filterData[filterKey]['name']] = [term['term']];
+                        this._commonService.selectedFilterData.filter[this.filterData[filterKey]['name']] = [term['term']];
                     }
                 }
             }
         }
-        this.selectedFilterData;
+        this._commonService.selectedFilterData.filter;
     }
 
     /**
@@ -61,74 +56,24 @@ export class FilterComponent implements OnInit {
     updateSelectedFilterData = (event, filterName, filterRow) => {
         filterName = filterName.toLowerCase();
 
-        if (this.selectedFilterData.hasOwnProperty(filterName)) {
+        if (this._commonService.selectedFilterData.filter.hasOwnProperty(filterName)) {
             if (event.target.checked === true) {
-                this.selectedFilterData[filterName].push(filterRow.term);
+                this._commonService.selectedFilterData.filter[filterName].push(filterRow.term);
                 this.filterData[this.selectedFilterIndex].count = this.filterData[this.selectedFilterIndex].count + 1;
             } else {
-                for (let i = 0; i < this.selectedFilterData[filterName].length; i++) {
-                    if (this.selectedFilterData[filterName][i] === filterRow.term) {
-                        this.selectedFilterData[filterName].splice(i, 1);
+                for (let i = 0; i < this._commonService.selectedFilterData.filter[filterName].length; i++) {
+                    if (this._commonService.selectedFilterData.filter[filterName][i] === filterRow.term) {
+                        this._commonService.selectedFilterData.filter[filterName].splice(i, 1);
                         this.filterData[this.selectedFilterIndex].count = this.filterData[this.selectedFilterIndex].count - 1;
                     }
                 }
             }
         } else {
             this.filterData[this.selectedFilterIndex].count = 1;
-            this.selectedFilterData[filterName] = [filterRow.term];
+            this._commonService.selectedFilterData.filter[filterName] = [filterRow.term];
         }
     }
 
-    /**
-     * This funtion is used to create fragment & queryparams and navigate to the specific routes
-     */
-    applyFilter(currentRouteFromCategoryFilter?){
-        const currentRoute = !currentRouteFromCategoryFilter ? this._commonService.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
-
-        const extras: NavigationExtras = { queryParams: {} };
-
-        const fragmentString = this._commonService.generateFragmentString(this.selectedFilterData);
-
-        const queryParams = this._activatedRoute.snapshot.queryParams;
-        extras.queryParams = queryParams;
-
-        if (fragmentString != null) {
-            extras.fragment = fragmentString;
-        } 
-
-        if (extras.queryParams['page']) {
-            delete extras.queryParams['page'];
-        }
-
-        this.toggleFilter.emit(true);
-        this._router.navigate([currentRoute], extras);
-    }
-
-    getselectedCategoryLink(item) {
-        this.applyFilter(item.categoryLink);
-    }
-    
-    addRupee(priceData) {
-        let symbol = '₹';
-        let price = priceData.split('-');
-        let rData = symbol + price[0].trim() + " - ";
-        if (price[1].trim() == "*") {
-            symbol = "";
-        }
-        rData = rData + symbol + price[1].trim();
-        return rData;
-    }
-
-    addDiscount(discountData) {
-        let symbol = '%';
-        let discount = discountData.split('-');
-        let dData = discount[0].trim() + symbol + " - ";
-        if (discount[1].trim() == "*") {
-            symbol = "";
-        }
-        dData = dData + discount[1].trim() + symbol;
-        return dData;
-    }
 }
 
 import { NgModule } from '@angular/core';

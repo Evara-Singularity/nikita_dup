@@ -1,4 +1,5 @@
-import { EventEmitter, Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'filter-category-list',
@@ -8,15 +9,5 @@ import { EventEmitter, Component, Input, Output } from '@angular/core';
 export class FilterCategoryComponent {
     @Input('categoryFilterData') categoryFilterData: any;
 
-    @Output() selectedCategoryLink: EventEmitter<any> = new EventEmitter();
-
-    constructor() {
-    }
-
-    ngOnInit(){
-    }
-
-    emitCategoryClickEvent(item) {
-        this.selectedCategoryLink.emit(item);
-    }
+    constructor(public _commonService: CommonService){}
 }

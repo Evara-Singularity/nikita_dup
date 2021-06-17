@@ -469,21 +469,18 @@ export class BrandComponent {
             }
         }
     }
+    
     async toggleSortBy(data) {
-        if (this.isBrowser) {
-            this.sortByOpt = data.sortByOpt;
-            if (!this.sortByInstance) {
-                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
-                const factory = this.cfr.resolveComponentFactory(SortByComponent);
-                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+        this.sortByOpt = data.sortByOpt;
+        if (!this.sortByInstance) {
+            const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+            const factory = this.cfr.resolveComponentFactory(SortByComponent);
+            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
 
-                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                    this.toggleSortBy(data);
-                });
-
-            }
-
+            (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy({sortByOpt:true});
+            });
+        } else {
             const sortByFilter = document.querySelector('sort-by');
 
             if (sortByFilter) {

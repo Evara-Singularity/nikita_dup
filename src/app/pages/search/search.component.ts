@@ -473,7 +473,7 @@ export class SearchComponent implements OnInit {
 
     getQueryParams(newQueryParams?) {
         let qp = this._commonService.getDefaultParams().queryParams;
-        let queryParams = this._commonService.generateQueryParams(qp);
+        let queryParams = this._commonService.generateQueryParams();
 
         if (newQueryParams != undefined) {
             for (let key in newQueryParams) {

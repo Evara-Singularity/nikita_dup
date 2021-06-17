@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { Observer, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationExtras, Router } from '@angular/router';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
@@ -239,25 +239,18 @@ export class CommonService {
         }
     }
 
-    generateQueryParams(qp) {
-        let queryParams = {};
-        if (qp["page"] > 1)
-            queryParams["page"] = qp["page"];
-        if (qp["pageSize"] > CONSTANTS.GLOBAL.default.pageSize)
-            queryParams["pageSize"] = qp["pageSize"];
-
-        /*if(this.defaultParams["controller"] != undefined)
-         queryParams["controller"] = this.defaultParams["controller"];*/
-        if (qp["controller"] != undefined)
-            queryParams["controller"] = qp["controller"];
-        if (qp["orderby"] != undefined)
-            queryParams["orderby"] = qp["orderby"];
-        if (qp["orderway"] != undefined)
-            queryParams["orderway"] = qp["orderway"];
-        if (qp["search_query"] != undefined)
-            queryParams["search_query"] = qp["search_query"];
-        if (qp["submit_search"] != undefined)
-            queryParams["submit_search"] = qp["submit_search"];
+    generateQueryParams() {
+        let queryParams = JSON.parse(JSON.stringify(this._activatedRoute.snapshot.queryParams));
+        if (this.selectedFilterData.sortBy === 'popularity') {
+            delete queryParams['orderBy'];
+            delete queryParams['orderWay'];
+        } else if (this.selectedFilterData.sortBy === 'lowPrice') {
+            queryParams['orderBy'] = 'price';
+            queryParams['orderWay'] = 'asc';
+        } else if (this.selectedFilterData.sortBy === 'highPrice') {
+            queryParams['orderBy'] = 'price';
+            queryParams['orderWay'] = 'desc';
+        }
         return queryParams;
     }
 
@@ -820,5 +813,39 @@ export class CommonService {
         setTimeout(() => {
             this.showLoader = false;
         }, 0);
+    }
+    
+
+    /**
+    * This funtion is used to create fragment & queryparams and navigate to the specific routes
+    */
+    public selectedFilterData: any = {
+        filter: {},
+        sortBy: {}
+    };
+    
+    applyFilter(currentRouteFromCategoryFilter?){
+        console.log(this.selectedFilterData);
+        const currentRoute = !currentRouteFromCategoryFilter ? this.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
+
+        const extras: NavigationExtras = { queryParams: {} };
+
+        const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
+
+        const queryParams = this.generateQueryParams();
+
+        console.log(queryParams);
+
+        extras.queryParams = queryParams;
+
+        if (fragmentString != null) {
+            extras.fragment = fragmentString;
+        } 
+
+        if (extras.queryParams['page']) {
+            delete extras.queryParams['page'];
+        }
+
+        this._router.navigate([currentRoute], extras);
     }
 }

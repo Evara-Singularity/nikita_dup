@@ -1,0 +1,35 @@
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.container{
+    height: 145px;
+    width: 100%;
+    border: 1px solid #A2A2A2;
+    padding: 15px 10px;
+    background-color: #fff;
+    .left{
+        width: '37%';
+        img{
+            width: 100%;
+            height: auto;
+        }
+        .tags {
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            background-color: red;
+        }
+    }
+    .right{
+        width: '63%';
+        .rating{
+            background-color: '#458D00';
+            font: 10px;
+            padding: 8px 16px;
+            color: '#FFF'
+        }
+    }
+}

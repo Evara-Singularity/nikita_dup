@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="left">
+        <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
+        <div class="tags">
+        </div>
+    </div>
+    <div class="right">
+        <div class="rating">
+            <span>{{product.rating}}</span>
+            <span>{{product.ratingCount}}</span>
+        </div>
+        <div class="header">
+            <span>{{product.productName}}</span>
+        </div>
+        <div class="brand">
+            <span>{{product.brandName}}</span>
+        </div>
+        <div class="price-details">
+            <div class="left">
+                <div class="price">
+                    <span class="crossed" >{{product.mrp}}</span>
+                    <span class="green-label">{{product.discount}}% OFF</span>
+                </div>
+                <div class="main-price">
+                    <span>{{product.salesPrice}}</span>
+                </div>
+            </div>
+            <div class="right">
+                <button>Cart</button>
+                <button>BUY NOW</button>
+            </div>
+        </div>
+    </div>
+</div>

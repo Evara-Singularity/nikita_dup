@@ -1,0 +1,8 @@
+<div class="list-heading">
+    <div class="left" *ngIf="productsListingData.listingHeading" >{{productsListingData.listingHeading}}</div>
+    <div class="right">Showing 20 out of {{productsListingData.totalCount}} products</div>
+</div>
+<product-horizontal-card 
+    *ngFor="let product of productsListingData.products" 
+    [product]="product">
+</product-horizontal-card>

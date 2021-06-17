@@ -1,4 +1,5 @@
-$cdn_url: "https://cdn.moglix.com/";
+@import './config';
+
 $font-family: 'Roboto',
 sans-serif;
 $cdn_url: "#{$cdn_url}";

@@ -3,15 +3,15 @@
     font-family: 'icomooon_pwa';
     font-display: swap;
     src: local('icomoon_pwa.eot'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.eot');
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.eot');
     src: local('icomoon_pwa.eot'),
     local('icomoon_pwa.ttf'),
     local('icomoon_pwa.woff'),
     local('icomoon_pwa.svg'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.eot') format('embedded-opentype'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.ttf') format('truetype'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.woff') format('woff'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.svg') format('svg');
+    url('/assets/fonts/icomoon_pwa.eot') format('embedded-opentype'),
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype'),
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.woff') format('woff'),
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }

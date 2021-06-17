@@ -1,7 +1,7 @@
 @import "../../../scss/variables";
 
 .empower_icon {
-  background: url("#{$cdn_url}mob/assets/img/businessIcons.svg");
+  background: url("#{$cdn_url}assets/img/businessIcons.svg");
   background-size: 1700%;
   &.empower {
     background-position: -234px -20px;

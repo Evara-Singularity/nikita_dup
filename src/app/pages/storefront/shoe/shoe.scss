@@ -119,7 +119,7 @@
         }
         .logo_block {
             .col-md-5 {
-                background: url('#{$cdn_url}img/others/safety-shoes-boots-online.png');
+                background: url('#{$cdn_url}/assets/img/others/safety-shoes-boots-online.png');
                 padding: 100px 0px;
             }
             .col-md-7 {
@@ -226,7 +226,7 @@
                             width: 43px;
                             margin: 3px 5px;
                             float: left;
-                            background: url(#{$cdn_url}img/others/ShoeType.svg);
+                            background: url("#{$cdn_url}/assets/img/others/ShoeType.svg");
                             background-repeat: no-repeat;
                         }
                         li:nth-child(1) {

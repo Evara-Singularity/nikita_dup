@@ -1,0 +1,18 @@
+<div class="filter-categories">
+    <ng-template #recursiveList let-categoryFilterData>                
+        <li id= "expId"  *ngFor="let item of categoryFilterData">
+            <div class="heading-name" >
+                     <i  *ngIf="item.childCategoryList && item.childCategoryList.length > 0" class="icon-next" [appApplyRemoveClassOnParent]="{className : 'openMenu' }"></i>
+                     <a (click)="emitCategoryClickEvent(item)">
+                         <span class="name">{{item.term}}</span>
+                    </a>
+                    <span class="total-count" *ngIf="item.childCategoryList">({{item.childCategoryList.length}})</span>
+             </div>
+            <ul *ngIf="item.childCategoryList && item.childCategoryList.length > 0" class="custom-cbox">
+                <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.childCategoryList }"></ng-container>
+            </ul> 
+        </li>
+
+    </ng-template>
+    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: categoryFilterData }"></ng-container>
+</div>

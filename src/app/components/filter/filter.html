@@ -1,44 +1,47 @@
-<section class="screen-view popup mob_filter" *ngIf="buckets.length" id="mob_filter">
+<section class="screen-view popup mob_filter" *ngIf="filterData && filterData.length" id="mob_filter">
     <div class="popup-head">
-        <i class="icon-back" (click)="filterUp()"></i>
+        <i class="icon-back" (click)="toggleFilter.emit(true)"></i>
         <span class="txt-name">FILTER</span>
-        <span (click)="applyMobileFilter({productFilterData: {}})" class="clear-filter">CLEAR ALL</span>
+        <span (click)="selectedFilterData = {}; applyFilter()" class="clear-filter">CLEAR ALL</span>
     </div>
-    <button class="apply-filter btn continue-btn" (click)="applyMobileFilter()">APPLY</button>
+    <button class="apply-filter btn continue-btn" (click)="applyFilter()">APPLY</button>
     <div class="filters-content">
         <ul class="side-filters">
-            <li *ngFor="let bucket of buckets; let i = index;" (click)="updateFilterActiveIndex(i)" [class.active]="filterActiveIndex == i">
+            <li *ngFor="let filter of filterData; let i = index;" (click)="selectedFilterIndex = i" [class.active]="selectedFilterIndex == i">
                 <div class="filter-label">
-                    <span class="filter-parent">{{ bucket.name }}<span
-                            *ngIf="bucket.count>0">({{ bucket.count }})</span></span>
+                    <span class="filter-parent">{{ filter.name }}<span
+                            *ngIf="filter.count>0">({{ filter.count }})</span></span>
                 </div>
                 <div class="filter-options">
-                    <ng-container *ngIf="bucket.name === 'category'">
-                        <app-f-category [terms]="bucket.terms"></app-f-category>
+                    <ng-container *ngIf="filter.name === 'category'">
+                        <filter-category-list (selectedCategoryLink)="getselectedCategoryLink($event)" [categoryFilterData]="filter.terms"></filter-category-list>
                     </ng-container>
-                    <ng-container *ngIf="bucket.name != 'category'">
+                    <ng-container *ngIf="filter.name != 'category'">
                         <div class="filter-list">
-                            <div class="filter-search" *ngIf="bucket.name != 'availability' && bucket.name != 'discount' && bucket.name != 'price'">
+                            <div class="filter-search" *ngIf="filter.name != 'availability' && filter.name != 'discount' && filter.name != 'price'">
                                 <input type="text" placeholder="Search" filterSearchBox>
                                 <i class="icon-search"></i>
                             </div>
                             <div class="custom-cbox">
-                                <ng-container *ngFor="let item of bucket.terms">
+                                <ng-container *ngFor="let item of filter.terms; let z = index;">
                                     <label [class.selected]="categoryCheckBox.checked" *ngIf="item.count">
                                         <span class="chk-box">
-                                            <input class="hidden" type="checkbox"
-                                                [disabled]="(!item.enabled || item.count==0)" [checked]="item.selected"
-                                                (click)="updateProductFilterData($event, bucket.name, item, true)"
+                                            <input 
+                                                (click)="updateSelectedFilterData($event, filter.name, item)"
+                                                class="hidden" 
+                                                type="checkbox"
+                                                [disabled]="!item.enabled " 
+                                                [checked]="item.selected"
                                                 #categoryCheckBox>
                                             <span class="custom-box icon-box"></span>
                                         </span>
-                                        <div *ngIf="bucket.name!=='price' && bucket.name!=='discount'">
+                                        <div *ngIf="filter.name!=='price' && filter.name!=='discount'">
                                             <span class="chk-txt">{{item.term}}</span>
                                         </div>
-                                        <div *ngIf="bucket.name=='price'">
+                                        <div *ngIf="filter.name=='price'">
                                             <span class="chk-txt">{{addRupee(item.term)}}</span>
                                         </div>
-                                        <div *ngIf="bucket.name=='discount'">
+                                        <div *ngIf="filter.name=='discount'">
                                             <span class="chk-txt">{{addDiscount(item.term)}}</span>
                                         </div>
                                     </label>

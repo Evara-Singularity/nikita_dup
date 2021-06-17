@@ -457,11 +457,9 @@ export class BrandComponent {
             });
             const factory = this.cfr.resolveComponentFactory(FilterComponent);
             this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-            this.filterInstance.instance['pageName'] = this.pageName;
-            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
-                this.onFilterSelected(data);
+            this.filterInstance.instance['filterData'] = this.filterData;
+            (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.filterUp();
             });
         } else {
             const mob_filter = document.querySelector('.mob_filter');
@@ -470,10 +468,7 @@ export class BrandComponent {
                 mob_filter.classList.toggle('upTrans');
             }
         }
-
-
     }
-
     async toggleSortBy(data) {
         if (this.isBrowser) {
             this.sortByOpt = data.sortByOpt;
@@ -552,11 +547,8 @@ export class BrandComponent {
         this.filterData = response.buckets;
         this.productsUpdated.next(response.productSearchResult.products);
     
-        if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
-        } else {
-            this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
-        }
+        this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
+
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }

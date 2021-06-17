@@ -1,35 +1,134 @@
-.left {
-    float: left;
-}
-.right {
-    float: right;
-}
-.container{
-    height: 145px;
+.card-container{
     width: 100%;
-    border: 1px solid #A2A2A2;
+    border: 1px solid #E2E2E2;
     padding: 15px 10px;
     background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     .left{
-        width: '37%';
+        width: 37%;
+        text-align: center;
         img{
             width: 100%;
             height: auto;
+            max-width: 125px;
         }
         .tags {
             position: absolute;
             top: 15px;
             left: 10px;
-            background-color: red;
         }
     }
     .right{
-        width: '63%';
+        width: 63%;
         .rating{
-            background-color: '#458D00';
             font: 10px;
-            padding: 8px 16px;
-            color: '#FFF'
+            margin-bottom: 10px;
+            span{
+                margin-right: 5px;
+            }
+            .avgrating{
+                display: inline;
+                background-color: #458D00;
+                padding: 4px 8px;
+                color: #FFF;
+                border-radius: 3px;
+            }
+            .count{
+                color: #C0C0C0;
+            }
+        }
+        .name{
+            span{
+                text-align: left;
+                font-size: 13px;
+                color: #303030;
+            }
+        }
+        .brand{
+            span{
+                margin-top: 4px;
+                text-align: left;
+                font-size: 10px;
+                color: #B1B1B1;
+            }
+            margin-bottom: 10px;
+        }
+        .price-details{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .left{
+                text-align: left;
+                width: 40%;
+                .price{
+                    font-size: 10px;
+                    margin-bottom: 10px;
+                    span{
+                        margin-right: 4px;
+                    }
+                    .crossed{
+                        color: #2B2B2B;
+                        text-decoration: line-through;
+                        opacity: 0.5;
+                    }
+                    .green-label{
+                        font-weight: bold;
+                        color: #3B9E26;
+                    }
+                }
+                .main-price{
+                    font-size: 14px;
+                    color: #2B2B2B;
+                    font-weight: bold;
+                }
+                .out-of-stock-text{
+                    font-size: 10px;
+                    color: #2B2B2B;
+                    opacity: 0.5;
+                }
+                .out-of-stock-price{
+                    font-size: 14px;
+                    color: #2B2B2B;
+                    opacity: 0.5;
+                    font-weight: bold;
+                    margin-top: 4px;
+                }
+            }
+            .right{
+                text-align: right;
+                width: 60%;
+                button{
+                    padding: 8px 12px;
+                    background-color: #D9232D;
+                    text-transform: uppercase;
+                    color: #FFF;
+                    border: 0;
+                    margin: 0;
+                    border-radius: 3px;
+                    display: inline;
+                    margin-right: 5px;
+                }
+                button.white{
+                    padding: 8px 12px;
+                    background-color: #FFF;
+                    text-transform: uppercase;
+                    color: #FFF;
+                    border: 0;
+                    margin: 0;
+                    border-radius: 3px;
+                    display: inline;
+                    margin-right: 5px;
+                    color: #D9232D;
+                    border: 1px solid #D9232D;
+                    i{
+                        color: #D9232D;
+                    }
+                }
+            }
         }
     }
+
 }

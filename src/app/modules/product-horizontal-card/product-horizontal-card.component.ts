@@ -9,12 +9,17 @@ import { environment } from 'environments/environment';
 })
 export class ProductHorizontalCardComponent implements OnInit {
 
+  readonly imageCdnPath = environment.IMAGE_BASE_URL;
   @Input() product: ProductsEntity;
-  readonly imageCdnPath = environment.IMAGE_BASE_URL ;
+
+  isOutOfStockByQuantity: boolean = false;
+  isOutOfStockByPrice: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.isOutOfStockByQuantity = !this.product.quantityAvailable;
+    this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp
   }
 
 }

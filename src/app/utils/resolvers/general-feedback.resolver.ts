@@ -22,8 +22,8 @@ export class GeneralFeedbackResolver implements Resolve<any> {
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
-        console.log(_activatedRouteSnapshot.params['orderid'])
-        const ORDER_ID = _activatedRouteSnapshot.params['orderid'];
+        console.log(_activatedRouteSnapshot.params['itemid'])
+        const ORDER_ID = _activatedRouteSnapshot.params['itemid'];
         const GENERAL_FEEDBACK_KEY = makeStateKey<any>('GFDST');
         if (this.transferState.hasKey(GENERAL_FEEDBACK_KEY)) {
             const response = this.transferState.get<any>(GENERAL_FEEDBACK_KEY, null);

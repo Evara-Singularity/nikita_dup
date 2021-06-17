@@ -651,7 +651,7 @@ const routes: Routes = [
 				},
 			},
             {
-                path: 'feedback/:orderid',
+                path: 'feedback/:itemid',
                 loadChildren: () =>
                     import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
                 data: {

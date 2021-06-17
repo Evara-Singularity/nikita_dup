@@ -5,11 +5,11 @@ import { ProductListingDataEntity, SearchResponse } from '@app/utils/models/prod
 @Component({
   selector: 'search-v1',
   templateUrl: './search-v1.component.html',
-  styleUrls: ['./search-v1.component.css']
+  styleUrls: ['./search-v1.component.scss']
 })
 export class SearchV1Component implements OnInit {
 
-  private productListingData: ProductListingDataEntity;
+  productListingData: ProductListingDataEntity;
 
   constructor(
     private route: ActivatedRoute
@@ -25,8 +25,10 @@ export class SearchV1Component implements OnInit {
     // data to be used for product listing section
     this.productListingData = {
       totalCount: rawSearchData.productSearchResult.totalCount,
-      products: rawSearchData.productSearchResult.products
+      products: rawSearchData.productSearchResult.products,
+      listingHeading: 'Search Results'
     };
+    
   }
 
 

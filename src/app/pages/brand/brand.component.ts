@@ -63,7 +63,6 @@ export class BrandComponent {
     session: {};
     isServer: boolean;
     isBrowser: boolean;
-    sortByOpt: boolean;
     iba: boolean; //isBrandActive
     productSearchResult: {};
     productSearchResultSEO: Array<any> = [];
@@ -470,15 +469,15 @@ export class BrandComponent {
         }
     }
     
-    async toggleSortBy(data) {
-        this.sortByOpt = data.sortByOpt;
+    async toggleSortBy() {
+
         if (!this.sortByInstance) {
             const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
             const factory = this.cfr.resolveComponentFactory(SortByComponent);
             this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
 
             (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-                this.toggleSortBy({sortByOpt:true});
+                this.toggleSortBy();
             });
         } else {
             const sortByFilter = document.querySelector('sort-by');
@@ -681,10 +680,6 @@ export class BrandComponent {
             extras.queryParams = {};
 
         this._router.navigate([currentRoute], extras);
-    }
-
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
     }
 
     scrollTop(eve) {

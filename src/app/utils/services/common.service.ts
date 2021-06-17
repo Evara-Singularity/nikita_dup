@@ -825,7 +825,7 @@ export class CommonService {
     };
     
     applyFilter(currentRouteFromCategoryFilter?){
-        console.log(this.selectedFilterData);
+
         const currentRoute = !currentRouteFromCategoryFilter ? this.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
 
         const extras: NavigationExtras = { queryParams: {} };
@@ -833,8 +833,6 @@ export class CommonService {
         const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
 
         const queryParams = this.generateQueryParams();
-
-        console.log(queryParams);
 
         extras.queryParams = queryParams;
 

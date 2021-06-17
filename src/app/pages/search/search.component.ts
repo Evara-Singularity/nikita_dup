@@ -71,7 +71,6 @@ export class SearchComponent implements OnInit {
     windowLoaded: number;
     isServer: boolean;
     isBrowser: boolean;
-    sortByOpt = false;
     filterCounts;
     relatedSearchResult: any;
     // relatedSearchResult: any = [{ "categoryName": "Chain Saws", "categoryId": "114143100", "Confidence": 0.5 }, { "categoryName": "Circular Saws", "categoryId": "114143500", "Confidence": 0.5 }, { "categoryName": "Hand Blenders", "categoryId": "214195640", "Confidence": 0.5 }, { "categoryName": "Hand Dryers", "categoryId": "121210000", "Confidence": 0.5 }];
@@ -258,11 +257,12 @@ export class SearchComponent implements OnInit {
 
             if (flag) {
                 this.paginationData = { itemCount: response.productSearchResult.totalCount };
-                this.sortByUpdated.next();
                 this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-                this.filterData = response.buckets;
                 this.productsUpdated.next(response.productSearchResult.products);
             }
+
+            this.filterData = response.buckets;
+            
             if (this.paginationInstance) {
                 this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
             }
@@ -308,9 +308,7 @@ export class SearchComponent implements OnInit {
 
         // this.refreshProductsBasedOnRouteChange();
     }
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
-    }
+
     createDefaultParams() {
         let newParams: any = {
             queryParams: {}
@@ -415,58 +413,45 @@ export class SearchComponent implements OnInit {
     }
 
     async filterUp() {
-            if (!this.filterInstance) {
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                    this._commonService.showLoader = false;
-                    setTimeout(() => {
-                        const mob_filter = document.querySelector('.mob_filter');
-                        if (mob_filter) {
-                            mob_filter.classList.add('upTrans');
-                        }
-                    }, 0);
-                });
-                const factory = this.cfr.resolveComponentFactory(FilterComponent);
-                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-                this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-                (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
-                    this.onFilterSelected(data);
-                });
-            } else {
-                const mob_filter = document.querySelector('.mob_filter');
+        if (!this.filterInstance) {
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                setTimeout(() => {
+                    const mob_filter = document.querySelector('.mob_filter');
+                    if (mob_filter) {
+                        mob_filter.classList.add('upTrans');
+                    }
+                }, 0);
+            });
+            const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+            this.filterInstance.instance['filterData'] = this.filterData;
+            (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.filterUp();
+            });
+        } else {
+            const mob_filter = document.querySelector('.mob_filter');
 
-                if (mob_filter) {
-                    mob_filter.classList.toggle('upTrans');
-                }
+            if (mob_filter) {
+                mob_filter.classList.toggle('upTrans');
             }
+        }
     }
-
-    async toggleSortBy(data) {
-        if (this.isBrowser) {
-            this.sortByOpt = data.sortByOpt;
-            if (!this.sortByInstance) {
-                this._commonService.showLoader = true;
-                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
-                    this._commonService.showLoader = false;
-                });
-                const factory = this.cfr.resolveComponentFactory(SortByComponent);
-                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
-
-                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                    this.toggleSortBy(data);
-                });
-
-            } else {
-
-                const sortByFilter = document.querySelector('sort-by');
     
-                if (sortByFilter) {
-                    sortByFilter.classList.toggle('open');
-                }
+    async toggleSortBy() {
+        if (!this.sortByInstance) {
+            const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+            const factory = this.cfr.resolveComponentFactory(SortByComponent);
+            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+
+            (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy();
+            });
+        } else {
+            const sortByFilter = document.querySelector('sort-by');
+
+            if (sortByFilter) {
+                sortByFilter.classList.toggle('open');
             }
-            this.sortByInstance.instance.initializeData();
         }
     }
 

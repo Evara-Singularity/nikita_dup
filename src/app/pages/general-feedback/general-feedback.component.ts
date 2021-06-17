@@ -1,15 +1,34 @@
+import { FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CommonService } from '@app/utils/services/common.service';
+import { FooterService } from '@app/utils/services/footer.service';
+import { Router } from 'express';
 
 @Component({
-  selector: 'app-general-feedback',
-  templateUrl: './general-feedback.component.html',
-  styleUrls: ['./general-feedback.component.scss']
+    selector: 'app-general-feedback',
+    templateUrl: './general-feedback.component.html',
+    styleUrls: ['./general-feedback.component.scss']
 })
-export class GeneralFeedbackComponent implements OnInit {
+export class GeneralFeedbackComponent implements OnInit
+{
 
-  constructor() { }
+    feedbackForm = new FormGroup({
+        
+    })
 
-  ngOnInit(): void {
-  }
+    constructor(private footerService: FooterService, private _router: Router, private _activatedRoute: ActivatedRoute, private _commonService: CommonService) { }
 
+    ngOnInit(): void
+    {
+        this._activatedRoute.data.subscribe(resolverData =>
+        {
+            this.initiallizeData(resolverData['feedback']);
+        });
+    }
+
+    initiallizeData(response)
+    {
+        console.log(response);
+    }
 }

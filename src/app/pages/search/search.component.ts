@@ -397,18 +397,7 @@ export class SearchComponent implements OnInit {
             });
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = this.paginationUpdated;
-            this.paginationUpdated.next(this.paginationData);
-            this.paginationInstance.instance['position'] = 'BOTTOM';
-            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
-
-            if (this.paginationInstance) {
-                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
-                    this.pageChanged(data);
-                });
-            }
-
+            this.paginationInstance.instance['paginationData'] = this.paginationData;
         }
     }
 

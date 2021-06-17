@@ -56,9 +56,6 @@ export class CategoryComponent implements OnInit {
     relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
-
-
-    paginationUpdated: Subject<any> = new Subject<any>();
     
     pageName: string;
     buckets = [];
@@ -363,18 +360,13 @@ export class CategoryComponent implements OnInit {
         // this._commonService.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.createCategorySchema(response.productSearchResult['products']); // ODP-684
-        if (flag) {
-            this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.productsUpdated.next(response.productSearchResult.products);
-            this.paginationUpdated.next(this.paginationData);
-        }
+        
+        this.paginationData = { itemCount: response.productSearchResult.totalCount };
+
+        this.productsUpdated.next(response.productSearchResult.products);
 
         this.filterData = response.buckets;
 
-        if (this.paginationInstance) {
-            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
-        }
         this.filterCounts = this._commonService.calculateFilterCount(this.filterData);
 
         this.priceRangeTable(response);      //price range table code starts here
@@ -747,18 +739,7 @@ export class CategoryComponent implements OnInit {
             const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject<any>({});
-            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
-            this.paginationInstance.instance['position'] = 'BOTTOM';
-            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
-
-            if (this.paginationInstance) {
-                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
-                    this.pageChanged(data);
-                });
-            }
-
+            this.paginationInstance.instance['paginationData'] = this.paginationData;
         }
     }
 

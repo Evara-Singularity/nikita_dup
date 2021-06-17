@@ -251,6 +251,7 @@ export class CommonService {
             queryParams['orderBy'] = 'price';
             queryParams['orderWay'] = 'desc';
         }
+
         return queryParams;
     }
 
@@ -821,10 +822,13 @@ export class CommonService {
     */
     public selectedFilterData: any = {
         filter: {},
-        sortBy: {}
+        sortBy: {},
+        pages: [],
+        page: 1,
+        pageSize: 10
     };
     
-    applyFilter(currentRouteFromCategoryFilter?){
+    applyFilter(currentRouteFromCategoryFilter?: number, page?: number){
 
         const currentRoute = !currentRouteFromCategoryFilter ? this.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
 
@@ -838,10 +842,18 @@ export class CommonService {
 
         if (fragmentString != null) {
             extras.fragment = fragmentString;
-        } 
+        }
 
+        
+        this.selectedFilterData.page = 1;        
         if (extras.queryParams['page']) {
+            this.selectedFilterData.pageSize = 10;
             delete extras.queryParams['page'];
+        }
+
+        if (page > 1) {
+            this.selectedFilterData.page = page;
+            extras.queryParams['page'] = page;
         }
 
         this._router.navigate([currentRoute], extras);

@@ -17,9 +17,7 @@ export class FilterComponent implements OnInit {
 
     public selectedFilterIndex: number = 0;
 
-    constructor(
-        public _commonService: CommonService,
-    ) {
+    constructor(public _commonService: CommonService) {
     }
 
     ngOnInit(){

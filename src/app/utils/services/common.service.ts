@@ -392,7 +392,7 @@ export class CommonService {
         return this._dataService.callRestful("GET", url);
     }
 
-    private formatParams(params) {
+    public formatParams(params) {
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
 
         let queryParams: {} = {};

@@ -75,5 +75,6 @@ export interface TermsEntity {
 export interface ProductListingDataEntity { 
     totalCount: number, 
     products: ProductsEntity[],
-    listingHeading: string
+    listingHeading: string,
+    filterData: any
 }

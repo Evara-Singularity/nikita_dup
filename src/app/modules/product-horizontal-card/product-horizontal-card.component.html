@@ -24,14 +24,14 @@
                     <span class="green-label">{{product.discount}}% OFF</span>
                 </div>
                 <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice" >
-                    <span>{{ product.salesPrice | currency:'INR' }}</span>
+                    <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
                 </div>
                 <div class="out-of-stock-text">
                     <span *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice" >Currently unavailable</span>
                     <span *ngIf="isOutOfStockByQuantity && isOutOfStockByPrice" >Available on Request</span>
                 </div>
                 <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice" >
-                    <span>{{ product.salesPrice | currency:'INR' }}</span>
+                    <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
                 </div>
             </div>
             <div class="right">

@@ -6,6 +6,7 @@ import { SearchV1Component } from './search-v1.component';
 const routes: Routes = [{
   path: '',
   component: SearchV1Component,
+  runGuardsAndResolvers: 'always',
   resolve: {
     searchData: SearchV1Resolver
   }

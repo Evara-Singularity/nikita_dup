@@ -17,6 +17,7 @@ export class SearchV1Component implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(result => {
+      console.log(result);
       this.createSearchData(result['searchData'][0]);
     })
   }
@@ -26,6 +27,7 @@ export class SearchV1Component implements OnInit {
     this.productListingData = {
       totalCount: rawSearchData.productSearchResult.totalCount,
       products: rawSearchData.productSearchResult.products,
+      filterData: rawSearchData.buckets,
       listingHeading: 'Search Results'
     };
     

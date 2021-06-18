@@ -4,11 +4,9 @@ import {
     Resolve,
     RouterStateSnapshot,
     ActivatedRouteSnapshot,
-    ActivatedRoute
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
+import { catchError, tap } from 'rxjs/operators'
 import { isPlatformServer } from '@angular/common';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
@@ -21,10 +19,8 @@ export class SearchResolver implements Resolve<object> {
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
-        private http: HttpClient,
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
-        private _activatedRoute: ActivatedRoute
     ) {
         this.pageName = "SEARCH";
     }

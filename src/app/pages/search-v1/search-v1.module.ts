@@ -10,7 +10,6 @@ import { SharedProductListingModule } from '@app/modules/shared-product-listing/
   imports: [
     CommonModule,
     SearchV1RoutingModule,
-    
     SharedProductListingModule
   ]
 })

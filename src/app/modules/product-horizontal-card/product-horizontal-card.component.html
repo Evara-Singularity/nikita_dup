@@ -7,7 +7,7 @@
     <div class="right">
         <div class="rating">
             <span class="avgrating" *ngIf="product.avgRating">
-                {{product.avgRating}} <i class="icon-rating-star"></i>
+                {{product.avgRating | rating | number : '1.1-1' }} <i class="icon-rating-star"></i>
             </span>
             <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
         </div>

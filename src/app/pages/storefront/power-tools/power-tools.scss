@@ -220,7 +220,7 @@
 
  #power-banner-carsl {
   .carousel-control-next{
-    background: url(#{$cdn_url}img/others/nov_17/pt_csf/right_arrow.svg);
+    background: url("#{$cdn_url}/assets/img/others/right_arrow.svg");
     background-repeat: no-repeat;
     width: 53px;
     height: 56px;
@@ -230,7 +230,7 @@
     top: 50%;
 }
  .carousel-control-prev{
-    background: url(#{$cdn_url}img/others/nov_17/pt_csf/left_arrow.svg);
+    background: url("#{$cdn_url}/assets/img/others/left_arrow.svg");
     background-repeat: no-repeat;
     width: 53px;
     height: 56px;

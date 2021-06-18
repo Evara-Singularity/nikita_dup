@@ -13,7 +13,7 @@
         "dev:ssr": "ng run ssr-pwa:serve-ssr",
         "serve:ssr": "node dist/server/main.js",
         "build:ssr": "ng build && ng run ssr-pwa:server:local",
-        "build:ssr:qa": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa/bundles/ && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
+        "build:ssr:qa": "npm run cssupdate:config:qa && ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa/bundles/ && ng run ssr-pwa:server:qa && npm run swupdate:url:qa && npm run cssupdate:dev",
         "build:ssr:vpn": "ng build --configuration=vpn --deploy-url=https://cdn.moglix.com/online/vpn/pwa/bundles/ && ng run ssr-pwa:server:vpn && npm run swupdate:url:vpn",
         "build:ssr:prod": "ng build --prod --deploy-url=https://cdn.moglix.com/online/prod/pwa/bundles/ && ng run ssr-pwa:server:production && npm run swupdate:url:prod",
         "build:ssr:prodab": "ng build --configuration=prodab --deploy-url=https://cdn.moglix.com/online/prod/pwa-ab/bundles/ && ng run ssr-pwa:server:prodab && npm run swupdate:url:prodab",
@@ -21,7 +21,9 @@
         "swupdate:url:qa": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/qa/pwa/bundles/",
         "swupdate:url:vpn": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/vpn/pwa/bundles/",
         "swupdate:url:prod": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa/bundles/",
-        "swupdate:url:prodab": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa-ab/bundles/"
+        "swupdate:url:prodab": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa-ab/bundles/",
+        "cssupdate:config:qa":"cp ./src/app/scss/qa/_config.scss ./src/app/scss/_config.scss",
+        "cssupdate:dev":"cp ./src/app/scss/_config.dev.scss ./src/app/scss/_config.scss"
     },
     "private": true,
     "dependencies": {

@@ -81,7 +81,7 @@
             }
             label {
                 vertical-align: middle;
-                font-size: 12px;
+                font-size: 14px;
                 margin: 0;
             }
         }
@@ -91,6 +91,7 @@
             display: inline-block;
             vertical-align: middle;
             margin: 0 10px 0 0;
+            -webkit-appearance: radio;
         }
         textarea {
             padding: 10px;
@@ -110,6 +111,7 @@
                     vertical-align: middle;
                     width: 20px;
                     height: 20px;
+                    -webkit-appearance: checkbox;
                 }
                 label {
                     font-size: 12px;
@@ -119,7 +121,8 @@
                 }
                 textarea {
                     border: 1px solid #CCCCCC;
-                    margin-left: 15px;
+                    margin-left: 25px;
+                    margin-top: 12px;
                     vertical-align: middle;
                     border-radius: 6px;
                     padding: 10px;
@@ -139,7 +142,7 @@
         margin-top: 30px;
         border: none;
         display: block;
-        width: 275px;
+        width: 100%;
         margin-bottom: 30px;
     }
 }
@@ -186,7 +189,7 @@
     }
     .image {
         .chair {
-            width: 36px !important;
+            width: 35px !important;
         }
     }
 }

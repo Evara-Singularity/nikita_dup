@@ -37,7 +37,7 @@ export const CONSTANTS = {
     FreeShippingMinAmount: '999',
   },
   GLOBAL: {
-    PLP_PAGE_COUNT: 10,
+    PLP_PAGE_COUNT: 20,
     loginByEmail: 1,
     loginByPhone: 2,
     newAddress: 9999,

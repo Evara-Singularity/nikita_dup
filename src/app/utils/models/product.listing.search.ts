@@ -72,4 +72,8 @@ export interface TermsEntity {
     childCategories?: null;
 }
 
-export interface ProductListingDataEntity { totalCount: number, products: ProductsEntity[] }
+export interface ProductListingDataEntity { 
+    totalCount: number, 
+    products: ProductsEntity[],
+    listingHeading: string
+}

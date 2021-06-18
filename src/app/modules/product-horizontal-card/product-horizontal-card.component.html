@@ -1,0 +1,50 @@
+<div class="card-container">
+    <div class="left">
+        <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
+        <div class="tags">
+        </div>
+    </div>
+    <div class="right">
+        <div class="rating">
+            <span class="avgrating" *ngIf="product.avgRating">
+                {{product.avgRating}} <i class="icon-rating-star"></i>
+            </span>
+            <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
+        </div>
+        <div class="name">
+            <span>{{product.productName}}</span>
+        </div>
+        <div class="brand">
+            <span>By: {{product.brandName}}</span>
+        </div>
+        <div class="price-details">
+            <div class="left">
+                <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice" >
+                    <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
+                    <span class="green-label">{{product.discount}}% OFF</span>
+                </div>
+                <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice" >
+                    <span>{{ product.salesPrice | currency:'INR' }}</span>
+                </div>
+                <div class="out-of-stock-text">
+                    <span *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice" >Currently unavailable</span>
+                    <span *ngIf="isOutOfStockByQuantity && isOutOfStockByPrice" >Available on Request</span>
+                </div>
+                <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice" >
+                    <span>{{ product.salesPrice | currency:'INR' }}</span>
+                </div>
+            </div>
+            <div class="right">
+                <ng-container *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                    <button class="white">
+                        <i class="icon-cart"></i>
+                    </button>
+                    <button>BUY NOW</button>
+                </ng-container>
+                <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
+                    <button class="white">SEND QUERY</button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

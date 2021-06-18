@@ -13,12 +13,24 @@ export class SharedProductListingComponent implements OnInit {
   private sortByInstance = null;
   @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
 
+  private paginationInstance = null;
+  @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
+
   @Input() productsListingData: ProductListingDataEntity;
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector) { }
 
   ngOnInit(): void {
   }
+
+  async onVisiblePagination(event) {
+    if (!this.paginationInstance) {
+        const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
+        const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
+        this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
+        this.paginationInstance.instance['paginationData'] = {itemCount :this.productsListingData.totalCount};
+    }
+}
 
   async filterUp() {
     if (!this.filterInstance) {
@@ -72,6 +84,11 @@ export class SharedProductListingComponent implements OnInit {
     if (this.sortByInstance) {
       this.sortByInstance = null;
       this.sortByContainerRef.remove();
+    }
+    
+    if (this.paginationInstance) {
+      this.paginationInstance = null;
+      this.paginationContainerRef.remove();
     }
   }
 

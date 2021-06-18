@@ -13,3 +13,5 @@
     [product]="product">
 </product-horizontal-card>
 
+<span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
+<ng-template #pagination></ng-template>

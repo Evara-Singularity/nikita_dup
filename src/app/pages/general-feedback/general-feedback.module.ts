@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +10,9 @@ import { GeneralFeedbackComponent } from './general-feedback.component';
   declarations: [GeneralFeedbackComponent],
   imports: [
     CommonModule,
-    GeneralFeedbackRoutingModule
+    GeneralFeedbackRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class GeneralFeedbackModule { }

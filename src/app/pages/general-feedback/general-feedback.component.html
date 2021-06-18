@@ -11,6 +11,7 @@
         </div>
         <div class="order-id">
             <p>For your Order ID : <strong>ID 593GSGA7733</strong> with product</p>
+
             <div class="product-details">
                 <span class="image"> <img src="assets/img/chair.png" class="chair"></span>
                 <span class="text">
@@ -24,45 +25,46 @@
     </div>
     <div class="cancel-order-radio">
         <p>Q1. Did you cancel the order ? *</p>
-        <form>
+        <form [formGroup]="canelOrder">
             <span>
-                <input type="radio" id="yes" name="cancel order" value="yes">
+                <input type="radio" id="yes" name="cancel order" value="yes" formControlName="value">
                 <label for="yes">YES</label><br>
             </span>
             <span>
-                <input type="radio" id="no" name="cancel order" value="no">
+                <input type="radio" id="no" name="cancel order" value="no" formControlName="value">
                 <label for="no">NO</label>
             </span>
         </form>
     </div>
     <div class="cancel-order-radio">
-        <p>Was the delivery attempted ? </p>
-        <form>
+        <p>Q2. Was the delivery attempted ? </p>
+        <form [formGroup]="deliveryAttempted">
             <span>
-                <input type="radio" id="1" name="delivery attempted" value="yes">
+                <input type="radio" id="1" name="delivery attempted" value="yes" formControlName="value">
                 <label for="1">YES</label><br>
             </span>
             <span>
-                <input type="radio" id="2" name="delivery attempted" value="no">
+                <input type="radio" id="2" name="delivery attempted" value="no" formControlName="value">
                 <label for="2">NO</label>
             </span>
         </form>
     </div>
     <div class="cancel-order-radio">
-        <p>Did the delivery executive call you? </p>
-        <form>
+        <p>Q3. Did the delivery executive call you? </p>
+        <form [formGroup]="executiveCall">
             <span>
-                <input type="radio" id="3" name="delivery executive" value="yes">
+                <input type="radio" id="3" name="delivery executive" value="yes" formControlName="value">
                 <label for="3">YES</label><br>
             </span>
             <span>
-                <input type="radio" id="4" name="delivery executive" value="no">
+                <input type="radio" id="4" name="delivery executive" value="no" formControlName="value">
                 <label for="4">NO</label>
             </span>
         </form>
+
     </div>
     <div class="cancel-order-radio">
-        <p>Why did you cancel ? *</p>
+        <p>Q4. Why did you cancel ? *</p>
         <form>
             <div class="form-group">
                 <input type="checkbox" id="Purchased" checked>
@@ -92,10 +94,10 @@
         </form>
     </div>
     <div class="cancel-order-radio">
-        <p>Any other details you would like to share with us..</p>
+        <p>Q5. Any other details you would like to share with us..</p>
         <textarea name="Add comment" id="comment" cols="100" rows="5">Add comment</textarea>
     </div>
-    <button class="submit">
+    <button class="submit" (click)="$event.stopPropagation();submitFeedback()">
         SUBMIT SURVEY
     </button>
 </div>

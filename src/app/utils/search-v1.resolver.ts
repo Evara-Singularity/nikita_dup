@@ -25,7 +25,9 @@ export class SearchV1Resolver implements Resolve<any> {
     private transferState: TransferState,
     private http: HttpClient,
     private loaderService: GlobalLoaderService
-  ) { }
+  ) { 
+    this.loaderService.setLoaderState(true);
+  }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa');
@@ -67,7 +69,7 @@ export class SearchV1Resolver implements Resolve<any> {
     params['type'] = 'm' //mobile
     params['abt'] = 'y' // new search params
     // add paging related params
-    params['pageIndex'] = (queryParams['page']) ? queryParams['page'] : 1;
+    params['pageIndex'] = (queryParams['page']) ? queryParams['page'] : 0;
     params['pageSize'] = CONSTANTS.GLOBAL.PLP_PAGE_COUNT
     // sorting/prder related params
     params['orderBy'] = (queryParams['orderby']) ? 'popularity' : 'popularity'; // change as per sorting functionality

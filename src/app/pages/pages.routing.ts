@@ -651,12 +651,12 @@ const routes: Routes = [
 				},
 			},
             {
-                path: 'feedback/:itemid',
+                path: 'feedback',
                 loadChildren: () =>
                     import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
                 data: {
                     footer: false,
-                    title: 'Feedback',
+                    logo: true,
                     moreOpt: true,
                 },
             },

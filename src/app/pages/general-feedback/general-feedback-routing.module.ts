@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { GeneralFeedbackResolver } from '@app/utils/resolvers/general-feedback.resolver';
-import { GeneralFeedbackComponent } from './general-feedback.component';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { SuccessComponent } from './success/success.component';
 
 const routes: Routes = [
     {
-        path: '',
-        component: GeneralFeedbackComponent,
+        path: 'item/:itemid',
+        component: FeedbackComponent,
         runGuardsAndResolvers: 'always',
         resolve: {
             feedback: GeneralFeedbackResolver
         }
+    },
+    {
+        path: 'success',
+        component: SuccessComponent
     }
 ];
 

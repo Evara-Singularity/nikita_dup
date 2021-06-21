@@ -651,6 +651,20 @@ const routes: Routes = [
 				},
 			},
 			{
+                path: 'assist-verification-success',
+                loadChildren: () => import('@pages/assist-verification-success/assist-verification-success.module').then(m => m.AssistVerificationSuccessModule),
+                data: {
+                    hideHeader: true,
+                },
+            },
+            {
+                path: 'assist-verification-failure',
+                loadChildren: () => import('@pages/assist-verification-failure/assist-verification-failure.module').then(m => m.AssistVerificationFailureModule),
+                data: {
+                    hideHeader: true,
+                },
+            },
+			{
 				path: '**',
 				loadChildren: () =>
 					import('./pageNotFound/pageNotFound.module').then(

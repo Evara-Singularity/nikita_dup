@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-assist-verification-failure',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssistVerificationFailureComponent implements OnInit {
 
-  constructor() { }
+  constructor(private titleService:Title) {
+    this.titleService.setTitle("Shop online for Industrial & Home Products: Tools, Electricals, Safety Equipment & more. - Moglix.com");
+  }
 
   ngOnInit(): void {
   }

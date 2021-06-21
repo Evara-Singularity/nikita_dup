@@ -12,7 +12,7 @@
         <div class="order-id">
             <p>For your Order ID : <strong>ID {{this.orderInfo['orderId']}}</strong> with product</p>
             <div class="product-details">
-                <span class="image"> <img src="{{imagePath}}{{this.orderInfo['itemImage']}}" class="pImage"></span>
+                <span class="image"> <img src="{{this.orderInfo['itemImage']}}" class="pImage"></span>
                 <span class="text">
                     <p>{{this.orderInfo['itemName']}}</p>
                     <strong>Qty: {{this.orderInfo['quantity']}}</strong>
@@ -22,7 +22,7 @@
     </a>
     <div class="cancel-order-radio">
         <p>Q1. Did you cancel the order ? *</p>
-        <form [formGroup]="canelOrder">
+        <form [formGroup]="cancelOrder">
             <span>
                 <input type="radio" id="yes" value="yes" formControlName="value">
                 <label for="yes">YES</label><br>
@@ -32,8 +32,8 @@
                 <label for="no">NO</label>
             </span>
         </form>
-        <ng-container *ngIf="isSubmitted && canelOrder.invalid">
-            Please select value
+        <ng-container *ngIf="isSubmitted && cancelOrder.invalid">
+            <p class="error-txt">Please select value.</p>
         </ng-container>
     </div>
     <div class="cancel-order-radio">
@@ -79,13 +79,17 @@
                     *ngIf="isOthersSelected" maxlength="512" formControlName="Others"></textarea>
             </div>
         </form>
-        <ng-container *ngIf="isSubmitted && cancelReasons.invalid">
-            Please select value
+        <ng-container *ngIf="isSubmitted && !isOthersSelected && cancelReasons.invalid">
+            <p class="error-txt">Please select value.</p>
+        </ng-container>
+        <ng-container *ngIf="isSubmitted && isOthersSelected && cancelReasons.get('Others').invalid">
+            <p class="error-txt">Please add comments.</p>
         </ng-container>
     </div>
     <div class="cancel-order-radio" [formGroup]="OtherDetails">
         <p>Q5. Any other details you would like to share with us..</p>
-        <textarea name="Add comment" id="comment" cols="100" rows="5" formControlName="value">Add comment</textarea>
+        <textarea name="Add comment" placeholder="Add comments" id="comment" cols="100" rows="5"
+            formControlName="value"></textarea>
     </div>
     <button class="submit" (click)="$event.stopPropagation();submitFeedback()">
         SUBMIT SURVEY

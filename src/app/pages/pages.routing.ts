@@ -655,9 +655,9 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
                 data: {
+                    title: 'Feedback',
+                    menuBar: true,
                     footer: false,
-                    logo: true,
-                    moreOpt: true,
                 },
             },
 			{

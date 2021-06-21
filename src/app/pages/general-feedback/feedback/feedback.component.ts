@@ -2,7 +2,9 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from "@app/utils/services/data.service";
+import { FooterService } from '@app/utils/services/footer.service';
 
 @Component({
     selector: 'feedback',
@@ -11,9 +13,8 @@ import { DataService } from "@app/utils/services/data.service";
 })
 export class FeedbackComponent implements OnInit, AfterViewInit
 {
-
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
-    readonly URL = CONSTANTS.NEW_MOGLIX_API + '/quest/getRtoDetailsByItemId?itemId=';
+    readonly URL = CONSTANTS.NEW_MOGLIX_API + '/order/pushEventFeedback';
     readonly CANCEL_REASONS = {
         Purchased: 'Purchased from somewhere else',
         delivery: 'Delivery took longer than expected',
@@ -26,8 +27,11 @@ export class FeedbackComponent implements OnInit, AfterViewInit
     isSubmitted = false;
     comments = "";
     orderInfo = {};
-    infoForm = new FormGroup({ orderId: new FormControl("", [Validators.required]), itemId: new FormControl("", [Validators.required]) })
-    canelOrder = new FormGroup({ key: new FormControl("Did you cancel the order"), value: new FormControl("", [Validators.required]) })
+    infoForm = new FormGroup({
+        orderId: new FormControl("", [Validators.required]), itemId: new FormControl("", [Validators.required]),
+        customerId: new FormControl("", [Validators.required])
+    })
+    cancelOrder = new FormGroup({ key: new FormControl("Did you cancel the order"), value: new FormControl("", [Validators.required]) })
     deliveryAttempted = new FormGroup({ key: new FormControl("Was the delivery attempted"), value: new FormControl("") })
     executiveCall = new FormGroup({ key: new FormControl("Did the delivery executive call you"), value: new FormControl("") })
     cancelReasons = new FormGroup(
@@ -37,9 +41,9 @@ export class FeedbackComponent implements OnInit, AfterViewInit
             Others: new FormControl("")
         })
     OtherDetails = new FormGroup({ key: new FormControl("Any other details you would like to share with us"), value: new FormControl("") })
-    formArray = new FormArray([this.canelOrder, this.deliveryAttempted, this.executiveCall, this.cancelReasons, this.OtherDetails]);
+    formArray = new FormArray([this.cancelOrder, this.deliveryAttempted, this.executiveCall, this.cancelReasons, this.OtherDetails]);
 
-    constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _dataService: DataService) { }
+    constructor(public footerService: FooterService, private tms: ToastMessageService, private _router: Router, private _activatedRoute: ActivatedRoute, private _dataService: DataService) { }
 
 
     ngOnInit(): void
@@ -48,6 +52,8 @@ export class FeedbackComponent implements OnInit, AfterViewInit
         {
             this.initiallizeData(resolverData['feedback']);
         });
+        this.footerService.setFooterObj({ footerData: false });
+        this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
     }
 
     ngAfterViewInit(): void
@@ -60,6 +66,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit
         this.orderInfo = response['data'];
         this.infoForm.get('orderId').setValue(this.orderInfo['orderId']);
         this.infoForm.get('itemId').setValue(this.orderInfo['itemId']);
+        this.infoForm.get('customerId').setValue(this.orderInfo['customerId']);
     }
 
     manageCancelReason(value: string)
@@ -73,13 +80,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit
 
     manageOthers($event)
     {
-        // this.isOthersSelected = $event.target.checked;
-        // if (this.isOthersSelected) {
-        //     this.cancelReasons.addControl("Others", new FormControl("", [Validators.required]))
-        // } else {
-        //     this.cancelReasons.removeControl("Others");
-        // }
-        // this.cancelReasons.updateValueAndValidity();
+        this.isOthersSelected = $event.target.checked;
         const control = (this.cancelReasons.get('Others') as FormControl);
         (this.isOthersSelected) ? control.setValidators([Validators.required]) : control.clearValidators();
         control.setValue("");
@@ -89,18 +90,20 @@ export class FeedbackComponent implements OnInit, AfterViewInit
     submitFeedback()
     {
         this.isSubmitted = true;
+        let request = this.infoForm.value;
+        request['feedback'] = JSON.stringify(Object.values(this.formArray.value));
         if (this.formArray.valid) {
-            let request = Object.assign(this.infoForm.value, this.formArray.value);
-            // this._dataService.callRestful("POST", this.URL, request).subscribe(
-            //     (response) =>
-            //     {
-            //         console.log(response);
-            //         if (response['success']) {
-            //             this._router.navigate(['feedback/success']);
-            //         }
-            //     });
+            this._dataService.callRestful("POST", this.URL, { body: request }).subscribe(
+                (response) =>
+                {
+                    if (response['responseCode'] === 200) {
+                        this._router.navigate(['feedback/success']);
+                    } else {
+                        this.isSubmitted = false;
+                        this.tms.show({ type: "error", text: response["responseMessage"] });
+                    }
+                },
+                (error) => { this.isSubmitted = false; });
         }
-
     }
-
 }

@@ -347,7 +347,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.router.url.includes('/checkout') ||
             this.router.url.includes('/online-assist') ||
             this.router.url.includes('/forgot-password') ||
-            this.router.url.includes('/sign-up')
+            this.router.url.includes('/sign-up') ||
+            this.router.url.includes('/feedback')
         ) {
             this.isLoginPage = true;
             this.hideElLogin = false;

@@ -14,10 +14,14 @@ export class SearchV1Component implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.setDataFromResolver();
+  }
+
+  setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
       console.log(result);
       this._productListService.createAndProvideDataToSharedListingComponent(result['searchData'][0], 'Search Results');
-    })
+    });
   }
 
 }

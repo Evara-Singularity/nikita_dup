@@ -28,7 +28,6 @@ export class BrandV1Resolver implements Resolve<any> {
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
-    console.log(state.url);
 
     const BRAND_DESC_KEY = makeStateKey<object>('brand-desc-and-other-details');
     const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa');

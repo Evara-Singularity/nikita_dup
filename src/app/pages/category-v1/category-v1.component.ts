@@ -4,12 +4,12 @@ import { ProductListingDataEntity } from '@app/utils/models/product.listing.sear
 import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
-    selector: 'brand',
-    templateUrl: './brand-v1.html',
-    styleUrls: ['./brand-v1.scss'],
+    selector: 'category',
+    templateUrl: './category-v1.html',
+    styleUrls: ['./category-v1.scss'],
 })
 
-export class BrandV1Component {
+export class CategoryV1Component {
     filterInstance = null;
     @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -35,7 +35,7 @@ export class BrandV1Component {
     setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
         console.log(result);
-        this._productListService.createAndProvideDataToSharedListingComponent(result['brand'][1], 'Brand Results');
+        this._productListService.createAndProvideDataToSharedListingComponent(result['category'][1], 'Category Results');
     });
     }
 }

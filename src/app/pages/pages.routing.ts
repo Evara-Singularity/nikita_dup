@@ -27,13 +27,23 @@ const routes: Routes = [
 			{
 				matcher: categoriesMatcher,
 				loadChildren: () =>
-					import('./category/category.module').then((m) => m.CategoryModule),
+					import('./category-v1/category-v1.module').then((m) => m.CategoryV1Module),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
 				},
 			},
+			// {
+			// 	matcher: categoriesMatcher,
+			// 	loadChildren: () =>
+			// 		import('./category/category.module').then((m) => m.CategoryModule),
+			// 	data: {
+			// 		footer: false,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 	},
+			// },
 			{
 				path: 'alp/:attribute',
 				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),

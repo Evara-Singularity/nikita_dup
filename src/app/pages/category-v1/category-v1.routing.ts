@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CategoryResolver } from '@app/utils/resolvers/category.resolver';
-import { CategoryComponent } from "./category.component";
+import { CategoryV1Resolver } from '@app/utils/resolvers/category-v1.resolver';
+import { CategoryV1Component } from "./category-v1.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: CategoryComponent,
+        component: CategoryV1Component,
         runGuardsAndResolvers: 'always',
         resolve: {
-            category: CategoryResolver
+            category: CategoryV1Resolver
         },
 
     }
@@ -18,4 +18,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class CategoryRoutingModule { }
+export class CategoryV1RoutingModule { }

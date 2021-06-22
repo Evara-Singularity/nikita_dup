@@ -12,7 +12,9 @@
         <div class="order-id">
             <p>For your Order ID : <strong>ID {{this.orderInfo['orderId']}}</strong> with product</p>
             <div class="product-details">
-                <span class="image"> <img src="{{this.orderInfo['itemImage']}}" class="pImage"></span>
+                <span class="image">
+                     <img src="{{this.orderInfo['itemImage']}}" class="pImage">
+                </span>
                 <span class="text">
                     <p>{{this.orderInfo['itemName']}}</p>
                     <strong>Qty: {{this.orderInfo['quantity']}}</strong>
@@ -21,7 +23,7 @@
         </div>
     </a>
     <div class="cancel-order-radio">
-        <p>Q1. Did you cancel the order ? *</p>
+        <p>Q1. Did you cancel the order ? <span class="asterick">*</span></p>
         <form [formGroup]="cancelOrder">
             <span>
                 <input type="radio" id="yes" value="yes" formControlName="value">
@@ -31,7 +33,7 @@
                 <input type="radio" id="no" value="no" formControlName="value">
                 <label for="no">NO</label>
             </span>
-        </form> 
+        </form>
         <ng-container *ngIf="isSubmitted && cancelOrder.invalid">
             <p class="error-txt">Please select value.</p>
         </ng-container>
@@ -63,20 +65,18 @@
         </form>
     </div>
     <div class="cancel-order-radio">
-        <p>Q4. Why did you cancel ? *</p>
+        <p>Q4. Why did you cancel ? <span class="asterick">*</span></p>
         <form [formGroup]="cancelReasons">
             <ng-container *ngFor="let reason of REASONS">
                 <div class="form-group">
-                    <input type="checkbox" id="{{reason}}"
-                        (input)="$event.stopPropagation();manageCancelReason(CANCEL_REASONS[reason])">
+                    <input type="checkbox" id="{{reason}}" (input)="$event.stopPropagation();manageCancelReason(CANCEL_REASONS[reason])">
                     <label for="{{reason}}">{{CANCEL_REASONS[reason]}}.</label>
                 </div>
             </ng-container>
             <div class="form-group">
                 <input type="checkbox" id="others" (input)="$event.stopPropagation();manageOthers($event)">
                 <label for="others">Others</label>
-                <textarea name="Add comment" placeholder="Add comments" id="comment" cols="60" rows="0"
-                    *ngIf="isOthersSelected" maxlength="512" formControlName="Others"></textarea>
+                <textarea name="Add comment" placeholder="Add comments" id="comment" cols="60" rows="0" *ngIf="isOthersSelected" maxlength="512" formControlName="Others"></textarea>
             </div>
         </form>
         <ng-container *ngIf="isSubmitted && !isOthersSelected && cancelReasons.invalid">
@@ -88,8 +88,7 @@
     </div>
     <div class="cancel-order-radio" [formGroup]="OtherDetails">
         <p>Q5. Any other details you would like to share with us..</p>
-        <textarea name="Add comment" placeholder="Add comments" id="comment" cols="100" rows="5"
-            formControlName="value"></textarea>
+        <textarea name="Add comment" placeholder="Add comments" id="comment" cols="100" rows="5" formControlName="value"></textarea>
     </div>
     <button class="submit" (click)="$event.stopPropagation();submitFeedback()">
         SUBMIT SURVEY

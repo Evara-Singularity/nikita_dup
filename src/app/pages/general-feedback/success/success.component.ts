@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'success',
@@ -8,7 +8,19 @@ import { Router } from '@angular/router';
 })
 export class SuccessComponent implements OnInit
 {
-    constructor(private _router: Router) { }
-    ngOnInit(): void { }
+    message = ""
+    constructor(private _router: Router, private _route: ActivatedRoute) { }
+    ngOnInit(): void
+    {
+        const STATUS:string = (this._route.snapshot.paramMap.get('status') as string)
+        if (STATUS === "success"){
+            this.message = 'Thank you for submitting your feedback!';
+        }
+        else if (STATUS === "submitted") {
+            this.message = 'Your rating has already been submitted.';
+        }else{
+            this.navigateTo();
+        }
+    }
     navigateTo() { this._router.navigate(['/']) }
 }

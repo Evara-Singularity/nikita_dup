@@ -14,7 +14,7 @@ const routes: Routes = [
         }
     },
     {
-        path: 'success',
+        path: 'status/:status',
         component: SuccessComponent
     }
 ];

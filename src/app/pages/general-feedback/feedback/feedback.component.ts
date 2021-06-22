@@ -14,6 +14,7 @@ import { FooterService } from '@app/utils/services/footer.service';
 export class FeedbackComponent implements OnInit, AfterViewInit
 {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
+    imageURL = this.imagePath + "assets/img/home_card.webp";
     readonly URL = CONSTANTS.NEW_MOGLIX_API + '/order/pushEventFeedback';
     readonly CANCEL_REASONS = {
         Purchased: 'Purchased from somewhere else',
@@ -67,6 +68,9 @@ export class FeedbackComponent implements OnInit, AfterViewInit
         this.infoForm.get('orderId').setValue(this.orderInfo['orderId']);
         this.infoForm.get('itemId').setValue(this.orderInfo['itemId']);
         this.infoForm.get('customerId').setValue(this.orderInfo['customerId']);
+        if (this.orderInfo['itemImage']){
+            this.imageURL = this.orderInfo['itemImage'];
+        }
     }
 
     manageCancelReason(value: string)
@@ -97,10 +101,13 @@ export class FeedbackComponent implements OnInit, AfterViewInit
                 (response) =>
                 {
                     if (response['responseCode'] === 200) {
-                        this._router.navigate(['feedback/success']);
+                        this._router.navigate(['feedback/status/success']);
                     } else {
                         this.isSubmitted = false;
                         this.tms.show({ type: "error", text: response["responseMessage"] });
+                        if ((response["responseMessage"] as string).includes('Feedback already received')) {
+                            this._router.navigate(['feedback/status/submitted']);
+                        }
                     }
                 },
                 (error) => { this.isSubmitted = false; });

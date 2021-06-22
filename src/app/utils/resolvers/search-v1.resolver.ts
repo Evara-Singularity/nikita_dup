@@ -13,8 +13,8 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { CommonService } from './services/common.service';
-import { GlobalLoaderService } from './services/global-loader.service';
+import { CommonService } from '../services/common.service';
+import { GlobalLoaderService } from '../services/global-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -68,26 +68,5 @@ export class SearchV1Resolver implements Resolve<any> {
       )
     }
   }
-
-  /**
-   * @param queryParams current search route query parameters redirected from headernav module
-   * @returns query params for API that is mapped with queryParams
-   */
-  // getQueryParams(queryParams: Params, fragments: Params) {
-  //   const params = Object.assign({});
-  //   // add static params
-  //   params['type'] = 'm' //mobile
-  //   params['abt'] = 'y' // new search params
-  //   // add paging related params
-  //   params['pageIndex'] = (queryParams['page']) ? queryParams['page'] : 0;
-  //   params['pageSize'] = CONSTANTS.GLOBAL.PLP_PAGE_COUNT
-  //   // sorting/prder related params
-  //   params['orderBy'] = (queryParams['orderby']) ? 'popularity' : 'popularity'; // change as per sorting functionality
-  //   params['orderWay'] = (queryParams['orderway']) ? queryParams['orderway'] : 'desc';
-  //   //keyword to be searched
-  //   params['str'] = (queryParams['search_query']) ? queryParams['search_query'] : '';
-  //   // Todo: filter related params 
-  //   return params;
-  // }
 
 }

@@ -71,7 +71,7 @@ const routes: Routes = [
 			{
 				path: 'brands/:brand',
 				loadChildren: () =>
-					import('./brand/brand.module').then((m) => m.BrandModule),
+					import('./brand-v1/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
 					title: '',

@@ -4,11 +4,11 @@ import { ProductListingDataEntity } from '@app/utils/models/product.listing.sear
 
 @Component({
     selector: 'brand',
-    templateUrl: './brand.html',
-    styleUrls: ['./brand.scss'],
+    templateUrl: './brand-v1.html',
+    styleUrls: ['./brand-v1.scss'],
 })
 
-export class BrandComponent {
+export class BrandV1Component {
     filterInstance = null;
     @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 

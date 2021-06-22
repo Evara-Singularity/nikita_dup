@@ -71,23 +71,23 @@ const routes: Routes = [
 			{
 				path: 'brands/:brand',
 				loadChildren: () =>
-					import('./brand-v1/brand.module').then((m) => m.BrandModule),
+					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
 				data: {
 					footer: false,
 					title: '',
 					moreOpt: true,
 				},
 			},
-			{
-				matcher: brandCategoriesMatcher,
-				loadChildren: () =>
-					import('./brand/brand.module').then((m) => m.BrandModule),
-				data: {
-					footer: false,
-					title: '',
-					moreOpt: true,
-				},
-			},
+			// {
+			// 	matcher: brandCategoriesMatcher,
+			// 	loadChildren: () =>
+			// 		import('./brand/brand.module').then((m) => m.BrandModule),
+			// 	data: {
+			// 		footer: false,
+			// 		title: '',
+			// 		moreOpt: true,
+			// 	},
+			// },
 			// {
 			// 	path: 'search',
 			// 	loadChildren: () =>

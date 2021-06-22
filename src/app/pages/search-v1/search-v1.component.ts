@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductListingDataEntity, SearchResponse } from '@app/utils/models/product.listing.search';
+import { ProductListService } from '@services/productList.service';
 
 @Component({
   selector: 'search-v1',
@@ -8,30 +8,16 @@ import { ProductListingDataEntity, SearchResponse } from '@app/utils/models/prod
   styleUrls: ['./search-v1.component.scss']
 })
 export class SearchV1Component implements OnInit {
-
-  productListingData: ProductListingDataEntity;
-
   constructor(
-    private route: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    public _productListService: ProductListService
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(result => {
+    this._activatedRoute.data.subscribe(result => {
       console.log(result);
-      this.createSearchData(result['searchData'][0]);
+      this._productListService.createAndProvideDataToSharedListingComponent(result['searchData'][0], 'Search Results');
     })
   }
-
-  createSearchData(rawSearchData: SearchResponse) {
-    // data to be used for product listing section
-    this.productListingData = {
-      totalCount: rawSearchData.productSearchResult.totalCount,
-      products: rawSearchData.productSearchResult.products,
-      filterData: rawSearchData.buckets,
-      listingHeading: 'Search Results'
-    };
-    
-  }
-
 
 }

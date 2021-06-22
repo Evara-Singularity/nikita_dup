@@ -650,6 +650,16 @@ const routes: Routes = [
 					moreOpt: false,
 				},
 			},
+            {
+                path: 'feedback',
+                loadChildren: () =>
+                    import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
+                data: {
+                    title: 'Feedback',
+                    menuBar: true,
+                    footer: false,
+                },
+            },
 			{
 				path: '**',
 				loadChildren: () =>

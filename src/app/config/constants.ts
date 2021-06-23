@@ -184,7 +184,7 @@ export const CONSTANTS = {
       { key: "12", value: "DEC" },
     ],
     default: {
-      pageSize: 10,
+      pageSize: 30,
     },
     codMin: 300,
     codMax: 25000,

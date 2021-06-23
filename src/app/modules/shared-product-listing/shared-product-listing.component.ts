@@ -38,7 +38,7 @@ export class SharedProductListingComponent {
                 if (mob_filter) {
                     mob_filter.classList.add('upTrans');
                 }
-            }, 0);
+            }, 100);
         });
         const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
         this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
@@ -52,7 +52,8 @@ export class SharedProductListingComponent {
         if (mob_filter) {
             mob_filter.classList.toggle('upTrans');
         }
-        this.filterInstance.instance.initializeSelectedFilterData();
+        this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+        this.filterInstance.instance.initializeSelectedFilterData(true);
     }
   }
 

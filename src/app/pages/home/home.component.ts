@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}, 0);
 		}
-		this._commonService.updateSortByFromSearch();
+		this._commonService.resetSelectedFilterData();
 	}
 
 	fetchHomePageData(response) {
@@ -201,14 +201,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 							blockData.image_block.length &&
 							block.layout_code == CONSTANTS.CMS_IDS.FEATURE_BRANDS
 						) {
-							console.log('featureBrandData blockData ==>', blockData.image_block);
 							this.featureBrandData = blockData.image_block;
 						} else if (
 							blockData.image_block &&
 							blockData.image_block.length &&
 							block.layout_code == CONSTANTS.CMS_IDS.FEATURE_ARRIVAL
 						) {
-							console.log('featureArrivalData blockData ==>', blockData.image_block);
 							this.featureArrivalData = blockData.image_block;
 						}
 					}

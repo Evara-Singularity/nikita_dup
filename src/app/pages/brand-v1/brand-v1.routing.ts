@@ -17,6 +17,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
-  })
-  export class BrandV1RoutingModule { }
+})
+export class BrandV1RoutingModule { }
   

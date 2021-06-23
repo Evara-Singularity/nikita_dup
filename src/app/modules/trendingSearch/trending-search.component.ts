@@ -23,7 +23,7 @@ export class TrendingSearchComponent {
     }
 
     navigateTo(link, qp) {
-        this._commonService.updateSortByFromSearch();
+        this._commonService.resetSelectedFilterData();
         this._commonService.setSectionClickInformation('trending_categories_search', 'listing');
         this.outData$.emit('resetAll');
         this._router.navigate([link], { queryParams: qp });

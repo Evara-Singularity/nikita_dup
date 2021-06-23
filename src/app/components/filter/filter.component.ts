@@ -17,7 +17,7 @@ export class FilterComponent implements OnInit {
 
     public selectedFilterIndex: number = 0;
 
-    constructor(public _commonService: CommonService, private _productListService: ProductListService, private _activatedRoute: ActivatedRoute) {
+    constructor(public _commonService: CommonService, private _activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(){
@@ -27,25 +27,14 @@ export class FilterComponent implements OnInit {
     /**
      * This funcition is used to initalize the selected filters data i.e stored in selectedFilterData
      */
-    initializeSelectedFilterData = () => {
-        // this._commonService.selectedFilterData.filter = this._commonService.calculateFilterCount(this.filterData);
-        for (const filterKey of Object.keys(this.filterData)) {
-            this.filterData[filterKey].count = 0;
-            for (const termKey of Object.keys(this.filterData[filterKey]['terms'])) {
-                const term = this.filterData[filterKey]['terms'][termKey];
-                if (term['selected']) {
-                    this.filterData[filterKey].count = this.filterData[filterKey].count + 1;
-                    if (this._commonService.selectedFilterData.filter.hasOwnProperty(this.filterData[filterKey]['name'])) {
-                        this._commonService.selectedFilterData.filter[this.filterData[filterKey]['name']].push(term['term']);
-                    } else {
-                        this._commonService.selectedFilterData.filter[this.filterData[filterKey]['name']] = [term['term']];
-                    }
-                }
+    initializeSelectedFilterData = (flag?: boolean) => {
+        if (!flag) {
+            if (this._activatedRoute.snapshot.fragment) {
+                this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment);
+            } else {
+                this._commonService.selectedFilterData.filter = {};
             }
         }
-        console.log(this._commonService.selectedFilterData.filter);
-        console.log(this._activatedRoute.snapshot.fragment);
-        console.log(this._productListService.calculateFilterCount(this.filterData));
     }
 
 
@@ -60,18 +49,21 @@ export class FilterComponent implements OnInit {
 
         if (this._commonService.selectedFilterData.filter.hasOwnProperty(filterName)) {
             if (event.target.checked === true) {
-                this._commonService.selectedFilterData.filter[filterName].push(filterRow.term);
-                this.filterData[this.selectedFilterIndex].count = this.filterData[this.selectedFilterIndex].count + 1;
+                const index = this._commonService.selectedFilterData.filter[filterName].findIndex(f => f === filterRow.term);
+                if (index < 0) {
+                    this._commonService.selectedFilterData.filter[filterName].push(filterRow.term);
+                }
             } else {
                 for (let i = 0; i < this._commonService.selectedFilterData.filter[filterName].length; i++) {
                     if (this._commonService.selectedFilterData.filter[filterName][i] === filterRow.term) {
-                        this._commonService.selectedFilterData.filter[filterName].splice(i, 1);
-                        this.filterData[this.selectedFilterIndex].count = this.filterData[this.selectedFilterIndex].count - 1;
+                        const index = this._commonService.selectedFilterData.filter[filterName].findIndex(f => f === filterRow.term);
+                        if (index > -1) {
+                            this._commonService.selectedFilterData.filter[filterName].splice(i, 1);
+                        }
                     }
                 }
             }
         } else {
-            this.filterData[this.selectedFilterIndex].count = 1;
             this._commonService.selectedFilterData.filter[filterName] = [filterRow.term];
         }
     }
@@ -85,7 +77,6 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { FilterCategoryComponent } from '@app/components/filter/filter-category/filter-category.component';
 import { FilterSearchBoxDirectiveModule } from '@app/utils/directives/filterSearchBox.directive';
 import { ApplyRemoveClassOnParentModule } from '@app/utils/directives/apply-remove-class-on-parent.directive';
-import { ProductListService } from '@app/utils/services/productList.service';
 
 @NgModule({
     imports: [

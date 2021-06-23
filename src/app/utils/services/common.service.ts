@@ -17,6 +17,7 @@ import { ActivatedRoute } from "@angular/router";
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from './global-loader.service';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 @Injectable({
     providedIn: 'root'
@@ -71,16 +72,6 @@ export class CommonService {
 
     set itemsValidationMessage(ivm) {
         this._itemsValidationMessage = ivm;
-    }
-
-    updateSortByFromSearch() {
-        this.deleteDefaultQueryParams(['orderWay', 'orderBy']);
-        this.updateSortBy.next('popularity');
-        const sortByFilter = document.querySelector('sort-by');
-
-        if (sortByFilter) {
-            sortByFilter.classList.remove('open');
-        }
     }
 
     scrollToTop() {
@@ -841,8 +832,18 @@ export class CommonService {
         sortBy: {},
         pages: [],
         page: 1,
-        pageSize: 10
+        pageSize: GLOBAL_CONSTANT.default.pageSize
     };
+
+    resetSelectedFilterData() {
+        this.selectedFilterData = {
+            filter: {},
+            sortBy: {},
+            pages: [],
+            page: 1,
+            pageSize: GLOBAL_CONSTANT.default.pageSize
+        };
+    }
     
     applyFilter(currentRouteFromCategoryFilter?: number, page?: number){
 
@@ -851,7 +852,6 @@ export class CommonService {
         const extras: NavigationExtras = { queryParams: {} };
 
         const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
-        console.log('fragmentString ===> ', fragmentString);
 
         const queryParams = this.generateQueryParams();
 
@@ -864,7 +864,7 @@ export class CommonService {
         
         this.selectedFilterData.page = 1;        
         if (extras.queryParams['page']) {
-            this.selectedFilterData.pageSize = 10;
+            this.selectedFilterData.pageSize = GLOBAL_CONSTANT.default.pageSize;
             delete extras.queryParams['page'];
         }
 

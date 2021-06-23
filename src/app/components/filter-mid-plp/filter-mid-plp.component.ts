@@ -49,7 +49,6 @@ export class FilterMidPlpComponent implements OnInit {
       return;
     } else {
       if (this._commonService.selectedFilterData.filter.hasOwnProperty(key)) {
-        console.log(this._commonService.selectedFilterData.filter[key].findIndex(x => x === item.term));
         const indexInSelectedFilterDataFilterArray = this._commonService.selectedFilterData.filter[key].findIndex(x => x === item.term);
         if (!(indexInSelectedFilterDataFilterArray > -1)) {
           this._commonService.selectedFilterData.filter[key].push(item.term);

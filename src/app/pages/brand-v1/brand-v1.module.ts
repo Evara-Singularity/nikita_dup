@@ -15,4 +15,4 @@ import { BrandV1RoutingModule } from './brand-v1.routing';
     ],
 })
 
-export class BrandV1Module { }
+export class BrandV1Module {}

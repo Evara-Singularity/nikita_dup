@@ -1,12 +1,13 @@
 import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
+import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
   selector: 'shared-product-listing',
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent implements OnInit {
+export class SharedProductListingComponent {
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -18,10 +19,7 @@ export class SharedProductListingComponent implements OnInit {
 
   @Input() productsListingData: ProductListingDataEntity;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector) { }
-
-  ngOnInit(): void {
-  }
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, private _productListService: ProductListService) { }
 
   async onVisiblePagination(event) {
     if (!this.paginationInstance) {
@@ -54,6 +52,7 @@ export class SharedProductListingComponent implements OnInit {
         if (mob_filter) {
             mob_filter.classList.toggle('upTrans');
         }
+        this.filterInstance.instance.initializeSelectedFilterData();
     }
   }
 
@@ -72,6 +71,7 @@ export class SharedProductListingComponent implements OnInit {
         if (sortByFilter) {
             sortByFilter.classList.toggle('open');
         }
+        this._productListService.initializeSortBy();
     }
 }
 

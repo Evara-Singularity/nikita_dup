@@ -1,6 +1,7 @@
 import { ActivatedRoute } from "@angular/router";
 import { CommonService } from "@app/utils/services/common.service";
 import { Component, ViewEncapsulation, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { ProductListService } from "@app/utils/services/productList.service";
 
 @Component({
   selector: 'sort-by',
@@ -15,25 +16,10 @@ export class SortByComponent {
   // Output event to toggle filter
   @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public _commonService: CommonService, private _activatedRoute: ActivatedRoute) {};
+  constructor(public _commonService: CommonService, private _productListService: ProductListService) {};
 
   ngOnInit() {
-    this.initializeSortBy();
-  }
-  
-  initializeSortBy() {
-    const queryParams = this._activatedRoute.snapshot.queryParams;
-
-    if (queryParams.hasOwnProperty('orderBy') && queryParams.hasOwnProperty('orderWay') && queryParams['orderBy'] === 'price') {
-      if (queryParams['orderWay'] === 'asc') {
-        this._commonService.selectedFilterData['sortBy'] = 'lowPrice';
-      } else {
-        this._commonService.selectedFilterData['sortBy'] = 'highPrice';
-      }
-    } else {
-      this._commonService.selectedFilterData['sortBy'] = 'popularity';
-    }
-
+    this._productListService.initializeSortBy()
   }
 }
 

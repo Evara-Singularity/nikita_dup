@@ -31,10 +31,9 @@ export class BrandV1Component {
     ngOnInit(): void {
         this.setDataFromResolver();
     }
-    
+
     setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
-        console.log(result);
         this._productListService.createAndProvideDataToSharedListingComponent(result['brand'][1], 'Brand Results');
     });
     }

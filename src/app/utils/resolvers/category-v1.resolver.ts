@@ -11,6 +11,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, share, tap } from 'rxjs/operators';
+import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
 
 @Injectable({
@@ -21,6 +22,7 @@ export class CategoryV1Resolver implements Resolve<any> {
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
+    private _commonService: CommonService,
     private http: HttpClient,
     private loaderService: GlobalLoaderService
   ) { 
@@ -68,10 +70,19 @@ export class CategoryV1Resolver implements Resolve<any> {
         const refresh_product_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY + "?category=" + categoryId;
         const breadcrump_url = environment.BASE_URL + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
+       
         
+        const params = {
+          filter: this._commonService.selectedFilterData.filter,
+          queryParams: _activatedRouteSnapshot.queryParams,
+          pageName: "CATEGORY"
+        };
+        
+        const actualParams = this._commonService.formatParams(params);
+
         const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());
         const getFAQObs = this.http.get(faq_url).pipe(share());
-        const refreshProductsObs = this.http.get(refresh_product_url).pipe(share());
+        const refreshProductsObs = this.http.get(refresh_product_url, { params: actualParams }).pipe(share());
         const getBreadCrump = this.http.get(breadcrump_url).pipe(share());
         const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share());
 

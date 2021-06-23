@@ -1,5 +1,5 @@
 import { EventEmitter, Component, Input, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class FilterComponent implements OnInit {
 
     public selectedFilterIndex: number = 0;
 
-    constructor(public _commonService: CommonService) {
+    constructor(public _commonService: CommonService, private _productListService: ProductListService, private _activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(){
@@ -28,6 +28,7 @@ export class FilterComponent implements OnInit {
      * This funcition is used to initalize the selected filters data i.e stored in selectedFilterData
      */
     initializeSelectedFilterData = () => {
+        // this._commonService.selectedFilterData.filter = this._commonService.calculateFilterCount(this.filterData);
         for (const filterKey of Object.keys(this.filterData)) {
             this.filterData[filterKey].count = 0;
             for (const termKey of Object.keys(this.filterData[filterKey]['terms'])) {
@@ -42,8 +43,11 @@ export class FilterComponent implements OnInit {
                 }
             }
         }
-        this._commonService.selectedFilterData.filter;
+        console.log(this._commonService.selectedFilterData.filter);
+        console.log(this._activatedRoute.snapshot.fragment);
+        console.log(this._productListService.calculateFilterCount(this.filterData));
     }
+
 
     /**
      * This funcition is used to modify the selected filters data i.e stored in selectedFilterData
@@ -81,6 +85,7 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { FilterCategoryComponent } from '@app/components/filter/filter-category/filter-category.component';
 import { FilterSearchBoxDirectiveModule } from '@app/utils/directives/filterSearchBox.directive';
 import { ApplyRemoveClassOnParentModule } from '@app/utils/directives/apply-remove-class-on-parent.directive';
+import { ProductListService } from '@app/utils/services/productList.service';
 
 @NgModule({
     imports: [

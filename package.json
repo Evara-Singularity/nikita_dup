@@ -3,6 +3,11 @@
     "version": "0.0.0",
     "description": "Example project from an angular.io guide.",
     "license": "MIT",
+    "browser": {
+        "fs": false,
+        "path": false,
+        "os": false
+    },
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -22,8 +27,8 @@
         "swupdate:url:vpn": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/vpn/pwa/bundles/",
         "swupdate:url:prod": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa/bundles/",
         "swupdate:url:prodab": "./node_modules/.bin/ngsw-config dist/browser ./ngsw-config.json  https://cdn.moglix.com/online/prod/pwa-ab/bundles/",
-        "cssupdate:config:qa":"cp ./src/app/scss/qa/_config.scss ./src/app/scss/_config.scss",
-        "cssupdate:dev":"cp ./src/app/scss/_config.dev.scss ./src/app/scss/_config.scss"
+        "cssupdate:config:qa": "cp ./src/app/scss/qa/_config.scss ./src/app/scss/_config.scss",
+        "cssupdate:dev": "cp ./src/app/scss/_config.dev.scss ./src/app/scss/_config.scss"
     },
     "private": true,
     "dependencies": {
@@ -43,6 +48,7 @@
         "credit-card-type": "^9.1.0",
         "express": "^4.15.2",
         "jquery": "^3.5.1",
+        "net": "^1.0.2",
         "ng-lazyload-image": "^9.1.0",
         "ng2-cc-library": "^1.0.1",
         "ngx-pagination": "^3.2.1",

@@ -27,8 +27,7 @@ export class SearchV1Resolver implements Resolve<any> {
     private http: HttpClient,
     private _commonService: CommonService,
     private loaderService: GlobalLoaderService
-  ) { 
-  }
+  ) {}
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);

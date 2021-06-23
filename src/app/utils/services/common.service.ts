@@ -834,6 +834,7 @@ export class CommonService {
 
         const extras: NavigationExtras = { queryParams: {} };
 
+        console.log(this.selectedFilterData);
         const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
 
         const queryParams = this.generateQueryParams();

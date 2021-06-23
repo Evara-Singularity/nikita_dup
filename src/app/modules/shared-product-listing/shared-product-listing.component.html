@@ -8,10 +8,12 @@
     <div class="right">Showing 20 out of {{productsListingData.totalCount}} products</div>
 </div>
 
-<product-horizontal-card 
-    *ngFor="let product of productsListingData.products" 
-    [product]="product">
-</product-horizontal-card>
+<ng-container>
+    <product-horizontal-card 
+        *ngFor="let product of productsListingData.products" 
+        [product]="product">
+    </product-horizontal-card>
+</ng-container>
 
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
 <ng-template #pagination></ng-template>

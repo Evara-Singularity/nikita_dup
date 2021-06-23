@@ -9,8 +9,10 @@ import {
 } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
+import { Router } from 'express';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
 
 @Injectable({
@@ -22,6 +24,8 @@ export class BrandV1Resolver implements Resolve<any> {
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
     private http: HttpClient,
+    private _router: Router,
+    private _commonService: CommonService,
     private loaderService: GlobalLoaderService
   ) { 
   }
@@ -51,15 +55,31 @@ export class BrandV1Resolver implements Resolve<any> {
 
       return of([brandCategory_data, brandList_data, cms_data]);
     } else {
+
+      const params = {
+        filter: this._commonService.selectedFilterData.filter,
+        queryParams: _activatedRouteSnapshot.queryParams,
+        pageName: "BRAND"
+      };
+      
+      const actualParams = this._commonService.formatParams(params);
+      actualParams['brand'] = _activatedRouteSnapshot.params.brand;
+      if (_activatedRouteSnapshot.fragment) {
+        actualParams['filter'] = encodeURIComponent(_activatedRouteSnapshot.fragment);
+      }
+      
+      console.log(actualParams);
+      console.log(_activatedRouteSnapshot.fragment);
+
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
-      const GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS + '?brand=' + _activatedRouteSnapshot.params.brand;
+      const GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
       const CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
 
       const cmsDataObs = this.http.get(CMS_DATA_API_URL);
       const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL);
-      const getBrandListObs = this.http.get(GET_BRAND_LIST_API_URL, { params: _activatedRouteSnapshot.queryParams });
+      const getBrandListObs = this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams });
 
-      const dataList = [isBrandCategoryObs, getBrandListObs, cmsDataObs]
+      const dataList = [isBrandCategoryObs, getBrandListObs, cmsDataObs];
 
       return forkJoin(dataList).pipe(
         catchError((err) => {

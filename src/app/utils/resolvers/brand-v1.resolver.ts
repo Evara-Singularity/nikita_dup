@@ -56,6 +56,10 @@ export class BrandV1Resolver implements Resolve<any> {
       return of([brandCategory_data, brandList_data, cms_data]);
     } else {
 
+      if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
+        this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
+      }
+
       const params = {
         filter: this._commonService.selectedFilterData.filter,
         queryParams: _activatedRouteSnapshot.queryParams,
@@ -64,9 +68,9 @@ export class BrandV1Resolver implements Resolve<any> {
       
       const actualParams = this._commonService.formatParams(params);
       actualParams['brand'] = _activatedRouteSnapshot.params.brand;
-      if (_activatedRouteSnapshot.fragment) {
-        actualParams['filter'] = encodeURIComponent(_activatedRouteSnapshot.fragment);
-      }
+      // if (_activatedRouteSnapshot.fragment) {
+      //   actualParams['filter'] = encodeURIComponent(_activatedRouteSnapshot.fragment);
+      // }
       
       console.log(actualParams);
       console.log(_activatedRouteSnapshot.fragment);

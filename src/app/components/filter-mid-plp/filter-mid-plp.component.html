@@ -3,8 +3,15 @@
         <p class="filter-heading">
             {{ inlineFilterData.name }}
         </p>
-        <ng-container *ngFor="let item of inlineFilterData.terms">
-            <span class="filter-btn" (click)="checkAndApplyFilter(inlineFilterData.name, item?.term)">{{ item?.term }}</span>
+        <ng-container *ngIf="inlineFilterData.name === GLOBAL_CONSTANT?.inlineFilter[0];  else nonCategory">
+            <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let k = index;">
+                <span *ngIf="k < 5" class="filter-btn" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item?.term }}</span>
+            </ng-container>
         </ng-container>
+        <ng-template #nonCategory>
+            <ng-container *ngFor="let item of inlineFilterData.terms">
+                <span class="filter-btn" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item?.term }}</span>
+            </ng-container>
+        </ng-template>
     </div>
 </ng-container>

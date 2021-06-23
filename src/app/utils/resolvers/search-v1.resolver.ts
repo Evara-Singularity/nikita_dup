@@ -43,7 +43,11 @@ export class SearchV1Resolver implements Resolve<any> {
       this.loaderService.setLoaderState(false);
       return of([search_data]);
     } else {
-      const URL = environment.BASE_URL + ENDPOINTS.SEARCH;
+      
+      if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
+        this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
+      }
+
       const params = {
         filter: this._commonService.selectedFilterData.filter,
         queryParams: _activatedRouteSnapshot.queryParams,
@@ -51,6 +55,7 @@ export class SearchV1Resolver implements Resolve<any> {
       };
       const actualParams = this._commonService.formatParams(params);
 
+      const URL = environment.BASE_URL + ENDPOINTS.SEARCH;
       const searchObs = this.http.get(URL, { params: actualParams });
 
       return forkJoin([searchObs]).pipe(

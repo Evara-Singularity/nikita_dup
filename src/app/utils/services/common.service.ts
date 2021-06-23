@@ -255,6 +255,22 @@ export class CommonService {
         return queryParams;
     }
 
+    updateSelectedFilterDataFilterFromFragment(fragment) {
+        let obj = {};
+        
+        if (fragment) {
+          let filtersList = fragment.split('/');
+          if (filtersList){
+                for (let i = 0; i < filtersList.length; i++) {
+                    let a = filtersList[i].split(/-(.+)/);
+                    obj[a[0]] = a[1].split('||');
+                }
+            }
+        }
+
+        return obj;
+    }
+
     generateFragmentString(productFilterData) {
         let fragment = "";
         if (Object.keys(productFilterData).length > 0) {
@@ -834,8 +850,8 @@ export class CommonService {
 
         const extras: NavigationExtras = { queryParams: {} };
 
-        console.log(this.selectedFilterData);
         const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
+        console.log('fragmentString ===> ', fragmentString);
 
         const queryParams = this.generateQueryParams();
 

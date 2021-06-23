@@ -70,6 +70,7 @@ export interface TermsEntity {
     maxPrice: number;
     minPrice: number;
     childCategories?: null;
+    childCategoryList?: null;
 }
 
 export interface ProductListingDataEntity { 

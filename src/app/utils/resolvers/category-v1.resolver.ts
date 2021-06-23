@@ -71,13 +71,16 @@ export class CategoryV1Resolver implements Resolve<any> {
         const breadcrump_url = environment.BASE_URL + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
        
+        if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
+          this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
+        }
         
         const params = {
           filter: this._commonService.selectedFilterData.filter,
           queryParams: _activatedRouteSnapshot.queryParams,
           pageName: "CATEGORY"
         };
-        
+
         const actualParams = this._commonService.formatParams(params);
 
         const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -15,9 +15,10 @@ export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;
   @Input('position') position: number;
   
+  public GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   public inlineFilterData: BucketsEntity;
   
-  constructor(private _productListService: ProductListService, private _commonService: CommonService) { }
+  constructor(private _router: Router, private _productListService: ProductListService, private _commonService: CommonService) { }
 
   ngOnInit(): void {
     this.genrateInlineFilterData();
@@ -42,26 +43,27 @@ export class FilterMidPlpComponent implements OnInit {
     }
   }
 
-  checkAndApplyFilter(key, value) {
+  checkAndApplyFilter(key, item) {
     if (key === GLOBAL_CONSTANT.inlineFilter[0]) {
+      this._router.navigate([item.categoryLink]);
       return;
-    }
-    if (this._commonService.selectedFilterData.filter.hasOwnProperty(key)) {
-      console.log(this._commonService.selectedFilterData.filter[key].findIndex(x => x === value));
-      const indexInSelectedFilterDataFilterArray = this._commonService.selectedFilterData.filter[key].findIndex(x => x === value);
-      if (!(indexInSelectedFilterDataFilterArray > -1)) {
-        this._commonService.selectedFilterData.filter[key].push(value);
-      } else {
-        this._commonService.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
-      }
     } else {
-      this._commonService.selectedFilterData.filter[key] = [];
-      this._commonService.selectedFilterData.filter[key].push(value);
+      if (this._commonService.selectedFilterData.filter.hasOwnProperty(key)) {
+        console.log(this._commonService.selectedFilterData.filter[key].findIndex(x => x === item.term));
+        const indexInSelectedFilterDataFilterArray = this._commonService.selectedFilterData.filter[key].findIndex(x => x === item.term);
+        if (!(indexInSelectedFilterDataFilterArray > -1)) {
+          this._commonService.selectedFilterData.filter[key].push(item.term);
+        } else {
+          this._commonService.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
+        }
+      } else {
+        this._commonService.selectedFilterData.filter[key] = [];
+        this._commonService.selectedFilterData.filter[key].push(item.term);
+      }
+  
+      this._commonService.applyFilter();
     }
-
-    this._commonService.applyFilter();
   }
-
 }
 
 @NgModule({

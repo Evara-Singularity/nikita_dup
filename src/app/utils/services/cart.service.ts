@@ -402,9 +402,7 @@ export class CartService {
      * incase of without login buynow, temp session can checked in cartService.buyNowSessionDetails
     */
     addToCart(args: {
-        redirectUrl: string,
         buyNow: boolean,
-        quantity: number,
         productDetails: AddToCartProductSchema
     }): Observable<any> {
         return this._checkForUserAndCartSession().pipe((

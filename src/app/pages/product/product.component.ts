@@ -1035,9 +1035,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.dataService.sendMessage(trackingData);
 
       this.showLoader = true;
+      
       sessionDetails["cart"]["buyNow"] = buyNow;
       sessionDetails["itemsList"] = checkAddToCartData.itemlist;
       sessionDetails = this.cartService.updateCart(sessionDetails);
+
+
       this.currentAddedProduct = Object.assign({}, singleProductItem);
       if (!buyNow) {
         this.cartService.setCartSession(sessionDetails);
@@ -1058,7 +1061,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });   //this redirect to quick order page
         return;
       }
+      
       this.showLoader = true;
+
       this.cartService.updateCartSessions(routerLink, sessionDetails, buyNow).subscribe(data => {
         this.showLoader = false;
         this.updateCartSessions(data, routerLink, buyNow);
@@ -1066,6 +1071,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.updateCartSessions(null, routerLink);
       });
+
       if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
         var totQuantity = 0;
         var trackData = {

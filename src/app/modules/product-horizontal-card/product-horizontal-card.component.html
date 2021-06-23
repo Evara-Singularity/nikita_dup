@@ -36,10 +36,10 @@
             </div>
             <div class="right">
                 <ng-container *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                    <button class="white">
+                    <button class="white" (click)="buyNow()" >
                         <i class="icon-cart"></i>
                     </button>
-                    <button>BUY NOW</button>
+                    <button (click)="buyNow(true)" >BUY NOW</button>
                 </ng-container>
                 <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
                     <button class="white">SEND QUERY</button>
@@ -48,3 +48,5 @@
         </div>
     </div>
 </div>
+
+<ng-container #addToCartToast></ng-container>

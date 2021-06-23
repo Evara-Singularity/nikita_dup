@@ -1,12 +1,12 @@
 import { Injectable, EventEmitter, Optional } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-
-import { cartSession } from "../models/cart.initial";
+import { AddToCartProductSchema, cartSession } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { Observable, Observer, of, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { concat, Observable, Observer, of, pipe, Subject, throwError } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { LocalStorageService } from 'ngx-webstorage';
 
 
 export class CartServiceConfig {
@@ -56,7 +56,10 @@ export class CartService {
 
     private _buyNowSessionDetails;
     
-    constructor(private _dataService: DataService,@Optional() config?: CartServiceConfig) {
+    constructor(
+        private _dataService: DataService,
+        private _localStorageService: LocalStorageService,
+        @Optional() config?: CartServiceConfig) {
         this.cartSession = cartSession;
         this.updateCart$.subscribe(() => {
             alert(this.test());
@@ -102,7 +105,6 @@ export class CartService {
     }
 
     updateCart(cartSession) {
-        // console.log('cartSession updateCart 33', Object.assign({},cartSession));
         let totalAmount: number = 0;
         let tawot: number = 0;
         let tpt: number = 0; //totalPayableTax
@@ -113,27 +115,19 @@ export class CartService {
         for (let item of itemsList) {
             if (item["bulkPrice"] == null) {
                 item["totalPayableAmount"] = this.getTwoDecimalValue(item["productUnitPrice"] * item["productQuantity"]);
-               item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax']*item['productQuantity']);
-                //item['tpawot'] = this.getTwoDecimalValue(item['productUnitPrice']*item['productQuantity']);
-
-               item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] -  item["tpawot"]);
-                //item['tax'] = this.getTwoDecimalValue(item['productQuantity'] *(item["productUnitPrice"] -  item["priceWithoutTax"]));
-
+                item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax'] * item['productQuantity']);
+                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
             }
             else {
                 item["totalPayableAmount"] = this.getTwoDecimalValue(item["bulkPrice"] * item["productQuantity"]);
-                item['tpawot'] = this.getTwoDecimalValue(item['bulkPriceWithoutTax']*item['productQuantity']);
-                //item['tpawot'] = this.getTwoDecimalValue(item['bulkPrice']*item['productQuantity']);
-
-                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] -  item["tpawot"]);
-               // item['tax'] = this.getTwoDecimalValue(item['productQuantity'] * (item["bulkPrice"] -  item["bulkPriceWithoutTax"]));
-
+                item['tpawot'] = this.getTwoDecimalValue(item['bulkPriceWithoutTax'] * item['productQuantity']);
+                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
             }
             totalAmount = this.getTwoDecimalValue(totalAmount + item.totalPayableAmount);
             tawot = this.getTwoDecimalValue(tawot + item.tpawot);
             tpt = tpt + item['tax'];
         };
-        
+
         cart.totalAmount = totalAmount;
         cart.totalPayableAmount = totalAmount + cart['shippingCharges'] - cart['totalOffer'];
         cart.tawot = tawot;
@@ -148,69 +142,6 @@ export class CartService {
 
     getTwoDecimalValue(a){
         return Math.floor(a * 100) / 100;
-    }
-    /**
-     * @param sessionCart
-     * Update cart on server session and then in local service varialbe: `cartSession` also
-     */
-    updateCartSession(sessionCart): any {
-        sessionCart['itemsList'].map((item) => {
-                delete item['tax'];
-                delete item['tpawot'];
-        });
-        delete sessionCart['cart']['tawot'];
-        delete sessionCart['cart']['tpt'];
-        // console.log(sessionCart, 'sessionCartsessionCartsessionCart');
-
-        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPD_CART, { body: sessionCart })
-        .pipe(
-            map((d) => {
-                if (d['status']) {
-                    // console.log('updateCartSession d', d);
-                    let totalAmount: number = 0;
-                    let tawot: number = 0;
-                    let tpt: number = 0;
-                    // sessionCart['itemsList'] = Object.assign({}, d['itemsList']);
-                    sessionCart['itemsList'].map((item) => {
-                        if (item['bulkPrice'] == null) {
-                            item['totalPayableAmount'] = this.getTwoDecimalValue(item['productUnitPrice'] * item['productQuantity']);
-                            item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax'] * item['productQuantity']);
-                            //item['tpawot'] = this.getTwoDecimalValue(item['productUnitPrice']*item['productQuantity']);
-
-                            item['tax'] = this.getTwoDecimalValue((item['productUnitPrice'] - item['priceWithoutTax']) * item['productQuantity']);
-                            //item['tax'] = this.getTwoDecimalValue((item['productUnitPrice'] - item['priceWithoutTax']) * item['productQuantity']);
-
-                        } else {
-                            item['totalPayableAmount'] = this.getTwoDecimalValue(item['bulkPrice'] * item['productQuantity']);
-                           item['tpawot'] = this.getTwoDecimalValue(item['bulkPriceWithoutTax'] * item['productQuantity']);
-                           //item['tpawot'] = this.getTwoDecimalValue(item['bulkPrice']*item['productQuantity']);
-
-                            item['tax'] = this.getTwoDecimalValue(item['totalPayableAmount'] - item['tpawot']);
-                            //item['tax'] = this.getTwoDecimalValue(item['productQuantity']*(item["bulkPrice"] -  item["bulkPriceWithoutTax"]));
-
-                        }
-
-                        totalAmount = this.getTwoDecimalValue(totalAmount + item.totalPayableAmount);
-                        tawot = this.getTwoDecimalValue(tawot + item.tpawot);
-                        tpt = tpt + item['tax'];
-                    });
-                    sessionCart.cart.totalAmount = totalAmount;
-                    sessionCart.cart.totalPayableAmount = d["cart"]["totalPayableAmount"];
-                    sessionCart.cart.tawot = tawot;
-                    sessionCart.cart.tpt = tpt;
-
-                    sessionCart['noOfItems'] = d['noOfItems'];
-                    sessionCart['statusDescription'] = d['statusDescription'];
-                    sessionCart['statusCode'] = d['statusCode'];
-                    sessionCart['status'] = d['status'];
-
-                    // return local cart because, some properties are not comming back from api like shipping charges.
-                    return sessionCart;
-                }
-                // api returns false, then return actual object returned from server
-                return d;
-            })
-        );
     }
 
     getValidateCartMessageApi(params){
@@ -461,4 +392,192 @@ export class CartService {
 
         return this.updateCartSession(cartObject)
     }
+
+
+    // COMMON CART LOGIC IMPLEMENTATION STARTS
+    /** 
+     * Target modules Product listing pages i.e. search, brand, category, brand+categrory
+     * this function return null or cartsession object 
+     * null is returned incase product already in cart AND null is also return incase of buynow without login. 
+     * incase of without login buynow, temp session can checked in cartService.buyNowSessionDetails
+    */
+    addToCart(args: {
+        redirectUrl: string,
+        buyNow: boolean,
+        quantity: number,
+        productDetails: AddToCartProductSchema
+    }): Observable<any> {
+        return this._checkForUserAndCartSession().pipe((
+            // Action : Check whether product already exist in cart itemList if exist exit
+            map(cartSession => {
+                // incase of buynow do not exlude 
+                if (args.buyNow) {
+                    return cartSession;
+                }
+                const itemsList = (cartSession && cartSession['itemsList']) ? [...cartSession['itemsList']] : [];
+                const filteredArr = itemsList.filter(items => items['productId'] == args.productDetails.productId);
+                return (filteredArr.length > 0) ? null : cartSession;
+            })
+        )).pipe(
+            // Action : update sessionId & cartId in productDetails
+            map((cartSession) => {
+                console.log('step 1 ==>', cartSession);
+                if (!cartSession) {
+                    return cartSession;
+                } else {
+                    args.productDetails.cartId = cartSession['cart']['cartId'];
+                    args.productDetails.buyNow = args.buyNow;
+                    cartSession['cart']['buyNow'] = args.buyNow;
+                    // Action : While adding check whether it is buynow flow, 
+                    // if yes then a add a single product and maintain buynow flow
+                    const items = (cartSession['itemsList']) ? [...cartSession['itemsList']] : [];
+                    // update buynow flag items
+                    cartSession['itemsList'] = (args.buyNow) ? [args.productDetails] : [...items, args.productDetails];
+                    // remove promocodes incase of buynow
+                    cartSession = (args.buyNow) ? this._removePromoCode(cartSession) : Object.assign({}, cartSession);
+                    // calculate total price and cart value.
+                    cartSession = this.updateCart(cartSession)
+                    //if not buynow flow then update global cart session in service
+                    if(!args.buyNow){
+                        this.setCartSession(cartSession);
+                    }
+                    return cartSession;
+                }
+            }), 
+            mergeMap(cartSession => {
+                console.log('step 2 ==>', cartSession);
+                return this._getUserSession().pipe(
+                    map(userSession => {
+                        if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
+                            // add temp session for buynow
+                            // as per current flow, update cart api should not be called for buynow if user is not logged in 
+                            console.log('step 3 ==>', cartSession);
+                            this.buyNowSessionDetails = cartSession;
+                            return null;
+                        } else {
+                            return cartSession;
+                        }
+                    }),
+                )
+            }),
+            mergeMap(request => {
+                if(request){
+                    return this.updateCartSession(request).pipe(
+                        map((cartSession: any) => {
+                            return cartSession;
+                        })
+                    );
+                }else{
+                    return of(null)
+                }
+            })
+        )
+    }
+
+    /**
+     * @param sessionCart
+     * Update cart on server session and then in local service varialbe: `cartSession` also
+     */
+    updateCartSession(sessionCart): Observable<any> {
+        // delete extra props
+        sessionCart['itemsList'].map((item) => {
+            delete item['tax'];
+            delete item['tpawot'];
+        });
+        delete sessionCart['cart']['tawot'];
+        delete sessionCart['cart']['tpt'];
+        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPD_CART, { body: sessionCart })
+            .pipe(
+                map((d) => {
+                    if (d['status']) {
+                        let totalAmount: number = 0;
+                        let tawot: number = 0;
+                        let tpt: number = 0;
+                        sessionCart['itemsList'].map((item) => {
+                            if (item['bulkPrice'] == null) {
+                                item['totalPayableAmount'] = this.getTwoDecimalValue(item['productUnitPrice'] * item['productQuantity']);
+                                item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax'] * item['productQuantity']);
+                                item['tax'] = this.getTwoDecimalValue((item['productUnitPrice'] - item['priceWithoutTax']) * item['productQuantity']);
+                            } else {
+                                item['totalPayableAmount'] = this.getTwoDecimalValue(item['bulkPrice'] * item['productQuantity']);
+                                item['tpawot'] = this.getTwoDecimalValue(item['bulkPriceWithoutTax'] * item['productQuantity']);
+                                item['tax'] = this.getTwoDecimalValue(item['totalPayableAmount'] - item['tpawot']);
+                            }
+
+                            totalAmount = this.getTwoDecimalValue(totalAmount + item.totalPayableAmount);
+                            tawot = this.getTwoDecimalValue(tawot + item.tpawot);
+                            tpt = tpt + item['tax'];
+                        });
+                        sessionCart.cart.totalAmount = totalAmount;
+                        sessionCart.cart.totalPayableAmount = d["cart"]["totalPayableAmount"];
+                        sessionCart.cart.tawot = tawot;
+                        sessionCart.cart.tpt = tpt;
+                        sessionCart['noOfItems'] = d['noOfItems'];
+                        sessionCart['statusDescription'] = d['statusDescription'];
+                        sessionCart['statusCode'] = d['statusCode'];
+                        sessionCart['status'] = d['status'];
+                        // return local cart because, some properties are not comming back from api like shipping charges.
+                        return sessionCart;
+                    }
+                    // api returns false, then return actual object returned from server
+                    return d;
+                })
+            );
+    }
+
+    /**
+     * 
+     * @returns always return cart session obj.
+     * either from cartsessoion from service 
+     * or by calling usersession api and then calling getcartsession API
+     * use this function to always get cart session no further handling required.
+     */
+    private _checkForUserAndCartSession(): Observable<any> {
+        return of(this.getCartSession()).pipe(
+            mergeMap(cartSessionDetails => {
+                if (cartSessionDetails && cartSessionDetails['cart']) {
+                    return of(cartSessionDetails);
+                } else {
+                    return this._getUserSession().pipe(
+                        map(userSessionDetails => {
+                            return Object.assign({}, { "sessionid": userSessionDetails['sessionId'] })
+                        }),
+                        mergeMap(request => {
+                            return this.getCartBySession(request).pipe(
+                                map((res: any) => {
+                                    return res;
+                                })
+                            );
+                        })
+                    )
+                }
+            }),
+        )
+    }
+
+    /**
+     * @returns get user session details from localstorage or by API
+     */
+    private _getUserSession(): Observable<any> {
+        let user = this._localStorageService.retrieve('user');
+        if (user) {
+            return of(user);
+        }
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION).pipe(
+            map(res => res)
+        );
+    }
+
+    private _removePromoCode(cartSession): any {
+        cartSession['offersList'] = [];
+        cartSession['extraOffer'] = null;
+        cartSession['cart']['totalOffer'] = 0;
+        let itemsList = cartSession["itemsList"];
+        itemsList.forEach((element, index) => {
+            cartSession["itemsList"][index]['offer'] = null;
+        });
+        return cartSession;
+    }
+    // COMMON CART LOGIC IMPLEMENTATION ENDS
+
 }

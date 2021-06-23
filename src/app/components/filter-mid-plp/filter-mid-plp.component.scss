@@ -1,0 +1,22 @@
+.filter-container {
+    padding: 10px 5px;
+    .filter-btn{
+        display: inline-block;
+        padding: 10px 20px;
+        background: #da4038;
+        color: white;
+        font-size: 14px;
+        margin: 5px;
+        border-radius: 10px;
+        &.active{
+            background: white;
+            color: #da4038;
+        }
+    }
+    
+    .filter-heading{
+        font-size: 18px;
+        margin-bottom: 5px;
+        text-transform: capitalize; 
+    }
+}

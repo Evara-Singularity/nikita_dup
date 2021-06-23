@@ -34,7 +34,6 @@ export class CategoryV1Component {
     
     setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
-        console.log(result);
         this._productListService.createAndProvideDataToSharedListingComponent(result['category'][1], 'Category Results');
     });
     }

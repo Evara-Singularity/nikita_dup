@@ -1,0 +1,10 @@
+<ng-container *ngIf="inlineFilterData">
+    <div class="filter-container">
+        <p class="filter-heading">
+            {{ inlineFilterData.name }}
+        </p>
+        <ng-container *ngFor="let item of inlineFilterData.terms">
+            <span class="filter-btn">{{ item?.term }}</span>
+        </ng-container>
+    </div>
+</ng-container>

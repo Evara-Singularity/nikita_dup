@@ -19,7 +19,7 @@ export class SharedProductListingComponent {
 
   @Input() productsListingData: ProductListingDataEntity;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, private _productListService: ProductListService) { }
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService) { }
 
   async onVisiblePagination(event) {
     if (!this.paginationInstance) {

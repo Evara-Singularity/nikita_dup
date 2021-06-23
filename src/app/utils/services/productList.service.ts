@@ -8,6 +8,7 @@ import { CommonService } from './common.service';
 })
 export class ProductListService {
   productListingData: ProductListingDataEntity;
+  inlineFilterData: any;
 
   constructor(
       private _activatedRoute: ActivatedRoute,

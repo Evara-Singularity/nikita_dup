@@ -4,7 +4,7 @@
             {{ inlineFilterData.name }}
         </p>
         <ng-container *ngFor="let item of inlineFilterData.terms">
-            <span class="filter-btn">{{ item?.term }}</span>
+            <span class="filter-btn" (click)="checkAndApplyFilter(inlineFilterData.name, item?.term)">{{ item?.term }}</span>
         </ng-container>
     </div>
 </ng-container>

@@ -3,6 +3,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
+import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class FilterMidPlpComponent implements OnInit {
   
   public inlineFilterData: BucketsEntity;
   
-  constructor(private _productListService: ProductListService) { }
+  constructor(private _productListService: ProductListService, private _commonService: CommonService) { }
 
   ngOnInit(): void {
     this.genrateInlineFilterData();
@@ -39,7 +40,26 @@ export class FilterMidPlpComponent implements OnInit {
     if (discount) {
       this._productListService.inlineFilterData.push(discount);
     }
-    console.log(this._productListService.inlineFilterData);
+  }
+
+  checkAndApplyFilter(key, value) {
+    if (key === GLOBAL_CONSTANT.inlineFilter[0]) {
+      return;
+    }
+    if (this._commonService.selectedFilterData.filter.hasOwnProperty(key)) {
+      console.log(this._commonService.selectedFilterData.filter[key].findIndex(x => x === value));
+      const indexInSelectedFilterDataFilterArray = this._commonService.selectedFilterData.filter[key].findIndex(x => x === value);
+      if (!(indexInSelectedFilterDataFilterArray > -1)) {
+        this._commonService.selectedFilterData.filter[key].push(value);
+      } else {
+        this._commonService.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
+      }
+    } else {
+      this._commonService.selectedFilterData.filter[key] = [];
+      this._commonService.selectedFilterData.filter[key].push(value);
+    }
+
+    this._commonService.applyFilter();
   }
 
 }

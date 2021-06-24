@@ -94,12 +94,13 @@ export class FeedbackComponent implements OnInit, AfterViewInit
         if (this.isOthersSelected){
             othersControl.setValidators([Validators.required]);
             valueControl.clearValidators();
-            othersControl.setValue("");
         }else{
             valueControl.setValidators([Validators.required]);
             othersControl.clearValidators();
         }
-        this.formArray.updateValueAndValidity();
+        othersControl.setValue("");
+        valueControl.updateValueAndValidity();
+        othersControl.updateValueAndValidity();
     }
 
     submitFeedback()

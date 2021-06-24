@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="order-id">
-            <p>For your Order ID : <strong>ID {{this.orderInfo['orderId']}}</strong> with product</p>
+            <p>For your Order ID : <strong>{{this.orderInfo['orderId']}}</strong> with product</p>
             <div class="product-details">
                 <span class="image">
                      <img src="{{imageURL}}" class="pImage">
@@ -27,11 +27,11 @@
         <form [formGroup]="cancelOrder">
             <span>
                 <input type="radio" id="yes" value="yes" formControlName="value">
-                <label for="yes">YES</label><br>
+                <label for="yes">Yes</label><br>
             </span>
             <span>
                 <input type="radio" id="no" value="no" formControlName="value">
-                <label for="no">NO</label>
+                <label for="no">No</label>
             </span>
         </form>
         <ng-container *ngIf="isSubmitted && cancelOrder.invalid">
@@ -43,11 +43,11 @@
         <form [formGroup]="deliveryAttempted">
             <span>
                 <input type="radio" id="1" value="yes" formControlName="value">
-                <label for="1">YES</label><br>
+                <label for="1">Yes</label><br>
             </span>
             <span>
                 <input type="radio" id="2" value="no" formControlName="value">
-                <label for="2">NO</label>
+                <label for="2">No</label>
             </span>
         </form>
     </div>
@@ -56,11 +56,11 @@
         <form [formGroup]="executiveCall">
             <span>
                 <input type="radio" id="3" value="yes" formControlName="value">
-                <label for="3">YES</label><br>
+                <label for="3">Yes</label><br>
             </span>
             <span>
                 <input type="radio" id="4" value="no" formControlName="value">
-                <label for="4">NO</label>
+                <label for="4">No</label>
             </span>
         </form>
     </div>

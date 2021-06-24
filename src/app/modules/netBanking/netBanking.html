@@ -1,32 +1,78 @@
-<section class="bank-container container">
-    <div id="net_block" class="">
-
-            <ul class="bank-list">
-                <li [class.selected]="selectedBankCode=='AXIB' || selectedBankCode=='UTIB'" (click)="updateNetBankingBank('AXIS Bank NetBanking')">
-                    <img src="{{imagePath+imageFolder}}/icon-axis.png">
-                    <p>AXIS</p>
-                </li>
-                <li [class.selected]="selectedBankCode=='ICIB' || selectedBankCode=='ICIC'" (click)="updateNetBankingBank('ICICI Netbanking')">
-                    <img src="{{imagePath+imageFolder}}/icon-icici.png">
+<section class="bank-container netBankingInner">
+    <div class="payment-notification">
+        Low success rate currently observed in some cases.<br/> If possible, use an alternate payment mode
+    </div>
+    <div id="net_block">
+        <ul class="bank-list">
+            <li class="bank-list-item" [class.selected]="selectedBankCode=='AXIB' || selectedBankCode=='UTIB'" (click)="updateNetBankingBank('AXIS Bank NetBanking')">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode=='AXIB' || selectedBankCode=='UTIB'" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <img src="{{imagePath+imageFolder}}/icon-axis.png">
+                <div class="bank-name">
+                    <p class="">AXIS</p>
+                    <span class="lowsuccessRate">Low success rate observed</span>
+                </div>
+            </li>
+            <li class="bank-list-item" [class.selected]="selectedBankCode=='ICIB' || selectedBankCode=='ICIC'" (click)="updateNetBankingBank('ICICI Netbanking')">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode=='ICIB' || selectedBankCode=='ICIC'" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <img src="{{imagePath+imageFolder}}/icon-icici.png">
+                <div class="bank-name">
                     <p>ICICI</p>
-                </li>
-                <li [class.selected]="selectedBankCode=='HDFB' || selectedBankCode=='HDFC'" (click)="updateNetBankingBank('HDFC Bank')">
-                    <img src="{{imagePath+imageFolder}}/icon-hdfc.png">
+                </div>
+            </li>
+            <li class="bank-list-item" [class.selected]="selectedBankCode=='HDFB' || selectedBankCode=='HDFC'" (click)="updateNetBankingBank('HDFC Bank')">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode=='HDFB' || selectedBankCode=='HDFC'" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <img src="{{imagePath+imageFolder}}/icon-hdfc.png">
+                <div class="bank-name">
                     <p>HDFC</p>
-                </li>
-                <li [class.selected]="selectedBankCode=='SBIB' || selectedBankCode=='SBIN'" (click)="updateNetBankingBank('State Bank of India')">
-                    <img src="{{imagePath+imageFolder}}/icon-sbi.png">
+                </div>
+            </li>
+            <li class="bank-list-item" [class.selected]="selectedBankCode=='SBIB' || selectedBankCode=='SBIN'" (click)="updateNetBankingBank('State Bank of India')">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode=='SBIB' || selectedBankCode=='SBIN'" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <img src="{{imagePath+imageFolder}}/icon-sbi.png">
+                <div class="bank-name">
                     <p>SBI</p>
-                </li>
-                <li *ngIf="type=='tax'" [class.selected]="selectedBankCode==='SCBL'" (click)="updateNetBankingBank('Standard Chartered Bank')">
-                    <img src="{{imagePath+imageFolder}}/icon-scb.png">
-                    <p>SCB</p>
-                </li>
-                <li [class.selected]="selectedBankCode==='UTBI' || selectedBankCode==='UBIB'"  (click)="updateNetBankingBank('Union Bank of India')">
-                    <img src="{{imagePath+imageFolder}}/icon-ubi.png">
-                    <p>UBI</p>
-                </li>
-            </ul>
+                </div>
+            </li>
+            <li class="bank-list-item" *ngIf="type=='tax'" [class.selected]="selectedBankCode==='SCBL'" (click)="updateNetBankingBank('Standard Chartered Bank')">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode==='SCBL'" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <img src="{{imagePath+imageFolder}}/icon-scb.png">
+                <div class="bank-name">
+                    <p class="bank-name">SCB</p>
+                </div>
+            </li>
+            <li class="bank-list-item" [class.selected]="selectedBankCode==='UTBI' || selectedBankCode==='UBIB'" (click)="updateNetBankingBank('Union Bank of India')">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode==='UTBI' || selectedBankCode==='UBIB'" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <img src="{{imagePath+imageFolder}}/icon-ubi.png">
+                <div class="bank-name">
+                    <p class="bank-name">UBI</p>
+                </div>
+            </li>
+        </ul>
+        <div class="custom_select_box">
+            <label>Select Bank</label>
+            <div class="custom_select_input">
+                <span>AXIS Bank</span>
+                <i class="icon-dropdown"></i>
+            </div>
+        </div>
 
         <form [formGroup]="netBankingForm" (ngSubmit)="pay(netBankingForm.value, netBankingForm.valid)" class="material-form mt-15">
             <div formGroupName="requestParams">
@@ -44,26 +90,19 @@
                     <!-- <div class="error-txt" *ngIf="false">Test</div> -->
                 </div>
             </div>
-            <div class="pad-tb-15 mt-15 border-top">
-                    <p class="lh-18">Please note.You might be redirected to 3-D secure page to
-                        complete your transaction.By placing this order, you agree to the <a class="text-darkblue"
-                            href="https://www.moglix.com/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
-                            href="https://www.moglix.com/privacy" target="_blank">Privacy Policy</a> of moglix.com
-                    </p>
-                </div>
+
             <div class="continue-button">
-                    <div class="container">
-                        <p class="total-mount" *ngIf="totalPayableAmount>0">
-                            <span class="payable-amnt">Payable Amount</span>
-                             ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
-                        <button type="submit" [disabled]="!netBankingForm.valid" class="btn">PAY</button>
-                    </div>
+                <div class="container">
+                    <p class="total-mount" *ngIf="totalPayableAmount>0">
+                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
+                    <button type="submit" [disabled]="!netBankingForm.valid" class="btn">PAY</button>
                 </div>
+            </div>
             <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
         </form>
-        
+
     </div>
 </section>
 
-<payu-form *ngIf="isValid&&type=='retail'" [data]="payuData" ></payu-form>
-<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData" ></razor-pay>
+<payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
+<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

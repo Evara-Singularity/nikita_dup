@@ -1,5 +1,192 @@
 <div *ngIf="!isEmiEnable" class="f-size-16 text-red"> {{message}} </div>
-<section *ngIf="emiResponse != undefined && isEmiEnable" id="emi_block" class="emi-container container">
+<section class="emiTabInner">
+    <div class="payment-notification">
+        Low success rate currently observed for Axis and HDFC. If possible, use an alternate payment mode
+    </div>
+    <h3 class="heading-3 emiHeading">
+        Select From Credit/debit Card
+    </h3>
+    <div class="emiTabs">
+        <div class="emiTab" [class.selectedTab]="paymentMethod == 'creditCard'" (click)="paymentMethod = 'creditCard'">
+            <span>Credit Card</span>
+        </div>
+        <div class="emiTab" [class.selectedTab]="paymentMethod == 'debitCard'" (click)="paymentMethod = 'debitCard'">
+            <span>Debit Card</span>
+        </div>
+    </div>
+    <div class="emiTabContent" [ngSwitch]="paymentMethod">
+        <div class="" *ngSwitchCase="'creditCard'">
+            <div (click)="showBanks()" class="custom_select_box">
+                <label>Select Bank</label>
+                <div class="custom_select_input">
+                    <span>AXIS Bank</span>
+                    <i class="icon-dropdown"></i>
+                </div>
+            </div>
+            <div class="emi-plans">
+                <div class="emi-plans-heading">
+                    <span>No Cost EMI Plans</span>
+                    <span class="align-left-auto">Total payable</span>
+                </div>
+                <ul class="emi-plans-list">
+                    <li *ngFor="let emiVal of [1,2]" class="emi-plans-list-item">
+                        <label class="payment-radio-btn">
+                            <input [checked]="emiVal" type="radio" name="net_radio"  [value]="emiVal">
+                            <span class ="custom-box"></span>
+                        </label>
+                        <div class="emi-amount">
+                            <p>₹5,844</p>
+                            <span>for 6 months <span class="green-txt">@0% p.a.</span></span>
+                        </div>
+                        <span class="emi-total-payable">₹2,074.46</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="emi-plans">
+                <h3 class="heading medium-heading">Standered EMI Plans</h3>
+                <ul class="emi-plans-list">
+                    <li *ngFor="let emiVal of [1,2]" class="emi-plans-list-item">
+                        <label class="payment-radio-btn">
+                            <input [checked]="emiVal" type="radio" name="net_radio"  [value]="emiVal">
+                            <span class ="custom-box"></span>
+                        </label>
+                        <div class="emi-amount">
+                            <p>₹5,844</p>
+                            <span>for 6 months @0% p.a.</span>
+                        </div>
+                        <span class="emi-total-payable">₹18,670.18</span>
+                    </li>
+                </ul>
+            </div>
+            <section class="creditDebitCardInner">
+                <h3 class="heading-3">Please enter you debit/credit card details</h3>
+                <form class="material-form material-form-boxed">
+                    <div class="input-field-boxed">
+                        <label>Card Number</label>
+                        <input type="text" placeholder="Enter Card Details">
+                    </div>
+                    <div class="card-expiryDate">
+                        <label>Expiry Date</label>
+                        <div class="multiple-form-field">
+                            <div class="input-field-boxed">
+                                <select placeholder="MM">
+                                    <option value="">MM</option>
+                                </select>
+                            </div>
+                            <div class="input-field-boxed">
+                                <select placeholder="YYYY">
+                                     <option value="">YYYY</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cvvField">
+                        <label>Card Number</label>
+                        <div class="multiple-form-field">
+                            <div class="input-field-boxed">
+                                <input type="text" placeholder="CVV">
+                            </div>
+                            <i class="icon-cvv"></i>
+                            <span class="cvv-text">
+                                Last 3 digits printed on <br/> the back of the card.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="input-field-boxed">
+                        <label>Name On Card</label>
+                        <input type="text" placeholder="Name On Card">
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div class="" *ngSwitchCase="'debitCard'">
+            <div (click)="showBanks()" class="custom_select_box">
+                <label>Select Bank</label>
+                <div class="custom_select_input">
+                    <span>Kotak Bank Mahindra</span>
+                    <i class="icon-dropdown"></i>
+                </div>
+            </div>
+            <div class="emi-plans">
+                <div class="emi-plans-heading">
+                    <span>No Cost EMI Plans</span>
+                    <span class="align-left-auto">Total payable</span>
+                </div>
+                <ul class="emi-plans-list">
+                    <li *ngFor="let emiVal of [1,2]" class="emi-plans-list-item">
+                        <label class="payment-radio-btn">
+                            <input [checked]="emiVal" type="radio" name="net_radio"  [value]="emiVal">
+                            <span class ="custom-box"></span>
+                        </label>
+                        <div class="emi-amount">
+                            <p>₹5,844</p>
+                            <span>for 6 months <span class="green-txt">@0% p.a.</span></span>
+                        </div>
+                        <span class="emi-total-payable">₹2,074.46</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="emi-plans">
+                <h3 class="heading medium-heading">Standered EMI Plans</h3>
+                <ul class="emi-plans-list">
+                    <li *ngFor="let emiVal of [1,2]" class="emi-plans-list-item">
+                        <label class="payment-radio-btn">
+                            <input [checked]="emiVal" type="radio" name="net_radio"  [value]="emiVal">
+                            <span class ="custom-box"></span>
+                        </label>
+                        <div class="emi-amount">
+                            <p>₹5,844</p>
+                            <span>for 6 months @0% p.a.</span>
+                        </div>
+                        <span class="emi-total-payable">₹18,670.18</span>
+                    </li>
+                </ul>
+            </div>
+            <section class="creditDebitCardInner">
+                <h3 class="heading-3">Please enter you debit/credit card details</h3>
+                <form class="material-form material-form-boxed">
+                    <div class="input-field-boxed">
+                        <label>Card Number</label>
+                        <input type="text" placeholder="Enter Card Details">
+                    </div>
+                    <div class="card-expiryDate">
+                        <label>Expiry Date</label>
+                        <div class="multiple-form-field">
+                            <div class="input-field-boxed">
+                                <select placeholder="MM">
+                                    <option value="">MM</option>
+                                </select>
+                            </div>
+                            <div class="input-field-boxed">
+                                <select placeholder="YYYY">
+                                     <option value="">YYYY</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cvvField">
+                        <label>Card Number</label>
+                        <div class="multiple-form-field">
+                            <div class="input-field-boxed">
+                                <input type="text" placeholder="CVV">
+                            </div>
+                            <i class="icon-cvv"></i>
+                            <span class="cvv-text">
+                                Last 3 digits printed on <br/> the back of the card.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="input-field-boxed">
+                        <label>Name On Card</label>
+                        <input type="text" placeholder="Name On Card">
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    <p class="emi-note-text"><b>Note:</b> The bank will continue to charge interest on NO Cost EMI plans as per existing rates. However, the interest to be charged by the bank will be passed on to you as an upfront discount</p>
+</section>
+<section style="display:none;" *ngIf="emiResponse != undefined && isEmiEnable" id="emi_block" class="emi-container container">
     <div class="">
         <div class="step-1 pad-lr-15">
             <!-- <h3 class="mb-15">1. Pay Via Credit Card</h3> -->

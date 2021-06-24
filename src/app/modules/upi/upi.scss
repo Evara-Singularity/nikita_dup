@@ -1,4 +1,8 @@
 @import '../../scss/variables';
+.upiBlockInner {
+    padding-bottom: 10px;
+}
+
 .upi-block {
     .custom-cbox {
         label {
@@ -100,5 +104,13 @@
                 -webkit-text-stroke-color: #53534F;
             }
         }
+    }
+}
+
+.all_upi-icons {
+    display: flex;
+    width: 60%;
+    .img {
+        width: 25px;
     }
 }

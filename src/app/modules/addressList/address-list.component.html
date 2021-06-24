@@ -1,8 +1,7 @@
-
 <div class="address-list" *ngIf="addresses && addresses.length>0">
-  <form>
-    <div class="multiple-address" *ngFor="let address of addresses; let i = index">
-      <label>
+    <form>
+        <div [class.withRadioContainer]="showRadio" class="multiple-address" *ngFor="let address of addresses; let i = index">
+            <label>
         <input *ngIf="showRadio" type="radio" name="sai" [checked]="(sai===i) || (addresses && addresses.length > 0 && addresses.length < 2)"  value="i" (change)="ucai(address,type, i)">
         <span *ngIf="showRadio" class="custom-box icon-box"></span>
         <span class="chk-txt">
@@ -14,16 +13,24 @@
           </span>
           <span class="txt">{{displayAddress(address)}}</span>
           <span class="txt" *ngIf="layoutType == 'LIST' ">{{address.phone}}</span>
+          <span *ngIf="showRadio" class="address-btn-section">
+            <span class="small-btn edit">
+             EDIT
+          </span>
+            <span class="small-btn delete">
+             DELIVER HERE
+          </span>
+        </span>
         </span>
       </label>
-      <i *ngIf="showRadio && (layoutType == 'LIST')" class="icon-dot" (click)="sbm = {index: i, type: type, address: address}"></i>
-    </div>
-  </form>
+            <i *ngIf="showRadio && (layoutType == 'LIST')" class="icon-dot" (click)="sbm = {index: i, type: type, address: address}"></i>
+        </div>
+    </form>
 </div>
 
 <app-bottom-menu *ngIf="sbm && sbm.index != undefined && layoutType == 'LIST'" (outData$)="onUpdate($event)">
-  <ul class="container" content>
-    <li (click)="updateAddress()">Edit</li>
-    <li (click)="deleteAddress()">Delete</li>
-  </ul>
+    <ul class="container" content>
+        <li (click)="updateAddress()">Edit</li>
+        <li (click)="deleteAddress()">Delete</li>
+    </ul>
 </app-bottom-menu>

@@ -45,6 +45,8 @@ export class EmiComponent {
     disableInterest;
     bajajFinservField
     bankMap = {7:"AXIS",15:"HDFC",21:"ICICI"};
+    paymentMethod = 'debitCard';
+    bankNames:boolean;
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
     }
@@ -498,6 +500,9 @@ export class EmiComponent {
         let cartSession = this._cartService.getCartSession();
         cartSession["nocostEmi"] = 0;
         this._cartService.orderSummary.next(cartSession);
+    }
+    showBanks(){
+      this.bankNames = true;
     }
 
     ngOnDestroy () {

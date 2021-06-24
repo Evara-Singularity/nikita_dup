@@ -6,35 +6,28 @@ import { ProductListService } from '@app/utils/services/productList.service';
 @Component({
     selector: 'brand',
     templateUrl: './brand-v1.html',
-    styleUrls: ['./brand-v1.scss'],
+    styleUrls: ['./brand-v1.scss','../category-v1/category-v1.scss'],
 })
 
 export class BrandV1Component {
-    filterInstance = null;
-    @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
+    public productListingData: ProductListingDataEntity;
+    public cmsData: any[] = [];
+    public API_RESPONSE: any;
 
-    sortByInstance = null;
-    @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
-
-    paginationInstance = null;
-    @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
-
-    brandDetailsFooterInstance = null;
-    @ViewChild('brandDetailsFooter', { read: ViewContainerRef }) brandDetailsFooterContainerRef: ViewContainerRef;
-
-    productListingData: ProductListingDataEntity;
     constructor(
-        private _activatedRoute: ActivatedRoute,
+        public _activatedRoute: ActivatedRoute,
         public _productListService: ProductListService
     ) {}
+
 
     ngOnInit(): void {
         this.setDataFromResolver();
     }
 
     setDataFromResolver() {
-    this._activatedRoute.data.subscribe(result => {
-        this._productListService.createAndProvideDataToSharedListingComponent(result['brand'][1], 'Brand Results');
-    });
+        this._activatedRoute.data.subscribe(result => {
+            this.API_RESPONSE = result; 
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1], 'Brand Results');
+        });
     }
 }

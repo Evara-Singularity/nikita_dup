@@ -88,16 +88,16 @@ const routes: Routes = [
 					moreOpt: true,
 				},
 			},
-			// {
-			// 	matcher: brandCategoriesMatcher,
-			// 	loadChildren: () =>
-			// 		import('./brand/brand.module').then((m) => m.BrandModule),
-			// 	data: {
-			// 		footer: false,
-			// 		title: '',
-			// 		moreOpt: true,
-			// 	},
-			// },
+			{
+				matcher: brandCategoriesMatcher,
+				loadChildren: () =>
+					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
+				data: {
+					footer: false,
+					title: '',
+					moreOpt: true,
+				},
+			},
 			// {
 			// 	path: 'search',
 			// 	loadChildren: () =>

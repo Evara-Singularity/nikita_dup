@@ -1,11 +1,13 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
+import { CommonModule } from '@angular/common';
+import { CmsModule } from '@app/modules/cms/cms.module';
 import { BrandV1Component } from "./brand-v1.component";
 import { BrandV1RoutingModule } from './brand-v1.routing';
+import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
 
 @NgModule({
     imports: [
+        CmsModule,
         CommonModule,
         BrandV1RoutingModule,
         SharedProductListingModule

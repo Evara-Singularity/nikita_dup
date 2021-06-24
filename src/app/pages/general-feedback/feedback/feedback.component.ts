@@ -63,7 +63,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit
 
     ngAfterViewInit(): void
     {
-        this.formArray.valueChanges.subscribe(() => this.isSubmitted = false);
+        
     }
 
     initiallizeData(response)

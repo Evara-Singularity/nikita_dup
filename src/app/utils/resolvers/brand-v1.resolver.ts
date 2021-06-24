@@ -60,6 +60,10 @@ export class BrandV1Resolver implements Resolve<any> {
         this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       }
 
+      const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
+      let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
+      let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
+
       const params = {
         filter: this._commonService.selectedFilterData.filter,
         queryParams: _activatedRouteSnapshot.queryParams,
@@ -69,13 +73,9 @@ export class BrandV1Resolver implements Resolve<any> {
       const actualParams = this._commonService.formatParams(params);
       actualParams['brand'] = _activatedRouteSnapshot.params.brand;
 
-      console.log(_activatedRouteSnapshot.params);
-
-      const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
-      const GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
-      let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
       if (_activatedRouteSnapshot.params.hasOwnProperty('category')) {
         CMS_DATA_API_URL += '&categoryCode=' + _activatedRouteSnapshot.params.category;
+        actualParams['category'] = _activatedRouteSnapshot.params.category;
       }
 
       const cmsDataObs = this.http.get(CMS_DATA_API_URL);

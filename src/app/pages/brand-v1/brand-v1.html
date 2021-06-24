@@ -9,7 +9,7 @@
     <li [routerLink]="['/']" class="f-size-12">Home</li>
     <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
     <li class="item f-size-12">
-        <a [routerLink]="['/brands',API_RESPONSE['brand'][1]?.brandDetails?.friendlyUrl]" style="text-transform: capitalize">
+        <a [routerLink]="['/brands/' + _activatedRoute.snapshot.params.brand]" style="text-transform: capitalize">
             {{_activatedRoute.snapshot.params.brand}}</a>
     </li>
     <li *ngIf="API_RESPONSE['brand'][1]?.categoryName" class="item f-size-12">

@@ -12,6 +12,11 @@
             background: white;
             color: #da4038;
         }
+        &.disabled{
+            opacity: 0.6;
+            pointer-events: none;
+            background: grey;
+        }
     }
     
     .filter-heading{

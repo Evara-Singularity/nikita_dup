@@ -72,20 +72,23 @@ export class FilterComponent implements OnInit {
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddRupaySymbolPipeModule } from "@utils/pipes/add-rupay-symbol";
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { FilterCategoryComponent } from '@app/components/filter/filter-category/filter-category.component';
 import { FilterSearchBoxDirectiveModule } from '@app/utils/directives/filterSearchBox.directive';
 import { ApplyRemoveClassOnParentModule } from '@app/utils/directives/apply-remove-class-on-parent.directive';
+import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
+import { EnabledFilterPipeModule } from '@app/utils/pipes/enabledFilterCount.pipe';
+
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
         ObjectToArrayPipeModule,
-        AddRupaySymbolPipeModule,
         ApplyRemoveClassOnParentModule,
         FilterSearchBoxDirectiveModule,
+        AddFilterSymbolPipeModule,
+        EnabledFilterPipeModule
     ],
     exports: [
         FilterComponent,

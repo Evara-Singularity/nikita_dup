@@ -3,6 +3,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
+import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 
@@ -69,6 +70,7 @@ export class FilterMidPlpComponent implements OnInit {
   imports: [
       CommonModule,
       RouterModule,
+      AddFilterSymbolPipeModule
   ],
   exports: [
     FilterMidPlpComponent

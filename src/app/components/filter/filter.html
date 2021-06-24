@@ -9,7 +9,7 @@
         <ul class="side-filters">
             <li *ngFor="let filter of filterData; let i = index;" (click)="selectedFilterIndex = i" [class.active]="selectedFilterIndex == i">
                 <div class="filter-label">
-                    <span class="filter-parent">{{ filter.name }}<span
+                    <span class="filter-parent">{{ filter.name }} <ng-container *ngIf="(filter.terms | enabledFilter)">({{ filter.terms | enabledFilter }})</ng-container> <span
                             *ngIf="filter.count>0">({{ filter.count }})</span></span>
                 </div>
                 <div class="filter-options">
@@ -35,14 +35,8 @@
                                                 #categoryCheckBox>
                                             <span class="custom-box icon-box"></span>
                                         </span>
-                                        <div *ngIf="filter.name!=='price' && filter.name!=='discount'">
-                                            <span class="chk-txt">{{item.term}}</span>
-                                        </div>
-                                        <div *ngIf="filter.name=='price'">
-                                            <span class="chk-txt">{{item.term}}</span>
-                                        </div>
-                                        <div *ngIf="filter.name=='discount'">
-                                            <span class="chk-txt">{{item.term}} %</span>
+                                        <div>
+                                            <span class="chk-txt">{{item.term | addFilterSymbol:filter.name}}</span>
                                         </div>
                                     </label>
                                 </ng-container>

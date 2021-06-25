@@ -1445,9 +1445,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.productRFQInstance = this.productRFQContainerRef.createComponent(factory, null, this.injector);
         this.productRFQInstance.instance['isOutOfStock'] = this.productOutOfStock;
         this.productRFQInstance.instance['isPopup'] = inStock;
-        let product = {url:this.productUrl, price:this.productPrice,
-            msn: (this.productSubPartNumber || this.defaultPartNumber), productName: this.productName, moq: this.productMinimmumQuantity,
-            brand: this.productBrandDetails['brandName'], taxonomyCode: this.productCategoryDetails['taxonomy'],
+        let product = {
+            url:this.productUrl, 
+            price:this.productPrice,
+            msn: (this.productSubPartNumber || this.defaultPartNumber), 
+            productName: this.productName,
+            moq: this.productMinimmumQuantity,
+            brand: this.productBrandDetails['brandName'], 
+            taxonomyCode: this.productCategoryDetails['taxonomy'],
             adobeTags: ''
         }
         this.productRFQInstance.instance['product'] = product;

@@ -43,7 +43,7 @@
                     <button (click)="buyNow(true)" >BUY NOW</button>
                 </ng-container>
                 <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
-                    <button class="white">SEND QUERY</button>
+                    <button class="white" (click)="openRfqForm()" >SEND QUERY</button>
                 </ng-container>
             </div>
         </div>
@@ -51,3 +51,4 @@
 </div>
 
 <ng-container #addToCartToast></ng-container>
+<ng-container #productRFQ></ng-container>

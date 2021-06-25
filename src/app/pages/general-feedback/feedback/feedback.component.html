@@ -1,0 +1,96 @@
+<div class="RTO-wrap">
+    <a class="cancellation-feedback-wrap" [routerLink]="'/' + this.orderInfo['itemUrl']">
+        <div class="cancellation-head">
+            <div class="text">
+                <h1>Cancellation Feedback</h1>
+                <p>Please share your feedback to help us serve you better</p>
+            </div>
+            <div class="image">
+                <img src="assets/img/rto-feedback.png">
+            </div>
+        </div>
+        <div class="order-id">
+            <p>For your Order ID : <strong>{{this.orderInfo['orderId']}}</strong> with product</p>
+            <div class="product-details">
+                <span class="image">
+                     <img src="{{imageURL}}" class="pImage">
+                </span>
+                <span class="text">
+                    <p>{{this.orderInfo['itemName']}}</p>
+                    <strong>Qty: {{this.orderInfo['quantity']}}</strong>
+                </span>
+            </div>
+        </div>
+    </a>
+    <div class="cancel-order-radio">
+        <p>Q1. Did you cancel the order ? <span class="asterick">*</span></p>
+        <form [formGroup]="cancelOrder">
+            <span>
+                <input type="radio" id="yes" value="yes" formControlName="value">
+                <label for="yes">Yes</label><br>
+            </span>
+            <span>
+                <input type="radio" id="no" value="no" formControlName="value">
+                <label for="no">No</label>
+            </span>
+        </form>
+        <ng-container *ngIf="isSubmitted && cancelOrder.invalid">
+            <p class="error-txt">Please select value.</p>
+        </ng-container>
+    </div>
+    <div class="cancel-order-radio">
+        <p>Q2. Was the delivery attempted ? </p>
+        <form [formGroup]="deliveryAttempted">
+            <span>
+                <input type="radio" id="1" value="yes" formControlName="value">
+                <label for="1">Yes</label><br>
+            </span>
+            <span>
+                <input type="radio" id="2" value="no" formControlName="value">
+                <label for="2">No</label>
+            </span>
+        </form>
+    </div>
+    <div class="cancel-order-radio">
+        <p>Q3. Did the delivery executive call you? </p>
+        <form [formGroup]="executiveCall">
+            <span>
+                <input type="radio" id="3" value="yes" formControlName="value">
+                <label for="3">Yes</label><br>
+            </span>
+            <span>
+                <input type="radio" id="4" value="no" formControlName="value">
+                <label for="4">No</label>
+            </span>
+        </form>
+    </div>
+    <div class="cancel-order-radio">
+        <p>Q4. Why did you cancel ? <span class="asterick">*</span></p>
+        <form [formGroup]="cancelReasons">
+            <ng-container *ngFor="let reason of REASONS">
+                <div class="form-group">
+                    <input type="checkbox" id="{{reason}}" (input)="$event.stopPropagation();manageCancelReason(CANCEL_REASONS[reason])">
+                    <label for="{{reason}}">{{CANCEL_REASONS[reason]}}.</label>
+                </div>
+            </ng-container>
+            <div class="form-group">
+                <input type="checkbox" id="others" (input)="$event.stopPropagation();manageOthers($event)">
+                <label for="others">Others</label>
+                <textarea name="Add comment" placeholder="Add comments" id="comment" cols="60" rows="0" *ngIf="isOthersSelected" maxlength="512" formControlName="Others"></textarea>
+            </div>
+        </form>
+        <ng-container *ngIf="isSubmitted && !isOthersSelected && cancelReasons.invalid">
+            <p class="error-txt">Please select value.</p>
+        </ng-container>
+        <ng-container *ngIf="isSubmitted && isOthersSelected && cancelReasons.get('Others').invalid">
+            <p class="error-txt">Please add comments.</p>
+        </ng-container>
+    </div>
+    <div class="cancel-order-radio" [formGroup]="OtherDetails">
+        <p>Q5. Any other details you would like to share with us..</p>
+        <textarea name="Add comment" placeholder="Add comments" id="comment" cols="100" rows="5" formControlName="value"></textarea>
+    </div>
+    <button class="submit" (click)="$event.stopPropagation();submitFeedback()">
+        SUBMIT SURVEY
+    </button>
+</div>

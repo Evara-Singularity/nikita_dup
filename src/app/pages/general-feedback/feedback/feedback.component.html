@@ -1,5 +1,5 @@
 <div class="RTO-wrap">
-    <a class="cancellation-feedback-wrap" [routerLink]="'/' + this.orderInfo['itemUrl']">
+    <div class="cancellation-feedback-wrap">
         <div class="cancellation-head">
             <div class="text">
                 <h1>Cancellation Feedback</h1>
@@ -21,7 +21,7 @@
                 </span>
             </div>
         </div>
-    </a>
+    </div>
     <div class="cancel-order-radio">
         <p>Q1. Did you cancel the order ? <span class="asterick">*</span></p>
         <form [formGroup]="cancelOrder">

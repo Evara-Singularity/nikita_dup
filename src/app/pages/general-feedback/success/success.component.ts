@@ -17,7 +17,7 @@ export class SuccessComponent implements OnInit
             this.message = 'Thank you for submitting your feedback!';
         }
         else if (STATUS === "submitted") {
-            this.message = 'Your rating has already been submitted.';
+            this.message = 'Your feedback has already been submitted.';
         }else{
             this.navigateTo();
         }

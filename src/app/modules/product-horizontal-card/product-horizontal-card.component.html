@@ -1,54 +1,70 @@
-<div class="card-container">
-    <div class="left">
-        <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
-        <div class="tags">
+<div class="product-card">
+    <!-- <pre>{{ product | json }}</pre> -->
+    <div class="youtube" *ngIf="product['videosInfo'] && product['videosInfo'].length > 0 ">
+        <div class="thumb">
+            <img (click)="showYTVideo(product['videosInfo'][0]['link'])"
+                [src]="product['videosInfo'][0]['link'] | ytthumbnail:'hqdefault'" alt="{{product['videosInfo'][0].title}}">
         </div>
     </div>
-    <div class="right">
-        <div class="rating">
-            <span class="avgrating" *ngIf="product.avgRating">
-                {{product.avgRating | rating | number : '1.1-1' }} 
-                <i class="icon-rating-star"></i>
-            </span>
-            <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
+    <div class="card-container">
+        <div class="left" (click)="navigateToPDP()" >
+            <img alt="{{product.productName}}"  src="{{imageCdnPath + product.mainImageLink}}" height="125"
+                width="125" />
+            <div class="tags">
         </div>
-        <div class="name">
-            <span>{{product.productName}}</span>
         </div>
-        <div class="brand">
-            <span>By: {{product.brandName}}</span>
-        </div>
-        <div class="price-details">
-            <div class="left">
-                <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice" >
-                    <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
-                    <span class="green-label">{{product.discount}}% OFF</span>
-                </div>
-                <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice" >
-                    <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
-                </div>
-                <div class="out-of-stock-text">
-                    <span *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice" >Currently unavailable</span>
-                    <span *ngIf="isOutOfStockByQuantity && isOutOfStockByPrice" >Available on Request</span>
-                </div>
-                <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice" >
-                    <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
-                </div>
+        <div class="right">
+            <div class="rating">
+                <span class="avgrating" *ngIf="product.avgRating">
+                    {{product.avgRating | rating | number : '1.1-1' }}
+                    <i class="icon-rating-star"></i>
+                </span>
+                <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
             </div>
-            <div class="right">
-                <ng-container *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                    <button class="white" (click)="buyNow()" >
-                        <i class="icon-cart"></i>
-                    </button>
-                    <button (click)="buyNow(true)" >BUY NOW</button>
-                </ng-container>
-                <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
-                    <button class="white" (click)="openRfqForm()" >SEND QUERY</button>
-                </ng-container>
+            <div class="name">
+                <span>{{product.productName}}</span>
+            </div>
+            <div class="brand">
+                <span>By: {{product.brandName}}</span>
+            </div>
+            <div class="price-details">
+                <div class="left">
+                    <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                        <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
+                        <span class="green-label">{{product.discount}}% OFF</span>
+                    </div>
+                    <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                        <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
+                    </div>
+                    <div class="out-of-stock-text">
+                        <span *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">Currently unavailable</span>
+                        <span *ngIf="isOutOfStockByQuantity && isOutOfStockByPrice">Available on Request</span>
+                    </div>
+                    <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">
+                        <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
+                    </div>
+                </div>
+                <div class="right">
+                    <ng-container *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                        <button class="white" (click)="buyNow()">
+                            <i class="icon-cart"></i>
+                        </button>
+                        <button (click)="buyNow(true)">BUY NOW</button>
+                    </ng-container>
+                    <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
+                        <button class="white" (click)="openRfqForm()">SEND QUERY</button>
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>
+    <!-- <product-variant-select-listing-page 
+        [product]="product" 
+        (selectedVariant$)="changeVariant($event)"
+        (continueToCart$)="variantAddToCart($event)"
+        [productGroupData]="this.productGroupData" ></product-variant-select-listing-page> -->
+    <ng-container #variantPopup></ng-container>
+    <ng-container #addToCartToast></ng-container>
+    <ng-container #productRFQ></ng-container>
+    <ng-container #alertBox></ng-container>
 </div>
-
-<ng-container #addToCartToast></ng-container>
-<ng-container #productRFQ></ng-container>

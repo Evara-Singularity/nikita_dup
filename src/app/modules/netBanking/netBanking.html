@@ -80,10 +80,10 @@
                     <label [class.is-focus]="bank!='Select Country' && bank.value!=''">
                         <span class="label">Select Bank*</span>
                         <input  formControlName="paymentId" hidden>
-                        <select (change)="updateTopBank($event)" formControlName="bankname" name="bankname" #bank>
+                        <select (change)="updateTopBank($event)" formControlName="bankname" placeholder="Other Banks"  name="bankname" #bank>
                             <option selected="selected">Select Bank</option>
                             <option *ngFor="let data of dataNB" [value]="data.key">{{data.key}}</option>
-                            <option *ngFor="let data of dataNBTop" [value]="data.key">{{data.key}}</option>
+                            <!-- <option *ngFor="let data of dataNBTop" [value]="data.key">{{data.key}}</option> -->
                         </select>
                         <i class="icon-down"></i>
                     </label>

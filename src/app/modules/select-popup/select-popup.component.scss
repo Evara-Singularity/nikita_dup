@@ -1,0 +1,50 @@
+//common popup
+.payment-dropdown-popup {
+    .overlay {
+        z-index: 12;
+        background: rgba(0, 0, 0, 0.7);
+    }
+    .payment-dropdown-content {
+        z-index: 12;
+        border-radius: 8px;
+        box-shadow: 0px 3px 16px #0000001A;
+        position: fixed;
+        top: 40%;
+        transform: translateY(-40%);
+        width: 80%;
+        max-height: 90%;
+        overflow-y: scroll;
+        margin: 0 auto;
+        background: #fff;
+        left: 0;
+        right: 0;
+        .payment-dropdown-header {
+            padding: 5px 0px;
+            border-bottom: 1px solid $border-grey;
+            h3 {
+                padding: 10px 15px;
+            }
+            i {
+                font-size: 16px;
+                position: absolute;
+                right: 10px;
+                top: 15px;
+            }
+        }
+    }
+    .payment-dropdown-listItem {
+        @extend %pwa-universal-radio;
+        border-bottom: 1px solid $border-grey;
+        display: flex;
+        padding: 10px 15px;
+        align-items: center;
+        line-height: 22px;
+        .custom-box {
+            margin-right: 10px;
+        }
+        .listItem_txt {
+            font-size: $large-font;
+        }
+    }
+}
+

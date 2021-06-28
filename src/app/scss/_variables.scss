@@ -175,7 +175,7 @@
                 display: none;
                 &:checked+.custom-box::before {
                     font-family: 'icomooon_pwa';
-                    content: "\e9a6";
+                    content: "\e912";
                     color: $logo-color;
                     font-size: 18px;
                 }
@@ -183,7 +183,7 @@
             .custom-box {
                 &::before {
                     font-family: 'icomooon_pwa';
-                    content: "\e9a7";
+                    content: "\e913";
                     font-size: 18px;
                     color: #303030;
                 }

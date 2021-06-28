@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <app-address-list (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
+        <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
             <div class="container">
@@ -31,7 +31,7 @@
                 <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'],2)">ADD</span> -->
             </div>
         </div>
-        <app-address-list (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
+        <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
             <div class="container">
@@ -57,8 +57,8 @@
           ADD NEW ADDRESS
         </button>
             </div>
-            <app-address-list (outData$)="outData($event)" [addresses]="getAddressList(addressList, 1)" [type]="1" [showRadio]="true" content></app-address-list>
-            <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button>
+            <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [addresses]="getAddressList(addressList, 1)" [type]="1" [showRadio]="true" content></app-address-list>
+            <!-- <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button> -->
         </div>
     </app-pop-up>
     <!-- LIST OF ADDRESS POP UP ENDS  -->
@@ -75,8 +75,8 @@
           ADD NEW ADDRESS
         </button>
             </div>
-            <app-address-list (outData$)="outData($event)" [addresses]="getAddressList(addressList, 2)" [type]="2" content [showRadio]="true"></app-address-list>
-            <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button>
+            <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [addresses]="getAddressList(addressList, 2)" [type]="2" content [showRadio]="true"></app-address-list>
+            <!-- <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button> -->
         </div>
     </app-pop-up>
 

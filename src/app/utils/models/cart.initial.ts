@@ -31,4 +31,6 @@ export interface AddToCartProductSchema {
     productUnitPrice: number;
     bulkPrice: null;
     expireAt: null;
+    filterAttributesList?: any;
+    isOutOfStock?: boolean,
 }

@@ -44,8 +44,11 @@ export class CategoryV1Component {
     @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
     public API_RESPONSE: any;
 
-    popularLinks: any;
+    reqArray: any[] = [];
+    popularLinks: any[] = [];
+    wantedBucket: any[] = [];
     categoryFooterData: any;
+    productRangeTableArray: any[] = [];
 
     constructor(
         public _router: Router,
@@ -71,6 +74,7 @@ export class CategoryV1Component {
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
             this.API_RESPONSE = result;
+
             console.log(result);
 
             this.updateComponentsBasedOnrouteChange();
@@ -91,8 +95,148 @@ export class CategoryV1Component {
             productSearchResultSEO: this.genrateProductSearchResultSEOData(),
             faqData: this.API_RESPONSE.category[2],
             buckets: this.API_RESPONSE.category[1].buckets,
-            PRTA: this.productRangeTableArray
+            PRTA: this.genrateProductRangeTable()
         };
+    }
+
+    genrateProductRangeTable() {
+        this.priceRangeTable(this.API_RESPONSE.category[1]);
+        return this.productRangeTableArray;
+    }
+
+    /* 
+     *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
+     */
+    priceRangeTable(res) {
+        let count = 0;
+        for (let val of res.productSearchResult.products) {
+            if (val.quantityAvailable === 0) {
+                count++;
+            }
+        }
+        if (count !== res.productSearchResult.products.length) {
+            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res.buckets)));
+        }
+    }
+
+    /* 
+   * excluding data that we don't want to add to price range table , from buckets we get from getCategory Api
+   */
+
+    getBucketForPriceRangeTable(buckets: any) {
+        for (let i = 0; i < buckets.length; i++) {
+            if (buckets[i].name !== "price" &&
+                buckets[i].name !== "discount" &&
+                buckets[i].name !== "badges" &&
+                buckets[i].name !== "availability") {
+                this.wantedBucket.push(buckets[i]); //wb(wanted bucket)
+            }
+        }
+
+        this.productRangeTableArray = [];                        //PRTA(Product Range Table Array):-array which stores final data after computation , is reset for when component is instantiated again
+        this.priceRangeData();               //proceeding calculations
+        this.wantedBucket = [];                          //wb(wanted bucket):-array which stores bucket data excluding price , discount , badges , availability.
+    }
+
+    priceRangeData() {
+        let temp = [];
+        if (this.wantedBucket.length > 0) {
+            for (let i = 0; i < this.wantedBucket.length; i++) {
+
+                /*
+                *to get category data in price range table
+                */
+
+                if (this.wantedBucket[i].name === "category") {
+                    this.getCategoryData(this.wantedBucket[i].terms);                // calling reccursive function to find out specific page category data
+                    if (this.reqArray !== null) {
+                        for (let val of this.reqArray) {                       // added "newName" to value we got from "getCategoryData" , to tackle difficulty faced in getting "other custom filters"(below)
+                            val.newName = val.term
+                        }
+                        temp = this.reqArray;
+                    }
+
+                    for (let i = 0; i < temp.length && this.productRangeTableArray.length < 4; i++) {   //getting top four values with non-zero min , max price 
+                        if (temp[i].minPrice > 0 && temp[i].maxPrice > 0) {
+                            this.productRangeTableArray.push(temp[i])
+                        }
+                    }
+                    this.productRangeTableArray.filter(x => !!x)                               //removing null values from array
+                    temp = [];
+                }
+
+
+                /* 
+                *to get brand data in price range table
+                */
+
+                else if (this.wantedBucket[i].name === "brand") {
+                    let temp = [];
+                    for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                                      //getting top four values with non-zero min , max price 
+                        if (this.wantedBucket[i].terms[j].minPrice > 0 && this.wantedBucket[i].terms[j].maxPrice > 0) {
+                            this.wantedBucket[i].terms[j].term = this.wantedBucket[i].terms[j].term + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName;
+                            temp.push(this.wantedBucket[i].terms[j]);
+                        }
+                    }
+                    if (temp.length !== 0) {
+                        for (let val of temp) {                                                                                           //added "newName" to value we got from "getCategoryData" , to tackle difficulty faced in getting "other custom filters"(below) 
+                            val.newName = val.term
+                            this.productRangeTableArray.push(val);
+                        }
+                    }
+                    this.productRangeTableArray.filter(x => !!x)                                                                                        //removing null values from array
+                    temp = [];
+                }
+
+                /* 
+                *to get other filter data in price range table
+                */
+
+                else {
+                    let str = ""
+                    let temp = [];
+                    for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                                        //getting top four values with non-zero min , max price for each "other filters"
+                        if (this.wantedBucket[i].terms[j].minPrice > 0 && this.wantedBucket[i].terms[j].maxPrice > 0) {
+                            this.wantedBucket[i].terms[j].newName = "";
+                            str = this.wantedBucket[i].name + " - " + this.wantedBucket[i].terms[j].term + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName;
+                            this.wantedBucket[i].terms[j].newName = this.camalize(str);
+                            temp.push(this.wantedBucket[i].terms[j]);
+                        }
+                    }
+                    if (temp.length !== 0) {
+                        for (let val of temp) {
+                            this.productRangeTableArray.push(val);
+                        }
+                    }
+                    this.productRangeTableArray.filter(x => !!x)
+                    temp = [];                                                                                                              //removing null values from PRTA
+                }
+            }
+        }
+    }
+
+    /*
+     *  Reccursive function to find out specific page category data .
+     */
+
+    getCategoryData(obj: any[]) {
+        for (let i = 0; i < obj.length; i++) {
+            if (obj[i].term === this.API_RESPONSE.category[0].categoryDetails.categoryName) {
+                this.reqArray = obj[i].childCategoryList;                              //Base condition.
+                break;
+            }
+            else if (obj[i].childCategoryList !== null) {
+                obj = obj[i].childCategoryList;
+                this.getCategoryData(obj);
+            }
+        }
+    }
+
+    camalize(str) {
+        return str.toLowerCase().replace(/^\w|\s\w/g, function (letter) {
+            return letter.toUpperCase();
+        }
+        );
     }
 
     genrateProductSearchResultSEOData() {
@@ -106,7 +250,6 @@ export class CategoryV1Component {
         return productSearchResultSEO;
     }
 
-    productRangeTableArray: Array<any> = [];
     isSLPPage: boolean = false;
     layoutType: number = 0;
     page_title: string = '';

@@ -6,13 +6,11 @@ import { Router, RouterModule } from '@angular/router';
 import { CategoryService } from '@utils/services/category.service';
 import { SubCategoryService } from "@utils/services/subCategory.service";
 import { CONSTANTS } from "@config/constants";
-import {Subject} from "rxjs";
 import { fade } from '@utils/animations/animation'
-import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { ClientUtility } from '@app/utils/client.utility';
+
 @Component({
     selector: 'sub-category',
     templateUrl: 'subCategory.html',
@@ -28,38 +26,27 @@ import { ClientUtility } from '@app/utils/client.utility';
 })
 
 export class SubCategoryComponent {
-    relatedCatgoryList: Array<any> = [];
+    @Input() relatedCatgoryList: Array<any> = [];
     @Output() getCategoryById:EventEmitter<any>=new EventEmitter<any>();
     @Output() updateSubCategoryCount$: EventEmitter<any> = new EventEmitter<any>();
     catdata;
     imageBasePath: string;
     public isAllListShow:boolean;
     moreLessCategoryText:string="SHOW MORE";
-    @Input() relatedCatgoryListUpdated: Subject<any>;
     defaultImage;
 
-    constructor(private _tState: TransferState, @Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public categoryService: CategoryService, private _subCategoryService: SubCategoryService, public router: Router, public commonService: CommonService) {
+    constructor(@Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public categoryService: CategoryService, private _subCategoryService: SubCategoryService, public router: Router, public commonService: CommonService) {
     };
 
     ngOnInit() {
         this.imageBasePath = CONSTANTS.IMAGE_BASE_URL;
 
-        this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList)=>{
-            this.showList(false);
-            this.relatedCatgoryList = relatedCatgoryList["children"];
-            this.cd.markForCheck(); // marks path
-        })
+        console.log(this.relatedCatgoryList);
+        
+        this.showList(false);
+        this.cd.markForCheck(); // marks path
     }
-
-    // navigateTo(url) {
-    //     this.commonService.updateSortBy.next('popularity');
-    //     const sortByFilter = document.querySelector('sort-by');
-
-    //     if (sortByFilter) {
-    //         sortByFilter.classList.remove('open');
-    //     }
-    //     this.router.navigateByUrl(url);
-    // }
+    
 
     goToAnother(id,categoryLink) {
         let obj = { "id": id };

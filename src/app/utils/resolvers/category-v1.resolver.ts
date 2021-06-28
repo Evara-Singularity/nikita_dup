@@ -82,6 +82,7 @@ export class CategoryV1Resolver implements Resolve<any> {
         };
 
         const actualParams = this._commonService.formatParams(params);
+        this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
         const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());
         const getFAQObs = this.http.get(faq_url).pipe(share());

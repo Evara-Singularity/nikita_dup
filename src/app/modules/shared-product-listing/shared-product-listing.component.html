@@ -4,8 +4,10 @@
 <ng-container #sortBy></ng-container>
 
 <div class="list-heading">
-    <div class="left" *ngIf="productsListingData.listingHeading" >{{productsListingData.listingHeading}}</div>
-    <div class="right">Showing 20 out of {{productsListingData.totalCount}} products</div>
+    <div class="left" *ngIf="productsListingData.totalCount">
+        {{productsListingData.totalCount}} Products below
+    </div>
+    <!-- <div class="right">Showing 20 out of {{productsListingData.totalCount}} products</div> -->
 </div>
 
 <ng-container *ngFor="let product of productsListingData.products; let i = index;">

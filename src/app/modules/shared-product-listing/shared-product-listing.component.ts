@@ -22,10 +22,6 @@ export class SharedProductListingComponent {
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, private _commonService: CommonService) { }
 
-  ngOnChanges(changes:SimpleChanges): void {
-    console.log(changes);
-  }
-
   async onVisiblePagination(event) {
     if (!this.paginationInstance) {
         const { PaginationComponent } = await import('@app/components/pagination/pagination.component');

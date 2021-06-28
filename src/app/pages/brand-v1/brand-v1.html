@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <cms [background]="'bg-trans'" [cmsData]="API_RESPONSE['brand'][2]?.data?.data"></cms>
+        <cms [background]="'bg-trans'" [cmsData]="API_RESPONSE?.brand[2]?.data?.data"></cms>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
         </div>
 
         <div class="container pt-10">
-            <p *ngIf="API_RESPONSE['brand'][1].categoryName && !_activatedRoute.snapshot.params.page" class="desc-brand"> Moglix offers superior quality and genuine
+            <p *ngIf="API_RESPONSE['brand'][1].categoryName && _commonService.selectedFilterData.page < 2" class="desc-brand"> Moglix offers superior quality and genuine
                 <a class="text-blue" [routerLink]="['/brands/' + _activatedRoute.snapshot.params.brand]" style="text-transform: capitalize">
                     {{API_RESPONSE['brand'][1].categoryName}}
                 </a> from a renowned brand
@@ -49,3 +49,12 @@
 <shared-product-listing 
     [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>
+
+<div class="popularCategories" *ngIf="popularLinks.length > 0">
+    <div class="innerPopularSection">
+        <h4 class="heading-3">Popular Categories</h4>
+        <a *ngFor="let category of popularLinks;last as isLast" href="{{this.API_RESPONSE.brand[1].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+    </div>
+</div>
+
+<brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>

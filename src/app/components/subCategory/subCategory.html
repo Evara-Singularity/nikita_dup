@@ -1,4 +1,4 @@
-<ng-container *ngIf="relatedCatgoryList!=undefined">
+<ng-container *ngIf="relatedCatgoryList && relatedCatgoryList?.length > 0">
 <div id="subcCategoryTop">
     <ul>
         <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
@@ -17,7 +17,6 @@
     <div *ngIf="relatedCatgoryList!==null && relatedCatgoryList.length > 3">
         <a (click)="showList()" class="btn show-more">
             {{moreLessCategoryText}}
-            <!-- <button type="button" (click)="showList()"></button> -->
         </a>
     </div>
 </div>

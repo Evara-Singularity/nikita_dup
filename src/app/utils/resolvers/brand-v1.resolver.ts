@@ -77,6 +77,7 @@ export class BrandV1Resolver implements Resolve<any> {
         CMS_DATA_API_URL += '&categoryCode=' + _activatedRouteSnapshot.params.category;
         actualParams['category'] = _activatedRouteSnapshot.params.category;
       }
+      this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
       const cmsDataObs = this.http.get(CMS_DATA_API_URL);
       const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL);

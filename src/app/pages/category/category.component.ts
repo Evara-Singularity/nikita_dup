@@ -71,7 +71,7 @@ export class CategoryComponent implements OnInit {
 
     productSearchResultSEO: Array<any> = [];
     filterCounts: number;
-    spl_subCategory_Dt: any;
+    f: any;
     forkJoinUnsub: any;
     combineLatestUnsub: any;
     pageNo: number;

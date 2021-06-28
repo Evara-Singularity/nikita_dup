@@ -831,7 +831,7 @@ export class CommonService {
         filter: {},
         sortBy: {},
         pages: [],
-        page: 1,
+        page: this._activatedRoute.snapshot.params.page || 1,
         totalCount: 0,
         pageSize: GLOBAL_CONSTANT.default.pageSize
     };

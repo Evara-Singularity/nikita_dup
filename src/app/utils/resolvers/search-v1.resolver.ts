@@ -54,6 +54,7 @@ export class SearchV1Resolver implements Resolve<any> {
         pageName: "SEARCH"
       };
       const actualParams = this._commonService.formatParams(params);
+      this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
       const URL = environment.BASE_URL + ENDPOINTS.SEARCH;
       const searchObs = this.http.get(URL, { params: actualParams });

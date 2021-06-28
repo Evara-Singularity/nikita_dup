@@ -5,3 +5,26 @@
         color: #303030;
     }
 }
+
+.trending-search-container {
+    background: #fff;
+    // padding: 10px;
+    .trending-search-inner {
+        flex-wrap: wrap;
+        display: flex;
+        &>div {
+            display: inline-flex;
+            margin-right: 10px;
+            a {
+                margin-bottom: 8px;
+                padding: 7px 10px;
+                color: #278BED;
+                border: 1px solid #278BED;
+                border-radius: 4px;
+                white-space: nowrap;
+                font-weight: bold;
+                font-size: 12px;
+            }
+        }
+    }
+}

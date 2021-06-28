@@ -3,7 +3,7 @@
         <div class="container" id="search-input-block">
             <i class="icon-back f-left" (click)="enableScroll();resetSearchBar();ssp=false"></i>
             <i class="icon-search"></i>
-            <form [formGroup]="searchForm" (ngSubmit)="searchData(searchForm.value, searchForm.valid)">
+            <form class="searchForm" [formGroup]="searchForm" (ngSubmit)="searchData(searchForm.value, searchForm.valid)">
                 <input formControlName="searchTerm" type="text" autocomplete="off" placeholder="Search Product/Category" aria-describedby="basic-addon2" id="search-input">
                 <i class="icon-circle-delete icon-del" *ngIf="ssp && showSuggestionBlock" (click)="resetSearchBar()"></i>
                 <button *ngIf="ssp" class="searchBtn" type="submit"><i class="icon-search"
@@ -14,22 +14,35 @@
     <section *ngIf="isBrowser" class="search-popup" #scrollable>
         <div *ngIf="!showSuggestionBlock" class="scroll-able">
             <app-trending-search (outData$)="outData($event)"></app-trending-search>
+            <div class="top_categories">
+                <h3 class="search_heading"><i class="icon-trending"></i>Top Categories</h3>
+                <div class="search_product_categories">
+                    <div class="search_product_category" *ngFor="let prod of [1,2,3,4,5]">
+                        <img src="https://cdn.moglix.com/c/I/Q/9/d/MINIQ9GEIZ193-medium.jpg">
+                        <span class="prodText">Safety</span>
+                    </div>
+                </div>
+            </div>
             <div class="search-result">
                 <app-search-history (outData$)="outData($event)"></app-search-history>
             </div>
         </div>
         <div class="ac_results search-result" *ngIf="showSuggestionBlock" id="ac_results">
             <div class="container">
-                <div>
+                <div class="search_suggestion">
+                    <h3 class="search_heading">Popular suggestions</h3>
                     <ul class="plan-list">
                         <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes )" *ngFor="let prod of suggestionList | slice:0:5; let i = index" [attr.data-index]="i">
-                            {{prod.term}}
-                            <img src="{{imageAssetPath}}assets/img/interface.png" class="interfaceIcon">
+                            <span class="search-text">{{prod.term}}</span>
+                            <div class="search-count">
+                                <span class="prodCount">5644</span>
+                                <img src="{{imageAssetPath}}assets/img/interface.png">
+                            </div>
                         </li>
                     </ul>
                     <!--categories-->
                     <ng-container *ngIf="categorySuggestionList.length">
-                        <h4 class="heading-4 popularCategoryHeading">Product Categories</h4>
+                        <!-- <h4 class="heading-4 popularCategoryHeading">Product Categories</h4>
                         <ul class="plan-list">
                             <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
                                 <div class="productImage">
@@ -39,11 +52,18 @@
 
                                 <img src="{{imageAssetPath}}assets/img/interface.png" class="interfaceIcon">
                             </li>
-                        </ul>
+                        </ul> -->
+                        <h3 class="search_heading">Product Categories</h3>
+                        <div class="search_product_categories">
+                            <div class="search_product_category" *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
+                                <img src="{{imagePath + prod.imageLink}}">
+                                <span class="prodText">{{prod.term}}</span>
+                            </div>
+                        </div>
                     </ng-container>
                     <!--Brands-->
                     <ng-container *ngIf="brandSuggestionList.length">
-                        <h4 class="heading-4 popularCategoryHeading">Popular Brands </h4>
+                        <h3 class="search_heading">Popular Brands </h3>
                         <ul class="plan-list">
                             <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
                                 {{prod.term}}

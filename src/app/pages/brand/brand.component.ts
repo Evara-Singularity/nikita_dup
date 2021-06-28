@@ -545,6 +545,7 @@ export class BrandComponent {
 
             }
         }
+        
         if (response['category'] !== "undefined") {
             this.brandcatFlag = true;
             this.brandCatDesc = response.desciption;

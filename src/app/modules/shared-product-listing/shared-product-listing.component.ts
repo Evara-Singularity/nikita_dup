@@ -1,5 +1,6 @@
-import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, SimpleChanges } from '@angular/core';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
+import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
@@ -19,14 +20,18 @@ export class SharedProductListingComponent {
 
   @Input() productsListingData: ProductListingDataEntity;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService) { }
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, private _commonService: CommonService) { }
+
+  ngOnChanges(changes:SimpleChanges): void {
+    console.log(changes);
+  }
 
   async onVisiblePagination(event) {
     if (!this.paginationInstance) {
         const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
         const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
         this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
-        this.paginationInstance.instance['paginationData'] = {itemCount :this.productsListingData.totalCount};
+        this.paginationInstance.instance['paginationData'] = {itemCount :this._commonService.selectedFilterData.totalCount};
     }
 }
 

@@ -832,6 +832,7 @@ export class CommonService {
         sortBy: {},
         pages: [],
         page: 1,
+        totalCount: 0,
         pageSize: GLOBAL_CONSTANT.default.pageSize
     };
 

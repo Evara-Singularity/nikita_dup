@@ -40,9 +40,6 @@ export class SubCategoryComponent {
 
     ngOnInit() {
         this.imageBasePath = CONSTANTS.IMAGE_BASE_URL;
-
-        console.log(this.relatedCatgoryList);
-        
         this.showList(false);
         this.cd.markForCheck(); // marks path
     }

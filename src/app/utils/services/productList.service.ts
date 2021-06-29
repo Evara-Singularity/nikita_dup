@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductListingDataEntity, SearchResponse } from '@app/utils/models/product.listing.search';
-import { CommonService } from './common.service';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { CommonService } from '@services/common.service';
+import { DataService } from '@services/data.service';
+import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
+import { environment } from 'environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +16,9 @@ export class ProductListService {
 
   constructor(
       private _activatedRoute: ActivatedRoute,
-      private _commonService: CommonService
+      private _commonService: CommonService,
+      private _router: Router,
+      private _dataService: DataService
   ){}
 
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
@@ -51,5 +57,18 @@ export class ProductListService {
         }
     });
     return count;
+  }
+
+  fetchUpdatedBucketForPriceRangeTable() {
+    const params = {
+      filter: this._commonService.selectedFilterData.filter,
+      queryParams: this._activatedRoute.snapshot.queryParams,
+      pageName: "CATEGORY"
+    };
+
+    const actualParams = this._commonService.formatParams(params);
+    actualParams['category'] = window.location.pathname.split('/')[(window.location.pathname.split('/').length -1)];
+    
+    return this._dataService.callRestful("GET", environment.BASE_URL + ENDPOINTS.GET_CATEGORY, { params: actualParams });
   }
 }

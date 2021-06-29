@@ -115,7 +115,9 @@ export class CategoryV1Component {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res.buckets)));
+            this._productListService.fetchUpdatedBucketForPriceRangeTable().subscribe(data => {
+                this.getBucketForPriceRangeTable(data['buckets']);
+            });
         }
     }
 

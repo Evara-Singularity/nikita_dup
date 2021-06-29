@@ -85,7 +85,7 @@ export class OrderFailureComponent {
         let page = {
           pageName: "payment-failure",
           channel: "purchase",
-          subsection: "payment failure" + userSession && userSession["agentId"] ? " | Inside Sales" : '',
+          subsection: "payment failure" + (userSession && userSession["agentId"]) ? " | Inside Sales" : '',
         };
         let custData = {
           customerID:

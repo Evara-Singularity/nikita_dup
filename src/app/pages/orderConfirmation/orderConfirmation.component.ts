@@ -376,7 +376,7 @@ export class OrderConfirmationComponent implements OnInit {
                             let page = {
                                 pageName: "order-Confirmation",
                                 channel: "purchase",
-                                subsection: "Payment Success" + userSession && userSession["agentId"] ? " | Inside Sales" : '',
+                                subsection: "Payment Success" + (userSession && userSession["agentId"]) ? " | Inside Sales" : '',
                             };
                             let custData = {
                                 customerID:

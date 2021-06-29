@@ -4,6 +4,8 @@
             <dynamic-image-component *ngIf="item[componentLabel] === 'image_component_two' || item[componentLabel] === 'image_component_six' || item[componentLabel] === 'image_component_four' || item[componentLabel] === 'image_component_three' " [titleData]="item[titleData]" [listOfImgs]="item[data]" [imagePath]="imagePath"></dynamic-image-component>
             <main-banner *ngSwitchCase="'main_banner_component'" [data]="item[data]" [imagePath]="imagePath">
             </main-banner>
+            <main-banner *ngSwitchCase="'HomePageFullWidthImage'" [data]="item[data]" [imagePath]="imagePath">
+            </main-banner>
             <text *ngSwitchCase="'text_component'" [title]="item[title]" [data]="item[data]"></text>
             <image-text *ngSwitchCase="'image_text_component'" [data]="item[data]" [imagePath]="imagePath">
             </image-text>

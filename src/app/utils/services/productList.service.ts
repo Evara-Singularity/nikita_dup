@@ -59,16 +59,4 @@ export class ProductListService {
     return count;
   }
 
-  fetchUpdatedBucketForPriceRangeTable() {
-    const params = {
-      filter: this._commonService.selectedFilterData.filter,
-      queryParams: this._activatedRoute.snapshot.queryParams,
-      pageName: "CATEGORY"
-    };
-
-    const actualParams = this._commonService.formatParams(params);
-    actualParams['category'] = window.location.pathname.split('/')[(window.location.pathname.split('/').length -1)];
-    
-    return this._dataService.callRestful("GET", environment.BASE_URL + ENDPOINTS.GET_CATEGORY, { params: actualParams });
-  }
 }

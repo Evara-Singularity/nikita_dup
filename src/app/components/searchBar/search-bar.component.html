@@ -14,17 +14,8 @@
     <section *ngIf="isBrowser" class="search-popup" #scrollable>
         <div *ngIf="!showSuggestionBlock" class="scroll-able">
             <app-trending-search (outData$)="outData($event)"></app-trending-search>
-            <div class="top_categories">
-                <h3 class="search_heading"><i class="icon-trending"></i>Top Categories</h3>
-                <div class="search_product_categories">
-                    <div class="search_product_category" *ngFor="let prod of [1,2,3,4,5]">
-                        <img src="https://cdn.moglix.com/c/I/Q/9/d/MINIQ9GEIZ193-medium.jpg">
-                        <span class="prodText">Safety</span>
-                    </div>
-                </div>
-            </div>
             <div class="search-result">
-                <app-search-history (outData$)="outData($event)"></app-search-history>
+                <app-search-history (outData$)="outData($event)" (sendTextToSearchBar)="handleSendTextToSearchBar($event)"></app-search-history>
             </div>
         </div>
         <div class="ac_results search-result" *ngIf="showSuggestionBlock" id="ac_results">
@@ -36,7 +27,7 @@
                             <span class="search-text">{{prod.term}}</span>
                             <div class="search-count">
                                 <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>
-                                <img src="{{imageAssetPath}}assets/img/interface.png">
+                                <img (click)="handleSendTextToSearchBar(prod.term, $event)" src="{{imageAssetPath}}assets/img/interface.png">
                             </div>
                         </li>
                     </ul>
@@ -55,7 +46,7 @@
                         </ul> -->
                         <h3 class="search_heading">Product Categories</h3>
                         <div class="search_product_categories">
-                            <div class="search_product_category" *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
+                            <div class="search_product_category" *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index" [attr.data-index]="i"  (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)">
                                 <img src="{{imagePath + prod.imageLink}}">
                                 <span class="prodText">{{prod.term}}</span>
                             </div>

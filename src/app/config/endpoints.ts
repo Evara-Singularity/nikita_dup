@@ -90,6 +90,7 @@ export const ENDPOINTS = {
   VALIDATE_BD: "/validation/validate",
   HOMEPAGE_FOOTER: "/homepage/footercode",
   TRENDING_CATEGORY: "/category/trendingCategory",
+  TRENDING_CATEGORY_CMS: "/category/getparentcategoryjsonbody?requestType=",
   ADD_PURCHASE_LIST: "/purchase/addPurchaseList",
   SIMILAR_PRODUCTS: "/search/similarproducts",
   SET_REVIEWS: "/reviews/setReviews",

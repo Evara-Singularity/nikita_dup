@@ -31,7 +31,7 @@ export class TypeAheadService {
   }
 
   getTrendingCategories() {
-    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TRENDING_CATEGORY);
+    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TRENDING_CATEGORY_CMS + 'trendingCategory');
   }
 
 }

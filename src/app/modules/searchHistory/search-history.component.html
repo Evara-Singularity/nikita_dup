@@ -10,7 +10,7 @@
             <i class="icon-delete crossIcon"></i>
             <a (click)="navigateTo(item.extras)" class="recentSearchProduct">{{item.name}}</a>
 
-            <img src="{{imagePathAsset}}assets/img/interface.png" class="interfaceIcon">
+            <img (click)="addToSearchBar($event, item.name)" src="{{imagePathAsset}}assets/img/interface.png" class="interfaceIcon">
         </li>
     </ul>
     <ul *ngIf="shd && shd.length===0" class="plan-list">

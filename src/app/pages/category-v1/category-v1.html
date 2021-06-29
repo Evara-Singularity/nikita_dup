@@ -22,8 +22,8 @@
 
 <div class="sub-cate-container">
     <div class="container pt-10">
-        <p *ngIf="_commonService.selectedFilterData.page < 2 && API_RESPONSE.category[0].children && API_RESPONSE.category[0].children.length > 0" class="sub_category_heading">{{API_RESPONSE.category[0].children?.categoryDetails?.categoryName}}
-            <span class="light-txt f-16" *ngIf="API_RESPONSE.category[0]?.children!==null">({{API_RESPONSE.category[0]?.children.length}}
+        <p *ngIf="_commonService.selectedFilterData.page < 2" class="sub_category_heading">{{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+            <span class="light-txt f-16" *ngIf="API_RESPONSE.category[0]?.children?.length > 0">({{API_RESPONSE.category[0]?.children?.length}}
                 Categories)</span>
         </p>
         <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>

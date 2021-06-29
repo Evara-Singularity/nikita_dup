@@ -1,15 +1,15 @@
 import {
-    Component, ViewEncapsulation, Input, EventEmitter, Output,
-    ChangeDetectorRef, ChangeDetectionStrategy, PLATFORM_ID, Inject, NgModule
+    Component, ViewEncapsulation, Input, EventEmitter, Output, 
+    ChangeDetectorRef, PLATFORM_ID, Inject, NgModule
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CategoryService } from '@utils/services/category.service';
 import { SubCategoryService } from "@utils/services/subCategory.service";
-import { CONSTANTS } from "@config/constants";
 import { fade } from '@utils/animations/animation'
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'sub-category',
@@ -18,7 +18,6 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
         './subCategory.scss'
     ],
     providers:[],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     animations: [
         fade
@@ -30,20 +29,18 @@ export class SubCategoryComponent {
     @Output() getCategoryById:EventEmitter<any>=new EventEmitter<any>();
     @Output() updateSubCategoryCount$: EventEmitter<any> = new EventEmitter<any>();
     catdata;
-    imageBasePath: string;
+    imageBasePath: string = environment.IMAGE_BASE_URL;
     public isAllListShow:boolean;
     moreLessCategoryText:string="SHOW MORE";
-    defaultImage;
+    defaultImage = environment.IMAGE_BASE_URL+'assets/img/home_card.webp';
 
     constructor(@Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public categoryService: CategoryService, private _subCategoryService: SubCategoryService, public router: Router, public commonService: CommonService) {
     };
 
-    ngOnInit() {
-        this.imageBasePath = CONSTANTS.IMAGE_BASE_URL;
-        this.showList(false);
-        this.cd.markForCheck(); // marks path
+    initializeSubcategoryData(data) {
+        this.relatedCatgoryList = data;
+
     }
-    
 
     goToAnother(id,categoryLink) {
         let obj = { "id": id };

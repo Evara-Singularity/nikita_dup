@@ -22,12 +22,14 @@ export class SharedProductListingComponent {
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, private _commonService: CommonService) { }
 
-  async onVisiblePagination(event) {
+  async onVisiblePagination() {
     if (!this.paginationInstance) {
         const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
         const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
         this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
-        this.paginationInstance.instance['paginationData'] = {itemCount :this._commonService.selectedFilterData.totalCount};
+        this.paginationInstance.instance['paginationData'] = {itemCount : this._commonService.selectedFilterData.totalCount};
+    } else {
+      this.paginationInstance.instance['paginationData'] = {itemCount : this._commonService.selectedFilterData.totalCount};
     }
 }
 

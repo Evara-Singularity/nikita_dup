@@ -75,12 +75,12 @@ export class CategoryV1Component {
         this._activatedRoute.data.subscribe(result => {
             this.API_RESPONSE = result;
 
-            console.log(result);
-
             this.updateComponentsBasedOnrouteChange();
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList);
+
+            this._commonService.selectedFilterData.totalCount = result['category'][1].productSearchResult.totalCount;
 
             this._productListService.createAndProvideDataToSharedListingComponent(result['category'][1], 'Category Results');
 
@@ -262,7 +262,11 @@ export class CategoryV1Component {
         const params = this._activatedRoute.snapshot.params;
 
         if (this._commonService.selectedFilterData.page < 2) {
-            this.createDynamicComponent('subCategory')
+            if (!this.subCategoryInstance) {
+                this.createDynamicComponent('subCategory');
+            } else {
+                this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
+            }
         }
 
         this.layoutType = 0;

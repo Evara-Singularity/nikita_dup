@@ -18,6 +18,10 @@ export class PaginationComponent {
     constructor(public _commonService: CommonService, private _activatedRoute: ActivatedRoute) {};
 
     ngOnInit() {
+        this.initializePageData();
+    }
+
+    initializePageData() {
         const queryParams = this._activatedRoute.snapshot.queryParams;
 
         this._commonService.selectedFilterData.pages = [];
@@ -27,6 +31,11 @@ export class PaginationComponent {
         for(let i = 0; i < Math.abs(this.paginationData.itemCount / this._commonService.selectedFilterData.pageSize); i++){
             this._commonService.selectedFilterData.pages.push(i+1);
         }
+    }
+
+    updatePageData(data) {
+        this.paginationData = data;
+        this.initializePageData();
     }
 
     pageChanged(event) {

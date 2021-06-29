@@ -41,6 +41,8 @@ export class BrandV1Component {
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1].categoryLinkList);
 
+            this._commonService.selectedFilterData.totalCount = result['brand'][1].productSearchResult.totalCount;
+
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1], 'Brand Results');
 

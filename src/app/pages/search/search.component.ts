@@ -114,6 +114,8 @@ export class SearchComponent implements OnInit {
 
             const oldDefaultParams = JSON.parse(JSON.stringify(this._commonService.getDefaultParams()));
             this.initiallizeData(resolverData['search'][0], { oldDefaultParams }, true);
+
+            this._commonService.selectedFilterData.totalCount = resolverData['search'][0].productSearchResult.totalCount;
             
             // Empty the setSearchResultsTrackingData initially.
             this._commonService.setSearchResultsTrackingData({});

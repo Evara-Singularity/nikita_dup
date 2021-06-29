@@ -100,6 +100,13 @@
                 padding: 0px 10px 0px 10px;
                 font-size: $large-font;
             }
+            &.disabled-boxed {
+                input {
+                    background: #F2F2F2;
+                    border: 1px solid $border-grey;
+                    pointer-events: none;
+                }
+            }
         }
         @include placeholder {
             color: #B5B5B5;

@@ -92,23 +92,18 @@
                 </div>
             </div>
         </div>
-
-        <div [class.disableCod]="disableCod" id="cashOnDeliverySection" (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')">
-            <a class="other-strip other-strip-payment">
-                <label class="payment-radio-btn">
-                    <input [checked]="paymentBlock==globalConstants['cashOnDelivery']" type="radio" [disabled]="messageCod"  name="paytmupi_radio" value="paytmupi_radio">
-                    <span class ="custom-box"></span>
-                </label>
-                <div class="payment-content">
-                    <h3><span>Cash on Delivery</span>
-                        <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
-                        <small class="error-txt coderror">{{messageCod}} </small>
-                    </h3>
-                    <div *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
-                        <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
-                    </div>
+        <!-- [class.disableCod]="disableCod" -->
+        <div id="cashOnDeliverySection">
+            <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')" class="payment-accordion_header">
+                <i class="icon-credit-line-home ico-accord-left"></i>
+                <span class="accordion-text">Cash on Delivery</span>
+                <i class="icon-down"></i>
+            </div>
+            <div class="payment-accordion_body">
+                <div class="payment-accordion_body" *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
+                    <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
                 </div>
-            </a>
+            </div>
         </div>
     </section>
 </section>

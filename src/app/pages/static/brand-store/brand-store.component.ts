@@ -10,12 +10,13 @@ import { ENDPOINTS } from '@app/config/endpoints';
 
 @Component({
 	selector: 'brand-store',
-	templateUrl: 'brand.html',
-	styleUrls: ['brand.scss'],
+	templateUrl: 'brand-store.html',
+	styleUrls: ['brand-store.scss'],
 })
 export class BrandComponent{
 	API: {};
 	brandData: any;
+	cmsData: any;
 	val: any;
 	brand_name: any = [];
 	final_arr: any = [];
@@ -67,8 +68,8 @@ export class BrandComponent{
 	ngOnInit() {
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['brandData']['error'] && rawData['brandData'].length) {
-				// this.fetchHomePageData(rawData.homeData);
 				const brandData = rawData['brandData'];
+				this.cmsData = rawData['brandData'][2]['data'] ? rawData['brandData'][2]['data']['data'] : [];
 				this.brandsLogo =
 					brandData[0]['data'][0]['block_data']['all_brand_store']['data'];
 				this.isShowLoader = false;

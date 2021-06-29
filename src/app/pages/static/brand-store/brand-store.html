@@ -1,3 +1,10 @@
+<!-- CMS content of Brand page -->
+<div class="container-fluid" *ngIf="cmsData">
+    <div class="row">
+        <cms [background]="'bg-trans'" [cmsData]="cmsData"></cms>
+    </div>
+</div>
+
 <section class="brands-container bg-white brandBlock">
     <div *ngIf="brandsLogo && brandsLogo.length > 0" class="container">
         <ul class="brands-logo">

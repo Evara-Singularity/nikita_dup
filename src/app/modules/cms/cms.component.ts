@@ -17,5 +17,9 @@ export class CmsWrapperComponent {
     @Input('cmsData') cmsData: any;
     @Input('background') background: string = 'bg-white';
 
+    ngOnInit() {
+        console.log(this.cmsData);
+    }
+
     constructor() {}
 }

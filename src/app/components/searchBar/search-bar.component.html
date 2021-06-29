@@ -35,7 +35,7 @@
                         <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes )" *ngFor="let prod of suggestionList | slice:0:5; let i = index" [attr.data-index]="i">
                             <span class="search-text">{{prod.term}}</span>
                             <div class="search-count">
-                                <span class="prodCount">5644</span>
+                                <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>
                                 <img src="{{imageAssetPath}}assets/img/interface.png">
                             </div>
                         </li>

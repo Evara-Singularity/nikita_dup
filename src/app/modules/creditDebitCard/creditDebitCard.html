@@ -24,14 +24,40 @@
                 <label>Expiry Date</label>
                 <div class="multiple-form-field">
                     <div class="input-field-boxed">
-                        <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
+                        <input type="hidden" formControlName="ccexpmon" #expireMonth />
+                        <div class="custom_select_box" (click)="openMonthPopUp()" >
+                            <div class="custom_select_input">
+                                <span>{{selectedMonth || 'MM'}}</span>
+                                <i class="icon-dropdown"></i>
+                            </div>
+                        </div>
+                        <select-popup 
+                                [itemArray]="expMons" 
+                                [displayKey]="'value'" 
+                                [valueKey]="'key'" 
+                                [headerLabel]="'Select Month'"
+                                [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)" ></select-popup>
+                        <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
                             <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
-                        </select>
+                        </select> -->
                     </div>
                     <div class="input-field-boxed">
-                        <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
+                        <input type="hidden" formControlName="ccexpyr" #expireYear />
+                        <div class="custom_select_box" (click)="openYearPopUp()" >
+                            <div class="custom_select_input">
+                                <span>{{selectedYear || 'YYYY'}}</span>
+                                <i class="icon-dropdown"></i>
+                            </div>
+                        </div>
+                        <select-popup 
+                                [itemArray]="expYrs" 
+                                [displayKey]="'value'" 
+                                [valueKey]="'key'" 
+                                [headerLabel]="'Select Year'"
+                                [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)" ></select-popup>
+                        <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
                             <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
-                        </select>
+                        </select> -->
                     </div>
                 </div>
             </div>

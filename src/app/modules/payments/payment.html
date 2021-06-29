@@ -15,6 +15,7 @@
                 </div>
             </div>
         </div>
+
         <div id="netBankingSection" [class.selectedAccordion]="paymentBlock==globalConstants['netBanking']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -27,6 +28,7 @@
                 </div>
             </div>
         </div>
+
         <div id="walletSection" [class.selectedAccordion]="paymentBlock==globalConstants['netBanking']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -39,6 +41,8 @@
                 </div>
             </div>
         </div>
+
+        <h1>{{paymentBlock==globalConstants['emi']}} {{paymentBlock}}</h1>
         <div id="emiSection" [class.selectedAccordion]="paymentBlock==globalConstants['emi']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -51,8 +55,9 @@
                 </div>
             </div>
         </div>
-        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" [class.selectedAccordion]="paymentBlock==globalConstants['emi']" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')" class="payment-accordion_header">
+
+        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" [class.selectedAccordion]="paymentBlock==globalConstants['neftRtgs']" class="payment_accordion_item">
+            <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
                 <span class="accordion-text">EMI</span>
                 <i class="icon-down"></i>
@@ -63,6 +68,7 @@
                 </div>
             </div>
         </div>
+        
         <div id="upiSection" [class.selectedAccordion]="paymentBlock==globalConstants['upi']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -75,6 +81,7 @@
                 </div>
             </div>
         </div>
+
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -87,181 +94,29 @@
                 </div>
             </div>
         </div>
-    </section>
-    <form style="display:none;">
-        <div class="payment-options mt-10">
-            <div *ngIf="isSavedCardExist" id="savedCardSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['savedCard'], 'savedCard', 'savedCardSection')">
-                    <label class="payment-radio-btn">
-                            <input [checked]="paymentBlock==globalConstants['savedCard']" type="radio" name="saved_card" value="saved_card">
-                            <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3>Saved Card Details</h3>
-                        <div *ngIf="paymentBlock==globalConstants['savedCard']" class="payment-popup">
-                            <saved-card [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
-                        </div>
-                    </div>
-                    <!-- <i class="icon-next"></i> -->
-                </a>
-            </div>
-            <div id="creditDebitCardSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')">
-                    <label class="payment-radio-btn">
-                           
-                                 <input [checked]="paymentBlock==globalConstants['creditDebitCard']" type="radio" name="cr_radio" value="cr_radio">
-                                 <span class ="custom-box"></span>
-                        </label>
-                    <div class="payment-content">
-                        <h3>Credit/Debit Card</h3>
-                        <div *ngIf="paymentBlock==globalConstants['creditDebitCard']" class="payment-popup">
-                            <credit-debit-card [type]="invoiceType"></credit-debit-card>
-                        </div>
-                    </div>
-                    <!-- <i class="icon-next"></i> -->
-                </a>
-            </div>
-            <div id="netBankingSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['netBanking']" type="radio" name="net_radio"  value="net_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3>Net Banking</h3>
-                        <div *ngIf="paymentBlock==globalConstants['netBanking']" class="payment-popup">
-                            <net-banking [type]="invoiceType"></net-banking>
-                        </div>
-                    </div>
-                </a>
-            </div>
 
-            <div id="walletSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['wallet']" type="radio" name="wallet_radio" value="wallet_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3>Wallet</h3>
-                        <div *ngIf="paymentBlock==globalConstants['wallet']" class="payment-popup">
-                            <wallet [type]="invoiceType"></wallet>
-                        </div>
-                    </div>
-                </a>
-            </div>
+        <div [class.disableCod]="disableCod" id="cashOnDeliverySection" (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')">
 
-            <div id="emiSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['emi']" type="radio" [disabled]="messageEmi"  name="emi_radio" value="emi_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3><span>EMI</span>
-                            <small class="error-txt emierror">{{messageEmi}} </small>
-                        </h3>
-                        <div *ngIf="paymentBlock==globalConstants['emi']" class="payment-popup">
-                            <emi [type]="invoiceType"></emi>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div id="neftRtgsSection" *ngIf="canNEFT_RTGS">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['neftRtgs']" type="radio" [disabled]="messageNeft"  name="neft_radio" value="neft_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3><span>NEFT/RTGS</span>
-                            <small class="error-txt nefterror">{{messageNeft}} </small>
-                        </h3>
-                        <div *ngIf="paymentBlock==globalConstants['neftRtgs']" class="payment-popup">
-                            <neft-rtgs></neft-rtgs>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div id="upiSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['upi']" type="radio"  name="upi_radio" value="upi_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3>UPI</h3>
-                        <div *ngIf="paymentBlock==globalConstants['upi']" class="payment-popup">
-                            <upi *ngIf="paymentBlock==globalConstants['upi']" [type]="invoiceType"></upi>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div id="paytmUpiSection">
-                <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['paytmUpi']" type="radio"  name="paytmupi_radio" value="paytmupi_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3>Paytm UPI</h3>
-                        <div *ngIf="paymentBlock==globalConstants['paytmUpi']" class="payment-popup">
-                            <paytm-upi *ngIf="paymentBlock==globalConstants['paytmUpi']" [type]="invoiceType"></paytm-upi>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div id="pseudoSection" *ngIf="!isPaymentSelected">
-                <div class="continue-button">
-                    <div class="container">
-                        <p class="total-mount">
-                            <span class="payable-amnt">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}} </p>
-                        <button type="submit" [disabled]="true" class="btn">PAY</button>
+            <a class="other-strip other-strip-payment">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['cashOnDelivery']" type="radio" [disabled]="messageCod"  name="paytmupi_radio" value="paytmupi_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3><span>Cash on Delivery</span>
+                        <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
+                        <small class="error-txt coderror">{{messageCod}} </small>
+                    </h3>
+                    <div *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
+                        <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
                     </div>
                 </div>
-            </div>
-
-            <div [class.disableCod]="disableCod" id="cashOnDeliverySection" (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')">
-
-                <a class="other-strip other-strip-payment">
-                    <label class="payment-radio-btn">
-                        <input [checked]="paymentBlock==globalConstants['cashOnDelivery']" type="radio" [disabled]="messageCod"  name="paytmupi_radio" value="paytmupi_radio">
-                        <span class ="custom-box"></span>
-                    </label>
-                    <div class="payment-content">
-                        <h3><span>Cash on Delivery</span>
-                            <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
-                            <small class="error-txt coderror">{{messageCod}} </small>
-                        </h3>
-                        <div *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
-                            <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
+            </a>
         </div>
-    </form>
 
+    </section>
 </section>
 
-
-<!-- <app-pop-up *ngIf="spp"  class="link-color" (outData$)="outData($event)" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup', selector: 'spp', headerText:getPopupHeading()}">
-    <div class="content-popup mt-15" content>
-        <credit-debit-card *ngIf="paymentBlock==globalConstants['creditDebitCard']" [type]="invoiceType"></credit-debit-card>
-        <net-banking *ngIf="paymentBlock==globalConstants['netBanking']" [type]="invoiceType" ></net-banking>
-        <wallet *ngIf="paymentBlock==globalConstants['wallet']" [type]="invoiceType" ></wallet>
-        <emi *ngIf="paymentBlock==globalConstants['emi']" [type]="invoiceType"></emi>
-        <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
-        <neft-rtgs *ngIf="paymentBlock==globalConstants['neftRtgs']"></neft-rtgs>
-        <upi *ngIf="paymentBlock==globalConstants['upi']" [type]="invoiceType"></upi>
-        <paytm-upi *ngIf="paymentBlock==globalConstants['paytmUpi']" [type]="invoiceType"></paytm-upi>
-    </div>
-</app-pop-up> -->
 
 <div class="row-eq-height payment_block" style="border: 1px solid #d6d6d6;">
     <div class="col-sm-3 bg-grey no-padding min-h-470 minh-auto-xs payment_sidebar">
@@ -289,3 +144,161 @@
         </div>
     </div>
 </app-pop-up>
+
+<!--     
+<form style="display:none;">
+    <div class="payment-options mt-10">
+        <div *ngIf="isSavedCardExist" id="savedCardSection">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['savedCard'], 'savedCard', 'savedCardSection')">
+                <label class="payment-radio-btn">
+                        <input [checked]="paymentBlock==globalConstants['savedCard']" type="radio" name="saved_card" value="saved_card">
+                        <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3>Saved Card Details</h3>
+                    <div *ngIf="paymentBlock==globalConstants['savedCard']" class="payment-popup">
+                        <saved-card [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div id="creditDebitCardSection">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')">
+                <label class="payment-radio-btn">
+                       
+                             <input [checked]="paymentBlock==globalConstants['creditDebitCard']" type="radio" name="cr_radio" value="cr_radio">
+                             <span class ="custom-box"></span>
+                    </label>
+                <div class="payment-content">
+                    <h3>Credit/Debit Card</h3>
+                    <div *ngIf="paymentBlock==globalConstants['creditDebitCard']" class="payment-popup">
+                        <credit-debit-card [type]="invoiceType"></credit-debit-card>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div id="netBankingSection">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['netBanking']" type="radio" name="net_radio"  value="net_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3>Net Banking</h3>
+                    <div *ngIf="paymentBlock==globalConstants['netBanking']" class="payment-popup">
+                        <net-banking [type]="invoiceType"></net-banking>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="walletSection">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['wallet']" type="radio" name="wallet_radio" value="wallet_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3>Wallet</h3>
+                    <div *ngIf="paymentBlock==globalConstants['wallet']" class="payment-popup">
+                        <wallet [type]="invoiceType"></wallet>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="emiSection" *ngIf="canNEFT_RTGS" >
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['emi']" type="radio" [disabled]="messageEmi"  name="emi_radio" value="emi_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3><span>EMI</span>
+                        <small class="error-txt emierror">{{messageEmi}} </small>
+                    </h3>
+                    <div *ngIf="paymentBlock==globalConstants['emi']" class="payment-popup">
+                        <emi [type]="invoiceType"></emi>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['neftRtgs']" type="radio" [disabled]="messageNeft"  name="neft_radio" value="neft_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3><span>NEFT/RTGS</span>
+                        <small class="error-txt nefterror">{{messageNeft}} </small>
+                    </h3>
+                    <div *ngIf="paymentBlock==globalConstants['neftRtgs']" class="payment-popup">
+                        <neft-rtgs></neft-rtgs>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="upiSection">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['upi']" type="radio"  name="upi_radio" value="upi_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3>UPI</h3>
+                    <div *ngIf="paymentBlock==globalConstants['upi']" class="payment-popup">
+                        <upi *ngIf="paymentBlock==globalConstants['upi']" [type]="invoiceType"></upi>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="paytmUpiSection">
+            <a class="other-strip other-strip-payment" (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['paytmUpi']" type="radio"  name="paytmupi_radio" value="paytmupi_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3>Paytm UPI</h3>
+                    <div *ngIf="paymentBlock==globalConstants['paytmUpi']" class="payment-popup">
+                        <paytm-upi *ngIf="paymentBlock==globalConstants['paytmUpi']" [type]="invoiceType"></paytm-upi>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="pseudoSection" *ngIf="!isPaymentSelected">
+            <div class="continue-button">
+                <div class="container">
+                    <p class="total-mount">
+                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}} </p>
+                    <button type="submit" [disabled]="true" class="btn">PAY</button>
+                </div>
+            </div>
+        </div>
+
+        <div [class.disableCod]="disableCod" id="cashOnDeliverySection" (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')">
+
+            <a class="other-strip other-strip-payment">
+                <label class="payment-radio-btn">
+                    <input [checked]="paymentBlock==globalConstants['cashOnDelivery']" type="radio" [disabled]="messageCod"  name="paytmupi_radio" value="paytmupi_radio">
+                    <span class ="custom-box"></span>
+                </label>
+                <div class="payment-content">
+                    <h3><span>Cash on Delivery</span>
+                        <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
+                        <small class="error-txt coderror">{{messageCod}} </small>
+                    </h3>
+                    <div *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
+                        <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</form> -->

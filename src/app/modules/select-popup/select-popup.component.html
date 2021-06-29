@@ -1,18 +1,18 @@
-<div class="payment-dropdown-popup">
+<div class="payment-dropdown-popup" *ngIf="isVisible" >
     <div class="overlay"></div>
     <div class="payment-dropdown-content">
-        <div class="payment-dropdown-header">
-            <h3 class="heading-3">Select Bank</h3>
-            <i class="icon-circle-delete f-right"></i>
+        <div class="payment-dropdown-header"  >
+            <h3 *ngIf="headerLabel" class="heading-3">{{headerLabel}}</h3>
+            <i class="icon-circle-delete f-right" (click)="onSelect(null)" ></i>
         </div>
         <div class="payment-dropdown-body">
             <ul>
-                <li *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]" class="payment-dropdown-listItem">
+                <li *ngFor="let item of itemArray" class="payment-dropdown-listItem" (click)="onSelect(item)">
                     <label>
-                    <input type="radio"  name="1" value="1">
-                    <span class ="custom-box"></span>
-                </label>
-                    <span class="listItem_txt">Standard Chartered Bank</span>
+                        <input type="radio" value="{{item[valueKey]}}">
+                        <span class="custom-box"></span>
+                    </label>
+                    <span class="listItem_txt">{{item[displayKey]}}</span>
                 </li>
             </ul>
         </div>

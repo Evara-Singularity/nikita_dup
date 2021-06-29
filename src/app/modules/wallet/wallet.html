@@ -32,18 +32,27 @@
     </div>
 </section> -->
 <section class="walletInner">
-    <ul class="bank-list">
-        <li *ngFor="let wallet of walletMapKeys" class="bank-list-item">
-            <label class="payment-radio-btn">
-                <input  type="radio" name="net_radio"  value="[wallet]">
-                <span class ="custom-box"></span>
-            </label>
-            <div>
-                <img class="wallet-img" src="{{imagePath+imageFolder + '/' + walletMap[wallet].imgUrl}}">
-                <span class="lowsuccessRate  pad-l-8">Low success rate observed</span>
+    <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
+        <ul class="bank-list">
+            <li *ngFor="let wallet of walletMapKeys" class="bank-list-item">
+                <label class="payment-radio-btn">
+                    <input  type="radio" formControlName="wType" [value]="wallet" >
+                    <span class ="custom-box"></span>
+                </label>
+                <div>
+                    <img class="wallet-img" src="{{imagePath+imageFolder + '/' + walletMap[wallet].imgUrl}}">
+                    <span class="lowsuccessRate  pad-l-8">Low success rate observed</span>
+                </div>
+            </li>
+        </ul>
+        <div class="continue-button">
+            <div class="container">
+                <p class="total-mount" *ngIf="totalPayableAmount>0">
+                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
+                <button type="submit" [disabled]="!walletForm.valid" class="btn">PAY</button>
             </div>
-        </li>
-    </ul>
+        </div>
+    </form>
 </section>
 
 <paytm-wallet-form *ngIf="isValid==true && wType=='walletPaytm'" [data]="walletData"></paytm-wallet-form>

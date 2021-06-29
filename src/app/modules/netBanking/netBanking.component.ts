@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { DATA_NB } from "./netBanking";
 import { DATA_NB_RAZ } from "./netBankingRazor";
 
@@ -42,6 +42,7 @@ export class NetBankingComponent {
     set isShowLoader(value) {
         this._loaderService.setLoaderState(value);
     }
+    bankSelectPopupStatus: boolean = false;
 
     constructor(
         private _localStorageService: LocalStorageService,
@@ -298,7 +299,19 @@ export class NetBankingComponent {
             this.netBankingForm.get('requestParams').get("bankname").setValue(this.selectedBankName)
             this.netBankingForm.get('requestParams').get("paymentId").setValue(DATA_NB_RAZ['NB'][this.selectedBankName] ? DATA_NB_RAZ['NB'][this.selectedBankName].id : DATA_NB_RAZ['NB-top'][this.selectedBankName].id);    
         }
+    }
 
+    selectBank(data) {
+        if (data) {
+            console.log('data ==>', data,  data.key);
+            this.bankSelectPopupStatus = false;
+            this.netBankingForm.get('requestParams').get("bankname").setValue(data.key);
+            console.log(this.netBankingForm.get('requestParams').get("bankname").value);
+        }
+    }
+
+    openYearPopUp(){
+        this.bankSelectPopupStatus = true;
     }
 
     ngOnDestroy() {

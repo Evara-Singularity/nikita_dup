@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '@app/config/constants';
@@ -27,7 +27,7 @@ export class CreditDebitCardComponent {
     payuData: {};
     cart: {};
     cartItems: Array<{}>;
-    expYrs: Array<number>;
+    expYrs: Array<any>;
     cartSession: any;
     expMons: Array<{ key: string, value: string }>;
     cartSessionObject: any;
@@ -37,6 +37,10 @@ export class CreditDebitCardComponent {
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
     }
+    monthSelectPopupStatus: boolean = false;
+    selectedMonth: string = null;
+    yearSelectPopupStatus: boolean = false;
+    selectedYear: string = null;
 
     constructor(
         private _localStorageService: LocalStorageService, 
@@ -56,7 +60,7 @@ export class CreditDebitCardComponent {
         ////console.log(todayDate);
         let currentYear = todayDate.getFullYear();
         for (let i = 0; i < 20; i++) {
-            this.expYrs.push(currentYear);
+            this.expYrs.push({key: currentYear, value: currentYear});
             currentYear = currentYear + 1;
         }
 
@@ -305,10 +309,37 @@ export class CreditDebitCardComponent {
         return null;
     }
 
+    selectMonth(data) {
+        console.log('selectMonth ==>', data);
+        if (data) {
+            this.monthSelectPopupStatus = false;
+            this.selectedMonth = data['value'];
+            (this.creditDebitCardForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
+        }
+    }
+
+    openMonthPopUp(){
+        this.monthSelectPopupStatus = true;
+    }
+
+    selectYear(data) {
+        console.log('selectMonth ==>', data);
+        if (data) {
+            this.yearSelectPopupStatus = false;
+            this.selectedYear = data['value'];
+            (this.creditDebitCardForm.get('requestParams.ccexpyr') as FormControl).setValue(data.key);
+        }
+    }
+
+    openYearPopUp(){
+        this.yearSelectPopupStatus = true;
+    }
+
     ngOnDestroy() {
         this.prepaidsubscription.unsubscribe();
       //  this._cartService.prepaidDiscountSubject.complete();
         this._cartService.setCartSession(this.cartSession);
         this._cartService.orderSummary.next(this.cartSession);
     }
+    
 }

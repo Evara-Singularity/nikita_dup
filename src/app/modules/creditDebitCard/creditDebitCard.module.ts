@@ -7,6 +7,7 @@ import {PayuFormModule} from "../payuForm/payuForm.module";
 import {RazorPayFormModule} from "../razorPayForm/razorPayForm.module";
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutocompleteOff.directive';
+import { SelectPopupModule } from '../select-popup/select-popup.module';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutoc
         PayuFormModule,
         RazorPayFormModule,
         MathCeilPipeModule,
-        KpAutocompleteOffDirectiveModule
+        KpAutocompleteOffDirectiveModule,
+        SelectPopupModule
     ],
     declarations: [
         CreditDebitCardComponent,

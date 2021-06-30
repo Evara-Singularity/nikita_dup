@@ -5,7 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from "@app/utils/services/data.service";
 import { FooterService } from '@app/utils/services/footer.service';
-
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
     selector: 'feedback',
     templateUrl: './feedback.component.html',
@@ -44,7 +44,11 @@ export class FeedbackComponent implements OnInit, AfterViewInit
     OtherDetails = new FormGroup({ key: new FormControl("Any other details you would like to share with us"), value: new FormControl("") })
     formArray = new FormArray([this.cancelOrder, this.deliveryAttempted, this.executiveCall, this.cancelReasons, this.OtherDetails]);
 
-    constructor(public footerService: FooterService, private tms: ToastMessageService, private _router: Router, private _activatedRoute: ActivatedRoute, private _dataService: DataService) { }
+    constructor(public footerService: FooterService, private tms: ToastMessageService, private _router: Router, private _activatedRoute: ActivatedRoute, private _dataService: DataService,
+        private _commonService: CommonService)
+    {
+
+    }
 
 
     ngOnInit(): void
@@ -59,7 +63,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit
 
     ngAfterViewInit(): void
     {
-        this.formArray.valueChanges.subscribe(() => this.isSubmitted = false);
+        
     }
 
     initiallizeData(response)
@@ -68,7 +72,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit
         this.infoForm.get('orderId').setValue(this.orderInfo['orderId']);
         this.infoForm.get('itemId').setValue(this.orderInfo['itemId']);
         this.infoForm.get('customerId').setValue(this.orderInfo['customerId']);
-        if (this.orderInfo['itemImage']){
+        if (this.orderInfo['itemImage']) {
             this.imageURL = this.orderInfo['itemImage'];
         }
     }
@@ -85,10 +89,18 @@ export class FeedbackComponent implements OnInit, AfterViewInit
     manageOthers($event)
     {
         this.isOthersSelected = $event.target.checked;
-        const control = (this.cancelReasons.get('Others') as FormControl);
-        (this.isOthersSelected) ? control.setValidators([Validators.required]) : control.clearValidators();
-        control.setValue("");
-        control.updateValueAndValidity();
+        const othersControl = (this.cancelReasons.get('Others') as FormControl);
+        const valueControl = (this.cancelReasons.get('value') as FormControl);
+        if (this.isOthersSelected){
+            othersControl.setValidators([Validators.required]);
+            valueControl.clearValidators();
+        }else{
+            valueControl.setValidators([Validators.required]);
+            othersControl.clearValidators();
+        }
+        othersControl.setValue("");
+        valueControl.updateValueAndValidity();
+        othersControl.updateValueAndValidity();
     }
 
     submitFeedback()
@@ -97,6 +109,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit
         let request = this.infoForm.value;
         request['feedback'] = JSON.stringify(Object.values(this.formArray.value));
         if (this.formArray.valid) {
+            this._commonService.showLoader = true;
             this._dataService.callRestful("POST", this.URL, { body: request }).subscribe(
                 (response) =>
                 {
@@ -104,13 +117,15 @@ export class FeedbackComponent implements OnInit, AfterViewInit
                         this._router.navigate(['feedback/status/success']);
                     } else {
                         this.isSubmitted = false;
-                        this.tms.show({ type: "error", text: response["responseMessage"] });
                         if ((response["responseMessage"] as string).includes('Feedback already received')) {
                             this._router.navigate(['feedback/status/submitted']);
+                        }else{
+                            this.tms.show({ type: "error", text: response["responseMessage"] });
                         }
                     }
+                    this._commonService.showLoader = false;
                 },
-                (error) => { this.isSubmitted = false; });
+                (error) => { this.isSubmitted = false; this._commonService.showLoader = false; });
         }
     }
 }

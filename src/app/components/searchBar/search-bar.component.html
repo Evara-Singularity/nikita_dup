@@ -32,7 +32,7 @@
                         </li>
                     </ul>
                     <!--categories-->
-                    <ng-container *ngIf="categorySuggestionList.length">
+                    <ng-container *ngIf="categorySuggestionList.length > 0">
                         <!-- <h4 class="heading-4 popularCategoryHeading">Product Categories</h4>
                         <ul class="plan-list">
                             <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
@@ -53,13 +53,11 @@
                         </div>
                     </ng-container>
                     <!--Brands-->
-                    <ng-container *ngIf="brandSuggestionList.length">
+                    <ng-container *ngIf="brandSuggestionList.length > 0">
                         <h3 class="search_heading">Explore By Brands </h3>
-                        <ul class="plan-list">
-                            <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
-                                {{prod.term}}
-                            </li>
-                        </ul>
+                        <div class="search_product_category brand"  (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
+                            <span class="prodText">{{prod.term}}</span>
+                        </div>
                     </ng-container>
                 </div>
             </div>

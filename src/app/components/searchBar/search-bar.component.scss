@@ -355,3 +355,19 @@ section.search-popup {
         }
     }
 }
+
+.search_product_category {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #EFEFF4;
+    border-radius: 8px;
+    padding: 5px;
+    margin-right: 10px;
+    width: 22.5%;
+    margin-bottom: 10px;
+    min-height: 45px;
+    overflow: hidden;
+    &.brand {
+        justify-content: center;
+    }
+}

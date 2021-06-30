@@ -44,7 +44,7 @@
                                 <img src="{{imageAssetPath}}assets/img/interface.png" class="interfaceIcon">
                             </li>
                         </ul> -->
-                        <h3 class="search_heading">Product Categories</h3>
+                        <h3 class="search_heading">Relevant Categories</h3>
                         <div class="search_product_categories">
                             <div class="search_product_category" *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index" [attr.data-index]="i"  (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)">
                                 <img src="{{imagePath + prod.imageLink}}">
@@ -54,7 +54,7 @@
                     </ng-container>
                     <!--Brands-->
                     <ng-container *ngIf="brandSuggestionList.length">
-                        <h3 class="search_heading">Popular Brands </h3>
+                        <h3 class="search_heading">Explore By Brands </h3>
                         <ul class="plan-list">
                             <li class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index" [attr.data-index]="i">
                                 {{prod.term}}

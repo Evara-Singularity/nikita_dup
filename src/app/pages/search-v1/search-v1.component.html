@@ -1,3 +1,41 @@
+<div class="card">
+    <div class="container">
+        <div class="search-txt"
+            *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
+            <p class="f-left"
+                *ngIf="API_RESULT['searchData'][0].productSearchResult.correctedSearchString != undefined && API_RESULT['searchData'][0].productSearchResult.correctedSearchString !== null">
+                <span>Showing results for
+                    <i>{{API_RESULT['searchData'][0].productSearchResult.correctedSearchString}}</i></span><br />
+                <a class="blue-text"
+                    (click)="redirectWithNoPreProcessRequiredParam(API_RESULT['searchData'][0].productSearchResult.inputSearchString)">Search
+                    instead for {{API_RESULT['searchData'][0].productSearchResult.inputSearchString}}</a>
+            </p>
+
+            <p class="f-left"
+                *ngIf="(API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or'">
+                <span>
+                    Showing {{API_RESULT['searchData'][0].productSearchResult.totalCount}} results for
+                    "{{API_RESULT['searchData'][0].productSearchResult.displayString}}"</span>
+            </p>
+            <p class="f-left"
+                *ngIf="toggleRcommendFlag && ((API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')">
+                <span>Showing {{API_RESULT['searchData'][0].productSearchResult.totalCount}} results for
+                    "{{ API_RESULT['searchData'][0].productSearchResult.displayString ?
+                    API_RESULT['searchData'][0].productSearchResult.displayString :
+                    API_RESULT['searchData'][0].productSearchResult.inputSearchString}}"</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="mixed_category_result"  *ngIf="API_RESULT['searchData'][0]?.categoriesRecommended">
+    <h3 class="heading-3">Are you looking for…</h3>
+    <ng-container *ngFor="let category of API_RESULT['searchData'][0]?.categoriesRecommended; let i = index;" >
+        <div *ngIf="i < 3">
+            <a (click)="goToRecommendedCategory(category?.categoryId, category)">{{ category?.categoryName }}</a>
+        </div>
+    </ng-container>
+</div>
 <shared-product-listing 
     [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>

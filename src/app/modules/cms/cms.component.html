@@ -1,6 +1,7 @@
 <ng-container *ngIf="cmsData">
     <ng-container *ngFor="let item of cmsData">
         <div class="row {{ background }} no-margin" [ngSwitch]="item[componentLabel]" *ngIf="item[data]">
+            <cms-carausel></cms-carausel>
             <dynamic-image-component *ngIf="item[componentLabel] === 'image_component_two' || item[componentLabel] === 'image_component_six' || item[componentLabel] === 'image_component_four' || item[componentLabel] === 'image_component_three' " [titleData]="item[titleData]" [listOfImgs]="item[data]" [imagePath]="imagePath"></dynamic-image-component>
             <main-banner *ngSwitchCase="'main_banner_component'" [data]="item[data]" [imagePath]="imagePath">
             </main-banner>

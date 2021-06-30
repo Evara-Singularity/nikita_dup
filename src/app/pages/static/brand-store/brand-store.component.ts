@@ -28,6 +28,7 @@ export class BrandComponent{
 	set isShowLoader(value) {
 		this.loaderService.setLoaderState(value);
 	}
+	imagePath = CONSTANTS.IMAGE_BASE_URL;
 	constructor(
 		private title: Title,
 		private meta: Meta,

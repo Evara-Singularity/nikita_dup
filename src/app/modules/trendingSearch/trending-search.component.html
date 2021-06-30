@@ -1,4 +1,4 @@
-<div class="trending-search-container">
+<div class="trending-search-container" *ngIf="trendingCatName?.length > 0">
     <h3 class="search_heading"><i class="icon-trending"></i>Trending Search</h3>
     <div class="trending-search-inner">
         <ng-container *ngFor="let prod of trendingCatName">
@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<div class="top_categories">
+<div class="top_categories" *ngIf="topCategories?.length > 0">
     <h3 class="search_heading"><i class="icon-trending"></i>Top Categories</h3>
     <div class="search_product_categories">
         <ng-container *ngFor="let item of topCategories;">

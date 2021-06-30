@@ -121,6 +121,7 @@ export class SearchBarComponent implements OnInit {
         this.searchForm.get('searchTerm').patchValue(data);
     }
 
+
     updateData(event) {
         this.ssp = event;
     }

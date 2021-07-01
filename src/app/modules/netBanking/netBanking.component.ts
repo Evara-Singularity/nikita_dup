@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { DATA_NB } from "./netBanking";
-import { DATA_NB_RAZ } from "./netBankingRazor";
 
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -36,7 +34,7 @@ export class NetBankingComponent {
     prepaidDiscount:number=0;
     totalPayableAmount:number=0;
     prepaidsubscription: Subscription;
-    imagePath = CONSTANTS.CDN_IMAGE_PATH;
+    imagePath = CONSTANTS.IMAGE_ASSET_URL;
     @Input() type : any;
     set isShowLoader(value) {
         this._loaderService.setLoaderState(value);
@@ -50,11 +48,21 @@ export class NetBankingComponent {
     commonFailureMsg: boolean= null;
 
     readonly bankImages = {
-        "AXIB": "axis_icon.png",
-        "UTIB": "hdfc_icon.png",
-        "UTIBF": "pnb_icon.png",
-        "SBI": "sbi_icon.png",
-        "UNITED": "united_logo.png",
+        // bankid: image map
+        "5": "hdfc.png",
+        "3": "axis.png",
+        "11": "icici.png",
+        "43": "kotak.png",
+        "103": "kotak.png",
+        "25": "united.png",
+        "12": "sbi.png",
+        "118": "sbi.png",
+        "35": "united.png",
+        "46": "pnb.png",
+        "74": "axis.png",
+        "92": "hdfc.png",
+        "93": "icici.png",
+        "97": "united.png",
     };
 
     constructor(

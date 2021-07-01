@@ -17,7 +17,8 @@
                     <input [checked]="selectedBankCode==banks['code']" type="radio" name="net_radio" >
                     <span class="custom-box"></span>
                 </label>
-                <img src="{{imagePath}}assets/payments/axis-icon.png" >
+                {{banks['id']}} - {{banks['name']}}
+                <img src="{{imagePath}}assets/payments/{{bankImages[banks['id']]}}" >
                 <div class="bank-name">
                     <p class="">{{banks['name']}}</p>
                     <span *ngIf="!banks['up_status']" class="lowsuccessRate">Low success rate observed</span>

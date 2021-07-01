@@ -45,7 +45,7 @@
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;"  >
                                 <li *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        <input formControlName="bankcode" [checked]="" type="radio" [value]="emi.key"
+                                        <input formControlName="bankcode" [checked]="selectedEmiOption == emi.key" type="radio" [value]="emi.key"
                                             (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount)" [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>
@@ -69,7 +69,7 @@
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
                                 <li *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        <input formControlName="bankcode" type="radio" [value]="emi.key"
+                                        <input formControlName="bankcode" type="radio" [checked]="selectedEmiOption == emi.key" [value]="emi.key"
                                             (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount)" [value]="emi.key"
                                             [id]="emi.key">
                                         <span class="custom-box"></span>
@@ -101,22 +101,48 @@
                             <label>Expiry Date</label>
                             <div class="multiple-form-field">
                                 <div class="input-field-boxed">
-                                    <select placeholder="MM">
-                                        <option value="">MM</option>
-                                    </select>
+                                    <input type="hidden" formControlName="ccexpmon" #expireMonth />
+                                    <div class="custom_select_box" (click)="openMonthPopUp()" >
+                                        <div class="custom_select_input">
+                                            <span>{{selectedMonth || 'MM'}}</span>
+                                            <i class="icon-dropdown"></i>
+                                        </div>
+                                    </div>
+                                    <select-popup 
+                                            [itemArray]="expMons" 
+                                            [displayKey]="'value'" 
+                                            [valueKey]="'key'" 
+                                            [headerLabel]="'Select Month'"
+                                            [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)" ></select-popup>
+                                    <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
+                                        <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
+                                    </select> -->
                                 </div>
                                 <div class="input-field-boxed">
-                                    <select placeholder="YYYY">
-                                        <option value="">YYYY</option>
-                                    </select>
+                                    <input type="hidden" formControlName="ccexpyr" #expireYear />
+                                    <div class="custom_select_box" (click)="openYearPopUp()" >
+                                        <div class="custom_select_input">
+                                            <span>{{selectedYear || 'YYYY'}}</span>
+                                            <i class="icon-dropdown"></i>
+                                        </div>
+                                    </div>
+                                    <select-popup 
+                                            [itemArray]="expYrs" 
+                                            [displayKey]="'value'" 
+                                            [valueKey]="'key'" 
+                                            [headerLabel]="'Select Year'"
+                                            [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)" ></select-popup>
+                                    <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
+                                        <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
+                                    </select> -->
                                 </div>
                             </div>
                         </div>
                         <div class="cvvField">
-                            <label>Card Number</label>
+                            <label>Enter CVV</label>
                             <div class="multiple-form-field">
                                 <div class="input-field-boxed">
-                                    <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
+                                    <input type="text" id="cc-number" formControlName="ccvv" type="tel" #ccNumber
                                         kpAutocompleteOff placeholder="CVV">
                                 </div>
                                 <i class="icon-cvv"></i>

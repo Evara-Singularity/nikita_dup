@@ -36,13 +36,26 @@ export class NetBankingComponent {
     prepaidDiscount:number=0;
     totalPayableAmount:number=0;
     prepaidsubscription: Subscription;
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
-    imageFolder = CONSTANTS.pwaImages.imgFolder;
+    imagePath = CONSTANTS.CDN_IMAGE_PATH;
     @Input() type : any;
     set isShowLoader(value) {
         this._loaderService.setLoaderState(value);
     }
     bankSelectPopupStatus: boolean = false;
+    @Input() successPercentageData: any = null;
+    // sprint 13 changes
+    topBanks: Array<any> = [];
+    othersBanks: Array<any> = [];
+    lowSuccessBanks: Array<any> = [];
+    commonFailureMsg: boolean= null;
+
+    readonly bankImages = {
+        "AXIB": "axis_icon.png",
+        "UTIB": "hdfc_icon.png",
+        "UTIBF": "pnb_icon.png",
+        "SBI": "sbi_icon.png",
+        "UNITED": "united_logo.png",
+    };
 
     constructor(
         private _localStorageService: LocalStorageService,
@@ -54,181 +67,172 @@ export class NetBankingComponent {
         private _loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder) {
         this.payuData = {};
-        this.selectedBankCode = 'AXIB';
-        // //console.log(this.dataNB);
         this.isValid = false;
     }
 
     ngOnInit() {
-
-
-
-        // this.dataNB = DATA_NB;
-        // //console.log(res);
-        //  ;
-        if (this.type === 'retail') {
-            this.dataNB = this._objectToArray.transform(DATA_NB["NB"], "associative");
-            this.dataNBTop = this._objectToArray.transform(DATA_NB["NB-top"], "associative");    
-            this.selectedBankCode ="AXIB";
-            this.selectedBankName = "AXIS Bank NetBanking";
-        } else {
-            this.dataNB = this._objectToArray.transform(DATA_NB_RAZ["NB"], "associative");
-            this.dataNBTop = this._objectToArray.transform(DATA_NB_RAZ["NB-top"], "associative");    
-            this.selectedBankCode ="UTIB";
-            this.selectedBankName = "AXIS Bank NetBanking";
-        }
 
         this.netBankingForm = this._formBuilder.group({
             /*"platformCode": [null],
              "mode": [null],
              "paymentId": [2],*/
             "requestParams": this._formBuilder.group({
-                "paymentId": [this.type== 'tax' ? 74 : 5],            
-                "bankname": [this.selectedBankName, [Validators.required]]
+                "paymentId": [this.type == 'tax' ? 74 : 5],
+                "bankname": ['', [Validators.required]],
+                "topBank": []
             })
         });
 
+        if(this.successPercentageData){
+            const bankData = this.createNetBankingData(this.successPercentageData);
+            console.log('bankData =>', bankData);
+            this.topBanks = bankData.topBanks;
+            this.othersBanks = bankData.otherBanks;
+            this.lowSuccessBanks = bankData.lowSuccessBanks;
+        }
+
         this.getPrePaidDiscount();
         this.cartSesssion = Object.assign({}, this._cartService.getCartSession());
-        this.prepaidsubscription=this._cartService.prepaidDiscountSubject.subscribe((data) => {
+        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
-         })
-        
+        })
+        this.setFirstBankDefaults();
+    }
+
+    setFirstBankDefaults() {
+        // select default first top bank
+        const firstTopBank = this.topBanks[0]
+        this.selectedBankCode = firstTopBank['code'];
+        this.netBankingForm.get('requestParams').get("bankname").setValue(firstTopBank.code);
+    }
+
+    createNetBankingData(successPercentageData) {
+        const banksArr: [] = this._objectToArray.transform(successPercentageData);
+        const topBanks = banksArr.filter(item => item['is_top'] == 1)
+        const otherBanks = banksArr.filter(item => item['is_top'] != 1)
+        const lowSuccessBanks =  banksArr.filter(item => item['up_status'] == 0)
+        topBanks.sort((a, b) => (a['id'] > b['id']) ? 1 : -1)
+        otherBanks.sort((a, b) => (a['id'] > b['id']) ? 1 : -1)
+        return { topBanks, otherBanks, lowSuccessBanks };
     }
 
     ngAfterViewInit() {
-        //console.log("ngAfterViewInit Called")
+
     }
 
-    updateNetBankingBank(selectedBank) {
-        ////console.log(selectedBank);
-        //this.selectedBankCode = selectedBank;
-        if(this.type == 'retail'){
-            this.selectedBankCode  = DATA_NB['NB'][selectedBank] ?DATA_NB['NB'][selectedBank].code : DATA_NB['NB-top'][selectedBank].code;
-            this.selectedBankName = selectedBank;
-            this.netBankingForm.get('requestParams').get("bankname").setValue(this.selectedBankName)
-            this.netBankingForm.get('requestParams').get("paymentId").setValue(DATA_NB['NB'][this.selectedBankName] ? DATA_NB['NB'][this.selectedBankName].id : DATA_NB['NB-top'][this.selectedBankName].id);
-        }else{
-            this.selectedBankCode  = DATA_NB_RAZ['NB'][selectedBank] ? DATA_NB_RAZ['NB'][selectedBank].code : DATA_NB_RAZ['NB-top'][selectedBank].code;
-            this.selectedBankName = selectedBank;
-            this.netBankingForm.get('requestParams').get("bankname").setValue(this.selectedBankName)
-            this.netBankingForm.get('requestParams').get("paymentId").setValue(DATA_NB_RAZ['NB'][this.selectedBankName] ? DATA_NB_RAZ['NB'][this.selectedBankName].id : DATA_NB_RAZ['NB-top'][this.selectedBankName].id);    
-        }
-        ////console.log("Selected Bank Code",this.selectedBankCode);
-    }
 
     pay(data, valid) {
         if (!valid)
-        return;
-    ////console.log(data.requestParams);
-
-    let cartSession = this._cartService.getCartSession();
-    let cart = cartSession["cart"];
-    let cartItems = cartSession["itemsList"];
-
-    let userSession = this._localAuthService.getUserSession();
-
-    let addressList = this._checkoutService.getCheckoutAddress();
-
-    let shippingInformation = {
-        'shippingCost': cartSession['cart']['shippingCharges'],
-        'couponUsed': cartSession['cart']['totalOffer'],
-        'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
-    };
-
-    dataLayer.push({
-        'event': 'checkoutStarted',
-        'shipping_Information': shippingInformation,
-        'city': addressList["city"],
-        'paymentMode': 'NB'
-    });
-
-    let extra = {
-        "mode": "NB",
-        "paymentId": 5,
-        addressList: addressList
-    };
-
-    let newdata = {
-        "platformCode": "online",
-        "mode": extra.mode,
-        "paymentId": this.netBankingForm.get('requestParams').get('paymentId').value,
-        "requestParams": {
-            "firstname": addressList["addressCustomerName"].split(' ').slice(0, -1).join(' '),
-            "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
-            "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
-            "productinfo": "MSNghihjbc",
-            "bankcode": this.selectedBankCode,
-        },
-        "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
-    };
-    if(this.type == "tax"){
-        // newdata["requestParams"]["paymentId"]=this.netBankingForm.get('requestParams').get('paymentId').value;
-        newdata["paymentGateway"]="razorpay";
-        newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"]=this.netBankingForm.get('requestParams').get('paymentId').value;
-
-    }
-    this.isShowLoader = true;
-    //console.log("New Data for pay", newdata);
-    // $("#page-loader").show();
-    this._commonService.pay(newdata).subscribe((res): void => {
-
-        if (res.status != true) {
-            this.isValid = false;
-            this.isShowLoader = false;
-            alert(res.description);
             return;
+        ////console.log(data.requestParams);
+
+        let cartSession = this._cartService.getCartSession();
+        let cart = cartSession["cart"];
+        let cartItems = cartSession["itemsList"];
+
+        let userSession = this._localAuthService.getUserSession();
+
+        let addressList = this._checkoutService.getCheckoutAddress();
+
+        let shippingInformation = {
+            'shippingCost': cartSession['cart']['shippingCharges'],
+            'couponUsed': cartSession['cart']['totalOffer'],
+            'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
+        };
+
+        dataLayer.push({
+            'event': 'checkoutStarted',
+            'shipping_Information': shippingInformation,
+            'city': addressList["city"],
+            'paymentMode': 'NB'
+        });
+
+        let extra = {
+            "mode": "NB",
+            "paymentId": 5,
+            addressList: addressList
+        };
+
+        let newdata = {
+            "platformCode": "online",
+            "mode": extra.mode,
+            "paymentId": this.netBankingForm.get('requestParams').get('paymentId').value,
+            "requestParams": {
+                "firstname": addressList["addressCustomerName"].split(' ').slice(0, -1).join(' '),
+                "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
+                "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
+                "productinfo": "MSNghihjbc",
+                "bankcode": this.selectedBankCode,
+            },
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+        };
+        if (this.type == "tax") {
+            // newdata["requestParams"]["paymentId"]=this.netBankingForm.get('requestParams').get('paymentId').value;
+            newdata["paymentGateway"] = "razorpay";
+            newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"] = this.netBankingForm.get('requestParams').get('paymentId').value;
+
         }
+        this.isShowLoader = true;
+        //console.log("New Data for pay", newdata);
+        // $("#page-loader").show();
+        this._commonService.pay(newdata).subscribe((res): void => {
 
-        let data = res.data;
-        let payuData;
-        if(this.type=='retail'){
-            payuData = {
-                formUrl: data.formUrl,
-                key: (data.key != undefined && data.key != null) ? data.key : "",
-                //key: "o0O7UA",
-                txnid: (data.txnid != undefined && data.txnid != null) ? data.txnid : "",
-                //txnid: "9878767",
-                amount: (data.amount != undefined && data.amount != null) ? data.amount : "",
-                //amount: "1.01",
-                productinfo: data.productinfo,
-                //productinfo: "MSNghihjbc",
-                firstname: data.firstname,
-                //firstname: "Kuldeep",
-                //lastname: (data.lastname != undefined && data.lastname != null) ? data.lastname : "",
-                //zipcode: (data.zipcode != undefined && data.zipcode != null) ? data.zipcode : "",
-                email: data.email,
-                //email: "kuldeep.panchal669@moglix.com",
-                phone: data.phone,
-                surl: data.surl,
-                furl: data.furl,
-                curl: data.curl,
-                hash: data.hash,
-                //hash:"556dbad0696d0f97287175d0a416f80cfa24f935b9cc461331fedb2474b4bf9096ee20cd4cce0030a09f644e22454a01880e3f8b185490c7a28a126beb211192",
-                pg: data.pg,
-                bankcode: data.bankcode,
-                //ccnum: data.ccnum,
-                //ccname: data.ccname,
-                //ccvv: data.ccvv,
-                //ccexpmon: data.ccexpmon,
-                //ccexpyr: data.ccexpyr,
-                //store_card: data.store_card,
-                //user_credentials: data.key+':'+data.email
-            };
-        }else{
-            payuData = data;
-        }
+            if (res.status != true) {
+                this.isValid = false;
+                this.isShowLoader = false;
+                alert(res.description);
+                return;
+            }
 
-        this.updateBuyNowToLocalStorage();
-        this.payuData = payuData;
+            let data = res.data;
+            let payuData;
+            if (this.type == 'retail') {
+                payuData = {
+                    formUrl: data.formUrl,
+                    key: (data.key != undefined && data.key != null) ? data.key : "",
+                    //key: "o0O7UA",
+                    txnid: (data.txnid != undefined && data.txnid != null) ? data.txnid : "",
+                    //txnid: "9878767",
+                    amount: (data.amount != undefined && data.amount != null) ? data.amount : "",
+                    //amount: "1.01",
+                    productinfo: data.productinfo,
+                    //productinfo: "MSNghihjbc",
+                    firstname: data.firstname,
+                    //firstname: "Kuldeep",
+                    //lastname: (data.lastname != undefined && data.lastname != null) ? data.lastname : "",
+                    //zipcode: (data.zipcode != undefined && data.zipcode != null) ? data.zipcode : "",
+                    email: data.email,
+                    //email: "kuldeep.panchal669@moglix.com",
+                    phone: data.phone,
+                    surl: data.surl,
+                    furl: data.furl,
+                    curl: data.curl,
+                    hash: data.hash,
+                    //hash:"556dbad0696d0f97287175d0a416f80cfa24f935b9cc461331fedb2474b4bf9096ee20cd4cce0030a09f644e22454a01880e3f8b185490c7a28a126beb211192",
+                    pg: data.pg,
+                    bankcode: data.bankcode,
+                    //ccnum: data.ccnum,
+                    //ccname: data.ccname,
+                    //ccvv: data.ccvv,
+                    //ccexpmon: data.ccexpmon,
+                    //ccexpyr: data.ccexpyr,
+                    //store_card: data.store_card,
+                    //user_credentials: data.key+':'+data.email
+                };
+            } else {
+                payuData = data;
+            }
 
-        //console.log(payuData);
-        this.isValid = true;
-        setTimeout(() => {
-            this.isShowLoader = false;
-            // $("#page-loader").hide();
-        }, 1000)
-    });
+            this.updateBuyNowToLocalStorage();
+            this.payuData = payuData;
+
+            //console.log(payuData);
+            this.isValid = true;
+            setTimeout(() => {
+                this.isShowLoader = false;
+                // $("#page-loader").hide();
+            }, 1000)
+        });
     }
 
     /**
@@ -285,29 +289,21 @@ export class NetBankingComponent {
         });
     }
 
-
-    updateTopBank($event) {
-        this.selectedBankName = this.netBankingForm.get("requestParams").value.bankname;        
-        if(this.type == 'retail'){
-            this.selectedBankCode  = DATA_NB['NB'][this.selectedBankName] ?DATA_NB['NB'][this.selectedBankName].code : DATA_NB['NB-top'][this.selectedBankName].code;
-            this.selectedBankName = $event.target.value;
-            this.netBankingForm.get('requestParams').get("bankname").setValue(this.selectedBankName)
-            this.netBankingForm.get('requestParams').get("paymentId").setValue(DATA_NB['NB'][this.selectedBankName] ? DATA_NB['NB'][this.selectedBankName].id : DATA_NB['NB-top'][this.selectedBankName].id);
-        }else{
-            this.selectedBankCode  = DATA_NB_RAZ['NB'][this.selectedBankName] ? DATA_NB_RAZ['NB'][this.selectedBankName].code : DATA_NB_RAZ['NB-top'][this.selectedBankName].code;
-            this.selectedBankName = $event.target.value;
-            this.netBankingForm.get('requestParams').get("bankname").setValue(this.selectedBankName)
-            this.netBankingForm.get('requestParams').get("paymentId").setValue(DATA_NB_RAZ['NB'][this.selectedBankName] ? DATA_NB_RAZ['NB'][this.selectedBankName].id : DATA_NB_RAZ['NB-top'][this.selectedBankName].id);    
-        }
-    }
-
-    selectBank(data) {
+    selectBank(data, isTopBank = false) {
+        console.log('selectbak==> ', data, isTopBank);
         if (data) {
-            console.log('data ==>', data,  data.key);
-            this.bankSelectPopupStatus = false;
-            this.netBankingForm.get('requestParams').get("bankname").setValue(data.key);
-            console.log(this.netBankingForm.get('requestParams').get("bankname").value);
+            this.selectedBankCode = data.code;
+            // only set incase value selected from select popup
+            if (!isTopBank) {
+                this.selectedBankName = data.name;
+                this.commonFailureMsg = false;
+                this.commonFailureMsg = (data.up_status === 0) ? true : false;
+            } else {
+                this.selectedBankName = null;
+            }
+            this.netBankingForm.get('requestParams').get("bankname").setValue(data.code);
         }
+        this.bankSelectPopupStatus = false;
     }
 
     openYearPopUp(){

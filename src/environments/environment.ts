@@ -5,8 +5,9 @@ export const environment = {
   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",
-  IMAGE_BASE_URL: 'https://cdn.moglix.com/',
+  IMAGE_BASE_URL: '/',
   DOCUMENT_URL: 'https://document.moglix.com/',
+  CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"

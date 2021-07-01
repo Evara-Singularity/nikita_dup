@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Input, ElementRef } from '@angular/core';
 import { EmiService } from "./emi.service";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { CreditCardValidator } from "ng2-cc-library";
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../config/constants';
@@ -38,7 +38,7 @@ export class EmiComponent {
     emiResponse: {};//Object Data
     emiRawDebitCardResponse = null;
     emiRawCreditCardResponse = null;
-    expYrs: Array<number>;
+    expYrs: Array<any>;
     expMons: Array<{ key: string, value: string }>;
     isValid: boolean;
     payuData: {};
@@ -59,6 +59,10 @@ export class EmiComponent {
         this.loaderService.setLoaderState(value);
     }
     noCostEmiCount = {};
+    monthSelectPopupStatus: boolean = false;
+    selectedMonth: string = null;
+    yearSelectPopupStatus: boolean = false;
+    selectedYear: string = null;
 
 
     constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray, private _emiService: EmiService, private elementRef: ElementRef, private loaderService: GlobalLoaderService, private _bankNamePipe: BankNamePipe) {
@@ -68,7 +72,7 @@ export class EmiComponent {
 
         this.emiForm = this._formBuilder.group({
             "store_card": [false],
-            "mode": ['EMI', [Validators.required]],
+            "mode": ['EMI', []],
             "requestParams": this._formBuilder.group({
                 "ccexpyr": ['', [Validators.required]],
                 "ccnum": [null, [<any>CreditCardValidator.validateCCNumber]],
@@ -122,7 +126,7 @@ export class EmiComponent {
         ////console.log(todayDate);
         let currentYear = todayDate.getFullYear();
         for (let i = 0; i < 20; i++) {
-            this.expYrs.push(currentYear);
+            this.expYrs.push({key: currentYear, value: currentYear});
             currentYear = currentYear + 1;
         }
         this.isValid = false;
@@ -602,6 +606,36 @@ export class EmiComponent {
         );
         this.paymentMethod = card;
         this.selectDefaultEMI();
+    }
+
+    selectMonth(data) {
+        console.log('selectMonth ==>', data);
+        if (data) {
+            this.monthSelectPopupStatus = false;
+            this.selectedMonth = data['value'];
+            (this.emiForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
+        }
+    }
+
+    openMonthPopUp(){
+        this.monthSelectPopupStatus = true;
+    }
+
+    selectYear(data) {
+        console.log('selectMonth ==>', data);
+        if (data) {
+            this.yearSelectPopupStatus = false;
+            this.selectedYear = data['value'];
+            (this.emiForm.get('requestParams.ccexpyr') as FormControl).setValue(data.key);
+        }
+    }
+
+    openYearPopUp(){
+        this.yearSelectPopupStatus = true;
+    }
+
+    get selectedEmiOption(){
+        return this.emiForm.get('requestParams.bankcode').value;
     }
 
     ngOnDestroy () {

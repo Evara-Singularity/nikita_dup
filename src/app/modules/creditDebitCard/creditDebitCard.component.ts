@@ -310,12 +310,13 @@ export class CreditDebitCardComponent {
     }
 
     selectMonth(data) {
-        console.log('selectMonth ==>', data);
+        // console.log('selectMonth ==>', data);
         if (data) {
-            this.monthSelectPopupStatus = false;
+           
             this.selectedMonth = data['value'];
             (this.creditDebitCardForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
         }
+        this.monthSelectPopupStatus = false;
     }
 
     openMonthPopUp(){
@@ -323,12 +324,13 @@ export class CreditDebitCardComponent {
     }
 
     selectYear(data) {
-        console.log('selectMonth ==>', data);
+        // console.log('selectMonth ==>', data);
         if (data) {
-            this.yearSelectPopupStatus = false;
+            
             this.selectedYear = data['value'];
             (this.creditDebitCardForm.get('requestParams.ccexpyr') as FormControl).setValue(data.key);
         }
+        this.yearSelectPopupStatus = false;
     }
 
     openYearPopUp(){

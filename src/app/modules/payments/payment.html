@@ -24,7 +24,7 @@
             </div>
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['netBanking']">
-                    <net-banking [type]="invoiceType"></net-banking>
+                    <net-banking [type]="invoiceType" [successPercentageData]="neftSuccessPercentageData" ></net-banking>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
             </div>
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['wallet']">
-                    <wallet [type]="invoiceType"></wallet>
+                    <wallet [type]="invoiceType" [successPercentageData]="walletSuccessPercentageData" ></wallet>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
             </div>
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['upi']" class="payment-popup">
-                    <upi *ngIf="paymentBlock==globalConstants['upi']" [type]="invoiceType"></upi>
+                    <upi *ngIf="paymentBlock==globalConstants['upi']" [successPercentageData]="upiSuccessPercentageData" [type]="invoiceType"></upi>
                 </div>
             </div>
         </div>

@@ -1,4 +1,20 @@
 <section class="container upiBlockInner">
+
+    
+    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==1">
+        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}. If possible, use an alternate payment mode
+    </div>
+
+    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==2">
+        Low success rate currently observed for {{lowSuccessBanks[0]['name']}} and {{lowSuccessBanks[1]['name']}}. If
+        possible, use an alternate payment mode
+    </div>
+
+    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==3">
+        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}, {{lowSuccessBanks[1]['name']}} and {{
+        (+lowSuccessBanks.length - 1 )}} banks. If possible, use an alternate payment mode
+    </div>
+
     <div id="upi_block" class="upi-block continer">
         <form [formGroup]="upiForm" (ngSubmit)="pay(upiForm.value, upiForm.valid)" class="form-horizontal">
             <div class="material-form material-form-boxed" *ngIf="upiChecked">
@@ -9,13 +25,6 @@
                             class="fa fa-times"></i></span>
                 </div>
             </div>
-            <!-- <div class="all_upi-icons">
-                <img src="{{imagePath+imageFolder}}/google-pay-wallet.png">
-                <img src="{{imagePath+imageFolder}}/bhim-wallet.png">
-                <img src="{{imagePath+imageFolder}}/paytm-wallet.png">
-                <img src="{{imagePath+imageFolder}}/phone-pe-wallet.png">
-                <img src="{{imagePath+imageFolder}}/whatsapp-wallet.png">
-            </div> -->
 
             <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
 

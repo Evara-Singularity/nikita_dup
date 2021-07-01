@@ -28,8 +28,6 @@ export class BrandStoreResolver implements Resolve<object> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
 
-    console.log(GLOBAL_CONSTANT);
-
     this.loaderService.setLoaderState(true);
     const logosObj = makeStateKey<object>('logosObj');
     const brandsObj = makeStateKey<object>('brandsObj');

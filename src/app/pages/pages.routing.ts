@@ -200,7 +200,7 @@ const routes: Routes = [
 			{
 				path: 'brand-store',
 				loadChildren: () =>
-					import('./static/brand-store/brand-store.module').then((m) => m.BrandModule),
+					import('./static/brand-store/brand-store.module').then((m) => m.BrandStoreModule),
 				data: {
 					footer: false,
 					title: 'Brand Store',

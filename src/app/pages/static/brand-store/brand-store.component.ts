@@ -29,6 +29,7 @@ export class BrandComponent{
 		this.loaderService.setLoaderState(value);
 	}
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
+
 	constructor(
 		private title: Title,
 		private meta: Meta,
@@ -72,7 +73,7 @@ export class BrandComponent{
 				const brandData = rawData['brandData'];
 				this.cmsData = rawData['brandData'][2]['data'] ? rawData['brandData'][2]['data']['data'] : [];
 				this.brandsLogo =
-					brandData[0]['data'][0]['block_data']['all_brand_store']['data'];
+				brandData[0]['data'][0]['block_data']['all_brand_store']['data'];
 				this.isShowLoader = false;
 				this.total_count = brandData[1]['totalCount'];
 				this.final_arr1 = brandData[1]['brands'].sort(this.compare);

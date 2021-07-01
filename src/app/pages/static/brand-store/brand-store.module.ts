@@ -17,4 +17,4 @@ import { CmsModule } from '@app/modules/cms/cms.module';
 	exports: [BrandComponent],
 	providers: [],
 })
-export class BrandModule {}
+export class BrandStoreModule {}

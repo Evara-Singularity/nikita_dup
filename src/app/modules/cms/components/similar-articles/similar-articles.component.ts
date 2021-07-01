@@ -6,10 +6,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./similar-articles.component.scss']
 })
 export class SimilarArticlesComponent implements OnInit {
-
-    @Input('data') data = null
+  @Input('customStyle') customStyle;
+  @Input('data') data = null
     
-    constructor() { }
+  constructor() { }
 
   ngOnInit() {
   }

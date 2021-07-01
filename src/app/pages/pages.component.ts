@@ -74,7 +74,6 @@ export class PagesComponent implements OnInit {
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ( (this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)  ){
-            console.log('updateCartSession called');
             this.updateCartSession();
           }
           this._localAuthService.login$.next();

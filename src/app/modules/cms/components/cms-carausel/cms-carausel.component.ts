@@ -7,11 +7,18 @@ import { Router } from '@angular/router';
     styleUrls: ['./cms-carausel.component.scss']
 })
 export class CmsCarauselComponent {
- 
-    constructor(private router: Router){
-    }
+    @Input('data') data = [];
+    @Input('imagePath') imagePath = '';
+    @Input('customStyle') customStyle;
+    imageTitle = '';
+    redirectPageLink = '';
 
-    naivgateTo(link){
-        this.router.navigate([link]);
+    constructor(private router: Router){}
+
+    ngOnInit() { 
+        console.log(this.data);
+    }
+    navigateTo(link) { 
+        this.router.navigate([link]); 
     }
 }

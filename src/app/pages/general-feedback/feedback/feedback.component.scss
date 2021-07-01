@@ -4,7 +4,7 @@
     margin-top: 20px;
     padding: 15px 6px;
     .cancellation-feedback-wrap {
-        box-shadow: 0px 3px 15px #0000001F;
+        box-shadow: 0px 3px 15px #0000001f;
         border-radius: 8px;
         .cancellation-head {
             background: #4196fb;
@@ -17,7 +17,7 @@
                 display: inline-block;
                 p {
                     color: #fff;
-                    font-size: 18px;
+                    font-size: 12px !important;
                     font-weight: 400;
                 }
                 h1 {
@@ -47,7 +47,7 @@
                 padding-bottom: 10px;
             }
             .product-details {
-                border: 1px solid #E5E5E5;
+                border: 1px solid #e5e5e5;
                 max-width: 438px;
                 width: 100%;
                 padding: 15px 0;
@@ -63,9 +63,13 @@
                 .text {
                     display: inline-block;
                     p {
-                        font-size: 10px;
+                        font-size: 12px !important;
                         font-weight: 400;
                         line-height: 15px;
+                        width: 250px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
             }
@@ -76,7 +80,7 @@
         border-radius: 8px;
         margin-top: 20px;
         padding: 30px 15px;
-        box-shadow: 0px 3px 15px #0000001F;
+        box-shadow: 0px 3px 15px #0000001f;
         .asterick {
             color: #db232e;
             display: inline-block;
@@ -89,7 +93,7 @@
             }
             label {
                 vertical-align: middle;
-                font-size: 16px;
+                font-size: 15px;
                 margin: 0;
             }
         }
@@ -122,13 +126,13 @@
                     -webkit-appearance: checkbox;
                 }
                 label {
-                    font-size: 16px;
+                    font-size: 15px;
                     font-weight: 400;
                     vertical-align: middle;
                     margin: 0;
                 }
                 textarea {
-                    border: 1px solid #CCCCCC;
+                    border: 1px solid #cccccc;
                     margin-left: 25px;
                     margin-top: 12px;
                     vertical-align: middle;
@@ -141,7 +145,7 @@
         }
     }
     .submit {
-        background: #F5681E;
+        background: #f5681e;
         border-radius: 3px;
         padding: 15px;
         font-size: 14px;
@@ -165,7 +169,7 @@
     }
 }
 
-@media screen and (min-width:320px) {
+@media screen and (min-width: 320px) {
     .text {
         p {
             font-size: 8px !important;

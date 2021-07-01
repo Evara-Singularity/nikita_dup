@@ -200,7 +200,7 @@ const routes: Routes = [
 			{
 				path: 'brand-store',
 				loadChildren: () =>
-					import('./static/brand/brand.module').then((m) => m.BrandModule),
+					import('./static/brand-store/brand-store.module').then((m) => m.BrandStoreModule),
 				data: {
 					footer: false,
 					title: 'Brand Store',
@@ -650,6 +650,30 @@ const routes: Routes = [
 					moreOpt: false,
 				},
 			},
+            {
+                path: 'feedback',
+                loadChildren: () =>
+                    import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
+                data: {
+                    title: 'Feedback',
+                    menuBar: true,
+                    footer: false,
+                },
+            },
+			{
+                path: 'assist-verification-success',
+                loadChildren: () => import('@pages/assist-verification-success/assist-verification-success.module').then(m => m.AssistVerificationSuccessModule),
+                data: {
+                    hideHeader: true,
+                },
+            },
+            {
+                path: 'assist-verification-failure',
+                loadChildren: () => import('@pages/assist-verification-failure/assist-verification-failure.module').then(m => m.AssistVerificationFailureModule),
+                data: {
+                    hideHeader: true,
+                },
+            },
             {
                 path: 'feedback',
                 loadChildren: () =>

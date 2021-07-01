@@ -80,6 +80,7 @@ export const ENDPOINTS = {
   GET_CATEGORY: "/category/getcategory",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",
+  GET_CMS_LAYOUT: "/cmsapi/getLayoutJsonByCode?layoutCode=",
   GET_SESSION: "/session/getSession",
   GET_TOKKEN: "/token/getToken",
   LOGOUT: "/login/logout",

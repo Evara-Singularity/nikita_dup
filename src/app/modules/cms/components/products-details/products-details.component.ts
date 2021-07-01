@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./products-details.component.scss']
 })
 export class ProductsDetailsComponent implements OnInit {
-
+    @Input('customStyle') customStyle;
     @Input('listOfProducts') listOfProducts: any[] = null;
     @Input('titleData') titleData = null;
     @Input('imagePath') imagePath = null;

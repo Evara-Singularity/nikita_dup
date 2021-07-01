@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid"  [ngStyle]="customStyle">
     <div class="row brand-container">
         <h3 [ngStyle]="titleData?.style" class="f-size-16 mar-tb-20" *ngIf="titleData"> {{ titleData?.titleName }} </h3>
         <div class="brand-items-wrap">

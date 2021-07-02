@@ -398,7 +398,7 @@ export class CategoryComponent implements OnInit {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res.buckets)));
+            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res.priceRangeBuckets)));
         }
     }
 

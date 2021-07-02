@@ -10,6 +10,7 @@ export class DynamicImageComponent {
     @Input('listOfImgs') listOfImgs = null;
     @Input('imagePath') imagePath = null;
     @Input('titleData') titleData = null;
+    @Input('customStyle') customStyle;
     constructor(private router: Router){}
 
     naivgateTo(link){

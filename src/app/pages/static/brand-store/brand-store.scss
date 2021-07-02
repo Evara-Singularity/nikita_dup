@@ -209,3 +209,113 @@
   padding: 20px 40px;
   line-height: 20px;
 }
+
+
+.revamp-brandStore {
+  padding-top: 15px;
+  .head-bs {
+      padding: 0 40px;
+  }
+  .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin: 15px 15px 0;
+      >div {
+          display: flex;
+          flex-shrink: 0;
+          scroll-snap-align: start;
+          scroll-behavior: smooth;
+          justify-content: center;
+          align-items: center;
+      }
+      .carousel-item {
+          margin-right: 15px;
+          &:last-child {
+              margin-right: 0;
+          }
+          img {
+              width: 260px;
+          }
+      }
+      .brand-logo {
+          img {
+              width: 56px;
+          }
+      }
+  }
+  .moglix-recommended {
+      padding: 20px 0;
+      margin: 0 15px;
+      h2 {
+          padding-bottom: 10px;
+          font-size: 14pt;
+      }
+      .product-image {
+          background: #CEEEFF;
+          padding: 15px;
+      }
+  }
+  .banner-wrap {
+      padding: 0 15px 20px;
+  }
+  .spotlight-section {
+      padding: 0 15px;
+      h2 {
+          padding-bottom: 10px;
+          font-size: 14pt;
+      }
+      .spotlight-carousel {
+          margin: 0;
+          .carousel-item {
+              img {
+                  width: 122px;
+              }
+          }
+      }
+  }
+  .brands-home-productivity {
+      padding: 20px 15px 0;
+      h2 {
+          padding-bottom: 10px;
+          font-size: 11pt;
+      }
+  }
+  .premium-brand {
+      padding: 20px 15px;
+      h2 {
+          padding-bottom: 10px;
+      }
+      .inner-premium-band {
+          width: 47%;
+          display: inline-block;
+          margin: 0 15px 15px 0;
+          &:nth-child(odd) {
+              margin-right: 0;
+          }
+          img {
+              width: 165px;
+          }
+      }
+  }
+  .home-office {
+      padding: 0 15px;
+      h2 {
+          padding-bottom: 10px;
+      }
+      .outer-wrap-HO {
+          padding-bottom: 15px;
+          .inner-home-office {
+              width: 30%;
+              display: inline-block;
+              margin-right: 12px;
+              &:last-child {
+                  margin-right: 0;
+              }
+              img {
+                  width: 105px;
+              }
+          }
+      }
+  }
+}

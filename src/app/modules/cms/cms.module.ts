@@ -11,6 +11,7 @@ import { FullImageComponent } from "./components/full-image/full-image.component
 import { DynamicImageComponent } from "./components/dynamic-image-component/dynamic-image.component";
 import { NgxSiemaModule } from 'ngx-siema';
 import { SiemaCarouselModule } from "../siemaCarousel/siemaCarousel.module";
+import { CmsCarauselComponent } from "./components/cms-carausel/cms-carausel.component";
 
 @NgModule({
     imports:[
@@ -22,6 +23,7 @@ import { SiemaCarouselModule } from "../siemaCarousel/siemaCarousel.module";
         TextComponent,
         SmallImageComponent,
         SimilarArticlesComponent,
+        CmsCarauselComponent,
         DynamicImageComponent,
         ProductsDetailsComponent,
         MainBannerComponent,
@@ -36,6 +38,7 @@ import { SiemaCarouselModule } from "../siemaCarousel/siemaCarousel.module";
         SimilarArticlesComponent,
         ProductsDetailsComponent,
         MainBannerComponent,
+        CmsCarauselComponent,
         FullImageComponent,
         ImageTextComponent,
         CmsWrapperComponent

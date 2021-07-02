@@ -31,8 +31,4 @@ export class CategoryService {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategorySchema + categoryId;
         return this._dataService.callRestful("GET", url);
     }
-    getRelatedArticles(categoryId): Observable<any> {
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ArticlesListByCategory + `${categoryId}`;
-        return this._dataService.callRestful("GET", url);
-    }
 }

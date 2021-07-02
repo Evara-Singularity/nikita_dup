@@ -112,6 +112,16 @@ export class SearchBarComponent implements OnInit {
 
     }
 
+
+    handleSendTextToSearchBar(data: string, e?: Event) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        this.searchForm.get('searchTerm').patchValue(data);
+    }
+
+
     updateData(event) {
         this.ssp = event;
     }

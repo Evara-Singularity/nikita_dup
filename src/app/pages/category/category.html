@@ -56,16 +56,13 @@
         </div>
     </div>
 
-    <div class="quickLinksSection" *ngIf="buckets.length > 0 && firstPageContent">
+    <div class="quickLinksSection" *ngIf="firstPageContent && productCategoryNames.length > 0">
         <h4>Quick Links</h4>
         <a *ngFor="let category of productCategoryNames" href="{{categoryLinkLists[category]}}" class="quickLinkList">{{category}}</a>
     </div>
-
-
-    <div *ngIf="productListLength && firstPageContent" observeVisibility [debounceTime]="100" (visible)="onVisibleRecentArticles($event)">
-        <ng-container *ngIf="_commonService?.isBrowser" #recentArticles></ng-container>
+    <div *ngIf="firstPageContent && productListLength">
+        <recent-articles [recentArticles]="recentArticlesData" [title]="recentArtitlcesTitle"></recent-articles>
     </div>
-    <!--ODP-1221-->
     <div [class.visibility]="!firstPageContent">
         <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
     </div>

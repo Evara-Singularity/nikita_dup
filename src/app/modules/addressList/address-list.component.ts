@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, Inject, OnInit, AfterViewInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectionStrategy, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, Output, Input, EventEmitter, Inject, OnInit, AfterViewInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectionStrategy, PLATFORM_ID, ViewChild, } from '@angular/core';
 import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { delay } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { AddressListService } from './address-list.service';
 import { BottomMenuComponent } from '../bottomMenu/bottom-menu.component';
 import { CartService } from '../../utils/services/cart.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         @Inject(PLATFORM_ID) platformId,
         private cartService: CartService,
         private _checkoutService: CheckoutService,
+        public router: Router,
         private _addressListService: AddressListService) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);

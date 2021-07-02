@@ -26,7 +26,7 @@
           </span>
         </span>
       </label>
-      <i *ngIf="showRadio && (layoutType == 'LIST')" class="icon-dot"
+      <i *ngIf="showRadio && (layoutType == 'LIST') && (router.url.indexOf('/checkout') == -1)" class="icon-dot"
         (click)="sbm = {index: i, type: type, address: address}"></i>
     </div>
   </form>

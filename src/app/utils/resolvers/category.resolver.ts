@@ -34,30 +34,17 @@ export class CategoryResolver implements Resolve<object> {
     createDefaultParams(currentQueryParams, params, fragment) {
 
         const newParams: any = {
-            queryParams: {}
+            queryParams: {},
+            filter: {}
         };
-
         
-
-        const defaultParams = this._commonService.getDefaultParams();
-
-        /**
-         *  Below code is added to maintain the state of sortBy : STARTS
-         */
-        if (defaultParams['queryParams']['orderBy'] !== undefined) {
-            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
-        }
-        if (defaultParams['queryParams']['orderWay'] !== undefined) {
-            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
-        }
-
         for (let key in currentQueryParams) {
             newParams.queryParams[key] = currentQueryParams[key];
         }
 
-        newParams['filter'] = {};
-
         newParams['category'] = params['id'];
+
+        newParams['pageName'] = this.pageName;
 
         if (fragment !== undefined && fragment != null && fragment.length > 0) {
             let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
@@ -90,7 +77,6 @@ export class CategoryResolver implements Resolve<object> {
             }
         }
 
-        newParams['pageName'] = this.pageName;
         return newParams;
     }
     

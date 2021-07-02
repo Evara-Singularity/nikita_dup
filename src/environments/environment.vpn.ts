@@ -10,7 +10,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   SOCIAL_LOGIN: {
     "google": {
-      "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"
+      "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"
     },
     "facebook": {
       "clientId": "775243655917959",

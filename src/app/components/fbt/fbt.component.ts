@@ -326,6 +326,10 @@ export class FbtComponent implements OnInit
         this.addToCartFromModal(routerLink);
     }
 
+    navigateToPDP(url: string){
+        this.router.navigateByUrl('/'+url);
+    }
+
     removeCartPromoCode(cartSession)
     {
         cartSession['offersList'] = [];

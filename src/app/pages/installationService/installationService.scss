@@ -1,7 +1,7 @@
 @import '../../scss/variables';
 
 .installtion-banner{
-  background:url(#{$cdn_url}img/others/services/installation-banner.jpg);
+  background:url("#{$cdn_url}/assets/img/others/services/installation-banner.jpg");
   background-size:cover;
   position:relative;
   height:340px;

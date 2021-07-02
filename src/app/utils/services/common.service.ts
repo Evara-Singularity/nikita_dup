@@ -147,6 +147,7 @@ export class CommonService {
                 this.defaultParams[key] = updatedParams[key];
             }
         }
+        
         return this.defaultParams;
     }
 

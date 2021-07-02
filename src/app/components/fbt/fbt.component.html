@@ -32,7 +32,7 @@
                     </label>
                 </div>
                 <div class="fbTrightContainer">
-                    <a [href]="product.url" target="_self">
+                    <a (click)="navigateToPDP(product.url)"  >
                         <div class="product-img">
                             <img [src]="product.productImage">
                         </div>

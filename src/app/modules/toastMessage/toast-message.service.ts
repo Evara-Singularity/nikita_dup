@@ -3,11 +3,11 @@ import { ToastMessage } from './toast-message.module';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
-    providedIn:'root'
+    providedIn: 'root'
 })
 export class ToastMessageService {
     private subject = new Subject<ToastMessage>();
-    
+
     constructor() {
     }
 
@@ -19,9 +19,8 @@ export class ToastMessageService {
         setTimeout(() => {
             this.subject.next(<ToastMessage>toast);
         }, 0);
-    }
-
-    remove() {
+        
     }
 
 }
+

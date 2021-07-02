@@ -1,7 +1,7 @@
 @import '../../scss/variables';
 
 .greengst-banner-max{
-  background:url("#{$cdn_url}img/others/e-background-banner.jpg") no-repeat;
+  background:url("#{$cdn_url}/assets/img/others/e-background-banner.jpg") no-repeat;
   background-size: cover;
   padding: 25px;
   position:relative;
@@ -22,7 +22,7 @@
   content:"";
   position:absolute;
   left: 22px;
-  background:url("#{$cdn_url}img/others/landingpage_check.svg") no-repeat;
+  background:url("#{$cdn_url}/assets/img/others/landingpage_check.svg") no-repeat;
   width:32px;
   height:40px;
   background-size:100%;
@@ -54,7 +54,7 @@
   font-size:16px;
 }
 .quote-div p:first-child:before{
-  background: url(#{$cdn_url}img/others/e-quote_start.svg) no-repeat;
+  background: url("#{$cdn_url}/assets/img/others/e-quote_start.svg") no-repeat;
   position: absolute;
   width: 30px;
   height: 40px;
@@ -66,7 +66,7 @@
   
 }
 .quote-div p:last-child:after{
-  background:url(#{$cdn_url}img/others/e-quote_end.svg) no-repeat;
+  background:url("#{$cdn_url}/assets/img/others/e-quote_end.svg") no-repeat;
   position:absolute;
   width: 30px;
   height:40px;

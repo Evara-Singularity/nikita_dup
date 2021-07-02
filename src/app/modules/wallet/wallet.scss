@@ -1,4 +1,5 @@
 @import '../../scss/variables';
+@import '../.././modules/payments/payment-common';
 .wallet-container {
     label {
         padding: 10px 15px;
@@ -12,5 +13,12 @@
         .custom-box {
             margin-top: 10px;
         }
+    }
+}
+
+.walletInner {
+    @extend %pwa-universal-radio;
+    .pad-l-8 {
+        padding-left: 8px;
     }
 }

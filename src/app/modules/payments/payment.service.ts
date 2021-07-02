@@ -25,4 +25,10 @@ export class PaymentService{
         }else
             return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CARD.GET_SAVED_CARD, {params:data});
     }
+
+    getPaymentsMethodData(type) {
+        let url = CONSTANTS.NEW_MOGLIX_API + "/payment/getPaymentMethodsStatus?gateWay=";
+        url += (type == "retail") ? "payu" : "razorpay";
+        return this._dataService.callRestful('GET', url);
+    }
 }

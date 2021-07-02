@@ -6,13 +6,13 @@
         </li> -->
         <!-- {{step}} -->
         <li class="grsolid" [style.width.%]="50">
-            <span class="trackerStatusHeading" [ngClass]="{'green':step ==1}">Address & Summary</span>
+            <span class="trackerStatusHeading" [ngClass]="{'green': +step >= 1}">Address & Summary</span>
             <span class="clearfix"></span>
-            <span [ngClass]="{'activeTracker':step ==1}" class="st_trackerline "></span>
+            <span [ngClass]="{'activeTracker':+step >= 1}" class="st_trackerline "></span>
         </li>
         <li class="grsolid" [style.width.%]="50">
-            <span class="trackerStatusHeading" [ngClass]="{'green':step ==3}">PAYMENT</span>
-            <span [ngClass]="{'activeTracker':step ==3}" class="st_trackerline"></span>
+            <span class="trackerStatusHeading" [ngClass]="{'green': +step ==3}">PAYMENT</span>
+            <span [ngClass]="{'activeTracker':+step ==3}" class="st_trackerline"></span>
         </li>
     </ul>
 </div>

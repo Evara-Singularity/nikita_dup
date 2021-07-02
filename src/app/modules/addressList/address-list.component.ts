@@ -18,6 +18,7 @@ import { CheckoutService } from '../../utils/services/checkout.service';
 export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(BottomMenuComponent) _bottomMenuComponent: BottomMenuComponent;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() closePopUp$: EventEmitter<any> = new EventEmitter<any>();
     @Input() type: number;
     @Input() layoutType: string;
     @Input() invoiceType: string;
@@ -173,5 +174,15 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.sbm = undefined;
         this.setAddressIndex();
+    }
+
+    updateAddressV1(data) {
+        this.sbm = data;
+        this.updateAddress()
+    }
+
+    selectAddress(address, addressType, selectedIndex){
+        this.ucai(address, addressType, selectedIndex);
+        this.closePopUp$.emit(true);
     }
 }

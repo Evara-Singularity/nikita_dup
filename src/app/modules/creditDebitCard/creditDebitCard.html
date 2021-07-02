@@ -1,14 +1,7 @@
-<section class="card-payment container">
-    <div class="">
-    <form class="material-form" [formGroup]="creditDebitCardForm" (ngSubmit)="pay(creditDebitCardForm.value, creditDebitCardForm.valid)">
-        <!-- <label class="inline-block pad-r-20">
-            <input type="radio" (change)="getPrePaidDiscount('CC')" formControlName="mode" value="CC">
-            <span class="radio-text icon-checkout_check">Credit Card</span>
-        </label>
-        <label class="inline-block pad-lr-20 pad-lr-xs-5">
-            <input type="radio" (change)="getPrePaidDiscount('DC')" formControlName="mode" value="DC">
-            <span class="radio-text icon-checkout_check inline-block">Debit Card</span>
-        </label> -->
+<section class="creditDebitCardInner">
+    <h3 class="heading-3">Please enter you debit/credit card details</h3>
+    <form class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
+        (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
         <div class="custom-cbox clearfix">
             <label class="wp-50 f-left">
                 <input type="radio" (change)="getPrePaidDiscount('CC')" formControlName="mode" value="CC">
@@ -21,60 +14,71 @@
                 <span class="chk-txt">Debit Card</span>
             </label>
         </div>
-
-        <div formGroupName="requestParams">
-            <div class="input-field">
-                <label [class.is-focus]="ccNumber.value!=''">
-                    <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff>
-                        <span class="label">Card Number*</span>
-                    <!-- <div class="error-txt" *ngIf="false">Test</div> -->
-                </label>
+        <ng-container formGroupName="requestParams">
+            <div class="input-field-boxed">
+                <label>Card Number</label>
+                <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff
+                    placeholder="Enter Card Details">
             </div>
-            <div class="input-field">
-                <label [class.is-focus]="nameOnCard.value!=''">
-                    <input formControlName="ccname" type="text" #nameOnCard>
-                    <span class="label">Name on Card*</span>
-                </label>
-                <div class="error-txt" *ngIf="false">Test</div>
-            </div>
-            <div class="column-field clearfix">
-                <div class="input-field w-45 f-left">
-                    <label [class.is-focus]="expireMonth.value!=''">
-                        <span class="label">Select Month*</span>
-                        <select formControlName="ccexpmon" #expireMonth>
-                            <!-- <option value="mm">MM</option> -->
+            <div class="card-expiryDate">
+                <label>Expiry Date</label>
+                <div class="multiple-form-field">
+                    <div class="input-field-boxed">
+                        <input type="hidden" formControlName="ccexpmon" #expireMonth />
+                        <div class="custom_select_box" (click)="openMonthPopUp()" >
+                            <div class="custom_select_input">
+                                <span>{{selectedMonth || 'MM'}}</span>
+                                <i class="icon-dropdown"></i>
+                            </div>
+                        </div>
+                        <select-popup 
+                                [itemArray]="expMons" 
+                                [displayKey]="'value'" 
+                                [valueKey]="'key'" 
+                                [headerLabel]="'Select Month'"
+                                [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)" ></select-popup>
+                        <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
                             <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
-                        </select>
-                        <i class="icon-down"></i>
-                    </label>
-                    <!-- <div class="error-txt" *ngIf="false">Test</div> -->
-                </div>
-                <div class="input-field w-45 f-right">
-                    <label [class.is-focus]="expireYear.value!=''">
-                        <span class="label">Select year*</span>
-                        <select formControlName="ccexpyr" #expireYear>
-                            <!-- <option value=" ">YY</option> -->
+                        </select> -->
+                    </div>
+                    <div class="input-field-boxed">
+                        <input type="hidden" formControlName="ccexpyr" #expireYear />
+                        <div class="custom_select_box" (click)="openYearPopUp()" >
+                            <div class="custom_select_input">
+                                <span>{{selectedYear || 'YYYY'}}</span>
+                                <i class="icon-dropdown"></i>
+                            </div>
+                        </div>
+                        <select-popup 
+                                [itemArray]="expYrs" 
+                                [displayKey]="'value'" 
+                                [valueKey]="'key'" 
+                                [headerLabel]="'Select Year'"
+                                [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)" ></select-popup>
+                        <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
                             <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
-                        </select>
-                        <i class="icon-down"></i>
-                    </label>
-                    <!-- <div class="error-txt" *ngIf="false">Test</div> -->
+                        </select> -->
+                    </div>
                 </div>
             </div>
-            <div class="column-field clearfix">
-                <div class="input-field w-30 f-left">
-                    <label [class.is-focus]="ccCvc.value!=''">
-                        <input id="cc-cvc" formControlName="ccvv" type="password" class="w-60" #ccCvc kpAutocompleteOff>
-                        <span class="label">CVV*</span>
-                    </label>
-                    <!-- <div class="error-txt" *ngIf="false">Test</div> -->
-                </div>
-                <div class="w-65 f-right cvv-info">
+            <div class="cvvField">
+                <label>Card Number</label>
+                <div class="multiple-form-field">
+                    <div class="input-field-boxed">
+                        <input type="text" placeholder="CVV" id="cc-cvc" formControlName="ccvv" type="password"
+                            class="w-60" #ccCvc kpAutocompleteOff>
+                    </div>
                     <i class="icon-cvv"></i>
-                    <p>Last 3 digits printed on the back of the card</p>
+                    <span class="cvv-text">
+                        Last 3 digits printed on <br /> the back of the card.
+                    </span>
                 </div>
             </div>
-        </div>
+            <div class="input-field-boxed">
+                <label>Name On Card</label>
+                <input type="text" placeholder="Name On Card" formControlName="ccname" type="text" #nameOnCard>
+            </div>
+        </ng-container>
         <div class="custom-cbox">
             <label>
                 <input class="hidden" type="checkbox" formControlName="store_card">
@@ -82,86 +86,17 @@
                 <span class="chk-txt">Save this card for faster payments</span>
             </label>
         </div>
-
-        <div class="pad-tb-15 mt-15 border-top">
-            <p class="lh-18">Please note.You might be redirected to 3-D secure page to
-                complete your transaction.By placing this order, you agree to the <a class="text-darkblue"
-                    href="{{API['PROD']}}/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
-                    href="{{API['PROD']}}/privacy" target="_blank">Privacy Policy</a> of moglix.com
-            </p>
-        </div>
-
-        
-        <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount |
-            number : '1.2-2'}}</div>
-
-            <div class="continue-button">
-                <div class="container">
-                    <p class="total-mount" *ngIf="totalPayableAmount>0"> 
-                        <span class="payable-amnt">Payable Amount</span>
-                        ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
-                    <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn">PAY</button>
-                </div>
+        <div class="continue-button">
+            <div class="container">
+                <p class="total-mount" *ngIf="totalPayableAmount>0">
+                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                </p>
+                <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn">PAY</button>
             </div>
+        </div>
     </form>
-    </div>
 </section>
 
 
-
-<!-- <div id="credit_block" class="credit_card_block pad-lr-10 tab-pane">
-    <form [formGroup]="creditDebitCardForm" (ngSubmit)="pay(creditDebitCardForm.value, creditDebitCardForm.valid)" class="form-horizontal">
-        <label class="inline-block pad-r-20">
-            <input type="radio" (change)="getPrePaidDiscount('CC')"   formControlName="mode" value="CC">
-            <span class="radio-text icon-checkout_check">Credit Card</span>
-        </label> 
-        <label class="inline-block pad-lr-20 pad-lr-xs-5">
-            <input type="radio"(change)="getPrePaidDiscount('DC')"   formControlName="mode" value="DC">
-            <span class="radio-text icon-checkout_check inline-block">Debit Card</span>
-        </label>
-        <div formGroupName="requestParams">
-            <div class="mar-tb-10">
-                <input id="cc-number" formControlName="ccnum" type="tel" placeholder="Card Number" class="h-40 br-3 border pad-l-10 wp-100" ccNumber>
-            </div>
-            <div class="mar-tb-10 o-hidden">
-                <div class=" h-40 wp-xs-100">
-                    <div class="wp-60 o-hidden f-left">
-                        <div class="border br-3 o-hidden wp-60 f-left">
-                            <select formControlName="ccexpmon" class="pad-l-5 no-border wp-50 h-40 inline-block bg-white f-left f-size-12">
-                                <option value="">MM</option>
-                                <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
-                            </select>
-                            <select formControlName="ccexpyr" class="pad-l-5 no-border wp-50 h-40 inline-block bg-white f-left f-size-12">
-                                <option value="">YY</option>
-                                <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
-                            </select>
-                        </div>
-                        <p type="text" class="pad-l-10 f-size-14 pad-t-5 wp-40 h-40 inline-block f-left text-blueblack text-400">Expiry <br />Date</p>
-                    </div>
-                    <div class="wp-40 o-hidden f-left">
-                        <i class="icon-cvv f-size-28 mar-l-10 inline-block f-right lh-40"></i>
-                        <input id="cc-cvc" formControlName="ccvv" type="password" class="w-60 h-40 inline-block f-right border br-3 text-center" placeholder="CVV" ccCvc>
-                    </div>
-                </div>
-            </div>
-            <div class="mar-tb-10">
-                <input formControlName="ccname" type="text" placeholder="Name On Card" class="h-40 border br-3 pad-l-10 wp-100">
-            </div>            
-        </div>
-        <div class="">
-            <div class="mar-t-5 mar-b-10">
-              <label>
-                <input type="checkbox" formControlName="store_card">
-                <span class="radio-text icon-checkout_check inline-block f-size-13 pad-r-5">Save this card for faster checkout.</span>
-              </label>
-            </div>
-            <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn bg-orange wp-60 text-white border-r-3 h-45 wp-xs-60 mob-b-full text-500 f-size-16">PAY <span *ngIf="totalPayableAmount>0" class="hidden-sm-up text-white">₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}</span></button>
-                <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
-           
-        </div>
-
-    </form>
-</div> -->
-
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
-<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData" ></razor-pay>
+<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

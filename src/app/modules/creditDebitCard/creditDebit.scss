@@ -1,24 +1,25 @@
-.column-field{
-    .w-45{
-      width: 45%;
+@import '../../modules/payments/payment-common';
+.column-field {
+    .w-45 {
+        width: 45%;
     }
-    .w-30{
-      width: 30%;
+    .w-30 {
+        width: 30%;
     }
-    .w-65{
-      width: 65%;
+    .w-65 {
+        width: 65%;
     }
-  }
-  .cvv-info{
-    .icon-cvv{
+}
+
+.cvv-info {
+    .icon-cvv {
         font-size: 22px;
         float: left;
         margin-top: 22px;
     }
-    p{
-      width: calc(100% - 45px);
-      float: right;
-      margin-top: 17px;
+    p {
+        width: calc(100% - 45px);
+        float: right;
+        margin-top: 17px;
     }
-  }
- 
+}

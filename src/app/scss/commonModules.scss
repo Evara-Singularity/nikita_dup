@@ -1,6 +1,7 @@
 @import '../../app/scss/variables';
 // Forms
 .material-form {
+    // Inside Label Input
     .input-field {
         margin-bottom: 30px;
         label {
@@ -86,6 +87,40 @@
             }
         }
     }
+    &.material-form-boxed {
+        .input-field-boxed {
+            margin-bottom: 20px;
+            input,
+            select {
+                width: 100%;
+                border: solid $border-grey;
+                border-radius: 4px;
+                border-width: 1px;
+                height: 40px;
+                padding: 0px 10px 0px 10px;
+                font-size: $large-font;
+            }
+            &.disabled-boxed {
+                input {
+                    background: #F2F2F2;
+                    border: 1px solid $border-grey;
+                    pointer-events: none;
+                }
+            }
+        }
+        @include placeholder {
+            color: #B5B5B5;
+            font-size: 14px;
+        }
+        label {
+            display: block;
+            font-size: $small-font;
+            margin-bottom: 5px;
+        }
+        .multiple-form-field {
+            display: flex;
+        }
+    }
 }
 
 .input-sec {
@@ -132,8 +167,8 @@ select,
 
 input,
 select {
-    background-image: none;
-    background: none;
+    // background-image: none;
+    // background: none;
     line-height: 18px;
     position: relative;
 }

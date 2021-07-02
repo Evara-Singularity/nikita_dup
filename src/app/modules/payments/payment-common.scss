@@ -25,7 +25,7 @@
             width: 35px;
             margin-right: 15px;
             &.wallet-img {
-                width: 110px;
+                width: 140px;
             }
         }
         .bank-name {
@@ -48,6 +48,9 @@
         .multiple-form-field {
             margin-bottom: 20px;
         }
+        .custom_select_box {
+            color: #B5B5B5;
+        }
         .input-field-boxed {
             width: 22%;
             margin-bottom: 0px;
@@ -63,6 +66,7 @@
                     right: -23px;
                     font-size: 20px;
                     padding: 10px;
+                    top: 0
                 }
             }
         }
@@ -105,6 +109,7 @@
         padding: 0px 10px 0px 10px;
         font-size: $large-font;
         align-items: center;
+        justify-content: center;
         i {
             margin-left: auto;
             font-size: $medium-font;

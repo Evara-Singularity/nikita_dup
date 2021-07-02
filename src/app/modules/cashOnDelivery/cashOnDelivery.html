@@ -1,7 +1,7 @@
 <section class="cash-container container">
     <div id="cash_block" class=" pad-lr-15">
         <p class="green-txt mb-15 f-14" *ngIf="isCODEnable">Great! All products in your cart are eligible for cash on delivery.</p>
-        <h3 class="heading-3-txt">*Payment through Card on delivery, is subject to availability of the device.</h3>
+        <p class="medium-cod-heading">*Payment through Card on delivery, is subject to availability of the device.</p>
         <div class="wp-100 mar-tb-15 pad-lr-10 o-hidden">
             <p *ngIf="!isCODEnable">Good News! We have started taking COD Orders [Upto Rs {{globalConstants['codMax']}}.]</p>
             <div *ngIf="!isCODEnable" class="f-size-12 text-green"> {{message}}</div>

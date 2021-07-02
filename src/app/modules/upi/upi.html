@@ -1,18 +1,16 @@
 <section class="container upiBlockInner">
 
-    
+
     <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==1">
         Low success rate currently observed for {{lowSuccessBanks[0]['name']}}. If possible, use an alternate payment mode
     </div>
 
     <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==2">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}} and {{lowSuccessBanks[1]['name']}}. If
-        possible, use an alternate payment mode
+        Low success rate currently observed for {{lowSuccessBanks[0]['name']}} and {{lowSuccessBanks[1]['name']}}. If possible, use an alternate payment mode
     </div>
 
     <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==3">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}, {{lowSuccessBanks[1]['name']}} and {{
-        (+lowSuccessBanks.length - 1 )}} banks. If possible, use an alternate payment mode
+        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}, {{lowSuccessBanks[1]['name']}} and {{ (+lowSuccessBanks.length - 1 )}} banks. If possible, use an alternate payment mode
     </div>
 
     <div id="upi_block" class="upi-block continer">
@@ -23,6 +21,26 @@
                     <input type="text" class="upicode" formControlName="upi" [value]="" placeholder="Ex: mobileNumber@upi" #upicode>
                     <span *ngIf="upicode?.value?.length!=''" class="clearupi" (click)="upicode.value=''"><i
                             class="fa fa-times"></i></span>
+                </div>
+            </div>
+            <div class="upi_icons">
+                <span class="upi_label">We support following UPI IDs</span>
+                <div class="upi-box-wrap">
+                    <div class="upi_box">
+                        <img src="./assets/img/upi_icons/paytm_upi.png">
+                    </div>
+                    <div class="upi-box">
+                        <img src="./assets/img/upi_icons/gpay_upi.png">
+                    </div>
+                    <div class="upi-box">
+                        <img src="./assets/img/upi_icons/bhim_upi.png">
+                    </div>
+                    <div class="upi-box">
+                        <img src="./assets/img/upi_icons/phonepe_upi.png">
+                    </div>
+                    <div class="upi-box">
+                        <img src="./assets/img/upi_icons/whatsapp_upi.png">
+                    </div>
                 </div>
             </div>
 

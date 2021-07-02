@@ -211,3 +211,15 @@ label.payment-radio-btn {
 .payment-accordion_body {
     padding: 0px 35px 0px 48px;
 }
+
+.note-section {
+    padding: 30px 15px 0px;
+    background: #F2F2F2;
+    p {
+        border-top: 1px solid $border-grey;
+        color: #606060;
+        font-size: 13px;
+        padding: 20px 15px 15px;
+        line-height: 20px;
+    }
+}

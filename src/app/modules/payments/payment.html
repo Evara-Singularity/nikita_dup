@@ -5,7 +5,7 @@
     <section class="payment_accordion">
         <div id="creditDebitCardSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-credit-debit-card ico-accord-left"></i>
                 <span class="accordion-text">Credit/Debit Card</span>
                 <i class="icon-down"></i>
             </div>
@@ -18,32 +18,32 @@
 
         <div id="netBankingSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-net-banking ico-accord-left"></i>
                 <span class="accordion-text">Net Banking</span>
                 <i class="icon-down"></i>
             </div>
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['netBanking']">
-                    <net-banking [type]="invoiceType" [successPercentageData]="neftSuccessPercentageData" ></net-banking>
+                    <net-banking [type]="invoiceType" [successPercentageData]="neftSuccessPercentageData"></net-banking>
                 </div>
             </div>
         </div>
 
         <div id="walletSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-wallet ico-accord-left"></i>
                 <span class="accordion-text">Wallet</span>
                 <i class="icon-down"></i>
             </div>
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['wallet']">
-                    <wallet [type]="invoiceType" [successPercentageData]="walletSuccessPercentageData" ></wallet>
+                    <wallet [type]="invoiceType" [successPercentageData]="walletSuccessPercentageData"></wallet>
                 </div>
             </div>
         </div>
         <div id="emiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-emi ico-accord-left"></i>
                 <span class="accordion-text">EMI {{messageEmi}} </span>
                 <i class="icon-down"></i>
             </div>
@@ -69,7 +69,7 @@
 
         <div id="upiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-upi ico-accord-left"></i>
                 <span class="accordion-text">UPI</span>
                 <i class="icon-down"></i>
             </div>
@@ -82,7 +82,7 @@
 
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-paytm ico-accord-left"></i>
                 <span class="accordion-text">Paytm UPI</span>
                 <i class="icon-down"></i>
             </div>
@@ -95,7 +95,7 @@
         <!-- [class.disableCod]="disableCod" -->
         <div id="cashOnDeliverySection">
             <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')" class="payment-accordion_header">
-                <i class="icon-credit-line-home ico-accord-left"></i>
+                <i class="icon-coupon-3-fill ico-accord-left"></i>
                 <span class="accordion-text">Cash on Delivery</span>
                 <i class="icon-down"></i>
             </div>
@@ -104,6 +104,9 @@
                     <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
                 </div>
             </div>
+        </div>
+        <div class="note-section">
+            <p>Please note: You might be redirected to 3-D secure page to complete your transaction.</p>
         </div>
     </section>
 </section>

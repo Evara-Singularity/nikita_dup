@@ -23,3 +23,39 @@
         margin-top: 17px;
     }
 }
+
+.save_faster_label {
+    @extend %custom-check-box-checkout;
+    input[type='radio'] {
+        display: none;
+        &:checked+.custom-box::before {
+            font-size: 14px;
+        }
+    }
+    .custom-box {
+        &:before {
+            font-size: 14px;
+        }
+    }
+    .chk-txt {
+        font-size: 12px;
+        color: #B5B5B5;
+    }
+}
+
+.radio-with-label-container {
+    display: flex;
+    margin: 10px 0px;
+    label.radio-with-label {
+        display: inline-flex;
+        @extend %pwa-universal-radio;
+        width: 160px;
+        align-items: center;
+        .custom-box {
+            margin-right: 10px;
+        }
+        .radio-text {
+            font-size: $medium-font;
+        }
+    }
+}

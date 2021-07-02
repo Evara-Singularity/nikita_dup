@@ -10,12 +10,10 @@
     </h3>
 
     <div class="emiTabs">
-        <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.creditCard"
-            (click)="changeCardType(CARD_TYPES.creditCard)">
+        <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.creditCard" (click)="changeCardType(CARD_TYPES.creditCard)">
             <span>Credit Card</span>
         </div>
-        <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.debitCard"
-            (click)="changeCardType(CARD_TYPES.debitCard)">
+        <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.debitCard" (click)="changeCardType(CARD_TYPES.debitCard)">
             <span>Debit Card</span>
         </div>
     </div>
@@ -33,16 +31,13 @@
                     </div>
                 </div>
 
-                <select-popup [itemArray]="dataEmi" [displayKey]="'bankname'" [valueKey]="'key'"
-                    [headerLabel]="'Select Bank'" [isVisible]="bankSelectPopUp"
-                    (selectedValue$)="selectedBankChange($event)"></select-popup>
+                <select-popup [itemArray]="dataEmi" [displayKey]="'bankname'" [valueKey]="'key'" [headerLabel]="'Select Bank'" [isVisible]="bankSelectPopUp" (selectedValue$)="selectedBankChange($event)"></select-popup>
 
                 <ng-container *ngIf="emiResponse">
-                    <div class="emi-plans"
-                        *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
+                    <div class="emi-plans" *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
                         <h3 class="heading medium-heading">No Cost EMI Plans</h3>
                         <ul class="emi-plans-list">
-                            <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;"  >
+                            <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
                                 <li *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
                                         <input formControlName="bankcode" [checked]="selectedEmiOption == emi.key" type="radio" [value]="emi.key"
@@ -62,8 +57,7 @@
                         </ul>
                     </div>
 
-                    <div class="emi-plans"
-                        *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
+                    <div class="emi-plans" *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
                         <h3 class="heading medium-heading">Standered EMI Plans </h3>
                         <ul class="emi-plans-list">
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
@@ -94,44 +88,31 @@
                     <div class="material-form material-form-boxed">
                         <div class="input-field-boxed">
                             <label>Card Number</label>
-                            <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
-                                kpAutocompleteOff>
+                            <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff>
                         </div>
                         <div class="card-expiryDate">
                             <label>Expiry Date</label>
                             <div class="multiple-form-field">
                                 <div class="input-field-boxed">
                                     <input type="hidden" formControlName="ccexpmon" #expireMonth />
-                                    <div class="custom_select_box" (click)="openMonthPopUp()" >
+                                    <div class="custom_select_box" (click)="openMonthPopUp()">
                                         <div class="custom_select_input">
                                             <span>{{selectedMonth || 'MM'}}</span>
-                                            <i class="icon-dropdown"></i>
                                         </div>
                                     </div>
-                                    <select-popup 
-                                            [itemArray]="expMons" 
-                                            [displayKey]="'value'" 
-                                            [valueKey]="'key'" 
-                                            [headerLabel]="'Select Month'"
-                                            [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)" ></select-popup>
+                                    <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)"></select-popup>
                                     <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
                                         <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
                                     </select> -->
                                 </div>
                                 <div class="input-field-boxed">
                                     <input type="hidden" formControlName="ccexpyr" #expireYear />
-                                    <div class="custom_select_box" (click)="openYearPopUp()" >
+                                    <div class="custom_select_box" (click)="openYearPopUp()">
                                         <div class="custom_select_input">
                                             <span>{{selectedYear || 'YYYY'}}</span>
-                                            <i class="icon-dropdown"></i>
                                         </div>
                                     </div>
-                                    <select-popup 
-                                            [itemArray]="expYrs" 
-                                            [displayKey]="'value'" 
-                                            [valueKey]="'key'" 
-                                            [headerLabel]="'Select Year'"
-                                            [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)" ></select-popup>
+                                    <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)"></select-popup>
                                     <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
                                         <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
                                     </select> -->
@@ -142,8 +123,7 @@
                             <label>Enter CVV</label>
                             <div class="multiple-form-field">
                                 <div class="input-field-boxed">
-                                    <input type="text" id="cc-number" formControlName="ccvv" type="tel" #ccNumber
-                                        kpAutocompleteOff placeholder="CVV">
+                                    <input type="text" id="cc-number" formControlName="ccvv" type="tel" #ccNumber kpAutocompleteOff placeholder="CVV">
                                 </div>
                                 <i class="icon-cvv"></i>
                                 <span class="cvv-text">
@@ -165,8 +145,7 @@
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
                         <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | number : '1.2-2'}}
                     </p>
-                    <button type="submit" [disabled]="!emiForm.valid" (click)="pay(emiForm.value, emiForm.valid)"
-                        class="btn">PAY</button>
+                    <button type="submit" [disabled]="!emiForm.valid" (click)="pay(emiForm.value, emiForm.valid)" class="btn">PAY</button>
                 </div>
             </div>
 

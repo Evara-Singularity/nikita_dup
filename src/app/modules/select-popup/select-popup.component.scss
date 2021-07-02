@@ -34,12 +34,13 @@
         }
     }
     .payment-dropdown-listItem {
-        @extend %pwa-universal-radio;
         border-bottom: 1px solid $border-grey;
         display: flex;
         padding: 10px 15px;
         align-items: center;
-        line-height: 22px;
+        .radio-box {
+            @extend %pwa-universal-radio;
+        }
         .custom-box {
             margin-right: 10px;
         }
@@ -48,4 +49,3 @@
         }
     }
 }
-

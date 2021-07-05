@@ -4,6 +4,12 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@services/productList.service';
 import { Router } from '@angular/router';
 
+let digitalData = {
+  page: {},
+  custData: {},
+  order: {}
+};
+
 @Component({
   selector: 'search-v1',
   templateUrl: './search-v1.component.html',
@@ -32,9 +38,7 @@ export class SearchV1Component implements OnInit {
 
       this._commonService.selectedFilterData.totalCount = this.API_RESULT['searchData'][0].productSearchResult.totalCount;
 
-      if (this._activatedRoute.snapshot.queryParams["didYouMean"] != undefined) {
-        this.didYouMean = this._activatedRoute.snapshot.queryParams["didYouMean"];
-      }
+      this.updateToggleRcommendFlag();
     });
   }
 
@@ -54,8 +58,24 @@ export class SearchV1Component implements OnInit {
     this._router.navigate(['search'], extras);
   }
 
+  updateToggleRcommendFlag() {
+    if (this._activatedRoute.snapshot.queryParams["didYouMean"] != undefined) {
+      this.didYouMean = this._activatedRoute.snapshot.queryParams["didYouMean"];
+    }
+
+    if (!this._activatedRoute.snapshot.queryParams.toggleRcommendFlag) {
+      this.toggleRcommendFlag = true;
+      if (digitalData['page']) {
+        digitalData['page']['categoryRecSelected'] = '';
+      }
+    } else {
+      this.toggleRcommendFlag = false;
+      this.recommendedCategory = '';
+    }
+  }
+
   redirectWithNoPreProcessRequiredParam(searchTerm: string) {
-    const actualParams = { ...this._activatedRoute.snapshot.queryParams};
+    const actualParams = { ...this._activatedRoute.snapshot.queryParams };
     actualParams['str'] = searchTerm;
     actualParams['preProcessRequired'] = 'n';
 

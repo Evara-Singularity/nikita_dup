@@ -1,8 +1,7 @@
 <checkout-header [step]="(tabIndex - 1)"></checkout-header>
 <ng-container *ngIf="isBrowser && isCheckoutResolved">
     <!-- <h1>isContinue {{isContinue}}</h1> -->
-    <continue *ngIf="tabIndex<4" [isContinue]="isContinue" [tabIndex]="tabIndexList.invoiceType"
-        (updateTabIndex)="tabIndexUpdated(tabIndexList.invoiceType+1)"></continue>
+    <continue *ngIf="tabIndex<4" [isContinue]="isContinue" [tabIndex]="tabIndexList.invoiceType" (updateTabIndex)="tabIndexUpdated(tabIndexList.invoiceType+1)"></continue>
 
     <cart-updates *ngIf="tabIndex<3" [itemsValidationMessage]="itemsValidationMessage"></cart-updates>
     <section class="checkout-container-v2" *ngIf="tabIndex<2 && user != null && user.authenticated == 'false'">
@@ -13,14 +12,10 @@
     </section>
 
     <div class="payment-modal-bottom" *ngIf="tabIndex === 2 || tabIndex === 3">
-        <delivery-address *ngIf="tabIndex === 2" [invoiceType]="invoiceType"
-            [addressFormButtonText]="addressFormButtonText" (updateTabIndex)="tabIndexUpdated($event)"
-            (updateCheckoutAddress$)="checkoutAddressUpdated($event)"
-            (unServicableItems$)="unServicableItemsUpdated($event)">
+        <delivery-address *ngIf="tabIndex === 2" [invoiceType]="invoiceType" [addressFormButtonText]="addressFormButtonText" (updateTabIndex)="tabIndexUpdated($event)" (updateCheckoutAddress$)="checkoutAddressUpdated($event)" (unServicableItems$)="unServicableItemsUpdated($event)">
         </delivery-address>
 
-        <cart (itemsValidationMessage$)="itemsValidationMessageUpdated($event)"
-            (updateTabIndex)="tabIndexUpdated($event)" [cartSessionUpdated$]="cartSessionUpdated$"></cart>
+        <cart (itemsValidationMessage$)="itemsValidationMessageUpdated($event)" (updateTabIndex)="tabIndexUpdated($event)" [cartSessionUpdated$]="cartSessionUpdated$"></cart>
         <div class="ordersummary-container">
             <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
         </div>

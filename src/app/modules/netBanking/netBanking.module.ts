@@ -7,6 +7,7 @@ import {PayuFormModule} from "../payuForm/payuForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
+import { SelectPopupModule } from '../select-popup/select-popup.module';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
         PayuFormModule,
         RazorPayFormModule,
         MathCeilPipeModule,
+        SelectPopupModule
     ],
     declarations: [
         NetBankingComponent,

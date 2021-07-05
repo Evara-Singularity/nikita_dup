@@ -95,7 +95,10 @@ export class SearchBarComponent implements OnInit {
                                 }
                             }
                         });
+                    }else{
+                        this.showSuggestionBlock = false;
                     }
+
                 }
             );
     }

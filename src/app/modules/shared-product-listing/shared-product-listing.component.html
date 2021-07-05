@@ -1,11 +1,14 @@
 <div class="filter-btn-container">
     <button (click)="toggleSortBy()">Sort By <span>{{ 'popularity' }}</span></button>
-    <button (click)="filterUp()">Filters <span class="price-filter">{{ '2' }}</span></button>
+    <button (click)="filterUp()">Filter Up</button>
 </div>
 
 <div class="list-heading">
-    <div class="left" *ngIf="productsListingData.totalCount">
-        {{productsListingData.totalCount}} Products below
+    <div class="left">
+        Safety
+    </div>
+    <div class="right" *ngIf="productsListingData.totalCount">
+        Showing 20 out of {{productsListingData.totalCount}} products
     </div>
 </div>
 

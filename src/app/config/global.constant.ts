@@ -5,6 +5,7 @@ export const GLOBAL_CONSTANT = {
     created: 1,
     updated: 2,
     creditDebitCard: 1,
+    brandStoreCmsId: 'CM1000031',
     netBanking: 2,
     wallet: 3,
     emi: 4,

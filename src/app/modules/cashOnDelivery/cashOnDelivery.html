@@ -1,8 +1,7 @@
 <section class="cash-container container">
-
     <div id="cash_block" class=" pad-lr-15">
         <p class="green-txt mb-15 f-14" *ngIf="isCODEnable">Great! All products in your cart are eligible for cash on delivery.</p>
-        <p class="mb-15">*Payment via debit/credit card, on order delivery, is subject to availability of the card swipe machine</p>
+        <p class="medium-cod-heading">*Payment through Card on delivery, is subject to availability of the device.</p>
         <div class="wp-100 mar-tb-15 pad-lr-10 o-hidden">
             <p *ngIf="!isCODEnable">Good News! We have started taking COD Orders [Upto Rs {{globalConstants['codMax']}}.]</p>
             <div *ngIf="!isCODEnable" class="f-size-12 text-green"> {{message}}</div>
@@ -11,16 +10,14 @@
         <!-- {{isCODEnable}} -->
         <div *ngIf="isCODEnable">
             <div *ngIf="!verifyOtp">
-                <form novalidate class="material-form mt-15" #sendOtpForm="ngForm">
-                    <div class="input-field">
-                        <label [class.is-focus]="mobileRef.value > 0">
-                            <input type="number" class="no-border inline-block" name="mobile_num" pattern="^[1-9][0-9]{9}$" required #mobileRef="ngModel" [ngModel]="userNum" readonly>
-                            <span class="label">Phone No*</span>
-                        </label>
-                        <label [class.is-focus]="emailId.value.length > 0">
-                            <input name="cust_email" type="text" class="no-border inline-block" [ngModel]="userEmail" #emailId readonly>
-                            <span class="label">Email</span>
-                        </label>
+                <form novalidate class="material-form material-form-boxed mt-15" #sendOtpForm="ngForm">
+                    <div class="input-field-boxed disabled-boxed">
+                        <label>Mobile Number*</label>
+                        <input type="number" name="mobile_num" pattern="^[1-9][0-9]{9}$" required #mobileRef="ngModel" [ngModel]="userNum" readonly>
+                    </div>
+                    <div class="input-field-boxed disabled-boxed">
+                        <label>Email</label>
+                        <input name="cust_email" type="text" [ngModel]="userEmail" #emailId readonly>
                     </div>
                     <!-- <div class="">
                         <p class="">The OTP Phone Number/ Email should be same as in the Shipping Details</p>

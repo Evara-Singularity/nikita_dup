@@ -1,6 +1,6 @@
 import { CommonService } from '@app/utils/services/common.service';
 import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
@@ -70,6 +70,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     ];
     isLoginPage: boolean = false;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
+    @Input('extraData') extraData;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -305,7 +306,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false){
-            this.location.back();
+            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
         }else{
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
@@ -347,7 +348,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.router.url.includes('/checkout') ||
             this.router.url.includes('/online-assist') ||
             this.router.url.includes('/forgot-password') ||
-            this.router.url.includes('/sign-up')
+            this.router.url.includes('/sign-up') ||
+            this.router.url.includes('/feedback')
         ) {
             this.isLoginPage = true;
             this.hideElLogin = false;

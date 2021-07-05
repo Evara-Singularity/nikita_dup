@@ -6,7 +6,7 @@ import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 @Component({
     selector: 'app-pop-up',
     templateUrl: './pop-up.component.html',
-    styleUrls: ['./pop-up.component.scss'],    
+    styleUrls: ['./pop-up.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {

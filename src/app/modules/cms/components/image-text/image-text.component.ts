@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     encapsulation: ViewEncapsulation.None,
 })
 export class ImageTextComponent implements OnInit {
-
+    @Input('customStyle') customStyle;
     @Input('data') data = null;
     @Input('imagePath') imagePath = null;
     info = null;

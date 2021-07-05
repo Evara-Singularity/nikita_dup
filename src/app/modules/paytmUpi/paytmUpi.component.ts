@@ -31,7 +31,7 @@ export class PaytmUpiComponent {
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
+    imagePath = CONSTANTS.CDN_IMAGE_PATH;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
     upiError:any;
     validUpi:boolean;

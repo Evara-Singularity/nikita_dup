@@ -1,38 +1,47 @@
 @import '../../scss/variables';
+@import '../.././modules/payments/payment-common';
+// .bank-list{
+//     // width: 90%;
+//     margin: auto;
+//     li{
+//       @include gridForCategory('3' , '40');
+//       padding: 15px;
+//       margin-bottom: 15px;
+//       &:nth-child(3n + 2){
+//         margin: 0 20px 15px 20px;
+//       }
+//       &:nth-child(3n){
+//         clear: right;
+//       }
+//       &:nth-child(3n + 1){
+//         clear: left;
+//       }
+//       img{
+//         width: 100%;
+//         border: 1px solid $border-sec-color;
+//         @extend %border-radius;
+//       }
+//       p{
+//         text-align: center;
+//         margin-top: 10px;
+//         font-size: $extra-large-font;
+//         font-weight: 600;
+//       }
+//       &.selected{
+//         background: $checkbox-overly;
+//         img{
+//           border-color: $active-border-color;
+//         }
+//       }
+//     }
+//   }
+.netBankingInner {
+    padding-bottom: 20px;
+    @extend %pwa-universal-radio;
+}
 
-.bank-list{
-    // width: 90%;
-    margin: auto;
-    li{
-      @include gridForCategory('3' , '40');
-      padding: 15px;
-      margin-bottom: 15px;
-      &:nth-child(3n + 2){
-        margin: 0 20px 15px 20px;
-  
-      }
-      &:nth-child(3n){
-        clear: right;
-      }
-      &:nth-child(3n + 1){
-        clear: left;
-      }
-      img{
-        width: 100%;
-        border: 1px solid $border-sec-color;
-        @extend %border-radius;
-      }
-      p{
-        text-align: center;
-        margin-top: 10px;
-        font-size: $extra-large-font;
-        font-weight: 600;
-      }
-      &.selected{
-        background: $checkbox-overly;
-        img{
-          border-color: $active-border-color;
-        }
-      }
-    }
-  }
+span.lowsuccessRate {
+    font-size: $small-font;
+    color: $logo-color;
+    display: block;
+}

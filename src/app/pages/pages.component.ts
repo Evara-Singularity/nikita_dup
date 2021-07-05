@@ -56,6 +56,7 @@ export class PagesComponent implements OnInit {
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
      */
+    
     this.setUserSession();
     if(this.isBrowser){
       this.setEnvIdentiferCookie()

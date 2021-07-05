@@ -765,7 +765,7 @@ export class CommonService {
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.HOMEPAGE_FOOTER);
     }
     getTrendingCategories() {
-
+        console.log('common');
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TRENDING_CATEGORY);
 
     }

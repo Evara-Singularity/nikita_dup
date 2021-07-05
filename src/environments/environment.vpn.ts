@@ -3,10 +3,11 @@ export const environment = {
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
-  IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/vpn/pwa/',
-  SOCKET_URL: "https://socketqa.moglilabs.com",
+  IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/vpn/pwa/bundles/',
+  SOCKET_URL: "https://socket.moglilabs.com",
   IMAGE_BASE_URL: 'https://cdn.moglix.com/',
   DOCUMENT_URL: 'https://document.moglix.com/',
+  CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"

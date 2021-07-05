@@ -9,6 +9,7 @@ import { CheckoutService } from '../../utils/services/checkout.service';
 import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
+import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 
 declare let dataLayer: any;
 
@@ -34,8 +35,9 @@ export class WalletComponent {
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
+    imagePath = CONSTANTS.CDN_IMAGE_PATH;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
+    @Input() successPercentageData: any = null;
      
     constructor(
         private _localStorageService: LocalStorageService,
@@ -45,6 +47,7 @@ export class WalletComponent {
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _walletService: WalletService,
+        private _objectToArray: ObjectToArray,
         private _formBuilder: FormBuilder) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
@@ -58,6 +61,7 @@ export class WalletComponent {
         this.walletMap = CONSTANTS.GLOBAL.walletMap[this.type];
         this.walletMapKeys = Object.keys(this.walletMap);
         this.wType = this.walletMapKeys[0];
+        console.log("this.walletMap", this.walletMap, this.walletMapKeys, this.wType);
         this.walletForm = this._formBuilder.group({
             "wType": [this.wType, [Validators.required]],
         });
@@ -65,6 +69,8 @@ export class WalletComponent {
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
         })
+
+        this.lowSuccessBanks;
 
     }
 
@@ -283,6 +289,12 @@ export class WalletComponent {
         };
 
         return freechargeData;
+    }
+
+    get lowSuccessBanks(){
+        const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
+        const lowSuccessBanks =  banksArr.filter(item => item['up_status'] == 0);
+        return lowSuccessBanks;
     }
 
     ngOnDestroy() {

@@ -1,13 +1,12 @@
-<button (click)="filterUp()" style="padding: 10px 30px; background: white;">Filter Up</button>
-<button (click)="toggleSortBy()" style="padding: 10px 30px; background: white;">Sort By</button>
-<ng-container #filter></ng-container>
-<ng-container #sortBy></ng-container>
+<div class="filter-btn-container">
+    <button (click)="toggleSortBy()">Sort By <span>{{ 'popularity' }}</span></button>
+    <button (click)="filterUp()">Filters <span class="price-filter">{{ '2' }}</span></button>
+</div>
 
 <div class="list-heading">
     <div class="left" *ngIf="productsListingData.totalCount">
         {{productsListingData.totalCount}} Products below
     </div>
-    <!-- <div class="right">Showing 20 out of {{productsListingData.totalCount}} products</div> -->
 </div>
 
 <ng-container *ngFor="let product of productsListingData.products; let i = index;">
@@ -18,3 +17,6 @@
 
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
 <ng-template #pagination></ng-template>
+
+<ng-container #filter></ng-container>
+<ng-container #sortBy></ng-container>

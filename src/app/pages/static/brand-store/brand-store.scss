@@ -1,6 +1,11 @@
 @import '../../../scss/variables';
+:host{
+  padding: 5px 0px 0px 0px;
+  display: block;
+}
+
 .brands-container{
-  padding:30px 0;
+  padding: 0;
   ul.brands-logo{
     border: 1px solid #C0C0C0;
     li{
@@ -107,11 +112,10 @@
     }
   }
   .alphabetBlock{
-    margin-top:10px;
     overflow-x:scroll;
      width:100%;
     .innerBlock{
-      width:2410px;
+      width:1300px;
       background:#F2F2F2;
      
       top: 0;
@@ -121,7 +125,7 @@
         li{
           list-style:none;
           float:left;
-          margin-right: 15px;
+          margin: 5px;
           width: 70px;
           text-align:center;
           a{

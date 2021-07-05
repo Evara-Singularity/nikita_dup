@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { CmsWrapperComponent } from "./cms.component";
 import { TextComponent } from "./components/text/text.component";
 import { SmallImageComponent } from "./components/small-image/small-image.component";
-import { SimilarArticlesComponent } from "./components/similar-articles/similar-articles.component";
 import { ProductsDetailsComponent } from "./components/products-details/products-details.component";
 import { MainBannerComponent } from "./components/main-banner/main-banner.component";
 import { ImageTextComponent } from "./components/image-text/image-text.component";
@@ -22,7 +21,6 @@ import { CmsCarauselComponent } from "./components/cms-carausel/cms-carausel.com
     exports: [
         TextComponent,
         SmallImageComponent,
-        SimilarArticlesComponent,
         CmsCarauselComponent,
         DynamicImageComponent,
         ProductsDetailsComponent,
@@ -35,7 +33,6 @@ import { CmsCarauselComponent } from "./components/cms-carausel/cms-carausel.com
         TextComponent,
         SmallImageComponent,
         DynamicImageComponent,
-        SimilarArticlesComponent,
         ProductsDetailsComponent,
         MainBannerComponent,
         CmsCarauselComponent,

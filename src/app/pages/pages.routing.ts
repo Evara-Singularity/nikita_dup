@@ -203,8 +203,7 @@ const routes: Routes = [
 					import('./static/brand-store/brand-store.module').then((m) => m.BrandStoreModule),
 				data: {
 					footer: false,
-					title: 'Brand Store',
-					moreOpt: true,
+					logo: true,
 				},
 			},
 			{

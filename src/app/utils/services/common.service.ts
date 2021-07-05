@@ -829,7 +829,7 @@ export class CommonService {
     */
     public selectedFilterData: any = {
         filter: {},
-        sortBy: {},
+        sortBy: 'popularity',
         pages: [],
         page: this._activatedRoute.snapshot.params.page || 1,
         totalCount: 0,
@@ -839,7 +839,7 @@ export class CommonService {
     resetSelectedFilterData() {
         this.selectedFilterData = {
             filter: {},
-            sortBy: {},
+            sortBy: 'popularity',
             pages: [],
             page: 1,
             pageSize: GLOBAL_CONSTANT.default.pageSize

@@ -1,15 +1,22 @@
 <div class="filter-btn-container">
-    <button (click)="toggleSortBy()">Sort By <span>{{ 'popularity' }}</span></button>
-    <button (click)="filterUp()">Filter Up</button>
+    <button (click)="toggleSortBy()">Sort By <span>{{ _commonService.selectedFilterData['sortBy'] ? _commonService.selectedFilterData['sortBy'] : 'popularity' }}</span></button>
+    <button (click)="filterUp()">Filters <span class="price-filter" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span></button>
 </div>
 
-<div class="list-heading">
-    <div class="left">
-        Safety
-    </div>
-    <div class="right" *ngIf="productsListingData.totalCount">
-        Showing 20 out of {{productsListingData.totalCount}} products
-    </div>
+<div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH'">
+    <ng-container *ngIf="pageName === 'SEARCH'">
+        <div class="list-heading-search">
+            {{productsListingData.totalCount}} Products below
+        </div>
+    </ng-container>
+    <ng-container *ngIf="pageName !== 'SEARCH'">
+        <div>
+            Safety
+        </div>
+        <div *ngIf="productsListingData.totalCount">
+            Showing 20 out of {{productsListingData.totalCount}} products
+        </div>
+    </ng-container>
 </div>
 
 <ng-container *ngFor="let product of productsListingData.products; let i = index;">

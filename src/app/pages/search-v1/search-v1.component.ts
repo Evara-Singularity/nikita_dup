@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'search-v1',
   templateUrl: './search-v1.component.html',
-  styleUrls: ['./search-v1.component.scss']
+  styleUrls: ['./search-v1.component.scss', '../category-v1/category-v1.scss']
 })
 export class SearchV1Component implements OnInit {
   public API_RESULT: any;
@@ -55,7 +55,11 @@ export class SearchV1Component implements OnInit {
   }
 
   redirectWithNoPreProcessRequiredParam(searchTerm: string) {
-    console.log(searchTerm);
+    const actualParams = { ...this._activatedRoute.snapshot.queryParams};
+    actualParams['str'] = searchTerm;
+    actualParams['preProcessRequired'] = 'n';
+
+    this._router.navigate(['search'], { queryParams: actualParams });
   }
 
 }

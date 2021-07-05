@@ -33,7 +33,8 @@
     </div>
 </div>
 
-<shared-product-listing [productsListingData]="_productListService?.productListingData">
+<shared-product-listing  [pageName]="'CATEGORY'" 
+[productsListingData]="_productListService?.productListingData">
 </shared-product-listing>
 
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">

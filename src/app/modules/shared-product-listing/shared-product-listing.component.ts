@@ -19,77 +19,92 @@ export class SharedProductListingComponent {
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
 
   @Input() productsListingData: ProductListingDataEntity;
+  @Input() pageName: string;
+  appliedFilterCount: number = 0;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, private _commonService: CommonService) { }
+  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, public _commonService: CommonService) { }
+
+  ngOnInit() {
+    this.updateFilterCountAndSort();
+  }
+
+  ngOnChanges(){
+    this.updateFilterCountAndSort();
+  }
+  
+  updateFilterCountAndSort(){
+    this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
+    this._productListService.initializeSortBy();
+  }
 
   async onVisiblePagination() {
     if (!this.paginationInstance) {
-        const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
-        const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
-        this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
-        this.paginationInstance.instance['paginationData'] = {itemCount : this._commonService.selectedFilterData.totalCount};
+      const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
+      const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
+      this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
+      this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
     } else {
-      this.paginationInstance.instance['paginationData'] = {itemCount : this._commonService.selectedFilterData.totalCount};
+      this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
     }
-}
+  }
 
   async filterUp() {
     if (!this.filterInstance) {
-        const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-            setTimeout(() => {
-                const mob_filter = document.querySelector('.mob_filter');
-                if (mob_filter) {
-                    mob_filter.classList.add('upTrans');
-                }
-            }, 100);
-        });
-        const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
-        this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
-        this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
-        (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-            this.filterUp();
-        });
+      const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+        setTimeout(() => {
+          const mob_filter = document.querySelector('.mob_filter');
+          if (mob_filter) {
+            mob_filter.classList.add('upTrans');
+          }
+        }, 100);
+      });
+      const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
+      this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
+      this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+      (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+        this.filterUp();
+      });
     } else {
-        const mob_filter = document.querySelector('.mob_filter');
+      const mob_filter = document.querySelector('.mob_filter');
 
-        if (mob_filter) {
-            mob_filter.classList.toggle('upTrans');
-        }
-        this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
-        this.filterInstance.instance.initializeSelectedFilterData(true);
+      if (mob_filter) {
+        mob_filter.classList.toggle('upTrans');
+      }
+      this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+      this.filterInstance.instance.initializeSelectedFilterData(true);
     }
   }
 
   async toggleSortBy() {
     if (!this.sortByInstance) {
-        const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
-        const factory = this._componentFactoryResolver.resolveComponentFactory(SortByComponent);
-        this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this._injector);
+      const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+      const factory = this._componentFactoryResolver.resolveComponentFactory(SortByComponent);
+      this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this._injector);
 
-        (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-            this.toggleSortBy();
-        });
+      (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+        this.toggleSortBy();
+      });
     } else {
-        const sortByFilter = document.querySelector('sort-by');
+      const sortByFilter = document.querySelector('sort-by');
 
-        if (sortByFilter) {
-            sortByFilter.classList.toggle('open');
-        }
-        this._productListService.initializeSortBy();
+      if (sortByFilter) {
+        sortByFilter.classList.toggle('open');
+      }
+      this._productListService.initializeSortBy();
     }
-}
+  }
 
   resetLazyComponents() {
     if (this.filterInstance) {
-        this.filterInstance = null;
-        this.filterContainerRef.remove();
+      this.filterInstance = null;
+      this.filterContainerRef.remove();
     }
 
     if (this.sortByInstance) {
       this.sortByInstance = null;
       this.sortByContainerRef.remove();
     }
-    
+
     if (this.paginationInstance) {
       this.paginationInstance = null;
       this.paginationContainerRef.remove();

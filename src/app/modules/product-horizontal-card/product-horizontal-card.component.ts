@@ -67,7 +67,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   ngOnInit(): void {
     this.isOutOfStockByQuantity = !this.product.quantityAvailable;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
-    // this.dummyVideoData();
+    this.dummyVideoData();
   }
 
   buyNow(buyNow = false) {

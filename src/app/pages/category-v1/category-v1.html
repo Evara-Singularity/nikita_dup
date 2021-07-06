@@ -19,6 +19,8 @@
         <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
     </div>
 </div>
+<shared-product-listing [productsListingData]="_productListService?.productListingData">
+</shared-product-listing>
 
 <div class="sub-cate-container">
     <div class="container pt-10">
@@ -30,10 +32,6 @@
     </div>
 </div>
 
-<shared-product-listing 
-    [productsListingData]="_productListService?.productListingData" >
-</shared-product-listing>
-
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
     <div class="quickLinksSection" *ngIf="popularLinks.length > 0">
         <h4>Quick Links</h4>
@@ -43,6 +41,6 @@
     <div *ngIf="_productListService?.productListingData?.productSearchResult?.totalCount">
         <recent-articles [recentArticles]="API_RESPONSE.category[0]" [title]="this.API_RESPONSE.category[0].children?.categoryDetails?.categoryName"></recent-articles>
     </div>
-    
+
     <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
 </ng-container>

@@ -1,5 +1,4 @@
 @import './config';
-
 $font-family: 'Roboto',
 sans-serif;
 $cdn_url: "#{$cdn_url}";
@@ -429,5 +428,25 @@ $extra-large-font: 16px;
     }
      :-ms-input-placeholder {
         @content
+    }
+}
+
+%pwa-universal-radio {
+    input[type='radio'] {
+        display: none;
+        &:checked+.custom-box::before {
+            font-family: 'icomooon_pwa';
+            content: "\e9a6";
+            color: $logo-color;
+            font-size: 24px;
+        }
+    }
+    .custom-box {
+        &::before {
+            font-family: 'icomooon_pwa';
+            content: "\e9a7";
+            font-size: 24px;
+            color: #303030;
+        }
     }
 }

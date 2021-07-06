@@ -2,4 +2,4 @@
     <a *ngFor="let item of _commonService.selectedFilterData.pages | paginate: { itemsPerPage: _commonService.selectedFilterData.pageSize, currentPage: _commonService.selectedFilterData.page }; let i = index"></a>
 </ul>
 
-<pagination-controls class="border-t border-b pad-tb-10" (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>
+<pagination-controls class="border-t border-b" (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>

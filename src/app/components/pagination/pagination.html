@@ -1,5 +1,5 @@
 <ul class="f-right">
-    <a *ngFor="let item of _commonService.selectedFilterData.pages | paginate: { itemsPerPage: _commonService.selectedFilterData.pageSize, currentPage: _commonService.selectedFilterData.page }; let i = index"></a>
+    <a *ngFor="let item of _commonService.selectedFilterData.pages | paginate: { itemsPerPage: 1, currentPage: _commonService.selectedFilterData.page };"></a>
 </ul>
 
 <pagination-controls class="border-t border-b" (pageChange)="pageChanged($event)" previousLabel="" nextLabel=""></pagination-controls>

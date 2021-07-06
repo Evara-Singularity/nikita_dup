@@ -25,7 +25,7 @@ export class PaginationComponent {
         const queryParams = this._activatedRoute.snapshot.queryParams;
 
         this._commonService.selectedFilterData.pages = [];
-        this._commonService.selectedFilterData.pageSize = queryParams['pageSize'] ? queryParams['pageSize'] : 10;
+        this._commonService.selectedFilterData.pageSize = queryParams['pageSize'] ? queryParams['pageSize'] : 20;
         this._commonService.selectedFilterData.page = queryParams['page'] ? queryParams['page'] : 1;
 
         for(let i = 0; i < Math.abs(this.paginationData.itemCount / this._commonService.selectedFilterData.pageSize); i++){

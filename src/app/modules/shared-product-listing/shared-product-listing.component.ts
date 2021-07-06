@@ -41,6 +41,10 @@ export class SharedProductListingComponent {
   updateFilterCountAndSort(){
     this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
     this._productListService.initializeSortBy();
+    if (this.paginationInstance) {
+      this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
+      this.paginationInstance.instance.initializePageData();
+    }
   }
 
   async onVisiblePagination() {
@@ -48,8 +52,6 @@ export class SharedProductListingComponent {
       const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
       this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
-      this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
-    } else {
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
     }
   }

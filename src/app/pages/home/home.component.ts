@@ -318,8 +318,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}
 			this.carouselData = ncd; //carousel data
-			console.log(this.carouselData);
-
+			
 			if (this.middleImageJsonData && this.middleImageJsonData.block_data) {
 				this.middleImageJsonDataLink = this.middleImageJsonData.block_data[
 					'image_block'

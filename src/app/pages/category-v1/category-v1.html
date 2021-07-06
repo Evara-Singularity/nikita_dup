@@ -1,7 +1,8 @@
 <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
-
-<div [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
-    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1" [class.slpLayout2]="layoutType == 2">
+<div
+    [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
+    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
+        [class.slpLayout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
             <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
@@ -19,13 +20,18 @@
         <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
     </div>
 </div>
-<shared-product-listing [productsListingData]="_productListService?.productListingData">
-</shared-product-listing>
+
+<div id="category-cards-section">
+    <shared-product-listing [productsListingData]="_productListService?.productListingData">
+    </shared-product-listing>
+</div>
 
 <div class="sub-cate-container">
     <div class="container pt-10">
-        <p *ngIf="_commonService.selectedFilterData.page < 2" class="sub_category_heading">{{API_RESPONSE.category[0].categoryDetails?.categoryName}}
-            <span class="light-txt f-16" *ngIf="API_RESPONSE.category[0]?.children?.length > 0">({{API_RESPONSE.category[0]?.children?.length}}
+        <p *ngIf="_commonService.selectedFilterData.page < 2" class="sub_category_heading">
+            {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+            <span class="light-txt f-16"
+                *ngIf="API_RESPONSE.category[0]?.children?.length > 0">({{API_RESPONSE.category[0]?.children?.length}}
                 Categories)</span>
         </p>
         <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
@@ -35,11 +41,13 @@
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
     <div class="quickLinksSection" *ngIf="popularLinks.length > 0">
         <h4>Quick Links</h4>
-        <a *ngFor="let category of popularLinks" href="{{API_RESPONSE.category[1].categoryLinkList[category]}}" class="quickLinkList">{{category}}</a>
+        <a *ngFor="let category of popularLinks" href="{{API_RESPONSE.category[1].categoryLinkList[category]}}"
+            class="quickLinkList">{{category}}</a>
     </div>
 
     <div *ngIf="_productListService?.productListingData?.productSearchResult?.totalCount">
-        <recent-articles [recentArticles]="API_RESPONSE.category[0]" [title]="this.API_RESPONSE.category[0].children?.categoryDetails?.categoryName"></recent-articles>
+        <recent-articles [recentArticles]="API_RESPONSE.category[0]"
+            [title]="this.API_RESPONSE.category[0].children?.categoryDetails?.categoryName"></recent-articles>
     </div>
 
     <category-footer [categoryFooterData]='categoryFooterData'></category-footer>

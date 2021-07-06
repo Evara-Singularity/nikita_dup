@@ -1,5 +1,6 @@
 @import "../../scss/variables";
 @import "./slp.scss";
+
 .displayCategoryName {
     font-size: 16px;
 }
@@ -244,13 +245,16 @@
     display: none;
 }
 
-.slpLayout1 {
-    @include layout1;
+::ng-deep{
+    .slpLayout1 {
+        @include layout1;
+    }
+    
+    .slpLayout2 {
+        @include layout2;
+    }
 }
 
-.slpLayout2 {
-    @include layout2;
-}
 
 // Panel Head Footer
 .panel-head {

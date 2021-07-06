@@ -169,6 +169,7 @@ export class SearchComponent implements OnInit {
             this.filterCounts = count;
         }, 0);
     }
+    
     topFunction() {
         document.body.scrollTop = document.getElementById('related-list').offsetTop;
         document.documentElement.scrollTop = document.getElementById('related-list').offsetTop;

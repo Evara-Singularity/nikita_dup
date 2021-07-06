@@ -75,6 +75,8 @@ export class CategoryV1Component {
         this._activatedRoute.data.subscribe(result => {
             this.API_RESPONSE = result;
 
+            console.log(this.API_RESPONSE);
+
             this.updateComponentsBasedOnrouteChange();
 
             // genrate popular links data

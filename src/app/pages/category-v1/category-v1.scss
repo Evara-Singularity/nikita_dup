@@ -1,5 +1,6 @@
 @import "../../scss/variables";
 @import "./slp.scss";
+
 .displayCategoryName {
     font-size: 16px;
 }
@@ -245,13 +246,16 @@
     display: none;
 }
 
-.slpLayout1 {
-    @include layout1;
+::ng-deep{
+    .slpLayout1 {
+        @include layout1;
+    }
+    
+    .slpLayout2 {
+        @include layout2;
+    }
 }
 
-.slpLayout2 {
-    @include layout2;
-}
 
 // Panel Head Footer
 .panel-head {
@@ -270,12 +274,5 @@
         text-align: left;
         border-bottom: 1px solid $border-color;
         padding: 5px;
-    }
-}
-
-.safetyban {
-    .slp-heading{
-        text-transform: uppercase;
-        font-size: 20px !important;
     }
 }

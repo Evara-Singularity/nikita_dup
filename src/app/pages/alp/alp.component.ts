@@ -399,7 +399,9 @@ export class AlpComponent implements OnInit {
             // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
             //console.log("links.href", links.href)
             this._renderer2.appendChild(this._document.head, links);
-            this.setAmpTag('alp');
+
+            // JIRA: ODP-1371
+            // this.setAmpTag('alp');
         }
 
 
@@ -885,16 +887,18 @@ export class AlpComponent implements OnInit {
     changeBanner(direction) {
         this.ngxSiemaService[direction](1, this.groupedBrandSiema.selector);
     }
-    setAmpTag(page) {
-        let currentRoute = this._router.url.split("?")[0].split("#")[0];
-        let ampLink;
-        ampLink = this._renderer2.createElement('link');
-        ampLink.rel = 'amphtml';
-        if (page == "alp") {
-            ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
-            this._renderer2.appendChild(this._document.head, ampLink);
-        }
-    }
+
+    // JIRA: ODP-1371
+    // setAmpTag(page) {
+    //     let currentRoute = this._router.url.split("?")[0].split("#")[0];
+    //     let ampLink;
+    //     ampLink = this._renderer2.createElement('link');
+    //     ampLink.rel = 'amphtml';
+    //     if (page == "alp") {
+    //         ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
+    //         this._renderer2.appendChild(this._document.head, ampLink);
+    //     }
+    // }
 
     resetLazyComponents() {
         if (this.filterInstance) {

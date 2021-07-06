@@ -33,9 +33,11 @@
     </div>
 </div>
 
-<shared-product-listing  [pageName]="'CATEGORY'" 
-[productsListingData]="_productListService?.productListingData">
+<div id="category-cards-section">
+    <shared-product-listing  [pageName]="'CATEGORY'" 
+    [productsListingData]="_productListService?.productListingData">
 </shared-product-listing>
+</div>
 
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
     <div class="quickLinksSection" *ngIf="popularLinks.length > 0">

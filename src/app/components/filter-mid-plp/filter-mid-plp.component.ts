@@ -10,7 +10,7 @@ import { ProductListService } from '@app/utils/services/productList.service';
 @Component({
   selector: 'filter-mid-plp',
   templateUrl: './filter-mid-plp.component.html',
-  styleUrls: ['./filter-mid-plp.component.scss']
+  styleUrls: ['./filter-mid-plp.component.scss', '../homefooter-accordian/homefooter-accordian.component.scss']
 })
 export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;

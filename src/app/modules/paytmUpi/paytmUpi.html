@@ -1,50 +1,39 @@
-<section class="container">
+<section class="upiBlockInner">
     <div id="upi_block" class="upi-block continer">
         <div class="">
             <form [formGroup]="upiForm" (ngSubmit)="paytmApicall(upiForm.value)" class="form-horizontal">
                 <div>
-                    <div class="custom-cbox">                        
-                        <label>                            
-                            <span class="chk-txt">
-                                <img src="{{imagePath+imageFolder}}/Mobile.png">
-                            </span>
-                        </label>
-                    </div>
-                    <div class="material-form pad-lr-15" *ngIf="upiChecked">
-                        <div class="input-field">
-                            <label [class.is-focus]="upicode.value.length != 0">
-                                
-                                <input type="text" class="upicode" formControlName="upi" [value]="" (keyup)="resetLoginError($event)" #upicode>
-                                <span class="label">Please enter your UPI ID.</span>
-                                <span *ngIf="upicode?.value?.length!=''" class="clearupi" (click)="upicode.value=''"><i
+                    <div class="material-form material-form-boxed" *ngIf="upiChecked">
+                        <div class="input-field-boxed">
+                            <label>Please enter your UPI ID.</label>
+                            <input type="text" class="upicode" formControlName="upi" [value]="" (keyup)="resetLoginError($event)" #upicode placeholder="Ex: mobileNumber@upi">
+                            <span *ngIf="upicode?.value?.length!=''" class="clearupi" (click)="upicode.value=''"><i
                                         class="fa fa-times"></i></span>
-                                <p *ngIf="upiForm.controls['upi'].touched && upiForm.controls['upi'].errors?.required" class="text-red error">Kindly enter upi</p>
-                                <p *ngIf="upiForm.controls['upi'].touched && upiForm.controls['upi'].errors?.pattern" class="text-red error">Enter valid upi</p>
-                                <p *ngIf="upiError && upicode.value.length > 0 && !validUpi" class="text-red error">{{upiError.message}}</p>
-                            </label>
+                            <p *ngIf="upiForm.controls['upi'].touched && upiForm.controls['upi'].errors?.required" class="text-red error">Kindly enter upi</p>
+                            <p *ngIf="upiForm.controls['upi'].touched && upiForm.controls['upi'].errors?.pattern" class="text-red error">Enter valid upi</p>
+                            <p *ngIf="upiError && upicode.value.length > 0 && !validUpi" class="text-red error">{{upiError.message}}</p>
+
                         </div>
                     </div>
                 </div>
-                <div class="pad-lr-15">
+                <div class="paytm-upi-img">
+                    <img src="{{imagePath+imageFolder}}/Mobile.png">
+                </div>
+                <!-- <div class="pad-lr-15">
                     <p class="">You will be redirected to a secure payment gateway wallet.</p>
                     <div class="pad-tb-15 mt-15 border-top">
-                        <p class="lh-18">Please note.You might be redirected to 3-D secure page to
-                            complete your transaction.By placing this order, you agree to the <a class="text-darkblue"
-                                href="https://www.moglix.com/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
+                        <p class="lh-18">Please note.You might be redirected to 3-D secure page to complete your transaction.By placing this order, you agree to the <a class="text-darkblue" href="https://www.moglix.com/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
                                 href="https://www.moglix.com/privacy" target="_blank">Privacy Policy</a> of moglix.com
                         </p>
                     </div>
-                </div>
-                <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹
-                    {{prepaidDiscount | number : '1.2-2'}}</div>
+                </div> -->
+                <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
 
                 <div class="continue-button">
                     <div class="container">
-                        <p class="total-mount" *ngIf="totalPayableAmount>0"> 
-                            <span class="payable-amnt">Payable Amount</span>
-                            ₹ {{totalPayableAmount | mathCeil | number
-                            : '1.2-2'}} </p>
-                            <!-- [disabled]="!upiForm.valid && !validUpi" -->
+                        <p class="total-mount" *ngIf="totalPayableAmount>0">
+                            <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
+                        <!-- [disabled]="!upiForm.valid && !validUpi" -->
                         <button [disabled]="!upiForm.valid" type="submit" class="btn">PAY</button>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ export const environment = {
   SOCKET_URL: "https://socket.moglix.com",
   IMAGE_BASE_URL: 'https://cdn.moglix.com/',
   DOCUMENT_URL: 'https://document.moglix.com/',
+  CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"

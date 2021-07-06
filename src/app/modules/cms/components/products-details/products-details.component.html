@@ -1,4 +1,4 @@
-<div class="productdetails-article">
+<div class="productdetails-article"  [ngStyle]="customStyle">
     <div class="view-all" *ngIf="listOfProducts?.length > 6">
         <span *ngIf="!viewAll" (click)="$event.stopPropagation; viewAll = true">view all</span> 
         <span *ngIf="viewAll" (click)="$event.stopPropagation; viewAll = false">view less</span> 

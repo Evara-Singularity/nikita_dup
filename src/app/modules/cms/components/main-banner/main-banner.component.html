@@ -1,4 +1,4 @@
-<section class="mainbanner-article">
+<section class="mainbanner-article" [ngStyle]="customStyle">
     <img [src]="mainBannerImgLink" [alt]="imageTitle" (click)="$event.stopPropagation();navigateTo(redirectPageLink)" />
 </section>
 

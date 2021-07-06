@@ -28,7 +28,7 @@
     
     .address-list {
         @extend %clear-fix;
-        @extend %container;
+        // @extend %container;
         label {
             padding: 10px 0;
             display: block;

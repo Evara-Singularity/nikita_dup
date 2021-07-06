@@ -218,7 +218,7 @@ export class CheckoutV1Component implements OnInit {
       this._commonService.setWindowLoaded();
     }
     
-      
+    this.intialCheckoutVisit();
   }
 
   getBusinessDetails() {
@@ -466,7 +466,8 @@ export class CheckoutV1Component implements OnInit {
       this.tabIndex = 4;
       this._checkoutService.setCheckoutTabIndex(this.tabIndex);
     }
-
+    // incase navigates back from payment tab to address page
+    this.intialCheckoutVisit();
     // this.changeParams();
   }
 
@@ -480,6 +481,11 @@ export class CheckoutV1Component implements OnInit {
         queryParams: { index: this.tabIndex },
         queryParamsHandling: "merge"
       })
+
+  }
+
+  intialCheckoutVisit() {
+    console.log('continue tabIndexUpdated this.index==>', this.tabIndex);
     if (this.tabIndex == 2) {
       let page = {};
       digitalData["page"] = page;
@@ -492,7 +498,6 @@ export class CheckoutV1Component implements OnInit {
       _satellite.track("genericPageLoad");
       // } 
     }
-
   }
 
   viewUnavailableItems() {

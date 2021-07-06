@@ -14,7 +14,7 @@ export class EmiService{
     }
 
     getEmiValues(data){
-        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_EMI_VAL, {params:data}).pipe(
+        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CLUSTER_EMI_VAL, {params:data}).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({status: false, statusCode: res.status});
             })

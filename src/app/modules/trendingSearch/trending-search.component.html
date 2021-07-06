@@ -2,9 +2,11 @@
     <h3 class="search_heading"><i class="icon-trending"></i>Trending Searches</h3>
     <div class="trending-search-inner">
         <ng-container *ngFor="let prod of trendingCatName">
-            <div>
-                <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
-            </div>
+            <ng-container *ngIf="prod.categoryName">
+                <div>
+                    <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
+                </div>
+            </ng-container>
         </ng-container>
     </div>
 </div>
@@ -13,10 +15,12 @@
     <h3 class="search_heading"><i class="icon-trending"></i>Top Categories</h3>
     <div class="search_product_categories">
         <ng-container *ngFor="let item of topCategories;">
-            <div class="search_product_category" (click)="navigateTo(item.categoryLink, {tS:'yes'})">
-                <img [src]="CONSTANTS.IMAGE_BASE_URL + item.categoryImage">
-                <span class="prodText">{{ item?.categoryName }}</span>
-            </div>
+            <ng-container *ngIf="item.categoryImage">
+                <div class="search_product_category" (click)="navigateTo(item.categoryLink, {tS:'yes'})">
+                    <img [src]="CONSTANTS.IMAGE_BASE_URL + item.categoryImage">
+                    <span class="prodText">{{ item?.categoryName }}</span>
+                </div>
+            </ng-container>
         </ng-container>
     </div>
 </div>

@@ -20,12 +20,18 @@ export class SharedProductListingComponent {
 
   @Input() productsListingData: ProductListingDataEntity;
   @Input() pageName: string;
-  appliedFilterCount: number = 0;
+  @Input() headerName: string;
+  
+  public appliedFilterCount: number = 0;
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, public _commonService: CommonService) { }
 
   ngOnInit() {
     this.updateFilterCountAndSort();
+
+    console.log(this.pageName);
+    console.log(this.productsListingData);
+
   }
 
   ngOnChanges(){

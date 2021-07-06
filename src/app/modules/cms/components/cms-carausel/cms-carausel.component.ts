@@ -16,7 +16,6 @@ export class CmsCarauselComponent {
     constructor(private router: Router){}
 
     ngOnInit() { 
-        console.log(this.data);
     }
     navigateTo(link) { 
         this.router.navigate([link]); 

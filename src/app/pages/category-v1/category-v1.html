@@ -39,11 +39,31 @@
 </div>
 
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
-    <div class="quickLinksSection" *ngIf="popularLinks.length > 0">
+    <ng-container *ngFor="let item of [1]; let i = index;">
+        <div class="panel-head" style="margin-top: 0px;" >
+            <div class="container">
+                <h3 class="heading" [appKpToggle]="{idName: 'openCategoryAccoridan'+i , iconMode : true}">
+                    Quick Links
+                    <span class="icon-accordian">
+                        <i class="icon-down"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div [id]="'openCategoryAccoridan' + i" style="display:none;" class="panel-body">
+            <div class="container category_links">
+                <div *ngFor="let category of popularLinks">
+                    <a  href="{{API_RESPONSE.category[1].categoryLinkList[category]}}">{{ category }}</a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- <div class="quickLinksSection" *ngIf="popularLinks.length > 0">
         <h4>Quick Links</h4>
         <a *ngFor="let category of popularLinks" href="{{API_RESPONSE.category[1].categoryLinkList[category]}}"
             class="quickLinkList">{{category}}</a>
-    </div>
+    </div> -->
 
     <div *ngIf="_productListService?.productListingData?.productSearchResult?.totalCount">
         <recent-articles [recentArticles]="API_RESPONSE.category[0]"

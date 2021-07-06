@@ -22,6 +22,7 @@ export class KpToggleDirective implements AfterViewInit {
     }
 
     showContainer(Id?: string, icon?: boolean) {
+        alert(Id);
         if (document.getElementById(Id).style.display == 'none') {
             document.getElementById(Id).style.display = 'block';
             if (icon == true) {

@@ -1,22 +1,3 @@
-<!-- <ng-container *ngIf="inlineFilterData">
-    <div class="filter-container">
-        <p class="filter-heading">
-            {{ inlineFilterData.name }}
-        </p>
-        <ng-container *ngIf="inlineFilterData.name === GLOBAL_CONSTANT?.inlineFilter[0];  else nonCategory">
-            <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let k = index;">
-                <span *ngIf="k < 5" class="filter-btn" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</span>
-            </ng-container>
-        </ng-container>
-        <ng-template #nonCategory>
-            <ng-container *ngFor="let item of inlineFilterData.terms">
-                <span class="filter-btn" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term  | addFilterSymbol:inlineFilterData.name }}</span>
-            </ng-container>
-        </ng-template>
-    </div>
-</ng-container> -->
-
-<!-- Version 3 -->
 <ng-container *ngIf="inlineFilterData">
     <div class="filter-container">
         <ng-container *ngIf="inlineFilterData.name === GLOBAL_CONSTANT?.inlineFilter[0];  else nonCategory">
@@ -25,16 +6,16 @@
                     <p class="filter-heading">
                         Show By &nbsp;{{ inlineFilterData.name }}
                     </p>
-                    <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList | slice:0:5; let k = index;">
+                    <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let k = index;">
                         <div class="inline-filter-card-one">
-                            <div class="inline-filter-card-value" *ngIf="k < 5" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }} One</div>
+                            <div class="inline-filter-card-value" *ngIf="k % 2 === 0" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</div>
                         </div>
                     </ng-container>
                 </div>
                 <div class="inner-card-list">
-                    <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList | slice:5; let k = index;">
+                    <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let k = index;">
                         <div class="inline-filter-card-two">
-                            <div class="inline-filter-card-value card-value-2 " *ngIf="k < 5" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }} Two</div>
+                            <div class="inline-filter-card-value card-value-2 "  *ngIf="k % 2 === 1" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</div>
                         </div>
                     </ng-container>
                 </div>
@@ -43,15 +24,15 @@
         <ng-template #nonCategory>
             <div class="inline-filter-card-list">
                 <div class="inner-card-list">
-                    <ng-container *ngFor="let item of inlineFilterData.terms | slice:0:4;">
-                        <div class="inline-filter-card-one">
+                    <ng-container *ngFor="let item of inlineFilterData.terms; let i = index;">
+                        <div class="inline-filter-card-one" *ngIf="i % 2 === 0">
                             <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                         </div>
                     </ng-container>
                 </div>
                 <div class="inner-card-list">
-                    <ng-container *ngFor="let item of inlineFilterData.terms | slice:4">
-                        <div class="inline-filter-card-two">
+                    <ng-container *ngFor="let item of inlineFilterData.terms; let i = index;">
+                        <div class="inline-filter-card-two"  *ngIf="i % 2 === 1">
                             <div class="inline-filter-card-value card-value-2" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                         </div>
                     </ng-container>

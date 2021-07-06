@@ -133,7 +133,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
-				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];
+				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];				
 			}
 		});
 
@@ -318,6 +318,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}
 			this.carouselData = ncd; //carousel data
+			console.log(this.carouselData);
 
 			if (this.middleImageJsonData && this.middleImageJsonData.block_data) {
 				this.middleImageJsonDataLink = this.middleImageJsonData.block_data[

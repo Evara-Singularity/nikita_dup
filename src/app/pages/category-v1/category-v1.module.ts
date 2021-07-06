@@ -7,6 +7,7 @@ import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { RecentArticlesModule } from '@app/components/recent-articles/recent-articles.component';
 import { CategoryFooterModule } from '@app/components/category-footer/category-footer.component';
+import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { CategoryFooterModule } from '@app/components/category-footer/category-f
         CategoryFooterModule,
         RecentArticlesModule,
         CategoryV1RoutingModule,
+        KpToggleDirectiveModule,
         SharedProductListingModule
     ],
     declarations: [

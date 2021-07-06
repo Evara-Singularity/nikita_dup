@@ -59,8 +59,8 @@
                 <div class="install-app" *ngIf="!isAppInstalled">
                     <button>INSTALL APP</button>
                 </div>
-                <div class="install-app" *ngIf="isAppInstalled">
-                    <button>Open Moglix App</button>
+                <div class="install-app"  *ngIf="isAppInstalled">
+                    <button (click)="openDeepLink()" >Open Moglix App</button>
                 </div>
             </div>
         </ng-container>

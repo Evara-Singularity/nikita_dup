@@ -24,6 +24,7 @@ export class AppPromoComponent implements OnInit {
 
   @Input() isOverlayMode: boolean = true;
   @Input() showPromoCode: boolean = true;
+  @Input() productMsn: string = null;
 
   public appPromoStatus: boolean = true;
   public mobile_os = null;
@@ -44,10 +45,18 @@ export class AppPromoComponent implements OnInit {
     this.mobile_os = this.getMobileOperatingSystem();
     this.isMoglixAppInstalled();
   }
+  
+  get productDeepLink() {
+    return 'moglix://' + this.productMsn;
+  }
+
+  openDeepLink(){
+    window.open(this.productDeepLink, '_blank');
+  }
 
   isMoglixAppInstalled() {
     if (navigator && navigator['getInstalledRelatedApps']) {
-      (navigator['getInstalledRelatedApps']).then(installedApps => {
+      (navigator['getInstalledRelatedApps'])().then(installedApps => {
         const nativeApp = installedApps.find(app => app.id === 'com.moglix.online');
         console.log("nativeApp ==>", nativeApp, installedApps);
         if (nativeApp && nativeApp.length > 0) {

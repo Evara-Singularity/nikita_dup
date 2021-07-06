@@ -1676,6 +1676,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
+    this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
   }
 
   postHelpful(item, yes, no, i) {

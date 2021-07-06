@@ -35,6 +35,7 @@ export class SharedProductListingComponent {
   }
   
   updateFilterCountAndSort(){
+    console.log(this.productsListingData);
     this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
     this._productListService.initializeSortBy();
     if (this.paginationInstance) {

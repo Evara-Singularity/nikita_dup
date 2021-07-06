@@ -1,6 +1,6 @@
 import { Component, Inject, Optional, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -8,7 +8,6 @@ import { DataService } from '@app/utils/services/data.service';
 import { FooterService } from '@app/utils/services/footer.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
@@ -23,12 +22,12 @@ export class BrandV1Component {
     public productListingData: ProductListingDataEntity;
     public cmsData: any[] = [];
     public API_RESPONSE: any;
-    public _router: Router;
     public popularLinks;
     public brandFooterData;
-
+    
     constructor(
         public _activatedRoute: ActivatedRoute,
+        public _router: Router,
         public _commonService: CommonService,
         private _renderer2: Renderer2,
         public _footerService: FooterService,
@@ -60,19 +59,23 @@ export class BrandV1Component {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
+            console.log(result);
+
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
-
-            // handle if brand is not active or has zero product count
-            this.handleIfBrandIsNotActive();
-
+            
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1].categoryLinkList);
-
+            
+            console.log(this.popularLinks);
+            
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1].productSearchResult.totalCount;
-
+            
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1], 'Brand Results');
+            
+            // handle if brand is not active or has zero product count
+            this.handleIfBrandIsNotActive();
 
             // genrate data for footer
             this.genrateAndUpdateBrandFooterData();

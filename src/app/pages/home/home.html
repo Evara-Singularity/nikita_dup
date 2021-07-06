@@ -1,3 +1,5 @@
+<app-promo *ngIf="isBrowser" [isOverlayMode]="false"></app-promo>
+
 <div class="css-banner-component">
     <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isBrowser">
         <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
@@ -55,7 +57,6 @@
     </div>
 </div> -->
 
-
 <!-- Section for feature Brands -->
 <div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
     <div>
@@ -79,60 +80,3 @@
 
 <home-accordians [flyoutData]='flyOutData' [carouselData]="carouselData"></home-accordians>
 
-<!--APP promotion-->
-<!--app store-->
-<div class="app-promotion">
-    <span>
-            <img src="assets/img/App-promotion/close-line.png">
-        </span>
-    <p>Get Rs 100 Off* on your first order<br> Use coupon <strong>HELLO</strong>
-
-    </p>
-</div>
-
-<div class="content-mobile-app">
-    <div class="mobile">
-        <img src="assets/img/App-promotion/mobile_icon.png">
-    </div>
-    <div class="text">
-        <strong>Download Moglix App</strong>
-        <p>4.1 <img src="assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
-    </div>
-    <div class="play-store">
-        <img src="assets/img/App-promotion/play_store.png">
-    </div>
-</div>
-
-<!--App store image added-->
-<div class="content-mobile-app">
-    <div class="mobile">
-        <img src="assets/img/App-promotion/mobile_icon.png">
-    </div>
-    <div class="text">
-        <strong>Download Moglix App</strong>
-        <p>4.1 <img src="assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
-    </div>
-    <div class="play-store">
-        <img src="assets/img/App-promotion/app_store.png">
-    </div>
-</div>
-
-<!--for install app code-->
-<div class="app-promotion">
-    <p class="install-app-text">Get Personalized Experience & Best Deals on App </p>
-</div>
-<div class="content-mobile-app">
-    <span class="install-app-cross">
-        <img src="assets/img/App-promotion/close-line.png">
-    </span>
-    <div class="mobile">
-        <img src="assets/img/App-promotion/mobile_icon.png">
-    </div>
-    <div class="text">
-        <strong>Download Moglix App</strong>
-        <p>4.1 <img src="assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
-    </div>
-    <div class="install-app">
-        <button>INSTALL APP</button>
-    </div>
-</div>

@@ -28,10 +28,6 @@ export class SharedProductListingComponent {
 
   ngOnInit() {
     this.updateFilterCountAndSort();
-
-    console.log(this.pageName);
-    console.log(this.productsListingData);
-
   }
 
   ngOnChanges(){

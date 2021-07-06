@@ -26,19 +26,22 @@
     </shared-product-listing>
 </div>
 
-<div class="sub-cate-container">
-    <div class="container pt-10">
-        <p *ngIf="_commonService.selectedFilterData.page < 2" class="sub_category_heading">
-            {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
-            <span class="light-txt f-16"
-                *ngIf="API_RESPONSE.category[0]?.children?.length > 0">({{API_RESPONSE.category[0]?.children?.length}}
-                Categories)</span>
-        </p>
-        <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
-    </div>
-</div>
 
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+    <!-- This is sub category section -->
+    <div class="sub-cate-container">
+        <div class="container pt-10">
+            <p class="sub_category_heading">
+                {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+                <span class="light-txt f-16"
+                    *ngIf="API_RESPONSE.category[0]?.children?.length > 0">({{API_RESPONSE.category[0]?.children?.length}}
+                    Categories)</span>
+            </p>
+            <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
+        </div>
+    </div>
+
+    <!-- This is accordian section -->
     <div class="accordian_footer_panel">
         <ng-container *ngFor="let item of [1,2,3]; let i = index;">
             <div class="panel-head" style="margin-top: 0px;" >
@@ -61,10 +64,12 @@
         </ng-container>
     </div>
 
+    <!-- This is recently article section -->
     <div *ngIf="_productListService?.productListingData?.productSearchResult?.totalCount">
         <recent-articles [recentArticles]="API_RESPONSE.category[0]"
             [title]="this.API_RESPONSE.category[0].children?.categoryDetails?.categoryName"></recent-articles>
     </div>
 
+    <!-- This is footer section -->
     <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
 </ng-container>

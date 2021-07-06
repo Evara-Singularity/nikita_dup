@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@services/productList.service';
@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import CONSTANTS from '@app/config/constants';
+import { DOCUMENT } from '@angular/common';
+import { Meta } from '@angular/platform-browser';
 
 let digitalData = {
   page: {},
@@ -28,11 +31,21 @@ export class SearchV1Component implements OnInit {
     public _productListService: ProductListService,
     private _commonService: CommonService,
     private _dataService: DataService,
+    private meta: Meta,
+    @Inject(DOCUMENT) private _document,
+    private _renderer2: Renderer2, 
     private _analytics: GlobalAnalyticsService,
     private _router: Router
   ) { }
 
   ngOnInit(): void {
+    if (this._commonService.isBrowser) {
+      // Set Meta data
+      this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
+
+      // Set Adobe tracking and other tasks
+      this.initializeAdobeTracking();
+    }
     this.setDataFromResolver();
   }
 
@@ -41,30 +54,72 @@ export class SearchV1Component implements OnInit {
       // Empty the setSearchResultsTrackingData initially.
       this._commonService.setSearchResultsTrackingData({});
 
+      // Set the API_RESULT variable
       this.API_RESULT = result;
 
+      // Update shared product list Data
       this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
 
+      // Initialize the current activated filter count
       this._commonService.selectedFilterData.totalCount = this.API_RESULT['searchData'][0].productSearchResult.totalCount;
 
+      // update recommend search flag
       this.updateToggleRcommendFlag();
 
       // Remove spacing from input search input value
       this.removeSpacingForSearchInput();
 
-      
       const filterIsNotAppliedAndProductCountIsOne = this.API_RESULT['searchData'][0].productSearchResult['totalCount'] === 1 || this._activatedRoute.snapshot.fragment === null;
+      
       if (filterIsNotAppliedAndProductCountIsOne) {
         this._commonService.setSearchResultsTrackingData({ 'search-query': this._activatedRoute.snapshot["queryParams"]["search_query"], 'search-results': '1' });
       }
-      
+
+      // Send Adobe Tracking Data
       this.setAdobeTrackingData();
 
+      // Send GTM call
       this.sendGTMCall();
 
+      // Send Analytics Call
       this.sendAnalyticsCall();
 
+      // Set canonical Urls
+      this.setCanonicalUrls();
+
     });
+  }
+
+  setCanonicalUrls(){
+    //Start Canonical URL 
+    let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+    let currentRoute = this._commonService.getCurrentRoute(this._router.url);
+    let pageCountQ = this.API_RESULT['searchData'][0].productSearchResult.totalCount / 10;
+    let currentPageP = parseInt(currentQueryParams["page"]);
+
+    if (pageCountQ > 1 && (currentPageP == 1 || isNaN(currentPageP))) {
+
+        let links = this._renderer2.createElement('link');
+        links.rel = "next";
+        links.href = CONSTANTS.PROD + currentRoute + '?page=2';
+        this._renderer2.appendChild(this._document.head, links);
+
+    } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
+        let links = this._renderer2.createElement('link');
+        links.rel = "prev";
+        links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+        this._renderer2.appendChild(this._document.head, links);
+
+        links = this._renderer2.createElement('link');
+        links.rel = "next";
+        links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
+        this._renderer2.appendChild(this._document.head, links);
+    } else if (currentPageP > 1 && pageCountQ + 1 >= currentPageP) {
+        let links = this._renderer2.createElement('link');
+        links.rel = "prev";
+        links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+        this._renderer2.appendChild(this._document.head, links);
+    }
   }
 
   sendGTMCall() {
@@ -78,7 +133,7 @@ export class SearchV1Component implements OnInit {
   sendAnalyticsCall(){
     if (this._commonService.isBrowser) {
       digitalData["page"]["trendingSearch"] = 'no';
-      digitalData['page']['searchTerm'] = this._activatedRoute.snapshot.queryParams['search_query'];
+      digitalData['page']['searchTerm'] = this.API_RESULT['searchData'][0].productSearchResult["totalCount"] === 1 ? this.API_RESULT['searchData'][0].productSearchResult.products[0].moglixPartNumber : this._activatedRoute.snapshot.queryParams['search_query'];
       digitalData['page']['suggestionClicked'] = this._activatedRoute.snapshot.queryParams['lsource'] && this._activatedRoute.snapshot.queryParams['lsource'] == 'sclick' ? 'yes' : 'no'
       this._analytics.sendAdobeCall(digitalData);
     }
@@ -118,7 +173,7 @@ export class SearchV1Component implements OnInit {
     digitalData['page']['subSection'] += (this.API_RESULT['searchData'][0].productSearchResult['products'].length === 0 ? " : ZSR" : '');
   }
 
-  setAdobeTracking() {
+  initializeAdobeTracking() {
     const user = this._localStorageService.retrieve('user');
     let page = {
         'pageName': "Search Listing Page",

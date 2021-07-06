@@ -61,16 +61,16 @@ export class CategoryV1Component {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.setDataFromResolver();
 
-        if (this._commonService.isBrowser) {            
+        if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
         }
     }
-    
+
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
             this.API_RESPONSE = result;
@@ -88,7 +88,7 @@ export class CategoryV1Component {
         });
     }
 
-    genrateAndUpdateCategoryFooterData(){
+    genrateAndUpdateCategoryFooterData() {
         this.categoryFooterData = {
             productSearchResult: this.API_RESPONSE.category[1].productSearchResult,
             getRelatedCatgory: this.API_RESPONSE.category[0],
@@ -260,25 +260,26 @@ export class CategoryV1Component {
 
     private updateComponentsBasedOnrouteChange() {
         const params = this._activatedRoute.snapshot.params;
-
-        if (this._commonService.selectedFilterData.page < 2) {
-            if (!this.subCategoryInstance) {
-                this.createDynamicComponent('subCategory');
-            } else {
-                this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
-            }
+        
+        if (!this.subCategoryInstance) {
+            this.createDynamicComponent('subCategory');
+        } else {
+            this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
+            this.subCategoryInstance.instance.initializeSubcategoryData(this.API_RESPONSE.category[0].children);
         }
+
+
 
         this.layoutType = 0;
         if (params && params.id && slpPagesExtrasIdMap.hasOwnProperty(params.id)) {
             this.isSLPPage = true;
             this.getExtraCategoryData(params).subscribe((data) => {
-    
+
                 this.layoutType = data['layoutType'];
                 if (this.API_RESPONSE.category[0].children && this.layoutType == 2) {
                     this.createDynamicComponent('slpSubCategory');
                 }
-    
+
                 this.page_title = data['pageTitle'];
 
                 if (data['data'][0].block_data.brand_block) {
@@ -293,12 +294,12 @@ export class CategoryV1Component {
                     this.shopbyFeatrData = data['data'][0].block_data.image_block;
                     this.createDynamicComponent('shopbyFeatr');
                 }
-    
+
                 if (data['data'][0].block_data.general_block) {
                     this.catStaticData = data['data'][0].block_data.general_block;
                     this.createDynamicComponent('catStatic');
                 }
-    
+
             });
         } else {
             this.isSLPPage = false;
@@ -402,7 +403,7 @@ export class CategoryV1Component {
             this.subCategoryInstance = null;
             this.subCategoryContainerRef.remove();
         }
-        if (this.catBestSellerInstance){
+        if (this.catBestSellerInstance) {
             this.catBestSellerInstance = null;
             this.catBestSellerContainerRef.remove();
         }
@@ -430,7 +431,7 @@ export class CategoryV1Component {
             this.cmsInstance = null;
             this.cmsContainerRef.remove();
         }
-        if(this.cateoryFooterInstance) {
+        if (this.cateoryFooterInstance) {
             this.cateoryFooterInstance = null;
             this.cateoryFooterContainerRef.remove();
         }

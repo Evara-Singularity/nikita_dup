@@ -25,7 +25,7 @@ export class GlobalAnalyticsService {
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
-    digitalData = Object.assign({}, data);
+    // digitalData = Object.assign({}, data);
     _satellite.track(trackingname);
   }
 

@@ -10,20 +10,6 @@
                     (click)="redirectWithNoPreProcessRequiredParam(API_RESULT['searchData'][0].productSearchResult.inputSearchString)">Search
                     instead for {{API_RESULT['searchData'][0].productSearchResult.inputSearchString}}</a>
             </p>
-
-            <p class="f-left"
-                *ngIf="(API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or'">
-                <span>
-                    Showing {{API_RESULT['searchData'][0].productSearchResult.totalCount}} results for
-                    "{{API_RESULT['searchData'][0].productSearchResult.displayString}}"</span>
-            </p>
-            <p class="f-left"
-                *ngIf="toggleRcommendFlag && ((API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')">
-                <span>Showing {{API_RESULT['searchData'][0].productSearchResult.totalCount}} results for
-                    "{{ API_RESULT['searchData'][0].productSearchResult.displayString ?
-                    API_RESULT['searchData'][0].productSearchResult.displayString :
-                    API_RESULT['searchData'][0].productSearchResult.inputSearchString}}"</span>
-            </p>
         </div>
     </div>
 </div>
@@ -36,6 +22,6 @@
         </div>
     </ng-container>
 </div>
-<shared-product-listing [pageName]="'SEARCH'"
+<shared-product-listing [headerName]="headerNameBasedOnCondition" [pageName]="'SEARCH'"
     [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>

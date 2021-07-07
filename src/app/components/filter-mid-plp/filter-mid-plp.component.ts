@@ -23,7 +23,6 @@ export class FilterMidPlpComponent implements OnInit {
 
   ngOnInit(): void {
     this.genrateInlineFilterData();
-    this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
   }
 
   genrateInlineFilterData() {
@@ -42,6 +41,8 @@ export class FilterMidPlpComponent implements OnInit {
     if (discount) {
       this._productListService.inlineFilterData.push(discount);
     }
+
+    this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
   }
 
   checkAndApplyFilter(key, item) {

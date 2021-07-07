@@ -108,10 +108,7 @@ export class BrandComponent {
             if (this._activatedRoute.snapshot.queryParams['category']) {
                 this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
             }
-
-    
-            // Set brand of the page
-            this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);    
+  
 
             // Set footers
             this.footerService.setMobileFoooters();
@@ -547,6 +544,8 @@ export class BrandComponent {
         }
         
         if (response['category'] !== "undefined") {
+            // Set brand of the page
+            this.brand = response.brandName;  
             this.brandcatFlag = true;
             this.brandCatDesc = response.desciption;
             this.categoryNameinAPI = response.categoryName
@@ -602,28 +601,31 @@ export class BrandComponent {
             this.setLinks(response);
         }
 
-        // Set amp tag only for brand-category page.
-        if (this.isServer) {
-            const params = this._activatedRoute.snapshot.params;
-            if (params['category']) {
-                this.catUrlName = this._router.url.split("/brands/" + this._activatedRoute.snapshot.params["brand"])[1];
-                this.setAmpTag('brand-category');
-            } else {
-                this.setAmpTag('brand');
-            }
-        }
+        // JIRA: ODP-1371
+        // // Set amp tag only for brand-category page.
+        // if (this.isServer) {
+        //     const params = this._activatedRoute.snapshot.params;
+        //     if (params['category']) {
+        //         this.catUrlName = this._router.url.split("/brands/" + this._activatedRoute.snapshot.params["brand"])[1];
+        //         this.setAmpTag('brand-category');
+        //     } else {
+        //         this.setAmpTag('brand');
+        //     }
+        // }
+
         this.onVisiblebrandDetailsFooter()
     }
 
-    setAmpTag(page) {
-        if (this.pageNo == 1 || this.pageNo == undefined) {
-            const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
-            const ampLink = this._renderer2.createElement('link');
-            ampLink.rel = 'amphtml';
-            ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
-            this._renderer2.appendChild(this._document.head, ampLink);
-        }
-    }
+    // JIRA: ODP-1371
+    // setAmpTag(page) {
+    //     if (this.pageNo == 1 || this.pageNo == undefined) {
+    //         const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
+    //         const ampLink = this._renderer2.createElement('link');
+    //         ampLink.rel = 'amphtml';
+    //         ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
+    //         this._renderer2.appendChild(this._document.head, ampLink);
+    //     }
+    // }
 
     onFilterSelected(count) {
         setTimeout(() => {

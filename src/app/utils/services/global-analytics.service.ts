@@ -3,9 +3,9 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
 import { Socket } from 'ngx-socket-io';
 
-declare let dataLayer: any;
-declare var digitalData: {};
-declare let _satellite;
+declare var dataLayer;
+declare var digitalData;
+declare var _satellite;
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,7 @@ export class GlobalAnalyticsService {
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
-    digitalData = Object.assign({}, data);
+    // digitalData = Object.assign({}, data);
     _satellite.track(trackingname);
   }
 

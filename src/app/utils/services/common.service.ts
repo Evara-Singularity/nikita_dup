@@ -166,6 +166,8 @@ export class CommonService {
 
     private getBrandData(type, curl, params) {
         const formattedParams = this.formatParams(params);
+        console.log(formattedParams);
+        console.log(params);
 
         return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRAND_NAME, { params: { name: formattedParams['brand'] } })
             .pipe(
@@ -289,6 +291,7 @@ export class CommonService {
     refreshProducts(flagFromResolver?: boolean): Observable<any> {
         return (new Observable(observer => {
             const defaultParams = this.defaultParams;
+            console.log(this.defaultParams);
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
                 if (this.currentRequest !== undefined)

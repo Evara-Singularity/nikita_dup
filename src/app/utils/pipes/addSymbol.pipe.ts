@@ -16,7 +16,9 @@ export class AddFilterSymbol implements PipeTransform
             switch (name.toLowerCase().trim()) {
                 case 'price': {
                     let values = value.split(HYPHEN);
-                    values.forEach((value, index) => { values[index] = RUPEE + value.trim() });
+                    values.forEach((value, index) => { 
+                        values[index] = ((value.trim() !== '*') ? RUPEE + value.trim() : value.trim()) 
+                    });
                     returnValue = values.join(" - ");
                     break;
                 }

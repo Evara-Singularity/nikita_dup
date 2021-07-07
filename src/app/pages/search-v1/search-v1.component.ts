@@ -24,6 +24,7 @@ let digitalData = {
 export class SearchV1Component implements OnInit {
   public API_RESULT: any;
   public didYouMean: any;
+  public headerNameBasedOnCondition;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -49,6 +50,15 @@ export class SearchV1Component implements OnInit {
     this.setDataFromResolver();
   }
 
+  setHeaderNameBasedOnCondition(){
+    if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
+      this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
+    } else if (this.toggleRcommendFlag && ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
+      this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
+    }
+    console.log(this.headerNameBasedOnCondition);
+  }
+
   setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
       // Empty the setSearchResultsTrackingData initially.
@@ -56,6 +66,8 @@ export class SearchV1Component implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
+
+      this.setHeaderNameBasedOnCondition();
 
       // Update shared product list Data
       this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');

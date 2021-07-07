@@ -23,7 +23,7 @@ export class SharedProductListingComponent {
   @Input() headerName: string;
   Object = Object;
   filterChipsArray: Array<any> = [];
-  
+
   public appliedFilterCount: number = 0;
 
   constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, public _commonService: CommonService) { }

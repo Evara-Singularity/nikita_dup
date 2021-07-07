@@ -1,4 +1,3 @@
-<breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
 <div [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
     <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1" [class.slpLayout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
@@ -23,6 +22,8 @@
     <shared-product-listing [headerName]="API_RESPONSE.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''" [pageName]="'CATEGORY'" [productsListingData]="_productListService?.productListingData">
     </shared-product-listing>
 </div>
+
+<breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
 
 <!-- This is sub category section -->
 <div [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">

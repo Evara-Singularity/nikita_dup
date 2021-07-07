@@ -4,7 +4,10 @@
         <span class="txt-name">FILTER</span>
         <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter">CLEAR ALL</span>
     </div>
-    <button class="apply-filter btn continue-btn" (click)="toggleFilter.emit(); _commonService.applyFilter()">APPLY</button>
+    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="apply-filter">
+        <button class="btn continue-btn">APPLY</button>
+    </div>
+
     <div class="filters-content">
         <ul class="side-filters">
             <li *ngFor="let filter of filterData; let i = index;" (click)="selectedFilterIndex = i" [class.active]="selectedFilterIndex == i">

@@ -1,5 +1,4 @@
 .filter-container {
-    padding: 10px 5px;
     .filter-btn {
         display: inline-block;
         padding: 10px 20px;
@@ -87,6 +86,7 @@
         margin-top: 16px;
         margin-bottom: 16px;
         font-weight: bold;
+        font-size: 12px;
         &.card-value-2 {
             margin-bottom: 16px;
         }

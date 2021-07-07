@@ -21,6 +21,7 @@
         width: 55%;
         text-align: right;
         font-size: 10px;
+        margin-left: auto;
     }
     .list-name{
         padding: 5px 0px;
@@ -51,9 +52,10 @@
         font-size: $medium-font;
         font-weight: bold;
         text-align: left;
-        padding: 0 15px;
+        padding: 0 12px;
         .txt {
             display: inline-block;
+            vertical-align: middle;
         }
         &:first-of-type {
             position: relative;
@@ -68,6 +70,8 @@
         }
         i {
             padding-right: 10px;
+            font-size: 20px;
+            vertical-align: middle;
         }
         .filter_count {
             color: #D9232D;

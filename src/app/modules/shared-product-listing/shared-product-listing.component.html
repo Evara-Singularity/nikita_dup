@@ -1,11 +1,9 @@
 <div class="filter-wrapper">
     <button type="button" (click)="toggleSortBy()">
-        <i class="icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By <span class="red-txt">{{
-                _commonService.selectedFilterData['sortBy'] ? _commonService.selectedFilterData['sortBy'] : 'popularity'
-                }}</span></span>
+        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By  <span class="red-txt">{{ _commonService.selectedFilterData['sortBy'] ? _commonService.selectedFilterData['sortBy'] : 'popularity' }}</span></span>
     </button>
     <button type="button" (click)="filterUp()">
-        <i class="icon-sort-by" aria-hidden="true"></i>
+        <i class="icon-filter-3-fill" aria-hidden="true"></i>
         <span class="txt">Filters</span>
         <span class="filter_count" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
     </button>

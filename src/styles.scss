@@ -17,6 +17,7 @@
 }
 
 // Icons
+i,
 [class^="icon-"]::before,
 [class*=" icon-"]::before {
     font-family: 'icomooon_pwa' !important;
@@ -353,6 +354,9 @@ header-nav {
         padding: 10px 5px;
         position: relative;
         color: $white;
+    }
+    .icon-cart1 {
+        font-size: 22px;
     }
 }
 

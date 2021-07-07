@@ -110,7 +110,7 @@
                 text-align: right;
                 width: 115px;
                 button {
-                    padding: 8px 10px;
+                    padding: 10px 10px;
                     background-color: #D9232D;
                     text-transform: uppercase;
                     color: #FFF;
@@ -152,6 +152,22 @@
         position: absolute;
         top: 50%;
         left: 50%;
+    }
+}
+
+.add_cart_btn {
+    border: 1px solid #D9232D;
+    display: inline-block;
+    border-radius: 4px;
+    margin-right: 8px;
+    width: 32px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 29px;
+    i {
+        font-size: 20px;
+        color: #D9232D;
+        vertical-align: middle;
     }
 }
 

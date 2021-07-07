@@ -18,7 +18,7 @@
                     {{product.avgRating | rating | number : '1.1-1' }}
                     <i class="icon-rating-star"></i>
                 </span>
-                <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
+                <span class="count" *ngIf="product.ratingCount">({{product.ratingCount}})</span>
             </div>
             <div class="name">
                 <span>{{product.productName}}</span>
@@ -45,9 +45,9 @@
                 </div>
                 <div class="right">
                     <ng-container *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                        <button class="white" (click)="buyNow()">
+                        <span class="add_cart_btn" (click)="buyNow()">
                             <i class="icon-cart1"></i>
-                        </button>
+                        </span>
                         <button (click)="buyNow(true)">BUY NOW</button>
                     </ng-container>
                     <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">

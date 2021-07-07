@@ -8,7 +8,7 @@
                 <a *ngIf="(routerData && routerData['logo']) && isHomePage" class="moglix-app-logo" [routerLink]="['/']">
                     <img src="{{imgAssetPath}}assets/img/moglix_logo_PWA.png">
                 </a>
-                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']" >
+                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
                     <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
                 </a>
             </div>
@@ -20,7 +20,7 @@
                     <i class="icon-search"></i>
                     <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
                 </div>
-                <a [routerLink]="['/quickorder']" class="icon-cart-header">
+                <a [routerLink]="['/quickorder']" class="icon-cart1">
                     <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
                 </a>
                 <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-dot"></a>
@@ -42,7 +42,7 @@
                 <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
             </a>
             <a *ngIf="!isHomePage  && !isLoginPage && (routerData && routerData['title'])" (click)="loadSearchNav()" class="icon-search red-txt"></a>
-            <a *ngIf="!isHomePage && !isLoginPage" [routerLink]="['/quickorder']" class="icon-cart-header">
+            <a *ngIf="!isHomePage && !isLoginPage" [routerLink]="['/quickorder']" class="icon-cart1">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
             <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-dot"></a>
@@ -53,7 +53,7 @@
             <a class="search-bar">
                 <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category/Brand...">
             </a>
-            <a *ngIf="isHomePage && isScrolledHeader" [routerLink]="['/quickorder']" class="icon-cart-header header-icon">
+            <a *ngIf="isHomePage && isScrolledHeader" [routerLink]="['/quickorder']" class="icon-cart1 header-icon">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
         </div>

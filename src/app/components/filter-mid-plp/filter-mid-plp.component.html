@@ -8,14 +8,14 @@
                     </p>
                     <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let k = index;">
                         <div class="inline-filter-card-one">
-                            <div class="inline-filter-card-value" *ngIf="k % 2 === 0" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</div>
+                            <div class="inline-filter-card-value" *ngIf="(k % 2 === 0) && item.term" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</div>
                         </div>
                     </ng-container>
                 </div>
                 <div class="inner-card-list">
                     <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let k = index;">
                         <div class="inline-filter-card-two">
-                            <div class="inline-filter-card-value card-value-2 "  *ngIf="k % 2 === 1" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</div>
+                            <div class="inline-filter-card-value card-value-2 "  *ngIf="(k % 2 === 1) && item.term" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term }}</div>
                         </div>
                     </ng-container>
                 </div>

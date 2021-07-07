@@ -23,8 +23,8 @@
         </div>
     </ng-container>
     <ng-container *ngIf="pageName !== 'SEARCH'">
-        <div class="left">
-            <p>Safety</p>
+        <div class="left" *ngIf="pageName === 'CATEGORY'">
+            {{ headerName }}
         </div>
         <div class="right" *ngIf="productsListingData.totalCount">
             Showing 20 out of {{productsListingData.totalCount}} products

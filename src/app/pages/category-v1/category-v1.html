@@ -22,7 +22,7 @@
 </div>
 
 <div id="category-cards-section">
-    <shared-product-listing [productsListingData]="_productListService?.productListingData">
+    <shared-product-listing [headerName]="API_RESPONSE.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''" [pageName]="'CATEGORY'" [productsListingData]="_productListService?.productListingData">
     </shared-product-listing>
 </div>
 

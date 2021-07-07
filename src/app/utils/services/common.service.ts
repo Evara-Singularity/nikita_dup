@@ -844,6 +844,25 @@ export class CommonService {
             pageSize: GLOBAL_CONSTANT.default.pageSize
         };
     }
+
+    genricApplyFilter(key, item) {
+        console.log(key);
+        console.log(item);
+        
+        if (this.selectedFilterData.filter.hasOwnProperty(key)) {
+          const indexInSelectedFilterDataFilterArray = this.selectedFilterData.filter[key].findIndex(x => x === item.term);
+          if (!(indexInSelectedFilterDataFilterArray > -1)) {
+            this.selectedFilterData.filter[key].push(item.term);
+          } else {
+            this.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
+          }
+        } else {
+          this.selectedFilterData.filter[key] = [];
+          this.selectedFilterData.filter[key].push(item.term);
+        }
+    
+        this.applyFilter();
+      }
     
     applyFilter(currentRouteFromCategoryFilter?: number, page?: number){
 

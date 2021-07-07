@@ -21,6 +21,8 @@ export class SharedProductListingComponent {
   @Input() productsListingData: ProductListingDataEntity;
   @Input() pageName: string;
   @Input() headerName: string;
+  Object = Object;
+  filterChipsArray: Array<any> = [];
   
   public appliedFilterCount: number = 0;
 
@@ -29,18 +31,32 @@ export class SharedProductListingComponent {
   ngOnInit() {
     this.updateFilterCountAndSort();
   }
-
+  
   ngOnChanges(){
     this.updateFilterCountAndSort();
   }
   
+  removeFilterChip(key, termName) {
+    const item = this.productsListingData.filterData.find(f => f.name === key);
+    if (item) {
+      const term = item.terms.find(t => t.term.toLowerCase() === termName.toLowerCase()); 
+      if (term) {
+        this._commonService.genricApplyFilter(key, term);
+      }
+    }
+  }
+  
   updateFilterCountAndSort(){
-    console.log(this.productsListingData);
     this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
     this._productListService.initializeSortBy();
     if (this.paginationInstance) {
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
       this.paginationInstance.instance.initializePageData();
+    }
+
+    this.filterChipsArray = [];
+    for(let key in this._commonService.selectedFilterData.filter) {
+      this.filterChipsArray = [...this.filterChipsArray, ...this._commonService.selectedFilterData.filter[key]];
     }
   }
 

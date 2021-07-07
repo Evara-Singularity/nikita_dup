@@ -39,7 +39,6 @@ export class SubCategoryComponent {
 
     initializeSubcategoryData(data) {
         this.relatedCatgoryList = data;
-        console.log(this.relatedCatgoryList);
     }
 
     goToAnother(id,categoryLink) {

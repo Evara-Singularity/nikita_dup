@@ -49,19 +49,7 @@ export class FilterMidPlpComponent implements OnInit {
       this._router.navigate([item.categoryLink]);
       return;
     } else {
-      if (this._commonService.selectedFilterData.filter.hasOwnProperty(key)) {
-        const indexInSelectedFilterDataFilterArray = this._commonService.selectedFilterData.filter[key].findIndex(x => x === item.term);
-        if (!(indexInSelectedFilterDataFilterArray > -1)) {
-          this._commonService.selectedFilterData.filter[key].push(item.term);
-        } else {
-          this._commonService.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
-        }
-      } else {
-        this._commonService.selectedFilterData.filter[key] = [];
-        this._commonService.selectedFilterData.filter[key].push(item.term);
-      }
-  
-      this._commonService.applyFilter();
+      this._commonService.genricApplyFilter(key, item);
     }
   }
 }

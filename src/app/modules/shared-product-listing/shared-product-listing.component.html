@@ -1,19 +1,25 @@
 <div class="filter-wrapper">
     <button type="button" (click)="toggleSortBy()">
-        <i class="icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By  <span class="red-txt">{{ _commonService.selectedFilterData['sortBy'] ? _commonService.selectedFilterData['sortBy'] : 'popularity' }}</span></span>
+        <i class="icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By <span class="red-txt">{{
+                _commonService.selectedFilterData['sortBy'] ? _commonService.selectedFilterData['sortBy'] : 'popularity'
+                }}</span></span>
     </button>
     <button type="button" (click)="filterUp()">
         <i class="icon-sort-by" aria-hidden="true"></i>
         <span class="txt">Filters</span>
-        <span class="filter_count"  *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
+        <span class="filter_count" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
     </button>
 </div>
-<div class="filter_chips">
+<div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">
-        <span *ngFor="let i of [1,2,3,4,5,6]" class="filter_chip">
-            0 -100
-         <i class="icon-circle-delete"></i>
-       </span>
+        <ng-container *ngFor="let filterChip of Object.keys(_commonService.selectedFilterData.filter)">
+            <ng-container *ngFor="let filter of _commonService.selectedFilterData.filter[filterChip]">
+                <span class="filter_chip">
+                    <span>{{ filter }}</span>
+                    <i (click)="removeFilterChip(filterChip, filter)" class="icon-circle-delete"></i>
+                </span>
+            </ng-container>
+        </ng-container>
     </div>
 </div>
 <div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH'">
@@ -34,7 +40,8 @@
 
 
 <ng-container *ngFor="let product of productsListingData.products; let i = index;">
-    <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData" *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
+    <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData"
+        *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
     <product-horizontal-card [product]="product">
     </product-horizontal-card>
 </ng-container>

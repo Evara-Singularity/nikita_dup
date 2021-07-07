@@ -136,6 +136,25 @@
     }
 }
 
+.youtubeThumbnail-listing {
+    .thumbnail {
+        background: url('https://img.youtube.com/vi/h9QNUcrjtOs/hqdefault.jpg');
+        background-size: cover;
+        height: 120px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        position: relative;
+    }
+    .youtube_icon {
+        width: 70px;
+        height: 70px;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+}
+
 @media screen and (max-width: 320px) {
     .card-container {
         .left {

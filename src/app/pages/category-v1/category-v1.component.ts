@@ -50,25 +50,6 @@ export class CategoryV1Component {
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
 
-    attributeData = [
-        {
-        "title":"Steel Toe Safety Shoes",
-        "friendlyUrl":"steel-toe-safety-shoes"
-        },
-        {
-        "title":"Kavach Black Safety Shoes Under 1000",
-        "friendlyUrl":"kavach-black-safety-shoes-under-1000"
-        },
-        {
-        "title":"Waterproof Shoes",
-        "friendlyUrl":"waterproof-shoes"
-        },
-        {
-        "title":"Size 6 Steel Toe Safety Shoes",
-        "friendlyUrl":"size6-steel-toe-safety-shoes"
-        }
-    ];
-
     constructor(
         public _router: Router,
         private injector: Injector,
@@ -92,6 +73,8 @@ export class CategoryV1Component {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
+            console.log(result);
+
             this.API_RESPONSE = result;
 
             this.updateComponentsBasedOnrouteChange();

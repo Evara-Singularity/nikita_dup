@@ -845,10 +845,7 @@ export class CommonService {
         };
     }
 
-    genricApplyFilter(key, item) {
-        console.log(key);
-        console.log(item);
-        
+    genricApplyFilter(key, item) {        
         if (this.selectedFilterData.filter.hasOwnProperty(key)) {
           const indexInSelectedFilterDataFilterArray = this.selectedFilterData.filter[key].findIndex(x => x === item.term);
           if (!(indexInSelectedFilterDataFilterArray > -1)) {

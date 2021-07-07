@@ -5,6 +5,7 @@ import { ProductHorizontalCardModule } from '../product-horizontal-card/product-
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterMidPlpModule } from '@app/components/filter-mid-plp/filter-mid-plp.component';
+import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -12,6 +13,7 @@ import { FilterMidPlpModule } from '@app/components/filter-mid-plp/filter-mid-pl
     CommonModule,
     ProductHorizontalCardModule,
     FilterMidPlpModule,
+    AddFilterSymbolPipeModule,
     NgxPaginationModule,
     ObserveVisibilityDirectiveModule,
   ],

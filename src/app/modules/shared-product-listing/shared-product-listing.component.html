@@ -15,7 +15,7 @@
         <ng-container *ngFor="let filterChip of Object.keys(_commonService.selectedFilterData.filter)">
             <ng-container *ngFor="let filter of _commonService.selectedFilterData.filter[filterChip]">
                 <span class="filter_chip">
-                    <span>{{ filter }}</span>
+                    <span>{{ filter | addFilterSymbol:filterChip }}</span>
                     <i (click)="removeFilterChip(filterChip, filter)" class="icon-circle-delete"></i>
                 </span>
             </ng-container>

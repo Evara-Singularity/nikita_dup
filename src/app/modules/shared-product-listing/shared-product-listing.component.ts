@@ -34,7 +34,6 @@ export class SharedProductListingComponent {
   
   ngOnChanges(){
     this.updateFilterCountAndSort();
-    console.log(this.headerName);
   }
   
   removeFilterChip(key, termName) {

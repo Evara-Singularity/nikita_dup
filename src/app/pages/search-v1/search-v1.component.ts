@@ -210,8 +210,7 @@ export class SearchV1Component implements OnInit {
 
   removeSpacingForSearchInput(){
     if (this._commonService.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
-      const queryParams = this._activatedRoute.snapshot.queryParams;
-      (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
+      (<HTMLInputElement>document.querySelector('#search-input')).value = this._activatedRoute.snapshot.queryParams['search_query'].trim();
     }
   }
 

@@ -50,6 +50,25 @@ export class CategoryV1Component {
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
 
+    attributeData = [
+        {
+        "title":"Steel Toe Safety Shoes",
+        "friendlyUrl":"steel-toe-safety-shoes"
+        },
+        {
+        "title":"Kavach Black Safety Shoes Under 1000",
+        "friendlyUrl":"kavach-black-safety-shoes-under-1000"
+        },
+        {
+        "title":"Waterproof Shoes",
+        "friendlyUrl":"waterproof-shoes"
+        },
+        {
+        "title":"Size 6 Steel Toe Safety Shoes",
+        "friendlyUrl":"size6-steel-toe-safety-shoes"
+        }
+    ];
+
     constructor(
         public _router: Router,
         private injector: Injector,
@@ -115,7 +134,7 @@ export class CategoryV1Component {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res['priceRangeBuckets'])));
+            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res['priceRangeBuckets'] ? res['priceRangeBuckets'] : res['buckets'])));
         }
     }
 

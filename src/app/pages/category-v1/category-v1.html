@@ -43,10 +43,30 @@
 
     <!-- This is accordian section -->
     <div class="accordian_footer_panel">
-        <ng-container *ngFor="let item of [1,2,3]; let i = index;">
+        <ng-container *ngIf="attributeData">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
-                    <h3 class="heading" [appKpToggle]="{idName: 'openCategoryAccoridan'+i , iconMode : true}">
+                    <h3 class="heading" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                        Shop by Attribute
+                        <span class="icon-accordian">
+                            <i class="icon-down"></i>
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let attribute of attributeData">
+                        <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="popularLinks.length > 0">
+            <div class="panel-head" style="margin-top: 0px;" >
+                <div class="container">
+                    <h3 class="heading" [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
                         Shop by Related Category
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
@@ -54,7 +74,27 @@
                     </h3>
                 </div>
             </div>
-            <div [id]="'openCategoryAccoridan' + i" style="display:none;" class="panel-body">
+            <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let category of popularLinks">
+                        <a  href="{{API_RESPONSE.category[1].categoryLinkList[category]}}">{{ category }}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        
+        <ng-container *ngIf="popularLinks">
+            <div class="panel-head" style="margin-top: 0px;" >
+                <div class="container">
+                    <h3 class="heading" [appKpToggle]="{idName: 'brandCategoryAccoridan' , iconMode : true}">
+                        Shop by Brand Category
+                        <span class="icon-accordian">
+                            <i class="icon-down"></i>
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div [id]="'brandCategoryAccoridan'" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularLinks">
                         <a  href="{{API_RESPONSE.category[1].categoryLinkList[category]}}">{{ category }}</a>

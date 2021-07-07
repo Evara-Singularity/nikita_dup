@@ -1,6 +1,21 @@
 <div class="filter-wrapper">
     <button type="button" (click)="toggleSortBy()">
-        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By  <span class="red-txt">{{ _commonService.selectedFilterData['sortBy'] ? _commonService.selectedFilterData['sortBy'] : 'popularity' }}</span></span>
+        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By  
+        <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
+            <ng-container *ngSwitchCase="'popularity'">
+                Popularity
+            </ng-container>
+            <ng-container *ngSwitchCase="'lowPrice'">
+                Low Price
+            </ng-container>
+            <ng-container *ngSwitchCase="'highPrice'">
+                High Price
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                Popularity
+            </ng-container>
+        </span>
+    </span>
     </button>
     <button type="button" (click)="filterUp()">
         <i class="icon-filter-3-fill" aria-hidden="true"></i>

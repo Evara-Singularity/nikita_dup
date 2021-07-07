@@ -12,6 +12,12 @@ import { DOCUMENT } from '@angular/common';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
+let digitalData = {
+    page: {},
+    custData: {},
+    order: {}
+  };
+
 @Component({
     selector: 'brand',
     templateUrl: './brand-v1.html',
@@ -312,7 +318,6 @@ export class BrandV1Component {
                 }
             }
 
-            let digitalData = {};
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
@@ -340,6 +345,8 @@ export class BrandV1Component {
                 'brandName': this._activatedRoute.snapshot.params.brand,
                 'brandUrl': window.location.origin + window.location.pathname
             });
+
+            console.log(digitalData);
 
             this._analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */

@@ -71,7 +71,8 @@ export class BrandV1Resolver implements Resolve<any> {
       };
       
       const actualParams = this._commonService.formatParams(params);
-      actualParams['brand'] = _activatedRouteSnapshot.params.brand;
+      actualParams['brand'] = _activatedRouteSnapshot.params.brand.split('-').join(' & ');
+      console.log(actualParams['brand']);
 
       if (_activatedRouteSnapshot.params.hasOwnProperty('category')) {
         CMS_DATA_API_URL += '&categoryCode=' + _activatedRouteSnapshot.params.category;

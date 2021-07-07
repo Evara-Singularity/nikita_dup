@@ -2,7 +2,7 @@
   <div class="overlay" (click)="toggleFilter.emit(true)"></div>
   <div class="content-box">
     <div class="container">
-      <h3 class="heading-3">Sort By <i class="icon-circle-delete"></i></h3>
+      <h3 class="heading-3">Sort By <i class="icon-circle-delete"  (click)="toggleFilter.emit(true)"></i></h3>
       <div class="custom-cbox">
         <label>
           <span class="chk-box">

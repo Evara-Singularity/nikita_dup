@@ -8,7 +8,14 @@
         <span class="filter_count"  *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
     </button>
 </div>
-
+<div class="filter_chips">
+    <div class="overflow_wrapper_chip">
+        <span *ngFor="let i of [1,2,3,4,5,6]" class="filter_chip">
+            0 -100
+         <i class="icon-circle-delete"></i>
+       </span>
+    </div>
+</div>
 <div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH'">
     <ng-container *ngIf="pageName === 'SEARCH'">
         <div class="list-heading-search">
@@ -16,14 +23,15 @@
         </div>
     </ng-container>
     <ng-container *ngIf="pageName !== 'SEARCH'">
-        <div *ngIf="pageName === 'CATEGORY'">
+        <div class="left" *ngIf="pageName === 'CATEGORY'">
             {{ headerName }}
         </div>
-        <div *ngIf="productsListingData.totalCount">
+        <div class="right" *ngIf="productsListingData.totalCount">
             Showing 20 out of {{productsListingData.totalCount}} products
         </div>
     </ng-container>
 </div>
+
 
 <ng-container *ngFor="let product of productsListingData.products; let i = index;">
     <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData" *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>

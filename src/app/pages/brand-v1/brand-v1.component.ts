@@ -59,16 +59,14 @@ export class BrandV1Component {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-            console.log(result);
 
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
             
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1].categoryLinkList);
-            
-            console.log(this.popularLinks);
-            
+
+            // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1].productSearchResult.totalCount;
             
             // create data for shared listing component
@@ -83,6 +81,7 @@ export class BrandV1Component {
             // Send Adobe Tracking Data
             this.setAdobeTrackingData();
 
+            // Set Amp tags
             this.setAmpTag(this._activatedRoute.snapshot.params['category'] ? 'brand-category' : 'brand');
 
         });

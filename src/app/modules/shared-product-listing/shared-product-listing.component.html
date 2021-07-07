@@ -23,14 +23,11 @@
     </div>
 </div>
 <div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH'">
-    <ng-container *ngIf="pageName === 'SEARCH'">
-        <div class="list-heading-search">
-            {{productsListingData.totalCount}} Products below
-        </div>
-    </ng-container>
-    <ng-container *ngIf="pageName !== 'SEARCH'">
-        <div class="left list-name" *ngIf="pageName === 'CATEGORY'">
-            {{ headerName }}
+    <ng-container>
+        <div class="left list-name">
+            <ng-container>
+                {{ headerName }}
+            </ng-container>
         </div>
         <div class="right" *ngIf="productsListingData.totalCount">
             Showing 20 out of {{productsListingData.totalCount}} products

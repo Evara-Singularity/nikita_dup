@@ -568,19 +568,20 @@ export class CategoryComponent implements OnInit {
             this._renderer2.appendChild(this._document.head, links);
         }
 
-        if (this.pageNo == undefined || this.pageNo == 1) {
-            if (this._commonService.isServer) {
-                let ampLink;
-                ampLink = this._renderer2.createElement('link');
-                ampLink.rel = 'amphtml';
-                ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
-                /**
-                 * Below if condition is just a temporary solution.
-                 * Strictly remove if condtion, once amp of drill(114160000) page is completed.
-                 */
-                this._renderer2.appendChild(this._document.head, ampLink);
-            }
-        }
+        // JIRA: ODP-1371
+        // if (this.pageNo == undefined || this.pageNo == 1) {
+        //     if (this._commonService.isServer) {
+        //         let ampLink;
+        //         ampLink = this._renderer2.createElement('link');
+        //         ampLink.rel = 'amphtml';
+        //         ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
+        //         /**
+        //          * Below if condition is just a temporary solution.
+        //          * Strictly remove if condtion, once amp of drill(114160000) page is completed.
+        //          */
+        //         this._renderer2.appendChild(this._document.head, ampLink);
+        //     }
+        // }
 
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
         const pageCountQ = response.productSearchResult.totalCount / 10;

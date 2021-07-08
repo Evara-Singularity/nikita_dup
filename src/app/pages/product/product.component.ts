@@ -168,7 +168,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemand loaded components for product RFQ
   productRFQInstance = null;
   @ViewChild('productRFQ', { read: ViewContainerRef }) productRFQContainerRef: ViewContainerRef;
-  
+  // ondemand loaded components for app Promo 
+  appPromoInstance = null;
+  @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
+
   iOptions: any = null;
 
   featuresMap = {
@@ -212,7 +215,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private checkoutService: CheckoutService,
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) private platformId: Object,
-    @Optional() @Inject (RESPONSE) private _response: any  ) {
+    @Optional() @Inject(RESPONSE) private _response: any) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -236,7 +239,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   createSiemaOption() {
-    if(!this.rawProductData){
+    if (!this.rawProductData) {
       return;
     }
     this.iOptions = {
@@ -289,8 +292,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
             productBO: rawData['product'][0]['productBO'],
             refreshCrousel: true,
             subGroupMsnId: null,
-          },rawData['product'][0]);
-          
+          }, rawData['product'][0]);
+
           this.setReviewsRatingData(rawReviews);
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
@@ -299,13 +302,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.showLoader = false;
           this.globalLoader.setLoaderState(false);
           this.productNotFound = true;
-          if(this.isServer && this.productNotFound) {
+          if (this.isServer && this.productNotFound) {
             this._response.status(404);
           }
         }
       } else {
         this.productNotFound = true;
-        if(this.isServer && this.productNotFound) {
+        if (this.isServer && this.productNotFound) {
           this._response.status(404);
         }
       }
@@ -344,14 +347,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'channel': "pdp",
       'subSection': "moglix: " + taxo1 + ":" + taxo2 + ":" + taxo3 + ": pdp : " + this.commonService.getSectionClick().toLowerCase(),
       'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-  }
-  let custData = {
+    }
+    let custData = {
       'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
       'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
       'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
       'customerType': (user && user["userType"]) ? user["userType"] : '',
-  }
-  let order = {
+    }
+    let order = {
       'productID': this.rawProductData['partNumber'],
       'productCategoryL1': taxo1,
       'productCategoryL2': taxo2,
@@ -360,11 +363,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'price': this.rawProductData['price'],
       'stockStatus': this.rawProductData['outOfStock'] ? "Out of Stock" : "In Stock",
       'tags': tagsForAdobe,
-  }
+    }
 
-  this.analytics.sendAdobeCall({ page, custData, order });
+    this.analytics.sendAdobeCall({ page, custData, order });
 
-  this.analytics.sendGTMCall({
+    this.analytics.sendGTMCall({
       'event': 'viewItem',
       'email': (user && user["email"]) ? user["email"] : '',
       'ProductID': productId,
@@ -383,7 +386,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           productBO: productData['productBO'],
           refreshCrousel: true,
           subGroupMsnId: productId,
-        },productData);
+        }, productData);
         this.showLoader = false;
       } else {
         // console.log('updateAttr productData status', productData);
@@ -391,8 +394,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     })
   }
 
-  removeRfqForm(){
-    if(this.productRFQInstance){
+  removeRfqForm() {
+    if (this.productRFQInstance) {
       this.productRFQInstance = null;
       this.productRFQContainerRef.remove();
     }
@@ -479,7 +482,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     this.isProductPriceValid = this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
     this.priceQuantityCountry = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
-    this.productMrp = (this.isProductPriceValid && this.priceQuantityCountry)?this.priceQuantityCountry['mrp']:null;
+    this.productMrp = (this.isProductPriceValid && this.priceQuantityCountry) ? this.priceQuantityCountry['mrp'] : null;
 
     console.log('isProductPriceValid', this.isProductPriceValid);
 
@@ -488,28 +491,28 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.priceQuantityCountry['bulkPricesModified'] = (this.isProductPriceValid && this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']) ? [...this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']] : null;
     }
 
-    this.priceWithoutTax = (this.priceQuantityCountry)?this.priceQuantityCountry['priceWithoutTax']:null;
-    if (this.priceQuantityCountry && this.priceQuantityCountry['mrp'] > 0 && this.priceQuantityCountry['priceWithoutTax'] > 0 ) {
+    this.priceWithoutTax = (this.priceQuantityCountry) ? this.priceQuantityCountry['priceWithoutTax'] : null;
+    if (this.priceQuantityCountry && this.priceQuantityCountry['mrp'] > 0 && this.priceQuantityCountry['priceWithoutTax'] > 0) {
       this.productDiscount = (((this.priceQuantityCountry['mrp'] - this.priceQuantityCountry['priceWithoutTax']) / this.priceQuantityCountry['mrp']) * 100)
     }
-    this.taxPercentage = (this.priceQuantityCountry)?this.priceQuantityCountry['taxRule']['taxPercentage']:null;
+    this.taxPercentage = (this.priceQuantityCountry) ? this.priceQuantityCountry['taxRule']['taxPercentage'] : null;
     this.productPrice = (this.priceQuantityCountry && !isNaN(this.priceQuantityCountry['sellingPrice'])) ? Number(this.priceQuantityCountry['sellingPrice']) : 0;
-    
+
     this.productTax = (this.priceQuantityCountry && !isNaN(this.priceQuantityCountry['sellingPrice']) && !isNaN(this.priceQuantityCountry['sellingPrice'])) ?
       (Number(this.priceQuantityCountry['sellingPrice']) - Number(this.priceQuantityCountry['sellingPrice'])) : 0;
-    this.productMinimmumQuantity = (this.priceQuantityCountry && this.priceQuantityCountry['moq'])?this.priceQuantityCountry['moq']:1;
+    this.productMinimmumQuantity = (this.priceQuantityCountry && this.priceQuantityCountry['moq']) ? this.priceQuantityCountry['moq'] : 1;
 
     this.setOutOfStockFlag();
 
-    if(this.productOutOfStock){
+    if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);
     }
 
     // product media processing
     this.setProductImages(this.rawProductData['productPartDetails'][partNumber]['images']);
     this.setProductVideo(this.rawProductData['videosInfo']);
-    if (args.refreshCrousel) { 
-      this.refreshProductCrousel() 
+    if (args.refreshCrousel) {
+      this.refreshProductCrousel()
     }
 
     this.setProductCommonType(this.rawProductData['filterAttributesList']);
@@ -518,9 +521,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.fetchFBTProducts(rawData);
     this.updateBulkPriceDiscount();
     this.showLoader = false;
-    
+
     // analytics calls moved to this function incase PDP is redirecte to PDP
-    this.callAnalyticForVisit(); 
+    this.callAnalyticForVisit();
     this.setMetatag();
 
   }
@@ -681,7 +684,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setProductImages(imagesArr: any[]) {
     this.productDefaultImage = (imagesArr.length > 0) ? this.imagePath + "" + imagesArr[0]['links']['default'] : '';
-    this.productMediumImage  = (imagesArr.length > 0) ? imagesArr[0]['links']['medium'] : '';
+    this.productMediumImage = (imagesArr.length > 0) ? imagesArr[0]['links']['medium'] : '';
     this.productAllImages = [];
     imagesArr.forEach(element => {
       this.productAllImages.push({
@@ -744,7 +747,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       };
       this.productShareInstance.instance['btmMenu'] = true;
       this.productShareInstance.instance['productResult'] = productResult;
-      this.productShareInstance.instance['shareFbUrl'] = CONSTANTS.FB_URL + shareURL + "&redirect_uri="+CONSTANTS.PROD;;
+      this.productShareInstance.instance['shareFbUrl'] = CONSTANTS.FB_URL + shareURL + "&redirect_uri=" + CONSTANTS.PROD;;
       this.productShareInstance.instance['shareTwitterUrl'] = CONSTANTS.TWITTER_URL + shareURL;
       this.productShareInstance.instance['shareLinkedInUrl'] = CONSTANTS.LINKEDIN_URL + shareURL;
       this.productShareInstance.instance['shareWhatsappUrl'] = this.sanitizer.bypassSecurityTrustUrl("whatsapp://send?text=" + encodeURIComponent(shareURL));
@@ -760,7 +763,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // Wishlist related functionality
   getPurchaseList() {
-    if(!this.rawProductData){
+    if (!this.rawProductData) {
       return;
     }
     this.isPurcahseListProduct = false;
@@ -800,7 +803,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           let obj = {
             "idUser": userSession.userId,
             "userType": "business",
-            "idProduct": this.productSubPartNumber ||  this.defaultPartNumber,
+            "idProduct": this.productSubPartNumber || this.defaultPartNumber,
             "productName": this.productName,
             "description": this.productDescripton,
             "brand": this.productBrandDetails['brandName'],
@@ -828,7 +831,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let obj = {
       "idUser": userSession.userId,
       "userType": "business",
-      "idProduct": this.productSubPartNumber ||  this.defaultPartNumber,
+      "idProduct": this.productSubPartNumber || this.defaultPartNumber,
       "productName": this.productName,
       "description": this.productDescripton,
       "brand": this.productBrandDetails['brandName'],
@@ -864,7 +867,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.processFBTResponse(rootProduct, this.rawProductFbtData);
         // this.productService.getFBTProducts(productId).subscribe((response) => {
         //   this.showLoader = false;
-          
+
         // }, error => {
         //   this.showLoader = false;
         //   this.fbtFlag = false;
@@ -923,7 +926,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);;
 
     this.analyticAddToCart(routerlink); // since legacy buy  now analytic code is used 
-    
+
     if (this.uniqueRequestNo == 0) {
       this.uniqueRequestNo = 1;
 
@@ -954,7 +957,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   addProductInCart(routerLink, sessionCartObject, quantity, buyNow?) {
-    
+
     this.checkoutService.setCheckoutTabIndex(1);
 
     const userSession = this.localStorageService.retrieve('user');
@@ -1160,7 +1163,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         if (checkProductQuantity > Number(this.priceQuantityCountry['quantityAvailable'])) {
           element.productQuantity = element.productQuantity;
           this.uniqueRequestNo = 0;
-          this._tms.show({type: 'error', text: this.priceQuantityCountry['quantityAvailable']+' is the maximum quantity available.'});
+          this._tms.show({ type: 'error', text: this.priceQuantityCountry['quantityAvailable'] + ' is the maximum quantity available.' });
           isOrderValid = false;
         }
         else {
@@ -1181,7 +1184,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       let quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);
       if (addToCartItem.productQuantity > Number(this.priceQuantityCountry['quantityAvailable'])) {
         this.uniqueRequestNo = 0;
-        this._tms.show({type: 'error', text: this.priceQuantityCountry['quantityAvailable']+' is the maximum quantity available.'});
+        this._tms.show({ type: 'error', text: this.priceQuantityCountry['quantityAvailable'] + ' is the maximum quantity available.' });
         isOrderValid = false;
       }
       else if (!isNaN(quantity) && quantity < this.productMinimmumQuantity) {
@@ -1206,7 +1209,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
     return { itemlist: itemsList, isvalid: isOrderValid };
   }
-  
+
 
   changeBulkPriceQuantity(input, eventFrom?: string) {
     this.bulkPriceSelctedQuatity = 0;
@@ -1270,10 +1273,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
       if ((eventFrom == "decrementButton" && value >= this.productMinimmumQuantity)) {
         (<HTMLInputElement>document.querySelector("#product_quantity")).value = this.productMinimmumQuantity;
       }
-    } 
+    }
 
-    if(Number((<HTMLInputElement>document.querySelector("#product_quantity")).value) > this.priceQuantityCountry['quantityAvailable']){
-      this._tms.show({type: 'error', text: this.priceQuantityCountry['quantityAvailable']+' is the maximum quantity available.'});
+    if (Number((<HTMLInputElement>document.querySelector("#product_quantity")).value) > this.priceQuantityCountry['quantityAvailable']) {
+      this._tms.show({ type: 'error', text: this.priceQuantityCountry['quantityAvailable'] + ' is the maximum quantity available.' });
     }
   }
 
@@ -1415,60 +1418,55 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.showLoader = status;
   }
 
-    // product-rfq 
-    async onVisibleProductRFQ(htmlElement)
-    {
-      this.removeRfqForm();
-      console.log('productRFQInstance', this.productRFQInstance);
-        if (!this.productRFQInstance) {
-            this.intiateRFQQuote(false, false);
-        }
+  // product-rfq 
+  async onVisibleProductRFQ(htmlElement) {
+    this.removeRfqForm();
+    console.log('productRFQInstance', this.productRFQInstance);
+    if (!this.productRFQInstance) {
+      this.intiateRFQQuote(false, false);
     }
+  }
 
-    async raiseRFQQuote()
-    {
-        let user = this.localStorageService.retrieve('user');
-        if (user && user.authenticated == "true") {
-            this.intiateRFQQuote(true);
-        } else {
-            let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this.productUrl } };
-            this.router.navigate(['/login'], navigationExtras);
-        }
+  async raiseRFQQuote() {
+    let user = this.localStorageService.retrieve('user');
+    if (user && user.authenticated == "true") {
+      this.intiateRFQQuote(true);
+    } else {
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this.productUrl } };
+      this.router.navigate(['/login'], navigationExtras);
     }
+  }
 
-    async intiateRFQQuote(inStock, sendAnalyticOnOpen = true)
-    {
-        const { ProductRFQComponent } = await import('./../../components/product-rfq/product-rfq.component').finally(() => {
-            if(sendAnalyticOnOpen){this.analyticRFQ(false)}
-        });
-        const factory = this.cfr.resolveComponentFactory(ProductRFQComponent);
-        this.productRFQInstance = this.productRFQContainerRef.createComponent(factory, null, this.injector);
-        this.productRFQInstance.instance['isOutOfStock'] = this.productOutOfStock;
-        this.productRFQInstance.instance['isPopup'] = inStock;
-        let product = {
-            url:this.productUrl, 
-            price:this.productPrice,
-            msn: (this.productSubPartNumber || this.defaultPartNumber), 
-            productName: this.productName,
-            moq: this.productMinimmumQuantity,
-            brand: this.productBrandDetails['brandName'], 
-            taxonomyCode: this.productCategoryDetails['taxonomy'],
-            adobeTags: ''
-        }
-        this.productRFQInstance.instance['product'] = product;
-        (this.productRFQInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>
-        {
-            this.toggleLoader(loaderStatus);
-        });
-        (this.productRFQInstance.instance['onRFQSuccess'] as EventEmitter<boolean>).subscribe((status) =>
-        {
-            this.analyticRFQ(true);
-            this.isRFQSuccessfull = true;
-        });
+  closeRFQAlert() { this.isRFQSuccessfull = false }
+
+  async intiateRFQQuote(inStock, sendAnalyticOnOpen = true) {
+    const { ProductRFQComponent } = await import('./../../components/product-rfq/product-rfq.component').finally(() => {
+      if (sendAnalyticOnOpen) { this.analyticRFQ(false) }
+    });
+    const factory = this.cfr.resolveComponentFactory(ProductRFQComponent);
+    this.productRFQInstance = this.productRFQContainerRef.createComponent(factory, null, this.injector);
+    this.productRFQInstance.instance['isOutOfStock'] = this.productOutOfStock;
+    this.productRFQInstance.instance['isPopup'] = inStock;
+    let product = {
+      url: this.productUrl,
+      price: this.productPrice,
+      msn: (this.productSubPartNumber || this.defaultPartNumber),
+      productName: this.productName,
+      moq: this.productMinimmumQuantity,
+      brand: this.productBrandDetails['brandName'],
+      taxonomyCode: this.productCategoryDetails['taxonomy'],
+      adobeTags: ''
     }
-    
-    closeRFQAlert(){this.isRFQSuccessfull = false}
-  
+    this.productRFQInstance.instance['product'] = product;
+    (this.productRFQInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus => {
+      this.toggleLoader(loaderStatus);
+    });
+    (this.productRFQInstance.instance['onRFQSuccess'] as EventEmitter<boolean>).subscribe((status) => {
+      this.analyticRFQ(true);
+      this.isRFQSuccessfull = true;
+    });
+  }
+
   async getPincodeForm() {
     this.showLoader = true;
     const { ProductCheckPincodeComponent } = await import('./../../components/product-check-pincode/product-check-pincode.component').finally(() => {
@@ -1648,7 +1646,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.popupCrouselContainerRef.remove();
       });
       (this.popupCrouselInstance.instance['currentSlide'] as EventEmitter<boolean>).subscribe(slideData => {
-        if(slideData){
+        if (slideData) {
           this.moveToSlide$.next(slideData.currentSlide);
         }
       });
@@ -1665,7 +1663,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.alertBoxInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
       this.alertBoxInstance.instance['mainText'] = mainText;
       this.alertBoxInstance.instance['subText'] = subText;
-      if(extraSectionName){
+      if (extraSectionName) {
         this.alertBoxInstance.instance['extraSectionName'] = extraSectionName;
       }
       (this.alertBoxInstance.instance['removed'] as EventEmitter<boolean>).subscribe(status => {
@@ -1677,6 +1675,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.alertBoxContainerRef.detach();
       }, 2000);
     }
+  }
+
+  async onVisibleAppPromo(event) {
+    this.showLoader = true;
+    const { ProductAppPromoComponent } = await import('../../components/product-app-promo/product-app-promo.component').finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
+    this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+    this.appPromoInstance.instance['isOverlayMode'] = false;
+    this.appPromoInstance.instance['showPromoCode'] = false;
+    this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
   }
 
   postHelpful(item, yes, no, i) {
@@ -1725,7 +1735,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
    * Please place all functional code above this section
    */
   setMetatag() {
-    if(!this.rawProductData){
+    if (!this.rawProductData) {
       return;
     }
     let title = this.productName;
@@ -1771,14 +1781,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       links.rel = "canonical";
       let url = this.productUrl;
-      if ( !this.isCommonProduct && !this.listOfGroupedCategoriesForCanonicalUrl.includes(this.productCategoryDetails['categoryCode'])) {
+      if (!this.isCommonProduct && !this.listOfGroupedCategoriesForCanonicalUrl.includes(this.productCategoryDetails['categoryCode'])) {
         url = this.rawProductData.productPartDetails[this.rawProductData['partNumber']].canonicalUrl ? this.rawProductData.productPartDetails[this.rawProductData['partNumber']].canonicalUrl : this.rawProductData['defaultCanonicalUrl'];
       }
-      
+
       if (url && url.substring(url.length - 2, url.length) == "-g") {
         url = url.substring(0, url.length - 2);
       }
-  
+
       links.href = CONSTANTS.PROD + "/" + url;
       this.renderer2.appendChild(this.document.head, links);
     }
@@ -1792,11 +1802,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   setQuestionAnswerSchema() {
-    if (this.isServer && this.rawProductData ) {
+    if (this.isServer && this.rawProductData) {
       // console.log('setQuestionAnswerSchema rawProductData', this.rawProductData);
       const qaSchema: Array<any> = [];
       if (this.isServer) {
-        
+
         const questionAnswerList = this.questionAnswerList['data']
         // console.log('questionAnswerList', questionAnswerList);
         if (questionAnswerList['totalCount'] > 0) {
@@ -1913,13 +1923,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
         s.text = JSON.stringify(schema);
         this.renderer2.appendChild(this.document.head, s);
-      }else{
+      } else {
         console.log('product schema not created due to price zero');
       }
 
       // console.log('schema not 2 2', 'called');
 
-    }else{
+    } else {
       console.log('product schema not created');
     }
   }
@@ -1929,7 +1939,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
    * Please place all functional code above this section
    */
   callAnalyticForVisit() {
-    if (this.isBrowser && this.rawProductData ) {
+    if (this.isBrowser && this.rawProductData) {
       this.setSessionForClickSection();
       this.productVisitAdobe();
       this.productVisitGTM();
@@ -1940,7 +1950,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setSessionForClickSection() {
     if (this.isBrowser && sessionStorage.getItem('pdp-page')) {
-        this.commonService.setSectionClick(sessionStorage.getItem('pdp-page'));
+      this.commonService.setSectionClick(sessionStorage.getItem('pdp-page'));
     }
   }
 
@@ -2217,7 +2227,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         'productInfo': {
           'productName': this.productName,
           'brand': this.productBrandDetails['brandName'],
-          'quantity': (this.priceQuantityCountry)?this.priceQuantityCountry['quantityAvailable']: null
+          'quantity': (this.priceQuantityCountry) ? this.priceQuantityCountry['quantityAvailable'] : null
         }
       });
     }
@@ -2256,7 +2266,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'brand': this.productBrandDetails['brandName'],
       'tags': tagsForAdobe
     }
-    this.analytics.sendAdobeCall({ page, custData, order }, (isSubmitted)?"genericClick":"genericPageLoad");
+    this.analytics.sendAdobeCall({ page, custData, order }, (isSubmitted) ? "genericClick" : "genericPageLoad");
   }
 
   analyticPincodeAvaliabilty(serviceability, codserviceability, pincode, deliveryDays, deliveryAnalytics) {
@@ -2309,7 +2319,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  
+
   scrollToResults(id: string) {
     // this.isRFQSuccessfull = false;
     // this._pageScrollService.scroll({
@@ -2317,13 +2327,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
     //   scrollTarget: id,
     // });
     let footerOffset = document.getElementById('.id').offsetTop;
-    ClientUtility.scrollToTop(1000,footerOffset - 30);
+    ClientUtility.scrollToTop(1000, footerOffset - 30);
   }
 
   pseudoFnc() {
 
   }
-    
+
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem('pdp-page');

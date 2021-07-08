@@ -7,6 +7,12 @@
   "scope": "./",
   "start_url": "./",
   "gcm_sender_id": "986577869152",
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.moglix.online"
+    }
+  ],
   "icons": [
     {
       "src": "assets/img/moglix-logo.svg",

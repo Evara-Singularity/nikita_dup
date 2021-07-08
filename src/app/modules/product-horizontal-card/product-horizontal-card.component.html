@@ -22,14 +22,14 @@
                 </span>
                 <span class="count" *ngIf="product.ratingCount">({{product.ratingCount}})</span>
             </div>
-            <div class="name">
-                <span>{{product.productName}}</span>
+            <div class="name" (click)="navigateToPDP()">
+                <span>{{product.productName | slice:0:70}}<span *ngIf="product.productName.length>70">...</span></span>
             </div>
-            <div class="brand">
+            <div class="brand" (click)="navigateToPDP()">
                 <span>By: {{product.brandName}}</span>
             </div>
             <div class="price-details">
-                <div class="left">
+                <div class="left" (click)="navigateToPDP()">
                     <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
                         <span class="green-label">{{product.discount}}% OFF</span>
@@ -59,11 +59,6 @@
             </div>
         </div>
     </div>
-    <!-- <product-variant-select-listing-page 
-        [product]="product" 
-        (selectedVariant$)="changeVariant($event)"
-        (continueToCart$)="variantAddToCart($event)"
-        [productGroupData]="this.productGroupData" ></product-variant-select-listing-page> -->
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>

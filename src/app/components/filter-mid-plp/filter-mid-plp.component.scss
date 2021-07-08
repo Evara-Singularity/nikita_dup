@@ -55,14 +55,6 @@
     display: block;
     background-color: #3C3C3C;
     font-size: 14px;
-    .inner-card-list {
-        &:last-child {
-            .inline-filter-card-one,
-            .inline-filter-card-value {
-                margin-right: 0px;
-            }
-        }
-    }
     .inline-filter-card-one {
         margin-right: 10px;
         display: inline-block;

@@ -63,7 +63,6 @@ export class BrandComponent {
     session: {};
     isServer: boolean;
     isBrowser: boolean;
-    sortByOpt: boolean;
     iba: boolean; //isBrandActive
     productSearchResult: {};
     productSearchResultSEO: Array<any> = [];
@@ -109,10 +108,7 @@ export class BrandComponent {
             if (this._activatedRoute.snapshot.queryParams['category']) {
                 this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
             }
-
-    
-            // Set brand of the page
-            this.brand = decodeURI(this._activatedRoute.snapshot.params['brand']);    
+  
 
             // Set footers
             this.footerService.setMobileFoooters();
@@ -429,19 +425,7 @@ export class BrandComponent {
             const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject({});
-            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
-            this.paginationUpdated.next(this.paginationData);
-            this.paginationInstance.instance['position'] = 'BOTTOM';
-            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
-
-            if (this.paginationInstance) {
-                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
-                    this.pageChanged(data);
-                });
-            }
-
+            this.paginationInstance.instance['paginationData'] = this.paginationData;
         }
     }
 
@@ -457,11 +441,9 @@ export class BrandComponent {
             });
             const factory = this.cfr.resolveComponentFactory(FilterComponent);
             this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-            this.filterInstance.instance['pageName'] = this.pageName;
-            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.filterData);
-            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
-                this.onFilterSelected(data);
+            this.filterInstance.instance['filterData'] = this.filterData;
+            (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.filterUp();
             });
         } else {
             const mob_filter = document.querySelector('.mob_filter');
@@ -470,25 +452,19 @@ export class BrandComponent {
                 mob_filter.classList.toggle('upTrans');
             }
         }
-
-
     }
+    
+    async toggleSortBy() {
 
-    async toggleSortBy(data) {
-        if (this.isBrowser) {
-            this.sortByOpt = data.sortByOpt;
-            if (!this.sortByInstance) {
-                const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
-                const factory = this.cfr.resolveComponentFactory(SortByComponent);
-                this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-                this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
+        if (!this.sortByInstance) {
+            const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+            const factory = this.cfr.resolveComponentFactory(SortByComponent);
+            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
 
-                (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                    this.toggleSortBy(data);
-                });
-
-            }
-
+            (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy();
+            });
+        } else {
             const sortByFilter = document.querySelector('sort-by');
 
             if (sortByFilter) {
@@ -552,11 +528,8 @@ export class BrandComponent {
         this.filterData = response.buckets;
         this.productsUpdated.next(response.productSearchResult.products);
     
-        if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
-        } else {
-            this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
-        }
+        this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
+
         if (this.paginationInstance) {
             this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
         }
@@ -569,7 +542,10 @@ export class BrandComponent {
 
             }
         }
+        
         if (response['category'] !== "undefined") {
+            // Set brand of the page
+            this.brand = response.brandName;  
             this.brandcatFlag = true;
             this.brandCatDesc = response.desciption;
             this.categoryNameinAPI = response.categoryName
@@ -625,28 +601,31 @@ export class BrandComponent {
             this.setLinks(response);
         }
 
-        // Set amp tag only for brand-category page.
-        if (this.isServer) {
-            const params = this._activatedRoute.snapshot.params;
-            if (params['category']) {
-                this.catUrlName = this._router.url.split("/brands/" + this._activatedRoute.snapshot.params["brand"])[1];
-                this.setAmpTag('brand-category');
-            } else {
-                this.setAmpTag('brand');
-            }
-        }
+        // JIRA: ODP-1371
+        // // Set amp tag only for brand-category page.
+        // if (this.isServer) {
+        //     const params = this._activatedRoute.snapshot.params;
+        //     if (params['category']) {
+        //         this.catUrlName = this._router.url.split("/brands/" + this._activatedRoute.snapshot.params["brand"])[1];
+        //         this.setAmpTag('brand-category');
+        //     } else {
+        //         this.setAmpTag('brand');
+        //     }
+        // }
+
         this.onVisiblebrandDetailsFooter()
     }
 
-    setAmpTag(page) {
-        if (this.pageNo == 1 || this.pageNo == undefined) {
-            const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
-            const ampLink = this._renderer2.createElement('link');
-            ampLink.rel = 'amphtml';
-            ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
-            this._renderer2.appendChild(this._document.head, ampLink);
-        }
-    }
+    // JIRA: ODP-1371
+    // setAmpTag(page) {
+    //     if (this.pageNo == 1 || this.pageNo == undefined) {
+    //         const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
+    //         const ampLink = this._renderer2.createElement('link');
+    //         ampLink.rel = 'amphtml';
+    //         ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
+    //         this._renderer2.appendChild(this._document.head, ampLink);
+    //     }
+    // }
 
     onFilterSelected(count) {
         setTimeout(() => {
@@ -692,10 +671,6 @@ export class BrandComponent {
             extras.queryParams = {};
 
         this._router.navigate([currentRoute], extras);
-    }
-
-    onUpdaet(data) {
-        this.sortByOpt = data.sortByOpt;
     }
 
     scrollTop(eve) {

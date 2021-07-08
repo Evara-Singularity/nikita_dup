@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   BREADCRUMB: "/homepage/getbreadcrumb",
   Q_AND_A: "/quest/getQuest",
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
+  GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   LOGIN_URL: "/login/sendOTP",
   LOGIN_OTP: "/login/validateotp",
   LOGIN_AUTHENTICATE: "/login/authenticate",
@@ -99,5 +100,6 @@ export const ENDPOINTS = {
   IS_REVIEW_HELPFUL: "/reviews/isReviewHelpful",
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
-  IS_BRAND_CATEGORY: "/search/isBrandCategory"
+  IS_BRAND_CATEGORY: "/search/isBrandCategory",
+  SEARCH: '/search'
 };

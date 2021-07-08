@@ -1,3 +1,5 @@
+<app-promo class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+
 <div class="css-banner-component">
     <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isBrowser">
         <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
@@ -76,4 +78,5 @@
 
 <ng-container class="bs-popup" #HomePopupComponet></ng-container>
 
-<home-accordians [flyoutData]='flyOutData' [carouselData]="carouselData"></home-accordians>
+
+<home-accordians [carouselData]="carouselData"></home-accordians>

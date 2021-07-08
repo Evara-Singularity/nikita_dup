@@ -64,31 +64,31 @@
         $active-border-color: $blue-link-color;
         $trackeryellow:#EDCE09;
         /*Font Size*/
-        
+
         $small-font: 10px;
         $medium-font: 12px;
         $large-font: 14px;
         $extra-large-font: 16px;
         /*Extends*/
-        
+
         %cards {
             padding: 10px;
             color: #333;
             background: $white;
             border: 1px solid #ccc;
         }
-        
+
         %border-radius {
             border-radius: 3px;
         }
-        
+
         %transition {
             -ms-transition: all ease-in-out 0.25s;
             -moz-transition: all ease-in-out 0.25s;
             -webkit-transition: all ease-in-out 0.25s;
             transition: all ease-in-out 0.25s;
         }
-        
+
         %clear-fix {
             &::after {
                 content: '';
@@ -101,7 +101,7 @@
                 display: block;
             }
         }
-        
+
         %container {
             width: 96%;
             margin-left: auto;
@@ -109,15 +109,17 @@
             padding: 0;
             @extend %clear-fix;
         }
-        
+
         %custom-green-radio-checkout {
             input[type='radio'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     content: "\e912";
                     color: $green-color;
                 }
             }
+
             .custom-box {
                 width: 18px;
                 height: 18px;
@@ -125,6 +127,7 @@
                 float: left;
                 margin-right: 5px;
                 position: relative;
+
                 &::before {
                     font-family: 'icomooon_pwa';
                     content: "\e912";
@@ -132,6 +135,7 @@
                     color: #B9B9B9;
                 }
             }
+
             .chk-txt {
                 font-size: 15px;
                 float: left;
@@ -139,10 +143,11 @@
                 line-height: 20px;
             }
         }
-        
+
         %custom-radio-checkout {
             input[type='radio'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     font-family: 'icomooon_pwa';
                     content: "\e912";
@@ -150,11 +155,13 @@
                     font-size: 18px;
                 }
             }
+
             .custom-box {
                 width: 18px;
                 float: left;
                 margin-right: 5px;
                 position: relative;
+
                 &::before {
                     font-family: 'icomooon_pwa';
                     content: "\e913";
@@ -162,6 +169,7 @@
                     color: #303030;
                 }
             }
+
             .chk-txt {
                 font-size: 15px;
                 float: left;
@@ -169,10 +177,11 @@
                 line-height: 20px;
             }
         }
-        
+
         %pwa-universal-radio {
             input[type='radio'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     font-family: 'icomooon_pwa';
                     content: "\e9a6";
@@ -180,6 +189,7 @@
                     font-size: 24px;
                 }
             }
+
             .custom-box {
                 &::before {
                     font-family: 'icomooon_pwa';
@@ -189,15 +199,17 @@
                 }
             }
         }
-        
+
         %custom-check-box-checkout {
             input[type='checkbox'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     content: "\e914";
                     color: $active-color;
                 }
             }
+
             .custom-box {
                 width: 18px;
                 height: 18px;
@@ -207,12 +219,14 @@
                 line-height: 20px;
                 margin-right: 5px;
                 @extend %transition;
+
                 &::before {
                     font-family: 'icomooon_pwa';
                     content: "\e915";
                     color: #000;
                 }
             }
+
             .chk-txt {
                 font-size: 15px;
                 float: left;
@@ -221,22 +235,26 @@
                 width: calc(100% - 38px);
             }
         }
-        
+
         %custom-check-box {
             input[type='checkbox'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     content: "\e912";
                     color: $active-color;
                 }
             }
+
             input[type='radio'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     content: "\e912";
                     color: $green-color;
                 }
             }
+
             .custom-box {
                 width: 18px;
                 height: 18px;
@@ -246,12 +264,14 @@
                 line-height: 20px;
                 margin-right: 5px;
                 @extend %transition;
+
                 &::before {
                     font-family: 'icomooon_pwa';
                     content: "\e912";
                     color: #B9B9B9;
                 }
             }
+
             .chk-txt {
                 font-size: 15px;
                 float: left;
@@ -260,38 +280,42 @@
                 width: calc(100% - 38px);
             }
         }
-        
+
         %box-shadow {
             box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
         }
-        
+
         %ico-txt {
             i {
                 float: left;
                 font-size: 17px;
                 line-height: 20px;
             }
+
             .txt {
                 float: left;
                 margin-left: 10px;
                 line-height: 20px;
             }
+
             @extend %clear-fix;
         }
-        
+
         %ico-txt-right {
             i {
                 float: right;
                 font-size: 17px;
             }
+
             .txt {
                 float: left;
                 line-height: 21px;
                 width: calc(100% - 20px);
             }
+
             @extend %clear-fix;
         }
-        
+
         %container {
             width: 96%;
             margin-left: auto;
@@ -299,7 +323,7 @@
             padding: 0;
             @extend %clear-fix;
         }
-        
+
         // for bottom options
         %content-box {
             position: fixed;
@@ -310,12 +334,13 @@
             z-index: 14;
             width: 100%;
         }
-        
+
         //For Ripple Effect
         %ripple {
             position: relative;
             overflow: hidden;
             transform: translate3d(0, 0, 0);
+
             &:after {
                 content: "";
                 display: block;
@@ -332,29 +357,34 @@
                 opacity: 0;
                 transition: transform .3s, opacity .5s;
             }
+
             &:active:after {
                 transform: scale(0, 0);
                 opacity: .3;
                 transition: 0s;
             }
         }
-        
+
         // Custom Check Box
         %custom-check-box {
             input[type='checkbox'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     content: "\e912";
                     color: $active-color;
                 }
             }
+
             input[type='radio'] {
                 display: none;
+
                 &:checked+.custom-box::before {
                     content: "\e912";
                     color: $green-color;
                 }
             }
+
             .custom-box {
                 width: 18px;
                 height: 18px;
@@ -364,12 +394,14 @@
                 line-height: 20px;
                 margin-right: 5px;
                 @extend %transition;
+
                 &::before {
                     font-family: 'icomooon_pwa';
                     content: "\e912";
                     color: #B9B9B9;
                 }
             }
+
             .chk-txt {
                 font-size: 15px;
                 float: left;
@@ -378,18 +410,21 @@
                 width: calc(100% - 38px);
             }
         }
+
         /*Mixins*/
-        
+
         @mixin gridForCategory($noOfItems, $space: null) {
             @if $space {
                 width: calc(100% / #{$noOfItems} - (#{$space}px / #{$noOfItems}));
             }
+
             @else {
                 width: calc(100% / #{$noOfItems});
             }
+
             float:left;
         }
-        
+
         @mixin transform($transforms) {
             -moz-transform: $transforms;
             -o-transform: $transforms;
@@ -397,30 +432,33 @@
             -webkit-transform: $transforms;
             transform: $transforms;
         }
-        
+
         @mixin rotate ($deg) {
             @include transform(rotate(#{$deg}deg));
         }
-        
+
         @mixin scale($scale) {
             @include transform(scale($scale));
         }
-        
+
         @mixin translate ($x, $y) {
             @include transform(translate($x, $y));
         }
-        
+
         @mixin placeholder {
-             ::-webkit-input-placeholder {
+            ::-webkit-input-placeholder {
                 @content
             }
-             :-moz-placeholder {
+
+            :-moz-placeholder {
                 @content
             }
-             ::-moz-placeholder {
+
+            ::-moz-placeholder {
                 @content
             }
-             :-ms-input-placeholder {
+
+            :-ms-input-placeholder {
                 @content
             }
         }

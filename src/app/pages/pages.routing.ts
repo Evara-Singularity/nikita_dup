@@ -27,13 +27,23 @@ const routes: Routes = [
 			{
 				matcher: categoriesMatcher,
 				loadChildren: () =>
-					import('./category/category.module').then((m) => m.CategoryModule),
+					import('./category-v1/category-v1.module').then((m) => m.CategoryV1Module),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
 				},
 			},
+			// {
+			// 	matcher: categoriesMatcher,
+			// 	loadChildren: () =>
+			// 		import('./category/category.module').then((m) => m.CategoryModule),
+			// 	data: {
+			// 		footer: false,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 	},
+			// },
 			{
 				path: 'alp/:attribute',
 				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
@@ -71,7 +81,7 @@ const routes: Routes = [
 			{
 				path: 'brands/:brand',
 				loadChildren: () =>
-					import('./brand/brand.module').then((m) => m.BrandModule),
+					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
 				data: {
 					footer: false,
                     logo: true,
@@ -81,17 +91,27 @@ const routes: Routes = [
 			{
 				matcher: brandCategoriesMatcher,
 				loadChildren: () =>
-					import('./brand/brand.module').then((m) => m.BrandModule),
+					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
 				data: {
 					footer: false,
                     logo: true,
 					moreOpt: true,
 				},
 			},
+			// {
+			// 	path: 'search',
+			// 	loadChildren: () =>
+			// 		import('./search/search.module').then((m) => m.SearchModule),
+			// 	data: {
+			// 		footer: false,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 	},
+			// },
 			{
 				path: 'search',
 				loadChildren: () =>
-					import('./search/search.module').then((m) => m.SearchModule),
+					import('./search-v1/search-v1.module').then((m) => m.SearchV1Module),
 				data: {
 					footer: false,
 					logo: true,

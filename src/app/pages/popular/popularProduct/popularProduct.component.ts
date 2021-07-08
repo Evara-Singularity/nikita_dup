@@ -161,10 +161,9 @@ export class PopularProductComponent {
             });
     }
 
-    sortByOpt: boolean;
-    async toggleSortBy(data) {
+
+    async toggleSortBy() {
         if (this.isBrowser) {
-            this.sortByOpt = data.sortByOpt;
             if (!this.sortByInstance) {
                 this._commonService.showLoader = true;
                 const { SortByComponent } = await import('@app/components/sortBy/sortBy.component').finally(() => {
@@ -175,7 +174,7 @@ export class PopularProductComponent {
                 this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
 
                 (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                    this.toggleSortBy(data);
+                    this.toggleSortBy();
                 });
 
             }

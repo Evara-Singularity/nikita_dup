@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { Observer, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationExtras, Router } from '@angular/router';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
@@ -17,6 +17,7 @@ import { ActivatedRoute } from "@angular/router";
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from './global-loader.service';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 @Injectable({
     providedIn: 'root'
@@ -71,16 +72,6 @@ export class CommonService {
 
     set itemsValidationMessage(ivm) {
         this._itemsValidationMessage = ivm;
-    }
-
-    updateSortByFromSearch() {
-        this.deleteDefaultQueryParams(['orderWay', 'orderBy']);
-        this.updateSortBy.next('popularity');
-        const sortByFilter = document.querySelector('sort-by');
-
-        if (sortByFilter) {
-            sortByFilter.classList.remove('open');
-        }
     }
 
     scrollToTop() {
@@ -175,6 +166,8 @@ export class CommonService {
 
     private getBrandData(type, curl, params) {
         const formattedParams = this.formatParams(params);
+        console.log(formattedParams);
+        console.log(params);
 
         return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRAND_NAME, { params: { name: formattedParams['brand'] } })
             .pipe(
@@ -239,26 +232,36 @@ export class CommonService {
         }
     }
 
-    generateQueryParams(qp) {
-        let queryParams = {};
-        if (qp["page"] > 1)
-            queryParams["page"] = qp["page"];
-        if (qp["pageSize"] > CONSTANTS.GLOBAL.default.pageSize)
-            queryParams["pageSize"] = qp["pageSize"];
+    generateQueryParams() {
+        let queryParams = JSON.parse(JSON.stringify(this._activatedRoute.snapshot.queryParams));
+        if (this.selectedFilterData.sortBy === 'popularity') {
+            delete queryParams['orderBy'];
+            delete queryParams['orderWay'];
+        } else if (this.selectedFilterData.sortBy === 'lowPrice') {
+            queryParams['orderBy'] = 'price';
+            queryParams['orderWay'] = 'asc';
+        } else if (this.selectedFilterData.sortBy === 'highPrice') {
+            queryParams['orderBy'] = 'price';
+            queryParams['orderWay'] = 'desc';
+        }
 
-        /*if(this.defaultParams["controller"] != undefined)
-         queryParams["controller"] = this.defaultParams["controller"];*/
-        if (qp["controller"] != undefined)
-            queryParams["controller"] = qp["controller"];
-        if (qp["orderby"] != undefined)
-            queryParams["orderby"] = qp["orderby"];
-        if (qp["orderway"] != undefined)
-            queryParams["orderway"] = qp["orderway"];
-        if (qp["search_query"] != undefined)
-            queryParams["search_query"] = qp["search_query"];
-        if (qp["submit_search"] != undefined)
-            queryParams["submit_search"] = qp["submit_search"];
         return queryParams;
+    }
+
+    updateSelectedFilterDataFilterFromFragment(fragment) {
+        let obj = {};
+        
+        if (fragment) {
+          let filtersList = fragment.split('/');
+          if (filtersList){
+                for (let i = 0; i < filtersList.length; i++) {
+                    let a = filtersList[i].split(/-(.+)/);
+                    obj[a[0]] = a[1].split('||');
+                }
+            }
+        }
+
+        return obj;
     }
 
     generateFragmentString(productFilterData) {
@@ -288,6 +291,7 @@ export class CommonService {
     refreshProducts(flagFromResolver?: boolean): Observable<any> {
         return (new Observable(observer => {
             const defaultParams = this.defaultParams;
+            console.log(this.defaultParams);
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
                 if (this.currentRequest !== undefined)
@@ -398,7 +402,7 @@ export class CommonService {
         return this._dataService.callRestful("GET", url);
     }
 
-    private formatParams(params) {
+    public formatParams(params) {
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
 
         let queryParams: {} = {};
@@ -819,5 +823,75 @@ export class CommonService {
         setTimeout(() => {
             this.showLoader = false;
         }, 0);
+    }
+    
+
+    /**
+    * This funtion is used to create fragment & queryparams and navigate to the specific routes
+    */
+    public selectedFilterData: any = {
+        filter: {},
+        sortBy: 'popularity',
+        pages: [],
+        page: this._activatedRoute.snapshot.params.page || 1,
+        totalCount: 0,
+        pageSize: GLOBAL_CONSTANT.default.pageSize
+    };
+
+    resetSelectedFilterData() {
+        this.selectedFilterData = {
+            filter: {},
+            sortBy: 'popularity',
+            pages: [],
+            page: 1,
+            pageSize: GLOBAL_CONSTANT.default.pageSize
+        };
+    }
+
+    genricApplyFilter(key, item) {        
+        if (this.selectedFilterData.filter.hasOwnProperty(key)) {
+          const indexInSelectedFilterDataFilterArray = this.selectedFilterData.filter[key].findIndex(x => x === item.term);
+          if (!(indexInSelectedFilterDataFilterArray > -1)) {
+            this.selectedFilterData.filter[key].push(item.term);
+          } else {
+            this.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
+          }
+        } else {
+          this.selectedFilterData.filter[key] = [];
+          this.selectedFilterData.filter[key].push(item.term);
+        }
+    
+        this.applyFilter();
+      }
+    
+    applyFilter(currentRouteFromCategoryFilter?: number, page?: number){
+
+        const currentRoute = !currentRouteFromCategoryFilter ? this.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
+
+        const extras: NavigationExtras = { queryParams: {} };
+
+        const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
+
+        const queryParams = this.generateQueryParams();
+
+        extras.queryParams = queryParams;
+
+        if (fragmentString != null) {
+            extras.fragment = fragmentString;
+        }
+
+        
+        this.selectedFilterData.page = 1;        
+        if (extras.queryParams['page']) {
+            this.selectedFilterData.pageSize = GLOBAL_CONSTANT.default.pageSize;
+            delete extras.queryParams['page'];
+        }
+
+        if (page > 1) {
+            this.selectedFilterData.page = page;
+            extras.queryParams['page'] = page;
+        }
+
+        this._router.navigate([currentRoute], extras);
     }
 }

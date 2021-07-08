@@ -161,7 +161,7 @@ export class SearchBarComponent implements OnInit {
     searchData(dataD, isValid) {
         this.service.goToDirectBrandCatPage(dataD.searchTerm).subscribe(
             (data) => {
-                this._cs.updateSortByFromSearch();
+                this._cs.resetSelectedFilterData();
                 this.enableScroll();
                 const extras = {
                     queryParams: {
@@ -184,7 +184,9 @@ export class SearchBarComponent implements OnInit {
                     this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no' } });
                 }
                 else {
-                    document.getElementById("search-input").blur();
+                    if (document.getElementById("search-input")) {
+                        document.getElementById("search-input").blur();
+                    }
                     this.resetSearchBar();
                     this.ssp = false;
                     if (dataD.searchTerm !== undefined && dataD.searchTerm != null && dataD.searchTerm.length > 0) {
@@ -239,7 +241,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     navigateTo(page, data, redirectUrl, categoryId, attributes) {
-        this._cs.updateSortByFromSearch();
+        this._cs.resetSelectedFilterData();
         this.enableScroll();
         this.resetSearchBar();
         this.showSuggestionBlock = false;

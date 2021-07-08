@@ -3,9 +3,9 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
 import { Socket } from 'ngx-socket-io';
 
-declare let dataLayer: any;
-declare var digitalData: {};
-declare let _satellite;
+declare var dataLayer;
+declare var digitalData;
+declare var _satellite;
 
 @Injectable({
   providedIn: 'root'

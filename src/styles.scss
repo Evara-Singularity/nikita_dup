@@ -17,6 +17,7 @@
 }
 
 // Icons
+i,
 [class^="icon-"]::before,
 [class*=" icon-"]::before {
     font-family: 'icomooon_pwa' !important;
@@ -33,6 +34,10 @@
     padding: 0;
     box-sizing: border-box;
     // font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    outline: 0;
 }
 
 .container {
@@ -349,6 +354,9 @@ header-nav {
         padding: 10px 5px;
         position: relative;
         color: $white;
+    }
+    .icon-cart1 {
+        font-size: 22px;
     }
 }
 
@@ -1042,4 +1050,23 @@ header-nav {
 
 .icon-wallet:before {
     content: "\e9b2";
+}
+
+.icon-filter-3-fill:before {
+    content: "\e9b4";
+}
+
+.icon-short:before {
+    content: "\e9ba";
+}
+
+.icon-cart1:before {
+    content: "\e9b9";
+}
+
+.icon-welcome-pdp:before {
+    content: "\e999";
+}
+.icon-more_options:before {
+    content: "\e9b6";
 }

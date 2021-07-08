@@ -1,24 +1,23 @@
-<ng-container *ngIf="relatedCatgoryList!=undefined">
-<div id="subcCategoryTop">
-    <ul>
-        <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
-            <li *ngIf="i<3 || isAllListShow" >
-                <div class="sub-cat-product">
-                    <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
-                        <div class="prod-image">
-                            <img style="height: 78px; width: 78px;" [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}">
-                        </div>
-                        <h4>{{item?.categoryDetails?.categoryName}}</h4>
-                    </a>
-                </div>
-            </li>
-        </ng-container>
-    </ul>
-    <div *ngIf="relatedCatgoryList!==null && relatedCatgoryList.length > 3">
-        <a (click)="showList()" class="btn show-more">
-            {{moreLessCategoryText}}
-            <!-- <button type="button" (click)="showList()"></button> -->
-        </a>
+<ng-container *ngIf="relatedCatgoryList && relatedCatgoryList?.length > 0">
+    <div id="subcCategoryTop">
+        <ul>
+            <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
+                <li *ngIf="i<3 || isAllListShow" >
+                    <div class="sub-cat-product">
+                        <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
+                            <div class="prod-image">
+                                <img style="height: 78px; width: 78px;" [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}">
+                            </div>
+                            <h4>{{item?.categoryDetails?.categoryName}}</h4>
+                        </a>
+                    </div>
+                </li>
+            </ng-container>
+        </ul>
+        <div *ngIf="relatedCatgoryList!==null && relatedCatgoryList.length > 3">
+            <a (click)="showList()" class="btn show-more">
+                {{moreLessCategoryText}}
+            </a>
+        </div>
     </div>
-</div>
 </ng-container>

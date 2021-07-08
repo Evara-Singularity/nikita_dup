@@ -23,7 +23,7 @@
                 <a [routerLink]="['/quickorder']" class="icon-cart1">
                     <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
                 </a>
-                <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-dot"></a>
+                <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-more_options"></a>
             </div>
         </div>
         <div *ngIf="isHomePage && !isScrolledHeader" class="search-bar search-bar-custom">
@@ -45,7 +45,7 @@
             <a *ngIf="!isHomePage && !isLoginPage" [routerLink]="['/quickorder']" class="icon-cart1">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
-            <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-dot"></a>
+            <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-more_options"></a>
         </div>
         <!-- When Home page Header is scrolled -->
         <div class="scrolledHeader" *ngIf="isHomePage && isScrolledHeader" [ngClass]="{'headerFixed': isScrolledHeader}">

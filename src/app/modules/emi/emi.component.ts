@@ -590,6 +590,9 @@ export class EmiComponent {
         if(data){
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;
+            this.onBankChange(this.selectedBank);
+            this.selectedMonth = null;
+            this.selectedYear = null;
         }
         this.bankSelectPopUp = false;
     }
@@ -600,21 +603,24 @@ export class EmiComponent {
         let cart = cartSession["cart"];
         this.selectedBank = null;
         this.selectedBankName = null;
+        this.selectedMonth = null;
+        this.selectedYear = null;
         this.processRawResponse(
             (card == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
             cart
         );
         this.paymentMethod = card;
         this.selectDefaultEMI();
+        this.emiForm.get("requestParams").reset();
     }
 
     selectMonth(data) {
         console.log('selectMonth ==>', data);
         if (data) {
-            this.monthSelectPopupStatus = false;
             this.selectedMonth = data['value'];
             (this.emiForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
         }
+        this.monthSelectPopupStatus = false;
     }
 
     openMonthPopUp(){
@@ -622,12 +628,12 @@ export class EmiComponent {
     }
 
     selectYear(data) {
-        console.log('selectMonth ==>', data);
+        console.log('selectYear ==>', data);
         if (data) {
-            this.yearSelectPopupStatus = false;
             this.selectedYear = data['value'];
             (this.emiForm.get('requestParams.ccexpyr') as FormControl).setValue(data.key);
         }
+        this.yearSelectPopupStatus = false;
     }
 
     openYearPopUp(){

@@ -145,6 +145,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     updatePaymentBlock(block, mode?, elementId?) {
         let cart = this.cartService.getCartSession();
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
+        this.messageEmi = "";
+        this.messageCod = "";
+        this.messageNeft = "";
         // console.log('totalAmount',this.totalAmount);
         if (block == 4 && this.totalAmount < 3000) {
             this.messageEmi = "Not available below Rs. 3000";

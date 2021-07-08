@@ -61,7 +61,7 @@
 
     <div class="keyfeatures" *ngIf="product['keyFeatures'] && product['keyFeatures'].length > 0">
         <ul>
-            <li *ngFor="let features of product['keyFeatures']">{{features}}</li>
+            <li *ngFor="let features of product['keyFeatures'] | slice:0:2 ">{{features}}</li>
         </ul>
     </div>
         <!-- <product-variant-select-listing-page 

@@ -1,20 +1,21 @@
 <section class="invoice-container">
-	<form [formGroup]="invoiceTypeForm">
-		<div class="invoice-select">
-			<label (change)="updateInvoiceType()">
+    <form [formGroup]="invoiceTypeForm">
+        <div class="invoice-select">
+            <label (change)="updateInvoiceType()">
 				<input type="checkbox" formControlName="type">
 				<span class="custom-box icon-box"></span>
 			</label>
-			<div class="chk-txt">
-				<span class="heading">{{taxHeading}} <small>(Optional)</small><span (click)="showToolTipBox($event);"
-						class="info-ico"><img src="{{imgAssetPath}}assets/img/info.svg"></span></span>
-				<p class="txt">{{taxSubHeading}}</p>
-			</div>
-			<div *ngIf="showToolTip" class="gstToolTipBox">
+            <div class="invoice-txt">
+                <!-- <span class="heading">{{taxHeading}} <small>(Optional)</small><span (click)="showToolTipBox($event);"
+						class="info-ico"><img src="{{imgAssetPath}}assets/img/info.svg"></span></span> -->
+                <p>Get GST Invoice</p>
+                <span class="invoice-subtxt">{{taxSubHeading}}</span>
+            </div>
+            <!-- <div *ngIf="showToolTip" class="gstToolTipBox">
 				<i class="icon-circle-delete f-right" (click)="showToolTip = false;"></i>
 				<p>Kindly provide correct GSTN and billing address details after selecting this option. Uncheck to
 					proceed normally for personal purchase.</p>
-			</div>
-		</div>
-	</form>
+			</div> -->
+        </div>
+    </form>
 </section>

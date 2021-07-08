@@ -1,4 +1,4 @@
-.popup_fixed{
+.popup_fixed {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -6,7 +6,7 @@
     top: 0px;
     left: 0px;
     z-index: 9;
-    .pos_center{
+    .pos_center {
         width: 500px;
         background: white;
         height: 250px;
@@ -16,33 +16,41 @@
         top: 50%;
     }
 }
-input.form-control[readonly]{
+
+.cash-container {
+    padding-bottom: 30px;
+    .medium-cod-heading {
+        font-size: 12px;
+        color: #353535;
+    }
+}
+
+input.form-control[readonly] {
     background-color: #e6e6e6 !important;
     border-bottom: 2px dotted #c3c3c3 !important;
 }
 
 @media only screen and (max-width: 767px) {
-    .static-xs{
+    .static-xs {
         position: static !important;
     }
-    .text-left-xs{
+    .text-left-xs {
         text-align: left !important;
     }
-    .popup_fixed{
-        .pos_center{
+    .popup_fixed {
+        .pos_center {
             height: 300px;
             width: 95%;
         }
     }
-
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-    .otp-error p{
+    .otp-error p {
         text-align: right;
     }
-    .num_err{
-        p{
+    .num_err {
+        p {
             text-align: center !important;
         }
     }

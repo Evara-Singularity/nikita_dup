@@ -672,6 +672,12 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         return filteredData;
     }
 
+    closePopUpBySelect(data: boolean) {
+        if (data) {
+            this.selectAddress();
+        }
+    }
+
     outData(data) {
         //  ;
         console.log(data);

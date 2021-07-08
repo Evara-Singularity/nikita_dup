@@ -13,9 +13,13 @@ export class CmsWrapperComponent {
     readonly class = 'componentClass';
     readonly titleData = 'titleData';
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
+    sample = {'padding': '20px', 'background': 'red'};
 
     @Input('cmsData') cmsData: any;
     @Input('background') background: string = 'bg-white';
+
+    ngOnInit() {
+    }
 
     constructor() {}
 }

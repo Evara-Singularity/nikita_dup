@@ -5,3 +5,53 @@
         color: #303030;
     }
 }
+
+.trending-search-container {
+    background: #fff;
+    // padding: 10px;
+    .trending-search-inner {
+        flex-wrap: wrap;
+        display: flex;
+        &>div {
+            display: inline-flex;
+            margin-right: 10px;
+            a {
+                margin-bottom: 8px;
+                padding: 7px 10px;
+                color: #278BED;
+                border: 1px solid #278BED;
+                border-radius: 4px;
+                white-space: nowrap;
+                font-weight: bold;
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+.search_product_categories {
+    display: flex;
+    flex-wrap: wrap;
+    .search_product_category {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #EFEFF4;
+        border-radius: 8px;
+        padding: 5px;
+        margin-right: 10px;
+        width: 29.5%;
+        margin-bottom: 10px;
+        &:last-child {
+            margin-right: 0px;
+        }
+        img {
+            width: 33px;
+        }
+        .prodText {
+            padding-left: 5px;
+            line-height: 13px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+    }
+}

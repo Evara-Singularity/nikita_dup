@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   BREADCRUMB: "/homepage/getbreadcrumb",
   Q_AND_A: "/quest/getQuest",
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
+  GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   LOGIN_URL: "/login/sendOTP",
   LOGIN_OTP: "/login/validateotp",
   LOGIN_AUTHENTICATE: "/login/authenticate",
@@ -53,6 +54,7 @@ export const ENDPOINTS = {
   SPL_DEALS: "/deals/special-deals",
   SPL_OFFR: "/deals/special-offer",
   GET_EMI_VAL: "/payment/getEMIValues",
+  GET_CLUSTER_EMI_VAL: "/payment/getClusterEmiValues",
   PAYMENT: "/payment/pay",
   GET_ALL_PAYMENT: "/payment/getAll",
   VALIDATE_VPA: "/payment/validateVPA?vpa=",
@@ -80,6 +82,7 @@ export const ENDPOINTS = {
   GET_CATEGORY: "/category/getcategory",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",
+  GET_CMS_LAYOUT: "/cmsapi/getLayoutJsonByCode?layoutCode=",
   GET_SESSION: "/session/getSession",
   GET_TOKKEN: "/token/getToken",
   LOGOUT: "/login/logout",
@@ -90,11 +93,13 @@ export const ENDPOINTS = {
   VALIDATE_BD: "/validation/validate",
   HOMEPAGE_FOOTER: "/homepage/footercode",
   TRENDING_CATEGORY: "/category/trendingCategory",
+  TRENDING_CATEGORY_CMS: "/category/getparentcategoryjsonbody?requestType=",
   ADD_PURCHASE_LIST: "/purchase/addPurchaseList",
   SIMILAR_PRODUCTS: "/search/similarproducts",
   SET_REVIEWS: "/reviews/setReviews",
   IS_REVIEW_HELPFUL: "/reviews/isReviewHelpful",
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
-  IS_BRAND_CATEGORY: "/search/isBrandCategory"
+  IS_BRAND_CATEGORY: "/search/isBrandCategory",
+  SEARCH: '/search'
 };

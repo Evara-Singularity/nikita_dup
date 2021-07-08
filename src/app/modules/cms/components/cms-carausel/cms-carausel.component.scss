@@ -1,0 +1,28 @@
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin: 15px 15px 0;
+    >div {
+        display: flex;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        scroll-behavior: smooth;
+        justify-content: center;
+        align-items: center;
+    }
+    .carousel-item {
+        margin-right: 15px;
+        &:last-child {
+            margin-right: 0;
+        }
+        img {
+            width: 260px;
+        }
+    }
+    .brand-logo {
+        img {
+            width: 56px;
+        }
+    }
+}

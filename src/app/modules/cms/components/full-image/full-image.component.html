@@ -1,4 +1,4 @@
-<div class="fullimages-articlewrap">
+<div class="fullimages-articlewrap"  [ngStyle]="customStyle">
     <div [style.width.px]="listOfImgs.length * 200" class="fullimages-articlewrap-inner">
         <div class="fullimages-article" *ngFor="let item of listOfImgs">
           <img src="{{imagePath + item['imageLink_m']}}" [alt]="item['imageTitle']"

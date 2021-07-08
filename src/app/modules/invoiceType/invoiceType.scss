@@ -1,50 +1,41 @@
 @import '../../scss/variables';
+.invoice-container {
+    background: $white;
+    padding: 15px;
+    margin-top: 10px;
+    @extend %cards;
+    .invoice-select {
+        display: flex;
+        align-items: center;
+        label {
+            width: 20px;
+            @extend %custom-check-box-checkout;
+        }
+        .invoice-txt {
+            padding-left: 10px;
+            p {
+                font-size: $large-font;
+                font-weight: bold;
+                margin-bottom: 2px;
+            }
+            .invoice-subtxt {
+                color: #9c9292;
+                font-size: $medium-font;
+            }
+        }
+    }
+}
 
-.invoice-container{
-  background: $white;
-  padding:15px;
-  margin-top: 10px;
-  @extend %cards;
-  .invoice-select{
-    // margin-top: 15px;
-    @extend %clear-fix;
-    position: relative;
-    label{
-      // padding: 10px;
-      width:20px;
-      // @include gridForCategory('1' , null);
-      @extend %custom-check-box-checkout;
-      &.selected{
-        // background: $selected-color;
-      }
-      
+.info-ico {
+    vertical-align: middle;
+    img {
+        width: 18px;
+        vertical-align: middle;
     }
-    .chk-txt{
-      font-size: $medium-font;
-      width: calc(100% - 25px);
-      float: right;
-      .heading{
-        font-weight: 500; 
-        display: block;
-        font-size:$large-font;
-      }
-      .txt{
-        font-size:$medium-font;
-        line-height:14px;
-        padding-top:5px;
-      }
-    }
-  }
 }
-.info-ico{
-  vertical-align:middle;
-  img{
-    width:18px;
-    vertical-align:middle;
-  }
-}
+
 .gstToolTipBox {
-    width:272px;
+    width: 272px;
     background: #f5f8ff;
     box-shadow: 0px 3px 6px #00000029;
     border: 0.2px solid #e0e9ff;
@@ -53,13 +44,13 @@
     position: absolute;
     right: 15px;
     top: 6px;
-  p {
-    color: #797979;
-    font-size: $medium-font;
-    line-height: 20px;
-    width:calc(100% - 25px);
-  }
-  i{
-    font-size: $large-font;
-  }
+    p {
+        color: #797979;
+        font-size: $medium-font;
+        line-height: 20px;
+        width: calc(100% - 25px);
+    }
+    i {
+        font-size: $large-font;
+    }
 }

@@ -1,11 +1,14 @@
-<header class="inner-pages">
+<header class="inner-pages" *ngIf="!extraData.hideHeader">
     <div class="style-1">
         <div *ngIf="isHomePage && !isScrolledHeader" class="head-strip container">
             <div class="f-left logo-container">
-                <i *ngIf="isHomePage || (routerData && routerData['menuBar']) " class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
+                <i *ngIf="isHomePage || (routerData && routerData['menuBar'])" class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
                 <i *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="goBack()" class="icon-back" id="icon-back"></i>
-                <a [routerLink]="['/']" class="icon-logo" *ngIf="(routerData && routerData['logo']) && isHomePage"></a>
-                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']" >
+                <!-- <a [routerLink]="['/']" class="icon-logo" *ngIf="(routerData && routerData['logo']) && isHomePage"></a> -->
+                <a *ngIf="(routerData && routerData['logo']) && isHomePage" class="moglix-app-logo" [routerLink]="['/']">
+                    <img src="{{imgAssetPath}}assets/img/moglix_logo_PWA.png">
+                </a>
+                <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
                     <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
                 </a>
             </div>
@@ -15,20 +18,20 @@
                 <!-- <a *ngIf="!isHomePage" (click)="loadSearchNav()" class="icon-search red-txt"></a> -->
                 <div class="search-bar" *ngIf="!isHomePage">
                     <i class="icon-search"></i>
-                    <input type="text" placeholder="Search Product/Category" (click)="loadSearchNav()">
+                    <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
                 </div>
-                <a [routerLink]="['/quickorder']" class="icon-cart-header">
+                <a [routerLink]="['/quickorder']" class="icon-cart1">
                     <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
                 </a>
                 <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-dot"></a>
             </div>
         </div>
         <div *ngIf="isHomePage && !isScrolledHeader" class="search-bar search-bar-custom">
-            <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category">
+            <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category/Brand...">
         </div>
         <!--Category Header-->
         <div class="common-category-header container">
-            <i *ngIf="!isHomePage && router.url.includes('dashboard/')" class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
+            <i *ngIf="!isHomePage && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'" class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
             <i *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')" [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()" class="icon-back" id="icon-back"></i>
             <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</span>
             <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
@@ -36,10 +39,10 @@
             </a>
             <a class="search-bar-mini" *ngIf="!isHomePage && !isLoginPage && !(routerData && routerData['title'])">
                 <i class="icon-search"></i>
-                <input type="text" placeholder="Search Product/Category" (click)="loadSearchNav()">
+                <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
             </a>
             <a *ngIf="!isHomePage  && !isLoginPage && (routerData && routerData['title'])" (click)="loadSearchNav()" class="icon-search red-txt"></a>
-            <a *ngIf="!isHomePage && !isLoginPage" [routerLink]="['/quickorder']" class="icon-cart-header">
+            <a *ngIf="!isHomePage && !isLoginPage" [routerLink]="['/quickorder']" class="icon-cart1">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
             <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-dot"></a>
@@ -48,9 +51,9 @@
         <div class="scrolledHeader" *ngIf="isHomePage && isScrolledHeader" [ngClass]="{'headerFixed': isScrolledHeader}">
             <a *ngIf="isHomePage && isScrolledHeader" class="icon-menu header-icon" id="icon-menu" (click)="loadSideNav()"></a>
             <a class="search-bar">
-                <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category">
+                <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category/Brand...">
             </a>
-            <a *ngIf="isHomePage && isScrolledHeader" [routerLink]="['/quickorder']" class="icon-cart-header header-icon">
+            <a *ngIf="isHomePage && isScrolledHeader" [routerLink]="['/quickorder']" class="icon-cart1 header-icon">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
         </div>

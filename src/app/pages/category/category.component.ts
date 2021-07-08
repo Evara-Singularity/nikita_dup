@@ -48,7 +48,7 @@ export class CategoryComponent implements OnInit {
     @ViewChild('cateoryFooter', { read: ViewContainerRef }) cateoryFooterContainerRef: ViewContainerRef;
     recentArticlesInstance = null;
     @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
-
+    filterData: any;
     paginationData: any = {};
     breadcrumbData: any;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -56,9 +56,6 @@ export class CategoryComponent implements OnInit {
     relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     @ViewChild(SortByComponent) sortByComponent: SortByComponent;
-
-
-    paginationUpdated: Subject<any> = new Subject<any>();
     
     pageName: string;
     buckets = [];
@@ -74,7 +71,7 @@ export class CategoryComponent implements OnInit {
 
     productSearchResultSEO: Array<any> = [];
     filterCounts: number;
-    spl_subCategory_Dt: any;
+    f: any;
     forkJoinUnsub: any;
     combineLatestUnsub: any;
     pageNo: number;
@@ -198,7 +195,7 @@ export class CategoryComponent implements OnInit {
             getRelatedCatgory: this.getRelatedCatgory,
             productSearchResultSEO: this.productSearchResultSEO,
             faqData: this.faqData,
-            buckets: this.buckets,
+            buckets: this.filterData,
             PRTA: this.PRTA
         };
     }
@@ -363,22 +360,15 @@ export class CategoryComponent implements OnInit {
         // this._commonService.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.createCategorySchema(response.productSearchResult['products']); // ODP-684
-        if (flag) {
-            this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.productsUpdated.next(response.productSearchResult.products);
-            this.paginationUpdated.next(this.paginationData);
-        }
-        this.buckets = response.buckets;
+        
+        this.paginationData = { itemCount: response.productSearchResult.totalCount };
 
-        if (this.paginationInstance) {
-            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
-        }
-        if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(this.buckets);
-        } else {
-            this.filterCounts = this._commonService.calculateFilterCount(this.buckets);
-        }
+        this.productsUpdated.next(response.productSearchResult.products);
+
+        this.filterData = response.buckets;
+
+        this.filterCounts = this._commonService.calculateFilterCount(this.filterData);
+
         this.priceRangeTable(response);      //price range table code starts here
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
@@ -408,7 +398,7 @@ export class CategoryComponent implements OnInit {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res.buckets)));
+            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res.priceRangeBuckets)));
         }
     }
 
@@ -578,19 +568,20 @@ export class CategoryComponent implements OnInit {
             this._renderer2.appendChild(this._document.head, links);
         }
 
-        if (this.pageNo == undefined || this.pageNo == 1) {
-            if (this._commonService.isServer) {
-                let ampLink;
-                ampLink = this._renderer2.createElement('link');
-                ampLink.rel = 'amphtml';
-                ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
-                /**
-                 * Below if condition is just a temporary solution.
-                 * Strictly remove if condtion, once amp of drill(114160000) page is completed.
-                 */
-                this._renderer2.appendChild(this._document.head, ampLink);
-            }
-        }
+        // JIRA: ODP-1371
+        // if (this.pageNo == undefined || this.pageNo == 1) {
+        //     if (this._commonService.isServer) {
+        //         let ampLink;
+        //         ampLink = this._renderer2.createElement('link');
+        //         ampLink.rel = 'amphtml';
+        //         ampLink.href = CONSTANTS.PROD + '/ampc' + currentRoute.toLowerCase();
+        //         /**
+        //          * Below if condition is just a temporary solution.
+        //          * Strictly remove if condtion, once amp of drill(114160000) page is completed.
+        //          */
+        //         this._renderer2.appendChild(this._document.head, ampLink);
+        //     }
+        // }
 
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
         const pageCountQ = response.productSearchResult.totalCount / 10;
@@ -749,39 +740,26 @@ export class CategoryComponent implements OnInit {
             const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject<any>({});
-            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
-            this.paginationInstance.instance['position'] = 'BOTTOM';
-            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
-
-            if (this.paginationInstance) {
-                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
-                    this.pageChanged(data);
-                });
-            }
-
+            this.paginationInstance.instance['paginationData'] = this.paginationData;
         }
     }
 
     async filterUp() {
         if (!this.filterInstance) {
-                const { FilterComponent } = await import('@app/components/filter/filter.component').finally(function() {
-                    setTimeout(function(){
-                        const mob_filter = document.querySelector('.mob_filter');
-                        if (mob_filter) {
-                            mob_filter.classList.add('upTrans');
-                        }
-                    }, 0);
-                });
-                const factory = this.cfr.resolveComponentFactory(FilterComponent);
-                this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-                this.filterInstance.instance['pageName'] = this.pageName;
-                this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.buckets);
-                this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-                (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
-                    this.onFilterSelected(data);
-                });
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                setTimeout(() => {
+                    const mob_filter = document.querySelector('.mob_filter');
+                    if (mob_filter) {
+                        mob_filter.classList.add('upTrans');
+                    }
+                }, 0);
+            });
+            const factory = this.cfr.resolveComponentFactory(FilterComponent);
+            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+            this.filterInstance.instance['filterData'] = this.filterData;
+            (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.filterUp();
+            });
         } else {
             const mob_filter = document.querySelector('.mob_filter');
 
@@ -790,24 +768,23 @@ export class CategoryComponent implements OnInit {
             }
         }
     }
-
-    async toggleSortBy(data) {
+    
+    async toggleSortBy() {
         if (!this.sortByInstance) {
             const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
             const factory = this.cfr.resolveComponentFactory(SortByComponent);
             this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-            this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
-            (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                this.toggleSortBy(data);
+
+            (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy();
             });
         } else {
             const sortByFilter = document.querySelector('sort-by');
-            
+
             if (sortByFilter) {
                 sortByFilter.classList.toggle('open');
             }
-        }        
-        this.sortByInstance.instance.initializeData();
+        }
     }
 
     createDefaultParams() {

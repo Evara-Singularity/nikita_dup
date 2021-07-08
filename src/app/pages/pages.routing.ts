@@ -27,13 +27,23 @@ const routes: Routes = [
 			{
 				matcher: categoriesMatcher,
 				loadChildren: () =>
-					import('./category/category.module').then((m) => m.CategoryModule),
+					import('./category-v1/category-v1.module').then((m) => m.CategoryV1Module),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
 				},
 			},
+			// {
+			// 	matcher: categoriesMatcher,
+			// 	loadChildren: () =>
+			// 		import('./category/category.module').then((m) => m.CategoryModule),
+			// 	data: {
+			// 		footer: false,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 	},
+			// },
 			{
 				path: 'alp/:attribute',
 				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
@@ -71,27 +81,37 @@ const routes: Routes = [
 			{
 				path: 'brands/:brand',
 				loadChildren: () =>
-					import('./brand/brand.module').then((m) => m.BrandModule),
+					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
 				data: {
 					footer: false,
-					title: '',
+                    logo: true,
 					moreOpt: true,
 				},
 			},
 			{
 				matcher: brandCategoriesMatcher,
 				loadChildren: () =>
-					import('./brand/brand.module').then((m) => m.BrandModule),
+					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
 				data: {
 					footer: false,
-					title: '',
+                    logo: true,
 					moreOpt: true,
 				},
 			},
+			// {
+			// 	path: 'search',
+			// 	loadChildren: () =>
+			// 		import('./search/search.module').then((m) => m.SearchModule),
+			// 	data: {
+			// 		footer: false,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 	},
+			// },
 			{
 				path: 'search',
 				loadChildren: () =>
-					import('./search/search.module').then((m) => m.SearchModule),
+					import('./search-v1/search-v1.module').then((m) => m.SearchV1Module),
 				data: {
 					footer: false,
 					logo: true,
@@ -200,11 +220,10 @@ const routes: Routes = [
 			{
 				path: 'brand-store',
 				loadChildren: () =>
-					import('./static/brand/brand.module').then((m) => m.BrandModule),
+					import('./static/brand-store/brand-store.module').then((m) => m.BrandStoreModule),
 				data: {
 					footer: false,
-					title: 'Brand Store',
-					moreOpt: true,
+					logo: true,
 				},
 			},
 			{
@@ -651,13 +670,37 @@ const routes: Routes = [
 				},
 			},
             {
-                path: 'feedback/:itemid',
+                path: 'feedback',
                 loadChildren: () =>
                     import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
                 data: {
-                    footer: false,
                     title: 'Feedback',
-                    moreOpt: true,
+                    menuBar: true,
+                    footer: false,
+                },
+            },
+			{
+                path: 'assist-verification-success',
+                loadChildren: () => import('@pages/assist-verification-success/assist-verification-success.module').then(m => m.AssistVerificationSuccessModule),
+                data: {
+                    hideHeader: true,
+                },
+            },
+            {
+                path: 'assist-verification-failure',
+                loadChildren: () => import('@pages/assist-verification-failure/assist-verification-failure.module').then(m => m.AssistVerificationFailureModule),
+                data: {
+                    hideHeader: true,
+                },
+            },
+            {
+                path: 'feedback',
+                loadChildren: () =>
+                    import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
+                data: {
+                    title: 'Feedback',
+                    menuBar: true,
+                    footer: false,
                 },
             },
 			{

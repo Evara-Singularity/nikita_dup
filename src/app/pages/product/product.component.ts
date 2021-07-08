@@ -1038,9 +1038,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.dataService.sendMessage(trackingData);
 
       this.showLoader = true;
+      
       sessionDetails["cart"]["buyNow"] = buyNow;
       sessionDetails["itemsList"] = checkAddToCartData.itemlist;
       sessionDetails = this.cartService.updateCart(sessionDetails);
+
+
       this.currentAddedProduct = Object.assign({}, singleProductItem);
       if (!buyNow) {
         this.cartService.setCartSession(sessionDetails);
@@ -1061,7 +1064,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });   //this redirect to quick order page
         return;
       }
+      
       this.showLoader = true;
+
       this.cartService.updateCartSessions(routerLink, sessionDetails, buyNow).subscribe(data => {
         this.showLoader = false;
         this.updateCartSessions(data, routerLink, buyNow);
@@ -1069,6 +1074,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.updateCartSessions(null, routerLink);
       });
+
       if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
         var totQuantity = 0;
         var trackData = {
@@ -1431,6 +1437,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  closeRFQAlert() { this.isRFQSuccessfull = false }
+
   async intiateRFQQuote(inStock, sendAnalyticOnOpen = true) {
     const { ProductRFQComponent } = await import('./../../components/product-rfq/product-rfq.component').finally(() => {
       if (sendAnalyticOnOpen) { this.analyticRFQ(false) }
@@ -1440,9 +1448,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.productRFQInstance.instance['isOutOfStock'] = this.productOutOfStock;
     this.productRFQInstance.instance['isPopup'] = inStock;
     let product = {
-      url: this.productUrl, price: this.productPrice,
-      msn: (this.productSubPartNumber || this.defaultPartNumber), productName: this.productName, moq: this.productMinimmumQuantity,
-      brand: this.productBrandDetails['brandName'], taxonomyCode: this.productCategoryDetails['taxonomy'],
+      url: this.productUrl,
+      price: this.productPrice,
+      msn: (this.productSubPartNumber || this.defaultPartNumber),
+      productName: this.productName,
+      moq: this.productMinimmumQuantity,
+      brand: this.productBrandDetails['brandName'],
+      taxonomyCode: this.productCategoryDetails['taxonomy'],
       adobeTags: ''
     }
     this.productRFQInstance.instance['product'] = product;
@@ -1454,8 +1466,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.isRFQSuccessfull = true;
     });
   }
-
-  closeRFQAlert() { this.isRFQSuccessfull = false }
 
   async getPincodeForm() {
     this.showLoader = true;

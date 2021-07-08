@@ -9,6 +9,7 @@ import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe'
 import { BankNamePipeModule } from '../../utils/pipes/bank.pipe';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutocompleteOff.directive';
+import { SelectPopupModule } from '../select-popup/select-popup.module';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { KpAutocompleteOffDirectiveModule } from '../../utils/directives/kpAutoc
         RazorPayFormModule,
         BankNamePipeModule,
         MathCeilPipeModule,
-        KpAutocompleteOffDirectiveModule
+        KpAutocompleteOffDirectiveModule,
+        SelectPopupModule
     ],
     declarations: [
         EmiComponent

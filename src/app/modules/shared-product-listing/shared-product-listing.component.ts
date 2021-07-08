@@ -1,4 +1,5 @@
 import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, SimpleChanges } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
@@ -22,6 +23,7 @@ export class SharedProductListingComponent {
   @Input() pageName: string;
   @Input() headerName: string;
   Object = Object;
+  imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
 
   public appliedFilterCount: number = 0;

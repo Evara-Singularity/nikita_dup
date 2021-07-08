@@ -46,12 +46,24 @@
     </ng-container>
 </div>
 
-
-<ng-container *ngFor="let product of productsListingData.products; let i = index;">
-    <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData"
-        *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
-    <product-horizontal-card [product]="product">
-    </product-horizontal-card>
+<ng-container *ngIf="productsListingData.products.length > 0">
+    <ng-container *ngFor="let product of productsListingData.products; let i = index;">
+        <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData"
+            *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
+        <product-horizontal-card [product]="product">
+        </product-horizontal-card>
+    </ng-container>
+</ng-container>
+<ng-container  *ngIf="productsListingData.products != undefined && productsListingData.products.length==0">
+    <div class="align-center">
+        <div class="container pt-15">
+            <h3 class="pb-15 mt-15 align-center f-16">No Product Found</h3>
+            <img class="no-product" src="{{imagePath}}b/I/P/B/d/no-search-result.svg" />
+            <p class="pad-tb-15 f-16">
+                Maybe your search was too specific. Contact for this specific product.
+            </p>
+        </div>
+    </div>
 </ng-container>
 
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>

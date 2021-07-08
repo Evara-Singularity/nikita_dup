@@ -53,21 +53,9 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   }
 
-  // todo : to be removed after integration
-  dummyVideoData() {
-    this.product['videosInfo'] = [
-      {
-        "link": "https://www.youtube.com/embed/h9QNUcrjtOs",
-        "title": "Tynor Adjustable R.O.M. Knee Brace for Multiple Orthopedic Problems, Size: Universal",
-        "uploadedBy": null
-      }
-    ]
-  }
-
   ngOnInit(): void {
     this.isOutOfStockByQuantity = !this.product.quantityAvailable;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
-    this.dummyVideoData();
   }
 
   buyNow(buyNow = false) {

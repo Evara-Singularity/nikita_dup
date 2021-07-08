@@ -8,7 +8,8 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '@app/config/constants';
 import { DOCUMENT } from '@angular/common';
-import { Meta } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 let digitalData = {
   page: {},
@@ -32,6 +33,7 @@ export class SearchV1Component implements OnInit {
     public _productListService: ProductListService,
     private _commonService: CommonService,
     private _dataService: DataService,
+    private _title: Title,
     private meta: Meta,
     @Inject(DOCUMENT) private _document,
     private _renderer2: Renderer2, 
@@ -66,6 +68,8 @@ export class SearchV1Component implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
+
+      this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 
       this.setHeaderNameBasedOnCondition();
 
@@ -210,8 +214,7 @@ export class SearchV1Component implements OnInit {
 
   removeSpacingForSearchInput(){
     if (this._commonService.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
-      const queryParams = this._activatedRoute.snapshot.queryParams;
-      (<HTMLInputElement>document.querySelector('#search-input')).value = queryParams['search_query'].trim();
+      (<HTMLInputElement>document.querySelector('#search-input')).value = this._activatedRoute.snapshot.queryParams['search_query'].trim();
     }
   }
 

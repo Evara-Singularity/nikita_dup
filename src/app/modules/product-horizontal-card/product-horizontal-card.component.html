@@ -37,7 +37,7 @@
                     <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
                     </div>
-                    <div class="out-of-stock-text">
+                    <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice" >
                         <span>Available on Request</span>
                     </div>
                     <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">
@@ -57,6 +57,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="keyfeatures" *ngIf="product['keyFeatures'] && product['keyFeatures'].length > 0">
+        <ul>
+            <li *ngFor="let features of product['keyFeatures'] | slice:0:2 ">{{features}}</li>
+        </ul>
     </div>
         <!-- <product-variant-select-listing-page 
         [product]="product" 

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
+import { Title } from '@angular/platform-browser';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 
@@ -56,6 +58,7 @@ export class CategoryV1Component {
         private _renderer2: Renderer2,
         @Inject(DOCUMENT) private _document,
         public _footerService: FooterService,
+        private _title: Title,
         public _commonService: CommonService,
         private _activatedRoute: ActivatedRoute,
         private _categoryService: CategoryService,
@@ -75,6 +78,8 @@ export class CategoryV1Component {
         this._activatedRoute.data.subscribe(result => {
 
             this.API_RESPONSE = result;
+
+            this._title.setTitle((this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com");
 
             this.updateComponentsBasedOnrouteChange();
 

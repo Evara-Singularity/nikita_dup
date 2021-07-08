@@ -220,10 +220,7 @@ export class BrandV1Component {
             }
 
         }
-        let categoryNames = productCategoryNames.toString();
-        //console.log("pageCountQ",pageCountQ);
         let currentPageP = parseInt(currentQueryParams["page"]);
-        //console.log("currentPageP",currentPageP) ;
 
         if (pageCountQ > 1 && (currentPageP == 1 || isNaN(currentPageP))) {
             let links = this._renderer2.createElement('link');
@@ -233,7 +230,6 @@ export class BrandV1Component {
                 href = href + "&category=" + encodeURIComponent((qp['category'].toLowerCase()));
             }
             links.href = href;
-            //console.log("page2",links.href);
             this._renderer2.appendChild(this._document.head, links);
 
         } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
@@ -251,7 +247,6 @@ export class BrandV1Component {
                     href = href + "&category=" + encodeURIComponent((qp['category'].toLowerCase()));
             }
             links.href = href;
-            //console.log("link href",links.href);
             this._renderer2.appendChild(this._document.head, links);
 
             links = this._renderer2.createElement('link');
@@ -345,8 +340,6 @@ export class BrandV1Component {
                 'brandName': this._activatedRoute.snapshot.params.brand,
                 'brandUrl': window.location.origin + window.location.pathname
             });
-
-            console.log(digitalData);
 
             this._analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */

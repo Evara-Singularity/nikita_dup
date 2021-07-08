@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
@@ -55,6 +55,19 @@ export class FilterMidPlpComponent implements OnInit {
   }
 }
 
+
+@Pipe({
+  name: 'removeSelected'
+})
+export class RemoveSelectedPipe implements PipeTransform{
+  transform(val) {
+    if (val && val.length > 0) {
+      return val.filter( v => !v.selected);
+    }
+    return val;
+  }
+}
+
 @NgModule({
   imports: [
       CommonModule,
@@ -65,6 +78,7 @@ export class FilterMidPlpComponent implements OnInit {
     FilterMidPlpComponent
   ],
   declarations: [
+    RemoveSelectedPipe,
     FilterMidPlpComponent
   ],
 })

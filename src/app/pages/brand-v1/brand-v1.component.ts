@@ -65,18 +65,18 @@ export class BrandV1Component {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
-            
+            console.log(this.API_RESPONSE);
+
             // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1].categoryLinkList);
+            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
 
             // Total count
-            this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1].productSearchResult.totalCount;
+            this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
             
             // create data for shared listing component
-            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1], 'Brand Results');
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
             
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
@@ -101,18 +101,18 @@ export class BrandV1Component {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
 
-        if (this.API_RESPONSE.brand[1]["title"]) {
-            this.title.setTitle(this.API_RESPONSE.brand[1]["title"]);
-            this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1]["title"] });
+        if (this.API_RESPONSE.brand[1][0]["title"]) {
+            this.title.setTitle(this.API_RESPONSE.brand[1][0]["title"]);
+            this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0]["title"] });
         } else {
             let title = "Buy " + this.capitalizeFirstLetter(this._activatedRoute.snapshot.params.brand) + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
         }
 
-        if (this.API_RESPONSE.brand[1]["metaDesciption"]) {
-            this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[1]["metaDesciption"] });
-            this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[1]["metaDesciption"] });
+        if (this.API_RESPONSE.brand[1][0]["metaDesciption"]) {
+            this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
+            this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
         } else {
             let metaDescription = "Buy " + this._activatedRoute.snapshot.params.brand + " products at best prices in India. Shop online for " + this._activatedRoute.snapshot.params.brand + " products at Moglix. Free Delivery & COD options across India.";
             this.meta.addTag({ "name": "description", "content": metaDescription });
@@ -130,7 +130,7 @@ export class BrandV1Component {
             links.href = (qp['page'] == 1 || qp['page'] == undefined) ? href : href + "?page=" + qp['page'];
             this._renderer2.appendChild(this._document.head, links);
             //list schema
-            if (this.API_RESPONSE['brand'][1].categoryName) {
+            if (this.API_RESPONSE['brand'][1][0].categoryName) {
                 itemsList = [
                     {
                         "@type": "ListItem",
@@ -165,7 +165,7 @@ export class BrandV1Component {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + this._router.url,
-                            "name": this.API_RESPONSE['brand'][1].categoryName
+                            "name": this.API_RESPONSE['brand'][1][0].categoryName
                         }
                     }
                 ];
@@ -209,8 +209,8 @@ export class BrandV1Component {
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);
 
-        let pageCountQ = this.API_RESPONSE.brand[1].productSearchResult.totalCount / 10;
-        let categoryLinkLists = this.API_RESPONSE.brand[1].categoryLinkList;
+        let pageCountQ = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount / 10;
+        let categoryLinkLists = this.API_RESPONSE.brand[1][0].categoryLinkList;
 
 
         let productCategoryNames = [];
@@ -278,7 +278,7 @@ export class BrandV1Component {
             trendingSearchData = queryParams;
         });
         if (this._commonService.isBrowser) {
-            if (this.API_RESPONSE['brand'][1].categoryName) {
+            if (this.API_RESPONSE['brand'][1][0].categoryName) {
                 page = {
                     'pageName': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing",
                     'channel': "brand:category",
@@ -346,7 +346,7 @@ export class BrandV1Component {
         }
         /* Setting of product schema for products */
         if (this._commonService.isServer) {
-            const products = this.API_RESPONSE.brand[1].productSearchResult.products || [];
+            const products = this.API_RESPONSE.brand[1][0].productSearchResult.products || [];
             if (products && products.length) {
                 const categoryName = qp && qp['categoryName'];
                 this.createProductsSchema(products, categoryName);
@@ -403,14 +403,14 @@ export class BrandV1Component {
                 page_type: "brand_page",
                 brand: this.API_RESPONSE['brand'][0].brandName,
                 filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
-                product_count: this.API_RESPONSE['brand'][1].productSearchResult.totalCount
+                product_count: this.API_RESPONSE['brand'][1][0].productSearchResult.totalCount
             }
             this._dataService.sendMessage(trackingData);
         }
     }
 
     handleIfBrandIsNotActive(){
-        if (!this.API_RESPONSE.brand[0].active || this.API_RESPONSE.brand[1]['productSearchResult']['totalCount'] === 0) {
+        if (!this.API_RESPONSE.brand[0].active || this.API_RESPONSE.brand[1][0]['productSearchResult']['totalCount'] === 0) {
             if (this._commonService.isServer) {
                 this._response.status(404);
             }
@@ -423,9 +423,9 @@ export class BrandV1Component {
 
     genrateProductSearchResultSEOData() {
         let productSearchResultSEO = [];
-        for (let i = 0; i < this.API_RESPONSE.brand[1].productSearchResult.products.length && i < 10; i++) {
-            if (this.API_RESPONSE.brand[1].productSearchResult.products[i].salesPrice > 0 && this.API_RESPONSE.brand[1].productSearchResult.products[i].priceWithoutTax > 0) {
-                productSearchResultSEO.push(this.API_RESPONSE.brand[1].productSearchResult.products[i]);
+        for (let i = 0; i < this.API_RESPONSE.brand[1][0].productSearchResult.products.length && i < 10; i++) {
+            if (this.API_RESPONSE.brand[1][0].productSearchResult.products[i].salesPrice > 0 && this.API_RESPONSE.brand[1][0].productSearchResult.products[i].priceWithoutTax > 0) {
+                productSearchResultSEO.push(this.API_RESPONSE.brand[1][0].productSearchResult.products[i]);
 
             }
         }
@@ -434,17 +434,17 @@ export class BrandV1Component {
 
     genrateAndUpdateBrandFooterData(){
         this.brandFooterData = {
-            brandCatDesc: this.API_RESPONSE.brand[1].desciption,
+            brandCatDesc: this.API_RESPONSE.brand[1][0].desciption,
             brandShortDesc: this.API_RESPONSE.brand[0].brandDesc,
             iba: this.API_RESPONSE.brand[0].active,
             firstPageContent: this._commonService.selectedFilterData.page < 2,
-            productSearchResult: this.API_RESPONSE.brand[1].productSearchResult,
+            productSearchResult: this.API_RESPONSE.brand[1][0].productSearchResult,
             productSearchResultSEO: this.genrateProductSearchResultSEOData(),
-            heading: this.API_RESPONSE.brand[1].heading,
-            productCount: this.API_RESPONSE.brand[1].productSearchResult.totalCount,
+            heading: this.API_RESPONSE.brand[1][0].heading,
+            productCount: this.API_RESPONSE.brand[1][0].productSearchResult.totalCount,
             brand: this._activatedRoute.snapshot.params.brand,
             productCategoryNames: this.popularLinks,
-            categoryLinkLists: this.API_RESPONSE.brand[1].categoryLinkList,
+            categoryLinkLists: this.API_RESPONSE.brand[1][0].categoryLinkList,
             categoryNames: this.popularLinks.toString(),
             todayDate: Date.now(),
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)

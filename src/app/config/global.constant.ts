@@ -9,6 +9,7 @@ export const GLOBAL_CONSTANT = {
     netBanking: 2,
     wallet: 3,
     emi: 4,
+    genricTitleBarText: 'Shop online for Industrial & Home Products: Tools, Electricals, Safety Equipment & more. - Moglix.com',
     cashOnDelivery: 5,
     neftRtgs: 6,
     savedCard: 7,

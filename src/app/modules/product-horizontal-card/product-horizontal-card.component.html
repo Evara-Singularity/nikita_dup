@@ -59,6 +59,11 @@
             </div>
         </div>
     </div>
+        <!-- <product-variant-select-listing-page 
+        [product]="product" 
+        (selectedVariant$)="changeVariant($event)"
+        (continueToCart$)="variantAddToCart($event)"
+        [productGroupData]="this.productGroupData" ></product-variant-select-listing-page> -->
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>

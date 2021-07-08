@@ -77,8 +77,6 @@ export class CategoryV1Component {
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
 
-            console.log(result);
-
             this.API_RESPONSE = result;
 
             this._title.setTitle((this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com");

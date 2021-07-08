@@ -22,6 +22,7 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   @Input() buyNow: boolean = false;
   @Output() selectedVariant$ = new EventEmitter<{ msn: string, buyNow: boolean }>();
   @Output() continueToCart$ = new EventEmitter<{ product: AddToCartProductSchema, buyNow: boolean }>();
+  @Output() hide$ = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -36,6 +37,10 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
 
   continueToCart() {
     this.continueToCart$.emit({ product: this.productGroupData, buyNow: this.buyNow })
+  }
+
+  hide() {
+    this.hide$.emit(true);
   }
 
 }

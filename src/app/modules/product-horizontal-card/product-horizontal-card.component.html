@@ -38,8 +38,7 @@
                         <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
                     </div>
                     <div class="out-of-stock-text">
-                        <span *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">Currently unavailable</span>
-                        <span *ngIf="isOutOfStockByQuantity && isOutOfStockByPrice">Available on Request</span>
+                        <span>Available on Request</span>
                     </div>
                     <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span>{{ product.priceWithoutTax | currency:'INR' }}</span>

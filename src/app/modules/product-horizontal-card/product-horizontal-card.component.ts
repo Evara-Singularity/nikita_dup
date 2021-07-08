@@ -6,6 +6,7 @@ import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { environment } from 'environments/environment';
@@ -49,6 +50,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _cfr: ComponentFactoryResolver,
     private _injector: Injector,
     private modalService: ModalService,
+    private _localAuthService: LocalAuthService,
   ) {
 
   }
@@ -138,17 +140,25 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   openRfqForm() {
-    const productMsnId = this.product['moglixPartNumber'];
-    this.getProductGroupDetails(productMsnId).pipe(
-      map(productRawData => {
-        return this.getRFQProduct(productRawData['productBO'])
+    const user = this._localAuthService.getUserSession();
+    const isUserLogin = user && user.authenticated && ((user.authenticated as boolean) == true) ? true : false;
+    console.log('isUserLogin ==>', isUserLogin);
+    if (isUserLogin) {
+      const productMsnId = this.product['moglixPartNumber'];
+      this.getProductGroupDetails(productMsnId).pipe(
+        map(productRawData => {
+          return this.getRFQProduct(productRawData['productBO'])
+        })
+      ).subscribe(productDetails => {
+        // console.log('openRfqForm productDetails', productDetails);
+        this.intiateRFQQuote(productDetails).then(res => {
+          this._loader.setLoaderState(false);
+        });
       })
-    ).subscribe(productDetails => {
-      // console.log('openRfqForm productDetails', productDetails);
-      this.intiateRFQQuote(productDetails).then(res => {
-        this._loader.setLoaderState(false);
-      });
-    })
+    } else {
+      this._router.navigate(['/login'])
+    }
+
   }
 
 
@@ -179,6 +189,10 @@ export class ProductHorizontalCardComponent implements OnInit {
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantAddToCart(data);
+        this.variantPopupInstance = null;
+        this.variantPopupInstanceRef.detach();
+      });
+      (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });

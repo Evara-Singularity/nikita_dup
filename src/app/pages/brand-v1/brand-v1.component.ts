@@ -88,7 +88,7 @@ export class BrandV1Component {
             this.setAdobeTrackingData();
 
             // Set Amp tags
-            this.setAmpTag(this._activatedRoute.snapshot.params['category'] ? 'brand-category' : 'brand');
+            // this.setAmpTag(this._activatedRoute.snapshot.params['category'] ? 'brand-category' : 'brand');
 
         });
     }
@@ -384,15 +384,15 @@ export class BrandV1Component {
         }
     }
 
-    setAmpTag(page) {
-        if (this._commonService.isServer && this._commonService.selectedFilterData.page == 1) {
-            const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
-            const ampLink = this._renderer2.createElement('link');
-            ampLink.rel = 'amphtml';
-            ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
-            this._renderer2.appendChild(this._document.head, ampLink);
-        }
-    }
+    // setAmpTag(page) {
+    //     if (this._commonService.isServer && this._commonService.selectedFilterData.page == 1) {
+    //         const currentRoute = (this._router.url.split("?")[0].split("#")[0] as string).toLowerCase();
+    //         const ampLink = this._renderer2.createElement('link');
+    //         ampLink.rel = 'amphtml';
+    //         ampLink.href = CONSTANTS.PROD + ((page == "brand") ? '/ampb' : '/ampcb') + currentRoute;
+    //         this._renderer2.appendChild(this._document.head, ampLink);
+    //     }
+    // }
 
     setAdobeTrackingData(){
         if (this._commonService.isBrowser) {

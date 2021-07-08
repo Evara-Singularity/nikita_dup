@@ -7,6 +7,7 @@ import { HomeRoutingModule } from './home.routing';
 import { SiemaCarouselModule } from '@modules/siemaCarousel/siemaCarousel.module';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { HomefooterAccordianModule } from '@app/components/homefooter-accordian/homefooter-accordian.component';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { HomefooterAccordianModule } from '@app/components/homefooter-accordian/
         LazyLoadImageModule,
         TrendingCategoriesModule,
         KpToggleDirectiveModule,
+        AppPromoModule,
         HomefooterAccordianModule
     ],
     declarations: [

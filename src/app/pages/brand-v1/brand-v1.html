@@ -26,6 +26,15 @@
     [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>
 
+<div class="popularCategories" *ngIf="popularLinks.length > 0">
+    <div class="innerPopularSection">
+        <h4 class="heading-3">Popular Categories</h4>
+        <a *ngFor="let category of popularLinks;last as isLast" href="{{this.API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+    </div>
+</div>
+
+<brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>
+
 <!-- Breadcrump of brand page -->
 <ul class="bread-head no-margin mar-b-15"  [ngClass]="{'notFoundEl': !(API_RESPONSE['brand'][0]['active']) }">
     <li [routerLink]="['/']" class="f-size-12">Home</li>
@@ -39,12 +48,3 @@
             {{API_RESPONSE['brand'][1]?.categoryName}}</a>
     </li>
 </ul>
-
-<div class="popularCategories" *ngIf="popularLinks.length > 0">
-    <div class="innerPopularSection">
-        <h4 class="heading-3">Popular Categories</h4>
-        <a *ngFor="let category of popularLinks;last as isLast" href="{{this.API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
-    </div>
-</div>
-
-<brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>

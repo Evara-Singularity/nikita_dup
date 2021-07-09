@@ -26,7 +26,7 @@
     [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>
 
-<div class="popularCategories" *ngIf="popularLinks.length > 0">
+<div class="popularCategories" *ngIf="popularLinks?.length > 0">
     <div class="innerPopularSection">
         <h4 class="heading-3">Popular Categories</h4>
         <a *ngFor="let category of popularLinks;last as isLast" href="{{this.API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>

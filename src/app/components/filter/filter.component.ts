@@ -21,21 +21,21 @@ export class FilterComponent implements OnInit {
     }
 
     ngOnInit(){
-        this.initializeSelectedFilterData();
+        // this.initializeSelectedFilterData();
     }
 
     /**
      * This funcition is used to initalize the selected filters data i.e stored in selectedFilterData
      */
-    initializeSelectedFilterData = (flag?: boolean) => {
-        if (!flag) {
-            if (this._activatedRoute.snapshot.fragment) {
-                this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment);
-            } else {
-                this._commonService.selectedFilterData.filter = {};
-            }
-        }
-    }
+    // initializeSelectedFilterData = (flag?: boolean) => {
+    //     if (!flag) {
+    //         if (this._activatedRoute.snapshot.fragment) {
+    //             this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment);
+    //         } else {
+    //             this._commonService.selectedFilterData.filter = {};
+    //         }
+    //     }
+    // }
 
 
     /**

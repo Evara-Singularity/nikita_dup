@@ -40,7 +40,7 @@
         <div class="left list-name">
             {{ headerName }}
         </div>
-        <div class="right" *ngIf="productsListingData.totalCount">
+        <div class="right" *ngIf="productsListingData?.totalCount">
             Showing {{ (productsListingData.totalCount < 20) ? productsListingData.totalCount : '20' }} out of {{productsListingData.totalCount}} products
         </div>
     </ng-container>

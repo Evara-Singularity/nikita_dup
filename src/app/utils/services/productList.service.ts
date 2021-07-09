@@ -26,14 +26,7 @@ export class ProductListService {
           listingHeading: heading
       };
 
-      for (let filter in this._commonService.selectedFilterData.filter) {
-        const data = rawSearchData.buckets.find(f => f.name === filter);
-        let fil = [];
-        if (data) {
-          fil = (data.terms.filter(f => f.selected)).map(f=> f.term);
-        }
-        this._commonService.selectedFilterData.filter[filter] = JSON.parse(JSON.stringify(fil));
-      }
+      this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment);
   }
 
   initializeSortBy() {

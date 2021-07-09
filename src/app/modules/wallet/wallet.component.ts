@@ -10,6 +10,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
 declare let dataLayer: any;
 
@@ -27,7 +28,7 @@ export class WalletComponent {
     walletData: {};
     walletMapKeys=[];
     walletMap:any;
-    isShowLoader: boolean = false;
+    //isShowLoader: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
 
@@ -38,6 +39,10 @@ export class WalletComponent {
     imagePath = CONSTANTS.CDN_IMAGE_PATH;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
     @Input() successPercentageData: any = null;
+    set isShowLoader(value)
+    {
+        this.loaderService.setLoaderState(value);
+    }
      
     constructor(
         private _localStorageService: LocalStorageService,
@@ -48,6 +53,7 @@ export class WalletComponent {
         private _cartService: CartService,
         private _walletService: WalletService,
         private _objectToArray: ObjectToArray,
+        private loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);

@@ -43,6 +43,8 @@
                                 [displayKey]="'name'"
                                 [valueKey]="'code'"
                                 [headerLabel]="'Select Bank'"
+                                [compare]="selectedBankCode"
+                                [type] = "'NETBANKING'"
                                 [isVisible]="bankSelectPopupStatus" (selectedValue$)="selectBank($event)" ></select-popup>
                     
                     <div style="margin: 8px;" *ngIf="commonFailureMsg"  >

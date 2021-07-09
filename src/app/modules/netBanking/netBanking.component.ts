@@ -307,6 +307,7 @@ export class NetBankingComponent {
                 this.commonFailureMsg = false;
                 this.commonFailureMsg = (data.up_status === 0) ? true : false;
             } else {
+                this.commonFailureMsg = false;
                 this.selectedBankName = null;
             }
             this.netBankingForm.get('requestParams').get("bankname").setValue(data.code);

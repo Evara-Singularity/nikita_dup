@@ -1,3 +1,4 @@
+import { LowSuccessMessagePipeModule } from './../../utils/pipes/low-success-rate.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {NgModule} from '@angular/core';
@@ -17,7 +18,8 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         TezUpiFormModule,
         MathCeilPipeModule,
         RazorPayFormModule,
-        ObjectToArrayPipeModule
+        ObjectToArrayPipeModule,
+        LowSuccessMessagePipeModule
     ],
     declarations: [
         UpiComponent

@@ -9,6 +9,7 @@ import {PayuWalletFormModule} from "../payuWalletForm/payuWalletForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
+import { LowSuccessMessagePipeModule } from '@app/utils/pipes/low-success-rate.pipe';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         RazorPayFormModule,
         MathCeilPipeModule,
         MobikwikWalletFormModule,
-        ObjectToArrayPipeModule
+        ObjectToArrayPipeModule,
+        LowSuccessMessagePipeModule
     ],
     declarations: [
         WalletComponent

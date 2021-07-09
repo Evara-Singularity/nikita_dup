@@ -10,6 +10,7 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
+import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
 
 declare var dataLayer;
 
@@ -37,8 +38,10 @@ export class UpiComponent {
         this.loaderService.setLoaderState(value);
     }
     @Input() successPercentageData: any = null;
+    lsrMessage = null;
     
-    constructor(private _localStorageService: LocalStorageService,private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: UpiService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray) {
+    constructor(private _localStorageService: LocalStorageService,private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: UpiService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray,
+        private lsr: LowSuccessMessagePipe) {
         this.upiData = {};
         this.isValid = false;
         this.uType = CONSTANTS.GLOBAL.upiTez;
@@ -55,7 +58,7 @@ export class UpiComponent {
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
         })
-        this.lowSuccessBanks;
+        this.lowSuccessBanks();
         // console.log(this.type , 'testing')
     }
 
@@ -215,10 +218,19 @@ export class UpiComponent {
         });
     }
 
-    get lowSuccessBanks(){
-        const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
-        const lowSuccessBanks =  banksArr.filter(item => item['up_status'] == 0);
-        return lowSuccessBanks;
+    
+    lowSuccessBanks(){
+        this.lsrMessage = null;
+        if (this.type == 'retail'){
+            const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
+            const TOP = banksArr.filter(item => item['is_top'] == 1);
+            const OTHERS = banksArr.filter(item => item['is_top'] == 0);
+            const LSRTOP = TOP.filter(item => item['up_status'] == 0);
+            const LSROTHERS = OTHERS.filter(item => item['up_status'] == 0);
+            if (LSRTOP.length || LSROTHERS.length) {
+                this.lsrMessage = this.lsr.transform(LSRTOP, LSROTHERS, "upis.");
+            }
+        }
     }
 
     ngOnDestroy() {

@@ -59,7 +59,7 @@ export class PagesComponent implements OnInit {
     
     this.setUserSession();
     if(this.isBrowser){
-      // this.dataService.startHistory();
+      this.dataService.startHistory();
       this.setEnvIdentiferCookie()
     }
   }

@@ -1,15 +1,8 @@
 <section class="bank-container netBankingInner">
     <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==1">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}. If possible, use an alternate payment mode
+        Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.
     </div>
-    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==2">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}} and {{lowSuccessBanks[1]['name']}}. If
-        possible, use an alternate payment mode
-    </div>
-    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==3">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}, {{lowSuccessBanks[1]['name']}} and {{
-        (+lowSuccessBanks.length - 1 )}} banks. If possible, use an alternate payment mode
-    </div>
+    
     <div id="net_block">
         <ul class="bank-list">
             <li class="bank-list-item" (click)="selectBank(banks, true)" *ngFor="let banks of topBanks">

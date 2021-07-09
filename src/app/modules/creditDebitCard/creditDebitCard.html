@@ -28,7 +28,8 @@
                                 <span>{{selectedMonth || 'MM'}}</span>
                             </div>
                         </div>
-                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)"></select-popup>
+                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)"
+                        [type]="'MONTH'" [compare]="selectedMonth"></select-popup>
                         <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
                             <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
                         </select> -->
@@ -40,7 +41,8 @@
                                 <span>{{selectedYear || 'YYYY'}}</span>
                             </div>
                         </div>
-                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)"></select-popup>
+                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)"
+                        [type]="'YEAR'" [compare]="selectedYear"></select-popup>
                         <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
                             <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
                         </select> -->

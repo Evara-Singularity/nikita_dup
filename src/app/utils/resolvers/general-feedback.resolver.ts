@@ -22,8 +22,7 @@ export class GeneralFeedbackResolver implements Resolve<any> {
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
-        console.log(_activatedRouteSnapshot.params['itemid'])
-        const ORDER_ID = _activatedRouteSnapshot.params['itemid'];
+        const ITEM_ID = _activatedRouteSnapshot.params['itemid'];
         const GENERAL_FEEDBACK_KEY = makeStateKey<any>('GFDST');
         if (this.transferState.hasKey(GENERAL_FEEDBACK_KEY)) {
             const response = this.transferState.get<any>(GENERAL_FEEDBACK_KEY, null);
@@ -31,18 +30,17 @@ export class GeneralFeedbackResolver implements Resolve<any> {
             return of(response);
         }
         else {
-            return of([]);
-            // const url = CONSTANTS.NEW_MOGLIX_API + '/cmsApi/getPopularSearchTerms?categories=all';
-            // return this.http.get(url)
-            //     .pipe(
-            //         catchError((err) => { return of(err); }),
-            //         tap(response =>
-            //         {
-            //             if (isPlatformServer(this.platformId)) {
-            //                 this.transferState.set(GENERAL_FEEDBACK_KEY, response);
-            //             }
-            //         })
-            //     );
+            const url = CONSTANTS.NEW_MOGLIX_API + '/quest/getRtoDetailsByItemId?itemId=' + ITEM_ID;
+            return this.http.get(url)
+                .pipe(
+                    catchError((err) => { return of(err); }),
+                    tap(response =>
+                    {
+                        if (isPlatformServer(this.platformId)) {
+                            this.transferState.set(GENERAL_FEEDBACK_KEY, response);
+                        }
+                    })
+                );
         }
     }
 }

@@ -1,13 +1,11 @@
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeneralFeedbackRoutingModule } from './general-feedback-routing.module';
-import { GeneralFeedbackComponent } from './general-feedback.component';
-
-
+import { SuccessComponent } from './success/success.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 @NgModule({
-  declarations: [GeneralFeedbackComponent],
+  declarations: [SuccessComponent, FeedbackComponent],
   imports: [
     CommonModule,
     GeneralFeedbackRoutingModule,

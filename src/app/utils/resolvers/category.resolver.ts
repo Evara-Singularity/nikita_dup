@@ -96,7 +96,6 @@ export class CategoryResolver implements Resolve<object> {
         const FAQ_KEY: any = makeStateKey<{}>('faq-' + categoryId);
         const BREADCRUMP_KEY: any = makeStateKey<{}>('breadcrump-' + categoryId);
         const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
-        //first page or page=1 related data
         const RELATED_ARTICLES_KEY = makeStateKey<{}>('related_articles-' + categoryId);
         
         if (this.transferState.hasKey(GET_RELATED_CATEGORY_KEY) && this.transferState.hasKey(REFRESH_KEY) && this.transferState.hasKey(FAQ_KEY) && this.transferState.hasKey(BREADCRUMP_KEY) && this.transferState.hasKey(CMS_KEY)
@@ -114,7 +113,6 @@ export class CategoryResolver implements Resolve<object> {
             this.transferState.remove(FAQ_KEY);
             this.transferState.remove(BREADCRUMP_KEY);
             this.transferState.remove(CMS_KEY);
-            //first page or page=1 related data
             this.transferState.remove(RELATED_ARTICLES_KEY);
             
             this.loaderService.setLoaderState(false);

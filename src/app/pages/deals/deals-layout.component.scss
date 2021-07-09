@@ -170,7 +170,7 @@ ul.emailer-tab {
     display: inline;
   }
   .deals {
-    background: url(#{$cdn_url}web/dist/assets/img/icon_deal.svg);
+    background: url("#{$cdn_url}/assets/img/icon_deal.svg");
     display: inline-block;
     min-width: 30px;
     height: 20px;
@@ -248,7 +248,7 @@ ul.emailer-tab {
   }
 
   .box2_black {
-    background: url("#{$cdn_url}img/others/corporate/content-bg.jpg");
+    background: url("#{$cdn_url}/assets/img/others/corporate/content-bg.jpg");
     background-repeat: no-repeat;
     margin: 0px;
     padding: 0px;

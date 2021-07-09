@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class FullImageComponent implements OnInit {
     @Input('listOfImgs') listOfImgs = null;
     @Input('imagePath') imagePath = null;
+    @Input('customStyle') customStyle;
     constructor(private router: Router) { }
     ngOnInit() { }
     navigateTo(link)

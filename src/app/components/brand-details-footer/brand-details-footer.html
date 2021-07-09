@@ -1,6 +1,5 @@
 <div class="body-bg pt-1" *ngIf="brandDetailsFooterData?.firstPageContent">
-    <div *ngIf="brandDetailsFooterData?.brandCatDesc || brandDetailsFooterData?.brandShortDesc || brandDetailsFooterData?.brandContent"
-        class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
+    <div class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
         <div id="openCat3" class="category_data" style="display: block;">
             <div class="container cms-content">
                 <div [innerHTML]="((brandDetailsFooterData?.brandCatDesc !== null && brandDetailsFooterData?.brandCatDesc !== '') ? brandDetailsFooterData?.brandCatDesc : (brandDetailsFooterData?.showDesc == true ? brandDetailsFooterData?.brandShortDesc : '<h2> Genuine Products from '+ brandDetailsFooterData?.brand + ' at the Best Prices Online at Moglix </h2>

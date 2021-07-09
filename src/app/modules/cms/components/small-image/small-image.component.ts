@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./small-image.component.scss']
 })
 export class SmallImageComponent implements OnInit {
-
+    @Input('customStyle') customStyle;
     @Input('listOfImgs') listOfImgs = null;
     @Input('imagePath') imagePath = null;
 

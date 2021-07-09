@@ -196,5 +196,8 @@
         height: 50px;
         left: 0;
         right: 0;
+        &.bg-red {
+            background: $logo-color;
+        }
     }
 }

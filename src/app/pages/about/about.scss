@@ -149,7 +149,7 @@ img {
 }
 
 .about-wall {
-    background:url("#{$cdn_url}img/others/2018/May/about-page/wall-bg.jpg") repeat top left;
+    background:url("#{$cdn_url}/assets/img/others/wall-bg.jpg") repeat top left;
     padding: 30px 20px 10px 20px;
     h1 {
         font-size: 18px;
@@ -163,7 +163,7 @@ img {
 }
 
 .about-pointer {
-    background:url("#{$cdn_url}img/others/about/pointer_background.jpg");
+    background:url("#{$cdn_url}/assets/img/others/pointer_background.jpeg");
     position: relative;
     padding: 30px 20px;
     text-align: center;

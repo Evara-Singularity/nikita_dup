@@ -23,8 +23,8 @@ export class CatStaticComponent {
       ClientUtility.scrollToTop(1000,footerOffset - 50);
     }
   }
-
 }
+
 @NgModule({
   declarations: [
     CatStaticComponent

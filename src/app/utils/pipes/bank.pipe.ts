@@ -3,7 +3,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
     name: 'bankpipe'
 })
-
 export class BankNamePipe implements PipeTransform {
     transform(value: any, ...args: any[]): any {
         if (value == "SCB") {
@@ -32,6 +31,9 @@ export class BankNamePipe implements PipeTransform {
         } 
         else if (value == "HDFC") {
             return "HDFC Bank";
+        }
+        else if (value == "BOBD") {
+            return "BOBD Bank";
         }
         else if (value == "AMEX") {
             return "American Express Bank";
@@ -78,7 +80,7 @@ import { NgModule } from '@angular/core';
     imports: [],
     exports: [BankNamePipe],
     declarations: [BankNamePipe],
-    providers: [],
+    providers: [BankNamePipe],
 })
 export class BankNamePipeModule { }
 

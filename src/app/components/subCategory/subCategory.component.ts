@@ -1,18 +1,16 @@
 import {
-    Component, ViewEncapsulation, Input, EventEmitter, Output,
-    ChangeDetectorRef, ChangeDetectionStrategy, PLATFORM_ID, Inject, NgModule
+    Component, ViewEncapsulation, Input, EventEmitter, Output, 
+    ChangeDetectorRef, PLATFORM_ID, Inject, NgModule
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CategoryService } from '@utils/services/category.service';
 import { SubCategoryService } from "@utils/services/subCategory.service";
-import { CONSTANTS } from "@config/constants";
-import {Subject} from "rxjs";
 import { fade } from '@utils/animations/animation'
-import { TransferState, makeStateKey } from '@angular/platform-browser';
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { ClientUtility } from '@app/utils/client.utility';
+import { environment } from 'environments/environment';
+
 @Component({
     selector: 'sub-category',
     templateUrl: 'subCategory.html',
@@ -20,7 +18,6 @@ import { ClientUtility } from '@app/utils/client.utility';
         './subCategory.scss'
     ],
     providers:[],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     animations: [
         fade
@@ -28,38 +25,21 @@ import { ClientUtility } from '@app/utils/client.utility';
 })
 
 export class SubCategoryComponent {
-    relatedCatgoryList: Array<any> = [];
+    @Input() relatedCatgoryList: Array<any> = [];
     @Output() getCategoryById:EventEmitter<any>=new EventEmitter<any>();
     @Output() updateSubCategoryCount$: EventEmitter<any> = new EventEmitter<any>();
     catdata;
-    imageBasePath: string;
+    imageBasePath: string = environment.IMAGE_BASE_URL;
     public isAllListShow:boolean;
     moreLessCategoryText:string="SHOW MORE";
-    @Input() relatedCatgoryListUpdated: Subject<any>;
-    defaultImage;
+    defaultImage = environment.IMAGE_BASE_URL+'assets/img/home_card.webp';
 
-    constructor(private _tState: TransferState, @Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public categoryService: CategoryService, private _subCategoryService: SubCategoryService, public router: Router, public commonService: CommonService) {
+    constructor(@Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public categoryService: CategoryService, private _subCategoryService: SubCategoryService, public router: Router, public commonService: CommonService) {
     };
 
-    ngOnInit() {
-        this.imageBasePath = CONSTANTS.IMAGE_BASE_URL;
-
-        this.relatedCatgoryListUpdated.subscribe((relatedCatgoryList)=>{
-            this.showList(false);
-            this.relatedCatgoryList = relatedCatgoryList["children"];
-            this.cd.markForCheck(); // marks path
-        })
+    initializeSubcategoryData(data) {
+        this.relatedCatgoryList = data;
     }
-
-    // navigateTo(url) {
-    //     this.commonService.updateSortBy.next('popularity');
-    //     const sortByFilter = document.querySelector('sort-by');
-
-    //     if (sortByFilter) {
-    //         sortByFilter.classList.remove('open');
-    //     }
-    //     this.router.navigateByUrl(url);
-    // }
 
     goToAnother(id,categoryLink) {
         let obj = { "id": id };
@@ -94,3 +74,8 @@ export class SubCategoryComponent {
 })
 export class SubCategoryModule {}
 export class CategoryModule extends SubCategoryModule {}
+export class CategoryV1Module extends SubCategoryModule {}
+export class BrandModule extends SubCategoryModule {}
+export class BrandV1Module extends SubCategoryModule {}
+export class SearchModule extends SubCategoryModule {}
+export class SearchV1Module extends SubCategoryModule {}

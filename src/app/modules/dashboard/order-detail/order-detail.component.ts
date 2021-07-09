@@ -609,7 +609,9 @@ export class OrderDetailComponent implements OnInit {
     digitalData["custData"] = custData;
     digitalData["order"] = order;
     console.log(digitalData);
-    _satellite.track("genericClick");
+    if(_satellite){
+      _satellite.track("genericClick");
+    }
 
     e.stopPropagation();
     e.preventDefault();

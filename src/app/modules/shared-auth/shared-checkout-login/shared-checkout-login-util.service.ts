@@ -20,7 +20,9 @@ export class SharedCheckoutLoginUtilService
             'subSection': "moglix:order checkout:login/signup page",
         }
         digitalData["page"] = page;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+            _satellite.track("genericPageLoad");
+        }
     }
 
     sendUserExistsAdobeAnalysis()
@@ -31,7 +33,9 @@ export class SharedCheckoutLoginUtilService
             'subSection': "moglix:order checkout:login page",
         }
         digitalData["page"] = page;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+            _satellite.track("genericPageLoad");
+        }
     }
 
     sendCriteoLayerTags(data)

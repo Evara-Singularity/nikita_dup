@@ -26,13 +26,17 @@ export class GlobalAnalyticsService {
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
-      console.log(environment["ISCHROME"]);
-    digitalData = Object.assign({}, data);
-    _satellite.track(trackingname);
+    // console.log(environment["ISCHROME"]);
+    if(_satellite){
+      digitalData = Object.assign({}, data);
+      _satellite.track(trackingname);
+    }
   }
 
   sendGTMCall(data: any) {
-    dataLayer.push(data);
+    if(dataLayer){
+      dataLayer.push(data);
+    }
   }
 
   sendToClicstreamViaSocket(data) {

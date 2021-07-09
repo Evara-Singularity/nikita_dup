@@ -116,13 +116,13 @@ app-search-bar {
             border-radius: 7px;
             border: none;
             box-shadow: none;
-            top: 10px;
+            top: 5px;
             width: 40px;
             height: 40px;
             i {
                 right: 10px;
                 top: 10px;
-                color: #d9232d;
+                color: #3C3C3C;
             }
         }
         .icon-del {
@@ -148,7 +148,7 @@ app-search-bar {
     i {
         position: absolute;
         left: 10px;
-        top: 20px;
+        top: 15px;
         font-size: 18px;
         color: #303030;
         z-index: 1;
@@ -164,7 +164,7 @@ app-search-bar {
     }
     input {
         border-radius: 3px;
-        margin: 10px 0;
+        margin: 5px 0;
         height: 40px;
         // line-height: 40px;
         width: 100%;

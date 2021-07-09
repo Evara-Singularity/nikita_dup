@@ -76,20 +76,26 @@ export class CategoryV1Component {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-
+            
+            // set API result data
             this.API_RESPONSE = result;
 
+            // set title bar
             this._title.setTitle((this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com");
 
+            // static components updates
             this.updateComponentsBasedOnrouteChange();
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList);
 
+            // Update total product account
             this._commonService.selectedFilterData.totalCount = result['category'][1].productSearchResult.totalCount;
 
+            // shared product listing data update
             this._productListService.createAndProvideDataToSharedListingComponent(result['category'][1], 'Category Results');
 
+            // update footer data
             this.genrateAndUpdateCategoryFooterData();
         });
     }

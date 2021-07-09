@@ -3,6 +3,7 @@ import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shared-product-listing',
@@ -28,7 +29,7 @@ export class SharedProductListingComponent {
 
   public appliedFilterCount: number = 0;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, public _commonService: CommonService) { }
+  constructor(private _router: Router, private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, public _commonService: CommonService) { }
 
   ngOnInit() {
     this.updateFilterCountAndSort();

@@ -4,8 +4,6 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@services/common.service';
 import { DataService } from '@services/data.service';
 import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
-import { environment } from 'environments/environment';
-import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -17,17 +15,25 @@ export class ProductListService {
   constructor(
       private _activatedRoute: ActivatedRoute,
       private _commonService: CommonService,
-      private _router: Router,
-      private _dataService: DataService
   ){}
 
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
+    
       this.productListingData = {
           totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
           products: rawSearchData.productSearchResult.products,
-          filterData: rawSearchData.buckets,
+          filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
           listingHeading: heading
-        };
+      };
+
+      for (let filter in this._commonService.selectedFilterData.filter) {
+        const data = rawSearchData.buckets.find(f => f.name === filter);
+        let fil = [];
+        if (data) {
+          fil = (data.terms.filter(f => f.selected)).map(f=> f.term);
+        }
+        this._commonService.selectedFilterData.filter[filter] = JSON.parse(JSON.stringify(fil));
+      }
   }
 
   initializeSortBy() {
@@ -45,7 +51,6 @@ export class ProductListService {
   }
 
   calculateFilterCount(data){
-    console.log(data);
     let count = 0;
     data.forEach((el) => {
         for (let i = 0; i < el.terms.length; i++) {

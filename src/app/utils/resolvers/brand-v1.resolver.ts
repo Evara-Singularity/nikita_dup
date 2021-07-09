@@ -64,11 +64,12 @@ export class BrandV1Resolver implements Resolve<any> {
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
 
       const params = {
-        filter: this._commonService.selectedFilterData.filter,
+        filter:  this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
         queryParams: _activatedRouteSnapshot.queryParams,
         pageName: "BRAND"
       };
       
+      this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       const actualParams = this._commonService.formatParams(params);
 
       if (_activatedRouteSnapshot.params.hasOwnProperty('category')) {

@@ -49,10 +49,12 @@ export class SearchV1Resolver implements Resolve<any> {
       }
 
       const params = {
-        filter: this._commonService.selectedFilterData.filter,
+        filter:  this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
         queryParams: _activatedRouteSnapshot.queryParams,
         pageName: "SEARCH"
       };
+
+      this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       const actualParams = this._commonService.formatParams(params);
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 

@@ -81,7 +81,7 @@ export class CategoryV1Resolver implements Resolve<any> {
         }
         
         const params = {
-          filter: this._commonService.selectedFilterData.filter,
+          filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
           queryParams: _activatedRouteSnapshot.queryParams,
           pageName: "CATEGORY"
         };

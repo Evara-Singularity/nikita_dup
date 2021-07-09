@@ -55,10 +55,6 @@ export class BrandV1Resolver implements Resolve<any> {
       return of([brandCategory_data, brandList_data, cms_data]);
     } else {
 
-      if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
-        this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
-      }
-
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;

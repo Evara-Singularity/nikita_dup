@@ -95,7 +95,6 @@ export class SharedProductListingComponent {
         mob_filter.classList.toggle('upTrans');
       }
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
-      this.filterInstance.instance.initializeSelectedFilterData(true);
     }
   }
 

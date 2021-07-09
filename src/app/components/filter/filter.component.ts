@@ -8,6 +8,7 @@ import { CommonService } from '@app/utils/services/common.service';
     styleUrls: ['./filter.scss'],    
 })
 
+
 export class FilterComponent {
     // input variable to get filter data from parent component
     @Input() filterData: Array<any>;

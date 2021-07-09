@@ -130,7 +130,9 @@ export class BussinessOrderComponent {
     digitalData["page"] = pageData;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    _satellite.track("genericPageLoad");
+    if(_satellite){
+      _satellite.track("genericPageLoad");
+    }
   }
 
   initializePageParams(page) {
@@ -346,7 +348,9 @@ export class BussinessOrderComponent {
     digitalData["custData"] = custData;
     digitalData["order"] = order;
     console.log(digitalData);
-    _satellite.track("genericClick");
+    if(_satellite){
+      _satellite.track("genericClick");
+    }
     e.stopPropagation();
     e.preventDefault();
 

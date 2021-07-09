@@ -284,6 +284,9 @@ export class CreditDebitCardComponent {
                 this.isShowLoader = false;
             }
         });
+        (this.creditDebitCardForm.get('requestParams') as FormControl).reset();
+        this.selectedMonth = null;
+        this.selectedYear = null;
     }
 
 
@@ -343,5 +346,6 @@ export class CreditDebitCardComponent {
         this._cartService.setCartSession(this.cartSession);
         this._cartService.orderSummary.next(this.cartSession);
     }
+    
     
 }

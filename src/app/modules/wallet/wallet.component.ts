@@ -10,6 +10,8 @@ import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
 
 declare let dataLayer: any;
 
@@ -27,7 +29,7 @@ export class WalletComponent {
     walletData: {};
     walletMapKeys=[];
     walletMap:any;
-    isShowLoader: boolean = false;
+    //isShowLoader: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
 
@@ -38,6 +40,11 @@ export class WalletComponent {
     imagePath = CONSTANTS.CDN_IMAGE_PATH;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
     @Input() successPercentageData: any = null;
+    set isShowLoader(value)
+    {
+        this.loaderService.setLoaderState(value);
+    }
+    lsrMessage = null;
      
     constructor(
         private _localStorageService: LocalStorageService,
@@ -48,7 +55,9 @@ export class WalletComponent {
         private _cartService: CartService,
         private _walletService: WalletService,
         private _objectToArray: ObjectToArray,
-        private _formBuilder: FormBuilder) {
+        private loaderService: GlobalLoaderService,
+        private _formBuilder: FormBuilder,
+        private lsr: LowSuccessMessagePipe) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
         this.walletData = {};
@@ -70,7 +79,7 @@ export class WalletComponent {
             this.getPrePaidDiscount();
         })
 
-        this.lowSuccessBanks;
+        this.lowSuccessBanks();
 
     }
 
@@ -291,10 +300,20 @@ export class WalletComponent {
         return freechargeData;
     }
 
-    get lowSuccessBanks(){
-        const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
-        const lowSuccessBanks =  banksArr.filter(item => item['up_status'] == 0);
-        return lowSuccessBanks;
+    
+    lowSuccessBanks()
+    {
+        this.lsrMessage = null;
+        if (this.type == 'retail') {
+            const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
+            const TOP = banksArr.filter(item => item['is_top'] == 1);
+            const OTHERS = banksArr.filter(item => item['is_top'] == 0);
+            const LSRTOP = TOP.filter(item => item['up_status'] == 0);
+            const LSROTHERS = OTHERS.filter(item => item['up_status'] == 0);
+            if (LSRTOP.length || LSROTHERS.length) {
+                this.lsrMessage = this.lsr.transform(LSRTOP, LSROTHERS, "upis.");
+            }
+        }
     }
 
     ngOnDestroy() {

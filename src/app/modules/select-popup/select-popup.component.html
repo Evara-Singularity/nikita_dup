@@ -9,7 +9,13 @@
             <ul>
                 <li *ngFor="let item of itemArray" class="payment-dropdown-listItem" (click)="onSelect(item)">
                     <span class="radio-box">
-                        <input type="radio" value="{{item[valueKey]}}">
+                        <ng-container [ngSwitch]="type">
+                            <input type="radio" [checked]="item['code'] == compare" *ngSwitchCase="'NETBANKING'">
+                            <input type="radio" [checked]="item['key'] == compare" *ngSwitchCase="'EMI'">
+                            <input type="radio" [checked]="item['value'] == compare" *ngSwitchCase="'MONTH'">
+                            <input type="radio" [checked]="item['value'] == compare" *ngSwitchCase="'YEAR'">
+                            <input type="radio" value="{{item[valueKey]}}" *ngSwitchDefault>
+                        </ng-container>
                         <span class="custom-box"></span>
                     </span>
                     <span class="listItem_txt">{{item[displayKey]}}</span>

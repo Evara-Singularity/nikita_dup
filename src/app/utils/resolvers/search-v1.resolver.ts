@@ -27,7 +27,7 @@ export class SearchV1Resolver implements Resolve<any> {
     private http: HttpClient,
     private _commonService: CommonService,
     private loaderService: GlobalLoaderService
-  ) {}
+  ) { }
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
@@ -43,16 +43,14 @@ export class SearchV1Resolver implements Resolve<any> {
       this.loaderService.setLoaderState(false);
       return of([search_data]);
     } else {
-      
-      if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
-        this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
-      }
 
       const params = {
-        filter: this._commonService.selectedFilterData.filter,
+        filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
         queryParams: _activatedRouteSnapshot.queryParams,
         pageName: "SEARCH"
       };
+
+      this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       const actualParams = this._commonService.formatParams(params);
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 

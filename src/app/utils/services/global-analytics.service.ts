@@ -1,3 +1,4 @@
+import { environment } from 'environments/environment';
 import { Injectable, Injector } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
@@ -25,12 +26,17 @@ export class GlobalAnalyticsService {
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
-    // digitalData = Object.assign({}, data);
-    _satellite.track(trackingname);
+    // console.log(environment["ISCHROME"]);
+    if(_satellite){
+      digitalData = Object.assign({}, data);
+      _satellite.track(trackingname);
+    }
   }
 
   sendGTMCall(data: any) {
-    dataLayer.push(data);
+    if(dataLayer){
+      dataLayer.push(data);
+    }
   }
 
   sendToClicstreamViaSocket(data) {

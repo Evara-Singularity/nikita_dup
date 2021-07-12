@@ -240,10 +240,10 @@ export class CategoryV1Component {
             this.handleZeroProductListOnServer();
         } else if (this.API_RESPONSE.category[0]['categoryDetails']['active']) {
             
-            const canonicalUrl = this.API_RESPONSE.category[0]['categoryDetails']['canonicalURL'];
-            if (this.isUrlEqual(canonicalUrl, this._router.url)) {
-                this._router.navigateByUrl("/" + canonicalUrl);
-            }
+            // const canonicalUrl = this.API_RESPONSE.category[0]['categoryDetails']['canonicalURL'];
+            // if (this.isUrlEqual(canonicalUrl, this._router.url)) {
+            //     this._router.navigateByUrl("/" + canonicalUrl);
+            // }
 
             if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0) {
                 this.fireTags();

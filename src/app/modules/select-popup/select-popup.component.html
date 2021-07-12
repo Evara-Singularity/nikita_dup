@@ -18,7 +18,10 @@
                         </ng-container>
                         <span class="custom-box"></span>
                     </span>
-                    <span class="listItem_txt">{{item[displayKey]}}</span>
+                    <span class="listItem_txt" *ngIf="type == 'MONTH'; else keyNames">{{item['key']}}</span>
+                    <ng-template #keyNames>
+                        <span class="listItem_txt" >{{item[displayKey]}}</span>
+                    </ng-template>
                 </li>
             </ul>
         </div>

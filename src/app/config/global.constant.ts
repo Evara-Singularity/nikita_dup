@@ -137,7 +137,7 @@ export const GLOBAL_CONSTANT = {
     default: {
         pageSize: 20
     },
-    inlineFilter: ['category', 'price', 'discount'],
+    inlineFilter: ['price', 'brand', 'discount'],
     codMin: 300,
     codMax: 25000,
     userType: {

@@ -1,13 +1,16 @@
 <div class="product-card">
     <!-- <pre>{{ product | json }}</pre> -->
-    <!-- <div class="youtubeThumbnail-listing" *ngIf="product['videosInfo'] && product['videosInfo'].length > 0">
-        <div (click)="showYTVideo(product['videosInfo'][0]['link'])" class="thumbnail">
-            <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(product['videosInfo'][0]['link']);" type="image" src="/assets/img/video_icon.svg" border="border of the image" alt="text">
+    <div class="youtubeThumbnail-listing" *ngIf="product['videoInfo'] && product['videoInfo'].length > 0">
+        <div class="thumbnail" [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
+            <input class="youtube_icon"
+                (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();" type="image"
+                src="/assets/img/video_icon.svg" alt="text">
         </div>
-    </div> -->
+    </div>
     <div class="card-container">
         <div class="left" (click)="navigateToPDP()">
-            <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
+            <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125"
+                width="125" />
             <div class="tags">
             </div>
         </div>
@@ -19,14 +22,14 @@
                 </span>
                 <span class="count" *ngIf="product.ratingCount">({{product.ratingCount}})</span>
             </div>
-            <div class="name">
-                <span>{{product.productName}}</span>
+            <div class="name" (click)="navigateToPDP()">
+                <span>{{product.productName | slice:0:70}}<span *ngIf="product.productName.length>70">...</span></span>
             </div>
-            <div class="brand">
+            <div class="brand" (click)="navigateToPDP()">
                 <span>By: {{product.brandName}}</span>
             </div>
             <div class="price-details">
-                <div class="left">
+                <div class="left" (click)="navigateToPDP()">
                     <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
                         <span class="green-label">{{product.discount}}% OFF</span>
@@ -34,9 +37,8 @@
                     <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
                     </div>
-                    <div class="out-of-stock-text">
-                        <span *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">Currently unavailable</span>
-                        <span *ngIf="isOutOfStockByQuantity && isOutOfStockByPrice">Available on Request</span>
+                    <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice" >
+                        <span>Available on Request</span>
                     </div>
                     <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
@@ -56,7 +58,13 @@
             </div>
         </div>
     </div>
-    <!-- <product-variant-select-listing-page 
+
+    <div class="keyfeatures" *ngIf="product['keyFeatures'] && product['keyFeatures'].length > 0">
+        <ul>
+            <li *ngFor="let features of product['keyFeatures'] | slice:0:2 ">{{features}}</li>
+        </ul>
+    </div>
+        <!-- <product-variant-select-listing-page 
         [product]="product" 
         (selectedVariant$)="changeVariant($event)"
         (continueToCart$)="variantAddToCart($event)"

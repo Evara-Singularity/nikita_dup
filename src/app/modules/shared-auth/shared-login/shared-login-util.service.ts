@@ -17,7 +17,9 @@ export class SharedLoginUtilService {
       'subSection': "moglix:login page",
     }
     digitalData["page"] = page;
-    _satellite.track("genericPageLoad");
+    if(_satellite){
+      _satellite.track("genericPageLoad");
+    }
   }
 
     sendSignupAdobeAnalysis()
@@ -28,7 +30,9 @@ export class SharedLoginUtilService {
             'subSection': "moglix:signup form",
         }
         digitalData["page"] = page;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+          _satellite.track("genericPageLoad");
+        }
     }
 
   sendCriteoLayerTags(data) {

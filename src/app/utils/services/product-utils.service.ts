@@ -137,7 +137,9 @@ export class ProductUtilsService{
         digitalData['page'] = page;
         digitalData['custData'] = custData;
         digitalData['order'] = order;
-        _satellite.track('genericClick');
+        if(_satellite){
+            _satellite.track('genericClick');
+        }
     }
 
     sendClickStream(product, cta:string)

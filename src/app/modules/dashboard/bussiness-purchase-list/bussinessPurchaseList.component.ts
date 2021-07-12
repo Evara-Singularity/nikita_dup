@@ -105,7 +105,9 @@ export class BussinessPurchaseListComponent {
     digitalData["page"] = pageData;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    _satellite.track("genericPageLoad");
+    if(_satellite){
+      _satellite.track("genericPageLoad");
+    }
   }
 
   getPurcahseList() {

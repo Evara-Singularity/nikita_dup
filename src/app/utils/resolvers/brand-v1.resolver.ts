@@ -11,7 +11,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, mergeMap, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
 
@@ -42,7 +42,6 @@ export class BrandV1Resolver implements Resolve<any> {
       this.transferState.hasKey(BRAND_LIST_KEY) && 
       this.transferState.hasKey(CMS_DATA_KEY)
     ) {
-      // id transferState data found then simply pass data
       const brandCategory_data = this.transferState.get<object>(BRAND_DESC_KEY, null);
       const brandList_data = this.transferState.get<object>(BRAND_LIST_KEY, null);
       const cms_data = this.transferState.get<object>(BRAND_LIST_KEY, null);
@@ -56,22 +55,18 @@ export class BrandV1Resolver implements Resolve<any> {
       return of([brandCategory_data, brandList_data, cms_data]);
     } else {
 
-      if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
-        this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
-      }
-
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
 
       const params = {
-        filter: this._commonService.selectedFilterData.filter,
+        filter:  this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
         queryParams: _activatedRouteSnapshot.queryParams,
         pageName: "BRAND"
       };
       
+      this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       const actualParams = this._commonService.formatParams(params);
-      actualParams['brand'] = _activatedRouteSnapshot.params.brand.split('-').join(' & ');
 
       if (_activatedRouteSnapshot.params.hasOwnProperty('category')) {
         CMS_DATA_API_URL += '&categoryCode=' + _activatedRouteSnapshot.params.category;
@@ -81,7 +76,15 @@ export class BrandV1Resolver implements Resolve<any> {
 
       const cmsDataObs = this.http.get(CMS_DATA_API_URL);
       const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL);
-      const getBrandListObs = this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams });
+      // const getBrandListObs = this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams });
+
+      const getBrandListObs = this.http.get(GET_BRAND_NAME_API_URL).pipe(share(), mergeMap(data => {
+        actualParams['brand'] = data['brandName'];
+        return forkJoin([
+          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams })
+        ])
+      }
+      ));
 
       const dataList = [isBrandCategoryObs, getBrandListObs, cmsDataObs];
 

@@ -55,25 +55,14 @@
     display: block;
     background-color: #3C3C3C;
     font-size: 14px;
-    .inner-card-list {
-        &:last-child {
-            .inline-filter-card-one,
-            .inline-filter-card-value {
-                margin-right: 0px;
-            }
-        }
-    }
     .inline-filter-card-one {
-        margin-right: 8px;
+        margin-right: 10px;
         display: inline-block;
-        // min-width: 4%;
         vertical-align: top;
     }
     .inline-filter-card-two {
-        // min-width: 4%;
-        margin-right: 8px;
+        margin-right: 10px;
         display: inline-block;
-        margin-top: -20px;
         vertical-align: bottom;
     }
     .inline-filter-card-value {
@@ -83,12 +72,12 @@
         width: 100%;
         border-radius: 4px;
         background-color: #fff;
-        margin-top: 16px;
-        margin-bottom: 16px;
+        margin-top: 5px;
+        margin-bottom: 5px;
         font-weight: bold;
         font-size: 12px;
         &.card-value-2 {
-            margin-bottom: 16px;
+            margin-bottom: 5px;
         }
     }
 }

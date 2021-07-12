@@ -9,10 +9,10 @@
     <div class="sub-cate-container">
         <div class="container pt-10">
             <p class="desc-brand"> Moglix offers superior quality and genuine
-                <a class="text-blue" [routerLink]="['/brands/' + _activatedRoute.snapshot.params.brand]" style="text-transform: capitalize">
+                <a class="text-blue" [routerLink]="['/brands/' + API_RESPONSE['brand'][0].brandName]" style="text-transform: capitalize">
                     {{API_RESPONSE['brand'][1].categoryName}}
                 </a> from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands/' + _activatedRoute.snapshot.params.brand]">{{_activatedRoute.snapshot.params.brand}}</a>. 
+                <a class="text-blue" [routerLink]="['/brands/' + API_RESPONSE['brand'][0].brandName]">{{API_RESPONSE['brand'][0].brandName}}</a>. 
                 Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(API_RESPONSE['brand'][1]?.heading | removeHTML)}}. Buy these products
                 at best prices and get them delivered at your doorstep across India.
             </p>
@@ -22,29 +22,29 @@
 </div>
 
 <shared-product-listing [pageName]="'BRAND'"
-    [headerName]="(API_RESPONSE['brand'][1]?.heading ? (API_RESPONSE['brand'][1]?.heading | removeHTML) : _activatedRoute.snapshot.params.brand) + (API_RESPONSE['brand'][1].categoryName ? ' Online' : ' Products')"
+    [headerName]="(API_RESPONSE['brand'][1]?.heading ? (API_RESPONSE['brand'][1]?.heading | removeHTML) : API_RESPONSE['brand'][0].brandName) + (API_RESPONSE['brand'][1].categoryName ? ' Online' : ' Products')"
     [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>
+
+<div class="popularCategories" *ngIf="popularLinks?.length > 0">
+    <div class="innerPopularSection">
+        <h4 class="heading-3">Popular Categories</h4>
+        <a *ngFor="let category of popularLinks;last as isLast" href="{{this.API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+    </div>
+</div>
+
+<brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>
 
 <!-- Breadcrump of brand page -->
 <ul class="bread-head no-margin mar-b-15"  [ngClass]="{'notFoundEl': !(API_RESPONSE['brand'][0]['active']) }">
     <li [routerLink]="['/']" class="f-size-12">Home</li>
     <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
     <li class="item f-size-12">
-        <a [routerLink]="['/brands/' + _activatedRoute.snapshot.params.brand]" style="text-transform: capitalize">
-            {{_activatedRoute.snapshot.params.brand}}</a>
+        <a [routerLink]="['/brands/' + API_RESPONSE['brand'][0].brandName]" style="text-transform: capitalize">
+            {{API_RESPONSE['brand'][0].brandName}}</a>
     </li>
     <li *ngIf="API_RESPONSE['brand'][1]?.categoryName" class="item f-size-12">
-        <a [routerLink]="['/brands/' + _activatedRoute.snapshot.params.brand]" style="text-transform: capitalize">
+        <a [routerLink]="['/brands/' + API_RESPONSE['brand'][0].brandName]" style="text-transform: capitalize">
             {{API_RESPONSE['brand'][1]?.categoryName}}</a>
     </li>
 </ul>
-
-<div class="popularCategories" *ngIf="popularLinks.length > 0">
-    <div class="innerPopularSection">
-        <h4 class="heading-3">Popular Categories</h4>
-        <a *ngFor="let category of popularLinks;last as isLast" href="{{this.API_RESPONSE.brand[1].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
-    </div>
-</div>
-
-<brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>

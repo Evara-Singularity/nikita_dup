@@ -6,6 +6,7 @@ import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { environment } from 'environments/environment';
@@ -49,25 +50,14 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _cfr: ComponentFactoryResolver,
     private _injector: Injector,
     private modalService: ModalService,
+    private _localAuthService: LocalAuthService,
   ) {
 
-  }
-
-  // todo : to be removed after integration
-  dummyVideoData() {
-    this.product['videosInfo'] = [
-      {
-        "link": "https://www.youtube.com/embed/h9QNUcrjtOs",
-        "title": "Tynor Adjustable R.O.M. Knee Brace for Multiple Orthopedic Problems, Size: Universal",
-        "uploadedBy": null
-      }
-    ]
   }
 
   ngOnInit(): void {
     this.isOutOfStockByQuantity = !this.product.quantityAvailable;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
-    this.dummyVideoData();
   }
 
   buyNow(buyNow = false) {
@@ -75,7 +65,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productMsnId = this.product['moglixPartNumber'];
     this.getProductGroupDetails(productMsnId).pipe(
       map(productRawData => {
-        console.log('data ==> ', productRawData);
+        // console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
           return this.getAddToCartProductRequest(productRawData['productBO'], buyNow);
         } else {
@@ -89,7 +79,7 @@ export class ProductHorizontalCardComponent implements OnInit {
         this.addToCart(productDetails, buyNow)
       }
     }, error => {
-      console.log('buyNow ==>', error);
+      // console.log('buyNow ==>', error);
     }, () => {
       this._loader.setLoaderState(false);
     })
@@ -99,15 +89,19 @@ export class ProductHorizontalCardComponent implements OnInit {
     this.getProductGroupDetails(data.msn).pipe(
       map(productRawData => {
         if (productRawData['productBO']) {
-          return this.getAddToCartProductRequest(productRawData['productBO'], data.buyNow);
+          return productRawData['productBO'];
         } else {
           return Error('Valid token not returned');
         }
       })
-    ).subscribe((productDetails: AddToCartProductSchema) => {
+    ).subscribe((productBO) => {
+      // console.log('productBO ==>', productBO);
       // productDetails will always have variants as it can be called by variant popup only
       if (this.variantPopupInstance) {
-        this.variantPopupInstance.instance['productGroupData'] = productDetails;
+        const productRequest = this.getAddToCartProductRequest(productBO, data.buyNow);
+        const product = this.productEntityFromProductBO(productBO);
+        this.variantPopupInstance.instance['productGroupData'] = productRequest;
+        // this.variantPopupInstance.instance['product'] = product;
       }
     }, error => {
       console.log('changeVariant ==>', error);
@@ -146,22 +140,30 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   openRfqForm() {
-    const productMsnId = this.product['moglixPartNumber'];
-    this.getProductGroupDetails(productMsnId).pipe(
-      map(productRawData => {
-        return this.getRFQProduct(productRawData['productBO'])
+    const user = this._localAuthService.getUserSession();
+    const isUserLogin = user && user.authenticated && ((user.authenticated as boolean) == true) ? true : false;
+    console.log('isUserLogin ==>', isUserLogin);
+    if (isUserLogin) {
+      const productMsnId = this.product['moglixPartNumber'];
+      this.getProductGroupDetails(productMsnId).pipe(
+        map(productRawData => {
+          return this.getRFQProduct(productRawData['productBO'])
+        })
+      ).subscribe(productDetails => {
+        // console.log('openRfqForm productDetails', productDetails);
+        this.intiateRFQQuote(productDetails).then(res => {
+          this._loader.setLoaderState(false);
+        });
       })
-    ).subscribe(productDetails => {
-      console.log('openRfqForm productDetails', productDetails);
-      this.intiateRFQQuote(productDetails).then(res => {
-        this._loader.setLoaderState(false);
-      });
-    })
+    } else {
+      this._router.navigate(['/login'])
+    }
+
   }
 
 
   async showYTVideo(link) {
-    console.log(link);
+    // console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
@@ -187,6 +189,10 @@ export class ProductHorizontalCardComponent implements OnInit {
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantAddToCart(data);
+        this.variantPopupInstance = null;
+        this.variantPopupInstanceRef.detach();
+      });
+      (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });
@@ -308,6 +314,48 @@ export class ProductHorizontalCardComponent implements OnInit {
     return this._http.get(PRODUCT_URL)
   }
 
+  productEntityFromProductBO(productBO) {
+    // console.log('productEntityFromProductBO ==>', productBO);
+    const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
+    const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+    const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+    const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
+    const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
+      (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
+    const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
+    const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
+    const productBrandDetails = productBO['brandDetails'];
+    const productCategoryDetails = productBO['categoryDetails'][0];
+
+    const product: ProductsEntity = {
+      moglixPartNumber: partNumber,
+      moglixProductNo: null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: productBO['productName'],
+      variantName: productBO['productName'],
+      productUrl: productBO['defaultCanonicalUrl'],
+      shortDesc: productBO['shortDesc'],
+      brandId: productBrandDetails['idBrand'],
+      brandName: productBrandDetails['brandName'],
+      quantityAvailable: priceQuantityCountry['quantityAvailable'],
+      discount: ((productMrp - priceWithoutTax) / productMrp) * 100,
+      rating: productBO['rating'],
+      categoryCodes: productCategoryDetails['categoryCode'],
+      taxonomy: productCategoryDetails['taxonomyCode'],
+      mainImageLink: (productBO['productPartDetails']['images']) ? productBO['productPartDetails']['images'][0]['default'] : '',
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: productBO['rating'],
+      itemInPack: null,
+      ratingCount: null,
+      reviewCount: null,
+    };
+  
+    return product;
+  }
+
   private getAddToCartProductRequest(productGroupData, buyNow): AddToCartProductSchema {
     const partNumber = productGroupData['partNumber'] || productGroupData['defaultPartNumber'];
     const isProductPriceValid = productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
@@ -320,7 +368,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productBrandDetails = productGroupData['brandDetails'];
     const productCategoryDetails = productGroupData['categoryDetails'][0];
 
-    const product: AddToCartProductSchema = {
+    return {
       cartId: null,
       productId: partNumber,
       createdAt: new Date(),
@@ -349,8 +397,9 @@ export class ProductHorizontalCardComponent implements OnInit {
       buyNow: buyNow,
       filterAttributesList: productGroupData['filterAttributesList'] || null,
       isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry)
-    };
-    return product;
+    } as AddToCartProductSchema;
+
+
   }
 
 

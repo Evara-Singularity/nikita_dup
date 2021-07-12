@@ -1,6 +1,10 @@
 <div class="bottom-options open">
     <div class="overlay"></div>
     <div class="content-box productVariantBox">
+        <div class="top-heading">
+            <h3 class="heading-3">Select Variant</h3>
+            <i class="icon-circle-delete" (click)="hide()" ></i>
+        </div>
         <div class="select-container" *ngIf="productGroupData">
             <div class="card-container">
                 <div class="left">
@@ -34,7 +38,7 @@
                 </div>
             </div>
             <div class="select-warp" *ngFor="let variants of productGroupData.filterAttributesList">
-                <p>Select {{variants['name']}}</p>
+                <h3 class="heading-3">Select {{variants['name']}}</h3>
                 <ul>
                     <li *ngFor="let item of variants['items']" [ngClass]="{'selected': item.selected, 'inactive': !item.active}" (click)="emitVariant(item.msn,item.selected, item.active)">
                         {{item['value']}}
@@ -42,10 +46,10 @@
                 </ul>
             </div>
         </div>
-
-        <button class="btn continue-btn" (click)="continueToCart()" [disabled]="productGroupData.isOutOfStock">
+        <div class="stickyBottomBtn">
+            <button class="btn continue-btn" (click)="continueToCart()" [disabled]="productGroupData.isOutOfStock">
                 CONTINUE
             </button>
-
+        </div>
     </div>
 </div>

@@ -44,7 +44,7 @@
                     </ul>
                     <!--categories-->
                     <ng-container *ngIf="categorySuggestionList.length > 0">
-                        <h3 class="search_heading">Relevant Categories</h3>
+                        <h3 class="search_heading rel-cat">Relevant Categories</h3>
                         <div class="search_product_categories">
                             <ng-container *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index">
                                 <div *ngIf="prod.imageLink" class="search_product_category" [attr.data-index]="i"

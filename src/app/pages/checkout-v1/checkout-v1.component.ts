@@ -443,7 +443,9 @@ export class CheckoutV1Component implements OnInit {
         //digitalData["page"]["pincode"] = this.shippingAddressPincode;
         digitalData["order"]["invoiceType"] = this.invoiceType;
 
-      _satellite.track("genericPageLoad");
+      if (_satellite) {
+        _satellite.track("genericPageLoad");
+      }
 
       // this.scrollToNewTab('#businessDetail');
     }
@@ -462,7 +464,9 @@ export class CheckoutV1Component implements OnInit {
         digitalData["page"]["channel"] = "checkout",
         digitalData["page"]["subSection"] = "moglix:order checkout:payment methods",
         digitalData["order"]["invoiceType"] = this.invoiceType;
-      _satellite.track("genericPageLoad");
+      if (_satellite) {
+        _satellite.track("genericPageLoad");
+      }
       this.tabIndex = 4;
       this._checkoutService.setCheckoutTabIndex(this.tabIndex);
     }
@@ -495,7 +499,9 @@ export class CheckoutV1Component implements OnInit {
       digitalData['page']['linkName'] = '',
         digitalData['page']['linkPageName'] = ''
       // if(typeof _satellite !== "undefined"){
-      _satellite.track("genericPageLoad");
+        if(_satellite){
+          _satellite.track("genericPageLoad");
+        }
       // } 
     }
   }

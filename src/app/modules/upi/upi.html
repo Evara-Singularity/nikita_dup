@@ -1,18 +1,9 @@
 <section class="container upiBlockInner">
 
 
-    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==1">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}. If possible, use an alternate payment mode
+    <div class="payment-notification" *ngIf="lsrMessage">
+        Low success rate currently observed for {{lsrMessage}}. If possible, use an alternate payment mode
     </div>
-
-    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==2">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}} and {{lowSuccessBanks[1]['name']}}. If possible, use an alternate payment mode
-    </div>
-
-    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==3">
-        Low success rate currently observed for {{lowSuccessBanks[0]['name']}}, {{lowSuccessBanks[1]['name']}} and {{ (+lowSuccessBanks.length - 1 )}} banks. If possible, use an alternate payment mode
-    </div>
-
     <div id="upi_block" class="upi-block continer">
         <form [formGroup]="upiForm" (ngSubmit)="pay(upiForm.value, upiForm.valid)" class="form-horizontal">
             <div class="material-form material-form-boxed" *ngIf="upiChecked">

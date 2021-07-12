@@ -16,7 +16,7 @@ let digitalData = {
     page: {},
     custData: {},
     order: {}
-  };
+};
 
 @Component({
     selector: 'brand',

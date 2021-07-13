@@ -46,7 +46,6 @@ export class ProductListService {
 }
 
   initializeSortBy() {
-    console.log('initializeSortBy');
     const url = location.search.substring(1);
     const queryParams = url ? JSON.parse('{"' + decodeURI(url).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
 

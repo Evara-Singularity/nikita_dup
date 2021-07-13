@@ -6,17 +6,20 @@ import { NgModule } from '@angular/core';
 })
 export class ReplacePipe implements PipeTransform {
 
-    transform(value: string): string {
-        return value.replace(/<[^>]+>/g, '');
-      }
+  transform(value: string): string {
+    if (value) {
+      return value.replace(/<[^>]+>/g, '');
+    }
+    return value
+  }
 
 
 }
 
 @NgModule({
-    imports: [],
-    exports: [ReplacePipe],
-    declarations: [ReplacePipe],
-    providers: [],
+  imports: [],
+  exports: [ReplacePipe],
+  declarations: [ReplacePipe],
+  providers: [],
 })
 export class ReplacePipeModule { }

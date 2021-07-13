@@ -442,7 +442,7 @@ export class BrandV1Component {
             productSearchResultSEO: this.genrateProductSearchResultSEOData(),
             heading: this.API_RESPONSE.brand[1][0].heading,
             productCount: this.API_RESPONSE.brand[1][0].productSearchResult.totalCount,
-            brand: this._activatedRoute.snapshot.params.brand,
+            brand: this.API_RESPONSE.brand[0].brandName,
             productCategoryNames: this.popularLinks,
             categoryLinkLists: this.API_RESPONSE.brand[1][0].categoryLinkList,
             categoryNames: this.popularLinks.toString(),

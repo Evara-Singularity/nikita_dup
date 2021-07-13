@@ -18,10 +18,10 @@
         padding: 15px 10px;
         .custom-box {
             &:checked+.custom-box::before {
-                color: #3875fd;
+                color: #3875fd !important;
             }
             &:before {
-                color: #3875fd;
+                color: #3875fd !important;
             }
         }
         .heading {

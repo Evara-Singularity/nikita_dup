@@ -17,6 +17,9 @@
         &:last-child {
             border-bottom: none;
         }
+        .chk-txt {
+            margin-left: 10px;
+        }
     }
     @extend %clear-fix;
     label {

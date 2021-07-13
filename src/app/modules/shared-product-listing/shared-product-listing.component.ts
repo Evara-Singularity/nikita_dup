@@ -51,7 +51,7 @@ export class SharedProductListingComponent {
   
   updateFilterCountAndSort(){
     this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
-    this._productListService.initializeSortBy();
+    
     if (this.paginationInstance) {
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
       this.paginationInstance.instance.initializePageData();
@@ -113,7 +113,6 @@ export class SharedProductListingComponent {
       if (sortByFilter) {
         sortByFilter.classList.toggle('open');
       }
-      this._productListService.initializeSortBy();
     }
   }
 

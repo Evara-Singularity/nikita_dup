@@ -185,6 +185,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     "Waterproof": "waterproof"
   };
 
+  appPromoVisible: boolean = true;
+
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
   }
@@ -1687,6 +1689,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
+    (this.appPromoInstance.instance['appPromoStatus$'] as EventEmitter<boolean>).subscribe((status) => {
+      this.appPromoVisible = status;
+    });
   }
 
   postHelpful(item, yes, no, i) {

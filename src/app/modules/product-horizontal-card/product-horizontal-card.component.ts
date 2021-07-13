@@ -58,6 +58,8 @@ export class ProductHorizontalCardComponent implements OnInit {
   ngOnInit(): void {
     this.isOutOfStockByQuantity = !this.product.quantityAvailable;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
+    // randomize product feature
+    this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [],2) 
   }
 
   buyNow(buyNow = false) {
@@ -69,14 +71,18 @@ export class ProductHorizontalCardComponent implements OnInit {
         if (productRawData['productBO']) {
           return this.getAddToCartProductRequest(productRawData['productBO'], buyNow);
         } else {
-          return Error('Valid token not returned');
+          return null;
         }
       })
     ).subscribe((productDetails: AddToCartProductSchema) => {
-      if (productDetails.filterAttributesList) {
-        this.loadVariantPop(this.product, productDetails, buyNow);
+      if (productDetails) {
+        if (productDetails.filterAttributesList) {
+          this.loadVariantPop(this.product, productDetails, buyNow);
+        } else {
+          this.addToCart(productDetails, buyNow)
+        }
       } else {
-        this.addToCart(productDetails, buyNow)
+        this.showAddToCartToast('Product does not exist');
       }
     }, error => {
       // console.log('buyNow ==>', error);
@@ -141,8 +147,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   openRfqForm() {
     const user = this._localAuthService.getUserSession();
-    const isUserLogin = user && user.authenticated && ((user.authenticated as boolean) == true) ? true : false;
-    console.log('isUserLogin ==>', isUserLogin);
+    const isUserLogin = user && user.authenticated && ((user.authenticated) === 'true') ? true : false;
     if (isUserLogin) {
       const productMsnId = this.product['moglixPartNumber'];
       this.getProductGroupDetails(productMsnId).pipe(
@@ -156,7 +161,7 @@ export class ProductHorizontalCardComponent implements OnInit {
         });
       })
     } else {
-      this._router.navigate(['/login'])
+      this._router.navigateByUrl('/login');
     }
 
   }
@@ -400,6 +405,20 @@ export class ProductHorizontalCardComponent implements OnInit {
     } as AddToCartProductSchema;
 
 
+  }
+
+  getRandomValue(arr, n) {
+    var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+    if (n > len)
+      return arr;
+    while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
   }
 
 

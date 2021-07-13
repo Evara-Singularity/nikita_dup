@@ -40,7 +40,7 @@ export interface ProductsEntity {
     brandId: string;
     brandName: string;
     quantityAvailable: number;
-    discount: number;
+    discount: any;
     rating?: null;
     categoryCodes?: null;
     taxonomy?: null;

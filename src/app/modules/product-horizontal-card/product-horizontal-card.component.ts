@@ -106,8 +106,9 @@ export class ProductHorizontalCardComponent implements OnInit {
       if (this.variantPopupInstance) {
         const productRequest = this.getAddToCartProductRequest(productBO, data.buyNow);
         const product = this.productEntityFromProductBO(productBO);
+        console.log('changeVariant product ==>', product);
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
-        // this.variantPopupInstance.instance['product'] = product;
+        this.variantPopupInstance.instance['product'] = product; 
       }
     }, error => {
       console.log('changeVariant ==>', error);
@@ -323,6 +324,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     // console.log('productEntityFromProductBO ==>', productBO);
     const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
     const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+    const productPartDetails = productBO['productPartDetails'][partNumber];
     const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
     const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
     const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
@@ -331,6 +333,8 @@ export class ProductHorizontalCardComponent implements OnInit {
     const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
     const productBrandDetails = productBO['brandDetails'];
     const productCategoryDetails = productBO['categoryDetails'][0];
+
+    console.log("productEntityFromProductBO productPartDetails ==>", productPartDetails['images'], productPartDetails['images'][0]);
 
     const product: ProductsEntity = {
       moglixPartNumber: partNumber,
@@ -345,17 +349,17 @@ export class ProductHorizontalCardComponent implements OnInit {
       brandId: productBrandDetails['idBrand'],
       brandName: productBrandDetails['brandName'],
       quantityAvailable: priceQuantityCountry['quantityAvailable'],
-      discount: ((productMrp - priceWithoutTax) / productMrp) * 100,
-      rating: productBO['rating'],
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      rating: this.product.rating,
       categoryCodes: productCategoryDetails['categoryCode'],
       taxonomy: productCategoryDetails['taxonomyCode'],
-      mainImageLink: (productBO['productPartDetails']['images']) ? productBO['productPartDetails']['images'][0]['default'] : '',
+      mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['default'] : '',
       productTags: [],
       filterableAttributes: {},
-      avgRating: productBO['rating'],
+      avgRating: this.product.avgRating,
       itemInPack: null,
-      ratingCount: null,
-      reviewCount: null,
+      ratingCount: this.product.ratingCount,
+      reviewCount: this.product.reviewCount
     };
   
     return product;

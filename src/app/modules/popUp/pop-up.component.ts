@@ -29,6 +29,7 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
+     
         this.pClass = (this.data && this.data.class) ? this.pClass + this.data.class : this.pClass;
         this.paraClass = (this.data && this.data.paraClass) ? this.data.paraClass : this.paraClass;
         this.closeClass = (this.data && this.data.closeClass) ? this.data.closeClass : this.closeClass;
@@ -48,6 +49,8 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }, 0);
         }
+        console.log(this.headerCustom,"this.headerText");
+        console.log(this.headerText,"this.headerText");
     }
 
     ngAfterViewInit() {

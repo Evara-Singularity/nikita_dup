@@ -253,3 +253,9 @@
         }
     }
 }
+
+.addCustomHeight {
+    .content-popup {
+        height: calc(100% - 50px) !important;
+    }
+}

@@ -37,6 +37,7 @@
             .chk-txt {
                 font-size: $medium-font;
                 width: calc(100% - 36px);
+                margin-left: 20px;
                 .heading-container {
                     display: block;
                     @extend %clear-fix;

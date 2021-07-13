@@ -6,7 +6,7 @@
     </div> -->
 
     <h3 class="heading-3 emiHeading">
-        Select From Credit/debit Card
+        Select From Credit/Debit Card
     </h3>
 
     <div class="emiTabs">
@@ -31,8 +31,7 @@
                     </div>
                 </div>
 
-                <select-popup [itemArray]="dataEmi" [displayKey]="'bankname'" [valueKey]="'key'" [headerLabel]="'Select Bank'" [isVisible]="bankSelectPopUp" (selectedValue$)="selectedBankChange($event)"
-                [type]="'EMI'" [compare]="selectedBank" ></select-popup>
+                <select-popup [itemArray]="dataEmi" [displayKey]="'bankname'" [valueKey]="'key'" [headerLabel]="'Select Bank'" [isVisible]="bankSelectPopUp" (selectedValue$)="selectedBankChange($event)" [type]="'EMI'" [compare]="selectedBank"></select-popup>
 
                 <ng-container *ngIf="emiResponse">
                     <div class="emi-plans" *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
@@ -89,7 +88,7 @@
                     <div class="material-form material-form-boxed">
                         <div class="input-field-boxed">
                             <label>Card Number</label>
-                            <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff placeholder="Card Number">
+                            <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff placeholder="Enter Card Details">
                         </div>
                         <div class="card-expiryDate" *ngIf="!(bajajFinservField)">
                             <label>Expiry Date</label>
@@ -101,8 +100,7 @@
                                             <span>{{selectedMonth || 'MM'}}</span>
                                         </div>
                                     </div>
-                                    <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)"
-                                    [type]="'MONTH'" [compare]="selectedMonth"></select-popup>
+                                    <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)" [type]="'MONTH'" [compare]="selectedMonth"></select-popup>
                                     <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
                                         <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
                                     </select> -->
@@ -114,8 +112,7 @@
                                             <span>{{selectedYear || 'YYYY'}}</span>
                                         </div>
                                     </div>
-                                    <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)"
-                                    [type]="'YEAR'" [compare]="selectedYear"></select-popup>
+                                    <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear"></select-popup>
                                     <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
                                         <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
                                     </select> -->

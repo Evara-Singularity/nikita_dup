@@ -17,6 +17,9 @@
         &:last-child {
             border-bottom: none;
         }
+        .chk-txt {
+            margin-left: 10px;
+        }
     }
     @extend %clear-fix;
     label {
@@ -52,4 +55,8 @@
         background: #F5681E;
         color: #fff;
     }
+}
+
+.content-popup {
+    height: calc(100% - 50px);
 }

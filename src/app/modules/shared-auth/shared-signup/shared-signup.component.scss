@@ -1,5 +1,4 @@
 @import "../../../scss/variables";
-
 .login-select {
     margin-bottom: 10px;
     @extend %clear-fix;
@@ -16,6 +15,14 @@
         @include gridForCategory('2', null);
         @extend %custom-radio-checkout;
         padding: 15px 10px;
+        .custom-box {
+            &:checked+.custom-box::before {
+                color: #3875fd !important;
+            }
+            &:before {
+                color: #3875fd !important;
+            }
+        }
         &.selected {
             background: $white;
             .heading {

@@ -69,7 +69,7 @@
 
         <div id="upiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')" class="payment-accordion_header">
-                <i class="icon-upi ico-accord-left"></i>
+                <img class="icon-img" src="assets/img/upi.svg">
                 <span class="accordion-text">UPI</span>
                 <i class="icon-down"></i>
             </div>
@@ -82,7 +82,7 @@
 
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')" class="payment-accordion_header">
-                <i class="icon-paytm ico-accord-left"></i>
+                <img class="icon-img" src="assets/img/paytm.svg">
                 <span class="accordion-text">Paytm UPI</span>
                 <i class="icon-down"></i>
             </div>

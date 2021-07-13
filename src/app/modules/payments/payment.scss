@@ -181,6 +181,9 @@ label.payment-radio-btn {
     background: #fff;
     .payment_accordion_item {
         box-shadow: 0px 1px 0px #00000029;
+        .icon-img {
+            width: 20px;
+        }
         &.selectedAccordion {
             .payment-accordion_body {
                 display: block;
@@ -204,7 +207,6 @@ label.payment-radio-btn {
     .accordion-text {
         font-size: $large-font;
         margin-left: 15px;
-        font-weight: bold;
     }
 }
 

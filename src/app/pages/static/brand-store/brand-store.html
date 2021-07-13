@@ -31,7 +31,7 @@
                 <span class="letter">{{brand['letter']}}</span>
                 <ul>
                     <li *ngFor="let nameA of brand.nameArr">
-                        <a href="{{nameA.link}}">{{nameA.name}}</a>
+                        <a (click)="_commonService.navigateTo(nameA.link)">{{nameA.name}}</a>
                     </li>
                 </ul>
             </div>

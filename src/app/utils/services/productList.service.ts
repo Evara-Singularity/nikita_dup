@@ -11,13 +11,11 @@ export class ProductListService {
   inlineFilterData: any;
 
   constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router,
     private _commonService: CommonService,
-  ) { }
+  ) {
+  }
 
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
-    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
 
     this.productListingData = {
       totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
@@ -25,14 +23,30 @@ export class ProductListService {
       filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
       listingHeading: heading
     };
-
-    this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment);
-
-    this.initializeSortBy();
+    
+    if (this._commonService.isBrowser) {
+      const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join(''); 
+      this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(fragment);
+      this.initializeSortBy();
+    }
 
   }
 
+  extractFragmentFromUrl(str) {
+    var pieces = str.split("&"), data = {}, i, parts;
+    // process each query pair
+    for (i = 0; i < pieces.length; i++) {
+        parts = pieces[i].split("=");
+        if (parts.length < 2) {
+            parts.push("");
+        }
+        data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+    }
+    return data;
+}
+
   initializeSortBy() {
+    console.log('initializeSortBy');
     const url = location.search.substring(1);
     const queryParams = url ? JSON.parse('{"' + decodeURI(url).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
 

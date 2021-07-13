@@ -884,6 +884,15 @@ export class CommonService {
             extras.queryParams['page'] = page;
         }
 
+
+        this.toggleFilter(true);
         this._router.navigate([currentRoute], extras);
+    }
+
+    toggleFilter(forceFillyRemove?:boolean) {
+        const mob_filter = document.querySelector('.mob_filter');
+        if (mob_filter) {
+            forceFillyRemove ? mob_filter.classList.remove('upTrans') : mob_filter.classList.toggle('upTrans');
+        }
     }
 }

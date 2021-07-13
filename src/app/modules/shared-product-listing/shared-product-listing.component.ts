@@ -76,11 +76,8 @@ export class SharedProductListingComponent {
     if (!this.filterInstance) {
       const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
         setTimeout(() => {
-          const mob_filter = document.querySelector('.mob_filter');
-          if (mob_filter) {
-            mob_filter.classList.add('upTrans');
-          }
-        }, 100);
+          this._commonService.toggleFilter();
+        }, 0);
       });
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
@@ -89,11 +86,7 @@ export class SharedProductListingComponent {
         this.filterUp();
       });
     } else {
-      const mob_filter = document.querySelector('.mob_filter');
-
-      if (mob_filter) {
-        mob_filter.classList.toggle('upTrans');
-      }
+      this._commonService.toggleFilter();
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
     }
   }

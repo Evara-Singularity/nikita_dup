@@ -40,6 +40,14 @@ button {
     outline: 0;
 }
 
+input,
+select {
+    background-image: none;
+    background: none;
+    line-height: 18px;
+    position: relative;
+}
+
 .container {
     @extend %container;
 }
@@ -1067,6 +1075,7 @@ header-nav {
 .icon-welcome-pdp:before {
     content: "\e999";
 }
+
 .icon-more_options:before {
     content: "\e9b6";
 }

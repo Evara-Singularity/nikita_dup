@@ -1,5 +1,4 @@
 <div class="product-card">
-    <!-- <pre>{{ product | json }}</pre> -->
     <div class="youtubeThumbnail-listing" *ngIf="product['videoInfo'] && product['videoInfo'].length > 0">
         <div class="thumbnail" [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
             <input class="youtube_icon"
@@ -9,10 +8,11 @@
     </div>
     <div class="card-container">
         <div class="left" (click)="navigateToPDP()">
+            <div class="tags" *ngFor="let tags of product['productTags']">
+                <img [src]="tags['tagImageLink']" />
+            </div>
             <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125"
                 width="125" />
-            <div class="tags">
-            </div>
         </div>
         <div class="right">
             <div class="rating">
@@ -23,7 +23,7 @@
                 <span class="count" *ngIf="product.ratingCount">({{product.ratingCount}})</span>
             </div>
             <div class="name" (click)="navigateToPDP()">
-                <span>{{product.productName | slice:0:70}}<span *ngIf="product.productName.length>70">...</span></span>
+                <span>{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>70">...</span></span>
             </div>
             <div class="brand" (click)="navigateToPDP()">
                 <span>By: {{product.brandName}}</span>
@@ -61,7 +61,7 @@
 
     <div class="keyfeatures" *ngIf="product['keyFeatures'] && product['keyFeatures'].length > 0">
         <ul>
-            <li *ngFor="let features of product['keyFeatures'] | slice:0:2 ">{{features}}</li>
+            <li *ngFor="let features of product['keyFeatures']">{{features}}</li>
         </ul>
     </div>
         <!-- <product-variant-select-listing-page 

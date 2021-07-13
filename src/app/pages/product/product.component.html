@@ -234,7 +234,8 @@
         <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
 
-        <div class="returnPolicyContainer" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+        <div [ngClass]="{'returnPolicyContainer': appPromoVisible}" observeVisibility [debounceTime]="300"
+            (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 
 @Component({
@@ -11,10 +11,15 @@ export class ProductAppPromoComponent implements OnInit {
 
   @Input() isOverlayMode: boolean;
   @Input() showPromoCode: boolean;
+  @Output() appPromoStatus$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  appPromoStatus(event){
+    this.appPromoStatus$.emit(event);
   }
 
 }

@@ -313,11 +313,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             } else if (isCheckout){
                 if (this.checkoutLoginService.isAtFirstSection) {
                     let index = this._checkoutService.getCheckoutTabIndex();
-                    if(index === 1 ){
+                    if (index === 1) {
                         this.location.back();
                     }
                     else if (index === 2) {
-                        this._checkoutService.setCheckoutTabIndex(index-1);
+                        this._checkoutService.setCheckoutTabIndex(index - 1);
                         this.location.back();
                     } else {
                         this._state.notifyData('routeChanged', index - 2);

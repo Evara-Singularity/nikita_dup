@@ -31,7 +31,7 @@ export class SearchV1Component implements OnInit {
     private _activatedRoute: ActivatedRoute,
     public _localStorageService: LocalStorageService,
     public _productListService: ProductListService,
-    private _commonService: CommonService,
+    public _commonService: CommonService,
     private _dataService: DataService,
     private _title: Title,
     private meta: Meta,

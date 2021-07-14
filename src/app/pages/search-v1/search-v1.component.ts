@@ -58,7 +58,6 @@ export class SearchV1Component implements OnInit {
     } else if (this.toggleRcommendFlag && ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
       this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
     }
-    console.log(this.headerNameBasedOnCondition);
   }
 
   setDataFromResolver() {

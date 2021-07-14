@@ -31,17 +31,17 @@
             <div class="price-details">
                 <div class="left" (click)="navigateToPDP()">
                     <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                        <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
+                        <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'  }}</span>
                         <span class="green-label">{{product.discount}}% OFF</span>
                     </div>
                     <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                        <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
+                        <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
                     </div>
                     <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice" >
                         <span>Available on Request</span>
                     </div>
                     <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">
-                        <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
+                        <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
                     </div>
                 </div>
                 <div class="right">

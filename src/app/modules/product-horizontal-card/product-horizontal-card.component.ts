@@ -333,9 +333,8 @@ export class ProductHorizontalCardComponent implements OnInit {
     const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
     const productBrandDetails = productBO['brandDetails'];
     const productCategoryDetails = productBO['categoryDetails'][0];
-
-    console.log("productEntityFromProductBO productPartDetails ==>", productPartDetails['images'], productPartDetails['images'][0]);
-
+    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
+    
     const product: ProductsEntity = {
       moglixPartNumber: partNumber,
       moglixProductNo: null,
@@ -376,6 +375,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
     const productBrandDetails = productGroupData['brandDetails'];
     const productCategoryDetails = productGroupData['categoryDetails'][0];
+    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
 
     return {
       cartId: null,
@@ -394,7 +394,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
       productImg: this.imageCdnPath + "" + this.product['mainImageLink'],
       isPersistant: true,
-      productQuantity: 1,
+      productQuantity: productMinimmumQuantity,
       productUnitPrice: productPrice,
       expireAt: null,
       productUrl: this.product['productUrl'],

@@ -6,6 +6,7 @@ import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 
 @Component({
@@ -53,7 +54,8 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   imports: [
     CommonModule,
     RouterModule,
-    RatingPipeModule
+    RatingPipeModule,
+    MathFloorPipeModule
   ],
 })
 export class ProductVariantSelectListingPageModule { }

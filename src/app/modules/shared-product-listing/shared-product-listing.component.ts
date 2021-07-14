@@ -79,7 +79,7 @@ export class SharedProductListingComponent {
   }
   
   updateFilterCountAndSort(){
-    this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
+    this.appliedFilterCount = Object.keys(this._commonService.selectedFilterData.filter).length;
     
     if (this.paginationInstance) {
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };

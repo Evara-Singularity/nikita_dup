@@ -205,7 +205,7 @@ export class AlpComponent implements OnInit {
         this.pageDescription = attributeListing['pageDescription'];
         this.metaTitle = attributeListing['metaTitle'];
         this.metaDescription = attributeListing['metaDescription'];
-        this.excludeAttributes = attributeListing['attributes'];
+        this.excludeAttributes = (attributeListing['attributes'] as string[]).map((name=>name.toLowerCase()));
         this.bestSellerProducts = this.attributeListingData['bestSellersProducts'];
         this.bestSellerTitle = attributeListing['categoryName'];
         this.fetchCIMSRelatedData(data[1]);
@@ -325,7 +325,7 @@ export class AlpComponent implements OnInit {
         this.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.productsUpdated.next(response.productSearchResult.products);
-        this.filterData = response.buckets;
+        this.filterData = this.filterBuckets(response.buckets);
         this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
         
 
@@ -844,7 +844,7 @@ export class AlpComponent implements OnInit {
 
     filterBuckets(buckets: any[]) {
         if (this.excludeAttributes.length > 0) {
-            return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
+            return buckets.filter((bucket) => this.excludeAttributes.indexOf((bucket.name as string).toLowerCase()) == -1);
         }
         return buckets;
     }

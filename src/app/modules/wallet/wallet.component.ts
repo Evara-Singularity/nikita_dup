@@ -306,11 +306,10 @@ export class WalletComponent {
         this.lsrMessage = [];
         if (this.type == 'retail') {
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
-            const TOP = banksArr.filter(item => item['is_top'] == 1);
-            const OTHERS = banksArr.filter(item => item['is_top'] == 0);
-            const LSRTOP = TOP.filter(item => item['up_status'] == 0);
-            const LSROTHERS = OTHERS.filter(item => item['up_status'] == 0);
-            this.lsrMessage = [...LSRTOP, ...LSROTHERS];
+            const lowSuccessBanks = banksArr.filter(item => item['up_status'] == 0)
+            if (lowSuccessBanks.length){
+                this.lsrMessage = true;
+            }
         }
     }
 

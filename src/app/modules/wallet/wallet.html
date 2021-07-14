@@ -1,6 +1,6 @@
 <section class="walletInner">
-    <div class="payment-notification" *ngIf="lsrMessage.length > 0">
-        Low success rate currently observed in some cases. If possible, use an alternate payment mode
+    <div class="payment-notification" *ngIf="lsrMessage">
+        Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.
     </div>
     <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
         <ul class="bank-list">

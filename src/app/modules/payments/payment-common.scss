@@ -114,5 +114,9 @@
             margin-left: auto;
             font-size: $medium-font;
         }
+        &.selectedInput{
+            color: #303030;
+        }
     }
+
 }

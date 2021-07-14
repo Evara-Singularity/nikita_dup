@@ -1,5 +1,5 @@
 <section class="bank-container netBankingInner">
-    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length ==1">
+    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length">
         Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.
     </div>
     
@@ -26,7 +26,7 @@
 
                     <div class="custom_select_box" (click)="openYearPopUp()">
                         <div class="custom_select_input">
-                            <span>{{ selectedBankName || 'Other banks'}}</span>
+                            <span>{{ selectedBankName || 'Other Banks'}}</span>
                             <i class="icon-dropdown"></i>
                         </div>
                     </div>

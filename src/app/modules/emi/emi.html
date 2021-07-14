@@ -98,7 +98,7 @@
                                 <div class="input-field-boxed">
                                     <input type="hidden" formControlName="ccexpmon" #expireMonth />
                                     <div class="custom_select_box" (click)="openMonthPopUp()">
-                                        <div class="custom_select_input">
+                                        <div class="custom_select_input" [class.selectedInput]="selectedMonth">
                                             <span>{{selectedMonth || 'MM'}}</span>
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@
                                 <div class="input-field-boxed">
                                     <input type="hidden" formControlName="ccexpyr" #expireYear />
                                     <div class="custom_select_box" (click)="openYearPopUp()">
-                                        <div class="custom_select_input">
+                                        <div class="custom_select_input" [class.selectedInput]="selectedYear">
                                             <span>{{selectedYear || 'YYYY'}}</span>
                                         </div>
                                     </div>
@@ -153,6 +153,13 @@
 
 
         </form>
+    </div>
+
+    <div class="lh-18 pad-tb-15 mt-15" *ngIf="nocostEmiDiscount > 0">
+        The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is already discounted
+        from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit will
+        be consumed for your total purchase amount of <b>Rs. {{this.totalPayableAmount | mathCeil | number : '1.2-2'}}</b> ,
+        and released after the amount is converted to an EMI.
     </div>
 
     <!-- <p class="emi-note-text">

@@ -6,9 +6,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    &:first-of-type {
-        border-top: 1px solid #E2E2E2;
-    }
     .left {
         width: 100px;
         text-align: center;
@@ -136,12 +133,15 @@
 }
 
 .youtubeThumbnail-listing {
+    padding-top: 10px;
     .thumbnail {
         background-size: cover;
         height: 120px;
         background-position: center center;
         background-repeat: no-repeat;
         position: relative;
+        margin: 0px 10px;
+        border-radius: 8px;
     }
     .youtube_icon {
         width: 70px;
@@ -169,16 +169,17 @@
     }
 }
 
-.product-card{
+.product-card {
     border-bottom: 1px solid #E2E2E2;
+    background: #fff;
 }
 
-.keyfeatures{
+.keyfeatures {
     background-color: #FFF;
     padding: 0px 8px 8px 18px;
-    ul{
+    ul {
         list-style: disc;
-        li{
+        li {
             color: #7B7B7B;
             font-size: 10px;
         }

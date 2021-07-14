@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 .select-container {
     width: 100%;
     background-color: #fff;
@@ -5,7 +6,7 @@
         padding: 10px;
         width: 100%;
         .heading-3 {
-            padding-bottom: 0px;
+            padding-bottom: 5px;
         }
         ul {
             width: 100%;
@@ -16,11 +17,14 @@
                 font-size: 14px;
                 padding: 0px 10px;
                 border: 1px solid #303030;
-                margin-right: 5px;
+                margin-right: 8px;
                 margin-top: 4px;
                 border-radius: 4px;
-                line-height: 31px;
+                line-height: 33px;
                 font-weight: bold;
+                min-width: 34px;
+                min-height: 34px;
+                text-align: center;
             }
             li.selected {
                 background-color: #F4E1E5;
@@ -38,20 +42,20 @@
 
 .card-container {
     width: 100%;
-    border: 1px solid #E2E2E2;
     padding: 15px 10px;
     background-color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #E2E2E2;
     .left {
-        width: 37%;
+        width: 100px;
         text-align: center;
         img {
             width: 100%;
             height: auto;
-            max-width: 125px;
+            max-width: 100px;
         }
         .tags {
             position: absolute;
@@ -60,9 +64,9 @@
         }
     }
     .right {
-        width: 63%;
+        width: calc(100% - 115px);
         .rating {
-            font: 10px;
+            font-size: 10px;
             margin-bottom: 10px;
             span {
                 margin-right: 5px;
@@ -70,9 +74,14 @@
             .avgrating {
                 display: inline;
                 background-color: #458D00;
-                padding: 4px 8px;
+                padding: 3px 5px;
                 color: #FFF;
                 border-radius: 3px;
+                font-size: 10px;
+                i {
+                    padding-left: 2px;
+                    font-size: 7px;
+                }
             }
             .count {
                 color: #C0C0C0;
@@ -81,8 +90,9 @@
         .name {
             span {
                 text-align: left;
-                font-size: 13px;
+                font-size: 12px;
                 color: #303030;
+                line-height: 16px;
             }
         }
         .brand {
@@ -100,10 +110,10 @@
             justify-content: space-between;
             .left {
                 text-align: left;
-                width: 80%;
+                width: calc(100% - 120px);
                 .price {
                     font-size: 10px;
-                    margin-bottom: 10px;
+                    margin-bottom: 5px;
                     span {
                         margin-right: 4px;
                     }
@@ -137,7 +147,29 @@
             }
             .right {
                 text-align: right;
-                width: 60%;
+                width: 115px;
+                button {
+                    padding: 10px 10px;
+                    background-color: #D9232D;
+                    text-transform: uppercase;
+                    color: #FFF;
+                    border: 0;
+                    margin: 0;
+                    border-radius: 3px;
+                    display: inline;
+                    font-size: 11px;
+                    font-weight: bold;
+                }
+                button.white {
+                    padding: 6px 8px;
+                    background-color: #FFF;
+                    margin-right: 5px;
+                    color: #D9232D;
+                    border: 1px solid #D9232D;
+                    i {
+                        color: #D9232D;
+                    }
+                }
             }
         }
     }
@@ -152,75 +184,66 @@
     height: 100%;
 }
 
-.bottom-options .overlay {
-    z-index: 13;
+.top-heading {
+    padding: 0px 10px;
+    border-bottom: 1px solid #E2E2E2;
+    .heading-3 {
+        padding-bottom: 0px;
+        padding: 15px 0;
+        position: relative;
+    }
+    i {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-size: 16px;
+    }
 }
 
-.open .bottom-options .overlay {
-    top: 0;
-}
-
-.bottom-options .content-box {
-    position: fixed;
-    bottom: -100%;
-    left: 0;
-    padding: 0px;
-    background: #fff;
-    z-index: 14;
-    width: 100%;
-    max-height: 60%;
-    overflow: auto;
-    border-radius: 0px;
-    &.productVariantBox {
-        height: calc(100% - 60px);
-        .continue-btn {
-            width: 100%;
-            color: #FFF;
-            background-color: #D9232D;
-            border: 0;
-            height: 50px;
+.custom-popup-bottom {
+    .open {
+        .bottom-options {
+            .content-box {
+                bottom: 0;
+            }
         }
     }
-    .top-heading {
-        padding: 0px 10px;
-        .heading-3 {
-            padding-bottom: 0px;
-            padding: 15px 0;
-            position: relative;
+    .bottom-options {
+        .overlay {
+            z-index: 13;
         }
-        i {
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            font-size: 16px;
+        .content-box {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            padding: 0px;
+            background: $white;
+            z-index: 14;
+            width: 100%;
+            overflow: auto;
+            @extend %transition;
         }
+    }
+    .bottom-options .content-box {
+        max-height: 65%;
+        padding-bottom: 60px;
     }
 }
 
 .stickyBottomBtn {
     position: fixed;
-    height: 50px;
-    padding: 2px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    box-shadow: 0px -3px 6px #00000029;
-}
-
-.bottom-options.open .content-box {
     bottom: 0;
-}
-
-.bottom-options.open .overlay {
-    top: 0;
-}
-
-.stickyButtonListing {
-    position: fixed;
     left: 0;
     right: 0;
-    bottom: 0px;
-    height: 60px;
+    z-index: 5;
+    padding: 5px;
     box-shadow: 0px -3px 6px #00000029;
-    padding: 2px;
+    background: #fff;
+    .continue-btn {
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 50px;
+    }
 }

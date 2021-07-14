@@ -3,7 +3,7 @@
         <div class="inline-filter-card-list">
                 <div class="inner-card-list">
                     <p class="filter-heading">
-                        Show By {{ inlineFilterData.name }}
+                        Shop By {{ inlineFilterData.name }} <ng-container *ngIf="inlineFilterData.name === 'price'">Range</ng-container>
                     </p>
                     <ng-container *ngIf="inlineFilterData.terms.length < 5">
                         <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">

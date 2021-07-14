@@ -1,4 +1,3 @@
-import { ActivatedRoute } from "@angular/router";
 import { CommonService } from "@app/utils/services/common.service";
 import { Component, ViewEncapsulation, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { ProductListService } from "@app/utils/services/productList.service";
@@ -9,17 +8,16 @@ import { ProductListService } from "@app/utils/services/productList.service";
   styleUrls: [
     './sortBy.scss'
   ],
+  host:     {'[class.open]':'true'},
   encapsulation: ViewEncapsulation.None
 })
 
 export class SortByComponent {
-  // Output event to toggle filter
   @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public _commonService: CommonService, private _productListService: ProductListService) {};
 
   ngOnInit() {
-    this._productListService.initializeSortBy()
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -25,6 +25,7 @@ export class AppPromoComponent implements OnInit {
   @Input() isOverlayMode: boolean = true;
   @Input() showPromoCode: boolean = true;
   @Input() productMsn: string = null;
+  @Output() appPromoStatus$: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public appPromoStatus: boolean = true;
   public mobile_os = null;
@@ -76,12 +77,14 @@ export class AppPromoComponent implements OnInit {
 
   removePromo() {
     this.appPromoStatus = false;
+    this.appPromoStatus$.emit(false);
     this._localStorage.store(this.key, false);
   }
 
   readStatusFromLocalStorage() {
     if (this._localStorage.retrieve(this.key) != null) {
       this.appPromoStatus = false;
+      this.appPromoStatus$.emit(false);
     } else {
       this.appPromoStatus = true;
     }

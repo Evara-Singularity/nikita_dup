@@ -1,9 +1,12 @@
-import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, SimpleChanges } from '@angular/core';
+import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, SimpleChanges, Inject, PLATFORM_ID } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
+import { CartService } from '@app/utils/services/cart.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'shared-product-listing',
@@ -26,13 +29,39 @@ export class SharedProductListingComponent {
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
+  isServer: boolean;
+  isBrowser: boolean
 
   public appliedFilterCount: number = 0;
 
-  constructor(private _router: Router, private _componentFactoryResolver: ComponentFactoryResolver, private _injector: Injector, public _productListService: ProductListService, public _commonService: CommonService) { }
+  constructor(
+    @Inject(DOCUMENT) private document,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private _router: Router,
+    private _componentFactoryResolver: ComponentFactoryResolver,
+    private _injector: Injector,
+    private _cartService: CartService,
+    public _productListService: ProductListService,
+    private _localAuthService: LocalAuthService,
+    public _commonService: CommonService) {
+    this.isServer = isPlatformServer(platformId);
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit() {
     this.updateFilterCountAndSort();
+    this.getUpdatedSession();
+  }
+
+  getUpdatedSession() {
+     // incase redirection from checkout with buynow updated count of product should be displayed in header cart icon
+    if (this.isBrowser) {
+      const userSession = this._localAuthService.getUserSession();
+      let params = { "sessionid": userSession.sessionId };
+      this._cartService.getCartBySession(params).subscribe((cartSession) => {
+        this._cartService.cart.next({ count: cartSession['noOfItems'] || null });
+      })
+    }
   }
   
   ngOnChanges(){
@@ -51,7 +80,7 @@ export class SharedProductListingComponent {
   
   updateFilterCountAndSort(){
     this.appliedFilterCount = this._commonService.calculateFilterCount(this.productsListingData.filterData);
-    this._productListService.initializeSortBy();
+    
     if (this.paginationInstance) {
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
       this.paginationInstance.instance.initializePageData();
@@ -76,11 +105,8 @@ export class SharedProductListingComponent {
     if (!this.filterInstance) {
       const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
         setTimeout(() => {
-          const mob_filter = document.querySelector('.mob_filter');
-          if (mob_filter) {
-            mob_filter.classList.add('upTrans');
-          }
-        }, 100);
+          this._commonService.toggleFilter();
+        }, 0);
       });
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
@@ -89,11 +115,7 @@ export class SharedProductListingComponent {
         this.filterUp();
       });
     } else {
-      const mob_filter = document.querySelector('.mob_filter');
-
-      if (mob_filter) {
-        mob_filter.classList.toggle('upTrans');
-      }
+      this._commonService.toggleFilter();
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
     }
   }
@@ -109,11 +131,9 @@ export class SharedProductListingComponent {
       });
     } else {
       const sortByFilter = document.querySelector('sort-by');
-
       if (sortByFilter) {
         sortByFilter.classList.toggle('open');
       }
-      this._productListService.initializeSortBy();
     }
   }
 

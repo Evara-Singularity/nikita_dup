@@ -94,6 +94,8 @@ export class CategoryV1Component {
             // set API result data
             this.API_RESPONSE = result;
 
+            console.log(this.API_RESPONSE);
+
             // Set Title and Meta for category
             this.setTitleAndMetaForCategory();
 
@@ -236,14 +238,8 @@ export class CategoryV1Component {
     checkIfThisCategoryIsActive(){
         if (!this.API_RESPONSE.category[0]['categoryDetails']['active'] || this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] === 0) {
             
-            // handle if category PLP is inactive or product count is zero
             this.handleZeroProductListOnServer();
         } else if (this.API_RESPONSE.category[0]['categoryDetails']['active']) {
-            
-            // const canonicalUrl = this.API_RESPONSE.category[0]['categoryDetails']['canonicalURL'];
-            // if (this.isUrlEqual(canonicalUrl, this._router.url)) {
-            //     this._router.navigateByUrl("/" + canonicalUrl);
-            // }
 
             if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0) {
                 this.fireTags();

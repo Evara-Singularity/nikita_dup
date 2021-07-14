@@ -81,8 +81,8 @@
     </div>
 
     <!-- This is recently article section -->
-    <div *ngIf="_productListService?.productListingData?.productSearchResult?.totalCount">
-        <recent-articles [recentArticles]="API_RESPONSE.category[0]" [title]="this.API_RESPONSE.category[0].children?.categoryDetails?.categoryName"></recent-articles>
+    <div class="recent-article-container" *ngIf="API_RESPONSE.category[1].productSearchResult?.totalCount > 0">
+        <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []" [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
     </div>
 
     <!-- This is footer section -->

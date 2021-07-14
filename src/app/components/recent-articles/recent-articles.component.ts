@@ -12,15 +12,22 @@ import { CONSTANTS } from '@config/constants';
 export class RecentArticles implements OnInit
 {
     constructor(private router: Router) { }
-    ngOnInit() { }
+    
     @Input() recentArticles;
     @Input() title;
     imageBaseUrl = CONSTANTS.IMAGE_BASE_URL;
     defaultImage = this.imageBaseUrl + CONSTANTS.ASSET_IMG;
+    
+    ngOnInit() {
+        console.log(this.recentArticles);
+        console.log(this.title);
+    }
+    
     navigateToArticlePage(article)
     {
-        this.router.navigateByUrl('/articles/' + article.friendlyUrl)
+        this.router.navigateByUrl('/articles/' + article.friendlyUrl);
     }
+
 }
 
 @NgModule({

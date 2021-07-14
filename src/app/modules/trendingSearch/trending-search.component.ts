@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { CommonService } from '../../utils/services/common.service';
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 
@@ -14,6 +15,7 @@ export class TrendingSearchComponent {
     trendingCat;
     topCategories;
     trendingCatName;
+    limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(public _router: Router, private _service: TypeAheadService, public _commonService:CommonService) { }
@@ -24,6 +26,14 @@ export class TrendingSearchComponent {
             this.trendingCatName = this.getTrendingCategories(this.trendingCat['top_categories']);
             this.topCategories = this.getTopCategories(this.trendingCat['trending_search']);
         });
+    }
+
+    updateLimitTrendingCategoryNumber(){
+        if (this.limitTrendingCategoryNumber === GLOBAL_CONSTANT.trendingCategoryLimit) {
+            this.limitTrendingCategoryNumber = this.trendingCatName.length;
+        } else {
+            this.limitTrendingCategoryNumber = GLOBAL_CONSTANT.trendingCategoryLimit;
+        }
     }
 
     getTopCategories(data) {

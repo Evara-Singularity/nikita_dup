@@ -19,6 +19,12 @@ export class SearchHistoryComponent {
         this.shd = this._lss.retrieve('search-history') ? this._lss.retrieve('search-history') : [];
     }
 
+    removeFromLocalStorage(index) {
+        console.log(index);
+        this.shd.splice(index, 1);
+        this._lss.store('search-history', this.shd);
+    }
+
     /**
      * csh : Clear Search History
      * This function is used to clear search history from localstorage.

@@ -96,7 +96,7 @@
                                 <div class="input-field-boxed">
                                     <input type="hidden" formControlName="ccexpmon" #expireMonth />
                                     <div class="custom_select_box" (click)="openMonthPopUp()">
-                                        <div class="custom_select_input">
+                                        <div class="custom_select_input" [class.selectedInput]="selectedMonth">
                                             <span>{{selectedMonth || 'MM'}}</span>
                                         </div>
                                     </div>
@@ -108,7 +108,7 @@
                                 <div class="input-field-boxed">
                                     <input type="hidden" formControlName="ccexpyr" #expireYear />
                                     <div class="custom_select_box" (click)="openYearPopUp()">
-                                        <div class="custom_select_input">
+                                        <div class="custom_select_input" [class.selectedInput]="selectedYear">
                                             <span>{{selectedYear || 'YYYY'}}</span>
                                         </div>
                                     </div>

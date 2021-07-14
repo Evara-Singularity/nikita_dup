@@ -162,7 +162,9 @@ export class ProductHorizontalCardComponent implements OnInit {
         });
       })
     } else {
-      this._router.navigateByUrl('/login');
+      let backUrl = `/login?backurl=${encodeURI(this._router.url)}`
+      //console.log("this.router.url ==>", this._router.url);
+      this._router.navigateByUrl(backUrl);
     }
 
   }

@@ -40,8 +40,9 @@
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
                                 <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        <input formControlName="bankcode" [checked]="selectedEmiOption == emi.key" type="radio" [value]="emi.key"
-                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount)" [id]="emi.key">
+                                        
+                                        <input formControlName="bankcode" [checked]="selectedEMIKey == emi.key" type="radio" [value]="emi.key"
+                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)" [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>
                                 <div class="emi-amount">
@@ -63,8 +64,9 @@
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
                                 <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        <input formControlName="bankcode" type="radio" [checked]="selectedEmiOption == emi.key" [value]="emi.key"
-                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount)" [value]="emi.key"
+                                        
+                                        <input formControlName="bankcode" type="radio" [checked]="selectedEMIKey == emi.key" [value]="emi.key"
+                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)" [value]="emi.key"
                                             [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>

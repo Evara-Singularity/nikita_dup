@@ -1,5 +1,5 @@
 <ng-container *ngIf="showToast">
-    <div class="cartNotification">
+    <div class="cartNotification" [ngClass]="{'cartNotificationBottom': positionBottom}">
         <h4>{{text}}</h4>
         <a class="view_cart_btn" [routerLink]="[btnLink]">{{btnText}}</a>
     </div>

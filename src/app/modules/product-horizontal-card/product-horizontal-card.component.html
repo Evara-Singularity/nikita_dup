@@ -23,7 +23,7 @@
                 <span class="count" *ngIf="product.ratingCount">({{product.ratingCount}})</span>
             </div>
             <div class="name" (click)="navigateToPDP()">
-                <span>{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>70">...</span></span>
+                <span>{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>60">...</span></span>
             </div>
             <div class="brand" (click)="navigateToPDP()">
                 <span>By: {{product.brandName}}</span>

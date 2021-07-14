@@ -93,6 +93,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productSubPartNumber: string;
   productBulkPrices: any[];
   recentBoughtOrderCount: any;
+  isProductReturnAble: boolean = false
   //Product Question answer
   questionAnswerForm: FormGroup;
   //review and rating 
@@ -469,6 +470,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     // mapping general information 
     this.productName = this.rawProductData['productName'];
+    this.isProductReturnAble = this.rawProductData['returnable'] || false;
     this.productDescripton = this.rawProductData['desciption'];
     this.productBrandDetails = this.rawProductData['brandDetails'];
     this.productCategoryDetails = this.rawProductData['categoryDetails'][0];

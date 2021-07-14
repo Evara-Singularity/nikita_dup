@@ -52,12 +52,30 @@ export class FilterMidPlpComponent implements OnInit {
 
 
 @Pipe({
+  name: 'checkForCount'
+})
+export class CheckForCountPipe implements PipeTransform{
+  transform(val) {
+    if (val && val.terms && val.terms.length > 0) {
+      return val.terms.filter( v => {
+        if (val.name === 'price') {
+          return (!v.selected && v.count)
+        }
+        return !v.selected
+      }).length;
+    }
+    return val.terms.length;
+  }
+}
+
+
+@Pipe({
   name: 'removeSelected'
 })
 export class RemoveSelectedPipe implements PipeTransform{
   transform(val) {
     if (val && val.length > 0) {
-      return val.filter( v => !v.selected);
+      return val.filter( v => !v.selected );
     }
     return val;
   }
@@ -74,6 +92,7 @@ export class RemoveSelectedPipe implements PipeTransform{
   ],
   declarations: [
     RemoveSelectedPipe,
+    CheckForCountPipe,
     FilterMidPlpComponent
   ],
 })

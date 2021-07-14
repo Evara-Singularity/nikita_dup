@@ -10,12 +10,7 @@
   "related_applications": [
     {
       "platform": "play",
-      "id": "com.moglix.online",
-      "url": "https://www.moglix.com"
-    },
-    {
-      "platform": "play",
-      "id": "com.moglix.online",
+      "id": "com.apppromodemo",
       "url": "https://qam-revamp.moglilabs.com"
     }
   ],

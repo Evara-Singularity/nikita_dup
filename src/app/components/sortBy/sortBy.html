@@ -1,10 +1,10 @@
 <div class="bottom-options sort-by" id="sortBy {{ _commonService.selectedFilterData['sortBy'] }} ">
-  <div class="overlay" (click)="toggleFilter.emit(true)"></div>
-  <div class="content-box">
-    <div class="container">
-      <h3 class="heading-3">Sort By <i class="icon-circle-delete"  (click)="toggleFilter.emit(true)"></i></h3>
-      <div class="custom-cbox">
-        <label>
+    <div class="overlay" (click)="toggleFilter.emit(true)"></div>
+    <div class="content-box roundedBox">
+        <div class="container">
+            <h3 class="heading-3">Sort By <i class="icon-circle-delete" (click)="toggleFilter.emit(true)"></i></h3>
+            <div class="custom-cbox">
+                <label>
           <span class="chk-box">
             <input class="hidden" type="radio" name="sortBy"
               [checked]="_commonService.selectedFilterData['sortBy'] == 'popularity'"
@@ -14,7 +14,7 @@
           <span class="chk-txt">Popularity</span>
         </label>
 
-        <label>
+                <label>
           <span class="chk-box">
             <input class="hidden" type="radio" name="sortBy"
               [checked]="_commonService.selectedFilterData['sortBy'] == 'lowPrice'"
@@ -24,7 +24,7 @@
           <span class="chk-txt"> Price - Low To High</span>
         </label>
 
-        <label>
+                <label>
           <span class="chk-box">
             <input class="hidden" type="radio" name="sortBy"
               [checked]="_commonService.selectedFilterData['sortBy'] == 'highPrice'"
@@ -33,7 +33,7 @@
           </span>
           <span class="chk-txt">Price - High To Low</span>
         </label>
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

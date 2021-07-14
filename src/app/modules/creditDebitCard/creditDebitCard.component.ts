@@ -315,8 +315,7 @@ export class CreditDebitCardComponent {
     selectMonth(data) {
         // console.log('selectMonth ==>', data);
         if (data) {
-           
-            this.selectedMonth = data['value'];
+            this.selectedMonth = data['key'];
             (this.creditDebitCardForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
         }
         this.monthSelectPopupStatus = false;

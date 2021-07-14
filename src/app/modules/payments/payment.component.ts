@@ -209,7 +209,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
     scollToSection(elementId) {
         setTimeout(() => {
-            this.elementRef.nativeElement.ownerDocument.getElementById(elementId).scrollIntoView({ behavior: 'smooth' });
+            this.elementRef.nativeElement.ownerDocument.getElementById(elementId).scrollIntoView({ behavior: 'smooth',block: 'center'});
         }, 300);
     }
 

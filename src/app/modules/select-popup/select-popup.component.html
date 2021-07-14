@@ -12,7 +12,7 @@
                         <ng-container [ngSwitch]="type">
                             <input type="radio" [checked]="item['code'] == compare" *ngSwitchCase="'NETBANKING'">
                             <input type="radio" [checked]="item['key'] == compare" *ngSwitchCase="'EMI'">
-                            <input type="radio" [checked]="item['value'] == compare" *ngSwitchCase="'MONTH'">
+                            <input type="radio" [checked]="item['key'] == compare" *ngSwitchCase="'MONTH'">
                             <input type="radio" [checked]="item['value'] == compare" *ngSwitchCase="'YEAR'">
                             <input type="radio" value="{{item[valueKey]}}" *ngSwitchDefault>
                         </ng-container>

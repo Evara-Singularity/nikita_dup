@@ -14,6 +14,9 @@ export class LowSuccessMessagePipe implements PipeTransform
             if (lsrTop && others.length > 0) {
                 lsrMessage = lsrTop + " and " + others.length + " more " + type;
             }
+            else {
+                lsrMessage = lsrTop;
+            }
         } else {
             if (others && others.length > 0) {
                 const length = others.length;

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
@@ -35,8 +36,10 @@ export class AppPromoComponent implements OnInit {
   constructor(
     private _localStorage: LocalStorageService,
     private _localAuthService: LocalAuthService,
-    private _router: Router
+    private _router: Router,
+    private _commonService: CommonService,
   ) {
+    this.isMoglixAppInstalled();
   }
 
   ngOnInit(): void {
@@ -44,27 +47,36 @@ export class AppPromoComponent implements OnInit {
     this.getUserAuthenticationStatus();
     this.getUserAuthenticationStatusChange();
     this.mobile_os = this.getMobileOperatingSystem();
-    this.isMoglixAppInstalled();
   }
-  
+
   get productDeepLink() {
     return 'moglix://' + this.productMsn;
   }
 
-  openDeepLink(){
+  openDeepLink() {
     window.open(this.productDeepLink, '_blank');
   }
 
   isMoglixAppInstalled() {
-    if (navigator && navigator['getInstalledRelatedApps']) {
-      (navigator['getInstalledRelatedApps'])().then(installedApps => {
-        const nativeApp = installedApps.find(app => app.id === 'com.moglix.online');
-        console.log("nativeApp ==>", nativeApp, installedApps);
-        if (nativeApp && nativeApp.length > 0) {
-          this.isAppInstalled = true;
+    if (this._commonService.isBrowser) {
+      console.log('isMoglixAppInstalled called 1 ==>', 'on load');
+      window.addEventListener('load', () => {
+        console.log('isMoglixAppInstalled called ==>', 'on load');
+        // Check to see if the API is supported.
+        if ('getInstalledRelatedApps' in navigator) {
+          this.checkForRelatedApps();
         }
       });
     }
+  }
+
+  checkForRelatedApps() {
+    navigator['getInstalledRelatedApps']().then((relatedApps) => {
+      console.log('isMoglixAppInstalled relatedApps ==>', relatedApps);
+      if (relatedApps && relatedApps.length > 0) {
+        this.isAppInstalled = true;
+      }
+    });
   }
 
   openPlayStore() {

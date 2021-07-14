@@ -64,7 +64,7 @@ export class CheckForCountPipe implements PipeTransform{
         return !v.selected
       }).length;
     }
-    return val.terms.length;
+    return val;
   }
 }
 

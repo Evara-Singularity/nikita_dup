@@ -27,6 +27,7 @@ export class ProductListService {
     if (this._commonService.isBrowser) {
       const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join(''); 
       this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(fragment);
+      this._commonService.selectedFilterData.filterChip = this._commonService.updateSelectedFilterDataFilterFromFragment(fragment);
       this.initializeSortBy();
     }
 

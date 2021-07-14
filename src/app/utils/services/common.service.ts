@@ -823,6 +823,7 @@ export class CommonService {
     */
     public selectedFilterData: any = {
         filter: {},
+        filterChip: {},
         sortBy: 'popularity',
         pages: [],
         page: this._activatedRoute.snapshot.params.page || 1,

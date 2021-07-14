@@ -16,7 +16,7 @@ let digitalData = {
     page: {},
     custData: {},
     order: {}
-  };
+};
 
 @Component({
     selector: 'brand',
@@ -67,7 +67,6 @@ export class BrandV1Component {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
-            console.log(this.API_RESPONSE);
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
@@ -430,6 +429,10 @@ export class BrandV1Component {
             }
         }
         return productSearchResultSEO;
+    }
+
+    navigateTo(){
+        this._router.navigateByUrl(window.location.pathname);
     }
 
     genrateAndUpdateBrandFooterData(){

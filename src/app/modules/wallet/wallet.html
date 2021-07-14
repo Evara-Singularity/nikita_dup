@@ -1,5 +1,4 @@
 <section class="walletInner">
-
     <div class="payment-notification" *ngIf="lsrMessage">
         Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.
     </div>
@@ -13,7 +12,7 @@
                 <div>
                     <img class="wallet-img" src="{{imagePath+imageFolder + '/' + walletMap[wallet].imgUrl}}">
                     <span class="lowsuccessRate  pad-l-8"
-                        *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && !successPercentageData[walletMap[wallet]['type']]['up_status']">Low
+                        *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
                         success rate observed</span>
                 </div>
             </li>

@@ -36,55 +36,57 @@
                 <ng-container *ngIf="emiResponse">
                     <div class="emi-plans" *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
                         <h3 class="heading medium-heading">No Cost EMI Plans</h3>
-                        <ul class="emi-plans-list">
+                        <div class="emi-plans-list">
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
-                                <li *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
+                                <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        <input formControlName="bankcode" [checked]="selectedEmiOption == emi.key" type="radio" [value]="emi.key"
-                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount)" [id]="emi.key">
+                                        
+                                        <input formControlName="bankcode" [checked]="selectedEMIKey == emi.key" type="radio" [value]="emi.key"
+                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)" [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>
-                                    <div class="emi-amount">
-                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
-                                        <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
+                                <div class="emi-amount">
+                                    <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                    <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
                                                 getEmiMonths(emi.key) }} months <span class="green-txt">@0%
                                                 p.a.</span></span>
-                                    </div>
-                                    <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
+                                </div>
+                                <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
                                         '1.2-2'}}</span>
-                                </li>
+                                </label>
                             </ng-container>
-                        </ul>
+                        </div>
                     </div>
 
                     <div class="emi-plans" *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
                         <h3 class="heading medium-heading">Standered EMI Plans </h3>
-                        <ul class="emi-plans-list">
+                        <div class="emi-plans-list">
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
-                                <li *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
+                                <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        <input formControlName="bankcode" type="radio" [checked]="selectedEmiOption == emi.key" [value]="emi.key"
-                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount)" [value]="emi.key"
+                                        
+                                        <input formControlName="bankcode" type="radio" [checked]="selectedEMIKey == emi.key" [value]="emi.key"
+                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)" [value]="emi.key"
                                             [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>
-                                    <div class="emi-amount">
-                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
-                                        <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
+                                <div class="emi-amount">
+                                    <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                    <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
                                                 getEmiMonths(emi.key) }} months {{emi.value.emi_interest_paid> 0 ? +
                                                 emi.value.emiBankInterest + '%' :
                                                 '0 %' }} p.a.</span>
-                                    </div>
-                                    <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
+                                </div>
+                                <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
                                         '1.2-2'}}</span>
-                                </li>
+                                </label>
                             </ng-container>
-                        </ul>
+                        </div>
                     </div>
                 </ng-container>
 
                 <section class="creditDebitCardInner">
-                    <h3 class="heading-3">Please enter you debit/credit card details</h3>
+                    <h3 class="heading-3">Please enter your card details</h3>
                     <div class="material-form material-form-boxed">
                         <div class="input-field-boxed">
                             <label>Card Number</label>

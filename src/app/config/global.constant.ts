@@ -4,6 +4,7 @@ export const GLOBAL_CONSTANT = {
     newAddress: 9999,
     created: 1,
     updated: 2,
+    trendingCategoryLimit: 4,
     creditDebitCard: 1,
     brandStoreCmsId: 'CM1000031',
     netBanking: 2,
@@ -137,7 +138,7 @@ export const GLOBAL_CONSTANT = {
     default: {
         pageSize: 20
     },
-    inlineFilter: ['category', 'price', 'discount'],
+    inlineFilter: ['price', 'brand', 'discount'],
     codMin: 300,
     codMax: 25000,
     userType: {

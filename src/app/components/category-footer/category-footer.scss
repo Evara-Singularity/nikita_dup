@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 ::ng-deep {
     .category_data {
         padding: 0px 15px;
@@ -17,5 +18,38 @@
     }
     .body-bg {
         background: #f2f2f2;
+    }
+}
+
+.panel-head {
+    background: #fff;
+    margin-top: 10px;
+    h3 {
+        padding: 15px 5px;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+}
+
+.category-tbl {
+    th,
+    td {
+        font-size: 12px;
+        font-weight: normal;
+        text-align: left;
+        border-bottom: 1px solid $border-color;
+        padding: 5px;
+    }
+}
+
+
+.common_table {
+    th,
+    td {
+        font-size: 12px;
+        font-weight: normal;
+        text-align: left;
+        border-bottom: 1px solid $border-color;
+        padding: 5px;
     }
 }

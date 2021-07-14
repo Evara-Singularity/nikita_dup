@@ -36,7 +36,7 @@ export class CategoryV1Resolver implements Resolve<any> {
     const GET_RELATED_CATEGORY_KEY: any = makeStateKey<{}>('get_related-' + categoryId);
     const REFRESH_KEY: any = makeStateKey<{}>('refresh-' + categoryId);
     const FAQ_KEY: any = makeStateKey<{}>('faq-' + categoryId);
-    const BREADCRUMP_KEY: any = makeStateKey<{}>('breadcrump-' + categoryId);
+    const BREADCRUMP_KEY: any = makeStateKey<{}>('breaattributedcrump-' + categoryId);
     const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
     const RELATED_ARTICLES_KEY = makeStateKey<{}>('related_articles-' + categoryId);
     const ATTRIBUTE_KEY = makeStateKey<{}>('attribute-' + categoryId);
@@ -75,13 +75,10 @@ export class CategoryV1Resolver implements Resolve<any> {
         const breadcrump_url = environment.BASE_URL + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;
+        const related_article_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_ARTICLES + categoryId;
        
-        if (!Object.keys(this._commonService.selectedFilterData.filter).length && _activatedRouteSnapshot.fragment) {
-          this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
-        }
-        
         const params = {
-          filter: this._commonService.selectedFilterData.filter,
+          filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
           queryParams: _activatedRouteSnapshot.queryParams,
           pageName: "CATEGORY"
         };
@@ -95,8 +92,9 @@ export class CategoryV1Resolver implements Resolve<any> {
         const getBreadCrump = this.http.get(breadcrump_url).pipe(share());
         const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share());
         const getAttributeObs = this.http.get(attribute_url).pipe(share());
+        const getRelatedArticleObs = this.http.get(related_article_url).pipe(share());
 
-        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getAttributeObs];
+        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getAttributeObs, getRelatedArticleObs];
 
         if (state.url.search('#') < 0) {
             apiList.push(getCmsDynamicDataForCategoryAndBrandObs);

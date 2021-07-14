@@ -25,8 +25,8 @@
 </div>
 <div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">
-        <ng-container *ngFor="let filterChip of Object.keys(_commonService.selectedFilterData.filter)">
-            <ng-container *ngFor="let filter of _commonService.selectedFilterData.filter[filterChip]">
+        <ng-container *ngFor="let filterChip of Object.keys(_commonService.selectedFilterData.filterChip)">
+            <ng-container *ngFor="let filter of _commonService.selectedFilterData.filterChip[filterChip]">
                 <span class="filter_chip">
                     <span>{{ filter | addFilterSymbol:filterChip }}</span>
                     <i (click)="removeFilterChip(filterChip, filter)" class="icon-circle-delete"></i>
@@ -40,7 +40,7 @@
         <div class="left list-name">
             {{ headerName }}
         </div>
-        <div class="right" *ngIf="productsListingData.totalCount">
+        <div class="right" *ngIf="productsListingData?.totalCount">
             Showing {{ (productsListingData.totalCount < 20) ? productsListingData.totalCount : '20' }} out of {{productsListingData.totalCount}} products
         </div>
     </ng-container>

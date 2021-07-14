@@ -1,3 +1,4 @@
+@import './../../scss/variables';
 .sort-by {
     text-align: left;
     .container {
@@ -21,11 +22,11 @@
 
 .overlay {
     position: fixed;
-    top: 0;
     left: 0;
     background: rgba(0, 0, 0, .2);
     width: 100%;
     height: 100%;
+    top: 0;
 }
 
 .bottom-options .overlay {
@@ -33,7 +34,7 @@
     top: 120%;
 }
 
-.open .bottom-options .overlay {
+.bottom-options.open .overlay {
     top: 0;
 }
 
@@ -47,11 +48,17 @@
     width: 100%;
     max-height: 45%;
     overflow: auto;
-    border-radius: 16px 16px 0px 0px;
-}
-
-.open .bottom-options .content-box {
-    bottom: 0;
+    &.roundedBox {
+        border-radius: 16px 16px 0px 0px;
+    }
+    &.open {
+        .overlay {
+            top: 120%;
+        }
+        &.content-box {
+            bottom: 0;
+        }
+    }
 }
 
 #emailer,
@@ -70,5 +77,13 @@
     line-height: 20px;
     width: calc(100% - 38px);
     font-size: 14px;
-    font-weight: bold;
+}
+
+.sortByLayout {
+    label {
+        display: block;
+        padding: 15px;
+        @extend %clear-fix;
+        @extend %custom-radio-checkout;
+    }
 }

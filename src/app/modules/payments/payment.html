@@ -108,6 +108,15 @@
                 </div>
             </div>
         </div>
+        <div id="pseudoSection" *ngIf="!isPaymentSelected">
+            <div class="continue-button">
+                <div class="container">
+                    <p class="total-mount">
+                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}} </p>
+                    <button type="submit" [disabled]="true" class="btn">PAY</button>
+                </div>
+            </div>
+        </div>
         <div class="note-section">
             <p>Please note: You might be redirected to 3-D secure page to complete your transaction.</p>
         </div>
@@ -268,15 +277,7 @@
             </a>
         </div>
 
-        <div id="pseudoSection" *ngIf="!isPaymentSelected">
-            <div class="continue-button">
-                <div class="container">
-                    <p class="total-mount">
-                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}} </p>
-                    <button type="submit" [disabled]="true" class="btn">PAY</button>
-                </div>
-            </div>
-        </div>
+
 
         <div [class.disableCod]="disableCod" id="cashOnDeliverySection" (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')">
 

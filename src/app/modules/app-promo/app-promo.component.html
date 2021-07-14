@@ -2,8 +2,7 @@
     <div [ngClass]="{'fixed-app-promo':isOverlayMode}">
 
         <ng-container *ngIf="!isUserAuthenticated">
-
-            <div class="app-promotion" *ngIf="showPromoCode" >
+            <div class="app-promotion" *ngIf="showPromoCode">
                 <span (click)="removePromo()">
                     <img src="{{assetImgPath}}assets/img/App-promotion/close-line.png" alt="close-line">
                 </span>
@@ -11,7 +10,7 @@
                 </p>
             </div>
 
-            <div class="content-mobile-app" (click)="openPlayStore()" *ngIf="mobile_os == MOBILE_ENVS.ANDROID">
+            <div class="content-mobile-app promotion-nonLogin" (click)="openPlayStore()" *ngIf="mobile_os == MOBILE_ENVS.ANDROID">
                 <div class="mobile">
                     <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
                 </div>
@@ -25,7 +24,7 @@
             </div>
 
             <!--App store image added-->
-            <div class="content-mobile-app" (click)="openAppStore()" *ngIf="mobile_os == MOBILE_ENVS.IOS">
+            <div class="content-mobile-app promotion-nonLogin" (click)="openAppStore()" *ngIf="mobile_os == MOBILE_ENVS.IOS">
                 <div class="mobile">
                     <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
                 </div>
@@ -42,7 +41,7 @@
 
         <!--for install app code-->
         <ng-container *ngIf="isUserAuthenticated">
-            <div class="app-promotion"  *ngIf="showPromoCode" >
+            <div class="app-promotion" *ngIf="showPromoCode">
                 <p class="install-app-text">Get Personalized Experience & Best Deals on App </p>
             </div>
             <div class="content-mobile-app">
@@ -59,8 +58,8 @@
                 <div class="install-app" *ngIf="!isAppInstalled">
                     <button>INSTALL APP</button>
                 </div>
-                <div class="install-app"  *ngIf="isAppInstalled">
-                    <button (click)="openDeepLink()" >Open Moglix App</button>
+                <div class="install-app" *ngIf="isAppInstalled">
+                    <button (click)="openDeepLink()">Open Moglix App</button>
                 </div>
             </div>
         </ng-container>

@@ -405,6 +405,8 @@ export class CartService {
         buyNow: boolean,
         productDetails: AddToCartProductSchema
     }): Observable<any> {
+        this.buyNow = args.buyNow;
+        this.buyNowSessionDetails = null;
         return this._checkForUserAndCartSession().pipe((
             // Action : Check whether product already exist in cart itemList if exist exit
             map(cartSession => {
@@ -419,7 +421,7 @@ export class CartService {
         )).pipe(
             // Action : update sessionId & cartId in productDetails
             map((cartSession) => {
-                console.log('step 1 ==>', cartSession);
+                //console.log('step 1 ==>', cartSession);
                 if (!cartSession) {
                     return cartSession;
                 } else {
@@ -443,13 +445,11 @@ export class CartService {
                 }
             }), 
             mergeMap(cartSession => {
-                console.log('step 2 ==>', cartSession);
                 return this._getUserSession().pipe(
                     map(userSession => {
                         if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
                             // add temp session for buynow
                             // as per current flow, update cart api should not be called for buynow if user is not logged in 
-                            console.log('step 3 ==>', cartSession);
                             this.buyNowSessionDetails = cartSession;
                             return null;
                         } else {

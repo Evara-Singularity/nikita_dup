@@ -6,6 +6,7 @@ import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 
 @Component({
@@ -21,7 +22,9 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   @Input() productGroupData: AddToCartProductSchema;
   @Input() buyNow: boolean = false;
   @Output() selectedVariant$ = new EventEmitter<{ msn: string, buyNow: boolean }>();
+  @Output() selectedVariantOOO$ = new EventEmitter<any>();
   @Output() continueToCart$ = new EventEmitter<{ product: AddToCartProductSchema, buyNow: boolean }>();
+  @Output() hide$ = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -31,11 +34,17 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   emitVariant(msn: string, isSecleted, isActive): void {
     if (!isSecleted && isActive) {
       this.selectedVariant$.emit({ msn, buyNow: this.buyNow });
+    }else{
+      this.selectedVariantOOO$.emit(msn);
     }
   }
 
   continueToCart() {
     this.continueToCart$.emit({ product: this.productGroupData, buyNow: this.buyNow })
+  }
+
+  hide() {
+    this.hide$.emit(true);
   }
 
 }
@@ -48,7 +57,8 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   imports: [
     CommonModule,
     RouterModule,
-    RatingPipeModule
+    RatingPipeModule,
+    MathFloorPipeModule
   ],
 })
 export class ProductVariantSelectListingPageModule { }

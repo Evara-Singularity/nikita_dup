@@ -248,12 +248,15 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 }
             });
 
-        this.cartService.cart.subscribe((data) =>
-        {
+        this.cartService.cart.subscribe((data) => {
             if (data.count) {
                 this.noOfCart = data.count;
             } else {
-                this.noOfCart = data;
+                if (data.count == null) {
+                    this.noOfCart = 0;
+                } else {
+                    this.noOfCart = data;
+                }
             }
             this.setHeader();
         });
@@ -313,11 +316,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             } else if (isCheckout){
                 if (this.checkoutLoginService.isAtFirstSection) {
                     let index = this._checkoutService.getCheckoutTabIndex();
-                    if(index === 1 ){
+                    if (index === 1) {
                         this.location.back();
                     }
                     else if (index === 2) {
-                        this._checkoutService.setCheckoutTabIndex(index-1);
+                        this._checkoutService.setCheckoutTabIndex(index - 1);
                         this.location.back();
                     } else {
                         this._state.notifyData('routeChanged', index - 2);

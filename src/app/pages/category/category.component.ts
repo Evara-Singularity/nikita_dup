@@ -1027,7 +1027,6 @@ export class CategoryComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        // this.sortByContainerRef['sortBy'] = 'popularity';
         this.resetLazyComponents();
     }
     

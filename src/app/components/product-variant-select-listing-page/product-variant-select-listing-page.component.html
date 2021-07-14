@@ -1,55 +1,58 @@
-<div class="bottom-options open">
-    <div class="overlay"></div>
-    <div class="content-box productVariantBox">
-        <div class="top-heading">
-            <h3 class="heading-3">Select Variant</h3>
-            <i class="icon-circle-delete"></i>
-        </div>
-        <div class="select-container" *ngIf="productGroupData">
-            <div class="card-container">
-                <div class="left">
-                    <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
+<div class="custom-popup-bottom">
+    <div class="open">
+        <div class="bottom-options">
+            <div class="overlay"></div>
+            <div class="content-box verifyPopup">
+                <div class="top-heading">
+                    <h3 class="heading-3">Select Variant</h3>
+                    <i class="icon-circle-delete" (click)="hide()"></i>
                 </div>
-                <div class="right">
-                    <div class="rating">
-                        <span class="avgrating" *ngIf="product.avgRating">
-                        {{product.avgRating | rating | number : '1.1-1' }}
-                        <i class="icon-rating-star"></i>
-                    </span>
-                        <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
-                    </div>
-                    <div class="name">
-                        <span>{{product.productName}}</span>
-                    </div>
-                    <div class="brand">
-                        <span>By: {{product.brandName}}</span>
-                    </div>
-                    <div class="price-details">
+                <div class="select-container" *ngIf="productGroupData">
+                    <div class="card-container">
                         <div class="left">
-                            <div class="price">
-                                <span class="crossed">{{ product.mrp | currency:'INR' }}</span>
-                                <span class="green-label">{{product.discount}}% OFF</span>
+                            <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
+                        </div>
+                        <div class="right">
+                            <div class="rating">
+                                <span class="avgrating" *ngIf="product.avgRating">
+                            {{product.avgRating | rating | number : '1.1-1' }}
+                            <i class="icon-rating-star"></i>
+                        </span>
+                                <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
                             </div>
-                            <div class="main-price">
-                                <span>{{ product.priceWithoutTax | currency:'INR' }}</span>
+                            <div class="name">
+                                <span>{{product.productName | slice:0:60 }}<span *ngIf="product.productName.length>60">...</span></span>
+                            </div>
+                            <div class="brand">
+                                <span>By: {{product.brandName}}</span>
+                            </div>
+                            <div class="price-details">
+                                <div class="left">
+                                    <div class="price">
+                                        <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+                                        <span class="green-label">{{product.discount}}% OFF</span>
+                                    </div>
+                                    <div class="main-price">
+                                        <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="select-warp" *ngFor="let variants of productGroupData.filterAttributesList">
+                        <h3 class="heading-3">Select {{variants['name']}}</h3>
+                        <ul>
+                            <li *ngFor="let item of variants['items']" [ngClass]="{'selected': item.selected, 'inactive': !item.active}" (click)="emitVariant(item.msn,item.selected, item.active)">
+                                {{item['value']}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="stickyBottomBtn">
+                    <button class="btn continue-btn" (click)="continueToCart()" [disabled]="productGroupData.isOutOfStock">
+                    CONTINUE
+                </button>
                 </div>
             </div>
-            <div class="select-warp" *ngFor="let variants of productGroupData.filterAttributesList">
-                <h3 class="heading-3">Select {{variants['name']}}</h3>
-                <ul>
-                    <li *ngFor="let item of variants['items']" [ngClass]="{'selected': item.selected, 'inactive': !item.active}" (click)="emitVariant(item.msn,item.selected, item.active)">
-                        {{item['value']}}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="stickyBottomBtn">
-            <button class="btn continue-btn" (click)="continueToCart()" [disabled]="productGroupData.isOutOfStock">
-                CONTINUE
-            </button>
         </div>
     </div>
-</div>

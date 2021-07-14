@@ -1,37 +1,54 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ENDPOINTS } from '@app/config/endpoints';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@services/common.service';
-import { DataService } from '@services/data.service';
 import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
-import { environment } from 'environments/environment';
-import { Router } from '@angular/router';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class ProductListService {
   productListingData: ProductListingDataEntity;
   inlineFilterData: any;
 
   constructor(
-      private _activatedRoute: ActivatedRoute,
-      private _commonService: CommonService,
-      private _router: Router,
-      private _dataService: DataService
-  ){}
-
-  createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
-      this.productListingData = {
-          totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
-          products: rawSearchData.productSearchResult.products,
-          filterData: rawSearchData.buckets,
-          listingHeading: heading
-        };
+    private _commonService: CommonService,
+  ) {
   }
 
+  createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
+
+    this.productListingData = {
+      totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
+      products: rawSearchData.productSearchResult.products,
+      filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
+      listingHeading: heading
+    };
+    
+    if (this._commonService.isBrowser) {
+      const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join(''); 
+      this._commonService.selectedFilterData.filter = this._commonService.updateSelectedFilterDataFilterFromFragment(fragment);
+      this._commonService.selectedFilterData.filterChip = this._commonService.updateSelectedFilterDataFilterFromFragment(fragment);
+      this.initializeSortBy();
+    }
+
+  }
+
+  extractFragmentFromUrl(str) {
+    var pieces = str.split("&"), data = {}, i, parts;
+    // process each query pair
+    for (i = 0; i < pieces.length; i++) {
+        parts = pieces[i].split("=");
+        if (parts.length < 2) {
+            parts.push("");
+        }
+        data[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+    }
+    return data;
+}
+
   initializeSortBy() {
-    const queryParams = this._activatedRoute.snapshot.queryParams;
+    const url = location.search.substring(1);
+    const queryParams = url ? JSON.parse('{"' + decodeURI(url).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
 
     if (queryParams.hasOwnProperty('orderBy') && queryParams.hasOwnProperty('orderWay') && queryParams['orderBy'] === 'price') {
       if (queryParams['orderWay'] === 'asc') {
@@ -44,17 +61,16 @@ export class ProductListService {
     }
   }
 
-  calculateFilterCount(data){
-    console.log(data);
+  calculateFilterCount(data) {
     let count = 0;
     data.forEach((el) => {
-        for (let i = 0; i < el.terms.length; i++) {
-            if (el.terms[i].selected) {
-                console.log(el);
-                count++;
-                break;
-            }
+      for (let i = 0; i < el.terms.length; i++) {
+        if (el.terms[i].selected) {
+          console.log(el);
+          count++;
+          break;
         }
+      }
     });
     return count;
   }

@@ -63,7 +63,7 @@
     </app-pop-up>
     <!-- LIST OF ADDRESS POP UP ENDS  -->
 
-    <app-pop-up *ngIf="salpu.billing" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left', paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup',selector:'salpu.billing',headerText:'Billing Address'}">
+    <app-pop-up *ngIf="salpu.billing" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left', paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:'salpu.billing',headerText:'Billing Address'}">
         <div class="head-sec" header>
             <i class="icon-circle-delete f-left" (click)="salpu.billing = false; closePopup(2)"></i>
             <p class="txt">Billing Address ({{getAddressessCount(addressList, 2)}})</p>

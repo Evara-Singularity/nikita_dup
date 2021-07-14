@@ -233,7 +233,8 @@ export class CommonService {
     }
 
     generateQueryParams() {
-        let queryParams = JSON.parse(JSON.stringify(this._activatedRoute.snapshot.queryParams));
+        const url = location.search.substring(1);
+        const queryParams = url ? JSON.parse('{"' + decodeURI(url).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
         if (this.selectedFilterData.sortBy === 'popularity') {
             delete queryParams['orderBy'];
             delete queryParams['orderWay'];
@@ -721,14 +722,6 @@ export class CommonService {
     }
 
 
-
-    updateSortByState(sortByState) {
-        let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
-        let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
-        this.defaultParams.queryParams["orderBy"] = orderBy;
-        this.defaultParams.queryParams["orderWay"] = orderWay;
-    }
-
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');
         return this.getBusinessDetail({ customerId: userSession.userId })
@@ -831,6 +824,7 @@ export class CommonService {
     */
     public selectedFilterData: any = {
         filter: {},
+        filterChip: {},
         sortBy: 'popularity',
         pages: [],
         page: this._activatedRoute.snapshot.params.page || 1,
@@ -892,6 +886,19 @@ export class CommonService {
             extras.queryParams['page'] = page;
         }
 
+
+        this.toggleFilter(true);
         this._router.navigate([currentRoute], extras);
+    }
+
+    toggleFilter(forceFillyRemove?:boolean) {
+        const mob_filter = document.querySelector('.mob_filter');
+        if (mob_filter) {
+            forceFillyRemove ? mob_filter.classList.remove('upTrans') : mob_filter.classList.toggle('upTrans');
+        }
+    }
+
+    navigateTo(link) {
+        this._router.navigateByUrl(link);
     }
 }

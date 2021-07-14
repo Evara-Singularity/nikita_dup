@@ -234,11 +234,12 @@
         <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
 
-        <div class="returnPolicyContainer" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+        <div [ngClass]="{'returnPolicyContainer': appPromoVisible}" observeVisibility [debounceTime]="300"
+            (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
 
-        <div class="returnPolicyContainer clearfix">
+        <div class="returnPolicyContainer clearfix" *ngIf="isProductReturnAble" >
             <h2 class="heading-3"> RETURN POLICY</h2>
             <div class=" returnPolicyInnerContainer pad-lr-0">
                 <div [style.width.px]="4 * 120">

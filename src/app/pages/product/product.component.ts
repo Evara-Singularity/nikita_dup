@@ -93,6 +93,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productSubPartNumber: string;
   productBulkPrices: any[];
   recentBoughtOrderCount: any;
+  isProductReturnAble: boolean = false
   //Product Question answer
   questionAnswerForm: FormGroup;
   //review and rating 
@@ -184,6 +185,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     "Toe Type": "steel-toe",
     "Waterproof": "waterproof"
   };
+
+  appPromoVisible: boolean = true;
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
@@ -467,6 +470,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     // mapping general information 
     this.productName = this.rawProductData['productName'];
+    this.isProductReturnAble = this.rawProductData['returnable'] || false;
     this.productDescripton = this.rawProductData['desciption'];
     this.productBrandDetails = this.rawProductData['brandDetails'];
     this.productCategoryDetails = this.rawProductData['categoryDetails'][0];
@@ -1687,6 +1691,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
+    (this.appPromoInstance.instance['appPromoStatus$'] as EventEmitter<boolean>).subscribe((status) => {
+      this.appPromoVisible = status;
+    });
   }
 
   postHelpful(item, yes, no, i) {

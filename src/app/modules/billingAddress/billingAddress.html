@@ -85,8 +85,7 @@
                 </label>
                 <p *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].touched && !addressForm['controls'].billingAddress['controls']['postCode'].valid && addressForm['controls'].billingAddress['controls']['postCode'].errors['required']" class="error-txt">Kindly enter your pincode</p>
                 <p *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].touched && addressForm['controls'].billingAddress['controls']['postCode'].errors && addressForm['controls'].billingAddress['controls']['postCode'].errors['invalidPostCode']" class="error-txt">Pincode should contain 6 digits</p>
-                <p class="error-txt" *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].valid && !isPinCodeApiValid">
-                    Please enter a valid digit pincode.</p>
+                <p class="error-txt" *ngIf="addressForm['controls'].billingAddress['controls']['postCode'].valid && !isPinCodeApiValid">Invalid Pincode</p>
             </div>
         </div>
 

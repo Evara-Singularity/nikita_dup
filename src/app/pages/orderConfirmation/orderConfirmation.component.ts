@@ -421,7 +421,9 @@ export class OrderConfirmationComponent implements OnInit {
                             digitalData["order"] = order;
 
                             try {
-                                _satellite.track("genericPageLoad");
+                                if(_satellite){
+                                    _satellite.track("genericPageLoad");
+                                }
                             } catch (adobeError) {
                                 this.sendClickStreamDataError(
                                     "order_completed_adobe_error",

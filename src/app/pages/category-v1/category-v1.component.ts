@@ -1,6 +1,6 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
+import { CONSTANTS } from '@app/config/constants';
 import { CategoryService } from '@app/utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
@@ -8,8 +8,17 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
-import { Title } from '@angular/platform-browser';
-import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import { Meta, Title } from '@angular/platform-browser';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { DataService } from '@app/utils/services/data.service';
+import { LocalStorageService } from 'ngx-webstorage';
+
+let digitalData = {
+    page: {},
+    custData: {},
+    order: {}
+};
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 
@@ -58,9 +67,14 @@ export class CategoryV1Component {
         private _renderer2: Renderer2,
         @Inject(DOCUMENT) private _document,
         public _footerService: FooterService,
+        private _analytics: GlobalAnalyticsService,
+        private _localStorageService: LocalStorageService,
+        private _dataService: DataService,
         private _title: Title,
+        @Optional() @Inject(RESPONSE) private _response,
         public _commonService: CommonService,
         private _activatedRoute: ActivatedRoute,
+        private meta: Meta, 
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
@@ -76,22 +90,308 @@ export class CategoryV1Component {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-
+            
+            // set API result data
             this.API_RESPONSE = result;
 
-            this._title.setTitle((this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com");
+            console.log(this.API_RESPONSE);
 
+            // Set Title and Meta for category
+            this.setTitleAndMetaForCategory();
+
+            // if this PLP is active and perform some tasks like fire tags
+            this.checkIfThisCategoryIsActive();
+
+            // static components updates
             this.updateComponentsBasedOnrouteChange();
+
+            // create Schema for PLP category products
+            this.createCategorySchema(this.API_RESPONSE.category[1].productSearchResult['products']);
+
+            // create FAQ section schema
+            this.setFaqSchema(this.API_RESPONSE.category[2]);
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList);
 
-            this._commonService.selectedFilterData.totalCount = result['category'][1].productSearchResult.totalCount;
+            // Update total product account
+            this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
 
-            this._productListService.createAndProvideDataToSharedListingComponent(result['category'][1], 'Category Results');
+            // shared product listing data update
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
 
+            // update footer data
             this.genrateAndUpdateCategoryFooterData();
+
+            this.setCanonicalUrls();
+
+            // send tracking data 
+            this.sendTrackingData();        
         });
+    }
+
+    private setCanonicalUrls() {
+        const currentRoute = this._router.url.split('?')[0].split('#')[0];
+
+        if (this._commonService.isServer) {
+            const links = this._renderer2.createElement('link');
+            links.rel = 'canonical';
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
+            } else {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            this._renderer2.appendChild(this._document.head, links);
+        }
+
+        const currentQueryParams = this._activatedRoute.snapshot.queryParams;
+        const pageCountQ = this.API_RESPONSE['category'][1].productSearchResult.totalCount / 10;
+        const currentPageP = parseInt(currentQueryParams['page']);
+
+        if (pageCountQ > 1 && (currentPageP === 1 || isNaN(currentPageP))) {
+            let links = this._renderer2.createElement('link');
+            links.rel = 'next';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=2';
+            this._renderer2.appendChild(this._document.head, links);
+
+        } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
+            let links = this._renderer2.createElement('link');
+            links.rel = 'prev';
+            if (currentPageP === 2) {
+                links.href = CONSTANTS.PROD + currentRoute;
+            } else {
+                links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+            }
+
+            this._renderer2.appendChild(this._document.head, links);
+
+            links = this._renderer2.createElement('link');
+            links.rel = 'next';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
+            this._renderer2.appendChild(this._document.head, links);
+        } else if (currentPageP > 1 && pageCountQ + 1 >= currentPageP) {
+            let links = this._renderer2.createElement('link');
+            links.rel = 'prev';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+            this._renderer2.appendChild(this._document.head, links);
+        }
+    }
+
+    sendTrackingData() {
+        if (this._commonService.isBrowser) {
+            let taxonomy = this.API_RESPONSE['category'][0]["categoryDetails"]['taxonomy'];
+            let trackData = {
+                event_type: "page_load",
+                label: "view",
+                product_count: this.API_RESPONSE['category'][1]["productSearchResult"]["totalCount"],
+                category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
+                category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
+                category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
+                channel: "Listing",
+                search_query: null,
+                suggestion_click: null,
+                filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
+                url_complete_load_time: null,
+                page_type: "Category"
+            }
+            this._dataService.sendMessage(trackData);
+        }
+    }
+
+    private setFaqSchema(faqData) {
+        if (this._commonService.isServer) {
+            if (faqData && faqData.length > 0) {
+                const qaSchema = [];
+                faqData.forEach((element, index) => {
+                    qaSchema.push({
+                        "@type": "Question",
+                        "name": element.questionText,
+                        "acceptedAnswer":
+                        {
+                            "@type": "Answer",
+                            "text": element.answerText
+                        }
+
+                    });
+
+                })
+                let qna = this._renderer2.createElement('script');
+                qna.type = "application/ld+json";
+                qna.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "FAQPage", "mainEntity": qaSchema });
+                this._renderer2.appendChild(this._document.head, qna);
+            }
+        }
+    }
+
+    handleZeroProductListOnServer() {
+        if (this._commonService.isServer) {
+            let httpStatus = 404;
+            if (this.API_RESPONSE.category[0]['httpStatus']) {
+                httpStatus = this.API_RESPONSE.category[0]['httpStatus'];
+            } else if (this.API_RESPONSE.category[1]['httpStatus']) {
+                httpStatus = this.API_RESPONSE.category[1]['httpStatus'];
+            }
+            this._response.status(httpStatus);
+        }
+    }
+
+    checkIfThisCategoryIsActive(){
+        if (!this.API_RESPONSE.category[0]['categoryDetails']['active'] || this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] === 0) {
+            
+            this.handleZeroProductListOnServer();
+        } else if (this.API_RESPONSE.category[0]['categoryDetails']['active']) {
+
+            if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0) {
+                this.fireTags();
+            }
+        }
+    }
+
+    fireTags() {
+        /**************************GTM START*****************************/
+        let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
+        cr = cr.split('/');
+        cr.splice(cr.length - 1, 1);
+
+        cr = cr.join('/');
+        const gaGtmData = this._commonService.getGaGtmData();
+        const psrp = this.API_RESPONSE.category[1].productSearchResult.products;
+
+        const dlp = [];
+        const criteoItem = [];
+        for (let p = 0; p < this.API_RESPONSE.category[1].productSearchResult.products.length; p++) {
+            const product = {
+                id: psrp[p].moglixPartNumber,
+                name: psrp[p].productName,
+                price: psrp[p].priceWithoutTax,
+                brand: psrp[p].brandName,
+                category: cr,
+                variant: '',
+                list: (gaGtmData && gaGtmData['list']) ? gaGtmData['list'] : '',
+                position: p + 1
+            };
+            dlp.push(product);
+            criteoItem.push(psrp[p].moglixPartNumber);
+        }
+
+            let user;
+            if (this._localStorageService.retrieve('user')) {
+                user = this._localStorageService.retrieve('user');
+            }
+            this._analytics.sendGTMCall({
+                'event': 'pr-impressions',
+                'ecommerce': {
+                    'currencyCode': 'INR', // Local currency is optional.
+                    'impressions': dlp,
+                },
+            });
+
+            const google_tag_params = {
+                ecomm_prodid: '',
+                ecomm_pagetype: 'category',
+                ecomm_totalvalue: ''
+            };
+
+            this._analytics.sendGTMCall({
+                'event': 'dyn_remk',
+                'ecomm_prodid': google_tag_params.ecomm_prodid,
+                'ecomm_pagetype': google_tag_params.ecomm_pagetype,
+                'ecomm_totalvalue': google_tag_params.ecomm_totalvalue,
+                'google_tag_params': google_tag_params
+            });
+
+            /*Start Criteo DataLayer Tags */
+
+            this._analytics.sendGTMCall({
+                'event': 'viewList',
+                'email': (user && user.email) ? user.email : '',
+                'ProductIDList': criteoItem,
+                'CategoryId': this.API_RESPONSE.category[0].categoryDetails.taxonomy,
+                'CategoryName': this.API_RESPONSE.category[0].categoryDetails.canonicalURL
+            });
+
+            /*End Criteo DataLayer Tags */
+
+            let taxo1;
+            let taxo2;
+            let taxo3;
+            /*Start Adobe Analytics Tags */
+            if (this.API_RESPONSE.category[0].categoryDetails.taxonomy) {
+                taxo1 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[0] || '';
+                taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
+                taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
+            }
+            let page = {
+                'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+                'channel': "listing",
+                'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
+                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            }
+            let custData = {
+                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+                'customerType': (user && user["userType"]) ? user["userType"] : '',
+            }
+            let order = {
+                'productCategoryL1': taxo1,
+                'productCategoryL2': taxo2,
+                'productCategoryL3': taxo3            
+            }
+
+            
+            digitalData["page"] = page;
+            digitalData["custData"] = custData;
+            digitalData["order"] = order;
+
+            if (this._activatedRoute.snapshot.queryParams['tS'] && this._activatedRoute.snapshot.queryParams['tS'] === 'no') {
+                digitalData["page"]["trendingSearch"] = 'no';
+                digitalData["page"]["suggestionClicked"] = 'no';
+            }
+            else if (this._activatedRoute.snapshot.queryParams['tS'] && this._activatedRoute.snapshot.queryParams['tS'] === 'yes') {
+                digitalData["page"]["trendingSearch"] = 'yes';
+                digitalData["page"]["suggestionClicked"] = 'yes';
+            }
+
+            if (this._activatedRoute.snapshot.queryParams['sC'] && this._activatedRoute.snapshot.queryParams['sC'] === 'no') {
+                digitalData["page"]["trendingSearch"] = 'no';
+                digitalData["page"]["suggestionClicked"] = 'no';
+            }
+            else if (this._activatedRoute.snapshot.queryParams['sC'] && this._activatedRoute.snapshot.queryParams['sC'] === 'yes') {
+                digitalData["page"]["trendingSearch"] = 'no';
+                digitalData["page"]["suggestionClicked"] = 'yes';
+            }
+            this._analytics.sendAdobeCall(digitalData);
+            /*End Adobe Analytics Tags */
+        
+    }
+
+    setTitleAndMetaForCategory(){
+        let title = (this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com";
+        let metaDescription = (this.API_RESPONSE.category[0].categoryDetails.metaDescription != undefined && this.API_RESPONSE.category[0].categoryDetails.metaDescription != null && this.API_RESPONSE.category[0].categoryDetails.metaDescription != "") ? this.API_RESPONSE.category[0].categoryDetails.metaDescription : "Shop online for " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " at best prices now! Moglix is a one stop shop for genuine " + this.API_RESPONSE.category[0].categoryDetails.categoryName + ". Cash on delivery, Free shipping available.";
+        this.meta.addTag({ 'name': 'description', 'content': metaDescription });
+        this.meta.addTag({ 'name': 'og:title', 'content': title });
+        this.meta.addTag({ 'name': 'og:description', 'content': metaDescription });
+        this.meta.addTag({ 'name': 'og:url', 'content': CONSTANTS.PROD + this._router.url });
+        this.meta.addTag({
+            'name': 'keywords',
+            'content': this.API_RESPONSE.category[0].categoryDetails.categoryName + ', ' + this.API_RESPONSE.category[0].categoryDetails.categoryName + ' online, buy ' + this.API_RESPONSE.category[0].categoryDetails.categoryName + ', industrial ' + this.API_RESPONSE.category[0].categoryDetails.categoryName
+        });
+
+        if (this.API_RESPONSE.category[1]['productSearchResult']['products'] && this.API_RESPONSE.category[1]['productSearchResult']['products'].length > 0) {
+            this.meta.addTag({ 'name': 'robots', 'content': (this._activatedRoute.snapshot.queryParams["page"] && parseInt(this._activatedRoute.snapshot.queryParams["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
+        } else {
+            this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
+        }
+
+        this._title.setTitle(title);
+    }
+
+    isUrlEqual(url1: string, url2: string): boolean {
+        if (url2.indexOf(url1) !== -1) {
+            return true;
+        }
+        return false;
     }
 
     genrateAndUpdateCategoryFooterData() {
@@ -273,8 +573,6 @@ export class CategoryV1Component {
             this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
             this.subCategoryInstance.instance.initializeSubcategoryData(this.API_RESPONSE.category[0].children);
         }
-
-
 
         this.layoutType = 0;
         if (params && params.id && slpPagesExtrasIdMap.hasOwnProperty(params.id)) {

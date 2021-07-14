@@ -1,18 +1,15 @@
 .card-container {
     width: 100%;
-    border-bottom: 1px solid #E2E2E2;
     padding: 15px 10px;
     background-color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    &:first-of-type {
-        border-top: 1px solid #E2E2E2;
-    }
     .left {
         width: 100px;
         text-align: center;
+        position: relative;
         img {
             width: 100%;
             height: auto;
@@ -20,8 +17,12 @@
         }
         .tags {
             position: absolute;
-            top: 15px;
-            left: 10px;
+            top: 0px;
+            left: 0px;
+            img{
+                height: 18px;
+                width: 80px;
+            }
         }
     }
     .right {
@@ -137,13 +138,15 @@
 }
 
 .youtubeThumbnail-listing {
+    padding-top: 10px;
     .thumbnail {
-        background: url('https://img.youtube.com/vi/h9QNUcrjtOs/hqdefault.jpg');
         background-size: cover;
         height: 120px;
         background-position: center center;
         background-repeat: no-repeat;
         position: relative;
+        margin: 0px 10px;
+        border-radius: 8px;
     }
     .youtube_icon {
         width: 70px;
@@ -168,6 +171,23 @@
         font-size: 20px;
         color: #D9232D;
         vertical-align: middle;
+    }
+}
+
+.product-card {
+    border-bottom: 1px solid #E2E2E2;
+    background: #fff;
+}
+
+.keyfeatures {
+    background-color: #FFF;
+    padding: 0px 8px 8px 18px;
+    ul {
+        list-style: disc;
+        li {
+            color: #7B7B7B;
+            font-size: 10px;
+        }
     }
 }
 

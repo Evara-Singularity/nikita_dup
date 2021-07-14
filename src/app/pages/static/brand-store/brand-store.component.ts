@@ -35,7 +35,7 @@ export class BrandComponent{
 		private meta: Meta,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
-		private _commonService: CommonService,
+		public _commonService: CommonService,
 		public _router: Router,
 		private route: ActivatedRoute,
 		private loaderService: GlobalLoaderService,

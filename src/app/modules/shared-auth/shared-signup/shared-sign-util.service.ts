@@ -24,7 +24,9 @@ export class SharedSignUtilService {
             'subSection': "moglix:order checkout signup form details",
         }
         digitalData["page"] = page;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+          _satellite.track("genericPageLoad");
+        }
     }
 
   pushCheckoutEvents(cartSession) {

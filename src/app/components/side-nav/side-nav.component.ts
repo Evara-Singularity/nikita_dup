@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
@@ -75,7 +75,10 @@ export class SideNavComponent implements OnInit {
 }
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   declarations: [SideNavComponent]
 })
 export class SideNavModule { }

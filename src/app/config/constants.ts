@@ -83,6 +83,13 @@ export const CONSTANTS = {
           paymentId: 64,
           imgUrl: "payzapp-wallet.png",
         },
+        walletYesPay: {
+          mode: "WALLET",
+          type: "YESPAY",
+          bankcode: "YESPAY",
+          paymentId: 64,
+          imgUrl: "yesbank-wallet.png",
+        },
         // walletFreecharge: {
         //   mode: "WALLET",
         //   type: "freecharge",
@@ -140,6 +147,13 @@ export const CONSTANTS = {
           bankcode: "FREC",
           paymentId: 64,
           imgUrl: "payzapp-wallet.png",
+        },
+        walletYesPay: {
+          mode: "WALLET",
+          type: "YESPAY",
+          bankcode: "YESPAY",
+          paymentId: 64,
+          imgUrl: "yesbank-wallet.png",
         },
       },
     },

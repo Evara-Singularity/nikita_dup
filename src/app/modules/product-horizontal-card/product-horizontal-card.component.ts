@@ -106,9 +106,11 @@ export class ProductHorizontalCardComponent implements OnInit {
       if (this.variantPopupInstance) {
         const productRequest = this.getAddToCartProductRequest(productBO, data.buyNow);
         const product = this.productEntityFromProductBO(productBO);
-        console.log('changeVariant product ==>', product);
+        const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
+        
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
+        this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
       }
     }, error => {
       console.log('changeVariant ==>', error);
@@ -197,6 +199,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       this.variantPopupInstance.instance['product'] = product;
       this.variantPopupInstance.instance['productGroupData'] = productGroupData;
       this.variantPopupInstance.instance['buyNow'] = buyNow;
+      this.variantPopupInstance.instance['isSelectedVariantOOO'] = false; // on first load always instock and value is passed as false
       (this.variantPopupInstance.instance['selectedVariant$'] as EventEmitter<boolean>).subscribe(data => {
         this.changeVariant(data);
       });
@@ -380,6 +383,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const partNumber = productGroupData['partNumber'] || productGroupData['defaultPartNumber'];
     const isProductPriceValid = productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
     const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+    const productPartDetails = productGroupData['productPartDetails'][partNumber];
     const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
     const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
       (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
@@ -400,16 +404,16 @@ export class ProductHorizontalCardComponent implements OnInit {
       taxes: productTax,
       amountWithTaxes: null,
       totalPayableAmount: productPrice,
-      productName: this.product['productName'],
-      brandName: this.product['brandName'],
+      productName: productGroupData['productName'],
+      brandName: productBrandDetails['brandName'],
       priceWithoutTax: priceWithoutTax,
       taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
-      productImg: this.imageCdnPath + "" + this.product['mainImageLink'],
+      productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['default']}` : '',
       isPersistant: true,
       productQuantity: productMinimmumQuantity,
       productUnitPrice: productPrice,
       expireAt: null,
-      productUrl: this.product['productUrl'],
+      productUrl: productGroupData['defaultCanonicalUrl'],
       bulkPriceMap: priceQuantityCountry['bulkPricesIndia'],
       bulkPrice: null,
       bulkPriceWithoutTax: null,

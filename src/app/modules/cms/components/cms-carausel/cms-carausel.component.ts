@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChange } from "@angular/core";
 import { Router } from '@angular/router';
+import { CmsService } from "../../cms.service";
 
 @Component({
     selector: 'cms-carausel',
@@ -10,14 +11,12 @@ export class CmsCarauselComponent {
     @Input('data') data = [];
     @Input('imagePath') imagePath = '';
     @Input('customStyle') customStyle;
+    @Input('componentName') componentName;
     imageTitle = '';
     redirectPageLink = '';
 
-    constructor(private router: Router){}
+    constructor(public _cmsService : CmsService){}
 
     ngOnInit() { 
-    }
-    navigateTo(link) { 
-        this.router.navigate([link]); 
     }
 }

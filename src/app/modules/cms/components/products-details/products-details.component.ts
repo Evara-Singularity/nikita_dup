@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmsService } from '../../cms.service';
 
 @Component({
   selector: 'products-details',
@@ -8,22 +9,18 @@ import { Router } from '@angular/router';
 })
 export class ProductsDetailsComponent implements OnInit {
     @Input('customStyle') customStyle;
+    @Input('componentName') componentName;
     @Input('listOfProducts') listOfProducts: any[] = null;
     @Input('titleData') titleData = null;
     @Input('imagePath') imagePath = null;
     title: string = '';
     viewAll: boolean = false;
-    constructor(private router: Router) { }
+    constructor(public _cmsService : CmsService) { }
 
     ngOnInit() { this.initialize(); }
 
     initialize()
     {
         this.title = this.titleData['titleName'];
-    }
-
-    navigateTo(link)
-    {
-        this.router.navigate([link]);
     }
 }

@@ -1,13 +1,13 @@
 <div class="trending-search-container" *ngIf="trendingCatName?.length > 0">
     <h3 class="search_heading"><i class="icon-trending"></i>Trending Searches</h3>
     <div class="trending-search-inner">
-        <ng-container *ngFor="let prod of trendingCatName | slice:0:limitTrendingCategoryNumber; let i = index;">
+        <ng-container *ngFor="let prod of trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber; let i = index;">
             <ng-container *ngIf="prod.categoryName">
                 <div>
                     <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
                 </div>
-                <div class="show_more" *ngIf="(i === ((trendingCatName | slice:0:limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - limitTrendingCategoryNumber) > 0))" (click)="updateLimitTrendingCategoryNumber()">
-                    {{ trendingCatName.length !== limitTrendingCategoryNumber ? (trendingCatName.length - limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
+                <div class="show_more" *ngIf="(i === ((trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - _commonService.limitTrendingCategoryNumber) >= 0))" (click)="updateLimitTrendingCategoryNumber()">
+                    {{ trendingCatName.length !== _commonService.limitTrendingCategoryNumber ? (trendingCatName.length - _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
                 </div>
             </ng-container>
         </ng-container>

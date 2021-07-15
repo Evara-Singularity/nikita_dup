@@ -44,13 +44,15 @@ export class SearchBarComponent implements OnInit {
         private _r: Router,
         private _fb: FormBuilder,
         private service: TypeAheadService,
-        private renderer: Renderer2
+        private renderer: Renderer2,
+        private _commonService: CommonService
     ) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
         // this.ssp = false;
 
         this.showSuggestionBlock = false;
+        this._commonService.resetLimitTrendingCategoryNumber();
         this.showSuggestionBlockLoader = false;
 
         this.suggestionList = [];
@@ -97,6 +99,7 @@ export class SearchBarComponent implements OnInit {
                         });
                     }else{
                         this.showSuggestionBlock = false;
+                        this._commonService.resetLimitTrendingCategoryNumber();
                     }
 
                 }
@@ -180,6 +183,7 @@ export class SearchBarComponent implements OnInit {
 
                 if (data['redirectionLink'] != null) {
                     this.showSuggestionBlock = false;
+                    this._commonService.resetLimitTrendingCategoryNumber();
                     this.ssp = false;
                     this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no' } });
                 }
@@ -191,6 +195,7 @@ export class SearchBarComponent implements OnInit {
                     this.ssp = false;
                     if (dataD.searchTerm !== undefined && dataD.searchTerm != null && dataD.searchTerm.length > 0) {
                         this.showSuggestionBlock = false;
+                        this._commonService.resetLimitTrendingCategoryNumber();
                         this._r.navigate(['search'], extras);
                     }
                 }
@@ -238,6 +243,7 @@ export class SearchBarComponent implements OnInit {
     resetSearchBar() {
         this.searchForm.reset();
         this.showSuggestionBlock = false;
+        this._commonService.resetLimitTrendingCategoryNumber();
     }
 
     navigateTo(page, data, redirectUrl, categoryId, attributes) {
@@ -245,6 +251,7 @@ export class SearchBarComponent implements OnInit {
         this.enableScroll();
         this.resetSearchBar();
         this.showSuggestionBlock = false;
+        this._commonService.resetLimitTrendingCategoryNumber();
         this.ssp = false;
         if (redirectUrl != undefined || redirectUrl != null) {
             this._r.navigate([redirectUrl], { queryParams: { sC: 'yes' } });

@@ -2,7 +2,7 @@
     <div [style.width.px]="listOfImgs.length * 200" class="fullimages-articlewrap-inner">
         <div class="fullimages-article" *ngFor="let item of listOfImgs">
           <img src="{{imagePath + item['imageLink_m']}}" [alt]="item['imageTitle']"
-              (click)="$event.stopPropagation();navigateTo(item['redirectPageLink'], {navigation:'brand_store_' + componentName })" />
+              (click)="$event.stopPropagation();_cmsService.navigateTo(item['redirectPageLink'], {navigation:'brand_store_' + componentName })" />
         </div>
     </div>
 </div>

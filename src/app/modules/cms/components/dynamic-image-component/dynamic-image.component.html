@@ -3,7 +3,7 @@
         <h3 [ngStyle]="titleData?.style" class="f-size-16 mar-tb-20" *ngIf="titleData"> {{ titleData?.titleName }} </h3>
         <div class="brand-items-wrap">
             <div class="brand-items" *ngFor="let list of listOfImgs">
-                <img class="pointer" [attr.src]="imagePath + list?.imageLink"  [alt]="list?.imageTitle" (click)="$event.stopPropagation();naivgateTo(list?.redirectPageLink, {navigation:'brand_store_' + componentName })">
+                <img class="pointer" [attr.src]="imagePath + list?.imageLink"  [alt]="list?.imageTitle" (click)="$event.stopPropagation();_cmsService.navigateTo(list?.redirectPageLink, {navigation:'brand_store_' + componentName })">
             </div>
         </div>
     </div>

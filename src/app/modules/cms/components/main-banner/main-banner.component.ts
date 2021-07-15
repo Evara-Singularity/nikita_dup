@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmsService } from '../../cms.service';
 
 @Component({
     selector: 'main-banner',
@@ -17,7 +18,7 @@ export class MainBannerComponent implements OnInit
     imageTitle = '';
     redirectPageLink = '';
 
-    constructor(private router: Router) { }
+    constructor(public _cmsService : CmsService) { }
 
     ngOnInit() { 
         this.initialize(this.data[0]); 
@@ -27,6 +28,5 @@ export class MainBannerComponent implements OnInit
         this.imageTitle = info['imageTitle'];
         this.redirectPageLink = info['redirectPageLink']; 
     }
-    navigateTo(link, qp) { this.router.navigate([link], { queryParams: qp }); }
 
 }

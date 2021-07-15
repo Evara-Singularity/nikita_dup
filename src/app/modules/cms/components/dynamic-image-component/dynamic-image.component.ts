@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChange } from "@angular/core";
 import { Router } from '@angular/router';
+import { CmsService } from "../../cms.service";
 
 @Component({
     selector: 'dynamic-image-component',
@@ -14,9 +15,6 @@ export class DynamicImageComponent {
     
     @Input('componentName') componentName;
 
-    constructor(private router: Router){}
-
-    naivgateTo(link, qp){
-        this.router.navigate([link], { queryParams: qp });
-    }
+    constructor(public _cmsService : CmsService){}
+    
 }

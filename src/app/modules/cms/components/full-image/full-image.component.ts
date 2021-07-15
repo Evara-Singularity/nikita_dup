@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmsService } from '../../cms.service';
 
 @Component({
   selector: 'full-image',
@@ -11,10 +12,6 @@ export class FullImageComponent implements OnInit {
     @Input('imagePath') imagePath = null;
     @Input('componentName') componentName;
     @Input('customStyle') customStyle;
-    constructor(private router: Router) { }
+    constructor(public _cmsService : CmsService) { }
     ngOnInit() { }
-    navigateTo(link, qp)
-    {
-        this.router.navigate([link], { queryParams: qp });
-    }
 }

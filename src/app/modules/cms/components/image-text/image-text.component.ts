@@ -1,6 +1,7 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmsService } from '../../cms.service';
 
 @Component({
   selector: 'image-text',
@@ -21,7 +22,7 @@ export class ImageTextComponent implements OnInit {
     imageAlignment: string = null;
     altImageTitle: string = null;
 
-    constructor(private router: Router, private domsanitizer:DomSanitizer) { }
+    constructor(public _cmsService : CmsService, private domsanitizer:DomSanitizer) { }
 
     ngOnInit() { this.initialize(this.data[0]); }
 
@@ -39,10 +40,5 @@ export class ImageTextComponent implements OnInit {
         this.redirectPageLink = info['redirectPageLink'];
         this.altImageTitle = info['imageTitle'];
         this.imageAlignment = info['imageAlignment'];
-    }
-
-    naivgateTo(link, qp)
-    {
-        this.router.navigate([link], { queryParams: qp });
     }
 }

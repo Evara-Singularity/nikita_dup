@@ -85,7 +85,7 @@
                     </div>
                 </ng-container>
 
-                <section class="creditDebitCardInner">
+                <section class="creditDebitCardInner noPad">
                     <h3 class="heading-3">Please enter your card details</h3>
                     <div class="material-form material-form-boxed">
                         <div class="input-field-boxed">
@@ -155,8 +155,9 @@
         </form>
     </div>
 
-    <div class="lh-18 pad-tb-15 mt-15 bank-top" *ngIf="nocostEmiDiscount > 0">
-        The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is already discounted
+    <div class="emi-note-text" *ngIf="nocostEmiDiscount > 0">
+        <b>Note: </b>The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is
+        already discounted
         from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit will
         be consumed for your total purchase amount of <b>Rs. {{this.totalPayableAmount | mathCeil | number : '1.2-2'}}</b> ,
         and released after the amount is converted to an EMI.

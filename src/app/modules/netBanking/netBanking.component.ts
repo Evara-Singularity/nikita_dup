@@ -119,8 +119,8 @@ export class NetBankingComponent {
         const topBanks = banksArr.filter(item => item['is_top'] == 1)
         const otherBanks = banksArr.filter(item => item['is_top'] != 1)
         const lowSuccessBanks =  banksArr.filter(item => item['up_status'] == 0)
-        topBanks.sort((a, b) => (a['id'] > b['id']) ? 1 : -1)
-        otherBanks.sort((a, b) => (a['id'] > b['id']) ? 1 : -1)
+        topBanks.sort((a, b) => (a['name'] > b['name']) ? 1 : -1)
+        otherBanks.sort((a, b) => (a['name'] > b['name']) ? 1 : -1)
         return { topBanks, otherBanks, lowSuccessBanks };
     }
 

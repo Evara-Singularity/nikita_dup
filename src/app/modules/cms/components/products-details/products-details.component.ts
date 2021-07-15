@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class ProductsDetailsComponent implements OnInit {
     @Input('customStyle') customStyle;
+    @Input('componentName') componentName;
     @Input('listOfProducts') listOfProducts: any[] = null;
     @Input('titleData') titleData = null;
     @Input('imagePath') imagePath = null;
@@ -22,8 +23,8 @@ export class ProductsDetailsComponent implements OnInit {
         this.title = this.titleData['titleName'];
     }
 
-    navigateTo(link)
+    navigateTo(link, qp)
     {
-        this.router.navigate([link]);
+        this.router.navigate([link], { queryParams: qp });
     }
 }

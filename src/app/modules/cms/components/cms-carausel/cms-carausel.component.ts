@@ -10,6 +10,7 @@ export class CmsCarauselComponent {
     @Input('data') data = [];
     @Input('imagePath') imagePath = '';
     @Input('customStyle') customStyle;
+    @Input('componentName') componentName;
     imageTitle = '';
     redirectPageLink = '';
 
@@ -17,7 +18,7 @@ export class CmsCarauselComponent {
 
     ngOnInit() { 
     }
-    navigateTo(link) { 
-        this.router.navigate([link]); 
+    navigateTo(link, qp) { 
+        this.router.navigate([link], { queryParams: qp }); 
     }
 }

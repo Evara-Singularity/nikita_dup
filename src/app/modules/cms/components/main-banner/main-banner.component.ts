@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class MainBannerComponent implements OnInit
 {
     @Input('data') data = [];
+    @Input('componentName') componentName;
     @Input('customStyle') customStyle;
     @Input('imagePath') imagePath = '';
 
@@ -26,6 +27,6 @@ export class MainBannerComponent implements OnInit
         this.imageTitle = info['imageTitle'];
         this.redirectPageLink = info['redirectPageLink']; 
     }
-    navigateTo(link) { this.router.navigate([link]); }
+    navigateTo(link, qp) { this.router.navigate([link], { queryParams: qp }); }
 
 }

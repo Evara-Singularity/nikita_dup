@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class ImageTextComponent implements OnInit {
     @Input('customStyle') customStyle;
     @Input('data') data = null;
+    @Input('componentName') componentName;
     @Input('imagePath') imagePath = null;
     info = null;
     title: string = null;
@@ -40,8 +41,8 @@ export class ImageTextComponent implements OnInit {
         this.imageAlignment = info['imageAlignment'];
     }
 
-    naivgateTo(link)
+    naivgateTo(link, qp)
     {
-        this.router.navigate([link]);
+        this.router.navigate([link], { queryParams: qp });
     }
 }

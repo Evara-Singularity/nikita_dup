@@ -19,7 +19,7 @@
     <div class="search_product_categories">
         <ng-container *ngFor="let item of topCategories;">
             <ng-container *ngIf="item.categoryImage">
-                <div class="search_product_category" (click)="navigateTo(item.categoryLink, {tS:'yes'})">
+                <div class="search_product_category" (click)="navigateTo(item.categoryLink, {tc:'yes'})">
                     <img [src]="CONSTANTS.IMAGE_BASE_URL + item.categoryImage">
                     <span class="prodText">{{ item?.categoryName }}</span>
                 </div>

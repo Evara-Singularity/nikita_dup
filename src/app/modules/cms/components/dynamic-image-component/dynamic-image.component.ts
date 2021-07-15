@@ -11,9 +11,12 @@ export class DynamicImageComponent {
     @Input('imagePath') imagePath = null;
     @Input('titleData') titleData = null;
     @Input('customStyle') customStyle;
+    
+    @Input('componentName') componentName;
+
     constructor(private router: Router){}
 
-    naivgateTo(link){
-        this.router.navigate([link]);
+    naivgateTo(link, qp){
+        this.router.navigate([link], { queryParams: qp });
     }
 }

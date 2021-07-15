@@ -1,12 +1,15 @@
 @import '../../scss/variables';
 .payment-notification {
-    color: $logo-color;
-    background: #FFEDEE;
-    padding: 6px 10px;
-    font-size: $small-font;
-    line-height: 14px;
-    box-shadow: 0px 0px 2px #0000001A;
-    border-radius: 4px;
+    span {
+        color: $logo-color;
+        background: #FFEDEE;
+        padding: 6px 10px;
+        font-size: $small-font;
+        line-height: 14px;
+        box-shadow: 0px 0px 2px #0000001A;
+        border-radius: 4px;
+        display: inline-block;
+    }
 }
 
 .bank-list {
@@ -114,9 +117,8 @@
             margin-left: auto;
             font-size: $medium-font;
         }
-        &.selectedInput{
+        &.selectedInput {
             color: #303030;
         }
     }
-
 }

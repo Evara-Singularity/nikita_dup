@@ -2,7 +2,6 @@
     .popularCategories {
         padding: 15px;
         background: #f2f2f2;
-
         .innerPopularSection {
             box-shadow: 0px 3px 6px #0000001a;
             border-radius: 4px;
@@ -10,12 +9,10 @@
             background: #fff;
             padding: 15px 30px;
         }
-
         .heading-3 {
             border-bottom: 2px solid #e6e6e6;
             margin-bottom: 10px;
         }
-
         .popularCategoriesList {
             font-size: 13px;
             font-weight: 400;
@@ -40,7 +37,36 @@
             color: #0061d5 !important
         }
     }
+    .panel-head {
+        background: #fff;
+        margin-top: 10px;
+        h3 {
+            padding: 15px 5px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+    }
     .body-bg {
         background: #f2f2f2;
+    }
+    .category-tbl {
+        th,
+        td {
+            font-size: 12px;
+            font-weight: normal;
+            text-align: left;
+            border-bottom: 1px solid #e6e6e6;
+            padding: 5px;
+        }
+    }
+    .common_table {
+        th,
+        td {
+            font-size: 12px;
+            font-weight: normal;
+            text-align: left;
+            border-bottom: 1px solid #e6e6e6;
+            padding: 5px;
+        }
     }
 }

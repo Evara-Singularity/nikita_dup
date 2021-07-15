@@ -37,10 +37,8 @@ export class AppPromoComponent implements OnInit {
   constructor(
     private _localStorage: LocalStorageService,
     private _localAuthService: LocalAuthService,
-    private _router: Router,
-    private _commonService: CommonService,
+    public _commonService: CommonService,
   ) {
-    this.isMoglixAppInstalled();
   }
 
   ngOnInit(): void {
@@ -56,36 +54,6 @@ export class AppPromoComponent implements OnInit {
 
   openDeepLink() {
     window.open(this.productDeepLink, '_blank');
-  }
-
-  isMoglixAppInstalled() {
-    if (this._commonService.isBrowser) {
-      console.log('isMoglixAppInstalled called 1 ==>', 'on load');
-      if (!this.isLazyLoaded) {
-        window.addEventListener('load', () => {
-          console.log('isMoglixAppInstalled called ==>', 'on not lazy load');
-          // Check to see if the API is supported.
-          if ('getInstalledRelatedApps' in navigator) {
-            this.checkForRelatedApps();
-          }
-        });
-      } else {
-        console.log('isMoglixAppInstalled called ==>', 'on lazy load');
-        if ('getInstalledRelatedApps' in navigator) {
-          this.checkForRelatedApps();
-        }
-      }
-
-    }
-  }
-
-  checkForRelatedApps() {
-    navigator['getInstalledRelatedApps']().then((relatedApps) => {
-      console.log('isMoglixAppInstalled relatedApps ==>', relatedApps);
-      if (relatedApps && relatedApps.length > 0) {
-        this.isAppInstalled = true;
-      }
-    });
   }
 
   openPlayStore() {

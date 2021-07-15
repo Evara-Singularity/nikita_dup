@@ -35,6 +35,7 @@ export class CommonService {
     }
     public isBrowser: boolean;
     public isServer: boolean;
+    public isAppInstalled: boolean = false;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -54,9 +55,9 @@ export class CommonService {
 
     private routeData: { currentUrl: string, previousUrl: string };
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService, 
-    private _loaderService: GlobalLoaderService,
-    private _router: Router) {
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
+        private _loaderService: GlobalLoaderService,
+        private _router: Router) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
@@ -75,13 +76,13 @@ export class CommonService {
         this._itemsValidationMessage = ivm;
     }
 
-    resetLimitTrendingCategoryNumber(){
+    resetLimitTrendingCategoryNumber() {
         this.limitTrendingCategoryNumber = GLOBAL_CONSTANT.trendingCategoryLimit;
     }
 
     scrollToTop() {
         if (this.isBrowser) {
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
     }
 
@@ -143,7 +144,7 @@ export class CommonService {
                 this.defaultParams[key] = updatedParams[key];
             }
         }
-        
+
         return this.defaultParams;
     }
 
@@ -215,7 +216,7 @@ export class CommonService {
         let formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams });
     }
-    
+
     private getSearchData(type, curl, params): Observable<any> {
         const formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
@@ -256,10 +257,10 @@ export class CommonService {
 
     updateSelectedFilterDataFilterFromFragment(fragment) {
         let obj = {};
-        
+
         if (fragment) {
-          let filtersList = fragment.split('/');
-          if (filtersList){
+            let filtersList = fragment.split('/');
+            if (filtersList) {
                 for (let i = 0; i < filtersList.length; i++) {
                     let a = filtersList[i].split(/-(.+)/);
                     obj[a[0]] = a[1].split('||');
@@ -279,7 +280,7 @@ export class CommonService {
             for (let i = 0; i < keys.length; i++) {
 
                 if (filter[keys[i]].length > 0) {
-                    if (fragment.length == 0){
+                    if (fragment.length == 0) {
                         fragment = fragment + keys[i] + '-' + filter[keys[i]].join("||");
                     }
                     else {
@@ -319,41 +320,41 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
-                if (this.currentRequest != undefined){
+                if (this.currentRequest != undefined) {
                     this.currentRequest.unsubscribe();
                 }
                 this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRANDS, defaultParams)
-                .pipe(
-                    map((res) => {
-                        res.buckets.map((bucket) => {
-                            bucket['collFilter'] = true;
+                    .pipe(
+                        map((res) => {
+                            res.buckets.map((bucket) => {
+                                bucket['collFilter'] = true;
+                            })
+                            res['flag'] = !!flagFromResolver;
+                            return res;
                         })
-                        res['flag'] = !!flagFromResolver;
-                        return res;
-                    })
-                ).subscribe((response) => {
-                    if (this._router.url.search('#') < 0) {
-                        this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
-                            if (res['status']) {
-                                response.cmsData = res['data']['data'];
+                    ).subscribe((response) => {
+                        if (this._router.url.search('#') < 0) {
+                            this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
+                                if (res['status']) {
+                                    response.cmsData = res['data']['data'];
+                                    observer.next(response);
+                                    observer.complete();
+                                } else {
+                                    observer.next(response);
+                                    observer.complete();
+                                }
+                            }, err => {
                                 observer.next(response);
                                 observer.complete();
-                            } else {
-                                observer.next(response);
-                                observer.complete();
-                            }
-                        }, err => {
+                            });
+                        } else {
+                            this.replaceHeading = false;
                             observer.next(response);
                             observer.complete();
-                        });
-                    } else {
-                        this.replaceHeading = false;
-                        observer.next(response);
-                        observer.complete();
-                    }
-                });
+                        }
+                    });
             } else if (defaultParams["pageName"] == "SEARCH") {
-                if (this.currentRequest != undefined){
+                if (this.currentRequest != undefined) {
                     this.currentRequest.unsubscribe();
                 }
                 this.currentRequest = this.getSearchData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)
@@ -444,7 +445,7 @@ export class CommonService {
             if (queryParams["str"] != undefined)
                 actualParams['str'] = queryParams["str"];
         } else if (params.pageName == "BRAND") {
-            if (params["category"]){
+            if (params["category"]) {
                 actualParams['category'] = params["category"];
             }
             actualParams['brand'] = params.brand ? params.brand.toLowerCase() : '';
@@ -530,7 +531,7 @@ export class CommonService {
     }
 
     subscribeCredit(data) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.EPAY_LATER , { body: data });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.EPAY_LATER, { body: data });
     }
 
     getBusinessDetail(data) {
@@ -671,7 +672,7 @@ export class CommonService {
         if (cart['buyNow']) {
             obj['shoppingCartDto']['cart']['buyNow'] = cart['buyNow'];
         }
- 
+
         if (billingAddress !== undefined && billingAddress !== null) {
             obj.shoppingCartDto.addressList.push(
                 {
@@ -756,7 +757,7 @@ export class CommonService {
                 })
             )
 
-        }
+    }
 
     testApi() {
         return this._dataService.callRestful("GET", CONSTANTS.TEST_API);
@@ -804,7 +805,7 @@ export class CommonService {
         return this._dataService.callRestful("GET", curl);
     }
 
-    calculateFilterCount(data){
+    calculateFilterCount(data) {
         let count = 0;
         data.forEach((el) => {
             for (let i = 0; i < el.terms.length; i++) {
@@ -822,7 +823,7 @@ export class CommonService {
             this.showLoader = false;
         }, 0);
     }
-    
+
 
     /**
     * This funtion is used to create fragment & queryparams and navigate to the specific routes
@@ -847,23 +848,23 @@ export class CommonService {
         };
     }
 
-    genricApplyFilter(key, item) {        
+    genricApplyFilter(key, item) {
         if (this.selectedFilterData.filter.hasOwnProperty(key)) {
-          const indexInSelectedFilterDataFilterArray = this.selectedFilterData.filter[key].findIndex(x => x === item.term);
-          if (!(indexInSelectedFilterDataFilterArray > -1)) {
-            this.selectedFilterData.filter[key].push(item.term);
-          } else {
-            this.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray,1);
-          }
+            const indexInSelectedFilterDataFilterArray = this.selectedFilterData.filter[key].findIndex(x => x === item.term);
+            if (!(indexInSelectedFilterDataFilterArray > -1)) {
+                this.selectedFilterData.filter[key].push(item.term);
+            } else {
+                this.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray, 1);
+            }
         } else {
-          this.selectedFilterData.filter[key] = [];
-          this.selectedFilterData.filter[key].push(item.term);
+            this.selectedFilterData.filter[key] = [];
+            this.selectedFilterData.filter[key].push(item.term);
         }
-    
+
         this.applyFilter();
-      }
-    
-    applyFilter(currentRouteFromCategoryFilter?: number, page?: number){
+    }
+
+    applyFilter(currentRouteFromCategoryFilter?: number, page?: number) {
 
         const currentRoute = !currentRouteFromCategoryFilter ? this.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
 
@@ -879,8 +880,8 @@ export class CommonService {
             extras.fragment = fragmentString;
         }
 
-        
-        this.selectedFilterData.page = 1;        
+
+        this.selectedFilterData.page = 1;
         if (extras.queryParams['page']) {
             this.selectedFilterData.pageSize = GLOBAL_CONSTANT.default.pageSize;
             delete extras.queryParams['page'];
@@ -896,7 +897,7 @@ export class CommonService {
         this._router.navigate([currentRoute], extras);
     }
 
-    toggleFilter(forceFillyRemove?:boolean) {
+    toggleFilter(forceFillyRemove?: boolean) {
         const mob_filter = document.querySelector('.mob_filter');
         if (mob_filter) {
             forceFillyRemove ? mob_filter.classList.remove('upTrans') : mob_filter.classList.toggle('upTrans');

@@ -39,6 +39,7 @@ export class PagesComponent implements OnInit {
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
+    this.isMoglixAppInstalled();
     this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
       if (res instanceof NavigationEnd) {
@@ -62,6 +63,28 @@ export class PagesComponent implements OnInit {
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
     }
+  }
+
+  isMoglixAppInstalled() {
+    if (this.isBrowser) {
+      console.log('isMoglixAppInstalled called 1 ==>', 'on load');
+      window.addEventListener('load', () => {
+        console.log('isMoglixAppInstalled called ==>', 'on window load');
+        // Check to see if the API is supported.
+        if ('getInstalledRelatedApps' in navigator) {
+          this.updateAppStatus()
+        }
+      });
+    }
+  }
+
+  updateAppStatus() {
+    navigator['getInstalledRelatedApps']().then((relatedApps) => {
+      console.log('isMoglixAppInstalled relatedApps ==>', relatedApps);
+      if (relatedApps && relatedApps.length > 0) {
+        this._commonService.isAppInstalled = true;
+      }
+    });
   }
 
   setUserSession() {

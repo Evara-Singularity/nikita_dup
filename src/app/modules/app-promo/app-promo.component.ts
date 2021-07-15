@@ -26,6 +26,7 @@ export class AppPromoComponent implements OnInit {
   @Input() isOverlayMode: boolean = true;
   @Input() showPromoCode: boolean = true;
   @Input() productMsn: string = null;
+  @Input() isLazyLoaded: boolean = false;
   @Output() appPromoStatus$: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public appPromoStatus: boolean = true;
@@ -60,13 +61,21 @@ export class AppPromoComponent implements OnInit {
   isMoglixAppInstalled() {
     if (this._commonService.isBrowser) {
       console.log('isMoglixAppInstalled called 1 ==>', 'on load');
-      window.addEventListener('load', () => {
-        console.log('isMoglixAppInstalled called ==>', 'on load');
-        // Check to see if the API is supported.
+      if (!this.isLazyLoaded) {
+        window.addEventListener('load', () => {
+          console.log('isMoglixAppInstalled called ==>', 'on not lazy load');
+          // Check to see if the API is supported.
+          if ('getInstalledRelatedApps' in navigator) {
+            this.checkForRelatedApps();
+          }
+        });
+      } else {
+        console.log('isMoglixAppInstalled called ==>', 'on lazy load');
         if ('getInstalledRelatedApps' in navigator) {
           this.checkForRelatedApps();
         }
-      });
+      }
+
     }
   }
 

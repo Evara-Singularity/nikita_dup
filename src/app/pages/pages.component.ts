@@ -90,7 +90,8 @@ export class PagesComponent implements OnInit {
       if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
         let cs = this._cartService.updateCart(cartSession);
         this._cartService.setCartSession(cs);
-        this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
+        const val = cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0;
+        this._cartService.cart.next({count: val});
         this._cartService.orderSummary.next(cartSession);
       }
       /**
@@ -99,7 +100,8 @@ export class PagesComponent implements OnInit {
       else if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 202) {
         let cs = this._cartService.updateCart(cartSession['cart']);
         this._cartService.setCartSession(cs);
-        this._cartService.cart.next(cartSession["cart"]["cart"] != undefined ? cartSession['cart']['noOfItems'] : 0);
+        const val = cartSession["cart"]["cart"] != undefined ? cartSession['cart']['noOfItems'] : 0;
+        this._cartService.cart.next(val);
         this._cartService.orderSummary.next(cartSession['cart']);
 
         this._localAuthService.setUserSession(cartSession['userData']);

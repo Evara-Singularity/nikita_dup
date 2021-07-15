@@ -21,7 +21,7 @@
                     <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
                 </div>
                 <a [routerLink]="['/quickorder']" class="icon-cart1">
-                    <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
+                    <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
                 </a>
                 <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-more_options"></a>
             </div>

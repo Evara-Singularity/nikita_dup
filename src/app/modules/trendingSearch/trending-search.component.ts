@@ -22,8 +22,8 @@ export class TrendingSearchComponent {
     ngOnInit() {
         this._service.getTrendingCategories().subscribe((data: any) => {
             this.trendingCat = data.data[0]['block_data'];
-            this.trendingCatName = this.getTrendingCategories(this.trendingCat['top_categories']);
-            this.topCategories = this.getTopCategories(this.trendingCat['trending_search']);
+            this.trendingCatName = this.getTrendingCategories(this.trendingCat['trending_search']);
+            this.topCategories = this.getTopCategories(this.trendingCat['top_categories']);
         });
     }
 

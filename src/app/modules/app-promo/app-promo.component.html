@@ -10,7 +10,8 @@
                 </p>
             </div>
 
-            <div class="content-mobile-app promotion-nonLogin" (click)="openPlayStore()" *ngIf="mobile_os == MOBILE_ENVS.ANDROID">
+            <div class="content-mobile-app promotion-nonLogin" (click)="openPlayStore()"
+                *ngIf="mobile_os == MOBILE_ENVS.ANDROID">
                 <div class="mobile">
                     <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
                 </div>
@@ -24,7 +25,8 @@
             </div>
 
             <!--App store image added-->
-            <div class="content-mobile-app promotion-nonLogin" (click)="openAppStore()" *ngIf="mobile_os == MOBILE_ENVS.IOS">
+            <div class="content-mobile-app promotion-nonLogin" (click)="openAppStore()"
+                *ngIf="mobile_os == MOBILE_ENVS.IOS">
                 <div class="mobile">
                     <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
                 </div>
@@ -55,10 +57,15 @@
                     <strong>Download Moglix App</strong>
                     <p>4.1 <img src="assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
                 </div>
-                <div class="install-app" *ngIf="!isAppInstalled">
+                <div class="install-app" *ngIf="!_commonService.isAppInstalled && mobile_os == MOBILE_ENVS.IOS"
+                    (click)="openAppStore()">
                     <button>INSTALL APP</button>
                 </div>
-                <div class="install-app" *ngIf="isAppInstalled">
+                <div class="install-app" *ngIf="!_commonService.isAppInstalled && mobile_os == MOBILE_ENVS.ANDROID"
+                    (click)="openPlayStore()">
+                    <button>INSTALL APP</button>
+                </div>
+                <div class="install-app" *ngIf="_commonService.isAppInstalled">
                     <button (click)="openDeepLink()">Open Moglix App</button>
                 </div>
             </div>

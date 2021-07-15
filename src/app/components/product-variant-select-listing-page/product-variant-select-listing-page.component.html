@@ -10,18 +10,20 @@
                 <div class="select-container" *ngIf="productGroupData">
                     <div class="card-container">
                         <div class="left">
-                            <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125" width="125" />
+                            <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}"
+                                height="125" width="125" />
                         </div>
                         <div class="right">
                             <div class="rating">
                                 <span class="avgrating" *ngIf="product.avgRating">
-                            {{product.avgRating | rating | number : '1.1-1' }}
-                            <i class="icon-rating-star"></i>
-                        </span>
+                                    {{product.avgRating | rating | number : '1.1-1' }}
+                                    <i class="icon-rating-star"></i>
+                                </span>
                                 <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
                             </div>
                             <div class="name">
-                                <span>{{product.productName | slice:0:60 }}<span *ngIf="product.productName.length>60">...</span></span>
+                                <span>{{product.productName | slice:0:60 }}<span
+                                        *ngIf="product.productName.length>60">...</span></span>
                             </div>
                             <div class="brand">
                                 <span>By: {{product.brandName}}</span>
@@ -29,11 +31,13 @@
                             <div class="price-details">
                                 <div class="left">
                                     <div class="price">
-                                        <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+                                        <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
+                                            '1.0-0' }}</span>
                                         <span class="green-label">{{product.discount}}% OFF</span>
                                     </div>
                                     <div class="main-price">
-                                        <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+                                        <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
+                                            '1.0-0' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -42,16 +46,21 @@
                     <div class="select-warp" *ngFor="let variants of productGroupData.filterAttributesList">
                         <h3 class="heading-3">Select {{variants['name']}}</h3>
                         <ul>
-                            <li *ngFor="let item of variants['items']" [ngClass]="{'selected': item.selected, 'inactive': !item.active}" (click)="emitVariant(item.msn,item.selected, item.active)">
-                                {{item['value']}}
-                            </li>
+                            <ng-container *ngFor="let item of variants['items']">
+                                <li *ngIf="item.active" [ngClass]="{'selected': item.selected}" (click)="emitVariant(item.msn)">
+                                    {{item['value']}}
+                                </li>
+                            </ng-container>
                         </ul>
                     </div>
                 </div>
                 <div class="stickyBottomBtn">
-                    <button class="btn continue-btn" (click)="continueToCart()" [disabled]="productGroupData.isOutOfStock">
-                    CONTINUE
-                </button>
+                    <button *ngIf="!isSelectedVariantOOO" class="btn continue-btn" (click)="continueToCart()">
+                        CONTINUE
+                    </button>
+                    <button *ngIf="isSelectedVariantOOO" class="btn continue-btn" (click)="continueToSendQuery()">
+                        SEND QUERY
+                    </button>
                 </div>
             </div>
         </div>

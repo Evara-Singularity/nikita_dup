@@ -37,8 +37,7 @@ export class WalletComponent {
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
-    imagePath = CONSTANTS.CDN_IMAGE_PATH;
-    imageFolder = CONSTANTS.pwaImages.imgFolder;
+    imagePath = CONSTANTS.IMAGE_ASSET_URL;
     @Input() successPercentageData: any = null;
     set isShowLoader(value)
     {
@@ -80,6 +79,7 @@ export class WalletComponent {
         })
 
         this.lowSuccessBanks();
+        // console.log("successPercentageData ==>",this.successPercentageData);
 
     }
 
@@ -306,7 +306,8 @@ export class WalletComponent {
         this.lsrMessage = false;
         if (this.type == 'retail') {
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
-            const lowSuccessBanks = banksArr.filter(item => item['up_status'] == 0)
+            // show global message only for top wallets
+            const lowSuccessBanks = banksArr.filter(item => (item['up_status'] == 0) && (item['is_top'] == 1))
             if (lowSuccessBanks.length){
                 this.lsrMessage = true;
             }

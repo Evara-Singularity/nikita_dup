@@ -21,22 +21,26 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   @Input() product: ProductsEntity;
   @Input() productGroupData: AddToCartProductSchema;
   @Input() buyNow: boolean = false;
+  @Input() isSelectedVariantOOO: boolean = false;
   @Output() selectedVariant$ = new EventEmitter<{ msn: string, buyNow: boolean }>();
   @Output() selectedVariantOOO$ = new EventEmitter<any>();
   @Output() continueToCart$ = new EventEmitter<{ product: AddToCartProductSchema, buyNow: boolean }>();
   @Output() hide$ = new EventEmitter<boolean>();
+  currentlySelectedMSN: string
 
   constructor() { }
 
   ngOnInit(): void {
+    this.currentlySelectedMSN = this.product.moglixPartNumber;
   }
 
-  emitVariant(msn: string, isSecleted, isActive): void {
-    if (!isSecleted && isActive) {
-      this.selectedVariant$.emit({ msn, buyNow: this.buyNow });
-    }else{
-      this.selectedVariantOOO$.emit(msn);
-    }
+  emitVariant(msn: string): void {
+    this.currentlySelectedMSN = msn;
+    this.selectedVariant$.emit({ msn, buyNow: this.buyNow });
+  }
+
+  continueToSendQuery(){
+    this.selectedVariantOOO$.emit(this.currentlySelectedMSN);
   }
 
   continueToCart() {

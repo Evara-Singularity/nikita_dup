@@ -6,7 +6,7 @@
                 <div>
                     <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
                 </div>
-                <div class="show_more" *ngIf="i === ((trendingCatName | slice:0:limitTrendingCategoryNumber).length - 1)" (click)="updateLimitTrendingCategoryNumber()">
+                <div class="show_more" *ngIf="(i === ((trendingCatName | slice:0:limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - limitTrendingCategoryNumber) > 0))" (click)="updateLimitTrendingCategoryNumber()">
                     {{ trendingCatName.length !== limitTrendingCategoryNumber ? (trendingCatName.length - limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
                 </div>
             </ng-container>

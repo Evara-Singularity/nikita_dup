@@ -57,67 +57,60 @@ export const CONSTANTS = {
       tax: {
         walletPaytm: {
           mode: "PAYTM",
-          type: "PAYTM",
+          type: 'PAYTM',
           bankcode: null,
           paymentId: 53,
-          imgUrl: "paytm-wallet.png",
-        },
-        walletMobikwik: {
-          mode: "WALLET",
-          type: "MOBIKWIK",
-          bankcode: null,
-          paymentId: 67,
-          imgUrl: "mobikwik-wallet.png",
-        },
-        walletAirtel: {
-          mode: "WALLET",
-          type: "AIRTEL",
-          bankcode: "AMON",
-          paymentId: 68,
-          imgUrl: "airtel-wallet.png",
-        },
-        walletPayZap: {
-          mode: "WALLET",
-          type: "HDFCPAYZAPP",
-          bankcode: "FREC",
-          paymentId: 64,
-          imgUrl: "payzapp-wallet.png",
-        },
-        walletYesPay: {
-          mode: "WALLET",
-          type: "YESPAY",
-          bankcode: "YESPAY",
-          paymentId: 64,
-          imgUrl: "yesbank-wallet.png",
+          imgUrl: "paytm-wallet.png"
         },
         // walletFreecharge: {
         //   mode: "WALLET",
         //   type: "freecharge",
         //   bankcode: "FREC",
         //   paymentId: 66,
-        //   imgUrl: "freecharge-wallet.png",
+        //   imgUrl: "freecharge-wallet.png"
         // },
+        walletMobikwik: {
+          mode: "WALLET",
+          type: "mobikwik",
+          bankcode: null,
+          paymentId: 67,
+          imgUrl: "mobikwik-wallet.png"
+        },
+        walletAirtel: {
+          mode: "WALLET",
+          type: "airtelmoney",
+          bankcode: "AMON",
+          paymentId: 68,
+          imgUrl: "airtel-wallet.png"
+        },
         // walletOlamoney: {
         //   mode: "WALLET",
         //   type: "olamoney",
         //   bankcode: "OLAM",
         //   paymentId: 65,
-        //   imgUrl: "ola-wallet.png",
+        //   imgUrl: "ola-wallet.png"
         // },
-        // walletJio: {
-        //   mode: "WALLET",
-        //   type: "jiomoney",
-        //   bankcode: "FREC",
-        //   paymentId: 69,
-        //   imgUrl: "jio-money-wallet.png",
-        // },
-        // walletMpesa: {
-        //   mode: "WALLET",
-        //   type: "mpesa",
-        //   bankcode: "FREC",
-        //   paymentId: 70,
-        //   imgUrl: "voda-pesa-wallet.png",
-        // },
+        walletJio: {
+          mode: "WALLET",
+          type: 'jiomoney',
+          bankcode: "FREC",
+          paymentId: 69,
+          imgUrl: "jiomoney-wallet.png"
+        },
+        walletMpesa: {
+          mode: "WALLET",
+          type: 'mpesa',
+          bankcode: "FREC",
+          paymentId: 70,
+          imgUrl: "vodafonempesa-wallet.png"
+        },
+        walletPayZap: {
+          mode: "WALLET",
+          type: "payzapp",
+          bankcode: "FREC",
+          paymentId: 64,
+          imgUrl: "payzapp-wallet.png"
+        },
       },
       retail: {
         walletPaytm: {
@@ -125,37 +118,51 @@ export const CONSTANTS = {
           type: "PAYTM",
           bankcode: null,
           paymentId: 53,
-          imgUrl: "paytm-wallet.png",
+          imgUrl: "paytm-wallet.png"
         },
+        // walletFreecharge: {
+        //   mode: "FREECHARGE",
+        //   type: 'FREECHARGE',
+        //   bankcode: "FREC",
+        //   paymentId: 59,
+        //   imgUrl: "freecharge-wallet.png"
+        // },
         walletMobikwik: {
-          mode: "WALLET",
+          mode: "MOBIKWIK",
           type: "MOBIKWIK",
           bankcode: null,
-          paymentId: 67,
-          imgUrl: "mobikwik-wallet.png",
+          paymentId: 52,
+          imgUrl: "mobikwik-wallet.png"
         },
         walletAirtel: {
-          mode: "WALLET",
+          mode: "AIRTEL",
           type: "AIRTEL",
           bankcode: "AMON",
-          paymentId: 68,
-          imgUrl: "airtel-wallet.png",
+          paymentId: 56,
+          imgUrl: "airtel-wallet.png"
         },
-        walletPayZap: {
-          mode: "WALLET",
+        // walletOxigen: {
+        //   mode: "OXIGEN",
+        //   type: "OXIGEN",
+        //   bankcode: "OXICASH",
+        //   paymentId: 57,
+        //   imgUrl: "oxigen-wallet.png"
+        // },
+        // walletOlamoney: {
+        //   mode: "OLAMONEY",
+        //   type: "OLAMONEY",
+        //   bankcode: "OLAM",
+        //   paymentId: 58,
+        //   imgUrl: "ola-wallet.png"
+        // },
+        walletHdfcpay: {
+          mode: "HDFCPAYZAPP",
           type: "HDFCPAYZAPP",
-          bankcode: "FREC",
-          paymentId: 64,
-          imgUrl: "payzapp-wallet.png",
-        },
-        walletYesPay: {
-          mode: "WALLET",
-          type: "YESPAY",
-          bankcode: "YESPAY",
-          paymentId: 64,
-          imgUrl: "yesbank-wallet.png",
-        },
-      },
+          bankcode: "PAYZ",
+          paymentId: 61,
+          imgUrl: "payzapp-wallet.png"
+        }
+      }
     },
     upiTez: 10,
     razorPay: 11,

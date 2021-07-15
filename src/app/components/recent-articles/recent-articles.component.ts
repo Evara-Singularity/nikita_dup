@@ -19,8 +19,6 @@ export class RecentArticles implements OnInit
     defaultImage = this.imageBaseUrl + CONSTANTS.ASSET_IMG;
     
     ngOnInit() {
-        console.log(this.recentArticles);
-        console.log(this.title);
     }
     
     navigateToArticlePage(article)

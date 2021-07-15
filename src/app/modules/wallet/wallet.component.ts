@@ -308,7 +308,7 @@ export class WalletComponent {
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
             const lowSuccessBanks = banksArr.filter(item => item['up_status'] == 0)
             if (lowSuccessBanks.length){
-                this.lsrMessage = true;
+                // this.lsrMessage = true;
             }
         }
     }

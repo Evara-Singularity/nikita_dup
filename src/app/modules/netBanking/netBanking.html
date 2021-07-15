@@ -1,8 +1,8 @@
 <section class="bank-container netBankingInner">
     <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length">
-        Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.
+        <span>Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.</span>
     </div>
-    
+
     <div id="net_block">
         <ul class="bank-list">
             <li class="bank-list-item" (click)="selectBank(banks, true)" *ngFor="let banks of topBanks">
@@ -10,7 +10,7 @@
                     <input [checked]="selectedBankCode==banks['code']" type="radio" name="net_radio" >
                     <span class="custom-box"></span>
                 </label>
-                <img src="{{imagePath}}assets/payments/{{bankImages[banks['id']]}}" >
+                <img src="{{imagePath}}assets/payments/{{bankImages[banks['id']]}}">
                 <div class="bank-name">
                     <p class="">{{banks['name']}}</p>
                     <span *ngIf="!banks['up_status']" class="lowsuccessRate">Low success rate observed</span>
@@ -30,18 +30,11 @@
                             <i class="icon-dropdown"></i>
                         </div>
                     </div>
-                    
-                    <select-popup 
-                                [itemArray]="othersBanks" 
-                                [displayKey]="'name'"
-                                [valueKey]="'code'"
-                                [headerLabel]="'Select Bank'"
-                                [compare]="selectedBankCode"
-                                [type] = "'NETBANKING'"
-                                [isVisible]="bankSelectPopupStatus" (selectedValue$)="selectBank($event)" ></select-popup>
-                    
-                    <div style="margin: 8px;" *ngIf="commonFailureMsg"  >
-                        <span class="lowsuccessRate">Low success rate observed</span>
+
+                    <select-popup [itemArray]="othersBanks" [displayKey]="'name'" [valueKey]="'code'" [headerLabel]="'Select Bank'" [compare]="selectedBankCode" [type]="'NETBANKING'" [isVisible]="bankSelectPopupStatus" (selectedValue$)="selectBank($event)"></select-popup>
+
+                    <div class="payment-notification mt-15" *ngIf="commonFailureMsg">
+                        <span>Low success rate observed</span>
                     </div>
 
                 </div>

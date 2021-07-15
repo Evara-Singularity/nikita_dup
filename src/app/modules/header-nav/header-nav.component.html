@@ -6,7 +6,7 @@
                 <i *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="goBack()" class="icon-back" id="icon-back"></i>
                 <!-- <a [routerLink]="['/']" class="icon-logo" *ngIf="(routerData && routerData['logo']) && isHomePage"></a> -->
                 <a *ngIf="(routerData && routerData['logo']) && isHomePage" class="moglix-app-logo" [routerLink]="['/']">
-                    <img src="{{imgAssetPath}}assets/img/moglix_logo_PWA.png">
+                    <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_PWA.png">
                 </a>
                 <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
                     <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">

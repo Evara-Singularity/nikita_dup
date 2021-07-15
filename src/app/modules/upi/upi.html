@@ -2,7 +2,7 @@
 
 
     <div class="payment-notification" *ngIf="lsrMessage">
-        <span>Low success rate currently observed for {{lsrMessage}}. If possible, use an alternate payment mode</span>
+        <span>Low success rate currently observed for <strong>{{lsrMessage}}</strong>. If possible, use an alternate payment mode</span>
     </div>
     <div id="upi_block" class="upi-block continer">
         <form [formGroup]="upiForm" (ngSubmit)="pay(upiForm.value, upiForm.valid)" class="form-horizontal">

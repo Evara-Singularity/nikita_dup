@@ -228,7 +228,7 @@ export class UpiComponent {
             const LSRTOP = TOP.filter(item => item['up_status'] == 0);
             const LSROTHERS = OTHERS.filter(item => item['up_status'] == 0);
             if (LSRTOP.length || LSROTHERS.length) {
-                this.lsrMessage = this.lsr.transform(LSRTOP, LSROTHERS, "upis.");
+                this.lsrMessage = this.lsr.transform(LSRTOP, LSROTHERS, "upis");
             }
         }
     }

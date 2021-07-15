@@ -40,7 +40,7 @@
                     <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice" >
                         <span>Available on Request</span>
                     </div>
-                    <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice">
+                    <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.priceWithoutTax!=0">
                         <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
                     </div>
                 </div>

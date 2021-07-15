@@ -252,11 +252,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             if (data.count) {
                 this.noOfCart = data.count;
             } else {
-                if (data.count == null) {
+                if (data.count == null || data.count == 0 ) {
                     this.noOfCart = 0;
                 } else {
                     this.noOfCart = data;
                 }
+                console.log("data.count ==>", data.count);
             }
             this.setHeader();
         });

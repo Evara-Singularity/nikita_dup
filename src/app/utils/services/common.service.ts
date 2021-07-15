@@ -28,6 +28,7 @@ export class CommonService {
     public cashOnDeliveryStatus = { isEnable: true, message: "" };
     public myRfqParameters = { "productName": null, "brandName": null };
     private searchResultsTrackingData: { 'search-query': string, 'search-results': string };
+    limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
 
     set showLoader(status: boolean) {
         this._loaderService.setLoaderState(status)
@@ -72,6 +73,10 @@ export class CommonService {
 
     set itemsValidationMessage(ivm) {
         this._itemsValidationMessage = ivm;
+    }
+
+    resetLimitTrendingCategoryNumber(){
+        this.limitTrendingCategoryNumber = GLOBAL_CONSTANT.trendingCategoryLimit;
     }
 
     scrollToTop() {

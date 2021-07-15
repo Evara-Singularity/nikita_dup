@@ -15,7 +15,6 @@ export class TrendingSearchComponent {
     trendingCat;
     topCategories;
     trendingCatName;
-    limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(public _router: Router, private _service: TypeAheadService, public _commonService:CommonService) { }
@@ -29,10 +28,10 @@ export class TrendingSearchComponent {
     }
 
     updateLimitTrendingCategoryNumber(){
-        if (this.limitTrendingCategoryNumber === GLOBAL_CONSTANT.trendingCategoryLimit) {
-            this.limitTrendingCategoryNumber = this.trendingCatName.length;
+        if (this._commonService.limitTrendingCategoryNumber === GLOBAL_CONSTANT.trendingCategoryLimit) {
+            this._commonService.limitTrendingCategoryNumber = this.trendingCatName.length;
         } else {
-            this.limitTrendingCategoryNumber = GLOBAL_CONSTANT.trendingCategoryLimit;
+            this._commonService.limitTrendingCategoryNumber = GLOBAL_CONSTANT.trendingCategoryLimit;
         }
     }
 

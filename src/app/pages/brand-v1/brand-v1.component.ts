@@ -99,12 +99,11 @@ export class BrandV1Component {
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
-
         if (this.API_RESPONSE.brand[1][0]["title"]) {
             this.title.setTitle(this.API_RESPONSE.brand[1][0]["title"]);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0]["title"] });
         } else {
-            let title = "Buy " + this.capitalizeFirstLetter(this._activatedRoute.snapshot.params.brand) + " Products Online at Best Price - Moglix.com";
+            let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
         }
@@ -113,7 +112,7 @@ export class BrandV1Component {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
         } else {
-            let metaDescription = "Buy " + this._activatedRoute.snapshot.params.brand + " products at best prices in India. Shop online for " + this._activatedRoute.snapshot.params.brand + " products at Moglix. Free Delivery & COD options across India.";
+            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this._activatedRoute.snapshot.params.brand + " products at Moglix. Free Delivery & COD options across India.";
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
@@ -155,7 +154,7 @@ export class BrandV1Component {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + '/' +this.API_RESPONSE.brand[0].friendlyUrl,
-                            "name": this._activatedRoute.snapshot.params.brand
+                            "name": this.API_RESPONSE.brand[1][0]["brandName"]
                         }
                     },
                     {
@@ -195,7 +194,7 @@ export class BrandV1Component {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + this._router.url,
-                            "name": this._activatedRoute.snapshot.params.brand
+                            "name": this.API_RESPONSE.brand[1][0]["brandName"]
                         }
                     },
                 ];

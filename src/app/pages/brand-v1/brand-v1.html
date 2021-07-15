@@ -40,7 +40,7 @@
     <li [routerLink]="['/']" class="f-size-12">Home</li>
     <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
     <li class="item f-size-12">
-        <a [routerLink]="['/brands/' + API_RESPONSE['brand'][0].brandName]" style="text-transform: capitalize">
+        <a [routerLink]="['/brands/' + API_RESPONSE['brand'][0].friendlyUrl]" style="text-transform: capitalize">
             {{API_RESPONSE['brand'][0].brandName}}</a>
     </li>
     <li *ngIf="API_RESPONSE['brand'][1][0]?.categoryName" class="item f-size-12">

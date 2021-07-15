@@ -113,7 +113,7 @@ export class BrandV1Component {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
         } else {
-            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this._activatedRoute.snapshot.params.brand + " products at Moglix. Free Delivery & COD options across India.";
+            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }

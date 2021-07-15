@@ -1,6 +1,6 @@
 <section class="walletInner">
     <div class="payment-notification" *ngIf="lsrMessage">
-        Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.
+        <span>Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.</span>
     </div>
     <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
         <ul class="bank-list">
@@ -11,8 +11,7 @@
                 </label>
                 <div>
                     <img class="wallet-img" src="{{imagePath+imageFolder + '/' + walletMap[wallet].imgUrl}}">
-                    <span class="lowsuccessRate  pad-l-8"
-                        *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
+                    <span class="lowsuccessRate  pad-l-8" *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
                         success rate observed</span>
                 </div>
             </li>
@@ -20,8 +19,7 @@
         <div class="continue-button">
             <div class="container">
                 <p class="total-mount" *ngIf="totalPayableAmount>0">
-                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number :
-                    '1.2-2'}}
+                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}
                 </p>
                 <button type="submit" [disabled]="!walletForm.valid" class="btn">PAY</button>
             </div>
@@ -30,9 +28,7 @@
 </section>
 
 <paytm-wallet-form *ngIf="isValid==true && wType=='walletPaytm'" [data]="walletData"></paytm-wallet-form>
-<payu-wallet-form
-    *ngIf="isValid&&type!='tax' &&  (wType=='walletAirtel' || wType=='walletFreecharge' || wType=='walletHdfcpay' || wType=='walletOlamoney' || wType=='walletOxigen')"
-    [data]="walletData"></payu-wallet-form>
+<payu-wallet-form *ngIf="isValid&&type!='tax' &&  (wType=='walletAirtel' || wType=='walletFreecharge' || wType=='walletHdfcpay' || wType=='walletOlamoney' || wType=='walletOxigen')" [data]="walletData"></payu-wallet-form>
 <mobikwik-wallet-form *ngIf="type=='retail' && isValid==true && wType=='walletMobikwik'" [data]="walletData">
 </mobikwik-wallet-form>
 <razor-pay *ngIf="isValid&&type=='tax' && wType!='walletPaytm'" [data]="walletData"></razor-pay>

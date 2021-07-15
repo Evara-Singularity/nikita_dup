@@ -1,5 +1,5 @@
 <section class="creditDebitCardInner">
-    <h3 class="heading-3">Please enter you debit/credit card details</h3>
+    <h3 class="heading-3">Please Enter Your Debit/Credit Card Details</h3>
     <form class="material-form material-form-boxed" [formGroup]="creditDebitCardForm" (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
         <div class="radio-with-label-container">
             <label class="radio-with-label ">
@@ -24,7 +24,7 @@
                     <div class="input-field-boxed">
                         <input type="hidden" formControlName="ccexpmon" #expireMonth />
                         <div class="custom_select_box" (click)="openMonthPopUp()">
-                            <div class="custom_select_input">
+                            <div class="custom_select_input" [class.selectedInput]="selectedMonth">
                                 <span>{{selectedMonth || 'MM'}}</span>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                     <div class="input-field-boxed">
                         <input type="hidden" formControlName="ccexpyr" #expireYear />
                         <div class="custom_select_box" (click)="openYearPopUp()">
-                            <div class="custom_select_input">
+                            <div class="custom_select_input" [class.selectedInput]="selectedYear">
                                 <span>{{selectedYear || 'YYYY'}}</span>
                             </div>
                         </div>

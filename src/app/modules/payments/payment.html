@@ -44,7 +44,8 @@
         <div id="emiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')" class="payment-accordion_header">
                 <i class="icon-emi ico-accord-left"></i>
-                <span class="accordion-text">EMI {{messageEmi}} </span>
+                <span class="accordion-text">EMI</span>
+                <span><small class="error-txt inline-error" *ngIf="messageEmi">{{messageEmi}} </small></span>
                 <i class="icon-down"></i>
             </div>
             <div class="payment-accordion_body">
@@ -92,11 +93,13 @@
                 </div>
             </div>
         </div>
-        <!-- [class.disableCod]="disableCod" -->
-        <div id="cashOnDeliverySection">
+        <!--  -->
+        <div id="cashOnDeliverySection" [class.disableCod]="disableCod">
             <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')" class="payment-accordion_header">
                 <i class="icon-coupon-3-fill ico-accord-left"></i>
-                <span class="accordion-text">Cash on Delivery {{messageCod}}</span>
+                <span class="accordion-text">Cash on Delivery</span>
+                <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
+                <small class="error-txt inline-error" *ngIf="messageCod">{{messageCod}} </small>
                 <i class="icon-down"></i>
             </div>
             <div class="payment-accordion_body">

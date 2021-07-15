@@ -44,7 +44,7 @@ export class WalletComponent {
     {
         this.loaderService.setLoaderState(value);
     }
-    lsrMessage = [];
+    lsrMessage = false;
      
     constructor(
         private _localStorageService: LocalStorageService,
@@ -303,14 +303,13 @@ export class WalletComponent {
     
     lowSuccessBanks()
     {
-        this.lsrMessage = [];
+        this.lsrMessage = false;
         if (this.type == 'retail') {
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
-            const TOP = banksArr.filter(item => item['is_top'] == 1);
-            const OTHERS = banksArr.filter(item => item['is_top'] == 0);
-            const LSRTOP = TOP.filter(item => item['up_status'] == 0);
-            const LSROTHERS = OTHERS.filter(item => item['up_status'] == 0);
-            this.lsrMessage = [...LSRTOP, ...LSROTHERS];
+            const lowSuccessBanks = banksArr.filter(item => item['up_status'] == 0)
+            if (lowSuccessBanks.length){
+                this.lsrMessage = true;
+            }
         }
     }
 

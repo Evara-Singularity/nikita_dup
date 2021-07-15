@@ -157,4 +157,12 @@ p {
     color: $note-text;
     font-size: $small-font;
     line-height: 18px;
+    padding-bottom: 20px;
+    b{
+        color: #303030;
+    }
+}
+
+.noPad{
+    padding-bottom: 0px;
 }

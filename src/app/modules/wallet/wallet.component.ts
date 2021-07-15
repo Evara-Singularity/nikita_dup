@@ -44,7 +44,7 @@ export class WalletComponent {
     {
         this.loaderService.setLoaderState(value);
     }
-    lsrMessage = [];
+    lsrMessage = false;
      
     constructor(
         private _localStorageService: LocalStorageService,
@@ -303,7 +303,7 @@ export class WalletComponent {
     
     lowSuccessBanks()
     {
-        this.lsrMessage = [];
+        this.lsrMessage = false;
         if (this.type == 'retail') {
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
             const lowSuccessBanks = banksArr.filter(item => item['up_status'] == 0)

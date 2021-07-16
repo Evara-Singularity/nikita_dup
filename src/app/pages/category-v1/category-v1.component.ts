@@ -93,7 +93,6 @@ export class CategoryV1Component {
             
             // set API result data
             this.API_RESPONSE = result;
-
             console.log(this.API_RESPONSE);
 
             // Set Title and Meta for category
@@ -241,7 +240,7 @@ export class CategoryV1Component {
             this.handleZeroProductListOnServer();
         } else if (this.API_RESPONSE.category[0]['categoryDetails']['active']) {
 
-            if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0) {
+            if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0 && this._commonService.isBrowser) {
                 this.fireTags();
             }
         }

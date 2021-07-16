@@ -1042,7 +1042,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.dataService.sendMessage(trackingData);
 
       this.showLoader = true;
-      
+
       sessionDetails["cart"]["buyNow"] = buyNow;
       sessionDetails["itemsList"] = checkAddToCartData.itemlist;
       sessionDetails = this.cartService.updateCart(sessionDetails);
@@ -1054,7 +1054,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       }
       this.cartSession = this.cartService.getCartSession();
       this.productUtil.checkRootItemInCart(this.currentAddedProduct['productId']);
-
+      this.fireViewBasketEvent();
       let user = this.localStorageService.retrieve('user');
       if (buyNow) {
         const cartSession = this.removePromoCode(sessionDetails);
@@ -1068,7 +1068,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });   //this redirect to quick order page
         return;
       }
-      
+
       this.showLoader = true;
 
       this.cartService.updateCartSessions(routerLink, sessionDetails, buyNow).subscribe(data => {
@@ -1104,8 +1104,37 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.dataService.sendMessage(trackData);
       }
     }
+  }
 
+  fireViewBasketEvent() {
+    let eventData = {
+      'prodId': '',
+      'prodPrice': 0,
+      'prodQuantity': 0,
+      'prodImage': '',
+      'prodName': '',
+      'prodURL': ''
+    };
+    let criteoItem = [];
+    for (let p = 0; p < this.cartSession["itemsList"].length; p++) {
+      criteoItem.push({ name: this.cartSession["itemsList"][p]['productName'], id: this.cartSession["itemsList"][p]['productId'], price: this.cartSession["itemsList"][p]['productUnitPrice'], quantity: this.cartSession["itemsList"][p]['productQuantity'], image: this.cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this.cartSession["itemsList"][p]['productUrl'] });
+      eventData['prodId'] = this.cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+      eventData['prodPrice'] = this.cartSession["itemsList"][p]['productUnitPrice'] * this.cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+      eventData['prodQuantity'] = this.cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+      eventData['prodImage'] = this.cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+      eventData['prodName'] = this.cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+      eventData['prodURL'] = this.cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+    }
+    let user = this.localStorageService.retrieve('user');
 
+    /*Start Criteo DataLayer Tags */
+    this.dataService.sendMessage({
+      'event': 'viewBasket',
+      'email': (user && user.email) ? user.email : '',
+      'currency': 'INR',
+      'productBasketProducts': criteoItem,
+      'eventData': eventData
+    });
   }
 
   updateCartSessions(data, routerLink, buyNow?) {

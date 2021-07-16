@@ -333,6 +333,7 @@ export class ProductHorizontalCardComponent implements OnInit {
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
+            this._productListService.fireViewBasketEvent();            
             this.showAddToCartToast();
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });

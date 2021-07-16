@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@services/common.service';
 import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
 import { LocalStorageService } from 'ngx-webstorage';
+import { CartService } from './cart.service';
 import { DataService } from './data.service';
 import { GlobalAnalyticsService } from './global-analytics.service';
 
@@ -17,6 +19,7 @@ export class ProductListService {
     private _commonService: CommonService,
     private _analytics: GlobalAnalyticsService,
     private _dataService: DataService,
+    private _cartService: CartService,
     public _localStorageService: LocalStorageService,
   ) {
   }
@@ -239,5 +242,36 @@ export class ProductListService {
     this._dataService.sendMessage(trackingData);
   }
 
+  fireViewBasketEvent() {
+    let eventData = {
+      'prodId': '',
+      'prodPrice': 0,
+      'prodQuantity': 0,
+      'prodImage': '',
+      'prodName': '',
+      'prodURL': ''
+    };
+    let criteoItem = [];
+    const cartSession = this._cartService.getCartSession();
+    for (let p = 0; p < cartSession["itemsList"].length; p++) {
+      criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+      eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+      eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+      eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+      eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+      eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+      eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+    }
+    let user = this._localStorageService.retrieve('user');
+
+    /*Start Criteo DataLayer Tags */
+    this._dataService.sendMessage({
+      'event': 'viewBasket',
+      'email': (user && user.email) ? user.email : '',
+      'currency': 'INR',
+      'productBasketProducts': criteoItem,
+      'eventData': eventData
+    });
+  }
 
 }

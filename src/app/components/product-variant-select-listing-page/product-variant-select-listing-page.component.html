@@ -28,7 +28,7 @@
                             <div class="brand">
                                 <span>By: {{product.brandName}}</span>
                             </div>
-                            <div class="price-details">
+                            <div class="price-details" *ngIf="product.priceWithoutTax != 0" >
                                 <div class="left">
                                     <div class="price">
                                         <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
@@ -41,6 +41,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="price-details" *ngIf="product.priceWithoutTax == 0" >
+                                <div class="out-of-stock-text" >
+                                    <span>Available on Request</span>
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                     <div class="select-warp" *ngFor="let variants of productGroupData.filterAttributesList">
@@ -55,10 +60,10 @@
                     </div>
                 </div>
                 <div class="stickyBottomBtn">
-                    <button *ngIf="!isSelectedVariantOOO" class="btn continue-btn" (click)="continueToCart()">
+                    <button *ngIf="!isSelectedVariantOOO && product.priceWithoutTax != 0" class="btn continue-btn" (click)="continueToCart()">
                         CONTINUE
                     </button>
-                    <button *ngIf="isSelectedVariantOOO" class="btn continue-btn" (click)="continueToSendQuery()">
+                    <button *ngIf="isSelectedVariantOOO || product.priceWithoutTax == 0" class="btn continue-btn" (click)="continueToSendQuery()">
                         SEND QUERY
                     </button>
                 </div>

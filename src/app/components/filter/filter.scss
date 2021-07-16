@@ -1,169 +1,195 @@
-@import '../../scss/variables';
-.mob_filter {
-    @extend %transition;
-    top: 115%;
-    display: block;
-    &.upTrans {
-        top: 0;
-    }
-    .popup-head {
-        padding: 10px;
-        position: relative;
-        @extend %box-shadow;
-        @extend %clear-fix;
-        i {
-            float: left;
-            font-size: 14px;
-            line-height: 25px;
+    @import '../../scss/variables';
+    .mob_filter {
+        @extend %transition;
+        top: 115%;
+        display: block;
+        &.upTrans {
+            top: 0;
         }
-        .txt-name {
-            font-size: $extra-large-font;
-            font-weight: 500;
-            float: left;
-            line-height: 25px;
-            margin-left: 15px;
-        }
-        .clear-filter {
-            float: right;
-            color: $blue-link-color;
-            line-height: 25px;
-            font-size: $large-font;
-            font-weight: 500;
-        }
-    }
-    .apply-filter {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: none;
-        z-index: 5;
-        padding: 5px;
-        box-shadow: 0px -3px 6px #00000029;
-        .continue-btn {
-            background: #D9232D;
-        }
-    }
-    &.upTrans {
-        .apply-filter {
-            display: block;
-        }
-    }
-}
-
-.filters-content {
-    width: 100%;
-    height: 80%;
-    height: calc(100vh - 60px);
-    .side-filters {
-        height: 95%;
-        height: calc(100% - 32px);
-        overflow: auto;
-        background: #F2F2F2;
-        width: 136px;
-        float: left;
-        border-right: 1px solid #C9C9C9;
-        li {
-            padding: 20px 10px 20px 20px;
+        .popup-head {
+            padding: 10px;
+            position: relative;
+            @extend %box-shadow;
             @extend %clear-fix;
-            border-bottom: 1px solid #C9C9C9;
-            .filter-parent {
-                font-size: $large-font;
-                line-height: 20px;
+            i {
                 float: left;
-                text-transform: capitalize;
+                font-size: 14px;
+                line-height: 25px;
             }
-            .selected-no {
+            .txt-name {
+                font-size: $extra-large-font;
+                font-weight: 500;
+                float: left;
+                line-height: 25px;
+                margin-left: 15px;
+            }
+            .clear-filter {
                 float: right;
-                font-size: $small-font;
-                line-height: 20px;
-                margin-left: 10px;
-                color: #999;
+                color: $blue-link-color;
+                line-height: 25px;
+                font-size: $large-font;
+                font-weight: 500;
             }
-            &.active {
-                background: $white;
-                margin-right: -1px;
-                .filter-options,
-                app-f-category {
-                    display: block;
+        }
+        .apply-filter {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: none;
+            z-index: 5;
+            padding: 5px;
+            box-shadow: 0px -3px 6px #00000029;
+            .continue-btn {
+                background: #D9232D;
+            }
+        }
+        &.upTrans {
+            .apply-filter {
+                display: block;
+            }
+        }
+    }
+    
+    .filters-content {
+        width: 100%;
+        height: 80%;
+        height: calc(100vh - 60px);
+        .side-filters {
+            height: 95%;
+            height: calc(100% - 32px);
+            overflow: auto;
+            background: #F2F2F2;
+            width: 136px;
+            float: left;
+            border-right: 1px solid #C9C9C9;
+            li {
+                padding: 20px 10px 20px 20px;
+                @extend %clear-fix;
+                border-bottom: 1px solid #C9C9C9;
+                .filter-parent {
+                    font-size: $large-font;
+                    line-height: 20px;
+                    float: left;
+                    text-transform: capitalize;
+                }
+                .selected-no {
+                    float: right;
+                    font-size: $small-font;
+                    line-height: 20px;
+                    margin-left: 10px;
+                    color: #999;
+                }
+                &.active {
+                    background: $white;
+                    margin-right: -1px;
+                    .filter-options,
+                    app-f-category {
+                        display: block;
+                    }
                 }
             }
         }
-    }
-    app-f-category {
-        display: none
-    }
-    .filter-options {
-        display: none;
-        position: absolute;
-        left: 136px;
-        top: 52px;
-        width: 70%;
-        width: calc(100% - 136px);
-        height: 100%;
-        .filter-search {
+        app-f-category {
+            display: none
+        }
+        .filter-options {
+            display: none;
             position: absolute;
-            top: 0;
-            width: 100%;
-            padding: 0 10px 0 10px;
-            background: $white;
-            input {
-                width: 100%;
-                height: 35px;
-                border: solid $border-color;
-                border-width: 0 0 1px 0;
-                margin-top: 8px;
-            }
-            .icon-search {
+            left: 136px;
+            top: 52px;
+            width: 70%;
+            width: calc(100% - 136px);
+            height: 100%;
+            .filter-search {
                 position: absolute;
-                right: 9px;
-                top: 17px;
-                font-size: 15px;
+                top: 0;
+                width: 100%;
+                padding: 0 10px 0 10px;
+                background: $white;
+                input {
+                    width: 100%;
+                    height: 35px;
+                    border: solid $border-color;
+                    border-width: 0 0 1px 0;
+                    margin-top: 8px;
+                }
+                .icon-search {
+                    position: absolute;
+                    right: 9px;
+                    top: 17px;
+                    font-size: 15px;
+                }
             }
-        }
-        .filter-brands {
-            position: relative;
-            width: 100%;
-            padding-top: 1px;
-        }
-        .filter-search+.custom-cbox {
-            margin-top: 55px;
-        }
-        .filter-list {
-            height: 80%;
-            height: calc(100vh - 100px);
-            overflow: auto;
-            .custom-cbox {
-                label {
-                    border-bottom: 1px solid $border-color;
-                    padding: 15px;
-                    &.selected {
-                        background: $selected-color;
+            .filter-brands {
+                position: relative;
+                width: 100%;
+                padding-top: 1px;
+            }
+            .filter-search+.custom-cbox {
+                margin-top: 55px;
+            }
+            .filter-list {
+                height: 80%;
+                height: calc(100vh - 100px);
+                overflow: auto;
+                .custom-cbox {
+                    label {
+                        border-bottom: 1px solid $border-color;
+                        padding: 15px;
+                        &.selected {
+                            background: $selected-color;
+                        }
                     }
                 }
             }
         }
     }
-}
-
-.custom-cbox {
-    label {
-        display: block;
-        padding: 10px 0;
-        @extend %clear-fix;
-        @extend %custom-check-box;
+    
+    .custom-cbox {
+        label {
+            display: block;
+            padding: 10px 0;
+            @extend %clear-fix;
+            @extend %custom-check-box;
+        }
     }
-}
-
-.popup.screen-view {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 120%;
-    left: 0;
-    background: #fff;
-    &.upTrans {
-        top: 0px;
-        z-index: 99;
+    
+    .popup.screen-view {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 120%;
+        left: 0;
+        background: #fff;
+        &.upTrans {
+            top: 0px;
+            z-index: 99;
+        }
     }
-}
+    
+    .filter-rating {
+        font-size: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 20px;
+        padding-left: 10px;
+        span {
+            margin-right: 5px;
+        }
+        .avgrating {
+            display: inline;
+            background-color: #458D00;
+            padding: 3px 5px;
+            color: #FFF;
+            border-radius: 3px;
+            font-size: 12px;
+            i {
+                padding-left: 2px;
+                font-size: 9px;
+            }
+        }
+        .count {
+            font-size: 10px;
+        }
+    }

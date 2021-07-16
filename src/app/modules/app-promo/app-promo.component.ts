@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
@@ -24,6 +24,7 @@ export class AppPromoComponent implements OnInit {
   readonly appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
 
   @Input() isOverlayMode: boolean = true;
+  @Input() page: string;
   @Input() showPromoCode: boolean = true;
   @Input() productMsn: string = null;
   @Input() isLazyLoaded: boolean = false;
@@ -37,6 +38,8 @@ export class AppPromoComponent implements OnInit {
   constructor(
     private _localStorage: LocalStorageService,
     private _localAuthService: LocalAuthService,
+    private _analytics: GlobalAnalyticsService,
+    private _localStorageService: LocalStorageService,
     public _commonService: CommonService,
   ) {
   }
@@ -57,11 +60,31 @@ export class AppPromoComponent implements OnInit {
   }
 
   openPlayStore() {
+    this.callAnalytics();
     window.open(this.playStoreLink, '_blank');
   }
 
   openAppStore() {
+    this.callAnalytics();
     window.open(this.appStoreLink, '_blank');
+  }
+
+  callAnalytics(){
+    const user = this._localStorageService.retrieve('user');
+    let digitalData={
+      page:{      
+      linkPageName: 'moglix: ' + this.page,
+      
+      linkName: 'Install App'
+    },
+    custData:{     
+      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+      'customerType': (user && user["userType"]) ? user["userType"] : '',
+      
+      }};
+    this._analytics.sendAdobeCall(digitalData, "genericClick");
   }
 
   removePromo() {

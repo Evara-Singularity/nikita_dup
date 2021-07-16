@@ -158,7 +158,6 @@ export class ProductListService {
 
   analyticAddToCart(routerlink, productDetails) {
     const user = this._localStorageService.retrieve('user');
-    console.log(productDetails);
     const taxonomy = productDetails['taxonomyCode'];
     let taxo1 = '';
     let taxo2 = '';

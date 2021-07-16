@@ -26,7 +26,7 @@
                 </h3>
             </div>
             <div id="openFaq" style="display: block;" class="body-bg pad-lr-15">
-                <div *ngFor="let fd of categoryFooterData?.faqData">
+                <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div" >
                     <h2 class="m_faqQuestion"><strong>{{fd["questionText"]}}</strong></h2>
                     <p class="m_faqAnswer">{{fd["answerText"]}}</p>
                 </div>

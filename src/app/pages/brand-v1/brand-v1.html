@@ -9,7 +9,7 @@
     <div class="sub-cate-container">
         <div class="container pt-10">
             <p class="desc-brand"> Moglix offers superior quality and genuine
-                <a class="text-blue" [routerLink]="_router.url.split('/brands/' + _activatedRoute.snapshot.params['brand'])[1]" style="text-transform: capitalize">
+                <a class="text-blue" [routerLink]="[(this._router.url.split('/brands/' + this._activatedRoute.snapshot.params['brand'])[1]).split('#')[0]]" style="text-transform: capitalize">
                     {{API_RESPONSE['brand'][1][0].categoryName}}
                 </a> from a renowned brand
                 <a class="text-blue" [routerLink]="['/brands/' + API_RESPONSE['brand'][0].friendlyUrl]">{{API_RESPONSE['brand'][0].brandName}}</a>. 

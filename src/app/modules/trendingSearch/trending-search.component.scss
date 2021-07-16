@@ -15,7 +15,7 @@
         &>div {
             display: inline-flex;
             margin-right: 10px;
-            &.show_more{
+            &.show_more {
                 color: #278BED;
                 font-weight: 500;
                 display: inline-block;
@@ -46,19 +46,22 @@
         border-radius: 8px;
         padding: 5px;
         margin-right: 10px;
-        width: 29.5%;
+        width: 48%;
         margin-bottom: 10px;
+        overflow: hidden;
         &:last-child {
             margin-right: 0px;
         }
+        &:nth-child(even) {
+            margin-right: 0px;
+        }
         img {
-            width: 33px;
+            width: 36px;
         }
         .prodText {
             padding-left: 5px;
             line-height: 13px;
-            font-size: 10px;
-            font-weight: bold;
+            font-size: 11px;
         }
     }
 }

@@ -398,7 +398,7 @@ export class CategoryV1Component {
             productSearchResult: this.API_RESPONSE.category[1].productSearchResult,
             getRelatedCatgory: this.API_RESPONSE.category[0],
             productSearchResultSEO: this.genrateProductSearchResultSEOData(),
-            faqData: this.API_RESPONSE.category[2],
+            faqData: this.API_RESPONSE.category[2]['data'],
             buckets: this.API_RESPONSE.category[1].buckets,
             PRTA: this.genrateProductRangeTable()
         };

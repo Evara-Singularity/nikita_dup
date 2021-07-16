@@ -37,7 +37,6 @@
             <h1 *ngIf="brandCategoryName" style="text-transform: capitalize" class="f-16 pad-tb-10 bold-txt">
                 Shop {{heading ? (heading | removeHTML) : brand}} Online
             </h1>
-
         </div>
         <div class="container pt-10">
             <p *ngIf='brandCategoryName && firstPageContent' class="desc-brand">Moglix offers superior quality and genuine
@@ -52,8 +51,6 @@
     </div>
     <div class="clearfix"></div>
 
-
-
     <product-list [itemCount]="this.paginationData?.itemCount" [productsUpdated]="productsUpdated" [productsCount]="paginationUpdated"></product-list>
 
     <div class="filter-wrapper">
@@ -61,20 +58,15 @@
             <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER  <span *ngIf="filterCounts">({{ filterCounts }})</span></span>
         </button>
 
-        <button type="button" (click)="toggleSortBy($event)">
+        <button type="button" (click)="toggleSortBy()">
             <i class="icon-sort-by" aria-hidden="true"></i>
             <span class="txt">SORT BY</span>
         </button>
     </div>
     <ng-container *ngIf="isBrowser" #sortBy></ng-container>
-    <!-- <sort-by [sortByUpdated]="sortByUpdated" [class.open]="sortByOpt" (outData$)="onUpdaet($event)"></sort-by> -->
     <div>
         <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
         <ng-template *ngIf="isBrowser" #pagination></ng-template>
-        <!-- <pagination class="block o-hidden h-54  h-auto-xs" [paginationUpdated]="paginationUpdated"
-            [sortByComponentUpdated]="sortByComponentUpdated" [position]="'BOTTOM'"
-            (onPageChange)="pageChanged($event)">
-        </pagination> -->
     </div>
 
     <div class="popularCategories" *ngIf="productCategoryNames.length>0">

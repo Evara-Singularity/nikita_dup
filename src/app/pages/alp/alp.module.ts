@@ -6,7 +6,6 @@ import { MetaModule } from '@ngx-meta/core';
 import { AlpComponent } from "./alp.component";
 import { AlpService } from "./alp.service";
 import { ObjectToArrayPipeModule } from "@pipes/object-to-array.pipe";
-import { PaginationModule } from "@modules/pagination/pagination.module";
 import { MathFloorPipeModule } from "@pipes/math-floor";
 import { ProductListModule } from '@modules/productList/productList.module'
 import { SortByModule } from "@components/sortBy/sortBy.module";
@@ -29,7 +28,6 @@ import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.
         ObjectToArrayPipeModule,
         RouterModule,
         ProductListModule,
-        PaginationModule,
         SortByModule,
         NgxPaginationModule,
         ObserveVisibilityDirectiveModule,

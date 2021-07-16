@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductListComponent } from './productList.component';
-import { ProductListService } from './productList.service';
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 import { CharacterremovePipeModule } from '@app/utils/pipes/characterRemove.pipe';
 import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
@@ -26,7 +25,6 @@ import { ShowAvailableOnRequestLastPipeModule } from "@app/utils/pipes/show-avai
     ],
     exports: [ProductListComponent],
     declarations: [ProductListComponent],
-    providers: [ProductListService],
 })
 export class ProductListModule { }
 export class CategoryModule extends ProductListModule { }

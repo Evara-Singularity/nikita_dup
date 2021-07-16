@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { Observer, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationExtras, Router } from '@angular/router';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
@@ -17,6 +17,7 @@ import { ActivatedRoute } from "@angular/router";
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from './global-loader.service';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 @Injectable({
     providedIn: 'root'
@@ -27,12 +28,14 @@ export class CommonService {
     public cashOnDeliveryStatus = { isEnable: true, message: "" };
     public myRfqParameters = { "productName": null, "brandName": null };
     private searchResultsTrackingData: { 'search-query': string, 'search-results': string };
+    limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
 
     set showLoader(status: boolean) {
         this._loaderService.setLoaderState(status)
     }
     public isBrowser: boolean;
     public isServer: boolean;
+    public isAppInstalled: boolean = false;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -52,9 +55,9 @@ export class CommonService {
 
     private routeData: { currentUrl: string, previousUrl: string };
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService, 
-    private _loaderService: GlobalLoaderService,
-    private _router: Router) {
+    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
+        private _loaderService: GlobalLoaderService,
+        private _router: Router) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
@@ -73,19 +76,13 @@ export class CommonService {
         this._itemsValidationMessage = ivm;
     }
 
-    updateSortByFromSearch() {
-        this.deleteDefaultQueryParams(['orderWay', 'orderBy']);
-        this.updateSortBy.next('popularity');
-        const sortByFilter = document.querySelector('sort-by');
-
-        if (sortByFilter) {
-            sortByFilter.classList.remove('open');
-        }
+    resetLimitTrendingCategoryNumber() {
+        this.limitTrendingCategoryNumber = GLOBAL_CONSTANT.trendingCategoryLimit;
     }
 
     scrollToTop() {
         if (this.isBrowser) {
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
     }
 
@@ -147,7 +144,7 @@ export class CommonService {
                 this.defaultParams[key] = updatedParams[key];
             }
         }
-        
+
         return this.defaultParams;
     }
 
@@ -175,6 +172,8 @@ export class CommonService {
 
     private getBrandData(type, curl, params) {
         const formattedParams = this.formatParams(params);
+        console.log(formattedParams);
+        console.log(params);
 
         return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRAND_NAME, { params: { name: formattedParams['brand'] } })
             .pipe(
@@ -217,7 +216,7 @@ export class CommonService {
         let formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams });
     }
-    
+
     private getSearchData(type, curl, params): Observable<any> {
         const formattedParams = this.formatParams(params);
         return this._dataService.callRestful(type, curl, { params: formattedParams })
@@ -239,26 +238,37 @@ export class CommonService {
         }
     }
 
-    generateQueryParams(qp) {
-        let queryParams = {};
-        if (qp["page"] > 1)
-            queryParams["page"] = qp["page"];
-        if (qp["pageSize"] > CONSTANTS.GLOBAL.default.pageSize)
-            queryParams["pageSize"] = qp["pageSize"];
+    generateQueryParams() {
+        const url = location.search.substring(1);
+        const queryParams = url ? JSON.parse('{"' + decodeURI(url).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : {};
+        if (this.selectedFilterData.sortBy === 'popularity') {
+            delete queryParams['orderBy'];
+            delete queryParams['orderWay'];
+        } else if (this.selectedFilterData.sortBy === 'lowPrice') {
+            queryParams['orderBy'] = 'price';
+            queryParams['orderWay'] = 'asc';
+        } else if (this.selectedFilterData.sortBy === 'highPrice') {
+            queryParams['orderBy'] = 'price';
+            queryParams['orderWay'] = 'desc';
+        }
 
-        /*if(this.defaultParams["controller"] != undefined)
-         queryParams["controller"] = this.defaultParams["controller"];*/
-        if (qp["controller"] != undefined)
-            queryParams["controller"] = qp["controller"];
-        if (qp["orderby"] != undefined)
-            queryParams["orderby"] = qp["orderby"];
-        if (qp["orderway"] != undefined)
-            queryParams["orderway"] = qp["orderway"];
-        if (qp["search_query"] != undefined)
-            queryParams["search_query"] = qp["search_query"];
-        if (qp["submit_search"] != undefined)
-            queryParams["submit_search"] = qp["submit_search"];
         return queryParams;
+    }
+
+    updateSelectedFilterDataFilterFromFragment(fragment) {
+        let obj = {};
+
+        if (fragment) {
+            let filtersList = fragment.split('/');
+            if (filtersList) {
+                for (let i = 0; i < filtersList.length; i++) {
+                    let a = filtersList[i].split(/-(.+)/);
+                    obj[a[0]] = a[1].split('||');
+                }
+            }
+        }
+
+        return obj;
     }
 
     generateFragmentString(productFilterData) {
@@ -270,7 +280,7 @@ export class CommonService {
             for (let i = 0; i < keys.length; i++) {
 
                 if (filter[keys[i]].length > 0) {
-                    if (fragment.length == 0){
+                    if (fragment.length == 0) {
                         fragment = fragment + keys[i] + '-' + filter[keys[i]].join("||");
                     }
                     else {
@@ -288,6 +298,7 @@ export class CommonService {
     refreshProducts(flagFromResolver?: boolean): Observable<any> {
         return (new Observable(observer => {
             const defaultParams = this.defaultParams;
+            console.log(this.defaultParams);
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
                 if (this.currentRequest !== undefined)
@@ -309,41 +320,41 @@ export class CommonService {
 
 
             } else if (defaultParams["pageName"] == "BRAND") {
-                if (this.currentRequest != undefined){
+                if (this.currentRequest != undefined) {
                     this.currentRequest.unsubscribe();
                 }
                 this.currentRequest = this.getBrandData('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRANDS, defaultParams)
-                .pipe(
-                    map((res) => {
-                        res.buckets.map((bucket) => {
-                            bucket['collFilter'] = true;
+                    .pipe(
+                        map((res) => {
+                            res.buckets.map((bucket) => {
+                                bucket['collFilter'] = true;
+                            })
+                            res['flag'] = !!flagFromResolver;
+                            return res;
                         })
-                        res['flag'] = !!flagFromResolver;
-                        return res;
-                    })
-                ).subscribe((response) => {
-                    if (this._router.url.search('#') < 0) {
-                        this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
-                            if (res['status']) {
-                                response.cmsData = res['data']['data'];
+                    ).subscribe((response) => {
+                        if (this._router.url.search('#') < 0) {
+                            this.getCmsDynamicDataForCategoryAndBrand(defaultParams['category'], defaultParams['brand']).subscribe(res => {
+                                if (res['status']) {
+                                    response.cmsData = res['data']['data'];
+                                    observer.next(response);
+                                    observer.complete();
+                                } else {
+                                    observer.next(response);
+                                    observer.complete();
+                                }
+                            }, err => {
                                 observer.next(response);
                                 observer.complete();
-                            } else {
-                                observer.next(response);
-                                observer.complete();
-                            }
-                        }, err => {
+                            });
+                        } else {
+                            this.replaceHeading = false;
                             observer.next(response);
                             observer.complete();
-                        });
-                    } else {
-                        this.replaceHeading = false;
-                        observer.next(response);
-                        observer.complete();
-                    }
-                });
+                        }
+                    });
             } else if (defaultParams["pageName"] == "SEARCH") {
-                if (this.currentRequest != undefined){
+                if (this.currentRequest != undefined) {
                     this.currentRequest.unsubscribe();
                 }
                 this.currentRequest = this.getSearchData('GET', CONSTANTS.NEW_MOGLIX_API + '/search', defaultParams)
@@ -398,7 +409,7 @@ export class CommonService {
         return this._dataService.callRestful("GET", url);
     }
 
-    private formatParams(params) {
+    public formatParams(params) {
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
 
         let queryParams: {} = {};
@@ -434,7 +445,7 @@ export class CommonService {
             if (queryParams["str"] != undefined)
                 actualParams['str'] = queryParams["str"];
         } else if (params.pageName == "BRAND") {
-            if (params["category"]){
+            if (params["category"]) {
                 actualParams['category'] = params["category"];
             }
             actualParams['brand'] = params.brand ? params.brand.toLowerCase() : '';
@@ -520,7 +531,7 @@ export class CommonService {
     }
 
     subscribeCredit(data) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.EPAY_LATER , { body: data });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.EPAY_LATER, { body: data });
     }
 
     getBusinessDetail(data) {
@@ -661,7 +672,7 @@ export class CommonService {
         if (cart['buyNow']) {
             obj['shoppingCartDto']['cart']['buyNow'] = cart['buyNow'];
         }
- 
+
         if (billingAddress !== undefined && billingAddress !== null) {
             obj.shoppingCartDto.addressList.push(
                 {
@@ -717,14 +728,6 @@ export class CommonService {
     }
 
 
-
-    updateSortByState(sortByState) {
-        let orderBy = (sortByState == 'popularity') ? 'popularity' : 'price';
-        let orderWay = (sortByState == 'lowPrice') ? 'asc' : 'desc';
-        this.defaultParams.queryParams["orderBy"] = orderBy;
-        this.defaultParams.queryParams["orderWay"] = orderWay;
-    }
-
     validateCartBeforePayment(obj) {
         let userSession = this._localStorageService.retrieve('user');
         return this.getBusinessDetail({ customerId: userSession.userId })
@@ -754,7 +757,7 @@ export class CommonService {
                 })
             )
 
-        }
+    }
 
     testApi() {
         return this._dataService.callRestful("GET", CONSTANTS.TEST_API);
@@ -764,7 +767,6 @@ export class CommonService {
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.HOMEPAGE_FOOTER);
     }
     getTrendingCategories() {
-
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TRENDING_CATEGORY);
 
     }
@@ -803,7 +805,7 @@ export class CommonService {
         return this._dataService.callRestful("GET", curl);
     }
 
-    calculateFilterCount(data){
+    calculateFilterCount(data) {
         let count = 0;
         data.forEach((el) => {
             for (let i = 0; i < el.terms.length; i++) {
@@ -820,5 +822,89 @@ export class CommonService {
         setTimeout(() => {
             this.showLoader = false;
         }, 0);
+    }
+
+
+    /**
+    * This funtion is used to create fragment & queryparams and navigate to the specific routes
+    */
+    public selectedFilterData: any = {
+        filter: {},
+        filterChip: {},
+        sortBy: 'popularity',
+        pages: [],
+        page: this._activatedRoute.snapshot.params.page || 1,
+        totalCount: 0,
+        pageSize: GLOBAL_CONSTANT.default.pageSize
+    };
+
+    resetSelectedFilterData() {
+        this.selectedFilterData = {
+            filter: {},
+            sortBy: 'popularity',
+            pages: [],
+            page: 1,
+            pageSize: GLOBAL_CONSTANT.default.pageSize
+        };
+    }
+
+    genricApplyFilter(key, item) {
+        if (this.selectedFilterData.filter.hasOwnProperty(key)) {
+            const indexInSelectedFilterDataFilterArray = this.selectedFilterData.filter[key].findIndex(x => x === item.term);
+            if (!(indexInSelectedFilterDataFilterArray > -1)) {
+                this.selectedFilterData.filter[key].push(item.term);
+            } else {
+                this.selectedFilterData.filter[key].splice(indexInSelectedFilterDataFilterArray, 1);
+            }
+        } else {
+            this.selectedFilterData.filter[key] = [];
+            this.selectedFilterData.filter[key].push(item.term);
+        }
+
+        this.applyFilter();
+    }
+
+    applyFilter(currentRouteFromCategoryFilter?: number, page?: number) {
+
+        const currentRoute = !currentRouteFromCategoryFilter ? this.getCurrentRoute(this._router.url) : currentRouteFromCategoryFilter;
+
+        const extras: NavigationExtras = { queryParams: {} };
+
+        const fragmentString = this.generateFragmentString(this.selectedFilterData.filter);
+
+        const queryParams = this.generateQueryParams();
+
+        extras.queryParams = queryParams;
+
+        if (fragmentString != null) {
+            extras.fragment = fragmentString;
+        }
+
+
+        this.selectedFilterData.page = 1;
+        if (extras.queryParams['page']) {
+            this.selectedFilterData.pageSize = GLOBAL_CONSTANT.default.pageSize;
+            delete extras.queryParams['page'];
+        }
+
+        if (page > 1) {
+            this.selectedFilterData.page = page;
+            extras.queryParams['page'] = page;
+        }
+
+
+        this.toggleFilter(true);
+        this._router.navigate([currentRoute], extras);
+    }
+
+    toggleFilter(forceFillyRemove?: boolean) {
+        const mob_filter = document.querySelector('.mob_filter');
+        if (mob_filter) {
+            forceFillyRemove ? mob_filter.classList.remove('upTrans') : mob_filter.classList.toggle('upTrans');
+        }
+    }
+
+    navigateTo(link) {
+        this._router.navigateByUrl(link);
     }
 }

@@ -1,4 +1,4 @@
-<div class="productdetails-article">
+<div class="productdetails-article"  [ngStyle]="customStyle">
     <div class="view-all" *ngIf="listOfProducts?.length > 6">
         <span *ngIf="!viewAll" (click)="$event.stopPropagation; viewAll = true">view all</span> 
         <span *ngIf="viewAll" (click)="$event.stopPropagation; viewAll = false">view less</span> 
@@ -7,7 +7,7 @@
     <ng-container *ngFor="let product of listOfProducts; let i = index;">
         <div class="innerContentWrapper" *ngIf="(i < 6 || (i > 6 && viewAll))" >
             <ul>
-                <li (click)="$event.stopPropagation;navigateTo(product['productlink'])">
+                <li (click)="$event.stopPropagation;_cmsService.navigateTo(product['productlink'], {navigation:'brand_store_' + componentName + '_' + (product['msn'] ? product['msn'] : '') })">
                     <div class="reviewRatingWrap">
                         <img class="product-img" src="{{imagePath + product['imageLink_small']}}" [alt]="product['productName']">
                     </div>

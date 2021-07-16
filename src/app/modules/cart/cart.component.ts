@@ -349,9 +349,10 @@ export class CartComponent {
                 digitalData["page"] = page;
                 digitalData["custData"] = custData;
                 digitalData["order"] = order;
-                _satellite.track("genericPageLoad");
+                if(_satellite){
+                    _satellite.track("genericPageLoad");
+                }
                 /*End Adobe Analytics Tags */
-
             }
         }
     }
@@ -1024,7 +1025,9 @@ export class CartComponent {
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
-            _satellite.track("genericClick");
+            if(_satellite){
+                _satellite.track("genericClick");
+            }
             /*End Adobe Analytics Tags */
 
             // Update cart in service

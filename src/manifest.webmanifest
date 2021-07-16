@@ -7,6 +7,13 @@
   "scope": "./",
   "start_url": "./",
   "gcm_sender_id": "986577869152",
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.apppromodemo",
+      "url": "https://qam-revamp.moglilabs.com"
+    }
+  ],
   "icons": [
     {
       "src": "assets/img/moglix-logo.svg",

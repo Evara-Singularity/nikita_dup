@@ -14,6 +14,7 @@ export class GlobalToastComponent implements OnInit {
   @Input() btnLink: string = null;
   @Input() btnText: string = null;
   @Input() showTime: number = 3000;
+  @Input() positionBottom: boolean = false;
   @Output() removed: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {

@@ -1,0 +1,40 @@
+<div class="container-fluid" *ngIf="cmsData">
+    <div class="row">
+        <cms [background]="'bg-trans'" [cmsData]="cmsData"></cms>
+    </div>
+</div>
+
+<section class="brands-container bg-white brandBlock">
+    <div class="panel-head">
+        <h3 class="heading titleBrand" [appKpToggle]="{idName: 'letterContainer',iconMode :true}">
+            ALL BRANDS
+            <span class="iconaccordian">
+                <i class="icon-expand"></i>
+            </span>
+        </h3>
+    </div>
+    <div id="letterContainer" style="display:none;">
+        <div id="letterId" class="row bg-lightGrey alphabetBlock">
+            <div class="innerBlock">
+                <ul>
+                    <li *ngFor="let letter of final_arr;let j= index;">
+                        <a (click)="scrollToList(j)">{{letter['letter']}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="letterName" class="row bg-white nameBlock">
+            <p>Showing
+                <span>{{total_count}}</span>&nbsp;Brands
+            </p>
+            <div id="alphabet_{{i}}" class="fullNameBlock clearfix" *ngFor="let brand of final_arr;let i = index;">
+                <span class="letter">{{brand['letter']}}</span>
+                <ul>
+                    <li *ngFor="let nameA of brand.nameArr">
+                        <a (click)="_commonService.navigateTo(nameA.link)">{{nameA.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

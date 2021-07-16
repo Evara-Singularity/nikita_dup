@@ -151,15 +151,16 @@ header {
         vertical-align: middle;
         // text-align: center;
         position: relative;
-        font-size: 16px;
+        font-size: 18px;
         color: $white;
     }
-    .icon-cart-header {
-        font-size: 18px;
+    .icon-cart1 {
+        font-size: 22px;
     }
     .page-name {
         width: 80%;
         padding: 12px 5px 12px 0px;
+        font-size: 16px;
     }
     .brand-page-name {
         width: auto !important;
@@ -303,7 +304,7 @@ header {
         &.header-icon {
             max-width: 48px;
             width: 12%;
-            font-size: 20px;
+            font-size: 24px;
             &.icon-menu {
                 font-size: 15px;
             }
@@ -314,4 +315,9 @@ header {
         right: 2px;
         color: #333;
     }
+}
+
+.logo-2x{
+    width: 64px;
+    height: 22px;
 }

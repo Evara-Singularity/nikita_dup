@@ -3,20 +3,21 @@
     font-family: 'icomooon_pwa';
     font-display: swap;
     src: local('icomoon_pwa.eot'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.eot');
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.eot');
     src: local('icomoon_pwa.eot'),
     local('icomoon_pwa.ttf'),
     local('icomoon_pwa.woff'),
     local('icomoon_pwa.svg'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.eot') format('embedded-opentype'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.ttf') format('truetype'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.woff') format('woff'),
-    url('#{$cdn_url}mob/assets/fonts/icomoon_pwa.svg') format('svg');
+    url('/assets/fonts/icomoon_pwa.eot') format('embedded-opentype'),
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype'),
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.woff') format('woff'),
+    url('#{$cdn_url}assets/fonts/icomoon_pwa.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 // Icons
+i[class^="icon-"],
 [class^="icon-"]::before,
 [class*=" icon-"]::before {
     font-family: 'icomooon_pwa' !important;
@@ -33,6 +34,18 @@
     padding: 0;
     box-sizing: border-box;
     // font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    outline: 0;
+}
+
+input,
+select {
+    background-image: none;
+    background: none;
+    line-height: 18px;
+    position: relative;
 }
 
 .container {
@@ -349,6 +362,9 @@ header-nav {
         padding: 10px 5px;
         position: relative;
         color: $white;
+    }
+    .icon-cart1 {
+        font-size: 22px;
     }
 }
 
@@ -1018,4 +1034,56 @@ header-nav {
 
 .icon-product_share:before {
     content: "\e9A4";
+}
+
+.icon-credit-debit-card:before {
+    content: "\e9a9";
+}
+
+.icon-net-banking:before {
+    content: "\e9ab";
+}
+
+.icon-upi:before {
+    content: "\e9b0";
+}
+
+.icon-paytm:before {
+    content: "\e9ac";
+}
+
+.icon-coupon-3-fill:before {
+    content: "\e9a8";
+}
+
+.icon-wallet:before {
+    content: "\e9b2";
+}
+
+.icon-filter-3-fill:before {
+    content: "\e9b4";
+}
+
+.icon-short:before {
+    content: "\e9ba";
+}
+
+.icon-cart1:before {
+    content: "\e9b9";
+}
+
+.icon-welcome-pdp:before {
+    content: "\e999";
+}
+
+.icon-more_options:before {
+    content: "\e9b6";
+}
+
+.icon-brand_store:before {
+    content: "\e9be";
+}
+
+.icon-top_categories:before {
+    content: "\e9bb";
 }

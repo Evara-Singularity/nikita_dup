@@ -1,0 +1,32 @@
+<ng-container *ngIf="inlineFilterData | checkForCount">
+    <div class="filter-container">
+        <div class="inline-filter-card-list">
+                <div class="inner-card-list">
+                    <p class="filter-heading">
+                        Shop By {{ inlineFilterData.name }} <ng-container *ngIf="inlineFilterData.name === 'price'">Range</ng-container>
+                    </p>
+                    <ng-container *ngIf="inlineFilterData.terms.length < 5">
+                        <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
+                            <div class="inline-filter-card-one" *ngIf="!(item?.selected) && item?.count">
+                                <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="inlineFilterData.terms.length > 4">
+                        <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
+                            <div class="inline-filter-card-one" *ngIf="(i % 2 === 0) && !(item?.selected)  && (item?.count)">
+                                <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div class="inner-card-list" *ngIf="inlineFilterData.terms.length > 4">
+                    <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
+                        <div class="inline-filter-card-two"  *ngIf="(i % 2 === 1) && !(item?.selected) &&  item?.count">
+                            <div class="inline-filter-card-value card-value-2" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
+                        </div>
+                    </ng-container>
+                </div>
+        </div>
+    </div>
+</ng-container>

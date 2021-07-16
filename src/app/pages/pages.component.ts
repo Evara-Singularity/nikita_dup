@@ -39,6 +39,7 @@ export class PagesComponent implements OnInit {
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
+    this.isMoglixAppInstalled();
     this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
       if (res instanceof NavigationEnd) {
@@ -64,6 +65,28 @@ export class PagesComponent implements OnInit {
     }
   }
 
+  isMoglixAppInstalled() {
+    if (this.isBrowser) {
+      console.log('isMoglixAppInstalled called 1 ==>', 'on load');
+      window.addEventListener('load', () => {
+        console.log('isMoglixAppInstalled called ==>', 'on window load');
+        // Check to see if the API is supported.
+        if ('getInstalledRelatedApps' in navigator) {
+          this.updateAppStatus()
+        }
+      });
+    }
+  }
+
+  updateAppStatus() {
+    navigator['getInstalledRelatedApps']().then((relatedApps) => {
+      console.log('isMoglixAppInstalled relatedApps ==>', relatedApps);
+      if (relatedApps && relatedApps.length > 0) {
+        this._commonService.isAppInstalled = true;
+      }
+    });
+  }
+
   setUserSession() {
     if (this.isBrowser) {
       this._commonService.getSession()
@@ -75,7 +98,6 @@ export class PagesComponent implements OnInit {
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ( (this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)  ){
-            console.log('updateCartSession called');
             this.updateCartSession();
           }
           this._localAuthService.login$.next();
@@ -91,7 +113,8 @@ export class PagesComponent implements OnInit {
       if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
         let cs = this._cartService.updateCart(cartSession);
         this._cartService.setCartSession(cs);
-        this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
+        const val = cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0;
+        this._cartService.cart.next({count: val});
         this._cartService.orderSummary.next(cartSession);
       }
       /**
@@ -100,7 +123,8 @@ export class PagesComponent implements OnInit {
       else if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 202) {
         let cs = this._cartService.updateCart(cartSession['cart']);
         this._cartService.setCartSession(cs);
-        this._cartService.cart.next(cartSession["cart"]["cart"] != undefined ? cartSession['cart']['noOfItems'] : 0);
+        const val = cartSession["cart"]["cart"] != undefined ? cartSession['cart']['noOfItems'] : 0;
+        this._cartService.cart.next(val);
         this._cartService.orderSummary.next(cartSession['cart']);
 
         this._localAuthService.setUserSession(cartSession['userData']);

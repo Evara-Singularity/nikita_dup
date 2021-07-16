@@ -1,19 +1,21 @@
 <ng-container *ngIf="cmsData">
     <ng-container *ngFor="let item of cmsData">
         <div class="row {{ background }} no-margin" [ngSwitch]="item[componentLabel]" *ngIf="item[data]">
-            <dynamic-image-component *ngIf="item[componentLabel] === 'image_component_two' || item[componentLabel] === 'image_component_six' || item[componentLabel] === 'image_component_four' || item[componentLabel] === 'image_component_three' " [titleData]="item[titleData]" [listOfImgs]="item[data]" [imagePath]="imagePath"></dynamic-image-component>
-            <main-banner *ngSwitchCase="'main_banner_component'" [data]="item[data]" [imagePath]="imagePath">
+            <dynamic-image-component [componentName]="item['componentName']" *ngIf="item[componentLabel] === 'image_component_two' || item[componentLabel] === 'image_component_six' || item[componentLabel] === 'image_component_four' || item[componentLabel] === 'image_component_three' " [titleData]="item[titleData]" [listOfImgs]="item[data]" [imagePath]="imagePath" [customStyle]="item['style']"></dynamic-image-component>
+            <cms-carausel *ngSwitchCase="'carausel_component'" [componentName]="item['componentName']"  [data]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']"></cms-carausel>
+            <main-banner *ngSwitchCase="'main_banner_component'" [componentName]="item['componentName']" [data]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">
             </main-banner>
-            <text *ngSwitchCase="'text_component'" [title]="item[title]" [data]="item[data]"></text>
-            <image-text *ngSwitchCase="'image_text_component'" [data]="item[data]" [imagePath]="imagePath">
+            <main-banner *ngSwitchCase="'HomePageFullWidthImage'" [componentName]="item['componentName']" [data]="item[data]" [imagePath]="imagePath" [customStyle]="item['style']">
+            </main-banner>
+            <text *ngSwitchCase="'text_component'" [title]="item[title]" [componentName]="item['componentName']" [data]="item[data]"  [customStyle]="item['style']"></text>
+            <image-text *ngSwitchCase="'image_text_component'" [componentName]="item['componentName']" [data]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">
             </image-text>
-            <products-details *ngSwitchCase="'product_details_component'" [listOfProducts]="item[data]"
-            [titleData]="item['titleData']" [imagePath]="imagePath"></products-details>
-            <small-image *ngSwitchCase="'small_image_component'" [listOfImgs]="item[data]" [imagePath]="imagePath">
+            <products-details *ngSwitchCase="'product_details_component'" [componentName]="item['componentName']" [listOfProducts]="item[data]"
+            [titleData]="item['titleData']" [imagePath]="imagePath"  [customStyle]="item['style']"></products-details>
+            <small-image *ngSwitchCase="'small_image_component'" [componentName]="item['componentName']" [listOfImgs]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">
             </small-image>
-            <full-image *ngSwitchCase="'full_image_component'" [listOfImgs]="item[data]" [imagePath]="imagePath">
+            <full-image *ngSwitchCase="'full_image_component'" [componentName]="item['componentName']" [listOfImgs]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">
             </full-image>
-            <similar-articles *ngSwitchCase="'similar_articles_component'" [data]="item[data]" ></similar-articles>
         </div>
 </ng-container>
 

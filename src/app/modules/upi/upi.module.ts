@@ -1,3 +1,4 @@
+import { LowSuccessMessagePipeModule } from './../../utils/pipes/low-success-rate.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {NgModule} from '@angular/core';
@@ -7,6 +8,7 @@ import {UpiService} from "./upi.service";
 import {TezUpiFormModule} from "../tezUpiForm/tezUpiForm.module";
 import { RazorPayFormModule } from '../razorPayForm/razorPayForm.module';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
+import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 
 @NgModule({
     imports: [
@@ -15,7 +17,9 @@ import { MathCeilPipeModule } from '@pipes/math-ceil';
         ReactiveFormsModule,
         TezUpiFormModule,
         MathCeilPipeModule,
-        RazorPayFormModule
+        RazorPayFormModule,
+        ObjectToArrayPipeModule,
+        LowSuccessMessagePipeModule
     ],
     declarations: [
         UpiComponent

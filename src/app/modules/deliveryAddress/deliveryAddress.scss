@@ -28,7 +28,7 @@
     
     .address-list {
         @extend %clear-fix;
-        @extend %container;
+        // @extend %container;
         label {
             padding: 10px 0;
             display: block;
@@ -36,7 +36,8 @@
             @extend %clear-fix;
             .chk-txt {
                 font-size: $medium-font;
-                width: calc(100% - 36px);
+                width: calc(100% - 40px);
+                margin-left: 20px;
                 .heading-container {
                     display: block;
                     @extend %clear-fix;

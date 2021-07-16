@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmsService } from '../../cms.service';
 
 @Component({
   selector: 'small-image',
@@ -7,15 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./small-image.component.scss']
 })
 export class SmallImageComponent implements OnInit {
-
+    @Input('customStyle') customStyle;
     @Input('listOfImgs') listOfImgs = null;
+    @Input('componentName') componentName;
     @Input('imagePath') imagePath = null;
 
-    constructor(private router: Router) { }
-    ngOnInit() { }
+    constructor(public _cmsService : CmsService){}
 
-    navigateTo(link)
-    {
-        this.router.navigate([link]);
-    }
+    ngOnInit() { }
 }

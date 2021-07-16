@@ -1,69 +1,57 @@
-<section class="bank-container container">
-    <div id="net_block" class="">
+<section class="bank-container netBankingInner">
+    <div class="payment-notification" *ngIf="lowSuccessBanks && lowSuccessBanks.length">
+        <span>Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.</span>
+    </div>
 
-            <ul class="bank-list">
-                <li [class.selected]="selectedBankCode=='AXIB' || selectedBankCode=='UTIB'" (click)="updateNetBankingBank('AXIS Bank NetBanking')">
-                    <img src="{{imagePath+imageFolder}}/icon-axis.png">
-                    <p>AXIS</p>
-                </li>
-                <li [class.selected]="selectedBankCode=='ICIB' || selectedBankCode=='ICIC'" (click)="updateNetBankingBank('ICICI Netbanking')">
-                    <img src="{{imagePath+imageFolder}}/icon-icici.png">
-                    <p>ICICI</p>
-                </li>
-                <li [class.selected]="selectedBankCode=='HDFB' || selectedBankCode=='HDFC'" (click)="updateNetBankingBank('HDFC Bank')">
-                    <img src="{{imagePath+imageFolder}}/icon-hdfc.png">
-                    <p>HDFC</p>
-                </li>
-                <li [class.selected]="selectedBankCode=='SBIB' || selectedBankCode=='SBIN'" (click)="updateNetBankingBank('State Bank of India')">
-                    <img src="{{imagePath+imageFolder}}/icon-sbi.png">
-                    <p>SBI</p>
-                </li>
-                <li *ngIf="type=='tax'" [class.selected]="selectedBankCode==='SCBL'" (click)="updateNetBankingBank('Standard Chartered Bank')">
-                    <img src="{{imagePath+imageFolder}}/icon-scb.png">
-                    <p>SCB</p>
-                </li>
-                <li [class.selected]="selectedBankCode==='UTBI' || selectedBankCode==='UBIB'"  (click)="updateNetBankingBank('Union Bank of India')">
-                    <img src="{{imagePath+imageFolder}}/icon-ubi.png">
-                    <p>UBI</p>
-                </li>
-            </ul>
+    <div id="net_block">
+        <ul class="bank-list">
+            <li class="bank-list-item" (click)="selectBank(banks, true)" *ngFor="let banks of topBanks">
+                <label class="payment-radio-btn">
+                    <input [checked]="selectedBankCode==banks['code']" type="radio" name="net_radio" >
+                    <span class="custom-box"></span>
+                </label>
+                <img src="{{imagePath}}assets/payments/{{bankImages[banks['id']]}}">
+                <div class="bank-name">
+                    <p class="">{{banks['name']}}</p>
+                    <span *ngIf="!banks['up_status']" class="lowsuccessRate">Low success rate observed</span>
+                </div>
+            </li>
+        </ul>
 
         <form [formGroup]="netBankingForm" (ngSubmit)="pay(netBankingForm.value, netBankingForm.valid)" class="material-form mt-15">
             <div formGroupName="requestParams">
                 <div class="input-field">
-                    <label [class.is-focus]="bank!='Select Country' && bank.value!=''">
-                        <span class="label">Select Bank*</span>
-                        <input  formControlName="paymentId" hidden>
-                        <select (change)="updateTopBank($event)" formControlName="bankname" name="bankname" #bank>
-                            <option selected="selected">Select Bank</option>
-                            <option *ngFor="let data of dataNB" [value]="data.key">{{data.key}}</option>
-                            <option *ngFor="let data of dataNBTop" [value]="data.key">{{data.key}}</option>
-                        </select>
-                        <i class="icon-down"></i>
-                    </label>
-                    <!-- <div class="error-txt" *ngIf="false">Test</div> -->
+                    <input formControlName="paymentId" hidden>
+                    <input formControlName="bankname" #bank hidden>
+
+                    <div class="custom_select_box" (click)="openYearPopUp()">
+                        <div class="custom_select_input">
+                            <span>{{ selectedBankName || 'Other Banks'}}</span>
+                            <i class="icon-dropdown"></i>
+                        </div>
+                    </div>
+
+                    <select-popup [itemArray]="othersBanks" [displayKey]="'name'" [valueKey]="'code'" [headerLabel]="'Select Bank'" [compare]="selectedBankCode" [type]="'NETBANKING'" [isVisible]="bankSelectPopupStatus" (selectedValue$)="selectBank($event)"></select-popup>
+
+                    <div class="payment-notification mt-15" *ngIf="commonFailureMsg">
+                        <span>Low success rate observed</span>
+                    </div>
+
                 </div>
             </div>
-            <div class="pad-tb-15 mt-15 border-top">
-                    <p class="lh-18">Please note.You might be redirected to 3-D secure page to
-                        complete your transaction.By placing this order, you agree to the <a class="text-darkblue"
-                            href="https://www.moglix.com/terms" target="_blank">Terms of Use</a> and <a class="text-darkblue"
-                            href="https://www.moglix.com/privacy" target="_blank">Privacy Policy</a> of moglix.com
-                    </p>
-                </div>
+
             <div class="continue-button">
-                    <div class="container">
-                        <p class="total-mount" *ngIf="totalPayableAmount>0">
-                            <span class="payable-amnt">Payable Amount</span>
-                             ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
-                        <button type="submit" [disabled]="!netBankingForm.valid" class="btn">PAY</button>
-                    </div>
+                <div class="container">
+                    <p class="total-mount" *ngIf="totalPayableAmount>0">
+                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}} </p>
+                    <button type="submit" [disabled]="!netBankingForm.valid" class="btn">PAY</button>
                 </div>
+            </div>
             <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
         </form>
-        
+
     </div>
 </section>
 
-<payu-form *ngIf="isValid&&type=='retail'" [data]="payuData" ></payu-form>
-<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData" ></razor-pay>
+<payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
+<razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

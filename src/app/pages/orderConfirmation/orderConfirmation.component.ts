@@ -376,7 +376,7 @@ export class OrderConfirmationComponent implements OnInit {
                             let page = {
                                 pageName: "order-Confirmation",
                                 channel: "purchase",
-                                subsection: "Payment Success" + (userSession && userSession["agentId"]) ? " | Inside Sales" : '',
+                                subSection: "Payment Success" + (userSession && userSession["agentId"]) ? " | Inside Sales" : '',
                             };
                             let custData = {
                                 customerID:
@@ -421,7 +421,9 @@ export class OrderConfirmationComponent implements OnInit {
                             digitalData["order"] = order;
 
                             try {
-                                _satellite.track("genericPageLoad");
+                                if(_satellite){
+                                    _satellite.track("genericPageLoad");
+                                }
                             } catch (adobeError) {
                                 this.sendClickStreamDataError(
                                     "order_completed_adobe_error",

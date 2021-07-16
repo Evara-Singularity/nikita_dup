@@ -321,7 +321,9 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
 
         digitalData['page']['pageName'] = "moglix:order checkout:address details";
         digitalData['page']['subSection'] = "moglix:order checkout:address details";
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+            _satellite.track("genericPageLoad");
+        }
 
     }
 
@@ -670,6 +672,12 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
             }
         }
         return filteredData;
+    }
+
+    closePopUpBySelect(data: boolean) {
+        if (data) {
+            this.selectAddress();
+        }
     }
 
     outData(data) {

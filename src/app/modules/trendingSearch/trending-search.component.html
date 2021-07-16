@@ -1,10 +1,29 @@
-<div class="container">
-    <div class="trending-search pb-15">
-        <h4 class="heading-4 mb-15">Trending Search</h4>
-        <ul class="tags-list">
-            <li *ngFor="let prod of trendingCatName">
-                <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
-            </li>
-        </ul>
+<div class="trending-search-container" *ngIf="trendingCatName?.length > 0">
+    <h3 class="search_heading"><i class="icon-trending"></i>Trending Searches</h3>
+    <div class="trending-search-inner">
+        <ng-container *ngFor="let prod of trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber; let i = index;">
+            <ng-container *ngIf="prod.categoryName">
+                <div>
+                    <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
+                </div>
+                <div class="show_more" *ngIf="(i === ((trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - _commonService.limitTrendingCategoryNumber) >= 0))" (click)="updateLimitTrendingCategoryNumber()">
+                    {{ trendingCatName.length !== _commonService.limitTrendingCategoryNumber ? (trendingCatName.length - _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<div class="top_categories" *ngIf="topCategories?.length > 0">
+    <h3 class="search_heading"><i class="icon-top_categories"></i>Top Categories</h3>
+    <div class="search_product_categories">
+        <ng-container *ngFor="let item of topCategories;">
+            <ng-container *ngIf="item.categoryImage">
+                <div class="search_product_category" (click)="navigateTo(item.categoryLink, {tc:'yes'})">
+                    <img [src]="CONSTANTS.IMAGE_BASE_URL + item.categoryImage">
+                    <span class="prodText">{{ item?.categoryName }}</span>
+                </div>
+            </ng-container>
+        </ng-container>
     </div>
 </div>

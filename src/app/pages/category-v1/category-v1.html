@@ -1,0 +1,92 @@
+<div [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
+    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1" [class.slpLayout2]="layoutType == 2">
+        <div class="container-fluid safetyshoebannersrow">
+            <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
+            <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
+            <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
+            <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
+        </div>
+        <div class="container-fluid safetyshshopbytype">
+            <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid category">
+    <div class="row">
+        <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
+    </div>
+</div>
+
+<div id="category-cards-section">
+    <shared-product-listing [headerName]="API_RESPONSE.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''" [pageName]="'CATEGORY'" [productsListingData]="_productListService?.productListingData" *ngIf="_productListService &&_productListService.productListingData">
+    </shared-product-listing>
+</div>
+
+<!-- This is sub category section -->
+<div [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">
+    <div class="container pt-10">
+        <p class="sub_category_heading"  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
+            {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+            <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
+                Categories)</span>
+        </p>
+        <ng-container #subCategory></ng-container>
+    </div>
+</div>
+
+<ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+
+    <!-- This is accordian section -->
+    <div class="accordian_footer_panel">
+        <ng-container *ngIf="this.API_RESPONSE.category[4].data.length > 0">
+            <div class="panel-head" style="margin-top: 0px;" >
+                <div class="container">
+                    <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                        Shop by Attribute
+                        <span class="icon-accordian">
+                            <i class="icon-down"></i>
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let attribute of this.API_RESPONSE.category[4].data">
+                        <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="popularLinks.length > 0">
+            <div class="panel-head" style="margin-top: 0px;">
+                <div class="container">
+                    <h3 class="heading-3" [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
+                        Shop by Brand Category
+                        <span class="icon-accordian">
+                            <i class="icon-down"></i>
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let category of popularLinks">
+                        <a href="{{API_RESPONSE.category[1].categoryLinkList[category]}}">{{ category }}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- This is recently article section -->
+    <div class="recent-article-container" *ngIf="API_RESPONSE.category[1].productSearchResult?.totalCount > 0">
+        <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []" [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
+    </div>
+
+    <!-- This is footer section -->
+    <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+</ng-container>
+
+<breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>

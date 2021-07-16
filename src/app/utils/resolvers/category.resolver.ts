@@ -96,48 +96,53 @@ export class CategoryResolver implements Resolve<object> {
         const FAQ_KEY: any = makeStateKey<{}>('faq-' + categoryId);
         const BREADCRUMP_KEY: any = makeStateKey<{}>('breadcrump-' + categoryId);
         const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
+        const RELATED_ARTICLES_KEY = makeStateKey<{}>('related_articles-' + categoryId);
         
-        if (this.transferState.hasKey(GET_RELATED_CATEGORY_KEY) && this.transferState.hasKey(REFRESH_KEY) && this.transferState.hasKey(FAQ_KEY) && this.transferState.hasKey(BREADCRUMP_KEY) && this.transferState.hasKey(CMS_KEY)) {
+        if (this.transferState.hasKey(GET_RELATED_CATEGORY_KEY) && this.transferState.hasKey(REFRESH_KEY) && this.transferState.hasKey(FAQ_KEY) && this.transferState.hasKey(BREADCRUMP_KEY) && this.transferState.hasKey(CMS_KEY)
+            && this.transferState.hasKey(RELATED_ARTICLES_KEY)) {
             const GET_RELATED_CATEGORY_KEY_OBJ = this.transferState.get<{}>(GET_RELATED_CATEGORY_KEY, null);
             const REFRESH_KEY_OBJ = this.transferState.get<{}>(REFRESH_KEY, null);
             const FAQ_KEY_OBJ = this.transferState.get<{}>(FAQ_KEY, null);
             const BREADCRUMP_KEY_OBJ = this.transferState.get<{}>(BREADCRUMP_KEY, null);
             const CMS_KEY_OBJ = this.transferState.get<{}>(CMS_KEY, null);
+            //first page or page=1 related data
+            const RELATED_ARTICLES_OBJ = this.transferState.get<{}>(RELATED_ARTICLES_KEY, {});
             
             this.transferState.remove(GET_RELATED_CATEGORY_KEY);
             this.transferState.remove(REFRESH_KEY);
             this.transferState.remove(FAQ_KEY);
             this.transferState.remove(BREADCRUMP_KEY);
             this.transferState.remove(CMS_KEY);
+            this.transferState.remove(RELATED_ARTICLES_KEY);
             
             this.loaderService.setLoaderState(false);
-            return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ]);
+            return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ, RELATED_ARTICLES_OBJ]);
         } else {
+
             const currentQueryParams = _activatedRouteSnapshot.queryParams;
             const params = _activatedRouteSnapshot.params;
             const source = _activatedRouteSnapshot['_routerState']['url'].split('#')[0].split('?')[0];
-            
             const get_rel_cat_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
             const faq_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
             const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
             const cms_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
-
             const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());
             const getFAQObs = this.http.get(faq_url).pipe(share());
             const refreshProductsObs = this.refreshProducts(currentQueryParams, params, fragment).pipe(share());
             const getBreadCrump = this.http.get(breadcrump_url).pipe(share());
             const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share());
-
-
-            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getCmsDynamicDataForCategoryAndBrandObs];
-
+            const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump];
             if (this._router.url.search('#') < 0) {
-                apiList.push(getCmsDynamicDataForCategoryAndBrandObs)
+                apiList.push(getCmsDynamicDataForCategoryAndBrandObs);
             } else {
                 this._commonService.cmsData = null;
                 this._commonService.replaceHeading = false;
             }
-
+            if (!(currentQueryParams['page']) || currentQueryParams['page'] == 1) {
+                //set default data for first page or page=1;
+                this.transferState.set(RELATED_ARTICLES_KEY,{});
+                this.appendPageOneAPIs(apiList, { categoryId: categoryId });
+            }
             return forkJoin(apiList).pipe(
                 catchError((err) => {
                     this.loaderService.setLoaderState(false);
@@ -150,11 +155,23 @@ export class CategoryResolver implements Resolve<object> {
                         this.transferState.set(FAQ_KEY, result[2]);
                         this.transferState.set(BREADCRUMP_KEY, result[3]);
                         this.transferState.set(CMS_KEY, result[4] || []);
+                        this.transferState.set(RELATED_ARTICLES_KEY, result[5] || {});
                         this.loaderService.setLoaderState(false);
                     }
                 })
             );
         }
     }
-    
+
+    /**
+     * @description: Please append first "page or page=1" related here and sequence matters
+     * @param: apiList=> to append for getting data
+     * @param: data=> required to build url  
+     * */
+    appendPageOneAPIs(apiList:any[], data){
+        const get_rel_articles_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_RELATED_ARTICLES + `${data.categoryId}`;
+        const getRelatedArticles = this.http.get(get_rel_articles_url).pipe(share());
+        apiList.push(getRelatedArticles);
+        return apiList;
+    }
 }

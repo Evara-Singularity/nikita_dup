@@ -1,4 +1,4 @@
-<invoice-type (outData$)="outData($event)" [taxHeading]="(invoiceTypeSectionHeadingText)?invoiceTypeSectionHeadingText:'Use GSTIN for Business Purchase'" [taxSubHeading]="(invoiceTypeSectionSubheadingText)?invoiceTypeSectionSubheadingText:'Get GST Invoice and claim input tax credit on your purchase.'"></invoice-type>
+<invoice-type (outData$)="outData($event)" [taxHeading]="(invoiceTypeSectionHeadingText)?invoiceTypeSectionHeadingText:'Use GSTIN for Business Purchase'" [taxSubHeading]="(invoiceTypeSectionSubheadingText)?invoiceTypeSectionSubheadingText:'Claim input tax credit on your purchase.'"></invoice-type>
 
 <div class="address-container">
     <div class="shipping-container">
@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <app-address-list (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
+        <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
             <div class="container">
@@ -31,7 +31,7 @@
                 <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'],2)">ADD</span> -->
             </div>
         </div>
-        <app-address-list (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
+        <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
             <div class="container">
@@ -45,7 +45,7 @@
 
 
     <!-- LIST OF ADDRESS POP UP STARTS  -->
-    <app-pop-up *ngIf="salpu.shipping" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup',selector:'salpu.shipping',headerText:'Delivery Address'}">
+    <app-pop-up *ngIf="salpu.shipping" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:'salpu.shipping',headerText:'Delivery Address'}">
         <div class="head-sec" header>
             <i class="icon-circle-delete f-left" (click)="salpu.shipping = false; closePopup(1)"></i>
             <p class="txt">Delivery Address ({{getAddressessCount(addressList, 1)}})</p>
@@ -57,13 +57,13 @@
           ADD NEW ADDRESS
         </button>
             </div>
-            <app-address-list (outData$)="outData($event)" [addresses]="getAddressList(addressList, 1)" [type]="1" [showRadio]="true" content></app-address-list>
-            <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button>
+            <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [addresses]="getAddressList(addressList, 1)" [type]="1" [showRadio]="true" content></app-address-list>
+            <!-- <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button> -->
         </div>
     </app-pop-up>
     <!-- LIST OF ADDRESS POP UP ENDS  -->
 
-    <app-pop-up *ngIf="salpu.billing" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left', paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup',selector:'salpu.billing',headerText:'Billing Address'}">
+    <app-pop-up *ngIf="salpu.billing" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left', paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:'salpu.billing',headerText:'Billing Address'}">
         <div class="head-sec" header>
             <i class="icon-circle-delete f-left" (click)="salpu.billing = false; closePopup(2)"></i>
             <p class="txt">Billing Address ({{getAddressessCount(addressList, 2)}})</p>
@@ -75,8 +75,8 @@
           ADD NEW ADDRESS
         </button>
             </div>
-            <app-address-list (outData$)="outData($event)" [addresses]="getAddressList(addressList, 2)" [type]="2" content [showRadio]="true"></app-address-list>
-            <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button>
+            <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)" [addresses]="getAddressList(addressList, 2)" [type]="2" content [showRadio]="true"></app-address-list>
+            <!-- <button (click)="selectAddress()" class="continue-btn btn">{{(deliverHereCTAText)?deliverHereCTAText:'DELIVER HERE'}}</button> -->
         </div>
     </app-pop-up>
 

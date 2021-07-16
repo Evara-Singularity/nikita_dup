@@ -38,6 +38,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
     }
+    successPercentageRawData = null; 
 
     constructor(public _dataService: DataService, private loaderService: GlobalLoaderService, public cartService: CartService, private _paymentService: PaymentService, private _localAuthService: LocalAuthService, public checkOutService: CheckoutService, public commonService: CommonService, private elementRef: ElementRef) {
         this.globalConstants = CONSTANTS.GLOBAL;
@@ -113,6 +114,17 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             }
             this._dataService.sendMessage(trackData);
         }
+
+        this.getPaymentSuccessAssistData();
+    }
+
+
+    getPaymentSuccessAssistData() {
+        this._paymentService.getPaymentsMethodData(this.invoiceType).subscribe(result => {
+            if (result['status']) {
+                this.successPercentageRawData = result['data'] || null;
+            }
+        })
     }
 
     ngAfterViewInit() {
@@ -131,10 +143,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
 
     updatePaymentBlock(block, mode?, elementId?) {
-         ;
-
         let cart = this.cartService.getCartSession();
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
+        this.messageEmi = "";
+        this.messageCod = "";
+        this.messageNeft = "";
         // console.log('totalAmount',this.totalAmount);
         if (block == 4 && this.totalAmount < 3000) {
             this.messageEmi = "Not available below Rs. 3000";
@@ -196,7 +209,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
     scollToSection(elementId) {
         setTimeout(() => {
-            this.elementRef.nativeElement.ownerDocument.getElementById(elementId).scrollIntoView({ behavior: 'smooth' });
+            this.elementRef.nativeElement.ownerDocument.getElementById(elementId).scrollIntoView({ behavior: 'smooth',block: 'center'});
         }, 300);
     }
 
@@ -236,6 +249,20 @@ export class PaymentComponent implements OnInit, AfterViewInit {
 
         this.updateTabIndex.emit(index);
     }
+
+    get neftSuccessPercentageData() {
+        return (this.successPercentageRawData && this.successPercentageRawData['NB']) ? this.successPercentageRawData['NB'] : null
+    }
+
+    get walletSuccessPercentageData() {
+        return (this.successPercentageRawData && this.successPercentageRawData['WALLET']) ? this.successPercentageRawData['WALLET'] : null
+    }
+
+    get upiSuccessPercentageData() {
+        return (this.successPercentageRawData && this.successPercentageRawData['UPI']) ? this.successPercentageRawData['UPI'] : null
+    }
+    
+    
 
     learnMore(e) {
         if (e !== undefined) {

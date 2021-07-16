@@ -19,7 +19,9 @@ export class SharedOtpUtilService {
             'subSection': "moglix:login page:otp details",
         }
         digitalData["page"] = page;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+            _satellite.track("genericPageLoad");
+        }
     }
 
     sendCheckoutAdobeAnalysis()
@@ -30,7 +32,9 @@ export class SharedOtpUtilService {
             'subSection': "moglix:order checkout:login page:otp details",
         }
         digitalData["page"] = page;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+            _satellite.track("genericPageLoad");
+        }
     }
 
     sendCriteoLayerTags(data)

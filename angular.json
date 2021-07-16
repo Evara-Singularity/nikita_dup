@@ -45,7 +45,11 @@
                 }
               ],
               "index": "src/index/production/index.html",
-              "optimization": true,
+              "optimization": {
+                "fonts": true,
+                "scripts": true,
+                "styles": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -73,7 +77,11 @@
                 }
               ],
               "index": "src/index/production/index.html",
-              "optimization": true,
+              "optimization": {
+                "fonts": true,
+                "scripts": true,
+                "styles": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -100,7 +108,11 @@
                   "with": "src/environments/environment.qa.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "fonts": true,
+                "scripts": true,
+                "styles": true
+              },
               "outputHashing": "all",
               "index": "src/index/qa/index.html",
               "sourceMap": false,
@@ -128,7 +140,11 @@
                   "with": "src/environments/environment.vpn.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "fonts": true,
+                "scripts": true,
+                "styles": true
+              },
               "outputHashing": "all",
               "index": "src/index/vpn/index.html",
               "sourceMap": false,

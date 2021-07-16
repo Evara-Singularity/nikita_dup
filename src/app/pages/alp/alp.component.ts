@@ -103,6 +103,7 @@ export class AlpComponent implements OnInit {
     faqData;
     excludeAttributes: string[] = [];
     attributeListingData = null;
+    filterData: Array<any> = [];
     titleHeading = '';
     titleDescription = '';
     pageDescription = '';
@@ -204,7 +205,7 @@ export class AlpComponent implements OnInit {
         this.pageDescription = attributeListing['pageDescription'];
         this.metaTitle = attributeListing['metaTitle'];
         this.metaDescription = attributeListing['metaDescription'];
-        this.excludeAttributes = attributeListing['attributes'];
+        this.excludeAttributes = (attributeListing['attributes'] as string[]).map((name=>name.toLowerCase()));
         this.bestSellerProducts = this.attributeListingData['bestSellersProducts'];
         this.bestSellerTitle = attributeListing['categoryName'];
         this.fetchCIMSRelatedData(data[1]);
@@ -323,19 +324,10 @@ export class AlpComponent implements OnInit {
     private initiallizeData(response: any, flag: boolean) {
         this.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
-        if (flag) {
-            this.sortByUpdated.next();
-            this.paginationData = { itemCount: response.productSearchResult.totalCount };
-            this.pageSizeUpdated.next({ productSearchResult: response.productSearchResult });
-            this.productsUpdated.next(response.productSearchResult.products);
-            this.paginationUpdated.next(this.paginationData);
-        }
-
-        if (this.filterInstance) {
-            this.filterInstance.instance['bucketsUpdated'].next(response.buckets);
-        } else {
-            this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
-        }
+        this.productsUpdated.next(response.productSearchResult.products);
+        this.filterData = this.filterBuckets(response.buckets);
+        this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
+        
 
         this.buckets = this.filterBuckets(response.buckets);
         this.productSearchResult = response.productSearchResult;
@@ -399,7 +391,9 @@ export class AlpComponent implements OnInit {
             // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
             //console.log("links.href", links.href)
             this._renderer2.appendChild(this._document.head, links);
-            this.setAmpTag('alp');
+
+            // JIRA: ODP-1371
+            // this.setAmpTag('alp');
         }
 
 
@@ -591,25 +585,14 @@ export class AlpComponent implements OnInit {
             const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
             const factory = this.cfr.resolveComponentFactory(PaginationComponent);
             this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationUpdated'] = new BehaviorSubject<any>({});
-            this.paginationInstance.instance['paginationUpdated'].next(this.paginationData);
-            this.paginationInstance.instance['position'] = 'BOTTOM';
-            this.paginationInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            this.paginationInstance.instance['sortByComponent'] = this.sortByComponent;
-
-            if (this.paginationInstance) {
-                (this.paginationInstance.instance['onPageChange'] as EventEmitter<any>).subscribe(data => {
-                    this.pageChanged(data);
-                });
-            }
-
+            this.paginationInstance.instance['paginationData'] = this.paginationData;
         }
     }
 
     async filterUp() {
         if (!this.filterInstance) {
-            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(function () {
-                setTimeout(function () {
+            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+                setTimeout(() => {
                     const mob_filter = document.querySelector('.mob_filter');
                     if (mob_filter) {
                         mob_filter.classList.add('upTrans');
@@ -617,14 +600,10 @@ export class AlpComponent implements OnInit {
                 }, 0);
             });
             const factory = this.cfr.resolveComponentFactory(FilterComponent);
-            console.clear();
-            console.log(this.buckets);
             this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-            this.filterInstance.instance['pageName'] = this.pageName;
-            this.filterInstance.instance['bucketsUpdated'] = new BehaviorSubject<any>(this.buckets);
-            this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
-            (this.filterInstance.instance['filterSelected'] as EventEmitter<any>).subscribe(data => {
-                this.onFilterSelected(data);
+            this.filterInstance.instance['filterData'] = this.filterData;
+            (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.filterUp();
             });
         } else {
             const mob_filter = document.querySelector('.mob_filter');
@@ -634,26 +613,25 @@ export class AlpComponent implements OnInit {
             }
         }
     }
+    
+    async toggleSortBy() {
 
-    async toggleSortBy(data) {
         if (!this.sortByInstance) {
             const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
             const factory = this.cfr.resolveComponentFactory(SortByComponent);
             this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
-            this.sortByInstance.instance['sortByUpdated'] = new BehaviorSubject<any>(null);
-            (this.sortByInstance.instance['outData$'] as EventEmitter<any>).subscribe(data => {
-                this.toggleSortBy(data);
+
+            (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+                this.toggleSortBy();
             });
+        } else {
+            const sortByFilter = document.querySelector('sort-by');
+
+            if (sortByFilter) {
+                sortByFilter.classList.toggle('open');
+            }
         }
-
-        const sortByFilter = document.querySelector('sort-by');
-
-        if (sortByFilter) {
-            sortByFilter.classList.toggle('open');
-        }
-
     }
-
     createDefaultParams(defaultApiParams) {
 
         let newParams = {
@@ -866,7 +844,7 @@ export class AlpComponent implements OnInit {
 
     filterBuckets(buckets: any[]) {
         if (this.excludeAttributes.length > 0) {
-            return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
+            return buckets.filter((bucket) => this.excludeAttributes.indexOf((bucket.name as string).toLowerCase()) == -1);
         }
         return buckets;
     }
@@ -885,16 +863,18 @@ export class AlpComponent implements OnInit {
     changeBanner(direction) {
         this.ngxSiemaService[direction](1, this.groupedBrandSiema.selector);
     }
-    setAmpTag(page) {
-        let currentRoute = this._router.url.split("?")[0].split("#")[0];
-        let ampLink;
-        ampLink = this._renderer2.createElement('link');
-        ampLink.rel = 'amphtml';
-        if (page == "alp") {
-            ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
-            this._renderer2.appendChild(this._document.head, ampLink);
-        }
-    }
+
+    // JIRA: ODP-1371
+    // setAmpTag(page) {
+    //     let currentRoute = this._router.url.split("?")[0].split("#")[0];
+    //     let ampLink;
+    //     ampLink = this._renderer2.createElement('link');
+    //     ampLink.rel = 'amphtml';
+    //     if (page == "alp") {
+    //         ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
+    //         this._renderer2.appendChild(this._document.head, ampLink);
+    //     }
+    // }
 
     resetLazyComponents() {
         if (this.filterInstance) {

@@ -1,0 +1,83 @@
+.filter-container {
+    .filter-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #da4038;
+        color: white;
+        font-size: 14px;
+        margin: 5px;
+        border-radius: 10px;
+        &.active {
+            background: white;
+            color: #da4038;
+        }
+        &.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+            background: grey;
+        }
+    }
+    .filter-heading {
+        font-size: 14px;
+        margin-bottom: 5px;
+        text-transform: capitalize;
+        font-weight: bold;
+        color: #fff;
+    }
+}
+
+// .inline-filter-container {
+//     background: #3C3C3C;
+//     .inline-filters {
+//         display: flex;
+//         overflow-x: scroll;
+//         .inline-filter-card {
+//             white-space: nowrap;
+//             a {
+//                 display: inline-block;
+//                 padding: 10px 20px;
+//                 background: #fff;
+//                 color: #3C3C3C;
+//                 font-size: 14px;
+//                 margin: 5px;
+//                 border-radius: 4px;
+//                 box-shadow: 0px 3px 6px #0000001A;
+//             }
+//         }
+//     }
+// }
+.inline-filter-card-list {
+    padding: 10px 40px 10px 10px;
+    border-bottom: 1px solid #d4d5d9;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    display: block;
+    background-color: #3C3C3C;
+    font-size: 14px;
+    .inline-filter-card-one {
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: top;
+    }
+    .inline-filter-card-two {
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: bottom;
+    }
+    .inline-filter-card-value {
+        padding: 10px 20px;
+        font-weight: 500;
+        text-align: center;
+        width: 100%;
+        border-radius: 4px;
+        background-color: #fff;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 12px;
+        &.card-value-2 {
+            margin-bottom: 5px;
+        }
+    }
+}

@@ -1,11 +1,12 @@
+import { environment } from 'environments/environment';
 import { Injectable, Injector } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
 import { Socket } from 'ngx-socket-io';
 
-declare let dataLayer: any;
-declare var digitalData: {};
-declare let _satellite;
+declare var dataLayer;
+declare var digitalData;
+declare var _satellite;
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,17 @@ export class GlobalAnalyticsService {
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
-    digitalData = Object.assign({}, data);
-    _satellite.track(trackingname);
+    // console.log(environment["ISCHROME"]);
+    if(_satellite){
+      digitalData = Object.assign({}, data);
+      _satellite.track(trackingname);
+    }
   }
 
   sendGTMCall(data: any) {
-    dataLayer.push(data);
+    if(dataLayer){
+      dataLayer.push(data);
+    }
   }
 
   sendToClicstreamViaSocket(data) {

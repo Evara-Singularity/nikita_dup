@@ -2,6 +2,20 @@
 
 /*Search box*/
 
+.rel-cat {
+    margin-top: 15px;
+}
+
+.search_heading {
+    color: #A8A8A8;
+    font-size: 12px;
+    font-weight: normal;
+    i {
+        font-size: 12px;
+        margin-right: 5px;
+    }
+}
+
 .search-popup {
     display: none;
     .search-result {
@@ -12,21 +26,36 @@
         .plan-list {
             // padding: 0 0 0 25px;
             li {
-                font-size: 13px;
-                color: #333333;
+                font-size: 12px;
+                color: #3C3C3C;
                 text-transform: capitalize;
-                line-height: 25px;
                 border-bottom: 1px solid #f1f1f1;
                 width: 100%;
                 display: block;
-                padding: 8px 0;
-                .interfaceIcon {
-                    float: right;
-                    padding: 5px 0 0;
-                    width: 12px;
+                padding: 4px 0;
+                .search-text {
+                    display: inline-block;
+                    vertical-align: middle;
+                    line-height: 31px;
+                    float: left;
+                    width: calc(100% - 65px);
                 }
-                a {
-                    color: $blue-link-color;
+                .search-count {
+                    float: right;
+                    padding: 5px 0 2px;
+                    color: #A8A8A8;
+                    max-width: 65px;
+                    vertical-align: top;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    span {
+                        display: inline-block;
+                        padding-right: 10px;
+                    }
+                    img {
+                        width: 22px;
+                    }
                 }
                 @extend %clear-fix;
             }
@@ -49,10 +78,6 @@
         }
         @extend %border-radius;
     }
-}
-
-.ac_results {
-    margin-top: -15px;
 }
 
 app-search-bar {
@@ -86,10 +111,11 @@ app-search-bar {
         background: #fff;
         .head-popup {
             background: #fff;
-            box-shadow: -1px 2px 2px rgba(0, 0, 0, .16);
+            box-shadow: 0px 3px 6px #00000029;
             .icon-back {
                 display: block;
                 left: 0px;
+                top: 12px;
             }
         }
         .search-popup {
@@ -105,34 +131,35 @@ app-search-bar {
         form {
             @include placeholder {
                 color: $place-holder-color;
-                font-size: 16px;
+                font-size: 12px;
             }
             width: 85%;
         }
         .searchBtn {
-            right: 5px;
+            right: 0px;
             position: absolute;
             background: #ececec;
-            border-radius: 7px;
+            border-radius: 4px;
             border: none;
             box-shadow: none;
-            top: 10px;
-            width: 40px;
-            height: 40px;
+            top: 4px;
+            width: 33px;
+            height: 33px;
             i {
-                right: 10px;
-                top: 10px;
-                color: #d9232d;
+                right: 0px;
+                top: 8px;
+                left: 0;
             }
         }
         .icon-del {
             position: absolute;
             right: 40px;
             font-size: 14px;
-            color: grey;
+            color: #C4C4C4;
             z-index: 21;
-            right: 70px;
+            right: 60px;
             left: auto;
+            top: 12px;
         }
     }
 }
@@ -165,14 +192,12 @@ app-search-bar {
     input {
         border-radius: 3px;
         margin: 10px 0;
-        height: 40px;
-        // line-height: 40px;
+        height: 21px;
         width: 100%;
         border: 0;
         padding: 0 36px 0 40px;
+        font-size: 12px !important;
         background: #fff;
-        font-size: 14px;
-        color: #707070;
     }
 }
 
@@ -265,14 +290,12 @@ app-search-bar {
 .pdpIco {
     .head-popup {
         box-shadow: none;
-        input {}
-        i {}
     }
 }
 
 //search screen 
 section.search-popup {
-    padding: 15px;
+    padding: 10px 15px;
 }
 
 .popularCategoryHeading {
@@ -290,8 +313,34 @@ section.search-popup {
     }
 }
 
-.prodText {
-    padding-left: 5px;
+.search_product_categories {
+    display: flex;
+    flex-wrap: wrap;
+    .search_product_category {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #EFEFF4;
+        border-radius: 8px;
+        padding: 5px;
+        margin-right: 10px;
+        width: 48%;
+        margin-bottom: 10px;
+        overflow: hidden;
+        &.brand {
+            justify-content: center;
+        }
+        &:nth-child(even) {
+            margin-right: 0px;
+        }
+        img {
+            width: 36px;
+        }
+        .prodText {
+            padding-left: 5px;
+            line-height: 10px;
+            font-size: 11px;
+        }
+    }
 }
 
 @media screen and (max-width: 320px) {
@@ -302,5 +351,21 @@ section.search-popup {
                 font-size: 16px;
             }
         }
+    }
+}
+
+.search_product_category {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #EFEFF4;
+    border-radius: 8px;
+    padding: 5px;
+    margin-right: 5px;
+    width: 48%;
+    margin-bottom: 10px;
+    min-height: 45px;
+    overflow: hidden;
+    &.brand {
+        justify-content: center;
     }
 }

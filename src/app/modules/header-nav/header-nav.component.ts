@@ -248,12 +248,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 }
             });
 
-        this.cartService.cart.subscribe((data) =>
-        {
-            if (data.count) {
-                this.noOfCart = data.count;
-            } else {
+        this.cartService.cart.subscribe((data) => {
+            if (typeof data === 'number') {
+                //console.log("data.count number ==>", data);
                 this.noOfCart = data;
+            } else {
+                // incase it is object
+                if (data.count == null || data.count == 0) {
+                    //console.log("data.count count 0 ==>", data);
+                    this.noOfCart = 0;
+                } else {
+                    //console.log("data.count count NOT 0 ==>", data);
+                    this.noOfCart = data.count;
+                }
             }
             this.setHeader();
         });
@@ -306,18 +313,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false){
-            this.location.back();
+            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
         }else{
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
             } else if (isCheckout){
                 if (this.checkoutLoginService.isAtFirstSection) {
                     let index = this._checkoutService.getCheckoutTabIndex();
-                    if(index === 1 ){
+                    if (index === 1) {
                         this.location.back();
                     }
                     else if (index === 2) {
-                        this._checkoutService.setCheckoutTabIndex(index-1);
+                        this._checkoutService.setCheckoutTabIndex(index - 1);
                         this.location.back();
                     } else {
                         this._state.notifyData('routeChanged', index - 2);

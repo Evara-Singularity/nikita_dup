@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmsService } from '../../cms.service';
 
 @Component({
     selector: 'main-banner',
@@ -9,18 +10,23 @@ import { Router } from '@angular/router';
 export class MainBannerComponent implements OnInit
 {
     @Input('data') data = [];
-    @Input('imagePath') imagePath = null;
+    @Input('componentName') componentName;
+    @Input('customStyle') customStyle;
+    @Input('imagePath') imagePath = '';
+
     mainBannerImgLink = '';
     imageTitle = '';
     redirectPageLink = '';
 
-    constructor(private router: Router) { }
-    ngOnInit() { this.initialize(this.data[0]); }
+    constructor(public _cmsService : CmsService) { }
+
+    ngOnInit() { 
+        this.initialize(this.data[0]); 
+    }
     initialize(info) { 
-        this.mainBannerImgLink = this.imagePath + info['imageLink_m']; 
+        this.mainBannerImgLink = this.imagePath + info['imageLink']; 
         this.imageTitle = info['imageTitle'];
         this.redirectPageLink = info['redirectPageLink']; 
     }
-    navigateTo(link) { this.router.navigate([link]); }
 
 }

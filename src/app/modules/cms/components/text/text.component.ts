@@ -8,13 +8,14 @@ import { DomSanitizer } from '@angular/platform-browser';
     encapsulation: ViewEncapsulation.None
 })
 export class TextComponent implements OnInit {
-
+    @Input('customStyle') customStyle;
     @Input('data') data: Array<any> = null
     @Input('title') title: string = '';
+    @Input('componentName') componentName;
     info = null;
     titleData = null;
     textDescription; string = null;
-
+    
     constructor(private domsanitizer: DomSanitizer) { }
 
     ngOnInit() { 

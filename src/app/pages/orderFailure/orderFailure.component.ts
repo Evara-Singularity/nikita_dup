@@ -85,7 +85,7 @@ export class OrderFailureComponent {
         let page = {
           pageName: "payment-failure",
           channel: "purchase",
-          subsection: "payment failure" + (userSession && userSession["agentId"]) ? " | Inside Sales" : '',
+          subSection: "payment failure" + (userSession && userSession["agentId"]) ? " | Inside Sales" : '',
         };
         let custData = {
           customerID:
@@ -127,7 +127,9 @@ export class OrderFailureComponent {
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
-        _satellite.track("genericPageLoad");
+        if(_satellite){
+          _satellite.track("genericPageLoad");
+        }
       }
     });
   }

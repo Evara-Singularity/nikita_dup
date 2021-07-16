@@ -12,10 +12,17 @@ export class SearchHistoryComponent {
 
     shd: Array<{name: string, link: string}>;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() sendTextToSearchBar: EventEmitter<any> = new EventEmitter<any>();
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private _r: Router, private _lss: LocalStorageService) {
         this.shd = this._lss.retrieve('search-history') ? this._lss.retrieve('search-history') : [];
+    }
+
+    removeFromLocalStorage(index) {
+        console.log(index);
+        this.shd.splice(index, 1);
+        this._lss.store('search-history', this.shd);
     }
 
     /**
@@ -30,5 +37,11 @@ export class SearchHistoryComponent {
     navigateTo(extras){
         this.outData$.emit('resetAll');
         this._r.navigate(['search'], extras);
+    }
+
+    addToSearchBar(e, name) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.sendTextToSearchBar.emit(name);
     }
 }

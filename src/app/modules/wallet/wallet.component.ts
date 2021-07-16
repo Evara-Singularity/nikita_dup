@@ -9,6 +9,9 @@ import { CheckoutService } from '../../utils/services/checkout.service';
 import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
+import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
 
 declare let dataLayer: any;
 
@@ -26,7 +29,7 @@ export class WalletComponent {
     walletData: {};
     walletMapKeys=[];
     walletMap:any;
-    isShowLoader: boolean = false;
+    //isShowLoader: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
 
@@ -34,8 +37,13 @@ export class WalletComponent {
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
-    imageFolder = CONSTANTS.pwaImages.imgFolder;
+    imagePath = CONSTANTS.IMAGE_ASSET_URL;
+    @Input() successPercentageData: any = null;
+    set isShowLoader(value)
+    {
+        this.loaderService.setLoaderState(value);
+    }
+    lsrMessage = false;
      
     constructor(
         private _localStorageService: LocalStorageService,
@@ -45,7 +53,10 @@ export class WalletComponent {
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _walletService: WalletService,
-        private _formBuilder: FormBuilder) {
+        private _objectToArray: ObjectToArray,
+        private loaderService: GlobalLoaderService,
+        private _formBuilder: FormBuilder,
+        private lsr: LowSuccessMessagePipe) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
         this.walletData = {};
@@ -58,6 +69,7 @@ export class WalletComponent {
         this.walletMap = CONSTANTS.GLOBAL.walletMap[this.type];
         this.walletMapKeys = Object.keys(this.walletMap);
         this.wType = this.walletMapKeys[0];
+        console.log("this.walletMap", this.walletMap, this.walletMapKeys, this.wType);
         this.walletForm = this._formBuilder.group({
             "wType": [this.wType, [Validators.required]],
         });
@@ -65,6 +77,9 @@ export class WalletComponent {
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
         })
+
+        this.lowSuccessBanks();
+        // console.log("successPercentageData ==>",this.successPercentageData);
 
     }
 
@@ -283,6 +298,20 @@ export class WalletComponent {
         };
 
         return freechargeData;
+    }
+
+    
+    lowSuccessBanks()
+    {
+        this.lsrMessage = false;
+        if (this.type == 'retail') {
+            const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
+            // show global message only for top wallets
+            const lowSuccessBanks = banksArr.filter(item => (item['up_status'] == 0) && (item['is_top'] == 1))
+            if (lowSuccessBanks.length){
+                this.lsrMessage = true;
+            }
+        }
     }
 
     ngOnDestroy() {

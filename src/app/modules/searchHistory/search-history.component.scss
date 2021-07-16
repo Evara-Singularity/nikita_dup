@@ -4,24 +4,40 @@
 
 .recentSearchProduct {
     color: #333333 !important;
+    line-height: 24px;
 }
 
 .interfaceIcon {
     float: right;
-    padding: 5px 0 0;
+    width: 24px;
 }
 
 .recentSearchWrapper {
-    padding-bottom: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 10px;
     .clearHistoryText {
-        color: #db232e;
-        font-size: 14px;
+        color: #2680EB;
+        font-size: 10px;
         font-weight: bold;
+        text-transform: uppercase;
     }
 }
 
 .crossIcon {
-    padding: 0 8px 0 2px;
-    width: 18px;
-    display: inline-block;
+    padding: 0px 15px 0 2px;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.searchHistoryWrapper {
+    margin-top: 10px;
+    .plan-list {
+        li {
+            padding: 10px 0px 10px 5px;
+        }
+    }
+}
+
+.normal-text {
+    text-transform: unset !important;
 }

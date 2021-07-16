@@ -1,43 +1,34 @@
-<section class="wallet-container  container">
-    <div class="custom-cbox  no-pad">
-        <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
-            
-            <label *ngFor="let wallet of walletMapKeys">
-                <input type="radio" formControlName="wType" [value]="wallet">
-                <span class="custom-box icon-box"></span>
-                <span class="chk-txt"><img src="{{imagePath+imageFolder + '/' + walletMap[wallet].imgUrl}}"></span>
-            </label>
-             
-            <div class="pad-15">
-                <p class="mt-15">You will be redirected to a secure payment gateway wallet.</p>
-                <div class="mt-15 pt-15 border-top">
-                    <p class="lh-18">Please note.You might be redirected to 3-D secure page to
-                        complete your transaction.By placing this order, you agree to the <a class="text-darkblue" href="https://www.moglix.com/terms"
-                            target="_blank">Terms of Use</a> and <a class="text-darkblue" href="https://www.moglix.com/privacy"
-                            target="_blank">Privacy Policy</a> of moglix.com
-                    </p>
-                </div>
-            </div>
-
-            <div class="continue-button">
-                <div class="container">
-                    <p class="total-mount" *ngIf="totalPayableAmount>0">
-                        <span class="payable-amnt">Payable Amount</span>
-                         ₹ {{totalPayableAmount | mathCeil | number :
-                        '1.2-2'}} </p>
-                    <button type="submit" [disabled]="!walletForm.valid" class="btn">PAY</button>
-                </div>
-            </div>
-            
-            <div class="pad-lr-10">
-                <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹
-                    {{prepaidDiscount | number : '1.2-2'}}</div>
-            </div>
-        </form>
+<section class="walletInner">
+    <div class="payment-notification" *ngIf="lsrMessage">
+        <span>Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.</span>
     </div>
+    <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
+        <ul class="bank-list">
+            <li *ngFor="let wallet of walletMapKeys" class="bank-list-item">
+                <label class="payment-radio-btn">
+                    <input type="radio" formControlName="wType" [value]="wallet">
+                    <span class="custom-box"></span>
+                </label>
+                <div>
+                    <img class="wallet-img" src="{{imagePath + 'assets/img/wallet-icons/' + walletMap[wallet].imgUrl}}">
+                    <span class="lowsuccessRate  pad-l-8" *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
+                        success rate observed</span>
+                </div>
+            </li>
+        </ul>
+        <div class="continue-button">
+            <div class="container">
+                <p class="total-mount" *ngIf="totalPayableAmount>0">
+                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                </p>
+                <button type="submit" [disabled]="!walletForm.valid" class="btn">PAY</button>
+            </div>
+        </div>
+    </form>
 </section>
- 
+
 <paytm-wallet-form *ngIf="isValid==true && wType=='walletPaytm'" [data]="walletData"></paytm-wallet-form>
 <payu-wallet-form *ngIf="isValid&&type!='tax' &&  (wType=='walletAirtel' || wType=='walletFreecharge' || wType=='walletHdfcpay' || wType=='walletOlamoney' || wType=='walletOxigen')" [data]="walletData"></payu-wallet-form>
-<mobikwik-wallet-form *ngIf="type=='retail' && isValid==true && wType=='walletMobikwik'" [data]="walletData"></mobikwik-wallet-form>
-<razor-pay *ngIf="isValid&&type=='tax' && wType!='walletPaytm'" [data]="walletData" ></razor-pay>
+<mobikwik-wallet-form *ngIf="type=='retail' && isValid==true && wType=='walletMobikwik'" [data]="walletData">
+</mobikwik-wallet-form>
+<razor-pay *ngIf="isValid&&type=='tax' && wType!='walletPaytm'" [data]="walletData"></razor-pay>

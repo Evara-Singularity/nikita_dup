@@ -9,6 +9,7 @@ import { ProductsEntity } from '@app/utils/models/product.listing.search';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -45,6 +46,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   constructor(
     private _cartService: CartService,
     private _http: HttpClient,
+    public _productListService: ProductListService,
     private _loader: GlobalLoaderService,
     private _router: Router,
     private _cfr: ComponentFactoryResolver,
@@ -160,6 +162,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     if (isUserLogin) {
       this.getProductGroupDetails(productMsnId).pipe(
         map(productRawData => {
+          console.log(productRawData['productBO']);
           return this.getRFQProduct(productRawData['productBO'])
         })
       ).subscribe(productDetails => {
@@ -235,6 +238,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       const headerText = 'Thanks for submitting the query.';
       const subHeaderText = 'Our support member will get in touch with you within 24 hours. For further assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.';
       this.loadAlertBox(headerText, subHeaderText, null);
+      this._productListService.analyticRFQ(true, product);
     });
   }
 
@@ -294,6 +298,9 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
     const productBrandDetails = product['brandDetails'];
     const productCategoryDetails = product['categoryDetails'][0];
+    const productTags = product['productTags'];
+    const outOfStock = product['outOfStock'];
+    const quantityAvailable = product['quantityAvailable'];
 
     return {
       url: product['friendlyUrl'],
@@ -304,11 +311,17 @@ export class ProductHorizontalCardComponent implements OnInit {
       taxonomyCode: productCategoryDetails['taxonomy'],
       productName: product['productName'],
       adobeTags: '',
+      productTags,
+      outOfStock,
+      quantityAvailable
     }
 
   }
 
   private addToCart(productDetails, buyNow): void {
+    // analytics call
+    this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api

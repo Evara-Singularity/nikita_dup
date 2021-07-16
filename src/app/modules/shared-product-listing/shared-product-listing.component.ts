@@ -35,17 +35,12 @@ export class SharedProductListingComponent {
   public appliedFilterCount: number = 0;
 
   constructor(
-    @Inject(DOCUMENT) private document,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private _router: Router,
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _injector: Injector,
     private _cartService: CartService,
     public _productListService: ProductListService,
     private _localAuthService: LocalAuthService,
     public _commonService: CommonService) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit() {
@@ -79,6 +74,8 @@ export class SharedProductListingComponent {
   }
   
   updateFilterCountAndSort(){
+    this._productListService.pageName = this.pageName.toLowerCase();
+
     this.appliedFilterCount = Object.keys(this._commonService.selectedFilterData.filter).length;
     
     if (this.paginationInstance) {

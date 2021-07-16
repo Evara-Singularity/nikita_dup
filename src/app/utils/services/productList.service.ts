@@ -82,6 +82,7 @@ export class ProductListService {
   }
 
   analyticRFQ(isSubmitted: boolean = false, product) {
+    console.log(product);
     const user = this._localStorageService.retrieve('user');
     let taxo1 = '';
     let taxo2 = '';
@@ -159,6 +160,7 @@ export class ProductListService {
   analyticAddToCart(routerlink, productDetails) {
     const user = this._localStorageService.retrieve('user');
     const taxonomy = productDetails['taxonomyCode'];
+    const pageName = this.pageName.toLowerCase();
     let taxo1 = '';
     let taxo2 = '';
     let taxo3 = '';
@@ -177,6 +179,8 @@ export class ProductListService {
     let page = {
       'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
       'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
+      'channel': pageName !== 'category' ? pageName : "listing",
+      'pageName': pageName + "_page"
     }
     let custData = {
       'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
@@ -225,14 +229,15 @@ export class ProductListService {
       brand: productDetails['brandName'],
       price: productDetails.priceWithoutTax,
       quantity: null,
-      channel: "Listing/" + this.pageName + " Listing",
+      channel: pageName !== 'category' ? pageName : "listing",
       category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
       category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
       category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-      page_type: this.pageName + "_page"
+      page_type: pageName + "_page"
     }
 
     this._dataService.sendMessage(trackingData);
   }
+
 
 }

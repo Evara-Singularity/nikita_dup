@@ -2140,6 +2140,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let page = {
       'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
       'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
+      'channel': 'pdp'
     }
     let custData = {
       'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',

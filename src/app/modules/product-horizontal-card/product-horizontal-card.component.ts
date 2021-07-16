@@ -162,6 +162,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     if (isUserLogin) {
       this.getProductGroupDetails(productMsnId).pipe(
         map(productRawData => {
+          console.log(productRawData);
           // console.log(productRawData['productBO']);
           return this.getRFQProduct(productRawData['productBO'])
         })
@@ -308,7 +309,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       msn: partNumber,
       moq: productMinimmumQuantity,
       brand: productBrandDetails['brandName'],
-      taxonomyCode: productCategoryDetails['taxonomy'],
+      taxonomyCode: productCategoryDetails['taxonomyCode'],
       productName: product['productName'],
       adobeTags: '',
       productTags,

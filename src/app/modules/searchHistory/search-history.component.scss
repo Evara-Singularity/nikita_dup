@@ -4,16 +4,17 @@
 
 .recentSearchProduct {
     color: #333333 !important;
+    line-height: 24px;
 }
 
 .interfaceIcon {
     float: right;
-    width: 14px;
+    width: 24px;
 }
 
 .recentSearchWrapper {
     border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     .clearHistoryText {
         color: #2680EB;
         font-size: 10px;
@@ -32,11 +33,11 @@
     margin-top: 10px;
     .plan-list {
         li {
-            padding: 12px 0;
+            padding: 10px 0px 10px 5px;
         }
     }
 }
 
-.normal-text{
+.normal-text {
     text-transform: unset !important;
 }

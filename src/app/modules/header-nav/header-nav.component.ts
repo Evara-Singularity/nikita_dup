@@ -249,15 +249,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.cartService.cart.subscribe((data) => {
-            if (data.count) {
-                this.noOfCart = data.count;
+            if (typeof data === 'number') {
+                //console.log("data.count number ==>", data);
+                this.noOfCart = data;
             } else {
-                if (data.count == null || data.count == 0 ) {
+                // incase it is object
+                if (data.count == null || data.count == 0) {
+                    //console.log("data.count count 0 ==>", data);
                     this.noOfCart = 0;
                 } else {
-                    this.noOfCart = data;
+                    //console.log("data.count count NOT 0 ==>", data);
+                    this.noOfCart = data.count;
                 }
-                console.log("data.count ==>", data.count);
             }
             this.setHeader();
         });

@@ -2,7 +2,7 @@
     <div class="carousel-inner">
         <div class="carousel-item active" *ngFor="let item of data; let i = index;">
             <img  src="{{imagePath + item['imageLink']}}" [alt]="item['imageTitle']"
-            (click)="$event.stopPropagation();_cmsService.navigateTo(item['redirectPageLink'], {navigation:'brand_store_' + componentName })">
+            (click)="$event.stopPropagation();_cmsService.navigateTo(item['redirectPageLink'], {navigation:'brand_store_' + componentName + item['imageTitle'] })">
         </div>
     </div>
 </div>

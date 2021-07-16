@@ -1,4 +1,3 @@
 <section class="mainbanner-article" [ngStyle]="customStyle">
-    <img [src]="mainBannerImgLink" [alt]="imageTitle" (click)="$event.stopPropagation();_cmsService.navigateTo(redirectPageLink, {navigation:'brand_store_' + componentName })" />
+    <img [src]="mainBannerImgLink" [alt]="imageTitle" (click)="$event.stopPropagation();_cmsService.navigateTo(redirectPageLink, {navigation:'brand_store_' + componentName + imageTitle })" />
 </section>
-

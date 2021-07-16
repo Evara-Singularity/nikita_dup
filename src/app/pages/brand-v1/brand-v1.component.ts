@@ -67,8 +67,6 @@ export class BrandV1Component {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
-            console.log(this._activatedRoute.snapshot);
-            console.log(this._router.url);
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);

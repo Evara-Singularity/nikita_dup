@@ -93,7 +93,6 @@ export class CategoryV1Component {
             
             // set API result data
             this.API_RESPONSE = result;
-
             console.log(this.API_RESPONSE);
 
             // Set Title and Meta for category
@@ -241,7 +240,7 @@ export class CategoryV1Component {
             this.handleZeroProductListOnServer();
         } else if (this.API_RESPONSE.category[0]['categoryDetails']['active']) {
 
-            if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0) {
+            if (this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] > 0 && this._commonService.isBrowser) {
                 this.fireTags();
             }
         }
@@ -399,7 +398,7 @@ export class CategoryV1Component {
             productSearchResult: this.API_RESPONSE.category[1].productSearchResult,
             getRelatedCatgory: this.API_RESPONSE.category[0],
             productSearchResultSEO: this.genrateProductSearchResultSEOData(),
-            faqData: this.API_RESPONSE.category[2],
+            faqData: this.API_RESPONSE.category[2]['data'],
             buckets: this.API_RESPONSE.category[1].buckets,
             PRTA: this.genrateProductRangeTable()
         };

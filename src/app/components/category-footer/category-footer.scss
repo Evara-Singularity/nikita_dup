@@ -31,6 +31,40 @@
     }
 }
 
+
+.m_faqHeading {
+    padding: 25px 0 10px 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.m_faqQuestion {
+    padding: 10px 20px;
+    font-size: 16px;
+    position: relative;
+     :before {
+        content: "Q:";
+        font-size: 18px;
+        position: absolute;
+        left: -8px;
+        font-weight: bold;
+    }
+}
+
+.m_faqAnswer {
+    font-size: 12px;
+    line-height: 18px;
+    position: relative;
+    padding: 0px 20px;
+    &:before {
+        content: "A:";
+        font-size: 18px;
+        position: absolute;
+        left: -8px;
+        font-weight: bold;
+    }
+}
+
 .category-tbl {
     th,
     td {
@@ -52,4 +86,9 @@
         border-bottom: 1px solid $border-color;
         padding: 5px;
     }
+}
+
+.openFaq_div{
+    padding-left: 20px;
+    padding-right: 20px;
 }

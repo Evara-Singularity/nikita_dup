@@ -12,6 +12,11 @@
       "platform": "play",
       "id": "com.moglix.online",
       "url": "https://qam-revamp.moglilabs.com"
+    },
+    {
+      "platform": "play",
+      "id": "com.moglix.online",
+      "url": "https://www.moglix.com"
     }
   ],
   "icons": [

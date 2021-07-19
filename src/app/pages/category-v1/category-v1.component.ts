@@ -199,9 +199,10 @@ export class CategoryV1Component {
 
     private setFaqSchema(faqData) {
         if (this._commonService.isServer) {
-            if (faqData && faqData.length > 0) {
+            const data:any[] = (faqData['data'] as any[]);
+            if (data.length > 0) {
                 const qaSchema = [];
-                faqData.forEach((element, index) => {
+                data.forEach((element, index) => {
                     qaSchema.push({
                         "@type": "Question",
                         "name": element.questionText,

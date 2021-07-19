@@ -274,7 +274,9 @@ export class CheckoutV1Component implements OnInit {
         if (cartSession && cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
           const cs = this._cartService.updateCart(cartSession);
           this._cartService.setCartSession(cs);
-          // this.cartSessionUpdated$.next(cartSession);
+          setTimeout(() => {
+            this.cartSessionUpdated$.next(cartSession);
+          }, 100);
           this._cartService.orderSummary.next(cartSession);
           this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
 
@@ -285,7 +287,9 @@ export class CheckoutV1Component implements OnInit {
         } else if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 202) {
           const cs = this._cartService.updateCart(cartSession['cart']);
           this._cartService.setCartSession(cs);
-          this.cartSessionUpdated$.next(cs);
+          setTimeout(() => {
+            this.cartSessionUpdated$.next(cs);
+          }, 100);
           this._cartService.orderSummary.next(cs);
           this._cartService.cart.next(cs["cart"] != undefined ? cs['noOfItems'] : 0);
 

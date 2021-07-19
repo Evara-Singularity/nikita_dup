@@ -251,6 +251,7 @@ export class CartComponent {
                     let reqobj = {
                         "shoppingCartDto": cartobj
                     }
+                    
                     this.validateCartApi(reqobj);
                 }
             }
@@ -433,7 +434,7 @@ export class CartComponent {
                     const msns: Array<string> = res[0]['data'] ? Object.keys(res[0]['data']) : [];
                     //  ;
                     if (items && items.length > 0) {
-                        //Below function is used to show price update at item level if any validation message is present corresponding to item.
+                        // Below function is used to show price update at item level if any validation message is present corresponding to item.
                         items = this.addPriceUpdateToCart(items, itemsValidationMessage);
                         this.itemsList = items;
                         // ucs: updateCartSession

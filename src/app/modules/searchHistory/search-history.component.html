@@ -9,8 +9,8 @@
         <li *ngFor="let item of shd; let i = index;">
             <i (click)="removeFromLocalStorage(i)" class="icon-delete crossIcon"></i>
             <a (click)="navigateTo(item.extras)" class="recentSearchProduct">{{item.name}}</a>
-
-            <img (click)="addToSearchBar($event, item.name)" src="{{imagePathAsset}}assets/img/interface.png" class="interfaceIcon">
+            <!-- <img (click)="addToSearchBar($event, item.name)" src="{{imagePathAsset}}assets/img/interface.png" class="interfaceIcon"> -->
+            <i (click)="addToSearchBar($event, item.name)" class="icon-share-box-line interfaceIcon"></i>
         </li>
     </ul>
     <ul *ngIf="shd && shd.length===0" class="plan-list">

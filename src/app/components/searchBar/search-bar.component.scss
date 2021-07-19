@@ -53,8 +53,10 @@
                         display: inline-block;
                         padding-right: 10px;
                     }
-                    img {
-                        width: 22px;
+                    .interfaceIcon {
+                        float: right;
+                        font-size: 22px;
+                        color: #a3a3ab;
                     }
                 }
                 @extend %clear-fix;

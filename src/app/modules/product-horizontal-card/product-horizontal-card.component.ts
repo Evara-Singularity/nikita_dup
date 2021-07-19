@@ -365,6 +365,8 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productCategoryDetails = productBO['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
 
+    //console.log('productEntityFromProductBO productUrl ==>', productBO['defaultCanonicalUrl'], productBO);
+
     const product: ProductsEntity = {
       moglixPartNumber: partNumber,
       moglixProductNo: null,
@@ -390,7 +392,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       ratingCount: this.product.ratingCount,
       reviewCount: this.product.reviewCount
     };
-
+    //console.log('product ==>', product);
     return product;
   }
 
@@ -408,7 +410,9 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productCategoryDetails = productGroupData['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
 
-    return {
+    //console.log('getAddToCartProductRequest productUrl ==>', productGroupData['defaultCanonicalUrl'], productGroupData);
+
+    const product = {
       cartId: null,
       productId: partNumber,
       createdAt: new Date(),
@@ -438,6 +442,10 @@ export class ProductHorizontalCardComponent implements OnInit {
       filterAttributesList: productGroupData['filterAttributesList'] || null,
       isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry)
     } as AddToCartProductSchema;
+
+    //console.log('product ==>', product); 
+
+    return product
 
 
   }

@@ -84,7 +84,6 @@ export class PagesComponent implements OnInit {
     const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
     const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
     
-    console.log(encryptedToken);
     const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
 
     this.dataService.callRestful("POST", url, { body: { tokenId: encryptedToken, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
@@ -97,7 +96,6 @@ export class PagesComponent implements OnInit {
           phone: res['userInfo']['phone'],
           phoneVerified: true,
           sessionId: res['cart']['sessionId'],
-          token: encryptedToken,
           userId: res['userInfo']['userId'],
           userName: res['userInfo']['firstName'],
           userType: null
@@ -181,7 +179,6 @@ export class PagesComponent implements OnInit {
 
   updateCartSession() {
     const userSession = this._localAuthService.getUserSession();
-    console.log(userSession);
 
     let params = { "sessionid": userSession.sessionId };
     this._cartService.getCartBySession(params).subscribe((cartSession) => {

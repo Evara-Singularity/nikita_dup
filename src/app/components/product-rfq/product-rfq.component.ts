@@ -33,6 +33,11 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     @Input('product') product = null;
     @Input('adobeTags') adobeTags = '';
     @Input('isOutOfStock') isOutOfStock = false;
+    /**
+     * isOutOfStock is also used to control popup and normal variant of this module,
+     * incase isOutOfStock version needs to be opened with popup use extraOutOfStock flag used in PLP pages
+    */
+    @Input('extraOutOfStock') extraOutOfStock = false;
     @Input('isPopup') isPopup = false;
     //outputs
     @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -334,7 +339,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
             quantity: this.quantity.value,
             prodReference: this.product['msn'],
             taxonomyCode: this.product['taxonomyCode'],
-            outOfStock: this.isOutOfStock ? 'outOfStock' : 'inStock'
+            outOfStock: (this.isOutOfStock || this.extraOutOfStock) ? 'outOfStock' : 'inStock'
         }]
         data['rfqEnquiryCustomer'] = { ...rfqDetails, ...extraData };
         this.productService.postBulkEnquiry(data).subscribe(

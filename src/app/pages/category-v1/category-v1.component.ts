@@ -94,6 +94,10 @@ export class CategoryV1Component {
             // set API result data
             this.API_RESPONSE = result;
             console.log(this.API_RESPONSE);
+            
+            if (this.cmsInstance.instance) {
+                this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
+            }
 
             // Set Title and Meta for category
             this.setTitleAndMetaForCategory();

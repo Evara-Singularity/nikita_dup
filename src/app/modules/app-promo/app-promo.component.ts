@@ -23,6 +23,7 @@ export class AppPromoComponent implements OnInit {
   readonly playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
   readonly appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
 
+  @Input() productData: any;
   @Input() isOverlayMode: boolean = true;
   @Input() page: string;
   @Input() showPromoCode: boolean = true;
@@ -69,21 +70,45 @@ export class AppPromoComponent implements OnInit {
     window.open(this.appStoreLink, '_blank');
   }
 
-  callAnalytics(){
+  callAnalytics() {
     const user = this._localStorageService.retrieve('user');
-    let digitalData={
-      page:{      
-      linkPageName: 'moglix: ' + this.page,
-      
-      linkName: 'Install App'
-    },
-    custData:{     
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-      
-      }};
+
+    let digitalData = {
+      page: {
+        linkName: 'Install App'
+      },
+      custData: {
+        'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+        'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+        'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+        'customerType': (user && user["userType"]) ? user["userType"] : '',
+      }
+    };
+
+    if (this.page === 'pdp') {
+      let taxo1 = '';
+      let taxo2 = '';
+      let taxo3 = '';
+      if (this.productData['categoryDetails'][0]['taxonomyCode']) {
+        taxo1 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[0] || '';
+        taxo2 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[1] || '';
+        taxo3 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[2] || '';
+      }
+
+      digitalData['page']['linkPageName'] = "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp";
+      digitalData['order'] = {
+        'productID': this.productData['partNumber'],
+        'productCategoryL1': taxo1,        
+        'productCategoryL2': taxo2,        
+        'productCategoryL3': taxo3,
+        'brand': this.productData['brandDetails']['brandName']
+      };
+
+
+    } else {
+      digitalData['page']['linkPageName'] = 'moglix: ' + this.page;
+    }
+
     this._analytics.sendAdobeCall(digitalData, "genericClick");
   }
 

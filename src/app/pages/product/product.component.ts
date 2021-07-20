@@ -396,8 +396,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           subGroupMsnId: productId,
         }, productData);
         this.showLoader = false;
-      } else {
-        // console.log('updateAttr productData status', productData);
       }
     });
   }
@@ -1736,6 +1734,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
+    this.appPromoInstance.instance['productData'] = this.rawProductData;
     this.appPromoInstance.instance['isLazyLoaded'] = true;
     (this.appPromoInstance.instance['appPromoStatus$'] as EventEmitter<boolean>).subscribe((status) => {
       this.appPromoVisible = status;

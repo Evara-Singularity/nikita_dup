@@ -127,18 +127,14 @@ export class ProductListService {
     let page = null;
     if (!isSubmitted) {
       page = {
-        'pageName': "moglix:bulk request form",
-        'channel': "bulk request form",
-        'subSection': "moglix:bulk request form",
+        'channel': "bulk request form : " + this.pageName.toLowerCase(),
         'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
       }
     } else {
       page = {
-        'pageName': "moglix:bulk request form",
-        'channel': "bulk request form",
-        'subSection': "moglix:bulk request form",
+        'channel': "bulk request form :" + this.pageName.toLowerCase(),
         'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
-        'linkPageName': "moglix:bulk request form",
+        'linkPageName': "moglix:bulk request form :" + this.pageName.toLowerCase(),
         'linkName': "Get Quote"
       }
     }
@@ -174,9 +170,6 @@ export class ProductListService {
     }
 
     let ele = [];
-    // this.productTags.forEach((element) => {
-    //   ele.push(element.name);
-    // });
     const tagsForAdobe = ele.join("|");
     
     let page = {

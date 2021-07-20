@@ -29,6 +29,7 @@ interface ProductDataArg {
   productBO: string;
   refreshCrousel?: boolean;
   subGroupMsnId?: string;
+  nextAvailableMsn?: string;
 }
 
 @Component({
@@ -295,6 +296,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             productBO: rawData['product'][0]['productBO'],
             refreshCrousel: true,
             subGroupMsnId: null,
+            nextAvailableMsn: rawData['product'][0]['nextAvailableMsn'] || null
           }, rawData['product'][0]);
 
           this.setReviewsRatingData(rawReviews);
@@ -380,7 +382,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'Discount': Math.floor(this.rawProductData['discount']),
       'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
     });
+    this.getProductGroupData(productId);
+  }
 
+  private getProductGroupData(productId: any) {
     this.removeRfqForm();
     this.showLoader = true;
     this.productService.getGroupProductObj(productId).subscribe(productData => {
@@ -394,7 +399,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       } else {
         // console.log('updateAttr productData status', productData);
       }
-    })
+    });
   }
 
   removeRfqForm() {
@@ -507,6 +512,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.productMinimmumQuantity = (this.priceQuantityCountry && this.priceQuantityCountry['moq']) ? this.priceQuantityCountry['moq'] : 1;
 
     this.setOutOfStockFlag();
+
+    /**
+     * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
+     * then redirect to inStock MSN of same grouped product
+     * check for filterAttributesList for grouped to make sure it is grouped product and check of outofstock and 
+     * then redirect to next inStock msn avaliable in args.nextAvailableMsn
+     * Make sure this condition is called after this.setOutOfStockFlag();
+    */
+    if (this.productFilterAttributesList && this.productOutOfStock) {
+      this.getProductGroupData(args.nextAvailableMsn);
+    }
 
     if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);

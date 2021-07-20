@@ -38,7 +38,6 @@ export class PagesComponent implements OnInit {
     private _cartService: CartService,
     private _localStorageService: LocalStorageService,
     private _router: Router,
-    private _sharedAuthService: SharedAuthService,
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
@@ -47,7 +46,7 @@ export class PagesComponent implements OnInit {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
     this.isMoglixAppInstalled();
-    
+
     this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
 
@@ -70,19 +69,30 @@ export class PagesComponent implements OnInit {
     }
   }
 
+  encryptKey(plain_text, encryptionMethod, secret, iv) {
+    const encryptor = crypto.createCipheriv(encryptionMethod, secret, iv);
+    const aes_encrypted = encryptor.update(plain_text, 'utf8', 'base64') + encryptor.final('base64');
+    return Buffer.from(aes_encrypted).toString('base64');
+  };
+
   loginUserIfUserRedirectedFromBharatpay(queryParams) {
     const token = queryParams['token'];
-    const key = 'moglix';
-    const encryptedToken = crypto.createHash('md5').update(token + key).digest("hex");
+    const secret_key = CONSTANTS.SECRET_KEY;
+    const secret_iv = 'smslt';
+    const encryptionMethod = 'AES-256-CBC';
+    const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
+    const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
+    const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
+    
     console.log(encryptedToken);
-    const url = (environment.BASE_URL.replace('v1', 'v2')) + (ENDPOINTS.BHARATPAY_URL + encryptedToken);
+    const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
 
-    this.dataService.callRestful("POST", url, {}).subscribe(res => {
+    this.dataService.callRestful("POST", url, { body: { tokenId: encryptedToken, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
       if (res['status']) {
-        const obj =  {
+        const obj = {
           authenticated: "true",
-          cart: JSON.stringify(res['cart']),          ​
-          email: res['userInfo']['email'],          ​
+          cart: JSON.stringify(res['cart']),
+          email: res['userInfo']['email'],
           emailVerified: null,
           phone: res['userInfo']['phone'],
           phoneVerified: true,
@@ -110,7 +120,7 @@ export class PagesComponent implements OnInit {
 
     const actualParams = this._commonService.formatParams(params);
     actualParams['str'] = msn;
-    this.dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SEARCH, {params: actualParams}).subscribe(res => {
+    this.dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SEARCH, { params: actualParams }).subscribe(res => {
       if (res.hasOwnProperty('productSearchResult') && res['productSearchResult']['totalCount'] === 1) {
         this._router.navigateByUrl(res['productSearchResult']['products'][0]['productUrl'])
       }
@@ -125,8 +135,8 @@ export class PagesComponent implements OnInit {
      */
 
     this.checkAndRedirect();
-    
-    if(this.isBrowser){
+
+    if (this.isBrowser) {
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
     }
@@ -160,7 +170,7 @@ export class PagesComponent implements OnInit {
         .subscribe((res) => {
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
-          if ( (this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)  ){
+          if ((this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)) {
             this.updateCartSession();
           }
           this._localAuthService.login$.next();
@@ -171,13 +181,15 @@ export class PagesComponent implements OnInit {
 
   updateCartSession() {
     const userSession = this._localAuthService.getUserSession();
+    console.log(userSession);
+
     let params = { "sessionid": userSession.sessionId };
     this._cartService.getCartBySession(params).subscribe((cartSession) => {
       if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
         let cs = this._cartService.updateCart(cartSession);
         this._cartService.setCartSession(cs);
         const val = cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0;
-        this._cartService.cart.next({count: val});
+        this._cartService.cart.next({ count: val });
         this._cartService.orderSummary.next(cartSession);
       }
       /**

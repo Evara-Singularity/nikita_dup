@@ -6,7 +6,9 @@ import { DataService } from '../../utils/services/data.service';
 
 const BASEURL = CONSTANTS.NEW_MOGLIX_API;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SharedAuthService {
 
   private readonly BASEURLS = {

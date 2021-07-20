@@ -12,6 +12,7 @@ export const CONSTANTS = {
   SOCKET_URL: environment.SOCKET_URL,
   IMAGE_BASE_URL: environment.IMAGE_BASE_URL,
   DOCUMENT_URL: environment.DOCUMENT_URL,
+  SECRET_KEY: 'moglix@4241',
   SOCIAL_LOGIN: environment.SOCIAL_LOGIN,
   AB_TESTING: environment.AB_TESTING,
   IDS_MAP: environment.IDS_MAP,

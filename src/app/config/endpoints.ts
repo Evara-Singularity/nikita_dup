@@ -7,6 +7,7 @@ export const ENDPOINTS = {
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   LOGIN_URL: "/login/sendOTP",
+  BHARATPAY_URL: '/marketPlace/cartSessionbyId/',
   LOGIN_OTP: "/login/validateotp",
   LOGIN_AUTHENTICATE: "/login/authenticate",
   FORGOT_PASSWORD: "/login/forgetpassword",

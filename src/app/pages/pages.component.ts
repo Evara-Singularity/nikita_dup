@@ -1,7 +1,7 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';
@@ -11,6 +11,11 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { environment } from 'environments/environment';
+import { SharedAuthService } from '@app/modules/shared-auth/shared-auth.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import * as crypto from 'crypto-browserify';
 
 @Component({
   selector: 'app-pages',
@@ -20,7 +25,6 @@ import CONSTANTS from '@app/config/constants';
 })
 
 export class PagesComponent implements OnInit {
-
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true, logo?: boolean, title?: string };
@@ -32,6 +36,9 @@ export class PagesComponent implements OnInit {
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
+    private _localStorageService: LocalStorageService,
+    private _router: Router,
+    private _sharedAuthService: SharedAuthService,
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
@@ -40,8 +47,10 @@ export class PagesComponent implements OnInit {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
     this.isMoglixAppInstalled();
+    
     this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
+
       if (res instanceof NavigationEnd) {
         if (res['url'] === '/') {
           this.isHomePage = true;
@@ -52,13 +61,71 @@ export class PagesComponent implements OnInit {
     })
   }
 
+  checkAndRedirect() {
+    const queryParams = this._aRoute.snapshot.queryParams;
+    if (queryParams.hasOwnProperty('token')) {
+      this.loginUserIfUserRedirectedFromBharatpay(queryParams);
+    } else {
+      this.setUserSession();
+    }
+  }
+
+  loginUserIfUserRedirectedFromBharatpay(queryParams) {
+    const token = queryParams['token'];
+    const key = 'moglix';
+    const encryptedToken = crypto.createHash('md5').update(token + key).digest("hex");
+    console.log(encryptedToken);
+    const url = (environment.BASE_URL.replace('v1', 'v2')) + (ENDPOINTS.BHARATPAY_URL + encryptedToken);
+
+    this.dataService.callRestful("POST", url, {}).subscribe(res => {
+      if (res['status']) {
+        const obj =  {
+          authenticated: "true",
+          cart: JSON.stringify(res['cart']),          ​
+          email: res['userInfo']['email'],          ​
+          emailVerified: null,
+          phone: res['userInfo']['phone'],
+          phoneVerified: true,
+          sessionId: res['cart']['sessionId'],
+          token: encryptedToken,
+          userId: res['userInfo']['userId'],
+          userName: res['userInfo']['firstName'],
+          userType: null
+        }
+        this._localStorageService.store('user', obj);
+        this.setUserSession();
+        if (queryParams.hasOwnProperty('msn')) {
+          this.redirectToProductPage(queryParams['msn']);
+        }
+      }
+    });
+  }
+
+  redirectToProductPage(msn) {
+    const params = {
+      filter: {},
+      queryParams: this._aRoute.snapshot.queryParams,
+      pageName: "SEARCH"
+    };
+
+    const actualParams = this._commonService.formatParams(params);
+    actualParams['str'] = msn;
+    this.dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SEARCH, {params: actualParams}).subscribe(res => {
+      if (res.hasOwnProperty('productSearchResult') && res['productSearchResult']['totalCount'] === 1) {
+        this._router.navigateByUrl(res['productSearchResult']['products'][0]['productUrl'])
+      }
+    })
+
+  }
+
   ngOnInit() {
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
      */
+
+    this.checkAndRedirect();
     
-    this.setUserSession();
     if(this.isBrowser){
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
@@ -67,9 +134,7 @@ export class PagesComponent implements OnInit {
 
   isMoglixAppInstalled() {
     if (this.isBrowser) {
-      console.log('isMoglixAppInstalled called 1 ==>', 'on load');
       window.addEventListener('load', () => {
-        console.log('isMoglixAppInstalled called ==>', 'on window load');
         // Check to see if the API is supported.
         if ('getInstalledRelatedApps' in navigator) {
           this.updateAppStatus()
@@ -80,7 +145,6 @@ export class PagesComponent implements OnInit {
 
   updateAppStatus() {
     navigator['getInstalledRelatedApps']().then((relatedApps) => {
-      console.log('isMoglixAppInstalled relatedApps ==>', relatedApps);
       if (relatedApps && relatedApps.length > 0) {
         this._commonService.isAppInstalled = true;
       }
@@ -94,7 +158,6 @@ export class PagesComponent implements OnInit {
           map((res) => res)
         )
         .subscribe((res) => {
-          let userSession = this._localAuthService.getUserSession();
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ( (this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)  ){

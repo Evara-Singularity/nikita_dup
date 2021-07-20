@@ -229,7 +229,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const { ProductRFQComponent } = await import('../../components/product-rfq/product-rfq.component');
     const factory = this._cfr.resolveComponentFactory(ProductRFQComponent);
     this.productRFQInstance = this.productRFQContainerRef.createComponent(factory, null, this._injector);
-    this.productRFQInstance.instance['isOutOfStock'] = false;
+    this.productRFQInstance.instance['isOutOfStock'] = true;
     this.productRFQInstance.instance['isPopup'] = true;
     this.productRFQInstance.instance['product'] = product;
     (this.productRFQInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus => {

@@ -95,7 +95,7 @@ export class CategoryV1Component {
             this.API_RESPONSE = result;
             console.log(this.API_RESPONSE);
             
-            if (this.cmsInstance.instance) {
+            if (this.cmsInstance) {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
             }
 
@@ -585,27 +585,76 @@ export class CategoryV1Component {
 
                 this.layoutType = data['layoutType'];
                 if (this.API_RESPONSE.category[0].children && this.layoutType == 2) {
-                    this.createDynamicComponent('slpSubCategory');
+                    if (this.slpSubCategoryInstance) {
+                        this.slpSubCategoryInstance.instance['sub_category_Data'] = this.API_RESPONSE.category[0].children;
+                    } else {
+                        this.createDynamicComponent('slpSubCategory');
+                    }
+                } else {
+                    if (this.slpSubCategoryInstance) {
+                        this.slpSubCategoryInstance = null;
+                        this.slpSubCategoryContainerRef.remove();
+                    }
                 }
 
                 this.page_title = data['pageTitle'];
 
                 if (data['data'][0].block_data.brand_block) {
                     this.shopByBrandData = data['data'][0].block_data.brand_block;
-                    this.createDynamicComponent('shopByBrand');
+                    if (this.shopByBrandInstance) {
+                        this.shopByBrandInstance.instance['brand_Data'] = this.shopByBrandData;
+                    } else {
+                        this.createDynamicComponent('shopByBrand');
+                    }
+                } else {
+                    if (this.shopByBrandInstance) {
+                        this.shopByBrandInstance = null;
+                        this.shopByBrandContainerRef.remove();
+                    }
                 }
+
                 if (data['data'][0].block_data.product_data) {
                     this.catBestsellerData = data['data'][0].block_data.product_data;
-                    this.createDynamicComponent('catBestseller');
+                    if (this.catBestSellerInstance) {
+                        this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestsellerData;
+                    } else {
+                        this.createDynamicComponent('catBestseller');
+                    }
+                } else {
+                    if (this.catBestSellerInstance) {
+                        this.catBestSellerInstance = null;
+                        this.catBestSellerContainerRef.remove();
+                    }
                 }
+
                 if (data['data'][0].block_data.image_block) {
                     this.shopbyFeatrData = data['data'][0].block_data.image_block;
-                    this.createDynamicComponent('shopbyFeatr');
+                    if (this.shopbyFeatrInstance) {
+                        this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopbyFeatrData;
+                    } else {
+                        this.createDynamicComponent('shopbyFeatr');
+                    }
+                } else {
+                    if (this.shopbyFeatrInstance) {
+                        this.shopbyFeatrInstance = null;
+                        this.shopbyFeatrContainerRef.remove();
+                    }
                 }
 
                 if (data['data'][0].block_data.general_block) {
                     this.catStaticData = data['data'][0].block_data.general_block;
-                    this.createDynamicComponent('catStatic');
+                    if (this.catStaticInstance) {
+                        this.catStaticInstance.instance['page_title'] = this.page_title;
+                        this.catStaticInstance.instance['static_data'] = this.catStaticData;
+                    } else {
+                        this.createDynamicComponent('catStatic');
+                    }
+
+                } else {
+                    if (this.catStaticInstance) {
+                        this.catStaticInstance = null;
+                        this.catStaticContainerRef.remove();
+                    }
                 }
 
             });
@@ -691,8 +740,10 @@ export class CategoryV1Component {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
                 this.cmsInstance.instance['background'] = 'bg-trans';
             }
+            
         }
     }
+
 
     resetLazyComponents() {
         if (this.filterInstance) {

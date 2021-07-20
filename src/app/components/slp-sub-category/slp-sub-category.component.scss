@@ -1,3 +1,35 @@
 .popRow{
   padding:0px;  
 }
+
+.sub-categoryRow {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  .outerBlock {
+      width: 50%;
+      float: left;
+      padding: 10px 10px;
+  }
+  .subCatBlock {
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      background: #fff;
+      min-height: 175px;
+      padding: 5px;
+      margin-bottom: 10px;
+      a {
+          display: block;
+      }
+      p {
+          font-size: 12px;
+          text-align: center;
+      }
+      img {
+          width: 100%;
+          border-radius: 2px;
+          padding: 8px 10px;
+      }
+  }
+}

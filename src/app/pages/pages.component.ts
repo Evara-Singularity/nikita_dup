@@ -13,9 +13,8 @@ import { DataService } from '@app/utils/services/data.service';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
-import { SharedAuthService } from '@app/modules/shared-auth/shared-auth.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import * as crypto from 'crypto-browserify';
+import crypto from 'crypto-browserify';
 
 @Component({
   selector: 'app-pages',

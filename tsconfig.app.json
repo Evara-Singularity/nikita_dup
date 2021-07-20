@@ -2,9 +2,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "paths": {
-      "stream": ["./node_modules/readable-stream"],
-    },
     "outDir": "./out-tsc/app",
     "types": [],
   },

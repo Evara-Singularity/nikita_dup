@@ -333,8 +333,7 @@ export class ProductHorizontalCardComponent implements OnInit {
           this.resetVariantData();
           if (!buyNow) {
             this._cartService.setCartSession(result);
-            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
-            this._productListService.fireViewBasketEvent();            
+            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });         
             this.showAddToCartToast();
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
@@ -441,7 +440,9 @@ export class ProductHorizontalCardComponent implements OnInit {
       taxonomyCode: productCategoryDetails['taxonomyCode'],
       buyNow: buyNow,
       filterAttributesList: productGroupData['filterAttributesList'] || null,
-      isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry)
+      isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry),
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      category: productCategoryDetails['taxonomy']
     } as AddToCartProductSchema;
 
     //console.log('product ==>', product); 

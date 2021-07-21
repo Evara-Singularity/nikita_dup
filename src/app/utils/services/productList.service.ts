@@ -157,6 +157,7 @@ export class ProductListService {
   }
 
   analyticAddToCart(routerlink, productDetails) {
+    // console.log('productDetails ==>', productDetails);
     const user = this._localStorageService.retrieve('user');
     const taxonomy = productDetails['taxonomyCode'];
     const pageName = this.pageName.toLowerCase();
@@ -173,7 +174,7 @@ export class ProductListService {
     const tagsForAdobe = ele.join("|");
     
     let page = {
-      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
+      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":listing",
       'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
       'channel': pageName !== 'category' ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting
@@ -190,8 +191,8 @@ export class ProductListService {
       'productCategoryL1': taxo1,
       'productCategoryL2': taxo2,
       'productCategoryL3': taxo3,
-      'price': productDetails.priceWithoutTax,
-      'quantity': null,
+      'price': productDetails.productUnitPrice,
+      'quantity': productDetails['productQuantity'],
       'brand': productDetails['brandName'],
       'tags': tagsForAdobe
     }
@@ -206,12 +207,15 @@ export class ProductListService {
           'products': [{
             'name': productDetails.productName,     // Name or ID of the product is required.
             'id': productDetails.productId, // todo: partnumber
-            'price': productDetails.priceWithoutTax,
+            'price': productDetails.productUnitPrice,
             'brand': productDetails['brandName'],
-            'category': (productDetails['taxonomy']) ? productDetails['taxonomy'] : '',
+            'category': (productDetails['category']) ? productDetails['category'] : '',
             'variant': '',
-            'quantity': null,
-            'productImg': productDetails.productImg
+            'quantity': productDetails['productQuantity'],
+            'productImg': productDetails.productImg,
+            'CatId': productDetails['taxonomyCode'],
+            'MRP': productDetails['amount'],
+            'Discount':  (productDetails['discount'] && !isNaN(productDetails['discount']))? parseInt(productDetails['discount']) : null
           }]
         }
       },
@@ -223,7 +227,7 @@ export class ProductListService {
       product_name: productDetails.productName,
       msn: productDetails.productId,
       brand: productDetails['brandName'],
-      price: productDetails.priceWithoutTax,
+      price: productDetails.productUnitPrice,
       quantity: productDetails.productQuantity,
       channel: pageName !== 'category' ? pageName : "listing",
       category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
@@ -233,6 +237,7 @@ export class ProductListService {
     }
 
     this._dataService.sendMessage(trackingData);
+    this.fireViewBasketEvent();
   }
 
   fireViewBasketEvent() {

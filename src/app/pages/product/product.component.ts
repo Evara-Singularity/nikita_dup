@@ -2220,7 +2220,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
             'category': (this.productCategoryDetails && this.productCategoryDetails['taxonomy']) ? this.productCategoryDetails['taxonomy'] : '',
             'variant': '',
             'quantity': quantity,
-            'productImg': this.productDefaultImage
+            'productImg': this.productDefaultImage,
+            'CatId': this.productCategoryDetails['taxonomyCode'],
+            'MRP': this.productMrp['amount'],
+            'Discount':  this.productDiscount
           }]
         }
       },

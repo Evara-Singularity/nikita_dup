@@ -943,7 +943,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     //  to be called on client side only.
     let quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);;
 
-    this.analyticAddToCart(routerlink); // since legacy buy  now analytic code is used 
+    this.analyticAddToCart(routerlink, quantity); // since legacy buy  now analytic code is used 
 
     if (this.uniqueRequestNo == 0) {
       this.uniqueRequestNo = 1;
@@ -1141,14 +1141,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
     let user = this.localStorageService.retrieve('user');
 
-    /*Start Criteo DataLayer Tags */
-    this.dataService.sendMessage({
+    const dataLayerObj = {
       'event': 'viewBasket',
       'email': (user && user.email) ? user.email : '',
       'currency': 'INR',
       'productBasketProducts': criteoItem,
       'eventData': eventData
-    });
+    }
+    this.analytics.sendGTMCall(dataLayerObj);
+    this.dataService.sendMessage(dataLayerObj);
+
   }
 
   updateCartSessions(data, routerLink, buyNow?) {
@@ -2163,7 +2165,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendAdobeCall(anlyticData);
   }
 
-  analyticAddToCart(routerlink) {
+  analyticAddToCart(routerlink, quantity) {
     const user = this.localStorageService.retrieve('user');
     const taxonomy = this.productCategoryDetails['taxonomyCode'];
     let taxo1 = '';
@@ -2199,7 +2201,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'productCategoryL2': taxo2,
       'productCategoryL3': taxo3,
       'price': this.productPrice,
-      'quantity': this.priceQuantityCountry['quantityAvailable'],
+      'quantity': quantity,
       'brand': this.productBrandDetails['brandName'],
       'tags': tagsForAdobe
     }
@@ -2217,7 +2219,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             'brand': this.productBrandDetails['brandName'],
             'category': (this.productCategoryDetails && this.productCategoryDetails['taxonomy']) ? this.productCategoryDetails['taxonomy'] : '',
             'variant': '',
-            'quantity': this.priceQuantityCountry['quantityAvailable'],
+            'quantity': quantity,
             'productImg': this.productDefaultImage
           }]
         }

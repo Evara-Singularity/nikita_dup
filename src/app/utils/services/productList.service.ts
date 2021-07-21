@@ -176,7 +176,7 @@ export class ProductListService {
       'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
       'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
       'channel': pageName !== 'category' ? pageName : "listing",
-      'pageName': pageName + "_page"
+      // 'pageName': pageName + "_page" // removing as we need same as visiting
     }
     let custData = {
       'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
@@ -224,7 +224,7 @@ export class ProductListService {
       msn: productDetails.productId,
       brand: productDetails['brandName'],
       price: productDetails.priceWithoutTax,
-      quantity: null,
+      quantity: productDetails.productQuantity,
       channel: pageName !== 'category' ? pageName : "listing",
       category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
       category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
@@ -260,13 +260,18 @@ export class ProductListService {
     let user = this._localStorageService.retrieve('user');
 
     /*Start Criteo DataLayer Tags */
-    this._dataService.sendMessage({
+
+    const dataLayerObj = {
       'event': 'viewBasket',
       'email': (user && user.email) ? user.email : '',
       'currency': 'INR',
       'productBasketProducts': criteoItem,
       'eventData': eventData
-    });
+    }
+    this._analytics.sendGTMCall(dataLayerObj);
+    this._dataService.sendMessage(dataLayerObj);
   }
+
+
 
 }

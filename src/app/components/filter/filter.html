@@ -21,7 +21,7 @@
                     </ng-container>
                     <ng-container *ngIf="filter.name != 'category'">
                         <div class="filter-list">
-                            <div class="filter-search" *ngIf="filter.name != 'availability' && filter.name != 'discount' && filter.name != 'price'">
+                            <div class="filter-search" *ngIf="filter.name != 'availability' && filter.name != 'discount' && filter.name != 'price' && filter.terms.length > 7 ">
                                 <input type="text" placeholder="Search" filterSearchBox>
                                 <i class="icon-search"></i>
                             </div>

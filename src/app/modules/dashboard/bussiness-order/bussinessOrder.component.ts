@@ -83,7 +83,10 @@ export class BussinessOrderComponent {
     let page = this._activatedRoute.snapshot.queryParams.page || 0;
     this.openOrder = this._activatedRoute.snapshot.queryParams.order;
     this.currentRoute = this._commonService.getCurrentRoute(this._router.url);
-    this.initializePageParams(page);
+    setTimeout(() => {
+      this.initializePageParams(page);
+    }, 1000);
+
 
     this.sub = this._router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -154,7 +157,7 @@ export class BussinessOrderComponent {
     this.currentPage = page + 1;
     this.isShowLoader = true;
     this._businessOrderService
-      .getOrderbyUserid(this.user, page)
+      .getOrderbyUserid(page)
       .subscribe((res) => {
         this.isShowLoader = false;
         if (res["status"] == true) {

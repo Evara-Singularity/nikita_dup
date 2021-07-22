@@ -15,6 +15,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 @Component({
   selector: 'app-pages',
@@ -59,13 +60,19 @@ export class PagesComponent implements OnInit {
     })
   }
 
+  
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
-    if (queryParams.hasOwnProperty('token')) {
-      this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } else {
-      this.setUserSession();
-    }
+    if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
+        this.loginUserIfUserRedirectedFromBharatpay(queryParams);
+      } else if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)){
+        const user = this._localStorageService.retrieve('user');
+        if (!user) {
+          this.router.navigateByUrl('/login');
+        }
+      } else {
+        this.setUserSession();
+      }
   }
 
   encryptKey(plain_text, encryptionMethod, secret, iv) {
@@ -101,7 +108,7 @@ export class PagesComponent implements OnInit {
         }
         this._localStorageService.store('user', obj);
         this.setUserSession();
-        if (queryParams.hasOwnProperty('msn')) {
+        if (window.location.pathname === GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] && queryParams.hasOwnProperty('msn')) {
           this.redirectToProductPage(queryParams['msn']);
         }
       }

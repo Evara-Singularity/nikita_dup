@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { DataService } from '@app/utils/services/data.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Injectable()
 export class DashboardService {
 
-    constructor(public dataService: DataService) { }
+    constructor(public dataService: DataService,  private _localStorageService: LocalStorageService) { }
 
     updatePersonalInfo(obj) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UC;
@@ -29,6 +30,7 @@ export class DashboardService {
     }
 
     getRfqList(obj){
+        
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RFQ_LIST;
         return this.dataService.callRestful("POST", url, {body:obj});
     }
@@ -44,12 +46,14 @@ export class DashboardService {
     }
 
     getOrders(obj){
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ODR + obj["userId"] + "&pageNo=0";
+        const user = this._localStorageService.retrieve("user");
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ODR + user["userId"] + "&pageNo=0";
         return this.dataService.callRestful("GET", url, {body:obj});
     }
 
     getOrderDetail(obj){
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ORD_DET + "?orderid=" + obj["orderId"] + "&customerId=" + obj["userId"];
+        const user = this._localStorageService.retrieve("user");
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ORD_DET + "?orderid=" + obj["orderId"] + "&customerId=" + user["userId"];
         return this.dataService.callRestful("GET", url, {body:obj});
     }
 

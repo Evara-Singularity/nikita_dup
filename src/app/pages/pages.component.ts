@@ -83,12 +83,12 @@ export class PagesComponent implements OnInit {
 
   loginUserIfUserRedirectedFromBharatpay(queryParams) {
     const token = queryParams['token'];
-    const secret_key = CONSTANTS.SECRET_KEY;
-    const secret_iv = 'smslt';
-    const encryptionMethod = 'AES-256-CBC';
-    const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
-    const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
-    const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
+    // const secret_key = CONSTANTS.SECRET_KEY;
+    // const secret_iv = 'smslt';
+    // const encryptionMethod = 'AES-256-CBC';
+    // const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
+    // const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
+    // const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
     
     const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
 

@@ -85,7 +85,7 @@ export class PagesComponent implements OnInit {
     
     const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
 
-    this.dataService.callRestful("POST", url, { body: { tokenId: encryptedToken, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
+    this.dataService.callRestful("POST", url, { body: { tokenId: token, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
       if (res['status']) {
         const obj = {
           authenticated: "true",
@@ -131,9 +131,9 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
 
-    this.checkAndRedirect();
-
+    
     if (this.isBrowser) {
+      this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
     }

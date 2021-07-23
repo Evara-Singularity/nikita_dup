@@ -223,7 +223,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
                     console.log('219',this.redirectUrl);
                     if(this.redirectUrl){
                         let navigationExtras: NavigationExtras = {
-                            queryParams: { 'backurl': decodeURI(this.redirectUrl) },
+                            queryParams: { 'backurl': this.redirectUrl },
                         };
                         this.router.navigate([url], navigationExtras);
                     }else{

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -173,9 +173,8 @@ export class ProductHorizontalCardComponent implements OnInit {
         });
       })
     } else {
-      let backUrl = `/login?backurl=${encodeURI(this._router.url)}`
-      //console.log("this.router.url ==>", this._router.url);
-      this._router.navigateByUrl(backUrl);
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
+      this._router.navigate(['/login'], navigationExtras);
     }
   }
 

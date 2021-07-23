@@ -93,7 +93,7 @@ export class NetBankingComponent {
 
         if(this.successPercentageData){
             const bankData = this.createNetBankingData(this.successPercentageData);
-            console.log('bankData =>', bankData);
+            // console.log('bankData =>', bankData);
             this.topBanks = bankData.topBanks;
             this.othersBanks = bankData.otherBanks;
             this.lowSuccessBanks = bankData.lowSuccessBanks;
@@ -298,7 +298,7 @@ export class NetBankingComponent {
     }
 
     selectBank(data, isTopBank = false) {
-        console.log('selectbak==> ', data, isTopBank);
+        // console.log('selectbak==> ', data, isTopBank);
         if (data) {
             this.selectedBankCode = data.code;
             // only set incase value selected from select popup
@@ -311,6 +311,7 @@ export class NetBankingComponent {
                 this.selectedBankName = null;
             }
             this.netBankingForm.get('requestParams').get("bankname").setValue(data.code);
+            this.netBankingForm.get('requestParams').get("paymentId").setValue(data.id);
         }
         this.bankSelectPopupStatus = false;
     }

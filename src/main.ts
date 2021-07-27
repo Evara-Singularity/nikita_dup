@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const CONNECTION = navigator['connection'];
                 const TYPE: string = CONNECTION['type'] || CONNECTION['effectiveType'];
                 if (ANALYTICS.includes(TYPE.toLowerCase())) {
+                    window['dataLayer'] = [];
+                    window['digitalData'] = {};
                     // these vars needs present in global document scope
                     loadAnalytics();
                 }

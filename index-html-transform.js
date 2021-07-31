@@ -27,9 +27,6 @@ module.exports = (targetOptions, indexHtml) => {
         return `<link rel="preload" as="script" href="${scriptURL}"/>
         `;
     });
-    // if (targetOptions.configuration.includes('production') || targetOptions.configuration.includes('qa')) {
-    // }
-
 
     return `
             ${headPart.replace(cssLinkRegExp, '')}

@@ -53,7 +53,7 @@ function shouldCompress (req, res) {
     // don't compress responses with this request header
     return false
   }
-  console.log('shouldCompress', 'called');
+  // console.log('shouldCompress', 'called');
   // fallback to standard filter function
   return compression.filter(req, res)
 }

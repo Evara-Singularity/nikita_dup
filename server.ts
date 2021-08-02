@@ -61,12 +61,22 @@ function shouldCompress (req, res) {
 function appendImagePreloads(indexHtml) {
   const regexImage = /<img.*?src=".*?"/g
   const regexImageSrc = /src=".*?"/g
-
-  const urls = indexHtml.match(regexImage).map((val) => {
-    // extract image URL from extacted img tags
-    return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
-    `;
-  })
+  // console.log("indexHtml.match(regexImage) ==>", indexHtml.match(regexImage));
+  let urls = [];
+  if (indexHtml.match(regexImage)) {
+    urls = indexHtml.match(regexImage).map((val) => {
+      // extract image URL from extacted img tags
+      // console.log("val.match(regexImageSrc).length ==>", val.match(regexImageSrc));
+      if (val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) {
+        return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
+        `;
+      } else {
+        return "";
+      }
+    })
+  } else {
+    return indexHtml
+  }
 
   const allImagePreloadLink = urls.join('')
 

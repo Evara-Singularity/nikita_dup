@@ -1,7 +1,7 @@
 import { NgxSiemaService, NgxSiemaOptions } from 'ngx-siema';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, OnInit, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
-// import * as $ from 'jquery';
+import * as $ from 'jquery';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 
@@ -45,14 +45,14 @@ export class CampaignComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser) {
       this.autoPlaySiema();
-      // $(window).resize(function () {
-      //   $('.lightslider-banner li,.slidewrap').css('height', $(window).height() - 100)
-      // })
-      // $(document).ready(function () {
-      //   $('.lightslider-banner li,.slidewrap').css('height', $(window).height() - 100)
-      //   $('lightslider-banner li,.rotating').css({ 'width': $(window).height() + 150, 'height': $(window).height() + 150 });
-      //   $('.lSPager').remove();
-      // });
+      $(window).resize(function () {
+        $('.lightslider-banner li,.slidewrap').css('height', $(window).height() - 100)
+      })
+      $(document).ready(function () {
+        $('.lightslider-banner li,.slidewrap').css('height', $(window).height() - 100)
+        $('lightslider-banner li,.rotating').css({ 'width': $(window).height() + 150, 'height': $(window).height() + 150 });
+        $('.lSPager').remove();
+      });
 
 
 
@@ -63,48 +63,48 @@ export class CampaignComponent implements OnInit {
       var url4 = CONSTANTS.MOGLIX_HAINA_VIDEO.url4;
       var url5 = CONSTANTS.MOGLIX_HAINA_VIDEO.url5;
 
-      // $('.watch-now').click(function () {
-      //   //alert('show')
-      //   $('.moglixhainavideopop iframe').attr('src', url1);
-      //   $('.moglixhainavideopop').fadeIn();
+      $('.watch-now').click(function () {
+        //alert('show')
+        $('.moglixhainavideopop iframe').attr('src', url1);
+        $('.moglixhainavideopop').fadeIn();
 
-      // })
-      // $('.playmoglixhainavideo').click(function () {
-      //   //alert('show')
-      //   $('.moglixhainavideopop iframe').attr('src', url1);
-      //   $('.moglixhainavideopop').fadeIn();
+      })
+      $('.playmoglixhainavideo').click(function () {
+        //alert('show')
+        $('.moglixhainavideopop iframe').attr('src', url1);
+        $('.moglixhainavideopop').fadeIn();
 
-      // })
-      // $('.video-thumb .playbtn1').click(function () {
-      //   //alert('show')
-      //   $('.moglixhainavideopop iframe').attr('src', url2);
-      //   $('.moglixhainavideopop').fadeIn();
+      })
+      $('.video-thumb .playbtn1').click(function () {
+        //alert('show')
+        $('.moglixhainavideopop iframe').attr('src', url2);
+        $('.moglixhainavideopop').fadeIn();
 
-      // })
-      // $('.video-thumb .playbtn2').click(function () {
-      //   //alert('show')
-      //   $('.moglixhainavideopop iframe').attr('src', url3);
-      //   $('.moglixhainavideopop').fadeIn();
+      })
+      $('.video-thumb .playbtn2').click(function () {
+        //alert('show')
+        $('.moglixhainavideopop iframe').attr('src', url3);
+        $('.moglixhainavideopop').fadeIn();
 
-      // })
-      // $('.video-thumb .playbtn3').click(function () {
-      //   //alert('show')
-      //   $('.moglixhainavideopop iframe').attr('src', url4);
-      //   $('.moglixhainavideopop').fadeIn();
+      })
+      $('.video-thumb .playbtn3').click(function () {
+        //alert('show')
+        $('.moglixhainavideopop iframe').attr('src', url4);
+        $('.moglixhainavideopop').fadeIn();
 
-      // })
-      // $('.video-thumb .playbtn4').click(function () {
-      //   //alert('show')
-      //   $('.moglixhainavideopop iframe').attr('src', url5);
-      //   $('.moglixhainavideopop').fadeIn();
+      })
+      $('.video-thumb .playbtn4').click(function () {
+        //alert('show')
+        $('.moglixhainavideopop iframe').attr('src', url5);
+        $('.moglixhainavideopop').fadeIn();
 
-      // })
+      })
 
-      // $('.moglixhainavideopop,.inner-formforentprise .crossthispop').click(function () {
-      //   $('.moglixhainavideopop').fadeOut();
-      //   $('.moglixhainavideopop iframe').attr('src', '');
-      //   $('.moglixhainavideopop iframe').attr('src', url1);
-      // })
+      $('.moglixhainavideopop,.inner-formforentprise .crossthispop').click(function () {
+        $('.moglixhainavideopop').fadeOut();
+        $('.moglixhainavideopop iframe').attr('src', '');
+        $('.moglixhainavideopop iframe').attr('src', url1);
+      })
     }
   }
 

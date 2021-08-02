@@ -12,6 +12,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import { CartService } from '../../utils/services/cart.service';
+import { environment } from 'environments/environment';
 
 declare let dataLayer: any;
 
@@ -67,7 +68,7 @@ export class SocialLoginComponent {
                     userId: data["id"],
                     idToken: (data["idToken"]) ? data["idToken"] : '',
                     source: (data["provider"]+'').toLowerCase(),
-                    buildVersion: '2.0' // for Login OTP for backed end tracking
+                    buildVersion: environment.buildVersion // for Login OTP for backed end tracking
                 };
 
                 this.socialLoginService.authenticate(params).subscribe((res)=>{

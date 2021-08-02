@@ -17,6 +17,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { SharedAuthService } from '../shared-auth.service';
 import { GlobalLoaderService } from '@services/global-loader.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-shared-signup',
@@ -230,7 +231,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         }
 
         this.signupUtilService.pushNormalUser();
-        let params = { source: 'signup', email: '', password: '', firstName: '', lastName: '', phone: '', otp: '', userType: 'online', phoneVerified: true, emailVerified: false, buildVersion: '2.0' };
+        let params = { source: 'signup', email: '', password: '', firstName: '', lastName: '', phone: '', otp: '', userType: 'online', phoneVerified: true, emailVerified: false, buildVersion: environment.buildVersion };
         params.email = this.email.value;
         params.password = this.password.value;
         params.firstName = this.name.value;

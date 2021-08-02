@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -173,9 +173,8 @@ export class ProductHorizontalCardComponent implements OnInit {
         });
       })
     } else {
-      let backUrl = `/login?backurl=${encodeURI(this._router.url)}`
-      //console.log("this.router.url ==>", this._router.url);
-      this._router.navigateByUrl(backUrl);
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
+      this._router.navigate(['/login'], navigationExtras);
     }
   }
 
@@ -230,6 +229,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const factory = this._cfr.resolveComponentFactory(ProductRFQComponent);
     this.productRFQInstance = this.productRFQContainerRef.createComponent(factory, null, this._injector);
     this.productRFQInstance.instance['isOutOfStock'] = false;
+    this.productRFQInstance.instance['extraOutOfStock'] = true;
     this.productRFQInstance.instance['isPopup'] = true;
     this.productRFQInstance.instance['product'] = product;
     (this.productRFQInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus => {
@@ -309,7 +309,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       msn: partNumber,
       moq: productMinimmumQuantity,
       brand: productBrandDetails['brandName'],
-      taxonomyCode: productCategoryDetails['taxonomyCode'],
+      taxonomyCode: productCategoryDetails['taxonomy'],
       productName: product['productName'],
       adobeTags: '',
       productTags,
@@ -332,8 +332,7 @@ export class ProductHorizontalCardComponent implements OnInit {
           this.resetVariantData();
           if (!buyNow) {
             this._cartService.setCartSession(result);
-            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
-            this._productListService.fireViewBasketEvent();            
+            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });         
             this.showAddToCartToast();
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
@@ -440,7 +439,9 @@ export class ProductHorizontalCardComponent implements OnInit {
       taxonomyCode: productCategoryDetails['taxonomyCode'],
       buyNow: buyNow,
       filterAttributesList: productGroupData['filterAttributesList'] || null,
-      isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry)
+      isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry),
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      category: productCategoryDetails['taxonomy']
     } as AddToCartProductSchema;
 
     //console.log('product ==>', product); 

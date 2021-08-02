@@ -35,7 +35,8 @@ export function footerData() {
     </ul>
   </div>
   <div class=" pad-tb-10 copyright">
-    <p>&copy; 2020 Moglix.com. All Rights Reserved.</p>
+  <p>MOGLI LABS (INDIA) PRIVATE LIMITED</p>
+  <p>&copy; 2021 Moglix.com. All Rights Reserved.</p>
   </div>
   <div class="footer-note lh-18">
   <h1 class="normal-txt mb-15 f-10">Moglix – Leading B2B e-Commerce for Industrial Products</h1>

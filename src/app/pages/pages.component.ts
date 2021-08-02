@@ -143,6 +143,7 @@ export class PagesComponent implements OnInit {
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
+      this.setConnectionType();
     }
   }
 
@@ -154,6 +155,25 @@ export class PagesComponent implements OnInit {
           this.updateAppStatus()
         }
       });
+    }
+  }
+
+  setConnectionType() {
+    let ISCHROME = false;
+    if (navigator && navigator['connection']) {
+      const CONNECTION = navigator['connection'];
+      if (navigator['connection']['type']) {
+        const TYPE_COOKIE = this.dataService.getCookie('CONNECTION_TYPE');
+        if (!TYPE_COOKIE) {
+          this.dataService.setCookie('CONNECTION_TYPE', CONNECTION['type'], 90);
+        }
+      }
+      if (navigator['connection']['effectiveType']) {
+        const EFFECTIVE_TYPE_COOKIE = this.dataService.getCookie('CONNECTION_EFFECTIVE_TYPE');
+        if (!EFFECTIVE_TYPE_COOKIE) {
+          this.dataService.setCookie('CONNECTION_EFFECTIVE_TYPE', CONNECTION['effectiveType'], 90);
+        }
+      }
     }
   }
 

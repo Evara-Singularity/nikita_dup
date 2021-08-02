@@ -420,7 +420,7 @@ export class CommonService {
 
 
         actualParams['type'] = 'm';
-        actualParams['abt'] = 'y';
+        actualParams['abt'] = 'n';
 
         if (queryParams['preProcessRequired']) {
             actualParams['preProcessRequired'] = queryParams['preProcessRequired'];

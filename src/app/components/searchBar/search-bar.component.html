@@ -24,7 +24,7 @@
                     <h3 class="search_heading">Popular Suggestions</h3>
                     <ul class="plan-list">
                         <ng-container *ngFor="let prod of suggestionList | slice:0:5; let i = index;">
-                            <li *ngIf="prod.productCount" class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes )" [attr.data-index]="i">
+                            <li *ngIf="prod.productCount" class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes, prod['brandName'] )" [attr.data-index]="i">
                                 <span class="search-text">{{prod.term}}</span>
                                 <div class="search-count">
                                     <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>

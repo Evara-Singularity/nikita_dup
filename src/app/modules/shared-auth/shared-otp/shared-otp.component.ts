@@ -15,6 +15,7 @@ import { CommonService } from '../../../utils/services/common.service';
 import { SharedAuthService } from '../shared-auth.service';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-shared-otp',
@@ -186,7 +187,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         requestData['otp'] = this.otp.value;
         this.cartSession = this.cartService.getCartSession();
         this.isReqProcessing = true;
-        requestData['buildVersion'] = '2.0';
+        requestData['buildVersion'] = environment.buildVersion;
         this.authService.authenticate(requestData).subscribe(
             (response) => {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {

@@ -8,7 +8,7 @@ import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
   styleUrls: ['./product-app-promo.component.scss']
 })
 export class ProductAppPromoComponent implements OnInit {
-
+  @Input() productData: boolean;
   @Input() isOverlayMode: boolean;
   @Input() showPromoCode: boolean;
   @Output() appPromoStatus$: EventEmitter<any> = new EventEmitter<any>();

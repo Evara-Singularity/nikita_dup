@@ -15,6 +15,7 @@ import { SharedLoginUtilService } from './shared-login-util.service';
 import { UsernameValidator } from '../../../utils/validators/username.validator';
 import { SharedAuthService } from '../shared-auth.service';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
+import { environment } from 'environments/environment';
 const TABLIST = ['LOGIN', 'SIGNUP', 'OTP'];
 
 @Component({
@@ -223,7 +224,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
                     console.log('219',this.redirectUrl);
                     if(this.redirectUrl){
                         let navigationExtras: NavigationExtras = {
-                            queryParams: { 'backurl': decodeURI(this.redirectUrl) },
+                            queryParams: { 'backurl': this.redirectUrl },
                         };
                         this.router.navigate([url], navigationExtras);
                     }else{
@@ -248,7 +249,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
             request.phone = (request.phone as string).toLowerCase();
         }
         this.isReqProcessing = true;
-        request['buildVersion'] = '2.0';
+        request['buildVersion'] = environment.buildVersion;
         this.authService.authenticate(request).subscribe(
             (response) => {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {

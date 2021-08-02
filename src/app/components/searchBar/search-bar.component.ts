@@ -246,7 +246,7 @@ export class SearchBarComponent implements OnInit {
         this._commonService.resetLimitTrendingCategoryNumber();
     }
 
-    navigateTo(page, data, redirectUrl, categoryId, attributes) {
+    navigateTo(page, data, redirectUrl, categoryId, attributes, brandFilterData = null) {
         this._cs.resetSelectedFilterData();
         this.enableScroll();
         this.resetSearchBar();
@@ -265,9 +265,12 @@ export class SearchBarComponent implements OnInit {
                     search_query: data,
                     submit_search: 'Search',
                     lsource: 'sclick', // lsource: localSource, sclick: suggestionClick
-                    category: categoryId
+                    category: categoryId,
                 }
             };
+            if (brandFilterData) {
+                extras['fragment'] = 'brand-' + brandFilterData;
+            }
             if (attributes) {
                 extras['fragment'] = this._cs.generateFragmentString(attributes);
             }

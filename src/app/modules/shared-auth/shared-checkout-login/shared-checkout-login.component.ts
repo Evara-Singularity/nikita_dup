@@ -13,6 +13,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { SharedAuthService } from '../shared-auth.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { environment } from 'environments/environment';
 const IDENTIFIER = { EMAIL: 'e', PHONE: 'p', }
 const SECTIONS = { 'LOGIN': 'LOGIN', 'FORGET_PASSWORD': 'FORGET_PASSWORD', 'VERIFY_OTP': 'VERIFY_OTP', 'SIGN_UP': 'SIGN_UP' }
 
@@ -232,7 +233,7 @@ export class SharedCheckoutLoginComponent implements OnInit {
         const email = (this.identifierType == IDENTIFIER.EMAIL) ? this.identifierForm.controls['identifier'].value : '';
         const phone = (this.identifierType == IDENTIFIER.PHONE) ? this.identifierForm.controls['identifier'].value : this.phoneFrom.controls['phone'].value;
         const password = this.passwordFrom.controls['password'].value;
-        const body = { email, phone, type: this.identifierType, password, buildVersion: '2.0' };
+        const body = { email, phone, type: this.identifierType, password, buildVersion: environment.buildVersion };
 
         this.commonService.showLoader = true;
         this.authService.authenticate(body).subscribe((response) => {

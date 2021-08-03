@@ -25,8 +25,7 @@ module.exports = (targetOptions, indexHtml) => {
         return val.replace('<script src="', '').replace('"', '');
     }).map(scriptURL => {
         if (scriptURL.includes("es2015")) {
-            return `<link rel="preload"  as="script" type="module" href="${scriptURL}"/>
-                `;
+            return "";
         } else {
             return `<link rel="preload" as="script" href="${scriptURL}"/>
                 `;

@@ -1,5 +1,5 @@
 const cssLinkRegExp = /<link rel="stylesheet" href="(.+)">/;
-const scriptLinkRegExp = /<script.*?src="(.*?)(main-|polyfills-|runtime-|vendor-)(.*?)"/g
+// const scriptLinkRegExp = /<script.*?src="(.*?)(main-|polyfills-|runtime-|vendor-)(.*?)"/g
 
 function getAsyncLink(href) {
     return `
@@ -20,22 +20,21 @@ module.exports = (targetOptions, indexHtml) => {
     const asyncLinkPart = getAsyncLink(getHref(indexHtml));
     const bodyPart = indexHtml.slice(headClosingTagIdx);
     // add rel=preload tags for intial bundle CSS
-    let scriptPreloadTags = [];
-    scriptPreloadTags = indexHtml.match(scriptLinkRegExp).map((val) => {
-        return val.replace('<script src="', '').replace('"', '');
-    }).map(scriptURL => {
-        if (scriptURL.includes("es2015")) {
-            return "";
-        } else {
-            return `<link rel="preload" as="script" href="${scriptURL}"/>
-                `;
-        }
-    });
+    // let scriptPreloadTags = [];
+    // scriptPreloadTags = indexHtml.match(scriptLinkRegExp).map((val) => {
+    //     return val.replace('<script src="', '').replace('"', '');
+    // }).map(scriptURL => {
+    //     if (scriptURL.includes("es2015")) {
+    //         return "";
+    //     } else {
+    //         return `<link rel="preload" as="script" href="${scriptURL}"/>
+    //             `;
+    //     }
+    // });
 
     return `
             ${headPart.replace(cssLinkRegExp, '')}
             ${asyncLinkPart}
-            ${scriptPreloadTags.join('')}
             ${bodyPart}
         `;
 };

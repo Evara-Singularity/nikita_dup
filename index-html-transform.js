@@ -24,8 +24,12 @@ module.exports = (targetOptions, indexHtml) => {
     scriptPreloadTags = indexHtml.match(scriptLinkRegExp).map((val) => {
         return val.replace('<script src="', '').replace('"', '');
     }).map(scriptURL => {
-        return `<link rel="preload" as="script" href="${scriptURL}"/>
-        `;
+        if (scriptURL.includes("es2015")) {
+            return `<link rel="preload" as="script" href="${scriptURL}"/>
+                `;
+        } else {
+            return "";
+        }
     });
 
     return `

@@ -8,7 +8,7 @@
         .rfq_header_text {
             margin-left: 15px;
             h3 {
-                color: #f5681e;
+                color: $btn-color-red;
                 font-size: 14px;
                 padding: 5px 0px;
             }
@@ -104,7 +104,7 @@
                 background: #E7E7E7;
             }
         }
-        background: #fff4ef;
+        background: $color-red-light;
         padding: 15px;
         p {
             // color: #f5681e;
@@ -172,7 +172,7 @@
         }
         .submit-btn {
             margin-top: 30px;
-            background: #F5681E;
+            background: $btn-color-red;
             color: #fff;
             border-radius: 4px;
             border: none;

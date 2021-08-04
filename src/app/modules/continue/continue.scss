@@ -42,7 +42,7 @@ button.btn[disabled] {
     }
     button {
         width: 175px;
-        background: #f2720f;
+        background: $btn-color-red;
         float: right;
         height: 55px;
         text-transform: uppercase;

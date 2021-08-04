@@ -20,8 +20,8 @@ export class AppPromoComponent implements OnInit {
     ANDROID: 'Android',
     OTHERS: 'unknown',
   }
-  readonly playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
-  readonly appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
+  playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
+  appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
 
   @Input() productData: any;
   @Input() isOverlayMode: boolean = true;
@@ -50,6 +50,13 @@ export class AppPromoComponent implements OnInit {
     this.getUserAuthenticationStatus();
     this.getUserAuthenticationStatusChange();
     this.mobile_os = this.getMobileOperatingSystem();
+    this.createPlayStoreLink();
+  }
+
+  createPlayStoreLink() {
+    const homepageaLink = "https://play.google.com/store/apps/details?id=com.moglix.online&referrer=utm_source%3DPWA%26utm_medium%3Dhomepage%26utm_campaign%3Dapp_download_nudge";
+    const pdpLink = "https://play.google.com/store/apps/details?id=com.moglix.online&referrer=utm_source%3DPWA%26utm_medium%3Dproductpage%26utm_campaign%3Dapp_download_nudge"
+    this.playStoreLink = (this.isOverlayMode) ? homepageaLink : pdpLink
   }
 
   get productDeepLink() {

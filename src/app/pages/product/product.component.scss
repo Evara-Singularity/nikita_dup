@@ -232,7 +232,7 @@
             }
             &.active {
                 i {
-                    color: $btn-color;
+                    color: $btn-color-red;
                 }
             }
         }
@@ -242,7 +242,7 @@
             width: calc(40% - 4px);
             height: 100%;
             font-weight: 600;
-            color: #F2720F;
+            color: $btn-color-red;
             margin-left: 5px;
         }
         .buy-now {
@@ -253,7 +253,7 @@
             }
             button {
                 width: 100%;
-                background: $btn-color;
+                background: $btn-color-red;
                 height: 100%;
                 border: none;
                 color: white;
@@ -266,7 +266,7 @@
             float: left;
             button {
                 width: 100%;
-                background: $btn-color;
+                background: $btn-color-red;
                 height: 100%;
                 border: none;
                 color: white;
@@ -414,9 +414,9 @@
                     color: #5BA621;
                 }
                 &.selected {
-                    border: 0.5px solid $btn-color;
-                    border: 0.5px solid $btn-color;
-                    background: #FFF3ED;
+                    border: 0.5px solid $btn-color-red;
+                    border: 0.5px solid $btn-color-red;
+                    background: $color-red-light;
                 }
             }
         }
@@ -485,15 +485,15 @@
                 font-weight: 500;
             }
             .full-txt {
-                color: $btn-color;
+                color: $btn-color-red;
                 font-size: $large-font;
                 font-weight: bold;
                 padding-bottom: 10px;
             }
             .getQuote {
                 padding: 6px 8px;
-                color: #F5681F;
-                background: #FEEFE8;
+                color: $btn-color-red;
+                background: $color-red-light;
                 border-radius: 3px;
                 font-weight: bold;
             }
@@ -548,7 +548,7 @@
         p {
             font-weight: 500;
             font-size: $large-font;
-            color: #F5681E;
+            color: $btn-color-red;
         }
         strong {
             color: #303030;
@@ -1285,7 +1285,7 @@
 }
 
 .light-red {
-    background: $btn-color;
+    background: $btn-color-red;
 }
 
 .red {
@@ -1388,7 +1388,7 @@
     font-weight: 500;
     letter-spacing: 0.5px;
     &.active {
-        background: $btn-color;
+        background: $btn-color-red;
     }
 }
 

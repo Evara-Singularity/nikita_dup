@@ -14,7 +14,8 @@ function getHref(indexHtml) {
 
 
 module.exports = (targetOptions, indexHtml) => {
-    const headClosingTagIdx = indexHtml.indexOf('</head>');
+    const insertString = '<!-- INSERT DYNAMIC CSS PRELOAD DURING BUILD HERE -->';
+    const headClosingTagIdx = indexHtml.indexOf(insertString);
     // add rel=preload tag for bundle CSS
     const headPart = indexHtml.slice(0, headClosingTagIdx);
     const asyncLinkPart = getAsyncLink(getHref(indexHtml));

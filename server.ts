@@ -79,10 +79,10 @@ function appendImagePreloads(indexHtml) {
   }
 
   const allImagePreloadLink = urls.join('')
-
-  const headStartingTagIdx = indexHtml.indexOf('<head>');
-  const headPart = indexHtml.slice(0, headStartingTagIdx + 6);
-  const bodyPart = indexHtml.slice(headStartingTagIdx + 6);
+  const replaceStringInIndex = '<!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->';
+  const headStartingTagIdx = indexHtml.indexOf(replaceStringInIndex);
+  const headPart = indexHtml.slice(0, headStartingTagIdx + replaceStringInIndex.length);
+  const bodyPart = indexHtml.slice(headStartingTagIdx + replaceStringInIndex.length);
 
   const newIndexHtml = `
       ${headPart}

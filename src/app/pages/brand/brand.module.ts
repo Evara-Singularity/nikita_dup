@@ -1,36 +1,24 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { routing as BrandRouting } from "./brand.routing";
-import { MetaModule } from '@ngx-meta/core';
-import { BrandComponent } from "./brand.component";
-import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
-import { ProductListModule } from '@app/modules/productList/productList.module';
-import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
-import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
-import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
+import { CommonModule } from '@angular/common';
 import { CmsModule } from '@app/modules/cms/cms.module';
-import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { BrandComponent } from "./brand.component";
+import { BrandRoutingModule } from './brand.routing';
+import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
+import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
 import { BrandFooterModule } from '@app/components/brand-details-footer/brand-details-footer.component';
 
 @NgModule({
     imports: [
         CmsModule,
-        BrandRouting,
         CommonModule,
+        BrandFooterModule,
         ReplacePipeModule,
-        ProductListModule,
-        MathFloorPipeModule,
-        NgxPaginationModule,
-        MetaModule.forRoot(),
-        ObjectToArrayPipeModule,
-        KpToggleDirectiveModule,
-        ObserveVisibilityDirectiveModule,
-        BrandFooterModule
+        BrandRoutingModule,
+        SharedProductListingModule
     ],
     declarations: [
         BrandComponent,
     ],
 })
 
-export class BrandModule { }
+export class BrandModule {}

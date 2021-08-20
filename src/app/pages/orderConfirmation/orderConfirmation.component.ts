@@ -594,8 +594,6 @@ export class OrderConfirmationComponent implements OnInit {
         this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
         this.appPromoInstance.instance['isOverlayMode'] = false;
         this.appPromoInstance.instance['showPromoCode'] = false;
-        // this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
-        // this.appPromoInstance.instance['productData'] = this.rawProductData;
         this.appPromoInstance.instance['isLazyLoaded'] = true;
         (this.appPromoInstance.instance['appPromoStatus$'] as EventEmitter<boolean>).subscribe((status) => {
           this.appPromoVisible = status;

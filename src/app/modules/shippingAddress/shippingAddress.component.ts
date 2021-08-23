@@ -8,6 +8,8 @@ import { countryList } from './country';
 import { ShippingAddressService } from './shippingAddress.service';
 import { stateList } from './state';
 import { Step } from '../../utils/validators/step.validate';
+import { ModalService } from '../../modules/modal/modal.service';
+import { OtpPopupComponent } from '@app/components/otp-popup/otp-popup.component';
 
 
 @Component({
@@ -43,13 +45,15 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit {
     isPincodeBusy: boolean;
     specials=/[*|\":<>[\]{}`\\()';@&$]/;
     isPinCodeApiValid: boolean;
+    
 
     constructor(
         private _cartService: CartService,
         private _localAuthService: LocalAuthService,
         private _addressService: ShippingAddressService,
         private _commonService: CommonService,
-        private formBuilder: FormBuilder) {
+        private formBuilder: FormBuilder,
+        private modalService: ModalService,) {
 
         this.isCheckoutButtonVisible = true;
         this.nti = false;
@@ -215,5 +219,10 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit {
 
     checkQuantityCode(event) {
         return event.charCode >= 48 && event.charCode <= 57;
+    }
+
+    displayOTPPopup(){
+        let modalData = { component: OtpPopupComponent, inputs: null, outputs: {} };
+        this.modalService.show(modalData);
     }
 }

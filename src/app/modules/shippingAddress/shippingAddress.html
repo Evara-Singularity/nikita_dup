@@ -32,6 +32,16 @@
             class="error-txt">Kindly enter your 10 digit contact no.</p>
     </div>
     <div class="input-field">
+        <label [class.is-focus]="isAltPhone.value.length!=0">
+            <input formControlName="altPhone" type="text" placeholder="" #isAltPhone>
+            <span class="label">Alternate Phone Number (Optional)</span>
+        </label>
+        <p *ngIf="altPhone.touched && altPhone.invalid && altPhone.errors['required']" class="error-txt">Kindly enter your 10 digit
+            contact number</p>
+        <p *ngIf="altPhone.touched && altPhone.invalid && altPhone.errors['invalidPhone'] && altPhone.value.length>0" class="error-txt">
+            Kindly enter your 10 digit contact no.</p>
+    </div>
+    <div class="input-field">
         <label [class.is-focus]="isAddress.value.length!=0">
             <input formControlName="addressLine" type="text" placeholder="" #isAddress maxlength="150">
             <span class="label">Address*</span>

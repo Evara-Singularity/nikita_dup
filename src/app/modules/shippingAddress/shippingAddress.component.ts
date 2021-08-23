@@ -196,6 +196,12 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
                     Validators.required, Step.validatePhone
                 ]
             ],
+            'altPhone': [
+                (address && address.altPhone) ? address.altPhone : this.user['altPhone'],
+                [
+                    Step.validatePhone
+                ]
+            ],
             'postCode': [
                 (address && address.postCode) ? address.postCode : null,
                 [

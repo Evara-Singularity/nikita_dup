@@ -89,7 +89,7 @@
             <!-- <span class="add-address">ADD</span> -->
         </div>
         <div class="content-popup card mt-15 pad-15" content>
-            <shipping-address *ngIf="saf.sa" [invoiceType]="invoiceType" [addressType]="addressType" [isGstEnable]="isGstEnable" (acou$)="acou($event)" [address]="saf.address" [buttonText]="addressFormButtonText">
+            <shipping-address *ngIf="saf.sa" [invoiceType]="invoiceType" [addressType]="addressType" [isGstEnable]="isGstEnable" (acou$)="acou($event)" [address]="saf.address" [buttonText]="addressFormButtonText" [verifiedPhones]="verifiedPhones">
             </shipping-address>
             <billing-address *ngIf="saf.ba" [invoiceType]="invoiceType" [addressType]="addressType" [isGstEnable]="isGstEnable" (acou$)="acou($event)" [address]="saf.address" [buttonText]="addressFormButtonText">
             </billing-address>

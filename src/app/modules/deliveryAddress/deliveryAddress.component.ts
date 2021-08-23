@@ -10,6 +10,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { AddressListService } from '../addressList/address-list.service';
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { DeliveryAddressUtil } from './deliveryAddress.util';
 
 
 declare let dataLayer;
@@ -79,6 +80,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     set showLoader(value) {
         this._loaderService.setLoaderState(value);
     }
+    verifiedPhones = [];
 
     constructor(
         private _router: Router,
@@ -119,6 +121,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         this.checkoutAddress = {};
 
         this._commonService.showLoader = true;
+        //observer that this is called by 2 times
         this.getAddressListApi();
         this.countryList = [];
         this._commonService.getCountryList().subscribe((rd) => {
@@ -158,6 +161,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                 });
                 // console.log("[getAddressListApi]..........");
                 this.addressList = rd['addressList'];
+                this.verifiedPhones = DeliveryAddressUtil.getVerifiedPhones(this.addressList);
                 this.addressListApiCallback();
 
             } else if (rd['statusCode'] === 500) { // Error in api

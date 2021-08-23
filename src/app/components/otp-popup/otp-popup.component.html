@@ -1,3 +1,10 @@
-<p>otp-popup works!</p>
-
-<button (click)="closeModal()">Close</button>
+<div>
+    <button (click)="$event.stopPropagation();closeModal()">X</button>
+    <h5>Enter the OTP</h5>
+    <p>OTP has been sent to {{phone}} for verification.</p>
+    <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp">
+    <p *ngIf="isTicking">{{tickerLabel}}</p>
+    <p *ngIf="otpErrorMessage">{{otpErrorMessage}}</p>
+    <button (click)="$event.stopPropagation();resendOTP();" *ngIf="!(isTicking)">RESEND</button>
+    <button (click)="$event.stopPropagation();validateOTP(otp.value)" [disabled]="otp.invalid">CONTINUE</button>
+</div>

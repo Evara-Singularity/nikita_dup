@@ -907,4 +907,14 @@ export class CommonService {
     navigateTo(link) {
         this._router.navigateByUrl(link);
     }
+
+    sendOtp(data): Observable<{}>
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
+    }
+
+    validateOTP(data)
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_OTP, { body: data });
+    }
 }

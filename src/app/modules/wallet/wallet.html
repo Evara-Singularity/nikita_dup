@@ -1,7 +1,8 @@
 <section class="walletInner">
-    <div class="payment-notification" *ngIf="lsrMessage">
+    <!-- Removed as per for hotfix -->
+    <!-- <div class="payment-notification" *ngIf="lsrMessage">
         <span>Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.</span>
-    </div>
+    </div> -->
     <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
         <ul class="bank-list">
             <li *ngFor="let wallet of walletMapKeys" class="bank-list-item">

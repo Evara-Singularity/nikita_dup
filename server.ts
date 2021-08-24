@@ -19,6 +19,7 @@ export function app() {
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
+    inlineCriticalCss: true,
   }));
 
   server.set('view engine', 'html');
@@ -36,7 +37,12 @@ export function app() {
 
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
-    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+    res.render(indexHtml, {
+      req,
+      providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }]
+    }, (err: Error, html: string) => {
+      res.status(html ? 200 : 500).send(appendImagePreloads(html) || err.message);
+    });
   });
 
   return server;
@@ -47,9 +53,43 @@ function shouldCompress (req, res) {
     // don't compress responses with this request header
     return false
   }
-  console.log('shouldCompress', 'called');
+  // console.log('shouldCompress', 'called');
   // fallback to standard filter function
   return compression.filter(req, res)
+}
+
+function appendImagePreloads(indexHtml) {
+  const regexImage = /<img.*?src=".*?"/g
+  const regexImageSrc = /src=".*?"/g
+  // console.log("indexHtml.match(regexImage) ==>", indexHtml.match(regexImage));
+  let urls = [];
+  if (indexHtml.match(regexImage)) {
+    urls = indexHtml.match(regexImage).map((val) => {
+      // extract image URL from extacted img tags
+      // console.log("val.match(regexImageSrc).length ==>", val.match(regexImageSrc));
+      if (val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) {
+        return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
+        `;
+      } else {
+        return "";
+      }
+    })
+  } else {
+    return indexHtml
+  }
+
+  const allImagePreloadLink = urls.join('')
+  const replaceStringInIndex = '<!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->';
+  const headStartingTagIdx = indexHtml.indexOf(replaceStringInIndex);
+  const headPart = indexHtml.slice(0, headStartingTagIdx + replaceStringInIndex.length);
+  const bodyPart = indexHtml.slice(headStartingTagIdx + replaceStringInIndex.length);
+
+  const newIndexHtml = `
+      ${headPart}
+      ${allImagePreloadLink}
+      ${bodyPart}
+  `;
+  return newIndexHtml;
 }
 
 function run() {

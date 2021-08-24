@@ -39,7 +39,7 @@
 
     <!-- This is accordian section -->
     <div class="accordian_footer_panel">
-        <ng-container *ngIf="this.API_RESPONSE.category[4].data.length > 0">
+        <ng-container *ngIf="API_RESPONSE.category[4].data.length > 0">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
                     <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
@@ -52,7 +52,7 @@
             </div>
             <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
                 <div class="container category_links">
-                    <div *ngFor="let attribute of this.API_RESPONSE.category[4].data">
+                    <div *ngFor="let attribute of API_RESPONSE.category[4].data">
                         <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
                     </div>
                 </div>

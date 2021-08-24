@@ -1,6 +1,14 @@
-<div>
-    <button (click)="$event.stopPropagation();closeModal()">X</button>
-    <h5>Enter the OTP</h5>
+<div class="otp-modal">
+    <div class="otp-top-area">
+        <div class="otp-entertext">
+            <h5>Enter the OTP</h5>
+        </div>
+        <div class="otp-crossbtn">
+            <button (click)="$event.stopPropagation();closeModal()">X</button>
+        </div>
+    </div>
+    
+    
     <p>OTP has been sent to {{phone}} for verification.</p>
     <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp">
     <p *ngIf="isTicking">{{tickerLabel}}</p>

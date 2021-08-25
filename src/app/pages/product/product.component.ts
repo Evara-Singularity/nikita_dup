@@ -517,10 +517,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
      * check for filterAttributesList for grouped to make sure it is grouped product and check of outofstock and 
      * then redirect to next inStock msn avaliable in args.nextAvailableMsn
      * Make sure this condition is called after this.setOutOfStockFlag();
+     * 
+     * Commented: as per request in Sprint-14 (Support)
     */
-    if (this.productFilterAttributesList && this.productOutOfStock) {
-      this.getProductGroupData(args.nextAvailableMsn);
-    }
+    
+    // if (this.productFilterAttributesList && this.productOutOfStock) {
+    //   this.getProductGroupData(args.nextAvailableMsn);
+    // }
 
     if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);

@@ -4,6 +4,9 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { ArticleUtilService } from './article-util.service';
 
 @Component({
@@ -24,7 +27,7 @@ export class ArticleComponent implements OnInit
     isBrowser = false;
     isServer = false;
 
-    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, @Inject(PLATFORM_ID) platformId, private router: Router,
+    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, @Inject(PLATFORM_ID) platformId, private router: Router,	private _commonService: CommonService, private _localStorageService:LocalStorageService, private _analytics:GlobalAnalyticsService,
         private toastMessageService: ToastMessageService, private title: Title, private renderer2: Renderer2, private meta: Meta, @Inject(DOCUMENT) private document)
     {
         this.isServer = isPlatformServer(platformId);
@@ -37,10 +40,48 @@ export class ArticleComponent implements OnInit
             let response = this.route.snapshot.data['articleData'];
             if (response['statusCode'] === 200 && response[this.data] != null) {
                 this.initialize(response[this.data]);
+                // this.setAnalyticTags(response[this.data]);
             } else {
                 this.toastMessageService.show({ type: 'error', text: response['message'] });
             }
         }
+    }
+
+//     // take reference from  
+// {
+//     custData: As per category page
+//     page: {
+//         channel: "store" || "article"
+//         loginStatus : As per category page
+//         pageName: "moglix:[storepagename || article-name]",
+//         subSection: "moglix:[storepagename || article-name]:[section-click]"
+//     } 
+//  }
+    setAnalyticTags(response) {
+            let user;
+            if (this._localStorageService.retrieve('user')) {
+                user = this._localStorageService.retrieve('user');
+            }
+            /*Start Adobe Analytics Tags */
+            let page = {
+                'pageName': "moglix:" + response.data[0].componentName,
+                'channel': "article",
+                'subSection': "moglix:" + response.data[0].componentName + ":" + this._commonService.getSectionClick().toLowerCase(),
+                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            }
+            let custData = {
+                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+                'customerType': (user && user["userType"]) ? user["userType"] : '',
+            }
+            let digitalData = {};
+		    digitalData['page'] = page;
+            digitalData['custData'] = custData;
+            console.log(JSON.stringify(digitalData,null,2));
+
+            this._analytics.sendAdobeCall(digitalData);
+            // /*End Adobe Analytics Tags */
     }
 
     initialize(response)
@@ -49,6 +90,7 @@ export class ArticleComponent implements OnInit
         if (this.isBrowser) {
             this.title.setTitle(response['metaTitle']);
             (window.outerWidth >= 768) ? this.articleUtilService.setFooter() : this.articleUtilService.setMobileFoooters();
+            this.setAnalyticTags(response);
         }
         if (this.isServer) {
             this.setMetaInformation(this.metaInformation);

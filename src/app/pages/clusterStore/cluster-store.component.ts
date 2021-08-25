@@ -14,6 +14,9 @@ import {
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
@@ -84,7 +87,10 @@ export class ClusterStoreComponent implements OnInit {
 		private toastMessageService: ToastMessageService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
-		private loaderService: GlobalLoaderService
+		private loaderService: GlobalLoaderService,
+		private _commonService: CommonService, 
+		private _localStorageService: LocalStorageService, 
+		private _analytics: GlobalAnalyticsService
 	) {
 		this.isServer = isPlatformServer(platformId);
 		this.isBrowser = isPlatformBrowser(platformId);
@@ -113,7 +119,36 @@ export class ClusterStoreComponent implements OnInit {
 					text: response['message'],
 				});
 			}
+			if(this.isBrowser){
+				this.setAnalyticTags(rawData.clusterStoreData);
+			}
 		});
+	}
+
+	setAnalyticTags(data) {
+		// console.log(data.pageTitle);
+		let user;
+            if (this._localStorageService.retrieve('user')) {
+                user = this._localStorageService.retrieve('user');
+            }
+            /*Start Adobe Analytics Tags */
+            let page = {
+                'pageName': "moglix:" + data.pageTitle,
+                'channel': "article",
+                'subSection': "moglix:" + data.pageTitle + ":" + this._commonService.getSectionClick().toLowerCase(),
+                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            }
+            let custData = {
+                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+                'customerType': (user && user["userType"]) ? user["userType"] : '',
+            }
+            let digitalData = {};
+		    digitalData['page'] = page;
+            digitalData['custData'] = custData;
+            this._analytics.sendAdobeCall(digitalData);
+            /*End Adobe Analytics Tags */
 	}
 
 	initialize(response) {

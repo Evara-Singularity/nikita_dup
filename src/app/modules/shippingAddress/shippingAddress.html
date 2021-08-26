@@ -21,11 +21,19 @@
         <p *ngIf="email.touched && email.invalid && email.errors['invalidEmail'] && email.value.length>0"
             class="error-txt">Enter valid email</p>
     </div>
-    <div class="input-field">
-        <label [class.is-focus]="isPhone.value.length!=0">
-            <input formControlName="phone" type="text" placeholder="" #isPhone>
-            <span class="label">Phone Number*</span>
-        </label>
+    <div class="input-field for-varification">
+        <div class="for-varification-l">
+            <label [class.is-focus]="isPhone.value.length!=0">
+                <input formControlName="phone" type="text" placeholder="" #isPhone>
+                <span class="label">Phone Number*</span>
+            </label>
+        </div>
+        <div class="for-varification-r">
+            <a class="show" href="">VARIFY NOW</a>
+            <a class="hidden" href=""><i class="fa fa-check-square" aria-hidden="true"></i> VARIFIED</a>
+            <!-- <input class="form-control no-border border-dark-b border-r-0 mar-b-10 pad-l-0" type="button" value="Varify now"> -->
+        </div>
+        
         <p *ngIf="phone.touched && phone.invalid && phone.errors['required']"
             class="error-txt">Kindly enter your 10 digit contact number</p>
         <p *ngIf="phone.touched && phone.invalid && phone.errors['invalidPhone'] && phone.value.length>0"

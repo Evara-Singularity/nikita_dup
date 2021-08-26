@@ -1,5 +1,8 @@
 .otp-modal{
     padding: 10px 10px;
+    p.error-msg{
+        color: #D9232D;
+    }
     .otp-top-area{
         display: flex;
         .otp-entertext{
@@ -12,7 +15,7 @@
             p{
                 font-size: 10px;
                 line-height: 16px;
-                color: #3C3C3C;
+                color: #756363;
             }
         }
         .otp-crossbtn{
@@ -54,10 +57,28 @@
                 color: #B5B5B5;
                 background: none;
             }
+            span{
+                color: #209F19;
+                font-weight: bold;
+                i{
+                    color: #209F19;
+                }
+            }
         }
     }
     .btn-cont{
-        margin-top: 15px;
+        margin-top: 20px;
+        background-color: #D9232D;
+        padding: 10px;
+        color: #fff;
+        border: #c4c4c4;
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+    .btn-cont-disable{
+        margin-top: 20px;
         background-color: #C4C4C4;
         padding: 10px;
         color: #fff;

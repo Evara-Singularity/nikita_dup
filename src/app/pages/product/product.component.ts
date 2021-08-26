@@ -491,8 +491,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.priceQuantityCountry = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
     this.productMrp = (this.isProductPriceValid && this.priceQuantityCountry) ? this.priceQuantityCountry['mrp'] : null;
 
-    console.log('isProductPriceValid', this.isProductPriceValid);
-
     if (this.priceQuantityCountry) {
       this.priceQuantityCountry['bulkPricesIndia'] = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']) : null;
       this.priceQuantityCountry['bulkPricesModified'] = (this.isProductPriceValid && this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']) ? [...this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']] : null;

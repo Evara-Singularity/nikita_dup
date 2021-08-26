@@ -11,13 +11,12 @@
     <div class="otp-area">
         <div class="otp-area-l">
             <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp">
-            
             <p *ngIf="otpErrorMessage">{{otpErrorMessage}}</p>
         </div>
         <div class="otp-area-r">
             <p *ngIf="isTicking">{{tickerLabel}}</p>
-            <button (click)="$event.stopPropagation();resendOTP();" *ngIf="!(isTicking)">RESEND</button>
+            <button (click)="$event.stopPropagation();sendOTP();" *ngIf="!(isTicking)">RESEND</button>
         </div>
     </div>
-    <button class="btn-cont" (click)="$event.stopPropagation();validateOTP(otp.value)" [disabled]="otp.invalid">CONTINUE</button>
+    <button class="btn-cont" (click)="$event.stopPropagation();validateOTP(otp.value)" [disabled]="otp.invalid">{{buttonLabel}}</button>
 </div>

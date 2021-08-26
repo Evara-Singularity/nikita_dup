@@ -146,7 +146,7 @@ export class ClusterStoreComponent implements OnInit {
             let digitalData = {};
 		    digitalData['page'] = page;
 			digitalData['custData'] = custData;
-            this._analytics.sendAdobeCall(digitalData);
+            setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0 );
             /*End Adobe Analytics Tags */
 	}
 

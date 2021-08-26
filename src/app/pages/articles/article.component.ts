@@ -67,10 +67,8 @@ export class ArticleComponent implements OnInit
             const digitalData = {};
             digitalData['page'] = page;
             digitalData['custData'] = custData;
-            console.log(JSON.stringify(digitalData,null,2));
-
-            this._analytics.sendAdobeCall(digitalData);
-            // /*End Adobe Analytics Tags */
+            setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0 );
+            /*End Adobe Analytics Tags */
     }
 
     initialize(response)

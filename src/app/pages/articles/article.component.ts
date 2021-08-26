@@ -40,23 +40,12 @@ export class ArticleComponent implements OnInit
             let response = this.route.snapshot.data['articleData'];
             if (response['statusCode'] === 200 && response[this.data] != null) {
                 this.initialize(response[this.data]);
-                // this.setAnalyticTags(response[this.data]);
             } else {
                 this.toastMessageService.show({ type: 'error', text: response['message'] });
             }
         }
     }
 
-//     // take reference from  
-// {
-//     custData: As per category page
-//     page: {
-//         channel: "store" || "article"
-//         loginStatus : As per category page
-//         pageName: "moglix:[storepagename || article-name]",
-//         subSection: "moglix:[storepagename || article-name]:[section-click]"
-//     } 
-//  }
     setAnalyticTags(response) {
             let user;
             if (this._localStorageService.retrieve('user')) {
@@ -68,15 +57,15 @@ export class ArticleComponent implements OnInit
                 'channel': "article",
                 'subSection': "moglix:" + response.data[0].componentName + ":" + this._commonService.getSectionClick().toLowerCase(),
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-            }
+            };
             let custData = {
                 'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
                 'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
                 'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
                 'customerType': (user && user["userType"]) ? user["userType"] : '',
-            }
-            let digitalData = {};
-		    digitalData['page'] = page;
+            };
+            const digitalData = {};
+            digitalData['page'] = page;
             digitalData['custData'] = custData;
             console.log(JSON.stringify(digitalData,null,2));
 

@@ -126,15 +126,14 @@ export class ClusterStoreComponent implements OnInit {
 	}
 
 	setAnalyticTags(data) {
-		// console.log(data.pageTitle);
-		let user;
+		    let user;
             if (this._localStorageService.retrieve('user')) {
                 user = this._localStorageService.retrieve('user');
             }
             /*Start Adobe Analytics Tags */
             let page = {
                 'pageName': "moglix:" + data.pageTitle,
-                'channel': "article",
+                'channel': "store",
                 'subSection': "moglix:" + data.pageTitle + ":" + this._commonService.getSectionClick().toLowerCase(),
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
             }
@@ -146,7 +145,7 @@ export class ClusterStoreComponent implements OnInit {
             }
             let digitalData = {};
 		    digitalData['page'] = page;
-            digitalData['custData'] = custData;
+			digitalData['custData'] = custData;
             this._analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */
 	}

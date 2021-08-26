@@ -412,6 +412,45 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'brand-store/dewalt',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm709642',
+				},
+			},
+			{
+				path: 'brand-store/stanley',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm523993',
+				},
+			},
+			{
+				path: 'brand-store/black-decker',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm105550',
+				},
+			},
+			{
 				path: 'covid-19-essentials',
 				loadChildren: () =>
 					import('./covid19essentials/covid19.module').then(

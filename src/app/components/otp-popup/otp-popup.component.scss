@@ -1,0 +1,70 @@
+.otp-modal{
+    padding: 10px 10px;
+    .otp-top-area{
+        display: flex;
+        .otp-entertext{
+            width: 80%;
+            h5{
+                font-size: 16px;
+                line-height: 21px;
+                color: #3C3C3C;
+            }
+            p{
+                font-size: 10px;
+                line-height: 16px;
+                color: #3C3C3C;
+            }
+        }
+        .otp-crossbtn{
+            width: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            button{
+                border: none;
+                width: 25px;
+                height: 25px;
+                font-weight: bold;
+                background-color: #000;
+                border-radius: 50%;
+                color: #fff;
+            }
+        }
+    }
+    .otp-area{
+        margin-top: 20px;
+        display: flex;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #707070;
+        .otp-area-l{
+            width: 70%;
+            input{
+                border: none;
+                font-size: 14px;
+                color: #B5B5B5;
+            }
+        }
+        .otp-area-r{
+            width: 30%;
+            display: flex;
+            justify-content: flex-end;
+            button{
+                border: none;
+                font-size: 14px;
+                color: #B5B5B5;
+                background: none;
+            }
+        }
+    }
+    .btn-cont{
+        margin-top: 15px;
+        background-color: #C4C4C4;
+        padding: 10px;
+        color: #fff;
+        border: #c4c4c4;
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+}

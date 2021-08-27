@@ -1733,6 +1733,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
     this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+    this.appPromoInstance.instance['page'] = 'pdp';
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;

@@ -8,6 +8,7 @@ export const GLOBAL_CONSTANT = {
     creditDebitCard: 1,
     brandStoreCmsId: 'CM1000031',
     netBanking: 2,
+    pageOnWhichBharatPaySupported: ['/', '/dashboard/order', '/dashboard/rfq'],
     wallet: 3,
     emi: 4,
     genricTitleBarText: 'Shop online for Industrial & Home Products: Tools, Electricals, Safety Equipment & more. - Moglix.com',

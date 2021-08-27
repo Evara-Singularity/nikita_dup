@@ -10,7 +10,8 @@
       "@pages/*": ["app/pages/*"],
       "@components/*": ["app/components/*"],
       "@pipes/*": ["app/utils/pipes/*"],
-      "@services/*": ["app/utils/services/*"]
+      "@services/*": ["app/utils/services/*"],
+      "stream": ["./node_modules/readable-stream"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

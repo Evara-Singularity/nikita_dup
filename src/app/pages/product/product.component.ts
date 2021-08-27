@@ -29,7 +29,6 @@ interface ProductDataArg {
   productBO: string;
   refreshCrousel?: boolean;
   subGroupMsnId?: string;
-  nextAvailableMsn?: string;
 }
 
 @Component({
@@ -296,7 +295,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
             productBO: rawData['product'][0]['productBO'],
             refreshCrousel: true,
             subGroupMsnId: null,
-            nextAvailableMsn: rawData['product'][0]['nextAvailableMsn'] || null
           }, rawData['product'][0]);
 
           this.setReviewsRatingData(rawReviews);
@@ -382,10 +380,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'Discount': Math.floor(this.rawProductData['discount']),
       'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
     });
-    this.getProductGroupData(productId);
-  }
 
-  private getProductGroupData(productId: any) {
     this.removeRfqForm();
     this.showLoader = true;
     this.productService.getGroupProductObj(productId).subscribe(productData => {
@@ -397,7 +392,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         }, productData);
         this.showLoader = false;
       }
-    });
+    })
   }
 
   removeRfqForm() {

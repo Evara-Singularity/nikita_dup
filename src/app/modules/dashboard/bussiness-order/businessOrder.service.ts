@@ -2,12 +2,14 @@ import { Injectable } from "@angular/core";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from '@app/config/endpoints';
 import { DataService } from "@app/utils/services/data.service";
+import { LocalStorageService } from "ngx-webstorage";
 
 @Injectable()
 export class BusinessOrderService {
-  constructor(public dataService: DataService) {}
+  constructor(public dataService: DataService, private _localStorageService: LocalStorageService) {}
 
-  getOrderbyUserid(user, pageNo) {
+  getOrderbyUserid(pageNo) {
+    const user = this._localStorageService.retrieve("user");
     return this.dataService.callRestful(
       "GET",
       CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ORDER,
@@ -16,10 +18,11 @@ export class BusinessOrderService {
   }
 
   getOrderDetail(orderId, userId) {
+    const user = this._localStorageService.retrieve("user");
     return this.dataService.callRestful(
       "GET",
       CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ORD_DET,
-      { params: { orderid: orderId, customerid: userId } }
+      { params: { orderid: orderId, customerid: user.userId } }
     );
   }
 

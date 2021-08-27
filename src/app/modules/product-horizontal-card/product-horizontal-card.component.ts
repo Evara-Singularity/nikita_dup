@@ -54,7 +54,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     private modalService: ModalService,
     private _localAuthService: LocalAuthService,
   ) {
-
   }
 
   ngOnInit(): void {
@@ -62,6 +61,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
+    this.product['discount'] = Math.floor(+(((this.product.mrp - this.product.priceWithoutTax) / this.product.mrp) * 100));
   }
 
   buyNow(buyNow = false) {

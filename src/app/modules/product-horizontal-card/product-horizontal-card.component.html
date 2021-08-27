@@ -32,7 +32,7 @@
                 <div class="left" (click)="navigateToPDP()">
                     <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'  }}</span>
-                        <span class="green-label">{{((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number:'1.0-0'}}% OFF</span>
+                        <span class="green-label">{{product.discount}}% OFF</span> 
                     </div>
                     <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                         <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>

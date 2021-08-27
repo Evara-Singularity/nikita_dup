@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 .column-field{
   .w-65{
     width: 65%;
@@ -46,4 +47,7 @@ button.continue-btn[disabled] {
       color: #5ba621 !important;
     }
   }
+}
+.varified-checkbox{
+  @extend %custom-check-box-checkout 
 }

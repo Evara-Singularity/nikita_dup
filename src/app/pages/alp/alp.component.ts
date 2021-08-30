@@ -392,8 +392,9 @@ export class AlpComponent implements OnInit {
             //console.log("links.href", links.href)
             this._renderer2.appendChild(this._document.head, links);
 
-            this.setAmpTag('alp');
         }
+        
+        this.setAmpTag('alp');
 
 
 

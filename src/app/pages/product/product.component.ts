@@ -1793,7 +1793,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let pageTitleName = this.productName;
     const pwot = this.priceWithoutTax;
 
-    if (pwot && pwot > 0) {
+    if (pwot && pwot > 0 && this.rawProductData['quantityAvailable'] > 0) {
       title += " - Buy at Rs." + this.productPrice
     }
 

@@ -1,9 +1,9 @@
 import { 
     Component, ElementRef, Input, ViewEncapsulation, PLATFORM_ID, 
     Inject, Output, EventEmitter, ChangeDetectorRef, ComponentFactoryResolver, 
-    ViewChild, Injector, ViewRef, ViewContainerRef } 
+    ViewChild, Injector, ViewRef, ViewContainerRef, NgModule } 
 from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { Subject } from 'rxjs';
 

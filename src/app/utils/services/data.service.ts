@@ -88,7 +88,7 @@ export class DataService {
                 referrer: document.referrer,
                 previous_url: prevUrl
             }
-            this.socket.emit("track", { ...trackingData, ...msg });
+            // this.socket.emit("track", { ...trackingData, ...msg });
         }
     }
     getMessage() {

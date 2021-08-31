@@ -1,0 +1,295 @@
+.product_block {
+    div {
+        h4.lh-18 {
+            height: 38px;
+            overflow: hidden;
+        }
+    }
+}
+
+.zoomCloseBtn {
+    display: none;
+}
+
+.prod-carsl {
+    &.oos {
+        .img-block {
+            img {
+                opacity: 0.6;
+            }
+        }
+    }
+    .img-block {
+        width: 100%;
+        height: 360px;
+        background: white;
+        position: relative;
+        padding: 15px;
+        .inner_block {
+            height: 100%;
+            .inner_element {
+                position: relative;
+            }
+            .element {
+                height: 100%;
+            }
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    &.zoomView {
+        &.oos {
+            p {
+                display: none;
+            }
+            img {
+                opacity: 1;
+            }
+        }
+        position: fixed !important;
+        top: 52px;
+        left: 0;
+        width: 100%;
+        bottom:0;
+        right:0;
+        z-index: 11;
+        background: #fff;
+        .img-block {
+            height: 96vh;
+            padding: 0px;
+            .inner_block {
+                .element {
+                    height: auto !important;
+                }
+            }
+            .pinch-zoom-container {
+                height: 100% !important;
+                left: 0px;
+                right: 0px;
+                margin: 0px auto;
+                bottom: 60px;
+                top: 0;
+                .element {
+                    // transform: translate(0,0);
+                    img {
+                        height: auto !important;
+                    }
+                }
+            }
+        }
+        .zoomCloseBtn {
+            display: block;
+            padding: 15px;
+            i {
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+ul.pager {
+    margin: auto;
+    text-align: center;
+    bottom: 0px;
+    position: relative;
+    background: white;
+    li {
+        display: inline-block;
+        vertical-align: top;
+        margin: 5px;
+        overflow: hidden;
+        z-index: 99;
+        &.pager_dot {
+            height: 8px;
+            margin-top: 8px;
+            ;
+            width: 8px;
+            background-color: #bebebe;
+            border-radius: 75%;
+            cursor: pointer;
+            &.active {
+                background-color: #222;
+            }
+        }
+        &.pager_icon_dot {
+            i {
+                font-size: 12px;
+                color: #bebebe;
+            }
+        }
+        &.active {
+            i {
+                font-size: 12px;
+                color: #222;
+            }
+        }
+    }
+}
+
+.similar_block {
+    background: #fff;
+    .product_block_container {
+        padding: 15px 5px;
+    }
+    .product_block {
+        box-shadow: 0px 2px 5px #00000029;
+        padding: 10px;
+    }
+    .rating-box {
+        background: #5BA621;
+        padding: 8px 5px;
+        border-radius: 3px;
+        color: white;
+        font-weight: 800;
+        color: white;
+        float: left;
+        font-size: 14px;
+        i {
+            color: white;
+            padding-left: 5px;
+        }
+    }
+    .img_block {
+        width: 84px;
+        height: 84px;
+        float: left;
+        img {
+            width: 100%;
+        }
+    }
+    .similar_details {
+        float: right;
+        width: calc(100% - 90px);
+        .prod_name {
+            p {
+                font-size: 14px;
+                font-weight: 800;
+                color: #333;
+                letter-spacing: 0.5px;
+                line-height: 21px;
+                margin-bottom: 5px;
+            }
+        }
+        .prod_price {
+            float: left;
+            padding-left: 10px;
+            // width: calc(100% - 60px);
+            .mrp {
+                font-size: 12px;
+                font-weight: 800;
+                color: #989898;
+                span {
+                    text-decoration: line-through;
+                }
+            }
+            .price {
+                font-size: 20px;
+                font-weight: 800;
+                span.discount {
+                    font-size: 12px;
+                    font-weight: 800;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+.similar-siema {
+    background: #fff;
+}
+
+.similar_link {
+    width: 100%;
+}
+
+.mfr_product_block {
+    margin-right: 10px;
+    background: #fff;
+    img {
+        width: 100%;
+    }
+    .mfr_product_details {
+        .discount {
+            padding: 8px 0;
+            height: 30px;
+            text-align: center;
+            display: inline-block;
+            background: #20a012;
+            width: 65px;
+            font-weight: 500;
+            color: white !important;
+        }
+        .prod-name {
+            padding-top: 5px;
+            line-height: 16px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .mrp {
+            font-size: 20px;
+            line-height: 25px;
+            font-weight: 500;
+            padding-top: 5px;
+            .before-discount {
+                padding-left: 10px;
+                text-decoration: line-through;
+                opacity: 0.5;
+                margin: 0 6px 0 0;
+                color: #635d5d;
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+.supplier_review_section {
+    width: 100%;
+    background: #fff;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    margin-right: 10px;
+    h4 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    img {
+        width: 140px;
+        padding-bottom: 15px;
+    }
+    p {
+        font-size: 14px;
+        line-height: 26px;
+        &.author {
+            font-weight: 600;
+            margin-top: 15px;
+        }
+    }
+}
+
+.top-banner,
+.banner-carousel-siema,
+.img-siema {
+    ngx-siema-slide {
+        display: block;
+    }
+}
+
+.icon-youtube:before {
+    content: "\e981";
+    .active {
+        color: #222;
+    }
+}
+
+.youtube_icon {
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}

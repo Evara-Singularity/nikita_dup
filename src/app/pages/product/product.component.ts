@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional, ElementRef } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
@@ -172,6 +172,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemand loaded components for app Promo 
   appPromoInstance = null;
   @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
+  // ondemand product crousel  
+  productCrouselInstance = null;
+  @ViewChild('productCrousel', { read: ViewContainerRef }) productCrouselContainerRef: ViewContainerRef;
+  @ViewChild('productCrouselPseudo', { read: ElementRef }) productCrouselPseudoContainerRef: ElementRef;
 
   iOptions: any = null;
 
@@ -1685,6 +1689,38 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
     }
   }
+
+  async loadProductCrousel(slideIndex) {
+    if (!this.productCrouselInstance) {
+      const { ProductCrouselComponent } = await import('../../modules/product-crousel/ProductCrousel.component').finally(() => {
+        this.clearPseudoImageCrousel();
+      });
+      const factory = this.cfr.resolveComponentFactory(ProductCrouselComponent);
+      this.productCrouselInstance = this.productCrouselContainerRef.createComponent(factory, null, this.injector);
+      this.productCrouselInstance.instance['options'] = this.iOptions;
+      this.productCrouselInstance.instance['items'] = this.productAllImages;
+      this.productCrouselInstance.instance['moveToSlide$'] = this.moveToSlide$;
+      this.productCrouselInstance.instance['refreshSiemaItems$'] = this.refreshSiemaItems$;
+      this.productCrouselInstance.instance['productName'] = this.productName;
+      setTimeout(() => {
+        (this.productCrouselInstance.instance['moveToSlide$'] as Subject<number>).next(slideIndex);
+      }, 100);
+    }
+  }
+
+  clearPseudoImageCrousel() {
+    console.log('this.productCrouselPseudoContainerRef', this.productCrouselPseudoContainerRef);
+    this.productCrouselPseudoContainerRef.nativeElement.remove();
+  }
+
+  onRotatePrevious() {
+    this.loadProductCrousel(1);
+  }
+
+  onRotateNext() {
+    this.loadProductCrousel(1);
+  }
+
 
   async loadAlertBox(mainText, subText = null, extraSectionName: string = null) {
     if (!this.alertBoxInstance) {

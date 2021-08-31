@@ -17,7 +17,6 @@ import CONSTANTS from '../../config/constants';
     styleUrls: [],
     encapsulation: ViewEncapsulation.None,
 })
-
 export class SiemaSlideComponent {
     @Input() options: any;
     @Input() item: any;

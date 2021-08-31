@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 .column-field{
   .w-65{
     width: 65%;
@@ -11,4 +12,42 @@
 
 button.continue-btn[disabled] {
   background: #bdbdbd;
+}
+
+.for-varification{
+  display: flex;
+  align-items: baseline;
+  .for-varification-l{
+    width: 60%;
+  }
+  .for-varification-r{
+    width: 40%;
+    border-bottom: 1px solid #030303;
+    padding: 6px 0px;
+    display: flex;
+    justify-content: flex-end;
+    a.show{
+      color: #176fd8 !important;
+      text-align: right;
+      display: none;
+      
+    }
+    a.hidden{
+      
+      color: #5ba621 !important;
+      text-align: right;
+      i{
+        color: #5ba621;
+      }
+      i:hover{
+        color: #5ba621 !important;
+      }
+    }
+    a.hidden:hover i{
+      color: #5ba621 !important;
+    }
+  }
+}
+.varified-checkbox{
+  @extend %custom-check-box-checkout 
 }

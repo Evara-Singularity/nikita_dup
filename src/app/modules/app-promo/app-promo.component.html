@@ -1,8 +1,9 @@
-<ng-container *ngIf="page === 'pdp'||(appPromoStatus && ( mobile_os == MOBILE_ENVS.ANDROID || mobile_os == MOBILE_ENVS.IOS ))">
+<ng-container
+    *ngIf="page === 'pdp'||(appPromoStatus && ( mobile_os == MOBILE_ENVS.ANDROID || mobile_os == MOBILE_ENVS.IOS ))">
     <div [ngClass]="{'fixed-app-promo':isOverlayMode}">
 
         <ng-container *ngIf="!isUserAuthenticated">
-            <div class="app-promotion" *ngIf="showPromoCode">
+            <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
                 <span (click)="removePromo()">
                     <img src="{{assetImgPath}}assets/img/App-promotion/close-line.png" alt="close-line">
                 </span>
@@ -47,7 +48,7 @@
                 <p class="install-app-text">Get Personalized Experience & Best Deals on App </p>
             </div>
             <div class="content-mobile-app">
-                <span class="install-app-cross" (click)="removePromo()">
+                <span class="install-app-cross" *ngIf="page != 'pdp'" (click)="removePromo()">
                     <img src="assets/img/App-promotion/close-line.png">
                 </span>
                 <div class="mobile">

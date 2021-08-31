@@ -15,7 +15,7 @@
         <div class="otp-area-r">
             <p *ngIf="isTicking">{{tickerLabel}}</p>
             <button (click)="$event.stopPropagation();resendOTP();" *ngIf="!(isTicking)">RESEND</button>
-            <span>Varified <i class="icon-check-active"></i></span>
+            <span>Varified <i class="icon-done"></i></span>
         </div>
     </div>
     <p class="error-msg" *ngIf="otpErrorMessage">{{otpErrorMessage}}</p>

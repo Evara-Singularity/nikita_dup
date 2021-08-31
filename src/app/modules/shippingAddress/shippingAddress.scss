@@ -17,13 +17,17 @@ button.continue-btn[disabled] {
 .for-varification{
   display: flex;
   align-items: baseline;
+  position: relative;
   .for-varification-l{
-    width: 60%;
+    width: 100%;
   }
   .for-varification-r{
-    width: 40%;
-    border-bottom: 1px solid #030303;
-    padding: 6px 0px;
+    position: absolute;
+    top: 20px;
+    width: 20%;
+    margin-left: 80%;
+    // border-bottom: 1px solid #030303;
+    // padding: 6px 0px;
     display: flex;
     justify-content: flex-end;
     a.show{

@@ -35,22 +35,28 @@
         }
     }
     .otp-area{
+        position: relative;
         margin-top: 20px;
-        display: flex;
         padding-bottom: 5px;
         border-bottom: 2px solid #707070;
         .otp-area-l{
-            width: 70%;
+            width: 100%;
             input{
+                width: 100% !important;
                 border: none;
                 font-size: 14px;
                 color: #B5B5B5;
             }
         }
         .otp-area-r{
-            width: 30%;
+            position: absolute;
+            top: 0px;
             display: flex;
             justify-content: flex-end;
+            width: 35%;
+            margin-left: 65%;
+           
+
             button{
                 border: none;
                 font-size: 14px;

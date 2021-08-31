@@ -35,6 +35,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
     isShowInvoiceGst: boolean;
     nti: boolean; // nti= needs tax invoice
     lastSearchedPincode = null;
+    isPhoneVerfied = false;
 
 
     globalConstants: {};
@@ -76,6 +77,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
             this.isPinCodeApiValid = true;
         }
         this.addressForm = this.createFormBuilder(this.address);
+        this.isPhoneVerfied = this.verifyPhone(this.phone.value, this.verifiedPhones);
         this.cartSession = this._cartService.getCartSession();
         this.itemsList = (this.cartSession['itemsList'] !== undefined && this.cartSession['itemsList'] !== null) ? this.cartSession['itemsList'] : [];
     }
@@ -90,6 +92,13 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
                 if (this.postCode.valid && data && data.toString().length == 6 && data != this.lastSearchedPincode) {
                     this.getCityByPincode();
                 }
+            }
+        );
+        this.phone.valueChanges.subscribe(
+            (phone:string) =>
+            {
+                //TODO:need to display depending on condition.
+                this.isPhoneVerfied = ((phone.length === 10) && (this.verifyPhone(phone, this.verifiedPhones)));
             }
         );
     }
@@ -132,19 +141,10 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
     {
         if (!this.isPincodeBusy && this.isPinCodeApiValid) {
             const phone = this.phone.value;
-            const isPhoneVerified = this.verifyPhone(phone, this.verifiedPhones);
-            if (isPhoneVerified) {
+            if (this.isPhoneVerfied) {
                 this.saveAddress(data);
             } else {
-                const mobile = { device: 'mobile', email: '', phone: phone, type: 'p', source: 'phone_verify', userId: this.user["userId"] };
-                this._commonService.sendOtp(mobile).subscribe((response) =>
-                {
-                    if (response['statusCode'] === 200) {
-                        this.displayOTPPopup(this.phone.value);
-                    } else {
-                        this._tms.show({ type: 'error', text: response['message'] });
-                    }
-                })
+                this.displayOTPPopup(this.phone.value);
             }
         }
     }
@@ -196,10 +196,10 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
                     Validators.required, Step.validatePhone
                 ]
             ],
-            'altPhone': [
-                (address && address.altPhone) ? address.altPhone : this.user['altPhone'],
+            'alternatePhone': [
+                (address && address.alternatePhone) ? address.alternatePhone : this.user['alternatePhone'],
                 [
-                    Step.validatePhone
+                    Validators.pattern("[0-9]{10}")
                 ]
             ],
             'postCode': [
@@ -250,22 +250,23 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
             {
                 if (rd['statusCode'] == 200) {
                     this.stateList = rd['dataList'];
-                } 
+                }
             });
         }
     }
 
-
     displayOTPPopup(phone)
     {
-        let modalData = { component: OtpPopupComponent, inputs: { data: { phone: phone } }, outputs: {} };
+        let modalData = { component: OtpPopupComponent, inputs: { phone: phone, source: 'phone_verify'}, outputs: {} };
         this._modalService.show_v1(modalData).subscribe((cInstance) =>
         {
             cInstance.instance['phone'] = this.phone.value;
-            (cInstance.instance['phoneValidation$'] as EventEmitter<any>).subscribe((validated: boolean) =>
+            (cInstance.instance['phoneValidation$'] as EventEmitter<any>).subscribe((validatedPhone) =>
             {
-                if (validated) {
-                    this.saveAddress(this.addressForm.value);
+                if (validatedPhone === phone) {
+                    this.isPhoneVerfied = true;
+                    this.verifiedPhones.push(phone);
+                    this._tms.show({ type: 'success', text: "Phone number verified successfully." });
                 }
             });
         })
@@ -277,7 +278,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
     get idAddress() { return this.addressForm.get('idAddress'); };
     get addressCustomerName() { return this.addressForm.get('addressCustomerName'); };
     get phone() { return this.addressForm.get('phone'); };
-    get altPhone() { return this.addressForm.get('altPhone'); };
+    get alternatePhone() { return this.addressForm.get('alternatePhone'); };
     get postCode() { return this.addressForm.get('postCode'); };
     get landmark() { return this.addressForm.get('landmark'); };
     get addressLine() { return this.addressForm.get('addressLine'); };

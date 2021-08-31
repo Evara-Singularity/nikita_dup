@@ -4,7 +4,8 @@ export class DeliveryAddressUtil
     {
         let phones = [];
         if (addressList.length) {
-            const filtered = addressList.filter((address) => { return true });
+            //TODO:need to change filter depending on backend flag
+            const filtered = addressList.filter((address) => { return address.phoneVerified });
             phones = filtered.map((address) => address.phone);
         }
         return phones;

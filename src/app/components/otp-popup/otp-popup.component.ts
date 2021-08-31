@@ -17,16 +17,16 @@ export class OtpPopupComponent implements OnInit, OnDestroy
     readonly timerLabel = "00:";
     readonly N1000 = 1000;
     readonly N46000 = 10000;
-    @Input() data: any;
-    @Input() verfied$: Subject<any>;
+    @Input() phone: any;
+    @Input() buttonLabel = "CONTINUE";
+    @Input() source = "";
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Output() phoneValidation$: EventEmitter<any> = new EventEmitter<any>();;
     private cDistroyed = new Subject();
-    otp: FormControl = new FormControl("", [Validators.pattern("[0-9]{6}")]);
+    otp: FormControl = new FormControl("", [Validators.required, Validators.pattern("[0-9]{6}")]);
     isTicking = false;
     tickerLabel = "";
     user = null;
-    @Input() phone: any;
     isOTPLimitExceeded = false;
     otpErrorMessage = null;
 
@@ -34,15 +34,15 @@ export class OtpPopupComponent implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        this.executeTimer();
         this.user = this._localAuthService.getUserSession();
-        //this.phone = this.data['phone'];
+        //TODO:Enable otp
+        //this.sendOTP();
     }
 
-    resendOTP()
+    sendOTP()
     {
-        const mobile = { device: 'mobile', email: '', phone: this.phone, type: 'p', source: 'phone_verify', userId: this.user["userId"] };
-        this._commonService.sendOtp(mobile).subscribe((response) =>
+        const request = { device: 'mobile', email: '', phone: this.phone, type: 'p', source: this.source, userId: this.user["userId"] };
+        this._commonService.sendOtp(request).subscribe((response) =>
         {
             if (response['statusCode'] === 200) {
                 this.tickerLabel = "";
@@ -55,16 +55,22 @@ export class OtpPopupComponent implements OnInit, OnDestroy
 
     validateOTP(value)
     {
-        const mobile = { email: '', phone: this.phone, type: 'p', source: 'phone_verify', userId: this.user["userId"], otp: value };
-        this._commonService.validateOTP(mobile).subscribe((response) =>
-        {
-            if (response['statusCode'] === 200) {
-                this.otpErrorMessage = null;
-                this.phoneValidation$.emit(true);
-            } else {
-                this.processOTPError(response);
-            }
-        })
+
+        this.phoneValidation$.emit(this.phone);
+        this.closePopup$.emit();
+
+        //TODO:verify OTP
+        // const mobile = { email: '', phone: this.phone, type: 'p', source: this.source, userId: this.user["userId"], otp: value };
+        // this._commonService.validateOTP(mobile).subscribe((response) =>
+        // {
+        //     if (response['statusCode'] === 200) {
+        //         this.otpErrorMessage = null;
+        //         this.closePopup$.emit();
+        //         this.phoneValidation$.emit(this.phone);
+        //     } else {
+        //         this.processOTPError(response);
+        //     }
+        // })
     }
 
     executeTimer()
@@ -90,7 +96,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy
     closeModal()
     {
         this.closePopup$.emit();
-        this.phoneValidation$.emit(false);
+        this.phoneValidation$.emit(null);
     }
 
     ngOnDestroy()

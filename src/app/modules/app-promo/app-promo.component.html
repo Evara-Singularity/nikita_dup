@@ -3,7 +3,7 @@
 
         <ng-container *ngIf="!isUserAuthenticated">
             <div class="app-promotion" *ngIf="showPromoCode">
-                <span (click)="removePromo()">
+                <span (click)="removePromo()" *ngIf="page !== 'pdp'">
                     <img src="{{assetImgPath}}assets/img/App-promotion/close-line.png" alt="close-line">
                 </span>
                 <p>Get Rs 100 Off* on your first order via App<br> Use coupon <strong>HELLO</strong>

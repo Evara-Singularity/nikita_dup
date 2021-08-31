@@ -317,7 +317,16 @@ header {
     }
 }
 
-.logo-2x{
+.logo-2x {
     width: 64px;
     height: 22px;
+}
+
+.abs-animation {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: white;
+    z-index: 90;
 }

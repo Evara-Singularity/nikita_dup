@@ -11,6 +11,8 @@ import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
     selector: 'header-nav',
@@ -19,6 +21,16 @@ import { CheckoutService } from '@app/utils/services/checkout.service';
 })
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 {
+
+
+    options: AnimationOptions = {
+        path: './../../../assets/json/sample.json',
+      };
+    
+    animationCreated(animationItem: AnimationItem): void {
+        console.log(animationItem);
+    }
+
     isHomePage: boolean;
     routerData: any = null;
     user: any = null;
@@ -94,6 +106,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.commonSubcribers();
     }
+    
 
     ngOnInit()
     {

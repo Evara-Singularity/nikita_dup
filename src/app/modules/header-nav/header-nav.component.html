@@ -26,8 +26,10 @@
                 <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-more_options"></a>
             </div>
         </div>
+
         <div *ngIf="isHomePage && !isScrolledHeader" class="search-bar search-bar-custom">
             <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category/Brand...">
+            <ng-lottie class="abs-animation" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
         </div>
         <!--Category Header-->
         <div class="common-category-header container">

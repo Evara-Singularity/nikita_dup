@@ -21,7 +21,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy
     @Input() buttonLabel = "CONTINUE";
     @Input() source = "";
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
-    @Output() phoneValidation$: EventEmitter<any> = new EventEmitter<any>();;
+    @Output() phoneValidation$: EventEmitter<any> = new EventEmitter<any>();
     private cDistroyed = new Subject();
     otp: FormControl = new FormControl("", [Validators.required, Validators.pattern("[0-9]{6}")]);
     isTicking = false;
@@ -45,7 +45,6 @@ export class OtpPopupComponent implements OnInit, OnDestroy
         this._commonService.sendOtp(request).subscribe((response) =>
         {
             if (response['statusCode'] === 200) {
-                
                 this.executeTimer();
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
@@ -75,7 +74,10 @@ export class OtpPopupComponent implements OnInit, OnDestroy
         const interval$ = interval(this.N1000);
         const timer$ = timer(this.N46000);
         this.isTicking = true;
-        timer$.subscribe(() => { this.isTicking = false; this.tickerLabel = `${this.timerLabel}00`; })
+        timer$.subscribe(() => { 
+            this.isTicking = false; 
+            this.tickerLabel = `${this.timerLabel}00`;
+         });
         interval$.pipe(takeUntil(timer$)).subscribe((value: number) =>
         {
             this.tickerLabel = `${this.timerLabel}`+ (value > 9 ? (value + 1) : ("0" + value));

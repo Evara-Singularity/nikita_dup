@@ -35,8 +35,6 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
     isShowInvoiceGst: boolean;
     nti: boolean; // nti= needs tax invoice
     lastSearchedPincode = null;
-    isPhoneVerfied = false;
-
 
     globalConstants: {};
     addressForm: FormGroup;
@@ -77,7 +75,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
             this.isPinCodeApiValid = true;
         }
         this.addressForm = this.createFormBuilder(this.address);
-        this.isPhoneVerfied = this.verifyPhone(this.phone.value, this.verifiedPhones);
+        this.phoneVerified.setValue(this.verifyPhone(this.phone.value, this.verifiedPhones));
         this.cartSession = this._cartService.getCartSession();
         this.itemsList = (this.cartSession['itemsList'] !== undefined && this.cartSession['itemsList'] !== null) ? this.cartSession['itemsList'] : [];
     }
@@ -95,10 +93,10 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
             }
         );
         this.phone.valueChanges.subscribe(
-            (phone:string) =>
+            (phone: string) =>
             {
-                //TODO:need to display depending on condition.
-                this.isPhoneVerfied = ((phone.length === 10) && (this.verifyPhone(phone, this.verifiedPhones)));
+                const isPhoneVerfied = ((phone.length === 10) && (this.verifyPhone(phone, this.verifiedPhones)));
+                this.phoneVerified.setValue(isPhoneVerfied);
             }
         );
     }
@@ -139,12 +137,21 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
      */
     onSubmit(data)
     {
+        debugger;
         if (!this.isPincodeBusy && this.isPinCodeApiValid) {
-            const phone = this.phone.value;
-            if (this.isPhoneVerfied) {
+            if (this.phoneVerified.value) {
                 this.saveAddress(data);
             } else {
-                this.displayOTPPopup(this.phone.value);
+                //TODO:Need to update source
+                const request = { device: 'mobile', email: '', phone: this.phone.value, type: 'p', source: "phone_verify", userId: this.user["userId"] };
+                this._commonService.sendOtp(request).subscribe((response) =>
+                {
+                    if (response['statusCode'] === 200) {
+                        this.displayOTPPopup(this.phone.value);
+                    } else {
+                        this._tms.show({ type: 'error', text: response['message'] });
+                    }
+                })
             }
         }
     }
@@ -220,6 +227,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
             'idCountry': [this.getCountry(address, 'idCountry'), [Validators.required]],
             'idState': [this.getState(address, 'idState'), [Validators.required]],
             'email': [address ? address.email : this.user['email'], [Step.validateEmail]],
+            'phoneVerified': [(address && address.phoneVerified)? address.phoneVerified : false]
         };
         return this._formBuilder.group(sFileds);
     }
@@ -257,14 +265,14 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
 
     displayOTPPopup(phone)
     {
-        let modalData = { component: OtpPopupComponent, inputs: { phone: phone, source: 'phone_verify'}, outputs: {} };
+        let modalData = { component: OtpPopupComponent, inputs: { phone: phone, source: 'phone_verify' }, outputs: {} };
         this._modalService.show_v1(modalData).subscribe((cInstance) =>
         {
             cInstance.instance['phone'] = this.phone.value;
             (cInstance.instance['phoneValidation$'] as EventEmitter<any>).subscribe((validatedPhone) =>
             {
                 if (validatedPhone === phone) {
-                    this.isPhoneVerfied = true;
+                    this.phoneVerified.setValue(true);
                     this.verifiedPhones.push(phone);
                     this._tms.show({ type: 'success', text: "Phone number verified successfully." });
                 }
@@ -286,4 +294,5 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
     get idCountry() { return this.addressForm.get('idCountry'); };
     get idState() { return this.addressForm.get('idState'); };
     get email() { return this.addressForm.get('email'); };
+    get phoneVerified() { return this.addressForm.get('phoneVerified'); };
 }

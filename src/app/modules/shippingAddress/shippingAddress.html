@@ -1,5 +1,4 @@
 <form [formGroup]="addressForm" class="material-form" (ngSubmit)="onSubmit(addressForm.value)">
-    <button (click)="displayOTPPopup(phone.value)">POPUP</button>
     <input formControlName="idAddress" type="hidden">
     <div class="input-field">
         <label [class.is-focus]="addressCustomerName.value.length!=0">
@@ -28,13 +27,10 @@
                 <span class="label">Phone Number*</span>
             </label>
         </div>
-        <div class="for-varification-r">
-            <a class="show" href="">VARIFY NOW</a>
-            <a class="hidden" href=""><i class="icon-checkbox-active"></i> VARIFIED</a>
-            
-            <!-- <input class="form-control no-border border-dark-b border-r-0 mar-b-10 pad-l-0" type="button" value="Varify now"> -->
+        <!--TODO:Sachin need to combine with Phone Number field-->
+        <div class="for-varification-r" *ngIf="phoneVerified.value">
+            <a class="hidden" href="">VERIFIED<i class="icon-checkbox-active"></i></a>
         </div>
-        
         <p *ngIf="phone.touched && phone.invalid && phone.errors['required']"
             class="error-txt">Kindly enter your 10 digit contact number</p>
         <p *ngIf="phone.touched && phone.invalid && phone.errors['invalidPhone'] && phone.value.length>0"

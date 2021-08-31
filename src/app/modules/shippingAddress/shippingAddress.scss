@@ -33,14 +33,15 @@ button.continue-btn[disabled] {
       
     }
     a.hidden{
-      
       color: #5ba621 !important;
       text-align: right;
       i{
         color: #5ba621;
+        padding-left: 5px;
       }
       i:hover{
         color: #5ba621 !important;
+        padding-left: 5px;
       }
     }
     a.hidden:hover i{

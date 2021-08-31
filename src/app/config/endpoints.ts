@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   BREADCRUMB: "/homepage/getbreadcrumb",
   Q_AND_A: "/quest/getQuest",
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
+  DUPLICATE_ORDER: "/checkout/order/userProductOrder",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   LOGIN_URL: "/login/sendOTP",
   BHARATPAY_URL: '/marketPlace/cartSessionbyId/',

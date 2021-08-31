@@ -29,7 +29,7 @@
 <div class="popularCategories" *ngIf="popularLinks?.length > 0">
     <div class="innerPopularSection">
         <h4 class="heading-3">Popular Categories</h4>
-        <a *ngFor="let category of popularLinks;last as isLast" href="{{API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+        <a *ngFor="let category of popularLinks;last as isLast" href="{{API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ API_RESPONSE['brand'][0]['brandName'] + ' ' + category }} <span *ngIf="!(isLast)">. </span></a>
     </div>
 </div>
 

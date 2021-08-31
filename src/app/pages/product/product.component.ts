@@ -155,6 +155,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemad loaded components recent viewd products all pop up
   recentAllInstance = null;
   @ViewChild('recentAll', { read: ViewContainerRef }) recentAllContainerRef: ViewContainerRef;
+  // ondemad loaded components for showing duplicate order
+  globalToastInstance = null;
+  @ViewChild('globalToast', { read: ViewContainerRef }) globalToastContainerRef: ViewContainerRef;
   // ondemad loaded components for post a product review
   writeReviewPopupInstance = null;
   @ViewChild('writeReviewPopup', { read: ViewContainerRef }) writeReviewPopupContainerRef: ViewContainerRef;
@@ -278,6 +281,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   getProductApiData() {
     // data received by product resolver
     this.route.data.subscribe((rawData) => {
+      console.log('=====================');
+      console.log(rawData);
+      console.log('=====================');
       if (!rawData['product']['error']) {
         // console.log('getProductApiData rawData', rawData['product'][4]);
         // todo: if productBO not fould redirect to product not found page
@@ -301,6 +307,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
           this.remoteApiCallRecentlyBought();
+          this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
         } else {
           this.showLoader = false;
           this.globalLoader.setLoaderState(false);
@@ -619,6 +626,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.alertBoxInstance) {
       this.alertBoxInstance = null;
       this.alertBoxContainerRef.remove();
+    }
+    if (this.globalToastInstance) {
+      this.globalToastInstance = null;
+      this.globalToastContainerRef.remove();
     }
     if (this.productRFQInstance) {
       this.productRFQInstance = null;
@@ -1698,6 +1709,24 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  async loadGlobalToastMessage(date, rawData) {
+    let data = {"status":true,"data":{"date":"2021-08-30","quantity":1,"orderId":2908392},"errorMsg":null};
+
+    if (!this.globalToastInstance && data.status) {
+      const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component').finally(() => {
+        this.showLoader = false;
+      });
+      const factory = this.cfr.resolveComponentFactory(GlobalToastComponent);
+      this.globalToastInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
+      this.globalToastInstance.instance['text'] = 'This same item has been ordered by you on ' + data.data.date;
+      this.globalToastInstance.instance['btnText'] = 'x';
+      this.globalToastInstance.instance['showTime'] = 100000;
+      this.globalToastInstance.instance['showDuplicateOrderToast'] = true;
+      this.globalToastInstance.instance['positionTop'] = true;
+      this.globalToastInstance.instance['productMsn'] = rawData.partNumber;
+    }
+  }
+
   async loadAlertBox(mainText, subText = null, extraSectionName: string = null) {
     if (!this.alertBoxInstance) {
       this.showLoader = true;
@@ -1705,7 +1734,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(AlertBoxToastComponent);
-      this.alertBoxInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
+      
+      
       this.alertBoxInstance.instance['mainText'] = mainText;
       this.alertBoxInstance.instance['subText'] = subText;
       if (extraSectionName) {

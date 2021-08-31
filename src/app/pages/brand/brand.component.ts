@@ -68,6 +68,8 @@ export class BrandComponent {
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
 
+            console.log(result);
+
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
 

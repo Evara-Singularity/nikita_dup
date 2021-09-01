@@ -281,9 +281,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   getProductApiData() {
     // data received by product resolver
     this.route.data.subscribe((rawData) => {
-      console.log('=====================');
-      console.log(rawData);
-      console.log('=====================');
       if (!rawData['product']['error']) {
         // console.log('getProductApiData rawData', rawData['product'][4]);
         // todo: if productBO not fould redirect to product not found page
@@ -307,7 +304,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
           this.remoteApiCallRecentlyBought();
-          this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+          const userSession = this.localStorageService.retrieve('user');
+          if (userSession && userSession.authenticated == "true" && rawData['product'][6].status) {
+            this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+          }
         } else {
           this.showLoader = false;
           this.globalLoader.setLoaderState(false);
@@ -327,7 +327,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }, error => {
       this.showLoader = false;
       this.globalLoader.setLoaderState(false);
-      console.log('getProductApiData error', error);
     });
   }
 
@@ -410,7 +409,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   setQuestionsAnswerData(data) {
-    console.log('questionAnswerList', data);
     this.questionAnswerList = data;
   }
 
@@ -571,13 +569,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.fbtComponentInstance = null;
       this.fbtComponentContainerRef.remove();
     }
-    // console.log('similarProductInstance 1', this.similarProductInstance);
     if (this.similarProductInstance) {
       this.similarProductInstance = null;
       this.similarProductContainerRef.remove();
       this.onVisibleSimilar(null);
     }
-    // console.log('similarProductInstance 2', this.similarProductInstance);
     if (this.recentProductsInstance) {
       this.recentProductsInstance = null;
       this.recentProductsContainerRef.remove();
@@ -671,7 +667,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       // incase priceQuantityCountry element not present in API
       this.productOutOfStock = true;
     }
-    console.log('setOutOfStockFlag :: ', this.productOutOfStock);
   }
 
   // setAttributesExtra(productPartDetails) {
@@ -1349,7 +1344,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   changeBulkQty(value, index) {
-    console.log('changeBulkQty', value, index);
     if (this.isBrowser) {
       (<HTMLInputElement>document.querySelector("#product_quantity")).value = "0";
     }
@@ -1371,7 +1365,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // dynamically load similar section 
   async onVisibleSimilar(htmlElement) {
-    console.log('onVisibleSimilar', 'called');
     if (!this.similarProductInstance) {
       const { SimilarProductsComponent } = await import('./../../components/similar-products/similar-products.component')
       const factory = this.cfr.resolveComponentFactory(SimilarProductsComponent);
@@ -1477,7 +1470,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // product-rfq 
   async onVisibleProductRFQ(htmlElement) {
     this.removeRfqForm();
-    console.log('productRFQInstance', this.productRFQInstance);
     if (!this.productRFQInstance) {
       this.intiateRFQQuote(false, false);
     }
@@ -1536,7 +1528,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.pincodeFormInstance.instance['productInfo'] = productInfo;
     this.pincodeFormInstance.instance['openPinCodePopup'] = true;
     (this.pincodeFormInstance.instance['out'] as EventEmitter<boolean>).subscribe(data => {
-      console.log('getPincodeForm detached', data);
       // create a new component after component is closed
       // this is required, to refresh input data
       this.pincodeFormInstance = null;
@@ -1569,7 +1560,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async viewPopUpOpen(data) {
-    console.log('viewPopUpOpen', data);
     if (!this.offerPopupInstance) {
       this.showLoader = true;
       const { ProductOfferPopupComponent } = await import('./../../components/product-offer-popup/product-offer-popup.component').finally(() => {
@@ -1580,7 +1570,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.offerPopupInstance.instance['data'] = data['block_data'];
       this.offerPopupInstance.instance['openMobikwikPopup'] = true;
       (this.offerPopupInstance.instance['out'] as EventEmitter<boolean>).subscribe(data => {
-        console.log('viewPopUpOpen detached', data);
         // create a new component after component is closed
         // this is required, to refresh input data
         this.offerPopupInstance = null;
@@ -1712,7 +1701,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   async loadGlobalToastMessage(date, rawData) {
     let data = {"status":true,"data":{"date":"2021-08-30","quantity":1,"orderId":2908392},"errorMsg":null};
 
-    if (!this.globalToastInstance && data.status) {
+    if (!this.globalToastInstance) {
       const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component').finally(() => {
         this.showLoader = false;
       });
@@ -1800,7 +1789,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async showYTVideo(link) {
-    console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };

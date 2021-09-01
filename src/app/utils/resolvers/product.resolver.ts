@@ -96,7 +96,6 @@ export class ProductResolver implements Resolve<object> {
       const pdpFirstFoldApiList = [productObs, productReviewObs, productCrumb, product_Q_AND_A, product_fbt, product_status_count];
 
       const userSession = this.localStorageService.retrieve('user');
-      console.log(userSession);
       if (userSession && userSession.authenticated == "true") {
         DUPLICATE_ORDER_URL += '&userId=' + userSession['userId'];
         const duplicate_order = this.http.get(DUPLICATE_ORDER_URL);

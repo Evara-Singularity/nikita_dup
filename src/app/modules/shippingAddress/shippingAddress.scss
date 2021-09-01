@@ -24,8 +24,7 @@ button.continue-btn[disabled] {
   .for-varification-r{
     position: absolute;
     top: 20px;
-    width: 20%;
-    margin-left: 80%;
+    right: 0px;
     // border-bottom: 1px solid #030303;
     // padding: 6px 0px;
     display: flex;
@@ -34,14 +33,20 @@ button.continue-btn[disabled] {
       color: #176fd8 !important;
       text-align: right;
       display: none;
+      font-size: 14px;
       
     }
     a.hidden{
-      
-      color: #5ba621 !important;
+      color: #209F19 !important;
+      font-size: 14px;
       text-align: right;
+      display: inline-block;
+      vertical-align: middle;
       i{
-        color: #5ba621;
+        color: #209F19 !important;
+        font-size: 16px;
+        display: inline-block;
+        vertical-align: middle;
       }
       i:hover{
         color: #5ba621 !important;

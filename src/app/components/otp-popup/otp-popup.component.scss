@@ -59,7 +59,9 @@
                 font-size: $large-font;
                 color: #278BED;
                 background: none;
-
+                &:disabled{
+                    color: #B5B5B5;
+                }
             }
             span{
                 color: #209F19;

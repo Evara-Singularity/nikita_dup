@@ -96,7 +96,7 @@ export class AppPromoComponent implements OnInit {
       let taxo1 = '';
       let taxo2 = '';
       let taxo3 = '';
-      if (this.productData['categoryDetails'][0]['taxonomyCode']) {
+      if (this.productData?.['categoryDetails'][0]['taxonomyCode']) {
         taxo1 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[0] || '';
         taxo2 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[1] || '';
         taxo3 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[2] || '';
@@ -104,11 +104,11 @@ export class AppPromoComponent implements OnInit {
 
       digitalData['page']['linkPageName'] = "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp";
       digitalData['order'] = {
-        'productID': this.productData['partNumber'],
+        'productID': this.productData?.['partNumber'],
         'productCategoryL1': taxo1,        
         'productCategoryL2': taxo2,        
         'productCategoryL3': taxo3,
-        'brand': this.productData['brandDetails']['brandName']
+        'brand': this.productData?.['brandDetails']['brandName']
       };
 
 

@@ -16,6 +16,7 @@ import { LocalAuthService } from '../..//utils/services/auth.service';
 import { FooterService } from '../..//utils/services/footer.service';
 import { CartService } from '../..//utils/services/cart.service';
 import { CommonService } from '../..//utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
     selector: 'quick-order',
@@ -50,6 +51,7 @@ export class QuickOrderComponent {
         public cartService: CartService,
         private _quickOrderService: QuickOrderService,
         private _commonService: CommonService,
+        private _analytics: GlobalAnalyticsService,
         public router: Router) {
 
         this.itemsList = [];
@@ -101,6 +103,7 @@ export class QuickOrderComponent {
         this.cartService.orderSummary.subscribe(
             data => {
                 this.itemsList = data.itemsList;
+                this.emptyBasketGtmEvent(this.itemsList);
             }
         );
 
@@ -267,6 +270,20 @@ export class QuickOrderComponent {
                 this.cartService.cart.next(res['noOfItems']);
             }
         });
+    }
+    
+    private emptyBasketGtmEvent(itemsList) {
+        let user = this.localStorageService.retrieve('user');
+        if (itemsList && itemsList.length == 0) {
+            const emptyBasketObj = {
+                'event': 'emptyBasket',
+                'email': (user && user.email) ? user.email : '',
+                'currency': 'INR',
+                'productBasketProducts': [],
+                'eventData': [] 
+            };
+            this._analytics.sendGTMCall(emptyBasketObj);
+        }
     }
 
     placeOrder() {

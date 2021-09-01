@@ -5,17 +5,17 @@
     </div> -->
     <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
         <ul class="bank-list">
-            <li *ngFor="let wallet of walletMapKeys" class="bank-list-item">
+            <label *ngFor="let wallet of walletMapKeys" class="bank-list-item">
                 <label class="payment-radio-btn">
                     <input type="radio" formControlName="wType" [value]="wallet">
                     <span class="custom-box"></span>
                 </label>
-                <div>
-                    <img class="wallet-img" src="{{imagePath + 'assets/img/wallet-icons/' + walletMap[wallet].imgUrl}}">
-                    <span class="lowsuccessRate  pad-l-8" *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
+            <div>
+                <img class="wallet-img" src="{{imagePath + 'assets/img/wallet-icons/' + walletMap[wallet].imgUrl}}">
+                <span class="lowsuccessRate  pad-l-8" *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
                         success rate observed</span>
-                </div>
-            </li>
+            </div>
+            </label>
         </ul>
         <div class="continue-button">
             <div class="container">

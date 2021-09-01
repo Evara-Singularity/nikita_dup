@@ -486,8 +486,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.priceQuantityCountry = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
     this.productMrp = (this.isProductPriceValid && this.priceQuantityCountry) ? this.priceQuantityCountry['mrp'] : null;
 
-    console.log('isProductPriceValid', this.isProductPriceValid);
-
     if (this.priceQuantityCountry) {
       this.priceQuantityCountry['bulkPricesIndia'] = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']) : null;
       this.priceQuantityCountry['bulkPricesModified'] = (this.isProductPriceValid && this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']) ? [...this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']] : null;
@@ -505,6 +503,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.productMinimmumQuantity = (this.priceQuantityCountry && this.priceQuantityCountry['moq']) ? this.priceQuantityCountry['moq'] : 1;
 
     this.setOutOfStockFlag();
+
+    /**
+     * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
+     * then redirect to inStock MSN of same grouped product
+     * check for filterAttributesList for grouped to make sure it is grouped product and check of outofstock and 
+     * then redirect to next inStock msn avaliable in args.nextAvailableMsn
+     * Make sure this condition is called after this.setOutOfStockFlag();
+     * 
+     * Commented: as per request in Sprint-14 (Support)
+    */
+    
+    // if (this.productFilterAttributesList && this.productOutOfStock) {
+    //   this.getProductGroupData(args.nextAvailableMsn);
+    // }
 
     if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);
@@ -1717,6 +1729,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
     this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+    this.appPromoInstance.instance['page'] = 'pdp';
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
@@ -1780,7 +1793,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let pageTitleName = this.productName;
     const pwot = this.priceWithoutTax;
 
-    if (pwot && pwot > 0) {
+    if (pwot && pwot > 0 && this.rawProductData['quantityAvailable'] > 0) {
       title += " - Buy at Rs." + this.productPrice
     }
 

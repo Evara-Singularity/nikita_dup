@@ -29,6 +29,9 @@ export class StoreComponent {
 	karam = 'cm338483';
 	philips = 'cm645889';
 	threem = 'cm909874';
+	blackDecker = 'cm105550';
+    dewalt = 'cm709642';
+    stanley = 'cm523993';
 	storeData: any;
 	isServer: boolean;
 	isBrowser: boolean;
@@ -114,6 +117,21 @@ export class StoreComponent {
 			case 'godrej': {
 				id = this.godrej;
 				video = 'https://www.youtube.com/embed/1lfvvQb9PPs';
+				break;
+			}
+			case 'dewalt': {
+				id = this.dewalt;
+				video = '';
+				break;
+			}
+			case 'stanley': {
+				id = this.stanley;
+				video = '';
+				break;
+			}
+			case 'black-decker': {
+				id = this.blackDecker;
+				video = '';
 				break;
 			}
 		}

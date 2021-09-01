@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, Optional, PLATFORM_ID, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { CategoryService } from '@app/utils/services/category.service';
@@ -6,7 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
@@ -60,6 +60,7 @@ export class CategoryV1Component {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    isBrowser: boolean;
 
     constructor(
         public _router: Router,
@@ -78,7 +79,10 @@ export class CategoryV1Component {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-    ) { }
+        @Inject(PLATFORM_ID) platformId,
+    ) {
+        this.isBrowser = isPlatformBrowser(platformId);
+    }
 
     ngOnInit(): void {
         this.setDataFromResolver();

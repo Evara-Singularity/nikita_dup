@@ -5,7 +5,7 @@
     <!--- PWA Related configs & metas -->
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"> -->
     <meta name="copyright" content="© 2017 Moglix.com." />
     <meta name="Author" content="Moglix.com" />
     <meta name="Created By" content="Moglix.com" />
@@ -18,32 +18,32 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff">
     <meta name="theme-color" content="#ffffff" />
     <meta name="theme-color" content="#1976d2">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="theme-color" content="#1976d2">
     <base href="/">
     <meta name="environment" content="development" />
     <!--- preload & preconnects -->
     <link rel="icon" type="image/vnd.microsoft.icon" href="https://cdn.moglix.com/online/prod/pwa/bundles/favicon.ico" />
-    <link rel="manifest" href="https://cdn.moglix.com/online/prod/pwa/bundles/manifest.webmanifest" crossorigin="use-credentials" >
+    <link rel="manifest" href="https://cdn.moglix.com/online/prod/pwa/bundles/manifest.webmanifest" crossorigin="use-credentials">
 
-    <link rel="preload" href="https://cdn.moglix.com/online/prod/pwa/bundles/assets/fonts/icomoon_pwa.ttf" as="font" type="font/ttf" >
+    <link rel="preload" href="https://cdn.moglix.com/online/prod/pwa/bundles/assets/fonts/icomoon_pwa.ttf" as="font" type="font/ttf">
     <!-- INSERT DYNAMIC CSS PRELOAD DURING BUILD HERE -->
     <!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->
-    
+
 </head>
 
 <body id="body">
-  <app-root></app-root>
-  <div id="alert-box"></div>
-  <!-- Adobe Tag Manager -->
-  <script>
-    digitalData = {};
-    digitalData.event = [];
-    dataLayer = [];
-  </script>
-  <script src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js" async=""></script>
-  <!-- Adobe Tag Manager -->
-  <noscript>Please enable JavaScript to continue using this application.</noscript>
+    <app-root></app-root>
+    <div id="alert-box"></div>
+    <!-- Adobe Tag Manager -->
+    <script>
+        digitalData = {};
+        digitalData.event = [];
+        dataLayer = [];
+    </script>
+    <script src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js" async=""></script>
+    <!-- Adobe Tag Manager -->
+    <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 
 </html>

@@ -17,25 +17,36 @@ button.continue-btn[disabled] {
 .for-varification{
   display: flex;
   align-items: baseline;
+  position: relative;
   .for-varification-l{
-    width: 60%;
+    width: 100%;
   }
   .for-varification-r{
-    width: 40%;
-    border-bottom: 1px solid #030303;
-    padding: 6px 0px;
+    position: absolute;
+    top: 20px;
+    right: 0px;
+    // border-bottom: 1px solid #030303;
+    // padding: 6px 0px;
     display: flex;
     justify-content: flex-end;
     a.show{
       color: #176fd8 !important;
       text-align: right;
       display: none;
+      font-size: $large-font;
       
     }
     a.hidden{
-      color: #5ba621 !important;
+      color: #209F19 !important;
+      font-size: $large-font;
       text-align: right;
+      display: inline-block;
+      vertical-align: middle;
       i{
+        color: #209F19 !important;
+        font-size: $extra-large-font;
+        display: inline-block;
+        vertical-align: middle;
         color: #5ba621;
         padding-left: 5px;
       }

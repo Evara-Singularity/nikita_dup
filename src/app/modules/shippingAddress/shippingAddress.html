@@ -27,9 +27,8 @@
                 <span class="label">Phone Number*</span>
             </label>
         </div>
-        <!--TODO:Sachin need to combine with Phone Number field-->
         <div class="for-varification-r" *ngIf="phoneVerified.value">
-            <a class="hidden" href="">VERIFIED<i class="icon-checkbox-active"></i></a>
+            <a class="hidden" href=""><i class="icon-done"></i> VERIFIED</a>
         </div>
         <p *ngIf="phone.touched && phone.invalid && phone.errors['required']"
             class="error-txt">Kindly enter your 10 digit contact number</p>
@@ -120,7 +119,7 @@
         </div>
     </div>
     <div class="clearfix"></div>
-    <div class="col-sm-12 mar-t-5 pad-lr-xs-5 o-hidden">
+    <div class=" mar-t-5 pad-lr-xs-5 o-hidden">
         <button [disabled]="addressForm.invalid" type="submit" class="btn continue-btn">{{buttonText}}</button>
     </div>
 </form>

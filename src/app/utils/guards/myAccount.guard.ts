@@ -15,9 +15,9 @@ export class MyAccountGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.isServer || GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)) {
-            return true;
-        }
+        // if (this.isServer || GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)) {
+        //     return true;
+        // }
 
         if (this.localStorageService.retrieve('user')) {
             const user = this.localStorageService.retrieve('user');

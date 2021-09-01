@@ -21,8 +21,8 @@ export const environment = {
     }
   },
   AB_TESTING: {
-    NAME: 'ENV_A',
-    STATUS: false,
+    NAME: 'ENV_B',
+    STATUS: true,
   },
   IDS_MAP: {
     //new ids for mobile

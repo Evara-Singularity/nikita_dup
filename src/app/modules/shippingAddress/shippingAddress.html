@@ -28,7 +28,7 @@
             </label>
         </div>
         <div class="for-varification-r" *ngIf="phoneVerified.value">
-            <a class="hidden" href=""><i class="icon-done"></i> VERIFIED</a>
+            <a class="hidden" href="">VERIFIED<i class="icon-done"></i></a>
         </div>
         <p *ngIf="phone.touched && phone.invalid && phone.errors['required']"
             class="error-txt">Kindly enter your 10 digit contact number</p>

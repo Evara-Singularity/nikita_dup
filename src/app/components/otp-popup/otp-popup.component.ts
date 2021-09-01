@@ -77,6 +77,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy
         timer$.subscribe(() => { 
             this.isTicking = false; 
             this.tickerLabel = `${this.timerLabel}00`;
+            console.log(this.tickerLabel)
          });
         interval$.pipe(takeUntil(timer$)).subscribe((value: number) =>
         {

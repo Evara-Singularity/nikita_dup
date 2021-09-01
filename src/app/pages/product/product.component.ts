@@ -176,6 +176,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productCrouselInstance = null;
   @ViewChild('productCrousel', { read: ViewContainerRef }) productCrouselContainerRef: ViewContainerRef;
   @ViewChild('productCrouselPseudo', { read: ElementRef }) productCrouselPseudoContainerRef: ElementRef;
+  isProductCrouselLoaded: boolean = false;
 
   iOptions: any = null;
 
@@ -1692,6 +1693,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async loadProductCrousel(slideIndex) {
     if (!this.productCrouselInstance) {
+      this.isProductCrouselLoaded = true;
       const { ProductCrouselComponent } = await import('../../modules/product-crousel/ProductCrousel.component').finally(() => {
         this.clearPseudoImageCrousel();
       });
@@ -1709,7 +1711,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   clearPseudoImageCrousel() {
-    console.log('this.productCrouselPseudoContainerRef', this.productCrouselPseudoContainerRef);
+    this.isProductCrouselLoaded = false;
     this.productCrouselPseudoContainerRef.nativeElement.remove();
   }
 

@@ -5,20 +5,19 @@
 
         <ng-container #productCrousel></ng-container>
 
-        <!-- <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
-        </siema-carousel> -->
-
         <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo (previous)="onRotatePrevious()">
             <div class="img-block-pseudo" >
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" style="transform-origin: 0% 0%;">
-                        <img src="{{productAllImages[1]['default']}}" height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[1]['default']}}" height="330" width="330"
+                            alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
                     </div>
                 </div>
                 <ng-container *ngIf="iOptions.pager && productAllImages.length>1">
                     <ul class="pager">
                         <ng-container *ngFor="let item of productAllImages;let i=index">
-                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)" [ngClass]="{'active':( i==0)}"></li>
+                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)" [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }"></li>
                             <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
                                 <em class="icon-youtube"></em>
                             </li>

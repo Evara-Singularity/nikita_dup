@@ -33,18 +33,18 @@ button.continue-btn[disabled] {
       color: #176fd8 !important;
       text-align: right;
       display: none;
-      font-size: 14px;
+      font-size: $large-font;
       
     }
     a.hidden{
       color: #209F19 !important;
-      font-size: 14px;
+      font-size: $large-font;
       text-align: right;
       display: inline-block;
       vertical-align: middle;
       i{
         color: #209F19 !important;
-        font-size: 16px;
+        font-size: $extra-large-font;
         display: inline-block;
         vertical-align: middle;
       }

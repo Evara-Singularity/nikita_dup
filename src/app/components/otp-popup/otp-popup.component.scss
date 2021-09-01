@@ -1,6 +1,7 @@
+@import '../../scss/variables';
 .otp-modal{
     padding: 10px 10px;
-    p.error-msg{
+    p.error-text{
         color: #D9232D;
     }
     .otp-top-area{
@@ -8,12 +9,12 @@
         .otp-entertext{
             width: 80%;
             h5{
-                font-size: 16px;
+                font-size: $extra-large-font;
                 line-height: 21px;
                 color: #3C3C3C;
             }
             p{
-                font-size: 10px;
+                font-size: $small-font;
                 line-height: 16px;
                 color: #756363;
             }
@@ -45,7 +46,7 @@
             input{
                 width: 100% !important;
                 border: none;
-                font-size: 14px;
+                font-size: $large-font;
                 color: #B5B5B5;
             }
         }
@@ -55,19 +56,19 @@
             top: 0px;
             button{
                 border: none;
-                font-size: 14px;
+                font-size: $large-font;
                 color: #278BED;
                 background: none;
 
             }
             span{
                 color: #209F19;
-                font-size: 14px;
+                font-size: $large-font;
                 display: inline-block;
                 vertical-align: middle;
                 i{
                     color: #209F19;
-                    font-size: 16px;
+                    font-size: $extra-large-font;
                     display: inline-block;
                     vertical-align: middle;
                 }
@@ -81,20 +82,7 @@
         color: #fff;
         border: #c4c4c4;
         width: 100%;
-        font-size: 14px;
-        font-weight: bold;
-        border-radius: 4px;
+        font-size: $large-font;
         &:disabled{background-color: #C4C4C4;}
     }
-    // .btn-cont-disable{
-    //     margin-top: 20px;
-    //     background-color: #C4C4C4;
-    //     padding: 10px;
-    //     color: #fff;
-    //     border: #c4c4c4;
-    //     width: 100%;
-    //     font-size: 14px;
-    //     font-weight: bold;
-    //     border-radius: 4px;
-    // }
 }

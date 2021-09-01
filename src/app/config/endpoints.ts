@@ -6,6 +6,7 @@ export const ENDPOINTS = {
   Q_AND_A: "/quest/getQuest",
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
+  SIMILAR_CATEGORY: "/category/mostSold",
   LOGIN_URL: "/login/sendOTP",
   BHARATPAY_URL: '/marketPlace/cartSessionbyId/',
   LOGIN_OTP: "/login/validateotp",

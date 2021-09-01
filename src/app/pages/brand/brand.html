@@ -29,8 +29,49 @@
 <div class="popularCategories" *ngIf="popularLinks?.length > 0">
     <div class="innerPopularSection">
         <h4 class="heading-3">Popular Categories</h4>
-        <a *ngFor="let category of popularLinks;last as isLast" href="{{API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ category }} <span *ngIf="!(isLast)">. </span></a>
+        <a *ngFor="let category of popularLinks;last as isLast" href="{{API_RESPONSE.brand[1][0].categoryLinkList[category]}}" class="popularCategoriesList">{{ API_RESPONSE['brand'][0].brandName + ' ' + category }} <span *ngIf="!(isLast)">. </span></a>
     </div>
+</div>
+
+<div class="accordian_footer_panel" *ngIf="API_RESPONSE.brand[3]">
+    <ng-container *ngIf="API_RESPONSE.brand[3].data.length > 0">
+        <div class="panel-head" style="margin-top: 0px;" >
+            <div class="container">
+                <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                    Shop by Attribute
+                    <span class="icon-accordian">
+                        <i class="icon-down"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+            <div class="container category_links">
+                <div *ngFor="let attribute of API_RESPONSE.brand[3].data">
+                    <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="API_RESPONSE.brand[4].mostSoledCategories.length > 0">
+        <div class="panel-head" style="margin-top: 0px;" >
+            <div class="container">
+                <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                    Similar Category
+                    <span class="icon-accordian">
+                        <i class="icon-down"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+            <div class="container category_links">
+                <div *ngFor="let attribute of API_RESPONSE.brand[4].mostSoledCategories">
+                    <a  href="{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
 </div>
 
 <brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>

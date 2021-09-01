@@ -322,11 +322,35 @@ header {
     height: 22px;
 }
 
-.abs-animation {
+//different Animation Classes for Lottie Animations
+.home-search-animation {
     position: absolute;
-    left: 0;
+    left: 40px;
     right: 0;
-    top: 0;
-    background: white;
-    z-index: 90;
+    top: 0px;
+    background: #fff;
+    pointer-events: none;
+    bottom: 0px;
+    .lottie-div {
+        position: absolute;
+        top: 0;
+        height: 40px;
+        left: 0;
+    }
+}
+
+.listing-search-animation {
+    position: absolute;
+    left: 36px;
+    right: 0;
+    top: 12px;
+    background: #fff;
+    pointer-events: none;
+    bottom: 0px;
+    height: 30px;
+    .lottie-div {
+        position: absolute;
+        top: 4px;
+        height: 24px;
+    }
 }

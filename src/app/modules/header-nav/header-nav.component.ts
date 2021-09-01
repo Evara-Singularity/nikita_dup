@@ -24,10 +24,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
 
     options: AnimationOptions = {
-        path: './../../../assets/json/sample.json',
-      };
-    
-    animationCreated(animationItem: AnimationItem): void {
+        path: './../../../assets/json/common1.json'
+    };
+
+      animationCreated(animationItem: AnimationItem): void {
         console.log(animationItem);
     }
 

@@ -143,7 +143,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
                 this.saveAddress(data);
             } else {
                 //TODO:Need to update source
-                const request = { device: 'mobile', email: '', phone: this.phone.value, type: 'p', source: "phone_verify", userId: this.user["userId"] };
+                const request = { device: 'mobile', email: '', phone: this.phone.value, type: 'p', source: "address", userId: this.user["userId"] };
                 this._commonService.sendOtp(request).subscribe((response) =>
                 {
                     if (response['statusCode'] === 200) {
@@ -265,7 +265,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
 
     displayOTPPopup(phone)
     {
-        let modalData = { component: OtpPopupComponent, inputs: { phone: phone, source: 'phone_verify' }, outputs: {} };
+        let modalData = { component: OtpPopupComponent, inputs: { phone: phone, source: 'address' }, outputs: {} };
         this._modalService.show_v1(modalData).subscribe((cInstance) =>
         {
             cInstance.instance['phone'] = this.phone.value;

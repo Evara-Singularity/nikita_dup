@@ -41,7 +41,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy
 
     sendOTP()
     {
-        const request = { device: 'mobile', email: '', phone: this.phone, type: 'p', source: "phone_verify", userId: this.user["userId"] };
+        const request = { device: 'mobile', email: '', phone: this.phone, type: 'p', source: this.source, userId: this.user["userId"] };
         this._commonService.sendOtp(request).subscribe((response) =>
         {
             if (response['statusCode'] === 200) {

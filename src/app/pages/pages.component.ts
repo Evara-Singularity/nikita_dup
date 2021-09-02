@@ -1,7 +1,7 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';
@@ -11,6 +11,11 @@ import { filter, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { environment } from 'environments/environment';
+import { LocalStorageService } from 'ngx-webstorage';
+import crypto from 'crypto-browserify';
+import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 
 @Component({
   selector: 'app-pages',
@@ -20,7 +25,6 @@ import CONSTANTS from '@app/config/constants';
 })
 
 export class PagesComponent implements OnInit {
-
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true, logo?: boolean, title?: string };
@@ -32,6 +36,8 @@ export class PagesComponent implements OnInit {
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
+    private _localStorageService: LocalStorageService,
+    private _router: Router,
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
@@ -40,8 +46,10 @@ export class PagesComponent implements OnInit {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
     this.isMoglixAppInstalled();
+
     this.router.events.subscribe(res => {
       this.createHeaderData(this._aRoute);
+
       if (res instanceof NavigationEnd) {
         if (res['url'] === '/') {
           this.isHomePage = true;
@@ -52,14 +60,87 @@ export class PagesComponent implements OnInit {
     })
   }
 
+  
+  checkAndRedirect() {
+    const queryParams = this._aRoute.snapshot.queryParams;
+    if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
+        this.loginUserIfUserRedirectedFromBharatpay(queryParams);
+      } else if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)){
+        const user = this._localStorageService.retrieve('user');
+        if (!user) {
+          this.router.navigateByUrl('/login');
+        }
+      } else {
+        this.setUserSession();
+      }
+  }
+
+  encryptKey(plain_text, encryptionMethod, secret, iv) {
+    const encryptor = crypto.createCipheriv(encryptionMethod, secret, iv);
+    const aes_encrypted = encryptor.update(plain_text, 'utf8', 'base64') + encryptor.final('base64');
+    return Buffer.from(aes_encrypted).toString('base64');
+  };
+
+  loginUserIfUserRedirectedFromBharatpay(queryParams) {
+    const token = queryParams['token'];
+    // const secret_key = CONSTANTS.SECRET_KEY;
+    // const secret_iv = 'smslt';
+    // const encryptionMethod = 'AES-256-CBC';
+    // const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
+    // const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
+    // const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
+    
+    const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
+
+    this.dataService.callRestful("POST", url, { body: { tokenId: token, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
+      if (res['status']) {
+        const obj = {
+          authenticated: "true",
+          cart: JSON.stringify(res['cart']),
+          email: res['userInfo']['email'],
+          emailVerified: null,
+          phone: res['userInfo']['phone'],
+          phoneVerified: true,
+          sessionId: res['cart']['sessionId'],
+          userId: res['userInfo']['userId'],
+          userName: res['userInfo']['firstName'],
+          userType: null
+        }
+        this._localStorageService.store('user', obj);
+        this.setUserSession();
+        if (window.location.pathname === GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] && queryParams.hasOwnProperty('msn')) {
+          this.redirectToProductPage(queryParams['msn']);
+        }
+      }
+    });
+  }
+
+  redirectToProductPage(msn) {
+    const params = {
+      filter: {},
+      queryParams: this._aRoute.snapshot.queryParams,
+      pageName: "SEARCH"
+    };
+
+    const actualParams = this._commonService.formatParams(params);
+    actualParams['str'] = msn;
+    this.dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SEARCH, { params: actualParams }).subscribe(res => {
+      if (res.hasOwnProperty('productSearchResult') && res['productSearchResult']['totalCount'] === 1) {
+        this._router.navigateByUrl(res['productSearchResult']['products'][0]['productUrl'])
+      }
+    })
+
+  }
+
   ngOnInit() {
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
      */
+
     
-    this.setUserSession();
-    if(this.isBrowser){
+    if (this.isBrowser) {
+      this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
@@ -68,9 +149,7 @@ export class PagesComponent implements OnInit {
 
   isMoglixAppInstalled() {
     if (this.isBrowser) {
-      console.log('isMoglixAppInstalled called 1 ==>', 'on load');
       window.addEventListener('load', () => {
-        console.log('isMoglixAppInstalled called ==>', 'on window load');
         // Check to see if the API is supported.
         if ('getInstalledRelatedApps' in navigator) {
           this.updateAppStatus()
@@ -100,7 +179,6 @@ export class PagesComponent implements OnInit {
 
   updateAppStatus() {
     navigator['getInstalledRelatedApps']().then((relatedApps) => {
-      console.log('isMoglixAppInstalled relatedApps ==>', relatedApps);
       if (relatedApps && relatedApps.length > 0) {
         this._commonService.isAppInstalled = true;
       }
@@ -114,10 +192,9 @@ export class PagesComponent implements OnInit {
           map((res) => res)
         )
         .subscribe((res) => {
-          let userSession = this._localAuthService.getUserSession();
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
-          if ( (this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)  ){
+          if ((this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)) {
             this.updateCartSession();
           }
           this._localAuthService.login$.next();
@@ -128,13 +205,14 @@ export class PagesComponent implements OnInit {
 
   updateCartSession() {
     const userSession = this._localAuthService.getUserSession();
+
     let params = { "sessionid": userSession.sessionId };
     this._cartService.getCartBySession(params).subscribe((cartSession) => {
       if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
         let cs = this._cartService.updateCart(cartSession);
         this._cartService.setCartSession(cs);
         const val = cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0;
-        this._cartService.cart.next({count: val});
+        this._cartService.cart.next({ count: val });
         this._cartService.orderSummary.next(cartSession);
       }
       /**

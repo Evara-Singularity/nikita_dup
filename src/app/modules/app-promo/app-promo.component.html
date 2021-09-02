@@ -1,4 +1,4 @@
-<ng-container *ngIf="appPromoStatus && ( mobile_os == MOBILE_ENVS.ANDROID || mobile_os == MOBILE_ENVS.IOS )">
+<ng-container *ngIf="page === 'pdp'||(appPromoStatus && ( mobile_os == MOBILE_ENVS.ANDROID || mobile_os == MOBILE_ENVS.IOS ))">
     <div [ngClass]="{'fixed-app-promo':isOverlayMode}">
 
         <ng-container *ngIf="!isUserAuthenticated">

@@ -13,6 +13,8 @@ import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'header-nav',
@@ -97,8 +99,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         public _commonService: CommonService,
         private changeDetectorRef: ChangeDetectorRef,
         private globalLoader: GlobalLoaderService,
+        private localStorageService: LocalStorageService,
         private _state: GlobalState,
         private _checkoutService: CheckoutService,
+        private _analytics: GlobalAnalyticsService
     )
     {
         this.isServer = isPlatformServer(platformId);
@@ -228,7 +232,24 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             //toggle side menu
             this.bottomSheetInstance.instance['sbm'] = !(this.bottomSheetInstance.instance['sbm']);
         }
+        this.loadBottomSheetAnalyticEvent();
+    }
 
+    loadBottomSheetAnalyticEvent() {
+        const user = this.localStorageService.retrieve('user');
+        let page = {
+            'linkPageName': "moglix:hamburger-menu",
+            'linkName': "header",
+            'channel': this.router.url
+        }
+        let custData = {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        }
+        let order = {}
+        this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
     commonSubcribers()

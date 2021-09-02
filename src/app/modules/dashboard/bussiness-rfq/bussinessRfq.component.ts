@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import CONSTANTS from "@app/config/constants";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { ActivatedRoute, Router } from "@angular/router";
 declare var digitalData: {};
 declare let _satellite;
 
@@ -27,11 +28,21 @@ export class BussinessRfqComponent {
     private _localAuthService: LocalAuthService,
     private localStorageService: LocalStorageService,
     private _dashboardService: DashboardService,
+    private _router: Router,
+    public _activatedRoute: ActivatedRoute,
     private loaderService:GlobalLoaderService) {
 
-    this.getMyRfqList();
-    this.setData();
     this.showLoader = true;
+    
+    if (this._activatedRoute.snapshot.queryParams.hasOwnProperty('token')) {
+      setTimeout(() =>{
+        this.getMyRfqList();
+        this.setData();
+      }, 600);
+    } else {
+      this.getMyRfqList();
+        this.setData();
+    }
   }
 
   setData() {

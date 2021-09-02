@@ -99,7 +99,7 @@ export class FbtComponent implements OnInit
             this.mainMSNPrice = this.rootProduct['priceWithoutTax'];
             this.fbtProducts.forEach((item, index) =>
             {
-                let fbtValidation = this.modifyProduct(item, true);
+                let fbtValidation = this.modifyProduct(item, false);
                 if (fbtValidation.validation && index < 3) {
                     this.mFBTProducts.push(fbtValidation['mProduct']);
                 }
@@ -172,8 +172,10 @@ export class FbtComponent implements OnInit
                 }
                 productObject['isFBT'] = isFBT;
                 if (isFBT) {
-                    productObject['isSelected'] = true;;
+                    productObject['isSelected'] = true;
                     this.fbtMSNPrices[partReference] = productObject['priceWithoutTax'];
+                } else {
+                    productObject['isSelected'] = false;
                 }
                 returnObj = { mProduct: productObject, validation: true }
             }

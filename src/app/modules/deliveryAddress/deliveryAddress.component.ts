@@ -106,8 +106,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         this.addShippingAddress = false;
         this.addBillingAddress = false;
         this.nti = this.invoiceType === 'retail' ? false : true;
-        this._checkoutService.setCheckoutAddress(null);
-        this._checkoutService.setBillingAddress(null);
 
         this.tabIndex = 2;
         const userSession = this._localAuthService.getUserSession();
@@ -171,9 +169,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
 
     addressListApiCallback() {
 
-        // Reset CheckoutAdress and Billing address before callling API and callback will reset it.
-        this._checkoutService.setCheckoutAddress(null);
-        this._checkoutService.setBillingAddress(null);
         this.shippingAddressList = [];
         this.billingAddressList = [];
 
@@ -240,17 +235,17 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                     if (billingAddress) {
                         const addressExist = bal.filter(a => a['idAddress'] === billingAddress['idAddress']);
                         if (addressExist.length > 0) {
-                            console.log('billingAddress addressExist');
+                            // console.log('billingAddress addressExist');
                             this.billingAddressList = [addressExist[0]]
                             this._checkoutService.setBillingAddress(addressExist[0]);
                         } else {
-                            console.log('billingAddress not addressExist');
+                            // console.log('billingAddress not addressExist');
                             this.selectedBillingAddress = 0;
                             this._checkoutService.setBillingAddress(bal[0]);
                             this.billingAddressList = [bal[0]]
                         }
                     } else {
-                        console.log('billingAddress not deafult');
+                        // console.log('billingAddress not deafult');
                         this.selectedBillingAddress = 0;
                         this._checkoutService.setBillingAddress(bal[0]);
                         this.billingAddressList = [bal[0]]

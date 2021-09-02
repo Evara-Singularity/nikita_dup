@@ -4,6 +4,9 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { ArticleUtilService } from './article-util.service';
 
 @Component({
@@ -24,7 +27,7 @@ export class ArticleComponent implements OnInit
     isBrowser = false;
     isServer = false;
 
-    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, @Inject(PLATFORM_ID) platformId, private router: Router,
+    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, @Inject(PLATFORM_ID) platformId, private router: Router,	private _commonService: CommonService, private _localStorageService:LocalStorageService, private _analytics:GlobalAnalyticsService,
         private toastMessageService: ToastMessageService, private title: Title, private renderer2: Renderer2, private meta: Meta, @Inject(DOCUMENT) private document)
     {
         this.isServer = isPlatformServer(platformId);
@@ -43,12 +46,38 @@ export class ArticleComponent implements OnInit
         }
     }
 
+    setAnalyticTags(response) {
+            let user;
+            if (this._localStorageService.retrieve('user')) {
+                user = this._localStorageService.retrieve('user');
+            }
+            /*Start Adobe Analytics Tags */
+            let page = {
+                'pageName': "moglix:" + response.data[0].componentName,
+                'channel': "article",
+                'subSection': "moglix:" + response.data[0].componentName + ":" + this._commonService.getSectionClick().toLowerCase(),
+                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            };
+            let custData = {
+                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+                'customerType': (user && user["userType"]) ? user["userType"] : '',
+            };
+            const digitalData = {};
+            digitalData['page'] = page;
+            digitalData['custData'] = custData;
+            setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0 );
+            /*End Adobe Analytics Tags */
+    }
+
     initialize(response)
     {
         this.metaInformation = { metaTitle: response['metaTitle'], metaDescription: response['metaDescription'] };
         if (this.isBrowser) {
             this.title.setTitle(response['metaTitle']);
             (window.outerWidth >= 768) ? this.articleUtilService.setFooter() : this.articleUtilService.setMobileFoooters();
+            this.setAnalyticTags(response);
         }
         if (this.isServer) {
             this.setMetaInformation(this.metaInformation);

@@ -138,9 +138,9 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
 
-    
+    this.setUserSession();
     if (this.isBrowser) {
-      this.checkAndRedirect();
+      // this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
@@ -192,6 +192,7 @@ export class PagesComponent implements OnInit {
           map((res) => res)
         )
         .subscribe((res) => {
+          let userSession = this._localAuthService.getUserSession();
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ((this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)) {

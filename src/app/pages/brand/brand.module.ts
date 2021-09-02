@@ -6,6 +6,7 @@ import { BrandRoutingModule } from './brand.routing';
 import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
 import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
 import { BrandFooterModule } from '@app/components/brand-details-footer/brand-details-footer.component';
+import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import { BrandFooterModule } from '@app/components/brand-details-footer/brand-de
         BrandFooterModule,
         ReplacePipeModule,
         BrandRoutingModule,
+        KpToggleDirectiveModule,
         SharedProductListingModule
     ],
     declarations: [

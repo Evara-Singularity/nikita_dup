@@ -21,7 +21,7 @@ let digitalData = {
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
-    styleUrls: ['./brand.scss','../category/category.scss'],
+    styleUrls: ['./brand.scss','../category/category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })
 
 export class BrandComponent {
@@ -67,6 +67,7 @@ export class BrandComponent {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
+            console.log(this.API_RESPONSE);
 
             console.log(result);
 

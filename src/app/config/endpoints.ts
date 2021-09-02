@@ -7,6 +7,7 @@ export const ENDPOINTS = {
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
   DUPLICATE_ORDER: "/checkout/order/userProductOrder",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
+  SIMILAR_CATEGORY: "/category/mostSold",
   LOGIN_URL: "/login/sendOTP",
   BHARATPAY_URL: '/marketPlace/cartSessionbyId/',
   LOGIN_OTP: "/login/validateotp",

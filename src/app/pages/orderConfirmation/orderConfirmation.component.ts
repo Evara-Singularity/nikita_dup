@@ -592,6 +592,7 @@ export class OrderConfirmationComponent implements OnInit {
         });
         const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
         this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+        this.appPromoInstance.instance['page'] = 'order-confirmation';
         this.appPromoInstance.instance['isOverlayMode'] = false;
         this.appPromoInstance.instance['showPromoCode'] = false;
         this.appPromoInstance.instance['isLazyLoaded'] = true;

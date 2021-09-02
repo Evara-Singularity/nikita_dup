@@ -20,11 +20,11 @@ let digitalData = {
 
 @Component({
     selector: 'brand',
-    templateUrl: './brand.html',
-    styleUrls: ['./brand.scss','../category/category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
+    templateUrl: './brand-v1.html',
+    styleUrls: ['./brand-v1.scss','../category-v1/category-v1.scss'],
 })
 
-export class BrandComponent {
+export class BrandV1Component {
     public productListingData: ProductListingDataEntity;
     public cmsData: any[] = [];
     public API_RESPONSE: any;
@@ -67,9 +67,6 @@ export class BrandComponent {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result; 
-            console.log(this.API_RESPONSE);
-
-            console.log(result);
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);

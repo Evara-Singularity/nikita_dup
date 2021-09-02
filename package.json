@@ -58,6 +58,7 @@
         "net": "^1.0.2",
         "ng-lazyload-image": "^9.1.0",
         "ng2-cc-library": "^1.0.1",
+        "ngx-lottie": "^7.0.3",
         "ngx-pagination": "^3.2.1",
         "ngx-siema": "git+https://github.com/Yogender-moglix/ngx-siema.git",
         "ngx-socket-io": "^3.0.1",

@@ -63,12 +63,11 @@
                             Reviews
                         </small>
                     </p>
-
                 </div>
             </div>
 
-            <ng-container *ngIf="productTags != undefined">
-                <div class="prod-tag">
+            <ng-container *ngIf="productTags != undefined && productTags.length > 0" >
+                <div class="prod-tag" >
                     <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
                         <img src="{{tag.imageUrl}}">
                     </div>
@@ -98,7 +97,14 @@
                         </small>
                     </p>
                 </ng-container>
-
+            </div>
+            <div class="price-block" *ngIf="productOutOfStock || !productMrp">
+                <p class="actual-price">
+                    <small>
+                        Min Orderable Qty :
+                        <span>{{productMinimmumQuantity}} Pack</span>
+                    </small>
+                </p>
             </div>
             <div *ngIf="productOutOfStock" class="pad-t-10 f-size-8">
                 <strong class="availabilityOnReq">Available on Request</strong>
@@ -234,8 +240,8 @@
         <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
 
-        <div [ngClass]="{'returnPolicyContainer': appPromoVisible}" observeVisibility [debounceTime]="300"
-            (visible)="onVisibleAppPromo($event)">
+        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
 
@@ -554,6 +560,7 @@
     <ng-container #offerComparePopup></ng-container>
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
+    <ng-container #globalToast></ng-container>
 
 
 

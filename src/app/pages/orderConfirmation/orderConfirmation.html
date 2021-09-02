@@ -37,15 +37,24 @@
     <div class="card mt-10 pad-15">
         <p><b>Note:</b> We do not demand your banking and credit card details verbally or telephnocially. Please do not divulge your details to fraudsters falsely claming to be calling on moglix’s behalf.</p>
     </div>
+    
+    <div class="card mt-10 pad-0">
+        <div observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+            <ng-container #appPromo></ng-container>
+        </div> 
+    </div>
+
     <div class="continue-button">
         <div class="container">
             <p class="orange-txt mt-5 ml-15" (click)="navigateTo('/')"> CONTINUE <br> SHOPPING</p>
             <button class="btn" (click)="navigateTo('dashboard/order')">VIEW ORDER</button>
         </div>
     </div>
+    <!-- <app-promo [page]="'order-confirmation'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo> -->  
 </section>
 
 <iframe *ngIf="iFrameUrl != undefined && afType != undefined && afType=='iFrame' && id=='undefined'" [src]="iFrameUrl | safeUrl" width="1" height="1"></iframe>
 <iframe *ngIf="iFrameUrl != undefined && afType != undefined && afType=='iFrame' && id!='undefined'" id="pixelcodeurl" [src]="iFrameUrl | safeUrl" width="1" height="1"></iframe>
 
 <img *ngIf="iFrameUrl != undefined && afType != undefined && afType=='image'" [src]="iFrameUrl" width="1" height="1">
+ 

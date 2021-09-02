@@ -112,3 +112,10 @@
     margin: 0 auto 20px auto;
     max-width: 300px;
 }
+
+.fixed-btm-app-prmo {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 9;
+}

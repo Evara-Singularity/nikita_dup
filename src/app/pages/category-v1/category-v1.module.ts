@@ -8,6 +8,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { RecentArticlesModule } from '@app/components/recent-articles/recent-articles.component';
 import { CategoryFooterModule } from '@app/components/category-footer/category-footer.component';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directi
         RecentArticlesModule,
         CategoryV1RoutingModule,
         KpToggleDirectiveModule,
-        SharedProductListingModule
+        SharedProductListingModule,
+        AppPromoModule
     ],
     declarations: [
         CategoryV1Component,

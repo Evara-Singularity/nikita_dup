@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { BrandComponent } from "./brand.component";
 import { BrandResolver } from '@app/utils/resolvers/brand.resolver';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
     {
@@ -13,4 +14,9 @@ const routes: Routes = [
     }
 ];
 
-export const routing = RouterModule.forChild(routes);
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+})
+export class BrandRoutingModule { }
+  

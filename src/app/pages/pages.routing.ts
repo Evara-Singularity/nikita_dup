@@ -27,7 +27,7 @@ const routes: Routes = [
 			{
 				matcher: categoriesMatcher,
 				loadChildren: () =>
-					import('./category-v1/category-v1.module').then((m) => m.CategoryV1Module),
+					import('./category/category.module').then((m) => m.CategoryModule),
 				data: {
 					footer: false,
 					logo: true,
@@ -81,7 +81,7 @@ const routes: Routes = [
 			{
 				path: 'brands/:brand',
 				loadChildren: () =>
-					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
+					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
                     logo: true,
@@ -91,7 +91,7 @@ const routes: Routes = [
 			{
 				matcher: brandCategoriesMatcher,
 				loadChildren: () =>
-					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
+					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
                     logo: true,
@@ -111,7 +111,7 @@ const routes: Routes = [
 			{
 				path: 'search',
 				loadChildren: () =>
-					import('./search-v1/search-v1.module').then((m) => m.SearchV1Module),
+					import('./search/search.module').then((m) => m.SearchModule),
 				data: {
 					footer: false,
 					logo: true,
@@ -409,6 +409,45 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					layoutId: 'cm338483',
+				},
+			},
+			{
+				path: 'brand-store/dewalt',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm709642',
+				},
+			},
+			{
+				path: 'brand-store/stanley',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm523993',
+				},
+			},
+			{
+				path: 'brand-store/black-decker',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm105550',
 				},
 			},
 			{

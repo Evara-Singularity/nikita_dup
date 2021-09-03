@@ -6,6 +6,7 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterMidPlpModule } from '@app/components/filter-mid-plp/filter-mid-plp.component';
 import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
+import { AppPromoModule } from '../app-promo/app-promo.module';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -16,6 +17,7 @@ import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
     AddFilterSymbolPipeModule,
     NgxPaginationModule,
     ObserveVisibilityDirectiveModule,
+    AppPromoModule
   ],
   exports: [
     SharedProductListingComponent

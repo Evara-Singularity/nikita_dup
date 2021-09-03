@@ -1,5 +1,5 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, Optional, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { delay, map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
@@ -41,7 +41,8 @@ export class PagesComponent implements OnInit {
     @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    @Optional() @Inject(CONSTANTS.BROWSER_AGENT_TOKEN) private bowserAgent,
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -145,6 +146,8 @@ export class PagesComponent implements OnInit {
       this.setEnvIdentiferCookie()
       this.setConnectionType();
     }
+
+    console.log('apage ng onit bowserAgent ==> ', this.bowserAgent);
   }
 
   isMoglixAppInstalled() {

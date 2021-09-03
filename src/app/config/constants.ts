@@ -1,3 +1,4 @@
+import { InjectionToken } from "@angular/core";
 import { environment } from "environments/environment";
 
 let siemaOptionsObject: {
@@ -18,6 +19,7 @@ export const CONSTANTS = {
   IDS_MAP: environment.IDS_MAP,
   CMS_IDS: environment.CMS_IDS,
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
+  BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },

@@ -30,7 +30,7 @@
         <div *ngIf="isHomePage && !isScrolledHeader" class="search-bar search-bar-custom">
             <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category/Brand...">
             <div class="home-search-animation">
-                <ng-lottie class="lottie-div lottie-div-home" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+                <ng-lottie class="lottie-div lottie-div-home" [options]="options"></ng-lottie>
             </div>
         </div>
         <!--Category Header-->
@@ -45,7 +45,7 @@
                 <i class="icon-search"></i>
                 <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
                 <div class="listing-search-animation">
-                    <ng-lottie class="lottie-div" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+                    <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
                 </div>
             </a>
             <a *ngIf="!isHomePage  && !isLoginPage && (routerData && routerData['title'])" (click)="loadSearchNav()" class="icon-search red-txt"></a>
@@ -60,7 +60,7 @@
             <a class="search-bar">
                 <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();" placeholder="Search Product/Category/Brand...">
                 <div class="home-search-animation">
-                    <ng-lottie class="lottie-div" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+                    <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
                 </div>
             </a>
             <a *ngIf="isHomePage && isScrolledHeader" [routerLink]="['/quickorder']" class="icon-cart1 header-icon">

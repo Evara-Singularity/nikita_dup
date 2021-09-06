@@ -29,10 +29,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         path: './../../../assets/json/common1.json'
     };
 
-      animationCreated(animationItem: AnimationItem): void {
-        console.log(animationItem);
-    }
-
     isHomePage: boolean;
     routerData: any = null;
     user: any = null;

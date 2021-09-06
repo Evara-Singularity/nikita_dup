@@ -122,6 +122,7 @@ export class CategoryV1Component {
 
             // shared product listing data update
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
+            console.log(JSON.stringify((this.API_RESPONSE['category'][1]),null,2))
 
             // update footer data
             this.genrateAndUpdateCategoryFooterData();

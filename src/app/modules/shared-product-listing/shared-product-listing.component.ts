@@ -79,6 +79,7 @@ export class SharedProductListingComponent {
     this.appliedFilterCount = Object.keys(this._commonService.selectedFilterData.filter).length;
     
     if (this.paginationInstance) {
+      console.log(JSON.stringify(this._commonService.selectedFilterData.totalCount,null,2))
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
       this.paginationInstance.instance.initializePageData();
     }
@@ -100,6 +101,8 @@ export class SharedProductListingComponent {
 
   async filterUp() {
     if (!this.filterInstance) {
+      console.log("1ßnd")
+
       const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
         setTimeout(() => {
           this._commonService.toggleFilter();
@@ -108,10 +111,14 @@ export class SharedProductListingComponent {
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+      console.log(JSON.stringify(this.productsListingData,null,2));
       (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
         this.filterUp();
       });
     } else {
+      console.log("2nd")
+      console.log(JSON.stringify(this.productsListingData,null,2));
+
       this._commonService.toggleFilter();
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
     }

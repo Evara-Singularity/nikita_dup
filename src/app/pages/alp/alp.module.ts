@@ -20,6 +20,7 @@ import { BestSellerComponent } from './best-seller/best-seller.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
+import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.
         NgxSiemaModule.forRoot(),
         MathCeilPipeModule,
         DiscountPipeModule,
-    ],
+        SharedProductListingModule
+        ],
     declarations: [
         AlpComponent,
         GroupByComponent,

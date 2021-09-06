@@ -6,7 +6,7 @@ import { CommonService } from '@services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
 import { FooterService } from '@services/footer.service';
-import { SortByComponent } from '@components/sortBy/sortBy.component';
+// import { SortByComponent } from '@components/sortBy/sortBy.component';
 import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
 import { Subject, BehaviorSubject, Observable, of } from 'rxjs';
@@ -14,6 +14,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@services/data.service';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
+import { ProductListService } from '@app/utils/services/productList.service';
 
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 const GRCRK: any = makeStateKey<{}>('GRCRK'); // GRCRK: Get Related Category Result Key
@@ -26,47 +27,47 @@ const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
 })
 
 export class AlpComponent implements OnInit {
-    paginationInstance = null;
-    @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
-    filterInstance = null;
-    @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
-    sortByInstance = null;
-    @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
-    subCategoryInstance = null;
-    @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
-    catBestSellerInstance = null;
-    @ViewChild('catBestsellers', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
-    shopByBrandInstance = null;
-    @ViewChild('shopByBrand', { read: ViewContainerRef }) shopByBrandContainerRef: ViewContainerRef;
-    catStaticInstance = null;
-    @ViewChild('catStatic', { read: ViewContainerRef }) catStaticContainerRef: ViewContainerRef;
-    slpSubCategoryInstance = null;
-    @ViewChild('slpSubCategoryRef', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
-    shopbyFeatrInstance = null;
-    @ViewChild('shopbyFeatr', { read: ViewContainerRef }) shopbyFeatrContainerRef: ViewContainerRef;
-    cmsInstance = null;
-    @ViewChild('cms', { read: ViewContainerRef }) cmsContainerRef: ViewContainerRef;
-    cateoryFooterInstance = null;
-    @ViewChild('cateoryFooter', { read: ViewContainerRef }) cateoryFooterContainerRef: ViewContainerRef;
-    recentArticlesInstance = null;
-    @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
+    // paginationInstance = null;
+    // @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
+    // filterInstance = null;
+    // @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
+    // sortByInstance = null;
+    // @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
+    // subCategoryInstance = null;
+    // @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
+    // catBestSellerInstance = null;
+    // @ViewChild('catBestsellers', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
+    // shopByBrandInstance = null;
+    // @ViewChild('shopByBrand', { read: ViewContainerRef }) shopByBrandContainerRef: ViewContainerRef;
+    // catStaticInstance = null;
+    // @ViewChild('catStatic', { read: ViewContainerRef }) catStaticContainerRef: ViewContainerRef;
+    // slpSubCategoryInstance = null;
+    // @ViewChild('slpSubCategoryRef', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
+    // shopbyFeatrInstance = null;
+    // @ViewChild('shopbyFeatr', { read: ViewContainerRef }) shopbyFeatrContainerRef: ViewContainerRef;
+    // cmsInstance = null;
+    // @ViewChild('cms', { read: ViewContainerRef }) cmsContainerRef: ViewContainerRef;
+    // cateoryFooterInstance = null;
+    // @ViewChild('cateoryFooter', { read: ViewContainerRef }) cateoryFooterContainerRef: ViewContainerRef;
+    // recentArticlesInstance = null;
+    // @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
 
-    @ViewChild(SortByComponent) sortByComponent: SortByComponent;
+    // @ViewChild(SortByComponent) sortByComponent: SortByComponent;
 
-    paginationData: any = {};
+    // paginationData: any = {};
     breadcrumbData: any;
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     pageSizeUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     relatedCatgoryListUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     showLoader: boolean;
-    paginationUpdated: Subject<any> = new Subject<any>();
-    sortByUpdated: Subject<any> = new Subject<any>();
+    // paginationUpdated: Subject<any> = new Subject<any>();
+    // sortByUpdated: Subject<any> = new Subject<any>();
     
     categoryDataName: Subject<any> = new Subject<any>();
-    sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
+    // sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
     pageName: string;
     buckets = [];
-    subCategoryCount: number;
+    // subCategoryCount: number;
     session: {};
     getRelatedCatgory: any;
     toggletsWrap: boolean;
@@ -77,10 +78,10 @@ export class AlpComponent implements OnInit {
     isBrowser: boolean;
     productSearchResult: {};
     productSearchResultSEO: Array<any> = [];
-    sortByOpt = false;
+    // sortByOpt = false;
     filterCounts;
     todayDate: number;
-    spl_subCategory_Dt: any;
+    // spl_subCategory_Dt: any;
 
     refreshProductsUnsub$: any;
     refreshProductsUnsub: any;
@@ -103,7 +104,7 @@ export class AlpComponent implements OnInit {
     faqData;
     excludeAttributes: string[] = [];
     attributeListingData = null;
-    filterData: Array<any> = [];
+    // filterData: Array<any> = [];
     titleHeading = '';
     titleDescription = '';
     pageDescription = '';
@@ -130,12 +131,14 @@ export class AlpComponent implements OnInit {
         public dataService: DataService,
         public pageTitle: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService,
         public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
-        public _commonService: CommonService, private _categoryService: AlpService, private ngxSiemaService: NgxSiemaService) {
+        public _commonService: CommonService, private _categoryService: AlpService, private ngxSiemaService: NgxSiemaService,
+        public _productListService:ProductListService
+        ) {
         this.showSubcategoty = true;
         this.getRelatedCatgory = {};
         this.todayDate = Date.now();
         this.pageName = 'ATTRIBUTE';
-        this.subCategoryCount = 0;
+        // this.subCategoryCount = 0;
     }
 
     ngOnInit() {
@@ -236,9 +239,9 @@ export class AlpComponent implements OnInit {
 
         this.initiallizeRelatedCategories(res, true);
 
-        if (this._commonService.isServer) {
-            res[2]['buckets'] = this.filterBuckets(res[2]['buckets']);
-        }
+        // if (this._commonService.isServer) {
+        //     res[2]['buckets'] = this.filterBuckets(res[2]['buckets']);
+        // }
 
         this.initiallizeData(res[2], true);
 
@@ -264,7 +267,7 @@ export class AlpComponent implements OnInit {
             channel: "Listing",
             search_query: null,
             suggestion_click: null,
-            filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
+            // filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
             url_complete_load_time: null,
             page_type: "Category"
         }
@@ -275,11 +278,11 @@ export class AlpComponent implements OnInit {
             this.openPopup = !data.hide;
         }
     }
-    onFilterSelected(count) {
-        setTimeout(() => {
-            this.filterCounts = count;
-        }, 0);
-    }
+    // onFilterSelected(count) {
+    //     setTimeout(() => {
+    //         this.filterCounts = count;
+    //     }, 0);
+    // }
     togglets() {
         this.toggletsWrap = !this.toggletsWrap;
     }
@@ -325,11 +328,11 @@ export class AlpComponent implements OnInit {
         this.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.productsUpdated.next(response.productSearchResult.products);
-        this.filterData = this.filterBuckets(response.buckets);
-        this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
+        // this.filterData = this.filterBuckets(response.buckets);
+        // this.filterCounts = this._commonService.calculateFilterCount(response.buckets);
         
 
-        this.buckets = this.filterBuckets(response.buckets);
+        // this.buckets = this.filterBuckets(response.buckets);
         this.productSearchResult = response.productSearchResult;
         this.productSearchResultSEO = [];
         for (let p = 0; p < response.productSearchResult.products.length && p < 10; p++) {
@@ -342,8 +345,16 @@ export class AlpComponent implements OnInit {
         if (products && products.length) {
             this.createProductsSchema(products);
         }
-        //console.log("set cano func",response);
+        // shared product listing data update
+    this._productListService.createAndProvideDataToSharedListingComponent(response, 'Category Results');
+    console.log(JSON.stringify((response),null,2))
+
+    // Update total product account
+    this._commonService.selectedFilterData.totalCount = response.productSearchResult.totalCount;
+
     }
+    // // shared product listing data update
+    // this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
     createProductsSchema(productArray) {
         if (this._commonService.isServer) {
             if (productArray.length > 0) {
@@ -580,58 +591,58 @@ export class AlpComponent implements OnInit {
         }
     }
 
-    async onVisiblePagination(event) {
-        if (!this.paginationInstance) {
-            const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
-            const factory = this.cfr.resolveComponentFactory(PaginationComponent);
-            this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
-            this.paginationInstance.instance['paginationData'] = this.paginationData;
-        }
-    }
+    // async onVisiblePagination(event) {
+    //     if (!this.paginationInstance) {
+    //         const { PaginationComponent } = await import('@app/components/pagination/pagination.component');
+    //         const factory = this.cfr.resolveComponentFactory(PaginationComponent);
+    //         this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this.injector);
+    //         this.paginationInstance.instance['paginationData'] = this.paginationData;
+    //     }
+    // }
 
-    async filterUp() {
-        if (!this.filterInstance) {
-            const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
-                setTimeout(() => {
-                    const mob_filter = document.querySelector('.mob_filter');
-                    if (mob_filter) {
-                        mob_filter.classList.add('upTrans');
-                    }
-                }, 0);
-            });
-            const factory = this.cfr.resolveComponentFactory(FilterComponent);
-            this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
-            this.filterInstance.instance['filterData'] = this.filterData;
-            (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-                this.filterUp();
-            });
-        } else {
-            const mob_filter = document.querySelector('.mob_filter');
+    // async filterUp() {
+    //     if (!this.filterInstance) {
+    //         const { FilterComponent } = await import('@app/components/filter/filter.component').finally(() => {
+    //             setTimeout(() => {
+    //                 const mob_filter = document.querySelector('.mob_filter');
+    //                 if (mob_filter) {
+    //                     mob_filter.classList.add('upTrans');
+    //                 }
+    //             }, 0);
+    //         });
+    //         const factory = this.cfr.resolveComponentFactory(FilterComponent);
+    //         this.filterInstance = this.filterContainerRef.createComponent(factory, null, this.injector);
+    //         this.filterInstance.instance['filterData'] = this.filterData;
+    //         (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+    //             this.filterUp();
+    //         });
+    //     } else {
+    //         const mob_filter = document.querySelector('.mob_filter');
 
-            if (mob_filter) {
-                mob_filter.classList.toggle('upTrans');
-            }
-        }
-    }
+    //         if (mob_filter) {
+    //             mob_filter.classList.toggle('upTrans');
+    //         }
+    //     }
+    // }
     
-    async toggleSortBy() {
+    // async toggleSortBy() {
 
-        if (!this.sortByInstance) {
-            const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
-            const factory = this.cfr.resolveComponentFactory(SortByComponent);
-            this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
+    //     if (!this.sortByInstance) {
+    //         const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
+    //         const factory = this.cfr.resolveComponentFactory(SortByComponent);
+    //         this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this.injector);
 
-            (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-                this.toggleSortBy();
-            });
-        } else {
-            const sortByFilter = document.querySelector('sort-by');
+    //         (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
+    //             this.toggleSortBy();
+    //         });
+    //     } else {
+    //         const sortByFilter = document.querySelector('sort-by');
 
-            if (sortByFilter) {
-                sortByFilter.classList.toggle('open');
-            }
-        }
-    }
+    //         if (sortByFilter) {
+    //             sortByFilter.classList.toggle('open');
+    //         }
+    //     }
+    // }
     createDefaultParams(defaultApiParams) {
 
         let newParams = {
@@ -728,7 +739,7 @@ export class AlpComponent implements OnInit {
             } else {
                 this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
             }
-            this.spl_subCategory_Dt = this.getRelatedCatgory.children;
+            // this.spl_subCategory_Dt = this.getRelatedCatgory.children;
 
         }
     }
@@ -765,9 +776,9 @@ export class AlpComponent implements OnInit {
         this._router.navigate([currentRoute], extras);
     }
 
-    updateSubCategoryCount(count) {
-        this.subCategoryCount = count;
-    }
+    // updateSubCategoryCount(count) {
+    //     this.subCategoryCount = count;
+    // }
 
     getTopTenBrandName(buckets: Array<{}>) {
         let bNames = null;
@@ -877,53 +888,53 @@ export class AlpComponent implements OnInit {
     // }
 
     resetLazyComponents() {
-        if (this.filterInstance) {
-            this.filterInstance = null;
-            this.filterContainerRef.remove();
-        }
-        if (this.sortByInstance) {
-            this.sortByInstance = null;
-            this.sortByContainerRef.remove();
-        }
-        if (this.paginationInstance) {
-            this.paginationInstance = null;
-            this.paginationContainerRef.remove();
-        }
-        if (this.subCategoryInstance) {
-            this.subCategoryInstance = null;
-            this.subCategoryContainerRef.remove();
-        }
-        if (this.catBestSellerInstance) {
-            this.catBestSellerInstance = null;
-            this.catBestSellerContainerRef.remove();
-        }
-        if (this.shopByBrandInstance) {
-            this.shopByBrandInstance = null;
-            this.shopByBrandContainerRef.remove();
-        }
-        if (this.catStaticInstance) {
-            this.catStaticInstance = null;
-            this.catStaticContainerRef.remove();
-        }
-        if (this.shopbyFeatrInstance) {
-            this.shopbyFeatrInstance = null;
-            this.shopbyFeatrContainerRef.remove();
-        }
-        if (this.shopbyFeatrInstance) {
-            this.shopbyFeatrInstance = null;
-            this.shopbyFeatrContainerRef.remove();
-        }
-        if (this.slpSubCategoryInstance) {
-            this.slpSubCategoryInstance = null;
-            this.slpSubCategoryContainerRef.remove();
-        }
-        if (this.cmsInstance) {
-            this.cmsInstance = null;
-            this.cmsContainerRef.remove();
-        }
-        if (this.cateoryFooterInstance) {
-            this.cateoryFooterInstance = null;
-            this.cateoryFooterContainerRef.remove();
-        }
+        // if (this.filterInstance) {
+        //     this.filterInstance = null;
+        //     this.filterContainerRef.remove();
+        // }
+        // if (this.sortByInstance) {
+        //     this.sortByInstance = null;
+        //     this.sortByContainerRef.remove();
+        // }
+        // if (this.paginationInstance) {
+        //     this.paginationInstance = null;
+        //     this.paginationContainerRef.remove();
+        // }
+        // if (this.subCategoryInstance) {
+        //     this.subCategoryInstance = null;
+        //     this.subCategoryContainerRef.remove();
+        // }
+        // if (this.catBestSellerInstance) {
+        //     this.catBestSellerInstance = null;
+        //     this.catBestSellerContainerRef.remove();
+        // }
+        // if (this.shopByBrandInstance) {
+        //     this.shopByBrandInstance = null;
+        //     this.shopByBrandContainerRef.remove();
+        // }
+        // if (this.catStaticInstance) {
+        //     this.catStaticInstance = null;
+        //     this.catStaticContainerRef.remove();
+        // }
+        // if (this.shopbyFeatrInstance) {
+        //     this.shopbyFeatrInstance = null;
+        //     this.shopbyFeatrContainerRef.remove();
+        // }
+        // if (this.shopbyFeatrInstance) {
+        //     this.shopbyFeatrInstance = null;
+        //     this.shopbyFeatrContainerRef.remove();
+        // }
+        // if (this.slpSubCategoryInstance) {
+        //     this.slpSubCategoryInstance = null;
+        //     this.slpSubCategoryContainerRef.remove();
+        // }
+        // if (this.cmsInstance) {
+        //     this.cmsInstance = null;
+        //     this.cmsContainerRef.remove();
+        // }
+        // if (this.cateoryFooterInstance) {
+        //     this.cateoryFooterInstance = null;
+        //     this.cateoryFooterContainerRef.remove();
+        // }
     }
 }

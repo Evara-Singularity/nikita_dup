@@ -19,6 +19,7 @@ export class FilterComponent {
     public selectedFilterIndex: number = 0;
 
     constructor(public _commonService: CommonService, private _activatedRoute: ActivatedRoute) {
+        console.log(JSON.stringify(this.filterData,null,2))
     }
 
     /**

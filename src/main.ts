@@ -38,25 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const CONNECTION = navigator['connection'];
                 const TYPE: string = CONNECTION['type'] || CONNECTION['effectiveType'];
                 if (ANALYTICS.includes(TYPE.toLowerCase())) {
-                    window['dataLayer'] = [];
-                    window['digitalData'] = {};
                     // these vars needs present in global document scope
                     loadAnalytics();
                 }
-            }
-
-            /**
-             * hack to over _satellite behaviour incase less 4G network types
-             * Refer loadAnalytics()
-             * */
-            if (!ISCHROME) {
-                window['dataLayer'] = [];
-                window['digitalData'] = {};
-                window['digitalData']['event'] = [];
-                window['_satellite'] = window['_satellite'] || {};
-                // window['_satellite']['track'] = function (args) {
-                //     console.info("Override _satellite", args)
-                // }
             }
 
         })

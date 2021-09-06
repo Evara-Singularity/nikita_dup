@@ -12,6 +12,7 @@ import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
 import { NgxSiemaService } from 'ngx-siema';
+import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 @NgModule({
   declarations: [
     ProductComponent,
@@ -29,7 +30,7 @@ import { NgxSiemaService } from 'ngx-siema';
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
     // Directives
-    ObserveVisibilityDirectiveModule,  
+    EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule
   ],
   exports: [],

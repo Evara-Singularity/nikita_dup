@@ -16,6 +16,7 @@ import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import { SpeedTestService } from 'ng-speed-test';
 
 @Component({
   selector: 'app-pages',
@@ -42,6 +43,7 @@ export class PagesComponent implements OnInit {
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
+    private speedTestService: SpeedTestService,
     @Optional() @Inject(CONSTANTS.BROWSER_AGENT_TOKEN) private bowserAgent,
   ) {
     this.isServer = isPlatformServer(platformId);
@@ -145,7 +147,18 @@ export class PagesComponent implements OnInit {
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
+
+      setTimeout(() => {
+        console.log('speedTestService', 'called');
+        this.speedTestService.getMbps({ iterations: 1, retryDelay: 1500 }).subscribe(
+          (speed) => {
+            console.log('speed ==>', speed);
+            this._commonService.networkSpeed = speed;
+          }
+        )
+      }, 3000);
     }
+    
 
     console.log('apage ng onit bowserAgent ==> ', this.bowserAgent);
   }

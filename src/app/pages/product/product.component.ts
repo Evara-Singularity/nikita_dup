@@ -696,6 +696,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     imagesArr.forEach(element => {
       this.productAllImages.push({
         src: this.imagePath + "" + element.links.xlarge,
+        xlarge: this.imagePath + "" + element.links.xlarge,
+        large: this.imagePath + "" + element.links.large,
         default: this.imagePath + "" + element.links.default,
         caption: this.imagePath + "" + element.links.icon,
         thumb: this.imagePath + "" + element.links.icon,

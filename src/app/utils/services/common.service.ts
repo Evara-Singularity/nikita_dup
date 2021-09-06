@@ -47,6 +47,7 @@ export class CommonService {
     abTesting: any;
 
     updateSortBy: Subject<string> = new Subject();
+    networkSpeed: number = null;
 
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };

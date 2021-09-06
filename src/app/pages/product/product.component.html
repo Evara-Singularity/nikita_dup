@@ -35,7 +35,7 @@
 </section>
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
-    <div class="info-to-buyer">
+    <!-- <div class="info-to-buyer">
         <div class="info-to-buyer-l">
             <p>This same item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
         </div>
@@ -50,7 +50,7 @@
         <div class="info-to-buyer-r">
             <a href="">view order</a>
         </div>
-    </div>
+    </div> -->
     <div class="prod-carsl" addClass [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
         </siema-carousel>

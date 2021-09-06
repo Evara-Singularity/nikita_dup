@@ -4,8 +4,8 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
-import { interval, Subject, timer } from 'rxjs';
-import { takeUntil, debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'app-otp-popup',
@@ -35,12 +35,13 @@ export class OtpPopupComponent implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        this.user = this._localAuthService.getUserSession();
         this.executeTimer();
+        this.user = this._localAuthService.getUserSession();
     }
 
     sendOTP()
     {
+        this.otp.reset();
         const request = { device: 'mobile', email: '', phone: this.phone, type: 'p', source: this.source, userId: this.user["userId"] };
         this._commonService.sendOtp(request).subscribe((response) =>
         {
@@ -70,19 +71,21 @@ export class OtpPopupComponent implements OnInit, OnDestroy
 
     executeTimer()
     {
-        this.tickerLabel = `${this.timerLabel}00`;
-        const interval$ = interval(this.N1000);
-        const timer$ = timer(this.N46000);
+        let otpCounter = 45;
+        this.tickerLabel = `${this.timerLabel}${otpCounter}`;
         this.isTicking = true;
-        timer$.subscribe(() => { 
-            this.isTicking = false; 
-            this.tickerLabel = `${this.timerLabel}00`;
-            console.log(this.tickerLabel)
-         });
-        interval$.pipe(takeUntil(timer$)).subscribe((value: number) =>
+        let timerId = setInterval(() =>
         {
-            this.tickerLabel = `${this.timerLabel}`+ (value > 9 ? (value + 1) : ("0" + value));
-        });
+            if (otpCounter < 1) {
+                this.isTicking = false;
+                this.tickerLabel = `${this.timerLabel}00`;
+                clearTimeout(timerId);
+                return;
+            } else {
+                otpCounter -= 1;
+                this.tickerLabel = `${this.timerLabel}${(otpCounter > 9 ? (otpCounter + 1) : ("0" + otpCounter))}`;
+            }
+        }, 1000);
     }
 
     processOTPError(response)

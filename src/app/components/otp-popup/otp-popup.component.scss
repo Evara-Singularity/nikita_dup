@@ -16,7 +16,7 @@
             p{
                 font-size: $small-font;
                 line-height: 16px;
-                color: #756363;
+                color: #3C3C3C;
             }
         }
         .otp-crossbtn{
@@ -47,7 +47,7 @@
                 width: 100% !important;
                 border: none;
                 font-size: $large-font;
-                color: #B5B5B5;
+                color: #343434;
             }
         }
         .otp-area-r{
@@ -85,6 +85,7 @@
         border: #c4c4c4;
         width: 100%;
         font-size: $large-font;
+        font-weight: bold;
         &:disabled{background-color: #C4C4C4;}
     }
 }

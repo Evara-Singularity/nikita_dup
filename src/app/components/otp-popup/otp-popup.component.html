@@ -20,7 +20,11 @@
             <span *ngIf="isPhoneVerfied">VERIFIED<i class="icon-done"></i></span>
         </div>
     </div>
-    <p class="error-msg" *ngIf="otpErrorMessage">{{otpErrorMessage}}</p>
+    <ng-container *ngIf="otp.touched || otp.dirty">
+        <p class="error-text" *ngIf="otp.hasError('required')">Please provide valid OTP.</p>
+        <p class="error-text" *ngIf="otp.hasError('pattern')">OTP must contain 6 digits.</p>
+    </ng-container>
+    <p class="error-text" *ngIf="otp.valid && otpErrorMessage">{{otpErrorMessage}}</p>
     <button class="btn-cont" (click)="$event.stopPropagation();validateOTP(otp.value)"
         [disabled]="otp.invalid">CONTINUE</button>
 </div>

@@ -42,7 +42,7 @@ import { SharedProductListingModule } from '@app/modules/shared-product-listing/
         MathCeilPipeModule,
         DiscountPipeModule,
         SharedProductListingModule
-        ],
+    ],
     declarations: [
         AlpComponent,
         GroupByComponent,

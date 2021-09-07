@@ -102,11 +102,11 @@ export class AlpComponent implements OnInit {
     taxo3: any;
     trendingSearchData;
     faqData;
-    excludeAttributes: string[] = [];
+    // excludeAttributes: string[] = [];
     attributeListingData = null;
     // filterData: Array<any> = [];
     titleHeading = '';
-    titleDescription = '';
+    // titleDescription = '';
     pageDescription = '';
     metaTitle = '';
     metaDescription = '';
@@ -143,13 +143,10 @@ export class AlpComponent implements OnInit {
 
     ngOnInit() {
         this.setCategoryDataFromResolver();
-        
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
-
-        this.footerService.setMobileFoooters();
-
+        // this.footerService.setMobileFoooters();
     }
 
     setDataAfterGettingDataFromResolver(res) {
@@ -204,13 +201,13 @@ export class AlpComponent implements OnInit {
         this.attributeListingData = data[0]['data'];
         let attributeListing = this.attributeListingData['attributesListing'];
         this.titleHeading = attributeListing['title']
-        this.titleDescription = attributeListing['titleDescription'];
+        // this.titleDescription = attributeListing['titleDescription'];
         this.pageDescription = attributeListing['pageDescription'];
         this.metaTitle = attributeListing['metaTitle'];
         this.metaDescription = attributeListing['metaDescription'];
-        this.excludeAttributes = (attributeListing['attributes'] as string[]).map((name=>name.toLowerCase()));
-        this.bestSellerProducts = this.attributeListingData['bestSellersProducts'];
-        this.bestSellerTitle = attributeListing['categoryName'];
+        // this.excludeAttributes = (attributeListing['attributes'] as string[]).map((name=>name.toLowerCase()));
+        // this.bestSellerProducts = this.attributeListingData['bestSellersProducts'];
+        // this.bestSellerTitle = attributeListing['categoryName'];
         this.fetchCIMSRelatedData(data[1]);
     }
 
@@ -218,8 +215,8 @@ export class AlpComponent implements OnInit {
         this._commonService.showLoader = false;
         this.breadcrumbData = res[1];
         const ict = res[0]['categoryDetails']['active'];
-        let productSearchResult = res[2]["productSearchResult"];
-        this.groupByBrandName(productSearchResult['products']);
+        // let productSearchResult = res[2]["productSearchResult"];
+        // this.groupByBrandName(productSearchResult['products']);
 
         if (!ict || res[2]['productSearchResult']['totalCount'] === 0) {
             if (this._commonService.isServer) {
@@ -273,19 +270,19 @@ export class AlpComponent implements OnInit {
         }
         this.dataService.sendMessage(trackData);
     }
-    outData(data) {
-        if (Object.keys(data).indexOf('hide') !== -1) {
-            this.openPopup = !data.hide;
-        }
-    }
+    // outData(data) {
+    //     if (Object.keys(data).indexOf('hide') !== -1) {
+    //         this.openPopup = !data.hide;
+    //     }
+    // }
     // onFilterSelected(count) {
     //     setTimeout(() => {
     //         this.filterCounts = count;
     //     }, 0);
     // }
-    togglets() {
-        this.toggletsWrap = !this.toggletsWrap;
-    }
+    // togglets() {
+    //     this.toggletsWrap = !this.toggletsWrap;
+    // }
     parseData(data) {
         let relevantObj: any = {};
         data.forEach(obj => {
@@ -643,62 +640,62 @@ export class AlpComponent implements OnInit {
     //         }
     //     }
     // }
-    createDefaultParams(defaultApiParams) {
+    // createDefaultParams(defaultApiParams) {
 
-        let newParams = {
-            category: defaultApiParams['category'], pageName: 'ATTRIBUTE', queryParams: {}, filter: {}
-        }
-        //api params/filters
-        if (defaultApiParams['str']) {
-            newParams.queryParams['str'] = defaultApiParams['str'];
-        }
-        if (defaultApiParams['filter']) {
-            let filterTemp = JSON.parse(decodeURIComponent(defaultApiParams['filter']));
-            filterTemp = JSON.stringify(filterTemp).replace(/[+]/g, ' ');
-            newParams.filter = JSON.parse(filterTemp);
-        }
-        let defaultParams = this._commonService.getDefaultParams();
-        if (defaultParams['queryParams']['orderBy'] != undefined) {
-            newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
-        }
-        if (defaultParams['queryParams']['orderWay'] != undefined) {
-            newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
-        }
-        let currentQueryParams = this._activatedRoute.snapshot.queryParams;
-        for (let key in currentQueryParams) {
-            newParams.queryParams[key] = currentQueryParams[key];
-        }
+    //     let newParams = {
+    //         category: defaultApiParams['category'], pageName: 'ATTRIBUTE', queryParams: {}, filter: {}
+    //     }
+    //     //api params/filters
+    //     if (defaultApiParams['str']) {
+    //         newParams.queryParams['str'] = defaultApiParams['str'];
+    //     }
+    //     if (defaultApiParams['filter']) {
+    //         let filterTemp = JSON.parse(decodeURIComponent(defaultApiParams['filter']));
+    //         filterTemp = JSON.stringify(filterTemp).replace(/[+]/g, ' ');
+    //         newParams.filter = JSON.parse(filterTemp);
+    //     }
+    //     let defaultParams = this._commonService.getDefaultParams();
+    //     if (defaultParams['queryParams']['orderBy'] != undefined) {
+    //         newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
+    //     }
+    //     if (defaultParams['queryParams']['orderWay'] != undefined) {
+    //         newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
+    //     }
+    //     let currentQueryParams = this._activatedRoute.snapshot.queryParams;
+    //     for (let key in currentQueryParams) {
+    //         newParams.queryParams[key] = currentQueryParams[key];
+    //     }
 
-        let fragment = this._activatedRoute.snapshot.fragment;
-        if (fragment != undefined && fragment != null && fragment.length > 0) {
-            let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            ////console.log(currentUrlFilterData);
-            currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
-            /*Below newCurrentUrlFilterData and for loop is added for a special case, / is coming also in voltage filter part*/
-            let newCurrentUrlFilterData = "";
-            for (let i = 0; i < currentUrlFilterData.length; i++) {
-                if (currentUrlFilterData[i] == "/" && /^\d+$/.test(currentUrlFilterData[i + 1])) {
-                    //console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
-                    newCurrentUrlFilterData = newCurrentUrlFilterData + "$";
-                    //console.log(newCurrentUrlFilterData);
-                } else {
-                    newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
-                }
-            }
-            currentUrlFilterData = newCurrentUrlFilterData.split("/");
-            if (currentUrlFilterData.length > 0) {
-                var filter = {};
-                for (var i = 0; i < currentUrlFilterData.length; i++) {
-                    var filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
-                    var filterData = currentUrlFilterData[i].replace("$", "/").substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
-                    filter[filterName] = filterData;
-                }
-                newParams["filter"] = Object.assign({}, newParams["filter"], filter);
-            }
-        }
-        // console.log('New Params', JSON.stringify(newParams));
-        return newParams;
-    }
+    //     let fragment = this._activatedRoute.snapshot.fragment;
+    //     if (fragment != undefined && fragment != null && fragment.length > 0) {
+    //         let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
+    //         ////console.log(currentUrlFilterData);
+    //         currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
+    //         /*Below newCurrentUrlFilterData and for loop is added for a special case, / is coming also in voltage filter part*/
+    //         let newCurrentUrlFilterData = "";
+    //         for (let i = 0; i < currentUrlFilterData.length; i++) {
+    //             if (currentUrlFilterData[i] == "/" && /^\d+$/.test(currentUrlFilterData[i + 1])) {
+    //                 //console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
+    //                 newCurrentUrlFilterData = newCurrentUrlFilterData + "$";
+    //                 //console.log(newCurrentUrlFilterData);
+    //             } else {
+    //                 newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
+    //             }
+    //         }
+    //         currentUrlFilterData = newCurrentUrlFilterData.split("/");
+    //         if (currentUrlFilterData.length > 0) {
+    //             var filter = {};
+    //             for (var i = 0; i < currentUrlFilterData.length; i++) {
+    //                 var filterName = currentUrlFilterData[i].substr(0, currentUrlFilterData[i].indexOf('-')).toLowerCase(); // "price"
+    //                 var filterData = currentUrlFilterData[i].replace("$", "/").substr(currentUrlFilterData[i].indexOf('-') + 1).split("||"); // ["101 - 500", "501 - 1000"]
+    //                 filter[filterName] = filterData;
+    //             }
+    //             newParams["filter"] = Object.assign({}, newParams["filter"], filter);
+    //         }
+    //     }
+    //     // console.log('New Params', JSON.stringify(newParams));
+    //     return newParams;
+    // }
 
     getExtraCategoryData(data): Observable<{}> {
         if (this._tState.hasKey(EDK)) {
@@ -724,7 +721,6 @@ export class AlpComponent implements OnInit {
     private initiallizeRelatedCategories(response, flag) {
         this.getRelatedCatgory = response[0];
         const categoryData = response[2];
-
         let qps = this._activatedRoute.snapshot.queryParams;
 
         if (this.getRelatedCatgory.categoryDetails.active) {
@@ -740,140 +736,140 @@ export class AlpComponent implements OnInit {
                 this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
             }
             // this.spl_subCategory_Dt = this.getRelatedCatgory.children;
-
         }
     }
 
 
-    pageChanged(page) {
-        const extras: NavigationExtras = {};
-        const currentRoute = this._commonService.getCurrentRoute(this._router.url);
-        const fragmentString = this._activatedRoute.snapshot.fragment;
-        if (fragmentString != null) {
-            extras.fragment = fragmentString;
-        }
+    // pageChanged(page) {
+    //     const extras: NavigationExtras = {};
+    //     const currentRoute = this._commonService.getCurrentRoute(this._router.url);
+    //     const fragmentString = this._activatedRoute.snapshot.fragment;
+    //     if (fragmentString != null) {
+    //         extras.fragment = fragmentString;
+    //     }
 
-        const currentQueryParams = this._activatedRoute.snapshot.queryParams;
-        const newQueryParams: {} = {};
-        if (Object.keys(currentQueryParams).length) {
-            for (let key in currentQueryParams) {
-                newQueryParams[key] = currentQueryParams[key];
-            }
-        }
+    //     const currentQueryParams = this._activatedRoute.snapshot.queryParams;
+    //     const newQueryParams: {} = {};
+    //     if (Object.keys(currentQueryParams).length) {
+    //         for (let key in currentQueryParams) {
+    //             newQueryParams[key] = currentQueryParams[key];
+    //         }
+    //     }
 
-        if (page !== '1') {
-            newQueryParams['page'] = page;
-        } else if (newQueryParams['page'] !== undefined) {
-            delete newQueryParams['page'];
-        }
+    //     if (page !== '1') {
+    //         newQueryParams['page'] = page;
+    //     } else if (newQueryParams['page'] !== undefined) {
+    //         delete newQueryParams['page'];
+    //     }
 
-        if (Object.keys(newQueryParams).length > 0) {
-            extras.queryParams = newQueryParams;
-        } else {
-            extras.queryParams = {};
-        }
+    //     if (Object.keys(newQueryParams).length > 0) {
+    //         extras.queryParams = newQueryParams;
+    //     } else {
+    //         extras.queryParams = {};
+    //     }
 
-        this._router.navigate([currentRoute], extras);
-    }
+    //     this._router.navigate([currentRoute], extras);
+    // }
 
     // updateSubCategoryCount(count) {
     //     this.subCategoryCount = count;
     // }
 
-    getTopTenBrandName(buckets: Array<{}>) {
-        let bNames = null;
+    // getTopTenBrandName(buckets: Array<{}>) {
+    //     let bNames = null;
 
-        if (buckets === undefined || buckets === null || (buckets && buckets.length === 0)) {
-            return '';
-        }
+    //     if (buckets === undefined || buckets === null || (buckets && buckets.length === 0)) {
+    //         return '';
+    //     }
 
-        for (let i = 0; i < buckets.length; i++) {
-            if (buckets[i]['name'] === 'brand') {
-                for (let j = 0; j < buckets[i]['terms'].length; j++) {
-                    if (bNames === null) {
-                        bNames = buckets[i]['terms'][j]['term'];
-                    } else {
-                        bNames = bNames + ', ' + buckets[i]['terms'][j]['term'];
-                    }
-                    if (j === 9) {
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return bNames;
-        // console.log(buckets, "bucketsbucketsbuckets");
-    }
+    //     for (let i = 0; i < buckets.length; i++) {
+    //         if (buckets[i]['name'] === 'brand') {
+    //             for (let j = 0; j < buckets[i]['terms'].length; j++) {
+    //                 if (bNames === null) {
+    //                     bNames = buckets[i]['terms'][j]['term'];
+    //                 } else {
+    //                     bNames = bNames + ', ' + buckets[i]['terms'][j]['term'];
+    //                 }
+    //                 if (j === 9) {
+    //                     break;
+    //                 }
+    //             }
+    //             break;
+    //         }
+    //     }
+    //     return bNames;
+    //     // console.log(buckets, "bucketsbucketsbuckets");
+    // }
 
-    getFeaturedProducts(products: Array<{}>) {
-        let fProducts = null;
-        if (products == undefined || products == null || (products && products.length == 0))
-            return "";
+    // getFeaturedProducts(products: Array<{}>) {
+    //     let fProducts = null;
+    //     if (products == undefined || products == null || (products && products.length == 0))
+    //         return "";
 
-        for (let i = 0; i < products.length; i++) {
-            if (fProducts == null)
-                fProducts = products[i]['productName'];
-            else
-                fProducts = fProducts + ", " + products[i]['productName'];
-            if (i == 5)
-                break;
-        }
-        return fProducts;
-    }
-    scrollTop(eve) {
-        if (this.isBrowser) {
-            ClientUtility.scrollToTop(500, eve.target.offsetTop - 50);
-        }
-    }
-    ngOnDestroy() {
-        if (this.refreshProductsUnsub$) {
-            this.refreshProductsUnsub$.unsubscribe();
-        }
-        if (this.refreshProductsUnsub) {
-            this.refreshProductsUnsub.unsubscribe();
-        }
-        if (this._activatedRouteUnsub) {
-            this._activatedRouteUnsub.unsubscribe();
-        }
-        if (this.combineLatestUnsub) {
-            this.combineLatestUnsub.unsubscribe()
-        }
-        if (this.forkJoinUnsub) {
-            this.forkJoinUnsub.unsubscribe();
-        }
-        this.resetLazyComponents();
-    }
-    getAltName(brandName) {
-        if (brandName == null || brandName == undefined) {
-            return 'safety shoes';
-        }
-        else {
-            return brandName + " safety shoes";
-        }
-    }
+    //     for (let i = 0; i < products.length; i++) {
+    //         if (fProducts == null)
+    //             fProducts = products[i]['productName'];
+    //         else
+    //             fProducts = fProducts + ", " + products[i]['productName'];
+    //         if (i == 5)
+    //             break;
+    //     }
+    //     return fProducts;
+    // }
+    // scrollTop(eve) {
+    //     if (this.isBrowser) {
+    //         ClientUtility.scrollToTop(500, eve.target.offsetTop - 50);
+    //     }
+    // }
+    // ngOnDestroy() {
+    //     if (this.refreshProductsUnsub$) {
+    //         this.refreshProductsUnsub$.unsubscribe();
+    //     }
+    //     if (this.refreshProductsUnsub) {
+    //         this.refreshProductsUnsub.unsubscribe();
+    //     }
+    //     if (this._activatedRouteUnsub) {
+    //         this._activatedRouteUnsub.unsubscribe();
+    //     }
+    //     if (this.combineLatestUnsub) {
+    //         this.combineLatestUnsub.unsubscribe()
+    //     }
+    //     if (this.forkJoinUnsub) {
+    //         this.forkJoinUnsub.unsubscribe();
+    //     }
+    //     this.resetLazyComponents();
+    // }
 
-    filterBuckets(buckets: any[]) {
-        if (this.excludeAttributes.length > 0) {
-            return buckets.filter((bucket) => this.excludeAttributes.indexOf((bucket.name as string).toLowerCase()) == -1);
-        }
-        return buckets;
-    }
+    // getAltName(brandName) {
+    //     if (brandName == null || brandName == undefined) {
+    //         return 'safety shoes';
+    //     }
+    //     else {
+    //         return brandName + " safety shoes";
+    //     }
+    // }
+
+    // filterBuckets(buckets: any[]) {
+    //     if (this.excludeAttributes.length > 0) {
+    //         return buckets.filter((bucket) => this.excludeAttributes.indexOf((bucket.name as string).toLowerCase()) == -1);
+    //     }
+    //     return buckets;
+    // }
 
     /** 
     * @description:to group products depending on brandname && total count >2.
     * @description::if products length > 2 then only apply group by otherwise not required
     * @param=>products:products array
    */
-    groupByBrandName(products: any[]) {
-        this.groupedProducts = this._categoryService.getGroupedProducts(products, 'brandName', 2);
-        this.groupedProductNames = Object.keys(this.groupedProducts);
-        this.displayGroupBy = this.groupedProductNames.length > 1 && (this.pageNo == 1 || this.pageNo == undefined);
-    }
+    // groupByBrandName(products: any[]) {
+    //     this.groupedProducts = this._categoryService.getGroupedProducts(products, 'brandName', 2);
+    //     this.groupedProductNames = Object.keys(this.groupedProducts);
+    //     this.displayGroupBy = this.groupedProductNames.length > 1 && (this.pageNo == 1 || this.pageNo == undefined);
+    // }
 
-    changeBanner(direction) {
-        this.ngxSiemaService[direction](1, this.groupedBrandSiema.selector);
-    }
+    // changeBanner(direction) {
+    //     this.ngxSiemaService[direction](1, this.groupedBrandSiema.selector);
+    // }
 
     // JIRA: ODP-1371
     // setAmpTag(page) {

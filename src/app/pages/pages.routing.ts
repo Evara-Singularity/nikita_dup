@@ -17,7 +17,7 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
-					pageName: 'Homepage'
+					pageName: 'home'
 				},
 			},
 			{
@@ -25,7 +25,7 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
 				data: {
-					pageName: 'ProductPage'
+					pageName: 'pdp'
 				},
 			},
 			{
@@ -36,7 +36,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'CategoryPage'
+					pageName: 'listing'
 				},
 			},
 			// {
@@ -55,7 +55,8 @@ const routes: Routes = [
 				data: {
 					footer: false,
 					logo: true,
-					moreOpt: true
+					moreOpt: true,
+					pageName: 'listing:alp'
 				}
 			},
 			{
@@ -68,7 +69,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'PopularProductPage'
+					pageName: 'listing:popular'
 				},
 			},
 			{
@@ -92,6 +93,7 @@ const routes: Routes = [
 					footer: false,
                     logo: true,
 					moreOpt: true,
+					pageName: 'listing:brand'
 				},
 			},
 			{
@@ -102,7 +104,7 @@ const routes: Routes = [
 					footer: false,
                     logo: true,
 					moreOpt: true,
-					pageName: 'BrandPage'
+					pageName: 'listing:brandCategory'
 				},
 			},
 			// {
@@ -123,6 +125,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'listing:search'
 				},
 			},
 			{
@@ -241,6 +244,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'article'
 				},
 			},
 			{
@@ -286,6 +290,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'store'
 				},
 			},
 			{

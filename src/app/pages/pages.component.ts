@@ -1,5 +1,5 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, Optional, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, Optional, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { delay, map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
@@ -25,7 +25,7 @@ import { SpeedTestService } from 'ng-speed-test';
   encapsulation: ViewEncapsulation.None
 })
 
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit, AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true, logo?: boolean, title?: string };
@@ -63,7 +63,21 @@ export class PagesComponent implements OnInit {
     })
   }
 
-  
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      setTimeout(() => {
+        // TODO: configure it with 500KB image 
+        this.speedTestService.getMbps({ iterations: 1, retryDelay: 1500 }).subscribe(
+          (speed) => {
+            console.log('speedTestService ngAfterViewInit', speed);
+            this._commonService.setNetworkSpeedState(speed);
+          }
+        )
+      }, 0);
+    }
+  }
+
+    
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
@@ -139,28 +153,14 @@ export class PagesComponent implements OnInit {
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
-     */
-
-    
+     */    
     if (this.isBrowser) {
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
-
-      setTimeout(() => {
-        console.log('speedTestService', 'called');
-        this.speedTestService.getMbps({ iterations: 1, retryDelay: 1500 }).subscribe(
-          (speed) => {
-            console.log('speed ==>', speed);
-            this._commonService.networkSpeed = speed;
-          }
-        )
-      }, 3000);
     }
     
-
-    console.log('apage ng onit bowserAgent ==> ', this.bowserAgent);
   }
 
   isMoglixAppInstalled() {

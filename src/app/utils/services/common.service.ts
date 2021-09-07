@@ -47,12 +47,11 @@ export class CommonService {
     abTesting: any;
 
     updateSortBy: Subject<string> = new Subject();
-    networkSpeed: number = null;
+    private _networkSpeed:Number = null;
+    private networkSpeedState: Subject<number> = new Subject<number>();
 
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
-
-    // useLastSortByState: boolean = false;
 
     private routeData: { currentUrl: string, previousUrl: string };
 
@@ -63,10 +62,23 @@ export class CommonService {
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
         this.gaGtmData = gaGtmData ? gaGtmData : {};
-        this.routeData = { currentUrl: "", previousUrl: "" };
+        this.routeData = { currentUrl: "", previousUrl: "" };   
         this.itemsValidationMessage = [];
         this.isBrowser = isPlatformBrowser(platformId);
         this.isServer = isPlatformServer(platformId);
+    }
+
+    setNetworkSpeedState(speed) {
+        this._networkSpeed = speed;
+        this.networkSpeedState.next(speed);
+    }
+
+    getNetworkSpeedState(): Observable<number>{
+        return this.networkSpeedState.asObservable();
+    }
+
+    get networkSpeed(){
+        return this._networkSpeed;
     }
 
     get itemsValidationMessage() {

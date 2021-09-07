@@ -1,5 +1,7 @@
 import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { AfterViewInit, Directive, ElementRef, Inject, NgModule, OnInit, PLATFORM_ID } from '@angular/core';
+import { SpeedTestService } from 'ng-speed-test';
+import { CommonService } from '../services/common.service';
 // import { SpeedTestModule, SpeedTestService } from 'ng-speed-test';
 
 /**
@@ -33,6 +35,8 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
 
   readonly whiteListedNode = ['img'];
   readonly imageSizes = ['xlarge', 'large', 'medium', 'small', 'thumbnail', 'icon']
+  readonly THRESHOLD: number = 2 // 2MB
+
   readonly replaceOptions = {
     'icon': 'small',
     'thumbnail': 'medium',
@@ -45,11 +49,12 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
   private el: ElementRef<HTMLImageElement> = null;
   private isBrowser: boolean = false;
   private isServer: boolean = false;
+ 
 
   constructor(
     el: ElementRef<HTMLImageElement>,
     @Inject(PLATFORM_ID) private platformId: Object,
-    // private speedTestService: SpeedTestService
+    public _commonService: CommonService,
   ) {
     this.el = el;
     this.isServer = isPlatformServer(platformId);
@@ -69,18 +74,21 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
-    // this.speedTestService.getMbps().subscribe(res=>{
-    //   console.log('speedTestService getMbps', res);
-    // })
-
+    if(this.isBrowser){
+      this._commonService.getNetworkSpeedState().subscribe(speed => {
+        if (speed && speed > this.THRESHOLD) {
+          this.startClientSideProcessing();
+        }
+      })
+    }
   }
 
   ngAfterViewInit() {
-    if (this.isBrowser) { 
+    if (this.isBrowser && this._commonService.networkSpeed && this._commonService.networkSpeed > this.THRESHOLD) {
       this.startClientSideProcessing();
     }
   }
+  
 
 }
 

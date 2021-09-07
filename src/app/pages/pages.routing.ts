@@ -17,12 +17,16 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
+					pageName: 'Homepage'
 				},
 			},
 			{
 				matcher: productMatch,
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
+				data: {
+					pageName: 'ProductPage'
+				},
 			},
 			{
 				matcher: categoriesMatcher,
@@ -32,6 +36,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'CategoryPage'
 				},
 			},
 			// {
@@ -63,6 +68,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'PopularProductPage'
 				},
 			},
 			{
@@ -96,6 +102,7 @@ const routes: Routes = [
 					footer: false,
                     logo: true,
 					moreOpt: true,
+					pageName: 'BrandPage'
 				},
 			},
 			// {

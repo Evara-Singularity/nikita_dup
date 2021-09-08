@@ -223,11 +223,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     loadBottomSheetAnalyticEvent() {
+        
         const user = this.localStorageService.retrieve('user');
         let page = {
             'linkPageName': "moglix:hamburger-menu",
             'linkName': "header",
-            'channel': this.router.url
+            'channel': this.routerData['pageName'] || this.router.url
         }
         let custData = {
             'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',

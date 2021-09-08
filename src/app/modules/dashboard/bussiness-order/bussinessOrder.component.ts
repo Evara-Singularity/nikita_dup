@@ -84,7 +84,7 @@ export class BussinessOrderComponent {
     this.openOrder = this._activatedRoute.snapshot.queryParams.order;
     this.currentRoute = this._commonService.getCurrentRoute(this._router.url);
 
-    if (this._activatedRoute.snapshot.queryParams.hasOwnProperty('token')) {
+    if (!this._activatedRoute.snapshot.queryParams.hasOwnProperty('token')) {
       this.initializePageParams(page);
     } else {
       setTimeout(() => {

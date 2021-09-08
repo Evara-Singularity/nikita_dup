@@ -38,7 +38,7 @@ export class BussinessRfqComponent {
       setTimeout(() =>{
         this.getMyRfqList();
         this.setData();
-      }, 600);
+      }, 1000);
     } else {
       this.getMyRfqList();
         this.setData();

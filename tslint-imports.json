@@ -5,6 +5,7 @@
     "rules": {
       "no-unused-declaration": true,
       "no-unnecessary-initializer": true,
-      "unnecessary-constructor": true
+      "unnecessary-constructor": true,
+      "no-unused-variable": true
     }
   }

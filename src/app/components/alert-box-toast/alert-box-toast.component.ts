@@ -13,8 +13,6 @@ export class AlertBoxToastComponent implements OnInit {
   @Output() removed: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() extraSectionName: string = null;
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 

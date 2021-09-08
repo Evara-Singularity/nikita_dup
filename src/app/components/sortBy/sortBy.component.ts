@@ -1,5 +1,5 @@
 import { CommonService } from "@app/utils/services/common.service";
-import { Component, ViewEncapsulation, Output, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { ProductListService } from "@app/utils/services/productList.service";
 
 @Component({

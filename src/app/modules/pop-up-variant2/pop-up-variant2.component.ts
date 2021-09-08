@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { of } from 'rxjs';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { delay } from 'rxjs/operators';

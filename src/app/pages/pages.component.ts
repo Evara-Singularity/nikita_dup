@@ -1,7 +1,7 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';

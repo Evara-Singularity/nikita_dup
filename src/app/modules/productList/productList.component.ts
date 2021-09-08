@@ -1,7 +1,6 @@
 import {
     Component, ElementRef, ViewEncapsulation, Input, ChangeDetectorRef,
-    ChangeDetectionStrategy,
-    PLATFORM_ID, Inject
+    ChangeDetectionStrategy
 } from '@angular/core';
 
 import { Router } from '@angular/router';

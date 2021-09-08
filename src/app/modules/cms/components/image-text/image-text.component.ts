@@ -1,6 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 import { CmsService } from '../../cms.service';
 
 @Component({

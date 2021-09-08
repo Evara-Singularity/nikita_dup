@@ -11,7 +11,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 

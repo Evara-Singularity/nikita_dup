@@ -17,9 +17,6 @@ export class GlobalToastComponent implements OnInit {
   @Input() positionBottom: boolean = false;
   @Output() removed: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() {
-  }
-
   ngOnInit(): void {
     setTimeout(() => {
       this.showToast = false;

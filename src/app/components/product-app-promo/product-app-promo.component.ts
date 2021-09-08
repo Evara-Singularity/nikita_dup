@@ -13,8 +13,6 @@ export class ProductAppPromoComponent implements OnInit {
   @Input() showPromoCode: boolean;
   @Output() appPromoStatus$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
-
   ngOnInit() {
   }
 

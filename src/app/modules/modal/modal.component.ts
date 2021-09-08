@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ApplicationRef, Injector, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { of, Subject } from 'rxjs';
-import {  map, takeUntil, catchError } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ModalService } from './modal.service';
 import { ModalDirective } from './modal.directive';
 

@@ -8,7 +8,6 @@ const DISCOUNT = "%";
 })
 export class AddFilterSymbol implements PipeTransform
 {
-    constructor() { }
     transform(value:string, name: string): any
     {
         let returnValue = "";

@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, OnInit, Output } from '@angular/core';
+import { EventEmitter, Component, Input, Output } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 

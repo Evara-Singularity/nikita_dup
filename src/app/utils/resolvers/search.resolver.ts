@@ -2,13 +2,10 @@ import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import {
-  Router, Resolve,
+import { Resolve,
   RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-  Params
+  ActivatedRouteSnapshot
 } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { forkJoin, Observable, of } from 'rxjs';

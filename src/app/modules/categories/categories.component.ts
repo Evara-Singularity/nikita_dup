@@ -5,8 +5,6 @@ import {
 	Output,
 	EventEmitter,
 	NgModule,
-	ViewChild,
-	ViewContainerRef,
 	ComponentFactoryResolver,
 	Injector,
 } from '@angular/core';
@@ -14,7 +12,6 @@ import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
-import { ModalService } from '../modal/modal.service';
 
 @Component({
 	selector: 'home-categories',

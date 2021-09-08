@@ -1,4 +1,4 @@
-import { Component, Renderer2, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';

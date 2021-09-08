@@ -11,8 +11,6 @@ import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ErrorHandlerModule } from './utils/interceptors/error-handler.module';
-import { RouterModule } from '@angular/router';
 
 const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({

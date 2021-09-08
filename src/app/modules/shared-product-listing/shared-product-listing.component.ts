@@ -108,6 +108,7 @@ export class SharedProductListingComponent {
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+      this.filterInstance.instance['isBrandPage'] = this.pageName === 'BRAND';
       (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
         this.filterUp();
       });

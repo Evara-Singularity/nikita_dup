@@ -37,3 +37,115 @@
         </ng-container>
     </ul>
 </section>
+
+<div class="upper-view-all-sec">
+    <div class="upper-view-all-sec-left">
+        <h4>Products Related To This Item</h4>
+    </div>
+    <div class="upper-view-all-sec-right">
+        <button>VIEW ALL</button>
+    </div>
+</div>
+<div class="vertical-scroll-container">
+    <div class="inner-scroll-container" [style.width.px]="4 * 170">
+        <div *ngFor="let i of [1,2,3,4]" class="card">
+            <div class="card-container grid-view">
+                <div class="left" >
+                    <img alt="priner" src="https://cdn.moglix.com/p/VrvdW4CQBz2Ck.jpg" height="125"
+                        width="125" />
+                </div>
+                <div class="right">
+                    <div class="rating">
+                        <span class="avgrating">
+                            4.5 <i class="icon-rating-star"></i>
+                        </span>
+                        <span class="count">1034</span>
+                    </div>
+                    <div class="name">
+                        <span>Epson EcoTank L6190 Wi-Fi Duplex Mu....<span>...</span></span>
+                    </div>
+                    <div class="brand">
+                        <span>By: Luminious</span>
+                    </div>
+                    <div class="price-details">
+                        <div class="left">
+                            <div class="price">
+                                <span class="crossed">424</span>
+                                <span class="green-label">12% OFF</span>
+                            </div>
+                            <div class="main-price">
+                                <span>371</span>
+                            </div>
+                            <!-- <div class="out-of-stock-text">
+                                <span>Available on Request</span>
+                            </div> -->
+                            <div class="out-of-stock-price">
+                                <!-- <span>2000</span> -->
+                            </div>
+                        </div>
+                        <div class="right">
+                                <span class="add_cart_btn">
+                                    <i class="icon-cart1"></i>
+                                </span>
+                                <button >BUY NOW</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="upper-u-may-like-sec">
+    <h4>Products You May Like</h4>
+        <span>SPONSORE</span>
+</div>  
+<div class="vertical-scroll-container">      
+    <div class="inner-scroll-container" [style.width.px]="4 * 170">
+        <div *ngFor="let i of [1,2,3,4]" class="card">
+            <div class="card-container grid-view">
+                <div class="left">
+                    <img alt="priner" src="https://cdn.moglix.com/p/VrvdW4CQBz2Ck.jpg" height="125"
+                        width="125" />
+                </div>
+                <div class="right">
+                    <!-- <div class="rating">
+                        <span class="avgrating">
+                            4.5 <i class="icon-rating-star"></i>
+                        </span>
+                        <span class="count">1034</span>
+                    </div> -->
+                    <div class="name">
+                        <span>Epson EcoTank L6190 Wi-Fi Duplex Mu....<span>...</span></span>
+                    </div>
+                    <div class="brand">
+                        <span>By: Luminious</span>
+                    </div>
+                    <div class="price-details">
+                        <div class="left">
+                            <div class="price">
+                                <span class="crossed">424</span>
+                                <span class="green-label">12% OFF</span>
+                            </div>
+                            <div class="main-price">
+                                <span>371</span>
+                            </div>
+                            <div class="out-of-stock-price">
+                                <!-- <span>2000</span> -->
+                            </div>
+                        </div>
+                        <!-- <div class="right">
+                            <ng-container>
+                                <span class="add_cart_btn" (click)="buyNow()">
+                                    <i class="icon-cart1"></i>
+                                </span>
+                                <button (click)="buyNow(true)">BUY NOW</button>
+                            </ng-container>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

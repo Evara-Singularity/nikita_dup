@@ -21,7 +21,7 @@ let digitalData = {
 @Component({
     selector: 'brand',
     templateUrl: './brand.html',
-    styleUrls: ['./brand.scss','../category/category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
+    styleUrls: ['./brand.scss', '../category/category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })
 
 export class BrandComponent {
@@ -30,7 +30,7 @@ export class BrandComponent {
     public API_RESPONSE: any;
     public popularLinks;
     public brandFooterData;
-    
+
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -45,12 +45,12 @@ export class BrandComponent {
         private _localStorageService: LocalStorageService,
         public _productListService: ProductListService,
         @Optional() @Inject(RESPONSE) private _response,
-    ) {}
+    ) { }
 
 
     ngOnInit(): void {
         if (this._commonService.isBrowser) {
-            
+
             // set some extra meta tags if brand is a category page
             if (this._activatedRoute.snapshot.queryParams['category']) {
                 this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
@@ -66,20 +66,22 @@ export class BrandComponent {
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
-            this.API_RESPONSE = result; 
-            console.log(this.API_RESPONSE);
-
-            console.log(result);
+            this.API_RESPONSE = result;
 
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
 
+            const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
+            if (!this._activatedRoute.snapshot.params.id) {
+                this.setPopularCategories(category.terms);
+            }
+
             // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
-            
+
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-            
+
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
 
@@ -92,6 +94,19 @@ export class BrandComponent {
             // Set Amp tags
             // this.setAmpTag(this._activatedRoute.snapshot.params['category'] ? 'brand-category' : 'brand');
 
+        });
+    }
+
+    popularCategories = [];
+    setPopularCategories(data) {
+        data.forEach(d => {
+            let b = {};
+            b['name'] = d['term'];
+            b['link'] = d['categoryLink'];
+            this.popularCategories.push(b);
+            if (d && d.hasOwnProperty('childCategoryList') && d['childCategoryList'] && d['childCategoryList'].length > 0) {
+                this.setPopularCategories(d['childCategoryList'])
+            }
         });
     }
 
@@ -156,7 +171,7 @@ export class BrandComponent {
                         "position": 2,
                         "item":
                         {
-                            "@id": CONSTANTS.PROD + '/' +this.API_RESPONSE.brand[0].friendlyUrl,
+                            "@id": CONSTANTS.PROD + '/' + this.API_RESPONSE.brand[0].friendlyUrl,
                             "name": this.API_RESPONSE.brand[1][0]["brandName"]
                         }
                     },
@@ -336,8 +351,8 @@ export class BrandComponent {
                 digitalData["page"]["suggestionClicked"] = 'yes';
             }
 
-            this._analytics.sendGTMCall({ 
-                'event': 'viewBrand', 
+            this._analytics.sendGTMCall({
+                'event': 'viewBrand',
                 'brandName': this._activatedRoute.snapshot.params.brand,
                 'brandUrl': window.location.origin + window.location.pathname
             });
@@ -395,7 +410,7 @@ export class BrandComponent {
     //     }
     // }
 
-    setAdobeTrackingData(){
+    setAdobeTrackingData() {
         if (this._commonService.isBrowser) {
             var trackingData = {
                 event_type: "page_load",
@@ -410,7 +425,7 @@ export class BrandComponent {
         }
     }
 
-    handleIfBrandIsNotActive(){
+    handleIfBrandIsNotActive() {
         if (!this.API_RESPONSE.brand[0].active || this.API_RESPONSE.brand[1][0]['productSearchResult']['totalCount'] === 0) {
             if (this._commonService.isServer) {
                 this._response.status(404);
@@ -433,11 +448,11 @@ export class BrandComponent {
         return productSearchResultSEO;
     }
 
-    navigateTo(){
+    navigateTo() {
         this._router.navigateByUrl(window.location.pathname);
     }
 
-    genrateAndUpdateBrandFooterData(){
+    genrateAndUpdateBrandFooterData() {
         this.brandFooterData = {
             brandCatDesc: this.API_RESPONSE.brand[1][0].desciption,
             brandShortDesc: this.API_RESPONSE.brand[0].brandDesc,

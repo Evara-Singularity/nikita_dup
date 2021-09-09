@@ -31,7 +31,7 @@
     <ng-container *ngIf="popularLinks?.length > 0">
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
-                <h3 class="heading-3" [appKpToggle]="{idName: 'popularCategoryAccord', iconMode : true}">
+                <h3 class="heading-3" [appKpToggle]="{idName: 'popularBrandCategoryAccord', iconMode : true}">
                     Popular Brand Categories
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
@@ -39,7 +39,7 @@
                 </h3>
             </div>
         </div>
-        <div [id]="'popularCategoryAccord'" style="display:none;" class="panel-body">
+        <div [id]="'popularBrandCategoryAccord'" style="display:none;" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularLinks | slice:0:10">
                     <a  href="{{API_RESPONSE.brand[1][0].categoryLinkList[category]}}">{{ API_RESPONSE['brand'][0].brandName + ' ' + category }} </a>
@@ -50,6 +50,26 @@
     <!-- 
         Popular Category from bucket list
     -->
+    <ng-container *ngIf="popularCategories?.length > 0 && !_activatedRoute.snapshot.params.id">
+        <div class="panel-head" style="margin-top: 0px;" >
+            <div class="container">
+                <h3 class="heading-3" [appKpToggle]="{idName: 'popularCategoryAccord', iconMode : true}">
+                    Popular Categories
+                    <span class="icon-accordian">
+                        <i class="icon-down"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div [id]="'popularCategoryAccord'" style="display:none;" class="panel-body">
+            <div class="container category_links">
+                <div *ngFor="let category of popularCategories | slice:0:10">
+                    <a  href="{{category?.link}}">{{ category?.name }} </a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    
     <ng-container *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data.length > 0">
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">

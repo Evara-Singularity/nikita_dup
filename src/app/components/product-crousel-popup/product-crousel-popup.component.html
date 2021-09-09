@@ -7,7 +7,7 @@
                     <div  class="img-block" >
                         <div class="inner_block">
                             <div class="pinch-zoom element" style="transform-origin: 0% 0%;" [attr.id]="'prodImg_' + itemIndex" >
-                                <img src="{{item?.xxlarge}}">
+                                <img src="{{item?.xxlarge | webpImageSupportCheck }}">
                             </div>
                         </div>
                     </div>

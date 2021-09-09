@@ -13,6 +13,7 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
 import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
 import { NgxSiemaService } from 'ngx-siema';
 import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
+import { WebpImageSupportCheckPipeModule } from '@app/utils/pipes/webpImageSupportCheck.pipe';
 @NgModule({
   declarations: [
     ProductComponent,
@@ -31,6 +32,7 @@ import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanc
     YTThumnailPipeModule,
     // Directives
     EnhanceImgByNetworkDirectiveModule,
+    WebpImageSupportCheckPipeModule,
     SwipeDirectiveModule
   ],
   exports: [],

@@ -48,7 +48,9 @@ export class CommonService {
 
     updateSortBy: Subject<string> = new Subject();
     private _networkSpeed:Number = null;
+    private _webpSupport: boolean = false;
     private networkSpeedState: Subject<number> = new Subject<number>();
+    private webpSupportState: Subject<number> = new Subject<number>();
 
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
@@ -77,9 +79,23 @@ export class CommonService {
         return this.networkSpeedState.asObservable();
     }
 
+    setWebpSupportState(status) {
+        this._webpSupport = status;
+        this.webpSupportState.next(status);
+    }
+
+    getWebpSupportState(): Observable<number>{
+        return this.webpSupportState.asObservable();
+    }
+
     get networkSpeed(){
         return this._networkSpeed;
     }
+
+    get webpSupport(){
+        return this._webpSupport;
+    }
+
 
     get itemsValidationMessage() {
         return this._itemsValidationMessage;

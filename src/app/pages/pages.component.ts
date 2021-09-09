@@ -17,6 +17,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SpeedTestService } from 'ng-speed-test';
+import * as Modernizr from 'modernizr';
 
 @Component({
   selector: 'app-pages',
@@ -44,7 +45,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
     private speedTestService: SpeedTestService,
-    @Optional() @Inject(CONSTANTS.BROWSER_AGENT_TOKEN) private bowserAgent,
   ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
@@ -159,6 +159,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
+      this.checkWebpSupport();
     }
     
   }
@@ -171,6 +172,19 @@ export class PagesComponent implements OnInit, AfterViewInit {
           this.updateAppStatus()
         }
       });
+    }
+  }
+
+  checkWebpSupport() {
+    const elem = document.createElement('canvas');
+    if (!!(elem.getContext && elem.getContext('2d'))) {
+      // was able or not to get WebP representation
+      console.log('was able or not to get WebP representation');
+      this._commonService.setWebpSupportState(elem.toDataURL('image/webp').indexOf('data:image/webp') == 0);
+    } else {
+      // very old browser like IE 8, canvas not supported
+      console.log('very old browser like IE 8, canvas not supported');
+      this._commonService.setWebpSupportState(false);
     }
   }
 

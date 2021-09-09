@@ -39,33 +39,23 @@
     <script defer >
         dataLayer = [];
         if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
-            let ISCHROME = false;
-            const ANALYTICS = ["wifi", "4g"]
-            if (navigator && navigator['connection']) {
-                ISCHROME = (navigator.userAgent).toLowerCase().includes("chrome");
-                const CONNECTION = navigator['connection'];
-                const TYPE = CONNECTION['type'] || CONNECTION['effectiveType'];
-                if (ANALYTICS.includes(TYPE.toLowerCase())) {
-                    // these vars needs present in global document scope
-                    var gtmKey = "GTM-PMPXQQ"; //PROD Key
-                    (function (w, d, s, l, i) {
-                        w[l] = w[l] || [];
-                        w[l].push({
-                            'gtm.start': new Date().getTime(),
-                            event: 'gtm.js'
-                        });
-                        var f = d.getElementsByTagName(s)[0],
-                            j = d.createElement(s),
-                            dl = l != 'dataLayer' ? '&l=' + l : '';
-                        j.async = true;
-                        j.src =
-                            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                        setTimeout(() => {
-                            f.parentNode.insertBefore(j, f)
-                        }, 0);
-                    })(window, document, 'script', 'dataLayer', gtmKey);
-                }
-            }
+            var gtmKey = "GTM-PMPXQQ"; //PROD Key
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                setTimeout(() => {
+                    f.parentNode.insertBefore(j, f)
+                }, 0);
+            })(window, document, 'script', 'dataLayer', gtmKey);
         }
         digitalData = {};
         digitalData.event = [];

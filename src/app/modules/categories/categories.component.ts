@@ -5,8 +5,6 @@ import {
 	Output,
 	EventEmitter,
 	NgModule,
-	ComponentFactoryResolver,
-	Injector,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
@@ -32,8 +30,6 @@ export class Categories {
 
 	constructor(
 		private _commonService: CommonService,
-		private cfr: ComponentFactoryResolver,
-		private injector: Injector
 	) {}
 
 	getCategoryLabel(categoryName) {

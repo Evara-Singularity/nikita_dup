@@ -219,8 +219,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     @Inject(DOCUMENT) private document,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject(RESPONSE) private _response: any) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {

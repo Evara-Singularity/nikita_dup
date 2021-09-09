@@ -9,7 +9,6 @@ import {
 } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
-import { Router } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, mergeMap, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
@@ -24,7 +23,6 @@ export class BrandResolver implements Resolve<any> {
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
     private http: HttpClient,
-    private _router: Router,
     private _commonService: CommonService,
     private loaderService: GlobalLoaderService
   ) { 

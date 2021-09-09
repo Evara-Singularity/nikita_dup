@@ -1,4 +1,4 @@
-import { Injectable, ComponentFactoryResolver, ApplicationRef, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,11 +7,6 @@ import { Subject, Observable } from 'rxjs';
 export class ModalService {
     private subject = new Subject<{}>();
     private hideModalSub = new Subject<boolean>();
-    
-    constructor(private componentFactoryResolver: ComponentFactoryResolver,
-        private appRef: ApplicationRef,
-        private injector: Injector) {
-    }
 
     getModals(): Observable<any> {
         return this.subject.asObservable();

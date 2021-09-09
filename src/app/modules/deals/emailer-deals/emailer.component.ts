@@ -27,8 +27,8 @@ export class EmailerComponent {
     public router: Router,
     private route: ActivatedRoute) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getEmailData();
   }
 

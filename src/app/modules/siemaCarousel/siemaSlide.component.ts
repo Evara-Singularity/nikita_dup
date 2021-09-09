@@ -57,7 +57,7 @@ export class SiemaSlideComponent {
         private _siemaCrouselService: SiemaCrouselService,
         private ngxSiemaService: NgxSiemaService
     ) {
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
     ngOnInit() {

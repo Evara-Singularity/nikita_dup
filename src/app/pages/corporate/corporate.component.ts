@@ -1,13 +1,10 @@
 import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title, makeStateKey, Meta, TransferState } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-const CD = makeStateKey<any>('corporatedata');
-declare let $: any;
-
 @Component({
   selector: 'corporate',
   templateUrl: 'corporate.html',
@@ -21,7 +18,6 @@ export class CorporateComponent {
   corporateData: any;
 
   constructor(
-    private _tState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
     private meta: Meta,
     private footerService: FooterService,
@@ -32,8 +28,8 @@ export class CorporateComponent {
     private globalLoader: GlobalLoaderService,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     this.getCorporateData();
     this.setMetas();

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ApplicationRef, Injector, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ModalService } from './modal.service';
@@ -21,8 +21,7 @@ export class ModalComponent implements OnInit {
     showVideoOverlay:boolean;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
-        private appRef: ApplicationRef,
-        private injector: Injector, private _ms: ModalService) {
+        private _ms: ModalService) {
         this.modals = {};
         this.showModal = false;
     }

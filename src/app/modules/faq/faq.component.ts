@@ -44,8 +44,8 @@ export class FaqComponent {
 		public footerService: FooterService,
 		private route: ActivatedRoute
 	) {
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = isPlatformServer(this.platformId);
+		this.isBrowser = isPlatformBrowser(this.platformId);
 		this.title.setTitle('FAQ-Moglix.com');
 		this.meta.addTag({
 			name: 'description',

@@ -64,8 +64,8 @@ export class CommonService {
         this.gaGtmData = gaGtmData ? gaGtmData : {};
         this.routeData = { currentUrl: "", previousUrl: "" };
         this.itemsValidationMessage = [];
-        this.isBrowser = isPlatformBrowser(platformId);
-        this.isServer = isPlatformServer(platformId);
+        this.isBrowser = isPlatformBrowser(this.platformId);
+        this.isServer = isPlatformServer(this.platformId);
     }
 
     get itemsValidationMessage() {

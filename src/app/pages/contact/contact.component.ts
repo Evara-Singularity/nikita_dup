@@ -23,7 +23,7 @@ export class ContactComponent {
     private meta: Meta,
     @Inject(PLATFORM_ID) private platformId) {
 
-    this.isServer = isPlatformServer(platformId)
+    this.isServer = isPlatformServer(this.platformId)
 
     this.title.setTitle("Contact Us - Moglix - Call 955 5988 544");
     this.meta.addTag({ "property": "og:title", "content": "Contact Us - Moglix - Call 955 5988 544" });

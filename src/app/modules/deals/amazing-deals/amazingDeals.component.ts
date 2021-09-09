@@ -27,8 +27,8 @@ export class AmazingDealsComponent implements OnInit, AfterViewInit  {
     private activatedRoute: ActivatedRoute,
     private route: ActivatedRoute) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getAmazingDealsData();
     this.setMetas();
     this.initializeClicks()

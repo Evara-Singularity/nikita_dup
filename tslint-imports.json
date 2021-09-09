@@ -3,9 +3,8 @@
       "tslint-etc"
     ],
     "rules": {
-      "no-unused-declaration": true,
-      "no-unnecessary-initializer": true,
-      "unnecessary-constructor": true,
-      "no-unused-variable": true
+        "no-unused-declaration": true,
+        "no-unnecessary-initializer": true,
+        "unnecessary-constructor": true
     }
   }

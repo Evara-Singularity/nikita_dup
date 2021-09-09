@@ -1,10 +1,8 @@
 import {
-    Component, ViewEncapsulation, Input, EventEmitter, Output, 
-    ChangeDetectorRef, PLATFORM_ID, Inject, NgModule
+    Component, ViewEncapsulation, Input, EventEmitter, Output, PLATFORM_ID, Inject, NgModule
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CategoryService } from '@utils/services/category.service';
-import { SubCategoryService } from "@utils/services/subCategory.service";
 import { fade } from '@utils/animations/animation'
 import { CommonService } from '@services/common.service';
 import { CommonModule } from '@angular/common';
@@ -34,7 +32,7 @@ export class SubCategoryComponent {
     moreLessCategoryText:string="SHOW MORE";
     defaultImage = environment.IMAGE_BASE_URL+'assets/img/home_card.webp';
 
-    constructor(@Inject(PLATFORM_ID) platformId, private cd: ChangeDetectorRef, public categoryService: CategoryService, private _subCategoryService: SubCategoryService, public router: Router, public commonService: CommonService) {
+    constructor(@Inject(PLATFORM_ID) platformId, public categoryService: CategoryService, public router: Router, public commonService: CommonService) {
     };
 
     initializeSubcategoryData(data) {

@@ -1,4 +1,4 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
@@ -38,8 +38,7 @@ export class BrandComponent{
 		public _commonService: CommonService,
 		public _router: Router,
 		private route: ActivatedRoute,
-		private loaderService: GlobalLoaderService,
-		@Inject(PLATFORM_ID) private platformId
+		private loaderService: GlobalLoaderService
 	) {
 		this.API = CONSTANTS;
 		this.title.setTitle('Moglix Brand Store');

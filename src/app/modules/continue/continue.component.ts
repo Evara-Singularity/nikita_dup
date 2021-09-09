@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Input, EventEmitter, Output, ViewEncapsulation, Inject } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { LocalStorageService } from "ngx-webstorage";
 import { CONSTANTS } from '../../config/constants';
 import { CartService } from '../../utils/services/cart.service';
@@ -29,8 +28,7 @@ export class ContinueComponent {
     constructor(
         public cartService: CartService,
         public localStorageService: LocalStorageService,
-        private _localAuthService: LocalAuthService,
-        @Inject(DOCUMENT) private _document) {
+        private _localAuthService: LocalAuthService) {
     };
 
     ngOnInit() {

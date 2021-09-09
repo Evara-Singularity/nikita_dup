@@ -1,13 +1,10 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
-const SPD = makeStateKey<any>('specialdata');
-
-declare let $: any;
 
 @Component({
   selector: 'covid19',
@@ -24,7 +21,6 @@ export class Covid19Component {
   constructor(
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
-    private _tState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
     private meta: Meta,
     private title: Title,
@@ -32,8 +28,8 @@ export class Covid19Component {
     private route: ActivatedRoute,
     private globalLoader: GlobalLoaderService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
   }
 

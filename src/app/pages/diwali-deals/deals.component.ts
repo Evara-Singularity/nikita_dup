@@ -1,11 +1,8 @@
 import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title, Meta, makeStateKey } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
-const DSD = makeStateKey<any>('dealsdata');
-
-declare let $: any;
 
 @Component({
   selector: 'deals',
@@ -27,8 +24,8 @@ export class DealsComponent {
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     this.getDealsData();
 

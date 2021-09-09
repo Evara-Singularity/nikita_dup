@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 import { GlobalLoaderService } from '../services/global-loader.service';
 import { CommonService } from '../services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { DataService } from '../services/data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class ProductResolver implements Resolve<object> {
     private http: HttpClient,
     private localStorageService: LocalStorageService,
     public _commonService: CommonService,
+    private _dataService: DataService,
     private loaderService: GlobalLoaderService
   ) { }
 
@@ -98,7 +100,7 @@ export class ProductResolver implements Resolve<object> {
       const userSession = this.localStorageService.retrieve('user');
       if (userSession && userSession.authenticated == "true") {
         DUPLICATE_ORDER_URL += '&userId=' + userSession['userId'];
-        const duplicate_order = this.http.get(DUPLICATE_ORDER_URL);
+        const duplicate_order = this._dataService.callRestful('GET', DUPLICATE_ORDER_URL);
         pdpFirstFoldApiList.push(duplicate_order);
       }
       

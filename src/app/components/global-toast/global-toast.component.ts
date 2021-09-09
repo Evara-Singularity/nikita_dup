@@ -28,7 +28,7 @@ export class GlobalToastComponent implements OnInit {
   ngOnInit(): void {
     this.userSession = this.localStorageService.retrieve('user');
     let userMsnDuplicateKey = this.localStorageService.retrieve('showDuplicateOrderToast-' + this.userSession.userId);
-    if (userMsnDuplicateKey.indexOf(this.productMsn) > -1) {
+    if (userMsnDuplicateKey && userMsnDuplicateKey.indexOf(this.productMsn) > -1) {
       this.showToast = false;
     }
 

@@ -1699,7 +1699,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async loadGlobalToastMessage(data, rawData) {
-
+    console.log(data);
     if (data['status'] === true) {
       if (!this.globalToastInstance) {
         const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component').finally(() => {
@@ -1708,7 +1708,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         const factory = this.cfr.resolveComponentFactory(GlobalToastComponent);
         this.globalToastInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        this.globalToastInstance.instance['text'] = 'This same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at 5:30pm';
+        const a = data.data.time.split(':');
+        this.globalToastInstance.instance['text'] = 'This same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? 'am' : 'pm');
         this.globalToastInstance.instance['btnText'] = 'x';
         this.globalToastInstance.instance['showTime'] = 100000;
         this.globalToastInstance.instance['showDuplicateOrderToast'] = true;

@@ -5,7 +5,7 @@ export const ENDPOINTS = {
   BREADCRUMB: "/homepage/getbreadcrumb",
   Q_AND_A: "/quest/getQuest",
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
-  DUPLICATE_ORDER: "/checkout/order/userProductOrder",
+  DUPLICATE_ORDER: "/checkout/duplicateOrder",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   SIMILAR_CATEGORY: "/category/mostSold",
   LOGIN_URL: "/login/sendOTP",

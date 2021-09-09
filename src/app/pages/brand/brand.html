@@ -32,7 +32,7 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'popularCategoryAccord', iconMode : true}">
-                    Popular Categories
+                    Popular Brand Categories
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
@@ -47,11 +47,14 @@
             </div>
         </div>
     </ng-container>
+    <!-- 
+        Popular Category from bucket list
+    -->
     <ng-container *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data.length > 0">
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
-                    Shop by Attribute
+                    Related Searches
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>

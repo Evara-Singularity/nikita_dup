@@ -306,7 +306,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.remoteApiCallRecentlyBought();
           const userSession = this.localStorageService.retrieve('user');
           if (userSession && userSession.authenticated == "true" && rawData['product'][6].status) {
-            this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+
+            const date1: any = new Date(rawData['product'][6]['data']['date']);
+            const date2: any = new Date();
+            const diffTime = Math.abs(date2 - date1);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays < 31) {
+              this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+            }
+
           }
         } else {
           this.showLoader = false;
@@ -518,7 +526,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
      * 
      * Commented: as per request in Sprint-14 (Support)
     */
-    
+
     // if (this.productFilterAttributesList && this.productOutOfStock) {
     //   this.getProductGroupData(args.nextAvailableMsn);
     // }
@@ -1699,7 +1707,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async loadGlobalToastMessage(data, rawData) {
-    console.log(data);
     if (data['status'] === true) {
       if (!this.globalToastInstance) {
         const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component').finally(() => {
@@ -1709,7 +1716,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.globalToastInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const a = data.data.time.split(':');
-        this.globalToastInstance.instance['text'] = 'This same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? 'am' : 'pm');
+        this.globalToastInstance.instance['text'] = 'The same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? 'AM' : 'PM');
         this.globalToastInstance.instance['btnText'] = 'x';
         this.globalToastInstance.instance['showTime'] = 100000;
         this.globalToastInstance.instance['showDuplicateOrderToast'] = true;
@@ -1726,8 +1733,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(AlertBoxToastComponent);
-      
-      
+
+
       this.alertBoxInstance.instance['mainText'] = mainText;
       this.alertBoxInstance.instance['subText'] = subText;
       if (extraSectionName) {
@@ -2241,7 +2248,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             'productImg': this.productDefaultImage,
             'CatId': this.productCategoryDetails['taxonomyCode'],
             'MRP': this.productMrp['amount'],
-            'Discount':  this.productDiscount
+            'Discount': this.productDiscount
           }]
         }
       },

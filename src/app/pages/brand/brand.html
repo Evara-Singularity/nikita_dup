@@ -50,7 +50,7 @@
     <!-- 
         Popular Category from bucket list
     -->
-    <ng-container *ngIf="popularCategories?.length > 0 && !_activatedRoute.snapshot.params.id">
+    <ng-container *ngIf="popularCategories?.length > 0 && !_activatedRoute.snapshot.params.category">
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'popularCategoryAccord', iconMode : true}">

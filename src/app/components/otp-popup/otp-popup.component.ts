@@ -102,6 +102,8 @@ export class OtpPopupComponent implements OnInit, OnDestroy
         this.phoneValidation$.emit(null);
     }
 
+    checkNumeric(event) { return event.charCode >= 48 && event.charCode <= 57; }
+
     ngOnDestroy()
     {
         this.cDistroyed.next();

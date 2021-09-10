@@ -13,7 +13,7 @@
     </div>
     <div class="otp-area">
         <div class="otp-area-l">
-            <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp">
+            <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp" (keypress)="checkNumeric($event);">
         </div>
         <div class="otp-area-r">
             <button (click)="$event.stopPropagation();sendOTP();" [disabled]="isTicking">RESEND OTP</button>

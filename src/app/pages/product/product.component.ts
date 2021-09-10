@@ -1716,7 +1716,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.globalToastInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const a = data.data.time.split(':');
-        this.globalToastInstance.instance['text'] = 'The same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? 'AM' : 'PM');
+        this.globalToastInstance.instance['text'] = 'The same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? ' AM' : ' PM');
         this.globalToastInstance.instance['btnText'] = 'x';
         this.globalToastInstance.instance['showTime'] = 100000;
         this.globalToastInstance.instance['showDuplicateOrderToast'] = true;

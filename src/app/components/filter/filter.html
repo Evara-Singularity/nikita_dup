@@ -17,7 +17,7 @@
                 </div>
                 <div class="filter-options">
                     <ng-container *ngIf="filter.name === 'category'">
-                        <filter-category-list [isBrandPage]="isBrandPage" [categoryFilterData]="filter.terms"></filter-category-list>
+                        <filter-category-list [brandName]='brandName' [isBrandPage]="isBrandPage" [categoryFilterData]="filter.terms"></filter-category-list>
                     </ng-container>
                     <ng-container *ngIf="filter.name != 'category'">
                         <div class="filter-list">

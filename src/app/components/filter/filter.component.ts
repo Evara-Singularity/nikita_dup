@@ -13,6 +13,7 @@ export class FilterComponent {
     // input variable to get filter data from parent component
     @Input() filterData: Array<any>;
     @Input() isBrandPage: Array<any>;
+    @Input() brandName: String;
 
     // Output event to toggle filter
     @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();

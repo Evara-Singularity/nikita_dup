@@ -25,6 +25,7 @@ export class SharedProductListingComponent {
 
   @Input() productsListingData: ProductListingDataEntity;
   @Input() pageName: string;
+  @Input() brandName: string;
   @Input() headerName: string;
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -109,6 +110,7 @@ export class SharedProductListingComponent {
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
       this.filterInstance.instance['isBrandPage'] = this.pageName === 'BRAND';
+      this.filterInstance.instance['brandName'] = this.brandName;
       (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
         this.filterUp();
       });

@@ -1,13 +1,17 @@
 export class DeliveryAddressUtil
 {
-    static getVerifiedPhones(addressList: any[])
+    static getVerifiedPhones(addressList: any[], user):any[]
     {
-        let phones = [];
+        let verifiedPhones = [];
+        if (user['phoneVerified']) {
+            verifiedPhones.push(user['phone']);
+        }
         if (addressList.length) {
             const filtered = addressList.filter((address) => { return address.phoneVerified });
-            phones = filtered.map((address) => address.phone);
+            const phones = filtered.map((address) => address.phone);
+            console.log(phones);
+            verifiedPhones = [...verifiedPhones, ...phones];
         }
-        return phones;
-
+        return verifiedPhones;
     }
 }

@@ -435,6 +435,10 @@
             <ng-container #similarProduct></ng-container>
         </section>
 
+        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+            <ng-container #sponseredProducts></ng-container>
+        </section>
+
         <!-- Review rating Starts -->
         <section class="pdp-review" id="reviewsAll">
             <p class="heading-3" observeVisibility [debounceTime]="100" (visible)="onVisibleReviews($event)">REVIEWS & RATINGS
@@ -551,7 +555,6 @@
     </div>
     <!-- other sections ends -->
 
-    <ng-container #recentAll></ng-container>
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #rfqForm></ng-container>
     <ng-container #pincodeForm></ng-container>

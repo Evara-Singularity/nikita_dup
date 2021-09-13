@@ -11,7 +11,7 @@
         <div class="inner-scroll-container" [style.width.px]="similarProducts.length * 170">
             <ng-container *ngFor="let product of similarProducts;" >
                 <product-horizontal-card 
-                    [product]="product" 
+                    [product]="product"
                     [cardMetaInfo]='cardMetaInfo'
                     [cardFeaturesConfig]='cardFeaturesConfig' >
                 </product-horizontal-card>

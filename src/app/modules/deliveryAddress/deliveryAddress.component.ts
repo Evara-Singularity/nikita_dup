@@ -159,7 +159,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
                 });
                 // console.log("[getAddressListApi]..........");
                 this.addressList = rd['addressList'];
-                this.verifiedPhones = DeliveryAddressUtil.getVerifiedPhones(this.addressList);
+                this.verifiedPhones = DeliveryAddressUtil.getVerifiedPhones(this.addressList, this.user);
                 this.addressListApiCallback();
 
             } else if (rd['statusCode'] === 500) { // Error in api

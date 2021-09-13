@@ -149,9 +149,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemad loaded components add to cart toast
   addToCartToastInstance = null;
   @ViewChild('addToCartToast', { read: ViewContainerRef }) addToCartToastContainerRef: ViewContainerRef;
-  // ondemad loaded components similat prodict all pop up
-  similarAllInstance = null;
-  @ViewChild('similarAll', { read: ViewContainerRef }) similarAllContainerRef: ViewContainerRef;
   // ondemad loaded components recent viewd products all pop up
   recentAllInstance = null;
   @ViewChild('recentAll', { read: ViewContainerRef }) recentAllContainerRef: ViewContainerRef;
@@ -600,10 +597,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.addToCartToastInstance = null;
       this.addToCartToastContainerRef.remove();
     }
-    if (this.similarAllInstance) {
-      this.similarAllInstance = null;
-      this.similarAllContainerRef.remove();
-    }
+
     if (this.recentAllInstance) {
       this.recentAllInstance = null;
       this.recentAllContainerRef.remove();
@@ -1370,25 +1364,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarProductInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
 
       this.similarProductInstance.instance['outOfStock'] = this.productOutOfStock;
-      (this.similarProductInstance.instance['showAll'] as EventEmitter<any>).subscribe(similarProducts => {
-        this.loadAllSimilar(similarProducts);
-      })
-    }
-  }
-
-  async loadAllSimilar(similarProducts) {
-    if (!this.similarAllInstance) {
-      this.showLoader = true;
-      const { SimilarProductsPopupComponent } = await import('./../../components/similar-products-popup/similar-products-popup.component').finally(() => {
-        this.showLoader = false;
-      });
-      const factory = this.cfr.resolveComponentFactory(SimilarProductsPopupComponent);
-      this.similarAllInstance = this.similarAllContainerRef.createComponent(factory, null, this.injector);
-      this.similarAllInstance.instance['similarProducts'] = similarProducts;
-      (this.similarAllInstance.instance['out'] as EventEmitter<boolean>).subscribe(status => {
-        this.similarAllInstance = null;
-        this.similarAllContainerRef.detach();
-      });
     }
   }
 

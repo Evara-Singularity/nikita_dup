@@ -24,9 +24,9 @@ export const CONSTANTS = {
   DEVICE: {
     device: 'mobile'
   },
-  PRODUCT_CARD_DESIGN_TYPE: {
-    CARD_VERTICAL: 'CARD_VERTICAL',
-    CARD_HORIZONTAL: 'CARD_HORIZONTAL'
+  PRODUCT_CARD_MODULE_NAMES: {
+    PLP: 'plp',
+    PDP: 'pdp'
   },
   META: {
     ROBOT: 'index,follow',

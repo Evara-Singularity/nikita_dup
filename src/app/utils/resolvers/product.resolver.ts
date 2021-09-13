@@ -97,11 +97,13 @@ export class ProductResolver implements Resolve<object> {
       
       const pdpFirstFoldApiList = [productObs, productReviewObs, productCrumb, product_Q_AND_A, product_fbt, product_status_count];
 
-      const userSession = this.localStorageService.retrieve('user');
-      if (userSession && userSession.authenticated == "true") {
-        DUPLICATE_ORDER_URL += '&userId=' + userSession['userId'];
-        const duplicate_order = this._dataService.callRestful('GET', DUPLICATE_ORDER_URL);
-        pdpFirstFoldApiList.push(duplicate_order);
+      if(this._commonService.isBrowser){ // this required as SSR will not have user session
+        const userSession = this.localStorageService.retrieve('user');
+        if (userSession && userSession.authenticated == "true") {
+          DUPLICATE_ORDER_URL += '&userId=' + userSession['userId'];
+          const duplicate_order = this._dataService.callRestful('GET', DUPLICATE_ORDER_URL);
+          pdpFirstFoldApiList.push(duplicate_order);
+        }
       }
       
 
@@ -118,7 +120,7 @@ export class ProductResolver implements Resolve<object> {
             this.transferState.set(PRODUCT_Q_AND_A_KEY, result[3]);
             this.transferState.set(PRODUCT_FBT, result[4]);
             this.transferState.set(PRODUCT_STATUS_COUNT, result[5]);
-            this.transferState.set(DUPLICATE_ORDER, result[6]);
+            this.transferState.set(DUPLICATE_ORDER, result[6] || null);
             this.loaderService.setLoaderState(false);
           }
         })

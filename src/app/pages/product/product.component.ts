@@ -304,18 +304,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
           this.remoteApiCallRecentlyBought();
-          const userSession = this.localStorageService.retrieve('user');
-          if (userSession && userSession.authenticated == "true" && rawData['product'][6].status) {
-
-            const date1: any = new Date(rawData['product'][6]['data']['date']);
-            const date2: any = new Date();
-            const diffTime = Math.abs(date2 - date1);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            if (diffDays < 31) {
-              this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
-            }
-
-          }
+          this.duplicateOrderCheck(rawData);
         } else {
           this.showLoader = false;
           this.globalLoader.setLoaderState(false);
@@ -336,6 +325,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.showLoader = false;
       this.globalLoader.setLoaderState(false);
     });
+  }
+
+  private duplicateOrderCheck(rawData) {
+    const userSession = this.localStorageService.retrieve('user');
+    if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && rawData['product'][6] && rawData['product'][6].status) {
+
+      const date1: any = new Date(rawData['product'][6]['data']['date']);
+      const date2: any = new Date();
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays < 31) {
+        this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+      }
+    }
   }
 
   updateAttr(productId) {

@@ -10,6 +10,7 @@ export class FilterCategoryComponent {
     @Input('categoryFilterData') categoryFilterData: any;
     @Input('isBrandPage') isBrandPage: any;
     @Input('brandName') brandName: any;
+    @Input('brandUrl') brandUrl: any;
 
     constructor(public _commonService: CommonService){}
 }

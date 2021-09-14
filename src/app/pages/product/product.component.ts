@@ -1736,8 +1736,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
       });
       const factory = this.cfr.resolveComponentFactory(AlertBoxToastComponent);
-
-
+      this.alertBoxInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
       this.alertBoxInstance.instance['mainText'] = mainText;
       this.alertBoxInstance.instance['subText'] = subText;
       if (extraSectionName) {

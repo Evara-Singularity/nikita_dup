@@ -142,7 +142,6 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
             if (this.phoneVerified.value) {
                 this.saveAddress(data);
             } else {
-                //TODO:Need to update source
                 const request = { device: 'mobile', email: '', phone: this.phone.value, type: 'p', source: "address", userId: this.user["userId"] };
                 this._commonService.sendOtp(request).subscribe((response) =>
                 {

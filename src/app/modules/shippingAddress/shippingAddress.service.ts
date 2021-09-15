@@ -11,6 +11,7 @@ export class ShippingAddressService {
     }
 
     postAddress(address) {
+        address['onlineab'] = "y";
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD, { body: address });
     }
     

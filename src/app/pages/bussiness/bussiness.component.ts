@@ -1,7 +1,7 @@
-import { Component, OnInit, PLATFORM_ID, Inject } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Router, NavigationStart } from "@angular/router";
-import { isPlatformServer, isPlatformBrowser } from "@angular/common";
+import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
   selector: "bussiness",
@@ -15,13 +15,13 @@ export class DashboardBussinessComponent implements OnInit {
   isBrowser: boolean;
 
   constructor(
-    @Inject(PLATFORM_ID) platformId,
     private title: Title,
-    private _router: Router
+    private _router: Router,
+    public _commonService: CommonService
   ) {
     this.title.setTitle("Dashboard-Moglix");
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {

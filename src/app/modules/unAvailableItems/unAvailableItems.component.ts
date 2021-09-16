@@ -1,6 +1,6 @@
-import { Component, Input, EventEmitter, Output, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Subject } from 'rxjs';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'un-available-items',
@@ -20,11 +20,11 @@ export class UnAvailableItemsComponent {
     private cDistroyed = new Subject();
     itemsList: [] = [];
     
-    constructor(        
-        @Inject(PLATFORM_ID) platformId,
+    constructor(   
+        public _commonService: CommonService     
     ) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     };
 
     ngOnInit() {

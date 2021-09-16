@@ -1,4 +1,3 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
@@ -62,8 +61,8 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         private commonService: CommonService,
         private loaderService: GlobalLoaderService,
         private tms: ToastMessageService) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = commonService.isServer;
+        this.isBrowser = commonService.isBrowser;
     }
 
     ngOnInit() { this.initialize(); }

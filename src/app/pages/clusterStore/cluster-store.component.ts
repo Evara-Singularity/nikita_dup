@@ -1,11 +1,10 @@
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	Component,
 	ComponentFactoryResolver,
 	Inject,
 	Injector,
 	OnInit,
-	PLATFORM_ID,
 	Renderer2,
 	ViewChild,
 	ViewContainerRef,
@@ -79,7 +78,6 @@ export class ClusterStoreComponent implements OnInit {
 	constructor(
 		private _router: Router,
 		private _activatedRoute: ActivatedRoute,
-		@Inject(PLATFORM_ID) platformId,
 		public title: Title,
 		public meta: Meta,
 		private _renderer2: Renderer2,
@@ -92,8 +90,8 @@ export class ClusterStoreComponent implements OnInit {
 		private _localStorageService: LocalStorageService, 
 		private _analytics: GlobalAnalyticsService
 	) {
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 		this.isShowLoader = false;
 	}
 

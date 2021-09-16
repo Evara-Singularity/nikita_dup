@@ -1,4 +1,3 @@
-import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
@@ -58,7 +57,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         private localAuthService: LocalAuthService,
         private otpUtilService: SharedOtpUtilService,
         private toastService: ToastMessageService,
-        @Inject(PLATFORM_ID) platformId,
         private cartService: CartService,
         private commonService: CommonService,
         private activatedRoute: ActivatedRoute,
@@ -66,7 +64,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         private loaderService: GlobalLoaderService,
         private checkoutLoginService: CheckoutLoginService,
     ) {
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = commonService.isBrowser;
     }
 
     ngOnInit() { 

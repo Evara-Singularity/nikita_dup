@@ -1,7 +1,6 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -18,10 +17,10 @@ export class QuickOrderResolver implements Resolve<object> {
         private _cartService: CartService,
         private _localAuthService: LocalAuthService,
         private _commonService: CommonService,
-        @Inject(PLATFORM_ID) platformId,) {
+        ) {
 
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     resolve(route: ActivatedRouteSnapshot, rstate: RouterStateSnapshot): Observable<object> {

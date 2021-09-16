@@ -1,6 +1,6 @@
 import { CommonService } from '@app/utils/services/common.service';
-import { isPlatformBrowser, isPlatformServer, Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
+import { Location } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
@@ -75,7 +75,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     @Input('extraData') extraData;
 
     constructor(
-        @Inject(PLATFORM_ID) platformId,
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
@@ -93,8 +92,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         private _analytics: GlobalAnalyticsService
     )
     {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 
         this.commonSubcribers();
     }

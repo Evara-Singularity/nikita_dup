@@ -1,9 +1,10 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { FooterService } from '../../utils/services/footer.service';
 import CONSTANTS from '../../config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 declare let $: any;
 
@@ -25,12 +26,11 @@ export class PressComponent {
     private _renderer2: Renderer2,
     private _router: Router,
     @Inject(DOCUMENT) private _document,
-    @Inject(PLATFORM_ID) platformId,
-    public footerService: FooterService) {
+    public footerService: FooterService,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
-
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.title.setTitle("Press Release - Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Press Release - Moglix.com" });
     this.meta.addTag({ "property": "og:description", "content": "Read about the latest news and development at Moglix in our press release section." });

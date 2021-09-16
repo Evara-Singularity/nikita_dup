@@ -37,7 +37,7 @@ interface ProductDataArg {
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit, AfterViewInit {
-
+  encodeURI = encodeURI;
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;

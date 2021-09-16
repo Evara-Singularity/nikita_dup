@@ -40,7 +40,8 @@ export class CashOnDeliveryService{
     }
 
     postAddress(address) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD, { body: address }).pipe(
+        //address['onlineab'] = "y";
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD + '?onlineab=y', { body: address }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({status: false, statusCode: res.status});
             })

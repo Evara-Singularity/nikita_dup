@@ -25,6 +25,7 @@ let digitalData = {
 })
 
 export class BrandComponent {
+    encodeURI = encodeURI;
     public productListingData: ProductListingDataEntity;
     public cmsData: any[] = [];
     public API_RESPONSE: any;

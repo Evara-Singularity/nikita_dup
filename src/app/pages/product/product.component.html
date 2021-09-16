@@ -34,9 +34,6 @@
     </div>
 </section>
 
-<div class="whatsapp-float-icon">
-    <img src="/assets/img/WhatsApp-float-icon.png">
-</div>
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
     <!-- <div class="info-to-buyer">
         <div class="info-to-buyer-l">
@@ -604,3 +601,4 @@
 </div>
 
 <div id="pageBottom"></div>
+<whatsapp-toast [customText]="encodeURI('Hi, I want to buy ' + productName)"></whatsapp-toast>

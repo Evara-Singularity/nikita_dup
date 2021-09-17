@@ -1,5 +1,5 @@
 <div class="whatsapp-float-icon">
-    <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + customText | safeUrl" target="_blank">
+    <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + convertURL(customText)" target="_blank">
         <img src="/assets/img/WhatsApp-float-icon.png">
     </a>
 </div>

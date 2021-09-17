@@ -14,11 +14,10 @@ export class WhatsAppToastComponent implements OnInit {
   @Input('customText') customText = '';
 
   ngOnInit(): void {
-    this.convertURL();
   }
 
-  convertURL(){
-    this.customText = encodeURIComponent(this.customText);
+  convertURL(url){
+    return encodeURIComponent(url);
   }
 
 }

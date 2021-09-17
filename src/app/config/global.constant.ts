@@ -3,7 +3,7 @@ export const GLOBAL_CONSTANT = {
     loginByPhone: 2,
     newAddress: 9999,
     created: 1,
-    whatsapp_number: 9999034709,
+    whatsapp_number: '+919999034709',
     updated: 2,
     trendingCategoryLimit: 10,
     creditDebitCard: 1,

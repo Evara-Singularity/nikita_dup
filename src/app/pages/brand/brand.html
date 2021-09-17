@@ -72,7 +72,7 @@
         </div>
     </ng-container>
     
-    <ng-container *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data.length > 0">
+    <ng-container *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data && API_RESPONSE.brand[4].data.length > 0">
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
@@ -84,7 +84,7 @@
             </div>
         </div>
         <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
-            <div class="container category_links">
+            <div class="container category_links" *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data" >
                 <div *ngFor="let attribute of API_RESPONSE.brand[4].data | slice:0:10">
                     <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
                 </div>

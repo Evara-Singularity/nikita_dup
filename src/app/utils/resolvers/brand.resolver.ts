@@ -116,7 +116,7 @@ export class BrandResolver implements Resolve<any> {
             this.transferState.set(BRAND_LIST_KEY, result[1]);
             this.transferState.set(SIMILAR_KEY, result[2]);
             this.transferState.set(CMS_DATA_KEY, result[3]);
-            this.transferState.set(ATTRIBUTE_KEY, result[3]);
+            this.transferState.set(ATTRIBUTE_KEY, result[4]);
           }
           this.loaderService.setLoaderState(false);
         })

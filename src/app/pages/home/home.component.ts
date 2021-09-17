@@ -38,6 +38,7 @@ import { CommonService } from '@app/utils/services/common.service';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;
 	isServer: boolean;
+	encodeURI = encodeURI;
 	bannerDataJson: any = {};
 	bannerImagesScroll: any = {};
 	middleImageJsonData: any = [];

@@ -76,7 +76,7 @@
             <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularLinks | slice:0:10 ">
-                        <a href="{{API_RESPONSE.category[1].categoryLinkList[category]}}">{{ category }}</a>
+                        <a href="{{ getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category])  }}">{{ category }}</a>
                     </div>
                 </div>
             </div>
@@ -93,3 +93,4 @@
 </ng-container>
 
 <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
+<whatsapp-toast  [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'"></whatsapp-toast>

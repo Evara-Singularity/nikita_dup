@@ -1,9 +1,10 @@
-import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Renderer2, Inject, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: "exclusive",
@@ -18,17 +19,17 @@ export class ExclusiveComponent {
 
   constructor(
     private elementRef: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(DOCUMENT) private _document,
     private _renderer2: Renderer2,
     private meta: Meta,
     private activatedRoute: ActivatedRoute,
     private title: Title,
     public router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.getFreshData();
     this.setMetas();
   }

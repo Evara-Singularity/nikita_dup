@@ -1,9 +1,10 @@
-import { Component, ViewEncapsulation, PLATFORM_ID, Inject, Renderer2 } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { Component, ViewEncapsulation, Inject, Renderer2 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { FooterService } from '@app/utils/services/footer.service';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'bulk-enquiry',
@@ -83,12 +84,12 @@ export class BulkEnquiryComponent {
     private _renderer2: Renderer2,
     private meta: Meta,
     private title: Title, 
-    @Inject(PLATFORM_ID) platformId, 
     public router: Router, 
-    public footerService: FooterService) 
+    public footerService: FooterService,
+    public _commonService: CommonService) 
     {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+      this.isServer = _commonService.isServer;
+      this.isBrowser = _commonService.isBrowser;
     
     this.title.setTitle("Bulk Order Inquiry - Buy More at Less Price");
     this.meta.addTag({ "property": "og:title", "content": "Bulk Order Enquiry - Buy More at Less Price" });

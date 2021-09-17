@@ -1,11 +1,11 @@
 
-import { isPlatformServer, isPlatformBrowser, DOCUMENT, Location } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { ViewChild, Renderer2 } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { Component, EventEmitter, Output, Input, ViewEncapsulation, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, EventEmitter, Output, Input, ViewEncapsulation, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntil, catchError } from 'rxjs/operators';
 import { of, forkJoin } from 'rxjs';
@@ -140,7 +140,6 @@ export class CartComponent {
         private _tState: TransferState,
         public footerService: FooterService,
         public activatedRoute: ActivatedRoute,
-        @Inject(PLATFORM_ID) platformId,
         public dataService: DataService,
         public commonService: CommonService,
         public checkOutService: CheckoutService,
@@ -152,8 +151,8 @@ export class CartComponent {
         private _loaderService: GlobalLoaderService,
         private _tms: ToastMessageService) {
 
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = commonService.isServer;
+        this.isBrowser = commonService.isBrowser;
         this.tabIndex = 4;
         this.itemsList = null;
         this.cart = {};

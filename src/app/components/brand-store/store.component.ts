@@ -7,10 +7,11 @@ import {
 	ElementRef,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta, TransferState } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
 	selector: 'store',
@@ -40,18 +41,18 @@ export class StoreComponent {
 		private _tState: TransferState,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
-		@Inject(PLATFORM_ID) private platformId: Object,
 		public _router: Router,
 		private meta: Meta,
 		private _activatedRoute: ActivatedRoute,
 		private title: Title,
 		private router: Router,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		public _commonService : CommonService
 	) {
 		let path = this.router.url.split('?');
 		path = path[0].split('/');
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+		this.isBrowser = _commonService.isBrowser;
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['data']['error']) {
 				this.storeData = rawData['data'];

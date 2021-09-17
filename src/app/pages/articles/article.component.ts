@@ -1,5 +1,5 @@
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
@@ -27,11 +27,11 @@ export class ArticleComponent implements OnInit
     isBrowser = false;
     isServer = false;
 
-    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, @Inject(PLATFORM_ID) platformId, private router: Router,	private _commonService: CommonService, private _localStorageService:LocalStorageService, private _analytics:GlobalAnalyticsService,
+    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, private router: Router,	private _commonService: CommonService, private _localStorageService:LocalStorageService, private _analytics:GlobalAnalyticsService,
         private toastMessageService: ToastMessageService, private title: Title, private renderer2: Renderer2, private meta: Meta, @Inject(DOCUMENT) private document)
     {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit() {

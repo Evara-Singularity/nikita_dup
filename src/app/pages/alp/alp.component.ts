@@ -1,6 +1,6 @@
 import { Title, Meta, makeStateKey, TransferState } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, OnInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { EventEmitter, Component, ViewChild, Inject, Renderer2, OnInit, Optional, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { AlpService } from './alp.service';
 import { CommonService } from '@services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -128,7 +128,7 @@ export class AlpComponent implements OnInit {
         private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
         public dataService: DataService,
-        public pageTitle: Title, private meta: Meta, @Inject(PLATFORM_ID) platformId, public footerService: FooterService,
+        public pageTitle: Title, private meta: Meta, public footerService: FooterService,
         public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
         public _commonService: CommonService, private _categoryService: AlpService, private ngxSiemaService: NgxSiemaService) {
         this.showSubcategoty = true;

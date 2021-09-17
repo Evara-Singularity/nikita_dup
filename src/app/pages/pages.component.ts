@@ -1,5 +1,4 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { delay, map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
@@ -38,13 +37,12 @@ export class PagesComponent implements OnInit {
     private _cartService: CartService,
     private _localStorageService: LocalStorageService,
     private _router: Router,
-    @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService
   ) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;;
     this.isMoglixAppInstalled();
 
     this.router.events.subscribe(res => {

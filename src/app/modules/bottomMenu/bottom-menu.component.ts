@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
 import { delay } from 'rxjs/operators';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { of } from 'rxjs';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'app-bottom-menu',
@@ -14,10 +14,10 @@ export class BottomMenuComponent implements OnInit {
     @Output() outData$: EventEmitter<{}>;
     isServer: boolean;
     isBrowser: boolean;
-    constructor(@Inject(PLATFORM_ID) platformId) {
+    constructor(public _commonService:CommonService) {
         this.outData$ = new EventEmitter();
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit() {

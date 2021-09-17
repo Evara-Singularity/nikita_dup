@@ -1,15 +1,15 @@
-import { DOCUMENT, isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	Component,
 	Inject,
 	OnInit,
 	Optional,
 	Renderer2,
-	PLATFORM_ID,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 
 @Component({
@@ -23,15 +23,15 @@ export class PopularSearchComponent implements OnInit {
 	isBrowser;
 	constructor(
 		@Optional() @Inject(RESPONSE) private response,
-		@Inject(PLATFORM_ID) platformId,
 		private title: Title,
 		private route: ActivatedRoute,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
-		public _router: Router
+		public _router: Router,
+		public _commonService: CommonService
 	) {
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 	}
 
 	ngOnInit() {

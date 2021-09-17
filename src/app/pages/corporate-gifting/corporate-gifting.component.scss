@@ -1,0 +1,234 @@
+.corporate-gifting-page{
+    background-color: #ffffff;
+    padding: 20px;
+    .corporate-gifting-tabs-header{
+        justify-content: space-between;
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: -webkit-box;  
+        display: -moz-box;   
+        display: -ms-flexbox;      
+        display: -webkit-flex;    
+        display: flex;  
+        justify-content: space-between;
+        overflow: scroll;
+            li {
+                flex: 1;
+                font-size: 12px;
+                text-align: center;
+                float: left;
+                padding: 10px 20px;
+                border-radius: 4px;
+                &:nth-child(1){
+                    background-color: #F4E1E5;
+                    border: 1px solid #D9232D;
+                    color: #D9232D;
+                }
+                &:hover{
+                    background-color: #F4E1E5;
+                    border: 1px solid #D9232D;
+                    color: #D9232D;
+                }
+              }
+          }
+    }
+    .corporate-gifting-tabs-body-main{
+        margin-top: 20px;
+        h4{
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: 400;
+        }
+        .corporate-gifting-tabs-body{ 
+            .corporate-gifting-tabs-body-left{
+                width: 100%;
+                .product-area{
+                    width: 100%;
+                    display: -webkit-box;  
+                    display: -moz-box;   
+                    display: -ms-flexbox;      
+                    display: -webkit-flex;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    .product-area-inner{
+                        margin-top: 20px;
+                        border: 1px solid #E3E3E3;
+                        border-radius: 4px;
+                        text-align: center;
+                        display: flex; 
+                        flex-basis: calc(50% - 10px);  
+                        justify-content: center;
+                        flex-direction: column;
+                        .product-img{
+                            position: relative;
+                            img{
+                                width: 98%;
+                                margin-left: 1%;
+                                margin-top: 2px;
+                            }
+                            .check-icon{
+                                position: absolute;
+                                top: 10px;
+                                left: 10px;
+                            }
+                        }
+                        .product-title{
+                            width: 80%;
+                            margin: auto;
+                            min-height: 100px;
+                            h5{
+                                margin-top: 10px;
+                                font-size: 14px;
+                                font-weight: 400;
+                                line-height: 18px;
+                                color: #3C3C3C;
+                            }
+                        }
+                        
+                        .price{
+                            p{
+                            .original-price{
+                                color: red;
+                                font-size: 11px;
+                                color: #928F8F;
+                                position: relative;
+                                &:before {
+                                    border-top: 1px solid #928F8F;
+                                    content:"";
+                                    margin: 0 auto; /* this centers the line to the full width specified */
+                                    position: absolute; 
+                                    top: 50%; left: 0; right: 0; bottom: 0;
+                                    width: 95%;
+                                    z-index: 2;
+                                }
+                            }
+                                span{
+                                    font-size: 16px;
+                                    color: #2B2B2B;
+                                    font-weight: 600;
+                                }
+                            }
+                            
+                        }
+                        .product-qty{
+                            margin: 10px 0px;
+                            display: -webkit-box;  
+                            display: -moz-box;   
+                            display: -ms-flexbox;      
+                            display: -webkit-flex;    
+                            display: flex;  
+                            align-items: center;
+                            justify-content: center;
+                            .product-qty-child{
+                                align-items: center;
+                                display: flex;
+                                justify-content: center;
+                            }
+                            .btn-minus{
+                                width: 30px;
+                                height: 30px;
+                                background-color: #D5D5D5;
+                                border: 1px solid #C4C4C4;
+                            }
+                            .btn-plus{
+                                width: 30px;
+                                height: 30px;
+                                background-color: #D5D5D5;
+                                border: 1px solid #C4C4C4;
+                            }
+                            .total-no{
+                                width: 60px;
+                                height: 30px;
+                                border: 1px solid #C4C4C4;
+                            }
+                        }
+                        
+                    }  
+                    .btn-view-more{
+                            background-color: #ffffff;
+                            color: #D9232D;
+                            border: 1px solid #D9232D;
+                            border-radius: 3px;
+                            font-weight: bold;
+                            padding: 15px 25px;
+                            margin-top: 20px !important;
+                            display: table;
+                             margin:  auto
+                    }
+                }
+            }
+            .corporate-gifting-tabs-body-right{
+                width: 100%;
+                box-shadow: 0px 0px 3px 0px rgba(113,113,113,0.75);
+                -webkit-box-shadow: 0px 0px 3px 0px rgba(113,113,113,0.75);
+                -moz-box-shadow: 0px 0px 3px 0px rgba(113,113,113,0.75);
+                .form-area{
+                    margin-top: 20px;
+                    .form-header{
+                        height: 120px;
+                        width: 100%;
+                        position: relative;
+                        img{
+                            width: 100%;
+                            
+                        }
+                        .form-header-show{
+                            position: absolute;
+                            margin: auto;
+                            top: 20px;
+                            right: 0;
+                            bottom: 0;
+                            left: 0;
+                            h4{
+                                margin: auto;
+                                text-align: center;
+                                color: #FFFFFF;
+                                font-size: 18px;
+                                line-height: 26px;
+                            }
+                        }
+                        
+                    }
+                    .form-body{
+                        padding: 20px;
+                        h5{
+                            font-size: 14px;
+                        }
+                        input{
+                            width: 100%;
+                            border: 1px solid #707070;
+                            border-radius: 4px;
+                            height: 40px;
+                            margin-top: 20px;
+                            padding: 0px 10px;
+                        }
+                        textarea{
+                            width: 100%;
+                            border: 1px solid #707070;
+                            border-radius: 4px;
+                            height: 60px;
+                            margin-top: 20px;
+                            color: #3C3C3C;
+                            padding: 10px;
+                        }
+                        button{
+                            position: fixed;
+                            width: 100%;
+                            left: 0;
+                            bottom: 0;
+                            background-color: #D9232D;
+                            color: #ffffff;
+                            border-radius: 3px;
+                            border: none;
+                            padding: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

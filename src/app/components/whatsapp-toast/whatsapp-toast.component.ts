@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import {SafeUrl, SafeUrlPipeModule } from '@app/utils/pipes/safe-url.pipe';
 
 @Component({
   selector: 'whatsapp-toast',
@@ -21,7 +22,8 @@ export class WhatsAppToastComponent implements OnInit {
   declarations: [WhatsAppToastComponent],
   exports: [WhatsAppToastComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    SafeUrlPipeModule
   ]
 })
 

@@ -454,6 +454,11 @@ export class BrandComponent {
         this._router.navigateByUrl(window.location.pathname);
     }
 
+    getUrlPathName(url){
+        const originSlash = /^https?:\/\/[^/]+\//i;
+        return url.replace(originSlash, '');
+    }
+
     genrateAndUpdateBrandFooterData() {
         this.brandFooterData = {
             brandCatDesc: this.API_RESPONSE.brand[1][0].desciption,
@@ -472,4 +477,5 @@ export class BrandComponent {
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)
         };
     }
+    
 }

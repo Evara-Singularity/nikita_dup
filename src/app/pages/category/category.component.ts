@@ -797,6 +797,11 @@ export class CategoryComponent {
         }
     }
 
+    getUrlPathName(url){
+        const originSlash = /^https?:\/\/[^/]+\//i;
+        return url.replace(originSlash, '');
+    }
+
     ngOnDestroy() {
         this.resetLazyComponents();
     }

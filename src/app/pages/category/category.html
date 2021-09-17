@@ -76,7 +76,7 @@
             <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularLinks | slice:0:10 ">
-                        <a href="{{API_RESPONSE.category[1].categoryLinkList[category]}}">{{ category }}</a>
+                        <a href="{{ getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category])  }}">{{ category }}</a>
                     </div>
                 </div>
             </div>

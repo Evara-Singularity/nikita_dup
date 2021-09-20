@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 .corporate-gifting-page{
     background-color: #ffffff;
     padding: 20px;
@@ -9,12 +10,12 @@
             padding: 0;
             overflow: hidden;
             display: -webkit-box;  
-        display: -moz-box;   
-        display: -ms-flexbox;      
-        display: -webkit-flex;    
-        display: flex;  
-        justify-content: space-between;
-        overflow: scroll;
+            display: -moz-box;   
+            display: -ms-flexbox;      
+            display: -webkit-flex;    
+            display: flex;  
+            justify-content: space-between;
+            overflow: scroll;
             li {
                 flex: 1;
                 font-size: 12px;
@@ -231,4 +232,9 @@
             }
         }
     }
+}
+
+.check-icon{
+   @extend %custom-check-box-checkout;
+   
 }

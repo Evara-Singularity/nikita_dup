@@ -1,10 +1,9 @@
 import { Title, Meta } from '@angular/platform-browser';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	Component,
 	ViewEncapsulation,
 	OnInit,
-	PLATFORM_ID,
 	Inject,
 	Renderer2,
 	ViewChild,
@@ -113,7 +112,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		@Inject(DOCUMENT) private _document,
 		private title: Title,
 		private meta: Meta,
-		@Inject(PLATFORM_ID) platformId,
 		public _lss: LocalStorageService,
 		public cartService: CartService,
 		public footerService: FooterService,
@@ -124,8 +122,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _commonService: CommonService,
 		private analytics: GlobalAnalyticsService
 	) {
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 		this.initConstructorData();
 	}
 

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID, NgModule } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PlatformLocation, isPlatformBrowser, CommonModule } from '@angular/common';
+import { PlatformLocation, CommonModule } from '@angular/common';
 import { NgxSiemaOptions } from 'ngx-siema';
 import CONSTANTS from '@app/config/constants';
 import { RouterModule } from '@angular/router';
+import { CommonService } from '@app/utils/services/common.service';
 
 
 @Component({
@@ -35,9 +36,9 @@ export class ClusterVideoComponent implements OnInit, AfterViewInit
     currentIframeIndex = -1;
 
 
-    constructor(private sanitizer: DomSanitizer, private platformLocation: PlatformLocation, @Inject(PLATFORM_ID) platformId)
+    constructor(private sanitizer: DomSanitizer, private platformLocation: PlatformLocation , public _commonService:CommonService)
     {
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = _commonService.isBrowser
     }
 
     ngOnInit()

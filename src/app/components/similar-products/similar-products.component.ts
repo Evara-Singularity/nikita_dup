@@ -78,7 +78,7 @@ export class SimilarProductsComponent implements OnInit
     navigateTo(url){
         this.commonService.setSectionClickInformation(this.outOfStock ? 'similar_product_oos' : 'similar_products', 'pdp')
         this.router.navigateByUrl(url);
-        if (this.commonService.isBrowser) {
+        if ( this.commonService.isBrowser ) {
             ClientUtility.scrollToTop(100);
         }
     }

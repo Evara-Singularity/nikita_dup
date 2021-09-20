@@ -1,7 +1,6 @@
-import { Component, Input, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WalletService } from "./wallet.service";
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../config/constants';
@@ -47,7 +46,6 @@ export class WalletComponent {
      
     constructor(
         private _localStorageService: LocalStorageService,
-        @Inject(PLATFORM_ID) platformId,
         private _checkoutService: CheckoutService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
@@ -57,8 +55,8 @@ export class WalletComponent {
         private loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder,
         private lsr: LowSuccessMessagePipe) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         this.walletData = {};
         this.isValid = false;
     }

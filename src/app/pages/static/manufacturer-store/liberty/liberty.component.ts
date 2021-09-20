@@ -1,17 +1,15 @@
 import { LibertyService } from './liberty.service';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import {
 	Component,
 	OnInit,
 	ViewChild,
-	PLATFORM_ID,
-	Inject,
 } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { SiemaCarouselComponent } from '@app/modules/siemaCarousel/siemaCarousel.component';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
 	selector: 'app-liberty',
@@ -96,17 +94,17 @@ export class LibertyComponent implements OnInit {
 	newArrivalArray: Array<any> = [];
 
 	constructor(
-		@Inject(PLATFORM_ID) platformId,
 		private _router: Router,
 		private _activatedRoute: ActivatedRoute,
 		private _libertyService: LibertyService,
 		private title: Title,
-		private meta: Meta
+		private meta: Meta,
+		public _commonService: CommonService
 	) {
 		this.paginationUpdated = new Subject<any>();
 		this.sortByComponentUpdated = new Subject<any>();
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 	}
 
 	ngOnInit() {

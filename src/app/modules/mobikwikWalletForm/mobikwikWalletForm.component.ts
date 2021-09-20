@@ -1,5 +1,5 @@
-import { Component, Input, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Component, Input, AfterViewInit } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'mobikwik-wallet-form',
@@ -12,10 +12,10 @@ export class MobikwikWalletFormComponent implements AfterViewInit {
     isServer: boolean;
     isBrowser: boolean;
 
-    constructor(@Inject(PLATFORM_ID) platformId) {
+    constructor(public _commonService: CommonService) {
         this.data = {};
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngAfterViewInit() {

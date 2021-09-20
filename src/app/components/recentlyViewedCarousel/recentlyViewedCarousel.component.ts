@@ -1,8 +1,6 @@
 import {
 	Component,
 	Input,
-	PLATFORM_ID,
-	Inject,
 	NgModule,
 	Output,
 	EventEmitter,
@@ -10,8 +8,6 @@ import {
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import {
-	isPlatformServer,
-	isPlatformBrowser,
 	CommonModule,
 } from '@angular/common';
 import CONSTANTS from '../../config/constants';
@@ -57,12 +53,11 @@ export class RecentlyViewedCarouselComponent {
 		private _localAuthService: LocalAuthService,
 		public _commonService: CommonService,
 		public router: Router,
-		@Inject(PLATFORM_ID) private platformId: Object,
 		private _dataservice: DataService
 	) {
-		this.isServer = isPlatformServer(platformId);
+		this.isServer = _commonService.isServer;
 		this.openPopup = false;
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isBrowser = _commonService.isBrowser;
 	}
 
 	ngOnInit() {

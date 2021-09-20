@@ -1,11 +1,12 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FooterService } from '@app/utils/services/footer.service';
 import { DataService } from '@app/utils/services/data.service';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
 	selector: 'industry-store',
@@ -29,17 +30,17 @@ export class IndustryStoreComponent {
 	public isAllListShow: boolean;
   
 	constructor(
-		@Inject(PLATFORM_ID) platformId,
 		public footerService: FooterService,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
 		private _router: Router,
 		private title: Title,
 		private meta: Meta,
-		private dataService: DataService
+		private dataService: DataService,
+		public _commonService: CommonService
 	) {
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 		this.title.setTitle('Industry Store - Moglix.com');
 		this.meta.addTag({
 			name: 'description',

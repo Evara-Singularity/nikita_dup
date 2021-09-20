@@ -1,5 +1,5 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 
 @Component({
@@ -14,10 +14,10 @@ export class CheckoutHeaderComponent implements OnInit {
   isBrowser: boolean
 
   constructor(
-    @Inject(PLATFORM_ID) platformId,
     private _localAuthService: LocalAuthService,
+    public _commonService: CommonService
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {

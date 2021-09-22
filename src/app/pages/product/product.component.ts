@@ -37,7 +37,7 @@ interface ProductDataArg {
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit, AfterViewInit {
-
+  encodeURI = encodeURI;
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
@@ -155,6 +155,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemad loaded components recent viewd products all pop up
   recentAllInstance = null;
   @ViewChild('recentAll', { read: ViewContainerRef }) recentAllContainerRef: ViewContainerRef;
+  // ondemad loaded components for showing duplicate order
+  globalToastInstance = null;
+  @ViewChild('globalToast', { read: ViewContainerRef }) globalToastContainerRef: ViewContainerRef;
   // ondemad loaded components for post a product review
   writeReviewPopupInstance = null;
   @ViewChild('writeReviewPopup', { read: ViewContainerRef }) writeReviewPopupContainerRef: ViewContainerRef;
@@ -306,6 +309,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
           this.remoteApiCallRecentlyBought();
+          this.duplicateOrderCheck(rawData);
         } else {
           this.showLoader = false;
           this.globalLoader.setLoaderState(false);
@@ -325,8 +329,21 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }, error => {
       this.showLoader = false;
       this.globalLoader.setLoaderState(false);
-      console.log('getProductApiData error', error);
     });
+  }
+
+  private duplicateOrderCheck(rawData) {
+    const userSession = this.localStorageService.retrieve('user');
+    if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && rawData['product'][6] && rawData['product'][6].status) {
+
+      const date1: any = new Date(rawData['product'][6]['data']['date']);
+      const date2: any = new Date();
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays < 31) {
+        this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+      }
+    }
   }
 
   updateAttr(productId) {
@@ -408,7 +425,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   setQuestionsAnswerData(data) {
-    console.log('questionAnswerList', data);
     this.questionAnswerList = data;
   }
 
@@ -491,8 +507,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.priceQuantityCountry = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
     this.productMrp = (this.isProductPriceValid && this.priceQuantityCountry) ? this.priceQuantityCountry['mrp'] : null;
 
-    console.log('isProductPriceValid', this.isProductPriceValid);
-
     if (this.priceQuantityCountry) {
       this.priceQuantityCountry['bulkPricesIndia'] = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']) : null;
       this.priceQuantityCountry['bulkPricesModified'] = (this.isProductPriceValid && this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']) ? [...this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']] : null;
@@ -510,6 +524,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.productMinimmumQuantity = (this.priceQuantityCountry && this.priceQuantityCountry['moq']) ? this.priceQuantityCountry['moq'] : 1;
 
     this.setOutOfStockFlag();
+
+    /**
+     * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
+     * then redirect to inStock MSN of same grouped product
+     * check for filterAttributesList for grouped to make sure it is grouped product and check of outofstock and 
+     * then redirect to next inStock msn avaliable in args.nextAvailableMsn
+     * Make sure this condition is called after this.setOutOfStockFlag();
+     * 
+     * Commented: as per request in Sprint-14 (Support)
+    */
+
+    // if (this.productFilterAttributesList && this.productOutOfStock) {
+    //   this.getProductGroupData(args.nextAvailableMsn);
+    // }
 
     if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);
@@ -557,13 +585,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.fbtComponentInstance = null;
       this.fbtComponentContainerRef.remove();
     }
-    // console.log('similarProductInstance 1', this.similarProductInstance);
     if (this.similarProductInstance) {
       this.similarProductInstance = null;
       this.similarProductContainerRef.remove();
       this.onVisibleSimilar(null);
     }
-    // console.log('similarProductInstance 2', this.similarProductInstance);
     if (this.recentProductsInstance) {
       this.recentProductsInstance = null;
       this.recentProductsContainerRef.remove();
@@ -613,6 +639,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.alertBoxInstance = null;
       this.alertBoxContainerRef.remove();
     }
+    if (this.globalToastInstance) {
+      this.globalToastInstance = null;
+      this.globalToastContainerRef.remove();
+    }
     if (this.productRFQInstance) {
       this.productRFQInstance = null;
       this.productRFQContainerRef.remove();
@@ -653,7 +683,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       // incase priceQuantityCountry element not present in API
       this.productOutOfStock = true;
     }
-    console.log('setOutOfStockFlag :: ', this.productOutOfStock);
   }
 
   // setAttributesExtra(productPartDetails) {
@@ -1333,7 +1362,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   changeBulkQty(value, index) {
-    console.log('changeBulkQty', value, index);
     if (this.isBrowser) {
       (<HTMLInputElement>document.querySelector("#product_quantity")).value = "0";
     }
@@ -1355,7 +1383,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // dynamically load similar section 
   async onVisibleSimilar(htmlElement) {
-    console.log('onVisibleSimilar', 'called');
     if (!this.similarProductInstance) {
       const { SimilarProductsComponent } = await import('./../../components/similar-products/similar-products.component')
       const factory = this.cfr.resolveComponentFactory(SimilarProductsComponent);
@@ -1461,7 +1488,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // product-rfq 
   async onVisibleProductRFQ(htmlElement) {
     this.removeRfqForm();
-    console.log('productRFQInstance', this.productRFQInstance);
     if (!this.productRFQInstance) {
       this.intiateRFQQuote(false, false);
     }
@@ -1520,7 +1546,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.pincodeFormInstance.instance['productInfo'] = productInfo;
     this.pincodeFormInstance.instance['openPinCodePopup'] = true;
     (this.pincodeFormInstance.instance['out'] as EventEmitter<boolean>).subscribe(data => {
-      console.log('getPincodeForm detached', data);
       // create a new component after component is closed
       // this is required, to refresh input data
       this.pincodeFormInstance = null;
@@ -1553,7 +1578,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async viewPopUpOpen(data) {
-    console.log('viewPopUpOpen', data);
     if (!this.offerPopupInstance) {
       this.showLoader = true;
       const { ProductOfferPopupComponent } = await import('./../../components/product-offer-popup/product-offer-popup.component').finally(() => {
@@ -1564,7 +1588,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.offerPopupInstance.instance['data'] = data['block_data'];
       this.offerPopupInstance.instance['openMobikwikPopup'] = true;
       (this.offerPopupInstance.instance['out'] as EventEmitter<boolean>).subscribe(data => {
-        console.log('viewPopUpOpen detached', data);
         // create a new component after component is closed
         // this is required, to refresh input data
         this.offerPopupInstance = null;
@@ -1726,6 +1749,26 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
 
+  async loadGlobalToastMessage(data, rawData) {
+    if (data['status'] === true) {
+      if (!this.globalToastInstance) {
+        const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component').finally(() => {
+          this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(GlobalToastComponent);
+        this.globalToastInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const a = data.data.time.split(':');
+        this.globalToastInstance.instance['text'] = 'The same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? ' AM' : ' PM');
+        this.globalToastInstance.instance['btnText'] = 'x';
+        this.globalToastInstance.instance['showTime'] = 100000;
+        this.globalToastInstance.instance['showDuplicateOrderToast'] = true;
+        this.globalToastInstance.instance['positionTop'] = true;
+        this.globalToastInstance.instance['productMsn'] = rawData.partNumber;
+      }
+    }
+  }
+
   async loadAlertBox(mainText, subText = null, extraSectionName: string = null) {
     if (!this.alertBoxInstance) {
       this.showLoader = true;
@@ -1757,6 +1800,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
     this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+    this.appPromoInstance.instance['page'] = 'pdp';
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
@@ -1797,7 +1841,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async showYTVideo(link) {
-    console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
@@ -1820,7 +1863,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let pageTitleName = this.productName;
     const pwot = this.priceWithoutTax;
 
-    if (pwot && pwot > 0) {
+    if (pwot && pwot > 0 && this.rawProductData['quantityAvailable'] > 0) {
       title += " - Buy at Rs." + this.productPrice
     }
 
@@ -2247,7 +2290,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             'productImg': this.productDefaultImage,
             'CatId': this.productCategoryDetails['taxonomyCode'],
             'MRP': this.productMrp['amount'],
-            'Discount':  this.productDiscount
+            'Discount': this.productDiscount
           }]
         }
       },

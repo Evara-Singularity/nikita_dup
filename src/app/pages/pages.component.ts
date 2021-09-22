@@ -17,7 +17,6 @@ import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SpeedTestService } from 'ng-speed-test';
-import * as Modernizr from 'modernizr';
 
 @Component({
   selector: 'app-pages',
@@ -153,9 +152,11 @@ export class PagesComponent implements OnInit, AfterViewInit {
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
-     */    
+     */
+
+    this.setUserSession();
     if (this.isBrowser) {
-      this.checkAndRedirect();
+      // this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
@@ -222,6 +223,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
           map((res) => res)
         )
         .subscribe((res) => {
+          let userSession = this._localAuthService.getUserSession();
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ((this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)) {

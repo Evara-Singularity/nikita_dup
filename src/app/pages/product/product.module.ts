@@ -14,6 +14,7 @@ import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
 import { NgxSiemaService } from 'ngx-siema';
 import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 import { WebpImageSupportCheckPipeModule } from '@app/utils/pipes/webpImageSupportCheck.pipe';
+import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
 @NgModule({
   declarations: [
     ProductComponent,
@@ -30,6 +31,7 @@ import { WebpImageSupportCheckPipeModule } from '@app/utils/pipes/webpImageSuppo
     ReactiveFormsModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
+    WhatsAppToastModule,
     // Directives
     EnhanceImgByNetworkDirectiveModule,
     WebpImageSupportCheckPipeModule,

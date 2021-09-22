@@ -56,6 +56,7 @@ export class CommonService {
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
     private routeData: { currentUrl: string, previousUrl: string };
+    userSession; 
 
     constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
@@ -68,6 +69,7 @@ export class CommonService {
         this.itemsValidationMessage = [];
         this.isBrowser = isPlatformBrowser(platformId);
         this.isServer = isPlatformServer(platformId);
+        this.userSession = this._localStorageService.retrieve('user');
     }
 
     setNetworkSpeedState(speed) {
@@ -450,6 +452,7 @@ export class CommonService {
 
         actualParams['type'] = 'm';
         actualParams['abt'] = 'n';
+        actualParams['onlineab'] = 'y';
 
         if (queryParams['preProcessRequired']) {
             actualParams['preProcessRequired'] = queryParams['preProcessRequired'];
@@ -935,5 +938,15 @@ export class CommonService {
 
     navigateTo(link) {
         this._router.navigateByUrl(link);
+    }
+
+    sendOtp(data): Observable<{}>
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
+    }
+
+    validateOTP(data)
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_OTP, { body: data });
     }
 }

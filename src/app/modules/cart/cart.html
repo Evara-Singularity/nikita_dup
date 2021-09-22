@@ -1,5 +1,8 @@
 <div *ngIf="itemsList != null && itemsList.length>0">
     <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of itemsList; let i = index">
+        <!-- <div class="product-order-time">
+            <p><span>You ordered this product 4 hours ago</span></p>
+        </div> -->
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>

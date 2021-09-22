@@ -1,24 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { SearchComponent } from "@pages/search/search.component";
-import { ObjectToArrayPipeModule } from "@pipes/object-to-array.pipe";
-import { routing as SearchRouting } from "@pages/search/search.routing";
-import { ProductListModule } from "@modules/productList/productList.module";
-import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { CommonModule } from '@angular/common';
+import { SearchV1RoutingModule } from './search.routing.module';
+import { SearchComponent } from './search.component';
+import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
+
 
 @NgModule({
-    imports: [
-        CommonModule,
-        SearchRouting,
-        ObjectToArrayPipeModule,
-        ProductListModule,
-        NgxPaginationModule,
-        ObserveVisibilityDirectiveModule,
-    ],
-    declarations: [
-        SearchComponent,
-    ],
+  declarations: [SearchComponent],
+  imports: [
+    CommonModule,
+    SearchV1RoutingModule,
+    SharedProductListingModule
+  ]
 })
-
 export class SearchModule { }

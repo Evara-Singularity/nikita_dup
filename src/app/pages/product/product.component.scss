@@ -32,11 +32,63 @@
 }
 
 .pdp-container {
+    padding: 10px 0px;
     background: #f2f2f2;
     position: relative;
     margin-bottom: 60px;
     &.pdp-container-remove {
         margin-bottom: 0px;
+    }
+    .info-to-buyer-next{
+        background-color: #FFEBE0;
+        border: 1px solid #F5681E;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        width: 96%;
+        margin: auto;
+        padding: 5px 10px;
+        display: flex;
+        .info-to-buyer-l{
+            width: 70%;
+            display: flex;
+            align-items: center;
+        }
+        .info-to-buyer-r{
+            width: 30%;
+            a{
+                color: #0E61D5 !important;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 5px 10px;
+                float: right;
+            }
+        }
+    }
+    .info-to-buyer{
+        margin-top: 10px;
+        display: none !important;
+        background-color: #F8D3D5;
+        border: 1px solid #D9232D;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 5px 10px;
+        display: flex;
+        .info-to-buyer-l{
+            width: 70%;
+            display: flex;
+            align-items: center;
+        }
+        .info-to-buyer-r{
+            width: 30%;
+            a{
+                color: #0E61D5 !important;
+                background-color: #ffffff;
+                border-radius: 4px;
+                padding: 5px 10px;
+                float: right;
+            }
+        }
     }
     .prod-carsl {
         &.oos {

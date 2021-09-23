@@ -35,7 +35,22 @@
 </section>
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
-
+    <!-- <div class="info-to-buyer">
+        <div class="info-to-buyer-l">
+            <p>This same item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
+        </div>
+        <div class="info-to-buyer-r">
+            <a href="">view order</a>
+        </div>
+    </div>
+    <div class="info-to-buyer-next">
+        <div class="info-to-buyer-l">
+            <p>Similar item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
+        </div>
+        <div class="info-to-buyer-r">
+            <a href="">view order</a>
+        </div>
+    </div> -->
     <div class="prod-carsl" addClass [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
         </siema-carousel>
@@ -562,6 +577,7 @@
     <ng-container #offerComparePopup></ng-container>
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
+    <ng-container #globalToast></ng-container>
 
 
 
@@ -587,3 +603,4 @@
 </div>
 
 <div id="pageBottom"></div>
+<whatsapp-toast [customText]="'Hi, I want to buy ' + productName"></whatsapp-toast>

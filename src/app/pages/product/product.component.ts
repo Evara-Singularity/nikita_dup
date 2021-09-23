@@ -1396,6 +1396,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const factory = this.cfr.resolveComponentFactory(ProductSponsoredListComponent);
       this.sponseredProductsInstance = this.sponseredProductsContainerRef.createComponent(factory, null, this.injector);
       this.sponseredProductsInstance.instance['productName'] = this.productName;
+      this.sponseredProductsInstance.instance['productId'] = this.defaultPartNumber;
       this.sponseredProductsInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
       this.sponseredProductsInstance.instance['outOfStock'] = this.productOutOfStock;
     }

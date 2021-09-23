@@ -104,5 +104,6 @@ export const ENDPOINTS = {
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
   IS_BRAND_CATEGORY: "/search/isBrandCategory",
-  SEARCH: '/search'
+  SEARCH: '/search',
+  SPONSERED_PRODUCTS: '/search/getSponsoredProducts'
 };

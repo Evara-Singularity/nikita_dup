@@ -42,6 +42,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     redirectedSectionName: '',
     redirectedIdentifier: '',
   }
+  @Input() isAd: boolean = false;
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;

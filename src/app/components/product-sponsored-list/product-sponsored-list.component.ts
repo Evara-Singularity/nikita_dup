@@ -3,6 +3,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
+import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class ProductSponsoredListComponent implements OnInit {
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   @Input() outOfStock: boolean = false;
   @Input() productName: string;
+  @Input() productId: string;
   @Input() categoryCode: string;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
@@ -34,6 +36,7 @@ export class ProductSponsoredListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private commonService: CommonService,
   ) { }
 
   ngOnInit() {
@@ -45,44 +48,20 @@ export class ProductSponsoredListComponent implements OnInit {
   }
 
   getProductList() {
-    this.productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) => {
-      let products = response['products'];
+    const query = {
+      a_type: 'PRODUCT',
+      client_id: 302211,
+      keywords: 'Black Decker' || encodeURIComponent(this.productId.toLowerCase()),
+      pcnt: 10,
+      page_type: 'SEARCH',
+      device_id: this.commonService.getUniqueGAId()
+    }
+    this.productService.getSponseredProducts(query).subscribe((response: any) => {
+      let products = response['productSearchResult']['products'];
       if (products && (products as []).length > 0) {
-        this.productList = (products as any[]).map(product => this.convertToProductEntity(product));
+        this.productList = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
       }
-    })
-  }
-
-  convertToProductEntity(product: any) {
-    const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
-    const productMrp = product['mrp'];
-    const productPrice = product['salesPrice'];
-    const priceWithoutTax = product['priceWithoutTax'];
-    return {
-      moglixPartNumber: partNumber,
-      moglixProductNo: product['moglixProductNo'] || null,
-      mrp: productMrp,
-      salesPrice: productPrice,
-      priceWithoutTax: priceWithoutTax,
-      productName: product['productName'],
-      variantName: product['productName'],
-      productUrl: product['productUrl'],
-      shortDesc: product['shortDesc'],
-      brandId: product['brandId'],
-      brandName: product['brandName'],
-      quantityAvailable: product['quantityAvailable'],
-      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-      rating: product['rating'] || null,
-      categoryCodes: null,
-      taxonomy: product['taxonomy'],
-      mainImageLink: (product['moglixImageNumber']) ? product['mainImageLink'] : '',
-      productTags: [],
-      filterableAttributes: {},
-      avgRating: product.avgRating,
-      itemInPack: null,
-      ratingCount: product.ratingCount,
-      reviewCount: product.reviewCount
-    } as ProductsEntity;
+    });
   }
 
 }

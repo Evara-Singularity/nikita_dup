@@ -28,7 +28,13 @@ export class ProductListService {
 
     this.productListingData = {
       totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
-      products: rawSearchData.productSearchResult.products,
+      products: [...rawSearchData.productSearchResult.products].map(product => {
+        const image = product['mainImageLink'].split('/');
+        image[image.length - 1] = image[image.length - 1].replace('large','thumbnail');
+        product['mainImageThumnailLink'] = image.join('/');
+        // console.log('products ==>', product);
+        return product;
+      }),
       filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
       listingHeading: heading
     };

@@ -66,7 +66,11 @@ export class PagesComponent implements OnInit, AfterViewInit {
     if (this.isBrowser) {
       setTimeout(() => {
         // TODO: configure it with 500KB image 
-        this.speedTestService.getMbps({ iterations: 1, retryDelay: 1500 }).subscribe(
+        this.speedTestService.getMbps({ iterations: 1, file: {
+          path: CONSTANTS.SPEED_TEST_IMAGE,
+          shouldBustCache: true,
+          size: 408949
+        }, retryDelay: 1500 }).subscribe(
           (speed) => {
             console.log('speedTestService ngAfterViewInit', speed);
             this._commonService.setNetworkSpeedState(speed);

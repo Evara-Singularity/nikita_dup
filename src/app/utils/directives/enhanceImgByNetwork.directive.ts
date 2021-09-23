@@ -65,33 +65,33 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
   startClientSideProcessing() {
     if (this.whiteListedNode.includes(this.el.nativeElement.nodeName.toLowerCase())) {
       const imageSrc = this.el.nativeElement.src;
-      console.log('inside imageSrcChunks ===>', imageSrc);
+      // console.log('inside imageSrcChunks ===>', imageSrc);
       const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
       const imageSrcChunks = imageSrc.split('/');
-      console.log('inside imageSrcChunks ===>', imageSrcChunks);
+      // console.log('inside imageSrcChunks ===>', imageSrcChunks);
       imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace(sizeType[0], this.replaceOptions[sizeType[0]]);
-      console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
+      // console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
       this.el.nativeElement.src = imageSrcChunks.join('/');
     } else {
-      console.log('enhanceImgByNetwork', 'enhanceImgByNetwork directive should be used with Img HTMLElement');
+      // console.log('enhanceImgByNetwork', 'enhanceImgByNetwork directive should be used with Img HTMLElement');
     }
   }
 
   startServerSideWebpProcessing() {
     const imageSrc = this.el.nativeElement.src;
-    console.log('inside imageSrcChunks ===>', imageSrc);
+    // console.log('inside imageSrcChunks ===>', imageSrc);
     const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
     const imageSrcChunks = imageSrc.split('/');
-    console.log('inside imageSrcChunks ===>', imageSrcChunks);
+    // console.log('inside imageSrcChunks ===>', imageSrcChunks);
     imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace('.jpg', '.webp').replace('.jpeg', '.webp');
-    console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
+    // console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
     this.el.nativeElement.src = imageSrcChunks.join('/');
   }
 
   ngOnInit() {
     if (this.isBrowser) {
       this._commonService.getNetworkSpeedState().subscribe(speed => {
-        console.log('speed ==>', speed);
+        // console.log('speed ==>', speed);
         if (speed && speed > this.THRESHOLD) {
           this.startClientSideProcessing();
         }

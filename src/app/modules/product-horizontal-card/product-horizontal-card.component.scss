@@ -36,6 +36,7 @@
         .right {
             width: 100%;
             .name {
+                min-height: 70px;
                 span {
                     text-align: left;
                 }
@@ -107,10 +108,20 @@
     .right {
         width: calc(100% - 115px);
         .rating {
+            position: relative;
             font-size: 10px;
             height: 20px;
+            display: flex;
+            align-items: center;
             margin-top: 5px;
             margin-bottom: 5px;
+            .ads{
+                position: absolute;
+                right: 10px;
+                padding: 1px 3px;
+                border: 1px solid #C0C0C0;
+                border-radius: 2px;
+            }
             span {
                 margin-right: 5px;
             }
@@ -186,6 +197,7 @@
                     opacity: 0.5;
                     font-weight: bold;
                     margin-top: 4px;
+                    margin-bottom: 10px;
                 }
             }
             .right {
@@ -204,7 +216,7 @@
                     font-weight: bold;
                 }
                 button.white {
-                    padding: 6px 8px;
+                    padding: 10px 10px;
                     background-color: #FFF;
                     margin-right: 5px;
                     color: #D9232D;
@@ -247,7 +259,7 @@
     width: 32px;
     text-align: center;
     vertical-align: middle;
-    line-height: 29px;
+    line-height: 30px;
     i {
         font-size: 20px;
         color: #D9232D;

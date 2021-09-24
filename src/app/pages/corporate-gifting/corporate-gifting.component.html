@@ -1,175 +1,61 @@
 <div class="corporate-gifting-page">
+
     <div class="corporate-gifting-tabs-header">
       <ul>
-        <li>Appliances&nbsp;&&nbsp;Utilities</li>
-        <li>IT&nbsp;&&nbsp;Electronics</li>
-        <li>Kitchen&nbsp;Appliances</li>
-        <li>Large&nbsp;Appliances</li>
-        <li>Fitness</li>
-        <li>Home</li>
-        <li>Lifestyle</li>
-        <li>IOT</li>
-        <li>Sports</li>
-        <li>Grooming</li>
+        <ng-container *ngFor="let category of giftingData; index as i;" >
+          <li [ngClass]="{'active': i === selectedCategoryIndex}" (click)="updateSelectedCategory(i)" >{{category.name}}</li>
+        </ng-container>
       </ul>
     </div>
   
     <div class="corporate-gifting-tabs-body-main">
-      <h4>Choose from a variety of gifting options below and submit your selection.</h4>
+      <h4 *ngIf="selectedProductCount == 0" >Choose from a variety of gifting options below and submit your selection.</h4>
+      <h4 *ngIf="selectedProductCount > 0" >{{selectedProductCount}} Product Selected. Go For It!</h4>
       <div class="corporate-gifting-tabs-body">
         <div class="corporate-gifting-tabs-body-left">
           <div class="product-area">
-            <div class="product-area-inner">
+
+            <div class="product-area-inner" 
+              *ngFor="let product of giftingData[selectedCategoryIndex]['products'];  index as productIndex;" >
               <div class="product-img">
                 <img src="/assets/img/corporate-giftinf-item.png"> 
                 <label class="check-icon">
-                    <input type="checkbox" ><span style="width: 50px;" class="custom-box"></span>
+                    <input type="checkbox" (click)="selectProduct(productIndex, $event)" ><span style="width: 20px;" class="custom-box"></span>
                 </label>
               </div>
               <div class="product-title">
-                <h5>Usha 500w white blue mixer grinder</h5>
+                <h5>{{product.name}}</h5>
               </div>
               <div class="price">
-                <p><span class="original-price">₹3849</span> &nbsp; <span>₹2111</span></p>
+                <p><span class="original-price">{{product.mrp}}</span> &nbsp; <span>{{product.price}}</span></p>
               </div>
               <div class="product-qty">
-                <div class="btn-minus product-qty-child">
-                  <a href=""><p>-</p></a>
+
+                <div class="btn-minus product-qty-child"  *ngIf="!product.isAdded">
+                  <span>-</span>
                 </div>
+                <div class="btn-minus product-qty-child" (click)="decrement(productIndex)" [ngClass]="{'active': product.isAdded}" *ngIf="product.isAdded" >
+                  <span>-</span>
+                </div>
+
                 <div class="total-no product-qty-child">
-                  <p>0</p>
+                  <p>{{product.quantity}}</p>
                 </div>
-                <div class="btn-plus product-qty-child">
-                  <a href=""><p>+</p></a>
+
+
+                <div class="btn-plus product-qty-child" *ngIf="!product.isAdded">
+                  <span>+</span>
                 </div>
+                <div class="btn-plus product-qty-child" (click)="increment(productIndex)" [ngClass]="{'active': product.isAdded}"
+                  *ngIf="product.isAdded">
+                  <span>+</span>
+                </div>
+
+
               </div>
+
             </div>
-            <div class="product-area-inner">
-              <div class="product-img">
-                <img src="/assets/img/corporate-giftinf-item.png"> 
-                <label class="check-icon">
-                    <input type="checkbox" ><span class="custom-box"></span>
-                </label>
-              </div>
-              <div class="product-title">
-                <h5>Usha 500w white blue mixer grinder</h5>
-              </div>
-              <div class="price">
-                <p><span class="original-price">₹3849</span> &nbsp; <span>₹2111</span></p>
-              </div>
-              <div class="product-qty">
-                <div class="btn-minus product-qty-child">
-                  <a href=""><p>-</p></a>
-                </div>
-                <div class="total-no product-qty-child">
-                  <p>0</p>
-                </div>
-                <div class="btn-plus product-qty-child">
-                  <a href=""><p>+</p></a>
-                </div>
-              </div>
-            </div>
-            <div class="product-area-inner">
-              <div class="product-img">
-                <img src="/assets/img/corporate-giftinf-item.png"> 
-                <label class="check-icon">
-                    <input type="checkbox" ><span class="custom-box"></span>
-                </label>
-              </div>
-              <div class="product-title">
-                <h5>Usha 500w white blue mixer grinder</h5>
-              </div>
-              <div class="price">
-                <p><span class="original-price">₹3849</span> &nbsp; <span>₹2111</span></p>
-              </div>
-              <div class="product-qty">
-                <div class="btn-minus product-qty-child">
-                  <a href=""><p>-</p></a>
-                </div>
-                <div class="total-no product-qty-child">
-                  <p>0</p>
-                </div>
-                <div class="btn-plus product-qty-child">
-                  <a href=""><p>+</p></a>
-                </div>
-              </div>
-            </div>
-            <div class="product-area-inner">
-              <div class="product-img">
-                <img src="/assets/img/corporate-giftinf-item.png"> 
-                <label class="check-icon">
-                    <input type="checkbox" ><span class="custom-box"></span>
-                </label>
-              </div>
-              <div class="product-title">
-                <h5>Usha 500w white blue mixer grinder</h5>
-              </div>
-              <div class="price">
-                <p><span class="original-price">₹3849</span> &nbsp; <span>₹2111</span></p>
-              </div>
-              <div class="product-qty">
-                <div class="btn-minus product-qty-child">
-                  <a href=""><p>-</p></a>
-                </div>
-                <div class="total-no product-qty-child">
-                  <p>0</p>
-                </div>
-                <div class="btn-plus product-qty-child">
-                  <a href=""><p>+</p></a>
-                </div>
-              </div>
-            </div>
-            <div class="product-area-inner">
-              <div class="product-img">
-                <img src="/assets/img/corporate-giftinf-item.png"> 
-                <label class="check-icon">
-                    <input type="checkbox" ><span class="custom-box"></span>
-                </label>
-              </div>
-              <div class="product-title">
-                <h5>Usha 500w white blue mixer grinder</h5>
-              </div>
-              <div class="price">
-                <p><span class="original-price">₹3849</span> &nbsp; <span>₹2111</span></p>
-              </div>
-              <div class="product-qty">
-                <div class="btn-minus product-qty-child">
-                  <a href=""><p>-</p></a>
-                </div>
-                <div class="total-no product-qty-child">
-                  <p>0</p>
-                </div>
-                <div class="btn-plus product-qty-child">
-                  <a href=""><p>+</p></a>
-                </div>
-              </div>
-            </div>
-            <div class="product-area-inner">
-              <div class="product-img">
-                <img src="/assets/img/corporate-giftinf-item.png"> 
-                <label class="check-icon">
-                    <input type="checkbox" ><span class="custom-box"></span>
-                </label>
-              </div>
-              <div class="product-title">
-                <h5>Usha 500w white blue mixer grinder</h5>
-              </div>
-              <div class="price">
-                <p><span class="original-price">₹3849</span> &nbsp; <span>₹2111</span></p>
-              </div>
-              <div class="product-qty">
-                <div class="btn-minus product-qty-child">
-                  <a href=""><p>-</p></a>
-                </div>
-                <div class="total-no product-qty-child">
-                  <p>0</p>
-                </div>
-                <div class="btn-plus product-qty-child">
-                  <a href=""><p>+</p></a>
-                </div>
-              </div>
-            </div>
-            <button class="submit btn-view-more" id="submit">VIEW MORE</button>
+            <!-- <button class="submit btn-view-more" id="submit">VIEW MORE</button> -->
           </div>
         </div>
         <div class="corporate-gifting-tabs-body-right">
@@ -180,15 +66,21 @@
                     <h4>Get the perfect<br> corporate gift solution</h4>
                 </div>
             </div>
-            <div class="form-body">
-              <h5>4 Product Selected. Go For It!</h5>
-              <form>
-                <input class="name" id="name" placeholder="First Name*">
-                <input class="email" id="email" placeholder="Email ID*">
-                <input class="mobile-number" id="mobile-number" placeholder="Mobile No*">
-                <textarea class="message" id="message" placeholder="Message"></textarea>
-                <button class="submit" id="submit">SUBMIT REQUEST</button>
-              </form>
+            <div class="form-body" [formGroup]="requestForm"  >
+                <input class="name" id="name" formControlName="name" placeholder="Name*">
+                <div class="error" *ngIf="isFormSubmited && requestForm.get('name').hasError('required')" >Name is required</div>
+                <input class="email" id="email" formControlName="email" placeholder="Email ID*">
+                <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('email').hasError('required') ) " >Email is required</div>
+                  <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('email').hasError('email') ) " >Please enter valid email address</div>
+                <input class="mobile-number" formControlName="phone" id="mobile-number" placeholder="Mobile No*">
+                <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('phone').hasError('required') ) " >Mobile No. is required</div>
+                  <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('phone').hasError('pattern') ) " >Please enter valid phone number</div>
+                <textarea class="message" formControlName="message" id="message" placeholder="Message"></textarea>
+                <button class="submit" (click)="submit()" id="submit">SUBMIT REQUEST</button>
             </div>
           </div>
         </div>

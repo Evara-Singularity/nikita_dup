@@ -23,12 +23,7 @@
                 float: left;
                 padding: 10px 20px;
                 border-radius: 4px;
-                &:nth-child(1){
-                    background-color: #F4E1E5;
-                    border: 1px solid #D9232D;
-                    color: #D9232D;
-                }
-                &:hover{
+                &.active{
                     background-color: #F4E1E5;
                     border: 1px solid #D9232D;
                     color: #D9232D;
@@ -134,12 +129,23 @@
                                 height: 30px;
                                 background-color: #D5D5D5;
                                 border: 1px solid #C4C4C4;
+                                &.active{
+                                    background-color: #F4E1E5;
+                                    border: 1px solid #D9232D;
+                                    color: #D9232D;
+                                }
                             }
                             .btn-plus{
                                 width: 30px;
                                 height: 30px;
                                 background-color: #D5D5D5;
                                 border: 1px solid #C4C4C4;
+
+                                &.active{
+                                    background-color: #F4E1E5;
+                                    border: 1px solid #D9232D;
+                                    color: #D9232D;
+                                }
                             }
                             .total-no{
                                 width: 60px;
@@ -204,7 +210,7 @@
                             border: 1px solid #707070;
                             border-radius: 4px;
                             height: 40px;
-                            margin-top: 20px;
+                            margin-top: 15px;
                             padding: 0px 10px;
                         }
                         textarea{
@@ -236,5 +242,10 @@
 
 .check-icon{
    @extend %custom-check-box-checkout;
-   
+}
+
+.error{
+  margin-top: 5px;
+  font-size: 10px;
+  color: #D9232D;
 }

@@ -102,5 +102,7 @@ export const ENDPOINTS = {
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
   IS_BRAND_CATEGORY: "/search/isBrandCategory",
-  SEARCH: '/search'
+  SEARCH: '/search',
+  GET_PARENT_CATEGORY_JSON_BODY: '/category/getparentcategoryjsonbody',
+  SAVE_CORPORATE_GIFTING: '/cmsapi/giftingQuery'
 };

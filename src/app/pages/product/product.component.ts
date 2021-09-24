@@ -2419,6 +2419,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   }
 
+  navigateToUrl(url) {
+    this.router.navigateByUrl(url);
+  }
+
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem('pdp-page');

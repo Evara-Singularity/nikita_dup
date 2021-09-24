@@ -24,10 +24,10 @@
                 </label>
               </div>
               <div class="product-title">
-                <h5>{{product.name}}</h5>
+                <h5 >{{( (product.name.length > 10) ? product['name'].slice(0, 40)+'...' : product['name']  )}}</h5>
               </div>
               <div class="price">
-                <p><span class="original-price">{{product.mrp}}</span> &nbsp; <span>{{product.price}}</span></p>
+                <p><span class="original-price">{{product.mrp | currency:'INR':'symbol':'1.0-0' }}</span> &nbsp; <span>{{product.price  | currency:'INR':'symbol':'1.0-0' }}</span></p>
               </div>
               <div class="product-qty">
 

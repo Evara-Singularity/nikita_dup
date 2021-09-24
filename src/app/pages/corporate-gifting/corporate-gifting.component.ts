@@ -12,7 +12,8 @@ interface GiftingProduct {
   name: string,
   price: any,
   mrp: any,
-  quantity: number
+  quantity: number,
+  image: string
 }
 
 interface GiftingCategory {
@@ -66,13 +67,14 @@ export class CorporateGiftingComponent implements OnInit {
       if (Object.prototype.hasOwnProperty.call(data, categoryIdKey)) {
         const categoryData = data[categoryIdKey];
         const products = (categoryData['data'] as any[]).map(element => {
-          const priceDetails = element['image_general'];
+          const priceDetails = element['image_general'][0] || null;
           return {
             isAdded: false,
             name: element['image_title'],
-            mrp: priceDetails['general_text'],
-            price: priceDetails['general_url'],
+            mrp: priceDetails && priceDetails['general_text'],
+            price: priceDetails && priceDetails['general_url'],
             quantity: 1,
+            image:  CONSTANTS.IMAGE_BASE_URL + element['image_name']
           } as GiftingProduct;
         })
         const category: GiftingCategory = {
@@ -131,23 +133,35 @@ export class CorporateGiftingComponent implements OnInit {
       "phone": this.requestForm.value['phone'],
       "email": this.requestForm.value['email'],
       "message": this.requestForm.value['message'],
-      "productList": this.giftingData[this.selectedCategoryIndex].products
+      "productList": this.giftingData.map(category => category.products)
+        .reduce((a, b) => [...a, ...b], [])
         .filter(product => product.isAdded === true) // only selected products
         .map(product => `${product.name}||${product.quantity}`).join(',') // get all quantity
     }
     this._dataService.callRestful('POST', URL, { body }).subscribe(response => {
-      if (response['status']) {
+      if (response) {
         this.toast.show({ type: 'info', text: `Request submitted successfully` });
       } else {
         this.toast.show({ type: 'error', text: `Something went wrong! Please try again.` });
       }
       this.isFormSubmited = false;
       this.requestForm.reset();
+      this.resetForm();
     })
   }
 
+  resetForm() {
+    this.giftingData.forEach(category => {
+      category.products.forEach(product => {
+        product.isAdded = false,
+          product.quantity = 1
+      });
+    });
+  }
+
   get selectedProductCount(){
-    return this.giftingData[this.selectedCategoryIndex].products
+    return this.giftingData.map(category => category.products )
+      .reduce((a, b) => [...a,...b], [])
       .filter(product=> product.isAdded === true) // only selected products
       .map(product=>product.quantity) // get all quantity
       .reduce((a, b) => a + b, 0) // sum up

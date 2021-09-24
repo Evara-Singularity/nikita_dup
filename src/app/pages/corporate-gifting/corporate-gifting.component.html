@@ -18,7 +18,7 @@
             <div class="product-area-inner" 
               *ngFor="let product of giftingData[selectedCategoryIndex]['products'];  index as productIndex;" >
               <div class="product-img">
-                <img src="/assets/img/corporate-giftinf-item.png"> 
+                <img src="{{product.image}}">
                 <label class="check-icon">
                     <input type="checkbox" (click)="selectProduct(productIndex, $event)" ><span style="width: 20px;" class="custom-box"></span>
                 </label>

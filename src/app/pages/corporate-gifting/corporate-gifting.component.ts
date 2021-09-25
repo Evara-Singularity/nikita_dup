@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
-import { concat } from 'rxjs-compat/operator/concat';
 
 interface GiftingProduct {
   isAdded: boolean,
@@ -32,13 +33,13 @@ export class CorporateGiftingComponent implements OnInit {
 
   giftingData: GiftingCategory[] = [];
   selectedCategoryIndex: number = 0;
-  readonly maxQuantityAllowed = 5;
+  readonly maxQuantityAllowed = 100000;
   isFormSubmited = false;
 
   requestForm: FormGroup = this.formBuilder.group({
     'name': ['', [Validators.required]],
     'email': ['', [Validators.required, Validators.email]],
-    'phone': ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]],
+    'phone': ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/), Validators.minLength(9)]],
     'message': ['']
   });
 
@@ -47,6 +48,7 @@ export class CorporateGiftingComponent implements OnInit {
     private toast: ToastMessageService,
     private formBuilder: FormBuilder,
     private _dataService: DataService,
+    private _commonService: CommonService
   ) { }
 
 
@@ -115,15 +117,31 @@ export class CorporateGiftingComponent implements OnInit {
     }
   }
 
+  selectAndDecrement(productIndex){
+    this.selectProduct(productIndex, {target:{checked: true}});
+    this.decrement(productIndex);
+  }
+
+  selectAndIncrement(productIndex){
+    this.selectProduct(productIndex, {target:{checked: true}});
+    this.increment(productIndex);
+  }
+
   submit(){
     this.isFormSubmited = true;
     if(!this.requestForm.valid){
+      this.scrollToForm((<HTMLElement>document.querySelector('.formHeading')).getBoundingClientRect().top);
       this.toast.show({ type: 'info', text: `Please enter required details`});
     }else if(this.requestForm.valid && this.selectedProductCount == 0){
+      this.scrollToForm(0);
       this.toast.show({ type: 'info', text: `Please select atleast 1 product to raise a request`});
     }else{
       this.callRemote();
     }
+  }
+
+  scrollToForm(top){
+    ClientUtility.scrollToTop(200, top);
   }
 
   callRemote() {
@@ -162,9 +180,7 @@ export class CorporateGiftingComponent implements OnInit {
   get selectedProductCount(){
     return this.giftingData.map(category => category.products )
       .reduce((a, b) => [...a,...b], [])
-      .filter(product=> product.isAdded === true) // only selected products
-      .map(product=>product.quantity) // get all quantity
-      .reduce((a, b) => a + b, 0) // sum up
+      .filter(product=> product.isAdded === true).length;
   }
 
 }

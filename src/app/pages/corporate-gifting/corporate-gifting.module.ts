@@ -4,6 +4,7 @@ import { CorporateGiftingRoutingModule } from './corporate-gifting-routing';
 import { CorporateGiftingComponent } from './corporate-gifting.component';
 import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CorporateGiftingRoutingModule,
     ToastMessageModule,
     ReactiveFormsModule,
+    NumberDirectiveModule
   ],
   exports:[
     CorporateGiftingComponent

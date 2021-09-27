@@ -46,8 +46,8 @@
                             </ng-container>
                             <div class="inner-card-list">
                                 <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
-                                    <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData?.terms?.length/2))">
-                                        <div class="inline-filter-card-value card-value-2" >{{ item.term }}</div>
+                                    <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
+                                        <div class="inline-filter-card-value card-value-2" >{{ i + ' - ' + item.term }}</div>
                                     </div>
                                 </ng-container>
                             </div>

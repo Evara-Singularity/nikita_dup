@@ -15,6 +15,7 @@ import { ProductListService } from '@app/utils/services/productList.service';
 export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;
   @Input('position') position: number;
+  @Input('pageName') pageName: string;
   
   public GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   public inlineFilterData: BucketsEntity;
@@ -27,9 +28,14 @@ export class FilterMidPlpComponent implements OnInit {
 
   genrateInlineFilterData() {
     this._productListService.inlineFilterData = [];
+
+    // if Brand or Brand + Category page then replace brand inline mid filter with category filter
+    
+    if(this.pageName === 'BRAND') {
+      GLOBAL_CONSTANT.inlineFilter[1] = 'category';
+    }
     
     const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
-    console.log(brand);
     const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
     const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
     

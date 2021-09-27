@@ -41,6 +41,12 @@ export class ContactComponent {
   }
 
   ngOnInit() {
+    if(this.isServer){
+      this.orgSchema();
+    }
+  }
+
+  orgSchema() {
     this.contactUsSchema = this._renderer2.createElement('script');
     this.contactUsSchema.type = "application/ld+json";
     this.contactUsSchema.text = JSON.stringify(
@@ -70,7 +76,7 @@ export class ContactComponent {
 
     )
     this._renderer2.appendChild(this._document.head, this.contactUsSchema);
-  }
+    }
 
 
 }

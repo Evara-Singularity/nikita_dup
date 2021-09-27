@@ -36,14 +36,9 @@ export class ContactComponent {
       links.rel = "canonical";
       links.href = CONSTANTS.PROD + "/contact";
       this._renderer2.appendChild(this._document.head, links);
-    }
-
-  }
-
-  ngOnInit() {
-    if(this.isServer){
       this.orgSchema();
     }
+
   }
 
   orgSchema() {

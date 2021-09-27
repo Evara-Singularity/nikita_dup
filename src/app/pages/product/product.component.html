@@ -594,7 +594,7 @@
             <p class="rfq-support-txt">Our support member will get in touch with you within 24 hours. For further assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.</p>
             <div class="alert-btn-row">
                 <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') " class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();closeRFQAlert()"> CONTINUE SHOPPING</p>
+                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToUrl(breadcrumbData[0]['categoryLink']);closeRFQAlert()"> EXPLORE CATEGORY</p>
             </div>
         </div>
     </div>

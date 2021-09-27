@@ -29,6 +29,7 @@ export class FilterMidPlpComponent implements OnInit {
     this._productListService.inlineFilterData = [];
     
     const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
+    console.log(brand);
     const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
     const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
     

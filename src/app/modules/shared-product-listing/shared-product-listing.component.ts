@@ -1,10 +1,11 @@
 import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
-import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
+import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
   selector: 'shared-product-listing',
@@ -12,6 +13,9 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
   styleUrls: ['./shared-product-listing.component.scss']
 })
 export class SharedProductListingComponent {
+
+  readonly sponseredProductPosition = [0, 5, 10, 15];
+  readonly sponseredProductPositionMapping = { 0: 0, 5: 1, 10: 2, 15: 3 }
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -26,11 +30,13 @@ export class SharedProductListingComponent {
   @Input() brandName: string;
   @Input() brandUrl: string = '';
   @Input() headerName: string;
+  @Input() sponseredKeyword: string;
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
   isServer: boolean;
   isBrowser: boolean
+  sponseredProductList: ProductsEntity[] = [];
 
   public appliedFilterCount: number = 0;
 
@@ -39,6 +45,7 @@ export class SharedProductListingComponent {
     private _injector: Injector,
     private _cartService: CartService,
     public _productListService: ProductListService,
+    public _productService: ProductService,
     private _localAuthService: LocalAuthService,
     public _commonService: CommonService) {
   }
@@ -46,6 +53,26 @@ export class SharedProductListingComponent {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+    this.getSponseredProducts();
+  }
+
+  private getSponseredProducts() {
+    if (this._commonService.isBrowser && this.sponseredKeyword) {
+      const query = {
+        a_type: 'PRODUCT',
+        client_id: 302211,
+        keywords: encodeURIComponent(this.sponseredKeyword.toLowerCase()),
+        pcnt: 4,
+        page_type: 'SEARCH',
+        device_id: this._commonService.getUniqueGAId()
+      }
+      this._productService.getSponseredProducts(query).subscribe(response => {
+        let products = response['productSearchResult']['products'];
+        if (products && (products as []).length > 0) {
+          this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+        }
+      });
+    }
   }
 
   getUpdatedSession() {

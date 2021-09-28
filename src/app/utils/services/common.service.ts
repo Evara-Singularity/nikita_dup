@@ -925,4 +925,8 @@ export class CommonService {
     {
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_OTP, { body: data });
     }
+
+    getUniqueGAId(){
+        return this._dataService.getCookie('_ga');
+    }
 }

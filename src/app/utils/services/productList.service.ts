@@ -25,9 +25,12 @@ export class ProductListService {
   }
 
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
+    
+    //Removing Products with null images
+    rawSearchData.productSearchResult.products = rawSearchData.productSearchResult.products.filter(res => res.mainImageLink!=null);
 
     this.productListingData = {
-      totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
+      totalCount: rawSearchData.productSearchResult.products.length ? rawSearchData.productSearchResult.totalCount : 0,
       products: rawSearchData.productSearchResult.products,
       filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
       listingHeading: heading

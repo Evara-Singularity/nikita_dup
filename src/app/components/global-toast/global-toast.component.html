@@ -1,6 +1,7 @@
 <ng-container *ngIf="showToast">
-    <div class="cartNotification" [ngClass]="{'cartNotificationBottom': positionBottom}">
+    <div class="cartNotification" [ngClass]="{'cartNotificationBottom': positionBottom, 'positionTop': positionTop }">
         <h4>{{text}}</h4>
-        <a class="view_cart_btn" [routerLink]="[btnLink]">{{btnText}}</a>
+        <a *ngIf="!showDuplicateOrderToast" class="view_cart_btn" [routerLink]="[btnLink]">{{btnText}}</a>
+        <a *ngIf="showDuplicateOrderToast" class="view_cart_btn" (click)="setDuplicateOrderToast();">x</a>
     </div>
 </ng-container>

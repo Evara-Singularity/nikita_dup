@@ -1,0 +1,97 @@
+@import '../../scss/variables';
+.otp-modal {
+    padding: 10px 10px;
+    p.error-text {
+        color: #D9232D;
+        padding-top: 5px;
+    }
+    .otp-top-area {
+        display: flex;
+        .otp-entertext {
+            width: 90%;
+            h5 {
+                font-size: $extra-large-font;
+                line-height: 21px;
+                color: #3C3C3C;
+            }
+            p {
+                font-size: $medium-font;
+                line-height: 16px;
+                color: #3C3C3C;
+            }
+        }
+        .otp-crossbtn {
+            width: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            i {
+                font-size: 20px;
+                color: #000;
+            }
+        }
+    }
+    .otp-time-counter {
+        p {
+            text-align: right;
+            margin-top: 20px;
+        }
+    }
+    .otp-area {
+        position: relative;
+        margin-top: 5px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #707070;
+        .otp-area-l {
+            width: 100%;
+            input {
+                width: 100% !important;
+                border: none;
+                font-size: $large-font;
+                color: #343434;
+            }
+             ::placeholder {
+                color: #B5B5B5 !important;
+            }
+        }
+        .otp-area-r {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            button {
+                border: none;
+                font-size: $large-font;
+                color: #278BED;
+                background: none;
+                &:disabled {
+                    color: #B5B5B5;
+                }
+            }
+            span {
+                color: #209F19;
+                font-size: $large-font;
+                display: inline-block;
+                vertical-align: middle;
+                i {
+                    color: #209F19;
+                    font-size: $extra-large-font;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    .btn-cont {
+        margin-top: 20px;
+        background-color: #D9232D;
+        padding: 10px;
+        color: #fff;
+        border: #c4c4c4;
+        width: 100%;
+        font-size: $large-font;
+        font-weight: bold;
+        &:disabled {
+            background-color: #C4C4C4;
+        }
+    }
+}

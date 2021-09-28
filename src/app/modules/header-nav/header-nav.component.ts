@@ -11,6 +11,8 @@ import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -21,6 +23,12 @@ import { LocalStorageService } from 'ngx-webstorage';
 })
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 {
+
+
+    options: AnimationOptions = {
+        path: './../../../assets/json/common1.json'
+    };
+
     isHomePage: boolean;
     routerData: any = null;
     user: any = null;
@@ -98,6 +106,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.commonSubcribers();
     }
+    
 
     ngOnInit()
     {
@@ -223,11 +232,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     loadBottomSheetAnalyticEvent() {
+        
         const user = this.localStorageService.retrieve('user');
         let page = {
             'linkPageName': "moglix:hamburger-menu",
             'linkName': "header",
-            'channel': this.router.url
+            'channel': this.routerData['pageName'] || this.router.url
         }
         let custData = {
             'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',

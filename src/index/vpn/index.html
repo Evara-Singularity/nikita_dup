@@ -36,10 +36,29 @@
     <app-root></app-root>
     <div id="alert-box"></div>
     <!-- Adobe Tag Manager -->
-    <script>
+    <script defer >
+        dataLayer = [];
+        if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+                var gtmKey = "GTM-PMPXQQ"; //PROD Key
+                (function (w, d, s, l, i) {
+                    w[l] = w[l] || [];
+                    w[l].push({
+                        'gtm.start': new Date().getTime(),
+                        event: 'gtm.js'
+                    });
+                    var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s),
+                        dl = l != 'dataLayer' ? '&l=' + l : '';
+                    j.async = true;
+                    j.src =
+                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    setTimeout(() => {
+                        f.parentNode.insertBefore(j, f)
+                    }, 0);
+                })(window, document, 'script', 'dataLayer', gtmKey);
+        }
         digitalData = {};
         digitalData.event = [];
-        dataLayer = [];
     </script>
     <script src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js" async=""></script>
     <!-- Adobe Tag Manager -->

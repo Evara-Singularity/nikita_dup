@@ -15,9 +15,6 @@ import { ToastMessageService } from '../../modules/toastMessage/toast-message.se
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 
-
-declare let $: any;
-
 @Injectable({
     providedIn: 'root'
 })

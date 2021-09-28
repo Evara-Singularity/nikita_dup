@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, PLATFORM_ID, Inject} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {SocialLoginService} from './socialLogin.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { map } from 'rxjs/operators';

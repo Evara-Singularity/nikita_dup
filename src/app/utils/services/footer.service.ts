@@ -9,7 +9,6 @@ export class FooterService {
         footerData: false,
     };
     footerChangeSubject: Subject<any> = new Subject<any>();
-    constructor() { }
 
     setMobileFoooters() {
         this.footerobj['footerData'] = false;

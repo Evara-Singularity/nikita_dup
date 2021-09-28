@@ -9,8 +9,6 @@ declare var _satellite;
 })
 export class SharedOtpUtilService {
 
-  constructor() { }
-
     sendAdobeAnalysis()
     {
         let page = {

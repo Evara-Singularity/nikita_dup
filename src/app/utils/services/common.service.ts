@@ -1,11 +1,11 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
-import { Observer, of, Subscription } from 'rxjs';
+import { Observer, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, NavigationExtras, Router } from '@angular/router';
-import { Injectable } from "@angular/core";
+import { NavigationExtras, Router } from '@angular/router';
+import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from './cart.service';
 import { DataService } from "./data.service";
@@ -17,6 +17,7 @@ import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from './global-loader.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -53,18 +54,27 @@ export class CommonService {
     // useLastSortByState: boolean = false;
 
     private routeData: { currentUrl: string, previousUrl: string };
+    userSession; 
 
-    constructor(private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
+    constructor(
+        private checkoutService: CheckoutService, 
+        private _localStorageService: LocalStorageService, 
+        private _activatedRoute: ActivatedRoute, 
+        private _dataService: DataService, 
+        public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
-        private _router: Router, public _commonService: CommonService) {
+        @Inject(PLATFORM_ID) private platformId: Object,
+        private _router: Router, public _commonService: CommonService
+    ) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
         this.gaGtmData = gaGtmData ? gaGtmData : {};
         this.routeData = { currentUrl: "", previousUrl: "" };
         this.itemsValidationMessage = [];
-        this.isServer = _commonService.isServer;
-        this.isBrowser = _commonService.isBrowser;
+        this.isBrowser = isPlatformBrowser(this.platformId);
+        this.isServer = isPlatformServer(this.platformId);
+        this.userSession = this._localStorageService.retrieve('user');
     }
 
     get itemsValidationMessage() {
@@ -420,6 +430,7 @@ export class CommonService {
 
         actualParams['type'] = 'm';
         actualParams['abt'] = 'n';
+        actualParams['onlineab'] = 'y';
 
         if (queryParams['preProcessRequired']) {
             actualParams['preProcessRequired'] = queryParams['preProcessRequired'];
@@ -792,7 +803,12 @@ export class CommonService {
 
     scrollTo(event) {
         if (this.isBrowser) {
-            ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+            if(event.target){
+                ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+            }else{
+                ClientUtility.scrollToTop(500, event.offsetTop - 50);
+            }
+            
         }
     }
 
@@ -905,5 +921,19 @@ export class CommonService {
 
     navigateTo(link) {
         this._router.navigateByUrl(link);
+    }
+
+    sendOtp(data): Observable<{}>
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
+    }
+
+    validateOTP(data)
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_OTP, { body: data });
+    }
+
+    getUniqueGAId(){
+        return this._dataService.getCookie('_ga');
     }
 }

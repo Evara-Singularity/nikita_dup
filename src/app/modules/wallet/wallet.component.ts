@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { WalletService } from "./wallet.service";
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../config/constants';
@@ -50,7 +49,6 @@ export class WalletComponent {
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
-        private _walletService: WalletService,
         private _objectToArray: ObjectToArray,
         private loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder,

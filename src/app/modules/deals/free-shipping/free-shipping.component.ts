@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: "new-year",
@@ -18,15 +19,15 @@ export class FreeShippingComponent {
   constructor(
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private title: Title,
     public router: Router,
     private meta: Meta,
     private route: ActivatedRoute,
+    private commonService: CommonService,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = this.commonService.isServer;
+    this.isBrowser = this.commonService.isBrowser;
     this.getFreshData();
     this.setMetas();
     this.initializeClicks();

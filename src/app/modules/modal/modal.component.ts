@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ApplicationRef, Injector, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { of, Subject } from 'rxjs';
-import {  map, takeUntil, catchError } from 'rxjs/operators';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ModalService } from './modal.service';
 import { ModalDirective } from './modal.directive';
 
@@ -21,8 +21,7 @@ export class ModalComponent implements OnInit {
     showVideoOverlay:boolean;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
-        private appRef: ApplicationRef,
-        private injector: Injector, private _ms: ModalService) {
+        private _ms: ModalService) {
         this.modals = {};
         this.showModal = false;
     }
@@ -107,6 +106,8 @@ export class ModalComponent implements OnInit {
 
         // Append DOM element to the body
         /* document.getElementById(parentId).appendChild(childDomElem); */
+
+        this._ms.setComponentRef(this.childComponentRef);
 
     }
 

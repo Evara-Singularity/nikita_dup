@@ -5,8 +5,6 @@ import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { FooterService } from '@app/utils/services/footer.service';
 
-declare let $: any;
-
 @Component({
   selector: 'installation-service',
   templateUrl: 'installationService.html', 

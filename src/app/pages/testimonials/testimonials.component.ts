@@ -5,7 +5,6 @@ import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
-declare let $: any;
 
 
 @Component({

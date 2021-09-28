@@ -24,6 +24,9 @@
         </div>
     </ng-container>
 </div>
-<shared-product-listing [headerName]="headerNameBasedOnCondition" [pageName]="'SEARCH'"
-    [productsListingData]="_productListService?.productListingData" >
+<shared-product-listing 
+    [headerName]="headerNameBasedOnCondition" 
+    [pageName]="'SEARCH'"
+    [productsListingData]="_productListService?.productListingData"
+    [sponseredKeyword]="'Black Decker'" >
 </shared-product-listing>

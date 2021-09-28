@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, Input, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-cluster-footer',
@@ -9,7 +8,6 @@ import { RouterModule } from '@angular/router';
 })
 export class ClusterFooterComponent implements OnInit {
   @Input('data') data;
-  constructor() { }
 
   ngOnInit(): void {
   }

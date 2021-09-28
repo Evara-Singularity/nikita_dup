@@ -2,7 +2,6 @@ import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import {
 	Component,
-	ViewEncapsulation,
 	OnInit,
 	Inject,
 	Renderer2,
@@ -37,6 +36,7 @@ import { CommonService } from '@app/utils/services/common.service';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;
 	isServer: boolean;
+	encodeURI = encodeURI;
 	bannerDataJson: any = {};
 	bannerImagesScroll: any = {};
 	middleImageJsonData: any = [];

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
@@ -22,7 +22,7 @@ export class TripleNineComponent {
     private title: Title,
     public router: Router,
     private meta: Meta,
-    private _document: Document,
+    @Inject(DOCUMENT) private _document,
     private route: ActivatedRoute,
     public _commonService:CommonService) {
 

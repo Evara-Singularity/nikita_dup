@@ -1,6 +1,6 @@
 import { NgxSiemaService, NgxSiemaOptions } from 'ngx-siema';
 import { DOCUMENT } from '@angular/common';
-import { Component, OnInit, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import * as $ from 'jquery';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
@@ -32,7 +32,6 @@ export class CampaignComponent implements OnInit {
   constructor(
     public pageTitle: Title,
     public meta: Meta,
-    private ElementRef: ElementRef,
     @Inject(DOCUMENT) private _document,
     private ngxSiemaService: NgxSiemaService,
     public _commonService: CommonService) {

@@ -18,7 +18,7 @@ export class RetailAddressComponent {
   showLoader: boolean = true;
   currentAddress;
   addressFormGroup: FormGroup;
-  addressFormButtonText: string = "SAVE";
+  addressFormButtonText: string = "SAVE ADDRESS";
   invoiceType: string;
 
   constructor(public _dashboardService: DashboardService) {

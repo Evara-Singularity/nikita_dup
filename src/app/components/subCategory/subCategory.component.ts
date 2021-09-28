@@ -74,7 +74,6 @@ export class SubCategoryComponent {
 })
 export class SubCategoryModule {}
 export class CategoryModule extends SubCategoryModule {}
-export class CategoryV1Module extends SubCategoryModule {}
 export class BrandModule extends SubCategoryModule {}
 export class BrandV1Module extends SubCategoryModule {}
 export class SearchModule extends SubCategoryModule {}

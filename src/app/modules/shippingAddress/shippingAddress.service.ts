@@ -11,7 +11,8 @@ export class ShippingAddressService {
     }
 
     postAddress(address) {
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD, { body: address });
+        //address['onlineab'] = "y";
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD  + '?onlineab=y', { body: address });
     }
     
     getCityByPinCode(pinCode) {

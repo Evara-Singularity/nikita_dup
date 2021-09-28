@@ -108,6 +108,8 @@ export class ModalComponent implements OnInit {
         // Append DOM element to the body
         /* document.getElementById(parentId).appendChild(childDomElem); */
 
+        this._ms.setComponentRef(this.childComponentRef);
+
     }
 
     private attachConfig(config, componentRef) {

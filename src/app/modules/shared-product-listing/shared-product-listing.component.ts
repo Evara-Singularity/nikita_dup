@@ -3,10 +3,8 @@ import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
-import { Router } from '@angular/router';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'shared-product-listing',

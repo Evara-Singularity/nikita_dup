@@ -418,8 +418,9 @@ export class CategoryV1Component {
     }
 
     /* 
-     *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
+     *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversely it proceeds.
      */
+
     priceRangeTable(res) {
         let count = 0;
         for (let val of res.productSearchResult.products) {
@@ -433,8 +434,8 @@ export class CategoryV1Component {
     }
 
     /* 
-   * excluding data that we don't want to add to price range table , from buckets we get from getCategory Api
-   */
+     * excluding data that we don't want to add to price range table , from buckets we get from getCategory Api
+     */
 
     getBucketForPriceRangeTable(buckets: any) {
         for (let i = 0; i < buckets.length; i++) {
@@ -447,8 +448,8 @@ export class CategoryV1Component {
         }
 
         this.productRangeTableArray = [];                        //PRTA(Product Range Table Array):-array which stores final data after computation , is reset for when component is instantiated again
-        this.priceRangeData();               //proceeding calculations
-        this.wantedBucket = [];                          //wb(wanted bucket):-array which stores bucket data excluding price , discount , badges , availability.
+        this.priceRangeData();                                   //proceeding calculations
+        this.wantedBucket = [];                                  //wb(wanted bucket):-array which stores bucket data excluding price , discount , badges , availability.
     }
 
     priceRangeData() {
@@ -463,18 +464,18 @@ export class CategoryV1Component {
                 if (this.wantedBucket[i].name === "category") {
                     this.getCategoryData(this.wantedBucket[i].terms);                // calling reccursive function to find out specific page category data
                     if (this.reqArray !== null) {
-                        for (let val of this.reqArray) {                       // added "newName" to value we got from "getCategoryData" , to tackle difficulty faced in getting "other custom filters"(below)
+                        for (let val of this.reqArray) {                             // added "newName" to value we got from "getCategoryData" , to tackle difficulty faced in getting "other custom filters"(below)
                             val.newName = val.term
                         }
                         temp = this.reqArray;
                     }
 
-                    for (let i = 0; i < temp.length && this.productRangeTableArray.length < 4; i++) {   //getting top four values with non-zero min , max price 
+                    for (let i = 0; i < temp.length && this.productRangeTableArray.length < 4; i++) {   //getting top four values with non-zero min , max price (requirement)
                         if (temp[i].minPrice > 0 && temp[i].maxPrice > 0) {
                             this.productRangeTableArray.push(temp[i])
                         }
                     }
-                    this.productRangeTableArray.filter(x => !!x)                               //removing null values from array
+                    this.productRangeTableArray.filter(x => !!x)                     //removing null values from array
                     temp = [];
                 }
 
@@ -485,7 +486,7 @@ export class CategoryV1Component {
 
                 else if (this.wantedBucket[i].name === "brand") {
                     let temp = [];
-                    for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                                      //getting top four values with non-zero min , max price 
+                    for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                      //getting top four values with non-zero min , max price (requirement)
                         if (this.wantedBucket[i].terms[j].minPrice > 0 && this.wantedBucket[i].terms[j].maxPrice > 0) {
                             this.wantedBucket[i].terms[j].term = this.wantedBucket[i].terms[j].term + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName;
                             temp.push(this.wantedBucket[i].terms[j]);
@@ -497,7 +498,7 @@ export class CategoryV1Component {
                             this.productRangeTableArray.push(val);
                         }
                     }
-                    this.productRangeTableArray.filter(x => !!x)                                                                                        //removing null values from array
+                    this.productRangeTableArray.filter(x => !!x)                                                                           //removing null values from array
                     temp = [];
                 }
 
@@ -508,7 +509,7 @@ export class CategoryV1Component {
                 else {
                     let str = ""
                     let temp = [];
-                    for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                                        //getting top four values with non-zero min , max price for each "other filters"
+                    for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                       //getting top four values with non-zero min , max price for each "other filters"
                         if (this.wantedBucket[i].terms[j].minPrice > 0 && this.wantedBucket[i].terms[j].maxPrice > 0) {
                             this.wantedBucket[i].terms[j].newName = "";
                             str = this.wantedBucket[i].name + " - " + this.wantedBucket[i].terms[j].term + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName;
@@ -522,7 +523,7 @@ export class CategoryV1Component {
                         }
                     }
                     this.productRangeTableArray.filter(x => !!x)
-                    temp = [];                                                                                                              //removing null values from PRTA
+                    temp = [];                                                                                                             //removing null values from PRTA
                 }
             }
         }

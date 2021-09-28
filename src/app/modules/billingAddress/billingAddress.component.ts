@@ -15,8 +15,6 @@ import CONSTANTS from '../../config/constants';
 import { Step } from '@utils/validators/step.validate';
 import { GlobalLoaderService } from '@services/global-loader.service';
 
-declare let $: any;
-
 @Component({
     selector: 'billing-address',
     templateUrl: './billingAddress.html',

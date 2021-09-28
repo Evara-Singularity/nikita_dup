@@ -2,7 +2,6 @@ import { Component,  Inject, Renderer2} from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';import { DOCUMENT } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
-declare let $: any;
 
 @Component({
   selector: 'about',

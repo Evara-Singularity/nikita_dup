@@ -1,9 +1,10 @@
-import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: "special-deal",
@@ -19,16 +20,16 @@ export class BestOfferComponent {
   constructor(
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private meta: Meta,
     private activatedRoute: ActivatedRoute,
     private title: Title,
     public router: Router,
     private route: ActivatedRoute,
-    @Inject(DOCUMENT) private _document) {
+    @Inject(DOCUMENT) private _document,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(this.platformId);
-    this.isBrowser = isPlatformBrowser(this.platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.setMetas();
     this.getBestOfferData();
     this.initializeClicks();

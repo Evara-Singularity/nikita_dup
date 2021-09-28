@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Input, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { Component, Inject, Input, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
@@ -15,7 +15,6 @@ export class BreadcrumbNavComponent implements OnInit {
   constructor(
     private renderer2: Renderer2,
     @Inject(DOCUMENT) private document,
-    @Inject(PLATFORM_ID) platformId,
     private router: Router,
     private _commonService: CommonService
   ) {

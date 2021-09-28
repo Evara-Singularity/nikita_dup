@@ -1,13 +1,11 @@
 import {
 	ViewEncapsulation,
-	Inject,
-	PLATFORM_ID,
 	Renderer2,
 	ElementRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
 	selector: 'shoe',
 	templateUrl: 'shoe.html',
@@ -22,11 +20,11 @@ export class ShoeComponent {
 		private elementRef: ElementRef,
 		private _renderer2: Renderer2,
 		public router: Router,
-		@Inject(PLATFORM_ID) private platformId: Object,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		public _commonService: CommonService
 	) {
-		this.isServer = isPlatformServer(this.platformId);
-		this.isBrowser = isPlatformBrowser(this.platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 	}
 
 	ngOnInit() {

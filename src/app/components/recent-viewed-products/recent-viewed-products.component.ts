@@ -1,6 +1,6 @@
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, NgModule, OnInit, Input } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { ProductService } from '../../utils/services/product.service';

@@ -1,9 +1,9 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { LocalStorageService } from 'ngx-webstorage';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
@@ -223,10 +223,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
     @Inject(DOCUMENT) private document,
-    @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject(RESPONSE) private _response: any) {
-    this.isServer = isPlatformServer(this.platformId);
-    this.isBrowser = isPlatformBrowser(this.platformId);
+    this.isServer = commonService.isServer;
+    this.isBrowser = commonService.isBrowser;
   }
 
   ngOnInit(): void {

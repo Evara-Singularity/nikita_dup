@@ -1,5 +1,5 @@
-import { EventEmitter, Component, ViewChild, PLATFORM_ID, Inject, Renderer2, ViewContainerRef, Injector, ComponentFactoryResolver } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { EventEmitter, Component, ViewChild, Inject, Renderer2, ViewContainerRef, Injector, ComponentFactoryResolver } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { CommonService } from "@services/common.service";
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { PopularProductService } from './popularProduct.service';
@@ -55,9 +55,9 @@ export class PopularProductComponent {
     constructor(private meta: Meta, 
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
-        private title: Title, public router: Router, public activatedRoute: ActivatedRoute, @Inject(PLATFORM_ID) platformId, public popularProductService: PopularProductService, private _commonService: CommonService, private _activatedRoute: ActivatedRoute, private _router: Router, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        private title: Title, public router: Router, public activatedRoute: ActivatedRoute, public popularProductService: PopularProductService, private _commonService: CommonService, private _activatedRoute: ActivatedRoute, private _router: Router, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document) {
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         this.pageName = "POPULAR SEARCH";
     }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../../utils/services/product.service';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
@@ -94,7 +94,7 @@ export class SimilarProductsComponent implements OnInit
     navigateTo(url){
         this.commonService.setSectionClickInformation(this.outOfStock ? 'similar_product_oos' : 'similar_products', 'pdp')
         this.router.navigateByUrl(url);
-        if (this.commonService.isBrowser) {
+        if ( this.commonService.isBrowser ) {
             ClientUtility.scrollToTop(100);
         }
     }

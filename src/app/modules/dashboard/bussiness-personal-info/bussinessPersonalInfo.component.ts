@@ -3,9 +3,9 @@ import { DashboardService } from "../dashboard.service";
 import { map } from "rxjs/operators";
 import { delay } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
-import { Location, isPlatformServer, isPlatformBrowser } from "@angular/common";
+import { Location } from "@angular/common";
 import { Router } from "@angular/router";
-import { Component, PLATFORM_ID, Inject } from "@angular/core";
+import { Component } from "@angular/core";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
@@ -34,7 +34,6 @@ export class BussinessInfoComponent {
 
   constructor(
     private _state: GlobalState,
-    @Inject(PLATFORM_ID) platformId,
     private _router: Router,
     private _location: Location,
     private _localStorageService: LocalStorageService,
@@ -47,8 +46,8 @@ export class BussinessInfoComponent {
     private _tms: ToastMessageService) {
     
     this.showLoader=false;
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this._state.subscribe("menu.isCollapsed", (isCollapsed) => { this.isMenuCollapsed = isCollapsed; });
 
     if (this._router.url == "/") {

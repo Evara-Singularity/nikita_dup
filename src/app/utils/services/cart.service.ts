@@ -69,11 +69,8 @@ export class CartService {
 
     ngOnInit() {
         this._dataService.dataServiceCart.subscribe(data => {
-            //  alert('ok');
             this.cart.next(data);
         })
-        let itemsArray = [];
-        
     }
 
     set buyNowSessionDetails(sessionDetails) {

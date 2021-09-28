@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { of } from 'rxjs';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { delay } from 'rxjs/operators';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'app-pop-up-variant2',
@@ -21,10 +21,10 @@ export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy 
   pClass: string;
   headerText: string = "";
   selector: any;
-  constructor(@Inject(PLATFORM_ID) platformId) {
+  constructor(public _commonService: CommonService) {
     // this.outData$ = new EventEmitter();
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.pClass = 'screen-view popup info-update-popup ';
   }
 

@@ -1,15 +1,16 @@
 import { Step } from '../../utils/validators/step.validate';
-import { Component, PLATFORM_ID, Inject, NgModule } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BulkEnquiryService } from '../../pages/bulkEnquiry/bulkEnquiry.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import { ClientUtility } from "../../utils/client.utility";
 import { Meta } from '@angular/platform-browser';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'create-enquiry-component',
@@ -36,16 +37,17 @@ export class CreateEnquiryComponent {
 
   constructor(
     private meta: Meta,
-    @Inject(PLATFORM_ID) platformId,
+    @Inject(DOCUMENT) private _document,
     public activatedRoute: ActivatedRoute,
     public formBuilder: FormBuilder,
     public bulkEnquiryService: BulkEnquiryService,
     public localStorageService: LocalStorageService,
-    private globalAnalyticService: GlobalAnalyticsService) {
+    private globalAnalyticService: GlobalAnalyticsService,
+    public _commonService: CommonService) {
 
     this.isChecked = false;
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.API = CONSTANTS;
   }
 

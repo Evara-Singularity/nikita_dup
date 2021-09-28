@@ -1,7 +1,5 @@
-import { Component, Input, PLATFORM_ID, Inject} from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-
-declare var $: any;
+import { Component, Input } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'paytm-upi-form',
@@ -12,9 +10,9 @@ export class PaytmUpiFormComponent{
     @Input() data:{} = {};
     isServer: boolean;
     isBrowser: boolean;
-    constructor(@Inject(PLATFORM_ID) private platformId: Object){
-        this.isServer = isPlatformServer(this.platformId);
-        this.isBrowser = isPlatformBrowser(this.platformId);
+    constructor(public _commonService: CommonService){
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit(){

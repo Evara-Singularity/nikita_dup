@@ -1,10 +1,10 @@
-import { Component, ViewEncapsulation, Input, OnInit, PLATFORM_ID, Inject, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 // import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CommonService } from '../../utils/services/common.service';
 import { TrendingSearchModule } from '../../modules/trendingSearch/trending-search.module';
@@ -39,7 +39,6 @@ export class SearchBarComponent implements OnInit {
 
     constructor(
         private _cs: CommonService,
-        @Inject(PLATFORM_ID) platformId,
         private _lss: LocalStorageService,
         private _r: Router,
         private _fb: FormBuilder,
@@ -47,8 +46,8 @@ export class SearchBarComponent implements OnInit {
         private renderer: Renderer2,
         private _commonService: CommonService
     ) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         // this.ssp = false;
 
         this.showSuggestionBlock = false;

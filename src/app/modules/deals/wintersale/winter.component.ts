@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
   selector: "winter",
   templateUrl: "winter.html",
@@ -17,15 +18,15 @@ export class WinterComponent {
   constructor(
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
-    @Inject(PLATFORM_ID) platformId: Object,
     private title: Title,
     public router: Router,
     private meta: Meta,
     private route: ActivatedRoute,
-    @Inject(DOCUMENT) private _document) {
+    @Inject(DOCUMENT) private _document,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.getWinterData();
     this.setMetas();
     this.initializeClicks();

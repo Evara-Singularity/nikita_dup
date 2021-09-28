@@ -1,5 +1,4 @@
-import { Component, Inject, PLATFORM_ID, OnInit, ComponentFactoryResolver, Injector, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, ComponentFactoryResolver, Injector, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OrderConfirmationService } from './orderConfirmation.service';
@@ -9,6 +8,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { CommonService } from '@app/utils/services/common.service';
 
 declare let dataLayer;
 declare var ADMITAD;
@@ -48,7 +48,6 @@ export class OrderConfirmationComponent implements OnInit {
     constructor(
         private localStorageService: LocalStorageService,
         public _dataService: DataService,
-        @Inject(PLATFORM_ID) platformId,
         private _ocs: OrderConfirmationService,
         private _lss: LocalStorageService,
         private _las: LocalAuthService,
@@ -60,10 +59,11 @@ export class OrderConfirmationComponent implements OnInit {
         private globalLoader: GlobalLoaderService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
+        public _commonService: CommonService
         ) {
 
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         this._activatedRoute.params.subscribe((data) => { });
     }
 

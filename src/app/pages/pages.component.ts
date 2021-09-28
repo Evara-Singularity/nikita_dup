@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';

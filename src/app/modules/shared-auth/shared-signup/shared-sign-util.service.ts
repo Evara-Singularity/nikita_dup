@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CartService } from '../../../utils/services/cart.service';
 declare var dataLayer;
 declare var digitalData: {};
 declare var _satellite;
@@ -9,8 +8,6 @@ declare var _satellite;
 export class SharedSignUtilService {
 
   private isCheckout: boolean = false;
-
-  constructor(private cartService: CartService) { }
 
   set setCheckout(value: boolean) {
     this.isCheckout = value;

@@ -1,4 +1,4 @@
-import { environment } from 'environments/environment';
+
 import { Injectable, Injector } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';

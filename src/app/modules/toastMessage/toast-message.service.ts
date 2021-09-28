@@ -8,9 +8,6 @@ import { Observable, Subject } from 'rxjs';
 export class ToastMessageService {
     private subject = new Subject<ToastMessage>();
 
-    constructor() {
-    }
-
     getToasts(): Observable<ToastMessage> {
         return this.subject.asObservable();
     }

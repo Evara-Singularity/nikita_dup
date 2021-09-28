@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit ,Input, NgModule} from '@angular/core';
+import { Component ,Input, NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CONSTANTS } from '@config/constants';
 import { LazyLoadImageModule } from 'ng-lazyload-image';

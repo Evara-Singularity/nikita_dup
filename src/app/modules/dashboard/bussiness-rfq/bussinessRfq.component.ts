@@ -5,7 +5,7 @@ import { map } from "rxjs/operators";
 import CONSTANTS from "@app/config/constants";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 declare var digitalData: {};
 declare let _satellite;
 
@@ -28,7 +28,6 @@ export class BussinessRfqComponent {
     private _localAuthService: LocalAuthService,
     private localStorageService: LocalStorageService,
     private _dashboardService: DashboardService,
-    private _router: Router,
     public _activatedRoute: ActivatedRoute,
     private loaderService:GlobalLoaderService) {
 

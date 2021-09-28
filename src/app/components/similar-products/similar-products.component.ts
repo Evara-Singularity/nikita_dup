@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../../utils/services/product.service';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';

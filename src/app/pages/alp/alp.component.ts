@@ -4,7 +4,7 @@ import { EventEmitter, Component, ViewChild, Inject, Renderer2, OnInit, Optional
 import { AlpService } from './alp.service';
 import { CommonService } from '@services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { ActivatedRoute, Router, NavigationExtras, Params } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { FooterService } from '@services/footer.service';
 import { SortByComponent } from '@components/sortBy/sortBy.component';
 import { CONSTANTS } from '@config/constants';

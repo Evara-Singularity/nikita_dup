@@ -72,8 +72,8 @@ export class CommonService {
         this.gaGtmData = gaGtmData ? gaGtmData : {};
         this.routeData = { currentUrl: "", previousUrl: "" };
         this.itemsValidationMessage = [];
-        this.isServer = isPlatformServer(this.platformId);
         this.isBrowser = isPlatformBrowser(this.platformId);
+        this.isServer = isPlatformServer(this.platformId);
         this.userSession = this._localStorageService.retrieve('user');
     }
 

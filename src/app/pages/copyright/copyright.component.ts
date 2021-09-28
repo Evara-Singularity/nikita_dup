@@ -5,8 +5,6 @@ import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
-declare let $: any;
-
 @Component({
     selector: 'copyright',
     templateUrl: 'copyright.html',

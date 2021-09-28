@@ -360,13 +360,13 @@
         <div class="prod-detail">
             <h2 class="heading-3">PRODUCT DETAILS</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
+                <p [innerHTML]="this.productDescripton"></p>
                 <p> Browse through the extensive list of
                     <a class="blueText" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText" [routerLink]="['/'+ productBrandCategoryUrl ]">{{productBrandDetails['brandName']}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
-                <p [innerHTML]="this.productDescripton"></p>
             </ng-container>
             <ng-template #noProdDesc>
                 <p>

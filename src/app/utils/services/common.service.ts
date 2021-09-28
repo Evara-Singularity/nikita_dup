@@ -796,7 +796,12 @@ export class CommonService {
 
     scrollTo(event) {
         if (this.isBrowser) {
-            ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+            if(event.target){
+                ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+            }else{
+                ClientUtility.scrollToTop(500, event.offsetTop - 50);
+            }
+            
         }
     }
 

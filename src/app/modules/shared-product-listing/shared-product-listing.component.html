@@ -50,6 +50,10 @@
     <ng-container *ngFor="let product of productsListingData.products; let i = index;">
         <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData"
             *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
+        <ng-container *ngIf="sponseredProductList && sponseredProductList.length == 4 && sponseredProductPosition.includes(i) " >
+            <product-horizontal-card [isAd]="true" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
+            </product-horizontal-card>
+        </ng-container>
         <product-horizontal-card [product]="product">
         </product-horizontal-card>
     </ng-container>
@@ -71,3 +75,4 @@
 
 <ng-container #filter></ng-container>
 <ng-container #sortBy></ng-container>
+<app-promo [page]="'listing'" class="fixed-btm-app-prmo"  [isOverlayMode]="true"></app-promo>  

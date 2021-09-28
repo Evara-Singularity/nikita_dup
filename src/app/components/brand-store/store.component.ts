@@ -3,14 +3,14 @@ import {
 	ViewEncapsulation,
 	Renderer2,
 	Inject,
-	PLATFORM_ID,
 	ElementRef,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title, Meta, TransferState } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
 	selector: 'store',
@@ -29,26 +29,27 @@ export class StoreComponent {
 	karam = 'cm338483';
 	philips = 'cm645889';
 	threem = 'cm909874';
+	blackDecker = 'cm105550';
+    dewalt = 'cm709642';
+    stanley = 'cm523993';
 	storeData: any;
 	isServer: boolean;
 	isBrowser: boolean;
 	constructor(
 		private elementRef: ElementRef,
-		private _tState: TransferState,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
-		@Inject(PLATFORM_ID) private platformId: Object,
 		public _router: Router,
 		private meta: Meta,
-		private _activatedRoute: ActivatedRoute,
 		private title: Title,
 		private router: Router,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		public _commonService : CommonService
 	) {
 		let path = this.router.url.split('?');
 		path = path[0].split('/');
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+		this.isBrowser = _commonService.isBrowser;
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['data']['error']) {
 				this.storeData = rawData['data'];
@@ -114,6 +115,21 @@ export class StoreComponent {
 			case 'godrej': {
 				id = this.godrej;
 				video = 'https://www.youtube.com/embed/1lfvvQb9PPs';
+				break;
+			}
+			case 'dewalt': {
+				id = this.dewalt;
+				video = '';
+				break;
+			}
+			case 'stanley': {
+				id = this.stanley;
+				video = '';
+				break;
+			}
+			case 'black-decker': {
+				id = this.blackDecker;
+				video = '';
 				break;
 			}
 		}

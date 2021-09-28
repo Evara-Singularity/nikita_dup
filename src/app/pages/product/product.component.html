@@ -35,7 +35,22 @@
 </section>
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
-
+    <!-- <div class="info-to-buyer">
+        <div class="info-to-buyer-l">
+            <p>This same item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
+        </div>
+        <div class="info-to-buyer-r">
+            <a href="">view order</a>
+        </div>
+    </div>
+    <div class="info-to-buyer-next">
+        <div class="info-to-buyer-l">
+            <p>Similar item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
+        </div>
+        <div class="info-to-buyer-r">
+            <a href="">view order</a>
+        </div>
+    </div> -->
     <div class="prod-carsl" addClass [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
         </siema-carousel>
@@ -63,12 +78,11 @@
                             Reviews
                         </small>
                     </p>
-
                 </div>
             </div>
 
-            <ng-container *ngIf="productTags != undefined">
-                <div class="prod-tag">
+            <ng-container *ngIf="productTags != undefined && productTags.length > 0" >
+                <div class="prod-tag" >
                     <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
                         <img src="{{tag.imageUrl}}">
                     </div>
@@ -98,7 +112,14 @@
                         </small>
                     </p>
                 </ng-container>
-
+            </div>
+            <div class="price-block" *ngIf="productOutOfStock || !productMrp">
+                <p class="actual-price">
+                    <small>
+                        Min Orderable Qty :
+                        <span>{{productMinimmumQuantity}} Pack</span>
+                    </small>
+                </p>
             </div>
             <div *ngIf="productOutOfStock" class="pad-t-10 f-size-8">
                 <strong class="availabilityOnReq">Available on Request</strong>
@@ -234,8 +255,8 @@
         <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
 
-        <div [ngClass]="{'returnPolicyContainer': appPromoVisible}" observeVisibility [debounceTime]="300"
-            (visible)="onVisibleAppPromo($event)">
+        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
 
@@ -429,6 +450,10 @@
             <ng-container #similarProduct></ng-container>
         </section>
 
+        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+            <ng-container #sponseredProducts></ng-container>
+        </section>
+
         <!-- Review rating Starts -->
         <section class="pdp-review" id="reviewsAll">
             <p class="heading-3" observeVisibility [debounceTime]="100" (visible)="onVisibleReviews($event)">REVIEWS & RATINGS
@@ -545,8 +570,6 @@
     </div>
     <!-- other sections ends -->
 
-    <ng-container #similarAll></ng-container>
-    <ng-container #recentAll></ng-container>
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #rfqForm></ng-container>
     <ng-container #pincodeForm></ng-container>
@@ -554,6 +577,7 @@
     <ng-container #offerComparePopup></ng-container>
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
+    <ng-container #globalToast></ng-container>
 
 
 
@@ -579,3 +603,4 @@
 </div>
 
 <div id="pageBottom"></div>
+<whatsapp-toast [customText]="'Hi, I want to buy ' + productName"></whatsapp-toast>

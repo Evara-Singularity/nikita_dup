@@ -1,80 +1,76 @@
-    @import '../../scss/variables';
-    .related-search {
-        p {
-            font-size: $large-font;
-            line-height: 30px;
-            width: calc(100% - 25px);
-            a {
-                color: $blue-link-color;
-            }
+@import '../../scss/variables';
+.related-search {
+    p {
+        font-size: $large-font;
+        line-height: 30px;
+        width: calc(100% - 25px);
+        a {
+            color: $blue-link-color;
         }
     }
-    
-    //No Result Found
-    .search-res {
-        background: $white;
-        .f-16 {
-            font-size: 16px;
-        }
-         ::ng-deep {
-            h3 {
-                font-size: $extra-large-font;
-            }
-            .no-product {
-                width: 100%;
-                margin: 0 auto 20px;
-                max-width: 300px;
-            }
-        }
-    }
-    
-    .search-txt {
-        p {
-            font-size: $large-font;
-            line-height: 16px;
-            padding: 15px 0;
-            width: calc(100% - 30px);
-        }
-    }
-    
-    .related-tags {
-        @extend %cards;
-        padding: 10px 0;
-        margin-top: 15px;
-    }
-    
-    .products-container {
-        margin-bottom: 65px;
-    }
-    
-    .blue-text {
-        color: #3875FD;
-        font-size: 13px;
-    }
-    
-     :host {
-        display: block;
-        margin: 55px 0px;
-        .slide-up {
-            transform: translateY(0);
-        }
-    }
+}
 
+//No Result Found
+.search-res {
+    background: $white;
+    .f-16 {
+        font-size: 16px;
+    }
+     ::ng-deep {
+        h3 {
+            font-size: $extra-large-font;
+        }
+        .no-product {
+            width: 100%;
+            margin: 0 auto 20px;
+            max-width: 300px;
+        }
+    }
+}
+
+.search-txt {
+    p {
+        font-size: $large-font;
+        line-height: 16px;
+        padding: 15px 0;
+        width: calc(100% - 30px);
+    }
+}
+
+.related-tags {
+    @extend %cards;
+    padding: 10px 0;
+    margin-top: 15px;
+}
+
+.products-container {
+    margin-bottom: 65px;
+}
+
+.blue-text {
+    color: #278BED;
+    font-size: 13px;
+}
+
+ :host {
+    display: block;
+    margin: 55px 0px 0px 0px;
+    .slide-up {
+        transform: translateY(0);
+    }
+}
 
 .mixed_category_result {
     display: flex;
     background: #ECECEC;
     flex-wrap: wrap;
     padding: 10px;
-
     .heading-3 {
         width: 100%;
     }
-
     &>div {
         display: inline-flex;
         margin-right: 10px;
-
         a {
             box-shadow: 0px 3px 6px #0000001A;
             margin-bottom: 8px;

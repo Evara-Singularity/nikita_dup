@@ -1,11 +1,4 @@
-<div class="cat_filter_wrap">
-    <div class="prod_filter">
-        <ng-container *ngIf="_commonService?.isBrowser" #filter></ng-container>
-    </div>
-</div>
-
-<breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
-<div [class.visibility]="!((layoutType == 1 || layoutType == 2) && firstPageContent)">
+<div [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
     <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1" [class.slpLayout2]="layoutType == 2">
         <div class="container-fluid safetyshoebannersrow">
             <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
@@ -24,44 +17,82 @@
         <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
     </div>
 </div>
-<div class="cate-container" id=category-cards-section>
-    <div class="bg_white">
-        <div class="sub-cate-container">
-            <div [class.visibility]="!showSubcategoty" class="container pt-10">
-                <p *ngIf="getRelatedCatgory?.children!==undefined && getRelatedCatgory?.children!==null" class="sub_category_heading">{{getRelatedCatgory?.categoryDetails?.categoryName}}
-                    <span class="light-txt f-16" *ngIf="getRelatedCatgory?.children!==null">({{getRelatedCatgory?.children.length}}
-                        Categories)</span>
-                </p>
-                <ng-container *ngIf="_commonService?.isBrowser" #subCategory></ng-container>
-            </div>
-        </div>
-        <div class="clearfix"></div>
-        <product-list [itemCount]="paginationData?.itemCount" [productsUpdated]="productsUpdated" [relatedCatgoryListUpdated]="relatedCatgoryListUpdated"></product-list>
-        <div class="filter-wrapper">
-            <button type="button" (click)="filterUp()">
-                <i class="icon-filter" aria-hidden="true"></i> <span class="txt"> FILTER <span *ngIf="filterCounts && filterCounts>0">({{ filterCounts }})</span></span>
-            </button>
 
-            <button type="button" (click)="toggleSortBy()">
-                <i class="icon-sort-by" aria-hidden="true"></i>
-                <span class="txt">SORT BY</span>
-            </button>
-        </div>
-        <ng-container *ngIf="_commonService?.isBrowser" #sortBy></ng-container>
-        <div [class.visibility]="this.paginationData?.itemCount == 0">
-            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
-            <ng-template *ngIf="_commonService?.isBrowser" #pagination></ng-template>
-        </div>
-    </div>
+<div id="category-cards-section">
+    <shared-product-listing
+        [headerName]="API_RESPONSE.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
+        [pageName]="'CATEGORY'"
+        [sponseredKeyword]="'Black Decker'"
+        [productsListingData]="_productListService?.productListingData"
+        *ngIf="_productListService &&_productListService.productListingData">
+    </shared-product-listing>
+</div>
 
-    <div class="quickLinksSection" *ngIf="firstPageContent && productCategoryNames.length > 0">
-        <h4>Quick Links</h4>
-        <a *ngFor="let category of productCategoryNames" href="{{categoryLinkLists[category]}}" class="quickLinkList">{{category}}</a>
-    </div>
-    <div *ngIf="firstPageContent && productListLength">
-        <recent-articles [recentArticles]="recentArticlesData" [title]="recentArtitlcesTitle"></recent-articles>
-    </div>
-    <div [class.visibility]="!firstPageContent">
-        <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+<!-- This is sub category section -->
+<div [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">
+    <div class="container pt-10">
+        <p class="sub_category_heading"  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
+            {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+            <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
+                Categories)</span>
+        </p>
+        <ng-container #subCategory></ng-container>
     </div>
 </div>
+
+<ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+
+    <!-- This is accordian section -->
+    <div class="accordian_footer_panel">
+        <ng-container *ngIf="API_RESPONSE.category[4].data.length > 0">
+            <div class="panel-head" style="margin-top: 0px;" >
+                <div class="container">
+                    <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                        Related Searches
+                        <span class="icon-accordian">
+                            <i class="icon-down"></i>
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let attribute of API_RESPONSE.category[4].data | slice:0:10 ">
+                        <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="popularLinks.length > 0">
+            <div class="panel-head" style="margin-top: 0px;">
+                <div class="container">
+                    <h3 class="heading-3" [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
+                        Popular Brand Category
+                        <span class="icon-accordian">
+                            <i class="icon-down"></i>
+                        </span>
+                    </h3>
+                </div>
+            </div>
+            <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
+                <div class="container category_links">
+                    <div *ngFor="let category of popularLinks | slice:0:10 ">
+                        <a href="{{ getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category])  }}">{{ category }}</a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- This is recently article section -->
+    <div class="recent-article-container" *ngIf="API_RESPONSE.category[1].productSearchResult?.totalCount > 0">
+        <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []" [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
+    </div>
+
+    <!-- This is footer section -->
+    <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+</ng-container>
+
+<breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
+<whatsapp-toast  [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'"></whatsapp-toast>

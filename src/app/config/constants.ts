@@ -24,6 +24,10 @@ export const CONSTANTS = {
   DEVICE: {
     device: 'mobile'
   },
+  PRODUCT_CARD_MODULE_NAMES: {
+    PLP: 'plp',
+    PDP: 'pdp'
+  },
   META: {
     ROBOT: 'index,follow',
     ROBOT1: 'noindex,follow',
@@ -343,7 +347,7 @@ export const CONSTANTS = {
   MOGLIX_HAINA_LOGO: "https://statics.moglix.com/img/newsletter/int/2021/january/210121/moglixhaina_logo.png",
   GET_LAYOUT: "/cmsapi/getLayoutJsonByRequestParam?requestParam=",
   MOGLIX_HAINA_VIDEO: {
-    url1: "https://www.youtube.com/embed/TddxyWx5g0o",
+    url1: "https://www.youtube.com/embed/rc2J19iHhmA", 
     url2: "https://www.youtube.com/embed/1d-sZmcyOnc",
     url3: "https://www.youtube.com/embed/V7vw4qFHp0E",
     url4: "https://www.youtube.com/embed/6trNPkCGejc",

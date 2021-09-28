@@ -1,6 +1,6 @@
 
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, Input, OnInit, PLATFORM_ID, EventEmitter, Output, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, EventEmitter, Output, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { ProductUtilsService } from '../../utils/services/product-utils.service';
@@ -41,12 +41,11 @@ export class FbtComponent implements OnInit
     currentCTA = '';
 
     constructor(
-        @Inject(PLATFORM_ID) private platformId: Object,
         private cartService: CartService, 
         private _commonService: CommonService,
         private productUtil: ProductUtilsService, 
         private router: Router){
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit() { this.intialize(); }
@@ -99,7 +98,7 @@ export class FbtComponent implements OnInit
             this.mainMSNPrice = this.rootProduct['priceWithoutTax'];
             this.fbtProducts.forEach((item, index) =>
             {
-                let fbtValidation = this.modifyProduct(item, true);
+                let fbtValidation = this.modifyProduct(item, false);
                 if (fbtValidation.validation && index < 3) {
                     this.mFBTProducts.push(fbtValidation['mProduct']);
                 }
@@ -172,8 +171,10 @@ export class FbtComponent implements OnInit
                 }
                 productObject['isFBT'] = isFBT;
                 if (isFBT) {
-                    productObject['isSelected'] = true;;
+                    productObject['isSelected'] = true;
                     this.fbtMSNPrices[partReference] = productObject['priceWithoutTax'];
+                } else {
+                    productObject['isSelected'] = false;
                 }
                 returnObj = { mProduct: productObject, validation: true }
             }

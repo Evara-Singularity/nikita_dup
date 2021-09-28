@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform, NgModule, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Pipe, PipeTransform, NgModule } from '@angular/core';
+import { CommonService } from '../services/common.service';
 declare var $: any;
 @Pipe({
     name: "oosValitionMessage"
@@ -8,9 +8,9 @@ export class OutOfStockValidationMessage implements PipeTransform {
     isServer: boolean;
     isBrowser: boolean;
 
-    constructor(@Inject(PLATFORM_ID) platformId,) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+    constructor(public _commonService: CommonService) {
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
     transform(value: any, fallback: string = null): any {
         //  ;

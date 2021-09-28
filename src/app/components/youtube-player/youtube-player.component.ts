@@ -1,7 +1,7 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID, SecurityContext, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SecurityContext, AfterViewInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -21,9 +21,9 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnDestroy
     readonly youtubeAPI = 'https://www.youtube.com/iframe_api';
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(private sanitizer: DomSanitizer, @Inject(PLATFORM_ID) platformId)
+    constructor(private sanitizer: DomSanitizer, public _commonService: CommonService)
     {
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit(): void {

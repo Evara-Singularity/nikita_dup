@@ -18,8 +18,6 @@ export class ProductShareComponent implements OnInit {
   @Output() removed: EventEmitter<boolean> = new EventEmitter<boolean>();
   public API = CONSTANTS;
 
-  constructor() { }
-
   ngOnInit(): void {
     console.log(this.shareFbUrl);
   }

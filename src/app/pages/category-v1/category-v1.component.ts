@@ -60,6 +60,7 @@ export class CategoryV1Component {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    isBrowser: boolean;
 
     constructor(
         public _router: Router,
@@ -78,7 +79,9 @@ export class CategoryV1Component {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-    ) { }
+    ) {
+        this.isBrowser = _commonService.isBrowser;  
+      }
 
     ngOnInit(): void {
         this.setDataFromResolver();

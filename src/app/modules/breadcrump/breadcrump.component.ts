@@ -1,5 +1,5 @@
-import { Component, Renderer2, ChangeDetectorRef, Input, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { Component, Renderer2, ChangeDetectorRef, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { BreadcrumpService } from './breadcrump.service';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
@@ -25,9 +25,9 @@ export class BreadcrumpComponent {
     isServer: boolean;
     isBrowser: boolean;
 
-    constructor(private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private cd: ChangeDetectorRef, @Inject(PLATFORM_ID) platformId, private _commonService: CommonService, public router: Router, public breadCrumpService: BreadcrumpService) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+    constructor(private _tState: TransferState, private _renderer2: Renderer2, @Inject(DOCUMENT) private _document, private cd: ChangeDetectorRef, private _commonService: CommonService, public router: Router, public breadCrumpService: BreadcrumpService) {
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit() {

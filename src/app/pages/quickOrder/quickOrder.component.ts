@@ -1,12 +1,11 @@
 
 import { LocalStorageService } from 'ngx-webstorage';
-import { Component, ViewEncapsulation, Input, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { QuickOrderService } from './quickOrder.service';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -16,6 +15,7 @@ import { LocalAuthService } from '../..//utils/services/auth.service';
 import { FooterService } from '../..//utils/services/footer.service';
 import { CartService } from '../..//utils/services/cart.service';
 import { CommonService } from '../..//utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
     selector: 'quick-order',
@@ -42,7 +42,6 @@ export class QuickOrderComponent {
         private _gState: GlobalState,
         private meta: Meta,
         private _activatedRoute: ActivatedRoute,
-        @Inject(PLATFORM_ID) platformId,
         private _localAuthService: LocalAuthService,
         private title: Title,
         private localStorageService: LocalStorageService,
@@ -50,14 +49,15 @@ export class QuickOrderComponent {
         public cartService: CartService,
         private _quickOrderService: QuickOrderService,
         private _commonService: CommonService,
+        private _analytics: GlobalAnalyticsService,
         public router: Router) {
 
         this.itemsList = [];
         this.itemsValidationMessage = [];
         this.cart = {};
         this.title.setTitle('Quick order-Moglix.com');
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         const user = this.localStorageService.retrieve('user');
         this._localAuthService.login$.pipe(
             takeUntil(this.cDistryoyed)).subscribe(
@@ -101,6 +101,7 @@ export class QuickOrderComponent {
         this.cartService.orderSummary.subscribe(
             data => {
                 this.itemsList = data.itemsList;
+                this.emptyBasketGtmEvent(this.itemsList);
             }
         );
 
@@ -267,6 +268,20 @@ export class QuickOrderComponent {
                 this.cartService.cart.next(res['noOfItems']);
             }
         });
+    }
+    
+    private emptyBasketGtmEvent(itemsList) {
+        let user = this.localStorageService.retrieve('user');
+        if (itemsList && itemsList.length == 0) {
+            const emptyBasketObj = {
+                'event': 'emptyBasket',
+                'email': (user && user.email) ? user.email : '',
+                'currency': 'INR',
+                'productBasketProducts': [],
+                'eventData': [] 
+            };
+            this._analytics.sendGTMCall(emptyBasketObj);
+        }
     }
 
     placeOrder() {

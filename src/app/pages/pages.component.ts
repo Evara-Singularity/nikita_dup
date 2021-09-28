@@ -1,7 +1,6 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';
@@ -38,13 +37,12 @@ export class PagesComponent implements OnInit {
     private _cartService: CartService,
     private _localStorageService: LocalStorageService,
     private _router: Router,
-    @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService
   ) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;;
     this.isMoglixAppInstalled();
 
     this.router.events.subscribe(res => {
@@ -138,9 +136,9 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
 
-    
+    this.setUserSession();
     if (this.isBrowser) {
-      this.checkAndRedirect();
+      // this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
@@ -192,6 +190,7 @@ export class PagesComponent implements OnInit {
           map((res) => res)
         )
         .subscribe((res) => {
+          let userSession = this._localAuthService.getUserSession();
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ((this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)) {

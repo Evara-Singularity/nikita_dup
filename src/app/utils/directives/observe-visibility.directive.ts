@@ -1,7 +1,8 @@
-import { CommonModule, isPlatformBrowser, isPlatformServer } from "@angular/common";
-import { AfterViewInit, Directive, ElementRef, EventEmitter, Inject, Input, NgModule, OnDestroy, OnInit, Output, PLATFORM_ID } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from "@angular/core";
 import { Subject } from "rxjs";
 import { delay, filter } from "rxjs/operators";
+import { CommonService } from "../services/common.service";
 
 @Directive({
   selector: '[observeVisibility]',
@@ -24,10 +25,10 @@ export class ObserveVisibilityDirective
 
   constructor(
     private element: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    public _commonService: CommonService
   ) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {

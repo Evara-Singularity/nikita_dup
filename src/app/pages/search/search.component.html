@@ -1,69 +1,32 @@
-<div class="cat_filter_wrap">
-    <div class="prod_filter">
-        <ng-container *ngIf="isBrowser" #filter></ng-container>
-        <!-- <filter *ngIf="isBrowser" [bucketsUpdated]="bucketsUpdated" [pageName]="pageName" [sortByComponentUpdated]="sortByComponentUpdated"  (filterSelected)="onFilterSelected($event)"></filter> -->
-    </div>
-</div>
-<div class="products-container">
-    <div>
+<ng-container  *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
+    <ng-container *ngIf="API_RESULT['searchData'][0].productSearchResult.correctedSearchString != undefined && API_RESULT['searchData'][0].productSearchResult.correctedSearchString !== null">
         <div class="card">
             <div class="container">
-                <div class="search-txt"
-                    *ngIf="(didYouMean == undefined || didYouMean == '') && productSearchResult != undefined">
-                    <p class="f-left"
-                        *ngIf="productSearchResult.correctedSearchString != undefined && productSearchResult.correctedSearchString !== null">
+                <div class="search-txt">
+                    <p class="f-left">
                         <span>Showing results for
-                            <i>{{productSearchResult.correctedSearchString}}</i></span><br />
+                            <i>{{API_RESULT['searchData'][0].productSearchResult.correctedSearchString}}</i></span><br />
                         <a class="blue-text"
-                            (click)="redirectWithNoPreProcessRequiredParam(productSearchResult.inputSearchString)">Search
-                            instead for {{productSearchResult.inputSearchString}}</a>
-                    </p>
-
-                    <p class="f-left"
-                        *ngIf="(productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation == 'or'">
-                        <span>
-                            Showing {{productSearchResult.totalCount}} results for
-                            "{{productSearchResult.displayString}}"</span>
-                    </p>
-                    <p class="f-left"
-                        *ngIf="toggleRcommendFlag && ((productSearchResult.correctedSearchString === undefined || productSearchResult.correctedSearchString === null) && productSearchResult.searchDisplayOperation != 'or')">
-                        <span>Showing {{productSearchResult.totalCount}} results for
-                            "{{ productSearchResult.displayString ?
-                            productSearchResult.displayString :
-                            productSearchResult.inputSearchString}}"</span>
+                            (click)="redirectWithNoPreProcessRequiredParam(API_RESULT['searchData'][0].productSearchResult.inputSearchString)">Search
+                            instead for {{API_RESULT['searchData'][0].productSearchResult.inputSearchString}}</a>
                     </p>
                 </div>
             </div>
         </div>
+    </ng-container>
+</ng-container>
 
-        <div class="mixed_category_result"  *ngIf="relatedSearchResult">
-            <h3 class="heading-3">Are you looking for…</h3>
-            <ng-container *ngFor="let category of relatedSearchResult; let i = index;" >
-                <div *ngIf="i < 3">
-                    <a (click)="goToRecommendedCategory(category?.categoryId, category)">{{ category?.categoryName }}</a>
-                </div>
-            </ng-container>
+<div class="mixed_category_result"  *ngIf="API_RESULT['searchData'][0]?.categoriesRecommended && _commonService.selectedFilterData.page < 2">
+    <h3 class="heading-3">Are you looking for…</h3>
+    <ng-container *ngFor="let category of API_RESULT['searchData'][0]?.categoriesRecommended; let i = index;" >
+        <div *ngIf="i < 3">
+            <a (click)="goToRecommendedCategory(category?.categoryId, category)">{{ category?.categoryName }}</a>
         </div>
-        <div class="search-res">
-            <product-list [itemCount]="this.paginationData?.itemCount" [productsUpdated]="productsUpdated"></product-list>
-            <div class="filter-wrapper">
-                <button type="button" (click)="filterUp()">
-                    <i class="icon-filter" aria-hidden="true"></i>
-                    <span class="txt">
-                        FILTER
-                        <span *ngIf="filterCounts && filterCounts>0">({{filterCounts}})</span></span>
-                </button>
-
-                <button type="button" (click)="toggleSortBy()">
-                    <i class="icon-sort-by" aria-hidden="true"></i>
-                    <span class="txt">SORT BY</span>
-                </button>
-            </div>
-            <ng-container *ngIf="isBrowser" #sortBy></ng-container>
-        </div>
-        <div class="card mt-15" [ngClass]="{'hide': !productSearchResult || !productSearchResult['totalCount']}">
-            <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination($event)"></span>
-            <ng-template *ngIf="isBrowser" #pagination></ng-template>
-        </div>
-    </div>
+    </ng-container>
 </div>
+<shared-product-listing 
+    [headerName]="headerNameBasedOnCondition" 
+    [pageName]="'SEARCH'"
+    [productsListingData]="_productListService?.productListingData"
+    [sponseredKeyword]="'Black Decker'" >
+</shared-product-listing>

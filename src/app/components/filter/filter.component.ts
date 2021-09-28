@@ -1,5 +1,5 @@
-import { EventEmitter, Component, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { EventEmitter, Component, Input, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -12,13 +12,16 @@ import { CommonService } from '@app/utils/services/common.service';
 export class FilterComponent {
     // input variable to get filter data from parent component
     @Input() filterData: Array<any>;
+    @Input() isBrandPage: Array<any>;
+    @Input() brandName: string;
+    @Input() brandUrl: string;
 
     // Output event to toggle filter
     @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
 
     public selectedFilterIndex: number = 0;
 
-    constructor(public _commonService: CommonService, private _activatedRoute: ActivatedRoute) {
+    constructor(public _commonService: CommonService) {
     }
 
     /**

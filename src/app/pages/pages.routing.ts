@@ -17,21 +17,26 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
+					pageName: 'home'
 				},
 			},
 			{
 				matcher: productMatch,
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
+				data: {
+					pageName: 'pdp'
+				},
 			},
 			{
 				matcher: categoriesMatcher,
 				loadChildren: () =>
-					import('./category-v1/category-v1.module').then((m) => m.CategoryV1Module),
+					import('./category/category.module').then((m) => m.CategoryModule),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'listing'
 				},
 			},
 			// {
@@ -50,7 +55,8 @@ const routes: Routes = [
 				data: {
 					footer: false,
 					logo: true,
-					moreOpt: true
+					moreOpt: true,
+					pageName: 'listing:alp'
 				}
 			},
 			{
@@ -63,6 +69,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'listing:popular'
 				},
 			},
 			{
@@ -81,21 +88,23 @@ const routes: Routes = [
 			{
 				path: 'brands/:brand',
 				loadChildren: () =>
-					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
+					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
                     logo: true,
 					moreOpt: true,
+					pageName: 'listing:brand'
 				},
 			},
 			{
 				matcher: brandCategoriesMatcher,
 				loadChildren: () =>
-					import('./brand-v1/brand-v1.module').then((m) => m.BrandV1Module),
+					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
                     logo: true,
 					moreOpt: true,
+					pageName: 'listing:brandCategory'
 				},
 			},
 			// {
@@ -111,11 +120,12 @@ const routes: Routes = [
 			{
 				path: 'search',
 				loadChildren: () =>
-					import('./search-v1/search-v1.module').then((m) => m.SearchV1Module),
+					import('./search/search.module').then((m) => m.SearchModule),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'listing:search'
 				},
 			},
 			{
@@ -234,6 +244,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'article'
 				},
 			},
 			{
@@ -279,6 +290,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					pageName: 'store'
 				},
 			},
 			{
@@ -412,6 +424,45 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'brand-store/dewalt',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm709642',
+				},
+			},
+			{
+				path: 'brand-store/stanley',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm523993',
+				},
+			},
+			{
+				path: 'brand-store/black-decker',
+				loadChildren: () =>
+					import('../components/brand-store/store.module').then(
+						(m) => m.StoreModule
+					),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					layoutId: 'cm105550',
+				},
+			},
+			{
 				path: 'covid-19-essentials',
 				loadChildren: () =>
 					import('./covid19essentials/covid19.module').then(
@@ -461,12 +512,12 @@ const routes: Routes = [
 			{
 				path: 'corporate-gifting',
 				loadChildren: () =>
-					import('./corporate/corporate.module').then((m) => m.CorporateModule),
+					import('./corporate-gifting/corporate-gifting.module').then((m) => m.CorporateGiftingModule),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					layoutId: 'cm918679',
+					// layoutId: 'cm918679',
 				},
 			},
 			{

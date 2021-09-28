@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '@services/footer.service';
 import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
-import { Subject, BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DataService } from '@services/data.service';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
@@ -52,13 +52,17 @@ export class AlpComponent implements OnInit {
     displayGroupBy = false;
     bestSellerTitle = '';
 
-    constructor(@Optional() @Inject(RESPONSE) private _response, private _tState: TransferState, private _renderer2: Renderer2,
+    constructor(
+        @Optional() @Inject(RESPONSE) private _response, 
+        private _tState: TransferState, private _renderer2: Renderer2,
         private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
         public dataService: DataService,
         public pageTitle: Title, private meta: Meta, public footerService: FooterService,
-        public _router: Router, public _activatedRoute: ActivatedRoute, private localStorageService: LocalStorageService,
-        public _commonService: CommonService, private _categoryService: AlpService,
+        public _router: Router, public _activatedRoute: ActivatedRoute, 
+        private localStorageService: LocalStorageService,
+        public _commonService: CommonService, 
+        private _categoryService: AlpService,
         public _productListService: ProductListService
     ) {
         this.getRelatedCatgory = {};

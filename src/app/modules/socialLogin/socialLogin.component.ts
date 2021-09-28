@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Output, PLATFORM_ID, Inject} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {SocialLoginService} from './socialLogin.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
 import { SocialAuthService } from "angularx-social-login";
@@ -37,9 +36,9 @@ export class SocialLoginComponent {
         private activatedRoute: ActivatedRoute, private _cartService: CartService,
         private _localAuthService: LocalAuthService, private socialLoginService: SocialLoginService,
         private _tms: ToastMessageService, 
-        private _auth: SocialAuthService, @Inject(PLATFORM_ID) platformId) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        private _auth: SocialAuthService) {
+            this.isServer = _commonService.isServer;
+            this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit(){    

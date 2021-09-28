@@ -64,7 +64,7 @@ export class CommonService {
         public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
         @Inject(PLATFORM_ID) private platformId: Object,
-        private _router: Router, public _commonService: CommonService
+        private _router: Router
     ) {
         // this.getBusinessDetails();
         this.windowLoaded = false;

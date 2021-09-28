@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 
 @Component({
@@ -19,13 +18,12 @@ export class BestDealComponent {
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private title: Title,
     public router: Router,
     private route: ActivatedRoute,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getBestDealData();
     this.setMetas();
   }

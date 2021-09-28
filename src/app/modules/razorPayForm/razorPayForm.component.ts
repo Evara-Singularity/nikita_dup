@@ -45,8 +45,8 @@ export class RazorPayFormComponent {
       private loaderService: GlobalLoaderService,
       private _formBuilder: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
     this.API = CONSTANTS;
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.razorPay = CONSTANTS.GLOBAL.razorPay;
     this.razorPayForm = this._formBuilder.group({
       "pType": [11, [Validators.required]],

@@ -1,12 +1,10 @@
-import { EventEmitter, Component, Input, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, SimpleChanges, Inject, PLATFORM_ID } from '@angular/core';
+import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
-import { Router } from '@angular/router';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ProductService } from '@app/utils/services/product.service';
 
 @Component({

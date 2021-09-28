@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 
 import { takeUntil } from 'rxjs/operators';
 import { SiemaSlideComponent } from './siemaSlide.component';
-import { SiemaCrouselService } from '../../utils/services/siema-crousel.service';
 import CONSTANTS from '../../config/constants';
 
 
@@ -60,10 +59,9 @@ export class SiemaCarouselComponent {
         private _cfr: ComponentFactoryResolver,
         private _cdr: ChangeDetectorRef,
         private ngxSiemaService: NgxSiemaService,
-        private _siemaCrouselService:  SiemaCrouselService,
         @Inject(PLATFORM_ID) private platformId: Object) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = isPlatformServer(this.platformId);
+        this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
 

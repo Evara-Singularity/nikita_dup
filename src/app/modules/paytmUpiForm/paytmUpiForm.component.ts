@@ -13,8 +13,8 @@ export class PaytmUpiFormComponent{
     isServer: boolean;
     isBrowser: boolean;
     constructor(@Inject(PLATFORM_ID) private platformId: Object){
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = isPlatformServer(this.platformId);
+        this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
     ngOnInit(){

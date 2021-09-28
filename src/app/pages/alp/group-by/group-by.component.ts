@@ -14,8 +14,6 @@ export class GroupByComponent implements OnInit {
     readonly defaultImage = this.baseImgPath + 'img/others/Card.jpg';
     readonly offset = 100;
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 

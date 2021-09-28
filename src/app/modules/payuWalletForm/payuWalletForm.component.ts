@@ -8,8 +8,6 @@ import { Component, Input } from '@angular/core';
 export class PayuWalletFormComponent{
 
     @Input() data:{} = {};
-    constructor(){
-    }
 
     ngOnInit(){
 

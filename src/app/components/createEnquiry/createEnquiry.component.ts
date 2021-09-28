@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BulkEnquiryService } from '../../pages/bulkEnquiry/bulkEnquiry.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT, CommonModule } from '@angular/common';
+import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
 import { ClientUtility } from "../../utils/client.utility";
 import { Meta } from '@angular/platform-browser';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
@@ -37,7 +37,6 @@ export class CreateEnquiryComponent {
   constructor(
     private meta: Meta,
     @Inject(PLATFORM_ID) platformId,
-    @Inject(DOCUMENT) private _document,
     public activatedRoute: ActivatedRoute,
     public formBuilder: FormBuilder,
     public bulkEnquiryService: BulkEnquiryService,

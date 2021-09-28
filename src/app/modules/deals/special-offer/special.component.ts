@@ -26,8 +26,8 @@ export class SpecialComponent {
     private route: ActivatedRoute,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getSpecialData();
     this.setMetas();
     this.initializeClicks();

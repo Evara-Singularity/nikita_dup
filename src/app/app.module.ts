@@ -11,8 +11,6 @@ import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ErrorHandlerModule } from './utils/interceptors/error-handler.module';
-import { RouterModule } from '@angular/router';
 
 const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
@@ -42,8 +40,8 @@ export class AppModule {
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     @Inject(APP_ID) private appId: string) {
-    const platform = isPlatformBrowser(platformId) ?
+    const platform = isPlatformBrowser(this.platformId) ?
       'in the browser' : 'on the server';
-    console.log(`Running ${platform} with appId=${appId}`);
+    console.log(`Running ${platform} with appId=${this.appId}`);
   }
 }

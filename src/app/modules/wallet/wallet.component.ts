@@ -1,6 +1,5 @@
 import { Component, Input, PLATFORM_ID, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { WalletService } from "./wallet.service";
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -11,7 +10,6 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
 
 declare let dataLayer: any;
 
@@ -52,11 +50,9 @@ export class WalletComponent {
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
-        private _walletService: WalletService,
         private _objectToArray: ObjectToArray,
         private loaderService: GlobalLoaderService,
-        private _formBuilder: FormBuilder,
-        private lsr: LowSuccessMessagePipe) {
+        private _formBuilder: FormBuilder) {
         this.isServer = isPlatformServer(platformId);
         this.isBrowser = isPlatformBrowser(platformId);
         this.walletData = {};

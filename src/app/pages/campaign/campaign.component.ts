@@ -1,6 +1,6 @@
 import { NgxSiemaService, NgxSiemaOptions } from 'ngx-siema';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, OnInit, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import * as $ from 'jquery';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
@@ -32,12 +32,11 @@ export class CampaignComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     public pageTitle: Title,
     public meta: Meta,
-    private ElementRef: ElementRef,
     @Inject(DOCUMENT) private _document,
     private ngxSiemaService: NgxSiemaService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.pageTitle.setTitle('Abse No Fikar Of Prices Or Delivery Kyunki #MoglixHaina');
 
   }

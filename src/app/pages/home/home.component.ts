@@ -2,7 +2,6 @@ import { Title, Meta } from '@angular/platform-browser';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import {
 	Component,
-	ViewEncapsulation,
 	OnInit,
 	PLATFORM_ID,
 	Inject,

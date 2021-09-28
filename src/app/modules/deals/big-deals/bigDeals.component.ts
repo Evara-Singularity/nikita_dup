@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Title, makeStateKey, TransferState } from '@angular/platform-browser';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 const BDD = makeStateKey<any>('bigdealdata');
 
@@ -25,8 +25,8 @@ export class BigDealComponent {
     private route: ActivatedRoute,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getBigDealData();
     this.setMetas();
   }

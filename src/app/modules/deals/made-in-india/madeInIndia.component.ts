@@ -25,8 +25,8 @@ export class MadeInIndiaComponent {
     private route: ActivatedRoute,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getMadeInIndiaData();
     this.setMetas();
   }

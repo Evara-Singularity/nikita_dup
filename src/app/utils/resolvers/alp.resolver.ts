@@ -3,11 +3,10 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import {
     Resolve,
     RouterStateSnapshot,
-    ActivatedRouteSnapshot,
-    ActivatedRoute
+    ActivatedRouteSnapshot
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, mergeMap, share, switchMap, tap } from 'rxjs/operators'
+import { catchError, map, mergeMap, share, tap } from 'rxjs/operators'
 import { isPlatformServer } from '@angular/common';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';

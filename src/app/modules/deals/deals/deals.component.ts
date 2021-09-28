@@ -25,8 +25,8 @@ export class DealsComponent {
     private route: ActivatedRoute,
     private meta: Meta) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
 
     this.setMetas();
     this.getDealsData();

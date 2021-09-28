@@ -27,8 +27,8 @@ export class SpecialDealsComponent {
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = isPlatformServer(this.platformId);
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.getSpecialDealsData();
     this.setMetas();
     this.initializeClicks();

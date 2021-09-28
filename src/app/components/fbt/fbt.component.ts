@@ -46,7 +46,7 @@ export class FbtComponent implements OnInit
         private _commonService: CommonService,
         private productUtil: ProductUtilsService, 
         private router: Router){
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
     ngOnInit() { this.intialize(); }

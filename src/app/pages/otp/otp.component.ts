@@ -6,8 +6,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OtpComponent implements OnInit {
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 

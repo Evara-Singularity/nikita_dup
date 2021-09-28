@@ -24,6 +24,10 @@ export const CONSTANTS = {
   DEVICE: {
     device: 'mobile'
   },
+  PRODUCT_CARD_MODULE_NAMES: {
+    PLP: 'plp',
+    PDP: 'pdp'
+  },
   META: {
     ROBOT: 'index,follow',
     ROBOT1: 'noindex,follow',

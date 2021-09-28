@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { DataService } from './data.service';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { ProductsEntity } from '../models/product.listing.search';
 
 @Injectable({
     providedIn: 'root'
@@ -148,4 +149,41 @@ export class ProductService {
     getCartBySession(params) {
         return this._dataService.callRestful("GET", this.basePath + ENDPOINTS.GET_CartBySession, { params: params });
     }
+
+    getSponseredProducts(params){
+        return this._dataService.callRestful("GET", 'https://nodeapiqa.moglilabs.com/nodeApi/v1' + ENDPOINTS.SPONSERED_PRODUCTS, { params: params });
+    }
+
+    searchResponseToProductEntity(product: any) {
+        const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
+        const productMrp = product['mrp'];
+        const productPrice = product['salesPrice'];
+        const priceWithoutTax = product['priceWithoutTax'];
+        return {
+          moglixPartNumber: partNumber,
+          moglixProductNo: product['moglixProductNo'] || null,
+          mrp: productMrp,
+          salesPrice: productPrice,
+          priceWithoutTax: priceWithoutTax,
+          productName: product['productName'],
+          variantName: product['productName'],
+          productUrl: product['productUrl'],
+          shortDesc: product['shortDesc'],
+          brandId: product['brandId'],
+          brandName: product['brandName'],
+          quantityAvailable: product['quantityAvailable'],
+          discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+          rating: product['rating'] || null,
+          categoryCodes: null,
+          taxonomy: product['taxonomy'],
+          mainImageLink: (product['moglixImageNumber']) ? product['mainImageLink'] : '',
+          productTags: [],
+          filterableAttributes: {},
+          avgRating: product.avgRating,
+          itemInPack: null,
+          ratingCount: product.ratingCount,
+          reviewCount: product.reviewCount
+        } as ProductsEntity;
+      }
+
 }

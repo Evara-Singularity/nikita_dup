@@ -41,7 +41,8 @@ export class DashboardService {
     }
 
     deleteAddress(obj){
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD;
+        //obj['onlineab'] = "y";
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.POST_ADD + '?onlineab=y';
         return this.dataService.callRestful("POST", url, {body:obj});
     }
 

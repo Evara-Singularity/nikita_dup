@@ -10,7 +10,7 @@ export const FAQDATA = {
 			acceptedAnswer: {
 				'@type': 'Answer',
 				text:
-					'Ordering at Moglix is easy. Placing your first order at Moglix? Please follow the below mentioned steps:<br /><ul><li>Just select the items you want to shop.</li> <br /><li>Enter your shipping address.</li><br /><li>Enter your payment information and you are home.</li><br />If you need any assistance give us a call. We would love to take your order over phone. You may contact us on +91 955 5988 544 to book your order on COD mode. Call Timings:- 9:30 AM to 7 PM.',
+					'Ordering at Moglix is easy. Placing your first order at Moglix? Please follow the below mentioned steps:<br /><ul><li>Just select the items you want to shop.</li> <br /><li>Enter your shipping address.</li><br /><li>Enter your payment information and you are home.</li><br />If you need any assistance give us a call. We would love to take your order over phone. You may contact us on +91 8448 233 444 to book your order on COD mode. Call Timings:- 9:30 AM to 7 PM.',
 			},
 		},
 		{
@@ -64,7 +64,7 @@ export const FAQDATA = {
 			acceptedAnswer: {
 				'@type': 'Answer',
 				text:
-					'Yes. We do take orders over phone. You may contact us on +91 955 5988 544 to book your order on COD mode. Call Timings:- 9:30 AM to 7 PM',
+					'Yes. We do take orders over phone. You may contact us on +91 8448 233 444 to book your order on COD mode. Call Timings:- 9:30 AM to 7 PM',
 			},
 		},
 		{
@@ -110,7 +110,7 @@ export const FAQDATA = {
 			acceptedAnswer: {
 				'@type': 'Answer',
 				text:
-					"Yes if your debit/credit card isn't working we can always take your order over phone. Do call us on +91 955 5988 544. Call Timings:- 9:30 AM to 7 PM",
+					"Yes if your debit/credit card isn't working we can always take your order over phone. Do call us on +91 8448 233 444. Call Timings:- 9:30 AM to 7 PM",
 			},
 		},
 		{
@@ -309,7 +309,7 @@ export const FAQDATA = {
 			acceptedAnswer: {
 				'@type': 'Answer',
 				text:
-					'In case of a payment failure, please retry ensuring that information passed on to payment gateway is accurate i.e. account details, billing address, password (for net banking), your internet connection is not disrupted in the process. If your account has been debited after a payment failure, it is normally rolled back to your bank account within 7 business days. All you need is to call us through at +91 955 5988 544. Call Timings:- 9:30 AM to 7 PM',
+					'In case of a payment failure, please retry ensuring that information passed on to payment gateway is accurate i.e. account details, billing address, password (for net banking), your internet connection is not disrupted in the process. If your account has been debited after a payment failure, it is normally rolled back to your bank account within 7 business days. All you need is to call us through at +91 8448 233 444. Call Timings:- 9:30 AM to 7 PM',
 			},
 		},
 		{

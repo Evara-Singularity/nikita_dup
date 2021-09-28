@@ -29,6 +29,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 })
 
 export class CategoryComponent {
+    encodeURI = encodeURI;
     paginationInstance = null;
     @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
     filterInstance = null;
@@ -794,6 +795,11 @@ export class CategoryComponent {
             this.cateoryFooterInstance = null;
             this.cateoryFooterContainerRef.remove();
         }
+    }
+
+    getUrlPathName(url){
+        const originSlash = /^https?:\/\/[^/]+\//i;
+        return url.replace(originSlash, '');
     }
 
     ngOnDestroy() {

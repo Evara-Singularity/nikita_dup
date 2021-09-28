@@ -39,7 +39,7 @@ export class CheckoutV1Component implements OnInit {
   checkoutAddress: {};
   checkoutAddressIndex: number;
   businessDetails: any;
-  addressFormButtonText: string = 'SAVE';
+  addressFormButtonText: string = 'SAVE ADDRESS';
   windowWidth: number;
   showSocialLogin: boolean;
   step: number = 1;

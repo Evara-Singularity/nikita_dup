@@ -512,12 +512,12 @@ const routes: Routes = [
 			{
 				path: 'corporate-gifting',
 				loadChildren: () =>
-					import('./corporate/corporate.module').then((m) => m.CorporateModule),
+					import('./corporate-gifting/corporate-gifting.module').then((m) => m.CorporateGiftingModule),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					layoutId: 'cm918679',
+					// layoutId: 'cm918679',
 				},
 			},
 			{

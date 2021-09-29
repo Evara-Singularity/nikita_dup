@@ -17,7 +17,7 @@ import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.modu
     GlobalLoaderModule,
     // this modal are used in all major module and hence being added to pages 
     ModalModule, 
-    ToastMessageModule
+    ToastMessageModule,
   ],
   providers: [MyAccountGuard]
 })

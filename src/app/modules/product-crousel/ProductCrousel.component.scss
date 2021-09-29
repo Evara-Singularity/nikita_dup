@@ -1,6 +1,4 @@
 @import './../../scss/carousel';
-
-
 // .product_block {
 //     div {
 //         h4.lh-18 {
@@ -273,22 +271,11 @@
 //     }
 // }
 
-// ngx-siema-slide {
-//     display: block;
-//     height: 93vh;
-//     .img-block{
-//         height: 100%;
-//         .inner_block{
-//             height: 100%;
-//             .element{
-//                 height: 100%;
-//                 vertical-align: middle;
-//                 img {
-//                     width: 100%;
-//                     display: block;
-//                 }
-//             }
-//         }
+// .top-banner,
+// .banner-carousel-siema,
+// .img-siema {
+//     ngx-siema-slide {
+//         display: block;
 //     }
 // }
 
@@ -306,29 +293,4 @@
 //     position: absolute;
 //     top: 50%;
 //     left: 50%;
-// }
-
-// .youtube-container {
-//     .inner_block {
-//         height: 100%;
-//         .inner_element {
-//             position: relative;
-//         }
-//         .element {
-//             height: 100%;
-//             // transform-origin: 0% 0% !important;
-//         }
-//         img {
-//             width: 100%;
-//             // height: 100%;
-//         }
-//     }
-//     .youtube_icon {
-//         width: 50px;
-//         height: 50px;
-//         transform: translate(-50%, -50%);
-//         position: absolute;
-//         top: 50%;
-//         left: 50%;
-//     }
 // }

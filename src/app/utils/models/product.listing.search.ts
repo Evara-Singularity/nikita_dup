@@ -45,6 +45,7 @@ export interface ProductsEntity {
     categoryCodes?: null;
     taxonomy?: null;
     mainImageLink: string;
+    mainImageThumnailLink?: string;
     productTags?: (null)[] | null;
     filterableAttributes: FilterableAttributes;
     itemInPack: string;

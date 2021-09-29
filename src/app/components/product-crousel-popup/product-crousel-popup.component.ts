@@ -12,6 +12,7 @@ import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.mo
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
 import CONSTANTS from '@app/config/constants';
+import { WebpImageSupportCheckPipeModule } from '@app/utils/pipes/webpImageSupportCheck.pipe';
 
 @Component({
   selector: 'app-product-crousel-popup',
@@ -136,6 +137,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     NgxSiemaModule.forRoot(), 
     YTThumnailPipeModule,
     ModalModule,
+    WebpImageSupportCheckPipeModule
   ],
   entryComponents: [ProductCrouselPopupComponent]
 })

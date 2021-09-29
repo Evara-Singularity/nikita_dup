@@ -1,3 +1,4 @@
+import { InjectionToken } from "@angular/core";
 import { environment } from "environments/environment";
 
 let siemaOptionsObject: {
@@ -18,6 +19,8 @@ export const CONSTANTS = {
   IDS_MAP: environment.IDS_MAP,
   CMS_IDS: environment.CMS_IDS,
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
+  BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
+  SPEED_TEST_IMAGE: 'https://raw.githubusercontent.com/jrquick17/ng-speed-test/02c59e4afde67c35a5ba74014b91d44b33c0b3fe/demo/src/assets/500kb.jpg', // ~500 KB image
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },

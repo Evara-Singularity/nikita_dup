@@ -58,6 +58,7 @@
         "lottie-web": "^5.7.13",
         "net": "^1.0.2",
         "ng-lazyload-image": "^9.1.0",
+        "ng-speed-test": "^2.2.0",
         "ng2-cc-library": "^1.0.1",
         "ngx-lottie": "^7.0.3",
         "ngx-pagination": "^3.2.1",

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
@@ -15,6 +15,7 @@ import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import { SpeedTestService } from 'ng-speed-test';
 
 @Component({
   selector: 'app-pages',
@@ -23,7 +24,7 @@ import { GLOBAL_CONSTANT } from '@app/config/global.constant';
   encapsulation: ViewEncapsulation.None
 })
 
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit, AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true, logo?: boolean, title?: string };
@@ -39,7 +40,8 @@ export class PagesComponent implements OnInit {
     private _router: Router,
     public router: Router,
     private _aRoute: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private speedTestService: SpeedTestService,
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;;
@@ -58,7 +60,25 @@ export class PagesComponent implements OnInit {
     })
   }
 
-  
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      setTimeout(() => {
+        // TODO: configure it with 500KB image 
+        this.speedTestService.getMbps({ iterations: 1, file: {
+          path: CONSTANTS.SPEED_TEST_IMAGE,
+          shouldBustCache: true,
+          size: 408949
+        }, retryDelay: 1500 }).subscribe(
+          (speed) => {
+            console.log('speedTestService ngAfterViewInit', speed);
+            this._commonService.setNetworkSpeedState(speed);
+          }
+        )
+      }, 0);
+    }
+  }
+
+    
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
@@ -142,7 +162,9 @@ export class PagesComponent implements OnInit {
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
+      this.checkWebpSupport();
     }
+    
   }
 
   isMoglixAppInstalled() {
@@ -153,6 +175,19 @@ export class PagesComponent implements OnInit {
           this.updateAppStatus()
         }
       });
+    }
+  }
+
+  checkWebpSupport() {
+    const elem = document.createElement('canvas');
+    if (!!(elem.getContext && elem.getContext('2d'))) {
+      // was able or not to get WebP representation
+      console.log('was able or not to get WebP representation');
+      this._commonService.setWebpSupportState(elem.toDataURL('image/webp').indexOf('data:image/webp') == 0);
+    } else {
+      // very old browser like IE 8, canvas not supported
+      console.log('very old browser like IE 8, canvas not supported');
+      this._commonService.setWebpSupportState(false);
     }
   }
 

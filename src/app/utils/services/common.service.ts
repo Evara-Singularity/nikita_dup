@@ -47,11 +47,13 @@ export class CommonService {
     abTesting: any;
 
     updateSortBy: Subject<string> = new Subject();
+    private _networkSpeed:Number = null;
+    private _webpSupport: boolean = false;
+    private networkSpeedState: Subject<number> = new Subject<number>();
+    private webpSupportState: Subject<number> = new Subject<number>();
 
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
-
-    // useLastSortByState: boolean = false;
 
     private routeData: { currentUrl: string, previousUrl: string };
     userSession; 
@@ -70,12 +72,39 @@ export class CommonService {
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
         this.gaGtmData = gaGtmData ? gaGtmData : {};
-        this.routeData = { currentUrl: "", previousUrl: "" };
+        this.routeData = { currentUrl: "", previousUrl: "" };   
         this.itemsValidationMessage = [];
         this.isBrowser = isPlatformBrowser(this.platformId);
         this.isServer = isPlatformServer(this.platformId);
         this.userSession = this._localStorageService.retrieve('user');
     }
+
+    setNetworkSpeedState(speed) {
+        this._networkSpeed = speed;
+        this.networkSpeedState.next(speed);
+    }
+
+    getNetworkSpeedState(): Observable<number>{
+        return this.networkSpeedState.asObservable();
+    }
+
+    setWebpSupportState(status) {
+        this._webpSupport = status;
+        this.webpSupportState.next(status);
+    }
+
+    getWebpSupportState(): Observable<number>{
+        return this.webpSupportState.asObservable();
+    }
+
+    get networkSpeed(){
+        return this._networkSpeed;
+    }
+
+    get webpSupport(){
+        return this._webpSupport;
+    }
+
 
     get itemsValidationMessage() {
         return this._itemsValidationMessage;

@@ -15,8 +15,11 @@
                 <div class="tags" *ngFor="let tags of product['productTags']">
                     <img [src]="tags['tagImageLink']" />
                 </div>
-                <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125"
-                    width="125" />
+                <img 
+                    alt="{{product.productName}}"
+                    enhanceImgByNetwork
+                    [defaultImage]="defaultImage" [lazyLoad]="imageCdnPath + product.mainImageThumnailLink"
+                    height="125" width="125" />
             </div>
             <div class="right">
                 <div class="rating" >

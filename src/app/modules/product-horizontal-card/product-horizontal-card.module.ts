@@ -4,6 +4,8 @@ import { ProductHorizontalCardComponent } from './product-horizontal-card.compon
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
+import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [ProductHorizontalCardComponent],
@@ -11,7 +13,9 @@ import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
     CommonModule,
     RatingPipeModule,
     YTThumnailPipeModule,
-    MathFloorPipeModule
+    MathFloorPipeModule,
+    EnhanceImgByNetworkDirectiveModule,
+    LazyLoadImageModule
   ],
   exports: [
     ProductHorizontalCardComponent

@@ -8,9 +8,6 @@ import { Component, Input } from '@angular/core';
 export class TezUpiFormComponent {
 
     @Input() data: {} = {};
-    constructor() {
-
-    }
 
     ngOnInit() {
 

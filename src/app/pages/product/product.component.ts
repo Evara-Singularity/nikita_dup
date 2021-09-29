@@ -1,9 +1,9 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional, ElementRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional, ElementRef } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { LocalStorageService } from 'ngx-webstorage';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
@@ -128,6 +128,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemand loaded components for similar products
   similarProductInstance = null;
   @ViewChild('similarProduct', { read: ViewContainerRef }) similarProductContainerRef: ViewContainerRef;
+  // ondemand loaded components for sponsered products
+  sponseredProductsInstance = null;
+  @ViewChild('sponseredProducts', { read: ViewContainerRef }) sponseredProductsContainerRef: ViewContainerRef;
   // ondemand loaded components for recents products
   recentProductsInstance = null;
   @ViewChild('recentProducts', { read: ViewContainerRef }) recentProductsContainerRef: ViewContainerRef;
@@ -225,10 +228,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
     @Inject(DOCUMENT) private document,
-    @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject(RESPONSE) private _response: any) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = commonService.isServer;
+    this.isBrowser = commonService.isBrowser;
   }
 
   ngOnInit(): void {
@@ -590,6 +592,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarProductContainerRef.remove();
       this.onVisibleSimilar(null);
     }
+    if (this.sponseredProductsInstance) {
+      this.sponseredProductsInstance = null;
+      this.sponseredProductsContainerRef.remove();
+      this.onVisibleSponsered(null);
+    }
+    // console.log('similarProductInstance 2', this.similarProductInstance);
     if (this.recentProductsInstance) {
       this.recentProductsInstance = null;
       this.recentProductsContainerRef.remove();
@@ -618,14 +626,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.addToCartToastInstance) {
       this.addToCartToastInstance = null;
       this.addToCartToastContainerRef.remove();
-    }
-    if (this.similarAllInstance) {
-      this.similarAllInstance = null;
-      this.similarAllContainerRef.remove();
-    }
-    if (this.recentAllInstance) {
-      this.recentAllInstance = null;
-      this.recentAllContainerRef.remove();
     }
     if (this.writeReviewPopupInstance) {
       this.writeReviewPopupInstance = null;
@@ -1392,27 +1392,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarProductInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
 
       this.similarProductInstance.instance['outOfStock'] = this.productOutOfStock;
-      (this.similarProductInstance.instance['showAll'] as EventEmitter<any>).subscribe(similarProducts => {
-        this.loadAllSimilar(similarProducts);
-      })
     }
   }
 
-  async loadAllSimilar(similarProducts) {
-    if (!this.similarAllInstance) {
-      this.showLoader = true;
-      const { SimilarProductsPopupComponent } = await import('./../../components/similar-products-popup/similar-products-popup.component').finally(() => {
-        this.showLoader = false;
-      });
-      const factory = this.cfr.resolveComponentFactory(SimilarProductsPopupComponent);
-      this.similarAllInstance = this.similarAllContainerRef.createComponent(factory, null, this.injector);
-      this.similarAllInstance.instance['similarProducts'] = similarProducts;
-      (this.similarAllInstance.instance['out'] as EventEmitter<boolean>).subscribe(status => {
-        this.similarAllInstance = null;
-        this.similarAllContainerRef.detach();
-      });
+    // dynamically load similar section 
+  async onVisibleSponsered(htmlElement) {
+    if (!this.sponseredProductsInstance) {
+      const { ProductSponsoredListComponent } = await import('./../../components/product-sponsored-list/product-sponsored-list.component');
+      const factory = this.cfr.resolveComponentFactory(ProductSponsoredListComponent);
+      this.sponseredProductsInstance = this.sponseredProductsContainerRef.createComponent(factory, null, this.injector);
+      this.sponseredProductsInstance.instance['productName'] = this.productName;
+      this.sponseredProductsInstance.instance['productId'] = this.defaultPartNumber;
+      this.sponseredProductsInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
+      this.sponseredProductsInstance.instance['outOfStock'] = this.productOutOfStock;
     }
   }
+  
 
   // dynamically recent products section 
   async onVisibleRecentProduct(htmlElement) {
@@ -1421,25 +1416,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const { RecentViewedProductsComponent } = await import('./../../components/recent-viewed-products/recent-viewed-products.component')
       const factory = this.cfr.resolveComponentFactory(RecentViewedProductsComponent);
       this.recentProductsInstance = this.recentProductsContainerRef.createComponent(factory, null, this.injector);
-      (this.recentProductsInstance.instance['showAll'] as EventEmitter<any>).subscribe(recentProducts => {
-        this.loadAllRecent(recentProducts);
-      })
-    }
-  }
-
-  async loadAllRecent(recentProducts) {
-    if (!this.recentAllInstance) {
-      this.showLoader = true;
-      const { RecentViewedPopupComponent } = await import('./../../components/recent-viewed-popup/recent-viewed-popup.component').finally(() => {
-        this.showLoader = false;
-      });
-      const factory = this.cfr.resolveComponentFactory(RecentViewedPopupComponent);
-      this.recentAllInstance = this.recentAllContainerRef.createComponent(factory, null, this.injector);
-      this.recentAllInstance.instance['recentProductList'] = recentProducts;
-      (this.recentAllInstance.instance['out'] as EventEmitter<boolean>).subscribe(status => {
-        this.recentAllInstance = null;
-        this.recentAllContainerRef.detach();
-      });
+      this.recentProductsInstance.instance['outOfStock'] = this.productOutOfStock;
     }
   }
 

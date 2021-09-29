@@ -11,7 +11,6 @@ import { YoutubePlayerComponent } from '../youtube-player/youtube-player.compone
 import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.module';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
-import { environment } from 'environments/environment';
 import CONSTANTS from '@app/config/constants';
 import { WebpImageSupportCheckPipeModule } from '@app/utils/pipes/webpImageSupportCheck.pipe';
 

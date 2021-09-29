@@ -80,3 +80,18 @@ export interface ProductListingDataEntity {
     listingHeading: string,
     filterData: any,
 }
+
+export interface ProductCardFeature {
+    enableBuyNow: Boolean,
+    enableAddToCart: Boolean,
+    enableFeatures: Boolean,
+    enableRating: Boolean,
+    enableCard: Boolean,
+    enableVideo: Boolean,
+    verticalOrientation: Boolean,
+    horizontalOrientation: Boolean,
+}
+export interface ProductCardMetaInfo {
+    redirectedSectionName?: string,
+    redirectedIdentifier?: string
+}

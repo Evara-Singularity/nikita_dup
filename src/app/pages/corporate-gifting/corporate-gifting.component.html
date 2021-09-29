@@ -1,0 +1,98 @@
+<div class="corporate-gifting-page">
+
+    <h1>B2B Corporate Gifting Solutions</h1>
+
+    <div class="corporate-gifting-tabs-header">
+      <ul>
+        <ng-container *ngFor="let category of giftingData; index as i;" >
+          <li [ngClass]="{'active': i === selectedCategoryIndex}" (click)="updateSelectedCategory(i)" >{{category.name}}</li>
+        </ng-container>
+      </ul>
+    </div>
+  
+    <div class="corporate-gifting-tabs-body-main">
+      <h4 *ngIf="selectedProductCount == 0" >Choose from a variety of gifting options below and submit your selection.</h4>
+      <h4 *ngIf="selectedProductCount > 0" ><b>{{selectedProductCount}} Product Selected. Go For It!</b></h4>
+      <div class="corporate-gifting-tabs-body">
+        <div class="corporate-gifting-tabs-body-left">
+          <div class="product-area">
+
+            <div class="product-area-inner" 
+              *ngFor="let product of giftingData[selectedCategoryIndex]['products'];  index as productIndex;" >
+              <div class="product-img">
+                <img src="{{product.image}}">
+                <label class="check-icon">
+                    <input type="checkbox" [checked]="product.isAdded" (click)="selectProduct(productIndex, $event)" ><span style="width: 25px;" class="custom-box"></span>
+                </label>
+              </div>
+              <div class="product-title">
+                <h5 >{{( (product.name.length > 10) ? product['name'].slice(0, 40)+'...' : product['name']  )}}</h5>
+              </div>
+              <div class="price">
+                <p><span class="original-price">{{product.mrp | currency:'INR':'symbol':'1.0-0' }}</span> &nbsp; <span>{{product.price  | currency:'INR':'symbol':'1.0-0' }}</span></p>
+              </div>
+              <div class="product-qty">
+
+                <div class="btn-minus product-qty-child" (click)="selectAndDecrement(productIndex)"  *ngIf="!product.isAdded">
+                  <span>-</span>
+                </div>
+                <div class="btn-minus product-qty-child" (click)="decrement(productIndex)" [ngClass]="{'active': product.isAdded}" *ngIf="product.isAdded" >
+                  <span>-</span>
+                </div>
+
+                <div class="total-no product-qty-child">
+                  <p>{{product.quantity}}</p>
+                </div>
+
+
+                <div class="btn-plus product-qty-child" (click)="selectAndIncrement(productIndex)" *ngIf="!product.isAdded">
+                  <span>+</span>
+                </div>
+                <div class="btn-plus product-qty-child" (click)="increment(productIndex)" [ngClass]="{'active': product.isAdded}"
+                  *ngIf="product.isAdded">
+                  <span>+</span>
+                </div>
+
+
+              </div>
+
+            </div>
+            <!-- <button class="submit btn-view-more" id="submit">VIEW MORE</button> -->
+          </div>
+        </div>
+        <div class="corporate-gifting-tabs-body-right">
+          <div class="form-area">
+            <div class="form-header">
+                <img src="/assets/img/gifting-form-bg.png"> 
+                <div class="form-header-show">
+                    <h4 class="formHeading" >Get the perfect<br> corporate gift solution</h4>
+                </div>
+            </div>
+            <div class="form-body" [formGroup]="requestForm"  >
+                <input class="name" id="name" formControlName="name" placeholder="Name*">
+                <div class="error" *ngIf="isFormSubmited && requestForm.get('name').hasError('required')" >Name is required</div>
+                <input class="email" id="email" formControlName="email" placeholder="Email ID*">
+                <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('email').hasError('required') ) " >Email is required</div>
+                  <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('email').hasError('email') ) " >Please enter valid email address</div>
+                <input class="mobile-number" formControlName="phone" maxlength="10" numbersOnly id="mobile-number" placeholder="Mobile No*">
+                <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('phone').hasError('required') ) " >Mobile No. is required</div>
+                  <div class="error" 
+                  *ngIf="isFormSubmited && (requestForm.get('phone').hasError('pattern') ) " >Please enter valid phone number</div>
+                  <div class="error" *ngIf="isFormSubmited && (requestForm.get('phone').hasError('minlength') ) ">Please enter
+                    valid phone number</div>
+                <textarea class="message" formControlName="message" id="message" placeholder="Message"></textarea>
+                <button class="continue-btn submit" (click)="submit()" id="submit">
+                  SUBMIT REQUEST
+                  <ng-container *ngIf="selectedProductCount > 0">
+                    ( {{selectedProductCount}} {{ (selectedProductCount==1)?'Product':'Products'}} )
+                  </ng-container>
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,9 +1,10 @@
 
 import { Component, PLATFORM_ID, Inject, Optional } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { isPlatformServer } from '@angular/common';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'pagenot-found',
@@ -19,10 +20,11 @@ export class PageNotFoundComponent {
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         @Optional() @Inject(RESPONSE) private response,
-        public footerService: FooterService) {
+        public footerService: FooterService,
+        public _commonService: CommonService) {
 
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 
     }
 

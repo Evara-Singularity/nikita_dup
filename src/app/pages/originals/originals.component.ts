@@ -23,7 +23,7 @@ export class OriginalsComponent {
     private meta: Meta,
     @Inject(PLATFORM_ID) private platformId) {
 
-    this.isServer = isPlatformServer(platformId);
+    this.isServer = isPlatformServer(this.platformId);
 
     this.title.setTitle("Moglix Originals - 100% Exclusive Brands and Products");
     this.meta.addTag({ "name": "description", "content": "Introducing Moglix originals, absolutely exclusive private label brands and products, you won't find anywhere else. Come explore today." });

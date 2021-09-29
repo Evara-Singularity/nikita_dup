@@ -35,7 +35,7 @@
         </ng-container>
     </div>
 </div>
-<div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH'">
+<div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
     <ng-container>
         <h1 class="left list-name">
             {{ headerName }}
@@ -50,6 +50,10 @@
     <ng-container *ngFor="let product of productsListingData.products; let i = index;">
         <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData"
             *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
+        <ng-container *ngIf="sponseredProductList && sponseredProductList.length == 4 && sponseredProductPosition.includes(i) " >
+            <product-horizontal-card [isAd]="true" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
+            </product-horizontal-card>
+        </ng-container>
         <product-horizontal-card [product]="product">
         </product-horizontal-card>
     </ng-container>

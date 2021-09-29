@@ -5,13 +5,14 @@ import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-p
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
-import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 
@@ -25,6 +26,24 @@ export class ProductHorizontalCardComponent implements OnInit {
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   @Input() product: ProductsEntity;
+  @Input() cardFeaturesConfig: ProductCardFeature = {
+    // feature config
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFeatures: true,
+    enableRating: true,
+    enableVideo: true,
+    // design config
+    enableCard: false,
+    verticalOrientation: false,
+    horizontalOrientation: true,
+  }
+  // currently being used in PDP similar product
+  @Input() cardMetaInfo: ProductCardMetaInfo = {
+    redirectedSectionName: '',
+    redirectedIdentifier: '',
+  }
+  @Input() isAd: boolean = false;
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -54,6 +73,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _injector: Injector,
     private modalService: ModalService,
     private _localAuthService: LocalAuthService,
+    private _commonService: CommonService
   ) {
   }
 
@@ -132,6 +152,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
+    this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName , this.cardMetaInfo.redirectedIdentifier);
     this._router.navigateByUrl(this.product.productUrl);
   }
 

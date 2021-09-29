@@ -16,8 +16,6 @@ export class BestsellerComponent implements OnInit {
   @Input('data') data;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
-  
-  constructor() { }
 
   ngOnInit() {
   }

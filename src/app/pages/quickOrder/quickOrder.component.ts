@@ -1,12 +1,11 @@
 
 import { LocalStorageService } from 'ngx-webstorage';
-import { Component, ViewEncapsulation, Input, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { QuickOrderService } from './quickOrder.service';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -43,7 +42,6 @@ export class QuickOrderComponent {
         private _gState: GlobalState,
         private meta: Meta,
         private _activatedRoute: ActivatedRoute,
-        @Inject(PLATFORM_ID) platformId,
         private _localAuthService: LocalAuthService,
         private title: Title,
         private localStorageService: LocalStorageService,
@@ -58,8 +56,8 @@ export class QuickOrderComponent {
         this.itemsValidationMessage = [];
         this.cart = {};
         this.title.setTitle('Quick order-Moglix.com');
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         const user = this.localStorageService.retrieve('user');
         this._localAuthService.login$.pipe(
             takeUntil(this.cDistryoyed)).subscribe(

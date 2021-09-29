@@ -1,7 +1,7 @@
 import { delay } from 'rxjs/operators';
-import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { of } from 'rxjs';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'app-pop-up',
@@ -22,9 +22,9 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     headerText: string = "";
     selector: any;
 
-    constructor(@Inject(PLATFORM_ID) platformId) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+    constructor(public _commonService: CommonService) {
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         this.pClass = 'screen-view popup info-update-popup ';
     }
 

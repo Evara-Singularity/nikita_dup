@@ -1,8 +1,8 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 
 @Injectable()
@@ -11,9 +11,9 @@ export class OrderConfirmationService {
     isServer: boolean;
     isBrowser: boolean;
 
-    constructor(@Inject(PLATFORM_ID) platformId, private _dataService: DataService) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+    constructor(private _dataService: DataService, public _commonService: CommonService) {
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     addAffiliateOrder(data) {

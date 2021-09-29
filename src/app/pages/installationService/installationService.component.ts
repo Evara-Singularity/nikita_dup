@@ -1,10 +1,9 @@
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Renderer2, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 import { FooterService } from '@app/utils/services/footer.service';
-
-declare let $: any;
 
 @Component({
   selector: 'installation-service',
@@ -18,13 +17,13 @@ export class InstallationComponent {
   API = CONSTANTS;
 
   constructor(
-    @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private footerService: FooterService,
     private _renderer2: Renderer2,
-    @Inject(DOCUMENT) private _document) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    @Inject(DOCUMENT) private _document,
+    public _commonService: CommonService) {
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {

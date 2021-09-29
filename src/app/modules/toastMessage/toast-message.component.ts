@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { of } from 'rxjs';
-import { delay, map, debounceTime, first } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { ToastMessage } from './toast-message.module';
 import { ToastMessageService } from './toast-message.service';
 

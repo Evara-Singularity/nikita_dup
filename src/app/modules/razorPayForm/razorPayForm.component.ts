@@ -1,7 +1,6 @@
-import { Component, Input, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import CONSTANTS from '../../config/constants';
 import { CheckoutService } from '../../utils/services/checkout.service';
 import { CommonService } from '../../utils/services/common.service';
@@ -43,10 +42,10 @@ export class RazorPayFormComponent {
       private _localAuthService: LocalAuthService, 
       private _cartService: CartService, 
       private loaderService: GlobalLoaderService,
-      private _formBuilder: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object) {
+      private _formBuilder: FormBuilder) {
     this.API = CONSTANTS;
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.razorPay = CONSTANTS.GLOBAL.razorPay;
     this.razorPayForm = this._formBuilder.group({
       "pType": [11, [Validators.required]],

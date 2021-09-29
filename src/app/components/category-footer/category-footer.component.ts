@@ -18,10 +18,6 @@ export class CategoryFooterComponent{
         this.todayDate = Date.now();
     }
 
-    ngOnInit(){
-        console.log(this.categoryFooterData);
-    }
-
     getTopTenBrandName(buckets: Array<{}>) {
         let bNames = null;
 

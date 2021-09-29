@@ -33,7 +33,7 @@ export class BrandResolver implements Resolve<any> {
     this.loaderService.setLoaderState(true);
 
     const BRAND_DESC_KEY = makeStateKey<object>('brand-desc-and-other-details');
-    const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa');
+    const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa' + _activatedRouteSnapshot.fragment);
     const CMS_DATA_KEY = makeStateKey<object>('cms-data-pwa');
     const ATTRIBUTE_KEY = makeStateKey<object>('attribute-url-data-pwa');
     const SIMILAR_KEY = makeStateKey<object>('similar-category-pwa');

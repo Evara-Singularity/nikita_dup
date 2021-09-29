@@ -19,6 +19,7 @@ export class ProductSponsoredListComponent implements OnInit {
   @Input() productName: string;
   @Input() productId: string;
   @Input() categoryCode: string;
+  readonly lowestCountToDisplay: number = 2
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -58,7 +59,7 @@ export class ProductSponsoredListComponent implements OnInit {
     }
     this.productService.getSponseredProducts(query).subscribe((response: any) => {
       let products = response['productSearchResult']['products'];
-      if (products && (products as []).length > 0) {
+      if (products && (products as []).length > this.lowestCountToDisplay) {
         this.productList = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
       }
     });

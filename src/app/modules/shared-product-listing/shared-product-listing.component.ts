@@ -67,7 +67,7 @@ export class SharedProductListingComponent {
         device_id: this._commonService.getUniqueGAId()
       }
       this._productService.getSponseredProducts(query).subscribe(response => {
-        let products = response['productSearchResult']['products'];
+        let products = response['productSearchResult']['products'] || [];
         if (products && (products as []).length > 0) {
           this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
         }

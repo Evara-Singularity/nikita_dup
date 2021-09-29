@@ -34,17 +34,10 @@ import { CommonService } from '../services/common.service';
 export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
 
   readonly whiteListedNode = ['img'];
-  readonly imageSizes = ['xlarge', 'large', 'medium', 'small', 'thumbnail', 'icon']
-  readonly THRESHOLD: number = 2 // 2MB
+  readonly imageSizes = CONSTANTS.IMAGE_SIZES_TYPE
+  readonly THRESHOLD: number = CONSTANTS.NETWORK_SPEED_THRESHOD_LIMIT // 2MB
 
-  readonly replaceOptions = {
-    'icon': 'small',
-    'thumbnail': 'medium',
-    'small': 'large',
-    'medium': 'xlarge',
-    'large': 'xxlarge',
-    'xlarge': 'xxlarge',
-  }
+  readonly replaceOptions = CONSTANTS.IMAGE_SIZES_REPLACE_DATA
 
   private el: ElementRef<HTMLImageElement> = null;
   private isBrowser: boolean = false;
@@ -70,7 +63,7 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
       const imageSrcChunks = imageSrc.split('/');
       // console.log('inside imageSrcChunks ===>', imageSrcChunks);
       imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace(sizeType[0], this.replaceOptions[sizeType[0]]);
-      // console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
+      // console.log('inside imageSrcChunks ===>', imageSrcChunks[(imageSrcChunks.length - 1)] );
       this.el.nativeElement.src = imageSrcChunks.join('/');
     } else {
       // console.log('enhanceImgByNetwork', 'enhanceImgByNetwork directive should be used with Img HTMLElement');
@@ -105,11 +98,11 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
     }
 
     // checkwhether on server is chrome useragent then replace for webp image
-    console.log('bowserAgent ==>', this.bowserAgent, this.isServer, this.bowserAgent.toLowerCase().indexOf("chrome") != -1);
-    if (this.isServer && this.bowserAgent && this.bowserAgent.toLowerCase().indexOf("chrome") != -1) {
-      console.log('inside ===>');
-      this.startServerSideWebpProcessing();
-    }
+    // console.log('bowserAgent ==>', this.bowserAgent, this.isServer, this.bowserAgent.toLowerCase().indexOf("chrome") != -1);
+    // if (this.isServer && this.bowserAgent && this.bowserAgent.toLowerCase().indexOf("chrome") != -1) {
+    //   console.log('inside ===>');
+    //   this.startServerSideWebpProcessing();
+    // }
 
   }
 

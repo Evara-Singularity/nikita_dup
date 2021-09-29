@@ -6,6 +6,7 @@ import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { EnhanceImgByNetworkPipeModule } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
 
 @NgModule({
   declarations: [ProductHorizontalCardComponent],
@@ -15,7 +16,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     YTThumnailPipeModule,
     MathFloorPipeModule,
     EnhanceImgByNetworkDirectiveModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    EnhanceImgByNetworkPipeModule
   ],
   exports: [
     ProductHorizontalCardComponent

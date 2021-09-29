@@ -33,8 +33,11 @@ export class ProductListService {
       totalCount: rawSearchData.productSearchResult.products.length ? rawSearchData.productSearchResult.totalCount : 0,
       products: [...rawSearchData.productSearchResult.products].map(product => {
         const image = product['mainImageLink'].split('/');
+        const imageMedium = Object.assign([], image);
         image[image.length - 1] = image[image.length - 1].replace('large','thumbnail');
+        imageMedium[imageMedium.length - 1] = imageMedium[imageMedium.length - 1].replace('large','medium');
         product['mainImageThumnailLink'] = image.join('/');
+        product['mainImageMediumLink'] = imageMedium.join('/');
         // console.log('products ==>', product);
         return product;
       }),

@@ -88,6 +88,10 @@ export class CommonService {
         return this.networkSpeedState.asObservable();
     }
 
+    getNetworkSpeed(): Number{
+        return this._networkSpeed;
+    }
+
     setWebpSupportState(status) {
         this._webpSupport = status;
         this.webpSupportState.next(status);

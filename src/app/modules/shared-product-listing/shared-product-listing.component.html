@@ -54,7 +54,7 @@
             <product-horizontal-card [isAd]="true" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
             </product-horizontal-card>
         </ng-container>
-        <product-horizontal-card [product]="product">
+        <product-horizontal-card [product]="product" [isFirstView]="(i < 5)"  >
         </product-horizontal-card>
     </ng-container>
 </ng-container>

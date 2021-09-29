@@ -366,6 +366,16 @@ export const CONSTANTS = {
   ByMasterCard: "http://purl.org/goodrelations/v1#MasterCard",
   ByVISA: "http://purl.org/goodrelations/v1#VISA",
   TEST_API: "https://newmoglix.moglix.com/test/testgetresponse",
-  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData']
+  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData'],
+  IMAGE_SIZES_TYPE: ['xlarge', 'large', 'medium', 'small', 'thumbnail', 'icon'],
+  NETWORK_SPEED_THRESHOD_LIMIT: 2,
+  IMAGE_SIZES_REPLACE_DATA: {
+    'icon': 'small',
+    'thumbnail': 'medium',
+    'small': 'large',
+    'medium': 'xlarge',
+    'large': 'xxlarge',
+    'xlarge': 'xxlarge',
+  }
 };
 export default CONSTANTS;

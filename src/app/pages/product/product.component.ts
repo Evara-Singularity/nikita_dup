@@ -190,6 +190,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   };
 
   appPromoVisible: boolean = true;
+  viewEventPushed: boolean = false;
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
@@ -387,16 +388,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     this.analytics.sendAdobeCall({ page, custData, order });
 
-    this.analytics.sendGTMCall({
-      'event': 'viewItem',
-      'email': (user && user["email"]) ? user["email"] : '',
-      'ProductID': productId,
-      'Category': this.rawProductData['taxonomy'],
-      'CatID': this.rawProductData['taxonomyCode'],
-      'MRP': this.rawProductData['mrp'],
-      'Discount': Math.floor(this.rawProductData['discount']),
-      'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
-    });
+    // this.analytics.sendGTMCall({
+    //   'event': 'viewItem',
+    //   'email': (user && user["email"]) ? user["email"] : '',
+    //   'ProductID': productId,
+    //   'Category': this.rawProductData['taxonomy'],
+    //   'CatID': this.rawProductData['taxonomyCode'],
+    //   'MRP': this.rawProductData['mrp'],
+    //   'Discount': Math.floor(this.rawProductData['discount']),
+    //   'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
+    // });
 
     this.removeRfqForm();
     this.showLoader = true;
@@ -2130,6 +2131,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'google_tag_params': google_tag_params
     });
     const user = this.localStorageService.retrieve('user');
+
+    if(!this.viewEventPushed){
     gtmDataObj.push({
       'event': 'viewItem',
       'email': (user && user["email"]) ? user["email"] : '',
@@ -2140,6 +2143,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'Discount': Math.floor(this.productDiscount),
       'ImageURL': this.productDefaultImage
     });
+    this.viewEventPushed = true;
+  }
 
     gtmDataObj.forEach(data => {
       this.analytics.sendGTMCall(data);
@@ -2159,10 +2164,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     let ele = []; // product tags for adobe;
+    // console.log("Here"+JSON.stringify(this.productTags,null,2))
     this.productTags.forEach((element) => {
       ele.push(element.name);
     });
     const tagsForAdobe = ele.join("|");
+    console.log("tagsForAdobe    "+tagsForAdobe)
 
 
     let page = {

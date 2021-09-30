@@ -31,8 +31,6 @@ export class SharedProductListingComponent {
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
-  isServer: boolean;
-  isBrowser: boolean
 
   public appliedFilterCount: number = 0;
 
@@ -52,7 +50,7 @@ export class SharedProductListingComponent {
 
   getUpdatedSession() {
      // incase redirection from checkout with buynow updated count of product should be displayed in header cart icon
-    if (this.isBrowser) {
+    if (this._commonService.isBrowser) {
       const userSession = this._localAuthService.getUserSession();
       let params = { "sessionid": userSession.sessionId };
       this._cartService.getCartBySession(params).subscribe((cartSession) => {

@@ -94,7 +94,8 @@ export class CategoryComponent {
 
             // set API result data
             this.API_RESPONSE = result;
-            console.log(this.API_RESPONSE);
+
+            this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(this.API_RESPONSE.category[7].buckets));
             
             if (this.cmsInstance) {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];

@@ -64,6 +64,7 @@ export class BrandResolver implements Resolve<any> {
 
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
+      let BUCKET_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
       const ATTRIBUTE_URL = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + _activatedRouteSnapshot.params.category;
       const SIMILAR_CATEGORY_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + _activatedRouteSnapshot.params.category;
@@ -98,7 +99,8 @@ export class BrandResolver implements Resolve<any> {
       const getBrandListObs = this.http.get(GET_BRAND_NAME_API_URL).pipe(share(), mergeMap(data => {
         actualParams['brand'] = data['brandName'];
         return forkJoin([
-          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams })
+          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }),
+          this.http.get(BUCKET_LIST_API_URL, { params: actualParams }),
         ])
         }
       ));

@@ -67,6 +67,7 @@ export class SearchComponent implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
+      this.API_RESULT['searchData'][0].buckets = JSON.parse(JSON.stringify(this.API_RESULT.searchData[1].buckets));
 
       this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 

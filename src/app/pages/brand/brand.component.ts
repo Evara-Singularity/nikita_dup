@@ -70,6 +70,8 @@ export class BrandComponent {
             this.API_RESPONSE = result;
             console.log('this.API_RESPONSE', this.API_RESPONSE);
 
+            this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(this.API_RESPONSE.brand[1][1].buckets));
+
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
 

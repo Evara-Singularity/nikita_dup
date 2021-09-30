@@ -4,9 +4,10 @@ import { ProductHorizontalCardComponent } from './product-horizontal-card.compon
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
+import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 
 @NgModule({
-  declarations: [ProductHorizontalCardComponent],
+  declarations: [ProductHorizontalCardComponent, ProductCardSkeletonComponent],
   imports: [
     CommonModule,
     RatingPipeModule,
@@ -14,7 +15,8 @@ import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
     MathFloorPipeModule
   ],
   exports: [
-    ProductHorizontalCardComponent
+    ProductHorizontalCardComponent,
+    ProductCardSkeletonComponent,
   ]
 })
 export class ProductHorizontalCardModule { }

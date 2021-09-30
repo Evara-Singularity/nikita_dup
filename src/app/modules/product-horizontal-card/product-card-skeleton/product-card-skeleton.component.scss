@@ -1,0 +1,210 @@
+// Changes made for Skeleton section by Ankit 
+
+.skeleton-pd-card-container{
+    width: 100%;
+    padding: 0.938rem 0.625rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .left-sectn{
+        width: 100px;
+        text-align: center;
+        position: relative;
+
+        .disc-tag{
+            height: 15px;
+            background: #F1F1F1;
+            width: calc(100% - 30px);
+            position: relative;
+            position: relative;
+        }
+        .disc-tag::after{
+            content: '';
+            position: absolute;
+            right: -3px;
+            border-top: 7px solid transparent;
+            border-right: 10px solid #fff;
+            border-bottom: 8px solid transparent;
+        }
+
+        .img{
+            width: 100%;
+            height: 110px;
+            background: #F1F1F1;
+            border-radius: 3px;
+            margin-top: 10px;
+            max-width: 120px;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+    }
+
+    .right-sectn{
+        width: calc(100% - 115px);
+
+        .avg-rating{
+           display: inline;
+           background-color: #F1F1F1;
+           padding: 0.125rem 1.375rem;
+           border-radius: 3px;
+           margin-right: 3px;
+           position: relative;
+           overflow: hidden;
+        }
+
+        .counts{
+            display: inline;
+            background-color: #F1F1F1;
+            padding: 0.063rem 1.25rem;
+            border-radius: 3px;
+            margin-left: 3px;
+            position: relative;
+            overflow: hidden;
+         }
+
+         .p-name{
+            height: 15px;
+            background: #F1F1F1;
+            border-radius: 3px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+         }
+
+         .brand-name{
+            height: 15px;
+            background: #F1F1F1;
+            border-radius: 3px;
+            margin-top: 3px;
+            width: 70%;
+            position: relative;
+            overflow: hidden;
+         }
+
+         .m-price{
+            height: 15px;
+            background: #F1F1F1;
+            border-radius: 3px;
+            margin-top: 20px;
+            width: 35%;
+            position: relative;
+            overflow: hidden;
+         }
+
+         .price-details{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .left-sectn{
+                text-align: left;
+                width: calc(100% - 120px);
+                margin-top: 8px;
+                .price{
+                
+                    margin-bottom: 5px;
+
+                    .striked{
+                        display: inline;
+                        background-color: #F1F1F1;
+                        padding: 0.063rem 0.938rem;
+                        border-radius: 3px;
+                        margin-right:2px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+
+                
+                    .disc-offer{
+                        display: inline;
+                        background-color: #F1F1F1;
+                        padding: 0.063rem 1.375rem;
+                        border-radius: 3px;
+                        margin-left: 2px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+               }
+               .a-price{
+                display: inline;
+                background-color: #F1F1F1;
+                padding: 0.063rem 1.563rem;
+                border-radius: 3px;
+                position: relative;
+                overflow: hidden;
+              }
+            }
+            .right-sectn{
+                text-align: right;
+                width: 115px;
+                margin-top: 8px;
+                
+                .add-cart-butn{
+                    display: inline-block;
+                    border-radius: 4px;
+                    margin-right: 8px;
+                    text-align: center;
+                    vertical-align: middle;
+                    line-height: 29px;
+                    background-color: #F1F1F1;
+                    padding: 0.938rem;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .buy-now-btn{
+                    display: inline-block;
+                    border-radius: 4px;
+                    text-align: center;
+                    vertical-align: middle;
+                    line-height: 29px;
+                    background-color: #F1F1F1;
+                    padding: 0.938rem 1.875rem;
+                    border: none;
+                    outline: none;
+                    position: relative;
+                    overflow: hidden;
+                }
+            }               
+         }
+
+    }
+    .disc-tag::before, .img::before, .avg-rating::before, .counts::before, .p-name::before, .brand-name::before, .m-price::before, .striked::before, .disc-offer::before, .a-price::before, .add-cart-butn::before, .buy-now-btn::before{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to right, #F1F1F1 0%, rgba(0,0,0,0.1) 10%, #F1F1F1 30%,  #F1F1F1 70%);
+        background-size: 450px 400px;
+        background-repeat: no-repeat;
+        animation: shimmer 1s linear infinite;
+        top:0;
+        right: 0;
+    }
+
+    .avg-rating::before, .counts::before, .p-name::before, .brand-name::before, .m-price::before, .striked::before, .disc-offer::before, .a-price::before, .add-cart-butn::before, .buy-now-btn::before{
+        animation-delay: 0.2s;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    
+    .skeleton-pd-card-container{
+        .left-sectn {
+            width: 85px;
+            text-align: center;
+            img {
+                max-width: 100%;
+            }
+        }
+        .right-sectn {
+            width: calc(100% - 95px);
+        }
+    }
+
+}

@@ -190,7 +190,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   };
 
   appPromoVisible: boolean = true;
-  viewEventPushed: boolean = false;
+  viewItemEventPushed: boolean = false;
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
@@ -2132,7 +2132,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     const user = this.localStorageService.retrieve('user');
 
-    if(!this.viewEventPushed){
+    if(!this.viewItemEventPushed){
     gtmDataObj.push({
       'event': 'viewItem',
       'email': (user && user["email"]) ? user["email"] : '',
@@ -2143,7 +2143,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'Discount': Math.floor(this.productDiscount),
       'ImageURL': this.productDefaultImage
     });
-    this.viewEventPushed = true;
+    this.viewItemEventPushed = true;
   }
 
     gtmDataObj.forEach(data => {
@@ -2164,13 +2164,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     let ele = []; // product tags for adobe;
-    // console.log("Here"+JSON.stringify(this.productTags,null,2))
     this.productTags.forEach((element) => {
       ele.push(element.name);
     });
     const tagsForAdobe = ele.join("|");
-    console.log("tagsForAdobe    "+tagsForAdobe)
-
 
     let page = {
       'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",

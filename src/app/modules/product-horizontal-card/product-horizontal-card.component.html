@@ -1,3 +1,39 @@
+<div class="skeleton-pd-card-container">
+    <div class="left-sectn">
+        <div class="disc-tag"></div>
+
+        <div class="img"> </div>
+    </div>
+
+    <div class="right-sectn">
+        <div class="ratings">
+            <span class="avg-rating"></span>
+            <span class="counts"></span>
+        </div>
+        <div class="p-name"></div>
+        <div class="brand-name"></div>
+        <div class="m-price"></div>
+        <div class="price-details">
+            <div class="left-sectn">
+                <div class="price">
+                    <span class="striked"></span>
+                    <span class="disc-offer"></span>
+                </div>
+                <div class="a-price"></div>
+            </div>
+            
+            <div class="right-sectn">
+                <span class="add-cart-butn"></span>
+                <button class="buy-now-btn"></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
 <div class="product-card">
     <div class="youtubeThumbnail-listing" *ngIf="product['videoInfo'] && product['videoInfo'].length > 0">
         <div class="thumbnail" [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">

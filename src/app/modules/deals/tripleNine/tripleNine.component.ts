@@ -22,6 +22,7 @@ export class TripleNineComponent {
     private title: Title,
     public router: Router,
     private meta: Meta,
+    @Inject(DOCUMENT) private _document,
     private route: ActivatedRoute,
     public _commonService:CommonService) {
 

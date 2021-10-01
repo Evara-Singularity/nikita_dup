@@ -80,7 +80,7 @@ export class CategoryResolver implements Resolve<any> {
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;
         const related_article_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_ARTICLES + categoryId;
-        const filter_bucket_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY + "?category=" + categoryId;
+        const filter_bucket_url = environment.BASE_URL + ENDPOINTS.GET_BUCKET + "?category=" + categoryId;
        
         const params = {
           filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),

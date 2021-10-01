@@ -59,7 +59,7 @@ export class SearchResolver implements Resolve<any> {
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
       const URL = environment.BASE_URL + ENDPOINTS.SEARCH;
-      const BUCKET_URL = environment.BASE_URL + ENDPOINTS.SEARCH;
+      const BUCKET_URL = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
       const searchObs = this.http.get(URL, { params: actualParams });
       const bucketObs = this.http.get(BUCKET_URL, { params: actualParams });
 

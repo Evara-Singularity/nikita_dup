@@ -48,14 +48,23 @@
 
 <ng-container *ngIf="productsListingData.products.length > 0">
     <ng-container *ngFor="let product of productsListingData.products; let i = index;">
+
+        <!-- Inscroll filter start -->
         <filter-mid-plp [position]="i" [filterData]="productsListingData.filterData"
             *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
-        <ng-container *ngIf="sponseredProductList && sponseredProductList.length == 4 && sponseredProductPosition.includes(i) " >
+        <!-- Inscroll filter end -->
+        <!-- Sponsered products section start -->
+        <product-card-skeleton *ngIf="(i === 0 || i === 5 || i === 10 || i === 15) && !sponseredProductLoadStatus">
+        </product-card-skeleton>
+        <ng-container
+            *ngIf="sponseredProductLoadStatus && sponseredProductList && sponseredProductList.length == 4 && sponseredProductPosition.includes(i) ">
             <product-horizontal-card [isAd]="true" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
             </product-horizontal-card>
         </ng-container>
-        <product-horizontal-card [product]="product" [isFirstView]="(i < 5)"  >
+        <!-- Sponsered products section end -->
+        <product-horizontal-card [product]="product" [isFirstView]="(i < 5)">
         </product-horizontal-card>
+
     </ng-container>
 </ng-container>
 <ng-container  *ngIf="productsListingData.products != undefined && productsListingData.products.length==0">

@@ -37,6 +37,7 @@ export class SharedProductListingComponent {
   isServer: boolean;
   isBrowser: boolean
   sponseredProductList: ProductsEntity[] = [];
+  sponseredProductLoadStatus: boolean = false;
 
   public appliedFilterCount: number = 0;
 
@@ -67,6 +68,7 @@ export class SharedProductListingComponent {
         device_id: this._commonService.getUniqueGAId()
       }
       this._productService.getSponseredProducts(query).subscribe(response => {
+        this.sponseredProductLoadStatus = true;
         let products = response['productSearchResult']['products'] || [];
         if (products && (products as []).length > 0) {
           this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));

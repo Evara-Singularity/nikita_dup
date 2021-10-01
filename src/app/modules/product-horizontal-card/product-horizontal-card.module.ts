@@ -7,9 +7,10 @@ import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { EnhanceImgByNetworkPipeModule } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
+import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 
 @NgModule({
-  declarations: [ProductHorizontalCardComponent],
+  declarations: [ProductHorizontalCardComponent, ProductCardSkeletonComponent],
   imports: [
     CommonModule,
     RatingPipeModule,
@@ -20,7 +21,8 @@ import { EnhanceImgByNetworkPipeModule } from '@app/utils/pipes/enhanceImgByNetw
     EnhanceImgByNetworkPipeModule
   ],
   exports: [
-    ProductHorizontalCardComponent
+    ProductHorizontalCardComponent,
+    ProductCardSkeletonComponent,
   ]
 })
 export class ProductHorizontalCardModule { }

@@ -342,62 +342,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   updateAttr(productId) {
-
-    if (this.localStorageService.retrieve('user')) {
-      var user = this.localStorageService.retrieve('user');
-    }
-
-    let taxo1 = '';
-    let taxo2 = '';
-    let taxo3 = '';
-    if (this.productCategoryDetails['taxonomyCode']) {
-      taxo1 = this.productCategoryDetails['taxonomyCode'].split("/")[0] || '';
-      taxo2 = this.productCategoryDetails['taxonomyCode'].split("/")[1] || '';
-      taxo3 = this.productCategoryDetails['taxonomyCode'].split("/")[2] || '';
-    }
-
-    let ele = []; // product tags for adobe;
-    this.productTags.forEach((element) => {
-      ele.push(element.name);
-    });
-    const tagsForAdobe = ele.join("|");
-
-    let page = {
-      'pageName': "moglix: " + taxo1 + ":" + taxo2 + ":" + taxo3 + ": pdp",
-      'channel': "pdp",
-      'subSection': "moglix: " + taxo1 + ":" + taxo2 + ":" + taxo3 + ": pdp : " + this.commonService.getSectionClick().toLowerCase(),
-      'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-    }
-    let custData = {
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-    }
-    let order = {
-      'productID': this.rawProductData['partNumber'],
-      'productCategoryL1': taxo1,
-      'productCategoryL2': taxo2,
-      'productCategoryL3': taxo3,
-      'brand': this.rawProductData['brand'],
-      'price': this.rawProductData['price'],
-      'stockStatus': this.rawProductData['outOfStock'] ? "Out of Stock" : "In Stock",
-      'tags': tagsForAdobe,
-    }
-
-    this.analytics.sendAdobeCall({ page, custData, order });
-
-    this.analytics.sendGTMCall({
-      'event': 'viewItem',
-      'email': (user && user["email"]) ? user["email"] : '',
-      'ProductID': productId,
-      'Category': this.rawProductData['taxonomy'],
-      'CatID': this.rawProductData['taxonomyCode'],
-      'MRP': this.rawProductData['mrp'],
-      'Discount': Math.floor(this.rawProductData['discount']),
-      'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
-    });
-
     this.removeRfqForm();
     this.showLoader = true;
     this.productService.getGroupProductObj(productId).subscribe(productData => {
@@ -2130,6 +2074,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'google_tag_params': google_tag_params
     });
     const user = this.localStorageService.retrieve('user');
+
     gtmDataObj.push({
       'event': 'viewItem',
       'email': (user && user["email"]) ? user["email"] : '',
@@ -2163,7 +2108,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       ele.push(element.name);
     });
     const tagsForAdobe = ele.join("|");
-
 
     let page = {
       'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",

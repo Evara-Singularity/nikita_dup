@@ -388,11 +388,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   sortReviewsList(sortType) {
     this.selectedReviewType = sortType;
-    let list = this.reviews.reviewList;
     if (sortType === "helpful") {
-      list.sort((a, b) => {
-        return b.yes - a.yes;
-      });
+      this.reviews.reviewList = this.sortedReviewByRating(this.reviews.reviewList);
+    } else {
+      this.reviews.reviewList = this.sortedReviewsByDate(this.reviews.reviewList);
     }
   }
 
@@ -2360,7 +2359,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   pseudoFnc() {
+  }
 
+  sortedReviewsByDate(reviewList) {
+    return reviewList.sort((a, b) => {
+      return parseInt(b.date_unix) - parseInt(a.date_unix)
+    });
+  }
+
+  sortedReviewByRating(reviewList) {
+    return reviewList.sort((a, b) => {
+      return b.yes - a.yes;
+    });
   }
 
   navigateToUrl(url) {

@@ -121,17 +121,17 @@ export class StoreComponent {
 			}
 			case 'dewalt': {
 				id = this.dewalt;
-				video = '';
+				video = 'https://www.youtube.com/embed/jYG_wjXMZ0g';
 				break;
 			}
 			case 'stanley': {
 				id = this.stanley;
-				video = '';
+				video = 'https://www.youtube.com/embed/1UtBRAOtI7I';
 				break;
 			}
 			case 'black-decker': {
 				id = this.blackDecker;
-				video = '';
+				video = 'https://www.youtube.com/embed/aqXDENG5MC8';
 				break;
 			}
 		}

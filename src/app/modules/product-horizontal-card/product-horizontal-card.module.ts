@@ -8,6 +8,7 @@ import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanc
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { EnhanceImgByNetworkPipeModule } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
+import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 
 @NgModule({
   declarations: [ProductHorizontalCardComponent, ProductCardSkeletonComponent],
@@ -18,7 +19,8 @@ import { ProductCardSkeletonComponent } from './product-card-skeleton/product-ca
     MathFloorPipeModule,
     EnhanceImgByNetworkDirectiveModule,
     LazyLoadImageModule,
-    EnhanceImgByNetworkPipeModule
+    EnhanceImgByNetworkPipeModule,
+    ObserveVisibilityDirectiveModule
   ],
   exports: [
     ProductHorizontalCardComponent,

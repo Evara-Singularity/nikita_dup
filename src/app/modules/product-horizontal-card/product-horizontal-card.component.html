@@ -1,4 +1,4 @@
-<div class="product-card">
+<div class="product-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)"  >
     
     <div class="youtubeThumbnail-listing" *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
         <div class="thumbnail" [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
@@ -16,7 +16,7 @@
                     <img [src]="tags['tagImageLink']" />
                 </div>
                 <ng-container *ngIf="isFirstView" >
-                    <img 
+                <img 
                         alt="{{product.productName}}"
                         src="{{imageCdnPath + product.mainImageThumnailLink}}"
                         enhanceImgByNetwork

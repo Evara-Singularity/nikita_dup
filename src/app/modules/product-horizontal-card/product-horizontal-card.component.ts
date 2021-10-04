@@ -10,6 +10,7 @@ import { EnhanceImgByNetworkPipe } from '@app/utils/pipes/enhanceImgByNetwork.pi
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
@@ -77,6 +78,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _localAuthService: LocalAuthService,
     private _commonService: CommonService,
     private _enhanceImagePipe: EnhanceImgByNetworkPipe,
+    private _analytics: GlobalAnalyticsService,
 
   ) {
   }
@@ -168,6 +170,11 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
+
+    // incase of promotional ad we need to fire GTM event for tracking
+    if (this.isAd && this._commonService.isBrowser) {
+      this.onlineSalesClickTrackUsingGTM();
+    }
     this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName , this.cardMetaInfo.redirectedIdentifier);
     this._router.navigateByUrl(this.product.productUrl);
   }
@@ -501,6 +508,26 @@ export class ProductHorizontalCardComponent implements OnInit {
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
+  }
+
+  cardVisisble(htmlElement) {
+    if (this.isAd && this._commonService.isBrowser) {
+      this.onlineSalesImpressionTrackUsingGTM();
+    }
+  }
+
+  onlineSalesImpressionTrackUsingGTM() {
+    this._analytics.sendGTMCall({
+      'event': 'AdImpression',
+      'uclids': [], // Ad server ids.
+    })
+  }
+
+  onlineSalesClickTrackUsingGTM() {
+    this._analytics.sendGTMCall({
+      'event': 'AdClick',
+      'uclids': [], // Ad server ids.
+    })
   }
 
 

@@ -115,7 +115,7 @@ export class CategoryComponent {
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
             // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList);
+            this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;

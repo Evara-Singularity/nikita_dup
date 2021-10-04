@@ -70,7 +70,7 @@ export class BrandComponent {
             this.API_RESPONSE = result;
 
             // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
+            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
 
             const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
             if (!this._activatedRoute.snapshot.params.id) {

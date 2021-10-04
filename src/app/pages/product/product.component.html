@@ -349,6 +349,7 @@
         <div class="prod-detail">
             <h2 class="heading-3">PRODUCT DETAILS</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
+                <p [innerHTML]="this.productDescripton"></p>
                 <p> Browse through the extensive list of
                     <a class="blueText" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
@@ -356,7 +357,6 @@
                         [routerLink]="['/'+ productBrandCategoryUrl ]">{{productBrandDetails['brandName']}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
-                <p [innerHTML]="this.productDescripton"></p>
             </ng-container>
             <ng-template #noProdDesc>
                 <p>
@@ -616,9 +616,8 @@
                 assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.
             </p>
             <div class="alert-btn-row">
-                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') "
-                    class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();closeRFQAlert()"> CONTINUE SHOPPING</p>
+                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') " class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
+                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToUrl(breadcrumbData[0]['categoryLink']);closeRFQAlert()"> EXPLORE CATEGORY</p>
             </div>
         </div>
     </div>

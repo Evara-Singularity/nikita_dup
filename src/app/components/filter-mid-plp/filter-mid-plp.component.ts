@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, Pipe, PipeTransform } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
 import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
@@ -15,11 +15,14 @@ import { ProductListService } from '@app/utils/services/productList.service';
 export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;
   @Input('position') position: number;
+  @Input('pageName') pageName: string;
   
   public GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   public inlineFilterData: BucketsEntity;
   
-  constructor(private _productListService: ProductListService, private _commonService: CommonService) { }
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private _productListService: ProductListService, private _commonService: CommonService) { }
 
   ngOnInit(): void {
     this.genrateInlineFilterData();
@@ -27,6 +30,14 @@ export class FilterMidPlpComponent implements OnInit {
 
   genrateInlineFilterData() {
     this._productListService.inlineFilterData = [];
+
+    // if Brand or Brand + Category page then replace brand inline mid filter with category filter
+
+    if(this.pageName === 'BRAND' && !this._activatedRoute.snapshot.params.category) {
+      GLOBAL_CONSTANT.inlineFilter[1] = 'category';
+    } else {
+      GLOBAL_CONSTANT.inlineFilter[1] = 'brand';
+    }
     
     const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
     const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);

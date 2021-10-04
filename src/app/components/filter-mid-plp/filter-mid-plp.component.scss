@@ -1,4 +1,5 @@
 .filter-container {
+    background-color: #3C3C3C;
     .filter-btn {
         display: inline-block;
         padding: 10px 20px;
@@ -23,6 +24,7 @@
         text-transform: capitalize;
         font-weight: bold;
         color: #fff;
+        padding: 10px 0px 0px 10px;
     }
 }
 
@@ -47,7 +49,7 @@
 //     }
 // }
 .inline-filter-card-list {
-    padding: 10px 40px 10px 10px;
+    padding: 5px 40px 10px 10px;
     border-bottom: 1px solid #d4d5d9;
     overflow-x: scroll;
     overflow-y: hidden;

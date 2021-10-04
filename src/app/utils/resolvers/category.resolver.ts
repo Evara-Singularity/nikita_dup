@@ -34,7 +34,7 @@ export class CategoryResolver implements Resolve<any> {
     const source = _activatedRouteSnapshot['_routerState']['url'].split('#')[0].split('?')[0];
 
     const GET_RELATED_CATEGORY_KEY: any = makeStateKey<{}>('get_related-' + categoryId);
-    const REFRESH_KEY: any = makeStateKey<{}>('refresh-' + categoryId);
+    const REFRESH_KEY: any = makeStateKey<{}>('refresh-' + categoryId + _activatedRouteSnapshot.fragment);
     const FAQ_KEY: any = makeStateKey<{}>('faq-' + categoryId);
     const BREADCRUMP_KEY: any = makeStateKey<{}>('breaattributedcrump-' + categoryId);
     const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);

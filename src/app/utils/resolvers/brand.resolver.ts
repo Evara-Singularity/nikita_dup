@@ -9,7 +9,6 @@ import {
 } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
-import { Router } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, mergeMap, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
@@ -63,7 +62,7 @@ export class BrandResolver implements Resolve<any> {
     } else {
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
-      let BUCKET_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
+      // let BUCKET_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
       const ATTRIBUTE_URL = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + _activatedRouteSnapshot.params.category;
       const SIMILAR_CATEGORY_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + _activatedRouteSnapshot.params.category;
@@ -99,7 +98,7 @@ export class BrandResolver implements Resolve<any> {
         actualParams['brand'] = data['brandName'];
         return forkJoin([
           this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }),
-          this.http.get(BUCKET_LIST_API_URL, { params: actualParams }),
+          // this.http.get(BUCKET_LIST_API_URL, { params: actualParams }),
         ])
         }
       ));

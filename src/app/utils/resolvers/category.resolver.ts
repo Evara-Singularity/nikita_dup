@@ -40,7 +40,7 @@ export class CategoryResolver implements Resolve<any> {
     const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
     const RELATED_ARTICLES_KEY = makeStateKey<{}>('related_articles-' + categoryId);
     const ATTRIBUTE_KEY = makeStateKey<{}>('attribute-' + categoryId);
-    const FILTER_BUCKET_KEY = makeStateKey<{}>('filter-bucket-' + categoryId);
+    // const FILTER_BUCKET_KEY = makeStateKey<{}>('filter-bucket-' + categoryId);
 
     if (
       this.transferState.hasKey(GET_RELATED_CATEGORY_KEY) &&
@@ -49,8 +49,8 @@ export class CategoryResolver implements Resolve<any> {
       this.transferState.hasKey(BREADCRUMP_KEY) &&
       this.transferState.hasKey(CMS_KEY) && 
       this.transferState.hasKey(RELATED_ARTICLES_KEY) &&
-      this.transferState.hasKey(ATTRIBUTE_KEY) && 
-      this.transferState.hasKey(FILTER_BUCKET_KEY)
+      this.transferState.hasKey(ATTRIBUTE_KEY)
+      // this.transferState.hasKey(FILTER_BUCKET_KEY)
     ) {
         const GET_RELATED_CATEGORY_KEY_OBJ = this.transferState.get<{}>(GET_RELATED_CATEGORY_KEY, null);
         const REFRESH_KEY_OBJ = this.transferState.get<{}>(REFRESH_KEY, null);
@@ -59,7 +59,7 @@ export class CategoryResolver implements Resolve<any> {
         const CMS_KEY_OBJ = this.transferState.get<{}>(CMS_KEY, null);
         const RELATED_ARTICLES_OBJ = this.transferState.get<{}>(RELATED_ARTICLES_KEY, {});
         const ATTRIBUTE_OBJ = this.transferState.get<{}>(ATTRIBUTE_KEY, {});
-        const FILTER_BUCKET_OBJ = this.transferState.get<{}>(FILTER_BUCKET_KEY, {});
+        // const FILTER_BUCKET_OBJ = this.transferState.get<{}>(FILTER_BUCKET_KEY, {});
         
         this.transferState.remove(GET_RELATED_CATEGORY_KEY);
         this.transferState.remove(REFRESH_KEY);
@@ -68,10 +68,10 @@ export class CategoryResolver implements Resolve<any> {
         this.transferState.remove(CMS_KEY);
         this.transferState.remove(RELATED_ARTICLES_KEY);
         this.transferState.remove(ATTRIBUTE_KEY);
-        this.transferState.remove(FILTER_BUCKET_KEY);
+        // this.transferState.remove(FILTER_BUCKET_KEY);
 
         this.loaderService.setLoaderState(false);
-        return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ, RELATED_ARTICLES_OBJ, ATTRIBUTE_OBJ, FILTER_BUCKET_OBJ]);
+        return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ, RELATED_ARTICLES_OBJ, ATTRIBUTE_OBJ]);
     } else {
         const get_rel_cat_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
         const faq_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
@@ -80,7 +80,7 @@ export class CategoryResolver implements Resolve<any> {
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;
         const related_article_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_ARTICLES + categoryId;
-        const filter_bucket_url = environment.BASE_URL + ENDPOINTS.GET_BUCKET + "?category=" + categoryId;
+        // const filter_bucket_url = environment.BASE_URL + ENDPOINTS.GET_BUCKET + "?category=" + categoryId;
        
         const params = {
           filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
@@ -94,13 +94,13 @@ export class CategoryResolver implements Resolve<any> {
         const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());
         const getFAQObs = this.http.get(faq_url).pipe(share());
         const refreshProductsObs = this.http.get(refresh_product_url, { params: actualParams }).pipe(share());
-        const filterBucketObs = this.http.get(filter_bucket_url, { params: actualParams }).pipe(share());
+        // const filterBucketObs = this.http.get(filter_bucket_url, { params: actualParams }).pipe(share());
         const getBreadCrump = this.http.get(breadcrump_url).pipe(share());
         const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share());
         const getAttributeObs = this.http.get(attribute_url).pipe(share());
         const getRelatedArticleObs = this.http.get(related_article_url).pipe(share());
 
-        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getAttributeObs, getRelatedArticleObs, filterBucketObs];
+        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getAttributeObs, getRelatedArticleObs];
 
         if (state.url.search('#') < 0) {
             apiList.push(getCmsDynamicDataForCategoryAndBrandObs);
@@ -121,7 +121,7 @@ export class CategoryResolver implements Resolve<any> {
                     this.transferState.set(CMS_KEY, result[4] || []);
                     this.transferState.set(RELATED_ARTICLES_KEY, result[5] || {});
                     this.transferState.set(ATTRIBUTE_KEY, result[6]);
-                    this.transferState.set(FILTER_BUCKET_KEY, result[7]);
+                    // this.transferState.set(FILTER_BUCKET_KEY, result[7]);
                   }
                   this.loaderService.setLoaderState(false);
             })

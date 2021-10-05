@@ -146,7 +146,7 @@ export class SearchComponent implements OnInit {
   }
 
   sendAnalyticsCall(){
-    if (this._commonService.isBrowser) {
+    if (this._commonService.isBrowser && this.API_RESULT['searchData'][0].productSearchResult.products[0]) {
       digitalData["page"]["trendingSearch"] = 'no';
       digitalData['page']['searchTerm'] = this.API_RESULT['searchData'][0].productSearchResult["totalCount"] === 1 ? this.API_RESULT['searchData'][0].productSearchResult.products[0].moglixPartNumber : this._activatedRoute.snapshot.queryParams['search_query'];
       digitalData['page']['suggestionClicked'] = this._activatedRoute.snapshot.queryParams['lsource'] && this._activatedRoute.snapshot.queryParams['lsource'] == 'sclick' ? 'yes' : 'no'

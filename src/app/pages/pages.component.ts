@@ -16,6 +16,7 @@ import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+declare var dataLayer;
 
 @Component({
   selector: 'app-pages',
@@ -106,6 +107,17 @@ export class PagesComponent implements OnInit {
           userName: res['userInfo']['firstName'],
           userType: null
         }
+        
+        dataLayer.push({
+          'event': 'bharatpay_user_login',
+          id: obj["userId"],
+          first_name: obj["userName"],
+          last_name: '',
+          phone: obj["phone"],
+          email: obj["email"],
+          user_type: obj["userType"]
+        });
+        
         this._localStorageService.store('user', obj);
         this.setUserSession();
         if (window.location.pathname === GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] && queryParams.hasOwnProperty('msn')) {

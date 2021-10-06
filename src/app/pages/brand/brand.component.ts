@@ -69,6 +69,8 @@ export class BrandComponent {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
 
+            // this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(this.API_RESPONSE.brand[1][1].buckets));
+
             // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
 

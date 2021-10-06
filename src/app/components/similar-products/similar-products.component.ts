@@ -9,6 +9,8 @@ import CONSTANTS from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
     selector: 'app-similar-products',
@@ -33,13 +35,15 @@ export class SimilarProductsComponent implements OnInit
         enableCard: true,
         verticalOrientation: true,
         horizontalOrientation: false,
+        lazyLoadImage: false
     }
     cardMetaInfo: ProductCardMetaInfo = null;
 
     constructor(
         public commonService: CommonService, 
         private router:Router,
-        private productService: ProductService
+        private productService: ProductService,
+        private productListService: ProductListService,
     ) { }
 
     ngOnInit(): void {
@@ -54,41 +58,9 @@ export class SimilarProductsComponent implements OnInit
         this.productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
-                this.similarProducts = (products as any[]).map(product => this.convertToProductEntity(product));
+                this.similarProducts = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
             }
         })
-    }
-
-    convertToProductEntity(product: any){
-        const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
-        const productMrp = product['mrp'];
-        const productPrice = product['salesPrice'];
-        const priceWithoutTax  = product['priceWithoutTax'];
-        return {
-            moglixPartNumber: partNumber,
-            moglixProductNo: product['moglixProductNo'] || null,
-            mrp: productMrp,
-            salesPrice: productPrice,
-            priceWithoutTax: priceWithoutTax,
-            productName: product['productName'],
-            variantName: product['productName'],
-            productUrl: product['productUrl'],
-            shortDesc: product['shortDesc'],
-            brandId: product['brandId'],
-            brandName: product['brandName'],
-            quantityAvailable: product['quantityAvailable'],
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-            rating: product['rating'] || null,
-            categoryCodes: null,
-            taxonomy: product['taxonomy'],
-            mainImageLink: (product['moglixImageNumber']) ? product['mainImageLink'] : '',
-            productTags: [],
-            filterableAttributes: {},
-            avgRating: product.avgRating,
-            itemInPack: null,
-            ratingCount: product.ratingCount,
-            reviewCount: product.reviewCount
-          } as ProductsEntity;
     }
 
     navigateTo(url){
@@ -110,6 +82,7 @@ export class SimilarProductsComponent implements OnInit
         MathFloorPipeModule,
         MathCeilPipeModule,
         ProductHorizontalCardModule,
+        LazyLoadImageModule
     ]
 })
 export class ProductModule { }

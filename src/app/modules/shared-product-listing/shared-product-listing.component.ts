@@ -72,9 +72,12 @@ export class SharedProductListingComponent {
         if(response['productSearchResult']){
           let products = response['productSearchResult']['products'] || [];
           if (products && (products as []).length > 0) {
-            this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+            this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
           }
         }
+      }, error=>{
+        this.sponseredProductLoadStatus = true;
+        console.error('getSponseredProducts failed', error);
       });
     }
   }

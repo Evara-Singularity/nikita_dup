@@ -26,6 +26,6 @@ export class EnhanceImgByNetworkPipe implements PipeTransform {
   imports: [],
   exports: [EnhanceImgByNetworkPipe],
   declarations: [EnhanceImgByNetworkPipe],
-  providers: [EnhanceImgByNetworkPipe],
+  providers: [EnhanceImgByNetworkPipe]
 })
 export class EnhanceImgByNetworkPipeModule { }

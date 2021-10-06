@@ -81,12 +81,14 @@ ul.pager {
             }
         }
         &.pager_icon_dot {
+            color: #bebebe;
             i {
                 font-size: 12px;
                 color: #bebebe;
             }
         }
         &.active {
+            color: #222;
             i {
                 font-size: 12px;
                 color: #222;

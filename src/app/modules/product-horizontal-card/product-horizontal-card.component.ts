@@ -21,7 +21,8 @@ import { ModalService } from '../modal/modal.service';
 @Component({
   selector: 'product-horizontal-card',
   templateUrl: './product-horizontal-card.component.html',
-  styleUrls: ['./product-horizontal-card.component.scss']
+  styleUrls: ['./product-horizontal-card.component.scss'],
+  providers: [EnhanceImgByNetworkPipe]
 })
 export class ProductHorizontalCardComponent implements OnInit {
 
@@ -39,6 +40,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     enableCard: false,
     verticalOrientation: false,
     horizontalOrientation: true,
+    lazyLoadImage: true,
   }
   // currently being used in PDP similar product
   @Input() cardMetaInfo: ProductCardMetaInfo = {

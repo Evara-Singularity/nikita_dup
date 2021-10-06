@@ -22,6 +22,7 @@ import { ModalService } from '../modal/modal.service';
   selector: 'product-horizontal-card',
   templateUrl: './product-horizontal-card.component.html',
   styleUrls: ['./product-horizontal-card.component.scss'],
+  providers: [EnhanceImgByNetworkPipe]
 })
 export class ProductHorizontalCardComponent implements OnInit {
 

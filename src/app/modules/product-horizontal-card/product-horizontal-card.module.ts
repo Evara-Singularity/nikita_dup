@@ -27,7 +27,7 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
     ProductCardSkeletonComponent,
   ],
   providers: [
-    // EnhanceImgByNetworkPipe
+    EnhanceImgByNetworkPipe
   ]
 })
 export class ProductHorizontalCardModule { }

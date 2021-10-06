@@ -314,14 +314,48 @@ export class ProductListService {
       categoryCodes: null,
       taxonomy: product['taxonomy'],
       mainImageLink: (product['moglixImageNumber']) ? product['mainImageLink'] : '',
-      mainImageThumnailLink: this.getImageFromSearchProductResponse(product['mainImageLink'],'large','thumbnail'),
-      mainImageMediumLink: this.getImageFromSearchProductResponse(product['mainImageLink'],'large','medium'),
+      mainImageThumnailLink: this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'thumbnail'),
+      mainImageMediumLink: this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'medium'),
       productTags: [],
       filterableAttributes: {},
       avgRating: product.avgRating,
       itemInPack: null,
       ratingCount: product.ratingCount,
       reviewCount: product.reviewCount
+    } as ProductsEntity;
+  }
+
+  recentProductResponseToProductEntity(product: any) {
+    const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
+    const productMrp = product['priceMrp'];
+    const productPrice = product['priceWithTax'];
+    const priceWithoutTax = product['priceWithoutTax'];
+    return {
+      moglixPartNumber: partNumber,
+      moglixProductNo: product['moglixProductNo'] || null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: product['productName'],
+      variantName: product['productName'],
+      productUrl: product['url'],
+      shortDesc: product['shortDesc'] || null,
+      brandId: product['brandId'] || null,
+      brandName: product['brandName'],
+      quantityAvailable: 1,
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      rating: product['rating'] || null,
+      categoryCodes: null,
+      taxonomy: product['taxonomy'] || null,
+      mainImageLink: (product['productImage']) ? product['productImage'] : '',
+      mainImageMediumLink: (product['productImage']) ? product['productImage'] : '',
+      mainImageThumnailLink: (product['productImage']) ? product['productImage'] : '',
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: product.avgRating || 0,
+      itemInPack: null,
+      ratingCount: product.ratingCount || 0,
+      reviewCount: product.reviewCount || 0
     } as ProductsEntity;
   }
 

@@ -61,7 +61,7 @@ export class ProductSponsoredListComponent implements OnInit {
       device_id: this.commonService.getUniqueGAId()
     }
     this.productService.getSponseredProducts(query).subscribe((response: any) => {
-      let products = response['productSearchResult']['products'];
+      let products = response['products'];
       if (products && (products as []).length > this.lowestCountToDisplay) {
         this.productList = (products as any[]).map(product => this.productListingService.searchResponseToProductEntity(product));
       }

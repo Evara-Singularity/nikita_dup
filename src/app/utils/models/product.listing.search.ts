@@ -53,6 +53,7 @@ export interface ProductsEntity {
     ratingCount: number;
     reviewCount: number;
     avgRating: number;
+    uclid?: string;
 }
 
 export interface FilterableAttributes {

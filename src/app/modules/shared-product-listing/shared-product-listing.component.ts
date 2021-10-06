@@ -69,8 +69,8 @@ export class SharedProductListingComponent {
       }
       this._productService.getSponseredProducts(query).subscribe(response => {
         this.sponseredProductLoadStatus = true;
-        if(response['productSearchResult']){
-          let products = response['productSearchResult']['products'] || [];
+        if(response['products']){
+          let products = response['products'] || [];
           if (products && (products as []).length > 0) {
             this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
           }

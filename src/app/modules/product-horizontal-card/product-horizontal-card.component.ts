@@ -521,14 +521,14 @@ export class ProductHorizontalCardComponent implements OnInit {
   onlineSalesImpressionTrackUsingGTM() {
     this._analytics.sendGTMCall({
       'event': 'AdImpression',
-      'uclids': [], // Ad server ids.
+      'uclids': (this.product.uclid) ? [this.product.uclid] : [],
     })
   }
 
   onlineSalesClickTrackUsingGTM() {
     this._analytics.sendGTMCall({
       'event': 'AdClick',
-      'uclids': [], // Ad server ids.
+      'uclids': (this.product.uclid) ? [this.product.uclid] : [],
     })
   }
 

@@ -21,23 +21,24 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input() outOfStock: boolean = false;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
-      // feature config
-      enableAddToCart: false,
-      enableBuyNow: false,
-      enableFeatures: false,
-      enableRating: true,
-      enableVideo: false,
-      // design config
-      enableCard: true,
-      verticalOrientation: true,
-      horizontalOrientation: false,
+    // feature config
+    enableAddToCart: false,
+    enableBuyNow: false,
+    enableFeatures: false,
+    enableRating: true,
+    enableVideo: false,
+    // design config
+    enableCard: true,
+    verticalOrientation: true,
+    horizontalOrientation: false,
+    lazyLoadImage: false,
   }
   cardMetaInfo: ProductCardMetaInfo = null;
 
   constructor(
     private productService: ProductService,
     public _router: Router,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +82,8 @@ export class RecentViewedProductsComponent implements OnInit {
       categoryCodes: null,
       taxonomy: product['taxonomy'] || null,
       mainImageLink: (product['productImage']) ? product['productImage'] : '',
+      mainImageMediumLink: (product['productImage']) ? product['productImage'] : '',
+      mainImageThumnailLink: (product['productImage']) ? product['productImage'] : '',
       productTags: [],
       filterableAttributes: {},
       avgRating: product.avgRating || 0,

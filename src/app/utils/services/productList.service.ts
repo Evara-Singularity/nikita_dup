@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@services/common.service';
-import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
+import { ProductListingDataEntity, ProductsEntity, SearchResponse } from '@utils/models/product.listing.search';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CartService } from './cart.service';
 import { DataService } from './data.service';
@@ -32,13 +32,8 @@ export class ProductListService {
     this.productListingData = {
       totalCount: rawSearchData.productSearchResult.products.length ? rawSearchData.productSearchResult.totalCount : 0,
       products: [...rawSearchData.productSearchResult.products].map(product => {
-        const image = product['mainImageLink'].split('/');
-        const imageMedium = Object.assign([], image);
-        image[image.length - 1] = image[image.length - 1].replace('large','thumbnail');
-        imageMedium[imageMedium.length - 1] = imageMedium[imageMedium.length - 1].replace('large','medium');
-        product['mainImageThumnailLink'] = image.join('/');
-        product['mainImageMediumLink'] = imageMedium.join('/');
-        // console.log('products ==>', product);
+        product['mainImageThumnailLink'] = this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'thumbnail');
+        product['mainImageMediumLink'] = this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'medium');
         return product;
       }),
       filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
@@ -52,6 +47,12 @@ export class ProductListService {
       this.initializeSortBy();
     }
 
+  }
+
+  getImageFromSearchProductResponse(originImageLink, variantFromName, variantGetName) {
+    const image = originImageLink.split('/');
+    image[image.length - 1] = image[image.length - 1].replace(variantFromName, variantGetName);
+    return image.join('/');
   }
 
   extractFragmentFromUrl(str) {
@@ -289,6 +290,40 @@ export class ProductListService {
     this._dataService.sendMessage(dataLayerObj);
   }
 
+
+  searchResponseToProductEntity(product: any) {
+    const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
+    const productMrp = product['mrp'];
+    const productPrice = product['salesPrice'];
+    const priceWithoutTax = product['priceWithoutTax'];
+    return {
+      moglixPartNumber: partNumber,
+      moglixProductNo: product['moglixProductNo'] || null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: product['productName'],
+      variantName: product['productName'],
+      productUrl: product['productUrl'],
+      shortDesc: product['shortDesc'],
+      brandId: product['brandId'],
+      brandName: product['brandName'],
+      quantityAvailable: product['quantityAvailable'],
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      rating: product['rating'] || null,
+      categoryCodes: null,
+      taxonomy: product['taxonomy'],
+      mainImageLink: (product['moglixImageNumber']) ? product['mainImageLink'] : '',
+      mainImageThumnailLink: this.getImageFromSearchProductResponse(product['mainImageLink'],'large','thumbnail'),
+      mainImageMediumLink: this.getImageFromSearchProductResponse(product['mainImageLink'],'large','medium'),
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: product.avgRating,
+      itemInPack: null,
+      ratingCount: product.ratingCount,
+      reviewCount: product.reviewCount
+    } as ProductsEntity;
+  }
 
 
 }

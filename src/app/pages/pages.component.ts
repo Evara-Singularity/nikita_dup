@@ -105,7 +105,8 @@ export class PagesComponent implements OnInit {
           sessionId: res['cart']['sessionId'],
           userId: res['userInfo']['userId'],
           userName: res['userInfo']['firstName'],
-          userType: null
+          userType: null,
+          bharatcraft_session: true
         }
         
         dataLayer.push({

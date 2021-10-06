@@ -29,20 +29,21 @@ export class SearchResolver implements Resolve<any> {
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
     const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa' + _activatedRouteSnapshot.fragment);
-    const BUCKET_DATA_KEY = makeStateKey<object>('bucket-pwa');
+    // const BUCKET_DATA_KEY = makeStateKey<object>('bucket-pwa');
 
     if (
-      this.transferState.hasKey(SEARCH_DATA_KEY) &&
-      this.transferState.hasKey(BUCKET_DATA_KEY)
+      this.transferState.hasKey(SEARCH_DATA_KEY) 
+      // &&
+      // this.transferState.hasKey(BUCKET_DATA_KEY)
     ) {
       // id transferState data found then simply pass data
       const search_data = this.transferState.get<object>(SEARCH_DATA_KEY, null);
-      const bucket_data = this.transferState.get<object>(BUCKET_DATA_KEY, null);
+      // const bucket_data = this.transferState.get<object>(BUCKET_DATA_KEY, null);
       this.transferState.remove(SEARCH_DATA_KEY);
-      this.transferState.remove(BUCKET_DATA_KEY);
+      // this.transferState.remove(BUCKET_DATA_KEY);
 
       this.loaderService.setLoaderState(false);
-      return of([search_data, bucket_data]);
+      return of([search_data]);
     } else {
 
       const params = {
@@ -68,7 +69,7 @@ export class SearchResolver implements Resolve<any> {
         tap(result => {
           if (isPlatformServer(this.platformId)) {
             this.transferState.set(SEARCH_DATA_KEY, result[0]);
-            this.transferState.set(BUCKET_DATA_KEY, result[1]);
+            // this.transferState.set(BUCKET_DATA_KEY, result[1]);
           }
           this.loaderService.setLoaderState(false);
         })

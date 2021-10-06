@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@services/common.service';
 import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
+import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CartService } from './cart.service';
 import { DataService } from './data.service';
@@ -19,13 +22,13 @@ export class ProductListService {
     private _commonService: CommonService,
     private _analytics: GlobalAnalyticsService,
     private _dataService: DataService,
+    private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
     public _localStorageService: LocalStorageService,
   ) {
   }
 
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
-    
     //Removing Products with null images
     rawSearchData.productSearchResult.products = rawSearchData.productSearchResult.products.filter(res => res.mainImageLink!=null);
 
@@ -38,7 +41,6 @@ export class ProductListService {
         imageMedium[imageMedium.length - 1] = imageMedium[imageMedium.length - 1].replace('large','medium');
         product['mainImageThumnailLink'] = image.join('/');
         product['mainImageMediumLink'] = imageMedium.join('/');
-        // console.log('products ==>', product);
         return product;
       }),
       filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
@@ -52,6 +54,23 @@ export class ProductListService {
       this.initializeSortBy();
     }
 
+  }
+
+  getFilterBucket(categoryId, pageName, brandName?: string) {
+    let filter_url = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
+    if (categoryId) {
+      filter_url += "?category=" + categoryId;
+    }
+    const params = {
+      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment),
+      queryParams: this._activatedRoute.snapshot.queryParams,
+      pageName: pageName
+    };
+    const actualParams = this._commonService.formatParams(params);
+    if (pageName === 'BRAND') {
+      actualParams['brand'] = brandName;
+    }
+    return this._dataService.callRestful("GET",  filter_url, { params: actualParams });
   }
 
   extractFragmentFromUrl(str) {

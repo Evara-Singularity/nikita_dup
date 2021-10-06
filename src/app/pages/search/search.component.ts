@@ -52,6 +52,15 @@ export class SearchComponent implements OnInit {
     this.setDataFromResolver();
   }
 
+  ngAfterViewInit(): void {
+    this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
+        if (res['status']) {
+          this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][1], 'Search Results');
+        }
+    });
+}
+
   setHeaderNameBasedOnCondition(){
     if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
       this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;

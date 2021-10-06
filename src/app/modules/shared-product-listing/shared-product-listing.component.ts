@@ -6,6 +6,7 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ProductService } from '@app/utils/services/product.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'shared-product-listing',
@@ -26,11 +27,12 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
 
   @Input() productsListingData: ProductListingDataEntity;
-  @Input() pageName: string;
-  @Input() brandName: string;
-  @Input() brandUrl: string = '';
+  @Input() pageName: 'CATEGORY' | 'BRAND' | 'SEARCH' | 'POPULAR SEARCH' | 'ATTRIBUTE';
+  @Input() brandName: string; // only received in case used in brand module
+  @Input() brandUrl: string = ''; // only received in case used in brand module
   @Input() headerName: string;
-  @Input() sponseredKeyword: string;
+  @Input() categoryId: string; // only received in case used in category module
+  @Input() searchKeyword: string; // only received in case used in search module
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
@@ -48,6 +50,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
     public _productListService: ProductListService,
     public _productService: ProductService,
     private _localAuthService: LocalAuthService,
+    private _activatedRoute: ActivatedRoute,
     public _commonService: CommonService) {
   }
 
@@ -60,29 +63,52 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
     this.getSponseredProducts();
   }
 
+  get isAdsEnable() {
+    return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
+  }
+
   private getSponseredProducts() {
-    if (this._commonService.isBrowser && this.sponseredKeyword) {
-      const query = {
-        a_type: 'PRODUCT',
-        client_id: 302211,
-        keywords: encodeURIComponent(this.sponseredKeyword.toLowerCase()),
-        pcnt: 4,
-        page_type: 'SEARCH',
-        device_id: this._commonService.getUniqueGAId()
-      }
+    if (this._commonService.isBrowser && this.isAdsEnable) {
+      const query = Object.assign({}, this.getSponseredRequest(), this.getParamsUsedInModules())
       this._productService.getSponseredProducts(query).subscribe(response => {
         this.sponseredProductLoadStatus = true;
-        if(response['products']){
+        if (response['products']) {
           let products = response['products'] || [];
           if (products && (products as []).length > 0) {
             this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
           }
         }
-      }, error=>{
+      }, error => {
         this.sponseredProductLoadStatus = true;
         console.error('getSponseredProducts failed', error);
       });
     }
+  }
+
+  getSponseredRequest() {
+    const request = {
+      a_type: 'PRODUCT',
+      client_id: 302211,
+      pcnt: 4,
+      page_type: 'SEARCH',
+      device_id: this._commonService.getUniqueGAId()
+    }
+    if (this.pageName == 'SEARCH') {
+      request['keywords'] = encodeURIComponent(this.searchKeyword.toLowerCase());
+    }
+    if (this.pageName == 'CATEGORY') {
+      request['category'] = this.categoryId;
+    }
+    return request;
+  }
+  
+  private getParamsUsedInModules() {
+    const params = {
+      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment),
+      queryParams: this._activatedRoute.snapshot.queryParams,
+      pageName: this.pageName
+    };
+    return this._commonService.formatParams(params);
   }
 
   getUpdatedSession() {

@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -12,7 +12,7 @@ import { ProductService } from '@app/utils/services/product.service';
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent {
+export class SharedProductListingComponent implements OnInit, AfterViewInit {
 
   readonly sponseredProductPosition = [0, 5, 10, 15];
   readonly sponseredProductPositionMapping = { 0: 0, 5: 1, 10: 2, 15: 3 }
@@ -54,6 +54,9 @@ export class SharedProductListingComponent {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+  }
+
+  ngAfterViewInit(){
     this.getSponseredProducts();
   }
 

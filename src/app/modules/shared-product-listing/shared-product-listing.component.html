@@ -52,7 +52,7 @@
             *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
         <!-- Inscroll filter end -->
         <!-- Sponsered products section start -->
-        <product-card-skeleton *ngIf="(i === 0 || i === 5 || i === 10 || i === 15) && !sponseredProductLoadStatus">
+        <product-card-skeleton *ngIf="(i === 0 || i === 5 || i === 10 || i === 15) && !sponseredProductLoadStatus && sponseredKeyword">
         </product-card-skeleton>
         <ng-container
             *ngIf="sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length == 4 && sponseredProductPosition?.includes(i) ">

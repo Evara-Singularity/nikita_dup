@@ -18,7 +18,7 @@
                     <ul class="pager">
                         <ng-container *ngFor="let item of productAllImages;let i=index">
                             <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)" [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }"></li>
-                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot" >
                                 <em class="icon-youtube"></em>
                             </li>
                         </ng-container>

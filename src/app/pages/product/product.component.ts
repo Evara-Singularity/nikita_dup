@@ -203,6 +203,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.globalLoader.setLoaderState(value);
   }
 
+  get getWhatsText(){
+    return `Hi, I want to buy ${this.productName} {{${this.defaultPartNumber}}}`
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

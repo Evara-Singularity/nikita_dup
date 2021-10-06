@@ -14,8 +14,8 @@ import { ProductService } from '@app/utils/services/product.service';
 })
 export class SharedProductListingComponent implements OnInit, AfterViewInit {
 
-  readonly sponseredProductPosition = [0, 5, 10, 15];
-  readonly sponseredProductPositionMapping = { 0: 0, 5: 1, 10: 2, 15: 3 }
+  readonly sponseredProductPosition = [0, 4, 8, 12];
+  readonly sponseredProductPositionMapping = { 0: 0, 4: 1, 8: 2, 12: 3 }
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -94,6 +94,20 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
         this._cartService.cart.next({ count: cartSession['noOfItems'] || null });
       })
     }
+  }
+
+  get productCount() {
+    if (this.pageName !== 'ATTRIBUTE') {
+      const productCount = this.productsListingData?.products.length;
+      if (productCount > 0 && productCount < 5) {
+        return 1;
+      } else if (productCount >= 5 && productCount < 10) {
+        return 2;
+      } else if (productCount >= 10 && productCount < 15) {
+        return 3;
+      } else return 4;
+    }
+    else return 0;
   }
   
   ngOnChanges(){

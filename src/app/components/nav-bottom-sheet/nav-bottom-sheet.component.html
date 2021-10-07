@@ -1,10 +1,10 @@
 <app-bottom-menu *ngIf="sbm" (outData$)="onUpdate($event)">
     <ul class="container plp-bottom-modal" content>
-        <li><span>More options</span> <i class="icon-circle-delete"></i> </li>
-        <li (click)="resetBottomOptCall('/dashboard/purchase-list')" [routerLink]="['']"><img src="assets/img/admin-fill.svg"> &nbsp; Sign-In/Sign-Up</li>
-        <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']"><img src="assets/img/catagories-fill.svg"> &nbsp;All Categories</li>
-        <li (click)="resetBottomOptCall('/')" [routerLink]="['/']"><img src="assets/img/store-fill.svg"> &nbsp;Brand Store</li>
-        <li (click)="resetBottomOptCall()"><img src="assets/img/search-fill.svg"> &nbsp;Popular Search</li>
-        <li><img src="assets/img/heart-fill.svg"> &nbsp;Wishlist</li>
+        <li><span>More options</span> <i (click)="resetBottomOpt()" class="icon-circle-delete"></i> </li>
+        <li *ngIf="!userLogin" (click)="resetBottomOptCall('/login')" [routerLink]="['']"><i class="icon-profile f-22"></i>Sign-In/Sign-Up</li>
+        <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']"><i class="icon-all-categories"></i>All Categories</li>
+        <li (click)="resetBottomOptCall('/brand-store')" [routerLink]="['/']"><i class="icon-brand_store f-22"></i>Brand Store</li>
+        <li (click)="resetBottomOptCall('/popular-search')"><i class="icon-search"></i>Popular Search</li>
+        <li (click)="resetBottomOptCall('/dashboard/purchase-list')"><i class="icon-purchase-list"></i>Wishlist</li>
     </ul>
 </app-bottom-menu>

@@ -15,14 +15,14 @@
                 <div class="tags" *ngFor="let tags of product['productTags']">
                     <img [src]="tags['tagImageLink']" />
                 </div>
-                <ng-container *ngIf="isFirstView" >
+                <ng-container *ngIf="isFirstView || !cardFeaturesConfig.lazyLoadImage" >
                 <img 
                         alt="{{product.productName}}"
                         src="{{imageCdnPath + product.mainImageThumnailLink}}"
                         enhanceImgByNetwork
                         height="125" width="125" />
                 </ng-container>
-                <ng-container *ngIf="!isFirstView" >
+                <ng-container *ngIf="!isFirstView && cardFeaturesConfig.lazyLoadImage" >
                     <img 
                         alt="{{product.productName}}"
                         [src]="defaultImage" [lazyLoad]="imageCdnPath + product.mainImageMediumLink"

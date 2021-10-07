@@ -53,6 +53,7 @@ export interface ProductsEntity {
     ratingCount: number;
     reviewCount: number;
     avgRating: number;
+    uclid?: string;
 }
 
 export interface FilterableAttributes {
@@ -91,6 +92,7 @@ export interface ProductCardFeature {
     enableVideo: Boolean,
     verticalOrientation: Boolean,
     horizontalOrientation: Boolean,
+    lazyLoadImage: Boolean,
 }
 export interface ProductCardMetaInfo {
     redirectedSectionName?: string,

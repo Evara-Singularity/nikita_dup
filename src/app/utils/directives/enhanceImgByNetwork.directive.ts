@@ -61,9 +61,9 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
       // console.log('inside imageSrcChunks ===>', imageSrc);
       const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
       const imageSrcChunks = imageSrc.split('/');
-      // console.log('inside imageSrcChunks ===>', imageSrcChunks);
-      imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace(sizeType[0], this.replaceOptions[sizeType[0]]);
-      // console.log('inside imageSrcChunks ===>', imageSrcChunks[(imageSrcChunks.length - 1)] );
+      //console.log('inside imageSrcChunks ===>', sizeType);
+      imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace('-'+sizeType[0], '-'+this.replaceOptions[sizeType[0]]);
+      //console.log('inside imageSrcChunks ===>', imageSrcChunks[(imageSrcChunks.length - 1)] );
       this.el.nativeElement.src = imageSrcChunks.join('/');
     } else {
       // console.log('enhanceImgByNetwork', 'enhanceImgByNetwork directive should be used with Img HTMLElement');

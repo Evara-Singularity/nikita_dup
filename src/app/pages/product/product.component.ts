@@ -203,6 +203,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.globalLoader.setLoaderState(value);
   }
 
+  get getWhatsText(){
+    return `Hi, I want to buy ${this.productName} {{${this.defaultPartNumber}}}`
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -291,8 +295,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       if (!rawData['product']['error']) {
         // console.log('getProductApiData rawData', rawData['product'][4]);
         // todo: if productBO not fould redirect to product not found page
-        if (rawData['product'][0]['productBO']) {
-          // originally only load 3 review on viewport intersection load other comments
+        if (rawData['product'][0]['productBO'] && Object.values(rawData['product'][0]['productBO']['productPartDetails'])[0]['images'] !== null ) {
           const rawReviews = Object.assign({}, rawData['product'][1]['data']);
           const rawProductFbtData = Object.assign({}, rawData['product'][4]);
           const rawProductCountData = Object.assign({}, rawData['product'][5]);

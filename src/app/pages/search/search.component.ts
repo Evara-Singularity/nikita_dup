@@ -52,6 +52,15 @@ export class SearchComponent implements OnInit {
     this.setDataFromResolver();
   }
 
+  ngAfterViewInit(): void {
+    this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
+        if (res['status']) {
+          this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][1], 'Search Results');
+        }
+    });
+}
+
   setHeaderNameBasedOnCondition(){
     if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
       this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
@@ -67,6 +76,7 @@ export class SearchComponent implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
+      this.API_RESULT['searchData'][0].buckets = JSON.parse(JSON.stringify(this.API_RESULT.searchData[1].buckets));
 
       this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 
@@ -146,7 +156,7 @@ export class SearchComponent implements OnInit {
   }
 
   sendAnalyticsCall(){
-    if (this._commonService.isBrowser) {
+    if (this._commonService.isBrowser && this.API_RESULT['searchData'][0].productSearchResult.products[0]) {
       digitalData["page"]["trendingSearch"] = 'no';
       digitalData['page']['searchTerm'] = this.API_RESULT['searchData'][0].productSearchResult["totalCount"] === 1 ? this.API_RESULT['searchData'][0].productSearchResult.products[0].moglixPartNumber : this._activatedRoute.snapshot.queryParams['search_query'];
       digitalData['page']['suggestionClicked'] = this._activatedRoute.snapshot.queryParams['lsource'] && this._activatedRoute.snapshot.queryParams['lsource'] == 'sclick' ? 'yes' : 'no'

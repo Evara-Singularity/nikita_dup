@@ -8,6 +8,7 @@ import CONSTANTS from '../../config/constants';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
   selector: 'app-recent-viewed-products',
@@ -21,23 +22,25 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input() outOfStock: boolean = false;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
-      // feature config
-      enableAddToCart: false,
-      enableBuyNow: false,
-      enableFeatures: false,
-      enableRating: true,
-      enableVideo: false,
-      // design config
-      enableCard: true,
-      verticalOrientation: true,
-      horizontalOrientation: false,
+    // feature config
+    enableAddToCart: false,
+    enableBuyNow: false,
+    enableFeatures: false,
+    enableRating: true,
+    enableVideo: false,
+    // design config
+    enableCard: true,
+    verticalOrientation: true,
+    horizontalOrientation: false,
+    lazyLoadImage: false,
   }
   cardMetaInfo: ProductCardMetaInfo = null;
 
   constructor(
     private productService: ProductService,
     public _router: Router,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private productListService: ProductListService,
   ) { }
 
   ngOnInit(): void {
@@ -53,41 +56,9 @@ export class RecentViewedProductsComponent implements OnInit {
     const userId = (user['userId']) ? user['userId'] : null;
     this.productService.getrecentProduct(userId).subscribe(result => {
       if (result['statusCode'] === 200) {
-        this.recentProductItems = (result['data'] as any[]).map(product => this.convertToProductEntity(product));
+        this.recentProductItems = (result['data'] as any[]).map(product => this.productListService.recentProductResponseToProductEntity(product));
       }
     })
-  }
-
-  convertToProductEntity(product: any) {
-    const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
-    const productMrp = product['priceMrp'];
-    const productPrice = product['priceWithTax'];
-    const priceWithoutTax = product['priceWithoutTax'];
-    return {
-      moglixPartNumber: partNumber,
-      moglixProductNo: product['moglixProductNo'] || null,
-      mrp: productMrp,
-      salesPrice: productPrice,
-      priceWithoutTax: priceWithoutTax,
-      productName: product['productName'],
-      variantName: product['productName'],
-      productUrl: product['url'],
-      shortDesc: product['shortDesc'] || null,
-      brandId: product['brandId'] || null,
-      brandName: product['brandName'],
-      quantityAvailable: 1,
-      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-      rating: product['rating'] || null,
-      categoryCodes: null,
-      taxonomy: product['taxonomy'] || null,
-      mainImageLink: (product['productImage']) ? product['productImage'] : '',
-      productTags: [],
-      filterableAttributes: {},
-      avgRating: product.avgRating || 0,
-      itemInPack: null,
-      ratingCount: product.ratingCount || 0,
-      reviewCount: product.reviewCount || 0
-    } as ProductsEntity;
   }
 
 }
@@ -101,7 +72,7 @@ export class RecentViewedProductsComponent implements OnInit {
     CommonModule,
     MathCeilPipeModule,
     MathFloorPipeModule,
-    ProductHorizontalCardModule
+    ProductHorizontalCardModule,
   ],
 })
 export class RecentViewedProductsModule { }

@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -6,16 +6,17 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ProductService } from '@app/utils/services/product.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'shared-product-listing',
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent {
+export class SharedProductListingComponent implements OnInit, AfterViewInit {
 
-  readonly sponseredProductPosition = [0, 5, 10, 15];
-  readonly sponseredProductPositionMapping = { 0: 0, 5: 1, 10: 2, 15: 3 }
+  readonly sponseredProductPosition = [0, 4, 8, 12];
+  readonly sponseredProductPositionMapping = { 0: 0, 4: 1, 8: 2, 12: 3 }
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -26,11 +27,12 @@ export class SharedProductListingComponent {
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
 
   @Input() productsListingData: ProductListingDataEntity;
-  @Input() pageName: string;
-  @Input() brandName: string;
-  @Input() brandUrl: string = '';
+  @Input() pageName: 'CATEGORY' | 'BRAND' | 'SEARCH' | 'POPULAR SEARCH' | 'ATTRIBUTE';
+  @Input() brandName: string; // only received in case used in brand module
+  @Input() brandUrl: string = ''; // only received in case used in brand module
   @Input() headerName: string;
-  @Input() sponseredKeyword: string;
+  @Input() categoryId: string; // only received in case used in category module
+  @Input() searchKeyword: string; // only received in case used in search module
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
@@ -48,35 +50,65 @@ export class SharedProductListingComponent {
     public _productListService: ProductListService,
     public _productService: ProductService,
     private _localAuthService: LocalAuthService,
+    private _activatedRoute: ActivatedRoute,
     public _commonService: CommonService) {
   }
 
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+  }
+
+  ngAfterViewInit(){
     this.getSponseredProducts();
   }
 
+  get isAdsEnable() {
+    return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
+  }
+
   private getSponseredProducts() {
-    if (this._commonService.isBrowser && this.sponseredKeyword) {
-      const query = {
-        a_type: 'PRODUCT',
-        client_id: 302211,
-        keywords: encodeURIComponent(this.sponseredKeyword.toLowerCase()),
-        pcnt: 4,
-        page_type: 'SEARCH',
-        device_id: this._commonService.getUniqueGAId()
-      }
+    if (this._commonService.isBrowser && this.isAdsEnable) {
+      const query = Object.assign({}, this.getSponseredRequest(), this.getParamsUsedInModules())
       this._productService.getSponseredProducts(query).subscribe(response => {
         this.sponseredProductLoadStatus = true;
-        if(response['productSearchResult']){
-          let products = response['productSearchResult']['products'] || [];
+        if (response['products']) {
+          let products = response['products'] || [];
           if (products && (products as []).length > 0) {
-            this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+            this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
           }
         }
+      }, error => {
+        this.sponseredProductLoadStatus = true;
+        console.error('getSponseredProducts failed', error);
       });
     }
+  }
+
+  getSponseredRequest() {
+    const request = {
+      a_type: 'PRODUCT',
+      client_id: 302211,
+      pcnt: 4,
+      page_type: 'SEARCH',
+      device_id: this._commonService.getUniqueGAId()
+    }
+    if (this.pageName == 'SEARCH') {
+      request['keywords'] = encodeURIComponent(this.searchKeyword.toLowerCase());
+    }
+    if (this.pageName == 'CATEGORY') {
+      request['category'] = this.categoryId;
+    }
+    return request;
+  }
+  
+  private getParamsUsedInModules() {
+    const params = {
+      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment),
+      queryParams: this._activatedRoute.snapshot.queryParams,
+      pageName: this.pageName
+    };
+    return this._commonService.formatParams(params);
   }
 
   getUpdatedSession() {
@@ -88,6 +120,20 @@ export class SharedProductListingComponent {
         this._cartService.cart.next({ count: cartSession['noOfItems'] || null });
       })
     }
+  }
+
+  get sponseredProductCount() {
+    if (this.isAdsEnable) {
+      const productCount = this.productsListingData?.products.length;
+      if (productCount > 0 && productCount < 5) {
+        return 1;
+      } else if (productCount >= 5 && productCount < 10) {
+        return 2;
+      } else if (productCount >= 10 && productCount < 15) {
+        return 3;
+      } else return 4;
+    }
+    else return 0;
   }
   
   ngOnChanges(){

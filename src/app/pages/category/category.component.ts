@@ -75,7 +75,7 @@ export class CategoryComponent {
         @Optional() @Inject(RESPONSE) private _response,
         public _commonService: CommonService,
         private _activatedRoute: ActivatedRoute,
-        private meta: Meta, 
+        private meta: Meta,
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
@@ -87,6 +87,15 @@ export class CategoryComponent {
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
         }
+    }
+
+    ngAfterViewInit(): void {
+        this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
+            if (res['status']) {
+                this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
+                this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
+            }
+        });
     }
 
     setDataFromResolver() {
@@ -129,7 +138,7 @@ export class CategoryComponent {
             this.setCanonicalUrls();
 
             // send tracking data 
-            this.sendTrackingData();        
+            this.sendTrackingData();
         });
     }
 
@@ -203,7 +212,7 @@ export class CategoryComponent {
 
     private setFaqSchema(faqData) {
         if (this._commonService.isServer) {
-            const data:any[] = (faqData['data'] as any[]);
+            const data: any[] = (faqData['data'] as any[]);
             if (data.length > 0) {
                 const qaSchema = [];
                 data.forEach((element, index) => {
@@ -239,9 +248,9 @@ export class CategoryComponent {
         }
     }
 
-    checkIfThisCategoryIsActive(){
+    checkIfThisCategoryIsActive() {
         if (!this.API_RESPONSE.category[0]['categoryDetails']['active'] || this.API_RESPONSE.category[1]['productSearchResult']['totalCount'] === 0) {
-            
+
             this.handleZeroProductListOnServer();
         } else if (this.API_RESPONSE.category[0]['categoryDetails']['active']) {
 
@@ -278,99 +287,99 @@ export class CategoryComponent {
             criteoItem.push(psrp[p].moglixPartNumber);
         }
 
-            let user;
-            if (this._localStorageService.retrieve('user')) {
-                user = this._localStorageService.retrieve('user');
-            }
-            this._analytics.sendGTMCall({
-                'event': 'pr-impressions',
-                'ecommerce': {
-                    'currencyCode': 'INR', // Local currency is optional.
-                    'impressions': dlp,
-                },
-            });
+        let user;
+        if (this._localStorageService.retrieve('user')) {
+            user = this._localStorageService.retrieve('user');
+        }
+        this._analytics.sendGTMCall({
+            'event': 'pr-impressions',
+            'ecommerce': {
+                'currencyCode': 'INR', // Local currency is optional.
+                'impressions': dlp,
+            },
+        });
 
-            const google_tag_params = {
-                ecomm_prodid: '',
-                ecomm_pagetype: 'category',
-                ecomm_totalvalue: ''
-            };
+        const google_tag_params = {
+            ecomm_prodid: '',
+            ecomm_pagetype: 'category',
+            ecomm_totalvalue: ''
+        };
 
-            this._analytics.sendGTMCall({
-                'event': 'dyn_remk',
-                'ecomm_prodid': google_tag_params.ecomm_prodid,
-                'ecomm_pagetype': google_tag_params.ecomm_pagetype,
-                'ecomm_totalvalue': google_tag_params.ecomm_totalvalue,
-                'google_tag_params': google_tag_params
-            });
+        this._analytics.sendGTMCall({
+            'event': 'dyn_remk',
+            'ecomm_prodid': google_tag_params.ecomm_prodid,
+            'ecomm_pagetype': google_tag_params.ecomm_pagetype,
+            'ecomm_totalvalue': google_tag_params.ecomm_totalvalue,
+            'google_tag_params': google_tag_params
+        });
 
-            /*Start Criteo DataLayer Tags */
+        /*Start Criteo DataLayer Tags */
 
-            this._analytics.sendGTMCall({
-                'event': 'viewList',
-                'email': (user && user.email) ? user.email : '',
-                'ProductIDList': criteoItem,
-                'CategoryId': this.API_RESPONSE.category[0].categoryDetails.taxonomy,
-                'CategoryName': this.API_RESPONSE.category[0].categoryDetails.canonicalURL
-            });
+        this._analytics.sendGTMCall({
+            'event': 'viewList',
+            'email': (user && user.email) ? user.email : '',
+            'ProductIDList': criteoItem,
+            'CategoryId': this.API_RESPONSE.category[0].categoryDetails.taxonomy,
+            'CategoryName': this.API_RESPONSE.category[0].categoryDetails.canonicalURL
+        });
 
-            /*End Criteo DataLayer Tags */
+        /*End Criteo DataLayer Tags */
 
-            let taxo1;
-            let taxo2;
-            let taxo3;
-            /*Start Adobe Analytics Tags */
-            if (this.API_RESPONSE.category[0].categoryDetails.taxonomy) {
-                taxo1 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[0] || '';
-                taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
-                taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
-            }
-            let page = {
-                'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
-                'channel': "listing",
-                'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
-                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-            }
-            let custData = {
-                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                'customerType': (user && user["userType"]) ? user["userType"] : '',
-            }
-            let order = {
-                'productCategoryL1': taxo1,
-                'productCategoryL2': taxo2,
-                'productCategoryL3': taxo3            
-            }
+        let taxo1;
+        let taxo2;
+        let taxo3;
+        /*Start Adobe Analytics Tags */
+        if (this.API_RESPONSE.category[0].categoryDetails.taxonomy) {
+            taxo1 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[0] || '';
+            taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
+            taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
+        }
+        let page = {
+            'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+            'channel': "listing",
+            'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
+            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+        }
+        let custData = {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        }
+        let order = {
+            'productCategoryL1': taxo1,
+            'productCategoryL2': taxo2,
+            'productCategoryL3': taxo3
+        }
 
-            
-            digitalData["page"] = page;
-            digitalData["custData"] = custData;
-            digitalData["order"] = order;
 
-            if (this._activatedRoute.snapshot.queryParams['tS'] && this._activatedRoute.snapshot.queryParams['tS'] === 'no') {
-                digitalData["page"]["trendingSearch"] = 'no';
-                digitalData["page"]["suggestionClicked"] = 'no';
-            }
-            else if (this._activatedRoute.snapshot.queryParams['tS'] && this._activatedRoute.snapshot.queryParams['tS'] === 'yes') {
-                digitalData["page"]["trendingSearch"] = 'yes';
-                digitalData["page"]["suggestionClicked"] = 'yes';
-            }
+        digitalData["page"] = page;
+        digitalData["custData"] = custData;
+        digitalData["order"] = order;
 
-            if (this._activatedRoute.snapshot.queryParams['sC'] && this._activatedRoute.snapshot.queryParams['sC'] === 'no') {
-                digitalData["page"]["trendingSearch"] = 'no';
-                digitalData["page"]["suggestionClicked"] = 'no';
-            }
-            else if (this._activatedRoute.snapshot.queryParams['sC'] && this._activatedRoute.snapshot.queryParams['sC'] === 'yes') {
-                digitalData["page"]["trendingSearch"] = 'no';
-                digitalData["page"]["suggestionClicked"] = 'yes';
-            }
-            this._analytics.sendAdobeCall(digitalData);
-            /*End Adobe Analytics Tags */
-        
+        if (this._activatedRoute.snapshot.queryParams['tS'] && this._activatedRoute.snapshot.queryParams['tS'] === 'no') {
+            digitalData["page"]["trendingSearch"] = 'no';
+            digitalData["page"]["suggestionClicked"] = 'no';
+        }
+        else if (this._activatedRoute.snapshot.queryParams['tS'] && this._activatedRoute.snapshot.queryParams['tS'] === 'yes') {
+            digitalData["page"]["trendingSearch"] = 'yes';
+            digitalData["page"]["suggestionClicked"] = 'yes';
+        }
+
+        if (this._activatedRoute.snapshot.queryParams['sC'] && this._activatedRoute.snapshot.queryParams['sC'] === 'no') {
+            digitalData["page"]["trendingSearch"] = 'no';
+            digitalData["page"]["suggestionClicked"] = 'no';
+        }
+        else if (this._activatedRoute.snapshot.queryParams['sC'] && this._activatedRoute.snapshot.queryParams['sC'] === 'yes') {
+            digitalData["page"]["trendingSearch"] = 'no';
+            digitalData["page"]["suggestionClicked"] = 'yes';
+        }
+        this._analytics.sendAdobeCall(digitalData);
+        /*End Adobe Analytics Tags */
+
     }
 
-    setTitleAndMetaForCategory(){
+    setTitleAndMetaForCategory() {
         let title = (this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com";
         let metaDescription = (this.API_RESPONSE.category[0].categoryDetails.metaDescription != undefined && this.API_RESPONSE.category[0].categoryDetails.metaDescription != null && this.API_RESPONSE.category[0].categoryDetails.metaDescription != "") ? this.API_RESPONSE.category[0].categoryDetails.metaDescription : "Shop online for " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " at best prices now! Moglix is a one stop shop for genuine " + this.API_RESPONSE.category[0].categoryDetails.categoryName + ". Cash on delivery, Free shipping available.";
         this.meta.addTag({ 'name': 'description', 'content': metaDescription });
@@ -570,7 +579,7 @@ export class CategoryComponent {
 
     private updateComponentsBasedOnrouteChange() {
         const params = this._activatedRoute.snapshot.params;
-        
+
         if (!this.subCategoryInstance) {
             this.createDynamicComponent('subCategory');
         } else {
@@ -740,7 +749,7 @@ export class CategoryComponent {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
                 this.cmsInstance.instance['background'] = 'bg-trans';
             }
-            
+
         }
     }
 
@@ -796,7 +805,7 @@ export class CategoryComponent {
         }
     }
 
-    getUrlPathName(url){
+    getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
     }

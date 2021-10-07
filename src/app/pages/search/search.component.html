@@ -27,6 +27,6 @@
 <shared-product-listing 
     [headerName]="headerNameBasedOnCondition" 
     [pageName]="'SEARCH'"
-    [productsListingData]="_productListService?.productListingData"
-    [sponseredKeyword]="'Black Decker'" >
+    [searchKeyword]="API_RESULT['searchData'][0].productSearchResult.inputSearchString"
+    [productsListingData]="_productListService?.productListingData" >
 </shared-product-listing>

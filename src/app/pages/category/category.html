@@ -22,7 +22,7 @@
     <shared-product-listing
         [headerName]="API_RESPONSE.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
         [pageName]="'CATEGORY'"
-        [sponseredKeyword]="'Black Decker'"
+        [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
         [productsListingData]="_productListService?.productListingData"
         *ngIf="_productListService &&_productListService.productListingData">
     </shared-product-listing>

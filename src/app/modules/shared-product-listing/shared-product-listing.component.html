@@ -41,7 +41,7 @@
             {{ headerName }}
         </h1>
         <div class="right" *ngIf="productsListingData?.products">
-            Showing {{ (productsListingData?.products.length + productCount)}} out of {{ productsListingData?.totalCount }} products
+            Showing {{ (productsListingData?.products.length + sponseredProductCount)}} out of {{ productsListingData?.totalCount }} products
         </div>
     </ng-container>
 </div>
@@ -52,10 +52,10 @@
             *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
         <!-- Inscroll filter end -->
         <!-- Sponsered products section start -->
-        <product-card-skeleton *ngIf="(i === 0 || i === 5 || i === 10 || i === 15) && !sponseredProductLoadStatus && pageName!=='ATTRIBUTE' ">
+        <product-card-skeleton *ngIf="(i === 0 || i === 5 || i === 10 || i === 15) && !sponseredProductLoadStatus && isAdsEnable">
         </product-card-skeleton>
         <ng-container
-            *ngIf="sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length == 4 && sponseredProductPosition?.includes(i) && pageName!=='ATTRIBUTE' ">
+            *ngIf="isAdsEnable && sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length == 4 && sponseredProductPosition?.includes(i) ">
             <product-horizontal-card [isAd]="true" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
             </product-horizontal-card>
         </ng-container>

@@ -617,7 +617,7 @@
             </p>
             <div class="alert-btn-row">
                 <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') " class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToUrl(breadcrumbData[0]['categoryLink']);closeRFQAlert()"> EXPLORE CATEGORY</p>
+                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()"> EXPLORE CATEGORY</p>
             </div>
         </div>
     </div>

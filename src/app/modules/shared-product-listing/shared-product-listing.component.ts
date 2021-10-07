@@ -98,6 +98,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
     }
     if (this.pageName == 'CATEGORY') {
       request['category'] = this.categoryId;
+      request['categories'] = this.categoryId;
     }
     return request;
   }

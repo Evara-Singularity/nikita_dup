@@ -23,7 +23,7 @@ export class NavBottomSheetComponent implements OnInit {
   }
   checkUserLogin(){
     let userSession = this._authService.getUserSession();
-    if(userSession.authenticated){
+    if(userSession && userSession.authenticated){
        this.userLogin = false;
     }
   }

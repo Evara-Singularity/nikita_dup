@@ -427,6 +427,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setProductaBreadcrum(breadcrumbData) {
     this.breadcrumbData = breadcrumbData;
+   
+  }
+  navigateToCategory(){
+    if(this.breadcrumbData){
+      let lastElement = this.breadcrumbData.length - 2;
+      let category = this.breadcrumbData[lastElement]['categoryLink'];
+      this.navigateToUrl(category);
+    }
   }
 
   processProductData(args: ProductDataArg, rawData) {

@@ -66,6 +66,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private activatedRoute: ActivatedRoute,
         private localAuthService: LocalAuthService,
         private title: Title,
+        private meta: Meta,
         private cartService: CartService,
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,

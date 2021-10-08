@@ -204,7 +204,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   get getWhatsText(){
-    return `Hi, I want to buy ${this.productName} {{${this.defaultPartNumber}}}`
+    return `Hi, I want to buy ${this.productName} (${this.defaultPartNumber})`
   }
 
   constructor(

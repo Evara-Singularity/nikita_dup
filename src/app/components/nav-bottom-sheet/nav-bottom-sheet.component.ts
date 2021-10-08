@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { LocalAuthService } from '@app/utils/services/auth.service';
 import { BottomMenuModule } from '../../modules/bottomMenu/bottom-menu.module';
 
 @Component({
@@ -10,22 +9,15 @@ import { BottomMenuModule } from '../../modules/bottomMenu/bottom-menu.module';
   styleUrls: ['./nav-bottom-sheet.component.scss']
 })
 export class NavBottomSheetComponent implements OnInit {
-  userLogin:boolean;
+  // userLogin:boolean;
   @Input() sbm: boolean = true;
+  @Input() userLogin:boolean;
   
   constructor(
     private router: Router,
-    private _authService:LocalAuthService
   ) { }
 
   ngOnInit(): void {
-    this.checkUserLogin();
-  }
-  checkUserLogin(){
-    let userSession = this._authService.getUserSession();
-    if(userSession && userSession.authenticated){
-       this.userLogin = false;
-    }
   }
 
   resetBottomOpt() {

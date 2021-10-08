@@ -221,12 +221,24 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 null,
                 this.injector
             );
+            console.log(this.bottomSheetInstance);
             this.bottomSheetInstance.instance['sbm'] = true;
+              
         } else {
             //toggle side menu
             this.bottomSheetInstance.instance['sbm'] = !(this.bottomSheetInstance.instance['sbm']);
         }
+        this.checkUserLogin();
         this.loadBottomSheetAnalyticEvent();
+    }
+    checkUserLogin(){
+        let user = this.localStorageService.retrieve('user');
+        if(user && user.authenticated === 'true'){
+            this.bottomSheetInstance.instance['userLogin'] = true;
+        }
+        else{
+            this.bottomSheetInstance.instance['userLogin'] = false;
+        }
     }
 
     loadBottomSheetAnalyticEvent() {

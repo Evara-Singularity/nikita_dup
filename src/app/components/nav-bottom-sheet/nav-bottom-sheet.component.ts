@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { LocalStorageService } from 'ngx-webstorage';
 import { BottomMenuModule } from '../../modules/bottomMenu/bottom-menu.module';
-LocalStorageService
+
 @Component({
   selector: 'app-nav-bottom-sheet',
   templateUrl: './nav-bottom-sheet.component.html',
@@ -17,7 +15,6 @@ export class NavBottomSheetComponent implements OnInit {
   
   constructor(
     private router: Router,
-    private localStorageService:LocalStorageService
   ) { }
 
   ngOnInit(): void {

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { BottomMenuModule } from '../../modules/bottomMenu/bottom-menu.module';
 
 @Component({
@@ -32,8 +32,15 @@ export class NavBottomSheetComponent implements OnInit {
   
   resetBottomOptCall(url = null){
     this.sbm = false;
+    
     if(url){
-      this.router.navigate([url]);
+      if(url === '/login'){
+        let currentUrl: NavigationExtras = { queryParams: {'backurl': this.router.url} };
+        this.router.navigate([url], currentUrl);
+      }
+      else{
+        this.router.navigate([url]);
+      }
     }
   }
 }

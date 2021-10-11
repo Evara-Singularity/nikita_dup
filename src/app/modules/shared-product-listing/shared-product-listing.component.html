@@ -56,7 +56,7 @@
         </product-card-skeleton>
         <ng-container
             *ngIf="isAdsEnable && sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length == 4 && sponseredProductPosition?.includes(i) ">
-            <product-horizontal-card [isAd]="true" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
+            <product-horizontal-card [isAd]="!sponseredProductList[sponseredProductPositionMapping[i]].internalProduct" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
             </product-horizontal-card>
         </ng-container>
         <!-- Sponsered products section end -->

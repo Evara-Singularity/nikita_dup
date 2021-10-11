@@ -342,7 +342,8 @@ export class ProductListService {
       itemInPack: null,
       ratingCount: product.ratingCount,
       reviewCount: product.reviewCount,
-      uclid: product.uclid
+      uclid: product.uclid,
+      internalProduct: product.internalProduct || true
     } as ProductsEntity;
   }
 

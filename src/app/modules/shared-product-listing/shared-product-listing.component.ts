@@ -124,7 +124,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   }
 
   get sponseredProductCount() {
-    if (this.isAdsEnable) {
+    if (this.isAdsEnable && this.sponseredProductList.length > 0) {
       const productCount = this.productsListingData?.products.length;
       if (productCount > 0 && productCount < 5) {
         return 1;

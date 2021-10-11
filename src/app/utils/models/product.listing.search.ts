@@ -54,6 +54,7 @@ export interface ProductsEntity {
     reviewCount: number;
     avgRating: number;
     uclid?: string;
+    internalProduct?: boolean; // used in case of sponsered Ad
 }
 
 export interface FilterableAttributes {

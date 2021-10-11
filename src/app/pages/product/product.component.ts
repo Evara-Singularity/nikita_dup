@@ -1106,7 +1106,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     };
     let criteoItem = [];
     for (let p = 0; p < this.cartSession["itemsList"].length; p++) {
-      criteoItem.push({ name: this.cartSession["itemsList"][p]['productName'], id: this.cartSession["itemsList"][p]['productId'], price: this.cartSession["itemsList"][p]['productUnitPrice'], quantity: this.cartSession["itemsList"][p]['productQuantity'], image: this.cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this.cartSession["itemsList"][p]['productUrl'] });
+      criteoItem.push({ name: this.cartSession["itemsList"][p]['productName'], brandId:  this.productBrandDetails['idBrand'] ,id: this.cartSession["itemsList"][p]['productId'], price: this.cartSession["itemsList"][p]['productUnitPrice'], quantity: this.cartSession["itemsList"][p]['productQuantity'], image: this.cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this.cartSession["itemsList"][p]['productUrl'] });
       eventData['prodId'] = this.cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
       eventData['prodPrice'] = this.cartSession["itemsList"][p]['productUnitPrice'] * this.cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
       eventData['prodQuantity'] = this.cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
@@ -2110,6 +2110,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'Category': this.productCategoryDetails['taxonomy'],
       'CatID': this.productCategoryDetails['taxonomyCode'],
       'MRP': this.productMrp,
+      'brandId': this.productBrandDetails['idBrand'],
       'Discount': Math.floor(this.productDiscount),
       'ImageURL': this.productDefaultImage
     });
@@ -2216,6 +2217,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             'id': this.productSubPartNumber, // todo: partnumber
             'price': this.productPrice,
             'brand': this.productBrandDetails['brandName'],
+            'brandId': this.productBrandDetails['idBrand'],
             'category': (this.productCategoryDetails && this.productCategoryDetails['taxonomy']) ? this.productCategoryDetails['taxonomy'] : '',
             'variant': '',
             'quantity': quantity,

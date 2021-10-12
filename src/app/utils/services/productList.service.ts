@@ -53,7 +53,8 @@ export class ProductListService {
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {
-    let filter_url = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
+    let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
+    
     if (categoryId) {
       filter_url += "?category=" + categoryId;
     }

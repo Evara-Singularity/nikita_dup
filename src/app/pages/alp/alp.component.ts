@@ -241,7 +241,6 @@ export class AlpComponent implements OnInit {
         }
         // shared product listing data update
         this._productListService.createAndProvideDataToSharedListingComponent(response, 'Category Results');
-        console.log(JSON.stringify((response), null, 2))
 
         // Update total product account
         this._commonService.selectedFilterData.totalCount = response.productSearchResult.totalCount;

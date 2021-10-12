@@ -96,6 +96,7 @@ export class BrandResolver implements Resolve<any> {
 
       const getBrandListObs = this.http.get(GET_BRAND_NAME_API_URL).pipe(share(), mergeMap(data => {
         actualParams['brand'] = data['brandName'];
+        actualParams['bucketReq'] = 'n';
         return forkJoin([
           this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }),
           // this.http.get(BUCKET_LIST_API_URL, { params: actualParams }),

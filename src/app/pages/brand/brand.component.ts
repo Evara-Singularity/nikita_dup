@@ -64,36 +64,28 @@ export class BrandComponent {
         this.setDataFromResolver();
     }
 
-    ngAfterViewInit(): void {
-        this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
-            if (res['status']) {
-                this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
-                this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Brand Results');
-                
-                const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                if (!this._activatedRoute.snapshot.params.id) {
-                    this.setPopularCategories(category.terms);
-                }
-            }
-        });
-    }
-
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
 
-            // this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(this.API_RESPONSE.brand[1][1].buckets));
-
-            // genrate popular links data
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
 
             // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
 
             // create data for shared listing component
-            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
+                if (res.hasOwnProperty('buckets')) {
+                    this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+                    this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
+                    
+                    const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
+                    if (!this._activatedRoute.snapshot.params.id) {
+                        this.setPopularCategories(category.terms);
+                    }
+                }
+            });
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
 

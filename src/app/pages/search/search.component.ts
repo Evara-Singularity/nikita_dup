@@ -18,7 +18,7 @@ let digitalData = {
 };
 
 @Component({
-  selector: 'search-v1',
+  selector: 'search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss', '../category/category.scss']
 })
@@ -53,12 +53,12 @@ export class SearchComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
-        if (res['status']) {
-          this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
-            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][1], 'Search Results');
-        }
-    });
+    // this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
+    //   if (res.hasOwnProperty('buckets')) {
+    //     this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+    //     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
+    //   }
+    // });
 }
 
   setHeaderNameBasedOnCondition(){
@@ -76,14 +76,18 @@ export class SearchComponent implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
-      this.API_RESULT['searchData'][0].buckets = JSON.parse(JSON.stringify(this.API_RESULT.searchData[1].buckets));
 
       this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 
       this.setHeaderNameBasedOnCondition();
 
       // Update shared product list Data
-      this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
+      this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
+        if (res.hasOwnProperty('buckets')) {
+          this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+          this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
+        }
+      });
 
       // Initialize the current activated filter count
       this._commonService.selectedFilterData.totalCount = this.API_RESULT['searchData'][0].productSearchResult.totalCount;

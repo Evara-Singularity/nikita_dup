@@ -29,18 +29,10 @@ export class SearchResolver implements Resolve<any> {
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
     const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa' + _activatedRouteSnapshot.fragment);
-    // const BUCKET_DATA_KEY = makeStateKey<object>('bucket-pwa');
 
-    if (
-      this.transferState.hasKey(SEARCH_DATA_KEY) 
-      // &&
-      // this.transferState.hasKey(BUCKET_DATA_KEY)
-    ) {
-      // id transferState data found then simply pass data
+    if ( this.transferState.hasKey(SEARCH_DATA_KEY) ) {
       const search_data = this.transferState.get<object>(SEARCH_DATA_KEY, null);
-      // const bucket_data = this.transferState.get<object>(BUCKET_DATA_KEY, null);
       this.transferState.remove(SEARCH_DATA_KEY);
-      // this.transferState.remove(BUCKET_DATA_KEY);
 
       this.loaderService.setLoaderState(false);
       return of([search_data]);
@@ -56,12 +48,10 @@ export class SearchResolver implements Resolve<any> {
       const actualParams = this._commonService.formatParams(params);
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
-      const URL = environment.BASE_URL + ENDPOINTS.SEARCH;
-      const BUCKET_URL = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
+      const URL = environment.BASE_URL + ENDPOINTS.SEARCH + "?bucketReq=n";
       const searchObs = this.http.get(URL, { params: actualParams });
-      const bucketObs = this.http.get(BUCKET_URL, { params: actualParams });
 
-      return forkJoin([searchObs, bucketObs]).pipe(
+      return forkJoin([searchObs]).pipe(
         catchError((err) => {
           this.loaderService.setLoaderState(false);
           return of(err);
@@ -69,7 +59,6 @@ export class SearchResolver implements Resolve<any> {
         tap(result => {
           if (isPlatformServer(this.platformId)) {
             this.transferState.set(SEARCH_DATA_KEY, result[0]);
-            // this.transferState.set(BUCKET_DATA_KEY, result[1]);
           }
           this.loaderService.setLoaderState(false);
         })

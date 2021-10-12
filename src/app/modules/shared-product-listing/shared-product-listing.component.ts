@@ -15,8 +15,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SharedProductListingComponent implements OnInit, AfterViewInit {
 
-  readonly sponseredProductPosition = [0, 4, 8, 12];
-  readonly sponseredProductPositionMapping = { 0: 0, 4: 1, 8: 2, 12: 3 }
+  readonly sponseredProductPosition = [0, 4, 8, 12, 16];
+  readonly sponseredProductPositionMapping = { 0: 0, 4: 1, 8: 2, 12: 3, 16: 4 }
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -89,12 +89,12 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
     const request = {
       a_type: 'PRODUCT',
       client_id: 302211,
-      pcnt: 4,
+      pcnt: 5,
       page_type: 'SEARCH',
       device_id: this._commonService.getUniqueGAId()
     }
     if (this.pageName == 'SEARCH') {
-      request['keywords'] = encodeURIComponent(this.searchKeyword.toLowerCase());
+      request['keywords'] = encodeURIComponent('black decker');
     }
     if (this.pageName == 'CATEGORY') {
       request['category'] = this.categoryId;
@@ -132,7 +132,9 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
         return 2;
       } else if (productCount >= 10 && productCount < 15) {
         return 3;
-      } else return 4;
+      } else if (productCount >= 15 && productCount < 20) {
+        return 4;
+      } else return 5;
     }
     else return 0;
   }

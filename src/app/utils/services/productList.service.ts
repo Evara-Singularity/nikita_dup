@@ -37,6 +37,7 @@ export class ProductListService {
       products: [...rawSearchData.productSearchResult.products].map(product => {
         product['mainImageThumnailLink'] = this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'thumbnail');
         product['mainImageMediumLink'] = this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'medium');
+        product['internalProduct'] = true;
         return product;
       }),
       filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
@@ -344,7 +345,7 @@ export class ProductListService {
       ratingCount: product.ratingCount,
       reviewCount: product.reviewCount,
       uclid: product.uclid,
-      internalProduct: product.internalProduct || true
+      internalProduct: product.internalProduct
     } as ProductsEntity;
   }
 

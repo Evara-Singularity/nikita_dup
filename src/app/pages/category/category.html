@@ -21,8 +21,8 @@
 <div id="category-cards-section">
     <shared-product-listing
         [headerName]="API_RESPONSE.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
-        [pageName]="'CATEGORY'"
-        [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
+        [pageName]="'CATEGORY'" [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryCode']"
+        [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
         [productsListingData]="_productListService?.productListingData"
         *ngIf="_productListService &&_productListService.productListingData">
     </shared-product-listing>

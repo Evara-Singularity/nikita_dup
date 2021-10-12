@@ -32,6 +32,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   @Input() brandUrl: string = ''; // only received in case used in brand module
   @Input() headerName: string;
   @Input() categoryId: string; // only received in case used in category module
+  @Input() categoryName: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -94,10 +95,15 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
       device_id: this._commonService.getUniqueGAId()
     }
     if (this.pageName == 'SEARCH') {
-      request['keywords'] = encodeURIComponent('black decker');
+      request['a_type'] = 'SEARCH';
+      request['page_type'] = 'SEARCH';
+      request['keywords'] = encodeURIComponent('black & decker');
     }
     if (this.pageName == 'CATEGORY') {
+      request['a_type'] = 'CATEGORY';
+      request['page_type'] = 'CATEGORY';
       request['category'] = this.categoryId;
+      request['categoryName'] = this.categoryName;
       request['categories'] = this.categoryId;
     }
     return request;

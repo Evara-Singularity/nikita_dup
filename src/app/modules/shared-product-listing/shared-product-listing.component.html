@@ -45,18 +45,25 @@
         </div>
     </ng-container>
 </div>
-
 <ng-container *ngIf="productsListingData?.products?.length > 0">
     <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
         <filter-mid-plp [pageName]="pageName" [position]="i" [filterData]="productsListingData?.filterData"
             *ngIf="i === 5 || i === 10 || i === 15"></filter-mid-plp>
         <!-- Inscroll filter end -->
         <!-- Sponsered products section start -->
-        <product-card-skeleton *ngIf="(i === 0 || i === 5 || i === 10 || i === 15) && !sponseredProductLoadStatus && isAdsEnable">
+        <product-card-skeleton *ngIf="(i === 0 || i === 3 || i === 7 || i === 15) && !sponseredProductLoadStatus && isAdsEnable">
+        </product-card-skeleton>
+        <product-card-skeleton *ngIf="( i === 3)  && !sponseredProductLoadStatus && isAdsEnable">
         </product-card-skeleton>
         <ng-container
-            *ngIf="isAdsEnable && sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length == 4 && sponseredProductPosition?.includes(i) ">
+            *ngIf="isAdsEnable && sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length > 0 && sponseredProductPosition?.includes(i) ">
             <product-horizontal-card [isAd]="!sponseredProductList[sponseredProductPositionMapping[i]].internalProduct" [product]="sponseredProductList[sponseredProductPositionMapping[i]]">
+            </product-horizontal-card>
+        </ng-container>
+        <ng-container
+            *ngIf="isAdsEnable && sponseredProductLoadStatus && sponseredProductList && sponseredProductList?.length > 0 && i === 3 ">
+            <product-horizontal-card [isAd]="!sponseredProductList[sponseredProductPositionMapping[i]].internalProduct"
+                [product]="sponseredProductList[1]">
             </product-horizontal-card>
         </ng-container>
         <!-- Sponsered products section end -->

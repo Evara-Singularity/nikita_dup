@@ -94,7 +94,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
       device_id: this._commonService.getUniqueGAId()
     }
     if (this.pageName == 'SEARCH') {
-      request['keywords'] = encodeURIComponent(this.searchKeyword.toLowerCase());
+      request['keywords'] = encodeURIComponent('black decker');
     }
     if (this.pageName == 'CATEGORY') {
       request['category'] = this.categoryId;

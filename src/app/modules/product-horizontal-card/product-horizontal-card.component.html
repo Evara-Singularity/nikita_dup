@@ -1,5 +1,4 @@
 <div class="product-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)"  >
-    
     <div class="youtubeThumbnail-listing" *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
         <div class="thumbnail" [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
             <input class="youtube_icon"

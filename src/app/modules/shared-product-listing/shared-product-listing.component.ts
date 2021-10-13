@@ -57,6 +57,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+    console.log(this.productsListingData);
   }
 
   ngAfterViewInit(){

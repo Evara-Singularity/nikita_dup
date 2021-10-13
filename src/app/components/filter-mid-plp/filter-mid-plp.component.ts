@@ -38,22 +38,24 @@ export class FilterMidPlpComponent implements OnInit {
     } else {
       GLOBAL_CONSTANT.inlineFilter[1] = 'brand';
     }
-    
-    const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
-    const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
-    const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
-    
-    if (brand) {
-      this._productListService.inlineFilterData.push(brand);
-    }
-    if (price) {
-      this._productListService.inlineFilterData.push(price);
-    }
-    if (discount) {
-      this._productListService.inlineFilterData.push(discount);
+    if (this.filterData) {
+      const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
+      const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
+      const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
+      
+      if (brand) {
+        this._productListService.inlineFilterData.push(brand);
+      }
+      if (price) {
+        this._productListService.inlineFilterData.push(price);
+      }
+      if (discount) {
+        this._productListService.inlineFilterData.push(discount);
+      }
+  
+      this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
     }
 
-    this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
   }
 
   checkAndApplyFilter(key, item) {

@@ -81,7 +81,7 @@ export interface ProductListingDataEntity {
     totalCount: number, 
     products: ProductsEntity[],
     listingHeading: string,
-    filterData: any,
+    filterData?: any,
 }
 
 export interface ProductCardFeature {

@@ -58,3 +58,24 @@
         </div>
     </div>
 </ng-container>
+
+<div *ngIf="!(inlineFilterData | checkForCount)" class="skeleton-filter-container">
+    <div class="skeleton-inline-filter-card-list">
+      <div class="card-inner-list">
+        <div class="heading-filter"></div>
+        <div class="inline-filter-card-one"></div>
+        <div class="inline-filter-card-two"></div>
+        <div class="inline-filter-card-two"></div>
+        <div class="inline-filter-card-two"></div>
+        <div class="inline-filter-card-two"></div>
+      </div>
+      
+      <div class="card-inner-list">
+        <div class="inline-filter-card-three"></div>
+        <div class="inline-filter-card-three"></div>
+        <div class="inline-filter-card-three"></div>
+        <div class="inline-filter-card-three"></div>
+      </div>
+    </div>
+
+</div>

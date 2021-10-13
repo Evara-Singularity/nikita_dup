@@ -82,10 +82,11 @@ export class SearchComponent implements OnInit {
       this.setHeaderNameBasedOnCondition();
 
       // Update shared product list Data
+      this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
       this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
         if (res.hasOwnProperty('buckets')) {
           this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
-          this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
+          this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results', true);
         }
       });
 

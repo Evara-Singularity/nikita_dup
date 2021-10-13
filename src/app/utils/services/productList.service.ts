@@ -28,7 +28,12 @@ export class ProductListService {
   ) {
   }
 
-  createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
+  createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading, bucketAvailable?: boolean) {
+    if (bucketAvailable) {
+      this.productListingData['filterData'] =  JSON.parse(JSON.stringify(rawSearchData.buckets));
+      return;
+    }
+    
     //Removing Products with null images
     rawSearchData.productSearchResult.products = rawSearchData.productSearchResult.products.filter(res => res.mainImageLink!=null);
 
@@ -40,9 +45,10 @@ export class ProductListService {
         product['internalProduct'] = true;
         return product;
       }),
-      filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
       listingHeading: heading
     };
+
+    
 
     if (this._commonService.isBrowser) {
       const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');

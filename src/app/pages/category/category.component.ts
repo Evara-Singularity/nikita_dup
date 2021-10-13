@@ -89,15 +89,6 @@ export class CategoryComponent {
         }
     }
 
-    ngAfterViewInit(): void {
-        // this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
-        //     if (res.hasOwnProperty('buckets')) {
-        //         this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
-        //         this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
-        //     }
-        // });
-    }
-
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
 
@@ -130,10 +121,11 @@ export class CategoryComponent {
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
 
             // shared product listing data update
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
             this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
-                    this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
+                    this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
                 }
             });
 

@@ -75,10 +75,11 @@ export class BrandComponent {
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
 
             // create data for shared listing component
+            this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
             this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
-                    this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
+                    this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
                     
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
                     if (!this._activatedRoute.snapshot.params.id) {

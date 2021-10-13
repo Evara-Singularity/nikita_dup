@@ -25,6 +25,7 @@
     </ng-container>
 </div>
 <shared-product-listing 
+    #sharedProductList
     [headerName]="headerNameBasedOnCondition" 
     [pageName]="'SEARCH'"
     [searchKeyword]="API_RESULT['searchData'][0].productSearchResult.inputSearchString"

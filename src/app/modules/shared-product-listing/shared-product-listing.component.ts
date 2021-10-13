@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent implements OnInit, AfterViewInit {
+export class SharedProductListingComponent implements OnInit {
 
   readonly sponseredProductPosition = [0, 4, 5, 10, 19];
   readonly sponseredProductPositionMapping = { 0: 0, 3: 2, 7: 3, 15: 4 }
@@ -60,15 +60,12 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
     this.getUpdatedSession();
   }
 
-  ngAfterViewInit(){
-    this.getSponseredProducts();
-  }
-
+ 
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
   }
 
-  private getSponseredProducts() {
+  getSponseredProducts() {
     if (this._commonService.isBrowser && this.isAdsEnable) {
       const query = Object.assign({}, this.getSponseredRequest(), this.getParamsUsedInModules())
       this._productService.getSponseredProducts(query).subscribe(response => {

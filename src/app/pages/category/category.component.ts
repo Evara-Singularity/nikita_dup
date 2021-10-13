@@ -13,6 +13,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 
 let digitalData = {
     page: {},
@@ -30,12 +31,6 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 
 export class CategoryComponent {
     encodeURI = encodeURI;
-    paginationInstance = null;
-    @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
-    filterInstance = null;
-    @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
-    sortByInstance = null;
-    @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
     subCategoryInstance = null;
     @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
     catBestSellerInstance = null;
@@ -55,6 +50,8 @@ export class CategoryComponent {
     recentArticlesInstance = null;
     @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
     public API_RESPONSE: any;
+
+    @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
 
     reqArray: any[] = [];
     popularLinks: any[] = [];
@@ -87,6 +84,10 @@ export class CategoryComponent {
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
         }
+    }
+
+    ngAfterViewInit(): void {
+        this.sharedProductList.getSponseredProducts();
     }
 
     setDataFromResolver() {
@@ -133,6 +134,9 @@ export class CategoryComponent {
                 }
             });
 
+            if (this.sharedProductList) {
+                this.sharedProductList.getSponseredProducts();
+            }
 
             this.setCanonicalUrls();
 
@@ -754,18 +758,6 @@ export class CategoryComponent {
 
 
     resetLazyComponents() {
-        if (this.filterInstance) {
-            this.filterInstance = null;
-            this.filterContainerRef.remove();
-        }
-        if (this.sortByInstance) {
-            this.sortByInstance = null;
-            this.sortByContainerRef.remove();
-        }
-        if (this.paginationInstance) {
-            this.paginationInstance = null;
-            this.paginationContainerRef.remove();
-        }
         if (this.subCategoryInstance) {
             this.subCategoryInstance = null;
             this.subCategoryContainerRef.remove();

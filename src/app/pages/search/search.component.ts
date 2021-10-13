@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@services/productList.service';
@@ -10,6 +10,7 @@ import CONSTANTS from '@app/config/constants';
 import { DOCUMENT } from '@angular/common';
 import { Meta, Title } from '@angular/platform-browser';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 
 let digitalData = {
   page: {},
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
   public API_RESULT: any;
   public didYouMean: any;
   public headerNameBasedOnCondition;
+  @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -53,13 +55,8 @@ export class SearchComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    // this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
-    //   if (res.hasOwnProperty('buckets')) {
-    //     this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
-    //     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
-    //   }
-    // });
-}
+    this.sharedProductList.getSponseredProducts();  
+  }
 
   setHeaderNameBasedOnCondition(){
     if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
@@ -89,6 +86,10 @@ export class SearchComponent implements OnInit {
           this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results', true);
         }
       });
+
+      if (this.sharedProductList) {
+        this.sharedProductList.getSponseredProducts();
+      }
 
       // Initialize the current activated filter count
       this._commonService.selectedFilterData.totalCount = this.API_RESULT['searchData'][0].productSearchResult.totalCount;

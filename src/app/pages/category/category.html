@@ -20,6 +20,7 @@
 
 <div id="category-cards-section">
     <shared-product-listing
+        #sharedProductList
         [headerName]="API_RESPONSE?.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
         [pageName]="'CATEGORY'" 
         [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"

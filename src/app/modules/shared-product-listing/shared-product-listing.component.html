@@ -51,6 +51,7 @@
         </div>
     </ng-container>
 </div>
+
 <ng-container *ngIf="productsListingData?.products?.length > 0">
     <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
         <filter-mid-plp [pageName]="pageName" [position]="i" [filterData]="productsListingData?.filterData"

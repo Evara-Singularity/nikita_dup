@@ -88,6 +88,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   }
 
   getSponseredRequest() {
+    alert(this.categoryId);
     const request = {
       a_type: 'PRODUCT',
       client_id: 302211,
@@ -98,7 +99,7 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
     if (this.pageName == 'SEARCH') {
       request['a_type'] = 'SEARCH';
       request['page_type'] = 'SEARCH';
-      request['keywords'] = encodeURIComponent('black & decker');
+      request['keywords'] = encodeURIComponent(this.searchKeyword);
     }
     if (this.pageName == 'CATEGORY') {
       request['a_type'] = 'CATEGORY';

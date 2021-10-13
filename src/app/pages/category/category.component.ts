@@ -91,6 +91,7 @@ export class CategoryComponent {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
+            console.log(this.API_RESPONSE.category[0]);
 
             // set API result data
             this.API_RESPONSE = result;

@@ -1,6 +1,6 @@
 <app-bottom-menu *ngIf="sbm" (outData$)="onUpdate($event)">
     <ul class="container plp-bottom-modal" content>
-        <li><span>More options</span> <i (click)="resetBottomOpt()" class="icon-circle-delete"></i> </li>
+        <li><span>More Options</span> <i (click)="resetBottomOpt()" class="icon-circle-delete"></i> </li>
         <li *ngIf="!userLogin" (click)="resetBottomOptCall('/login')" [routerLink]="['']"><i class="icon-profile f-22"></i>Sign-In/Sign-Up</li>
         <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']"><i class="icon-all-categories"></i>All Categories</li>
         <li (click)="resetBottomOptCall('/brand-store')" [routerLink]="['/']"><i class="icon-brand_store f-22"></i>Brand Store</li>

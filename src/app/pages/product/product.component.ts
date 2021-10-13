@@ -338,7 +338,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   private duplicateOrderCheck(rawData) {
-    if( rawData && rawData['product'][6]['data']['date'] ){
+    if( rawData && rawData['product'][6] && rawData['product'][6]['data']['date'] ){
       const userSession = this.localStorageService.retrieve('user');
       if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && rawData['product'][6] && rawData['product'][6].status) {
         const date1: any = new Date(rawData['product'][6]['data']['date']);

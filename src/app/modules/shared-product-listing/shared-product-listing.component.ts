@@ -78,10 +78,12 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
           if (products && (products as []).length > 0) {
             this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
             let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
+            const reversedSponseredProductList = this.sponseredProductList.reverse();
             this.productsListingData.products.forEach((product, index) => {
               if (this.sponseredProductPosition.includes(index)) {
-                product.isAdsEnable = true;
-                tempProductList.splice(index, 0, product);
+                if (reversedSponseredProductList.length > 0) {
+                  tempProductList.splice(index, 0, reversedSponseredProductList.pop());
+                }
               }
             });
             this.productsListingData.products = JSON.parse(JSON.stringify(tempProductList));

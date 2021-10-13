@@ -28,9 +28,12 @@ export class ProductListService {
   ) {
   }
 
+  showMidPlpFilterLoader: boolean = true;
+  
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading, bucketAvailable?: boolean) {
     if (bucketAvailable) {
       this.productListingData['filterData'] =  JSON.parse(JSON.stringify(rawSearchData.buckets));
+      this.showMidPlpFilterLoader = false;
       return;
     }
     
@@ -60,6 +63,8 @@ export class ProductListService {
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {
+    this.showMidPlpFilterLoader = true;
+    
     let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
     
     if (categoryId) {

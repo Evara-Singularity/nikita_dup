@@ -126,12 +126,13 @@ export class CategoryComponent {
             this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
+                    this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
+                    // update footer data
+                    this.genrateAndUpdateCategoryFooterData();
                 }
             });
 
-            // update footer data
-            this.genrateAndUpdateCategoryFooterData();
 
             this.setCanonicalUrls();
 

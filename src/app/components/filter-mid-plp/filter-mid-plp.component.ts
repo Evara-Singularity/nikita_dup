@@ -22,10 +22,16 @@ export class FilterMidPlpComponent implements OnInit {
   
   constructor(
     private _activatedRoute: ActivatedRoute,
-    private _productListService: ProductListService, private _commonService: CommonService) { }
+    public _productListService: ProductListService, private _commonService: CommonService) { }
 
   ngOnInit(): void {
     this.genrateInlineFilterData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.filterData.currentValue && changes.filterData.currentValue.length > 0) {
+      this.genrateInlineFilterData();    
+    }
   }
 
   genrateInlineFilterData() {

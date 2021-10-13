@@ -47,7 +47,7 @@
             {{ headerName }}
         </h1>
         <div class="right" *ngIf="productsListingData?.products">
-            Showing {{ (productsListingData?.products.length + sponseredProductCount)}} out of {{ (productsListingData?.totalCount > (productsListingData?.products.length + sponseredProductCount) ? productsListingData?.totalCount  :( productsListingData?.products.length + sponseredProductCount) ) }} products
+            Showing {{ productsListingData?.products.length }} out of {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount  :( productsListingData?.products.length) ) }} products
         </div>
     </ng-container>
 </div>

@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SharedProductListingComponent implements OnInit, AfterViewInit {
 
-  readonly sponseredProductPosition = [0, 3, 7, 15];
+  readonly sponseredProductPosition = [0, 3, 7, 15, 20];
   readonly sponseredProductPositionMapping = { 0: 0, 3: 2, 7: 3, 15: 4 }
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
@@ -58,7 +58,6 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
-    console.log(this.productsListingData);
   }
 
   ngAfterViewInit(){
@@ -78,6 +77,14 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
           let products = response['products'] || [];
           if (products && (products as []).length > 0) {
             this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
+            let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
+            this.productsListingData.products.forEach((product, index) => {
+              if (this.sponseredProductPosition.includes(index)) {
+                product.isAdsEnable = true;
+                tempProductList.splice(index, 0, product);
+              }
+            });
+            this.productsListingData.products = JSON.parse(JSON.stringify(tempProductList));
           }
         }
       }, error => {
@@ -88,7 +95,6 @@ export class SharedProductListingComponent implements OnInit, AfterViewInit {
   }
 
   getSponseredRequest() {
-    alert(this.categoryId);
     const request = {
       a_type: 'PRODUCT',
       client_id: 302211,

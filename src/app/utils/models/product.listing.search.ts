@@ -31,6 +31,7 @@ export interface ProductsEntity {
     moglixPartNumber: string;
     moglixProductNo?: null;
     mrp: number;
+    isAdsEnable?: boolean;
     salesPrice: number;
     priceWithoutTax: number;
     productName: string;

@@ -367,9 +367,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   private addToCart(productDetails, buyNow): void {
-    // analytics call
-    this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
-
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
@@ -381,6 +378,8 @@ export class ProductHorizontalCardComponent implements OnInit {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });         
             this.showAddToCartToast();
+            // analytics call
+            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
@@ -471,6 +470,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       totalPayableAmount: productPrice,
       productName: productGroupData['productName'],
       brandName: productBrandDetails['brandName'],
+      brandId: productBrandDetails['idBrand'],
       priceWithoutTax: priceWithoutTax,
       taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
       productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',

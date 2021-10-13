@@ -254,6 +254,7 @@ export class ProductListService {
             'variant': '',
             'quantity': productDetails['productQuantity'],
             'productImg': productDetails.productImg,
+            'brandId': productDetails['brandId'],
             'CatId': productDetails['taxonomyCode'],
             'MRP': productDetails['amount'],
             'Discount':  (productDetails['discount'] && !isNaN(productDetails['discount']))? parseInt(productDetails['discount']) : null
@@ -294,7 +295,7 @@ export class ProductListService {
     const cartSession = this._cartService.getCartSession() || {};
     if (cartSession && cartSession.hasOwnProperty("itemsList")) {
       for (let p = 0; p < cartSession["itemsList"].length; p++) {
-        criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+        criteoItem.push({ name: cartSession["itemsList"][p]['productName'], 'brandId': cartSession["itemsList"][p]['brandId'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
         eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
         eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
         eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];

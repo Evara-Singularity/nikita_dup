@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SharedProductListingComponent implements OnInit, AfterViewInit {
 
-  readonly sponseredProductPosition = [0, 3, 7, 15, 19];
+  readonly sponseredProductPosition = [0, 4, 5, 10, 19];
   readonly sponseredProductPositionMapping = { 0: 0, 3: 2, 7: 3, 15: 4 }
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;

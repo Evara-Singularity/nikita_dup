@@ -46,13 +46,18 @@ export class AlpResolver implements Resolve<object> {
             newParams.filter = JSON.parse(filterTemp);
         }
         let defaultParams = this._commonService.getDefaultParams();
+
         if (defaultParams['queryParams']['orderBy'] != undefined) {
             newParams.queryParams['orderBy'] = defaultParams['queryParams']['orderBy'];
-        }
+        } 
         if (defaultParams['queryParams']['orderWay'] != undefined) {
             newParams.queryParams['orderWay'] = defaultParams['queryParams']['orderWay'];
         }
         
+        if (Object.keys(currentQueryParams).length === 0) {
+            newParams.queryParams['orderBy'] = 'popularity';
+            defaultParams['queryParams']['orderBy'] = 'popularity';
+        }
         for (let key in currentQueryParams) {
             newParams.queryParams[key] = currentQueryParams[key];
         }

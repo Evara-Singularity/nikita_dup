@@ -76,10 +76,6 @@ export class AlpComponent implements OnInit {
         }
     }
 
-    setDataAfterGettingDataFromResolver(res) {
-        this.setAttributeListingInfo(res);
-    }
-
     setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
         this._activatedRoute.data.subscribe(res => {
@@ -91,7 +87,7 @@ export class AlpComponent implements OnInit {
             const paramsData = this._activatedRoute.snapshot.params;
             this.updateConfigBasedOnParams(paramsData);
 
-            this.setDataAfterGettingDataFromResolver(res.alp);
+            this.setAttributeListingInfo(res.alp);
         });
     }
 
@@ -149,7 +145,6 @@ export class AlpComponent implements OnInit {
                 }
                 this._response.status(httpStatus);
             }
-            res[2] = { buckets: [], productSearchResult: { products: [], totalCount: 0 } };
         }
         if (this.isBrowser) {
             this.showLoader = false;
@@ -241,6 +236,10 @@ export class AlpComponent implements OnInit {
         }
         // shared product listing data update
         this._productListService.createAndProvideDataToSharedListingComponent(response, 'Category Results');
+        console.log('-------------------------');
+        console.log(response);
+        console.log('-------------------------');
+        this._productListService.createAndProvideDataToSharedListingComponent(response, 'Category Results', true);
 
         // Update total product account
         this._commonService.selectedFilterData.totalCount = response.productSearchResult.totalCount;

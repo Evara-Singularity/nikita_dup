@@ -39,7 +39,7 @@
                 </div>
                 <div class="name" (click)="navigateToPDP()">
                     <span *ngIf="cardFeaturesConfig.horizontalOrientation" >{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>60">...</span></span>
-                    <span *ngIf="cardFeaturesConfig.verticalOrientation" >{{product.productName | slice:0:45}}<span *ngIf="product.productName.length>45">...</span></span>
+                    <span *ngIf="cardFeaturesConfig.verticalOrientation" >{{product.productName | slice:0:40}}<span *ngIf="product.productName.length>45">...</span></span>
                 </div>
                 <div class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName}}</span>
@@ -60,14 +60,14 @@
                             <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
                         </div>
                     </div>
-                    <div class="right">
+                    <div class="right" >
                         <ng-container *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
                             <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                                 <i class="icon-cart1"></i>
                             </span>
                             <button *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
-                        <ng-container *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
+                        <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
                             <button class="white" (click)="openRfqForm()">SEND QUERY</button>
                         </ng-container>
                     </div>

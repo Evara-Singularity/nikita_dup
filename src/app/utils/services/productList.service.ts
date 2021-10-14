@@ -357,7 +357,7 @@ export class ProductListService {
       ratingCount: product.ratingCount,
       reviewCount: product.reviewCount,
       uclid: product.uclid,
-      internalProduct: product.internalProduct
+      internalProduct: (!product.hasOwnProperty('internalProduct')) ? true : product.internalProduct // if intenal product prop does not exist then it is internal product
     } as ProductsEntity;
   }
 
@@ -391,7 +391,8 @@ export class ProductListService {
       avgRating: product.avgRating || 0,
       itemInPack: null,
       ratingCount: product.ratingCount || 0,
-      reviewCount: product.reviewCount || 0
+      reviewCount: product.reviewCount || 0,
+      internalProduct: true,
     } as ProductsEntity;
   }
 

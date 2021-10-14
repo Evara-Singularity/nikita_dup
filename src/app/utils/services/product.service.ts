@@ -151,7 +151,7 @@ export class ProductService {
     }
 
     getSponseredProducts(params){
-        return this._dataService.callRestful("GET", 'https://nodeapiqa.moglilabs.com/nodeApi/v1' + ENDPOINTS.SPONSERED_PRODUCTS, { params: params });
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SPONSERED_PRODUCTS, { params: params });
     }
 
 }

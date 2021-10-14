@@ -39,7 +39,7 @@ export class PaytmUpiComponent {
         this.loaderService.setLoaderState(value);
     }
     
-    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: PaytmUpiService, private _formBuilder: FormBuilder, private _paytmUpiService: PaytmUpiService) {
+    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _paytmUpiService: PaytmUpiService) {
         this.upiData = {};
         this.isValid = false;
         this.uType = CONSTANTS.GLOBAL.paytmUpi;

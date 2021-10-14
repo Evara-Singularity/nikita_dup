@@ -7,8 +7,6 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@app/utils/services/common.service';
 const SPD = makeStateKey<any>('specialdata');
 
-declare let $: any;
-
 @Component({
   selector: 'covid19',
   templateUrl: 'covid19.html',

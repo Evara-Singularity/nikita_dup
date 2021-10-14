@@ -1,5 +1,5 @@
 import { Step } from '../../utils/validators/step.validate';
-import { Component, PLATFORM_ID, Inject, NgModule } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BulkEnquiryService } from '../../pages/bulkEnquiry/bulkEnquiry.service';

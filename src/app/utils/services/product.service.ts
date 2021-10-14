@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { DataService } from './data.service';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { ProductsEntity } from '../models/product.listing.search';
 
 @Injectable({
     providedIn: 'root'
@@ -148,4 +149,9 @@ export class ProductService {
     getCartBySession(params) {
         return this._dataService.callRestful("GET", this.basePath + ENDPOINTS.GET_CartBySession, { params: params });
     }
+
+    getSponseredProducts(params){
+        return this._dataService.callRestful("GET", 'https://nodeapiqa.moglilabs.com/nodeApi/v1' + ENDPOINTS.SPONSERED_PRODUCTS, { params: params });
+    }
+
 }

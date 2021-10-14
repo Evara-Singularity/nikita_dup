@@ -5,8 +5,6 @@ import { DOCUMENT } from '@angular/common';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
-declare let $: any;
-
 @Component({
     selector: 'compliance',
     templateUrl: 'compliance.html',

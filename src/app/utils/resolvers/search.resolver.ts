@@ -2,13 +2,10 @@ import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import {
-  Router, Resolve,
+import { Resolve,
   RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-  Params
+  ActivatedRouteSnapshot
 } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { forkJoin, Observable, of } from 'rxjs';
@@ -31,12 +28,9 @@ export class SearchResolver implements Resolve<any> {
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
-    const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa');
+    const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa' + _activatedRouteSnapshot.fragment);
 
-    if (
-      this.transferState.hasKey(SEARCH_DATA_KEY)
-    ) {
-      // id transferState data found then simply pass data
+    if ( this.transferState.hasKey(SEARCH_DATA_KEY) ) {
       const search_data = this.transferState.get<object>(SEARCH_DATA_KEY, null);
       this.transferState.remove(SEARCH_DATA_KEY);
 
@@ -54,7 +48,7 @@ export class SearchResolver implements Resolve<any> {
       const actualParams = this._commonService.formatParams(params);
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
-      const URL = environment.BASE_URL + ENDPOINTS.SEARCH;
+      const URL = environment.BASE_URL + ENDPOINTS.SEARCH + "?bucketReq=n";
       const searchObs = this.http.get(URL, { params: actualParams });
 
       return forkJoin([searchObs]).pipe(

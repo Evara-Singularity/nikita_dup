@@ -18,8 +18,6 @@ export class SelectPopupComponent implements OnInit
 
     @Output() selectedValue$ = new EventEmitter<object>();
 
-    constructor() { }
-
     ngOnInit(): void
     {
     }

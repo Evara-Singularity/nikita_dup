@@ -27,7 +27,7 @@ export class CareerComponent {
     private _router: Router,
     @Inject(PLATFORM_ID) private platformId) {
 
-    this.isServer = isPlatformServer(platformId);
+    this.isServer = isPlatformServer(this.platformId);
 
     this.title.setTitle("Explore Career Opportunities at Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Explore Career Opportunities at Moglix.com" });

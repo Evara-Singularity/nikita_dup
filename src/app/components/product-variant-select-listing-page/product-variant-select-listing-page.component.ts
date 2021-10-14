@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
-import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
@@ -27,8 +25,6 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   @Output() continueToCart$ = new EventEmitter<{ product: AddToCartProductSchema, buyNow: boolean }>();
   @Output() hide$ = new EventEmitter<boolean>();
   currentlySelectedMSN: string
-
-  constructor() { }
 
   ngOnInit(): void {
     this.currentlySelectedMSN = this.product.moglixPartNumber;

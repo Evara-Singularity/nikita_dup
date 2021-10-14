@@ -5,9 +5,6 @@ export class AddressListService {
 
     lastSelectedAddress: any = null
 
-    constructor() {
-    }
-
     setLastSelectedAddress(data: any){
         this.lastSelectedAddress = data;
     }

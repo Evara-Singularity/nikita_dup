@@ -1,3 +1,4 @@
+import { InjectionToken } from "@angular/core";
 import { environment } from "environments/environment";
 
 let siemaOptionsObject: {
@@ -18,11 +19,17 @@ export const CONSTANTS = {
   IDS_MAP: environment.IDS_MAP,
   CMS_IDS: environment.CMS_IDS,
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
+  BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
+  SPEED_TEST_IMAGE: 'https://raw.githubusercontent.com/jrquick17/ng-speed-test/02c59e4afde67c35a5ba74014b91d44b33c0b3fe/demo/src/assets/500kb.jpg', // ~500 KB image
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },
   DEVICE: {
     device: 'mobile'
+  },
+  PRODUCT_CARD_MODULE_NAMES: {
+    PLP: 'plp',
+    PDP: 'pdp'
   },
   META: {
     ROBOT: 'index,follow',
@@ -359,6 +366,16 @@ export const CONSTANTS = {
   ByMasterCard: "http://purl.org/goodrelations/v1#MasterCard",
   ByVISA: "http://purl.org/goodrelations/v1#VISA",
   TEST_API: "https://newmoglix.moglix.com/test/testgetresponse",
-  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData']
+  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData'],
+  IMAGE_SIZES_TYPE: ['xlarge', 'large', 'medium', 'small', 'thumbnail', 'icon'],
+  NETWORK_SPEED_THRESHOD_LIMIT: 2,
+  IMAGE_SIZES_REPLACE_DATA: {
+    'icon': 'small',
+    'thumbnail': 'medium',
+    'small': 'large',
+    'medium': 'xlarge',
+    'large': 'xxlarge',
+    'xlarge': 'xxlarge',
+  }
 };
 export default CONSTANTS;

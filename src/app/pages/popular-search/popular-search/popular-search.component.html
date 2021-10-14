@@ -6,7 +6,7 @@
         <h4>{{category.categoryName}}</h4>
         <p>
             <span *ngFor="let item of category['data'];last as isLast">
-                <a href="{{'./alp/' + item.friendlyUrl}}" [title]="item.searchTerm" target="_self">{{item.searchTerm |
+                <a [routerLink]="['/alp/' + item.friendlyUrl]" [title]="item.searchTerm" target="_self">{{item.searchTerm |
                     titlecase}}</a>
                 <span *ngIf="!isLast"> ,</span>
             </span>

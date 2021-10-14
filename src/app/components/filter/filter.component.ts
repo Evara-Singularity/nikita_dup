@@ -1,5 +1,5 @@
-import { EventEmitter, Component, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { EventEmitter, Component, Input, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class FilterComponent {
 
     public selectedFilterIndex: number = 0;
 
-    constructor(public _commonService: CommonService, private _activatedRoute: ActivatedRoute) {
+    constructor(public _commonService: CommonService) {
     }
 
     /**

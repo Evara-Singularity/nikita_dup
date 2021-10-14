@@ -23,7 +23,7 @@ export class ContactComponent {
     private meta: Meta,
     @Inject(PLATFORM_ID) private platformId) {
 
-    this.isServer = isPlatformServer(platformId)
+    this.isServer = isPlatformServer(this.platformId)
 
     this.title.setTitle("Contact Us - Moglix - Call 8448 233 444");
     this.meta.addTag({ "property": "og:title", "content": "Contact Us - Moglix - Call 8448 233 444" });
@@ -36,11 +36,12 @@ export class ContactComponent {
       links.rel = "canonical";
       links.href = CONSTANTS.PROD + "/contact";
       this._renderer2.appendChild(this._document.head, links);
+      this.orgSchema();
     }
 
   }
 
-  ngOnInit() {
+  orgSchema() {
     this.contactUsSchema = this._renderer2.createElement('script');
     this.contactUsSchema.type = "application/ld+json";
     this.contactUsSchema.text = JSON.stringify(
@@ -70,7 +71,7 @@ export class ContactComponent {
 
     )
     this._renderer2.appendChild(this._document.head, this.contactUsSchema);
-  }
+    }
 
 
 }

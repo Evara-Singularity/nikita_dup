@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { CommonService } from '@app/utils/services/common.service';

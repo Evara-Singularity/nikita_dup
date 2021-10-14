@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { Title, makeStateKey, TransferState } from '@angular/platform-browser';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 const BDD = makeStateKey<any>('bigdealdata');

@@ -21,7 +21,8 @@
     <div class="clearfix"></div>
 </div>
 
-<shared-product-listing [pageName]="'BRAND'"
+<shared-product-listing 
+    [pageName]="'BRAND'"
     [brandName]="API_RESPONSE['brand'][0].brandName"
     [brandUrl]="API_RESPONSE['brand'][0].friendlyUrl"
     [headerName]="'Shop ' + (API_RESPONSE['brand'][1][0]?.heading ? (API_RESPONSE['brand'][1][0]?.heading | removeHTML) : API_RESPONSE['brand'][0].brandName) + (API_RESPONSE['brand'][1][0].categoryName ? ' Online' : ' Products')"

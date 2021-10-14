@@ -2387,11 +2387,6 @@ export class CartComponent {
         if (this._tState.hasKey(QAD)) {
             this.questionAnswerList = this._tState.get(QAD, {});
             this.isQuestionApihit = true;
-            // console.log(JSON.stringify(this.questionAnswerList) + "           similar product parmod                     ")
-            /* if (isPlatformBrowser(this.platformId)) {
-                this.tstate.remove(QUESTION_ANSWER_SERVER);
-            } */
-
         }
         else {
             this._productService.getQuestionsAnswers(productId).subscribe(

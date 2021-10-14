@@ -83,6 +83,7 @@ export const ENDPOINTS = {
   GET_PrepaidDiscount: "/payment/getPrepaidDiscount",
   VALIDATE_PRODUCT_SER: "/logistics/validateProductsService",
   GET_CATEGORY: "/category/getcategory",
+  GET_BUCKET: "/bucketAggregation",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",
   GET_CMS_LAYOUT: "/cmsapi/getLayoutJsonByCode?layoutCode=",
@@ -105,6 +106,7 @@ export const ENDPOINTS = {
   GET_CartBySession: "/cart/getCartBySession",
   IS_BRAND_CATEGORY: "/search/isBrandCategory",
   SEARCH: '/search',
+  SPONSERED_PRODUCTS: '/search/getSponsoredProducts',
   GET_PARENT_CATEGORY_JSON_BODY: '/category/getparentcategoryjsonbody',
   SAVE_CORPORATE_GIFTING: '/cmsapi/giftingQuery'
 };

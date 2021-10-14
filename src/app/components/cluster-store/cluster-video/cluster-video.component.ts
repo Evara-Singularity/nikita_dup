@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID, NgModule } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, NgModule } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PlatformLocation, CommonModule } from '@angular/common';
 import { NgxSiemaOptions } from 'ngx-siema';

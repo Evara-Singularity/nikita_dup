@@ -13,9 +13,6 @@ export class CheckoutLoginService {
   private resetTabSateSub: Subject<any> = new Subject<any>();
   private isAtFirstSectionObj: boolean = true;
 
-  constructor(
-  ) { }
-
   resetIdentifierInCheckout(status: boolean) {
     this.identifierResetSubject.next(status);
   }

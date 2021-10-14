@@ -17,7 +17,6 @@ import { CommonService } from '@app/utils/services/common.service';
     styleUrls: [],
     encapsulation: ViewEncapsulation.None,
 })
-
 export class SiemaSlideComponent {
     @Input() options: any;
     @Input() item: any;

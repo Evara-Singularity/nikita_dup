@@ -15,8 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SharedProductListingComponent implements OnInit {
 
-  readonly sponseredProductPosition = [0, 4, 5, 10, 19];
-  readonly sponseredProductPositionMapping = { 0: 0, 3: 2, 7: 3, 15: 4 }
+  readonly sponseredProductPosition = [4, 5, 10, 19, 24];
   private filterInstance = null;
   @ViewChild('filter', { read: ViewContainerRef }) filterContainerRef: ViewContainerRef;
 
@@ -67,29 +66,38 @@ export class SharedProductListingComponent implements OnInit {
 
   getSponseredProducts() {
     if (this._commonService.isBrowser && this.isAdsEnable) {
-      const query = Object.assign({}, this.getSponseredRequest(), this.getParamsUsedInModules())
-      this._productService.getSponseredProducts(query).subscribe(response => {
-        this.sponseredProductLoadStatus = true;
-        if (response['products']) {
-          let products = response['products'] || [];
-          if (products && (products as []).length > 0) {
-            this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
-            let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
-            const reversedSponseredProductList = this.sponseredProductList.reverse();
-            this.productsListingData.products.forEach((product, index) => {
-              if (this.sponseredProductPosition.includes(index)) {
-                if (reversedSponseredProductList.length > 0) {
-                  tempProductList.splice(index, 0, reversedSponseredProductList.pop());
+      const paramsUsedInModules = this.getParamsUsedInModules();
+      if (this.isCallSponseredApi(paramsUsedInModules)) {
+        const query = Object.assign({}, this.getSponseredRequest(), this._commonService.formatParams(paramsUsedInModules))
+        this._productService.getSponseredProducts(query).subscribe(response => {
+          this.sponseredProductLoadStatus = true;
+          if (response['products']) {
+            let products = response['products'] || [];
+            if (products && (products as []).length > 0) {
+              this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
+              let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
+              const reversedSponseredProductList = this.sponseredProductList.reverse();
+              this.productsListingData.products.forEach((product, index) => {
+                if (this.sponseredProductPosition.includes(index)) {
+                  if (reversedSponseredProductList.length > 0) {
+                    tempProductList.splice(index, 0, reversedSponseredProductList.pop());
+                  }
                 }
+              });
+              // incase any product remains adding it to bottom most
+              if(reversedSponseredProductList.length > 0){
+                reversedSponseredProductList.forEach(product=>{
+                  tempProductList.push(reversedSponseredProductList.pop());
+                })
               }
-            });
-            this.productsListingData.products = JSON.parse(JSON.stringify(tempProductList));
+              this.productsListingData.products = JSON.parse(JSON.stringify(tempProductList));
+            }
           }
-        }
-      }, error => {
-        this.sponseredProductLoadStatus = true;
-        console.error('getSponseredProducts failed', error);
-      });
+        }, error => {
+          this.sponseredProductLoadStatus = true;
+          console.error('getSponseredProducts failed', error);
+        });
+      }
     }
   }
 
@@ -122,7 +130,15 @@ export class SharedProductListingComponent implements OnInit {
       queryParams: this._activatedRoute.snapshot.queryParams,
       pageName: this.pageName
     };
-    return this._commonService.formatParams(params);
+    return params;
+  }
+
+  private isCallSponseredApi(formatParamsObj: any): boolean {
+    const filter = formatParamsObj.filter || {};
+    const queryParams = formatParamsObj.queryParams || {};
+    const filterKeys = Object.keys(filter)
+    const queryParamsKeys = Object.keys(queryParams);
+    return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length == 1 && queryParamsKeys.includes('page')))
   }
 
   getUpdatedSession() {

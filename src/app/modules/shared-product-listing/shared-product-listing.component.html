@@ -56,7 +56,7 @@
     <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
             <filter-mid-plp [pageName]="pageName" [position]="i" [filterData]="productsListingData?.filterData"
                 *ngIf="(i === 5 || i === 10 || i === 15)"></filter-mid-plp>        
-            <product-card-skeleton *ngIf="(i === 0 || i === 4 || i === 5 || i === 15) && !sponseredProductLoadStatus && isAdsEnable">
+            <product-card-skeleton *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
             </product-card-skeleton>
         <product-horizontal-card [product]="product" [isFirstView]="(i < 5)">
         </product-horizontal-card>

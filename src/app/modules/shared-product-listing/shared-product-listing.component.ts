@@ -97,6 +97,8 @@ export class SharedProductListingComponent implements OnInit {
           this.sponseredProductLoadStatus = true;
           console.error('getSponseredProducts failed', error);
         });
+      }else{
+        this.sponseredProductLoadStatus = true;
       }
     }
   }
@@ -138,7 +140,8 @@ export class SharedProductListingComponent implements OnInit {
     const queryParams = formatParamsObj.queryParams || {};
     const filterKeys = Object.keys(filter)
     const queryParamsKeys = Object.keys(queryParams);
-    return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length == 1 && queryParamsKeys.includes('page')))
+    const queryParamConditionOne =  (!queryParamsKeys.includes('orderby') && !queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay')) || (queryParamsKeys.includes('orderby') && queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay'))
+    return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length > 0 && queryParamConditionOne ))
   }
 
   getUpdatedSession() {

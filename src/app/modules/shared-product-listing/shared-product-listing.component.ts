@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit } from '@angular/core';
+import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent implements OnInit {
+export class SharedProductListingComponent implements OnInit, OnDestroy {
 
   readonly sponseredProductPosition = [4, 5, 10, 19, 24];
   private filterInstance = null;
@@ -85,7 +85,7 @@ export class SharedProductListingComponent implements OnInit {
                 }
               });
               // incase any product remains adding it to bottom most
-              if(reversedSponseredProductList.length > 0){
+              if(reversedSponseredProductList.length > 0 && this.sponseredProductList.length == 20){
                 reversedSponseredProductList.forEach(product=>{
                   tempProductList.push(reversedSponseredProductList.pop());
                 })
@@ -112,12 +112,10 @@ export class SharedProductListingComponent implements OnInit {
       device_id: this._commonService.getUniqueGAId()
     }
     if (this.pageName == 'SEARCH') {
-      request['a_type'] = 'SEARCH';
       request['page_type'] = 'SEARCH';
       request['keywords'] = encodeURIComponent(this.searchKeyword);
     }
     if (this.pageName == 'CATEGORY') {
-      request['a_type'] = 'CATEGORY';
       request['page_type'] = 'CATEGORY';
       request['category'] = this.categoryId;
       request['categoryName'] = this.categoryName;

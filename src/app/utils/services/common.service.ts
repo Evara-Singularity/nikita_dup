@@ -482,7 +482,7 @@ export class CommonService {
                 actualParams['category'] = params["category"];
             //10766
             if (queryParams["str"] != undefined)
-                actualParams['str'] = queryParams["str"];
+                actualParams['str'] = encodeURIComponent(queryParams["str"]) ;
         } else if (params.pageName == "BRAND") {
             if (params["category"]) {
                 actualParams['category'] = params["category"];
@@ -498,16 +498,16 @@ export class CommonService {
                 actualParams['operation'] = "or";
             if (queryParams["category"] != undefined)
                 actualParams['category'] = encodeURIComponent(queryParams["category"]);
-            actualParams['str'] = queryParams["search_query"];
+            actualParams['str'] = encodeURIComponent(queryParams["search_query"]);
         } else if (params.pageName == "POPULAR SEARCH") {
-            actualParams['str'] = params["searchString"];
+            actualParams['str'] = encodeURIComponent(params["searchString"]);
         }
         else if (params.pageName == "ATTRIBUTE") {
             if (params["category"] != undefined) {
                 actualParams['category'] = params["category"];
             }
             if (queryParams["str"]) {
-                actualParams['str'] = queryParams["str"];
+                actualParams['str'] = encodeURIComponent(queryParams["str"]);
             }
             if (queryParams["pageIndex"]) {
                 actualParams['pageIndex'] = queryParams["pageIndex"];
@@ -940,7 +940,7 @@ export class CommonService {
         this.toggleFilter(true);
         this._router.navigate([currentRoute], extras);
     }
-
+    
     toggleFilter(forceFillyRemove?: boolean) {
         const mob_filter = document.querySelector('.mob_filter');
         if (mob_filter) {

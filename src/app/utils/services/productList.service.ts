@@ -361,6 +361,7 @@ export class ProductListService {
       ratingCount: product.ratingCount,
       reviewCount: product.reviewCount,
       uclid: product.uclid,
+      keyFeatures: product.keyFeatures || [],
       internalProduct: (!product.hasOwnProperty('internalProduct')) ? true : product.internalProduct // if intenal product prop does not exist then it is internal product
     } as ProductsEntity;
   }

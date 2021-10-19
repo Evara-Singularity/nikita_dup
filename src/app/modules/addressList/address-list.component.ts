@@ -163,8 +163,9 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    deleteAddress() {
-        // console.log(this.sbm, this.sai);
+    deleteAddress(index?,type?,address?) {
+        
+        this.sbm = {index: index, type: type, address: address}
         this.outData$.emit({
             da: this.sbm
         });
@@ -175,6 +176,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
 
         this.sbm = undefined;
+        
         this.setAddressIndex();
     }
 

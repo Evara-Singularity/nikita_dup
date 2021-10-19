@@ -31,6 +31,7 @@ export class ProductListService {
   showMidPlpFilterLoader: boolean = true;
   
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading, bucketAvailable?: boolean) {
+
     if (bucketAvailable) {
       this.productListingData['filterData'] =  JSON.parse(JSON.stringify(rawSearchData.buckets));
       this.showMidPlpFilterLoader = false;
@@ -70,8 +71,11 @@ export class ProductListService {
     if (categoryId) {
       filter_url += "?category=" + categoryId;
     }
+
+    const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
+    
     const params = {
-      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment),
+      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(fragment),
       queryParams: this._activatedRoute.snapshot.queryParams,
       pageName: pageName
     };

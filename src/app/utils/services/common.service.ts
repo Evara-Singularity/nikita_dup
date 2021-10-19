@@ -482,7 +482,7 @@ export class CommonService {
                 actualParams['category'] = params["category"];
             //10766
             if (queryParams["str"] != undefined)
-                actualParams['str'] = encodeURIComponent(queryParams["str"]) ;
+                actualParams['str'] = (queryParams["str"]) ;
         } else if (params.pageName == "BRAND") {
             if (params["category"]) {
                 actualParams['category'] = params["category"];
@@ -498,16 +498,16 @@ export class CommonService {
                 actualParams['operation'] = "or";
             if (queryParams["category"] != undefined)
                 actualParams['category'] = encodeURIComponent(queryParams["category"]);
-            actualParams['str'] = encodeURIComponent(queryParams["search_query"]);
+            actualParams['str'] = (queryParams["search_query"]);
         } else if (params.pageName == "POPULAR SEARCH") {
-            actualParams['str'] = encodeURIComponent(params["searchString"]);
+            actualParams['str'] = (params["searchString"]);
         }
         else if (params.pageName == "ATTRIBUTE") {
             if (params["category"] != undefined) {
                 actualParams['category'] = params["category"];
             }
             if (queryParams["str"]) {
-                actualParams['str'] = encodeURIComponent(queryParams["str"]);
+                actualParams['str'] = (queryParams["str"]);
             }
             if (queryParams["pageIndex"]) {
                 actualParams['pageIndex'] = queryParams["pageIndex"];

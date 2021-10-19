@@ -113,7 +113,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     }
     if (this.pageName == 'SEARCH') {
       request['page_type'] = 'SEARCH';
-      request['keywords'] = encodeURIComponent(this.searchKeyword);
+      request['keywords'] = this.searchKeyword;
     }
     if (this.pageName == 'CATEGORY') {
       request['page_type'] = 'CATEGORY';

@@ -23,7 +23,8 @@ export class TripleNineComponent {
     public router: Router,
     private meta: Meta,
     private route: ActivatedRoute,
-    public _commonService:CommonService) {
+    public _commonService:CommonService,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;;

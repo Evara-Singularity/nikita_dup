@@ -85,8 +85,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
                 }
               });
               // incase any product remains adding it to bottom most
-              if(reversedSponseredProductList.length > 0 && this.sponseredProductList.length == 20){
-                reversedSponseredProductList.forEach(product=>{
+              if (reversedSponseredProductList.length > 0 && tempProductList.length == 24) {
+                reversedSponseredProductList.forEach(product => {
                   tempProductList.push(reversedSponseredProductList.pop());
                 })
               }

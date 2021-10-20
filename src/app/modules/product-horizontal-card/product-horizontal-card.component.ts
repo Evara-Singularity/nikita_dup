@@ -96,6 +96,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     this._commonService.getNetworkSpeedState().subscribe(speed => {
       this.changeThumbImage(speed);
     })
+    this.isAd = !this.product.internalProduct
   }
 
 
@@ -513,7 +514,9 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   cardVisisble(htmlElement) {
+    console.log('cardVisisble imp', this.isAd, this._commonService.isBrowser );
     if (this.isAd && this._commonService.isBrowser) {
+      
       this.onlineSalesImpressionTrackUsingGTM();
     }
   }

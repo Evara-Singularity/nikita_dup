@@ -57,7 +57,7 @@ export class ProductSponsoredListComponent implements OnInit {
       client_id: 302211,
       sku_id: encodeURIComponent(this.productId.toLowerCase()),
       pcnt: 10,
-      page_type: 'SEARCH',
+      page_type: 'PRODUCT',
       device_id: this.commonService.getUniqueGAId()
     }
     this.productService.getSponseredProducts(query).subscribe((response: any) => {

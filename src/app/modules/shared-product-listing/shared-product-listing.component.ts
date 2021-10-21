@@ -64,17 +64,11 @@ export class SharedProductListingComponent {
   ngOnChanges(){
     this.updateFilterCountAndSort();
   }
-  
+
   removeFilterChip(key, termName) {
-    const item = this.productsListingData.filterData.find(f => f.name === key);
-    if (item) {
-      const term = item.terms.find(t => t.term.toLowerCase() === termName.toLowerCase()); 
-      if (term) {
-        this._commonService.genricApplyFilter(key, term);
-      }
-    }
+    this._commonService.genricApplyFilter(key, {term: termName});
   }
-  
+
   updateFilterCountAndSort(){
     this._productListService.pageName = this.pageName.toLowerCase();
 
@@ -109,6 +103,8 @@ export class SharedProductListingComponent {
       });
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
+      this.productsListingData.filterData[3].terms = this.productsListingData.filterData[3].terms.reverse();   //ODP-1570, Discount asecending to descending 
+      this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
       this.filterInstance.instance['isBrandPage'] = this.pageName === 'BRAND';
       this.filterInstance.instance['brandName'] = this.brandName;

@@ -22,7 +22,6 @@ export class ExclusiveComponent {
     @Inject(DOCUMENT) private _document,
     private _renderer2: Renderer2,
     private meta: Meta,
-    private activatedRoute: ActivatedRoute,
     private title: Title,
     public router: Router,
     private route: ActivatedRoute,

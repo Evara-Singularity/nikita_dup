@@ -12,7 +12,6 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { Step } from '../../utils/validators/step.validate';
 
-declare let $: any;
 
 
 @Component({

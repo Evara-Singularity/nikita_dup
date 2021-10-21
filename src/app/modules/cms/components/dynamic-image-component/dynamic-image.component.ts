@@ -1,5 +1,4 @@
-import { Component, Input, SimpleChange } from "@angular/core";
-import { Router } from '@angular/router';
+import { Component, Input } from "@angular/core";
 import { CmsService } from "../../cms.service";
 
 @Component({

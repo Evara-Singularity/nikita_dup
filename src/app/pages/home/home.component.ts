@@ -2,7 +2,6 @@ import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import {
 	Component,
-	ViewEncapsulation,
 	OnInit,
 	Inject,
 	Renderer2,

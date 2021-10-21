@@ -5,7 +5,6 @@ import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { FooterService } from '@app/utils/services/footer.service';
 import { CommonService } from '@app/utils/services/common.service';
-declare let $: any;
 
 @Component({
     selector: 'press',

@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -59,6 +59,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     invalidOTPMessage: string = null;
 
     constructor(
+        private meta: Meta,
         private commonService: CommonService,
         private toastService: ToastMessageService,
         private localStorageService: LocalStorageService,
@@ -70,7 +71,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,
         private loaderService: GlobalLoaderService,
-        private checkoutLoginService: CheckoutLoginService
+        private checkoutLoginService: CheckoutLoginService,
     ){
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;

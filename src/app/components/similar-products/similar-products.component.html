@@ -1,39 +1,21 @@
-<!-- Similar Products-->
 <section class="Bestseller card similar-prod" *ngIf="similarProducts && similarProducts.length>0">
-    <div class="clearfix border-bottom">
-        <div class="container pad-tb-10">
-            <h3 class="f-left">SIMILAR PRODUCTS</h3>
-            <a *ngIf="similarProducts && similarProducts.length>2" href="javascript:void(0);" (click)="showAllSimilar()" class="btn-red f-right">
-                VIEW ALL
-            </a>
+    <div class="upper-view-all-sec">
+        <div class="upper-view-all-sec-left">
+            <h4>SIMILAR PRODUCTS</h4>
+        </div>
+        <!-- <div class="upper-view-all-sec-right">
+            <button>VIEW ALL</button>
+        </div> -->
+    </div>
+    <div class="vertical-scroll-container">
+        <div class="inner-scroll-container" [style.width.px]="similarProducts.length * 170">
+            <ng-container *ngFor="let product of similarProducts;" >
+                <product-horizontal-card 
+                    [product]="product"
+                    [cardMetaInfo]='cardMetaInfo'
+                    [cardFeaturesConfig]='cardFeaturesConfig' >
+                </product-horizontal-card>
+            </ng-container>
         </div>
     </div>
-    <ul class="list view-products">
-        <ng-container *ngFor="let similarProduct of similarProducts; let i = index;">
-            <li *ngIf="i<2">
-                <a  (click)="navigateTo(similarProduct.productUrl)" class="clearfix">
-                    <div class="product-img">
-                        <img src="{{imagePath+similarProduct.mainImageLink}}" alt="product Image">
-                    </div>
-                    <div class="product-description">
-                        <p class="description-txt">{{similarProduct.productName}}</p>
-                        <p class="price">
-                            <span class="before-discount"> &#x20B9;{{similarProduct.mrp | mathFloor | number:
-                                '1.0-0'}}</span>
-                            <span class="discount">{{((similarProduct.mrp -
-                                similarProduct.priceWithoutTax)/similarProduct.mrp)*100 | mathFloor
-                                | number: '1.0-0'}}% OFF</span>
-                            <span class="after-discount">&#x20B9;{{similarProduct.priceWithoutTax | mathFloor |
-                                number: '1.0-0'}}</span>
-                        </p>
-                        <ng-container *ngFor="let itemEl of similarProduct.shortDesc;">
-                            <p *ngIf="itemEl.key==='Brand'" class="seller">
-                                <span>By :</span> {{itemEl.value}}
-                            </p>
-                        </ng-container>
-                    </div>
-                </a>
-            </li>
-        </ng-container>
-    </ul>
 </section>

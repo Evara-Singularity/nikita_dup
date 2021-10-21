@@ -24,8 +24,6 @@ export class TrackOrderComponent implements OnInit {
     "Tracking information from courier partner is not available at the moment.";
   deliveredInfo = null;
 
-  constructor() { }
-
 
   ngOnInit() {
     this.displayScans = this.itemDetails["hasInfo"];

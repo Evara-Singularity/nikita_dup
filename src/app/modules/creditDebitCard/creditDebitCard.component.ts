@@ -7,7 +7,6 @@ import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { CheckoutService } from '@app/utils/services/checkout.service';
-import { CreditDebitCardService } from "./creditDebitCard.service";
 import { CreditCardValidator } from 'ng2-cc-library';
 import * as creditCardType from 'credit-card-type';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
@@ -48,7 +47,6 @@ export class CreditDebitCardComponent {
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
         private _cartService: CartService, 
-        private _creditDebitService: CreditDebitCardService, 
         private loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder) {
 

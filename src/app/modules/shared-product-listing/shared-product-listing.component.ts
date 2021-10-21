@@ -32,6 +32,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() headerName: string;
   @Input() categoryId: string; // only received in case used in category module
   @Input() categoryName: string; // only received in case used in category module
+  @Input() categoryTaxonomay: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -120,6 +121,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       request['category'] = this.categoryId;
       request['categoryName'] = this.categoryName;
       request['categories'] = this.categoryId;
+      request['taxonomy'] = this.categoryTaxonomay;
     }
     return request;
   }

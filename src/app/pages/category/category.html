@@ -25,6 +25,7 @@
         [pageName]="'CATEGORY'" 
         [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"
         [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
+        [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
         [productsListingData]="_productListService?.productListingData"
         *ngIf="_productListService &&_productListService.productListingData">
     </shared-product-listing>

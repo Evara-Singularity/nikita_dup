@@ -102,7 +102,7 @@ export class AlpResolver implements Resolve<object> {
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
         this._commonService.showLoader = true;
-        const GET_CIMS_ATTRIBUTE_LISTING: any = makeStateKey<{}>('get_cims_attribute-' + _activatedRouteSnapshot.params['attribute']);
+        const GET_CIMS_ATTRIBUTE_LISTING: any = makeStateKey<{}>('get_cims_attribute-' + _activatedRouteSnapshot.params['attribute'] + Math.random());
         const OTHER_DATA: any = makeStateKey<{}>('other_data-' + _activatedRouteSnapshot.params['attribute']);
         const BREADCRUMP: any = makeStateKey<{}>('breadcrump-' + _activatedRouteSnapshot.params['attribute']);
 

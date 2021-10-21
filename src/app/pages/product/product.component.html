@@ -1,7 +1,7 @@
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 
-    <div class="prod-carsl" addClass [ngClass]="[carouselInitialized ? '' : 'before-init']">
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1" [ngClass]="[carouselInitialized ? '' : 'before-init']">
 
         <ng-container #productCrousel></ng-container>
 

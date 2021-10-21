@@ -119,6 +119,9 @@
         &.before-init {
             height: 362px;
             overflow: hidden;
+            &.hasOneImage{
+                height: 333px;
+            }
         }
     }
     .thumb-carsl {

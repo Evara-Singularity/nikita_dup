@@ -577,6 +577,7 @@ export class CategoryComponent {
         } else {
             this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
             this.subCategoryInstance.instance.initializeSubcategoryData(this.API_RESPONSE.category[0].children);
+            this.subCategoryInstance.instance.showList(false);
         }
 
         this.layoutType = 0;

@@ -557,7 +557,7 @@ export class EmiComponent {
             this.step=1;
             const emiKey = emiValues[0]['key'] // select first key by default
             this.selectedEMIKey = emiKey;
-            if(value == 'BAJFIN'){
+            if(value == 'BAJFIN' || value == 'BAJAJ'){
                 // this.disableInterest = true;
                 this.bajajFinservField = true;
                 this.emiForm.removeControl('requestParams');

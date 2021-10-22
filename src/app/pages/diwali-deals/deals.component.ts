@@ -6,8 +6,6 @@ import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 const DSD = makeStateKey<any>('dealsdata');
 
-declare let $: any;
-
 @Component({
   selector: 'deals',
   templateUrl: 'deals.html',

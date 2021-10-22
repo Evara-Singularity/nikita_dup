@@ -1,0 +1,219 @@
+.zoomView{
+    ngx-siema-slide {
+        display: block;
+        height: 93vh;
+        .img-block{
+            height: 100%;
+            padding:0px;
+            .inner_block{
+                height: 100%;
+                .element{
+                    height: 100%;
+                    vertical-align: middle;
+                    img {
+                        width: 100%;
+                        display: block;
+                        height:auto;
+                    }
+                }
+            }
+        }
+    }
+    .youtube_icon {
+        width: 50px;
+        height: 50px;
+        transform: translate(-50%,-50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+}  
+ngx-siema-slide,siema-slide{
+    ::ng-deep {
+        display:block; 
+        .img-block {
+            width: 100%;
+            height: 360px;
+            background: white;
+            position: relative;
+            padding: 15px;
+            .inner_block {
+                height: 100%;
+                .inner_element {
+                    position: relative;
+                }
+                .element {
+                    height: 100%;
+                    .loader-image{
+                        width: 50px;
+                        height: 50px;
+                        position: fixed;
+                        top: 35%;
+                        left: 50%;
+                        bottom: 0;
+                        transform: translate(-50%,-50%);
+                    }
+                }
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+   
+    &:host{
+        display:block;  
+        .youtube_icon {
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%,-50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
+}
+ProductCrouselSlide{
+    &:host{
+        display:block;  
+        .youtube_icon {
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%,-50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }     
+}
+// Carousel Dots
+ul.pager {
+    margin: auto;
+    text-align: center;
+    bottom: 0px;
+    position: relative;
+    background: white;
+    li {
+        display: inline-block;
+        vertical-align: top;
+        margin: 5px;
+        overflow: hidden;
+        z-index: 99;
+        &.pager_dot {
+            height: 8px;
+            margin-top: 8px;
+            width: 8px;
+            background-color: #bebebe;
+            border-radius: 75%;
+            cursor: pointer;
+            &.active {
+                background-color: #222;
+            }
+        }
+        &.pager_icon_dot {
+            color: #bebebe;
+            i {
+                font-size: 12px;
+                color: #bebebe;
+            }
+        }
+        &.active {
+            color: #222;
+            i {
+                font-size: 12px;
+                color: #222;
+            }
+        }
+    }
+}
+.loader-image{
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,-50%);
+}
+// .prod-carsl {
+//     &.oos {
+//         .img-block {
+//             img {
+//                 opacity: 0.6;
+//             }
+//         }
+//     }
+//     .img-block {
+//         width: 100%;
+//         height: 360px;
+//         background: white;
+//         position: relative;
+//         padding: 15px;
+//         .inner_block {
+//             height: 100%;
+//             .inner_element {
+//                 position: relative;
+//             }
+//             .element {
+//                 height: 100%;
+//             }
+//             img {
+//                 width: 100%;
+//                 height: 100%;
+//             }
+//         }
+//     }
+//     &.zoomView {
+//         &.oos {
+//             p {
+//                 display: none;
+//             }
+//             img {
+//                 opacity: 1;
+//             }
+//         }
+//         position: fixed !important;
+//         top: 52px;
+//         left: 0;
+//         width: 100%;
+//         bottom:0;
+//         right:0;
+//         z-index: 11;
+//         background: #fff;
+//         .img-block {
+//             height: 96vh;
+//             padding: 0px;
+//             .inner_block {
+//                 .element {
+//                     height: auto !important;
+//                 }
+//             }
+//             .pinch-zoom-container {
+//                 height: 100% !important;
+//                 left: 0px;
+//                 right: 0px;
+//                 margin: 0px auto;
+//                 bottom: 60px;
+//                 top: 0;
+//                 .element {
+//                     // transform: translate(0,0);
+//                     img {
+//                         height: auto !important;
+//                         width: 100%;
+//                         display: block;
+//                     }
+//                 }
+//             }
+//         }
+//         .zoomCloseBtn {
+//             display: block;
+//             padding: 15px;
+//             i {
+//                 font-size: 18px;
+//             }
+//         }
+//     }
+// }
+
+  

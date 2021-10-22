@@ -68,27 +68,31 @@ export class BrandComponent {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
-            console.log('this.API_RESPONSE', this.API_RESPONSE);
 
-            // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList);
-
-            const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-            if (!this._activatedRoute.snapshot.params.id) {
-                this.setPopularCategories(category.terms);
-            }
+            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
 
             // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
 
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
+                if (res.hasOwnProperty('buckets')) {
+                    this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+                    this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
+                    this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
+                    
+                    const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
+                    if (!this._activatedRoute.snapshot.params.id) {
+                        this.setPopularCategories(category.terms);
+                    }
+                    // genrate data for footer
+                    this.genrateAndUpdateBrandFooterData();
+                }
+            });
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
 
-            // genrate data for footer
-            this.genrateAndUpdateBrandFooterData();
 
             // Send Adobe Tracking Data
             this.setAdobeTrackingData();

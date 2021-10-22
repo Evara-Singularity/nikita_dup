@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@services/productList.service';
@@ -10,6 +10,7 @@ import CONSTANTS from '@app/config/constants';
 import { DOCUMENT } from '@angular/common';
 import { Meta, Title } from '@angular/platform-browser';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
+import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 
 let digitalData = {
   page: {},
@@ -18,7 +19,7 @@ let digitalData = {
 };
 
 @Component({
-  selector: 'search-v1',
+  selector: 'search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss', '../category/category.scss']
 })
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
   public API_RESULT: any;
   public didYouMean: any;
   public headerNameBasedOnCondition;
+  @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -52,6 +54,10 @@ export class SearchComponent implements OnInit {
     this.setDataFromResolver();
   }
 
+  ngAfterViewInit(): void {
+    this.sharedProductList.getSponseredProducts();  
+  }
+
   setHeaderNameBasedOnCondition(){
     if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
       this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
@@ -74,6 +80,16 @@ export class SearchComponent implements OnInit {
 
       // Update shared product list Data
       this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results');
+      this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'SEARCH').subscribe(res => {
+        if (res.hasOwnProperty('buckets')) {
+          this.API_RESULT.searchData[0].buckets = JSON.parse(JSON.stringify(res['buckets']));
+          this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESULT['searchData'][0], 'Search Results', true);
+        }
+      });
+
+      if (this.sharedProductList) {
+        this.sharedProductList.getSponseredProducts();
+      }
 
       // Initialize the current activated filter count
       this._commonService.selectedFilterData.totalCount = this.API_RESULT['searchData'][0].productSearchResult.totalCount;
@@ -146,7 +162,7 @@ export class SearchComponent implements OnInit {
   }
 
   sendAnalyticsCall(){
-    if (this._commonService.isBrowser) {
+    if (this._commonService.isBrowser && this.API_RESULT['searchData'][0].productSearchResult.products[0]) {
       digitalData["page"]["trendingSearch"] = 'no';
       digitalData['page']['searchTerm'] = this.API_RESULT['searchData'][0].productSearchResult["totalCount"] === 1 ? this.API_RESULT['searchData'][0].productSearchResult.products[0].moglixPartNumber : this._activatedRoute.snapshot.queryParams['search_query'];
       digitalData['page']['suggestionClicked'] = this._activatedRoute.snapshot.queryParams['lsource'] && this._activatedRoute.snapshot.queryParams['lsource'] == 'sclick' ? 'yes' : 'no'

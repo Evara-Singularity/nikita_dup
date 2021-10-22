@@ -33,4 +33,5 @@ export interface AddToCartProductSchema {
     expireAt: null;
     filterAttributesList?: any;
     isOutOfStock?: boolean,
+    brandId?: string,
 }

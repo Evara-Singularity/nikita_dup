@@ -9,9 +9,6 @@ export class SiemaCrouselService{
   moveToSlideInProduct: Subject<number> = new Subject<number>();
   productCrouselPopupState: Subject<any> = new Subject<any>();
 
-
-  constructor() { }
-
   getMoveProductScrouselSlide(): Observable<number>{
     return this.moveToSlideInProduct.asObservable();
   }

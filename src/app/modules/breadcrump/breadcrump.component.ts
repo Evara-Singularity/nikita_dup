@@ -1,4 +1,4 @@
-import { Component, Renderer2, ChangeDetectorRef, Input, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Renderer2, ChangeDetectorRef, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { BreadcrumpService } from './breadcrump.service';

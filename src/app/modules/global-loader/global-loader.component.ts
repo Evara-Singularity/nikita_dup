@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 

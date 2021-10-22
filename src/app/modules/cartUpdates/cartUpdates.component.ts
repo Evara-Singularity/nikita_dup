@@ -1,5 +1,5 @@
 import { ViewEncapsulation } from '@angular/core';
-import { Component, Input, EventEmitter, Output, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { GlobalState } from '@app/utils/global.state';
 import { ModalService } from '../modal/modal.service';

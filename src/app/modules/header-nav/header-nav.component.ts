@@ -1,7 +1,7 @@
 import { CommonService } from '@app/utils/services/common.service';
 import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { CartService } from '../../utils/services/cart.service';
@@ -11,7 +11,6 @@ import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
-import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -222,12 +221,24 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 null,
                 this.injector
             );
+            console.log(this.bottomSheetInstance);
             this.bottomSheetInstance.instance['sbm'] = true;
+              
         } else {
             //toggle side menu
             this.bottomSheetInstance.instance['sbm'] = !(this.bottomSheetInstance.instance['sbm']);
         }
+        this.checkUserLogin();
         this.loadBottomSheetAnalyticEvent();
+    }
+    checkUserLogin(){
+        let user = this.localStorageService.retrieve('user');
+        if(user && user.authenticated === 'true'){
+            this.bottomSheetInstance.instance['userLogin'] = true;
+        }
+        else{
+            this.bottomSheetInstance.instance['userLogin'] = false;
+        }
     }
 
     loadBottomSheetAnalyticEvent() {

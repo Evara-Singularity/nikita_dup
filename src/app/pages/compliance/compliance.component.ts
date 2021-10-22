@@ -2,7 +2,7 @@ import { Component, Renderer2, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
-import CONSTANTS from '@app/config/constants';
+import {CONSTANTS} from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
 declare let $: any;

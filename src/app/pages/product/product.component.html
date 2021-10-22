@@ -102,13 +102,13 @@
                     <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
                         {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                         <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inclusive Price: {{productPrice | mathFloor | number:'1.0-0'}}
+                            GST @{{taxPercentage}}% Inclusive Price: {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                         </small>
                     </p>
                     <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
                         {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                         <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inclusive Price: {{bulkSellingPrice}}
+                            GST @{{taxPercentage}}% Inclusive Price: {{bulkSellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                         </small>
                     </p>
                 </ng-container>

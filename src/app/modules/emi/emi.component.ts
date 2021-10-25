@@ -403,7 +403,7 @@ export class EmiComponent {
             addressList: addressList,
             "bankname":this.selectedBank,
             "bankcode":data.requestParams.bankcode,
-            "emitenure": this.selectedEMIKey,
+            "emitenure": emitenureFlag,
             "emiFlag": 1,
             "noCostEmiDiscount": Math.round(this.nocostEmiDiscount * 100)/100,
             "gateway": this.type == "tax" ? "razorpay": ""
@@ -455,7 +455,6 @@ export class EmiComponent {
             }
 
             let data = res.data;
-
             let payuData;
             if(this.type == "retail"){
                 payuData = {
@@ -483,10 +482,11 @@ export class EmiComponent {
                 };
                 
                 this.payuData = payuData;
+                this.payuData['emi_duration'] = parseInt(this.selectedEMIKey);
             }else{
                 this.payuData = data;
+                this.payuData['emi_duration'] = parseInt(this.selectedEMIKey);
             }
-            this.payuData['emi_duration'] = parseInt(this.selectedEMIKey),
             this.updateBuyNowToLocalStorage();
             this.isValid = true;
             setTimeout(() => {

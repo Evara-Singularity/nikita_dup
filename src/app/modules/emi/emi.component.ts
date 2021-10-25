@@ -396,6 +396,8 @@ export class EmiComponent {
             'city': addressList["city"],
             'paymentMode': data.mode
         });
+
+        alert(this.selectedEMIKey);
         
         let extra = {
             "mode": data.mode,
@@ -481,11 +483,12 @@ export class EmiComponent {
                     store_card: data.store_card,
                     user_credentials: data.user_credentials
                 };
-    
+                
                 this.payuData = payuData;
             }else{
                 this.payuData = data;
             }
+            this.payuData['emi_duration'] = parseInt(this.selectedEMIKey),
             this.updateBuyNowToLocalStorage();
             this.isValid = true;
             setTimeout(() => {

@@ -161,7 +161,8 @@ export class EmiComponent {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
         this.dataEmi = this._objectToArray.transform(cardTypeResponse, "associative");
-
+        
+ 
         this.dataEmi.forEach((element, index) => {
             if (this.bankMap.hasOwnProperty(element.key)) {
                 element.key = this.bankMap[element.key];
@@ -180,6 +181,13 @@ export class EmiComponent {
                 }
             });
         });
+
+        this.dataEmi.map(d => {
+            if (d.key === 'BAJAJ') {
+                d.bankname = 'Bajaj Finserv No Cost Emi';
+            }
+            return d;
+        })
 
         const noCostEmiCount = {};
         for (const key in this.emiResponse) {

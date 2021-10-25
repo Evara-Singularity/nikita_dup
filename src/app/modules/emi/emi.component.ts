@@ -397,8 +397,6 @@ export class EmiComponent {
             'paymentMode': data.mode
         });
 
-        alert(this.selectedEMIKey);
-        
         let extra = {
             "mode": data.mode,
             "paymentId": 14,

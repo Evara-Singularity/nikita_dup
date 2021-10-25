@@ -256,8 +256,6 @@ export class EmiComponent {
 
                 
                 this.emiResponse = data.emiResponse;
-                
-                alert('a');
 
                 this.dataEmi = this._objectToArray.transform(data.emiResponse, "associative");
                 this.dataEmi.forEach((element, index) => {
@@ -437,9 +435,6 @@ export class EmiComponent {
             newdata['validatorRequest']["shoppingCartDto"]['cart']['noCostEmiDiscount']=this.nocostEmiDiscount
         }
 
-        alert(this.selectedEMIKey);
-
-        return;
 
         this.isShowLoader=true;
         /*//// console.log("New Data for pay", newdata);*/

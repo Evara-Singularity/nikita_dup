@@ -7,7 +7,7 @@
                          <a (click)="_commonService.applyFilter(isBrandPage ? ('/brands/' + brandUrl + '/' + item?.categoryLink) : item?.categoryLink)">
                              <span class="name">{{item.term}}</span>
                         </a>
-                        <span class="total-count" *ngIf="item.childCategoryList">({{item.childCategoryList.length}})</span>
+                        <span class="total-count" *ngIf="item.childCategoryList">({{item?.childCategoryList?.length}})</span>
                  </div>
                 <ul *ngIf="item.childCategoryList && item.childCategoryList.length > 0" class="custom-cbox">
                     <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.childCategoryList }"></ng-container>

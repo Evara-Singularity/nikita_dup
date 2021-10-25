@@ -41,6 +41,7 @@ export function app() {
       req,
       providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }]
     }, (err: Error, html: string) => {
+      // manipulate html string to add preloads for images
       res.status(html ? 200 : 500).send(appendImagePreloads(html) || err.message);
     });
   });
@@ -53,7 +54,6 @@ function shouldCompress (req, res) {
     // don't compress responses with this request header
     return false
   }
-  // console.log('shouldCompress', 'called');
   // fallback to standard filter function
   return compression.filter(req, res)
 }
@@ -61,13 +61,13 @@ function shouldCompress (req, res) {
 function appendImagePreloads(indexHtml) {
   const regexImage = /<img.*?src=".*?"/g
   const regexImageSrc = /src=".*?"/g
-  // console.log("indexHtml.match(regexImage) ==>", indexHtml.match(regexImage));
+  // maxLimit is to make sure only images coming in first view ports are being preloaded.
+  const maxLimit = 5;
   let urls = [];
   if (indexHtml.match(regexImage)) {
-    urls = indexHtml.match(regexImage).map((val) => {
+    urls = indexHtml.match(regexImage).map((val, index) => {
       // extract image URL from extacted img tags
-      // console.log("val.match(regexImageSrc).length ==>", val.match(regexImageSrc));
-      if (val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) {
+      if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit) {
         return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
         `;
       } else {

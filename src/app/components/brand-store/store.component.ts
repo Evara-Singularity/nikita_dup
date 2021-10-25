@@ -3,12 +3,11 @@ import {
 	ViewEncapsulation,
 	Renderer2,
 	Inject,
-	PLATFORM_ID,
 	ElementRef,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { Title, Meta, TransferState } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
@@ -38,12 +37,10 @@ export class StoreComponent {
 	isBrowser: boolean;
 	constructor(
 		private elementRef: ElementRef,
-		private _tState: TransferState,
 		private _renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document,
 		public _router: Router,
 		private meta: Meta,
-		private _activatedRoute: ActivatedRoute,
 		private title: Title,
 		private router: Router,
 		private route: ActivatedRoute,
@@ -122,17 +119,17 @@ export class StoreComponent {
 			}
 			case 'dewalt': {
 				id = this.dewalt;
-				video = '';
+				video = 'https://www.youtube.com/embed/jYG_wjXMZ0g';
 				break;
 			}
 			case 'stanley': {
 				id = this.stanley;
-				video = '';
+				video = 'https://www.youtube.com/embed/1UtBRAOtI7I';
 				break;
 			}
 			case 'black-decker': {
 				id = this.blackDecker;
-				video = '';
+				video = 'https://www.youtube.com/embed/aqXDENG5MC8';
 				break;
 			}
 		}

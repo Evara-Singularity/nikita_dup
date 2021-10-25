@@ -1,13 +1,13 @@
 <app-pop-up (outData$)="outData($event)" class="openMobikwikPopup"
     [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:''}">
-    <div class="content-popup youtube-container" content>
+    <div class="content-popup youtube-container zoomView" content>
         <ngx-siema [options]="ngxSiemaOptions">
             <ngx-siema-slide *ngFor="let item of productAllImages;let itemIndex=index">
                 <ng-container *ngIf="item.contentType=='IMAGE'">
                     <div  class="img-block" >
                         <div class="inner_block">
                             <div class="pinch-zoom element" style="transform-origin: 0% 0%;" [attr.id]="'prodImg_' + itemIndex" >
-                                <img src="{{item?.xxlarge}}">
+                                <img src="{{item?.xxlarge  }}">
                             </div>
                         </div>
                     </div>

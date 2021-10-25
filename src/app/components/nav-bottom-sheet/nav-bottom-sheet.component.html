@@ -1,8 +1,10 @@
 <app-bottom-menu *ngIf="sbm" (outData$)="onUpdate($event)">
-    <ul class="container" content>
-        <li (click)="resetBottomOptCall('/dashboard/purchase-list')" [routerLink]="['']">View Wishlist</li>
-        <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']">View All Category</li>
-        <li (click)="resetBottomOptCall('/')" [routerLink]="['/']">Home</li>
-        <li (click)="resetBottomOptCall()">Cancel</li>
+    <ul class="container plp-bottom-modal" content>
+        <li><span>More Options</span> <i (click)="resetBottomOpt()" class="icon-circle-delete"></i> </li>
+        <li *ngIf="!userLogin" (click)="resetBottomOptCall('/login')" [routerLink]="['']"><i class="icon-profile f-22"></i>Sign-In/Sign-Up</li>
+        <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']"><i class="icon-all-categories"></i>All Categories</li>
+        <li (click)="resetBottomOptCall('/brand-store')" [routerLink]="['/']"><i class="icon-brand_store f-22"></i>Brand Store</li>
+        <li (click)="resetBottomOptCall('/popular-search')"><i class="icon-search"></i>Popular Search</li>
+        <li (click)="resetBottomOptCall('/dashboard/purchase-list')"><i class="icon-purchase-list"></i>Wishlist</li>
     </ul>
 </app-bottom-menu>

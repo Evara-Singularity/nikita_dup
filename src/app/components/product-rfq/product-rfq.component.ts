@@ -4,7 +4,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
-import { GlobalState } from '../../utils/global.state';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { stateList } from '../../utils/data/state';
@@ -73,7 +72,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     });
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(private localStorageService: LocalStorageService, private globalState: GlobalState, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
+    constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
      private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService)
     {
         this.stateList = stateList['dataList'];

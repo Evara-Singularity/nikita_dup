@@ -9,7 +9,6 @@ import {
 } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
-import { Router } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, mergeMap, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
@@ -33,7 +32,7 @@ export class BrandResolver implements Resolve<any> {
     this.loaderService.setLoaderState(true);
 
     const BRAND_DESC_KEY = makeStateKey<object>('brand-desc-and-other-details');
-    const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa');
+    const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa' + _activatedRouteSnapshot.fragment);
     const CMS_DATA_KEY = makeStateKey<object>('cms-data-pwa');
     const ATTRIBUTE_KEY = makeStateKey<object>('attribute-url-data-pwa');
     const SIMILAR_KEY = makeStateKey<object>('similar-category-pwa');
@@ -61,9 +60,9 @@ export class BrandResolver implements Resolve<any> {
 
       return of([brandCategory_data, brandList_data, similar_category_data,  cms_data, attribute_data]);
     } else {
-
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + _activatedRouteSnapshot.params.brand;
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
+      // let BUCKET_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BUCKET;
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
       const ATTRIBUTE_URL = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + _activatedRouteSnapshot.params.category;
       const SIMILAR_CATEGORY_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + _activatedRouteSnapshot.params.category;
@@ -97,8 +96,9 @@ export class BrandResolver implements Resolve<any> {
 
       const getBrandListObs = this.http.get(GET_BRAND_NAME_API_URL).pipe(share(), mergeMap(data => {
         actualParams['brand'] = data['brandName'];
+        actualParams['bucketReq'] = 'n';
         return forkJoin([
-          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams })
+          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }),
         ])
         }
       ));

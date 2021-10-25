@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import CONSTANTS from '../../config/constants';
-import { CommonService } from '@app/utils/services/common.service';
-
-declare let $: any;
+import { CommonService } from '@app/utils/services/common.service'
 
 @Component({
     selector: 'privacy',

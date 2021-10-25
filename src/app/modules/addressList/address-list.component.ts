@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, Inject, OnInit, AfterViewInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectionStrategy, PLATFORM_ID, ViewChild, } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnInit, AfterViewInit, OnDestroy, ChangeDetectionStrategy, ViewChild, } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { AddressListService } from './address-list.service';
@@ -163,8 +163,9 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    deleteAddress() {
-        // console.log(this.sbm, this.sai);
+    deleteAddress(index?,type?,address?) {
+        
+        this.sbm = {index: index, type: type, address: address}
         this.outData$.emit({
             da: this.sbm
         });
@@ -175,6 +176,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
 
         this.sbm = undefined;
+        
         this.setAddressIndex();
     }
 

@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 
-declare var $: any;
-
 @Component({
     selector: 'paytm-upi-form',
     templateUrl: './paytmUpiForm.html',

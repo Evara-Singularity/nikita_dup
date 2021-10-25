@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
@@ -19,7 +18,6 @@ export class BestDealComponent {
   constructor(
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
-    private title: Title,
     public router: Router,
     private route: ActivatedRoute,
     @Inject(DOCUMENT) private _document,

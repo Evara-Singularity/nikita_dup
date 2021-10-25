@@ -15,9 +15,6 @@ import { ToastMessageService } from '../../modules/toastMessage/toast-message.se
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 
-
-declare let $: any;
-
 @Injectable({
     providedIn: 'root'
 })
@@ -88,7 +85,7 @@ export class DataService {
                 referrer: document.referrer,
                 previous_url: prevUrl
             }
-            this.socket.emit("track", { ...trackingData, ...msg });
+            // this.socket.emit("track", { ...trackingData, ...msg });
         }
     }
     getMessage() {

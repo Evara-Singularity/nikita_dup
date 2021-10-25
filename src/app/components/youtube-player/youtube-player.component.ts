@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, SecurityContext, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SecurityContext, AfterViewInit, OnDestroy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';

@@ -398,6 +398,7 @@ export class ProductListService {
       ratingCount: product.ratingCount || 0,
       reviewCount: product.reviewCount || 0,
       internalProduct: true,
+      outOfStock: product.outOfStock
     } as ProductsEntity;
   }
 

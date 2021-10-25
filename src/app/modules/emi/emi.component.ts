@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Input, ElementRef, Pipe, PipeTransform } from '@angular/core';
 import { EmiService } from "./emi.service";
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { CreditCardValidator } from "ng2-cc-library";
@@ -161,7 +161,7 @@ export class EmiComponent {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
         this.dataEmi = this._objectToArray.transform(cardTypeResponse, "associative");
-        // // console.log('this.dataEmi ==>', this.dataEmi);
+
         this.dataEmi.forEach((element, index) => {
             if (this.bankMap.hasOwnProperty(element.key)) {
                 element.key = this.bankMap[element.key];
@@ -226,6 +226,7 @@ export class EmiComponent {
             }
             nameA = a.key.toUpperCase(); // ignore upper and lowercase
             nameB = b.key.toUpperCase(); // ignore upper and lowercase
+            
             if (nameA < nameB) {
                 return -1;
             }
@@ -253,7 +254,11 @@ export class EmiComponent {
 
                 let data = res["data"];
 
+                
                 this.emiResponse = data.emiResponse;
+                
+                alert('a');
+
                 this.dataEmi = this._objectToArray.transform(data.emiResponse, "associative");
                 this.dataEmi.forEach((element, index) => {
                     if(this.bankMap.hasOwnProperty(element.key)){
@@ -392,7 +397,7 @@ export class EmiComponent {
             addressList: addressList,
             "bankname":this.selectedBank,
             "bankcode":data.requestParams.bankcode,
-            "emitenure":emitenureFlag,
+            "emitenure": this.selectedEMIKey,
             "emiFlag": 1,
             "noCostEmiDiscount": Math.round(this.nocostEmiDiscount * 100)/100,
             "gateway": this.type == "tax" ? "razorpay": ""
@@ -430,8 +435,11 @@ export class EmiComponent {
             newdata["requestParams"]["user_id"] = userSession["userId"];
             newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"]=133;
             newdata['validatorRequest']["shoppingCartDto"]['cart']['noCostEmiDiscount']=this.nocostEmiDiscount
-
         }
+
+        alert(this.selectedEMIKey);
+
+        return;
 
         this.isShowLoader=true;
         /*//// console.log("New Data for pay", newdata);*/
@@ -658,5 +666,18 @@ export class EmiComponent {
         let cartSession = this._cartService.getCartSession();
         cartSession["nocostEmi"] = 0;
         this._cartService.orderSummary.next(cartSession);
+    }
+}
+
+
+@Pipe({
+    name: 'bankNameChange'
+})
+export class BankNameChangePipe implements PipeTransform{
+    transform(val: any, args) {
+        if (val) {
+            console.log(val);
+        }
+        return val;
     }
 }

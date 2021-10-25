@@ -155,7 +155,7 @@
         </form>
     </div>
 
-    <div class="emi-note-text" *ngIf="nocostEmiDiscount > 0">
+    <div class="emi-note-text" *ngIf="(nocostEmiDiscount > 0) && (selectedBank !== 'BAJFIN' || selectedBank !== 'BAJAJ')">
         <b>Note: </b>The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is
         already discounted
         from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit will

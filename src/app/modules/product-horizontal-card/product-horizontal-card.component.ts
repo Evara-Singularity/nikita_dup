@@ -86,7 +86,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isOutOfStockByQuantity = !this.product.quantityAvailable;
+    this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)

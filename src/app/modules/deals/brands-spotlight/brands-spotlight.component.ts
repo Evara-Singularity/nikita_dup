@@ -30,38 +30,28 @@ export class BrandSpotlightComponent {
     this.isBrowser = _commonService.isBrowser;
     this.setMetas();
     this.getBrandData();
-    // this.initializeClicks();
   }
+
 
   initializeClicks() {
     let tab = this.activatedRoute.snapshot.queryParams["tab"] || 1;
     if (tab < 1 || tab > 6) tab = 1;
     if (!this.isServer) {
-      setTimeout(function () {
-        document.querySelector("li").classList.remove("active");
-        (<HTMLElement>document.querySelector(".tab_num > div")).style.display =
-          "none"; //.hide();
-        (<HTMLElement>(
-          document.querySelector(".tab_num > div:nth-child(" + tab + ")")
-        )).style.display = "block"; //.show();
-        document
-          .querySelector("li:nth-child(" + tab + ")")
-          .classList.add("active");
-        document.querySelector("li").addEventListener("click", (e) => {
-          let className = (<HTMLElement>e.currentTarget).className;
-          let class_num = className.split(" ");
-          if (class_num.length == 1) {
-            (<HTMLElement>(
-              document.querySelector(".tab_num .wp-100")
-            )).style.display = "none"; //.hide();
-            (<HTMLElement>(
-              document.querySelector(".tab_num div." + className)
-            )).style.display = "block"; //.show();
-            document.querySelector("li").classList.remove("active");
-            document.querySelector("li." + className).classList.add("active");
-          }
+      document.querySelector("li").classList.remove("active");
+      (<HTMLElement>document.querySelector(".tab_num > div")).style.display =
+        "none"; //.hide();
+      (<HTMLElement>(
+        document.querySelector(".tab_num > div:nth-child(" + tab + ")")
+      )).style.display = "block"; //.show();
+      document
+        .querySelector("li:nth-child(" + tab + ")")
+        .classList.add("active");
+      const htmlLiCollection = document.getElementsByTagName("li");
+      [].forEach.call(htmlLiCollection, (eachHtmlEl) => {
+        eachHtmlEl.addEventListener("click", (e) => {
+          e.classList.add("active");
         });
-      }, 3000);
+      })
     }
   }
 
@@ -74,7 +64,7 @@ export class BrandSpotlightComponent {
       links.rel = "canonical";
       links.href = CONSTANTS.PROD + this.router.url;
       this._renderer2.appendChild(this._document.head, links);
-    } 
+    }
   }
 
   getBrandData() {
@@ -85,7 +75,7 @@ export class BrandSpotlightComponent {
         setTimeout(() => {
           this.reinsertLinks();
           this.initializeClicks();
-        }, 1000);
+        }, 0);
 
       } else {
         console.log('BrandsSpotlightComponent API data error', rawData);

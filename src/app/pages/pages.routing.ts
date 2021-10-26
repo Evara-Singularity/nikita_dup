@@ -738,7 +738,7 @@ const routes: Routes = [
                 },
             },
 			{
-                path: 'assist-verification-success',
+                path: 'e-gift-voucher',
                 loadChildren: () => import('@pages/e-gift-voucher/e-gift-voucher.module').then(m => m.EGiftVoucherModule),
                 data: {
                     hideHeader: true,

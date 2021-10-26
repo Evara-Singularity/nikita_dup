@@ -17,6 +17,7 @@ import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
+import { ToastMessageService } from '../toastMessage/toast-message.service';
 
 @Component({
   selector: 'product-horizontal-card',
@@ -81,7 +82,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _commonService: CommonService,
     private _enhanceImagePipe: EnhanceImgByNetworkPipe,
     private _analytics: GlobalAnalyticsService,
-
+    private _toastMessageService: ToastMessageService
   ) {
   }
 
@@ -106,6 +107,11 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   buyNow(buyNow = false) {
+    //ODP-1680
+    if ((this.product['quantityAvailable'] < this.product['moq']) || this.product['moq'] !== 0) {
+      this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
+      return;
+    }
     this._loader.setLoaderState(true);
     const productMsnId = this.product['moglixPartNumber'];
     this.getProductGroupDetails(productMsnId).pipe(

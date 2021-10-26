@@ -13,4 +13,35 @@
             line-height: 18px;
         }
     }
+    li:not(:last-child) {
+        padding-bottom: 9pt;
+    }
+    ol ol > li:first-child {
+        padding-top: 9pt;
+    }
+    
+    /* hierarchical ordering:  */
+    ol {
+        padding-left: 12pt;	
+        counter-reset: item
+    }
+    li {
+      display: block
+    }
+    li:before {
+      content: counters(item, ".") ". ";
+      counter-increment: item
+    }
+    section > ol li::before {
+        position: relative;
+        left:-4pt;
+    }
+    /* hard coding section numbers to avoid risks on bad browsers */
+    #sec1 > ol > li::before  { content: "1." counter(item) "."; }
+    #sec2 > ol > li::before  { content: "2." counter(item) "."; }
+    #sec3 > ol > li::before  { content: "3." counter(item) "."; }
 }
+
+.center {
+    text-align: center
+   }

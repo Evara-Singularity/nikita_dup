@@ -7,8 +7,6 @@ declare var _satellite;
   providedIn: 'root'
 })
 export class SharedLoginUtilService {
-  
-  constructor() { }
 
   sendLoginAdobeAnalysis() {
     let page = {

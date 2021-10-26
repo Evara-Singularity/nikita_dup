@@ -6,8 +6,6 @@ import { FooterService } from '../../utils/services/footer.service';
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
-declare let $: any;
-
 @Component({
   selector: 'press',
   templateUrl: 'press.html',

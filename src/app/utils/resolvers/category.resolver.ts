@@ -34,7 +34,7 @@ export class CategoryResolver implements Resolve<any> {
     const source = _activatedRouteSnapshot['_routerState']['url'].split('#')[0].split('?')[0];
 
     const GET_RELATED_CATEGORY_KEY: any = makeStateKey<{}>('get_related-' + categoryId);
-    const REFRESH_KEY: any = makeStateKey<{}>('refresh-' + categoryId);
+    const REFRESH_KEY: any = makeStateKey<{}>('refresh-' + categoryId + _activatedRouteSnapshot.fragment);
     const FAQ_KEY: any = makeStateKey<{}>('faq-' + categoryId);
     const BREADCRUMP_KEY: any = makeStateKey<{}>('breaattributedcrump-' + categoryId);
     const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
@@ -71,7 +71,7 @@ export class CategoryResolver implements Resolve<any> {
     } else {
         const get_rel_cat_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
         const faq_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
-        const refresh_product_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY + "?category=" + categoryId;
+        const refresh_product_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY + "?category=" + categoryId + "&bucketReq=n";
         const breadcrump_url = environment.BASE_URL + ENDPOINTS.BREADCRUMB + "?source=" + source + "&type=category";
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, Output, EventEmitter, NgModule, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalStorageService } from 'ngx-webstorage';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
@@ -220,6 +220,4 @@ export class ProductBulkRequestFormComponent implements OnInit {
   ],
 })
 export class ProductBulkRequestFormModule {
-  constructor( ) {
-  }
 }

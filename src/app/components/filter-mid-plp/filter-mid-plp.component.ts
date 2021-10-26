@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, Pipe, PipeTransform } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, Input, NgModule, OnInit, Pipe, PipeTransform, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
 import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
@@ -15,34 +15,53 @@ import { ProductListService } from '@app/utils/services/productList.service';
 export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;
   @Input('position') position: number;
+  @Input('pageName') pageName: string;
   
   public GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   public inlineFilterData: BucketsEntity;
   
-  constructor(private _productListService: ProductListService, private _commonService: CommonService) { }
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    public _productListService: ProductListService, private _commonService: CommonService) { }
 
   ngOnInit(): void {
     this.genrateInlineFilterData();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.filterData.currentValue && changes.filterData.currentValue.length > 0) {
+      this.genrateInlineFilterData();    
+    }
+  }
+
   genrateInlineFilterData() {
     this._productListService.inlineFilterData = [];
-    
-    const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
-    const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
-    const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
-    
-    if (brand) {
-      this._productListService.inlineFilterData.push(brand);
+
+    // if Brand or Brand + Category page then replace brand inline mid filter with category filter
+
+    if(this.pageName === 'BRAND' && !this._activatedRoute.snapshot.params.category) {
+      GLOBAL_CONSTANT.inlineFilter[1] = 'category';
+    } else {
+      GLOBAL_CONSTANT.inlineFilter[1] = 'brand';
     }
-    if (price) {
-      this._productListService.inlineFilterData.push(price);
-    }
-    if (discount) {
-      this._productListService.inlineFilterData.push(discount);
+    if (this.filterData) {
+      const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
+      const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
+      const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
+      
+      if (brand) {
+        this._productListService.inlineFilterData.push(brand);
+      }
+      if (price) {
+        this._productListService.inlineFilterData.push(price);
+      }
+      if (discount) {
+        this._productListService.inlineFilterData.push(discount);
+      }
+  
+      this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
     }
 
-    this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
   }
 
   checkAndApplyFilter(key, item) {

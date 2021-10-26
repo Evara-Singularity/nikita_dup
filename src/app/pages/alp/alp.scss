@@ -1,6 +1,7 @@
 @import "../../scss/variables";
 :host {
     display: block;
+    margin-top: 108px;
     .slide-up {
         transform: translateY(0);
     }

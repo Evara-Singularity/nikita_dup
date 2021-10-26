@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { delay } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';

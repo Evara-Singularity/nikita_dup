@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule, Optional } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,8 +12,8 @@ import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ErrorHandlerModule } from './utils/interceptors/error-handler.module';
-import { RouterModule } from '@angular/router';
+import { SpeedTestModule } from 'ng-speed-test';
+
 
 const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
@@ -31,10 +32,18 @@ const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    SpeedTestModule,
     // ErrorHandlerModule
   ],
   declarations: [
     AppComponent,
+  ],
+  providers: [
+    {
+      provide: CONSTANTS.BROWSER_AGENT_TOKEN,
+      useFactory: userAgentFactory,
+      deps: [PLATFORM_ID, [new Optional(), REQUEST] ],
+    },
   ],
   bootstrap: [AppComponent]
 })
@@ -42,8 +51,16 @@ export class AppModule {
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     @Inject(APP_ID) private appId: string) {
-    const platform = isPlatformBrowser(platformId) ?
+    const platform = isPlatformBrowser(this.platformId) ?
       'in the browser' : 'on the server';
-    console.log(`Running ${platform} with appId=${appId}`);
+    console.log(`Running ${platform} with appId=${this.appId}`);
   }
+}
+
+export function userAgentFactory(platformId, req: Request): string {
+  if (isPlatformBrowser(platformId)) {
+    return navigator.userAgent.toLowerCase() || null;
+  }
+  const userAgent = (req['get']('user-agent') || '').toLowerCase();
+  return userAgent;
 }

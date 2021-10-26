@@ -1,6 +1,6 @@
 import { CONSTANTS } from '@config/constants';
-import { Component,Input,Inject, NgModule } from '@angular/core';
-import { CommonModule, DOCUMENT } from "@angular/common";
+import { Component,Input, NgModule } from '@angular/core';
+import { CommonModule } from "@angular/common";
 import { RouterModule } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
 
@@ -14,8 +14,6 @@ export class CatStaticComponent {
   @Input('static_data') static_data;
   @Input('page_title') page_title ;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-
-  constructor(@Inject(DOCUMENT) private _document) { }
 
   scrollToResults(){
     if (document.getElementById('category-cards-section')) {

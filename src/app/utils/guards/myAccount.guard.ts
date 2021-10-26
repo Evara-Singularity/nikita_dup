@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
-import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { CommonService } from '../services/common.service';
 @Injectable()
 export class MyAccountGuard implements CanActivate {

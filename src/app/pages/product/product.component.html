@@ -1,63 +1,39 @@
-<section *ngIf="productNotFound" class="page-not-found">
-    <img src="{{imagePath + '1/img/Truck.png'}}" class=" wp-100">
-    <div class="container align-center">
-        <h3 class="f-16">Oops!!! Page not Delivered!!</h3>
-        <p class="mb-15 pb-10 f-14">We apologize! The page could not be delivered as the address does not exist on this planet.
-        </p>
-        <ul class="categories-list">
-            <li [routerLink]="['/electricals/211000000']">
-                <i class="icon-electricals"></i>
-                <span>Electricals</span>
-            </li>
-            <li [routerLink]="['/hand-tools/112000000']">
-                <i class="icon-hand-tool"></i>
-                <span>Hand Tools</span>
-            </li>
+<div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
+    *ngIf="!productNotFound">
 
-            <li [routerLink]="['/safety-and-security/116000000']">
-                <i class="icon-safety"></i>
-                <span>Safety</span>
-            </li>
-            <li [routerLink]="['/security/120000000']">
-                <i class="icon-security"></i>
-                <span>Security</span>
-            </li>
-            <li [routerLink]="['/power-tools/114000000']">
-                <i class="icon-power-tool"></i>
-                <span>Power Tools</span>
-            </li>
-            <li [routerLink]="['/all-categories']">
-                <i class="icon-all-category"></i>
-                <span>more</span>
-            </li>
-        </ul>
-    </div>
-</section>
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1" [ngClass]="[carouselInitialized ? '' : 'before-init']">
 
-<div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
-    <!-- <div class="info-to-buyer">
-        <div class="info-to-buyer-l">
-            <p>This same item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
+        <ng-container #productCrousel></ng-container>
+
+        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo (previous)="onRotatePrevious()">
+            <div class="img-block-pseudo" >
+                <div class="inner-block-pseudo">
+                    <div class="pinch-zoom element-pseudo" style="transform-origin: 0% 0%;">
+                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}" height="330" width="330"
+                            alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
+                    </div>
+                </div>
+                <ul class="pager">
+                    <ng-container
+                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productAllImages.length>1">
+                        <ng-container *ngFor="let item of productAllImages;let i=index">
+                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
+                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }"></li>
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
+                                <em class="icon-youtube"></em>
+                            </li>
+                        </ng-container>
+                    </ng-container>
+                </ul>
+            </div>
         </div>
-        <div class="info-to-buyer-r">
-            <a href="">view order</a>
-        </div>
-    </div>
-    <div class="info-to-buyer-next">
-        <div class="info-to-buyer-l">
-            <p>Similar item has been ordered by you on 24 June 2021 at 4.30 PM.</p>
-        </div>
-        <div class="info-to-buyer-r">
-            <a href="">view order</a>
-        </div>
-    </div> -->
-    <div class="prod-carsl" addClass [ngClass]="[carouselInitialized ? '' : 'before-init']">
-        <siema-carousel [options]="iOptions" [items]="productAllImages" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productName]="productName">
-        </siema-carousel>
+
         <!-- TODO: check how this section is used in PQA -->
         <ng-container *ngIf="productTags != undefined">
             <div class="image_tag">
-                <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
+                <div class="tag_container"
+                    *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
                     <img src="{{tag.imageUrl}}">
                 </div>
             </div>
@@ -65,6 +41,7 @@
     </div>
 
     <div class="prod-description">
+        
         <div class="container">
             <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
             <div class="prod-inner-desc" (click)="showRating()">
@@ -92,10 +69,12 @@
                 <ng-container *ngIf="productMrp > 0">
                     <p class="mrp" *ngIf="productMrp > priceWithoutTax">
                         <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                        <span *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
+                        <span
+                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
                             [ {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF]
                         </span>
-                        <span *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
+                        <span
+                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
                             {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
                         </span>
                     </p>
@@ -166,7 +145,8 @@
         <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
             <p class="heading-3">{{list.name}}</p>
             <ul>
-                <li *ngFor="let item of list.items;let i = index;" (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc();">
+                <li *ngFor="let item of list.items;let i = index;"
+                    (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc();">
                     <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
                 </li>
             </ul>
@@ -181,9 +161,12 @@
             <div class="update-quantity" *ngIf="!productOutOfStock && productMrp > 0">
                 <p class="heading-3">Update Qty:</p>
                 <div class="quantity-block">
-                    <span class="add-qty qty-block" (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
-                    <input id="product_quantity" [value]="productMinimmumQuantity" (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
-                    <span class="remove-qty qty-block" (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
+                    <span class="add-qty qty-block"
+                        (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
+                    <input id="product_quantity" [value]="productMinimmumQuantity"
+                        (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
+                    <span class="remove-qty qty-block"
+                        (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
                 <div class="quan-details">
                     <p>Qty Per Pack :
@@ -194,13 +177,17 @@
                     </p>
                 </div>
             </div>
-            <div class="bulk-qty" *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
+            <div class="bulk-qty"
+                *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
                 <div class="blk-contain">
-                    <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)" class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of priceQuantityCountry['bulkPricesModified'];let last=last; let index = index;" (click)="changeBulkQty(items.minQty,index)" class="blk-block" [ngClass]="{'selected': (bulkPriceSelctedQuatity >= items.minQty && bulkPriceSelctedQuatity < items.maxQty)}">
+                    <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
+                        class="inner-blk-contain clearfix">
+                        <div *ngFor="let items of priceQuantityCountry['bulkPricesModified'];let last=last; let index = index;"
+                            (click)="changeBulkQty(items.minQty,index)" class="blk-block"
+                            [ngClass]="{'selected': (bulkPriceSelctedQuatity >= items.minQty && bulkPriceSelctedQuatity < items.maxQty)}">
                             <p class="qty">Qty
                                 <span *ngIf="last!==true">{{items.minQty}} {{items.minQty!==items.maxQty ?
                                     -items.maxQty:'' }}</span>
@@ -260,13 +247,14 @@
             <ng-container #appPromo></ng-container>
         </div>
 
-        <div class="returnPolicyContainer clearfix" *ngIf="isProductReturnAble" >
+        <div class="returnPolicyContainer clearfix" *ngIf="isProductReturnAble">
             <h2 class="heading-3"> RETURN POLICY</h2>
             <div class=" returnPolicyInnerContainer pad-lr-0">
                 <div [style.width.px]="4 * 120">
                     <div class="returnPolicyInner" (click)="$event.stopPropagation(); navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px"
+                                width="16px">
                         </span>
                         <span class="returnTxt">
                             Upto 7 days <br /> returnable
@@ -282,7 +270,8 @@
                     </div>
                     <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/fragile.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/fragile.svg" height="16px"
+                                width="16px">
                         </span>
                         <span class="returnTxt">
                             Damaged <br /> Product
@@ -290,7 +279,8 @@
                     </div>
                     <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/thumb-down-button.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/return_policy/thumb-down-button.svg" height="16px"
+                                width="16px">
                         </span>
                         <span class="returnTxt">
                             Defective <br />Product
@@ -340,7 +330,8 @@
                     </td>
                     <td class="right">
                         <div>
-                            <a class="brandName" [routerLink]="getBrandLink(productBrandDetails)">{{productBrandDetails['brandName']}}</a>
+                            <a class="brandName"
+                                [routerLink]="getBrandLink(productBrandDetails)">{{productBrandDetails['brandName']}}</a>
                         </div>
                     </td>
                 </tr>
@@ -360,20 +351,28 @@
         <div class="prod-detail">
             <h2 class="heading-3">PRODUCT DETAILS</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
+                <p [innerHTML]="this.productDescripton"></p>
                 <p> Browse through the extensive list of
                     <a class="blueText" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                    <a class="blueText" [routerLink]="['/'+ productBrandCategoryUrl ]">{{productBrandDetails['brandName']}}
+                    <a class="blueText"
+                        [routerLink]="['/'+ productBrandCategoryUrl ]">{{productBrandDetails['brandName']}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
-                <p [innerHTML]="this.productDescripton"></p>
             </ng-container>
             <ng-template #noProdDesc>
                 <p>
-                    {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a well-known ecommerce platform for qualitative range of <a class="blueText" [routerLink]="['/'+productCategoryDetails['categoryLink']]">{{productCategoryDetails['categoryName']}}</a>.
-                    All {{productName}} are manufactured by using quality assured material and advanced techniques, which make them up to the standard in this highly challenging field. The materials utilized to manufacture {{productName}}, are sourced
-                    from the most reliable and official vendors, chosen after performing detailed market surveys. {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high quality. We are dedicatedly involved in
-                    providing an excellent quality array of <a class="blueText" [routerLink]="['/'+productBrandCategoryUrl]">
+                    {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a
+                    well-known ecommerce platform for qualitative range of <a class="blueText"
+                        [routerLink]="['/'+productCategoryDetails['categoryLink']]">{{productCategoryDetails['categoryName']}}</a>.
+                    All {{productName}} are manufactured by using quality assured material and advanced techniques,
+                    which make them up to the standard in this highly challenging field. The materials utilized to
+                    manufacture {{productName}}, are sourced
+                    from the most reliable and official vendors, chosen after performing detailed market surveys.
+                    {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high
+                    quality. We are dedicatedly involved in
+                    providing an excellent quality array of <a class="blueText"
+                        [routerLink]="['/'+productBrandCategoryUrl]">
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
@@ -386,14 +385,17 @@
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
                     <div *ngFor="let video of productVideos" class="prod-desc-video">
-                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])" type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg" border="border of the image" alt="text">
+                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])"
+                            type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg"
+                            border="border of the image" alt="text">
                         <img [src]="video['link'] | ytthumbnail:'hqdefault'">
                     </div>
                 </div>
             </div>
         </div>
 
-        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
+        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
+            (visible)="getFbtIntance($event)">
             <ng-container #fbt></ng-container>
         </section>
 
@@ -428,7 +430,8 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24" >
             </a> -->
 
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
+            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items"
+                [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -436,7 +439,8 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items" [routerLink]="['/'+productBrandCategoryUrl]">
+            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items"
+                [routerLink]="['/'+productBrandCategoryUrl]">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -450,9 +454,14 @@
             <ng-container #similarProduct></ng-container>
         </section>
 
+        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+            <ng-container #sponseredProducts></ng-container>
+        </section>
+
         <!-- Review rating Starts -->
         <section class="pdp-review" id="reviewsAll">
-            <p class="heading-3" observeVisibility [debounceTime]="100" (visible)="onVisibleReviews($event)">REVIEWS & RATINGS
+            <p class="heading-3" observeVisibility [debounceTime]="100" (visible)="onVisibleReviews($event)">REVIEWS &
+                RATINGS
             </p>
             <p class="heading-4">
                 Customer Reviews on {{productName}}
@@ -465,19 +474,29 @@
                 </div>
                 <div class="rating-scale">
                     <div class="rating-bar">
-                        <span [style.width.%]="(reviews?.summaryData?.five_star_count/reviews?.summaryData?.review_count)*100" class="bar dark-green"></span>
+                        <span
+                            [style.width.%]="(reviews?.summaryData?.five_star_count/reviews?.summaryData?.review_count)*100"
+                            class="bar dark-green"></span>
                     </div>
                     <div class="rating-bar">
-                        <span [style.width.%]="(reviews?.summaryData?.four_star_count/reviews?.summaryData?.review_count)*100" class="bar light-green"></span>
+                        <span
+                            [style.width.%]="(reviews?.summaryData?.four_star_count/reviews?.summaryData?.review_count)*100"
+                            class="bar light-green"></span>
                     </div>
                     <div class="rating-bar">
-                        <span [style.width.%]="(reviews?.summaryData?.three_star_count/reviews?.summaryData?.review_count)*100" class="bar yellow"></span>
+                        <span
+                            [style.width.%]="(reviews?.summaryData?.three_star_count/reviews?.summaryData?.review_count)*100"
+                            class="bar yellow"></span>
                     </div>
                     <div class="rating-bar">
-                        <span [style.width.%]="(reviews?.summaryData?.two_star_count/reviews?.summaryData?.review_count)*100" class="bar light-red"></span>
+                        <span
+                            [style.width.%]="(reviews?.summaryData?.two_star_count/reviews?.summaryData?.review_count)*100"
+                            class="bar light-red"></span>
                     </div>
                     <div class="rating-bar">
-                        <span [style.width.%]="(reviews?.summaryData?.one_star_count/reviews?.summaryData?.review_count)*100" class="bar red"></span>
+                        <span
+                            [style.width.%]="(reviews?.summaryData?.one_star_count/reviews?.summaryData?.review_count)*100"
+                            class="bar red"></span>
                     </div>
                 </div>
             </div>
@@ -507,10 +526,12 @@
 
                     <div class="cust_suggestion clearfix">
                         <p class="sug_txt">{{item.yes}} of {{item.totalReview}} users found this review helpful.</p>
-                        <button [ngClass]="{'active':item.like=='1'}" class="suggstn-btn" (click)="postHelpful(item,'1','0',i)">
+                        <button [ngClass]="{'active':item.like=='1'}" class="suggstn-btn"
+                            (click)="postHelpful(item,'1','0',i)">
                             <i class="icon-like"></i>
                         </button>
-                        <button [ngClass]="{'active':item.dislike=='1'}" (click)="postHelpful(item,'0','1',i)" class="suggstn-btn">
+                        <button [ngClass]="{'active':item.dislike=='1'}" (click)="postHelpful(item,'0','1',i)"
+                            class="suggstn-btn">
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
@@ -529,16 +550,19 @@
             <div class="container">
                 <p class="heading-3">QUESTIONS & ANSWERS</p>
                 <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
-                    <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text" placeholder="Have a Question?">
+                    <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text"
+                        placeholder="Have a Question?">
                     <button [disabled]="questionAnswerForm.invalid" (click)="postUserQuestion()">SUBMIT</button>
                 </form>
                 <!-- search space  -->
-                <p class="display-qn" *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
+                <p class="display-qn"
+                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
                     Displaying Questions
                     <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
                     <span>{{questionAnswerList['data']['totalCount']}} </span>
                 </p>
-                <ng-container *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
+                <ng-container
+                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
                     <div class="qn-block" *ngFor="let item of questionAnswerList['data']['qlist'];let i=index">
                         <div class="question clearfix">
                             <span class="qn-number">Q{{i+1}}.</span>
@@ -554,7 +578,8 @@
             </div>
         </section>
 
-        <section observeVisibility style="margin-top: 10px;" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+        <section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
+            [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
             <ng-container #recentProducts></ng-container>
             <div class="loader_container" *ngIf="!recentProductsInstance">
                 <div class="loader"></div>
@@ -566,8 +591,6 @@
     </div>
     <!-- other sections ends -->
 
-    <ng-container #similarAll></ng-container>
-    <ng-container #recentAll></ng-container>
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #rfqForm></ng-container>
     <ng-container #pincodeForm></ng-container>
@@ -591,14 +614,53 @@
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
             <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
             <p class="rfq-thanks-title">Thanks for submitting the query.</p>
-            <p class="rfq-support-txt">Our support member will get in touch with you within 24 hours. For further assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.</p>
+            <p class="rfq-support-txt">Our support member will get in touch with you within 24 hours. For further
+                assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.
+            </p>
             <div class="alert-btn-row">
                 <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') " class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();closeRFQAlert()"> CONTINUE SHOPPING</p>
+                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()"> EXPLORE CATEGORY</p>
             </div>
         </div>
     </div>
 </div>
 
+<section *ngIf="productNotFound" class="page-not-found">
+    <img src="{{imagePath + '1/img/Truck.png'}}" class=" wp-100">
+    <div class="container align-center">
+        <h3 class="f-16">Oops!!! Page not Delivered!!</h3>
+        <p class="mb-15 pb-10 f-14">We apologize! The page could not be delivered as the address does not exist on this
+            planet.
+        </p>
+        <ul class="categories-list">
+            <li [routerLink]="['/electricals/211000000']">
+                <i class="icon-electricals"></i>
+                <span>Electricals</span>
+            </li>
+            <li [routerLink]="['/hand-tools/112000000']">
+                <i class="icon-hand-tool"></i>
+                <span>Hand Tools</span>
+            </li>
+
+            <li [routerLink]="['/safety-and-security/116000000']">
+                <i class="icon-safety"></i>
+                <span>Safety</span>
+            </li>
+            <li [routerLink]="['/security/120000000']">
+                <i class="icon-security"></i>
+                <span>Security</span>
+            </li>
+            <li [routerLink]="['/power-tools/114000000']">
+                <i class="icon-power-tool"></i>
+                <span>Power Tools</span>
+            </li>
+            <li [routerLink]="['/all-categories']">
+                <i class="icon-all-category"></i>
+                <span>more</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
 <div id="pageBottom"></div>
-<whatsapp-toast [customText]="'Hi, I want to buy ' + productName"></whatsapp-toast>
+<whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>

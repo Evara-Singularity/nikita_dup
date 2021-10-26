@@ -58,8 +58,6 @@ export class NeftRtgsComponent{
 
     pay(){
         let cartSession = this._cartService.getCartSession();
-        let cart = cartSession["cart"];
-        let cartItems = cartSession["itemsList"];
 
         let userSession = this._localAuthService.getUserSession();
         let addressList = this._checkoutService.getCheckoutAddress()

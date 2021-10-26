@@ -1,0 +1,25 @@
+@import './../../../scss/carousel';
+::ng-deep{
+    .inner_block{
+        position: relative;
+     }
+}
+// .img-block {
+//     width: 100%;
+//     background: white;
+//     position: relative;
+//     padding: 15px;
+//     .inner_block {
+//         height: 100%;
+//         .inner_element {
+//             position: relative;
+//         }
+//         .element {
+//             height: 100%;
+//         }
+//         img {
+//             width: 100%;
+//             height: 100%;
+//         }
+//     }
+// }

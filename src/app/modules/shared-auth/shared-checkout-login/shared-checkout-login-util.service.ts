@@ -10,8 +10,6 @@ declare var _satellite;
 export class SharedCheckoutLoginUtilService
 {
 
-    constructor() { }
-
     sendAdobeAnalysis()
     {
         let page = {

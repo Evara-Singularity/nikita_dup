@@ -16,8 +16,6 @@ export class ProductOfferPopupComponent implements OnInit {
   @Output() out: EventEmitter<any> =  new EventEmitter<any>();
   IMG_PATH = CONSTANTS.IMAGE_BASE_URL;
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 

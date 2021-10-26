@@ -32,7 +32,8 @@ export class BrandSpotlightComponent {
     this.getBrandData();
   }
 
-
+  tabClassList = ['power', 'automative', 'plumbing', 'safety'];
+  
   initializeClicks() {
     let tab = this.activatedRoute.snapshot.queryParams["tab"] || 1;
     if (tab < 1 || tab > 6) tab = 1;
@@ -47,13 +48,29 @@ export class BrandSpotlightComponent {
         .querySelector("li:nth-child(" + tab + ")")
         .classList.add("active");
       const htmlLiCollection = document.getElementsByTagName("li");
-      [].forEach.call(htmlLiCollection, (eachHtmlEl) => {
+      [].forEach.call(htmlLiCollection, (eachHtmlEl, index) => {
         eachHtmlEl.addEventListener("click", (e) => {
-          e.classList.add("active");
+          this.resetClass();
+          eachHtmlEl.classList.add("active");
+          const tab = document.querySelector('.tab_num .' + this.tabClassList[index]);
+          tab['style'].display = 'block';
         });
       })
     }
   }
+
+  resetClass() {
+    const li = document.getElementsByTagName('li');
+    [].forEach.call(li, (eachHtmlEl) => {
+      eachHtmlEl.classList.remove('active');
+    });
+
+    this.tabClassList.forEach(e => {
+      const el = document.querySelector('div.' + e);
+      el['style'].display = 'none';
+    });
+  }
+
 
   setMetas() {
     this.title.setTitle("Explore Best Offers on Moglix.com");

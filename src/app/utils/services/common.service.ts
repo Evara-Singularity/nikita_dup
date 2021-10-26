@@ -10,6 +10,7 @@ import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from './cart.service';
 import { DataService } from "./data.service";
 import { CheckoutService } from './checkout.service';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -17,7 +18,6 @@ import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from './global-loader.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -58,24 +58,17 @@ export class CommonService {
     private routeData: { currentUrl: string, previousUrl: string };
     userSession; 
 
-    constructor(
-        private checkoutService: CheckoutService, 
-        private _localStorageService: LocalStorageService, 
-        private _activatedRoute: ActivatedRoute, 
-        private _dataService: DataService, 
-        public _cartService: CartService,
+    constructor(@Inject(PLATFORM_ID) platformId, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
-        @Inject(PLATFORM_ID) private platformId: Object,
-        private _router: Router
-    ) {
+        private _router: Router) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
         this.gaGtmData = gaGtmData ? gaGtmData : {};
         this.routeData = { currentUrl: "", previousUrl: "" };   
         this.itemsValidationMessage = [];
-        this.isBrowser = isPlatformBrowser(this.platformId);
-        this.isServer = isPlatformServer(this.platformId);
+        this.isServer = isPlatformServer(platformId);
+        this.isBrowser = isPlatformBrowser(platformId);
         this.userSession = this._localStorageService.retrieve('user');
     }
 

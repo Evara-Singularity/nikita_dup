@@ -132,6 +132,7 @@ export class RazorPayFormComponent {
     if (this.data['token']) {
       razorData['token'] = this.data['token'];
     }
+
     this.razorpay.createPayment(razorData);
     const that = this;
     this.razorpay.on('payment.success', function (resp) {

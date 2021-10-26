@@ -59,7 +59,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     invalidOTPMessage: string = null;
 
     constructor(
-        private meta: Meta,
         private commonService: CommonService,
         private toastService: ToastMessageService,
         private localStorageService: LocalStorageService,
@@ -67,6 +66,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private activatedRoute: ActivatedRoute,
         private localAuthService: LocalAuthService,
         private title: Title,
+        private meta: Meta,
         private cartService: CartService,
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,

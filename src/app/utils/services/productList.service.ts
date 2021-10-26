@@ -301,18 +301,20 @@ export class ProductListService {
       'prodURL': ''
     };
     let criteoItem = [];
-    const cartSession = this._cartService.getCartSession() || {};
-    if (cartSession && cartSession.hasOwnProperty("itemsList")) {
-      for (let p = 0; p < cartSession["itemsList"].length; p++) {
-        criteoItem.push({ name: cartSession["itemsList"][p]['productName'], 'brandId': cartSession["itemsList"][p]['brandId'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
-        eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
-        eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
-        eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
-        eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
-        eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
-        eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+    setTimeout(() => {
+      const cartSession = this._cartService.getCartSession() || {};
+      if (cartSession && cartSession.hasOwnProperty("itemsList")) {
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+          criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+          eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+          eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+          eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+          eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+          eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+          eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+        }
       }
-    }
+    }, 0)
     let user = this._localStorageService.retrieve('user');
 
     /*Start Criteo DataLayer Tags */
@@ -398,6 +400,7 @@ export class ProductListService {
       ratingCount: product.ratingCount || 0,
       reviewCount: product.reviewCount || 0,
       internalProduct: true,
+      outOfStock: product.outOfStock
     } as ProductsEntity;
   }
 

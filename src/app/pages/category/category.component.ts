@@ -95,7 +95,8 @@ export class CategoryComponent {
             
             // set API result data
             this.API_RESPONSE = result;
-            console.log(result);
+            
+            this._productListService.excludeAttributes = [];
 
             if (this.cmsInstance) {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];

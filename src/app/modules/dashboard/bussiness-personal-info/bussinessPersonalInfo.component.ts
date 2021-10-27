@@ -143,6 +143,7 @@ export class BussinessInfoComponent {
           type: "success",
           text: "Profile updated successfully.",
         });
+        userSession['userName'] = data.fname;
         if (this.localStorageService.retrieve("user")) {
           let user = this.localStorageService.retrieve("user");
           if (user.authenticated == "true") {

@@ -216,12 +216,9 @@ export class ProductHorizontalCardComponent implements OnInit {
     if (isUserLogin) {
       this.getProductGroupDetails(productMsnId).pipe(
         map(productRawData => {
-          console.log(productRawData);
-          // console.log(productRawData['productBO']);
           return this.getRFQProduct(productRawData['productBO'])
         })
       ).subscribe(productDetails => {
-        // console.log('openRfqForm productDetails', productDetails);
         this.intiateRFQQuote(productDetails).then(res => {
           this._loader.setLoaderState(false);
         });
@@ -235,7 +232,6 @@ export class ProductHorizontalCardComponent implements OnInit {
 
 
   async showYTVideo(link) {
-    // console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
@@ -403,7 +399,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   productEntityFromProductBO(productBO) {
-    // console.log('productEntityFromProductBO ==>', productBO);
     const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
     const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
     const productPartDetails = productBO['productPartDetails'][partNumber];
@@ -416,9 +411,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productBrandDetails = productBO['brandDetails'];
     const productCategoryDetails = productBO['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-
-    //console.log('productEntityFromProductBO productUrl ==>', productBO['defaultCanonicalUrl'], productBO);
-
     const product: ProductsEntity = {
       moglixPartNumber: partNumber,
       moglixProductNo: null,
@@ -444,7 +436,6 @@ export class ProductHorizontalCardComponent implements OnInit {
       ratingCount: this.product.ratingCount,
       reviewCount: this.product.reviewCount
     };
-    //console.log('product ==>', product);
     return product;
   }
 
@@ -461,8 +452,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productBrandDetails = productGroupData['brandDetails'];
     const productCategoryDetails = productGroupData['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-
-    //console.log('getAddToCartProductRequest productUrl ==>', productGroupData['defaultCanonicalUrl'], productGroupData);
 
     const product = {
       cartId: null,
@@ -497,12 +486,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
       category: productCategoryDetails['taxonomy']
     } as AddToCartProductSchema;
-
-    //console.log('product ==>', product); 
-
     return product
-
-
   }
 
   getRandomValue(arr, n) {
@@ -520,7 +504,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   cardVisisble(htmlElement) {
-    console.log('cardVisisble imp', this.isAd, this._commonService.isBrowser );
     if (this.isAd && this._commonService.isBrowser) {
       
       this.onlineSalesImpressionTrackUsingGTM();

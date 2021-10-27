@@ -213,7 +213,10 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       });
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
-      this.productsListingData.filterData[3].terms = this.productsListingData.filterData[3].terms.reverse();   //ODP-1570, Discount asecending to descending 
+      const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
+      if (discountIndex) {
+        this.productsListingData.filterData[discountIndex].terms.sort((a,b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+      }
       this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
       this.filterInstance.instance['isBrandPage'] = this.pageName === 'BRAND';
@@ -224,7 +227,13 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       });
     } else {
       this._commonService.toggleFilter();
+      const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
+      if (discountIndex) {
+        this.productsListingData.filterData[discountIndex].terms.sort((a,b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+      }
+      this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+      console.log(this.productsListingData.filterData);
     }
   }
 

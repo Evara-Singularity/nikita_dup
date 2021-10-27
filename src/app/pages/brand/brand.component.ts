@@ -69,6 +69,8 @@ export class BrandComponent {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
 
+            this._productListService.excludeAttributes = [];
+
             this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
 
             // Total count

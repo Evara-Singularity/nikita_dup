@@ -29,10 +29,22 @@ export class ProductListService {
   }
 
   showMidPlpFilterLoader: boolean = true;
+  excludeAttributes: string[] = [];
+
+  filterBuckets(buckets: any[])
+    {
+        if (this.excludeAttributes.length > 0) {
+            return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
+        }
+        return buckets;
+    }
   
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading, bucketAvailable?: boolean) {
 
     if (bucketAvailable) {
+      if (this.excludeAttributes.length > 0) {
+        rawSearchData.buckets = this.filterBuckets(rawSearchData.buckets);
+      }
       this.productListingData['filterData'] =  JSON.parse(JSON.stringify(rawSearchData.buckets));
       this.showMidPlpFilterLoader = false;
       return;

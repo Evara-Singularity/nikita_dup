@@ -28,6 +28,8 @@
         $font-bolder: 600;
         $font-bold: 700;
         $font-ultraBold: 900;
+        
+        //colors
         $facebook-color: #3b5998;
         $twitter-color: #55acee;
         $google-color: #dd4b39;
@@ -65,12 +67,20 @@
         $active-color: $blue-link-color;
         $active-border-color: $blue-link-color;
         $trackeryellow:#EDCE09;
-        /*Font Size*/
+        $yellow-txt:#FDB92C;
+         
+        //width
+        $fullwidth:100%;
         
+        /*Font Size*/
         $small-font: 10px;
         $medium-font: 12px;
         $large-font: 14px;
         $extra-large-font: 16px;
+
+        //grid variables
+        $colmax:12;
+        $default-gap:15px;
         /*Extends*/
         
         %cards {

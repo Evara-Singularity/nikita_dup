@@ -1,5 +1,6 @@
 @import "../../scss/variables";
 @import "../../scss/carousel";
+
 .page-not-found {
     background: $white;
     img {
@@ -2141,4 +2142,15 @@
 }
 .pager{
     height: 30px;
+}
+//pdp new
+//section
+.pdp-section-card{
+    margin-top:10px;
+    background:$white;
+  }
+.ratingCard{
+    .green-txt{
+        text-align:right;
+    }
 }

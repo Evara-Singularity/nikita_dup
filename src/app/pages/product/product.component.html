@@ -457,6 +457,27 @@
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
         </section>
+        <section class="pdp-section-card">
+            <div class="pwa-container ratingCard">
+                <div class="pwa-row">
+                    <div class="pwa-col-6 pad-lr-0">
+                        <i class="icon-rating-star"></i>
+                        <i class="icon-rating-star"></i>
+                        <i class="icon-rating-star"></i>
+                        <i class="icon-rating-star"></i>
+                        <i class="icon-rating-star"></i>
+                    </div>
+                    <div class="pwa-col-6 pad-lr-0">
+                        <p class="small-txt green-txt">Verified Purchase</p>
+                    </div>
+                </div>
+                <div class="pwa-row flex-dir-col">
+                    <span class="grey-txt">
+                        Mar 6, 2016
+                    </span>
+                </div>
+            </div>
+        </section>
 
         <!-- Review rating Starts -->
         <section class="pdp-review" id="reviewsAll">
@@ -503,8 +524,9 @@
             <p class="small-txt align-center">Average Rating based on {{reviews?.summaryData?.review_count}} ratings</p>
 
             <button class="revw-btn btn" (click)="writeReview();">RATE AND WRITE REVIEW</button>
-
-            <div class="all-revw">
+           
+            
+            <!-- <div class="all-revw">
                 <div *ngFor="let item of  reviews?.reviewList; let i=index" class="inner-div ">
                     <div class="clearfix revw-row">
                         <div class="small-stars">
@@ -516,7 +538,6 @@
                         </div>
                         <div class="verfy-prod">
                             <p class="small-txt green-txt" *ngIf="item?.is_approved">Verified Purchase</p>
-
                         </div>
                     </div>
                     <p class="cust-name">{{item?.user_name}}</p>
@@ -535,13 +556,13 @@
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="view-all clearfix" (click)="openAllReviewsPopup=true" *ngIf="reviews && reviews.reviewList">
                     <p class="view-txt">View all reviews
                         <span class="count">({{reviews.reviewList.length}})</span>
                     </p>
                 </div> -->
-            </div>
+            <!-- </div> -->
 
         </section>
         <!-- Review rating ends -->

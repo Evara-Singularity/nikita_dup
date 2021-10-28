@@ -5,25 +5,30 @@
     </div>
     <div class="gifting-form-container">
       <h2>Fill your E-gift card requirements and we will call you with the <span>best discounts</span> within 30 min.</h2>
-      <h5>Check list of 200+ brands e-Gift vouchers & validity</h5>
-      <form>
+      <h5 (click)="togglePopUp2()">Check list of 200+ brands e-Gift vouchers & validity</h5>
+      <form [formGroup]="eGiftForm">
         <div class="personal-details">
           <div class="row">
             <div class="col-md-6 form-pd-field">
               <label>Full Name*</label>
-              <input type="text">
+              <input type="text"  (keypress)="firstName($event)" formControlName="fullName">
+              <div *ngIf="eGiftForm.controls['fullName'].dirty && eGiftForm.controls['fullName'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name <span class="f-size-10">(Special characters are not allowed)</span></div>
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Email ID*</label>
-              <input type="text">
+              <input type="text" formControlName="emailId">
+              <div *ngIf="eGiftForm.controls['emailId'].dirty && eGiftForm.controls['emailId'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID</div>
+              <div *ngIf="!eGiftForm.controls['emailId'].hasError('required') && eGiftForm.controls['emailId'].hasError('invalidCharT')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID. Ex: abc@xxx.com</div>
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Mobile No*</label>
-              <input type="text">
+              <input type="text" (keypress)="checkQuantityCode($event)" maxlength="10" minlength="10" formControlName="phone">
+              <div *ngIf="eGiftForm.controls['phone'].dirty && eGiftForm.controls['phone'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your phone no.</div>
+              <div *ngIf="!eGiftForm.controls['phone'].hasError('required') && eGiftForm.controls['phone'].hasError('minlength')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter 10 digit contact no.</div>       
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Company (optional)</label>
-              <input type="text">
+              <input (keypress)="firstName($event)" type="text" formControlName="company">
             </div>
           </div>
         </div>
@@ -51,6 +56,53 @@
                 <label>Action</label>
               </div>
             </div> -->
+
+
+
+               <!--Requirements-->
+               <ng-container *ngFor="let requirement of requirements['controls'];let index=index">
+                <div class="req-flex" [formGroup]="requirement">
+                    <div class="catogary req-flex-child" placeholder="Select">
+                        <select formControlName="category">
+                            <option value="" selected disabled hidden>Select</option>                                        
+                            <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
+                          </select>
+                    </div>
+                    <div class="brand req-flex-child" >
+                        <select formControlName="brand">
+                            <option value="" selected disabled hidden>Select</option>                               
+                            <option *ngFor="let brand of brandList">{{brand.brandName}}</option>
+                        </select>
+                    </div>
+                    <div class="value req-flex-child" >
+                        <select formControlName="value">
+                          <option value="" selected disabled hidden>Select</option>                                        
+                          <option>500</option>
+                          <option>1000</option>
+                          <option>5000</option>
+                          <option>10000</option>
+                        </select>
+                    </div>
+                    <div class="qty req-flex-child">
+                        <input value="10" min="1" type="number"  formControlName="quantity">
+                    </div>
+                    <div class="total-value req-flex-child">
+                        <input value="TotalValue" type="text" formControlName="totalvalue" disabled readonly>
+                    </div>
+                    <div class="action req-flex-child" (click)="removeProduct(index)" *ngIf="requirements['controls'].length > 1">
+                        <div class="bin-area">
+                          <img src="assets/img/gift-bin-icon.png">
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+
+
+
+
+
+<!-- 
             <div class="req-flex">
               <div class="catogary req-flex-child">
                 <select aria-placeholder="val">
@@ -85,20 +137,23 @@
                   </div>
                 
               </div>
-            </div>
+            </div> -->
             
           </div>
         </div>
-        <div class="add-another-card">
-          <input type="button" value="+ ADD ANOTHER CARD">
+        <div [ngClass]="{'add-another-card-disabled':!requirements.valid, 'add-another-card': requirements.valid}">
+          <input type="button"
+          [disabled]="!requirements.valid"
+          (click)="addProducts()"
+           value="+ ADD ANOTHER CARD">
         </div>
         <div class="row submit-and-total">
             <div class="col-md-4 total-area">
                 <span class="total">Total</span><br>
-                <span class="amount">0.00 INR</span>
+                <span class="amount">{{TotalValue}}.00 INR</span>
               </div>
           <div class="col-md-8 submit-area">
-            <input class="submit-button" type="button" value="SUBMIT REQUEST">
+            <input  [ngClass]="{'submit-button' : eGiftForm.valid, 'submit-button-disabled' : !eGiftForm.valid}" [disabled]="!requirements.valid " type="button" value="SUBMIT REQUEST" (click)="onSubmit(eGiftForm.value)">
           </div>
         </div>
       </form>
@@ -106,12 +161,12 @@
   </div>
   
   <!-- start popup 1 -->
-  <div class="list-of-brand-e-gifts">
+  <div class="list-of-brand-e-gifts" *ngIf="showListPopup">
     <div class="top-head">
       <div class="th-left">
         <h2>List of 200+ brands e-Gift vouchers & validity</h2>
       </div>
-      <div class="th-right">
+      <div class="th-right"  (click)="togglePopUp2()">
         <img src="assets/img/close-circle-fill.svg">
       </div>
     </div>
@@ -157,8 +212,8 @@
   
   <!-- popup 2 -->
   
-  <div class="thanks-pop">
-    <div class="top-cross-area">
+  <div class="thanks-pop" *ngIf="showSuccessPopup">
+    <div class="top-cross-area"  (click)="togglePopUp1()">
         <img src="assets/img/close-circle-fill.svg">
     </div>
     <div class="pop-img-area">
@@ -167,7 +222,7 @@
     <div class="pop-text-area">
       <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
     </div>
-    <div class="pop-rnr">
+    <div class="pop-rnr"  (click)="togglePopUp1()">
       <button>RAISE NEW REQUEST</button>
     </div>
   </div>

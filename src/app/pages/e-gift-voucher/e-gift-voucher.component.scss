@@ -304,3 +304,46 @@
 }
 
 select::-ms-expand { display: block; }
+
+.add-another-card-disabled {
+    border: 1px dashed #B1B1B1;
+    border-radius: 4px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input {
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      color: #B1B1B1;
+      background: none;
+    }
+  }
+
+  .submit-button-disabled {
+    cursor: not-allowed;
+    color: #FFFFFF;
+    background-color: #B1B1B1;
+    width: 200px;
+    border-radius: 4px;
+    height: 40px;
+    border: none;
+  }
+
+  input { 
+    text-align: center; 
+  }
+
+  .popup_container {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background: #0505058c;
+    padding-top: 175px;
+    z-index: 99;
+  
+  }

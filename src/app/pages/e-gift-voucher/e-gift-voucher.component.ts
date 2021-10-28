@@ -45,9 +45,6 @@ export class EGiftVoucherComponent implements OnInit {
 
 
         this.user = this._localStorageService.retrieve('user');
-        // alert(JSON.stringify(this.user,null,2))
-        // alert(JSON.stringify(this.user.email,null,2))
-        // alert(JSON.stringify(this.user.userName,null,2))
 
         this.eGiftForm = this.fb.group({
             fullName: [this.user.userName, [Validators.required]],

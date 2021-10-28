@@ -35,7 +35,6 @@
         <div class="gift-card-req">
           <h3>Enter your gift card requirement:</h3>
           <div class="gift-card-req-form">
-
                <!--Requirements-->
                <ng-container *ngFor="let requirement of requirements['controls'];let index=index">
                 <div class="req-flex" [formGroup]="requirement">
@@ -61,9 +60,7 @@
                         </select>
                     </div>
                     <div class="qty req-flex-child">
-
                         <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity"  step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
-
                     </div>
                     <div class="total-value req-flex-child">
                         <input [value]="(singleItemPrice.value*quantity.value)" type="text" formControlName="totalvalue" disabled readonly>

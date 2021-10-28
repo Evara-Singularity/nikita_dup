@@ -99,6 +99,7 @@
                             height: 40px;
                             background-color: #FFFFFF;
                             border: 1px solid #707070;
+                            padding: 0px 10px;
                         }
                         input{
                             padding: 0px 5px;
@@ -339,19 +340,6 @@ select::-ms-expand { display: block; }
   input { 
     text-align: center; 
   }
-
-  .popup_container {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100vw;
-    height: 100vh;
-    background: #0505058c;
-    padding-top: 175px;
-    z-index: 99;
-  
-  }
-
 
 
   .popup_container {

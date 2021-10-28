@@ -2,9 +2,10 @@
     *ngIf="!productNotFound">
 
     <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1" [ngClass]="[carouselInitialized ? '' : 'before-init']">
+         <div class="">
 
+         </div>
         <ng-container #productCrousel></ng-container>
-
         <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo (previous)="onRotatePrevious()">
             <div class="img-block-pseudo" >
                 <div class="inner-block-pseudo">
@@ -38,6 +39,9 @@
                 </div>
             </div>
         </ng-container>
+        <div class="review">
+            sjhsjkh
+        </div>
     </div>
 
     <div class="prod-description">
@@ -478,6 +482,21 @@
                 </div>
             </div>
         </section>
+
+        <section class="pdp-section-card">
+            <div class="pwa-container">
+                <div class="pwa-row">
+                   <div class="pwa-col-6">
+                    <p class="heading-3">Reviews & Ratings</p>
+                   </div>
+                   <div class="pwa-col-6">
+                     <button class ="btn redBgButton">WRITE A REVIEW</button>
+                   </div>
+                </div>
+                <div class="pwa"></div>
+            </div>
+        </section>
+        
 
         <!-- Review rating Starts -->
         <section class="pdp-review" id="reviewsAll">

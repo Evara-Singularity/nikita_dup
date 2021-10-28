@@ -209,6 +209,15 @@ a {
     border: 1px solid $btn-color-red;
     font-size: $large-font;
 }
+.redBgButton{
+    background:$color-red-light;
+    color: $btn-color-red;
+    font-weight:bold;
+    width: 100%;
+    height:30px;
+    font-size: $medium-font;  
+}
+
 
 // Fixed Button
 .bottom-stick {

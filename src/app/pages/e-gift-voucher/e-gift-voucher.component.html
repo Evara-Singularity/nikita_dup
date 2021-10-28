@@ -12,18 +12,18 @@
             <div class="col-md-6 form-pd-field">
               <label>Full Name*</label>
               <input type="text"  (keypress)="firstName($event)" formControlName="fullName">
-              <div *ngIf="eGiftForm.controls['fullName'].dirty && eGiftForm.controls['fullName'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name <span class="f-size-10">(Special characters are not allowed)</span></div>
+              <div *ngIf="eGiftForm.controls['fullName'].touched && eGiftForm.controls['fullName'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name <span class="f-size-10">(Special characters are not allowed)</span></div>
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Email ID*</label>
               <input type="text" formControlName="emailId">
-              <div *ngIf="eGiftForm.controls['emailId'].dirty && eGiftForm.controls['emailId'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID</div>
+              <div *ngIf="eGiftForm.controls['emailId'].touched && eGiftForm.controls['emailId'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID</div>
               <div *ngIf="!eGiftForm.controls['emailId'].hasError('required') && eGiftForm.controls['emailId'].hasError('invalidCharT')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID. Ex: abc@xxx.com</div>
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Mobile No*</label>
               <input type="text" (keypress)="checkQuantityCode($event)" maxlength="10" minlength="10" formControlName="phone">
-              <div *ngIf="eGiftForm.controls['phone'].dirty && eGiftForm.controls['phone'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your phone no.</div>
+              <div *ngIf="eGiftForm.controls['phone'].touched && eGiftForm.controls['phone'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your phone no.</div>
               <div *ngIf="!eGiftForm.controls['phone'].hasError('required') && eGiftForm.controls['phone'].hasError('minlength')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter 10 digit contact no.</div>       
             </div>
             <div class="col-md-6 form-pd-field">
@@ -35,19 +35,18 @@
         <div class="gift-card-req">
           <h3>Enter your gift card requirement:</h3>
           <div class="gift-card-req-form">
-            <h4>Gift Card 1</h4>
 
                <!--Requirements-->
                <ng-container *ngFor="let requirement of requirements['controls'];let index=index">
                 <div class="req-flex" [formGroup]="requirement">
                     <div class="catogary req-flex-child" placeholder="Select">
-                        <select formControlName="category">
+                        <select (change)="updateTotatQuantity()" formControlName="category">
                             <option value="" selected disabled hidden>Select</option>                                        
                             <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
                           </select>
                     </div>
                     <div class="brand req-flex-child" >
-                        <select formControlName="brand">
+                        <select  (change)="updateTotatQuantity()"  formControlName="brand">
                             <option value="" selected disabled hidden>Select</option>                               
                             <option *ngFor="let brand of brandList">{{brand.brandName}}</option>
                         </select>
@@ -62,7 +61,9 @@
                         </select>
                     </div>
                     <div class="qty req-flex-child">
-                        <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity">
+
+                        <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity"  step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
+
                     </div>
                     <div class="total-value req-flex-child">
                         <input [value]="(singleItemPrice.value*quantity.value)" type="text" formControlName="totalvalue" disabled readonly>
@@ -131,7 +132,7 @@
                 <span class="amount">{{TotalValue}}.00 INR</span>
               </div>
           <div class="col-md-8 submit-area">
-            <input  [ngClass]="{'submit-button' : eGiftForm.valid, 'submit-button-disabled' : !eGiftForm.valid}" [disabled]="!requirements.valid " type="button" value="SUBMIT REQUEST" (click)="onSubmit(eGiftForm.value)">
+            <input class="submit-button" [disabled]="!requirements.valid " type="button" value="SUBMIT REQUEST" (click)="onSubmit(eGiftForm.value)">
           </div>
         </div>
       </form>

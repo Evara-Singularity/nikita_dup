@@ -45,9 +45,12 @@ export class EGiftVoucherComponent implements OnInit {
 
 
         this.user = this._localStorageService.retrieve('user');
+<<<<<<< Updated upstream
         // alert(JSON.stringify(this.user,null,2))
         // alert(JSON.stringify(this.user.email,null,2))
         // alert(JSON.stringify(this.user.userName,null,2))
+=======
+>>>>>>> Stashed changes
 
         this.eGiftForm = this.fb.group({
             fullName: [this.user.userName, [Validators.required]],
@@ -60,6 +63,7 @@ export class EGiftVoucherComponent implements OnInit {
 
         //call api store it in a variable data 
         this._dataService.callRestful("GET", 'https://nodeapiqa.moglilabs.com/nodeApi/v1/rfq/getVoucherData').subscribe((res) => {
+             alert(JSON.stringify(res));
             if (res['statusCode'] === 200 && res['data']) {
                 this.categoryList = [];
                 res['data']['categoryList'].forEach(element => {

@@ -1,3 +1,6 @@
+import { ProductInfoComponent } from './../../modules/product-info/product-info.component';
+import { QuestionAnswerComponent } from './../../components/question-answer/question-answer.component';
+import { ReviewRatingComponent } from './../../components/review-rating/review-rating.component';
 import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional, ElementRef } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -2407,6 +2410,37 @@ export class ProductComponent implements OnInit, AfterViewInit {
   navigateToUrl(url) {
     this.router.navigateByUrl(url);
   }
+
+  //ODP-17054/1705:Yajya modify mConfig if required
+    async displayReviewRating()
+    {
+            this.modalService.show({
+                inputs: { modalData: { isModal: true } },
+                component: ReviewRatingComponent,
+                outputs: {},
+                mConfig: { className: 'ex' }
+            });
+    }
+
+    async displayQuestionAnswer()
+    {
+            this.modalService.show({
+                inputs: { modalData: { isModal: true } },
+                component: QuestionAnswerComponent,
+                outputs: {},
+                mConfig: { className: 'ex' }
+            });
+    }
+
+    async displayProductInfo()
+    {
+            this.modalService.show({
+                inputs: { modalData: { isModal: true } },
+                component: ProductInfoComponent,
+                outputs: {},
+                mConfig: { className: 'ex' }
+            });
+    }
 
   ngOnDestroy() {
     if (this.isBrowser) {

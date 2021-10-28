@@ -1,3 +1,4 @@
+import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -31,6 +32,7 @@ import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toa
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
     WhatsAppToastModule,
+    ProductInfoModule,
     // Directives
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule

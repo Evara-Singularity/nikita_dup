@@ -1,3 +1,9 @@
+<!--1704:Yajya move this as per design-->
+<div style="margin-top: 50px;">
+    <button (click)="displayReviewRating()">Review & Rating</button>
+    <button (click)="displayQuestionAnswer()">QA</button>
+    <button (click)="displayProductInfo()">Features & Specification</button>
+</div>
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 

@@ -149,7 +149,7 @@ export class CategoryComponent {
     private setCanonicalUrls() {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
 
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
             links.rel = 'canonical';
             if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
@@ -215,7 +215,7 @@ export class CategoryComponent {
     }
 
     private setFaqSchema(faqData) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const data: any[] = (faqData['data'] as any[]);
             if (data.length > 0) {
                 const qaSchema = [];
@@ -678,7 +678,7 @@ export class CategoryComponent {
     }
 
     createCategorySchema(productArray) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {

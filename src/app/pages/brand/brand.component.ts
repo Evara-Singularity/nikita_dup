@@ -146,7 +146,7 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";
@@ -369,7 +369,7 @@ export class BrandComponent {
             /*End Adobe Analytics Tags */
         }
         /* Setting of product schema for products */
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const products = this.API_RESPONSE.brand[1][0].productSearchResult.products || [];
             if (products && products.length) {
                 const categoryName = qp && qp['categoryName'];
@@ -379,7 +379,7 @@ export class BrandComponent {
     }
 
     createProductsSchema(productArray, categoryName) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {

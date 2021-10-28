@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalModule } from '@app/modules/modal/modal.module';
-import { Subject } from 'rxjs';
 
 @Component({
     selector: 'review-rating',
@@ -13,21 +11,9 @@ export class ReviewRatingComponent implements OnInit, OnDestroy
 {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input('modalData') modalData = null;
-    private cDistryoyed = new Subject();
-
     constructor() { }
     ngOnInit() { }
-
-    close()
-    {
-        this.closePopup$.emit();
-    }
-
-    ngOnDestroy()
-    {
-        this.cDistryoyed.next();
-        this.cDistryoyed.unsubscribe();
-    }
+    ngOnDestroy() { }
 }
 
 @NgModule({
@@ -36,7 +22,7 @@ export class ReviewRatingComponent implements OnInit, OnDestroy
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        ModalModule,
-    ]
+    ],
+    exports: [ReviewRatingComponent]
 })
 export default class ReviewRatingModule { }

@@ -691,3 +691,19 @@
 
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
+
+<!--1704/1705 Yajya-->
+<app-pop-up-variant2 *ngIf="displayVariant2Popup" (outData$)="outData($event)" [class.open1]="displayVariant2Popup"
+    [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
+            <p class="txt header_text page-name">Testing</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15 pad-15" content>
+        <review-rating *ngIf="reviewRatingPopup"></review-rating>
+        <question-answer *ngIf="questionAnswerPopup"></question-answer>
+        <product-info *ngIf="productInfoPopup"></product-info>
+    </div>
+</app-pop-up-variant2>

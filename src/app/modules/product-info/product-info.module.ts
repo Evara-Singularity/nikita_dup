@@ -10,9 +10,10 @@ import { ImagesComponent } from './images/images.component';
 
 
 @NgModule({
-  declarations: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent],
-  imports: [
-    CommonModule
-  ]
+    declarations: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent],
+    imports: [
+        CommonModule
+    ],
+    exports: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent]
 })
 export class ProductInfoModule { }

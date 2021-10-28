@@ -117,6 +117,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   fbtFlag = false;
   isRFQSuccessfull = false;
   similarProducts = [];
+  //1074-1075 pop-ups
+  reviewRatingPopup = false;
+  questionAnswerPopup = false;
+  productInfoPopup = false;
 
   // Q&A vars
   questionMessage: string;
@@ -2411,36 +2415,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(url);
   }
 
-  //ODP-17054/1705:Yajya modify mConfig if required
-    async displayReviewRating()
-    {
-            this.modalService.show({
-                inputs: { modalData: { isModal: true } },
-                component: ReviewRatingComponent,
-                outputs: {},
-                mConfig: { className: 'ex' }
-            });
-    }
+  
+    //ODP-17054/1705:Yajya modify mConfig if required
+    get displayVariant2Popup() { return this.reviewRatingPopup || this.questionAnswerPopup || this.productInfoPopup }
+    
+    closeVariant2Popup() { this.reviewRatingPopup = this.questionAnswerPopup = this.productInfoPopup = false; }
 
-    async displayQuestionAnswer()
-    {
-            this.modalService.show({
-                inputs: { modalData: { isModal: true } },
-                component: QuestionAnswerComponent,
-                outputs: {},
-                mConfig: { className: 'ex' }
-            });
-    }
+    async displayReviewRating() { this.reviewRatingPopup = true; }
 
-    async displayProductInfo()
-    {
-            this.modalService.show({
-                inputs: { modalData: { isModal: true } },
-                component: ProductInfoComponent,
-                outputs: {},
-                mConfig: { className: 'ex' }
-            });
-    }
+    async displayQuestionAnswer() { this.questionAnswerPopup = true; }
+
+    async displayProductInfo() { this.productInfoPopup = true; }
+
+    outData(data){ console.log(data) }  
 
   ngOnDestroy() {
     if (this.isBrowser) {

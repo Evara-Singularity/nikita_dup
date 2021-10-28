@@ -2,8 +2,6 @@
 <ng-container *ngFor="let tab of TABS">
     <button (click)="updateTab(tab)">{{tab | titlecase}}</button>
 </ng-container>
-
-
 <div [ngSwitch]="defaultInfo">
     <specifications *ngSwitchCase="'specifications'"></specifications>
     <details *ngSwitchCase="'product details'"></details>
@@ -11,6 +9,3 @@
     <images *ngSwitchCase="'images'"></images>
     <key-features *ngSwitchDefault></key-features>
 </div>
-
-
-<button (click)="close()">close</button>

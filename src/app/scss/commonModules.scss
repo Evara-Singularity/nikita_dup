@@ -387,14 +387,11 @@ option {
     }
 }
 //grid
-.pwa-container{
-    padding:15px;
-    position: relative;
-}
+
 .pwa-row{
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -15px;
+    padding:15px;
     justify-content: space-evenly;
     align-items:center;
 }

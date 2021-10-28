@@ -109,7 +109,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   buyNow(buyNow = false) {
     //ODP-1680
-    if ((this.product['quantityAvailable'] < this.product['moq']) || this.product['moq'] !== 0) {
+    if (this.product['moq'] && (this.product['quantityAvailable'] < this.product['moq'])) {
       this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
       return;
     }

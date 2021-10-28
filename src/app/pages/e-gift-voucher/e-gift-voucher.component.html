@@ -43,12 +43,14 @@
                             <option value="" selected disabled hidden>Select</option>                                        
                             <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
                           </select>
+                          <i class="icon-down"></i>
                     </div>
                     <div class="brand req-flex-child" >
                         <select  (change)="updateTotatQuantity()"  formControlName="brand">
                             <option value="" selected disabled hidden>Select</option>                               
                             <option *ngFor="let brand of brandList">{{brand.brandName}}</option>
                         </select>
+                        <i class="icon-down"></i>
                     </div>
                     <div class="value req-flex-child" >
                         <select  (change)="updateTotatQuantity()" #singleItemPrice formControlName="value">
@@ -58,6 +60,7 @@
                           <option>5000</option>
                           <option>10000</option>
                         </select>
+                        <i class="icon-down"></i>
                     </div>
                     <div class="qty req-flex-child">
                         <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity"  step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >

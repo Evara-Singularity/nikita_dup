@@ -36,28 +36,6 @@
           <h3>Enter your gift card requirement:</h3>
           <div class="gift-card-req-form">
             <h4>Gift Card 1</h4>
-            <!-- <div class="req-flex">
-              <div class="catogary req-flex-child">
-                <label>Catogary</label>
-              </div>
-              <div class="brand req-flex-child">
-                <label>Brand</label>
-              </div>
-              <div class="value req-flex-child">
-                <label>Value (INR)</label>
-              </div>
-              <div class="qty req-flex-child">
-                <label>Qty</label>
-              </div>
-              <div class="total-value req-flex-child">
-                <label>Total Value (INR)</label>
-              </div>
-              <div class="action req-flex-child">
-                <label>Action</label>
-              </div>
-            </div> -->
-
-
 
                <!--Requirements-->
                <ng-container *ngFor="let requirement of requirements['controls'];let index=index">
@@ -75,7 +53,7 @@
                         </select>
                     </div>
                     <div class="value req-flex-child" >
-                        <select formControlName="value">
+                        <select  (change)="updateTotatQuantity()" #singleItemPrice formControlName="value">
                           <option value="" selected disabled hidden>Select</option>                                        
                           <option>500</option>
                           <option>1000</option>
@@ -84,12 +62,12 @@
                         </select>
                     </div>
                     <div class="qty req-flex-child">
-                        <input value="10" min="1" type="number"  formControlName="quantity">
+                        <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity">
                     </div>
                     <div class="total-value req-flex-child">
-                        <input value="TotalValue" type="text" formControlName="totalvalue" disabled readonly>
+                        <input [value]="(singleItemPrice.value*quantity.value)" type="text" formControlName="totalvalue" disabled readonly>
                     </div>
-                    <div class="action req-flex-child" (click)="removeProduct(index)" *ngIf="requirements['controls'].length > 1">
+                    <div class="action req-flex-child" (click)="removeProduct(index);updateTotatQuantity();" *ngIf="requirements['controls'].length > 1">
                         <div class="bin-area">
                           <img src="assets/img/gift-bin-icon.png">
                         </div>
@@ -161,70 +139,73 @@
   </div>
   
   <!-- start popup 1 -->
-  <div class="list-of-brand-e-gifts" *ngIf="showListPopup">
-    <div class="top-head">
-      <div class="th-left">
-        <h2>List of 200+ brands e-Gift vouchers & validity</h2>
+  <div class="popup_container"  *ngIf="showListPopup">
+    <div class="list-of-brand-e-gifts">
+      <div class="top-head">
+        <div class="th-left">
+          <h2>List of 200+ brands e-Gift vouchers & validity</h2>
+        </div>
+        <div class="th-right"  (click)="togglePopUp2()">
+          <img src="assets/img/close-circle-fill.svg">
+        </div>
       </div>
-      <div class="th-right"  (click)="togglePopUp2()">
-        <img src="assets/img/close-circle-fill.svg">
+      <div class="table-area">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Brands</th>
+              <th>Validity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Accessories</td>
+              <td>Hidesign</td>
+              <td>1 Year</td>
+            </tr>
+            <tr>
+              <td>Accessories</td>
+              <td>Hidesign</td>
+              <td>1 Year</td>
+            </tr>
+            <tr>
+              <td>Apparel</td>
+              <td>The Man Company</td>
+              <td>1 Year</td>
+            </tr>
+            <tr>
+              <td>Accessories</td>
+              <td>Hidesign</td>
+              <td>10 monthhs</td>
+            </tr>
+            <tr>
+              <td>Apparel</td>
+              <td>The Man Company</td>
+              <td>1 Year</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-    <div class="table-area">
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Brands</th>
-            <th>Validity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Accessories</td>
-            <td>Hidesign</td>
-            <td>1 Year</td>
-          </tr>
-          <tr>
-            <td>Accessories</td>
-            <td>Hidesign</td>
-            <td>1 Year</td>
-          </tr>
-          <tr>
-            <td>Apparel</td>
-            <td>The Man Company</td>
-            <td>1 Year</td>
-          </tr>
-          <tr>
-            <td>Accessories</td>
-            <td>Hidesign</td>
-            <td>10 monthhs</td>
-          </tr>
-          <tr>
-            <td>Apparel</td>
-            <td>The Man Company</td>
-            <td>1 Year</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
   
   <!-- popup 2 -->
-  
-  <div class="thanks-pop" *ngIf="showSuccessPopup">
-    <div class="top-cross-area"  (click)="togglePopUp1()">
-        <img src="assets/img/close-circle-fill.svg">
+  <div class="popup_container"  *ngIf="showSuccessPopup">
+    <div class="thanks-pop">
+      <div class="top-cross-area"  (click)="togglePopUp1()">
+          <img src="assets/img/close-circle-fill.svg">
+      </div>
+      <div class="pop-img-area">
+        <img src="assets/img/checkbox-circle-fill-m.svg">
+      </div>
+      <div class="pop-text-area">
+        <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
+      </div>
+      <div class="pop-rnr"  (click)="togglePopUp1()">
+        <button>RAISE NEW REQUEST</button>
+      </div>
     </div>
-    <div class="pop-img-area">
-      <img src="assets/img/checkbox-circle-fill-m.svg">
-    </div>
-    <div class="pop-text-area">
-      <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
-    </div>
-    <div class="pop-rnr"  (click)="togglePopUp1()">
-      <button>RAISE NEW REQUEST</button>
-    </div>
+    
+    
   </div>
-  
-  

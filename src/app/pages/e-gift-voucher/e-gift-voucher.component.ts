@@ -70,6 +70,16 @@ export class EGiftVoucherComponent implements OnInit {
 
   
   }
+
+  updateTotatQuantity() {
+    this.TotalValue = 0;
+    this.requirements.value.forEach(element => {
+        if (parseInt(element.value) && element.quantity) {
+            this.TotalValue += (parseInt(element.value)*parseInt(element.quantity));
+        }
+    });
+  }
+
   valueChanged() {
       this.requirements.valueChanges.subscribe((changes) => {
           // this.calculator(itemForm)
@@ -85,9 +95,9 @@ export class EGiftVoucherComponent implements OnInit {
           }
 
 
-          if(changes[0].value !==""){
-               this.TotalValue=changes[0].quantity*changes[0].value;
-           }
+        //   if(changes[0].value !==""){
+        //        this.TotalValue=changes[0].quantity*changes[0].value;
+        //    }
         });
   }
   
@@ -96,17 +106,10 @@ export class EGiftVoucherComponent implements OnInit {
   {
       return this.fb.group(
         {
-          // category: ['',Validators.required],
-          // brand: ['',Validators.required],
-          // value: ['',Validators.required],
-          // quantity: ['1',[Validators.required, Validators.maxLength(3),MinimumQty.validateQty]],
-          // totalvalue: ['',Validators.required],
-
-
-          category: [''],
-          brand: [''],
-          value: [''],
-          quantity: ['1'],
+          category: ['',Validators.required],
+          brand: ['',Validators.required],
+          value: ['',Validators.required],
+          quantity: ['1',[Validators.required, Validators.maxLength(3)]],
           totalvalue: [''],
         }
       )

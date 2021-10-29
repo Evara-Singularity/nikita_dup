@@ -186,24 +186,11 @@
     label {
         width: 20px;
         @extend %custom-check-box-checkout;
-        .custom-box{
-            font-size: 14px !important;
-        }
     }
 }
 
 .custom-box {
-    width: 14px;
-    height: 14px;
-    display: block;
-    float: left;
     font-size: 14px !important;
-    line-height: 20px;
-    margin-right: 5px;
     @extend %transition;
-    &::before {
-        font-family: 'icomooon_pwa';
-        content: "\e915";
-        color: rgb(238, 5, 5);
-    }
+    
 }

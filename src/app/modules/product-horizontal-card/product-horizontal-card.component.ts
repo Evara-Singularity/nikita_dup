@@ -109,16 +109,11 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   buyNow(buyNow = false) {
-    //ODP-1680
-    if (this.product['moq'] && (this.product['quantityAvailable'] < this.product['moq'])) {
-      this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
-      return;
-    }
     this._loader.setLoaderState(true);
     const productMsnId = this.product['moglixPartNumber'];
     this.getProductGroupDetails(productMsnId).pipe(
       map(productRawData => {
-        // console.log('data ==> ', productRawData);
+        console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
           return this.getAddToCartProductRequest(productRawData['productBO'], buyNow);
         } else {
@@ -127,6 +122,10 @@ export class ProductHorizontalCardComponent implements OnInit {
       })
     ).subscribe((productDetails: AddToCartProductSchema) => {
       if (productDetails) {
+        if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
+          this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
+          return;
+        }
         if (productDetails.filterAttributesList) {
           this.loadVariantPop(this.product, productDetails, buyNow);
         } else {
@@ -158,7 +157,7 @@ export class ProductHorizontalCardComponent implements OnInit {
         const productRequest = this.getAddToCartProductRequest(productBO, data.buyNow);
         const product = this.productEntityFromProductBO(productBO);
         const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
-        
+
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
@@ -185,7 +184,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     if (this.isAd && this._commonService.isBrowser) {
       this.onlineSalesClickTrackUsingGTM();
     }
-    this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName , this.cardMetaInfo.redirectedIdentifier);
+    this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName, this.cardMetaInfo.redirectedIdentifier);
     this._router.navigateByUrl(this.product.productUrl);
   }
 
@@ -380,7 +379,7 @@ export class ProductHorizontalCardComponent implements OnInit {
           this.resetVariantData();
           if (!buyNow) {
             this._cartService.setCartSession(result);
-            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });         
+            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
             this.showAddToCartToast();
             // analytics call
             this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
@@ -425,6 +424,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       brandId: productBrandDetails['idBrand'],
       brandName: productBrandDetails['brandName'],
       quantityAvailable: priceQuantityCountry['quantityAvailable'],
+      productMinimmumQuantity: productMinimmumQuantity,
       discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
       rating: this.product.rating,
       categoryCodes: productCategoryDetails['categoryCode'],
@@ -453,6 +453,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productBrandDetails = productGroupData['brandDetails'];
     const productCategoryDetails = productGroupData['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
+    const quantityAvailable = (priceQuantityCountry && priceQuantityCountry['quantityAvailable']) ? priceQuantityCountry['quantityAvailable'] : 1;
 
     const product = {
       cartId: null,
@@ -473,6 +474,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
       isPersistant: true,
       productQuantity: productMinimmumQuantity,
+      quantityAvailable: quantityAvailable,
       productUnitPrice: productPrice,
       expireAt: null,
       productUrl: productGroupData['defaultCanonicalUrl'],
@@ -506,7 +508,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   cardVisisble(htmlElement) {
     if (this.isAd && this._commonService.isBrowser) {
-      
+
       this.onlineSalesImpressionTrackUsingGTM();
     }
   }

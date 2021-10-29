@@ -35,6 +35,7 @@ export interface ProductsEntity {
     priceWithoutTax: number;
     productName: string;
     variantName: string;
+    productMinimmumQuantity?: number;
     productUrl: string;
     shortDesc: string;
     brandId: string;

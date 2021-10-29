@@ -49,6 +49,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     redirectedIdentifier: '',
   }
   @Input() isAd: boolean = false;
+  @Input() hideAd: boolean = false;
   @Input() isFirstView: boolean = false;
   productGroupData: any = null;
 

@@ -183,9 +183,10 @@ export class EGiftVoucherComponent implements OnInit {
                     this.showSuccessPopup = true;
                     //reset data
                     this.eGiftForm.reset();
-                    (formArray: FormArray) => {
-                        formArray = this.formBuilder.array([]);
-                    }
+                    this.requirements.value.forEach((e, index) => {
+                        (<FormArray>this.requirements).removeAt(index)
+                    });
+                    (this.requirements as FormArray).push(this.getRequirements());
                     this.autoFill();
                 }
                 else {

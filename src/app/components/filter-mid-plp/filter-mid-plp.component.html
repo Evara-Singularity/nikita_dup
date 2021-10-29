@@ -4,10 +4,7 @@
             Shop By {{ inlineFilterData.name }} <ng-container *ngIf="inlineFilterData.name === 'price'">Range</ng-container>
         </p>
         <div class="inline-filter-card-list">
-            <label>
-				<input type="checkbox" formControlName="type">
-				<span class="custom-box icon-box"></span>
-			</label>
+            
                 <div class="inner-card-list">
                     <ng-container *ngIf="inlineFilterData.name !== 'category'">
                         <ng-container *ngIf="inlineFilterData.terms.length < 5">

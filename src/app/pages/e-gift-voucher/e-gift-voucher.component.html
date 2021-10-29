@@ -161,30 +161,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Accessories</td>
-              <td>Hidesign</td>
-              <td>1 Year</td>
-            </tr>
-            <tr>
-              <td>Accessories</td>
-              <td>Hidesign</td>
-              <td>1 Year</td>
-            </tr>
-            <tr>
-              <td>Apparel</td>
-              <td>The Man Company</td>
-              <td>1 Year</td>
-            </tr>
-            <tr>
-              <td>Accessories</td>
-              <td>Hidesign</td>
-              <td>10 monthhs</td>
-            </tr>
-            <tr>
-              <td>Apparel</td>
-              <td>The Man Company</td>
-              <td>1 Year</td>
+            <tr *ngFor="let brands of brandListAll">
+              <td>{{brands.catName}}</td>
+              <td>{{brands.braName}}</td>
+              <td>{{brands.validity}}</td>
             </tr>
           </tbody>
         </table>

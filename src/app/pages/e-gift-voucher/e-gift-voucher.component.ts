@@ -6,9 +6,9 @@ import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
-  selector: 'app-e-gift-voucher',
-  templateUrl: './e-gift-voucher.component.html',
-  styleUrls: ['./e-gift-voucher.component.scss']
+    selector: 'app-e-gift-voucher',
+    templateUrl: './e-gift-voucher.component.html',
+    styleUrls: ['./e-gift-voucher.component.scss']
 })
 export class EGiftVoucherComponent implements OnInit {
 
@@ -16,14 +16,15 @@ export class EGiftVoucherComponent implements OnInit {
     showSuccessPopup = false;
     showListPopup = false;
 
-  
+
 
     data: Object;
     categoryList: any[];
     brandList: any;
     TotalValue: any;
     rfqEnquiryItemsList: any[];
-    brandListAll: [];
+    catListAll: any = [];
+    brandListAll: any[] = [];
     userId: any;
     email: any;
     eGiftForm: FormGroup;
@@ -36,7 +37,7 @@ export class EGiftVoucherComponent implements OnInit {
         private _tms: ToastMessageService,
         private _localStorageService: LocalStorageService,
 
-        ) {
+    ) {
 
     }
 
@@ -60,8 +61,27 @@ export class EGiftVoucherComponent implements OnInit {
             if (res['statusCode'] === 200 && res['data']) {
                 this.categoryList = [];
                 res['data']['categoryList'].forEach(element => {
-                    this.categoryList.push(element)
+                    this.categoryList.push(element);
+                    this.catListAll.push(element.categoryName);
                 });
+
+
+                for (let i = 0; i < this.catListAll.length; i++) {
+                    if (this.categoryList[i].categoryName === this.catListAll[i]) {
+                        for (let j = 0; j < this.categoryList[i].brandList.length; j++) {
+                            console.log(this.categoryList[i].brandList.length)
+                            let popUpObj = {
+                                catName: '',
+                                braName: '',
+                                validity: ''
+                            }
+                            popUpObj['catName'] = this.categoryList[i].categoryName;
+                            popUpObj['braName'] = this.categoryList[i].brandList[j].brandName,
+                                popUpObj['validity'] = this.categoryList[i].brandList[j].validity
+                            this.brandListAll.push(popUpObj)
+                        }
+                    }
+                }
 
                 this.valueChanged();
 
@@ -104,7 +124,7 @@ export class EGiftVoucherComponent implements OnInit {
 
     firstName(event) {
         var key;
-        key = event.charCode;  
+        key = event.charCode;
         return ((key > 64 &&
             key < 91) || (key > 96 && key < 123) || key == 32 || key == 46);
     }
@@ -165,8 +185,8 @@ export class EGiftVoucherComponent implements OnInit {
                     this.eGiftForm.reset();
                     (formArray: FormArray) => {
                         formArray = this.formBuilder.array([]);
-                      }
-                      this.autoFill();
+                    }
+                    this.autoFill();
                 }
                 else {
                     this._tms.show({ type: 'error', text: 'Something Went Wrong' });
@@ -176,7 +196,7 @@ export class EGiftVoucherComponent implements OnInit {
             });
         }
         else {
-             this.eGiftForm.markAllAsTouched();
+            this.eGiftForm.markAllAsTouched();
             // Object.keys(this.eGiftForm.controls).forEach(field => {
             //     const control = this.eGiftForm.get(field);
             //     control.markAsTouched({ onlySelf: true });
@@ -208,7 +228,7 @@ export class EGiftVoucherComponent implements OnInit {
 
     //getters
     get requirements() { return this.eGiftForm.get('requirements') };
-    
+
 
     autoFill() {
         this.eGiftForm.controls['fullName'].setValue(this.user.userName)

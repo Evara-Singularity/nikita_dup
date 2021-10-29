@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
 import { Step } from '@app/utils/validators/step.validate';
@@ -57,7 +58,7 @@ export class EGiftVoucherComponent implements OnInit {
 
 
         //call api store it in a variable data 
-        this._dataService.callRestful("GET", 'https://nodeapiqa.moglilabs.com/nodeApi/v1/rfq/getVoucherData').subscribe((res) => {
+        this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/rfq/getVoucherData').subscribe((res) => {
             if (res['statusCode'] === 200 && res['data']) {
                 this.categoryList = [];
                 res['data']['categoryList'].forEach(element => {
@@ -165,7 +166,7 @@ export class EGiftVoucherComponent implements OnInit {
                 })
             });
 
-            this._dataService.callRestful("POST", 'https://nodeapiqa.moglilabs.com/nodeApi/v1/rfq/createVoucherRfq', {
+            this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + '/rfq/createVoucherRfq', {
                 body: {
                     "rfqEnquiryCustomer": {
                         "name": request.fullName,

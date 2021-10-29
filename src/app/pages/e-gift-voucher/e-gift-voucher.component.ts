@@ -159,7 +159,7 @@ export class EGiftVoucherComponent implements OnInit {
                 this.rfqEnquiryItemsList.push({
                     "categoryName": element.category,
                     "quantity": element.quantity,
-                    "brandName": element.category,
+                    "brandName": element.brand,
                     "itemValue": element.value,
                     "totalValue": +element.totalValue
                 })
@@ -172,7 +172,7 @@ export class EGiftVoucherComponent implements OnInit {
                         "email": request.emailId,
                         "mobile": request.phone,
                         "company": request.company,
-                        "userId": "23211"
+                        "userId": this.user.userId || ''
                     },
                     "rfqEnquiryItemsList": this.rfqEnquiryItemsList
 

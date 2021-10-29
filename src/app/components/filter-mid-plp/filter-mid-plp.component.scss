@@ -186,5 +186,8 @@
     label {
         width: 20px;
         @extend %custom-check-box-checkout;
+        span{
+            font-size: 10px !important;
+        }
     }
 }

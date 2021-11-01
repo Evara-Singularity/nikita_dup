@@ -92,10 +92,10 @@ export class CategoryComponent {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-            
+
             // set API result data
             this.API_RESPONSE = result;
-            
+
             this._productListService.excludeAttributes = [];
 
             if (this.cmsInstance) {
@@ -117,8 +117,6 @@ export class CategoryComponent {
             // create FAQ section schema
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
-            // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
@@ -132,6 +130,11 @@ export class CategoryComponent {
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
                     // update footer data
                     this.genrateAndUpdateCategoryFooterData();
+                }
+                if (res.hasOwnProperty('categoryLinkList')) {
+                    this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
+                    // genrate popular links data
+                    this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
                 }
             });
 

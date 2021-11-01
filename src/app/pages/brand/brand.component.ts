@@ -71,8 +71,6 @@ export class BrandComponent {
 
             this._productListService.excludeAttributes = [];
 
-            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
-
             // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
 
@@ -83,6 +81,12 @@ export class BrandComponent {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
+
+                    if (res.hasOwnProperty('categoryLinkList')) {
+                        this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
+                        // genrate popular links data
+                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
+                    }
                     
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
                     if (!this._activatedRoute.snapshot.params.id) {

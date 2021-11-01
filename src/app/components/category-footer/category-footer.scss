@@ -112,3 +112,11 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+
+::ng-deep hr{
+    display: none !important;
+}
+
+::ng-deep p strong{
+    font-weight: initial !important;
+}

@@ -1,7 +1,7 @@
+import { PopUpModule } from './../../modules/popUp/pop-up.module';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
 @Component({
     selector: 'question-answer',
     templateUrl: './question-answer.component.html',
@@ -34,7 +34,7 @@ export class QuestionAnswerComponent implements OnInit, OnDestroy
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        PopUpVariant2Module
+        PopUpModule
     ],
     exports: [QuestionAnswerComponent]
 

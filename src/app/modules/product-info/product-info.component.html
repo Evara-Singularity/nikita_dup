@@ -1,4 +1,4 @@
-<app-pop-up-variant2 (outData$)="close($event)" [class.open1]="openProductInfo"
+<app-pop-up (outData$)="close($event)" [class.open1]="openProductInfo"
     [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
@@ -19,7 +19,7 @@
             <key-features *ngSwitchDefault></key-features>
         </div>
     </div>
-</app-pop-up-variant2>
+</app-pop-up>
 
 
 

@@ -124,6 +124,9 @@ export class ProductComponent implements OnInit, AfterViewInit
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ['116111700'];
 
+    // ondemand loaded components for PDP accordians
+    pdpAccordianInstance = null;
+    @ViewChild('pdpAccordian', { read: ViewContainerRef }) pdpAccordianContainerRef: ViewContainerRef;
     // ondemand loaded components for share module
     productShareInstance = null;
     @ViewChild('productShare', { read: ViewContainerRef }) productShareContainerRef: ViewContainerRef;
@@ -458,6 +461,18 @@ export class ProductComponent implements OnInit, AfterViewInit
         else {
             this.starsCount = rating;
             //this.productResult['rating'] = rating;
+        }
+    }
+
+    async onVisibleProductAccordians($event) {
+        if (!this.pdpAccordianInstance) {           
+            const { ProductAccordiansComponent } = await import('./../../components/product-accordians/product-accordians.component');
+            const factory = this.cfr.resolveComponentFactory(ProductAccordiansComponent);
+            this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(factory, null, this.injector);
+            this.pdpAccordianInstance.instance['categoryBrandDetails'] = {
+                category: this.rawProductData.categoryDetails[0],
+                brand: this.rawProductData.brandDetails
+            };
         }
     }
 

@@ -1,6 +1,8 @@
+import { EmiPlansModule } from './../../modules/emi-plans/emi-plans.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import ProductCheckPincodeModule from '@app/components/product-check-pincode/product-check-pincode.component';
 import QuestionAnswerModule from '@app/components/question-answer/question-answer.component';
 import ReviewRatingModule from '@app/components/review-rating/review-rating.component';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
@@ -35,10 +37,8 @@ import { ProductComponent } from './product.component';
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
     WhatsAppToastModule,
-    PopUpVariant2Module,
     ProductInfoModule,
-    ReviewRatingModule,
-    QuestionAnswerModule,
+    EmiPlansModule,
     // Directives
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule

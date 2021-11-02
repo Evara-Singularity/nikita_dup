@@ -21,7 +21,6 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         ReactiveFormsModule,
         ObjectToArrayPipeModule,
         ArraySortPipeModule,
-        PopUpModule,
         BankNamePipeModule,
         MathCeilPipeModule,
         MathFloorPipeModule

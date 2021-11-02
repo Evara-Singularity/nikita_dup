@@ -1,13 +1,13 @@
-<app-pop-up-variant2 (outData$)="outData($event)" [class.open1]="displayVariant2Popup" *ngIf="displayVariant2Popup"
+<app-pop-up (outData$)="outData($event)" [class.open1]="displayVariant2Popup" *ngIf="displayVariant2Popup"
     [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
-            <p class="txt header_text page-name">Testing</p>
+            <p class="txt header_text page-name">Question & Answer</p>
         </div>
     </div>
     <div class="content-popup card mt-15 pad-15" content>
         <p>question-answer works!</p>
     </div>
-</app-pop-up-variant2>
+</app-pop-up>
 

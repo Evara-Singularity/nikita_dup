@@ -387,16 +387,13 @@ option {
     }
 }
 //grid
-.pwa-container{
-    padding:15px;
-    position: relative;
-}
+
 .pwa-row{
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -15px;
-    justify-content: space-evenly;
-    align-items: flex-start;
+    padding:10px 15px;
+    // justify-content: space-evenly;
+    align-items:center;
 }
 @for $i from 1 through 12 {
     $colnum: $i;
@@ -405,8 +402,8 @@ option {
         -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
         flex: 0 0 ($fullwidth / $colmax)*$colnum;
         max-width: ($fullwidth / $colmax)*$colnum;
-        padding-left: $default-gap;
-        padding-right: $default-gap;
+        // padding-left: $default-gap;
+        // padding-right: $default-gap;
      }
 }
 

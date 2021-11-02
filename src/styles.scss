@@ -123,10 +123,21 @@ h3,
     font-size: $medium-font;
     font-weight: 400;
 }
+.extra-small-txt{
+    font-size: $small-font;
+    font-weight: 400;
+    line-height:14px;
+}
+
 
 .normal-txt {
     font-weight: 400;
 }
+
+.content{
+    font-size: 14px;
+    line-height: 20px;
+}    
 
 h2,
 .heading-2 {
@@ -209,6 +220,15 @@ a {
     border: 1px solid $btn-color-red;
     font-size: $large-font;
 }
+.redBgButton{
+    background:$color-red-light;
+    color: $btn-color-red;
+    font-weight:bold;
+    font-size: $medium-font;  
+    padding: 8px 15px;
+    box-shadow:none;
+}
+
 
 // Fixed Button
 .bottom-stick {
@@ -334,7 +354,13 @@ header-nav {
     }
 }
 
-// 
+// Aligment Classes
+.align-right{
+    text-align:right;
+}
+.align-left{
+  text-align:left;
+}
 .align-center {
     text-align: center;
 }

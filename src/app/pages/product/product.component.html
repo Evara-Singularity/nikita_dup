@@ -1,8 +1,8 @@
 <!--1704:Yajya move this as per design-->
 <div style="margin-top: 50px;">
-    <button (click)="displayReviewRating()">Review & Rating</button>
-    <button (click)="displayQuestionAnswer()">QA</button>
-    <button (click)="displayProductInfo()">Features & Specification</button>
+    <button (click)="handleReviewRatingPopup()">Review & Rating</button>
+    <button (click)="handleQuestionAnswerPopup()">QA</button>
+    <button (click)="handleProductInfoPopup()">Features & Specification</button>
 </div>
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
@@ -214,15 +214,16 @@
     </div>
     <!-- Product quantity action section ends -->
 
-    <!--1704/1705 Yajya-->
-    <div>
+    <!--1704/1705-->
+    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)">
         Delivery Details
-        <input type="text">
+            <!--1704/1705:TODO modify product-check-pincode as per design-->
+            <ng-container #pincodeForm></ng-container>
     </div>
+    <!--1704/1705 Yajya end-->
 
     <!-- other sections starts -->
     <div>
-
         <!-- RFQ section starts -->
         <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
             <ul class="deals-list">
@@ -234,14 +235,6 @@
                         <small>Get quick quotes for bulk queries</small>
                     </div>
                     <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
-                </li>
-                <li class="clearfix">
-                    <i class="icon-location ico_offer"></i>
-                    <div class="ofr_txt location-txt">
-                        <p class="first-">Enter Pincode to check availability.</p>
-                        <small>Shipping charge as per serviceability</small>
-                    </div>
-                    <span class="ico-right" (click)="getPincodeForm();">CHECK</span>
                 </li>
             </ul>
         </div>
@@ -626,15 +619,16 @@
 
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #rfqForm></ng-container>
-    <ng-container #pincodeForm></ng-container>
     <ng-container #offerPopup></ng-container>
     <ng-container #offerComparePopup></ng-container>
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
     <ng-container #globalToast></ng-container>
-
-
-
+    <!--1704/1705-->
+    <ng-container #emiPlansPopup></ng-container>
+    <ng-container #reviewRatingPopup></ng-container>
+    <ng-container #questionAnswersPopup></ng-container>
+    <ng-container #productInfoPopup></ng-container>
 </div>
 
 <ng-container #addToCartToast></ng-container>
@@ -698,18 +692,3 @@
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
 
-<!--1704/1705 Yajya-->
-<app-pop-up-variant2 *ngIf="displayVariant2Popup" (outData$)="outData($event)" [class.open1]="displayVariant2Popup"
-    [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
-    <div class="head-sec header_add_edit" header>
-        <div class="container">
-            <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
-            <p class="txt header_text page-name">Testing</p>
-        </div>
-    </div>
-    <div class="content-popup card mt-15 pad-15" content>
-        <review-rating *ngIf="reviewRatingPopup"></review-rating>
-        <question-answer *ngIf="questionAnswerPopup"></question-answer>
-        <product-info *ngIf="productInfoPopup"></product-info>
-    </div>
-</app-pop-up-variant2>

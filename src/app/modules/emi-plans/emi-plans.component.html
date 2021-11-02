@@ -1,0 +1,15 @@
+<app-pop-up-variant2 (outData$)="outData($event)" [class.open1]="openEMIPopup"
+    [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openEMIPopup'}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeEMIPalns($event)"></i>
+            <p class="txt header_text page-name">EMI Plans</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15 pad-15" content>
+        <!--Yajya EMI plans goes here-->
+        <p>EMI Plans code</p>
+    </div>
+</app-pop-up-variant2>
+
+

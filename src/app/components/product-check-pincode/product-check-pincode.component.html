@@ -1,36 +1,27 @@
-<!-- PopUp for Pincode -->
-<app-pop-up
-    [data]="{headerText: 'CHECK DELIVERY & PAYMENTS', selector:'openPinCodePopup',class: 'check-pincode'}" (outData$)="outData($event)" >
-    <div class="content-popup check-pincode" content >
-        <form [formGroup]="pinCodeForm" class="">
-            <div class="input-pincode">
-                <input (keyup)="checkPinocdeKey($event)"
-                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                    formControlName="pincode" class="inp-box" type="number" placeholder="Enter your pincode"
-                    maxlength="6">
-                <button (click)="checkAvailblityOnPinCode()" class="btn-submit">SUBMIT</button>
-            </div>
-            <p class="delivery-txt" *ngIf="deliveryDays != null">
-                <span>Delivery in </span>{{deliveryDays}}
-            </p>
-            <div *ngIf="pinCodeForm.controls['pincode'].hasError('pattern')" class="invalid pin-validation clearfix">
-                <i class="icon-circle-delete f-left"></i>
-                <p class="right-txt">Invalid pincode provided</p>
-            </div>
-            <div *ngIf="isPincodeAvailble && codDeliveryPincode && servicePincode && !pinCodeForm.controls['pincode'].hasError('pattern')"
-                class="validity-pin">
-                <div [ngClass]="{'valid':pincodeMessageCodAble, 'invalid': !pincodeMessageCodAble}"
-                    class="pin-validation clearfix">
-                    <i class="icon-check-active f-left"></i>
-                    <p class="right-txt">{{codDeliveryPincode}}</p>
-                </div>
-                <div [ngClass]="{'valid':pincodeMessageServiceaAble, 'invalid': !pincodeMessageServiceaAble}"
-                    class="pin-validation clearfix">
-                    <i class="icon-check-active f-left"></i>
-                    <p class="right-txt">{{servicePincode}}</p>
-                </div>
-            </div>
-            <p class="ship-txt mt-15">Shipping charge applicable as per serviceability</p>
-        </form>
+<div class="content-popup check-pincode" content>
+    <div class="input-pincode">
+        <input (keyup)="checkPinocdeKey($event)"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            [formControl]="pincode" class="inp-box" type="number" placeholder="Enter your pincode" maxlength="6">
+        <button (click)="checkAvailblityOnPinCode()" class="btn-submit">SUBMIT</button>
     </div>
-</app-pop-up>
+    <p class="delivery-txt" *ngIf="deliveryDays != null">
+        <span>Delivery in </span>{{deliveryDays}}
+    </p>
+    <div *ngIf="pincode.hasError('pattern')" class="invalid pin-validation clearfix">
+        <i class="icon-circle-delete f-left"></i>
+        <p class="right-txt">Invalid pincode provided</p>
+    </div>
+    <div *ngIf="isPincodeAvailble && cashOnDeliveryMsg && serviceableMsg && !pincode.hasError('pattern')"
+        class="validity-pin">
+        <div [ngClass]="{'valid':isCashOnDelivery, 'invalid': !isCashOnDelivery}" class="pin-validation clearfix">
+            <i class="icon-check-active f-left"></i>
+            <p class="right-txt">{{cashOnDeliveryMsg}}</p>
+        </div>
+        <div [ngClass]="{'valid':isServiceable, 'invalid': !isServiceable}" class="pin-validation clearfix">
+            <i class="icon-check-active f-left"></i>
+            <p class="right-txt">{{serviceableMsg}}</p>
+        </div>
+    </div>
+    <p class="ship-txt mt-15">Shipping charge applicable as per serviceability</p>
+</div>

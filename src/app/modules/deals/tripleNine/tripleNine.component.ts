@@ -21,10 +21,10 @@ export class TripleNineComponent {
     private _renderer2: Renderer2,
     private title: Title,
     public router: Router,
-    @Inject(DOCUMENT) private _document,
     private meta: Meta,
     private route: ActivatedRoute,
-    public _commonService:CommonService) {
+    public _commonService:CommonService,
+    @Inject(DOCUMENT) private _document) {
 
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;;

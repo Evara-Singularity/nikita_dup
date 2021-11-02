@@ -34,4 +34,5 @@ export interface AddToCartProductSchema {
     filterAttributesList?: any;
     isOutOfStock?: boolean,
     brandId?: string,
+    quantityAvailable?: number,
 }

@@ -12,6 +12,9 @@
         display: block;
     }
     .tab_num {
+        > div{
+            display: none;
+        }
         .power {
             &:after {
                 clear: both;

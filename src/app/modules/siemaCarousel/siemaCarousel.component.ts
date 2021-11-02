@@ -65,6 +65,8 @@ export class SiemaCarouselComponent {
     }
 
 
+    lazyLoadBannerFlag = true;
+
     ngOnInit() {
 
         if (this.isBrowser) {
@@ -148,7 +150,11 @@ export class SiemaCarouselComponent {
             },
             onChange: () => {
                 this.scrollInitialize();
-                this.lazyLoadBanner();
+
+                if (this.lazyLoadBannerFlag) {
+                    this.lazyLoadBanner();
+                }
+                this.lazyLoadBannerFlag = false;
 
                 document.querySelectorAll('iframe').forEach((iframe) => {
                     iframe.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*')

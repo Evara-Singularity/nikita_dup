@@ -2591,14 +2591,13 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    scrollToResults(id: string)
-    {
-        // this.isRFQSuccessfull = false;
-        // this._pageScrollService.scroll({
-        //   document: this.document,
-        //   scrollTarget: id,
-        // });
+    scrollToResults(id: string) {
         let footerOffset = document.getElementById('.id').offsetTop;
+        ClientUtility.scrollToTop(1000, footerOffset - 30);
+    }
+    
+    scrollToId(id: string) {
+        let footerOffset = document.getElementById(id).offsetTop;
         ClientUtility.scrollToTop(1000, footerOffset - 30);
     }
 

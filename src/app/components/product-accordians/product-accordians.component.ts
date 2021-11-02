@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { ProductListService } from '@app/utils/services/productList.service';
@@ -15,6 +16,7 @@ import { forkJoin } from 'rxjs';
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   ACCORDIAN_DATA: Array<any> = [[],[],[]];
+  popularLinks: Array<any>= [];
 
   constructor(
     public _commonService: CommonService, 
@@ -30,7 +32,7 @@ export class ProductAccordiansComponent {
     let categoryId = this.categoryBrandDetails.category.categoryCode;
     const apiList = [
       this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId),
-      this._productListService.getFilterBucket(categoryId, 'BRAND', this.categoryBrandDetails.brand.brandName),
+      this._productListService.getFilterBucket(categoryId, 'CATEGORY', this.categoryBrandDetails.brand.brandName),
       this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryId)
     ];
 
@@ -39,7 +41,8 @@ export class ProductAccordiansComponent {
         this.ACCORDIAN_DATA[0] = res[0]['data'];
       }
       if (res[1].hasOwnProperty('categoryLinkList') && res[1]['categoryLinkList']) {
-        this.ACCORDIAN_DATA[1] = Object.keys(res[1]['categoryLinkList']);
+        this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
+        this.popularLinks = Object.keys(res[1]['categoryLinkList']);
       }
       if (res[2].hasOwnProperty('mostSoledCategories')) {
         this.ACCORDIAN_DATA[2] = res[2]['mostSoledCategories'];
@@ -53,7 +56,8 @@ export class ProductAccordiansComponent {
 @NgModule({
   declarations: [ProductAccordiansComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    KpToggleDirectiveModule,
   ]
 })
 export default class ProductAccordiansModule {

@@ -391,8 +391,8 @@ option {
 .pwa-row{
     display: flex;
     flex-wrap: wrap;
-    padding:15px;
-    justify-content: space-evenly;
+    padding:10px 15px;
+    // justify-content: space-evenly;
     align-items:center;
 }
 @for $i from 1 through 12 {
@@ -402,8 +402,8 @@ option {
         -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
         flex: 0 0 ($fullwidth / $colmax)*$colnum;
         max-width: ($fullwidth / $colmax)*$colnum;
-        padding-left: $default-gap;
-        padding-right: $default-gap;
+        // padding-left: $default-gap;
+        // padding-right: $default-gap;
      }
 }
 

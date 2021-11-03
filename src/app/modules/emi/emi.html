@@ -40,7 +40,6 @@
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
                                 <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        
                                         <input formControlName="bankcode" [checked]="selectedEMIKey == emi.key" type="radio" [value]="emi.key"
                                             (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)" [id]="emi.key">
                                         <span class="custom-box"></span>

@@ -34,7 +34,7 @@
                         <i class="icon-rating-star"></i>
                     </span>
                     <span class="count" *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{product.ratingCount}})</span>
-                    <span class="ads" *ngIf="!product.internalProduct" >AD</span>
+                    <span class="ads" *ngIf="!product.internalProduct && !hideAd" >AD</span>
                 </div>
                 <div class="name" (click)="navigateToPDP()">
                     <span *ngIf="cardFeaturesConfig.horizontalOrientation" >{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>60">...</span></span>

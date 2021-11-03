@@ -92,10 +92,11 @@ export class CategoryComponent {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-            
+
             // set API result data
             this.API_RESPONSE = result;
-            console.log(result);
+
+            this._productListService.excludeAttributes = [];
 
             if (this.cmsInstance) {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
@@ -116,8 +117,6 @@ export class CategoryComponent {
             // create FAQ section schema
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
-            // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
@@ -131,6 +130,11 @@ export class CategoryComponent {
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
                     // update footer data
                     this.genrateAndUpdateCategoryFooterData();
+                }
+                if (res.hasOwnProperty('categoryLinkList')) {
+                    this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
+                    // genrate popular links data
+                    this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
                 }
             });
 
@@ -148,7 +152,7 @@ export class CategoryComponent {
     private setCanonicalUrls() {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
 
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
             links.rel = 'canonical';
             if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
@@ -214,7 +218,7 @@ export class CategoryComponent {
     }
 
     private setFaqSchema(faqData) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const data: any[] = (faqData['data'] as any[]);
             if (data.length > 0) {
                 const qaSchema = [];
@@ -588,6 +592,7 @@ export class CategoryComponent {
         } else {
             this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
             this.subCategoryInstance.instance.initializeSubcategoryData(this.API_RESPONSE.category[0].children);
+            this.subCategoryInstance.instance.showList(false);
         }
 
         this.layoutType = 0;
@@ -676,7 +681,7 @@ export class CategoryComponent {
     }
 
     createCategorySchema(productArray) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {

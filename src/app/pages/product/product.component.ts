@@ -119,6 +119,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     //1074-1075 pop-ups
     questionAnswerPopup = false;
     productInfoPopup = false;
+    isProductCrouselLoaded: boolean = false;
+    productImages = null;
 
     // Q&A vars
     questionMessage: string;
@@ -199,7 +201,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     productCrouselInstance = null;
     @ViewChild('productCrousel', { read: ViewContainerRef }) productCrouselContainerRef: ViewContainerRef;
     @ViewChild('productCrouselPseudo', { read: ElementRef }) productCrouselPseudoContainerRef: ElementRef;
-    isProductCrouselLoaded: boolean = false;
+    
 
     iOptions: any = null;
 
@@ -215,6 +217,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     };
 
     appPromoVisible: boolean = true;
+    productInfo = null;
 
     set showLoader(value: boolean)
     {
@@ -2660,12 +2663,27 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
         this.productInfoPopupInstance = this.productInfoPopupContainerRef.createComponent(factory, null, this.injector);
+        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo();
         this.productInfoPopupInstance.instance['openProductInfo'] = true;
         (this.productInfoPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
         });
+    }
+
+    getProductInfo()
+    {
+        if (this.productInfo) { return this.productInfo; }
+        this.productInfo = {};
+        this.productInfo['features'] = this.productKeyFeatures;
+        const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails) }
+        this.productInfo['specifications'] = { specifications: this.productAttributes, brand: brand };
+        const details = { description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails};
+        this.productInfo['details'] = details;
+        this.productInfo['videos'] = this.productVideos;
+        this.productInfo['images'] = this.productAllImages;
+        return this.productInfo;
     }
 
     ngOnDestroy()

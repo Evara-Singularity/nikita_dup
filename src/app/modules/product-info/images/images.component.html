@@ -1,1 +1,10 @@
-<p>images works!</p>
+<ng-container *ngIf="images.length">
+    <div class="large">
+        <img src="{{images[currentImageIndex].large}}">
+    </div>
+    <div class="medium">
+        <img *ngFor="let image of images;let imgIndex=index;" src="{{image.medium}}"
+            [class.selected]="imgIndex === currentImageIndex"
+            (click)="$event.stopPropagation();updateImageIndex(imgIndex)" width="20px">
+    </div>
+</ng-container>

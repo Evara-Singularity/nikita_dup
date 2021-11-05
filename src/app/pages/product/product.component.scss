@@ -573,28 +573,35 @@
         background: white;
         margin-top: 10px;
         .heading-3 {
-            padding-left: 15px;
+            padding: 17px 12px;
         }
     }
     .product-spec {
         border-top: 1px dashed #a2a2a2;
         border-bottom: 1px dashed #a2a2a2;
-        td {
-            &.left {
-                border-right: 1px dashed #c7c7c7;
-                border-bottom: 1px dashed #c7c7c7;
+        tr{
+            &:nth-child(2n){
+                background-color: #F1F1F1;
             }
-            &.right {
-                border-bottom: 1px dashed #c7c7c7;
-            }
-            div {
-                width: 100%;
-                padding: 15px 10px;
-                .brandName {
-                    color: #006DF0;
+            td {
+            
+                &.left {
+                    border-right: 1px dashed #c7c7c7;
+                    border-bottom: 1px dashed #c7c7c7;
+                }
+                &.right {
+                    border-bottom: 1px dashed #c7c7c7;
+                }
+                div {
+                    width: 100%;
+                    padding: 15px 10px;
+                    .brandName {
+                        color: #006DF0;
+                    }
                 }
             }
         }
+        
     }
     .payments-block {
         background: white;
@@ -1700,14 +1707,19 @@
         /* Firefox 64 */
         padding-bottom: 15px;
         .returnPolicyInner {
-            width: 120px;
+            border: 1px solid #EFEFF4;
+            border-radius: 8px;
+            width: 140px;
+            margin-right: 10px;
+            padding: 10px;
             float: left;
             .returnImg {
                 background: #FAE0E1;
-                padding: 10px;
-                border-radius: 50%;
+                padding: 6px;
+                border-radius: 20%;
                 float: left;
-                width: 35px;
+                width: 28px;
+                margin-top: 5px;
                 text-align: center;
                 vertical-align: middle;
                 img {

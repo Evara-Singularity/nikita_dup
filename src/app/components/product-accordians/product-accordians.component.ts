@@ -32,7 +32,7 @@ export class ProductAccordiansComponent {
     let categoryId = this.categoryBrandDetails.category.categoryCode;
     const apiList = [
       this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId),
-      this._productListService.getFilterBucket(categoryId, 'CATEGORY', this.categoryBrandDetails.brand.brandName),
+      this._productListService.getFilterBucket(categoryId, 'BRAND', this.categoryBrandDetails.brand.brandName),
       this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryId)
     ];
 

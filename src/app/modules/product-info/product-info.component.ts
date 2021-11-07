@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 })
 export class ProductInfoComponent implements OnInit, OnDestroy
 {
-    readonly TABS = ["key features", "specifications", "videos", "product details", "images"]
+    readonly TABS = ["key features", "specifications", "videos", "product details", "images",]
 
     @Input('openProductInfo') openProductInfo = false;
     @Input('modalData') modalData = null;
@@ -19,14 +19,12 @@ export class ProductInfoComponent implements OnInit, OnDestroy
 
     ngOnInit() { }
 
-    updateTab(tab){this.defaultInfo = tab}
+    updateTab(tab) { this.defaultInfo = tab }
 
     close(event) { this.closePopup$.emit(); }
 
-    closeProducInfo($event) { this.closePopup$.emit(); this.openProductInfo = false;}
+    closeProducInfo($event) { this.closePopup$.emit(); this.openProductInfo = false; }
 
-    ngOnDestroy()
-    {
-    }
+    ngOnDestroy() { }
 
 }

@@ -12,17 +12,12 @@
             <button (click)="updateTab(tab)">{{tab | titlecase}}</button>
         </ng-container>
         <div [ngSwitch]="defaultInfo">
-            <specifications *ngSwitchCase="'specifications'"></specifications>
-            <details *ngSwitchCase="'product details'"></details>
-            <videos *ngSwitchCase="'videos'"></videos>
-            <images *ngSwitchCase="'images'"></images>
-            <key-features *ngSwitchDefault></key-features>
+            <specifications *ngSwitchCase="'specifications'" [specifications]="modalData.specifications">
+            </specifications>
+            <details *ngSwitchCase="'product details'" [details]="modalData.details"></details>
+            <videos *ngSwitchCase="'videos'" [videos]="modalData.videos"></videos>
+            <images *ngSwitchCase="'images'" [images]="modalData.images"></images>
+            <key-features *ngSwitchDefault [features]="modalData.features"></key-features>
         </div>
     </div>
 </app-pop-up>
-
-
-
-
-
-

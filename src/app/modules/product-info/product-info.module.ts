@@ -7,6 +7,7 @@ import { VideosComponent } from './videos/videos.component';
 import { DetailsComponent } from './details/details.component';
 import { ImagesComponent } from './images/images.component';
 import { PopUpModule } from '../popUp/pop-up.module';
+import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 
 
 
@@ -15,6 +16,7 @@ import { PopUpModule } from '../popUp/pop-up.module';
     imports: [
         CommonModule,
         PopUpModule,
+        YTThumnailPipeModule
     ],
     exports: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent]
 })

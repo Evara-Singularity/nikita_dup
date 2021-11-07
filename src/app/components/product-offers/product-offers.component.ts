@@ -10,6 +10,7 @@ import { ProductService } from '../../utils/services/product.service';
 export class ProductOffersComponent implements OnInit {
 
   allofferData: any = null;
+  imagePathAsset: any = null;
   @Output() viewPopUpHandler: EventEmitter<any> = new EventEmitter<any>();
   @Output() emaiComparePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
 

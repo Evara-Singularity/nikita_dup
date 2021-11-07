@@ -2185,6 +2185,13 @@
         line-height:16px;
     }
  }
+ .view-review{
+    padding: 20px 20px;
+    span {
+        color: blue;
+        font-size: 14px;
+    }
+ }
  .reviewRow{
      padding:15px;
      .heading-3-txt {
@@ -2230,4 +2237,18 @@
  
 .accordian_footer_panel{
     margin-top: 10px;
+}
+.wp-100 {
+    width: 100%;
+}
+.hp-100 {
+    height: 100% !important;
+}
+
+.pad-b-70{
+    padding-bottom: 70px !important;
+}
+
+.f-size-14{
+    font-size: 14px;
 }

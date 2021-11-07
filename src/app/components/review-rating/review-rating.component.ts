@@ -6,22 +6,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'review-rating',
     templateUrl: './review-rating.component.html',
-    styleUrls: ['./review-rating.component.scss']
+    styleUrls: ['./../../pages/product/product.component.scss']
 })
-export class ReviewRatingComponent implements OnInit, OnDestroy
-{
+export class ReviewRatingComponent {
     displayVariant2Popup = true;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() emitWriteReview$: EventEmitter<any> = new EventEmitter<any>();
     @Input('modalData') modalData = null;
+    @Input('rawReviewsData') rawReviewsData = null;
     constructor() { }
-    ngOnInit() { }
-    ngOnDestroy() { }
-    outData($event)
-    {
-        console.log($event);
+    outData($event) {
         this.closePopup$.emit();
     }
-    closeVariant2Popup() { 
+    
+    emitWriteReview() {
+        this.closePopup$.emit();
+        this.emitWriteReview$.emit();
+    }
+
+    closeVariant2Popup() {
         this.closePopup$.emit();
         this.displayVariant2Popup = false
     }

@@ -51,9 +51,6 @@
                 </div>
             </div>
         </ng-container>
-        <div class="review">
-            sjhsjkh
-        </div>
     </div>
 
     <div class="prod-description">
@@ -482,20 +479,20 @@
                     <p class="heading-3">Reviews & Ratings</p>
                 </div>
                 <div class="pwa-col-6 align-right">
-                    <button class="btn redBgButton">WRITE A REVIEW</button>
+                    <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
             <div class="pwa-row">
                 <p class="extra-small-txt">
-                    Customer Reviews on Almonard 18 Inch Tempest vMark ll Pedestal Fan, Sweep: 1440 rpm
+                    Customer Reviews on {{ productName}}
                 </p>
             </div>
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
-                        <h3>3.2<i class="icon-rating-star"></i>
+                        <h3>{{ rawReviewsData?.summaryData?.final_average_rating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
                         </h3>
-                        <p class="small-txt">Average Rating based on 45 ratings and 15 reviews</p>
+                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }} ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                     </div>
                 </div>
                 <div class="pwa-col-6">
@@ -503,169 +500,83 @@
                         <div class="inner-scale">
                             <span>5</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="70" class="bar dark-green"></span>
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar dark-green"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>4</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="70" class="bar light-green"></span>
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-green"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>3</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="70" class="bar yellow"></span>
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar yellow"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>2</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="70" class="bar light-red"></span>
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-red"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>1</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="70" class="bar red"></span>
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar red"></span>
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div *ngFor="let i of [1,2,3]" class="reviewRow">
+            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;" class="reviewRow">
                 <div class="pwa-row innerRow">
                     <div class="pwa-col-6 reviewRow-col">
                         <div class="small-stars">
-                            <i class="icon-rating-star ylw-txt"></i>
-                            <i class="icon-rating-star"></i>
-                            <i class="icon-rating-star"></i>
-                            <i class="icon-rating-star"></i>
-                            <i class="icon-rating-star"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 1"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 2"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 3"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 4"></i>
                         </div>
-                        <p>Anu Thakur</p>
-                        <p class="small-txt grey-txt cust-date">Mar 6, 2016</p>
+                        <p>{{review?.user_name}}</p>
+                        <p class="small-txt grey-txt cust-date">
+                            {{ review?.date_unix | date: 'longDate' }}
+                        </p>
                     </div>
                     <div class="pwa-col-6 align-right">
-                        <p class="small-txt green-txt">Verified Purchase</p>
+                        <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
                     </div>
                     <div>
                         <h3 class="heading-3-txt">
-                            Excellent product by Almonard, cheap and best
+                            {{ review?.review_subject }}
                         </h3>
                         <p class="content">
-                            I have purchased this product on one week back… It delivered in next day…about this
-                            smartphone Micromax made first time a good smartphone in low cost with fingerprint sensor..I
-                            like it..if we talk abt this all features Micromax reduce d some features for cost
-                            cutting..like non removable battery and no notification light given..
+                            {{ review?.review_text }}
                         </p>
                     </div>
                 </div>
                 <div class="pwa-row">
                     <div class="pwa-col-6">
-                        <strong>Report Abuse</strong>
+                        <!-- <strong>Report Abuse</strong> -->
                     </div>
                     <div class="pwa-col-6 align-right">
                         <button class="suggstn-btn">
-                            <span class="small-txt">10</span>
+                            <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
                         <button class="suggstn-btn">
-                            <span class="small-txt">10</span>
+                            <span class="small-txt">{{review.no}}</span>
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Review rating Starts -->
-        <section class="pdp-review" id="reviewsAll">
-            <p class="heading-3" observeVisibility [debounceTime]="100" (visible)="onVisibleReviews($event)">REVIEWS &
-                RATINGS
-            </p>
-            <p class="heading-4">
-                Customer Reviews on {{productName}}
-            </p>
-            <div class="rating-box clearfix">
-                <div class="rating-star">
-                    <i class="icon-rating-star rating-val">
-                        <small>{{reviews?.summaryData?.final_average_rating | number:'1.1-1'}}</small>
-                    </i>
-                </div>
-                <div class="rating-scale">
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.five_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar dark-green"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.four_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar light-green"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.three_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar yellow"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.two_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar light-red"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.one_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar red"></span>
-                    </div>
-                </div>
+            <div class="view-review" (click)="handleReviewRatingPopup()">
+                <span>View {{ rawReviewsData?.summaryData?.review_count }} Reviews</span>
             </div>
-            <p class="small-txt align-center">Average Rating based on {{reviews?.summaryData?.review_count}} ratings</p>
-
-            <button class="revw-btn btn" (click)="writeReview();">RATE AND WRITE REVIEW</button>
-
-
-            <!-- <div class="all-revw">
-                <div *ngFor="let item of  reviews?.reviewList; let i=index" class="inner-div ">
-                    <div class="clearfix revw-row">
-                        <div class="small-stars">
-                            <i [class.ylw-txt]="item.rating>0" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>1" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>2" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>3" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>4" class="icon-rating-star"></i>
-                        </div>
-                        <div class="verfy-prod">
-                            <p class="small-txt green-txt" *ngIf="item?.is_approved">Verified Purchase</p>
-                        </div>
-                    </div>
-                    <p class="cust-name">{{item?.user_name}}</p>
-                    <p class="small-txt grey-txt cust-date">{{item?.date}}</p>
-                    <p class="revw-head">{{item?.review_subject}}</p>
-                    <p class="revw-txt">{{item?.review_text}}</p>
-
-                    <div class="cust_suggestion clearfix">
-                        <p class="sug_txt">{{item.yes}} of {{item.totalReview}} users found this review helpful.</p>
-                        <button [ngClass]="{'active':item.like=='1'}" class="suggstn-btn"
-                            (click)="postHelpful(item,'1','0',i)">
-                            <i class="icon-like"></i>
-                        </button>
-                        <button [ngClass]="{'active':item.dislike=='1'}" (click)="postHelpful(item,'0','1',i)"
-                            class="suggstn-btn">
-                            <i class="icon-dislike"></i>
-                        </button>
-                    </div>
-                </div> -->
-            <!-- <div class="view-all clearfix" (click)="openAllReviewsPopup=true" *ngIf="reviews && reviews.reviewList">
-                    <p class="view-txt">View all reviews
-                        <span class="count">({{reviews.reviewList.length}})</span>
-                    </p>
-                </div> -->
-            <!-- </div> -->
-
         </section>
-        <!-- Review rating ends -->
-
         <section class="Qa">
             <div class="container">
                 <p class="heading-3">QUESTIONS & ANSWERS</p>

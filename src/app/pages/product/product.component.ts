@@ -204,7 +204,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     productCrouselInstance = null;
     @ViewChild('productCrousel', { read: ViewContainerRef }) productCrouselContainerRef: ViewContainerRef;
     @ViewChild('productCrouselPseudo', { read: ElementRef }) productCrouselPseudoContainerRef: ElementRef;
-    
+
 
     iOptions: any = null;
 
@@ -670,6 +670,11 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
+        }
+        //1704
+        if (this.productInfo) {
+            this.productInfoPopupInstance = null;
+            this.productInfoPopupContainerRef.remove();
         }
     }
 
@@ -1630,8 +1635,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             });
             (this.offerSectionInstance.instance['emaiComparePopUpHandler'] as EventEmitter<boolean>).subscribe(status =>
             {
-                //this.emiComparePopUpOpen(status);
-                this.emiComparePopUpOpen_v1(status);
+                this.emiComparePopUpOpen(status);
+                //this.emiComparePopUpOpen_v1(status);
             });
         }
     }
@@ -2695,13 +2700,22 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         if (this.productInfo) { return this.productInfo; }
         this.productInfo = {};
-        this.productInfo['features'] = this.productKeyFeatures;
-        const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails) }
-        this.productInfo['specifications'] = { specifications: this.productAttributes, brand: brand };
-        const details = { description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails};
-        this.productInfo['details'] = details;
-        this.productInfo['videos'] = this.productVideos;
-        this.productInfo['images'] = this.productAllImages;
+        if (this.productKeyFeatures && this.productKeyFeatures.length) {
+            this.productInfo['key features'] = this.productKeyFeatures;
+        }
+        if (this.productAttributes) {
+            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails) }
+            this.productInfo['specifications'] = { attributes: this.productAttributes, brand: brand };
+        }
+        if (this.productVideos && this.productVideos.length) {
+            this.productInfo['videos'] = this.productVideos;
+        }
+        const details = { description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails 
+            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName};
+        this.productInfo['product details'] = details;
+        if (this.productAllImages && this.productAllImages.length) {
+            this.productInfo['images'] = this.productAllImages;
+        }
         return this.productInfo;
     }
 

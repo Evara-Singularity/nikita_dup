@@ -328,7 +328,7 @@
         <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
             <h2 class="heading-3">KEY FEATURES</h2>
             <ul class="feature-list">
-                <li *ngFor="let feature of productKeyFeatures">
+                <li *ngFor="let feature of productKeyFeatures | sliceArray:2">
                     <p>
                         <span>{{feature}}.</span>
                     </p>
@@ -350,7 +350,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr *ngFor="let attr of productAttributes | objectToArray:'associative'">
+                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:2">
                     <td class="left">
                         <div>{{attr.key}}</div>
                     </td>

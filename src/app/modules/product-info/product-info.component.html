@@ -6,12 +6,51 @@
             <p class="txt header_text page-name">Product Info</p>
         </div>
     </div>
-    <div class="content-popup card mt-15 pad-15" content>
+    <div class="content-popup card mt-15" content>
         <!--Yajya Design code goes here w.r.t each companent-->
-        <ng-container *ngFor="let tab of tabs">
-            <button (click)="updateTab(tab)">{{tab | titlecase}}</button>
-        </ng-container>
-        <div [ngSwitch]="defaultInfo">
+        <div class="card-container list-view">
+            <div class="left">
+                <ng-container>
+                <img 
+                        src="https://cdn.moglix.com/p/I/1/G/d/MINI1G7ZIGS84-xlarge.jpg"
+                        enhanceImgByNetwork
+                        height="125" width="125" />
+                </ng-container>
+            </div>
+            <div class="right">
+                <div class="name">
+                    <span>Dr. Morepen Gluco One 25 Strips, BG 03<span>...</span></span>
+                </div>
+                <div class="brand">
+                    <span>By: Luminous</span>
+                </div>
+                <div class="price-details">
+                    <div class="left">
+                        <div class="price">
+                            <span class="crossed">999</span>
+                            <span class="green-label">56% OFF</span> 
+                        </div>
+                        <div class="main-price">
+                            <span>999</span>
+                        </div>
+                        <div *ngIf="false" class="out-of-stock-text" >
+                            <span>Available on Request</span>
+                        </div>
+                        <div *ngIf="false" class="out-of-stock-price">
+                            <span>713</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="tabs-container">
+            <ul class="tabs"  [ngStyle]="{'transform': shiftLeft}">
+                <ng-container  *ngFor="let tab of tabs; let i = index">
+                    <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">{{tab | titlecase}}</li>
+                </ng-container>
+            </ul>
+        </section>
+        <div class="tab-content" [ngSwitch]="defaultInfo">
             <specifications *ngSwitchCase="'specifications'" [specifications]="modalData['specifications']">
             </specifications>
             <product-details *ngSwitchCase="'product details'" [details]="modalData['product details']"></product-details>

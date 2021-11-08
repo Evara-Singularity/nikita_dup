@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'product-info',
@@ -7,18 +7,45 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 })
 export class ProductInfoComponent implements OnInit, OnDestroy
 {
-    tabs: string[] = [];;
+    tabs: string[] = [];
     @Input('openProductInfo') openProductInfo = false;
     @Input('modalData') modalData = null;
 
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     defaultInfo = "";
+    selectedIndex = 0;
+    leftTabIdx = 0;
+    atStart = true;
+    atEnd = false;
+    shiftLeft:string;
 
     constructor() { }
 
-    ngOnInit() { this.tabs = Object.keys(this.modalData) }
+    ngOnInit() { 
+        this.shiftLeft = `translateX(0px)`;
+        this.tabs = Object.keys(this.modalData);
+    }
 
-    updateTab(tab) { this.defaultInfo = tab }
+    updateTab(tab,index){
+        this.selectedIndex = index;
+        this.defaultInfo = tab;
+        console.log(tab, this.selectedIndex);
+        this.scrollTab(index - this.leftTabIdx - 1);
+
+    }
+    scrollTab(x){
+        if ((this.atStart && x < 0) || (this.atEnd && x > 0)) {
+            return;
+          }
+        this.leftTabIdx = this.leftTabIdx + x;
+        this.shiftLeft = `translateX(${this.leftTabIdx * -140}px)`;
+        this.atStart = this.leftTabIdx === 0;
+        this.atEnd = this.leftTabIdx === this.tabs.length - 1
+    }
+    @HostListener('scroll', ['$event']) 
+    scrollHandler(event) {
+      console.debug("Scroll Event");
+    }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }
 

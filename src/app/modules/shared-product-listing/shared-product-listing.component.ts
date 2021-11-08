@@ -174,17 +174,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   ngOnChanges(){
     this.updateFilterCountAndSort();
   }
-  
+
   removeFilterChip(key, termName) {
-    const item = this.productsListingData.filterData.find(f => f.name === key);
-    if (item) {
-      const term = item.terms.find(t => t.term.toLowerCase() === termName.toLowerCase()); 
-      if (term) {
-        this._commonService.genricApplyFilter(key, term);
-      }
-    }
+    this._commonService.genricApplyFilter(key, {term: termName});
   }
-  
+
   updateFilterCountAndSort(){
     this._productListService.pageName = this.pageName.toLowerCase();
 
@@ -219,6 +213,15 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       });
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
+      const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
+      if (discountIndex) {
+        this.productsListingData.filterData[discountIndex].terms.sort((a,b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+      }
+      const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
+      if (ratingIndex) {
+        this.productsListingData.filterData[ratingIndex].terms.sort((a,b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+      }
+      // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
       this.filterInstance.instance['isBrandPage'] = this.pageName === 'BRAND';
       this.filterInstance.instance['brandName'] = this.brandName;
@@ -228,7 +231,17 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       });
     } else {
       this._commonService.toggleFilter();
+      const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
+      if (discountIndex) {
+        this.productsListingData.filterData[discountIndex].terms.sort((a,b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+      }
+      const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
+      if (ratingIndex) {
+        this.productsListingData.filterData[ratingIndex].terms.sort((a,b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+      }
+      // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
+      console.log(this.productsListingData.filterData);
     }
   }
 

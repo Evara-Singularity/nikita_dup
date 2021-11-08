@@ -26,6 +26,10 @@ export class AddFilterSymbol implements PipeTransform
                     returnValue = value.replace(numericValue, numericValue + "% or more");
                     break;
                 }
+                case 'ratings':{
+                    returnValue= value.replace(value, value+ " ★ & above");
+                    break;
+                }
                 default:{
                     returnValue = value;
                 }

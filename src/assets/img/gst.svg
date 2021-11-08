@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38.451" height="38.451" viewBox="0 0 38.451 38.451">
+  <g id="gst" transform="translate(-67.079 -70.678) rotate(-20)">
+    <g id="Rectangle_15_copy" data-name="Rectangle 15 copy" transform="translate(35.351 99)" fill="#fff" stroke="#0093ff" stroke-width="1">
+      <rect width="30" height="30" rx="4" stroke="none"/>
+      <rect x="0.5" y="0.5" width="29" height="29" rx="3.5" fill="none"/>
+    </g>
+    <g id="Rectangle_15_copy-2" data-name="Rectangle 15 copy" transform="translate(37.203 100.851)" fill="#fff" stroke="#0093ff" stroke-width="0.5">
+      <rect width="26.297" height="26.297" rx="3" stroke="none"/>
+      <rect x="0.25" y="0.25" width="25.797" height="25.797" rx="2.75" fill="none"/>
+    </g>
+    <path id="Path_69425" data-name="Path 69425" d="M-5.131.14c1.512,0,2.3-.9,2.3-2.464V-5.53H-5.061v1.4h.77v1.918c0,.7-.308.952-.8.952s-.8-.252-.8-.952V-7.574c0-.7.308-.966.8-.966s.8.266.8.966v.938h1.456v-.84c0-1.568-.784-2.464-2.3-2.464s-2.3.9-2.3,2.464v5.152C-7.427-.756-6.643.14-5.131.14ZM.161.14A2.174,2.174,0,0,0,2.485-2.352c0-1.218-.406-2-1.694-3.136C-.217-6.37-.539-6.888-.539-7.6c0-.672.28-.938.77-.938s.77.266.77.966v.5H2.457v-.406c0-1.568-.742-2.464-2.24-2.464A2.142,2.142,0,0,0-2.079-7.5c0,1.12.42,1.918,1.708,3.052C.637-3.57.945-3.052.945-2.24c0,.728-.308.98-.8.98s-.8-.252-.8-.952v-.672H-2.107v.56C-2.107-.756-1.351.14.161.14ZM4.571,0h1.54V-8.4h1.61V-9.8H2.961v1.4h1.61Z" transform="translate(51 119)" fill="#0093ff"/>
+  </g>
+</svg>

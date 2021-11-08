@@ -27,7 +27,6 @@ export class SpecialDealsComponent {
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
     public _commonService: CommonService) {
-
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
     this.getSpecialDealsData();

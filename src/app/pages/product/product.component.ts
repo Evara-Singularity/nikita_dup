@@ -126,6 +126,9 @@ export class ProductComponent implements OnInit, AfterViewInit
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ['116111700'];
 
+    // ondemand loaded components for PDP accordians
+    pdpAccordianInstance = null;
+    @ViewChild('pdpAccordian', { read: ViewContainerRef }) pdpAccordianContainerRef: ViewContainerRef;
     // ondemand loaded components for share module
     productShareInstance = null;
     @ViewChild('productShare', { read: ViewContainerRef }) productShareContainerRef: ViewContainerRef;
@@ -419,6 +422,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     setReviewsRatingData(reviews)
     {
+        console.log(reviews);
         this.reviews = reviews;
         if (this.reviews && this.reviews.reviewList) {
             this.reviewLength = this.reviews.reviewList.length;
@@ -461,6 +465,18 @@ export class ProductComponent implements OnInit, AfterViewInit
         else {
             this.starsCount = rating;
             //this.productResult['rating'] = rating;
+        }
+    }
+
+    async onVisibleProductAccordians($event) {
+        if (!this.pdpAccordianInstance) {           
+            const { ProductAccordiansComponent } = await import('./../../components/product-accordians/product-accordians.component');
+            const factory = this.cfr.resolveComponentFactory(ProductAccordiansComponent);
+            this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(factory, null, this.injector);
+            this.pdpAccordianInstance.instance['categoryBrandDetails'] = {
+                category: this.rawProductData.categoryDetails[0],
+                brand: this.rawProductData.brandDetails
+            };
         }
     }
 
@@ -1743,8 +1759,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    async writeReview()
-    {
+    async writeReview() {
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
 
@@ -2584,14 +2599,13 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    scrollToResults(id: string)
-    {
-        // this.isRFQSuccessfull = false;
-        // this._pageScrollService.scroll({
-        //   document: this.document,
-        //   scrollTarget: id,
-        // });
+    scrollToResults(id: string) {
         let footerOffset = document.getElementById('.id').offsetTop;
+        ClientUtility.scrollToTop(1000, footerOffset - 30);
+    }
+    
+    scrollToId(id: string) {
+        let footerOffset = document.getElementById(id).offsetTop;
         ClientUtility.scrollToTop(1000, footerOffset - 30);
     }
 
@@ -2630,10 +2644,15 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ReviewRatingComponent);
         this.reviewRatingPopupInstance = this.reviewRatingPopupContainerRef.createComponent(factory, null, this.injector);
+        this.rawReviewsData.productName = this.productName;
+        this.reviewRatingPopupInstance.instance['rawReviewsData'] = this.rawReviewsData;
         (this.reviewRatingPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             this.reviewRatingPopupInstance = null;
             this.reviewRatingPopupContainerRef.remove();
+        });
+        (this.reviewRatingPopupInstance.instance['emitWriteReview$'] as EventEmitter<boolean>).subscribe(data => {
+            this.writeReview();
         });
         // if (this.reviewRatingPopupInstance) {
         //     (this.reviewRatingPopupInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>

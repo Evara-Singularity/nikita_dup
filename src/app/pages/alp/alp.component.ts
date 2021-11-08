@@ -79,6 +79,7 @@ export class AlpComponent implements OnInit {
     setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
         this._activatedRoute.data.subscribe(res => {
+            this._productListService.excludeAttributes = [];
             // Set config based on query params change
             const queryParamsData = this._activatedRoute.snapshot.queryParams;
             this.updateConfigBasedOnQueryParams(queryParamsData);
@@ -127,8 +128,11 @@ export class AlpComponent implements OnInit {
         this.pageDescription = attributeListing['pageDescription'];
         this.metaTitle = attributeListing['metaTitle'];
         this.metaDescription = attributeListing['metaDescription'];
+        this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
         this.fetchCIMSRelatedData(data[1]);
     }
+
+    
 
     fetchCIMSRelatedData(res) {
         this._commonService.showLoader = false;
@@ -236,9 +240,6 @@ export class AlpComponent implements OnInit {
         }
         // shared product listing data update
         this._productListService.createAndProvideDataToSharedListingComponent(response, 'Category Results');
-        console.log('-------------------------');
-        console.log(response);
-        console.log('-------------------------');
         this._productListService.createAndProvideDataToSharedListingComponent(response, 'Category Results', true);
 
         // Update total product account

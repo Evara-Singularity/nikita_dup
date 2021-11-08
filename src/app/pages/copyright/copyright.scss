@@ -17,11 +17,13 @@
     }
     .text-blue{ color: #0061d5;}
     ul{
+        padding: 5px 15px;
        // margin-bottom:15px;
          li{
              padding: 0px 0 5px 0;
              font-size:12px;
              line-height:18px;
+             list-style-type: disc;
              a{color: #0061d5;}
          }
      }

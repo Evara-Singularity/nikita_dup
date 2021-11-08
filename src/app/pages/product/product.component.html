@@ -124,9 +124,10 @@
             </div>
 
             <!--recently bought product section -->
-            <div class="recent-bought-wrap" *ngIf="recentBoughtOrderCount">
+            <!--1704-->
+            <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
                 <img src="{{imagePathAsset}}assets/img/icons/coupon-3-fill.png" height="15" width="15">
-                <span class="inner-text">{{recentBoughtOrderCount}} people bought this recently</span>
+                <span class="inner-text">{{rawProductCountMessage}}</span>
             </div>
 
         </div>

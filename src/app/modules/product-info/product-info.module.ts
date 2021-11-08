@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductInfoComponent } from './product-info.component';
@@ -7,6 +8,8 @@ import { VideosComponent } from './videos/videos.component';
 import { DetailsComponent } from './details/details.component';
 import { ImagesComponent } from './images/images.component';
 import { PopUpModule } from '../popUp/pop-up.module';
+import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
+import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 
 
 
@@ -14,7 +17,10 @@ import { PopUpModule } from '../popUp/pop-up.module';
     declarations: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent],
     imports: [
         CommonModule,
+        RouterModule,
         PopUpModule,
+        YTThumnailPipeModule,
+        ObjectToArrayPipeModule,
     ],
     exports: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent]
 })

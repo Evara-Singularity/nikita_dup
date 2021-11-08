@@ -1,4 +1,4 @@
-<app-pop-up (outData$)="close($event)" [class.open1]="openProductInfo"
+<app-pop-up (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
     [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
@@ -45,26 +45,18 @@
         </div>
         <section class="tabs-container">
             <ul class="tabs"  [ngStyle]="{'transform': shiftLeft}">
-                <ng-container  *ngFor="let tab of TABS; let i = index">
+                <ng-container  *ngFor="let tab of tabs; let i = index">
                     <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">{{tab | titlecase}}</li>
                 </ng-container>
             </ul>
         </section>
-             <!-- <ng-container *ngFor="let tab of TABS">
-                    <button (click)="updateTab(tab)">{{tab | titlecase}}</button>
-            </ng-container> -->
         <div class="tab-content" [ngSwitch]="defaultInfo">
-            <specifications *ngSwitchCase="'specifications'"></specifications>
-            <details *ngSwitchCase="'product details'" i-click></details>
-            <videos *ngSwitchCase="'videos'"></videos>
-            <images *ngSwitchCase="'images'"></images>
-            <key-features *ngSwitchDefault></key-features>
+            <specifications *ngSwitchCase="'specifications'" [specifications]="modalData['specifications']">
+            </specifications>
+            <product-details *ngSwitchCase="'product details'" [details]="modalData['product details']"></product-details>
+            <videos *ngSwitchCase="'videos'" [videos]="modalData['videos']"></videos>
+            <images *ngSwitchCase="'images'" [images]="modalData['images']"></images>
+            <key-features *ngSwitchDefault [features]="modalData['key features']"></key-features>
         </div>
     </div>
 </app-pop-up>
-
-
-
-
-
-

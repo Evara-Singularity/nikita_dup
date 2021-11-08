@@ -119,11 +119,16 @@ export class ProductComponent implements OnInit, AfterViewInit
     //1074-1075 pop-ups
     questionAnswerPopup = false;
     productInfoPopup = false;
+    isProductCrouselLoaded: boolean = false;
+    productImages = null;
 
     // Q&A vars
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ['116111700'];
 
+    // ondemand loaded components for PDP accordians
+    pdpAccordianInstance = null;
+    @ViewChild('pdpAccordian', { read: ViewContainerRef }) pdpAccordianContainerRef: ViewContainerRef;
     // ondemand loaded components for share module
     productShareInstance = null;
     @ViewChild('productShare', { read: ViewContainerRef }) productShareContainerRef: ViewContainerRef;
@@ -199,7 +204,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     productCrouselInstance = null;
     @ViewChild('productCrousel', { read: ViewContainerRef }) productCrouselContainerRef: ViewContainerRef;
     @ViewChild('productCrouselPseudo', { read: ElementRef }) productCrouselPseudoContainerRef: ElementRef;
-    isProductCrouselLoaded: boolean = false;
+
 
     iOptions: any = null;
 
@@ -215,6 +220,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     };
 
     appPromoVisible: boolean = true;
+    productInfo = null;
 
     set showLoader(value: boolean)
     {
@@ -416,6 +422,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     setReviewsRatingData(reviews)
     {
+        console.log(reviews);
         this.reviews = reviews;
         if (this.reviews && this.reviews.reviewList) {
             this.reviewLength = this.reviews.reviewList.length;
@@ -458,6 +465,18 @@ export class ProductComponent implements OnInit, AfterViewInit
         else {
             this.starsCount = rating;
             //this.productResult['rating'] = rating;
+        }
+    }
+
+    async onVisibleProductAccordians($event) {
+        if (!this.pdpAccordianInstance) {           
+            const { ProductAccordiansComponent } = await import('./../../components/product-accordians/product-accordians.component');
+            const factory = this.cfr.resolveComponentFactory(ProductAccordiansComponent);
+            this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(factory, null, this.injector);
+            this.pdpAccordianInstance.instance['categoryBrandDetails'] = {
+                category: this.rawProductData.categoryDetails[0],
+                brand: this.rawProductData.brandDetails
+            };
         }
     }
 
@@ -651,6 +670,11 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
+        }
+        //1704
+        if (this.productInfo) {
+            this.productInfoPopupInstance = null;
+            this.productInfoPopupContainerRef.remove();
         }
     }
 
@@ -1611,8 +1635,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             });
             (this.offerSectionInstance.instance['emaiComparePopUpHandler'] as EventEmitter<boolean>).subscribe(status =>
             {
-                //this.emiComparePopUpOpen(status);
-                this.emiComparePopUpOpen_v1(status);
+                this.emiComparePopUpOpen(status);
+                //this.emiComparePopUpOpen_v1(status);
             });
         }
     }
@@ -1735,8 +1759,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    async writeReview()
-    {
+    async writeReview() {
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
 
@@ -2576,14 +2599,13 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    scrollToResults(id: string)
-    {
-        // this.isRFQSuccessfull = false;
-        // this._pageScrollService.scroll({
-        //   document: this.document,
-        //   scrollTarget: id,
-        // });
+    scrollToResults(id: string) {
         let footerOffset = document.getElementById('.id').offsetTop;
+        ClientUtility.scrollToTop(1000, footerOffset - 30);
+    }
+    
+    scrollToId(id: string) {
+        let footerOffset = document.getElementById(id).offsetTop;
         ClientUtility.scrollToTop(1000, footerOffset - 30);
     }
 
@@ -2622,10 +2644,15 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ReviewRatingComponent);
         this.reviewRatingPopupInstance = this.reviewRatingPopupContainerRef.createComponent(factory, null, this.injector);
+        this.rawReviewsData.productName = this.productName;
+        this.reviewRatingPopupInstance.instance['rawReviewsData'] = this.rawReviewsData;
         (this.reviewRatingPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             this.reviewRatingPopupInstance = null;
             this.reviewRatingPopupContainerRef.remove();
+        });
+        (this.reviewRatingPopupInstance.instance['emitWriteReview$'] as EventEmitter<boolean>).subscribe(data => {
+            this.writeReview();
         });
         // if (this.reviewRatingPopupInstance) {
         //     (this.reviewRatingPopupInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>
@@ -2660,12 +2687,36 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
         this.productInfoPopupInstance = this.productInfoPopupContainerRef.createComponent(factory, null, this.injector);
+        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo();
         this.productInfoPopupInstance.instance['openProductInfo'] = true;
         (this.productInfoPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
         });
+    }
+
+    getProductInfo()
+    {
+        if (this.productInfo) { return this.productInfo; }
+        this.productInfo = {};
+        if (this.productKeyFeatures && this.productKeyFeatures.length) {
+            this.productInfo['key features'] = this.productKeyFeatures;
+        }
+        if (this.productAttributes) {
+            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails) }
+            this.productInfo['specifications'] = { attributes: this.productAttributes, brand: brand };
+        }
+        if (this.productVideos && this.productVideos.length) {
+            this.productInfo['videos'] = this.productVideos;
+        }
+        const details = { description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails 
+            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName};
+        this.productInfo['product details'] = details;
+        if (this.productAllImages && this.productAllImages.length) {
+            this.productInfo['images'] = this.productAllImages;
+        }
+        return this.productInfo;
     }
 
     ngOnDestroy()

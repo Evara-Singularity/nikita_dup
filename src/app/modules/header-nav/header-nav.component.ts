@@ -155,11 +155,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 null,
                 this.injector
             );
+            this.sideNavInstance.instance['user'] = this.localAuthService.getUserSession();
         } else {
             //toggle side menu
             this.sideNavInstance.instance['sideMenuOpen'] = !this.sideNavInstance[
                 'sideMenuOpen'
             ];
+            console.log(this.localAuthService.getUserSession());
             this.sideNavInstance.instance[
                 'user'
             ] = this.localAuthService.getUserSession();

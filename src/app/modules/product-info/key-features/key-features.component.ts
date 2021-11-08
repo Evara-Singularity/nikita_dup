@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'key-features',
-  templateUrl: './key-features.component.html',
-  styleUrls: ['./key-features.component.scss']
+    selector: 'key-features',
+    templateUrl: './key-features.component.html',
+    styleUrls: ['./key-features.component.scss']
 })
-export class KeyFeaturesComponent implements OnInit {
+export class KeyFeaturesComponent implements OnInit
+{
 
-  constructor() { }
+    @Input("features") features = null;
 
-  ngOnInit(): void {
-  }
+    constructor() { }
+
+    ngOnInit()
+    {
+        console.clear();
+        console.log(this.features);
+    }
 
 }

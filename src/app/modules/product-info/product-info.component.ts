@@ -7,8 +7,7 @@ import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output
 })
 export class ProductInfoComponent implements OnInit, OnDestroy
 {
-    readonly TABS = ["key features", "specifications", "videos", "product details", "images"]
-
+    tabs: string[] = [];
     @Input('openProductInfo') openProductInfo = false;
     @Input('modalData') modalData = null;
 
@@ -24,6 +23,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy
 
     ngOnInit() { 
         this.shiftLeft = `translateX(0px)`;
+        this.tabs = Object.keys(this.modalData);
     }
 
     updateTab(tab,index){
@@ -40,19 +40,15 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.leftTabIdx = this.leftTabIdx + x;
         this.shiftLeft = `translateX(${this.leftTabIdx * -140}px)`;
         this.atStart = this.leftTabIdx === 0;
-        this.atEnd = this.leftTabIdx === this.TABS.length - 1
+        this.atEnd = this.leftTabIdx === this.tabs.length - 1
     }
     @HostListener('scroll', ['$event']) 
     scrollHandler(event) {
       console.debug("Scroll Event");
     }
 
-    close(event) { this.closePopup$.emit(); }
+    closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }
 
-    closeProducInfo($event) { this.closePopup$.emit(); this.openProductInfo = false;}
-
-    ngOnDestroy()
-    {
-    }
+    ngOnDestroy() { }
 
 }

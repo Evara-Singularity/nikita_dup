@@ -2,12 +2,14 @@
 .prod-detail {
     padding: 15px 15px;
     background: white;
-    heading-3 {
-        padding-left: 15px;
-    }
     p {
         font-size: $large-font;
         line-height: 21px;
+    }
+    .blueText {
+        color: #0D99FF;
+        font-weight: 500;
+        font-size: 13px;
     }
     .read-more {
         background: none;

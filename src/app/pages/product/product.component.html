@@ -1,5 +1,6 @@
 <!--1704:Yajya move this as per design-->
 <div style="margin-top: 50px;">
+    <button (click)="scrollToId('similarProducts')">Scroll To Similar</button>
     <button (click)="handleReviewRatingPopup()">Review & Rating</button>
     <button (click)="handleQuestionAnswerPopup()">QA</button>
     <button (click)="handleProductInfoPopup()">Features & Specification</button>
@@ -7,18 +8,21 @@
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 
-    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1" [ngClass]="[carouselInitialized ? '' : 'before-init']">
-         <div class="">
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
+        [ngClass]="[carouselInitialized ? '' : 'before-init']">
+        <div class="">
 
-         </div>
+        </div>
         <ng-container #productCrousel></ng-container>
-        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo (previous)="onRotatePrevious()">
-            <div class="img-block-pseudo" >
+        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+            (previous)="onRotatePrevious()">
+            <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" style="transform-origin: 0% 0%;">
-                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}" height="330" width="330"
-                            alt="{{productName}}">
-                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
+                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
+                            height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
+                            class="loader-image" />
                     </div>
                 </div>
                 <ul class="pager">
@@ -26,8 +30,10 @@
                         *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productAllImages.length>1">
                         <ng-container *ngFor="let item of productAllImages;let i=index">
                             <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
-                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }"></li>
-                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
+                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
+                            </li>
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
+                                class="pager_icon_dot">
                                 <em class="icon-youtube"></em>
                             </li>
                         </ng-container>
@@ -48,7 +54,7 @@
     </div>
 
     <div class="prod-description">
-        
+
         <div class="container">
             <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
             <div class="prod-inner-desc" (click)="showRating()">
@@ -65,9 +71,10 @@
                 </div>
             </div>
 
-            <ng-container *ngIf="productTags != undefined && productTags.length > 0" >
-                <div class="prod-tag" >
-                    <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
+            <ng-container *ngIf="productTags != undefined && productTags.length > 0">
+                <div class="prod-tag">
+                    <div class="tag_container"
+                        *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
                         <img src="{{tag.imageUrl}}">
                     </div>
                 </div>
@@ -88,13 +95,15 @@
                     <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
                         {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                         <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inclusive Price: {{productPrice}}
+                            GST @{{taxPercentage}}% Inclusive Price: {{productPrice | mathFloor | currency: 'INR' :
+                            'symbol' : '1.0-0'}}
                         </small>
                     </p>
                     <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
                         {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                         <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inclusive Price: {{bulkSellingPrice}}
+                            GST @{{taxPercentage}}% Inclusive Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
+                            'symbol' : '1.0-0'}}
                         </small>
                     </p>
                 </ng-container>
@@ -218,8 +227,8 @@
     <!--1704/1705-->
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)">
         Delivery Details
-            <!--1704/1705:TODO modify product-check-pincode as per design-->
-            <ng-container #pincodeForm></ng-container>
+        <!--1704/1705:TODO modify product-check-pincode as per design-->
+        <ng-container #pincodeForm></ng-container>
     </div>
     <!--1704/1705 Yajya end-->
 
@@ -249,14 +258,14 @@
         <!-- RFQ section ends -->
 
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
-             (visible)="onVisibleAppPromo($event)">
+            (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
 
         <div class="returnPolicyContainer clearfix" *ngIf="isProductReturnAble">
-            <h2 class="heading-3"> RETURN POLICY</h2>
+            <h2 class="heading-3"> RETUN POLICY</h2>
             <div class=" returnPolicyInnerContainer pad-lr-0">
-                <div [style.width.px]="4 * 120">
+                <div [style.width.px]="4 * 150">
                     <div class="returnPolicyInner" (click)="$event.stopPropagation(); navigateToFAQ();">
                         <span class="returnImg">
                             <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px"
@@ -319,7 +328,7 @@
         <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
             <h2 class="heading-3">KEY FEATURES</h2>
             <ul class="feature-list">
-                <li *ngFor="let feature of productKeyFeatures">
+                <li *ngFor="let feature of productKeyFeatures | sliceArray:2">
                     <p>
                         <span>{{feature}}.</span>
                     </p>
@@ -341,7 +350,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr *ngFor="let attr of productAttributes | objectToArray:'associative'">
+                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:2">
                     <td class="left">
                         <div>{{attr.key}}</div>
                     </td>
@@ -463,204 +472,111 @@
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
         </section>
-       
+
         <section class="pdp-section-card">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
                 </div>
                 <div class="pwa-col-6 align-right">
-                    <button class="btn redBgButton">WRITE A REVIEW</button>
+                    <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
             <div class="pwa-row">
                 <p class="extra-small-txt">
-                    Customer Reviews on Almonard 18 Inch Tempest vMark ll Pedestal Fan, Sweep: 1440 rpm
+                    Customer Reviews on {{ productName}}
                 </p>
             </div>
             <div class="pwa-row">
-                   <div class="pwa-col-6">
-                       <div class="overall-rating">
-                           <h3>3.2<i class="icon-rating-star"></i>
-                           </h3>
-                           <p class="small-txt">Average Rating based on 45 ratings and 15 reviews</p>                           
-                       </div>
-                   </div>
-                    <div class="pwa-col-6">
-                        <div class="rating-scale">
-                            <div class="inner-scale">
-                                <span>5</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar dark-green"></span>
-                                </span>
-                            </div>
-                            <div class="inner-scale">
-                                <span>4</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar light-green"></span>
-                                </span>
-                            </div>
-                            <div class="inner-scale">
-                                <span>3</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar yellow"></span>
-                                </span>
-                            </div>
-                            <div class="inner-scale">
-                                <span>2</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar light-red"></span>
-                                </span>  
-                            </div>
-                            <div class="inner-scale">
-                                <span>1</span>
-                                <span class="rating-bar">
-                                        <span class="bar"
-                                        [style.width.%]="70"
-                                        class="bar red"></span>
-                                </span>  
-                            </div>
-                        </div>
+                <div class="pwa-col-6">
+                    <div class="overall-rating">
+                        <h3>{{ rawReviewsData?.summaryData?.final_average_rating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
+                        </h3>
+                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }} ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                     </div>
-             </div>
-             <div *ngFor="let i of [1,2,3]" class="reviewRow">
-                    <div class="pwa-row innerRow">
-                        <div class="pwa-col-6 reviewRow-col">
-                            <div class="small-stars">
-                                <i class="icon-rating-star ylw-txt"></i>
-                                <i class="icon-rating-star"></i>
-                                <i class="icon-rating-star"></i>
-                                <i class="icon-rating-star"></i>
-                                <i class="icon-rating-star"></i>
-                            </div>
-                            <p>Anu Thakur</p>
-                            <p class="small-txt grey-txt cust-date">Mar 6, 2016</p>
-                        </div>
-                        <div class="pwa-col-6 align-right">
-                            <p class="small-txt green-txt">Verified Purchase</p>
-                        </div>
-                        <div>
-                                <h3 class="heading-3-txt">
-                                    Excellent product by Almonard, cheap and best
-                                </h3>
-                                <p class="content">
-                                    I have purchased this product on one week back… It delivered in next day…about this smartphone Micromax made first time a good smartphone in low cost with fingerprint sensor..I like it..if we talk abt this all features Micromax reduce d some features for cost cutting..like non removable battery and no notification light given..
-                                </p>
-                        </div>
-                        </div>
-                        <div class="pwa-row">
-                            <div class="pwa-col-6">
-                                <strong>Report Abuse</strong>
-                              </div>
-                            <div class="pwa-col-6 align-right">
-                                <button class="suggstn-btn">
-                                   <span class="small-txt">10</span> 
-                                   <i class="icon-like"></i>
-                               </button>
-                               <button class="suggstn-btn">
-                                <span class="small-txt">10</span>    
-                                <i class="icon-dislike"></i>
-                            </button>
-                            </div>
-                      </div>
-             </div>
-        </section>
-        <!-- Review rating Starts -->
-        <section class="pdp-review" id="reviewsAll">
-            <p class="heading-3" observeVisibility [debounceTime]="100" (visible)="onVisibleReviews($event)">REVIEWS &
-                RATINGS
-            </p>
-            <p class="heading-4">
-                Customer Reviews on {{productName}}
-            </p>
-            <div class="rating-box clearfix">
-                <div class="rating-star">
-                    <i class="icon-rating-star rating-val">
-                        <small>{{reviews?.summaryData?.final_average_rating | number:'1.1-1'}}</small>
-                    </i>
                 </div>
-                <div class="rating-scale">
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.five_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar dark-green"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.four_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar light-green"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.three_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar yellow"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.two_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar light-red"></span>
-                    </div>
-                    <div class="rating-bar">
-                        <span
-                            [style.width.%]="(reviews?.summaryData?.one_star_count/reviews?.summaryData?.review_count)*100"
-                            class="bar red"></span>
+                <div class="pwa-col-6">
+                    <div class="rating-scale">
+                        <div class="inner-scale">
+                            <span>5</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar dark-green"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>4</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-green"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>3</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar yellow"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>2</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-red"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>1</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar red"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <p class="small-txt align-center">Average Rating based on {{reviews?.summaryData?.review_count}} ratings</p>
-
-            <button class="revw-btn btn" (click)="writeReview();">RATE AND WRITE REVIEW</button>
-           
-            
-            <!-- <div class="all-revw">
-                <div *ngFor="let item of  reviews?.reviewList; let i=index" class="inner-div ">
-                    <div class="clearfix revw-row">
+            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;" class="reviewRow">
+                <div class="pwa-row innerRow">
+                    <div class="pwa-col-6 reviewRow-col">
                         <div class="small-stars">
-                            <i [class.ylw-txt]="item.rating>0" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>1" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>2" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>3" class="icon-rating-star"></i>
-                            <i [class.ylw-txt]="item.rating>4" class="icon-rating-star"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 1"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 2"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 3"></i>
+                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 4"></i>
                         </div>
-                        <div class="verfy-prod">
-                            <p class="small-txt green-txt" *ngIf="item?.is_approved">Verified Purchase</p>
-                        </div>
+                        <p>{{review?.user_name}}</p>
+                        <p class="small-txt grey-txt cust-date">
+                            {{ review?.date_unix | date: 'longDate' }}
+                        </p>
                     </div>
-                    <p class="cust-name">{{item?.user_name}}</p>
-                    <p class="small-txt grey-txt cust-date">{{item?.date}}</p>
-                    <p class="revw-head">{{item?.review_subject}}</p>
-                    <p class="revw-txt">{{item?.review_text}}</p>
-
-                    <div class="cust_suggestion clearfix">
-                        <p class="sug_txt">{{item.yes}} of {{item.totalReview}} users found this review helpful.</p>
-                        <button [ngClass]="{'active':item.like=='1'}" class="suggstn-btn"
-                            (click)="postHelpful(item,'1','0',i)">
+                    <div class="pwa-col-6 align-right">
+                        <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
+                    </div>
+                    <div>
+                        <h3 class="heading-3-txt">
+                            {{ review?.review_subject }}
+                        </h3>
+                        <p class="content">
+                            {{ review?.review_text }}
+                        </p>
+                    </div>
+                </div>
+                <div class="pwa-row">
+                    <div class="pwa-col-6">
+                        <!-- <strong>Report Abuse</strong> -->
+                    </div>
+                    <div class="pwa-col-6 align-right">
+                        <button class="suggstn-btn">
+                            <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
-                        <button [ngClass]="{'active':item.dislike=='1'}" (click)="postHelpful(item,'0','1',i)"
-                            class="suggstn-btn">
+                        <button class="suggstn-btn">
+                            <span class="small-txt">{{review.no}}</span>
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
-                </div> -->
-                <!-- <div class="view-all clearfix" (click)="openAllReviewsPopup=true" *ngIf="reviews && reviews.reviewList">
-                    <p class="view-txt">View all reviews
-                        <span class="count">({{reviews.reviewList.length}})</span>
-                    </p>
-                </div> -->
-            <!-- </div> -->
-
+                </div>
+            </div>
+            <div class="view-review" (click)="handleReviewRatingPopup()">
+                <span>View {{ rawReviewsData?.summaryData?.review_count }} Reviews</span>
+            </div>
         </section>
-        <!-- Review rating ends -->
-
         <section class="Qa">
             <div class="container">
                 <p class="heading-3">QUESTIONS & ANSWERS</p>
@@ -703,9 +619,13 @@
 
         <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
 
+        <!-- Attribute Accordian Section -->
+        <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
+            <ng-container #pdpAccordian></ng-container>
+        </section>
     </div>
     <!-- other sections ends -->
-
+    
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #rfqForm></ng-container>
     <ng-container #offerPopup></ng-container>
@@ -734,8 +654,10 @@
                 assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.
             </p>
             <div class="alert-btn-row">
-                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') " class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()"> EXPLORE CATEGORY</p>
+                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') "
+                    class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
+                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
+                    EXPLORE CATEGORY</p>
             </div>
         </div>
     </div>
@@ -780,4 +702,3 @@
 
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
-

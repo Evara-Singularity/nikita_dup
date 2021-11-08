@@ -69,7 +69,7 @@ export class BrandComponent {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
 
-            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
+            this._productListService.excludeAttributes = [];
 
             // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
@@ -81,6 +81,12 @@ export class BrandComponent {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
+
+                    if (res.hasOwnProperty('categoryLinkList')) {
+                        this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
+                        // genrate popular links data
+                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
+                    }
                     
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
                     if (!this._activatedRoute.snapshot.params.id) {
@@ -144,7 +150,7 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";
@@ -367,7 +373,7 @@ export class BrandComponent {
             /*End Adobe Analytics Tags */
         }
         /* Setting of product schema for products */
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const products = this.API_RESPONSE.brand[1][0].productSearchResult.products || [];
             if (products && products.length) {
                 const categoryName = qp && qp['categoryName'];
@@ -377,7 +383,7 @@ export class BrandComponent {
     }
 
     createProductsSchema(productArray, categoryName) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {

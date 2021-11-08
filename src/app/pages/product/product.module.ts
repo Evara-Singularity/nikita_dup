@@ -20,6 +20,7 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
+import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 @NgModule({
   declarations: [
     ProductComponent,
@@ -39,6 +40,7 @@ import { ProductComponent } from './product.component';
     WhatsAppToastModule,
     ProductInfoModule,
     EmiPlansModule,
+    SliceArrayPipeModule,
     // Directives
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule

@@ -13,4 +13,5 @@ import { BrandSpotlightComponent } from './brands-spotlight.component';
     BrandSpotlightRoutingModule
   ]
 })
-export class BrandSpotlightModule { }
+export class BrandSpotlightModule {
+}

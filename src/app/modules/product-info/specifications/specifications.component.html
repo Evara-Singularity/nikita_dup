@@ -7,17 +7,18 @@
             </td>
             <td class="right">
                 <div>
-                    <a class="brandName">Da-Dhichi</a>
+                    <a class="brandName"
+                        [routerLink]="specifications?.brand?.link">{{specifications?.brand?.name}}</a>
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr *ngFor="let attr of specifications.attributes | objectToArray:'associative'">
             <td class="left">
-                <div>Warranty</div>
+                <div>{{attr.key}}</div>
             </td>
             <td class="right">
-                <div>
-                    6 Months Manufacturing Warranty
+                <div *ngFor="let item of attr.value">
+                    {{item}}
                 </div>
             </td>
         </tr>

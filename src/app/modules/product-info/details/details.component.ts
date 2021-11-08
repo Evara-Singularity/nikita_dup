@@ -1,13 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'details',
+    selector: 'product-details',
     templateUrl: './details.component.html',
     styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit
 {
-
     @Input("details") details = null;
 
     constructor() { }
@@ -17,5 +16,8 @@ export class DetailsComponent implements OnInit
         console.clear();
         console.log(this.details);
     }
+
+
+    get description() { return this.details['description'] || null }
 
 }

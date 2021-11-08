@@ -7,18 +7,21 @@
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 
-    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1" [ngClass]="[carouselInitialized ? '' : 'before-init']">
-         <div class="">
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
+        [ngClass]="[carouselInitialized ? '' : 'before-init']">
+        <div class="">
 
-         </div>
+        </div>
         <ng-container #productCrousel></ng-container>
-        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo (previous)="onRotatePrevious()">
-            <div class="img-block-pseudo" >
+        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+            (previous)="onRotatePrevious()">
+            <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" style="transform-origin: 0% 0%;">
-                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}" height="330" width="330"
-                            alt="{{productName}}">
-                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
+                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
+                            height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
+                            class="loader-image" />
                     </div>
                 </div>
                 <ul class="pager">
@@ -26,8 +29,10 @@
                         *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productAllImages.length>1">
                         <ng-container *ngFor="let item of productAllImages;let i=index">
                             <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
-                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }"></li>
-                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
+                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
+                            </li>
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
+                                class="pager_icon_dot">
                                 <em class="icon-youtube"></em>
                             </li>
                         </ng-container>
@@ -51,7 +56,7 @@
     </div>
 
     <div class="prod-description">
-        
+
         <div class="container">
             <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
             <div class="prod-inner-desc" (click)="showRating()">
@@ -68,9 +73,10 @@
                 </div>
             </div>
 
-            <ng-container *ngIf="productTags != undefined && productTags.length > 0" >
-                <div class="prod-tag" >
-                    <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
+            <ng-container *ngIf="productTags != undefined && productTags.length > 0">
+                <div class="prod-tag">
+                    <div class="tag_container"
+                        *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
                         <img src="{{tag.imageUrl}}">
                     </div>
                 </div>
@@ -221,8 +227,8 @@
     <!--1704/1705-->
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)">
         Delivery Details
-            <!--1704/1705:TODO modify product-check-pincode as per design-->
-            <ng-container #pincodeForm></ng-container>
+        <!--1704/1705:TODO modify product-check-pincode as per design-->
+        <ng-container #pincodeForm></ng-container>
     </div>
     <!--1704/1705 Yajya end-->
 
@@ -252,7 +258,7 @@
         <!-- RFQ section ends -->
 
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
-             (visible)="onVisibleAppPromo($event)">
+            (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
 
@@ -322,7 +328,7 @@
         <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
             <h2 class="heading-3">KEY FEATURES</h2>
             <ul class="feature-list">
-                <li *ngFor="let feature of productKeyFeatures">
+                <li *ngFor="let feature of productKeyFeatures | sliceArray:2">
                     <p>
                         <span>{{feature}}.</span>
                     </p>
@@ -344,7 +350,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr *ngFor="let attr of productAttributes | objectToArray:'associative'">
+                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:2">
                     <td class="left">
                         <div>{{attr.key}}</div>
                     </td>
@@ -466,7 +472,7 @@
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
         </section>
-       
+
         <section class="pdp-section-card">
             <div class="pwa-row">
                 <div class="pwa-col-6">
@@ -482,99 +488,92 @@
                 </p>
             </div>
             <div class="pwa-row">
-                   <div class="pwa-col-6">
-                       <div class="overall-rating">
-                           <h3>3.2<i class="icon-rating-star"></i>
-                           </h3>
-                           <p class="small-txt">Average Rating based on 45 ratings and 15 reviews</p>                           
-                       </div>
-                   </div>
-                    <div class="pwa-col-6">
-                        <div class="rating-scale">
-                            <div class="inner-scale">
-                                <span>5</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar dark-green"></span>
-                                </span>
-                            </div>
-                            <div class="inner-scale">
-                                <span>4</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar light-green"></span>
-                                </span>
-                            </div>
-                            <div class="inner-scale">
-                                <span>3</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar yellow"></span>
-                                </span>
-                            </div>
-                            <div class="inner-scale">
-                                <span>2</span>
-                                <span class="rating-bar">
-                                    <span class="bar"
-                                    [style.width.%]="70"
-                                    class="bar light-red"></span>
-                                </span>  
-                            </div>
-                            <div class="inner-scale">
-                                <span>1</span>
-                                <span class="rating-bar">
-                                        <span class="bar"
-                                        [style.width.%]="70"
-                                        class="bar red"></span>
-                                </span>  
-                            </div>
+                <div class="pwa-col-6">
+                    <div class="overall-rating">
+                        <h3>3.2<i class="icon-rating-star"></i>
+                        </h3>
+                        <p class="small-txt">Average Rating based on 45 ratings and 15 reviews</p>
+                    </div>
+                </div>
+                <div class="pwa-col-6">
+                    <div class="rating-scale">
+                        <div class="inner-scale">
+                            <span>5</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="70" class="bar dark-green"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>4</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="70" class="bar light-green"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>3</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="70" class="bar yellow"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>2</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="70" class="bar light-red"></span>
+                            </span>
+                        </div>
+                        <div class="inner-scale">
+                            <span>1</span>
+                            <span class="rating-bar">
+                                <span class="bar" [style.width.%]="70" class="bar red"></span>
+                            </span>
                         </div>
                     </div>
-             </div>
-             <div *ngFor="let i of [1,2,3]" class="reviewRow">
-                    <div class="pwa-row innerRow">
-                        <div class="pwa-col-6 reviewRow-col">
-                            <div class="small-stars">
-                                <i class="icon-rating-star ylw-txt"></i>
-                                <i class="icon-rating-star"></i>
-                                <i class="icon-rating-star"></i>
-                                <i class="icon-rating-star"></i>
-                                <i class="icon-rating-star"></i>
-                            </div>
-                            <p>Anu Thakur</p>
-                            <p class="small-txt grey-txt cust-date">Mar 6, 2016</p>
+                </div>
+            </div>
+            <div *ngFor="let i of [1,2,3]" class="reviewRow">
+                <div class="pwa-row innerRow">
+                    <div class="pwa-col-6 reviewRow-col">
+                        <div class="small-stars">
+                            <i class="icon-rating-star ylw-txt"></i>
+                            <i class="icon-rating-star"></i>
+                            <i class="icon-rating-star"></i>
+                            <i class="icon-rating-star"></i>
+                            <i class="icon-rating-star"></i>
                         </div>
-                        <div class="pwa-col-6 align-right">
-                            <p class="small-txt green-txt">Verified Purchase</p>
-                        </div>
-                        <div>
-                                <h3 class="heading-3-txt">
-                                    Excellent product by Almonard, cheap and best
-                                </h3>
-                                <p class="content">
-                                    I have purchased this product on one week back… It delivered in next day…about this smartphone Micromax made first time a good smartphone in low cost with fingerprint sensor..I like it..if we talk abt this all features Micromax reduce d some features for cost cutting..like non removable battery and no notification light given..
-                                </p>
-                        </div>
-                        </div>
-                        <div class="pwa-row">
-                            <div class="pwa-col-6">
-                                <strong>Report Abuse</strong>
-                              </div>
-                            <div class="pwa-col-6 align-right">
-                                <button class="suggstn-btn">
-                                   <span class="small-txt">10</span> 
-                                   <i class="icon-like"></i>
-                               </button>
-                               <button class="suggstn-btn">
-                                <span class="small-txt">10</span>    
-                                <i class="icon-dislike"></i>
-                            </button>
-                            </div>
-                      </div>
-             </div>
+                        <p>Anu Thakur</p>
+                        <p class="small-txt grey-txt cust-date">Mar 6, 2016</p>
+                    </div>
+                    <div class="pwa-col-6 align-right">
+                        <p class="small-txt green-txt">Verified Purchase</p>
+                    </div>
+                    <div>
+                        <h3 class="heading-3-txt">
+                            Excellent product by Almonard, cheap and best
+                        </h3>
+                        <p class="content">
+                            I have purchased this product on one week back… It delivered in next day…about this
+                            smartphone Micromax made first time a good smartphone in low cost with fingerprint sensor..I
+                            like it..if we talk abt this all features Micromax reduce d some features for cost
+                            cutting..like non removable battery and no notification light given..
+                        </p>
+                    </div>
+                </div>
+                <div class="pwa-row">
+                    <div class="pwa-col-6">
+                        <strong>Report Abuse</strong>
+                    </div>
+                    <div class="pwa-col-6 align-right">
+                        <button class="suggstn-btn">
+                            <span class="small-txt">10</span>
+                            <i class="icon-like"></i>
+                        </button>
+                        <button class="suggstn-btn">
+                            <span class="small-txt">10</span>
+                            <i class="icon-dislike"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
         <!-- Review rating Starts -->
         <section class="pdp-review" id="reviewsAll">
@@ -621,8 +620,8 @@
             <p class="small-txt align-center">Average Rating based on {{reviews?.summaryData?.review_count}} ratings</p>
 
             <button class="revw-btn btn" (click)="writeReview();">RATE AND WRITE REVIEW</button>
-           
-            
+
+
             <!-- <div class="all-revw">
                 <div *ngFor="let item of  reviews?.reviewList; let i=index" class="inner-div ">
                     <div class="clearfix revw-row">
@@ -654,7 +653,7 @@
                         </button>
                     </div>
                 </div> -->
-                <!-- <div class="view-all clearfix" (click)="openAllReviewsPopup=true" *ngIf="reviews && reviews.reviewList">
+            <!-- <div class="view-all clearfix" (click)="openAllReviewsPopup=true" *ngIf="reviews && reviews.reviewList">
                     <p class="view-txt">View all reviews
                         <span class="count">({{reviews.reviewList.length}})</span>
                     </p>
@@ -737,8 +736,10 @@
                 assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.
             </p>
             <div class="alert-btn-row">
-                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') " class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()"> EXPLORE CATEGORY</p>
+                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') "
+                    class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
+                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
+                    EXPLORE CATEGORY</p>
             </div>
         </div>
     </div>
@@ -783,4 +784,3 @@
 
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
-

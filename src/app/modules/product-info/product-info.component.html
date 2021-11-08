@@ -1,4 +1,4 @@
-<app-pop-up (outData$)="close($event)" [class.open1]="openProductInfo"
+<app-pop-up (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
     [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
@@ -8,16 +8,16 @@
     </div>
     <div class="content-popup card mt-15 pad-15" content>
         <!--Yajya Design code goes here w.r.t each companent-->
-        <ng-container *ngFor="let tab of TABS">
+        <ng-container *ngFor="let tab of tabs">
             <button (click)="updateTab(tab)">{{tab | titlecase}}</button>
         </ng-container>
         <div [ngSwitch]="defaultInfo">
-            <specifications *ngSwitchCase="'specifications'" [specifications]="modalData.specifications">
+            <specifications *ngSwitchCase="'specifications'" [specifications]="modalData['specifications']">
             </specifications>
-            <details *ngSwitchCase="'product details'" [details]="modalData.details"></details>
-            <videos *ngSwitchCase="'videos'" [videos]="modalData.videos"></videos>
-            <images *ngSwitchCase="'images'" [images]="modalData.images"></images>
-            <key-features *ngSwitchDefault [features]="modalData.features"></key-features>
+            <product-details *ngSwitchCase="'product details'" [details]="modalData['product details']"></product-details>
+            <videos *ngSwitchCase="'videos'" [videos]="modalData['videos']"></videos>
+            <images *ngSwitchCase="'images'" [images]="modalData['images']"></images>
+            <key-features *ngSwitchDefault [features]="modalData['key features']"></key-features>
         </div>
     </div>
 </app-pop-up>

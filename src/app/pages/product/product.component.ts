@@ -1635,8 +1635,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             });
             (this.offerSectionInstance.instance['emaiComparePopUpHandler'] as EventEmitter<boolean>).subscribe(status =>
             {
-                this.emiComparePopUpOpen(status);
-                //this.emiComparePopUpOpen_v1(status);
+                //this.emiComparePopUpOpen(status);
+                this.emiComparePopUpOpen_v1(status);
             });
         }
     }
@@ -1659,6 +1659,10 @@ export class ProductComponent implements OnInit, AfterViewInit
                 // this is required, to refresh input data
                 this.offerPopupInstance = null;
                 this.offerPopupContainerRef.remove();
+            });
+            (this.offerComparePopupInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>
+            {
+                this.toggleLoader(loaderStatus);
             });
         }
     }

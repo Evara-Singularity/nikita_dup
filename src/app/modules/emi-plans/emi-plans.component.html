@@ -7,9 +7,66 @@
         </div>
     </div>
     <div class="content-popup card mt-15 pad-15" content>
-        <!--Yajya EMI plans goes here-->
-        <p>EMI Plans code</p>
+        <!--10766:Design Changes start-->
+        <!--cards tab code start-->
+        <div class="emiTabs">
+            <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.creditCard"
+                (click)="changeCardType(CARD_TYPES.creditCard)">
+                <span>Credit Card</span>
+            </div>
+            <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.debitCard"
+                (click)="changeCardType(CARD_TYPES.debitCard)">
+                <span>Debit Card</span>
+            </div>
+        </div>
+        <!--cards tab code end-->
+        <ul>
+            <li *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
+                {{item['bankname']}}
+                <i _ngcontent-ssr-pwa-c63="" class="icon-down" (click)="selectedBankChange(item)"></i>
+                <div [style.display]="item['key']===selectedBank?'block':'none'">
+                    <div class="emi-plans"
+                        *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
+                        <h3 class="heading medium-heading">No Cost EMI Plans</h3>
+                        <div class="emi-plans-list">
+                            <ng-container
+                                *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
+                                <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
+                                    <div class="emi-amount">
+                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
+                                                getEmiMonths(emi.key) }} months <span class="green-txt">@0%
+                                                p.a.</span></span>
+                                    </div>
+                                    <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
+                                        '1.2-2'}}</span>
+                                </label>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="emi-plans"
+                        *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
+                        <h3 class="heading medium-heading">Standered EMI Plans </h3>
+                        <div class="emi-plans-list">
+                            <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
+                                <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
+                                    <div class="emi-amount">
+                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
+                                                getEmiMonths(emi.key) }} months {{emi.value.emi_interest_paid> 0 ? +
+                                                emi.value.emiBankInterest + '%' :
+                                                '0 %' }} p.a.</span>
+                                    </div>
+                                    <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
+                                        '1.2-2'}}</span>
+                                </label>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+            </li>
+        </ul>
+        <!--10766:Design Changes End-->
     </div>
 </app-pop-up>
-
-

@@ -58,9 +58,11 @@ export class ProductCheckPincodeComponent implements OnInit
             this.isCashOnDelivery = this.FALSE;
             const msnArr = [];
             msnArr.push(PARTNUMBER);
+            this.isLoading.emit(true);
             this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode }).subscribe(
                 (response: any) =>
                 {
+                    this.isLoading.emit(false);
                     this.isPincodeAvailble = this.TRUE;
                     let pc = this.localStorageService.retrieve(PINCODE);
                     if (!pc || !Object.keys(pc).length) { pc = {}; }

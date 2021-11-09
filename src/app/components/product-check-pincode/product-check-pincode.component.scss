@@ -99,9 +99,9 @@
             display: flex;
             align-items: center;
             .delivery-details-inner-img{
-                width: 15%;
+                width: 10%;
                 img{
-                    width: 32px;
+                    width: 24px;
                 }
             }
             .delivery-details-inner-box{
@@ -137,33 +137,30 @@
         .availability-text{
             font-size: 10px;
             color: #74777A;
-            margin-left: 15%;
+            margin-left: 10%;
         }
     }
 }
-.free-delivery{
-    border-top: 2px solid #E3E3E3;
-    border-bottom: 2px solid #E3E3E3;
-    .free-delivery-inner{
-        padding: 10px 0px;
-        display: flex;
-        align-items: center;
-        .free-delivery-inner-img{
-            width: 15%;
-            img{
-                width: 32px;
-            }
+.about-delivery{
+    min-height: 56px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #E3E3E3;
+    &:last-child{
+        border-bottom: 1px solid #E3E3E3;
+    }
+    img{
+        width: 24px;
+        margin-right: 10px;
+    }
+    .about-delivery-txt{
+        h4{
+            font-size: 12px;
         }
-        .free-delivery-inner-details{
-            width: 80%;
-            h4{
-                font-size: 12px;
-                color: #299E22;
-            }
-            span{
-                font-size: 10px;
-                color: #74777A;
-            }
+        span{
+            font-size: 10px;
+            color: #74777A;
         }
     }
 }

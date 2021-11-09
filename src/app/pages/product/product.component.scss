@@ -118,7 +118,7 @@
             }
         }
         &.before-init {
-            height: 362px;
+            height:330px;
             overflow: hidden;
             &.hasOneImage{
                 height: 333px;
@@ -2095,13 +2095,13 @@
 .prod-carsl{
     background:#fff;
     .img-siema{
-        // .img-block {
-        //     width: 100%;
-        //     height: 360px;
-        //     background: white;
-        //     position: relative;
-        //     padding:0px 60px;
-        // }
+        .img-block {
+            width: 100%;
+            height: 330px;
+            background: white;
+            position: relative;
+            padding:30px;
+        }
       .inner_block{
           position: relative;
       }  
@@ -2116,10 +2116,10 @@
     }
     .img-block {
         width: 100%;
-        height: 360px;
+        height: 330px;
         background: white;
         position: relative;
-        padding: 15px;
+        padding: 30px;
         .inner_block {
             height: 100%;
         }
@@ -2128,6 +2128,15 @@
 
 .prod-carsl-pseudo{
     background-color: #ffffff;
+    .img-block-pseudo{
+        height: 330px;
+        position: relative;
+        padding: 30px;
+        img{
+            width:100%;
+            height:100%;
+        }
+    }
 }
 .pager{
     height: 30px;
@@ -2252,4 +2261,14 @@
 
 .f-size-14{
     font-size: 14px;
+}
+.fixed_strip{
+  display:flex;
+  position:absolute;
+  right:10px;
+  top:10px;
+   button{
+       border:1px solid #EFEFF4;
+       padding:10px;
+   }
 }

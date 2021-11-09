@@ -95,7 +95,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     productRating: number;
     productSubPartNumber: string;
     productBulkPrices: any[];
-    recentBoughtOrderCount: any;
+    //recentBoughtOrderCount: any;
     isProductReturnAble: boolean = false
     //Product Question answer
     questionAnswerForm: FormGroup;

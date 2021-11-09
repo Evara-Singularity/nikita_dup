@@ -34,6 +34,10 @@
             <p class="right-txt">{{serviceableMsg}}</p>
         </div>
     </div>
+    <div>
+        <p *ngIf="itemShippingAmount>0">Charges {{itemShippingAmount}}</p>
+        <p *ngIf="itemShippingAmount == 0">free delivery</p>
+    </div>
     <p class="ship-txt mt-15">Shipping charge applicable as per serviceability</p>
     <div class="about-delivery">
         <img src="assets/img/shipping.svg">

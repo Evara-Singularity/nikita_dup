@@ -422,7 +422,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     setReviewsRatingData(reviews)
     {
-        console.log(reviews);
+        //console.log(reviews);
         this.reviews = reviews;
         if (this.reviews && this.reviews.reviewList) {
             this.reviewLength = this.reviews.reviewList.length;
@@ -1602,9 +1602,13 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ProductCheckPincodeComponent);
         this.pincodeFormInstance = this.pincodeFormContainerRef.createComponent(factory, null, this.injector);
+        const quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);
         const productInfo = {};
         productInfo['partNumber'] = this.productSubPartNumber || this.defaultPartNumber;
         productInfo['estimatedDelivery'] = this.priceQuantityCountry['estimatedDelivery'];
+        productInfo['categoryDetails'] = this.productCategoryDetails;
+        productInfo['productPrice'] = this.productPrice;
+        productInfo['quantity'] = quantity;
         this.pincodeFormInstance.instance['pageData'] = productInfo;
         if (this.pincodeFormInstance) {
             (this.pincodeFormInstance.instance['sendAnalyticsCall'] as EventEmitter<any>).subscribe(data =>

@@ -50,8 +50,7 @@
                 </ng-container>
             </ul>
         </section>
-        <div class="tab-content" [ngSwitch]="defaultInfo">
-            <!-- [style.width.px]="totalInnerWIdth*5" -->
+        <div class="tab-content" [ngSwitch]="defaultInfo" [style.width.px]="totalInnerWIdth*5">
             <div class="inner-tab-content"  [ngStyle]="{'transform': shiftLeft }">
                 <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide activeTab ">
                     <specifications  [specifications]="modalData['specifications']">

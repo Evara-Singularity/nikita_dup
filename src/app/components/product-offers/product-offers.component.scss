@@ -6,10 +6,17 @@
     }
     li {
         @extend %clear-fix;
+        background-color: #F6FFF5;
         border-bottom: 0.5px solid #E3E3E3;
         padding: 15px;
         &.location {
             background: rgba(65, 123, 253, 0.1);
+        }
+        .cb-icon{
+            width: 10%;
+            img{
+                width: 20px;
+            }
         }
         .ico_offer {
             font-size: $extra-large-font;

@@ -50,7 +50,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     //conditions vars
     rawProductData: any = null;
     rawProductFbtData: any = null;
-    rawProductCountData: any = null;//1704
+    rawProductCountData: any = null;
     rawProductCountMessage = null;
     uniqueRequestNo: number = 0;
     currentAddedProduct: any;
@@ -95,7 +95,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     productRating: number;
     productSubPartNumber: string;
     productBulkPrices: any[];
-    recentBoughtOrderCount: any;
     isProductReturnAble: boolean = false
     //Product Question answer
     questionAnswerForm: FormGroup;
@@ -189,16 +188,16 @@ export class ProductComponent implements OnInit, AfterViewInit
     // ondemand loaded components for app Promo 
     appPromoInstance = null;
     @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
-    // 1704/1705 ondemad loaded components for emi infromation
+    // ondemad loaded components for emi infromation
     emiPopupInstance = null;
     @ViewChild('emiPopup', { read: ViewContainerRef }) emiPopupContainerRef: ViewContainerRef;
-    // 1704/1705 ondemad loaded components for review & rating
+    // ondemad loaded components for review & rating
     reviewRatingPopupInstance = null;
     @ViewChild('reviewRatingPopup', { read: ViewContainerRef }) reviewRatingPopupContainerRef: ViewContainerRef;
-    // 1704/1705 ondemad loaded components for question & answer
+    // ondemad loaded components for question & answer
     questionAnswerPopupInstance = null;
     @ViewChild('questionAnswersPopup', { read: ViewContainerRef }) questionAnswerPopupContainerRef: ViewContainerRef;
-    // 1704/1705 ondemad loaded components for features & specification
+    // ondemad loaded components for features & specification
     productInfoPopupInstance = null;
     @ViewChild('productInfoPopup', { read: ViewContainerRef }) productInfoPopupContainerRef: ViewContainerRef;
     // ondemand product crousel  
@@ -672,7 +671,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
         }
-        //1704
         if (this.productInfo) {
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
@@ -1595,7 +1593,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    //1704/1705:TODO:remove code
     async onVisiblePincodeSection($event)
     {
         this.showLoader = true;
@@ -2593,16 +2590,6 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     remoteApiCallRecentlyBought()
     {
-        //10766:1704/1705
-        // if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
-        //     if (
-        //         this.rawProductCountData['status'] == true && this.rawProductCountData['data'] &&
-        //         this.rawProductCountData['data']['orderCount'] && parseInt(this.rawProductCountData['data']['orderCount']) !== 0 &&
-        //         parseInt(this.rawProductCountData['data']['orderCount']) > 10
-        //     ) {
-        //         this.recentBoughtOrderCount = this.rawProductCountData['data']['orderCount'];
-        //     }
-        // }
         let MSG = null;
         if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
             if (this.rawProductCountData['status'] && this.rawProductCountData['data'])
@@ -2648,7 +2635,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.router.navigateByUrl(url);
     }
 
-    //1704-1705
     async handleReviewRatingPopup()
     {
         this.showLoader = true;

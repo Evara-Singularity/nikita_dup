@@ -1,3 +1,4 @@
+import { CartService } from '@services/cart.service';
 import { CommonService } from './../../utils/services/common.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
@@ -25,15 +26,18 @@ export class ProductCheckPincodeComponent implements OnInit
     checkedPincode: any;
     deliveryDays = null;
     deliveryAnalytics = null;
+    itemShippingAmount = 0;
 
     constructor(
         private localStorageService: LocalStorageService,
         private productService: ProductService,
-        private _commonService: CommonService
+        private _commonService: CommonService,
+        private _cartService: CartService,
     ) { }
 
     ngOnInit(): void
     {
+        this.checkShippingCharges();
         const user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
             let params = { customerId: user.userId, invoiceType: "retail" };
@@ -45,6 +49,28 @@ export class ProductCheckPincodeComponent implements OnInit
                 }
             });
         }
+    }
+
+    checkShippingCharges()
+    {
+        const categoryDetails = this.pageData['categoryDetails'];
+        const request = {
+            "itemsList": [
+                {
+                    "productId": this.pageData['partNumber'],
+                    "categoryId": categoryDetails['categoryCode'],
+                    "taxonomy": categoryDetails['taxonomyCode']
+                }
+            ],
+            "totalPayableAmount": this.pageData['productPrice']
+        }
+        this._cartService.getShippingValue(request).subscribe((response) =>
+        {
+            if (response['status'] && response['data'])
+            {
+                this.itemShippingAmount = response['data']['totalShippingAmount'];
+            }
+        });
     }
 
     checkAvailblityOnPinCode()

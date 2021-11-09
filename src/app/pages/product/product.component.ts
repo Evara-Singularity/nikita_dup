@@ -50,7 +50,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     //conditions vars
     rawProductData: any = null;
     rawProductFbtData: any = null;
-    rawProductCountData: any = null;
+    rawProductCountData: any = null;//1704
+    rawProductCountMessage = null;
     uniqueRequestNo: number = 0;
     currentAddedProduct: any;
     cartSession: any;
@@ -1635,8 +1636,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             });
             (this.offerSectionInstance.instance['emaiComparePopUpHandler'] as EventEmitter<boolean>).subscribe(status =>
             {
-                this.emiComparePopUpOpen(status);
-                //this.emiComparePopUpOpen_v1(status);
+                //this.emiComparePopUpOpen(status);
+                this.emiComparePopUpOpen_v1(status);
             });
         }
     }
@@ -1659,6 +1660,10 @@ export class ProductComponent implements OnInit, AfterViewInit
                 // this is required, to refresh input data
                 this.offerPopupInstance = null;
                 this.offerPopupContainerRef.remove();
+            });
+            (this.offerComparePopupInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>
+            {
+                this.toggleLoader(loaderStatus);
             });
         }
     }
@@ -2588,15 +2593,24 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     remoteApiCallRecentlyBought()
     {
+        //10766:1704/1705
+        // if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
+        //     if (
+        //         this.rawProductCountData['status'] == true && this.rawProductCountData['data'] &&
+        //         this.rawProductCountData['data']['orderCount'] && parseInt(this.rawProductCountData['data']['orderCount']) !== 0 &&
+        //         parseInt(this.rawProductCountData['data']['orderCount']) > 10
+        //     ) {
+        //         this.recentBoughtOrderCount = this.rawProductCountData['data']['orderCount'];
+        //     }
+        // }
+        let MSG = null;
         if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
-            if (
-                this.rawProductCountData['status'] == true && this.rawProductCountData['data'] &&
-                this.rawProductCountData['data']['orderCount'] && parseInt(this.rawProductCountData['data']['orderCount']) !== 0 &&
-                parseInt(this.rawProductCountData['data']['orderCount']) > 10
-            ) {
-                this.recentBoughtOrderCount = this.rawProductCountData['data']['orderCount'];
+            if (this.rawProductCountData['status'] && this.rawProductCountData['data'])
+            {
+                MSG = this.rawProductCountData['data']['message'];
             }
         }
+        this.rawProductCountMessage = MSG;
     }
 
     scrollToResults(id: string) {

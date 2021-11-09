@@ -6,7 +6,7 @@
             <p class="txt header_text page-name">EMI Plans</p>
         </div>
     </div>
-    <div class="content-popup card mt-15" content>
+    <div class="content-popup mt-15" content>
         <!--10766:Design Changes start-->
         <!--cards tab code start-->
         <div class="emi-top-details pd-15">
@@ -19,7 +19,7 @@
                     <img src="assets/img/how-it-w.png">
                 </div>
                 
-                <div class="emi-top-details-inner-mid">
+                <div  (click)="handleEMIStepsPopup()" class="emi-top-details-inner-mid">
                     <p><strong>See how it works</strong></p>
                     <span>You can avail it in 4 simple steps</span>
                      
@@ -94,70 +94,5 @@
             </div>
         </div>
         <ng-container #emiStepsPopup></ng-container>
-        <div class="emi-steps">
-            <h3 class="heading">Pay In Installment in 4 Easy Steps...</h3>
-            <div class="step-num">
-                <div class="number">
-                    <span>1.</span>
-                </div>
-                <div class="det">
-                    <p>See EMI plans of eligible products on product page.</p>
-                    <button (click)="handleEMIStepsPopup()">Open EMI steps</button>
-                </div>
-            </div>
-            <div class="step-img">
-                <img src="assets/img/step1.png">
-            </div>
-            <div class="step-num">
-                <div class="number">
-                    <span>2.</span>
-                </div>
-                <div class="det">
-                    <p>SAt the time of checkout select your plan as per your convenience</p>
-                </div>
-            </div>
-            <div class="step-img">
-                <img src="assets/img/step2.png">
-            </div>
-            <div class="step-num">
-                <div class="number">
-                    <span>3.</span>
-                </div>
-                <div class="det">
-                    <p>Continue by filling you debit/credit card detail.</p>
-                </div>
-            </div>
-            <div class="step-img">
-                <img src="assets/img/step4.png">
-            </div>
-            <div class="step-num">
-                <div class="number">
-                    <span>4.</span>
-                </div>
-                <div class="det">
-                    <p>After placing order, you will receive an email confirmation of your order, your monthly installment plan & terms.</p>
-                </div>
-            </div>
-            <div class="step-img">
-                <img src="assets/img/step4.png">
-            </div>
-            <div class="step-blw-det">
-                <p>No Cost EMI offer of Moglix enables users to purchase *everything on EMI and experience easy shopping. This special scheme allows customers to purchase expensive products on EMI at the original price of the product that is split equally across the **EMI tenure. The interest a buyer is liable to pay is offered as an upfront discount on checkout. So, there are no addition costs such as interest, down payment or processing fee. Moglix offers No Cost EMI on all products across the site.</p>
-                <p><strong>*Minimum order placed should be Rs.3000</strong></p>
-                <p><strong>**Applicable on EMI tenure for 3 and 6 months only, across all banks.</strong></p>
-                <span class="tnc">Terms and Conditions:</span>
-                <div class="step-emi-det">
-                    <h4>EMI Details</h4>
-                    <ul>
-                        <li>Select your preferred EMI option at the time of payment.</li>
-                        <li>Final EMI is calculated on the total value of your order at the time of payment.</li>
-                        <li>The Bank charges annual interest rates according to the reducing monthly balance. In the monthly reducing cycle, the principal is reduced with every EMI and the interest is calculated on the outstanding balance.</li>
-                        <li> The minimum order value to avail the EMI payment option is Rs 3,000. In case of any kind of refund in an EMI transaction, interest already billed in a particular transaction will not be refundable under any circumstances. </li>
-                        <li>While you will not be charged a processing fee for availing EMI option, the interest charged by the bank shall not be refunded.</li>
-                        <li>You may check with the respective bank/issuer on how a cancellation, refund or pre-closure could affect the EMI terms, and what interest charges would be levied on you for the same.</li>
-                      </ul> 
-                </div>
-            </div>
-        </div>
     </div>
 </app-pop-up>

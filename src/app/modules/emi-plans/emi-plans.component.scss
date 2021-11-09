@@ -20,7 +20,7 @@
             border: 1px solid #D9232D;
             &:nth-child(2){
                 border-top-left-radius: 0px;
-            border-bottom-left-radius: 0px;
+                border-bottom-left-radius: 0px;
                 border-top-right-radius: 4px;
                 border-bottom-right-radius: 4px;
             }
@@ -29,29 +29,46 @@
 }
 .emi-top-details{
     padding: 20px;
+    background-color: #F7F7FA;
     .emi-top-details-inner{
         display: flex;
-        span{
+        align-items: center;
+        span.bullet{
             margin-right: 10px;
-        }        
-    }
-    .how-it-work{
-        padding: 10px 20px;
-        border: 1px solid #EFEFF4;
-        background-color: #fff;
-        img{
-            width: 24px;
-            margin-right: 10px;
+            font-size: 40px; line-height: 10px;
+        }   
+        .emi-top-details-inner-left{
+            width: 15%;
+            img{
+                width: 24px;
+                margin-right: 10px;
+            }
         }
-        .how-it-work-txt{
+        .emi-top-details-inner-mid{
+            width: 75%;
             span{
                 font-size: 10px;
                 color: #3C3C3C;
-                
             }
+        }
+        .emi-top-details-inner-last{
+            width: 10%;
+        }      
+    }
+    .how-it-work{
+        margin-top: 20px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #EFEFF4;
+        background-color: #fff;
+        
+    }
+    .find-txt{
+        p{
+            line-height: 18px;
+        }
     }
 }
-
 .emiTabContent {
     margin-top: 15px;
 }
@@ -75,14 +92,13 @@
     }
     .emi-plans-list {
         border: 1px solid #EFEFF4;
-        border-radius: 4px !important;
-        margin-bottom: 10px;
+        border-radius: 4px;
+        background-color: #fff;
         .emi-plans-list-item {
             @extend %pwa-universal-radio;
             display: flex;
             padding: 10px;
             border-bottom: 1px solid #EFEFF4;
-            background-color: #fff;
             &:last-child {
                 border-bottom: none;
             }
@@ -205,6 +221,7 @@
 
 //Sachin css
 .emi-steps{
+    padding: 20px;
     .step-num{
         display: flex;
         align-items: center;
@@ -224,7 +241,6 @@
     .step-img{
         padding: 20px 10px;
     }
-}
 }
 // Sachin TODO
 // 1. image local path 

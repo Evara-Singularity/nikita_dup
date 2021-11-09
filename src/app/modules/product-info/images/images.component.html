@@ -1,10 +1,12 @@
 <ng-container *ngIf="images.length">
-    <div class="large">
+    <div class="mainImageLarge">
         <img src="{{images[currentImageIndex].large}}">
     </div>
-    <div class="medium">
-        <img *ngFor="let image of images;let imgIndex=index;" src="{{image.medium}}"
-            [class.selected]="imgIndex === currentImageIndex"
-            (click)="$event.stopPropagation();updateImageIndex(imgIndex)" width="20px">
+    <div class="thumbnailImageSlider">
+        <div *ngFor="let image of images;let imgIndex=index;" [class.activeImgSlide]="true">
+            <img src="{{image.medium}}"
+                [class.selected]="imgIndex === currentImageIndex"
+                (click)="$event.stopPropagation();updateImageIndex(imgIndex)">
+        </div>
     </div>
 </ng-container>

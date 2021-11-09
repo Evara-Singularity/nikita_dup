@@ -44,19 +44,32 @@
             </div>
         </div>
         <section class="tabs-container">
-            <ul class="tabs"  [ngStyle]="{'transform': shiftLeft}">
+            <ul class="tabs">
                 <ng-container  *ngFor="let tab of tabs; let i = index">
                     <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">{{tab | titlecase}}</li>
                 </ng-container>
             </ul>
         </section>
         <div class="tab-content" [ngSwitch]="defaultInfo">
-            <specifications *ngSwitchCase="'specifications'" [specifications]="modalData['specifications']">
-            </specifications>
-            <product-details *ngSwitchCase="'product details'" [details]="modalData['product details']"></product-details>
-            <videos *ngSwitchCase="'videos'" [videos]="modalData['videos']"></videos>
-            <images *ngSwitchCase="'images'" [images]="modalData['images']"></images>
-            <key-features *ngSwitchDefault [features]="modalData['key features']"></key-features>
+            <!-- [style.width.px]="totalInnerWIdth*5" -->
+            <div class="inner-tab-content"  [ngStyle]="{'transform': shiftLeft }">
+                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide activeTab ">
+                    <specifications  [specifications]="modalData['specifications']">
+                    </specifications>
+                </div>
+              <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide">
+                  <product-details  [details]="modalData['product details']"></product-details>
+              </div>
+              <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide" >
+                  <videos [videos]="modalData['videos']"></videos>
+              </div>
+              <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide">
+                  <images  [images]="modalData['images']"></images>
+              </div>
+              <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide">
+                  <key-features  [features]="modalData['key features']"></key-features>
+              </div>
+            </div>
         </div>
     </div>
 </app-pop-up>

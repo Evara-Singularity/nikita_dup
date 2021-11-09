@@ -6,9 +6,9 @@
     align-items: center;
     &::-webkit-scrollbar {
         display: none;
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none; 
     } 
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
   }
   
   .tabs {
@@ -31,6 +31,7 @@
     padding:10px 15px;
     font-weight: 500;
     box-shadow: 0px 3px 8px #455B6314;
+
     &.selectedTab{
         border:1px solid $logo-color; 
         background:$color-red-light;
@@ -40,6 +41,27 @@
 
   .tab-content{
     margin-top:15px;
+    position: relative;
+    overflow:hidden;
+    .inner-tab-content{
+      display: flex;
+      flex-wrap: nowrap;
+      will-change: transform;
+      transition: transform .25s cubic-bezier(0,0,.3,1);
+      // overflow-x:scroll;
   }
+    //  .inner-tab-content{
+    //   width:100%;
+    //   opacity:0;
+    //   transition:opacity 500ms ease-in-out 0ms,
+    //   transform 500ms ease-in-out 0ms;
+    //   transform: translate3d(-375px, 0px, 0px);
+    //   &.activeTab{
+    //     right:0px;
+    //     opacity:1;
+    //   }
+    // }
+  }
+
   
   

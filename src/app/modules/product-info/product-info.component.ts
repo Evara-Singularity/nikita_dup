@@ -18,33 +18,29 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     atStart = true;
     atEnd = false;
     shiftLeft:string;
+    public innerWidth: any;
+    public totalInnerWIdth;
+
 
     constructor() { }
 
     ngOnInit() { 
-        this.shiftLeft = `translateX(0px)`;
         this.tabs = Object.keys(this.modalData);
-    }
+        this.innerWidth = window.innerWidth.toString();
+        // this.totalInnerWIdth = window.innerWidth + 100;
+     }
 
     updateTab(tab,index){
         this.selectedIndex = index;
         this.defaultInfo = tab;
         console.log(tab, this.selectedIndex);
-        this.scrollTab(index - this.leftTabIdx - 1);
-
+        this.shiftLeft = `translateX(${-this.innerWidth*index}px) `;
+        // this.scrollTab(index - this.leftTabIdx - 1);
     }
-    scrollTab(x){
-        if ((this.atStart && x < 0) || (this.atEnd && x > 0)) {
-            return;
-          }
-        this.leftTabIdx = this.leftTabIdx + x;
-        this.shiftLeft = `translateX(${this.leftTabIdx * -140}px)`;
-        this.atStart = this.leftTabIdx === 0;
-        this.atEnd = this.leftTabIdx === this.tabs.length - 1
-    }
-    @HostListener('scroll', ['$event']) 
-    scrollHandler(event) {
-      console.debug("Scroll Event");
+    
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+      this.innerWidth = window.innerWidth;
     }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { BankNamePipe } from '@app/utils/pipes/bank.pipe';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 import { EmiService } from './../emi/emi.service';
@@ -29,11 +29,15 @@ export class EmiPlansComponent implements OnInit
     emiRawCreditCardResponse = null;
     paymentMethod = this.CARD_TYPES.creditCard;
     noCostEmiCount = {}
+    emiStepsPopupInstance = null;
+    @ViewChild('emiStepsPopup', { read: ViewContainerRef }) emiStepsPopupContainerRef: ViewContainerRef;
 
     constructor(
         private _emiService: EmiService,
         private _objectToArray: ObjectToArray,
-        private _bankNamePipe: BankNamePipe
+        private _bankNamePipe: BankNamePipe,
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector,
     ) { }
 
     ngOnInit() { this.intialLoad(); }
@@ -214,5 +218,20 @@ export class EmiPlansComponent implements OnInit
     {
         this.out.emit(data);
         this.openEMIPopup = false;
+    }
+
+    async handleEMIStepsPopup()
+    {
+        const { EmiStepsComponent } = await import('./emi-steps/emi-steps.component').finally(() =>
+        {
+        });
+        const factory = this.cfr.resolveComponentFactory(EmiStepsComponent);
+        this.emiStepsPopupInstance = this.emiStepsPopupContainerRef.createComponent(factory, null, this.injector);
+        this.emiStepsPopupInstance.instance['openEMIStepsPopup'] = true;
+        (this.emiStepsPopupInstance.instance['out'] as EventEmitter<boolean>).subscribe(data =>
+        {
+            this.emiStepsPopupInstance = null;
+            this.emiStepsPopupContainerRef.remove();
+        });
     }
 }

@@ -1,10 +1,21 @@
-<div class="content-popup check-pincode" content>
-    <div class="input-pincode">
-        <input (keyup)="checkPinocdeKey($event)"
-            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-            [formControl]="pincode" class="inp-box" type="number" placeholder="Enter your pincode" maxlength="6">
-        <button (click)="checkAvailblityOnPinCode()" class="btn-submit">SUBMIT</button>
+<div class="content-popup" content>
+    <div class="delivery-details-area"> 
+    <div class="delivery-details container">
+        <h3 class="heading-3">Delivery Details</h3>
+        <div class="delivery-details-inner">
+            <div class="delivery-details-inner-img">
+                <img src="assets/img/map-pin-fill.svg">
+            </div>
+            <div class="delivery-details-inner-box">
+                <input (keyup)="checkPinocdeKey($event)"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                [formControl]="pincode" class="inp-box" type="number" placeholder="Enter your pincode" maxlength="6">
+                <button (click)="checkAvailblityOnPinCode()" class="btn-submit">CHECK</button>
+            </div>
+        </div>
+        <span class="availability-text">Check serviceability at your location</span>
     </div>
+    
     <p class="delivery-txt" *ngIf="deliveryDays != null">
         <span>Delivery in </span>{{deliveryDays}}
     </p>
@@ -24,4 +35,44 @@
         </div>
     </div>
     <p class="ship-txt mt-15">Shipping charge applicable as per serviceability</p>
+    <div class="about-delivery">
+        <img src="assets/img/shipping.svg">
+        <div class="about-delivery-txt">
+            <h4 class="green-txt">Free Delivery</h4>
+                    <span class="green-txt">No shipping charge on this order</span>
+        </div>
+    </div>
+    <div class="about-delivery">
+        <img src="assets/img/delivery_available.svg">
+        <div class="about-delivery-txt">
+            <h4>Delivery available at 110091 in 6 - 7 days</h4>
+        </div>
+    </div>
+    <div class="about-delivery">
+        <img src="assets/img/shipping.svg">
+        <div class="about-delivery-txt">
+            <h4>Shipping applicable - ₹50</h4>
+                    <span>On this order</span>
+        </div>
+    </div>
+    <div class="about-delivery">
+        <img src="assets/img/cod.svg">
+        <div class="about-delivery-txt">
+            <h4 class="green-txt">COD Available</h4>
+            <span>You can pay at the time of delivery</span>
+        </div>
+    </div>
+    <div class="about-delivery">
+        <img src="assets/img/prepaid_payment.svg">
+        <div class="about-delivery-txt">
+           <h4>Prepaid payment only</h4>
+        </div>
+    </div>
+    <div class="about-delivery">
+        <img src="assets/img/delivery_not_available.svg">
+        <div class="about-delivery-txt">
+           <h4  class="red-txt">Delivery unavailable at 110091</h4>
+        </div>
+    </div>
 </div>
+

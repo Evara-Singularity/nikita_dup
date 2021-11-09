@@ -1,7 +1,9 @@
 <!--Old Code-->
-<!-- <ul class="deals-list" *ngIf="allofferData" >
+<ul class="deals-list" *ngIf="allofferData" >
     <li *ngFor="let item of allofferData; let i=index;" >
-        <i class="icon-offers ico_offer"></i>
+        <div class="cb-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/726/726448.png">
+        </div>
         <p class="ofr_txt">
             <small>{{item.block_data['image_block'][0].image_title}}</small>
         </p>
@@ -13,12 +15,52 @@
             <strong>EMIs Available</strong>
             <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
         </div>
-        <span class="ico-right">COMPARE</span>
+        <span class="ico-right">VIEW</span>
     </li>
-</ul> -->
+</ul>
+<div class="moglix-benifits clearfix">
+    <h2 class="heading-3"> Moglix Benefits</h2>
+    <div class=" moglix-benifits-InnerContainer pad-lr-0">
+        <div [style.width.px]="4 * 150">
+            <div class="moglix-benifits-Inner">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    GST Invoice<br> Available
+                </span>
+            </div>
+            <div class="moglix-benifits-Inner">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/return_policy/box.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    Secure <br> Payments
+                </span>
+            </div>
+            <div class="moglix-benifits-Inner">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/return_policy/fragile.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    365 Days <br> Help Desk
+                </span>
+            </div>
+            <div class="moglix-benifits-Inner">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/return_policy/thumb-down-button.svg" height="16px"
+                        width="16px">
+                </span>
+                <span class="returnTxt">
+                    Return <br />Product
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <!--Old Code-->
 <!--New Code-->
-<div class="coupen-area">
+<!-- <div class="coupen-area">
     <div class="coupen-header">
         <h4>Get this for as low as <span>₹609</span></h4>
         <p>With below offers and coupons</p>
@@ -46,7 +88,7 @@
             <p>view</p>
         </div>
     </div>
-</div>
+</div> -->
 <!-- start moglix benifits -->
 
 <!-- <div class="moglix-benifits">
@@ -87,45 +129,3 @@
     </div>
 </div> -->
 
-<div class="moglix-benifits clearfix">
-    <h2 class="heading-3"> Moglix Benefits</h2>
-    <div class=" moglix-benifits-InnerContainer pad-lr-0">
-        <div [style.width.px]="4 * 150">
-            <div class="moglix-benifits-Inner">
-                <span class="returnImg">
-                    <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px"
-                        width="16px">
-                </span>
-                <span class="returnTxt">
-                    GST Invoice<br> Available
-                </span>
-            </div>
-            <div class="moglix-benifits-Inner">
-                <span class="returnImg">
-                    <img src="{{imagePathAsset}}assets/img/return_policy/box.svg" height="16px" width="16px">
-                </span>
-                <span class="returnTxt">
-                     Secure <br> Payments
-                </span>
-            </div>
-            <div class="moglix-benifits-Inner">
-                <span class="returnImg">
-                    <img src="{{imagePathAsset}}assets/img/return_policy/fragile.svg" height="16px"
-                        width="16px">
-                </span>
-                <span class="returnTxt">
-                    365 Days <br> Help Desk
-                </span>
-            </div>
-            <div class="moglix-benifits-Inner">
-                <span class="returnImg">
-                    <img src="{{imagePathAsset}}assets/img/return_policy/thumb-down-button.svg" height="16px"
-                        width="16px">
-                </span>
-                <span class="returnTxt">
-                    Return <br />Product
-                </span>
-            </div>
-        </div>
-    </div>
-</div>

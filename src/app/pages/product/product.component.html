@@ -1,10 +1,3 @@
-<!--1704:Yajya move this as per design-->
-<div style="margin-top: 50px;">
-    <button (click)="scrollToId('similarProducts')">Scroll To Similar</button>
-    <button (click)="handleReviewRatingPopup()">Review & Rating</button>
-    <button (click)="handleQuestionAnswerPopup()">QA</button>
-    <button (click)="handleProductInfoPopup()">Features & Specification</button>
-</div>
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 
@@ -124,7 +117,6 @@
             </div>
 
             <!--recently bought product section -->
-            <!--1704-->
             <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
                 <img src="{{imagePathAsset}}assets/img/icons/coupon-3-fill.png" height="15" width="15">
                 <span class="inner-text">{{rawProductCountMessage}}</span>
@@ -225,13 +217,10 @@
     </div>
     <!-- Product quantity action section ends -->
 
-    <!--1704/1705-->
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)">
         Delivery Details
-        <!--1704/1705:TODO modify product-check-pincode as per design-->
         <ng-container #pincodeForm></ng-container>
     </div>
-    <!--1704/1705 Yajya end-->
 
     <!-- other sections starts -->
     <div>
@@ -634,7 +623,6 @@
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
     <ng-container #globalToast></ng-container>
-    <!--1704/1705-->
     <ng-container #emiPlansPopup></ng-container>
     <ng-container #reviewRatingPopup></ng-container>
     <ng-container #questionAnswersPopup></ng-container>

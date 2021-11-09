@@ -1,14 +1,29 @@
 <app-pop-up (outData$)="outData($event)" [class.open1]="openEMIPopup"
     [data]="{class: 'payment-popup addAddressPopup addEmi',headerCustom:true, selector:'openEMIPopup'}">
     <div class="head-sec header_add_edit" header>
-        <div class="container">
+        <div>
             <i class="icon-back f-left white_text" (click)="closeEMIPalns($event)"></i>
             <p class="txt header_text page-name">EMI Plans</p>
         </div>
     </div>
-    <div class="content-popup card mt-15 pad-15" content>
+    <div class="content-popup card mt-15" content>
         <!--10766:Design Changes start-->
         <!--cards tab code start-->
+        <div class="emi-top-details pd-15">
+            <div class="emi-top-details-inner intrst-plan">
+                <span>&#8226;</span>
+                <p><span class="green-txt">0% interest plans</span> available on listed debit/credit cards.</p>
+            </div>
+            <div class="emi-top-details-inner how-it-work">
+                <img src="assets/img/how-it-w.png">
+                <div class="how-it-work-txt">
+                    <p>See how it works</p>
+                    <span>You can avail it in 4 simple steps</span>
+                    <img src="assets/img/arrow-right-blue.png"> 
+                </div>
+                
+            </div>
+        </div>
         <div class="emiTabs">
             <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.creditCard"
                 (click)="changeCardType(CARD_TYPES.creditCard)">
@@ -22,7 +37,7 @@
         <!--cards tab code end-->
             <div *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
                 <div (click)="selectedBankChange(item)" class="payment-accordion_header">
-                    <img class="ico-accord-left" src="https://w7.pngwing.com/pngs/887/91/png-transparent-bajaj-auto-bajaj-finserv-ltd-mortgage-loan-finance-finance-blue-company-text.png"/>
+                    <img class="ico-accord-left" src="assets/img/emi-bajaj.png"/>
                     <span>{{item['bankname']}}</span>
                     <i  class="icon-down"></i>
                 </div>

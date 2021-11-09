@@ -1,7 +1,8 @@
 @import '../../scss/variables';
 .emiTabs {
     display: flex;
-    border: 1px solid #E7E7E8;
+    padding: 10px;
+    margin: 10px;
     border-radius: 4px;
     .emiTab {
         flex: 1;
@@ -17,7 +18,37 @@
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
             border: 1px solid #D9232D;
+            &:nth-child(2){
+                border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
         }
+    }
+}
+.emi-top-details{
+    padding: 20px;
+    .emi-top-details-inner{
+        display: flex;
+        span{
+            margin-right: 10px;
+        }        
+    }
+    .how-it-work{
+        padding: 10px 20px;
+        border: 1px solid #EFEFF4;
+        background-color: #fff;
+        img{
+            width: 24px;
+            margin-right: 10px;
+        }
+        .how-it-work-txt{
+            span{
+                font-size: 10px;
+                color: #3C3C3C;
+                
+            }
     }
 }
 
@@ -44,12 +75,14 @@
     }
     .emi-plans-list {
         border: 1px solid #EFEFF4;
-        border-radius: 4px;
+        border-radius: 4px !important;
+        margin-bottom: 10px;
         .emi-plans-list-item {
             @extend %pwa-universal-radio;
             display: flex;
             padding: 10px;
             border-bottom: 1px solid #EFEFF4;
+            background-color: #fff;
             &:last-child {
                 border-bottom: none;
             }
@@ -138,22 +171,24 @@
     height: 60px;
     align-items: center;
     padding: 0px 15px;
+    border-top: 1px solid #E5E5E5;
     .icon-down {
         margin-left: auto;
-        font-size: $small-font;
+        font-size: $medium-font;
     }
     .ico-accord-left {
         font-size: 20px;
-        width:20px
+        width:36px;
+        margin-right: 10px;
     }
     .accordion-text {
         font-size: $large-font;
         margin-left: 15px;
     }
 }
-
 .payment-accordion_body {
-    padding: 0px 35px 0px 48px;
+    padding: 0px 20px 1px 20px;
+    background-color: #F7F7FA;
 }
 
 .note-section {
@@ -189,6 +224,7 @@
     .step-img{
         padding: 20px 10px;
     }
+}
 }
 // Sachin TODO
 // 1. image local path 

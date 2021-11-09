@@ -69,6 +69,7 @@
                 </div>
             </div>
         </div>
+        <ng-container #emiStepsPopup></ng-container>
         <div class="emi-steps">
             <h3 class="heading">Pay In Installment in 4 Easy Steps...</h3>
             <div class="step-num">
@@ -77,6 +78,7 @@
                 </div>
                 <div class="det">
                     <p>See EMI plans of eligible products on product page.</p>
+                    <button (click)="handleEMIStepsPopup()">Open EMI steps</button>
                 </div>
             </div>
             <div class="step-img">

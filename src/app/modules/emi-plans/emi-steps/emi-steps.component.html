@@ -1,1 +1,12 @@
-<p>emi-steps works!</p>
+<app-pop-up-variant2 (outData$)="outData($event)" [class.open1]="openEMIStepsPopup"
+    [data]="{class: 'payment-popup addAddressPopup',headerCustom:true}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeEMISteps($event)"></i>
+            <p class="txt header_text page-name"> EMI Steps</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15 pad-15" content>
+        <!--Sachin code goes here-->
+    </div>
+</app-pop-up-variant2>

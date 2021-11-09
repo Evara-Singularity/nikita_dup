@@ -13,70 +13,50 @@
                 <button (click)="checkAvailblityOnPinCode()" class="btn-submit">CHECK</button>
             </div>
         </div>
-        <span class="availability-text">Check serviceability at your location</span>
     </div>
-    
-    <p class="delivery-txt" *ngIf="deliveryDays != null">
-        <span>Delivery in </span>{{deliveryDays}}
-    </p>
     <div *ngIf="pincode.hasError('pattern')" class="invalid pin-validation clearfix">
-        <i class="icon-circle-delete f-left"></i>
         <p class="right-txt">Invalid pincode provided</p>
     </div>
-    <div *ngIf="isPincodeAvailble && cashOnDeliveryMsg && serviceableMsg && !pincode.hasError('pattern')"
-        class="validity-pin">
-        <div [ngClass]="{'valid':isCashOnDelivery, 'invalid': !isCashOnDelivery}" class="pin-validation clearfix">
-            <i class="icon-check-active f-left"></i>
-            <p class="right-txt">{{cashOnDeliveryMsg}}</p>
-        </div>
-        <div [ngClass]="{'valid':isServiceable, 'invalid': !isServiceable}" class="pin-validation clearfix">
-            <i class="icon-check-active f-left"></i>
-            <p class="right-txt">{{serviceableMsg}}</p>
-        </div>
-    </div>
-    <div>
-        <p *ngIf="itemShippingAmount>0">Charges {{itemShippingAmount}}</p>
-        <p *ngIf="itemShippingAmount == 0">free delivery</p>
-    </div>
-    <p class="ship-txt mt-15">Shipping charge applicable as per serviceability</p>
-    <div class="about-delivery">
+    <div class="about-delivery" *ngIf="itemShippingAmount == 0">
         <img src="assets/img/shipping.svg">
         <div class="about-delivery-txt">
             <h4 class="green-txt">Free Delivery</h4>
                     <span class="green-txt">No shipping charge on this order</span>
         </div>
     </div>
-    <div class="about-delivery">
-        <img src="assets/img/delivery_available.svg">
-        <div class="about-delivery-txt">
-            <h4>Delivery available at 110091 in 6 - 7 days</h4>
-        </div>
-    </div>
-    <div class="about-delivery">
+    <div class="about-delivery" *ngIf="itemShippingAmount>0">
         <img src="assets/img/shipping.svg">
         <div class="about-delivery-txt">
-            <h4>Shipping applicable - ₹50</h4>
+            <h4>Shipping applicable - ₹{{itemShippingAmount}}</h4>
                     <span>On this order</span>
         </div>
     </div>
-    <div class="about-delivery">
-        <img src="assets/img/cod.svg">
-        <div class="about-delivery-txt">
-            <h4 class="green-txt">COD Available</h4>
-            <span>You can pay at the time of delivery</span>
+    <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern')">
+        <div class="about-delivery" *ngIf="isServiceable">
+            <img src="assets/img/delivery_available.svg">
+            <div class="about-delivery-txt">
+                <h4>Delivery available at {{pincode.value}} in {{deliveryDays}}</h4>
+            </div>
         </div>
-    </div>
-    <div class="about-delivery">
-        <img src="assets/img/prepaid_payment.svg">
-        <div class="about-delivery-txt">
-           <h4>Prepaid payment only</h4>
+        <div class="about-delivery" *ngIf="!(isServiceable)">
+            <img src="assets/img/delivery_not_available.svg">
+            <div class="about-delivery-txt">
+                <h4 class="red-txt">Delivery unavailable at {{pincode.value}}</h4>
+            </div>
         </div>
-    </div>
-    <div class="about-delivery">
-        <img src="assets/img/delivery_not_available.svg">
-        <div class="about-delivery-txt">
-           <h4  class="red-txt">Delivery unavailable at 110091</h4>
+        <div class="about-delivery" *ngIf="isServiceable && !(isCashOnDelivery)">
+            <img src="assets/img/cod.svg">
+            <div class="about-delivery-txt">
+                <h4 class="green-txt">COD Available</h4>
+                <span>You can pay at the time of delivery</span>
+            </div>
         </div>
-    </div>
+        <div class="about-delivery" *ngIf="isCashOnDelivery">
+            <img src="assets/img/prepaid_payment.svg">
+            <div class="about-delivery-txt">
+                <h4>Prepaid payment only</h4>
+            </div>
+        </div>
+    </ng-container>
 </div>
 

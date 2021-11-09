@@ -21,8 +21,6 @@ export class ProductCheckPincodeComponent implements OnInit
     isPincodeAvailble: boolean = this.FALSE;
     isServiceable: boolean = this.FALSE;
     isCashOnDelivery: boolean = this.FALSE;
-    cashOnDeliveryMsg: string;
-    serviceableMsg: string;
     checkedPincode: any;
     deliveryDays = null;
     deliveryAnalytics = null;
@@ -101,8 +99,6 @@ export class ProductCheckPincodeComponent implements OnInit
                         let pincodeResponse = response.data[PARTNUMBER];
                         this.isCashOnDelivery = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
                         this.isServiceable = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
-                        this.updateCashOnDeliveryInfo(this.isCashOnDelivery, pincode);
-                        this.updateServiceableInfo(this.isServiceable, pincode);
                         if (this.isServiceable) {
                             let avgLogisticEstimated = pincodeResponse['avgDay'] || null;
                             let avgPlatformEstimated = null;
@@ -116,10 +112,6 @@ export class ProductCheckPincodeComponent implements OnInit
                             deliveryDays: this.deliveryDays,
                             deliveryAnalytics: this.deliveryAnalytics,
                         });
-                    }
-                    else {
-                        this.updateCashOnDeliveryInfo(this.FALSE, pincode);
-                        this.updateServiceableInfo(this.FALSE, pincode);
                     }
                 },
                 error =>
@@ -186,9 +178,6 @@ export class ProductCheckPincodeComponent implements OnInit
         }
     }
 
-    updateCashOnDeliveryInfo(isCOD, pincode) { this.cashOnDeliveryMsg = `Cash On Delivery is ${isCOD ? 'available' : 'unavailable'} for ${pincode}`; }
-
-    updateServiceableInfo(isServiceable, pincode) { this.serviceableMsg = `Service is ${isServiceable ? 'available' : 'unavailable'} for ${pincode}`; }
 }
 @NgModule({
     declarations: [ProductCheckPincodeComponent],

@@ -1,14 +1,38 @@
 <app-pop-up (outData$)="outData($event)" [class.open1]="openEMIPopup"
     [data]="{class: 'payment-popup addAddressPopup addEmi',headerCustom:true, selector:'openEMIPopup'}">
     <div class="head-sec header_add_edit" header>
-        <div class="container">
+        <div>
             <i class="icon-back f-left white_text" (click)="closeEMIPalns($event)"></i>
             <p class="txt header_text page-name">EMI Plans</p>
         </div>
     </div>
-    <div class="content-popup card mt-15 pad-15" content>
+    <div class="content-popup card mt-15" content>
         <!--10766:Design Changes start-->
         <!--cards tab code start-->
+        <div class="emi-top-details pd-15">
+            <div class="emi-top-details-inner intrst-plan">
+                <span class="bullet">&#8226;</span>
+                <p><span class="green-txt">0% interest plans</span> available on listed debit/credit cards.</p>
+            </div>
+            <div class="emi-top-details-inner how-it-work">
+                <div class="emi-top-details-inner-left">
+                    <img src="assets/img/how-it-w.png">
+                </div>
+                
+                <div class="emi-top-details-inner-mid">
+                    <p><strong>See how it works</strong></p>
+                    <span>You can avail it in 4 simple steps</span>
+                     
+                </div>
+                <div class="emi-top-details-inner-last">
+                    <img src="assets/img/arrow-right-blue.png">
+                </div>
+                
+            </div>
+            <div class="find-txt mt-15">
+                <p><strong>Find a suitable EMI option below and choose the same option at payments step while placing the order.</strong></p>
+            </div>
+        </div>
         <div class="emiTabs">
             <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.creditCard"
                 (click)="changeCardType(CARD_TYPES.creditCard)">
@@ -22,7 +46,7 @@
         <!--cards tab code end-->
             <div *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
                 <div (click)="selectedBankChange(item)" class="payment-accordion_header">
-                    <img class="ico-accord-left" src="https://w7.pngwing.com/pngs/887/91/png-transparent-bajaj-auto-bajaj-finserv-ltd-mortgage-loan-finance-finance-blue-company-text.png"/>
+                    <img class="ico-accord-left" src="assets/img/emi-bajaj.png"/>
                     <span>{{item['bankname']}}</span>
                     <i  class="icon-down"></i>
                 </div>
@@ -82,7 +106,7 @@
                 </div>
             </div>
             <div class="step-img">
-                <img src="assets/img/1.png">
+                <img src="assets/img/step1.png">
             </div>
             <div class="step-num">
                 <div class="number">
@@ -93,7 +117,7 @@
                 </div>
             </div>
             <div class="step-img">
-                <img src="assets/img/2.png">
+                <img src="assets/img/step2.png">
             </div>
             <div class="step-num">
                 <div class="number">
@@ -104,7 +128,7 @@
                 </div>
             </div>
             <div class="step-img">
-                <img src="assets/img/3.png">
+                <img src="assets/img/step4.png">
             </div>
             <div class="step-num">
                 <div class="number">
@@ -115,7 +139,7 @@
                 </div>
             </div>
             <div class="step-img">
-                <img src="assets/img/4.png">
+                <img src="assets/img/step4.png">
             </div>
             <div class="step-blw-det">
                 <p>No Cost EMI offer of Moglix enables users to purchase *everything on EMI and experience easy shopping. This special scheme allows customers to purchase expensive products on EMI at the original price of the product that is split equally across the **EMI tenure. The interest a buyer is liable to pay is offered as an upfront discount on checkout. So, there are no addition costs such as interest, down payment or processing fee. Moglix offers No Cost EMI on all products across the site.</p>

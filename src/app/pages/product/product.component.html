@@ -3,8 +3,8 @@
 
     <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
-        <div class="">
-
+        <div class="fixed-strip">
+            <i class="icon-purchase-list-pdp"></i>
         </div>
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo

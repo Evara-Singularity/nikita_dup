@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="pincode.hasError('pattern')" class="invalid pin-validation clearfix">
+    <div *ngIf="pincode.hasError('pattern')" class="invalid-txt">
         <p class="right-txt">Invalid pincode provided</p>
     </div>
     <div class="about-delivery" *ngIf="itemShippingAmount == 0">

@@ -5,7 +5,7 @@
     <div class="thumbnailImageSlider">
         <div *ngFor="let image of images;let imgIndex=index;" [class.activeImgSlide]="true">
             <img src="{{image.medium}}"
-                [class.selected]="imgIndex === currentImageIndex"
+                [class.activeImgSlide]="imgIndex === currentImageIndex"
                 (click)="$event.stopPropagation();updateImageIndex(imgIndex)">
         </div>
     </div>

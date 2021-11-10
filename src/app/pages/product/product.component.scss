@@ -165,7 +165,7 @@
         .prod-inner-desc {
             padding: 5px 0px;
             overflow: auto;
-            display: inline-block;
+            display:block;
             .rating-box {
                 background: #5BA621;
                 padding: 5px;
@@ -1955,19 +1955,20 @@
 
 // RFQ Thanks popup
 .recent-bought-wrap {
-    display: inline-block;
-    background: #d9232d30;
+    display:flex;
+    background: rgb(0 211 203 / 10%);
     border-radius: 2px;
     padding: 5px;
     margin: 10px 0px;
-    width: 175px;
-    img {
+    align-items:center;
+    i {
+        color: #00A293;
         vertical-align: middle;
         width: 15px;
         height: 15px;
     }
     .inner-text {
-        color: #D9232D;
+        color: #00A293;
         font-size: 10px;
         font-weight: 400;
         padding-left: 5px;

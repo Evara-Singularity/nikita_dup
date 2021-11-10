@@ -80,9 +80,7 @@
         border-bottom: 1px solid #E3E3E3;
         h4{
             font-size: $large-font;
-            span{
-                color: #299E22;
-            }
+            
         }
         p{
             color: #8e8b8b;
@@ -103,12 +101,9 @@
             }
         }
         .cb-text{
-            width: 80%;
+            width:78%;
             p{
-                font-size: $large-font;
-                span{
-                    color: #299E22;
-                }
+                font-size:13px;
                 .emi-price{
                     color: #303030;
                 }
@@ -120,77 +115,11 @@
         }
         .cb-view{
             width: 10%;
-            p{
-                color: #278BED;
+            span{
+                color:#278BED;
                 font-size: $medium-font;
             }
         }
         
-    }
-}
-
-// start moglix benifits
-// .moglix-benifits{
-//     h4{
-//         font-size: $extra-large-font;
-//     }
-//     .moglix-benifits-body{
-//         display: flex;
-//         flex-wrap: wrap;
-//         padding: 15px !important;
-//         overflow: scroll;
-//         .moglix-benifits-feature{
-//             width: 35%;
-//             border: 1px solid #EFEFF4;
-//             border-radius: 4px;
-//             padding: 10px;
-//             .mbf-left{
-//                 img{
-//                     width: 14px;
-//                 }
-//             }
-//         }
-//     }
-// }
-
-.moglix-benifits {
-    margin: 10px 0px;
-    background: #fff;
-    padding: 15px 15px 5px;
-    .moglix-benifits-InnerContainer {
-        overflow-y: hidden;
-        overflow-x: scroll;
-        width: auto;
-        scrollbar-width: none;
-        /* Firefox 64 */
-        padding-bottom: 15px;
-        .moglix-benifits-Inner {
-            border: 1px solid #EFEFF4;
-            border-radius: 8px;
-            width: 140px;
-            margin-right: 10px;
-            padding: 10px;
-            float: left;
-            .returnImg {
-                background: #FAE0E1;
-                padding: 6px;
-                border-radius: 20%;
-                float: left;
-                width: 28px;
-                margin-top: 5px;
-                text-align: center;
-                vertical-align: middle;
-                img {
-                    vertical-align: top;
-                }
-            }
-            .returnTxt {
-                color: #0061D5;
-                font-size: 12px;
-                width: calc(100% - 45px);
-                float: right;
-                line-height: 18px;
-            }
-        }
     }
 }

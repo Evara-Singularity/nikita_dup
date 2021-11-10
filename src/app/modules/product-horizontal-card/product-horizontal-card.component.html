@@ -75,7 +75,7 @@
         </div>
         <div class="keyfeatures" *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
             <ul>
-                <li *ngFor="let features of product['keyFeatures']">{{features}}</li>
+                <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,18).join(" ")}}<span *ngIf="features.split(' ').length>18">...</span></li>
             </ul>
         </div>
     </div>

@@ -2341,6 +2341,13 @@
     border-radius: 4px;
     margin-bottom:15px;
     box-shadow: 1px 3px 6px #efe7e7;
+    display:inline-block;
+    text-align:center;
+    img{
+        line-height: 28px;
+        display: inline-block;
+        vertical-align: middle;
+    }
     &.fixed_ico-img{
         margin-top:auto;
     }

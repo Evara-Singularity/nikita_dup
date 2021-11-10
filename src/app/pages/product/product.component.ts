@@ -116,7 +116,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     fbtFlag = false;
     isRFQSuccessfull = false;
     similarProducts = [];
-    //1074-1075 pop-ups
+    displayCardCta = false;
     questionAnswerPopup = false;
     productInfoPopup = false;
     isProductCrouselLoaded: boolean = false;
@@ -2685,8 +2685,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.reviewRatingPopupContainerRef.remove();
         });
     }
-    displayCardCta = false;
-    async handleProductInfoPopup()
+
+    async handleProductInfoPopup(infoType)
     {
         this.showLoader = true;
         this.displayCardCta = true;
@@ -2696,7 +2696,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
         this.productInfoPopupInstance = this.productInfoPopupContainerRef.createComponent(factory, null, this.injector);
-        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo();
+        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo_v1(infoType);
         this.productInfoPopupInstance.instance['openProductInfo'] = true;
         (this.productInfoPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
@@ -2706,12 +2706,45 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
+    getProductInfo_v1(infoType)
+    {
+        const productInfo = {};
+        productInfo['mainInfo'] = {
+            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],
+            productMrp: this.productMrp, productDiscount: this.productDiscount, bulkPriceWithoutTax: this.bulkPriceWithoutTax,
+            priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage, bulkDiscount: this.bulkDiscount,
+            productOutOfStock: this.productOutOfStock
+        }
+        let contentInfo = {};
+        if (this.productKeyFeatures && this.productKeyFeatures.length) {
+            contentInfo['key features'] = this.productKeyFeatures;
+        }
+        if (this.productAttributes) {
+            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails), };
+            contentInfo['specifications'] = { attributes: this.productAttributes, brand: brand };
+        }
+        if (this.productVideos && this.productVideos.length) {
+            contentInfo['videos'] = this.productVideos;
+        }
+        const details = {
+            description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
+            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
+        };
+        contentInfo['product details'] = details;
+        if (this.productAllImages && this.productAllImages.length) {
+            contentInfo['images'] = this.productAllImages;
+        }
+        productInfo['contentInfo'] = contentInfo;
+        productInfo['infoType'] = infoType;
+        return productInfo;
+    }
+
     getProductInfo()
     {
         if (this.productInfo) { return this.productInfo; }
         this.productInfo = {};
         this.productInfo['productInfo'] = {
-            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],productMrp: this.productMrp, productDiscount: this.productDiscount,
+            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'], productMrp: this.productMrp, productDiscount: this.productDiscount,
             bulkPriceWithoutTax: this.bulkPriceWithoutTax, priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage,
             bulkDiscount: this.bulkDiscount, productOutOfStock: this.productOutOfStock
         }
@@ -2743,5 +2776,4 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         this.resetLazyComponents();
     }
-
 }

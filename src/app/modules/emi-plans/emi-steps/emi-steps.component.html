@@ -1,4 +1,4 @@
-<app-pop-up-variant2 (outData$)="outData($event)" [class.open1]="openEMIStepsPopup"
+<app-pop-up-variant2 (outData$)="outData($event)" [class.open1]="openEMIStepsPopup" *ngIf="openEMIStepsPopup"
     [data]="{class: 'payment-popup addAddressPopup addEmiSteps',headerCustom:true}">
     <div class="head-sec" header>
         <div class="container">

@@ -1,4 +1,4 @@
-<app-pop-up (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
+<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
     [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
@@ -11,42 +11,39 @@
         <div class="card-container list-view">
             <div class="left">
                 <ng-container>
-                    <img src="{{productInfo['imgURL']}}" enhanceImgByNetwork height="125" width="125" />
+                    <img src="{{imgURL}}" enhanceImgByNetwork height="125" width="125" />
                 </ng-container>
             </div>
             <div class="right">
                 <div class="name">
-                    <span>{{productInfo['name']}}</span>
+                    <span>{{productName}}</span>
                     <!--<span>...</span>-->
                 </div>
                 <div class="brand">
-                    <span>By: {{productInfo['brandName']}}</span>
+                    <span>By: {{brandName}}</span>
                 </div>
-                <div class="price-details" *ngIf="productInfo['productMrp'] > 0">
+                <div class="price-details" *ngIf="productMrp > 0">
                     <div class="left">
-                        <div class="price" *ngIf="productInfo['productMrp'] > productInfo['priceWithoutTax']">
-                            <span class="crossed">{{productInfo['productMrp'] | currency: 'INR' : 'symbol' :
+                        <div class="price" *ngIf="productMrp > priceWithoutTax">
+                            <span class="crossed">{{productMrp | currency: 'INR' : 'symbol' :
                                 '1.0-0'}}</span>
-                            <ng-container
-                                *ngIf="productInfo['productDiscount'] != undefined && productInfo['productDiscount']>0 && productInfo['productMrp'] > 0">
-                                <span class="green-label" *ngIf="productInfo['bulkPriceWithoutTax']==null">
-                                    {{((productInfo['productMrp'] -
-                                    productInfo['priceWithoutTax'])/productInfo['productMrp'])*100 | mathFloor |
-                                    number:'1.0-0'}}% OFF
+                            <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
+                                <span class="green-label" *ngIf="bulkPriceWithoutTax==null">
+                                    {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}%
+                                    OFF
                                 </span>
-                                <span class="green-label" *ngIf="productInfo['bulkPriceWithoutTax']!=null">
-                                    {{ productInfo['bulkDiscount'] | mathFloor | number:'1.0-0'}}% OFF% OFF
+                                <span class="green-label" *ngIf="bulkPriceWithoutTax!=null">
+                                    {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF% OFF
                                 </span>
                             </ng-container>
                         </div>
                         <div class="main-price">
-                            <span
-                                *ngIf="productInfo['priceWithoutTax'] > 0 && productInfo['bulkPriceWithoutTax']==null">{{productInfo['priceWithoutTax']
-                                | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-                            <span *ngIf="productInfo['bulkPriceWithoutTax']!==null">{{productInfo['bulkPriceWithoutTax']
-                                | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+                            <span *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
+                                {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span> <span
+                                *ngIf="bulkPriceWithoutTax!==null">
+                                {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
                         </div>
-                        <div class="out-of-stock-text" *ngIf="productInfo['productOutOfStock']">
+                        <div class="out-of-stock-text" *ngIf="productOutOfStock">
                             <span>Available on Request</span>
                         </div>
                         <!-- <div *ngIf="false" class="out-of-stock-price">
@@ -59,29 +56,43 @@
         <section class="tabs-container">
             <ul class="tabs">
                 <ng-container *ngFor="let tab of tabs; let i = index">
-                    <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">{{tab | titlecase}}</li>
+                    <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">
+                        {{tab | titlecase}}</li>
                 </ng-container>
             </ul>
         </section>
         <div class="tab-content" [ngSwitch]="defaultInfo" [style.width.px]="totalInnerWIdth*tabs.length">
             <div class="inner-tab-content" [ngStyle]="{'transform': shiftLeft }">
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide">
-                    <key-features [features]="modalData['key features']"></key-features>
+                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
+                    *ngIf="hasTab('key features')">
+                    <key-features [features]="contentInfo['key features']"></key-features>
                 </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide activeTab ">
-                    <specifications [specifications]="modalData['specifications']">
+                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide activeTab"
+                    *ngIf="hasTab('specifications')">
+                    <specifications [specifications]="contentInfo['specifications']">
                     </specifications>
                 </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide">
-                    <product-details [details]="modalData['product details']"></product-details>
+                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
+                    *ngIf="hasTab('product details')">
+                    <product-details [details]="contentInfo['product details']"></product-details>
                 </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide" *ngIf="hasVideos">
-                    <videos [videos]="modalData['videos']" [name]="productInfo['name']" ></videos>
+                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
+                    *ngIf="hasTab('videos')">
+                    <videos [videos]="contentInfo['videos']" [name]="productName"></videos>
                 </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide">
-                    <images [images]="modalData['images']"></images>
+                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
+                    *ngIf="hasTab('images')">
+                    <images [images]="contentInfo['images']"></images>
                 </div>
             </div>
         </div>
+        <!--Yajya work around-->
+        <!-- <div class="tab-content" [ngSwitch]="defaultInfo">
+            <key-features *ngSwitchCase="'key features'"  [features]="contentInfo['key features']" ></key-features>
+            <specifications *ngSwitchCase="'specifications'" [specifications]="contentInfo['specifications']" > </specifications>
+            <product-details *ngSwitchCase="'product details'" [details]="contentInfo['product details']" ></product-details>
+            <videos *ngSwitchCase="'videos'" [videos]="contentInfo['videos']" [name]="productName" ></videos>
+            <images *ngSwitchCase="'images'"  [images]="contentInfo['images']" ></images>
+        </div> -->
     </div>
 </app-pop-up>

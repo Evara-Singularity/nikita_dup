@@ -31,11 +31,10 @@ export class ProductInfoComponent implements OnInit, OnDestroy
      }
 
     updateTab(tab,index){
+        console.log(tab, this.selectedIndex);
         this.selectedIndex = index;
         this.defaultInfo = tab;
-        console.log(tab, this.selectedIndex);
         this.shiftLeft = `translateX(${-this.innerWidth*index}px) `;
-        // this.scrollTab(index - this.leftTabIdx - 1);
     }
     
     @HostListener('window:resize', ['$event'])

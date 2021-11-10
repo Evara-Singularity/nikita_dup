@@ -14,7 +14,6 @@ export class KeyFeaturesComponent implements OnInit
 
     ngOnInit()
     {
-        console.log(this.features);
     }
 
 }

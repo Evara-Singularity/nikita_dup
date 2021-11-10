@@ -13,8 +13,6 @@ export class DetailsComponent implements OnInit
 
     ngOnInit(): void
     {
-        console.clear();
-        console.log(this.details);
     }
 
 

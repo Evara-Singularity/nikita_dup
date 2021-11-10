@@ -7,15 +7,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SpecificationsComponent implements OnInit
 {
-
     @Input("specifications") specifications = null;
 
     constructor() { }
 
     ngOnInit()
     {
-        console.clear();
-        console.log(this.specifications);
     }
 
 }

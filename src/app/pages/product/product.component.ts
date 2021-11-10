@@ -468,8 +468,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    async onVisibleProductAccordians($event) {
-        if (!this.pdpAccordianInstance) {           
+    async onVisibleProductAccordians($event)
+    {
+        if (!this.pdpAccordianInstance) {
             const { ProductAccordiansComponent } = await import('./../../components/product-accordians/product-accordians.component');
             const factory = this.cfr.resolveComponentFactory(ProductAccordiansComponent);
             this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(factory, null, this.injector);
@@ -1765,7 +1766,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    async writeReview() {
+    async writeReview()
+    {
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
 
@@ -2596,20 +2598,21 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let MSG = null;
         if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
-            if (this.rawProductCountData['status'] && this.rawProductCountData['data'])
-            {
+            if (this.rawProductCountData['status'] && this.rawProductCountData['data']) {
                 MSG = this.rawProductCountData['data']['message'];
             }
         }
         this.rawProductCountMessage = MSG;
     }
 
-    scrollToResults(id: string) {
+    scrollToResults(id: string)
+    {
         let footerOffset = document.getElementById('.id').offsetTop;
         ClientUtility.scrollToTop(1000, footerOffset - 30);
     }
-    
-    scrollToId(id: string) {
+
+    scrollToId(id: string)
+    {
         let footerOffset = document.getElementById(id).offsetTop;
         ClientUtility.scrollToTop(1000, footerOffset - 30);
     }
@@ -2655,7 +2658,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.reviewRatingPopupInstance = null;
             this.reviewRatingPopupContainerRef.remove();
         });
-        (this.reviewRatingPopupInstance.instance['emitWriteReview$'] as EventEmitter<boolean>).subscribe(data => {
+        (this.reviewRatingPopupInstance.instance['emitWriteReview$'] as EventEmitter<boolean>).subscribe(data =>
+        {
             this.writeReview();
         });
         // if (this.reviewRatingPopupInstance) {
@@ -2704,18 +2708,25 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         if (this.productInfo) { return this.productInfo; }
         this.productInfo = {};
+        this.productInfo['productInfo'] = {
+            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],productMrp: this.productMrp, productDiscount: this.productDiscount,
+            bulkPriceWithoutTax: this.bulkPriceWithoutTax, priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage,
+            bulkDiscount: this.bulkDiscount, productOutOfStock: this.productOutOfStock
+        }
         if (this.productKeyFeatures && this.productKeyFeatures.length) {
             this.productInfo['key features'] = this.productKeyFeatures;
         }
         if (this.productAttributes) {
-            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails) }
+            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails), };
             this.productInfo['specifications'] = { attributes: this.productAttributes, brand: brand };
         }
         if (this.productVideos && this.productVideos.length) {
             this.productInfo['videos'] = this.productVideos;
         }
-        const details = { description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails 
-            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName};
+        const details = {
+            description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
+            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
+        };
         this.productInfo['product details'] = details;
         if (this.productAllImages && this.productAllImages.length) {
             this.productInfo['images'] = this.productAllImages;

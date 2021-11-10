@@ -1,3 +1,4 @@
+import { MathFloorPipeModule } from './../../utils/pipes/math-floor';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -21,6 +22,7 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         PopUpModule,
         YTThumnailPipeModule,
         ObjectToArrayPipeModule,
+        MathFloorPipeModule
     ],
     exports: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent]
 })

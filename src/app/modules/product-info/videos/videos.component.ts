@@ -8,16 +8,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class VideosComponent implements OnInit
 {
-    @Input("videos") videos:any[] = null;
+    @Input("videos") videos: any[] = null;
+    @Input("name") name: string = null;
     iframeElement: HTMLIFrameElement;
     readonly youtubeAPI = 'https://www.youtube.com/iframe_api';
     readonly ytParams = '?autoplay=0&controls=1&loop&enablejsapi=1&fs=0&modestbranding=1&rel=1';
 
     constructor(private _sanitizer: DomSanitizer) { }
-    
+
     ngOnInit()
     {
-        if(this.videos.length){
+        if (this.videos && this.videos.length) {
             const tag = document.createElement('script');
             tag.src = this.youtubeAPI;
             document.body.appendChild(tag);
@@ -26,8 +27,10 @@ export class VideosComponent implements OnInit
 
     ngAfterViewInit()
     {
-        this.iframeElement = (document.getElementById('ytplayer') as HTMLIFrameElement);
-        this.iframeElement.src = this.getSanitizedURL(this.videos[0]['link'], this.ytParams);
+        if (this.videos && this.videos.length) {
+            this.iframeElement = (document.getElementById('ytplayer') as HTMLIFrameElement);
+            this.iframeElement.src = this.getSanitizedURL(this.videos[0]['link'], this.ytParams);
+        }
     }
 
     getSanitizedURL(url, params)

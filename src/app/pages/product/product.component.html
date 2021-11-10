@@ -151,7 +151,7 @@
     </div>
 
     <!-- CTA Fixed position -->
-    <div class="bottom-bar" *ngIf="!productOutOfStock">
+    <div class="bottom-bar" [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
         <div class="wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
             <i [ngClass]="isPurcahseListProduct ? 'icon-puchase_active':'icon-puchase_inactive'"></i>
         </div>

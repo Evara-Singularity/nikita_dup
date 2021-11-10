@@ -2685,10 +2685,11 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.reviewRatingPopupContainerRef.remove();
         });
     }
-
+    displayCardCta = false;
     async handleProductInfoPopup()
     {
         this.showLoader = true;
+        this.displayCardCta = true;
         const { ProductInfoComponent } = await import('./../../modules/product-info/product-info.component').finally(() =>
         {
             this.showLoader = false;
@@ -2701,6 +2702,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         {
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
+            this.displayCardCta = false;
         });
     }
 

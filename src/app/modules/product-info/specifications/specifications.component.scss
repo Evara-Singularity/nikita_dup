@@ -8,6 +8,11 @@
 .product-spec {
     border-top: 1px dashed #c7c7c7;
     border-bottom: 1px dashed #c7c7c7;
+    .spec-row{
+        &:nth-child(2n){
+          background:#F1F1F1;
+        }
+    }
     td {
         &.left {
             border-right: 1px dashed #c7c7c7;

@@ -106,7 +106,7 @@
             }
             .delivery-details-inner-box{
                 width: 85%;
-                border: 2px solid #707070;
+                border: 1px solid #707070;
                 border-radius: 4px;
                 height: 40px;
                 position: relative;
@@ -163,4 +163,8 @@
             color: #74777A;
         }
     }
+}
+.invalid-txt{
+    padding: 0px 45px 10px;
+    color: #D9232D;
 }

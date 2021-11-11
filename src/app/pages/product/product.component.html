@@ -410,8 +410,8 @@
                     </p>
                 </li>
             </ul>
-            <div (click)="handleProductInfoPopup()" class="show-all-strip">
-                <span>Show All Key Features</span>
+            <div (click)="handleProductInfoPopup('key features')" class="show-all-strip">
+                <span>Show Key Features</span>
             </div>
         </div>
 
@@ -440,8 +440,8 @@
                     </td>
                 </tr>
             </table>
-            <div (click)="handleProductInfoPopup()" class="show-all-strip spec">
-                <span>Show All Specification</span>
+            <div (click)="handleProductInfoPopup('specifications')" class="show-all-strip spec">
+                <span>Show All Specifications</span>
             </div>
         </div>
 
@@ -473,7 +473,7 @@
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
-            <div (click)="handleProductInfoPopup()" class="show-all-strip">
+            <div (click)="handleProductInfoPopup('product details')" class="show-all-strip">
                 <span>Read More</span>
             </div>
         </div>

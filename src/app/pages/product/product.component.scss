@@ -153,7 +153,7 @@
         }
     }
     .prod-description {
-        padding: 20px 15px;
+        padding: 20px 15px 5px;
         background: white;
         position: relative;
         .prod-name {
@@ -613,7 +613,7 @@
         }
     }
     .deals-block {
-        margin: 10px 0 0 0;
+        margin: 10px 0 10px 0;
         .view-order {
             color: #0D99FF;
             text-align: center;
@@ -1592,7 +1592,7 @@
 
 // Tagging
 .prod-tag {
-    padding-bottom: 20px;
+    padding-top:5px;
     .tag_container {
         float: left;
         width: 33%;

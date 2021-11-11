@@ -94,7 +94,7 @@
 .delivery-details-area{
     background-color: #fff;
     .delivery-details{
-        padding: 10px 0px;
+        padding: 10px 0px 15px;
         .delivery-details-inner{
             display: flex;
             align-items: center;
@@ -119,10 +119,10 @@
                 button{
                     cursor: pointer;
                     position: absolute;
-                    width: 25%;
-                    top: -2px;
-                    right: -2px;
-                    height: 40px;
+                    width: 30%;
+                    top: 0px;
+                    right: -1px;
+                    bottom: 0px;
                     border: none;
                     background-color: #D9232D;
                     border: 2px solid #D9232D;
@@ -137,7 +137,7 @@
         .availability-text{
             font-size: 10px;
             color: #74777A;
-            margin-left: 10%;
+            margin-top:4px;
         }
     }
 }
@@ -164,6 +164,6 @@
     }
 }
 .invalid-txt{
-    padding: 0px 45px 10px;
+    padding: 10px 38px 0px;
     color: #D9232D;
 }

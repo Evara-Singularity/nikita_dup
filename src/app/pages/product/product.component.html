@@ -51,7 +51,7 @@
     <div class="prod-description">
             <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
             <ng-container *ngIf="productTags && productTags != undefined && productTags.length > 0">
-                <div class="prod-tag">
+                <div class="prod-tag" *ngIf="productTags && productTags != undefined && productTags.length > 0">
                     <div class="tag_container"
                         *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
                         <img src="{{tag.imageUrl}}">
@@ -75,14 +75,14 @@
                     <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
                         {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                         <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inclusive Price: {{productPrice | mathFloor | currency: 'INR' :
+                            GST @{{taxPercentage}}% Inc. Price: {{productPrice | mathFloor | currency: 'INR' :
                             'symbol' : '1.0-0'}}
                         </small>
                     </p>
                     <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
                         {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                         <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inclusive Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
+                            GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
                             'symbol' : '1.0-0'}}
                         </small>
                     </p>
@@ -231,6 +231,9 @@
         </div>
     </div>
     <!-- Product quantity action section ends -->
+    <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+        <ng-container #offerSection></ng-container>
+    </div>
 
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
@@ -260,12 +263,6 @@
         </div>
         <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
-
-        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
-            (visible)="onVisibleAppPromo($event)">
-            <ng-container #appPromo></ng-container>
-        </div>
-
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
@@ -346,9 +343,7 @@
             </div>
         </div>
 
-        <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
-            <ng-container #offerSection></ng-container>
-        </div>
+   
 
         <!-- <div class="payments-block">
             <ul class="deals-list">
@@ -392,7 +387,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:2">
+                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:3s">
                     <td class="left">
                         <div>{{attr.key}}</div>
                     </td>
@@ -656,7 +651,13 @@
                 </ng-container>
             </div>
         </section>
-
+        <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
+            <ng-container #pdpAccordian></ng-container>
+        </section>
+        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+            (visible)="onVisibleAppPromo($event)">
+            <ng-container #appPromo></ng-container>
+        </div>
         <section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
             [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
             <ng-container #recentProducts></ng-container>
@@ -666,11 +667,6 @@
         </section>
 
         <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
-
-        <!-- Attribute Accordian Section -->
-        <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
-            <ng-container #pdpAccordian></ng-container>
-        </section>
     </div>
     <!-- other sections ends -->
     

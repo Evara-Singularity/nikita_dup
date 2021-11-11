@@ -626,7 +626,7 @@
         background: white;
         margin-top: 10px;
         .heading-3 {
-            padding: 17px 12px;
+            padding: 17px 15px;
         }
     }
     .product-spec {
@@ -647,7 +647,7 @@
                 }
                 div {
                     width: 100%;
-                    padding: 15px 10px;
+                    padding: 15px 15px;
                     .brandName {
                         color: #006DF0;
                     }
@@ -734,7 +734,7 @@
     .Qa {
         background: white;
         margin-top: 15px;
-        padding: 5px 0px 25px;
+        padding: 5px 15px 25px;
         .display-qn {
             border-bottom: 1px dashed #e3e3e3;
             font-size: $medium-font;
@@ -1861,7 +1861,7 @@
         display: flex;
         background: #fff;
         border-bottom: 1px solid #EFEFF4;
-        padding: 20px 22px;
+        padding: 20px 15px;
         &:last-child {
             border-bottom: 0;
         }

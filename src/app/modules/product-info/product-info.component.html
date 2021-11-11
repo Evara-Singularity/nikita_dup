@@ -61,7 +61,7 @@
                 </ng-container>
             </ul>
         </section>
-        <div class="tab-content" [ngSwitch]="defaultInfo" [style.width.px]="totalInnerWIdth*tabs.length">
+        <!-- <div class="tab-content" [ngSwitch]="defaultInfo" [style.width.px]="totalInnerWIdth*tabs.length">
             <div class="inner-tab-content" [ngStyle]="{'transform': shiftLeft }">
                 <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
                     *ngIf="hasTab('key features')">
@@ -85,14 +85,14 @@
                     <images [images]="contentInfo['images']"></images>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--Yajya work around-->
-        <!-- <div class="tab-content" [ngSwitch]="defaultInfo">
+        <div class="tab-content" [ngSwitch]="defaultInfo">
             <key-features *ngSwitchCase="'key features'"  [features]="contentInfo['key features']" ></key-features>
             <specifications *ngSwitchCase="'specifications'" [specifications]="contentInfo['specifications']" > </specifications>
             <product-details *ngSwitchCase="'product details'" [details]="contentInfo['product details']" ></product-details>
             <videos *ngSwitchCase="'videos'" [videos]="contentInfo['videos']" [name]="productName" ></videos>
             <images *ngSwitchCase="'images'"  [images]="contentInfo['images']" ></images>
-        </div> -->
+        </div>
     </div>
 </app-pop-up>

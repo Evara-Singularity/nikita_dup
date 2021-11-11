@@ -128,12 +128,12 @@
                     </p>
                 </div>
             </div>
-            <div *ngIf="productOutOfStock" class="pad-t-10 f-size-8">
+            <!-- <div *ngIf="productOutOfStock" class="pad-t-10 f-size-8">
                 <strong class="availabilityOnReq">Available on Request</strong>
                 <div class="wishlist" *ngIf="!isPurcahseListProduct" (click)="addToPurchaseList()">
                     <p class="blueText">ADD TO MY WISHLIST</p>
                 </div>
-            </div>
+            </div> -->
 
             <!--recently bought product section -->
             <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
@@ -387,7 +387,7 @@
                     </div>
             </div>
         </div>
-        <div class="payments-block">
+        <!-- <div class="payments-block">
             <ul class="deals-list">
                 <li class="clearfix">
                     <span class="gst-icon">
@@ -399,7 +399,7 @@
                     </div>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
         <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
             <h2 class="heading-3">KEY FEATURES</h2>
@@ -411,7 +411,7 @@
                 </li>
             </ul>
             <div (click)="handleProductInfoPopup()" class="show-all-strip">
-                <span>SHOW ALL KEY FEATURES</span>
+                <span>Show All Key Features</span>
             </div>
         </div>
 
@@ -441,7 +441,7 @@
                 </tr>
             </table>
             <div (click)="handleProductInfoPopup()" class="show-all-strip spec">
-                <span>SHOW ALL SPECIFICATION</span>
+                <span>Show All Specification</span>
             </div>
         </div>
 
@@ -474,7 +474,7 @@
                 </p>
             </ng-template>
             <div (click)="handleProductInfoPopup()" class="show-all-strip">
-                <span>READ MORE</span>
+                <span>Read More</span>
             </div>
         </div>
 

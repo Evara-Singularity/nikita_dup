@@ -103,6 +103,7 @@
                             padding: 0px 24px 0px 10px;
                         }
                         .icon-down{
+                            pointer-events: none;
                             position:absolute;
                             top:22px;
                             right: 15px;
@@ -344,10 +345,6 @@ select::-ms-expand { display: block; }
     border: none;
   }
 
-  input { 
-    text-align: center; 
-  }
-
 
   .popup_container {
     position: fixed;
@@ -364,4 +361,16 @@ select::-ms-expand { display: block; }
       overflow-y: scroll;
     }
   }
-  
+
+
+  ::placeholder { 
+    color: grey;
+    opacity: 1;
+  }
+
+  .others {
+    color:black
+}
+datalist {
+    display: none;
+  }

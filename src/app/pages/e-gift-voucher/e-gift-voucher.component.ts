@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -22,14 +23,21 @@ export class EGiftVoucherComponent implements OnInit {
     data: Object;
     categoryList: any[];
     brandList: any;
-    TotalValue: any;
+    TotalValue=0;
     rfqEnquiryItemsList: any[];
     catListAll: any = [];
     brandListAll: any[] = [];
     userId: any;
     email: any;
     eGiftForm: FormGroup;
+    isFormValid: boolean=false;
+    button: HTMLButtonElement;
+    datalist: HTMLDataListElement;
+    select: HTMLSelectElement;
+    textContent: string;
+    options: HTMLOptionsCollection;
     // eGiftForm: FormGroup;
+
 
 
     constructor(public formBuilder: FormBuilder,
@@ -37,6 +45,8 @@ export class EGiftVoucherComponent implements OnInit {
         private _dataService: DataService,
         private _tms: ToastMessageService,
         private _localStorageService: LocalStorageService,
+        @Inject(DOCUMENT) private _document,
+
 
     ) {
 
@@ -50,7 +60,7 @@ export class EGiftVoucherComponent implements OnInit {
 
         this.eGiftForm = this.fb.group({
             fullName: [this.user.userName, [Validators.required]],
-            emailId: [this.user.email, [Validators.required, Step.validateEmail]],
+            emailId: ['this.user.email', [Validators.required, Step.validateEmail]],
             phone: [this.user.phone, [Validators.required]],
             company: [''],
             requirements: new FormArray([])
@@ -83,14 +93,12 @@ export class EGiftVoucherComponent implements OnInit {
                         }
                     }
                 }
-
                 this.valueChanged();
-
             }
         });
 
         (this.requirements as FormArray).push(this.getRequirements());
-
+         this.autoFill();
     }
 
     valueChanged() {
@@ -114,11 +122,11 @@ export class EGiftVoucherComponent implements OnInit {
     getRequirements() {
         return this.fb.group(
             {
-                category: [''],
-                brand: [''],
+                category: ['',[Validators.required]],
+                brand: ['',[Validators.required]],
                 value: [''],
                 quantity: ['1'],
-                totalvalue: [''],
+                totalvalue: ['0'],
             }
         )
     }
@@ -153,7 +161,6 @@ export class EGiftVoucherComponent implements OnInit {
 
 
     onSubmit(request) {
-
         if (this.eGiftForm.valid) {
             this.rfqEnquiryItemsList = [];
             request.requirements.forEach(element => {
@@ -197,19 +204,30 @@ export class EGiftVoucherComponent implements OnInit {
                 }
             });
         }
-        else {
+        else if(!this.requirements.valid && !this.eGiftForm.controls.fullName.valid && !this.eGiftForm.controls.emailId.valid && !this.eGiftForm.controls.phone.valid){
             this.eGiftForm.markAllAsTouched();
             // Object.keys(this.eGiftForm.controls).forEach(field => {
             //     const control = this.eGiftForm.get(field);
             //     control.markAsTouched({ onlySelf: true });
             // });
+            this._tms.show({ type: 'error', text: 'Please mention all details and your gift card requirements' });
+
+        }
+        else if(this.requirements.valid && !this.eGiftForm.controls.fullName.valid && !this.eGiftForm.controls.emailId.valid && !this.eGiftForm.controls.phone.valid){
+            this.eGiftForm.markAllAsTouched();
             this._tms.show({ type: 'error', text: 'Please mention all details' });
+
+        }
+        else if(!this.requirements.valid && this.eGiftForm.controls.fullName.valid && this.eGiftForm.controls.emailId.valid && this.eGiftForm.controls.phone.valid){
+            this.eGiftForm.markAllAsTouched();
+            this._tms.show({ type: 'error', text: 'Please mention your gift card requirements' });
 
         }
     }
 
 
     updateTotatQuantity() {
+        // alert("called")
         this.TotalValue = 0;
         this.requirements.value.forEach(element => {
             if (parseInt(element.value) && element.quantity) {

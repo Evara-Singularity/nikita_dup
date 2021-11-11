@@ -11,24 +11,24 @@
           <div class="row">
             <div class="col-md-6 form-pd-field">
               <label>Full Name*</label>
-              <input type="text"  (keypress)="firstName($event)" formControlName="fullName">
+              <input type="text"  (keypress)="firstName($event)" formControlName="fullName" placeholder="Enter full name">
               <div *ngIf="eGiftForm.controls['fullName'].touched && eGiftForm.controls['fullName'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name <span class="f-size-10">(Special characters are not allowed)</span></div>
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Email ID*</label>
-              <input type="text" formControlName="emailId">
+              <input type="text" formControlName="emailId" placeholder="Enter email Id" >
               <div *ngIf="eGiftForm.controls['emailId'].touched && eGiftForm.controls['emailId'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID</div>
               <div *ngIf="!eGiftForm.controls['emailId'].hasError('required') && eGiftForm.controls['emailId'].hasError('invalidCharT')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter valid email ID. Ex: abc@xxx.com</div>
             </div>
             <div class="col-md-6 form-pd-field">
               <label>Mobile No*</label>
-              <input type="text" (keypress)="checkQuantityCode($event)" maxlength="10" minlength="10" formControlName="phone">
+              <input type="text" (keypress)="checkQuantityCode($event)" maxlength="10" minlength="10" formControlName="phone" placeholder="Enter mobile no">
               <div *ngIf="eGiftForm.controls['phone'].touched && eGiftForm.controls['phone'].hasError('required')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your phone no.</div>
               <div *ngIf="!eGiftForm.controls['phone'].hasError('required') && eGiftForm.controls['phone'].hasError('minlength')" class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter 10 digit contact no.</div>       
             </div>
             <div class="col-md-6 form-pd-field">
-              <label>Company (optional)</label>
-              <input (keypress)="firstName($event)" type="text" formControlName="company">
+              <label>Company (Optional)</label>
+              <input (keypress)="firstName($event)" type="text" formControlName="company" placeholder="Enter company name">
             </div>
           </div>
         </div>
@@ -38,24 +38,55 @@
                <!--Requirements-->
                <ng-container *ngFor="let requirement of requirements['controls'];let index=index">
                 <div class="req-flex" [formGroup]="requirement">
-                    <div class="catogary req-flex-child" placeholder="Select">
-                        <select (change)="updateTotatQuantity()" formControlName="category">
-                            <option value="" selected disabled hidden>Select Category</option>                                        
-                            <option *ngFor="let category of categoryList">{{category.categoryName | slice:0:20}}<span *ngIf="category.categoryName.length > 19">...</span></option>
+
+
+
+
+                    <!-- ctegory -->
+                    <div class="catogary req-flex-child">
+                      <!-- <button (click)="toggle_ddl()" class="ic">▼</button> -->
+                      <!-- <span (click)="input()" class="ic">▼</span> -->
+                      <i class="icon-down"></i>
+                      <input  list="menace" (input)="updateTotatQuantity()" placeholder="Category"
+                        formControlName="category">
+                      
+                        <datalist id="menace">
+                          <!-- <select multiple size=8> -->
+
+                          <option *ngFor="let category of categoryList">{{category.categoryName | slice:0:15}}<span
+                              *ngIf="category.categoryName.length > 14">...</span></option>
+                            <!-- </select> -->
+
+                        </datalist>
+
+                      <!-- <button (click)="toggle_ddl()" class="ic">▼</button> -->
+                    </div>
+
+
+
+                    <!-- Brand -->
+                    <div class="brand req-flex-child">
+                      <input list="menace2" (input)="updateTotatQuantity()" placeholder="Brand" formControlName="brand">
+                        <datalist id="menace2">
+                          <select multiple size=8>
+
+                          <option *ngFor="let brand of brandList">{{brand.brandName | slice:0:15}}<span
+                              *ngIf="brand.brandName.length > 14">...</span></option>
                           </select>
-                          <i class="icon-down"></i>
+
+                        </datalist>
+                      <i class="icon-down"></i>
                     </div>
-                    <div class="brand req-flex-child" >
-                        <select  (change)="updateTotatQuantity()"  formControlName="brand">
-                            <option value="" selected disabled hidden>Select Brand</option>                               
-                            <option *ngFor="let brand of brandList">{{brand.brandName | slice:0:20}}<span *ngIf="brand.brandName.length > 19" >...</span></option>
-                        </select>
-                        <i class="icon-down"></i>
-                    </div>
+
+
+
+
+
+
                     <div class="value req-flex-child" >
                         <select  (change)="updateTotatQuantity()" #singleItemPrice formControlName="value">
-                          <option value="" selected disabled hidden>Select Value</option>                                        
-                          <option>500</option>
+                          <option value="" selected disabled hidden>Value</option>                                        
+                          <option >500</option>
                           <option>1000</option>
                           <option>2000</option>
                           <option>5000</option>
@@ -64,7 +95,7 @@
                         <i class="icon-down"></i>
                     </div>
                     <div class="qty req-flex-child">
-                        <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity"  step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
+                        <input (change)="updateTotatQuantity()" #quantity value="10"  type="number"  formControlName="quantity"   min="1"  step="1" oninput="validity.valid||(value='');" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
                     </div>
                     <div class="total-value req-flex-child">
                         <input [value]="(singleItemPrice.value*quantity.value)" type="text" formControlName="totalvalue" disabled readonly>
@@ -77,48 +108,6 @@
                 </div>
             </ng-container>
 
-
-
-
-
-
-<!-- 
-            <div class="req-flex">
-              <div class="catogary req-flex-child">
-                <select aria-placeholder="val">
-                  <option>Apparel</option>
-                  <option>Apparel</option>
-                  <option>Apparel</option>
-                </select>
-              </div>
-              <div class="brand req-flex-child">
-                <select>
-                  <option>Max Lifestyle</option>
-                  <option>Max Lifestyle</option>
-                  <option>Max Lifestyle</option>
-                </select> 
-              </div>
-              <div class="value req-flex-child">
-                <select>
-                  <option>1000</option>
-                  <option>1000</option>
-                  <option>1000</option>
-                </select> 
-              </div>
-              <div class="qty req-flex-child">
-                <input value="10" type="text">
-              </div>
-              <div class="total-value req-flex-child">
-                <input value="10000" type="text">
-              </div>
-              <div class="action req-flex-child">
-                <div class="bin-area">
-                    <img src="assets/img/gift-bin-icon.png">
-                  </div>
-                
-              </div>
-            </div> -->
-            
           </div>
         </div>
         <div [ngClass]="{'add-another-card-disabled':!requirements.valid, 'add-another-card': requirements.valid}">
@@ -130,10 +119,10 @@
         <div class="row submit-and-total">
             <div class="col-md-4 total-area">
                 <span class="total">Total</span><br>
-                <span class="amount">{{TotalValue}}.00 INR</span>
+                <span class="amount">{{TotalValue}} INR</span>
               </div>
           <div class="col-md-8 submit-area">
-            <input class="submit-button" [disabled]="!requirements.valid " type="button" value="SUBMIT REQUEST" (click)="onSubmit(eGiftForm.value)">
+            <input class="submit-button"  type="button" value="SUBMIT REQUEST" (click)="onSubmit(eGiftForm.value)">
           </div>
         </div>
       </form>

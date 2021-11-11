@@ -535,7 +535,7 @@
                     Customer Reviews on {{ productName}}
                 </p>
             </div>
-            <div class="pwa-row">
+            <div class="pwa-row rating-sec">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
                         <h3>{{ rawReviewsData?.summaryData?.final_average_rating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
@@ -605,7 +605,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="pwa-row">
+                <div class="pwa-row like-unlikeRow">
                     <div class="pwa-col-6">
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
@@ -622,7 +622,7 @@
                 </div>
             </div>
             <div class="view-review" (click)="handleReviewRatingPopup()">
-                <span>View {{ rawReviewsData?.summaryData?.review_count }} Reviews</span>
+                <span>View {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
         <section class="Qa">

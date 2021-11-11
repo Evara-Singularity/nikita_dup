@@ -50,7 +50,7 @@
 
     <div class="prod-description">
             <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-            <ng-container *ngIf="productTags != undefined && productTags.length > 0">
+            <ng-container *ngIf="productTags && productTags != undefined && productTags.length > 0">
                 <div class="prod-tag">
                     <div class="tag_container"
                         *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
@@ -91,7 +91,7 @@
             <div class="price-block" *ngIf="productOutOfStock || !productMrp">
                 <p class="actual-price">
                     <small>
-                        Min Orderable Qty :
+                        Min Order Qty :
                         <span>{{productMinimmumQuantity}} Pack</span>
                     </small>
                 </p>
@@ -228,7 +228,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- Product quantity action section ends -->
@@ -318,7 +317,7 @@
                             <img src="assets/img/gst-invo.svg" height="16px"
                                 width="16px">
                         </span>
-                        <span class="returnTxt">
+                        <span class="returnTxt benefits-txt">
                             GST Invoice<br> Available
                         </span>
                     </div>
@@ -326,7 +325,7 @@
                         <span class="returnImg">
                             <img src="assets/img/secure-payment-fill.svg" height="16px" width="16px">
                         </span>
-                        <span class="returnTxt">
+                        <span class="returnTxt benefits-txt">
                              Secure <br> Payments
                         </span>
                     </div>
@@ -335,7 +334,7 @@
                             <img src="assets/img/customer-service-fill.svg" height="16px"
                                 width="16px">
                         </span>
-                        <span class="returnTxt">
+                        <span class="returnTxt benefits-txt">
                             365 Days <br> Help Desk
                         </span>
                     </div>
@@ -344,7 +343,7 @@
                             <img src="assets/img/restart-line.svg" height="16px"
                                 width="16px">
                         </span>
-                        <span class="returnTxt">
+                        <span class="returnTxt benefits-txt">
                             Return <br />Product
                         </span>
                     </div>
@@ -388,13 +387,6 @@
                     </div>
             </div>
         </div>
-
-        <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
-            <ng-container #offerSection></ng-container>
-        </div>
-
-
-
         <div class="payments-block">
             <ul class="deals-list">
                 <li class="clearfix">

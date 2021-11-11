@@ -24,13 +24,13 @@ export class EmiPlansComponent implements OnInit
     dataEmi: Array<any> = [];
     selectedBank: any;
     selectedBankName: string = null;
-    //1704
     emiRawDebitCardResponse = null;
     emiRawCreditCardResponse = null;
     paymentMethod = this.CARD_TYPES.creditCard;
     noCostEmiCount = {}
     emiStepsPopupInstance = null;
     @ViewChild('emiStepsPopup', { read: ViewContainerRef }) emiStepsPopupContainerRef: ViewContainerRef;
+    minOrderPlaced = 3000;
 
     constructor(
         private _emiService: EmiService,
@@ -146,18 +146,9 @@ export class EmiPlansComponent implements OnInit
     {
         if (this.dataEmi && this.dataEmi.length > 0) {
             const data = this.dataEmi[0];
-            //const emiArr: [] = this._objectToArray.transform(this.dataEmi[0]['value'], "associative");
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;
-            // const noCostEMI = emiArr.filter(item => item['value']['emi_interest_paid'] === 0)
-            // const withCostEMI = emiArr.filter(item => item['value']['emi_interest_paid'] !== 0)
-            // if (noCostEMI.length > 0) {
-            //     this.selectedEMIKey = noCostEMI[0]['key'];
-            //     this.selectEmI(this.getEmiMonths(data.key), noCostEMI[0]['value']['emiBankInterest'], noCostEMI[0]['value']['transactionAmount'])
-            // } else {
-            //     this.selectedEMIKey = withCostEMI[0]['key'];
-            //     this.selectEmI(this.getEmiMonths(data.key), withCostEMI[0]['value']['emiBankInterest'], withCostEMI[0]['value']['transactionAmount'])
-            // }
+            if (this.selectedBank === "BAJFIN") { this.minOrderPlaced = 4500; }
         }
     }
 
@@ -173,9 +164,11 @@ export class EmiPlansComponent implements OnInit
 
     selectedBankChange(data)
     {
+        console.log(data);//BAJFIN
         if (data) {
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;
+            this.minOrderPlaced = (this.selectedBank === "BAJFIN") ? 4500 : 3000;
         }
     }
 

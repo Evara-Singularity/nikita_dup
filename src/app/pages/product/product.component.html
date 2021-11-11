@@ -105,7 +105,7 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details">
+                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
                     <p>Qty Per Pack :
                         <span>{{priceQuantityCountry['packageUnit']}}</span>
                     </p>
@@ -232,7 +232,7 @@
     </div>
     <!-- Product quantity action section ends -->
 
-    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)">
+    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
     </div>
 
@@ -266,48 +266,6 @@
             <ng-container #appPromo></ng-container>
         </div>
 
-        <!-- <div class="returnPolicyContainer clearfix" *ngIf="isProductReturnAble">
-            <h2 class="heading-3"> RETUN POLICY</h2>
-            <div class=" returnPolicyInnerContainer pad-lr-0">
-                <div [style.width.px]="4 * 150">
-                    <div class="returnPolicyInner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/undo-button.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Upto 7 days <br /> returnable
-                        </span>
-                    </div>
-                    <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/box.svg" height="16px" width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Wrong <br /> Product
-                        </span>
-                    </div>
-                    <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/fragile.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Damaged <br /> Product
-                        </span>
-                    </div>
-                    <div class="returnPolicyInner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/return_policy/thumb-down-button.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Defective <br />Product
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
@@ -387,6 +345,11 @@
                     </div>
             </div>
         </div>
+
+        <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+            <ng-container #offerSection></ng-container>
+        </div>
+
         <!-- <div class="payments-block">
             <ul class="deals-list">
                 <li class="clearfix">

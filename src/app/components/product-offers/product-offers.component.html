@@ -1,28 +1,4 @@
-<!--Old Code-->
-<!-- <ul class="deals-list" *ngIf="allofferData" >
-    <li *ngFor="let item of allofferData; let i=index;" >
-        <i class="icon-offers ico_offer"></i>
-        <p class="ofr_txt">
-            <small>{{item.block_data['image_block'][0].image_title}}</small>
-        </p>
-        <span class="ico-right" (click)="sendOfferData(item)" >VIEW</span>
-    </li>
-    <li (click)="openEmiPopup()">
-        <i class="icon-emi ico_offer"></i>
-        <div class="ofr_txt">
-            <strong>EMIs Available</strong>
-            <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
-        </div>
-        <span class="ico-right">COMPARE</span>
-    </li>
-</ul> -->
-<!--Old Code-->
-<!--New Code-->
 <div class="coupen-area">
-    <!-- <div class="coupen-header">
-        <h4>Get this for as low as <span>₹609</span></h4>
-        <p>With below offers and coupons</p>
-    </div> -->
     <div class="pwa-row coupen-body-area" *ngFor="let item of allofferData; let i=index;">
         <div class="cb-icon">
             <img src="assets/img/coupon-3.svg">
@@ -41,8 +17,6 @@
         <div class="cb-text">
             <strong>EMIs Available </strong>
             <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
-            <!-- <p><strong>No cost EMI</strong> starting from <span class="emi-price"><strong>₹334/month</strong></span></p>
-            <p class="small-txt">Inclusive of all taxes</p> -->
         </div>
         <div class="cb-view">
             <span>VIEW</span>

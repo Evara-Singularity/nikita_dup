@@ -1638,8 +1638,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             });
             (this.offerSectionInstance.instance['emaiComparePopUpHandler'] as EventEmitter<boolean>).subscribe(status =>
             {
-                //this.emiComparePopUpOpen(status);
-                this.emiComparePopUpOpen_v1(status);
+                this.emiComparePopUpOpen(status);
             });
         }
     }
@@ -1671,38 +1670,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     async emiComparePopUpOpen(status)
-    {
-        if (!this.offerComparePopupInstance && status) {
-            this.showLoader = true;
-            const quantity = Number((<HTMLInputElement>document.querySelector("#product_quantity")).value);
-            const { ProductOfferComparisionComponent } = await import('./../../components/product-offer-comparision/product-offer-comparision.component').finally(() =>
-            {
-                this.showLoader = false;
-            });
-            const factory = this.cfr.resolveComponentFactory(ProductOfferComparisionComponent);
-            this.offerComparePopupInstance = this.offerComparePopupContainerRef.createComponent(factory, null, this.injector);
-            const productInfo = {};
-            productInfo['productName'] = this.productName;
-            productInfo['minimal_quantity'] = this.productMinimmumQuantity;
-            productInfo['priceWithoutTax'] = this.priceWithoutTax;
-            this.offerComparePopupInstance.instance['productInfo'] = productInfo;
-            this.offerComparePopupInstance.instance['quantity'] = quantity;
-            this.offerComparePopupInstance.instance['openEMIPopup'] = true;
-            (this.offerComparePopupInstance.instance['out'] as EventEmitter<boolean>).subscribe(data =>
-            {
-                // create a new component after component is closed
-                // this is required, to refresh input data
-                this.offerComparePopupInstance = null;
-                this.offerComparePopupContainerRef.detach();
-            });
-            (this.offerComparePopupInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>
-            {
-                this.toggleLoader(loaderStatus);
-            });
-        }
-    }
-
-    async emiComparePopUpOpen_v1(status)
     {
         if (!this.offerComparePopupInstance && status) {
             this.showLoader = true;

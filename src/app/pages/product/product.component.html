@@ -50,10 +50,10 @@
 
     <div class="prod-description">
             <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-            <ng-container *ngIf="productTags && productTags != undefined && productTags.length > 0">
+            <ng-container *ngIf="productTags && productTags != undefined && refinedProdTags.length > 0">
                 <div class="prod-tag">
                     <div class="tag_container"
-                        *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'text': 'object' | slice:0:3;let i = index;">
+                        *ngFor="let tag of refinedProdTags;let i = index;">
                         <img src="{{tag.imageUrl}}">
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="price-block" *ngIf="productOutOfStock || !productMrp">
+            <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
                 <p class="actual-price">
                     <small>
                         Min Order Qty :
@@ -180,30 +180,9 @@
     <!-- Product bulk quantity section ends -->
 
     <!-- Product quantity action section starts -->
-    <div class="product-section-detail" *ngIf="priceQuantityCountry && !productOutOfStock">
+    <div class="product-section-detail" *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
-
-            <!-- <div class="update-quantity" *ngIf="!productOutOfStock && productMrp > 0">
-                <p class="heading-3">Update Qty:</p>
-                <div class="quantity-block">
-                    <span class="add-qty qty-block"
-                        (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
-                    <input id="product_quantity" [value]="productMinimmumQuantity"
-                        (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
-                    <span class="remove-qty qty-block"
-                        (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
-                </div>
-                <div class="quan-details">
-                    <p>Qty Per Pack :
-                        <span>{{priceQuantityCountry['packageUnit']}}</span>
-                    </p>
-                    <p>Min Orderable Qty :
-                        <span>{{productMinimmumQuantity}} Pack</span>
-                    </p>
-                </div>
-            </div> -->
-            <div class="bulk-qty"
-                *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
+            <div class="bulk-qty">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
@@ -232,7 +211,7 @@
     </div>
     <!-- Product quantity action section ends -->
 
-    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
+    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)">
         <ng-container #pincodeForm></ng-container>
     </div>
 
@@ -265,7 +244,7 @@
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
-
+        
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
@@ -345,11 +324,6 @@
                     </div>
             </div>
         </div>
-
-        <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
-            <ng-container #offerSection></ng-container>
-        </div>
-
         <!-- <div class="payments-block">
             <ul class="deals-list">
                 <li class="clearfix">
@@ -521,7 +495,7 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="pdp-section-card">
+        <section class="pdp-section-card" *ngIf="overallRating">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
@@ -538,7 +512,7 @@
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
-                        <h3>{{ rawReviewsData?.summaryData?.final_average_rating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
+                        <h3>{{ overallRating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
                         </h3>
                         <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }} ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                     </div>
@@ -578,7 +552,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;" class="reviewRow">
+            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;let i=index" class="reviewRow">
                 <div class="pwa-row innerRow">
                     <div class="pwa-col-6 reviewRow-col">
                         <div class="small-stars">
@@ -610,19 +584,19 @@
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
                     <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.like=='1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
                             <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
-                        <button class="suggstn-btn">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}" (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
                             <span class="small-txt">{{review.no}}</span>
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="view-review" (click)="handleReviewRatingPopup()">
-                <span>View {{ rawReviewsData?.summaryData?.review_count }} Reviews</span>
+            <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+                <span> View {{ rawReviewsData?.summaryData?.review_count }} Reviews</span>
             </div>
         </section>
         <section class="Qa">

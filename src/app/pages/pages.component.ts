@@ -82,6 +82,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
           }
         )
         if (this.pageRefreshed) {
+          alert('called');
           window.history.replaceState('', '', '/');
           window.history.pushState('', '', this.router.url);
           this.pageRefreshed = false;

@@ -7,7 +7,6 @@ import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output
 })
 export class ProductInfoComponent implements OnInit, OnDestroy
 {
-
     @Input('openProductInfo') openProductInfo = false;
     @Input('modalData') modalData = null;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
@@ -39,19 +38,17 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     brandName = "";
 
 
-    constructor() { }
+    constructor() {}
 
     ngOnInit()
     {
         if (this.modalData) {
-            console.clear();
             console.log(this.modalData);
             this.processMainInfo(this.modalData['mainInfo']);
             this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
         }
         this.innerWidth = window.innerWidth.toString();
     }
-
     processMainInfo(mainInfo)
     {
         this.productMrp = mainInfo['productMrp'];
@@ -64,7 +61,6 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.productName = mainInfo['productName'];
         this.brandName = mainInfo['brandName'];
     }
-
     processContentInfo(contentInfo, infoType)
     {
         this.contentInfo = contentInfo;
@@ -72,7 +68,6 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.selectedIndex = this.tabs.indexOf(infoType);
         this.updateTab(infoType,this.selectedIndex)
     }
-
     updateTab(tab, index)
     {
         this.selectedIndex = index;
@@ -87,6 +82,5 @@ export class ProductInfoComponent implements OnInit, OnDestroy
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }
 
-    ngOnDestroy() { }
-
+    ngOnDestroy() {}
 }

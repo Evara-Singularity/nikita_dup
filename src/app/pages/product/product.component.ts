@@ -2695,6 +2695,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
             , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
         };
+        console.log(this.productDescripton);
         contentInfo['product details'] = details;
         if (this.productAllImages && this.productAllImages.length) {
             contentInfo['images'] = this.productAllImages;

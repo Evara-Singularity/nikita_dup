@@ -1723,7 +1723,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             const factory = this.cfr.resolveComponentFactory(GlobalToastComponent);
             this.addToCartToastInstance = this.addToCartToastContainerRef.createComponent(factory, null, this.injector);
 
-            this.addToCartToastInstance.instance['text'] = 'Product added successfully';
+            this.addToCartToastInstance.instance['text'] = 'Product added successfullyGreat Choice ! Today’s price is 286 less than average selling price.';
             this.addToCartToastInstance.instance['btnText'] = 'VIEW CART';
             this.addToCartToastInstance.instance['btnLink'] = '/quickorder';
             this.addToCartToastInstance.instance['showTime'] = 6000;

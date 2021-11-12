@@ -336,7 +336,7 @@
         </div> -->
 
         <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
-            <h2 class="heading-3">KEY FEATURES</h2>
+            <h2 class="heading-3">Key Features</h2>
             <ul class="feature-list">
                 <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
                     <p>
@@ -350,7 +350,7 @@
         </div>
 
         <div class="product-specification" *ngIf=" productAttributes != null">
-            <h2 class="heading-3">PRODUCT SPECIFICATION</h2>
+            <h2 class="heading-3">Product Specifications</h2>
             <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="left">
@@ -380,7 +380,7 @@
         </div>
 
         <div class="prod-detail">
-            <h2 class="heading-3">PRODUCT DETAILS</h2>
+            <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p> Browse through the extensive list of
@@ -415,7 +415,7 @@
 
 
         <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail">
-            <h2 class="heading-3">PRODUCT VIDEOS</h2>
+            <h2 class="heading-3">Product Videos</h2>
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
                     <div *ngFor="let video of productVideos" class="prod-desc-video">
@@ -598,7 +598,7 @@
         </section>
         <section class="Qa">
             <div class="">
-                <p class="heading-3">QUESTIONS & ANSWERS</p>
+                <p class="heading-3">Questions & Answers</p>
                 <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
                     <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text"
                         placeholder="Have a Question?">

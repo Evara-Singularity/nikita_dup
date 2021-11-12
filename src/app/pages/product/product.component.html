@@ -592,8 +592,8 @@
                     </div>
                 </div>
             </div>
-            <div class="view-review" (click)="handleReviewRatingPopup()">
-                <span>View {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
+            <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+                <span>VIEW {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
         <section class="Qa">

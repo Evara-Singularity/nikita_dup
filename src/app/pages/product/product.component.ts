@@ -1634,6 +1634,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             const { ProductOffersComponent } = await import('./../../components/product-offers/product-offers.component')
             const factory = this.cfr.resolveComponentFactory(ProductOffersComponent);
             this.offerSectionInstance = this.offerSectionContainerRef.createComponent(factory, null, this.injector);
+            this.offerSectionInstance.instance['price'] = this.priceWithoutTax;
             (this.offerSectionInstance.instance['viewPopUpHandler'] as EventEmitter<boolean>).subscribe(data =>
             {
                 this.viewPopUpOpen(data);

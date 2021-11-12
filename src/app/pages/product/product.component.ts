@@ -53,6 +53,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     rawProductFbtData: any = null;
     rawProductCountData: any = null;
     rawProductCountMessage = null;
+    rawCartNotificationMessage = null;
     uniqueRequestNo: number = 0;
     currentAddedProduct: any;
     cartSession: any;
@@ -1723,7 +1724,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             const factory = this.cfr.resolveComponentFactory(GlobalToastComponent);
             this.addToCartToastInstance = this.addToCartToastContainerRef.createComponent(factory, null, this.injector);
 
-            this.addToCartToastInstance.instance['text'] = 'Product added successfully';
+            this.addToCartToastInstance.instance['text'] = this.rawCartNotificationMessage;
             this.addToCartToastInstance.instance['btnText'] = 'VIEW CART';
             this.addToCartToastInstance.instance['btnLink'] = '/quickorder';
             this.addToCartToastInstance.instance['showTime'] = 6000;
@@ -2567,12 +2568,15 @@ export class ProductComponent implements OnInit, AfterViewInit
     remoteApiCallRecentlyBought()
     {
         let MSG = null;
+        let CART_NOTIFICATION_MSG = null;
         if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
             if (this.rawProductCountData['status'] && this.rawProductCountData['data']) {
-                MSG = this.rawProductCountData['data']['message'];
+                MSG = this.rawProductCountData['data']['message'] || null;
+                CART_NOTIFICATION_MSG = this.rawProductCountData['data']['toastMessage'] || 'Product added successfully';
             }
         }
         this.rawProductCountMessage = MSG;
+        this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
     }
 
     scrollToResults(id: string)

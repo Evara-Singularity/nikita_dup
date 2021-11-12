@@ -296,14 +296,23 @@
         .cart-btn {
             background: $white;
             border: 0;
-            width: calc(40% - 4px);
+            width:49%;
             height: 100%;
             font-weight: 600;
             color: $btn-color-red;
-            margin-left: 5px;
+            i{
+                font-size: 24px;
+                display: inline-block;
+                vertical-align: middle;
+                padding-right: 5PX;
+            }
+            span{
+                display: inline-block;
+                vertical-align: middle;
+            }
         }
         .buy-now {
-            width: calc(40% - 4px);
+            width:50%;
             height: 100%;
             &.extnd-btn {
                 width: 100%;
@@ -1857,6 +1866,7 @@
 .widget-container {
     display: flex;
     flex-flow: column wrap;
+    margin-top:10px;
     .widget-items {
         display: flex;
         background: #fff;
@@ -1900,7 +1910,7 @@
 }
 
 .pdf_section {
-    margin-top: 20px;
+    margin-top:0px;
     padding: 0px;
     background: #fff;
     margin-bottom: 10px;

@@ -144,19 +144,20 @@
         <ng-container #productShare></ng-container>
     </div>
 
-    <div *ngIf="productOutOfStock" class="oos-category clearfix">
+    <!-- <div *ngIf="productOutOfStock" class="oos-category clearfix">
         <strong class="txt" style="font-weight: normal;">
             More From {{productCategoryDetails['categoryName']}}</strong>
         <span [routerLink]="['/'+productCategoryDetails['categoryLink']]" class="category_link blueText">VIEW ALL</span>
-    </div>
+    </div> -->
 
     <!-- CTA Fixed position -->
     <div class="bottom-bar" [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-        <div class="wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
+        <!-- <div class="wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
             <i [ngClass]="isPurcahseListProduct ? 'icon-puchase_active':'icon-puchase_inactive'"></i>
-        </div>
+        </div> -->
         <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
-            ADD TO CART
+            <i class="icon-cart1"></i>
+            <span>ADD TO CART</span>
         </button>
         <div class="buy-now f-right f-14">
             <button class="f-14" (click)="buyNow('/checkout');">BUY NOW</button>
@@ -453,6 +454,11 @@
 
 
 
+        
+
+        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+            <ng-container #similarProduct></ng-container>
+        </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
             <!-- <a class="widget-items" [routerLink]="getBrandLink(productBrandDetails)">
@@ -482,11 +488,6 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
         </section>
-
-        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-            <ng-container #similarProduct></ng-container>
-        </section>
-
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
         </section>
@@ -591,8 +592,8 @@
                     </div>
                 </div>
             </div>
-            <div class="view-review" (click)="handleReviewRatingPopup()">
-                <span>View {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
+            <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+                <span>VIEW {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
         <section class="Qa">

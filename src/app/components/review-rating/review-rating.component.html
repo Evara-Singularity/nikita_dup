@@ -61,13 +61,8 @@
                     <button class="btn redBgButton wp-100" (click)="emitWriteReview()">WRITE A REVIEW</button>
                 </div>
             </div>
-<<<<<<< HEAD
             <div *ngFor="let review of rawReviewsData?.reviewList;let i=index" class="reviewRow">
                 <div class="pwa-row innerRow">
-=======
-            <div *ngFor="let review of rawReviewsData?.reviewList" class="reviewRow popup-reviewRow">
-                <div class="pwa-row innerRow popup-innerRow">
->>>>>>> 1decdef788df90f9a698768daceb7c1a1bdee6ee
                     <div class="pwa-col-6 reviewRow-col">
                         <div class="small-stars">
                             <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>

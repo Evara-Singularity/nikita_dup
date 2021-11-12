@@ -118,6 +118,10 @@
             span{
                 color:#278BED;
                 font-size: $medium-font;
+                &.disabledViewText{
+                    pointer-events:none;
+                    color:#181817;
+                }
             }
         }
         

@@ -64,33 +64,43 @@ export class PagesComponent implements OnInit, AfterViewInit {
     if (this.isBrowser) {
       setTimeout(() => {
         // TODO: configure it with 500KB image 
-        this.speedTestService.getMbps({ iterations: 1, file: {
-          path: CONSTANTS.SPEED_TEST_IMAGE,
-          shouldBustCache: true,
-          size: 408949
-        }, retryDelay: 1500 }).subscribe(
+        this.speedTestService.getMbps({
+          iterations: 1, file: {
+            path: CONSTANTS.SPEED_TEST_IMAGE,
+            shouldBustCache: true,
+            size: 408949
+          }, retryDelay: 1500
+        }).subscribe(
           (speed) => {
             console.log('speedTestService ngAfterViewInit', speed);
             this._commonService.setNetworkSpeedState(speed);
           }
         )
+
+        this.disableBackButton();
       }, 0);
     }
   }
 
-    
+  disableBackButton(): void {
+    history.pushState(null, document.title, location.href);
+    window.addEventListener('popstate', function (event) {
+      history.pushState(null, document.title, location.href);
+    });
+  }
+
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
-        this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-      } else if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)){
-        const user = this._localStorageService.retrieve('user');
-        if (!user) {
-          this.router.navigateByUrl('/login');
-        }
-      } else {
-        this.setUserSession();
+      this.loginUserIfUserRedirectedFromBharatpay(queryParams);
+    } else if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)) {
+      const user = this._localStorageService.retrieve('user');
+      if (!user) {
+        this.router.navigateByUrl('/login');
       }
+    } else {
+      this.setUserSession();
+    }
   }
 
   encryptKey(plain_text, encryptionMethod, secret, iv) {
@@ -107,7 +117,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     // const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
     // const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
     // const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
-    
+
     const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
 
     this.dataService.callRestful("POST", url, { body: { tokenId: token, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
@@ -164,7 +174,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.setConnectionType();
       this.checkWebpSupport();
     }
-    
+
   }
 
   isMoglixAppInstalled() {

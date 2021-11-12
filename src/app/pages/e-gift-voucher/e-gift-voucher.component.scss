@@ -60,6 +60,7 @@
                     font-size: 14px;
                 }
                 input{
+                    padding: 0px 10px;
                     height: 45px;
                     margin: 5px 0px;
                     background: #FFFFFF 0% 0% no-repeat padding-box;
@@ -98,9 +99,10 @@
                             width: 100%;
                             border-radius: 3px;
                             height: 40px;
+                            color: #978bab;
                             background-color: #FFFFFF;
                             border: 1px solid #707070;
-                            padding: 0px 24px 0px 10px;
+                            padding: 0px 24px 0px 5px;
                         }
                         .icon-down{
                             pointer-events: none;
@@ -110,7 +112,7 @@
                             z-index:3;
                           }
                         input{
-                            padding: 0px 5px;
+                            padding: 0px 10px;
                             width: 100%;
                             border-radius: 3px;
                             height: 40px;

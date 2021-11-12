@@ -2193,7 +2193,10 @@
 .pdp-section-card{
     margin-top:10px;
     background:$white;
-  }
+    .rating-sec{
+        padding-bottom: 20px !important;
+    }
+}
 .ratingCard{
     .green-txt{
         text-align:right;
@@ -2241,23 +2244,36 @@
     }
  }
  .view-review{
-    padding: 20px 20px;
+    padding: 20px 0px;
+    border-top: 1px dashed #a2a2a2;
+    margin: 0px 15px;
     span {
-        color: blue;
-        font-size: 14px;
+        color: #0D99FF;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
     }
  }
+ .popup-reviewRow{
+     padding: 5px 15px !important;
+     .popup-innerRow{
+         padding-top: 15px !important;
+     }
+ }
  .reviewRow{
-     padding:15px;
+     padding:0px 15px;
      .heading-3-txt {
          color: $txt-color;
          font-size:13px;
      }
     .innerRow{
         border-top: 1px dashed #a2a2a2;
-        margin: 20px 0px 0px 0px;
         align-items:flex-start;
         padding:20px 0px;
+    }
+    .like-unlikeRow{
+        padding-bottom: 20px !important;
     }
     .pwa-row{
         padding: 10px 0px;

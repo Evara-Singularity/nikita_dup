@@ -16,6 +16,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SpeedTestService } from 'ng-speed-test';
+import { HostListener } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pages',
@@ -33,6 +35,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   footerVisible = false;
   isHomePage: boolean;
   constructor(
+    private _location: Location,
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
@@ -60,6 +63,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
     })
   }
 
+  pageRefreshed = true;
+
   ngAfterViewInit(): void {
     if (this.isBrowser) {
       setTimeout(() => {
@@ -76,17 +81,14 @@ export class PagesComponent implements OnInit, AfterViewInit {
             this._commonService.setNetworkSpeedState(speed);
           }
         )
-
-        this.disableBackButton();
+        if (this.pageRefreshed) {
+          window.history.replaceState('', '', '/');
+          window.history.pushState('', '', this.router.url);
+          this.pageRefreshed = false;
+        }
       }, 0);
-    }
-  }
 
-  disableBackButton(): void {
-    history.pushState(null, document.title, location.href);
-    window.addEventListener('popstate', function (event) {
-      history.pushState(null, document.title, location.href);
-    });
+    }
   }
 
   checkAndRedirect() {

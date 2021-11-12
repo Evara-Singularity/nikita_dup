@@ -44,8 +44,6 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     ngOnInit()
     {
         if (this.modalData) {
-            console.clear();
-            console.log(this.modalData);
             this.processMainInfo(this.modalData['mainInfo']);
             this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
         }

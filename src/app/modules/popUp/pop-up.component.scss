@@ -74,7 +74,8 @@
                 .head-sec {
                     background: $logo-color !important;
                     i {
-                        color: $white
+                        color: $white;
+                        font-size:18px;
                     }
                 }
                 .content-popup {
@@ -90,6 +91,12 @@
             &.addEmi{
                 background:#F7F7FA !important;
             }
+            &.addEmiSteps{
+                    .emiStepContent{
+                        background:#F7F7FA !important;
+                        height:100% !important;
+                    }
+                }
         }
         .content-popup {
             height: 85%;

@@ -213,11 +213,6 @@
     <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
-
-    <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
-        <ng-container #offerSection></ng-container>
-    </div>
-
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
     </div>

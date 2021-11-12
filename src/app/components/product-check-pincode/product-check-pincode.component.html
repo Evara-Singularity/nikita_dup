@@ -11,6 +11,9 @@
                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                 [formControl]="pincode" class="inp-box" type="number" placeholder="Enter your pincode" maxlength="6">
                 <button (click)="checkAvailblityOnPinCode()" class="btn-submit">CHECK</button>
+                <p class="availability-text">
+                    Check serviceability at your location
+                </p>
             </div>
         </div>
     </div>

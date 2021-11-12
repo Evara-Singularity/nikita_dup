@@ -1,7 +1,17 @@
 .emi-steps{
-    .step-num{
+    .emiStepHeading{
         display: flex;
         align-items: center;
+        padding-bottom: 20px;
+        letter-spacing: 0.5px;
+        i{
+            margin-left: auto;
+            font-size: 18px;
+        }
+    }
+    .step-num{
+        display: flex;
+        align-items: flex-start;
         .number{
             width: 10%;
             span{

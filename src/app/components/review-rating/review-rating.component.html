@@ -93,11 +93,11 @@
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
                     <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.like=='1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
                             <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
-                        <button class="suggstn-btn">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}" (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
                             <span class="small-txt">{{review.no}}</span>
                             <i class="icon-dislike"></i>
                         </button>

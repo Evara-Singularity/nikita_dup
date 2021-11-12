@@ -7,6 +7,7 @@ import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-p
 import CONSTANTS from '@app/config/constants';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { ArrayFilterPipe } from '@app/utils/pipes/k-array-filter.pipe';
 import { CartService } from '@app/utils/services/cart.service';
 import { CheckoutService } from '@app/utils/services/checkout.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -520,6 +521,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productVideos = this.rawProductData['videosInfo'];
         this.productDocumentInfo = this.rawProductData['documentInfo'];
         this.productTags = this.rawProductData['productTags'];
+        this.getRefinedProductTags();
         this.productAttributes = this.rawProductData['productPartDetails'][partNumber]['attributes'] || [];
         this.productRating = this.rawProductData['productPartDetails'][partNumber]['productRating'];
         this.productBrandCategoryUrl = 'brands/' + this.productBrandDetails['friendlyUrl'] + "/" + this.productCategoryDetails['categoryLink'];
@@ -2620,6 +2622,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.reviewRatingPopupInstance = this.reviewRatingPopupContainerRef.createComponent(factory, null, this.injector);
         this.rawReviewsData.productName = this.productName;
         this.reviewRatingPopupInstance.instance['rawReviewsData'] = this.rawReviewsData;
+        this.reviewRatingPopupInstance.instance['productUrl'] = this.productUrl;
         (this.reviewRatingPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             this.reviewRatingPopupInstance = null;
@@ -2629,12 +2632,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         {
             this.writeReview();
         });
-        // if (this.reviewRatingPopupInstance) {
-        //     (this.reviewRatingPopupInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus =>
-        //     {
-        //         this.toggleLoader(loaderStatus);
-        //     });
-        // }
     }
 
     async handleQuestionAnswerPopup()
@@ -2735,6 +2732,22 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         return this.productInfo;
     }
+
+    refinedProdTags = [];
+    getRefinedProductTags()
+    {
+        const pipe = new ArrayFilterPipe();
+        this.refinedProdTags = pipe.transform(this.productTags, 'type', 'text', 'object');
+        this.refinedProdTags = (this.refinedProdTags as []).slice(0,3);
+    }
+
+    get overallRating() { 
+        if (this.rawReviewsData && this.rawReviewsData['summaryData'])
+        {
+            return this.rawReviewsData['summaryData']['final_average_rating'];
+        }
+        return 0;
+    } 
 
     ngOnDestroy()
     {

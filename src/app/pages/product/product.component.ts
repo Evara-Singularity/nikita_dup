@@ -1635,7 +1635,13 @@ export class ProductComponent implements OnInit, AfterViewInit
             const { ProductOffersComponent } = await import('./../../components/product-offers/product-offers.component')
             const factory = this.cfr.resolveComponentFactory(ProductOffersComponent);
             this.offerSectionInstance = this.offerSectionContainerRef.createComponent(factory, null, this.injector);
-            this.offerSectionInstance.instance['price'] = this.priceWithoutTax;
+            let price = 0;
+            if (this.priceWithoutTax > 0 && this.bulkPriceWithoutTax == null) {
+                price = this.priceWithoutTax;
+            } else if (this.bulkPriceWithoutTax !== null) {
+                price = this.priceWithoutTax;
+            }
+            this.offerSectionInstance.instance['price'] = price;
             (this.offerSectionInstance.instance['viewPopUpHandler'] as EventEmitter<boolean>).subscribe(data =>
             {
                 this.viewPopUpOpen(data);
@@ -2742,16 +2748,16 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         const pipe = new ArrayFilterPipe();
         this.refinedProdTags = pipe.transform(this.productTags, 'type', 'text', 'object');
-        this.refinedProdTags = (this.refinedProdTags as []).slice(0,3);
+        this.refinedProdTags = (this.refinedProdTags as []).slice(0, 3);
     }
 
-    get overallRating() { 
-        if (this.rawReviewsData && this.rawReviewsData['summaryData'])
-        {
+    get overallRating()
+    {
+        if (this.rawReviewsData && this.rawReviewsData['summaryData']) {
             return this.rawReviewsData['summaryData']['final_average_rating'];
         }
         return 0;
-    } 
+    }
 
     ngOnDestroy()
     {

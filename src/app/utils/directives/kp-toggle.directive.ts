@@ -37,20 +37,22 @@ export class KpToggleDirective {
         if (this.closeOtherTabs) {
             this.resetClass();
         }
-        if (document.getElementById(Id).style.display == 'none') {
-            document.getElementById(Id).style.display = 'block';
-            if (icon == true) {
-                this._el.nativeElement.classList.add('ico-expand');
-                this._el.nativeElement.classList.add('ico-up');
+        setTimeout(() => {
+            if (document.getElementById(Id).style.display == 'none') {
+                document.getElementById(Id).style.display = 'block';
+                if (icon == true) {
+                    this._el.nativeElement.classList.add('ico-expand');
+                    this._el.nativeElement.classList.add('ico-up');
+                }
             }
-        }
-        else {
-            document.getElementById(Id).style.display = 'none';
-            if (icon == true) {
-                this._el.nativeElement.classList.remove('ico-expand');
-                this._el.nativeElement.classList.remove('ico-up');
+            else {
+                document.getElementById(Id).style.display = 'none';
+                if (icon == true) {
+                    this._el.nativeElement.classList.remove('ico-expand');
+                    this._el.nativeElement.classList.remove('ico-up');
+                }
             }
-        }
+        }, 0);
     }
 }
 

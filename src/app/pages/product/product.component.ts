@@ -2684,7 +2684,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         const productInfo = {};
         productInfo['mainInfo'] = {
-            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],
+            productName: this.productName, 
+            imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],
             productMrp: this.productMrp, productDiscount: this.productDiscount, bulkPriceWithoutTax: this.bulkPriceWithoutTax,
             priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage, bulkDiscount: this.bulkDiscount,
             productOutOfStock: this.productOutOfStock

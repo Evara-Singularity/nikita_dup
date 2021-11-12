@@ -16,6 +16,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SpeedTestService } from 'ng-speed-test';
+import { HostListener } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pages',
@@ -33,6 +35,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   footerVisible = false;
   isHomePage: boolean;
   constructor(
+    private _location: Location,
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
@@ -60,37 +63,46 @@ export class PagesComponent implements OnInit, AfterViewInit {
     })
   }
 
+  pageRefreshed = true;
+
   ngAfterViewInit(): void {
     if (this.isBrowser) {
       setTimeout(() => {
         // TODO: configure it with 500KB image 
-        this.speedTestService.getMbps({ iterations: 1, file: {
-          path: CONSTANTS.SPEED_TEST_IMAGE,
-          shouldBustCache: true,
-          size: 408949
-        }, retryDelay: 1500 }).subscribe(
+        this.speedTestService.getMbps({
+          iterations: 1, file: {
+            path: CONSTANTS.SPEED_TEST_IMAGE,
+            shouldBustCache: true,
+            size: 408949
+          }, retryDelay: 1500
+        }).subscribe(
           (speed) => {
             console.log('speedTestService ngAfterViewInit', speed);
             this._commonService.setNetworkSpeedState(speed);
           }
         )
+        if (this.pageRefreshed) {
+          window.history.replaceState('', '', '/');
+          window.history.pushState('', '', this.router.url);
+          this.pageRefreshed = false;
+        }
       }, 0);
+
     }
   }
 
-    
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
-        this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-      } else if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)){
-        const user = this._localStorageService.retrieve('user');
-        if (!user) {
-          this.router.navigateByUrl('/login');
-        }
-      } else {
-        this.setUserSession();
+      this.loginUserIfUserRedirectedFromBharatpay(queryParams);
+    } else if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname)) {
+      const user = this._localStorageService.retrieve('user');
+      if (!user) {
+        this.router.navigateByUrl('/login');
       }
+    } else {
+      this.setUserSession();
+    }
   }
 
   encryptKey(plain_text, encryptionMethod, secret, iv) {
@@ -107,7 +119,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     // const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
     // const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
     // const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
-    
+
     const url = (environment.BASE_URL.replace('v1', 'v2')) + ENDPOINTS.BHARATPAY_URL;
 
     this.dataService.callRestful("POST", url, { body: { tokenId: token, sessionId: (this._localAuthService.getUserSession() ? this._localAuthService.getUserSession().sessionId : null) } }).subscribe(res => {
@@ -164,7 +176,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.setConnectionType();
       this.checkWebpSupport();
     }
-    
+
   }
 
   isMoglixAppInstalled() {

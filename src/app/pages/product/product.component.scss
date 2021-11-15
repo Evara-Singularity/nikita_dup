@@ -700,9 +700,6 @@
         background: white;
         font-size: $large-font;
         border-bottom:1px solid $border-color;
-        h2{
-            text-transform: initial !important;
-        }
         .feature-list {
             li {
                 p:before {
@@ -2220,7 +2217,6 @@
     border-top: 1px dashed #a2a2a2;
     margin: 0px 15px;
     span {
-        text-transform: uppercase;
         color: #0D99FF;
         font-size: 12px;
         font-weight: 600;
@@ -2391,7 +2387,6 @@
 }
 .show-all-strip{
     font-size:12px;
-    text-transform: uppercase;
     padding-top:10px;
    &.spec{
         padding:10px 15px;

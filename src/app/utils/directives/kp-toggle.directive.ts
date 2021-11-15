@@ -52,7 +52,7 @@ export class KpToggleDirective {
                     this._el.nativeElement.classList.remove('ico-up');
                 }
             }
-        }, 0);
+        }, 100);
     }
 }
 

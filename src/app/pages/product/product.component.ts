@@ -1788,6 +1788,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         if (!this.popupCrouselInstance) {
             this.showLoader = true;
+            this.displayCardCta = true;
             const { ProductCrouselPopupComponent } = await import('../../components/product-crousel-popup/product-crousel-popup.component').finally(() =>
             {
                 this.showLoader = false;
@@ -1803,6 +1804,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
             (this.popupCrouselInstance.instance['out'] as EventEmitter<boolean>).subscribe(status =>
             {
+                this.displayCardCta = false;
                 this.popupCrouselInstance = null;
                 this.popupCrouselContainerRef.remove();
             });
@@ -1819,7 +1821,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         if (!this.productCrouselInstance) {
             this.isProductCrouselLoaded = true;
-            this.displayCardCta = true;
             const { ProductCrouselComponent } = await import('../../modules/product-crousel/ProductCrousel.component').finally(() =>
             {
                 this.clearPseudoImageCrousel();
@@ -1835,10 +1836,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             {
                 (this.productCrouselInstance.instance['moveToSlide$'] as Subject<number>).next(slideIndex)
             }, 100);
-            (this.productCrouselInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
-                {
-                    this.displayCardCta = false;
-                });
         };
     }
 

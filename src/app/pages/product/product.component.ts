@@ -1948,6 +1948,8 @@ export class ProductComponent implements OnInit, AfterViewInit
                         this.reviews.reviewList[i]['isPost'] = true;
                         this.reviews.reviewList[i]['like'] = yes;
                         this.reviews.reviewList[i]['dislike'] = no;
+                        console.log('-----------------------------');
+                        console.log(this.reviews.reviewList[i]);
                     }
                 });
             } else {

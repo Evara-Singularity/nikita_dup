@@ -7,7 +7,7 @@
             </td>
             <td class="right">
                 <div>
-                    <a class="brandName">{{specifications?.brand?.name}}</a>
+                    <a class="brandName" (click)="_commonService.navigateTo(specifications?.brand?.link)" >{{specifications?.brand?.name}}</a>
                 </div>
             </td>
         </tr>

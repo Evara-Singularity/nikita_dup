@@ -942,7 +942,7 @@ export class CommonService {
     }
     
     navigateTo(link) {
-        this._router.navigateByUrl(link);
+        this._router.navigate(link);
     }
 
     sendOtp(data): Observable<{}>

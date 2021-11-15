@@ -63,8 +63,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
     })
   }
 
-  pageRefreshed = true;
-
   ngAfterViewInit(): void {
     if (this.isBrowser) {
       setTimeout(() => {
@@ -81,11 +79,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
             this._commonService.setNetworkSpeedState(speed);
           }
         )
-        if (this.pageRefreshed) {
-          window.history.replaceState('', '', '/');
-          window.history.pushState('', '', this.router.url);
-          this.pageRefreshed = false;
-        }
       }, 0);
 
     }

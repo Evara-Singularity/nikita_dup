@@ -492,7 +492,7 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="pdp-section-card" *ngIf="overallRating">
+        <section class="pdp-section-card">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
@@ -592,7 +592,7 @@
                     </div>
                 </div>
             </div>
-            <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>VIEW {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
             </div>
         </section>

@@ -19,7 +19,7 @@
             <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
         </div>
         <div class="cb-view">
-            <span [class.disabledViewText]="disableEMIView">VIEW</span>
+            <span *ngIf="!disableEMIView">VIEW</span>
         </div>
     </div>
 </div>

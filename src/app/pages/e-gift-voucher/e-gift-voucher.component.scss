@@ -39,13 +39,23 @@
                 color: #37B918;
             }
         }
-        h5{
-            text-align: center;
-            color: #4490DF;
-            font-size: 12px;
-            line-height: 18px;
-            margin-top: 10px;
+        .centered-btn{
+            display: flex;
+            justify-content: center;
+            h5{
+                background-color: #4490df1a;
+                text-align: center;
+                color: #4490DF;
+                font-size: 12px;
+                line-height: 18px;
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 4px;
+                cursor: pointer;
+                display: inline-block;
+            }
         }
+        
         .personal-details{
             border-radius: 8px;
             background-color: #FAF7F7;

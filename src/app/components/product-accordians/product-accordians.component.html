@@ -13,9 +13,11 @@
         <div [id]="'popularBrandCategoryAccord'" style="display:none;" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularLinks | slice:0:10">
-                    <a  href="{{ACCORDIAN_DATA[1][category]}}">{{ categoryBrandDetails.brand.brandName + ' ' + category }} </a>
+                    <a  href="{{ACCORDIAN_DATA[1][category]}}" (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED BRAND CATEGORY', ACCORDIAN_DATA[1][category]);">
+                        {{ categoryBrandDetails.brand.brandName + ' ' + category }} 
+                    </a>
                 </div>
-            </div>
+            </div> 
         </div>
     </ng-container>
     <ng-container *ngIf="ACCORDIAN_DATA[0].length > 0">
@@ -32,7 +34,9 @@
         <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
             <div class="container category_links" >
                 <div *ngFor="let attribute of ACCORDIAN_DATA[0] | slice:0:10">
-                    <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                    <a  href="{{attribute.friendlyUrl}}" (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl);">
+                        {{ attribute.title }}
+                    </a>
                 </div>
             </div>
         </div>
@@ -51,7 +55,9 @@
         <div [id]="'mostSoldAccoridan'" style="display:none;" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let attribute of ACCORDIAN_DATA[2]  | slice:0:10">
-                    <a  href="{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>
+                    <a href="{{attribute.categoryLink}}" (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName);">
+                        {{ attribute.categoryName }}
+                    </a>
                 </div>
             </div>
         </div>

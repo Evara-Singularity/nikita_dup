@@ -123,6 +123,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     productInfoPopup = false;
     isProductCrouselLoaded: boolean = false;
     productImages = null;
+    refinedProdTags = [];
 
     // Q&A vars
     questionMessage: string;
@@ -480,6 +481,13 @@ export class ProductComponent implements OnInit, AfterViewInit
                 category: this.rawProductData.categoryDetails[0],
                 brand: this.rawProductData.brandDetails
             };
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: null,
+                channel: "pdp", subSection: null,
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[0]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.pdpAccordianInstance.instance['analyticsInfo'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };;
         }
     }
 
@@ -1746,7 +1754,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
-
+            this.sendProductInfotracking("write a review");
             if (!this.writeReviewPopupInstance) {
                 this.showLoader = true;
                 const { PostProductReviewPopupComponent } = await import('../../components/post-product-review-popup/post-product-review-popup.component').finally(() =>
@@ -2339,14 +2347,9 @@ export class ProductComponent implements OnInit, AfterViewInit
             'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
             'channel': "pdp",
             'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp " + this.commonService.getSectionClick().toLowerCase(),
-            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            'loginStatus': this.loginStatusTracking
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking;
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2387,12 +2390,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
             'channel': 'pdp'
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking
         let order = {
             'productID': this.productSubPartNumber || this.defaultPartNumber, // TODO: partNumber
             'parentID': this.productSubPartNumber,
@@ -2512,12 +2510,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             }
         }
 
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking;
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2548,12 +2541,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             'channel': 'pdp',
             'loginStatus': (user.userId) ? 'registered' : 'guest',
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking;
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2623,6 +2611,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     async handleReviewRatingPopup()
     {
+        this.sendProductInfotracking("view all reviews");
         this.showLoader = true;
         const { ReviewRatingComponent } = await import('./../../components/review-rating/review-rating.component').finally(() =>
         {
@@ -2660,8 +2649,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    async handleProductInfoPopup(infoType)
+    async handleProductInfoPopup(infoType, cta)
     {
+        this.sendProductInfotracking(cta);
         this.showLoader = true;
         this.displayCardCta = true;
         const { ProductInfoComponent } = await import('./../../modules/product-info/product-info.component').finally(() =>
@@ -2670,7 +2660,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
         this.productInfoPopupInstance = this.productInfoPopupContainerRef.createComponent(factory, null, this.injector);
-        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo_v1(infoType);
+        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo(infoType);
         this.productInfoPopupInstance.instance['openProductInfo'] = true;
         (this.productInfoPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
@@ -2680,11 +2670,11 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    getProductInfo_v1(infoType)
+    getProductInfo(infoType)
     {
         const productInfo = {};
         productInfo['mainInfo'] = {
-            productName: this.productName, 
+            productName: this.productName,
             imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],
             productMrp: this.productMrp, productDiscount: this.productDiscount, bulkPriceWithoutTax: this.bulkPriceWithoutTax,
             priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage, bulkDiscount: this.bulkDiscount,
@@ -2705,47 +2695,35 @@ export class ProductComponent implements OnInit, AfterViewInit
             description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
             , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
         };
-        console.log(this.productDescripton);
         contentInfo['product details'] = details;
         if (this.productAllImages && this.productAllImages.length) {
             contentInfo['images'] = this.productAllImages;
         }
         productInfo['contentInfo'] = contentInfo;
         productInfo['infoType'] = infoType;
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[0]}:pdp`,
+            channel: "About This Product", subSection: null,
+            linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
+        }
+        productInfo['analyticsInfo'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };
         return productInfo;
     }
 
-    getProductInfo()
+    sendProductInfotracking(cta)
     {
-        if (this.productInfo) { return this.productInfo; }
-        this.productInfo = {};
-        this.productInfo['productInfo'] = {
-            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'], productMrp: this.productMrp, productDiscount: this.productDiscount,
-            bulkPriceWithoutTax: this.bulkPriceWithoutTax, priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage,
-            bulkDiscount: this.bulkDiscount, productOutOfStock: this.productOutOfStock
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp", subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[0]}:pdp`, linkName: cta, loginStatus: this.loginStatusTracking
         }
-        if (this.productKeyFeatures && this.productKeyFeatures.length) {
-            this.productInfo['key features'] = this.productKeyFeatures;
-        }
-        if (this.productAttributes) {
-            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails), };
-            this.productInfo['specifications'] = { attributes: this.productAttributes, brand: brand };
-        }
-        if (this.productVideos && this.productVideos.length) {
-            this.productInfo['videos'] = this.productVideos;
-        }
-        const details = {
-            description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
-            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
-        };
-        this.productInfo['product details'] = details;
-        if (this.productAllImages && this.productAllImages.length) {
-            this.productInfo['images'] = this.productAllImages;
-        }
-        return this.productInfo;
+        const custData = this.custDataTracking;
+        const order = this.orderTracking;
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    refinedProdTags = [];
     getRefinedProductTags()
     {
         const pipe = new ArrayFilterPipe();
@@ -2760,6 +2738,55 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         return 0;
     }
+
+    get custDataTracking()
+    {
+        const user = this.localStorageService.retrieve('user');
+        return {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        }
+    }
+
+    get loginStatusTracking() 
+    {
+        const user = this.localStorageService.retrieve('user');
+        return (user && user["authenticated"] == 'true') ? "registered user" : "guest";
+    }
+
+    get orderTracking()
+    {
+        const TAXNONS = this.taxons;
+        const TAGS = [];
+        this.productTags.forEach((element) => { TAGS.push(element.name); });
+        const tagsForAdobe = TAGS.join("|");
+        return {
+            'productID': this.productSubPartNumber,
+            'productCategoryL1': TAXNONS[0],
+            'productCategoryL2': TAXNONS[1],
+            'productCategoryL3': TAXNONS[2],
+            'brand': this.productBrandDetails['brandName'],
+            'price': this.productPrice,
+            'stockStatus': this.productOutOfStock ? "Out of Stock" : "In Stock",
+            'tags': tagsForAdobe
+        }
+    }
+
+    get taxons()
+    {
+        const taxon = [];
+        if (this.productCategoryDetails['taxonomyCode']) {
+            taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[0] || '');
+            taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[1] || '');
+            taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[2] || '');
+
+        }
+        return taxon;
+    }
+
+
 
     ngOnDestroy()
     {

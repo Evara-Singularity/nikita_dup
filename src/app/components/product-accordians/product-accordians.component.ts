@@ -4,6 +4,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { forkJoin } from 'rxjs';
@@ -15,6 +16,7 @@ import { forkJoin } from 'rxjs';
 })
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
+  @Input('analyticsInfo') analyticsInfo: any;
   ACCORDIAN_DATA: Array<any> = [[],[],[]];
   popularLinks: Array<any>= [];
 
@@ -22,6 +24,7 @@ export class ProductAccordiansComponent {
     public _commonService: CommonService, 
     private _dataService: DataService,
     private _productListService: ProductListService,
+    private globalAnalyticService: GlobalAnalyticsService,
   ){}
 
   ngOnInit() {
@@ -49,6 +52,14 @@ export class ProductAccordiansComponent {
       }
     });
 
+  }
+
+  sendAdobeTracking(accordian, link)
+  {
+      const PAGE = this.analyticsInfo['page'];
+      PAGE['subSection'] = accordian;
+      PAGE['linkName'] = link;
+      this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
   }
 }
 

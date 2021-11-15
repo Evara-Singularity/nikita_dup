@@ -1,4 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'product-info',
@@ -12,18 +14,11 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     defaultInfo = "";
     selectedIndex = 0;
-    leftTabIdx = 0;
-    atStart = true;
-    atEnd = false;
-    shiftLeft: string;
     productInfo = null;
-    public innerWidth: any;
-    public totalInnerWIdth;
-    hasVideos = false;
-
     //new code
     mainInfo = null;
     contentInfo = null;
+    analyticsInfo = null;
     tab = null;
     tabs: string[] = [];
     //prices
@@ -32,22 +27,28 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     productDiscount = 0;
     bulkPriceWithoutTax = 0;
     bulkDiscount = 0;
-    productOutOfStock = false;
     imgURL = null;
     productName = "";
     brandName = "";
+    productOutOfStock = false;
+    loginStatus = "guest";
+    pageName = null;
 
-
-    constructor() {}
+    constructor(private globalAnalyticService: GlobalAnalyticsService,
+        public localStorageService: LocalStorageService,) { }
 
     ngOnInit()
     {
         if (this.modalData) {
             this.processMainInfo(this.modalData['mainInfo']);
             this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
+            this.analyticsInfo = this.modalData['analyticsInfo'];
+            this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
         }
-        this.innerWidth = window.innerWidth.toString();
+        const user = this.localStorageService.retrieve('user');
+        this.loginStatus = (user && user["authenticated"] == 'true') ? "registered user" : "guest";
     }
+
     processMainInfo(mainInfo)
     {
         this.productMrp = mainInfo['productMrp'];
@@ -60,26 +61,31 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.productName = mainInfo['productName'];
         this.brandName = mainInfo['brandName'];
     }
+
     processContentInfo(contentInfo, infoType)
     {
         this.contentInfo = contentInfo;
         this.tabs = Object.keys(contentInfo);
         this.selectedIndex = this.tabs.indexOf(infoType);
-        this.updateTab(infoType,this.selectedIndex)
+        this.updateTab(infoType, this.selectedIndex)
     }
-    updateTab(tab, index)
+
+    updateTab(tab: string, index )
     {
         this.selectedIndex = index;
         this.defaultInfo = tab;
-        this.shiftLeft = `translateX(${-this.innerWidth * index}px)`;
+        this.sendTracking(tab.toUpperCase());
     }
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event) { this.innerWidth = window.innerWidth; }
-
-    hasTab(tabName) { return this.tabs.includes(tabName); }
+    sendTracking(subSection: string)
+    {
+        const PAGE = this.analyticsInfo['page'];
+        PAGE['subSection'] = subSection;
+        this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] },"genericPageLoad");
+    }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }
 
-    ngOnDestroy() {}
+    ngOnDestroy() { }
+
 }

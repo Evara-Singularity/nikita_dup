@@ -7,7 +7,6 @@
         </div>
     </div>
     <div class="content-popup card mt-15" [class.customPopHeight]="productOutOfStock" content>
-        <!--Yajya Design code goes here w.r.t each companent-->
         <div class="card-container list-view">
             <div class="left">
                 <ng-container>
@@ -17,7 +16,6 @@
             <div class="right">
                 <div class="name">
                     <span>{{productName}}</span>
-                    <!--<span>...</span>-->
                 </div>
                 <div class="brand">
                     <span>By: {{brandName}}</span>
@@ -46,9 +44,6 @@
                         <div class="out-of-stock-text" *ngIf="productOutOfStock">
                             <span>Available on Request</span>
                         </div>
-                        <!-- <div *ngIf="false" class="out-of-stock-price">
-                            <span>713</span>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -61,32 +56,6 @@
                 </ng-container>
             </ul>
         </section>
-        <!-- <div class="tab-content" [ngSwitch]="defaultInfo" [style.width.px]="totalInnerWIdth*tabs.length">
-            <div class="inner-tab-content" [ngStyle]="{'transform': shiftLeft }">
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
-                    *ngIf="hasTab('key features')">
-                    <key-features [features]="contentInfo['key features']"></key-features>
-                </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide activeTab"
-                    *ngIf="hasTab('specifications')">
-                    <specifications [specifications]="contentInfo['specifications']">
-                    </specifications>
-                </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
-                    *ngIf="hasTab('product details')">
-                    <product-details [details]="contentInfo['product details']"></product-details>
-                </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
-                    *ngIf="hasTab('videos')">
-                    <videos [videos]="contentInfo['videos']" [name]="productName"></videos>
-                </div>
-                <div [ngStyle]="{'min-width.px':innerWidth,'width.px':innerWidth}" class="tabSlide"
-                    *ngIf="hasTab('images')">
-                    <images [images]="contentInfo['images']"></images>
-                </div>
-            </div>
-        </div> -->
-        <!--Yajya work around-->
         <div class="tab-content" [ngSwitch]="defaultInfo">
             <key-features *ngSwitchCase="'key features'"  [features]="contentInfo['key features']" ></key-features>
             <specifications *ngSwitchCase="'specifications'" [specifications]="contentInfo['specifications']" > </specifications>

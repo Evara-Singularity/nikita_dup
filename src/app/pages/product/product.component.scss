@@ -12,6 +12,7 @@
     background: $gray-color;
 }
 .pdp-section-header{
+   margin-top:10px;
     padding:5px 15px;
     background:#fff;
     border-bottom:1px solid  $border-color;
@@ -2336,7 +2337,7 @@
 }
 //start moglix benifits and return policy
 .moglix-benifits {
-    margin: 10px 0px;
+    margin-top: 10px;
     background: #fff;
     padding: 15px 15px 5px;
     .moglix-ben-n-ret-policy-InnerContainer {

@@ -248,6 +248,7 @@
                 span {
                     color: #5BA621;
                     text-decoration: initial;
+                    font-weight:bold;
                 }
                 small {
                     font-size: 12px;
@@ -695,7 +696,7 @@
         }
     }
     .key-features {
-        padding: 15px 15px;
+        padding: 5px 15px 15px;
         background: white;
         font-size: $large-font;
         border-bottom:1px solid $border-color;
@@ -703,7 +704,6 @@
             text-transform: initial !important;
         }
         .feature-list {
-            margin-top: 10px;
             li {
                 p:before {
                     content: "•";
@@ -2375,7 +2375,7 @@
                 }
             }
             .returnTxt {
-                color: #0061D5;
+                color: #278BED;
                 font-size: $small-font;
                 width: calc(100% - 45px);
                 line-height: 14px;

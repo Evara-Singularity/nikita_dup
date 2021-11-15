@@ -107,7 +107,7 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <div class="quan-details" *ngIf="productMinimmumQuantity>=1">
                     <p>Qty Per Pack :
                         <span>{{priceQuantityCountry['packageUnit']}}</span>
                     </p>
@@ -274,15 +274,6 @@
                             365 Days <br> Help Desk
                         </span>
                     </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <img src="assets/img/restart-line.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            Return <br />Product
-                        </span>
-                    </div>
                 </div>
             <h2 class="heading-3"> Return Policy</h2>
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
@@ -350,10 +341,10 @@
                     </p>
                 </li>
             </ul>
-            <div (click)="handleProductInfoPopup('key features')" class="show-all-strip">
-                <span>Show all Key Features</span>
-            </div>
-        </div>
+
+           <div  (click)="handleProductInfoPopup('key features')" class="show-all-strip">
+                <span>SHOW ALL KEY FEATURES</span>
+           </div>
 
         <div class="product-specification" *ngIf=" productAttributes != null">
             <h2 class="heading-3">Product Specifications</h2>
@@ -498,7 +489,7 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="pdp-section-card" *ngIf="overallRating">
+        <section class="pdp-section-card">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
@@ -598,7 +589,7 @@
                     </div>
                 </div>
             </div>
-            <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>View {{ rawReviewsData?.summaryData?.review_count }} More Helpful Review</span>
             </div>
         </section>

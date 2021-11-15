@@ -11,6 +11,16 @@
 .readOnlytxt {
     background: $gray-color;
 }
+.pdp-section-header{
+   margin-top:10px;
+    padding:5px 15px;
+    background:#fff;
+    border-bottom:1px solid  $border-color;
+    .heading-3{
+        font-size:$extra-large-font;
+        font-weight:bold;
+    }
+}
 
 .categories-list {
     li {
@@ -493,6 +503,7 @@
         clear: both;
         justify-content: space-between;
         padding-top:5px;
+        align-items:center;
     }
     .qty_section{
         width:140px;
@@ -529,7 +540,7 @@
             }
         }
         .quan-details {
-            padding-top: 10px;
+            padding-top:5px;
             text-align:center;
             p {
                 font-size: 11px;
@@ -633,7 +644,6 @@
     }
     .product-specification {
         background: white;
-        margin-top: 10px;
         .heading-3 {
             padding: 17px 15px;
         }
@@ -687,8 +697,8 @@
     .key-features {
         padding: 15px 15px;
         background: white;
-        margin-top: 15px;
         font-size: $large-font;
+        border-bottom:1px solid $border-color;
         .feature-list {
             margin-top: 10px;
             li {
@@ -717,6 +727,18 @@
         p {
             font-size: $large-font;
             line-height: 21px;
+           &:first-of-type{
+            -webkit-line-clamp: 4;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+           } 
+           &.static-desc{
+            height:0;
+            visibility:hidden
+         }
         }
         .read-more {
             background: none;
@@ -1760,42 +1782,6 @@
     margin: 10px 0px;
     background: #fff;
     padding: 15px 15px 5px;
-    .returnPolicyInnerContainer {
-        overflow-y: hidden;
-        overflow-x: scroll;
-        width: auto;
-        scrollbar-width: none;
-        /* Firefox 64 */
-        padding-bottom: 15px;
-        .returnPolicyInner {
-            border: 1px solid #EFEFF4;
-            border-radius: 8px;
-            width: 140px;
-            margin-right: 10px;
-            padding: 10px;
-            float: left;
-            .returnImg {
-                background: #FAE0E1;
-                padding: 6px;
-                border-radius: 20%;
-                float: left;
-                width: 28px;
-                margin-top: 5px;
-                text-align: center;
-                vertical-align: middle;
-                img {
-                    vertical-align: top;
-                }
-            }
-            .returnTxt {
-                color: #0061D5;
-                font-size: 12px;
-                width: calc(100% - 45px);
-                float: right;
-                line-height: 18px;
-            }
-        }
-    }
 }
 
 //OOS Category
@@ -1982,46 +1968,6 @@
     }
 }
 
-.rfq-thanks-popup {
-    text-align: center;
-    padding: 30px;
-    position: relative;
-    i {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-    }
-    img {
-        width: 110px;
-    }
-    .rfq-thanks-title {
-        color: #393939;
-        font-size: $medium-font;
-        margin-top: 30px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-    .rfq-support-txt {
-        font-size: 10px;
-        color: RGBA(57, 57, 57, 0.5);
-        line-height: 14px;
-    }
-    .alert-btn-row {
-        margin-top: 30px;
-        button {
-            font-size: 12px;
-            font-weight: bold;
-            background: #F2720F;
-            padding: 10px 20px;
-        }
-        p {
-            margin-top: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-    }
-}
-
 // Alert Box
 .alert-box {
     .overlay {
@@ -2104,7 +2050,7 @@
         }
         .rfq-thanks-popup {
             text-align: center;
-            padding: 30px;
+            padding: 10px 30px;
             position: relative;
             i {
                 position: absolute;
@@ -2114,20 +2060,34 @@
             img {
                 width: 110px;
             }
-            .rfq-thanks-title {
-                color: #393939;
-                font-size: $medium-font;
-                margin-top: 30px;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }
-            .rfq-support-txt {
-                font-size: 10px;
-                color: RGBA(57, 57, 57, 0.5);
-                line-height: 14px;
-            }
+           .rfq-support-txt{
+               color:#303030;
+               p{
+                font-size: 14px;
+                line-height: 23px;
+               }
+               .grey-txt{
+                  color:#7B7B7B;
+                  margin-bottom:15px;
+               }
+               span{
+                display: block;
+                font-size: 17px;
+                line-height: 24px;
+               }
+               strong{
+                   color:#278BED;
+               }
+               .rfq-thanks-txt{
+                 margin-bottom:15px;
+                 &:last-child{
+                     margin-bottom:0px;
+                 }
+               }
+             }
+            
             .alert-btn-row {
-                margin-top: 30px;
+                margin-top: 10px;
                 button {
                     font-size: 12px;
                     font-weight: bold;
@@ -2135,7 +2095,7 @@
                     padding: 10px 20px;
                 }
                 p {
-                    margin-top: 20px;
+                    margin:10px 0px;
                     font-size: 12px;
                     font-weight: bold;
                 }
@@ -2261,7 +2221,6 @@
         font-size: 12px;
         font-weight: 600;
         cursor: pointer;
-        text-transform: uppercase;
     }
  }
  .popup-reviewRow{
@@ -2344,29 +2303,41 @@
  .fixed_ico{
     border: 1px solid #EFEFF4;
     background: #fff;
-    padding:8px;
+    padding: 8px 6px;
     border-radius: 4px;
-    margin-bottom:15px;
+    margin-bottom: 15px;
     box-shadow: 1px 3px 6px #efe7e7;
-    display:inline-block;
-    text-align:center;
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
     img{
         line-height: 28px;
         display: inline-block;
         vertical-align: middle;
     }
-    &.fixed_ico-img{
-        margin-top:auto;
-    }
-     i{
+    i{
         font-size: 14px;
         line-height: 18px;
      }
-   }
+    &.wishlist{
+        i {
+            font-size: 22px;
+         }
+        &.active {
+            border:1px solid $logo-color;
+            i {
+            color: $btn-color-red;
+          }
+      }
+    }
+    &.fixed_ico-img{
+        margin-top:auto;
+    }
+  }
 }
 //start moglix benifits and return policy
 .moglix-benifits {
-    margin: 10px 0px;
+    margin-top: 10px;
     background: #fff;
     padding: 15px 15px 5px;
     .moglix-ben-n-ret-policy-InnerContainer {

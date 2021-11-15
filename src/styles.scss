@@ -113,7 +113,6 @@ h3,
     font-size: $large-font;
     padding: 10px 0;
 }
-
 .heading-3-txt {
     color: $dark-gray-color;
     font-size: $medium-font;
@@ -1120,4 +1119,12 @@ header-nav {
 
 .icon-share-box-line:before {
     content: "\e9b8";
+}
+.icon-wishlist1-inactive:before{
+    content: "\e9bd";
+    color:#30303066;
+}
+.icon-wishlist1-active:before{
+    content: "\e9bd";
+    color:#D9232D;
 }

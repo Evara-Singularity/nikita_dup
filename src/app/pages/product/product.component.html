@@ -107,7 +107,7 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <div class="quan-details" *ngIf="productMinimmumQuantity>=1">
                     <p>Qty Per Pack :
                         <span>{{priceQuantityCountry['packageUnit']}}</span>
                     </p>

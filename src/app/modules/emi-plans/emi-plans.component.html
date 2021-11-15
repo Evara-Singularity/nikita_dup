@@ -14,12 +14,12 @@
                 <span class="bullet">&#8226;</span>
                 <p><span class="green-txt">0% interest plans</span> available on listed debit/credit cards.</p>
             </div>
-            <div class="emi-top-details-inner how-it-work">
+            <div (click)="handleEMIStepsPopup()" class="emi-top-details-inner how-it-work">
                 <div class="emi-top-details-inner-left">
                     <img src="assets/img/how-it-w.png">
                 </div>
                 
-                <div  (click)="handleEMIStepsPopup()" class="emi-top-details-inner-mid">
+                <div class="emi-top-details-inner-mid">
                     <p><strong>See how it works</strong></p>
                     <span>You can avail it in 4 simple steps</span>
                      
@@ -46,7 +46,7 @@
         <!--cards tab code end-->
             <div *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
                 <div (click)="selectedBankChange(item)" class="payment-accordion_header">
-                    <img class="ico-accord-left" src="assets/img/emi-bajaj.png"/>
+                    <!-- <img class="ico-accord-left" src="assets/img/emi-bajaj.png"/> -->
                     <span>{{item['bankname']}}</span>
                     <i  class="icon-down"></i>
                 </div>
@@ -54,7 +54,10 @@
                 <div [style.display]="item['key']===selectedBank?'block':'none'">
                     <div class="emi-plans"
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
-                        <h3 class="heading-3">No Cost EMI Plans</h3>
+                        <div class="emi-plans-heading">
+                            <strong>No Cost EMI Plans</strong>
+                            <strong class="align-left-auto">Total payable</strong>
+                        </div>
                         <div class="emi-plans-list">
                             <ng-container
                                 *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
@@ -73,7 +76,10 @@
                     </div>
                     <div class="emi-plans"
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
-                        <h3 class="heading-3">Standered EMI Plans </h3>
+                      <div class="emi-plans-heading">
+                            <strong>Standered EMI Plans</strong>
+                            <strong class="align-left-auto">Total payable</strong>
+                        </div>
                         <div class="emi-plans-list">
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
                                 <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">

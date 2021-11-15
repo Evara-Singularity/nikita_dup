@@ -4,8 +4,10 @@
     <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <div class="fixed-strip">
-            <span class="fixed_ico" (click)="addToPurchaseList()"><img src="assets/img/heart-fill.svg"></span>
             <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
+            <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
+                <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
+              </span>
             <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img src="assets/img/similar-ico.svg"></span>
         </div>
         <ng-container #productCrousel></ng-container>
@@ -334,7 +336,11 @@
                 </li>
             </ul>
         </div> -->
-
+        <div class="pdp-section-header">
+            <h3 class="heading-3">
+                About This Product
+            </h3>
+        </div>
         <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
             <h2 class="heading-3">Key Features</h2>
             <ul class="feature-list">
@@ -383,7 +389,7 @@
             <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
-                <p> Browse through the extensive list of
+                <p class="static-desc"> Browse through the extensive list of
                     <a class="blueText" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText"
@@ -593,7 +599,7 @@
                 </div>
             </div>
             <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>VIEW {{ rawReviewsData?.summaryData?.review_count }} MORE HELPFUL REVIEW</span>
+                <span>View {{ rawReviewsData?.summaryData?.review_count }} More Helpful Review</span>
             </div>
         </section>
         <section class="Qa">
@@ -668,10 +674,23 @@
         <div class="rfq-thanks-popup ">
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
             <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
-            <p class="rfq-thanks-title">Thanks for submitting the query.</p>
-            <p class="rfq-support-txt">Our support member will get in touch with you within 24 hours. For further
-                assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.
-            </p>
+            <h3 class="heading-2">Thanks for submitting the query.</h3>
+            <div class="rfq-support-txt">
+                <p class="grey-txt">
+                    Our support member will get in touch with you
+                    <br/>
+                    within 24 hours
+                </p> 
+                <p class="rfq-thanks-txt mar-t-10">
+                    For further assistance 
+                    <span>Call or Whatsapp</span>
+                    @<strong>&nbsp;+91 99996 44044</strong>
+                </p>
+                <p class="rfq-thanks-txt">
+                    <span>You can also mail us at</span>
+                    <strong>alesenquiry@moglix.com</strong>
+                </p>
+            </div>
             <div class="alert-btn-row">
                 <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') "
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>

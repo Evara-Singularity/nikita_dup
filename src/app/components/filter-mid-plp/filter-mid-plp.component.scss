@@ -1,4 +1,6 @@
+@import '../../scss/variables';
 .filter-container {
+    @extend %cards;
     background-color: #3C3C3C;
     .filter-btn {
         display: inline-block;
@@ -50,7 +52,6 @@
 // }
 .inline-filter-card-list {
     padding: 5px 40px 10px 10px;
-    border-bottom: 1px solid #d4d5d9;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
@@ -68,7 +69,14 @@
         vertical-align: bottom;
     }
     .inline-filter-card-value {
-        padding: 10px 20px;
+        label {
+            width: 25px;
+            @extend %custom-check-box-checkout;
+        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 15px;
         font-weight: 500;
         text-align: center;
         width: 100%;
@@ -171,5 +179,18 @@
     100%{
         background-position: 450px 0;
     }
+    
+}
+
+.sachin{
+    label {
+        width: 20px;
+        @extend %custom-check-box-checkout;
+    }
+}
+
+.custom-box {
+    font-size: 14px !important;
+    @extend %transition;
     
 }

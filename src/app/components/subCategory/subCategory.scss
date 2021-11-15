@@ -1,30 +1,29 @@
 @import './../../scss/variables';
 
 #subcCategoryTop {
-
-  padding: 15px 0;
+  background-color: white;
+  border-radius: 8px;
 
   li {
-    @include gridForCategory('3', '40');
-    margin-bottom: 20px;
-
-    &:nth-child(3n + 2) {
-      margin: 0 20px 20px 20px;
-
+    @include gridForCategory('2');
+    padding: 10px;
+    &:nth-child(1){
+      border-right: 1px solid #EFEFF4;
+      border-bottom: 1px solid #EFEFF4;
     }
-
-    &:nth-child(3n) {
-      clear: right;
+    &:nth-child(odd){
+      border-right: 1px solid #EFEFF4;
+      border-bottom: 1px solid #EFEFF4;
     }
-
-    &:nth-child(3n + 1) {
-      clear: left;
+    &:nth-child(2n){
+      border-bottom: 1px solid #EFEFF4;
+      
     }
 
     .prod-image {
       padding: 10px;
       background: $white;
-      @extend %box-shadow;
+      // @extend %box-shadow;
       min-height: 92px;
       text-align: center;
 
@@ -44,10 +43,10 @@
 
 .show-more {
   display: block;
-  width: 80%;
   font-size: $extra-large-font;
   text-align: center;
-  color: $white !important;
-  background: $link-color;
+  color: #D9232D;
   margin: 0 auto;
+  font-weight: 600;
+  padding: 20px;
 }

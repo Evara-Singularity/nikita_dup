@@ -40,14 +40,16 @@
                 </h3>
             </div>
             <div id="openCat2" style="display:block" class="">
-                <table width="100%" class="category-tbl common_table body-bg">
-                    <tbody>
+                <table width="100%" class="category-tbl common_table  table-cate-btm">
+                    <thead>
                         <tr>
                             <th>Latest {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Models
                             </th>
                             <th>Expected Price</th>
                             <th>Discount</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
                             <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
                                 <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
@@ -70,8 +72,8 @@
                 </div>
             </div>
             <div id="openCat2">
-                <table width="100%" class="category-tbl common_table body-bg">
-                    <tbody>
+                <table width="100%" class="category-tbl common_table table-cate-btm">
+                    <thead>
                         <tr>
                             <th>
                                 {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
@@ -83,6 +85,8 @@
                                 Max Price
                             </th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <ng-container *ngFor="let PRTA of categoryFooterData?.PRTA | slice:0:100, let i=index">
                             <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
                                 <td>

@@ -107,7 +107,7 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <div class="quan-details" *ngIf="productMinimmumQuantity>=1">
                     <p>Qty Per Pack :
                         <span>{{priceQuantityCountry['packageUnit']}}</span>
                     </p>
@@ -259,15 +259,6 @@
                             365 Days <br> Help Desk
                         </span>
                     </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <img src="assets/img/restart-line.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            Return <br />Product
-                        </span>
-                    </div>
                 </div>
             <h2 class="heading-3"> Return Policy</h2>
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
@@ -335,8 +326,8 @@
                     </p>
                 </li>
             </ul>
-            <div (click)="handleProductInfoPopup('key features')" class="show-all-strip">
-                <span>Show Key Features</span>
+            <div  (click)="handleProductInfoPopup('key features')" class="show-all-strip">
+                <span>SHOW ALL KEY FEATURES</span>
             </div>
         </div>
 

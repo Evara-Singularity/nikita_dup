@@ -204,7 +204,7 @@ export class EGiftVoucherComponent implements OnInit {
                 }
             });
         }
-        else if(!this.requirements.valid && !this.eGiftForm.controls.fullName.valid && !this.eGiftForm.controls.emailId.valid && !this.eGiftForm.controls.phone.valid){
+        else if(!this.requirements.valid && (!this.eGiftForm.controls.fullName.valid || !this.eGiftForm.controls.emailId.valid || !this.eGiftForm.controls.phone.valid)){
             this.eGiftForm.markAllAsTouched();
             // Object.keys(this.eGiftForm.controls).forEach(field => {
             //     const control = this.eGiftForm.get(field);
@@ -213,12 +213,12 @@ export class EGiftVoucherComponent implements OnInit {
             this._tms.show({ type: 'error', text: 'Please mention all details and your gift card requirements' });
 
         }
-        else if(this.requirements.valid && !this.eGiftForm.controls.fullName.valid && !this.eGiftForm.controls.emailId.valid && !this.eGiftForm.controls.phone.valid){
+        else if(this.requirements.valid && (!this.eGiftForm.controls.fullName.valid || !this.eGiftForm.controls.emailId.valid || !this.eGiftForm.controls.phone.valid)){
             this.eGiftForm.markAllAsTouched();
             this._tms.show({ type: 'error', text: 'Please mention all details' });
 
         }
-        else if(!this.requirements.valid && this.eGiftForm.controls.fullName.valid && this.eGiftForm.controls.emailId.valid && this.eGiftForm.controls.phone.valid){
+        else if(!this.requirements.valid && (this.eGiftForm.controls.fullName.valid || this.eGiftForm.controls.emailId.valid || this.eGiftForm.controls.phone.valid)){
             this.eGiftForm.markAllAsTouched();
             this._tms.show({ type: 'error', text: 'Please mention your gift card requirements' });
 

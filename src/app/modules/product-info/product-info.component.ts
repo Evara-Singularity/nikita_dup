@@ -13,12 +13,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     defaultInfo = "";
     selectedIndex = 0;
     leftTabIdx = 0;
-    atStart = true;
-    atEnd = false;
-    shiftLeft: string;
     productInfo = null;
-    public innerWidth: any;
-    public totalInnerWIdth;
     hasVideos = false;
 
     //new code
@@ -46,7 +41,6 @@ export class ProductInfoComponent implements OnInit, OnDestroy
             this.processMainInfo(this.modalData['mainInfo']);
             this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
         }
-        this.innerWidth = window.innerWidth.toString();
     }
     processMainInfo(mainInfo)
     {
@@ -67,16 +61,11 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.selectedIndex = this.tabs.indexOf(infoType);
         this.updateTab(infoType,this.selectedIndex)
     }
-    updateTab(tab, index)
+    updateTab(tab,index)
     {
         this.selectedIndex = index;
         this.defaultInfo = tab;
-        this.shiftLeft = `translateX(${-this.innerWidth * index}px)`;
     }
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event) { this.innerWidth = window.innerWidth; }
-
     hasTab(tabName) { return this.tabs.includes(tabName); }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }

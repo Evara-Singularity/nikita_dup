@@ -1,4 +1,12 @@
 @import "../../scss/variables";
+.pdp-section-header{
+    padding:5px 15px;
+    border-bottom:1px solid  $border-color;
+    .heading-3{
+        font-size:$extra-large-font;
+        font-weight:bold;
+    }
+}
 .deals-list {
     .heading-3 {
         padding-left: 15px;

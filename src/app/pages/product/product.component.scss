@@ -2405,3 +2405,13 @@
         font-weight:500;
     }
 }
+
+.active {
+    .icon-like {
+        color: #3b9e26 !important;
+    }
+    .icon-dislike {
+        color: #d9232d !important;
+    }
+
+}

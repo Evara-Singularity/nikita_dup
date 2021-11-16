@@ -3,9 +3,9 @@
     <ng-container *ngIf="details.description != null else noProdDesc">
         <p [innerHTML]="details.description"></p>
         <p> Browse through the extensive list of
-            <a class="blueText" (click)="_commonService?.navigateTo('/'+ details['category']['categoryLink'])">
+            <a class="blueText" (click)="_commonService.navigateTo('/'+ details['category']['categoryLink'], true)">
                 {{details['category']['categoryName']}}</a> at Moglix. Shop online for other
-            <a class="blueText" (click)="_commonService?.navigateTo('/'+ details['brandCategoryURL'])">{{details['brand']['brandName']}}
+            <a class="blueText" (click)="_commonService.navigateTo('/'+ details['brandCategoryURL'], true)">{{details['brand']['brandName']}}
                 {{details['category']['categoryName']}}.</a> available at Moglix in the lowest price range.
         </p>
     </ng-container>
@@ -13,14 +13,14 @@
         <p>
             {{details['productName']}} is a premium quality product from {{details['brand']['brandName']}}. Moglix is a
             well-known ecommerce platform for qualitative range of <a class="blueText"
-                (click)="_commonService?.navigateTo('/'+details['category']['categoryLink'])">{{details['category']['categoryName']}}</a>.
+                (click)="_commonService.navigateTo('/'+details['category']['categoryLink'], true)">{{details['category']['categoryName']}}</a>.
             All {{details['productName']}} are manufactured by using quality assured material and advanced techniques,
             which make them up to the standard in this highly challenging field. The materials utilized to
             manufacture {{details['productName']}}, are sourced
             from the most reliable and official vendors, chosen after performing detailed market surveys.
             {{details['brand']['brandName']}} products are widely acknowledged in the market for their high
             quality. We are dedicatedly involved in
-            providing an excellent quality array of <a class="blueText" (click)="_commonService?.navigateTo('/'+ details['brandCategoryURL'])">
+            providing an excellent quality array of <a class="blueText" (click)="_commonService.navigateTo('/'+ details['brandCategoryURL'], true)">
                 {{details['brand']['brandName']}} {{details['category']['categoryName']}}</a>.
         </p>
     </ng-template>

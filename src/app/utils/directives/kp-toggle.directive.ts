@@ -19,7 +19,7 @@ export class KpToggleDirective {
         }
     }
 
-    resetClass() {
+    resetClass(id) {
         const panel_body = document.getElementsByClassName('panel-body');
         const panel_head = document.getElementsByClassName('heading-3');
 
@@ -31,28 +31,27 @@ export class KpToggleDirective {
             eachHtmlEl.classList.remove('ico-up');
             eachHtmlEl.classList.remove('ico-expand');
         });
+
+        if (id) {
+            document.getElementById(id).style.display = 'block';   
+        }
     }
 
     showContainer(Id?: string, icon?: boolean) {
-        if (this.closeOtherTabs) {
-            this.resetClass();
+        if (document.getElementById(Id).style.display == 'none') {
+            document.getElementById(Id).style.display = 'block';
+            if (icon == true) {
+                this._el.nativeElement.classList.add('ico-expand');
+                this._el.nativeElement.classList.add('ico-up');
+            }
+        } else {
+            document.getElementById(Id).style.display = 'none';
+            if (icon == true) {
+                this._el.nativeElement.classList.remove('ico-expand');
+                this._el.nativeElement.classList.remove('ico-up');
+            }
         }
-        setTimeout(() => {
-            if (document.getElementById(Id).style.display == 'none') {
-                document.getElementById(Id).style.display = 'block';
-                if (icon == true) {
-                    this._el.nativeElement.classList.add('ico-expand');
-                    this._el.nativeElement.classList.add('ico-up');
-                }
-            }
-            else {
-                document.getElementById(Id).style.display = 'none';
-                if (icon == true) {
-                    this._el.nativeElement.classList.remove('ico-expand');
-                    this._el.nativeElement.classList.remove('ico-up');
-                }
-            }
-        }, 100);
+        this.resetClass(document.getElementById(Id).style.display == 'block' ? Id : null);
     }
 }
 

@@ -123,7 +123,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     productInfoPopup = false;
     isProductCrouselLoaded: boolean = false;
     productImages = null;
-    shiftLeft: string;;
+    refinedProdTags = [];
 
     // Q&A vars
     questionMessage: string;
@@ -481,6 +481,13 @@ export class ProductComponent implements OnInit, AfterViewInit
                 category: this.rawProductData.categoryDetails[0],
                 brand: this.rawProductData.brandDetails
             };
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: null,
+                channel: "pdp", subSection: null,
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.pdpAccordianInstance.instance['analyticsInfo'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };;
         }
     }
 
@@ -986,8 +993,15 @@ export class ProductComponent implements OnInit, AfterViewInit
     async showFBT()
     {
         if (this.fbtFlag) {
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                channel: "About This Product", subSection: null,
+                linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            let analytics = { page: page, custData: this.custDataTracking, order: this.orderTracking };
             this.modalService.show({
-                inputs: { modalData: { isModal: true, backToCartFlow: this.addToCartFromModal.bind(this) } },
+                inputs: { modalData: { isModal: true, backToCartFlow: this.addToCartFromModal.bind(this), analytics: analytics } },
                 component: FbtComponent,
                 outputs: {},
                 mConfig: { className: 'ex' }
@@ -1120,7 +1134,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             var taxonomy = this.productCategoryDetails['taxonomyCode'];
             var trackingData = {
                 event_type: "click",
-                label: routerLink == "/quickorder" ? "add_to_cart" : "buy_now",
+                label: routerLink == "/quickorder" ? (this.displayCardCta ? "add_to_cart_overlay" : "add_to_cart") : ( this.displayCardCta ? "buy_now_overlay" : "buy_now"),
                 product_name: this.productName,
                 msn: this.productSubPartNumber || this.defaultPartNumber,
                 brand: this.productBrandDetails['brandName'],
@@ -1468,6 +1482,15 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.similarProductInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
 
             this.similarProductInstance.instance['outOfStock'] = this.productOutOfStock;
+            const custData = this.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp", subSection: "Similar Products",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.similarProductInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
         }
     }
 
@@ -1482,6 +1505,15 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.sponseredProductsInstance.instance['productId'] = this.defaultPartNumber;
             this.sponseredProductsInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
             this.sponseredProductsInstance.instance['outOfStock'] = this.productOutOfStock;
+            const custData = this.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp", subSection: "You May Also Like",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.sponseredProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
         }
     }
 
@@ -1495,6 +1527,15 @@ export class ProductComponent implements OnInit, AfterViewInit
             const factory = this.cfr.resolveComponentFactory(RecentViewedProductsComponent);
             this.recentProductsInstance = this.recentProductsContainerRef.createComponent(factory, null, this.injector);
             this.recentProductsInstance.instance['outOfStock'] = this.productOutOfStock;
+            const custData = this.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp", subSection: "Recently Viewed",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.recentProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData};
         }
     }
 
@@ -1721,6 +1762,14 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(factory, null, this.injector);
             //this.fbtComponentInstance.instance['addToCartFromModal'] = this.addToCartFromModal.bind(this);
             this.fbtComponentInstance.instance['isModal'] = false;
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                channel: "About This Product", subSection: null,
+                linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.fbtComponentInstance.instance['analytics'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };;
+
         }
     }
 
@@ -1747,7 +1796,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
-
+            this.sendProductInfotracking("write a review");
             if (!this.writeReviewPopupInstance) {
                 this.showLoader = true;
                 const { PostProductReviewPopupComponent } = await import('../../components/post-product-review-popup/post-product-review-popup.component').finally(() =>
@@ -1927,6 +1976,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
+    alreadyLiked: boolean = true; 
     postHelpful(item, yes, no, i)
     {
         if (this.localStorageService.retrieve('user')) {
@@ -1944,15 +1994,16 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.productService.postHelpful(obj).subscribe((res) =>
                 {
                     if (res['code'] === '200') {
-                        console.log(this.rawReviewsData.reviewList[i]);
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         this.rawReviewsData.reviewList[i]['isPost'] = true;
                         this.rawReviewsData.reviewList[i]['like'] = yes;
                         this.rawReviewsData.reviewList[i]['dislike'] = no;
 
-                        if (yes === '1') {
+                        if (yes === '1' && this.alreadyLiked) {
+                            this.alreadyLiked = false;
                             this.rawReviewsData.reviewList[i]['yes'] += 1;
-                        } else if (no === '1' && this.rawReviewsData.reviewList[i]['no'] > 0) {
+                        } else if (no === '1' && this.rawReviewsData.reviewList[i]['no'] > 0 && this.alreadyLiked) {
+                            this.alreadyLiked = false;
                             this.rawReviewsData.reviewList[i]['no'] -= 1;
                         }
                     }
@@ -2349,14 +2400,9 @@ export class ProductComponent implements OnInit, AfterViewInit
             'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
             'channel': "pdp",
             'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp " + this.commonService.getSectionClick().toLowerCase(),
-            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            'loginStatus': this.loginStatusTracking
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking;
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2397,12 +2443,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
             'channel': 'pdp'
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking
         let order = {
             'productID': this.productSubPartNumber || this.defaultPartNumber, // TODO: partNumber
             'parentID': this.productSubPartNumber,
@@ -2522,12 +2563,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             }
         }
 
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking;
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2558,12 +2594,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             'channel': 'pdp',
             'loginStatus': (user.userId) ? 'registered' : 'guest',
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this.custDataTracking;
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2633,6 +2664,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     async handleReviewRatingPopup()
     {
+        this.sendProductInfotracking("view all reviews");
         this.showLoader = true;
         const { ReviewRatingComponent } = await import('./../../components/review-rating/review-rating.component').finally(() =>
         {
@@ -2670,8 +2702,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    async handleProductInfoPopup(infoType)
+    async handleProductInfoPopup(infoType, cta)
     {
+        this.sendProductInfotracking(cta);
         this.showLoader = true;
         this.displayCardCta = true;
         const { ProductInfoComponent } = await import('./../../modules/product-info/product-info.component').finally(() =>
@@ -2680,13 +2713,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
         this.productInfoPopupInstance = this.productInfoPopupContainerRef.createComponent(factory, null, this.injector);
-        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo_v1(infoType);
+        this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo(infoType);
         this.productInfoPopupInstance.instance['openProductInfo'] = true;
-        var infoTabs = document.getElementById('infoTabs');
-        if(infoTabs){
-            console.log(infoTabs,"infoTabs");
-            infoTabs.scrollLeft = 200;
-        }
         (this.productInfoPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             // document.getElementById('infoTabs').scrollLeft = 0;
@@ -2696,11 +2724,11 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    getProductInfo_v1(infoType)
+    getProductInfo(infoType)
     {
         const productInfo = {};
         productInfo['mainInfo'] = {
-            productName: this.productName, 
+            productName: this.productName,
             imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'],
             productMrp: this.productMrp, productDiscount: this.productDiscount, bulkPriceWithoutTax: this.bulkPriceWithoutTax,
             priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage, bulkDiscount: this.bulkDiscount,
@@ -2721,47 +2749,49 @@ export class ProductComponent implements OnInit, AfterViewInit
             description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
             , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
         };
-        console.log(this.productDescripton);
         contentInfo['product details'] = details;
         if (this.productAllImages && this.productAllImages.length) {
             contentInfo['images'] = this.productAllImages;
         }
         productInfo['contentInfo'] = contentInfo;
         productInfo['infoType'] = infoType;
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+            channel: "About This Product", subSection: null,
+            linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
+        }
+        productInfo['analyticsInfo'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };
         return productInfo;
     }
 
-    getProductInfo()
+    sendProductInfotracking(cta)
     {
-        if (this.productInfo) { return this.productInfo; }
-        this.productInfo = {};
-        this.productInfo['productInfo'] = {
-            name: this.productName, imgURL: this.productAllImages[0]['large'], brandName: this.productBrandDetails['brandName'], productMrp: this.productMrp, productDiscount: this.productDiscount,
-            bulkPriceWithoutTax: this.bulkPriceWithoutTax, priceWithoutTax: this.priceWithoutTax, taxPercentage: this.taxPercentage,
-            bulkDiscount: this.bulkDiscount, productOutOfStock: this.productOutOfStock
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp", subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: cta, loginStatus: this.loginStatusTracking
         }
-        if (this.productKeyFeatures && this.productKeyFeatures.length) {
-            this.productInfo['key features'] = this.productKeyFeatures;
-        }
-        if (this.productAttributes) {
-            const brand = { name: this.productBrandDetails['brandName'], link: this.getBrandLink(this.productBrandDetails), };
-            this.productInfo['specifications'] = { attributes: this.productAttributes, brand: brand };
-        }
-        if (this.productVideos && this.productVideos.length) {
-            this.productInfo['videos'] = this.productVideos;
-        }
-        const details = {
-            description: this.productDescripton, category: this.productCategoryDetails, brand: this.productBrandDetails
-            , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
-        };
-        this.productInfo['product details'] = details;
-        if (this.productAllImages && this.productAllImages.length) {
-            this.productInfo['images'] = this.productAllImages;
-        }
-        return this.productInfo;
+        const custData = this.custDataTracking;
+        const order = this.orderTracking;
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    refinedProdTags = [];
+    sendWidgetTracking(widgetType)
+    {
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp", subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: `More from ${widgetType}`, loginStatus: this.loginStatusTracking
+        }
+        const custData = this.custDataTracking;
+        const order = this.orderTracking;
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+        this.commonService.setSectionClickInformation('pdp_widget', 'listing')
+    }
+
     getRefinedProductTags()
     {
         const pipe = new ArrayFilterPipe();
@@ -2775,6 +2805,68 @@ export class ProductComponent implements OnInit, AfterViewInit
             return this.rawReviewsData['summaryData']['final_average_rating'];
         }
         return 0;
+    }
+
+    get custDataTracking()
+    {
+        const user = this.localStorageService.retrieve('user');
+        return {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        }
+    }
+
+    get loginStatusTracking() 
+    {
+        const user = this.localStorageService.retrieve('user');
+        return (user && user["authenticated"] == 'true') ? "registered user" : "guest";
+    }
+
+    get orderTracking()
+    {
+        const TAXNONS = this.taxons;
+        const TAGS = [];
+        this.productTags.forEach((element) => { TAGS.push(element.name); });
+        const tagsForAdobe = TAGS.join("|");
+        return {
+            'productID': this.productSubPartNumber,
+            'productCategoryL1': TAXNONS[0],
+            'productCategoryL2': TAXNONS[1],
+            'productCategoryL3': TAXNONS[2],
+            'brand': this.productBrandDetails['brandName'],
+            'price': this.productPrice,
+            'stockStatus': this.productOutOfStock ? "Out of Stock" : "In Stock",
+            'tags': tagsForAdobe
+        }
+    }
+
+    get taxons()
+    {
+        const taxon = [];
+        if (this.productCategoryDetails['taxonomyCode']) {
+            taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[0] || '');
+            taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[1] || '');
+            taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[2] || '');
+
+        }
+        return taxon;
+    }
+
+    get breadCrumbAnalytics()
+    {
+        let analytics = null
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp", subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: 'breadcrumb', loginStatus: this.loginStatusTracking
+        }
+        const custData = this.custDataTracking;
+        const order = this.orderTracking;
+        analytics = {page,custData,order};
+        return analytics;
     }
 
     ngOnDestroy()

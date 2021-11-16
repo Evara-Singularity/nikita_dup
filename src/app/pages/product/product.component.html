@@ -107,7 +107,7 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>=1">
+                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
                     <p>Qty Per Pack :
                         <span>{{priceQuantityCountry['packageUnit']}}</span>
                     </p>
@@ -326,8 +326,8 @@
                     </p>
                 </li>
             </ul>
-            <div  (click)="handleProductInfoPopup('key features')" class="show-all-strip">
-                <span>SHOW ALL KEY FEATURES</span>
+            <div (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
+                <span>Show Key Features</span>
             </div>
         </div>
 
@@ -356,7 +356,7 @@
                     </td>
                 </tr>
             </table>
-            <div (click)="handleProductInfoPopup('specifications')" class="show-all-strip spec">
+            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')" class="show-all-strip spec">
                 <span>Show All Specifications</span>
             </div>
         </div>
@@ -390,14 +390,14 @@
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
-            <div (click)="handleProductInfoPopup('product details')" class="show-all-strip">
+            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
                 <span>Read More</span>
             </div>
         </div>
 
 
 
-        <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail">
+        <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
             <h2 class="heading-3">Product Videos</h2>
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
@@ -444,7 +444,7 @@
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" class="widget-items">
+            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -452,7 +452,7 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)" class="widget-items">
+            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -615,7 +615,7 @@
             </div>
         </section>
 
-        <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </div>
     <!-- other sections ends -->
     

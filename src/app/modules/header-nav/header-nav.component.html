@@ -20,7 +20,7 @@
                     <i class="icon-search"></i>
                     <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
                 </div>
-                <a (click)="_commonService.navigateTo('/quickorder')" class="icon-cart1">
+                <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
                     <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
                 </a>
                 <a *ngIf="!isHomePage && (routerData && !routerData['menuBar'])" (click)="loadBottomSheet()" class="icon-more_options"></a>
@@ -49,7 +49,7 @@
                 </div>
             </a>
             <a *ngIf="!isHomePage  && !isLoginPage && (routerData && routerData['title'])" (click)="loadSearchNav()" class="icon-search red-txt"></a>
-            <a *ngIf="!isHomePage && !isLoginPage"  (click)="_commonService.navigateTo('/quickorder')" class="icon-cart1">
+            <a *ngIf="!isHomePage && !isLoginPage"  (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
             <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-more_options"></a>
@@ -63,7 +63,7 @@
                     <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
                 </div>
             </a>
-            <a *ngIf="isHomePage && isScrolledHeader"  (click)="_commonService.navigateTo('/quickorder')" class="icon-cart1 header-icon">
+            <a *ngIf="isHomePage && isScrolledHeader"  (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1 header-icon">
                 <span class="badge onw" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
         </div>

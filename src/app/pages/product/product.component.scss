@@ -719,10 +719,10 @@
         }
     }
     .prod-detail {
-        padding: 15px 15px;
+        padding: 5px 15px 15px;
         background: white;
-        heading-3 {
-            padding-left: 15px;
+        .heading-3 {
+            padding-bottom:5px;
         }
         p {
             font-size: $large-font;
@@ -730,10 +730,10 @@
            &:first-of-type{
             -webkit-line-clamp: 4;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            height: 6em;
            } 
            &.static-desc{
             height:0;
@@ -749,6 +749,13 @@
             border: none;
             padding-top: 10px;
             text-transform: capitalize;
+        }
+        &.detail-videos{
+            border-top:1px solid $border-color;
+            padding: 5px 15px 15px;
+            .heading-3 {
+                padding-bottom:10px;
+            }
         }
     }
     .prod-services {
@@ -2388,6 +2395,7 @@
 .show-all-strip{
     font-size:12px;
     padding-top:10px;
+    text-transform:uppercase;
    &.spec{
         padding:10px 15px;
         border-bottom:1px solid #EFEFF4;

@@ -326,8 +326,8 @@
                     </p>
                 </li>
             </ul>
-            <div  (click)="handleProductInfoPopup('key features')" class="show-all-strip">
-                <span>SHOW ALL KEY FEATURES</span>
+            <div (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
+                <span>Show Key Features</span>
             </div>
         </div>
 
@@ -356,7 +356,7 @@
                     </td>
                 </tr>
             </table>
-            <div (click)="handleProductInfoPopup('specifications')" class="show-all-strip spec">
+            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')" class="show-all-strip spec">
                 <span>Show All Specifications</span>
             </div>
         </div>
@@ -390,7 +390,7 @@
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
-            <div (click)="handleProductInfoPopup('product details')" class="show-all-strip">
+            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
                 <span>Read More</span>
             </div>
         </div>
@@ -444,7 +444,16 @@
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'])" class="widget-items">
+            <!-- <a class="widget-items" [routerLink]="getBrandLink(productBrandDetails)">
+                <span class="content-wrap">
+                    <p>More from {{productBrandDetails['brandName']}}</p>
+                    <span class="explore-now">Explore Now</span>
+                </span>
+                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24" >
+            </a> -->
+
+            <a (click)="sendWidgetTracking('category')" class="widget-items"
+                [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -452,7 +461,8 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl)" class="widget-items">
+            <a (click)="sendWidgetTracking('brandCategory')" class="widget-items"
+                [routerLink]="['/'+productBrandCategoryUrl]">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -615,7 +625,7 @@
             </div>
         </section>
 
-        <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </div>
     <!-- other sections ends -->
     

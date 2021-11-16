@@ -7,7 +7,6 @@
         </div>
     </div>
     <div class="content-popup card mt-15" [class.customPopHeight]="productOutOfStock" content>
-        <!--Yajya Design code goes here w.r.t each companent-->
         <div class="card-container list-view">
             <div class="left">
                 <ng-container>
@@ -17,7 +16,6 @@
             <div class="right">
                 <div class="name">
                     <span>{{productName}}</span>
-                    <!--<span>...</span>-->
                 </div>
                 <div class="brand">
                     <span>By: {{brandName}}</span>
@@ -46,9 +44,6 @@
                         <div class="out-of-stock-text" *ngIf="productOutOfStock">
                             <span>Available on Request</span>
                         </div>
-                        <!-- <div *ngIf="false" class="out-of-stock-price">
-                            <span>713</span>
-                        </div> -->
                     </div>
                 </div>
             </div>

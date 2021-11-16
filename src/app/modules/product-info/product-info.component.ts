@@ -1,4 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'product-info',
@@ -12,13 +14,11 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     defaultInfo = "";
     selectedIndex = 0;
-    leftTabIdx = 0;
     productInfo = null;
-    hasVideos = false;
-
     //new code
     mainInfo = null;
     contentInfo = null;
+    analyticsInfo = null;
     tab = null;
     tabs: string[] = [];
     //prices
@@ -27,21 +27,28 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     productDiscount = 0;
     bulkPriceWithoutTax = 0;
     bulkDiscount = 0;
-    productOutOfStock = false;
     imgURL = null;
     productName = "";
     brandName = "";
+    productOutOfStock = false;
+    loginStatus = "guest";
+    pageName = null;
 
-
-    constructor() {}
+    constructor(private globalAnalyticService: GlobalAnalyticsService,
+        public localStorageService: LocalStorageService,) { }
 
     ngOnInit()
     {
         if (this.modalData) {
             this.processMainInfo(this.modalData['mainInfo']);
             this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
+            this.analyticsInfo = this.modalData['analyticsInfo'];
+            this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
         }
+        const user = this.localStorageService.retrieve('user');
+        this.loginStatus = (user && user["authenticated"] == 'true') ? "registered user" : "guest";
     }
+
     processMainInfo(mainInfo)
     {
         this.productMrp = mainInfo['productMrp'];
@@ -54,27 +61,33 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.productName = mainInfo['productName'];
         this.brandName = mainInfo['brandName'];
     }
+
     processContentInfo(contentInfo, infoType)
     {
         this.contentInfo = contentInfo;
         this.tabs = Object.keys(contentInfo);
         this.selectedIndex = this.tabs.indexOf(infoType);
-        this.updateTab(infoType,this.selectedIndex)
+        this.updateTab(infoType, this.selectedIndex)
     }
-    updateTab(tab,index)
+
+    updateTab(tab: string, index)
     {
         this.selectedIndex = index;
         this.defaultInfo = tab;
-        let infoTabs = document.getElementById('infoTabs');
-        if(infoTabs){
-            console.clear();
-            console.log(" infoTabs.scrollLeft", infoTabs.scrollLeft);
-            infoTabs.scrollLeft += (80 * index);
-        }
+        this.sendTracking(tab.toUpperCase());
     }
-    hasTab(tabName) { return this.tabs.includes(tabName); }
+
+    sendTracking(subSection: string)
+    {
+        const PAGE = this.analyticsInfo['page'];
+        PAGE['subSection'] = subSection;
+        const custData = this.analyticsInfo['custData'];
+        const order = this.analyticsInfo['order'];
+        this.globalAnalyticService.sendAdobeCall({ PAGE, custData, order }, "genericPageLoad");
+    }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }
 
-    ngOnDestroy() {}
+    ngOnDestroy() { }
+
 }

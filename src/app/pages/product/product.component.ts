@@ -379,7 +379,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     private duplicateOrderCheck(rawData)
     {
-        if (rawData && rawData['product'][6] && rawData['product'][6]['data']['date']) {
+        if (rawData && rawData['product'][6] && rawData['product'][6]['data'] && rawData['product'][6]['data']['date']) {
             const userSession = this.localStorageService.retrieve('user');
             if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && rawData['product'][6] && rawData['product'][6].status) {
                 const date1: any = new Date(rawData['product'][6]['data']['date']);
@@ -1943,13 +1943,12 @@ export class ProductComponent implements OnInit, AfterViewInit
                 }
                 this.productService.postHelpful(obj).subscribe((res) =>
                 {
-                    if (res['code'] == 200) {
+                    if (res['code'] === '200') {
+                        console.log(this.reviews.reviewList[i]);
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         this.reviews.reviewList[i]['isPost'] = true;
                         this.reviews.reviewList[i]['like'] = yes;
                         this.reviews.reviewList[i]['dislike'] = no;
-                        console.log('-----------------------------');
-                        console.log(this.reviews.reviewList[i]);
                     }
                 });
             } else {

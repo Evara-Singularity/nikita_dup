@@ -1,0 +1,72 @@
+<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
+    [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>
+            <p class="txt header_text page-name">About this Product</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15" [class.customPopHeight]="productOutOfStock" content>
+        <!--Yajya Design code goes here w.r.t each companent-->
+        <div class="card-container list-view">
+            <div class="left">
+                <ng-container>
+                    <img src="{{imgURL}}" enhanceImgByNetwork height="125" width="125" />
+                </ng-container>
+            </div>
+            <div class="right">
+                <div class="name">
+                    <span>{{productName}}</span>
+                    <!--<span>...</span>-->
+                </div>
+                <div class="brand">
+                    <span>By: {{brandName}}</span>
+                </div>
+                <div class="price-details" *ngIf="productMrp > 0">
+                    <div class="left">
+                        <div class="price" *ngIf="productMrp > priceWithoutTax">
+                            <span class="crossed">{{productMrp | currency: 'INR' : 'symbol' :
+                                '1.0-0'}}</span>
+                            <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
+                                <span class="green-label" *ngIf="bulkPriceWithoutTax==null">
+                                    {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}%
+                                    OFF
+                                </span>
+                                <span class="green-label" *ngIf="bulkPriceWithoutTax!=null">
+                                    {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF% OFF
+                                </span>
+                            </ng-container>
+                        </div>
+                        <div class="main-price">
+                            <span *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
+                                {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span> <span
+                                *ngIf="bulkPriceWithoutTax!==null">
+                                {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+                        </div>
+                        <div class="out-of-stock-text" *ngIf="productOutOfStock">
+                            <span>Available on Request</span>
+                        </div>
+                        <!-- <div *ngIf="false" class="out-of-stock-price">
+                            <span>713</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section id="infoTabs" class="tabs-container">
+            <ul class="tabs">
+                <ng-container *ngFor="let tab of tabs; let i = index">
+                    <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">
+                        {{tab | titlecase}}</li>
+                </ng-container>
+            </ul>
+        </section>
+        <div class="tab-content" [ngSwitch]="defaultInfo">
+            <key-features *ngSwitchCase="'key features'"  [features]="contentInfo['key features']" ></key-features>
+            <specifications *ngSwitchCase="'specifications'" [specifications]="contentInfo['specifications']" > </specifications>
+            <product-details *ngSwitchCase="'product details'" [details]="contentInfo['product details']" ></product-details>
+            <videos *ngSwitchCase="'videos'" [videos]="contentInfo['videos']" [name]="productName" ></videos>
+            <images *ngSwitchCase="'images'"  [images]="contentInfo['images']" ></images>
+        </div>
+    </div>
+</app-pop-up>

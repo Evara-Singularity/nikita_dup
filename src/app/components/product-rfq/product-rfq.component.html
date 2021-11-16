@@ -118,7 +118,7 @@
                 </ng-container>
                 <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
             </div>
-            <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn" [class.stickyRfqButton]="!isOutOfStock">SEND QUERY</button>
+            <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR REQUIREMENT</button>
         </div>
     </form>
 </ng-template>
@@ -131,7 +131,7 @@
     <div class="head-sec" header>
         <div class="container">
             <i class="icon-circle-delete f-left" (click)="close()"></i>
-            <p class="txt">Get Best Price
+            <p class="txt">Interested to buy in bulk
                 <span class="subtxt">
                     Add more details to get the best deal.
                </span>

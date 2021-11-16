@@ -1,0 +1,10 @@
+<svg id="restart-line" xmlns="http://www.w3.org/2000/svg" width="14.569" height="14.569" viewBox="0 0 14.569 14.569">
+  <path id="Path_66807" data-name="Path 66807" d="M0,0H14.569V14.569H0Z" fill="none"/>
+  <g id="Group_9534" data-name="Group 9534" transform="translate(2 2)">
+    <g id="thumb-down-button" transform="translate(0 0)">
+      <g id="thumb-down">
+        <path id="Path_585" data-name="Path 585" d="M4.04,25.5H8.586a1,1,0,0,1,.909.6l1.515,3.55a.717.717,0,0,1,.1.35v.95h0V31a1.008,1.008,0,0,1-1.01,1H6.919l.505,2.3v.15a1.042,1.042,0,0,1-.2.55l-.556.5L3.333,32.2a.982.982,0,0,1-.3-.7v-5A1.008,1.008,0,0,1,4.04,25.5Zm-2.02,0v6H0v-6Z" transform="translate(0 -25.5)" fill="#d9232d"/>
+      </g>
+    </g>
+  </g>
+</svg>

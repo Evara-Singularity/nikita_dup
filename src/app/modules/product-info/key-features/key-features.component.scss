@@ -1,0 +1,26 @@
+@import '../../../scss/variables';
+.key-features {
+    padding: 15px 15px;
+    background: white;
+    font-size: $large-font;
+    .feature-list {
+        li {
+            p{
+                margin-bottom :10px;
+                &:before {
+                    content:"•";
+                    font-size:24px;
+                    padding-right: 10px;
+                    vertical-align: top;
+                    line-height: 21px;
+                }
+            }
+            span {
+                display: inline-block;
+                width: 90%;
+                line-height: 21px;
+                vertical-align: top;
+            }
+        }
+    }
+}

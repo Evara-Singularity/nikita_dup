@@ -20,6 +20,7 @@ export class ProductSponsoredListComponent implements OnInit {
   @Input() productName: string;
   @Input() productId: string;
   @Input() categoryCode: string;
+  @Input('analytics') analytics = null;
   readonly lowestCountToDisplay: number = 2
 
   readonly cardFeaturesConfig: ProductCardFeature = {

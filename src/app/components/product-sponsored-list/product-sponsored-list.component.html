@@ -5,12 +5,15 @@
     </div>  
   <div class="vertical-scroll-container">
       <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
-          <ng-container *ngFor="let product of productList;" >
+          <ng-container *ngFor="let product of productList;let pIndex=index" >
               <product-horizontal-card 
                   [product]="product"
                   [cardMetaInfo]='cardMetaInfo'
                   [hideAd]="true"
-                  [cardFeaturesConfig]='cardFeaturesConfig' >
+                  [cardFeaturesConfig]='cardFeaturesConfig'
+                  [pIndex]="pIndex"
+                  [enableTracking]="true"
+                  [analytics]="analytics" >
               </product-horizontal-card>
           </ng-container>
       </div>

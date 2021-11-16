@@ -70,7 +70,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.updateTab(infoType, this.selectedIndex)
     }
 
-    updateTab(tab: string, index )
+    updateTab(tab: string, index)
     {
         this.selectedIndex = index;
         this.defaultInfo = tab;
@@ -81,7 +81,9 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     {
         const PAGE = this.analyticsInfo['page'];
         PAGE['subSection'] = subSection;
-        this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] },"genericPageLoad");
+        const custData = this.analyticsInfo['custData'];
+        const order = this.analyticsInfo['order'];
+        this.globalAnalyticService.sendAdobeCall({ PAGE, custData, order }, "genericPageLoad");
     }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }

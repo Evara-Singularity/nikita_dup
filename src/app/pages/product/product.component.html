@@ -475,7 +475,7 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24" >
             </a> -->
 
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items"
+            <a (click)="sendWidgetTracking('category')" class="widget-items"
                 [routerLink]="['/'+productCategoryDetails['categoryLink']]">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
@@ -484,7 +484,7 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
-            <a (click)="commonService.setSectionClickInformation('pdp_widget', 'listing')" class="widget-items"
+            <a (click)="sendWidgetTracking('brandCategory')" class="widget-items"
                 [routerLink]="['/'+productBrandCategoryUrl]">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
@@ -648,7 +648,7 @@
             </div>
         </section>
 
-        <breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </div>
     <!-- other sections ends -->
     

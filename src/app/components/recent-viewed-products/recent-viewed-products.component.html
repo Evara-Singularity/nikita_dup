@@ -9,11 +9,14 @@
     </div>
     <div class="vertical-scroll-container">
         <div class="inner-scroll-container" [style.width.px]="recentProductItems.length * 165">
-            <ng-container *ngFor="let product of recentProductItems;" >
+            <ng-container *ngFor="let product of recentProductItems;let pIndex = index" >
                 <product-horizontal-card 
                     [product]="product"
                     [cardMetaInfo]='cardMetaInfo'
-                    [cardFeaturesConfig]='cardFeaturesConfig' >
+                    [cardFeaturesConfig]='cardFeaturesConfig'
+                    [pIndex]="pIndex"
+                    [enableTracking]="true"
+                    [analytics]="analytics">
                 </product-horizontal-card>
             </ng-container>
         </div>

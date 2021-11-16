@@ -485,7 +485,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             let page = {
                 pageName: null,
                 channel: "pdp", subSection: null,
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[0]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
             }
             this.pdpAccordianInstance.instance['analyticsInfo'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };;
         }
@@ -993,8 +993,15 @@ export class ProductComponent implements OnInit, AfterViewInit
     async showFBT()
     {
         if (this.fbtFlag) {
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                channel: "About This Product", subSection: null,
+                linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            let analytics = { page: page, custData: this.custDataTracking, order: this.orderTracking };
             this.modalService.show({
-                inputs: { modalData: { isModal: true, backToCartFlow: this.addToCartFromModal.bind(this) } },
+                inputs: { modalData: { isModal: true, backToCartFlow: this.addToCartFromModal.bind(this), analytics: analytics } },
                 component: FbtComponent,
                 outputs: {},
                 mConfig: { className: 'ex' }
@@ -1475,6 +1482,15 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.similarProductInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
 
             this.similarProductInstance.instance['outOfStock'] = this.productOutOfStock;
+            const custData = this.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp", subSection: "You May Also Like",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.recentProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
         }
     }
 
@@ -1502,6 +1518,15 @@ export class ProductComponent implements OnInit, AfterViewInit
             const factory = this.cfr.resolveComponentFactory(RecentViewedProductsComponent);
             this.recentProductsInstance = this.recentProductsContainerRef.createComponent(factory, null, this.injector);
             this.recentProductsInstance.instance['outOfStock'] = this.productOutOfStock;
+            const custData = this.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp", subSection: "Recently Viewed",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.recentProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData};
         }
     }
 
@@ -2703,7 +2728,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         productInfo['infoType'] = infoType;
         const TAXONS = this.taxons;
         let page = {
-            pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[0]}:pdp`,
+            pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
             channel: "About This Product", subSection: null,
             linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
         }
@@ -2717,11 +2742,26 @@ export class ProductComponent implements OnInit, AfterViewInit
         let page = {
             pageName: null,
             channel: "pdp", subSection: null,
-            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[0]}:pdp`, linkName: cta, loginStatus: this.loginStatusTracking
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: cta, loginStatus: this.loginStatusTracking
         }
         const custData = this.custDataTracking;
         const order = this.orderTracking;
         this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+    }
+
+    sendWidgetTracking(widgetType)
+    {
+        const linkName = widgetType === "category" ? this.productCategoryDetails['categoryName'] : (this.productBrandDetails['brandName'] +" "+ this.productCategoryDetails['categoryName'])
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp", subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: `More from ${linkName}`, loginStatus: this.loginStatusTracking
+        }
+        const custData = this.custDataTracking;
+        const order = this.orderTracking;
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+        this.commonService.setSectionClickInformation('pdp_widget', 'listing')
     }
 
     getRefinedProductTags()
@@ -2786,7 +2826,20 @@ export class ProductComponent implements OnInit, AfterViewInit
         return taxon;
     }
 
-
+    get breadCrumbAnalytics()
+    {
+        let analytics = null
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp", subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: 'breadcrumb', loginStatus: this.loginStatusTracking
+        }
+        const custData = this.custDataTracking;
+        const order = this.orderTracking;
+        analytics = {page,custData,order};
+        return analytics;
+    }
 
     ngOnDestroy()
     {

@@ -11,6 +11,7 @@ import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
     selector: 'fbt',
@@ -36,6 +37,7 @@ export class FbtComponent implements OnInit
     fbtSubscription: Subscription = null;
     rootProductSubscription = null;
     @Input('modalData') modalData = null;
+    @Input('analytics') analytics = null;
     private cDistryoyed = new Subject();
     isModal = false;
     currentCTA = '';
@@ -44,6 +46,7 @@ export class FbtComponent implements OnInit
         private cartService: CartService, 
         private _commonService: CommonService,
         private productUtil: ProductUtilsService, 
+        private _analyticsService: GlobalAnalyticsService,
         private router: Router){
         this.isBrowser = _commonService.isBrowser;
     }
@@ -55,6 +58,7 @@ export class FbtComponent implements OnInit
         if (this.modalData) {
             this.isModal = this.modalData['isModal'];
             this.addToCartFromModal = this.modalData['backToCartFlow'];
+            this.analytics = this.modalData['analytics'];
         } else {
             this.isModal = false;
         }
@@ -212,12 +216,19 @@ export class FbtComponent implements OnInit
 
     setCTAType()
     {
+        let linkName = "buy_together_fbt";
         if (this.noOfFBTS > 0) {
             this.currentCTA = 'BUY TOGETHER';
         } else {
             this.currentCTA = this.isModal ? 'SKIP & GO TO CART' : 'ADD TO CART';
+            linkName = this.isModal ? 'skip_&_go_to_cart_fbt' : 'add_to_cart_fbt';
         }
         this.productUtil.sendTrackData(this.currentCTA, this.rootMSN);
+        const page = this.analytics['page'];
+        page['linkName'] = linkName;
+        const custData = this.analytics['custData'];
+        const order = this.analytics['order'];
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
     addProducts()

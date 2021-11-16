@@ -470,16 +470,23 @@
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
                 </div>
-                <div class="pwa-col-6 align-right">
+                <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
                     <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
-            <div class="pwa-row">
+
+            <div class="pwa-row"  *ngIf="overallRating < 1">
+                <p class="review_text">
+                    Be the first one to provide review for this product
+                </p>
+                <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+            </div>
+            <div class="pwa-row" *ngIf="overallRating > 0">
                 <p class="extra-small-txt">
                     Customer Reviews on {{ productName}}
                 </p>
             </div>
-            <div class="pwa-row rating-sec">
+            <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
                         <h3>{{ overallRating  | number:'1.1-1' }}<i class="icon-rating-star"></i>

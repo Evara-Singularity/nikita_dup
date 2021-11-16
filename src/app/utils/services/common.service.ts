@@ -941,8 +941,12 @@ export class CommonService {
         }
     }
     
-    navigateTo(link) {
-        this._router.navigateByUrl(link);
+    navigateTo(link, addBracket?: boolean) {
+        if (addBracket) {
+            this._router.navigate([link]);
+            return;
+        }
+        this._router.navigate(link);
     }
 
     sendOtp(data): Observable<{}>

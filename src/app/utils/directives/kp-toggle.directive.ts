@@ -1,13 +1,14 @@
-import { Directive, ElementRef, AfterViewInit, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 @Directive({
     selector: '[appKpToggle]'
 })
-export class KpToggleDirective implements AfterViewInit {
+export class KpToggleDirective {
 
     constructor(private _el: ElementRef) {
     }
 
     @Input('appKpToggle') data: {};
+    @Input('closeOtherTabs') closeOtherTabs: boolean;
 
     @HostListener('click') onMouseEnter() {
         if (this.data['iconMode']) {
@@ -18,7 +19,22 @@ export class KpToggleDirective implements AfterViewInit {
         }
     }
 
-    ngAfterViewInit(): void {
+    resetClass(id) {
+        const panel_body = document.getElementsByClassName('panel-body');
+        const panel_head = document.getElementsByClassName('heading-3');
+
+        [].forEach.call(panel_body, (eachHtmlEl) => {
+            eachHtmlEl.style.display = 'none';
+        });
+
+        [].forEach.call(panel_head, (eachHtmlEl) => {
+            eachHtmlEl.classList.remove('ico-up');
+            eachHtmlEl.classList.remove('ico-expand');
+        });
+
+        if (id) {
+            document.getElementById(id).style.display = 'block';   
+        }
     }
 
     showContainer(Id?: string, icon?: boolean) {
@@ -28,14 +44,14 @@ export class KpToggleDirective implements AfterViewInit {
                 this._el.nativeElement.classList.add('ico-expand');
                 this._el.nativeElement.classList.add('ico-up');
             }
-        }
-        else {
+        } else {
             document.getElementById(Id).style.display = 'none';
             if (icon == true) {
                 this._el.nativeElement.classList.remove('ico-expand');
                 this._el.nativeElement.classList.remove('ico-up');
             }
         }
+        this.resetClass(document.getElementById(Id).style.display == 'block' ? Id : null);
     }
 }
 

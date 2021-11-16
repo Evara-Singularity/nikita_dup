@@ -1,0 +1,121 @@
+<app-pop-up (outData$)="outData($event)" [class.open1]="openEMIPopup" *ngIf="openEMIPopup"
+    [data]="{class: 'payment-popup addAddressPopup addEmi',headerCustom:true, selector:'openEMIPopup'}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeEMIPalns($event)"></i>
+            <p class="txt header_text page-name">EMI Plans</p>
+        </div>
+    </div>
+    <div class="content-popup mt-15" content>
+        <!--10766:Design Changes start-->
+        <!--cards tab code start-->
+        <div class="emi-top-details pd-15">
+            <div class="emi-top-details-inner intrst-plan">
+                <span class="bullet">&#8226;</span>
+                <p><span class="green-txt">0% interest plans</span> available on listed debit/credit cards.</p>
+            </div>
+            <div (click)="handleEMIStepsPopup()" class="emi-top-details-inner how-it-work">
+                <div class="emi-top-details-inner-left">
+                    <img src="assets/img/how-it-w.png">
+                </div>
+                
+                <div class="emi-top-details-inner-mid">
+                    <p><strong>See how it works</strong></p>
+                    <span>You can avail it in 4 simple steps</span>
+                     
+                </div>
+                <div class="emi-top-details-inner-last">
+                    <img src="assets/img/arrow-right-blue.png">
+                </div>
+                
+            </div>
+            <div class="find-txt mt-15">
+                <p><strong>Find a suitable EMI option below and choose the same option at payments step while placing the order.</strong></p>
+            </div>
+        </div>
+        <div class="emiTabs">
+            <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.creditCard"
+                (click)="changeCardType(CARD_TYPES.creditCard)">
+                <span>Credit Card</span>
+            </div>
+            <div class="emiTab" [class.selectedTab]="paymentMethod == CARD_TYPES.debitCard"
+                (click)="changeCardType(CARD_TYPES.debitCard)">
+                <span>Debit Card</span>
+            </div>
+        </div>
+        <!--cards tab code end-->
+            <div *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
+                <div (click)="selectedBankChange(item)" class="payment-accordion_header">
+                    <!-- <img class="ico-accord-left" src="assets/img/emi-bajaj.png"/> -->
+                    <span>{{item['bankname']}}</span>
+                    <i  class="icon-down"></i>
+                </div>
+                <div class="payment-accordion_body">
+                <div [style.display]="item['key']===selectedBank?'block':'none'">
+                    <div class="emi-plans"
+                        *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
+                        <div class="emi-plans-heading">
+                            <strong>No Cost EMI Plans</strong>
+                            <strong class="align-left-auto">Total payable</strong>
+                        </div>
+                        <div class="emi-plans-list">
+                            <ng-container
+                                *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
+                                <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
+                                    <div class="emi-amount">
+                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
+                                                getEmiMonths(emi.key) }} months <span class="green-txt">@0%
+                                                p.a.</span></span>
+                                    </div>
+                                    <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
+                                        '1.2-2'}}</span>
+                                </label>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="emi-plans"
+                        *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
+                      <div class="emi-plans-heading">
+                            <strong>Standered EMI Plans</strong>
+                            <strong class="align-left-auto">Total payable</strong>
+                        </div>
+                        <div class="emi-plans-list">
+                            <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
+                                <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
+                                    <div class="emi-amount">
+                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
+                                                getEmiMonths(emi.key) }} months {{emi.value.emi_interest_paid> 0 ? +
+                                                emi.value.emiBankInterest + '%' :
+                                                '0 %' }} p.a.</span>
+                                    </div>
+                                    <span class="emi-total-payable">₹{{emi.value.transactionAmount | number :
+                                        '1.2-2'}}</span>
+                                </label>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step-blw-det">
+            <p>No Cost EMI offer of Moglix enables users to purchase *everything on EMI and experience easy shopping. This special scheme allows customers to purchase expensive products on EMI at the original price of the product that is split equally across the **EMI tenure. The interest a buyer is liable to pay is offered as an upfront discount on checkout. So, there are no addition costs such as interest, down payment or processing fee. Moglix offers No Cost EMI on all products across the site.</p>
+            <p><strong>*Minimum order placed should be Rs.{{minOrderPlaced}}</strong></p>
+            <p><strong>**Applicable on EMI tenure for 3 and 6 months only, across all banks.</strong></p>
+            <p class="tnc">Terms and Conditions:</p>
+            <div class="step-emi-det">
+                <h4>EMI Details</h4>
+                <ul>
+                    <li>Select your preferred EMI option at the time of payment.</li>
+                    <li>Final EMI is calculated on the total value of your order at the time of payment.</li>
+                    <li>The Bank charges annual interest rates according to the reducing monthly balance. In the monthly reducing cycle, the principal is reduced with every EMI and the interest is calculated on the outstanding balance.</li>
+                    <li> The minimum order value to avail the EMI payment option is Rs 3,000. In case of any kind of refund in an EMI transaction, interest already billed in a particular transaction will not be refundable under any circumstances. </li>
+                    <li>While you will not be charged a processing fee for availing EMI option, the interest charged by the bank shall not be refunded.</li>
+                    <li>You may check with the respective bank/issuer on how a cancellation, refund or pre-closure could affect the EMI terms, and what interest charges would be levied on you for the same.</li>
+                  </ul> 
+            </div>
+        </div>
+        <ng-container #emiStepsPopup></ng-container>
+    </div>
+</app-pop-up>

@@ -1,0 +1,25 @@
+<div class="product-specification">
+    <h2 class="heading-3">PRODUCT SPECIFICATION</h2>
+    <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="left">
+                <div>Brand</div>
+            </td>
+            <td class="right">
+                <div>
+                    <a class="brandName" (click)="_commonService.navigateTo(specifications?.brand?.link)" >{{specifications?.brand?.name}}</a>
+                </div>
+            </td>
+        </tr>
+        <tr class="spec-row" *ngFor="let attr of specifications.attributes | objectToArray:'associative'">
+            <td class="left">
+                <div>{{attr.key}}</div>
+            </td>
+            <td class="right">
+                <div *ngFor="let item of attr.value">
+                    {{item}}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

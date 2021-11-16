@@ -65,6 +65,12 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     {
         this.selectedIndex = index;
         this.defaultInfo = tab;
+        let infoTabs = document.getElementById('infoTabs');
+        if(infoTabs){
+            console.clear();
+            console.log(" infoTabs.scrollLeft", infoTabs.scrollLeft);
+            infoTabs.scrollLeft += (80 * index);
+        }
     }
     hasTab(tabName) { return this.tabs.includes(tabName); }
 

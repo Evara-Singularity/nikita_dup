@@ -2682,11 +2682,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productInfoPopupInstance = this.productInfoPopupContainerRef.createComponent(factory, null, this.injector);
         this.productInfoPopupInstance.instance['modalData'] = this.getProductInfo_v1(infoType);
         this.productInfoPopupInstance.instance['openProductInfo'] = true;
-        var infoTabs = document.getElementById('infoTabs');
-        if(infoTabs){
-            console.log(infoTabs,"infoTabs");
-            infoTabs.scrollLeft = 200;
-        }
         (this.productInfoPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {
             // document.getElementById('infoTabs').scrollLeft = 0;

@@ -146,7 +146,7 @@ export class OrderConfirmationComponent implements OnInit {
                     data["affiliateId"] = 10;
                     this.afType = "iFrame";
                     this.iFrameUrl =
-                        "https://tracking.icubeswire.co/aff_a?offer_id=375&adv_sub1=" +
+                        "https://tracking.icubeswire.co/aff_a?offer_id=2584&adv_sub1=" +
                         this.queryParams["orderId"] +
                         "&sale_amount=" +
                         this.queryParams["transactionAmount"] +

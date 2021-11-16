@@ -2778,12 +2778,11 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     sendWidgetTracking(widgetType)
     {
-        const linkName = widgetType === "category" ? this.productCategoryDetails['categoryName'] : (this.productBrandDetails['brandName'] +" "+ this.productCategoryDetails['categoryName'])
         const TAXONS = this.taxons;
         let page = {
             pageName: null,
             channel: "pdp", subSection: null,
-            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: `More from ${linkName}`, loginStatus: this.loginStatusTracking
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: `More from ${widgetType}`, loginStatus: this.loginStatusTracking
         }
         const custData = this.custDataTracking;
         const order = this.orderTracking;

@@ -7,6 +7,8 @@
   li {
     @include gridForCategory('2');
     padding: 10px;
+    min-height: 155px;
+    max-height: 155px;
     &:nth-child(1){
       border-right: 1px solid #EFEFF4;
       border-bottom: 1px solid #EFEFF4;
@@ -36,7 +38,6 @@
       font-size: 12px;
       font-weight: 400;
       text-align: center;
-      margin-top: 10px;
     }
   }
 }

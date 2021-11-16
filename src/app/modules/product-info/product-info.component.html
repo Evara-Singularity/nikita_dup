@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <section class="tabs-container">
+        <section id="infoTabs" class="tabs-container">
             <ul class="tabs">
                 <ng-container *ngFor="let tab of tabs; let i = index">
                     <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">

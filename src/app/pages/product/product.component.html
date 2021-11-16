@@ -107,7 +107,7 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <div class="quan-details" *ngIf="productMinimmumQuantity>=1">
                     <p>Qty Per Pack :
                         <span>{{priceQuantityCountry['packageUnit']}}</span>
                     </p>
@@ -130,12 +130,6 @@
                     </p>
                 </div>
             </div>
-            <!-- <div *ngIf="productOutOfStock" class="pad-t-10 f-size-8">
-                <strong class="availabilityOnReq">Available on Request</strong>
-                <div class="wishlist" *ngIf="!isPurcahseListProduct" (click)="addToPurchaseList()">
-                    <p class="blueText">ADD TO MY WISHLIST</p>
-                </div>
-            </div> -->
 
             <!--recently bought product section -->
             <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
@@ -146,17 +140,8 @@
         <ng-container #productShare></ng-container>
     </div>
 
-    <!-- <div *ngIf="productOutOfStock" class="oos-category clearfix">
-        <strong class="txt" style="font-weight: normal;">
-            More From {{productCategoryDetails['categoryName']}}</strong>
-        <span [routerLink]="['/'+productCategoryDetails['categoryLink']]" class="category_link blueText">VIEW ALL</span>
-    </div> -->
-
     <!-- CTA Fixed position -->
     <div class="bottom-bar" [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-        <!-- <div class="wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
-            <i [ngClass]="isPurcahseListProduct ? 'icon-puchase_active':'icon-puchase_inactive'"></i>
-        </div> -->
         <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
             <i class="icon-cart1"></i>
             <span>ADD TO CART</span>
@@ -274,15 +259,6 @@
                             365 Days <br> Help Desk
                         </span>
                     </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <img src="assets/img/restart-line.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            Return <br />Product
-                        </span>
-                    </div>
                 </div>
             <h2 class="heading-3"> Return Policy</h2>
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
@@ -365,7 +341,7 @@
                     <td class="right">
                         <div>
                             <a class="brandName"
-                                [routerLink]="getBrandLink(productBrandDetails)">{{productBrandDetails['brandName']}}</a>
+                            (click)="commonService.navigateTo(getBrandLink(productBrandDetails))" >{{productBrandDetails['brandName']}}</a>
                         </div>
                     </td>
                 </tr>
@@ -390,10 +366,11 @@
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
-                    <a class="blueText" [routerLink]="['/'+productCategoryDetails['categoryLink']]">
+                    <a class="blueText" 
+                    (click)="commonService.navigateTo('/'+productCategoryDetails['categoryLink'])">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText"
-                        [routerLink]="['/'+ productBrandCategoryUrl ]">{{productBrandDetails['brandName']}}
+                        (click)="commonService.navigateTo('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
             </ng-container>
@@ -401,7 +378,7 @@
                 <p>
                     {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a
                     well-known ecommerce platform for qualitative range of <a class="blueText"
-                        [routerLink]="['/'+productCategoryDetails['categoryLink']]">{{productCategoryDetails['categoryName']}}</a>.
+                    (click)="commonService.navigateTo('/'+productCategoryDetails['categoryLink'])" >{{productCategoryDetails['categoryName']}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
                     manufacture {{productName}}, are sourced
@@ -409,7 +386,7 @@
                     {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high
                     quality. We are dedicatedly involved in
                     providing an excellent quality array of <a class="blueText"
-                        [routerLink]="['/'+productBrandCategoryUrl]">
+                    (click)="commonService.navigateTo('/'+productBrandCategoryUrl)" >
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
@@ -420,7 +397,7 @@
 
 
 
-        <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail">
+        <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
             <h2 class="heading-3">Product Videos</h2>
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
@@ -498,7 +475,7 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="pdp-section-card" *ngIf="overallRating">
+        <section class="pdp-section-card">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
@@ -587,7 +564,7 @@
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
                     <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like=='1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
                             <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
@@ -598,7 +575,7 @@
                     </div>
                 </div>
             </div>
-            <div class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>View {{ rawReviewsData?.summaryData?.review_count }} More Helpful Review</span>
             </div>
         </section>
@@ -709,28 +686,27 @@
             planet.
         </p>
         <ul class="categories-list">
-            <li [routerLink]="['/electricals/211000000']">
+            <li (click)="commonService.navigateTo('/electricals/211000000')">
                 <i class="icon-electricals"></i>
                 <span>Electricals</span>
             </li>
-            <li [routerLink]="['/hand-tools/112000000']">
+            <li (click)="commonService.navigateTo('/hand-tools/112000000')">
                 <i class="icon-hand-tool"></i>
                 <span>Hand Tools</span>
             </li>
-
-            <li [routerLink]="['/safety-and-security/116000000']">
+            <li (click)="commonService.navigateTo('/safety-and-security/116000000')">
                 <i class="icon-safety"></i>
                 <span>Safety</span>
             </li>
-            <li [routerLink]="['/security/120000000']">
+            <li (click)="commonService.navigateTo('/security/120000000')">
                 <i class="icon-security"></i>
                 <span>Security</span>
             </li>
-            <li [routerLink]="['/power-tools/114000000']">
+            <li (click)="commonService.navigateTo('/power-tools/114000000')">
                 <i class="icon-power-tool"></i>
                 <span>Power Tools</span>
             </li>
-            <li [routerLink]="['/all-categories']">
+            <li (click)="commonService.navigateTo('/all-categories')">
                 <i class="icon-all-category"></i>
                 <span>more</span>
             </li>

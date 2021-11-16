@@ -1,7 +1,7 @@
 @import '../../scss/variables';
 @import '../../scss/cards.scss';
 .tabs-container{
-    overflow-x: auto;
+    overflow-x: scroll;
     display: flex;
     align-items: center;
     &::-webkit-scrollbar {
@@ -15,9 +15,9 @@
     display: flex;
     align-items: center;
     flex-wrap: no-wrap;
-    transform: translateX(0px);
     transition: transform 300ms ease-in-out;
     padding:0 15px;
+    scroll-behavior: smooth;
   }
   
   .tab{

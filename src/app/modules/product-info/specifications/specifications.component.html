@@ -1,5 +1,5 @@
 <div class="product-specification">
-    <h2 class="heading-3">PRODUCT SPECIFICATION</h2>
+    <h2 class="heading-3">Product Specifications</h2>
     <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
         <tr>
             <td class="left">
@@ -7,8 +7,7 @@
             </td>
             <td class="right">
                 <div>
-                    <a class="brandName"
-                        [routerLink]="specifications?.brand?.link">{{specifications?.brand?.name}}</a>
+                    <a class="brandName" (click)="_commonService.navigateTo(specifications?.brand?.link)" >{{specifications?.brand?.name}}</a>
                 </div>
             </td>
         </tr>

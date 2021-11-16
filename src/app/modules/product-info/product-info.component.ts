@@ -40,9 +40,8 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     ngOnInit()
     {
         if (this.modalData) {
-            this.processMainInfo(this.modalData['mainInfo']);
-            this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
             this.analyticsInfo = this.modalData['analyticsInfo'];
+            this.processMainInfo(this.modalData['mainInfo']);
             this.processContentInfo(this.modalData['contentInfo'], this.modalData['infoType']);
         }
         const user = this.localStorageService.retrieve('user');
@@ -79,11 +78,11 @@ export class ProductInfoComponent implements OnInit, OnDestroy
 
     sendTracking(subSection: string)
     {
-        const PAGE = this.analyticsInfo['page'];
-        PAGE['subSection'] = subSection;
+        const page = this.analyticsInfo['page'];
+        page['subSection'] = subSection;
         const custData = this.analyticsInfo['custData'];
         const order = this.analyticsInfo['order'];
-        this.globalAnalyticService.sendAdobeCall({ PAGE, custData, order }, "genericPageLoad");
+        this.globalAnalyticService.sendAdobeCall({ page, custData, order }, "genericPageLoad");
     }
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }

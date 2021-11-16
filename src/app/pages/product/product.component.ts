@@ -1487,10 +1487,10 @@ export class ProductComponent implements OnInit, AfterViewInit
             const TAXONS = this.taxons;
             const page = {
                 pageName: null,
-                channel: "pdp", subSection: "You May Also Like",
+                channel: "pdp", subSection: "Similar Products",
                 linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
             }
-            this.recentProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
+            this.similarProductInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
         }
     }
 
@@ -1505,6 +1505,15 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.sponseredProductsInstance.instance['productId'] = this.defaultPartNumber;
             this.sponseredProductsInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
             this.sponseredProductsInstance.instance['outOfStock'] = this.productOutOfStock;
+            const custData = this.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp", subSection: "You May Also Like",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.sponseredProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
         }
     }
 
@@ -1753,6 +1762,14 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(factory, null, this.injector);
             //this.fbtComponentInstance.instance['addToCartFromModal'] = this.addToCartFromModal.bind(this);
             this.fbtComponentInstance.instance['isModal'] = false;
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                channel: "About This Product", subSection: null,
+                linkPageName: null, linkName: null, loginStatus: this.loginStatusTracking
+            }
+            this.fbtComponentInstance.instance['analytics'] = { page: page, custData: this.custDataTracking, order: this.orderTracking };;
+
         }
     }
 

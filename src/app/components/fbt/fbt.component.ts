@@ -139,7 +139,6 @@ export class FbtComponent implements OnInit
                 productObject['taxonomy'] = categoryDetails.taxonomy;
                 productObject['categoryCode'] = categoryDetails.categoryCode;
                 productObject['taxonomyCode'] = categoryDetails.taxonomyCode;
-                productObject['id_brand'] = product.brandDetails.idBrand;
                 productObject['productName'] = product.productName;
                 productObject['defaultPartNumber'] = product['defaultPartNumber'] ? product['defaultPartNumber'] : '';
                 productObject['partNumber'] = product.partNumber;
@@ -228,7 +227,7 @@ export class FbtComponent implements OnInit
         page['linkName'] = linkName;
         const custData = this.analytics['custData'];
         const order = this.analytics['order'];
-        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+        this._analyticsService.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
     addProducts()

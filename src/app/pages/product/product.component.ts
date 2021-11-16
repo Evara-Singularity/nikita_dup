@@ -24,6 +24,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { FbtComponent } from './../../components/fbt/fbt.component';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import { CheckoutService } from '@app/utils/services/checkout.service';
+import { ProductOfferComparisionModule } from '@app/components/product-offer-comparision/product-offer-comparision.component';
 
 interface ProductDataArg {
   productBO: string;
@@ -1972,6 +1973,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           delete schema['offers']['availability'];
         } else if (this.priceQuantityCountry['quantityAvailable'] == 0) {
           delete schema['offers']['availability'];
+        } if (this.reviews?.summaryData?.final_average_rating === 0 || null || ''){
+          delete schema['aggregateRating'];
         }
 
         s.text = JSON.stringify(schema);

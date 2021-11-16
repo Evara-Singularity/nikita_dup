@@ -426,10 +426,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     setReviewsRatingData(reviews)
     {
         //console.log(reviews);
-        this.reviews = reviews;
-        if (this.reviews && this.reviews.reviewList) {
-            this.reviewLength = this.reviews.reviewList.length;
-            this.reviews.reviewList.forEach(element =>
+        this.rawReviewsData = reviews;
+        if (this.rawReviewsData && this.rawReviewsData.reviewList) {
+            this.reviewLength = this.rawReviewsData.reviewList.length;
+            this.rawReviewsData.reviewList.forEach(element =>
             {
                 element['isPost'] = false;
                 element['yes'] = 0;
@@ -442,16 +442,16 @@ export class ProductComponent implements OnInit, AfterViewInit
             });
         }
         this.sortReviewsList("date");
-        this.setProductRating(this.reviews.summaryData.final_average_rating);
+        this.setProductRating(this.rawReviewsData.summaryData.final_average_rating);
     }
 
     sortReviewsList(sortType)
     {
         this.selectedReviewType = sortType;
         if (sortType === "helpful") {
-            this.reviews.reviewList = this.sortedReviewByRating(this.reviews.reviewList);
+            this.rawReviewsData.reviewList = this.sortedReviewByRating(this.rawReviewsData.reviewList);
         } else {
-            this.reviews.reviewList = this.sortedReviewsByDate(this.reviews.reviewList);
+            this.rawReviewsData.reviewList = this.sortedReviewsByDate(this.rawReviewsData.reviewList);
         }
     }
 
@@ -1944,11 +1944,17 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.productService.postHelpful(obj).subscribe((res) =>
                 {
                     if (res['code'] === '200') {
-                        console.log(this.reviews.reviewList[i]);
+                        console.log(this.rawReviewsData.reviewList[i]);
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
-                        this.reviews.reviewList[i]['isPost'] = true;
-                        this.reviews.reviewList[i]['like'] = yes;
-                        this.reviews.reviewList[i]['dislike'] = no;
+                        this.rawReviewsData.reviewList[i]['isPost'] = true;
+                        this.rawReviewsData.reviewList[i]['like'] = yes;
+                        this.rawReviewsData.reviewList[i]['dislike'] = no;
+
+                        if (yes === '1') {
+                            this.rawReviewsData.reviewList[i]['yes'] += 1;
+                        } else if (no === '1' && this.rawReviewsData.reviewList[i]['no'] > 0) {
+                            this.rawReviewsData.reviewList[i]['no'] -= 1;
+                        }
                     }
                 });
             } else {
@@ -2079,8 +2085,8 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         if (this.isServer && this.rawProductData) {
             let inStock = (!this.productOutOfStock) ? "http://schema.org/InStock" : "http://schema.org/OutOfStock";
-            let reviewCount = this.reviews.summaryData.review_count > 0 ? this.reviews.summaryData.review_count : 1;
-            let ratingValue = this.reviews.summaryData.final_average_rating > 0 ? this.reviews.summaryData.final_average_rating : 3.5;
+            let reviewCount = this.rawReviewsData.summaryData.review_count > 0 ? this.rawReviewsData.summaryData.review_count : 1;
+            let ratingValue = this.rawReviewsData.summaryData.final_average_rating > 0 ? this.rawReviewsData.summaryData.final_average_rating : 3.5;
             let imageSchema = this.renderer2.createElement('script');
             imageSchema.type = "application/ld+json";
 

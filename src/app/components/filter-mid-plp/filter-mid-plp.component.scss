@@ -71,6 +71,7 @@
     .inline-filter-card-value {
         label {
             width: 25px;
+            margin-top: -4px;
             @extend %custom-check-box-checkout;
         }
         display: flex;
@@ -85,7 +86,7 @@
         margin-top: 5px;
         margin-bottom: 5px;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 14px;
         &.card-value-2 {
             margin-bottom: 5px;
         }

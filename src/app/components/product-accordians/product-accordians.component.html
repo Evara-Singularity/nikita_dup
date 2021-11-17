@@ -10,7 +10,7 @@
                 </h3>
             </div>
         </div>
-        <div [id]="'popularBrandCategoryAccord'" style="display:none;" class="panel-body">
+        <div [id]="'popularBrandCategoryAccord'" [style.display]="popularLinks?.length > 0 ? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularLinks | slice:0:10">
                     <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED BRAND CATEGORY', ACCORDIAN_DATA[1][category], ACCORDIAN_DATA[1][category]);">
@@ -31,7 +31,7 @@
                 </h3>
             </div>
         </div>
-        <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+        <div [id]="'attributeAccoridan'" [style.display]="(ACCORDIAN_DATA[1].length === 0 && ACCORDIAN_DATA[0]?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links" >
                 <div *ngFor="let attribute of ACCORDIAN_DATA[0] | slice:0:10">
                     <a   (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl, attribute.friendlyUrl);">
@@ -45,14 +45,14 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [closeOtherTabs]="true" [appKpToggle]="{idName: 'mostSoldAccoridan', iconMode : true}">
-                    Shop by Related Category
+                    Shop by Related Categories
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
         </div>
-        <div [id]="'mostSoldAccoridan'" style="display:none;" class="panel-body">
+        <div [id]="'mostSoldAccoridan'" [style.display]="(ACCORDIAN_DATA[1].length === 0 && ACCORDIAN_DATA[0].length === 0 && ACCORDIAN_DATA[2]?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let attribute of ACCORDIAN_DATA[2]  | slice:0:10">
                     <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName, attribute.categoryLink);">

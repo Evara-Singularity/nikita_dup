@@ -990,6 +990,17 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
+    sendProductImageClickTracking() {
+        let page = {
+          'channel': "pdp image carausel",
+          'pageName': "moglix:image carausel:pdp",
+          'linkName': "moglix:productmainimageclick_0",
+          'subSection': "moglix:pdp carausel main image:pdp",
+          'linkPageName': "moglix:" + this.router.url,
+        }
+        this.analytics.sendAdobeCall({ page }, "genericPageLoad");
+      }
+
     async showFBT()
     {
         if (this.fbtFlag) {
@@ -1134,7 +1145,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             var taxonomy = this.productCategoryDetails['taxonomyCode'];
             var trackingData = {
                 event_type: "click",
-                label: routerLink == "/quickorder" ? "add_to_cart" : "buy_now",
+                label: routerLink == "/quickorder" ? (this.displayCardCta ? "add_to_cart_overlay" : "add_to_cart") : ( this.displayCardCta ? "buy_now_overlay" : "buy_now"),
                 product_name: this.productName,
                 msn: this.productSubPartNumber || this.defaultPartNumber,
                 brand: this.productBrandDetails['brandName'],
@@ -1976,6 +1987,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
+    alreadyLiked: boolean = true; 
     postHelpful(item, yes, no, i)
     {
         if (this.localStorageService.retrieve('user')) {
@@ -1993,15 +2005,16 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.productService.postHelpful(obj).subscribe((res) =>
                 {
                     if (res['code'] === '200') {
-                        console.log(this.rawReviewsData.reviewList[i]);
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         this.rawReviewsData.reviewList[i]['isPost'] = true;
                         this.rawReviewsData.reviewList[i]['like'] = yes;
                         this.rawReviewsData.reviewList[i]['dislike'] = no;
 
-                        if (yes === '1') {
+                        if (yes === '1' && this.alreadyLiked) {
+                            this.alreadyLiked = false;
                             this.rawReviewsData.reviewList[i]['yes'] += 1;
-                        } else if (no === '1' && this.rawReviewsData.reviewList[i]['no'] > 0) {
+                        } else if (no === '1' && this.rawReviewsData.reviewList[i]['no'] > 0 && this.alreadyLiked) {
+                            this.alreadyLiked = false;
                             this.rawReviewsData.reviewList[i]['no'] -= 1;
                         }
                     }

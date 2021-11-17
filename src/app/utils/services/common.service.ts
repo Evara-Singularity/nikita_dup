@@ -951,6 +951,7 @@ export class CommonService {
 
     sendOtp(data): Observable<{}>
     {
+        data['device'] = CONSTANTS.DEVICE.device;
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
     }
 

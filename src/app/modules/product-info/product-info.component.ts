@@ -1,4 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -7,8 +8,7 @@ import { LocalStorageService } from 'ngx-webstorage';
     templateUrl: './product-info.component.html',
     styleUrls: ['./product-info.component.scss']
 })
-export class ProductInfoComponent implements OnInit, OnDestroy
-{
+export class ProductInfoComponent implements OnInit {
     @Input('openProductInfo') openProductInfo = false;
     @Input('modalData') modalData = null;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
@@ -35,10 +35,10 @@ export class ProductInfoComponent implements OnInit, OnDestroy
     pageName = null;
 
     constructor(private globalAnalyticService: GlobalAnalyticsService,
+        private _commonService: CommonService,
         public localStorageService: LocalStorageService,) { }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         if (this.modalData) {
             this.analyticsInfo = this.modalData['analyticsInfo'];
             this.processMainInfo(this.modalData['mainInfo']);
@@ -48,8 +48,7 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.loginStatus = (user && user["authenticated"] == 'true') ? "registered user" : "guest";
     }
 
-    processMainInfo(mainInfo)
-    {
+    processMainInfo(mainInfo) {
         this.productMrp = mainInfo['productMrp'];
         this.priceWithoutTax = mainInfo['priceWithoutTax'];
         this.productDiscount = mainInfo['productDiscount'];
@@ -61,23 +60,20 @@ export class ProductInfoComponent implements OnInit, OnDestroy
         this.brandName = mainInfo['brandName'];
     }
 
-    processContentInfo(contentInfo, infoType)
-    {
+    processContentInfo(contentInfo, infoType) {
         this.contentInfo = contentInfo;
         this.tabs = Object.keys(contentInfo);
         this.selectedIndex = this.tabs.indexOf(infoType);
         this.updateTab(infoType, this.selectedIndex)
     }
 
-    updateTab(tab: string, index)
-    {
+    updateTab(tab: string, index) {
         this.selectedIndex = index;
         this.defaultInfo = tab;
         this.sendTracking(tab.toUpperCase());
     }
 
-    sendTracking(subSection: string)
-    {
+    sendTracking(subSection: string) {
         const page = this.analyticsInfo['page'];
         page['subSection'] = subSection;
         const custData = this.analyticsInfo['custData'];
@@ -87,6 +83,13 @@ export class ProductInfoComponent implements OnInit, OnDestroy
 
     closeProducInfo($event) { this.openProductInfo = false; this.closePopup$.emit(); }
 
-    ngOnDestroy() { }
+    ngAfterViewInit() {
+        if(this._commonService.isBrowser) {
+            const productDetailBtn = document.getElementById('tab-2');
+            productDetailBtn.onclick = function () {
+                document.getElementById('infoTabs').scrollLeft += 150;
+            };
+        }
+    }
 
 }

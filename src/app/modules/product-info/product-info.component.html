@@ -3,7 +3,7 @@
     <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>
-            <p class="txt header_text page-name">About this Product</p>
+            <p class="txt header_text page-name">About this Product ss</p>
         </div>
     </div>
     <div class="content-popup card mt-15" [class.customPopHeight]="productOutOfStock" content>
@@ -51,7 +51,7 @@
         <section id="infoTabs" class="tabs-container">
             <ul class="tabs">
                 <ng-container *ngFor="let tab of tabs; let i = index">
-                    <li class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">
+                    <li [id]="'tab-' + i" class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">
                         {{tab | titlecase}}</li>
                 </ng-container>
             </ul>

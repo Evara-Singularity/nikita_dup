@@ -2867,6 +2867,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         return analytics;
     }
 
+    navigateLink(link) { this.router.navigate([link]); }
+
     ngOnDestroy()
     {
         if (this.isBrowser) {

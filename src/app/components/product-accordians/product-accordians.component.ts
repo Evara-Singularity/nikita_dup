@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
@@ -25,6 +26,7 @@ export class ProductAccordiansComponent {
     private _dataService: DataService,
     private _productListService: ProductListService,
     private globalAnalyticService: GlobalAnalyticsService,
+    private _router:Router
   ){}
 
   ngOnInit() {
@@ -54,12 +56,13 @@ export class ProductAccordiansComponent {
 
   }
 
-  sendAdobeTracking(accordian, link)
+  sendAdobeTracking(accordian, linkName, link)
   {
       const PAGE = this.analyticsInfo['page'];
       PAGE['subSection'] = accordian;
       PAGE['linkName'] = link;
       this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
+      this._router.navigate([`${link}`])
   }
 }
 
@@ -69,6 +72,7 @@ export class ProductAccordiansComponent {
   imports: [
     CommonModule,
     KpToggleDirectiveModule,
+    RouterModule
   ]
 })
 export default class ProductAccordiansModule {

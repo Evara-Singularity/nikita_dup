@@ -990,6 +990,17 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
+    sendProductImageClickTracking() {
+        let page = {
+          'channel': "pdp image carausel",
+          'pageName': "moglix:image carausel:pdp",
+          'linkName': "moglix:productmainimageclick",
+          'subSection': "moglix:pdp carausel main image:pdp",
+          'linkPageName': "moglix:" + this.router.url,
+        }
+        this.analytics.sendAdobeCall({ page }, "genericPageLoad");
+      }
+
     async showFBT()
     {
         if (this.fbtFlag) {

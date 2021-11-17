@@ -3,12 +3,13 @@ import { isPlatformBrowser } from '@angular/common';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { Subject } from 'rxjs';
 import PinchZoom from 'pinch-zoom-js';
-
 import CONSTANTS from '@app/config/constants';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { SiemaCrouselService } from '@app/utils/services/siema-crousel.service';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
-
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ProductCrouselSlide',
@@ -47,10 +48,14 @@ export class ProductCrouselSlideComponent implements OnInit {
   @ViewChild('pinchZoom') pinchZoom: ElementRef;
   readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
   readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
+  analyticsInfo: any = {};
 
   constructor(
+    private globalAnalyticService: GlobalAnalyticsService,
     @Inject(PLATFORM_ID) private platformId: Object,
+    public localStorageService: LocalStorageService,
     private _modalService: ModalService,
+    private _router: Router,
     private _siemaCrouselService: SiemaCrouselService,
     private ngxSiemaService: NgxSiemaService
   ) {
@@ -112,7 +117,7 @@ export class ProductCrouselSlideComponent implements OnInit {
     if (this.pzInstance) {
       this.pzInstance.zoomOutAnimation();
     }
-    event.stopPropagation();
+    e.stopPropagation();
   }
 
 
@@ -136,8 +141,22 @@ export class ProductCrouselSlideComponent implements OnInit {
     this._modalService.show(modalData);
   }
 
+  sendTracking() {
+    let page = {
+      'channel': "pdp image carausel",
+      'pageName': "moglix:image carausel:pdp",
+      'linkName': "moglix:productmainimageclick",
+      'subSection': "moglix:pdp carausel main image:pdp",
+      'linkPageName': "moglix:" + this._router.url,
+    }
+    this.globalAnalyticService.sendAdobeCall({ page }, "genericPageLoad");
+  }
+
   clicked() {
     this.ngxSiemaService.currentSlide(this.options.selector).subscribe(result => {
+      if(result.currentSlide === 0) {
+        this.sendTracking();
+      }
       this._siemaCrouselService.setProductScrouselPopup({ active: true, slideNumber: result.currentSlide });
     })
   }

@@ -31,6 +31,12 @@ export class ProductAccordiansComponent {
     this.loadShopByAttributeData();
   }
 
+  ngAfterViewInit() {
+    const el = document.getElementsByClassName('panel-body')[0];
+    console.log('---------------------------------');
+    console.log(el);
+  }
+
   loadShopByAttributeData() {
     let categoryId = this.categoryBrandDetails.category.categoryCode;
     const apiList = [

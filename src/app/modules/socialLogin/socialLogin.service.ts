@@ -40,6 +40,7 @@ export class SocialLoginService {
     }
 
     authenticate(params) {
+        params['device'] = CONSTANTS.DEVICE.device;
         let curl = CONSTANTS.NEW_MOGLIX_API + CONSTANTS.SL.API;
         return this._dataService.callRestful("POST", curl, { body: params });
     }

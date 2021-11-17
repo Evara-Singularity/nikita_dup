@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './ProductCrouselSlide.component.html',
   styleUrls: ['./ProductCrouselSlide.component.scss']
 })
-export class ProductCrouselSlideComponent implements OnInit {
+export class ProductCrouselSlideComponent  {
   @Input() options: any;
   @Input() item: any;
   @Input() imagePath: any;
@@ -62,10 +62,6 @@ export class ProductCrouselSlideComponent implements OnInit {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
-  ngOnInit() {
-
-  }
-
   ngAfterViewInit() {
     if (this.isBrowser) {
 
@@ -75,32 +71,23 @@ export class ProductCrouselSlideComponent implements OnInit {
           this.pzInstance = new PinchZoom(el, {
             // zoom factor
             tapZoomFactor: 2,
-
             // zoom out factor
             zoomOutFactor: null,
-
             // duration in ms
             animationDuration: 300,
-
             // min/max zoom level
             maxZoom: 4,
             minZoom: 0.5,
-
             // draggable unzoomed image
             draggableUnzoomed: false,
-
             lockDragAxis: false,
-
             // compute offsets only once
             setOffsetsOnce: false,
-
             // falls back to 2D transforms when idle
             use2d: false,
-
             // vertical/horizontal padding
             verticalPadding: 0,
             horizontalPadding: 0
-
           });
         }, 0);
       }

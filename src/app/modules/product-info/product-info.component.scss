@@ -70,3 +70,12 @@
   .customPopHeight{
       height:calc(100vh - 50px)!important;
   }
+
+.oos-btn-cta{
+  position: fixed;
+  bottom: 0px;
+  z-index: 500;
+  width: 100%;
+  background: red;
+  height: 50px;
+}

@@ -141,11 +141,11 @@ export class ProductCrouselSlideComponent implements OnInit {
     this._modalService.show(modalData);
   }
 
-  sendTracking() {
+  sendTracking(num) {
     let page = {
       'channel': "pdp image carausel",
       'pageName': "moglix:image carausel:pdp",
-      'linkName': "moglix:productmainimageclick",
+      'linkName': "moglix:productmainimageclick_" + num,
       'subSection': "moglix:pdp carausel main image:pdp",
       'linkPageName': "moglix:" + this._router.url,
     }
@@ -154,9 +154,7 @@ export class ProductCrouselSlideComponent implements OnInit {
 
   clicked() {
     this.ngxSiemaService.currentSlide(this.options.selector).subscribe(result => {
-      if(result.currentSlide === 0) {
-        this.sendTracking();
-      }
+      this.sendTracking(result.currentSlide);
       this._siemaCrouselService.setProductScrouselPopup({ active: true, slideNumber: result.currentSlide });
     })
   }

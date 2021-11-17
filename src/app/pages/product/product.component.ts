@@ -994,7 +994,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         let page = {
           'channel': "pdp image carausel",
           'pageName': "moglix:image carausel:pdp",
-          'linkName': "moglix:productmainimageclick",
+          'linkName': "moglix:productmainimageclick_0",
           'subSection': "moglix:pdp carausel main image:pdp",
           'linkPageName': "moglix:" + this.router.url,
         }

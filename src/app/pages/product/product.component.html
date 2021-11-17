@@ -367,10 +367,10 @@
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
                     <a class="blueText" 
-                    (click)="commonService.navigateTo('/'+productCategoryDetails['categoryLink'])">
+                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText"
-                        (click)="commonService.navigateTo('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
+                        (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
             </ng-container>
@@ -378,7 +378,7 @@
                 <p>
                     {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a
                     well-known ecommerce platform for qualitative range of <a class="blueText"
-                    (click)="commonService.navigateTo('/'+productCategoryDetails['categoryLink'])" >{{productCategoryDetails['categoryName']}}</a>.
+                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])" >{{productCategoryDetails['categoryName']}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
                     manufacture {{productName}}, are sourced
@@ -386,7 +386,7 @@
                     {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high
                     quality. We are dedicatedly involved in
                     providing an excellent quality array of <a class="blueText"
-                    (click)="commonService.navigateTo('/'+productBrandCategoryUrl)" >
+                    (click)="navigateLink('/'+productBrandCategoryUrl)" >
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
@@ -573,7 +573,7 @@
                 </div>
             </div>
             <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>View {{ rawReviewsData?.summaryData?.review_count - 2 }} More Helpful Reviews</span>
+                <span>VIEW {{ rawReviewsData?.summaryData?.review_count - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
         <section class="Qa">

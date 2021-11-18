@@ -426,7 +426,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     setReviewsRatingData(reviews)
     {
         //console.log(reviews);
-        this.rawReviewsData = reviews;
+        // this.rawReviewsData = reviews;
         if (this.rawReviewsData && this.rawReviewsData.reviewList) {
             this.reviewLength = this.rawReviewsData.reviewList.length;
             this.rawReviewsData.reviewList.forEach(element =>
@@ -2685,6 +2685,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.reviewRatingPopupInstance = this.reviewRatingPopupContainerRef.createComponent(factory, null, this.injector);
         this.rawReviewsData.productName = this.productName;
         this.reviewRatingPopupInstance.instance['rawReviewsData'] = this.rawReviewsData;
+        console.log('----------------------');
+        console.log(this.rawReviewsData);
         this.reviewRatingPopupInstance.instance['productUrl'] = this.productUrl;
         (this.reviewRatingPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data =>
         {

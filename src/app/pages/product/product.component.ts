@@ -351,7 +351,6 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this.setReviewsRatingData(rawReviews);
                     this.setProductaBreadcrum(rawData['product'][2]);
                     this.setQuestionsAnswerData(rawData['product'][3]);
-                    this.remoteApiCallRecentlyBought();
                     this.duplicateOrderCheck(rawData);
                 } else {
                     this.showLoader = false;
@@ -587,6 +586,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.fetchFBTProducts(rawData);
         this.updateBulkPriceDiscount();
         this.showLoader = false;
+        this.remoteApiCallRecentlyBought();
 
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
@@ -2386,8 +2386,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    productVisitAdobe()
-    {
+    productVisitAdobe() {
         const user = this.localStorageService.retrieve('user');
 
         let taxo1 = '';
@@ -2400,8 +2399,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
 
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
-        {
+        this.productTags.forEach((element) => {
             ele.push(element.name);
         });
         const tagsForAdobe = ele.join("|");
@@ -2410,9 +2408,10 @@ export class ProductComponent implements OnInit, AfterViewInit
             'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
             'channel': "pdp",
             'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp " + this.commonService.getSectionClick().toLowerCase(),
-            'loginStatus': this.loginStatusTracking
+            'loginStatus': this.loginStatusTracking,
         }
         let custData = this.custDataTracking;
+        
         let order = {
             'productID': this.productSubPartNumber,
             'productCategoryL1': taxo1,
@@ -2421,7 +2420,9 @@ export class ProductComponent implements OnInit, AfterViewInit
             'brand': this.productBrandDetails['brandName'],
             'price': this.productPrice,
             'stockStatus': this.productOutOfStock ? "Out of Stock" : "In Stock",
-            'tags': tagsForAdobe
+            'tags': tagsForAdobe,
+            'pdpMessage': this.rawProductCountMessage || '',
+            'pdpToastMessage': this.rawCartNotificationMessage || ''
         }
 
         const anlyticData = { page, custData, order }
@@ -2621,18 +2622,18 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-  remoteApiCallRecentlyBought() {
-    let MSG = null;
-    let CART_NOTIFICATION_MSG = null;
-    if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
-      if (this.rawProductCountData['status'] && this.rawProductCountData['statusCode'] && this.rawProductCountData['statusCode'] == 200 && this.rawProductCountData['data']) {
-        MSG = this.rawProductCountData['data']['message'] || null;
-        CART_NOTIFICATION_MSG = this.rawProductCountData['data']['toastMessage'] || 'Product added successfully';
-      }
+    remoteApiCallRecentlyBought() {
+        let MSG = null;
+        let CART_NOTIFICATION_MSG = null;
+        if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
+            if (this.rawProductCountData['status'] && this.rawProductCountData['statusCode'] && this.rawProductCountData['statusCode'] == 200 && this.rawProductCountData['data']) {
+                MSG = this.rawProductCountData['data']['message'] || null;
+                CART_NOTIFICATION_MSG = this.rawProductCountData['data']['toastMessage'] || 'Product added successfully';
+            }
+        }
+        this.rawProductCountMessage = MSG;
+        this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
     }
-    this.rawProductCountMessage = MSG;
-    this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
-  }
 
     scrollToResults(id: string)
     {

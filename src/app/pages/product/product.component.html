@@ -90,14 +90,14 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
+            <!-- <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
                 <p class="actual-price">
                     <small>
                         Min Order Qty :
                         <span>{{productMinimmumQuantity}} Pack</span>
                     </small>
                 </p>
-             </div>
+             </div> -->
              <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block"

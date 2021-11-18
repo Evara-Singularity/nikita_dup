@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   ngAfterViewInit() {
-    if (this.pageRefreshed) {
+    if (this.pageRefreshed && window) {
       window.history.replaceState('', '', '/');
       window.history.pushState('', '', this.router.url);
       this.pageRefreshed = false;

@@ -1,11 +1,6 @@
 import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import
-{
-    Resolve,
-    RouterStateSnapshot,
-    ActivatedRouteSnapshot
-} from '@angular/router';
+import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, share, switchMap, tap } from 'rxjs/operators'
 import { isPlatformServer } from '@angular/common';
@@ -21,7 +16,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
     providedIn: 'root'
 })
 export class AlpResolver implements Resolve<object> {
-    private pageName;
+    private pageName = 'ATTRIBUTE';
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
@@ -32,13 +27,12 @@ export class AlpResolver implements Resolve<object> {
 
     )
     {
-        this.pageName = 'ATTRIBUTE';
     }
 
     createDefaultParams(defaultApiParams, currentQueryParams, fragment)
     {
         let newParams = {
-            category: defaultApiParams['category'], pageName: 'ATTRIBUTE', queryParams: {}, filter: {}
+            category: defaultApiParams['category'], pageName: this.pageName, queryParams: {}, filter: {}
         }
         //api params/filters
         if (defaultApiParams['str']) {
@@ -68,15 +62,12 @@ export class AlpResolver implements Resolve<object> {
 
         if (fragment != undefined && fragment != null && fragment.length > 0) {
             let currentUrlFilterData: any = fragment.replace(/^\/|\/$/g, '');
-            ////console.log(currentUrlFilterData);
             currentUrlFilterData = currentUrlFilterData.replace(/^\s+|\s+$/gm, '');
             /*Below newCurrentUrlFilterData and for loop is added for a special case, / is coming also in voltage filter part*/
             let newCurrentUrlFilterData = "";
             for (let i = 0; i < currentUrlFilterData.length; i++) {
                 if (currentUrlFilterData[i] == "/" && /^\d+$/.test(currentUrlFilterData[i + 1])) {
-                    //console.log(/^\d+$/.test(currentUrlFilterData[i+1]), newCurrentUrlFilterData);
                     newCurrentUrlFilterData = newCurrentUrlFilterData + "$";
-                    //console.log(newCurrentUrlFilterData);
                 } else {
                     newCurrentUrlFilterData = newCurrentUrlFilterData + currentUrlFilterData[i];
                 }
@@ -92,14 +83,13 @@ export class AlpResolver implements Resolve<object> {
                 newParams["filter"] = Object.assign({}, newParams["filter"], filter);
             }
         }
-        // console.log('New Params', JSON.stringify(newParams));
         return newParams;
     }
 
     private refreshProducts(defaultApiParams, currentQueryParams, fragment): Observable<{}>
     {
         defaultApiParams = this.createDefaultParams(defaultApiParams, currentQueryParams, fragment);
-        defaultApiParams["pageName"] = 'ATTRIBUTE';
+        defaultApiParams["pageName"] = this.pageName;
         this._commonService.updateDefaultParamsNew(defaultApiParams);
         return this._commonService.refreshProducts();
     }
@@ -109,44 +99,36 @@ export class AlpResolver implements Resolve<object> {
     {
         this._commonService.showLoader = true;
         const GET_CIMS_ATTRIBUTE_LISTING: any = makeStateKey<{}>('get_cims_attribute-' + _activatedRouteSnapshot.params['attribute'] + Math.random());
-        const OTHER_DATA: any = makeStateKey<{}>('other_data-' + _activatedRouteSnapshot.params['attribute']);
+        const CATEGORY_CODE: any = makeStateKey<{}>('alp_category_code' + _activatedRouteSnapshot.params['attribute'] + Math.random());
         const BREADCRUMP: any = makeStateKey<{}>('breadcrump-' + _activatedRouteSnapshot.params['attribute']);
+        const LISTING: any = makeStateKey<{}>('alp_listing' + _activatedRouteSnapshot.params['attribute']);
 
-        if (this.transferState.hasKey(GET_CIMS_ATTRIBUTE_LISTING) && this.transferState.hasKey(OTHER_DATA)) {
+        if (this.transferState.hasKey(GET_CIMS_ATTRIBUTE_LISTING)) {// && this.transferState.hasKey(OTHER_DATA)
             const GET_CIMS_ATTRIBUTE_LISTING_OBJ = this.transferState.get<{}>(GET_CIMS_ATTRIBUTE_LISTING, null);
-            const OTHER_DATA_OBJ = this.transferState.get<{}>(OTHER_DATA, null);
             const BREADCRUMP_OBJ = this.transferState.get<{}>(BREADCRUMP, null);
             this.transferState.remove(GET_CIMS_ATTRIBUTE_LISTING);
-            this.transferState.remove(OTHER_DATA);
             this.transferState.remove(BREADCRUMP);
             this.loaderService.setLoaderState(false);
-            return of([GET_CIMS_ATTRIBUTE_LISTING_OBJ, OTHER_DATA_OBJ, BREADCRUMP_OBJ]);
+            return of([GET_CIMS_ATTRIBUTE_LISTING_OBJ, CATEGORY_CODE, BREADCRUMP_OBJ, LISTING]);
         } else {
 
             const cims_attribute_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CIMS_ATTRIBUTE + '?friendlyUrl=' + _activatedRouteSnapshot.params['attribute'];
             const get_category_code_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=';
             const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?type=category";
-
-
-            // attributeListing['title']
-
-
-            const getCimsAttributeObs = this.http.get(cims_attribute_url).pipe(share());
             const otherDataObj = this.http.get(cims_attribute_url).pipe(share(), mergeMap((_cimsResponse) =>
             {
                 const CIMS_DATA = _cimsResponse['data'];
-                if (CIMS_DATA && CIMS_DATA['defaultParams']['category'])
-                {
+                if (CIMS_DATA && CIMS_DATA['defaultParams']['category']) {
                     const CATEGORY = CIMS_DATA['defaultParams']['category'];
-                    return forkJoin([of(_cimsResponse),
+                    const request = forkJoin([of(_cimsResponse),
                     this.http.get(get_category_code_url + CATEGORY).pipe(map(res => res)),
                     this.http.get(get_category_code_url + CATEGORY).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + CIMS_DATA['attributesListing']['title'] + '&source=' + catData['categoryDetails']['categoryLink']))),
                     this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment).pipe(map(res => res))])
+                    return request;
                 }
                 return forkJoin([of(_cimsResponse)]);
             }));
 
-            //return forkJoin([getCimsAttributeObs, otherDataObj]).pipe(catchError((err) =>
             return forkJoin([otherDataObj]).pipe(catchError((err) =>
             {
                 this.loaderService.setLoaderState(false);
@@ -155,15 +137,12 @@ export class AlpResolver implements Resolve<object> {
             }),
                 tap(result =>
                 {
-                    //Abhishek:added condition
-                    const RESPONSE = result[0];
                     this.loaderService.setLoaderState(false);
-                    if (RESPONSE[0]['data'] == null) {
-                        this._response.status(404);
-                    } else if (isPlatformServer(this.platformId)) {
-                        this.transferState.set(GET_CIMS_ATTRIBUTE_LISTING, RESPONSE[0]);
-                        this.transferState.set(OTHER_DATA, RESPONSE[1]);
-                    }
+                    const RESPONSE = result[0];
+                    this.transferState.set(GET_CIMS_ATTRIBUTE_LISTING, RESPONSE[0] || null);
+                    this.transferState.set(CATEGORY_CODE, RESPONSE[1] || null);
+                    this.transferState.set(BREADCRUMP, RESPONSE[2] || null);
+                    this.transferState.set(LISTING, RESPONSE[3] || null);
                 })
             );
         }

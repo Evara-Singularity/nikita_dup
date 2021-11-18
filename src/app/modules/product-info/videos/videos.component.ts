@@ -1,5 +1,8 @@
 import { Component, Input, OnInit, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
+import { ModalService } from '@app/modules/modal/modal.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'videos',
@@ -10,11 +13,10 @@ export class VideosComponent implements OnInit
 {
     @Input("videos") videos: any[] = null;
     @Input("name") name: string = null;
-    iframeElement: HTMLIFrameElement;
     readonly youtubeAPI = 'https://www.youtube.com/iframe_api';
-    readonly ytParams = '?autoplay=0&controls=1&loop&enablejsapi=1&fs=0&modestbranding=1&rel=1';
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(private _sanitizer: DomSanitizer) { }
+    constructor(private modalService: ModalService,) { }
 
     ngOnInit()
     {
@@ -25,19 +27,12 @@ export class VideosComponent implements OnInit
         }
     }
 
-    ngAfterViewInit()
+    async showYTVideo(link)
     {
-        if (this.videos && this.videos.length) {
-            this.iframeElement = (document.getElementById('ytplayer') as HTMLIFrameElement);
-            this.iframeElement.src = this.getSanitizedURL(this.videos[0]['link'], this.ytParams);
-        }
-    }
-
-    getSanitizedURL(url, params)
-    {
-        if (params) {
-            url = url + params;
-        }
-        return this._sanitizer.sanitize(SecurityContext.URL, url);
+        let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
+        let videoDetails = { url: link, params: ytParams };
+        let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
+        modalData.inputs = { videoDetails: videoDetails };
+        this.modalService.show(modalData);
     }
 }

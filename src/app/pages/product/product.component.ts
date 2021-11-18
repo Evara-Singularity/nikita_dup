@@ -812,13 +812,13 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.refreshSiemaItems$.next({ items: this.productAllImages, type: "refresh", currentSlide: 0 });
     }
 
-    showRating()
-    {
-        ClientUtility.scrollToTop(
-            2000,
-            ClientUtility.offset(<HTMLElement>document.querySelector('#reviewsAll')).top - document.querySelector('header').offsetHeight
-        );
-    }
+    // showRating()
+    // {
+    //     ClientUtility.scrollToTop(
+    //         2000,
+    //         ClientUtility.offset(<HTMLElement>document.querySelector('#reviewsAll')).top - document.querySelector('header').offsetHeight
+    //     );
+    // }
 
     async loadProductShare()
     {

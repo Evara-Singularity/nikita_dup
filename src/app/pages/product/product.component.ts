@@ -989,16 +989,17 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    sendProductImageClickTracking() {
+    sendProductImageClickTracking()
+    {
         let page = {
-          'channel': "pdp image carausel",
-          'pageName': "moglix:image carausel:pdp",
-          'linkName': "moglix:productmainimageclick_0",
-          'subSection': "moglix:pdp carausel main image:pdp",
-          'linkPageName': "moglix:" + this.router.url,
+            'channel': "pdp image carausel",
+            'pageName': "moglix:image carausel:pdp",
+            'linkName': "moglix:productmainimageclick_0",
+            'subSection': "moglix:pdp carausel main image:pdp",
+            'linkPageName': "moglix:" + this.router.url,
         }
         this.analytics.sendAdobeCall({ page }, "genericPageLoad");
-      }
+    }
 
     async showFBT()
     {
@@ -1144,7 +1145,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             var taxonomy = this.productCategoryDetails['taxonomyCode'];
             var trackingData = {
                 event_type: "click",
-                label: routerLink == "/quickorder" ? (this.displayCardCta ? "add_to_cart_overlay" : "add_to_cart") : ( this.displayCardCta ? "buy_now_overlay" : "buy_now"),
+                label: routerLink == "/quickorder" ? (this.displayCardCta ? "add_to_cart_overlay" : "add_to_cart") : (this.displayCardCta ? "buy_now_overlay" : "buy_now"),
                 product_name: this.productName,
                 msn: this.productSubPartNumber || this.defaultPartNumber,
                 brand: this.productBrandDetails['brandName'],
@@ -1545,7 +1546,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 channel: "pdp", subSection: "Recently Viewed",
                 linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, linkName: null, loginStatus: this.loginStatusTracking
             }
-            this.recentProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData};
+            this.recentProductsInstance.instance['analytics'] = { page: page, custData: custData, order: orderData };
         }
     }
 
@@ -1986,7 +1987,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    alreadyLiked: boolean = true; 
+    alreadyLiked: boolean = true;
     postHelpful(item, yes, no, i)
     {
         if (this.localStorageService.retrieve('user')) {
@@ -2762,9 +2763,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             , brandCategoryURL: this.productBrandCategoryUrl, productName: this.productName
         };
         contentInfo['product details'] = details;
-        if (this.productAllImages && this.productAllImages.length) {
-            contentInfo['images'] = this.productAllImages;
-        }
+        const IMAGES = (this.productAllImages as any[]).filter(image => image['contentType'] === "IMAGE")
+        if (IMAGES.length) { contentInfo['images'] = IMAGES; }
         productInfo['contentInfo'] = contentInfo;
         productInfo['infoType'] = infoType;
         const TAXONS = this.taxons;
@@ -2877,7 +2877,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         const custData = this.custDataTracking;
         const order = this.orderTracking;
-        analytics = {page,custData,order};
+        analytics = { page, custData, order };
         return analytics;
     }
 

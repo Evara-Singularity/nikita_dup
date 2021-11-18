@@ -446,7 +446,13 @@ export class CategoryComponent {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify((res['priceRangeBuckets'].length > 0) ? res['priceRangeBuckets'] : res['buckets'])));
+            let buckets: any[] = null
+            if (res['priceRangeBuckets'] && (res['priceRangeBuckets'] as any[]).length) {
+                buckets = Object.create(res['priceRangeBuckets']);
+            } else {
+                buckets = Object.create(res['buckets']);
+            }
+            this.getBucketForPriceRangeTable(buckets);
         }
     }
 

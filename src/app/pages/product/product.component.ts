@@ -341,7 +341,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this.rawReviewsData = Object.assign({}, rawReviews);
                     this.rawProductFbtData = Object.assign({}, rawProductFbtData);
                     this.rawProductCountData = Object.assign({}, rawProductCountData);
-                    rawReviews['reviewList'] = (rawReviews['reviewList'] as []).slice(0, 3);
+                    rawReviews['reviewList'] = (rawReviews['reviewList'] as []);
 
                     this.processProductData({
                         productBO: rawData['product'][0]['productBO'],
@@ -425,8 +425,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     setReviewsRatingData(reviews)
     {
-        //console.log(reviews);
-        // this.rawReviewsData = reviews;
+        this.rawReviewsData = reviews;
         if (this.rawReviewsData && this.rawReviewsData.reviewList) {
             this.reviewLength = this.rawReviewsData.reviewList.length;
             this.rawReviewsData.reviewList.forEach(element =>
@@ -440,6 +439,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     element['no'] = Number(element.is_review_helpful_count_no['value']);
                 element['totalReview'] = element['yes'] + element['no']
             });
+            console.log(this.rawReviewsData)
         }
         this.sortReviewsList("date");
         this.setProductRating(this.rawReviewsData.summaryData.final_average_rating);
@@ -2881,6 +2881,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         analytics = {page,custData,order};
         return analytics;
     }
+
+    navigateLink(link) { this.router.navigate([link]); }
 
     ngOnDestroy()
     {

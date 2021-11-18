@@ -68,402 +68,383 @@ export class OrderConfirmationComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.routeUrl = this._router.url;
-        this.queryParams = this._activatedRoute.snapshot.queryParams;
 
         const utm_medium = this._lss.retrieve("utm_medium");
-        const data = {
-            orderId: this.queryParams["orderId"],
-            transactionAmount: this.queryParams["transactionAmount"],
-        };
-        const ecomm_prodid = [];
         const userSession = this._las.getUserSession();
-        /*Affiliate pixels call */
 
+        this.routeUrl = this._router.url;
+        this.queryParams = this._activatedRoute.snapshot.queryParams;
         this.mode = this.queryParams["mode"];
         this.orderId = this.queryParams["orderId"];
         this.amount = this.queryParams["transactionAmount"];
 
         if (this.isBrowser) {
-            this._orderService
-                .sendTrackerOrderConfirmationCall({
-                    sessionId:
-                        userSession && userSession.sessionId ? userSession.sessionId : "",
-                    userId: userSession && userSession.userId ? userSession.userId : "",
-                    orderId: this.orderId,
-                    createdBySource: "pwa",
-                    userAgent: window.navigator.userAgent,
-                    orderStatus: "success",
-                    index: "order_confirmation_1",
-                })
-                .subscribe((res) => {
-                    console.log("sendTrackerOrderConfirmationCall", res);
-                });
-        }
 
-        if (this.isBrowser) {
-            if (utm_medium) {
-                if (utm_medium === "mysmartprice") {
-                    this.afType = "iFrame";
-                    this.iFrameUrl =
-                        "https://mspdv.in/p.ashx?o=10&e=16&p=" +
-                        this.queryParams["transactionAmount"] +
-                        "&t=" +
-                        this.queryParams["orderId"] +
-                        "&udid=" +
-                        this.queryParams["transactionAmount"];
-                    data["affiliateId"] = 1;
-                } else if (utm_medium === "affprog-mopm") {
-                    data["affiliateId"] = 2;
-                    let src =
-                        "https://track.in.omgpm.com/916096/transaction.asp?APPID=" +
-                        this.queryParams["orderId"] +
-                        "&MID=916096&PID=17423&status=" +
-                        this.queryParams["transactionAmount"];
-                    this._ocs.cs(src, "script");
-                } else if (utm_medium === "cuelinks_desidime") {
-                    this.afType = "image";
-                    this.iFrameUrl =
-                        "https://paritycube.go2cloud.org/SLCD?adv_sub=" +
-                        this.queryParams["orderId"] +
-                        "&amount=" +
-                        this.queryParams["transactionAmount"];
-                    data["affiliateId"] = 7;
-                } else if (utm_medium === "clickonik") {
-                    const e = {
-                        ce: "img",
-                        src:
-                            "https://track.clickonik.com/pixel?adid=5f7ad7f126f6cb33c836f693&&sale_amount=" +
-                            this.queryParams["transactionAmount"] +
-                            "&sub1=" +
-                            this.queryParams["orderId"],
-                    };
-                    this._ocs.cns(e);
-                    data["affiliateId"] = 8;
-                } else if (utm_medium == "admitad") {
-                    data["affiliateId"] = 9;
-                } else if (utm_medium == "CPS") {
-                    data["affiliateId"] = 10;
-                    this.afType = "iFrame";
-                    this.iFrameUrl =
-                        "https://tracking.icubeswire.co/aff_a?offer_id=375&adv_sub1=" +
-                        this.queryParams["orderId"] +
-                        "&sale_amount=" +
-                        this.queryParams["transactionAmount"] +
-                        this.queryParams["orderId"] +
-                        "&amount=" +
-                        this.queryParams["transactionAmount"];
-                    this.id = "pixelcodeurl";
-                }
-                this._ocs.addAffiliateOrder(data).subscribe(() => {
-                });
-            }
-            /*End Affiliate pixel call */
-            //ENDS
-            /*Get cart session on load*/
-            const params = { sessionid: userSession.sessionId };
-            /**
-             * For buyNow fetch only buynow item.
-             */
-            const flashData = this.localStorageService.retrieve("flashData");
-            if (flashData && flashData["buyNow"]) {
-                params["buyNow"] = flashData["buyNow"];
-            }
+            this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_1" });
+            this.utmBasedTracking(utm_medium, {
+                orderId: this.queryParams["orderId"],
+                transactionAmount: this.queryParams["transactionAmount"],
+            });
 
-            if (
-                userSession &&
-                userSession.authenticated &&
-                userSession.authenticated == "true") {
-
-                let criteoItem = [];
-                let couponId = [];
-                let prodIds = "",
-                    prodNames = "",
-                    prodPrices = "",
-                    prodQuantities = "",
-                    aCat1 = "",
-                    aCat2 = "",
-                    aCat3 = "",
-                    aprodIds = "",
-                    aprodNames = "",
-                    aprodPrices = "",
-                    aprodQuantities = "",
-                    aShipping = "",
-                    aOffer = "",
-                    aTotalDiscount = 0,
-                    aTotalShipping = 0,
-                    aTotalQuantity = 0;
-                let totalPriceCalc = 0;
-                this._cartService.getCartBySession(params).subscribe(
-                    (cartSession) => {
-                        try {
-                            this._orderService
-                                .sendTrackerOrderConfirmationCall({
-                                    sessionId:
-                                        userSession && userSession.sessionId
-                                            ? userSession.sessionId
-                                            : "",
-                                    userId:
-                                        userSession && userSession.userId ? userSession.userId : "",
-                                    orderId: this.orderId,
-                                    createdBySource: "pwa",
-                                    userAgent: window.navigator.userAgent,
-                                    orderStatus: "success",
-                                    index: "order_confirmation_2",
-                                })
-                                .subscribe((res) => {
-                                    console.log("sendTrackerOrderConfirmationCall", res);
-                                });
-
-                            if (
-                                cartSession["statusCode"] != undefined &&
-                                cartSession["statusCode"] == 200
-                            ) {
-                                let obj = [];
-                                let obj1 = [];
-                                let orderedItem = [];
-                                cartSession["itemsList"].forEach((element) => {
-                                    let price = element.productUnitPrice;
-                                    if (element.bulkPrice != "" && element.bulkPrice != null) {
-                                        price = element.bulkPrice;
-                                    }
-
-                                    this.productCategoryCode.push(element.categoryCode);
-
-                                    obj.push({
-                                        sku: element.productId,
-                                        name: element.productName,
-                                        price: element.productUnitPrice,
-                                        quantity: element.productQuantity,
-                                    });
-
-                                    obj1.push({
-                                        id: element.productId,
-                                        name: element.productName,
-                                        price: element.productUnitPrice,
-                                        quantity: element.productQuantity,
-                                        variant: "",
-                                    });
-
-                                    criteoItem.push({
-                                        id: element.productId,
-                                        price: element.productUnitPrice,
-                                        quantity: element.productQuantity,
-                                        name: element.productName,
-                                    });
-
-                                    if (utm_medium && utm_medium == "admitad") {
-                                        orderedItem.push({
-                                            Product: {
-                                                category: "1",                   // Please don't change the value of this
-                                                price: element.productUnitPrice, // Pass total amount here
-                                                priceCurrency: "INR",            // currency code in the ISO-4217 alfa-3 format
-                                            },
-
-                                            orderQuantity: element.productQuantity, // product quantity. Always '1' for "Insurance and finance" program category
-                                            additionalType: "sale",                 // always sale
-                                        });
-                                    }
-
-                                    ecomm_prodid.push(element.productId);
-                                    prodIds = element.productId + ", " + prodIds;
-                                    prodNames = element.productName + ", " + prodNames;
-                                    prodPrices = price + ", " + prodPrices;
-                                    prodQuantities =
-                                        element.productQuantity + ", " + prodQuantities;
-
-                                    totalPriceCalc =
-                                        price * element.productQuantity + totalPriceCalc;
-
-                                    let taxonomy = element.taxonomyCode.split("/");
-                                    taxonomy.forEach((ele, i) => {
-                                        if (i == 0) aCat1 = ele + "|" + aCat1 || "NA";
-                                        if (i == 1) aCat2 = ele + "|" + aCat2 || "NA";
-                                        if (i == 2) aCat3 = ele + "|" + aCat3 || "NA";
-                                    });
-                                    if (aCat1) {
-                                        this.parentCate = aCat1.split("|");
-                                        this.parentCate.pop();
-                                    }
-                                    aprodIds = element.productId + "|" + aprodIds;
-                                    aprodNames = element.productName + "|" + aprodNames;
-                                    aprodPrices = price + "|" + aprodPrices;
-                                    aprodQuantities =
-                                        element.productQuantity + "|" + aprodQuantities;
-                                    if (element.shipping)
-                                        aShipping = element.shipping + "|" + aShipping;
-                                    if (element.offer) aOffer = element.offer + "|" + aOffer;
-                                    if (element.offer)
-                                        aTotalDiscount = element.offer + aTotalDiscount;
-                                    if (element.shipping)
-                                        aTotalShipping = element.shipping + aTotalShipping;
-                                    if (element.productQuantity)
-                                        aTotalQuantity =
-                                            parseInt(element.productQuantity) + aTotalQuantity;
-                                });
-                                if (utm_medium && utm_medium == "admitad") {
-                                    ADMITAD = window["ADMITAD"] || {};
-                                    ADMITAD.Invoice = ADMITAD.Invoice || {};
-                                    ADMITAD.Invoice.broker = "adm";
-                                    ADMITAD.Invoice.referencesOrder =
-                                        ADMITAD.Invoice.referencesOrder || [];
-                                    ADMITAD.Invoice.category = "1";
-                                    // adding items to the order
-                                    ADMITAD.Invoice.referencesOrder.push({
-                                        orderNumber: this.queryParams["orderId"], // Pass order ID here
-                                        orderedItem: orderedItem,
-                                    });
-                                    // Important! If order data is loaded via AJAX, uncomment this string.
-                                    ADMITAD.Tracking.processPositions();
-                                }
-                            }
-
-                            if (cartSession["offersList"].length > 0) {
-                                cartSession["offersList"].forEach((element) => {
-                                    couponId.push(element.offerId);
-                                });
-                                this.couponCodeData = couponId.toString();
-                            } else {
-                                this.couponCodeData = "";
-                            }
-
-                            if (cartSession["userInfo"]) {
-                                this.userType = cartSession["userInfo"].userType;
-                            }
-
-                            dataLayer.push({
-                                event: "orderConfirmationEcommerce",
-                                transactionId: this.queryParams["orderId"],
-                                transactionTotal: this.queryParams["transactionAmount"],
-                            });
-
-                            /*Start Criteo DataLayer Tags */
-                            dataLayer.push({
-                                event: "trackTransaction",
-                                email: userSession.email,
-                                productTransactionAmount: this.queryParams["transactionAmount"],
-                                TransactionID: this.queryParams["orderId"],
-                                categoryCode: this.productCategoryCode.toString(),
-                                parentCategoryCode: this.parentCate.toString(),
-                                currency: "INR",
-                                id: prodIds,
-                                name: prodNames,
-                                price: prodPrices,
-                                quantity: prodQuantities,
-                            });
-                            /*End Criteo DataLayer Tags */
-
-                            dataLayer.push({
-                                event: "pr-purchase",
-                                "Payment Mode": this.queryParams["mode"],             //cod ,  HDFC, paytm, Payu, etc
-                                ecommerce: {
-                                    purchase: {
-                                        actionField: {
-                                            id: this.queryParams["orderId"],                // Transaction ID. Required for purchases and refunds.
-                                            affiliation: "Moglix",
-                                            revenue: this.queryParams["transactionAmount"], // Total transaction value (incl. tax and shipping)
-                                            tax: "",
-                                            shipping: "",
-                                        },
-                                        products: criteoItem,
-                                    },
-                                },
-                            });
-
-                            let google_tag_params = {
-                                ecomm_prodid: ecomm_prodid,
-                                ecomm_pagetype: "order-confirmation",
-                                ecomm_totalvalue: this.queryParams["transactionAmount"],
-                            };
-
-                            dataLayer.push({
-                                event: "pr-confirmation",
-                                ecomm_prodid: google_tag_params.ecomm_prodid,
-                                ecomm_pagetype: google_tag_params.ecomm_pagetype,
-                                ecomm_totalvalue: google_tag_params.ecomm_totalvalue,
-                                google_tag_params: google_tag_params,
-                            });
-                            this._lss.clear("utm_medium");
-
-                            let page = {
-                                pageName: "order-Confirmation",
-                                channel: "purchase",
-                                subSection: "Payment Success" + ((userSession && userSession["agentId"]) ? " | Inside Sales" : ''),
-                            };
-                            let custData = {
-                                customerID:
-                                    userSession && userSession["userId"]
-                                        ? btoa(userSession["userId"])
-                                        : "",
-                                emailID:
-                                    userSession && userSession["email"]
-                                        ? btoa(userSession["email"])
-                                        : "",
-                                mobile:
-                                    userSession && userSession["phone"]
-                                        ? btoa(userSession["phone"])
-                                        : "",
-                                customerType: this.userType,
-                                agentId: 
-                                    userSession && userSession["agentId"] 
-                                    ? btoa(userSession["agentId"]) 
-                                    : '',
-                            };
-                            let order = {
-                                transactionID: this.queryParams["orderId"],
-                                platformType: "mobile",
-                                productCategoryL1: aCat1,
-                                productCategoryL2: aCat2,
-                                productCategoryL3: aCat3,
-                                productID: aprodIds,
-                                productPrice: aprodPrices,
-                                shipping: aShipping,
-                                couponDiscount: aOffer,
-                                quantity: aprodQuantities,
-                                paymentMode: this.queryParams["mode"],
-                                totalDiscount: aTotalDiscount,
-                                totalQuantity: aTotalQuantity,
-                                totalPrice: totalPriceCalc,
-                                couponCode: "",
-                                shippingCharges: aTotalShipping,
-                                couponCodeID: this.couponCodeData,
-                            };
-                            digitalData["page"] = page;
-                            digitalData["custData"] = custData;
-                            digitalData["order"] = order;
-
-                            try {
-                                if(_satellite){
-                                    _satellite.track("genericPageLoad");
-                                }
-                            } catch (adobeError) {
-                                this.sendClickStreamDataError(
-                                    "order_completed_adobe_error",
-                                    adobeError
-                                );
-                            }
-
-                            this.sendClickStreamData(cartSession);
-                        } catch (trackError) {
-                            this.sendClickStreamDataError(
-                                "order_completed_data_error",
-                                trackError
-                            );
-                        }
-                    },
-                    (reponseError) => {
-                        this.sendClickStreamDataError(
-                            "order_completed_api_error",
-                            reponseError
-                        );
-                    }
-                );
-            }
+            this.getCartSessionAnalyticsCall(userSession, utm_medium);
             this.footerService.setFooterObj({ footerData: false });
             this.footerService.footerChangeSubject.next(
                 this.footerService.getFooterObj()
             );
+            
         }
+    }
+
+    private getCartSessionAnalyticsCall(userSession: any, utm_medium: any) {
+
+        if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            this._cartService.getCartBySession({
+                buyNow:  this.localStorageService.retrieve("flashData") || 'false',
+                sessionid: userSession.sessionId
+            }).subscribe( (cartSession) => {
+                    if (cartSession["statusCode"] != undefined && cartSession["statusCode"] == 200) {
+                        this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
+                        this.setVars(cartSession);
+                        // sent to analytics
+                        const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
+                        this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
+                        this.gtmTracking(userSession, anayticsData);
+                        this.abobeTracking(userSession, anayticsData);
+                        this.sendClickStreamData(cartSession);
+                    }
+                },
+                (reponseError) => {
+                    this.sendClickStreamDataError(
+                        "order_completed_api_error",
+                        reponseError
+                    );
+                },
+            );
+        }
+    }
+
+
+    private setVars(cartSession: Object) {
+        let couponId = [];
+        if (cartSession["offersList"].length > 0) {
+            cartSession["offersList"].forEach((element) => {
+                couponId.push(element.offerId);
+            });
+            this.couponCodeData = couponId.toString();
+        } else {
+            this.couponCodeData = "";
+        }
+
+        if (cartSession["userInfo"]) {
+            this.userType = cartSession["userInfo"].userType;
+        }
+    }
+
+    private admitAdsTracking(utm_medium: any, orderedItem: any[]) {
+        if (utm_medium && utm_medium == "admitad") {
+            ADMITAD = window["ADMITAD"] || {};
+            ADMITAD.Invoice = ADMITAD.Invoice || {};
+            ADMITAD.Invoice.broker = "adm";
+            ADMITAD.Invoice.referencesOrder =
+                ADMITAD.Invoice.referencesOrder || [];
+            ADMITAD.Invoice.category = "1";
+            // adding items to the order
+            ADMITAD.Invoice.referencesOrder.push({
+                orderNumber: this.queryParams["orderId"],
+                orderedItem: orderedItem,
+            });
+            // Important! If order data is loaded via AJAX, uncomment this string.
+            ADMITAD.Tracking.processPositions();
+        }
+    }
+
+    private gtmTracking(userSession: any, anayticsData) {
+        dataLayer.push({
+            event: "orderConfirmationEcommerce",
+            transactionId: this.queryParams["orderId"],
+            transactionTotal: this.queryParams["transactionAmount"],
+        });
+
+        /*Start Criteo DataLayer Tags */
+        dataLayer.push({
+            event: "trackTransaction",
+            email: userSession.email,
+            productTransactionAmount: this.queryParams["transactionAmount"],
+            TransactionID: this.queryParams["orderId"],
+            categoryCode: this.productCategoryCode.toString(),
+            parentCategoryCode: this.parentCate.toString(),
+            currency: "INR",
+            id: anayticsData.prodIds,
+            name: anayticsData.prodNames,
+            price: anayticsData.prodPrices,
+            quantity: anayticsData.prodQuantities,
+        });
+        /*End Criteo DataLayer Tags */
+        dataLayer.push({
+            event: "pr-purchase",
+            "Payment Mode": this.queryParams["mode"],
+            ecommerce: {
+                purchase: {
+                    actionField: {
+                        id: this.queryParams["orderId"],
+                        affiliation: "Moglix",
+                        revenue: this.queryParams["transactionAmount"],
+                        tax: "",
+                        shipping: "",
+                    },
+                    products: anayticsData.criteoItem,
+                },
+            },
+        });
+
+        let google_tag_params = {
+            ecomm_prodid: anayticsData.ecomm_prodid,
+            ecomm_pagetype: "order-confirmation",
+            ecomm_totalvalue: this.queryParams["transactionAmount"],
+        };
+
+        dataLayer.push({
+            event: "pr-confirmation",
+            ecomm_prodid: google_tag_params.ecomm_prodid,
+            ecomm_pagetype: google_tag_params.ecomm_pagetype,
+            ecomm_totalvalue: google_tag_params.ecomm_totalvalue,
+            google_tag_params: google_tag_params,
+        });
+        this._lss.clear("utm_medium");
+    }
+
+    private abobeTracking(userSession: any, anayticsData) {
+        let page = {
+            pageName: "order-Confirmation",
+            channel: "purchase",
+            subSection: "Payment Success" + ((userSession && userSession["agentId"]) ? " | Inside Sales" : ''),
+        };
+        let custData = {
+            customerID: userSession && userSession["userId"]
+                ? btoa(userSession["userId"])
+                : "",
+            emailID: userSession && userSession["email"]
+                ? btoa(userSession["email"])
+                : "",
+            mobile: userSession && userSession["phone"]
+                ? btoa(userSession["phone"])
+                : "",
+            customerType: this.userType,
+            agentId: userSession && userSession["agentId"]
+                ? btoa(userSession["agentId"])
+                : '',
+        };
+        let order = {
+            transactionID: this.queryParams["orderId"],
+            platformType: "mobile",
+            productCategoryL1: anayticsData.aCat1,
+            productCategoryL2: anayticsData.aCat2,
+            productCategoryL3: anayticsData.aCat3,
+            productID: anayticsData.aprodIds,
+            productPrice: anayticsData.aprodPrices,
+            shipping: anayticsData.aShipping,
+            couponDiscount: anayticsData.aOffer,
+            quantity: anayticsData.aprodQuantities,
+            paymentMode: this.queryParams["mode"],
+            totalDiscount: anayticsData.aTotalDiscount,
+            totalQuantity: anayticsData.aTotalQuantity,
+            totalPrice: anayticsData.totalPriceCalc,
+            couponCode: "",
+            shippingCharges: anayticsData.aTotalShipping,
+            couponCodeID: this.couponCodeData,
+        };
+        digitalData["page"] = page;
+        digitalData["custData"] = custData;
+        digitalData["order"] = order;
+        _satellite.track("genericPageLoad");
+    }
+
+    private utmBasedTracking(utm_medium: any, data: { orderId: any; transactionAmount: any; }) {
+        if (utm_medium) {
+            if (utm_medium === "mysmartprice") {
+                this.afType = "iFrame";
+                this.iFrameUrl =
+                    "https://mspdv.in/p.ashx?o=10&e=16&p=" +
+                    this.queryParams["transactionAmount"] +
+                    "&t=" +
+                    this.queryParams["orderId"] +
+                    "&udid=" +
+                    this.queryParams["transactionAmount"];
+                data["affiliateId"] = 1;
+            } else if (utm_medium === "affprog-mopm") {
+                data["affiliateId"] = 2;
+                let src = "https://track.in.omgpm.com/916096/transaction.asp?APPID=" +
+                    this.queryParams["orderId"] +
+                    "&MID=916096&PID=17423&status=" +
+                    this.queryParams["transactionAmount"];
+                this._ocs.cs(src, "script");
+            } else if (utm_medium === "cuelinks_desidime") {
+                this.afType = "image";
+                this.iFrameUrl =
+                    "https://paritycube.go2cloud.org/SLCD?adv_sub=" +
+                    this.queryParams["orderId"] +
+                    "&amount=" +
+                    this.queryParams["transactionAmount"];
+                data["affiliateId"] = 7;
+            } else if (utm_medium === "clickonik") {
+                const e = {
+                    ce: "img",
+                    src: "https://track.clickonik.com/pixel?adid=5f7ad7f126f6cb33c836f693&&sale_amount=" +
+                        this.queryParams["transactionAmount"] +
+                        "&sub1=" +
+                        this.queryParams["orderId"],
+                };
+                this._ocs.cns(e);
+                data["affiliateId"] = 8;
+            } else if (utm_medium == "admitad") {
+                data["affiliateId"] = 9;
+            } else if (utm_medium == "CPS") {
+                data["affiliateId"] = 10;
+                this.afType = "iFrame";
+                this.iFrameUrl =
+                    "https://tracking.icubeswire.co/aff_a?offer_id=375&adv_sub1=" +
+                    this.queryParams["orderId"] +
+                    "&sale_amount=" +
+                    this.queryParams["transactionAmount"] +
+                    this.queryParams["orderId"] +
+                    "&amount=" +
+                    this.queryParams["transactionAmount"];
+                this.id = "pixelcodeurl";
+            }
+            this._ocs.addAffiliateOrder(data).subscribe(() => {
+            });
+        }
+    }
+
+    private analyticCallUsingAPI(userSession: any, options: object) {
+
+        if (this.isBrowser) {
+            const body = Object.assign({
+                sessionId: userSession && userSession.sessionId ? userSession.sessionId : "",
+                userId: userSession && userSession.userId ? userSession.userId : "",
+                orderId: this.orderId,
+                createdBySource: "pwa",
+                userAgent: window.navigator.userAgent,
+            }, options)
+            this._orderService
+                .sendTrackerOrderConfirmationCall(body)
+                .subscribe((res) => {
+                    console.log("sendTrackerOrderConfirmationCall", res);
+                });
+        }
+    }
+
+    getAnalyticCartItemObj(cartSession, utm_medium) {
+        const dataObj = {
+            criteoItem: [],
+            couponId: [],
+            ecomm_prodid: [],
+            prodIds: "",
+            prodNames: "",
+            prodPrices: "",
+            prodQuantities: "",
+            aCat1: "",
+            aCat2: "",
+            aCat3: "",
+            aprodIds: "",
+            aprodNames: "",
+            aprodPrices: "",
+            aprodQuantities: "",
+            aShipping: "",
+            aOffer: "",
+            aTotalDiscount: 0,
+            aTotalShipping: 0,
+            aTotalQuantity: 0,
+            totalPriceCalc: 0,
+            orderedItem: [],
+            obj: [],
+            obj1: [],
+        }
+
+        cartSession["itemsList"].forEach((element) => {
+            let price = element.productUnitPrice;
+
+            if (element.bulkPrice != "" && element.bulkPrice != null) {
+                price = element.bulkPrice;
+            }
+
+            this.productCategoryCode.push(element.categoryCode);
+
+            dataObj.obj.push({
+                sku: element.productId,
+                name: element.productName,
+                price: element.productUnitPrice,
+                quantity: element.productQuantity,
+            });
+
+            dataObj.obj1.push({
+                id: element.productId,
+                name: element.productName,
+                price: element.productUnitPrice,
+                quantity: element.productQuantity,
+                variant: "",
+            });
+
+            dataObj.criteoItem.push({
+                id: element.productId,
+                price: element.productUnitPrice,
+                quantity: element.productQuantity,
+                name: element.productName,
+            });
+
+            if (utm_medium && utm_medium == "admitad") {
+                dataObj.orderedItem.push({
+                    Product: {
+                        category: "1",
+                        price: element.productUnitPrice,
+                        priceCurrency: "INR", // currency code in the ISO-4217 alfa-3 format
+                    },
+                    orderQuantity: element.productQuantity,
+                    additionalType: "sale", // always sale
+                });
+            }
+
+            dataObj.ecomm_prodid.push(element.productId);
+            dataObj.prodIds = element.productId + ", " + dataObj.prodIds;
+            dataObj.prodNames = element.productName + ", " + dataObj.prodNames;
+            dataObj.prodPrices = price + ", " + dataObj.prodPrices;
+            dataObj.prodQuantities = element.productQuantity + ", " + dataObj.prodQuantities;
+
+            dataObj.totalPriceCalc = price * element.productQuantity + dataObj.totalPriceCalc;
+
+            let taxonomy = element.taxonomyCode.split("/");
+            taxonomy.forEach((ele, i) => {
+                if (i == 0)
+                    dataObj.aCat1 = ele + "|" + dataObj.aCat1 || "NA";
+                if (i == 1)
+                    dataObj.aCat2 = ele + "|" + dataObj.aCat2 || "NA";
+                if (i == 2)
+                    dataObj.aCat3 = ele + "|" + dataObj.aCat3 || "NA";
+            });
+
+            if (dataObj.aCat1) {
+                this.parentCate = dataObj.aCat1.split("|");
+                this.parentCate.pop();
+            }
+
+            dataObj.aprodIds = element.productId + "|" + dataObj.aprodIds;
+            dataObj.aprodNames = element.productName + "|" + dataObj.aprodNames;
+            dataObj.aprodPrices = price + "|" + dataObj.aprodPrices;
+            dataObj.aprodQuantities = element.productQuantity + "|" + dataObj.aprodQuantities;
+
+            if (element.shipping)
+                dataObj.aShipping = element.shipping + "|" + dataObj.aShipping;
+            if (element.offer)
+                dataObj.aOffer = element.offer + "|" + dataObj.aOffer;
+            if (element.offer)
+                dataObj.aTotalDiscount = element.offer + dataObj.aTotalDiscount;
+            if (element.shipping)
+                dataObj.aTotalShipping = element.shipping + dataObj.aTotalShipping;
+            if (element.productQuantity)
+                dataObj.aTotalQuantity = parseInt(element.productQuantity) + dataObj.aTotalQuantity;
+        });
+
+        return dataObj;
     }
 
     sendClickStreamDataError(key, reponseError) {
@@ -601,3 +582,43 @@ export class OrderConfirmationComponent implements OnInit {
         });
       }
 }
+
+
+/**
+ * ORDER CONFIRMATION DOCUMENT FLOW
+ *
+ * queryParams
+ * - orderId
+ * - transactionAmount
+ * - mode
+ *
+ * setOrderStreamData Analytics calls
+ * - API URL ::  /clickStream/setOrderStreamData
+ * - API DATA: {sessionId, userId, orderId, createdBySource, userAgent, orderStatus, index}
+ * - API CALLED ON : onload on comp before any other API with "index" value as "order_confirmation_1"
+ *
+ *
+ * utm_medium logic
+ *  - expected values in utm_medium ::  mysmartprice, affprog-mopm, cuelinks_desidime, clickonik, admitad, CPS
+ * - based on values scripts are created and added into documents
+ * - /checkout/createAffiliateOrder APIs is called with param affiliateId
+ *
+ *
+ * CartBySession API called
+ * - called with post body with buynow(true OR false) status by refering to localStorage key "flashData"
+ * - On success response : setOrderStreamData Analytics call with with "index" value as "order_confirmation_2"
+ * - On Error response : Socket API is called with "label" key value as "order_completed_data_error"
+ * - ADOBE events fired in success - orderConfirmationEcommerce, trackTransaction, pr-purchase, pr-confirmation
+ * - GTM events fires events, pageName: "order-Confirmation", channel: "purchase",
+ * - SOCKET event fired :    event_type: "page_load", page_type: "order_confirmation" and other details
+ *
+ * OTHER features
+ * App promo
+ *
+ * Need to check with PM team
+ * - utm_medium signifiance with "admitad" as value
+ *
+ * POTENTIAL RISK ::
+ *  1. get cart session API is called on ngOnInit and in ngAfterViewInit updateCartSession cart session is called, there are chances that ngAfterViewInit is called with ngOnInit as both calls are async
+ *
+ */

@@ -195,3 +195,19 @@
     @extend %transition;
     
 }
+
+.apl-btn-filter-area{
+    display: flex;
+    justify-content: flex-end;
+    .apl-btn-filter{
+        color: #D9232D;
+        padding: 10px 15px;
+        text-transform: uppercase;
+        border: none;
+        font-size: 12px;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        border-radius: 3px;
+        opacity: 1;
+        font-weight: bold;
+    }
+}

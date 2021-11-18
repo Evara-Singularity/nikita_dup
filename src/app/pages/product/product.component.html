@@ -573,7 +573,7 @@
                 </div>
             </div>
             <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>VIEW {{ rawReviewsData?.summaryData?.review_count - 2 }} MORE HELPFUL REVIEW</span>
+                <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
         <section class="Qa">

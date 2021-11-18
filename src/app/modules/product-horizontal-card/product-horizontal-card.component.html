@@ -19,14 +19,14 @@
                         src="{{imageCdnPath + product.mainImageThumnailLink}}"
                         enhanceImgByNetwork
                         height="125" width="125" 
-                        (click)="$event.stopPropagation();sendTracking('image')"/>
+                        (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();"/>
                 </ng-container>
                 <ng-container *ngIf="!isFirstView && cardFeaturesConfig.lazyLoadImage" >
                     <img 
                         alt="{{product.productName}}"
                         [src]="defaultImage" [lazyLoad]="imageCdnPath + product.mainImageMediumLink"
                         height="125" width="125" 
-                        (click)="$event.stopPropagation();sendTracking('image')"/>
+                        (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();"/>
                 </ng-container>
             </div>
             <div class="right">

@@ -332,8 +332,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.route.data.subscribe((rawData) =>
         {
             if (!rawData['product']['error']) {
-                // console.log('getProductApiData rawData', rawData['product'][4]);
-                // todo: if productBO not fould redirect to product not found page
+
                 if (rawData['product'][0]['productBO'] && Object.values(rawData['product'][0]['productBO']['productPartDetails'])[0]['images'] !== null) {
                     const rawReviews = Object.assign({}, rawData['product'][1]['data']);
                     const rawProductFbtData = Object.assign({}, rawData['product'][4]);
@@ -2622,19 +2621,18 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    remoteApiCallRecentlyBought()
-    {
-        let MSG = null;
-        let CART_NOTIFICATION_MSG = null;
-        if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
-            if (this.rawProductCountData['status'] && this.rawProductCountData['data']) {
-                MSG = this.rawProductCountData['data']['message'] || null;
-                CART_NOTIFICATION_MSG = this.rawProductCountData['data']['toastMessage'] || 'Product added successfully';
-            }
-        }
-        this.rawProductCountMessage = MSG;
-        this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
+  remoteApiCallRecentlyBought() {
+    let MSG = null;
+    let CART_NOTIFICATION_MSG = null;
+    if (this.rawProductData && this.rawProductCountData && !this.productOutOfStock) {
+      if (this.rawProductCountData['status'] && this.rawProductCountData['statusCode'] && this.rawProductCountData['statusCode'] == 200 && this.rawProductCountData['data']) {
+        MSG = this.rawProductCountData['data']['message'] || null;
+        CART_NOTIFICATION_MSG = this.rawProductCountData['data']['toastMessage'] || 'Product added successfully';
+      }
     }
+    this.rawProductCountMessage = MSG;
+    this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
+  }
 
     scrollToResults(id: string)
     {

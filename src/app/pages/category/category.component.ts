@@ -26,7 +26,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 @Component({
     selector: 'category',
     templateUrl: './category.html',
-    styleUrls: ['./category.scss'],
+    styleUrls: ['./category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })
 
 export class CategoryComponent {

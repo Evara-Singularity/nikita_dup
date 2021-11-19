@@ -68,7 +68,6 @@ export class OrderConfirmationComponent implements OnInit {
     }
 
     ngOnInit() {
-
         const utm_medium = this._lss.retrieve("utm_medium");
         const userSession = this._las.getUserSession();
 
@@ -77,6 +76,8 @@ export class OrderConfirmationComponent implements OnInit {
         this.mode = this.queryParams["mode"];
         this.orderId = this.queryParams["orderId"];
         this.amount = this.queryParams["transactionAmount"];
+
+        console.log('order onfirmation logs ==> routeUrl, queryParams, mode, orderId, amount', this.routeUrl, this.queryParams, this.mode, this.orderId, this.amount )
 
         if (this.isBrowser) {
 
@@ -88,29 +89,31 @@ export class OrderConfirmationComponent implements OnInit {
 
             this.getCartSessionAnalyticsCall(userSession, utm_medium);
             this.footerService.setFooterObj({ footerData: false });
-            this.footerService.footerChangeSubject.next(
-                this.footerService.getFooterObj()
-            );
+            this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
             
         }
     }
 
     private getCartSessionAnalyticsCall(userSession: any, utm_medium: any) {
 
+        console.log('order onfirmation logs ==> getCartSessionAnalyticsCall started');
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
             this._cartService.getCartBySession({
                 buyNow:  this.localStorageService.retrieve("flashData") || 'false',
                 sessionid: userSession.sessionId
             }).subscribe( (cartSession) => {
+                     console.log('order onfirmation logs ==> completed response ', cartSession);
                     if (cartSession["statusCode"] != undefined && cartSession["statusCode"] == 200) {
-                        this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
+                        // this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
                         this.setVars(cartSession);
                         // sent to analytics
                         const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
+                        console.log('order onfirmation logs ==> completed processed obj ', anayticsData);
                         this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
                         this.gtmTracking(userSession, anayticsData);
                         this.abobeTracking(userSession, anayticsData);
                         this.sendClickStreamData(cartSession);
+                        this.resetCartSession();
                     }
                 },
                 (reponseError) => {
@@ -119,6 +122,7 @@ export class OrderConfirmationComponent implements OnInit {
                         reponseError
                     );
                 },
+                
             );
         }
     }
@@ -154,7 +158,9 @@ export class OrderConfirmationComponent implements OnInit {
                 orderedItem: orderedItem,
             });
             // Important! If order data is loaded via AJAX, uncomment this string.
+            console.log('order onfirmation logs ==> admitAdsTracking completed');
             ADMITAD.Tracking.processPositions();
+            
         }
     }
 
@@ -211,6 +217,7 @@ export class OrderConfirmationComponent implements OnInit {
             google_tag_params: google_tag_params,
         });
         this._lss.clear("utm_medium");
+        console.log('order onfirmation logs ==> gtmTracking completed');
     }
 
     private abobeTracking(userSession: any, anayticsData) {
@@ -257,6 +264,7 @@ export class OrderConfirmationComponent implements OnInit {
         digitalData["custData"] = custData;
         digitalData["order"] = order;
         _satellite.track("genericPageLoad");
+        console.log('order onfirmation logs ==> abobeTracking completed');
     }
 
     private utmBasedTracking(utm_medium: any, data: { orderId: any; transactionAmount: any; }) {
@@ -311,13 +319,15 @@ export class OrderConfirmationComponent implements OnInit {
                     this.queryParams["transactionAmount"];
                 this.id = "pixelcodeurl";
             }
-            this._ocs.addAffiliateOrder(data).subscribe(() => {
+            console.log('order onfirmation logs ==> started with body' , data);
+            this._ocs.addAffiliateOrder(data).subscribe((res) => {
+                console.log('order onfirmation logs ==> completed with res' , res);
             });
         }
     }
 
     private analyticCallUsingAPI(userSession: any, options: object) {
-
+        console.log('order onfirmation logs ==> started', options);
         if (this.isBrowser) {
             const body = Object.assign({
                 sessionId: userSession && userSession.sessionId ? userSession.sessionId : "",
@@ -329,6 +339,7 @@ export class OrderConfirmationComponent implements OnInit {
             this._orderService
                 .sendTrackerOrderConfirmationCall(body)
                 .subscribe((res) => {
+                    console.log('order onfirmation logs ==> completed', res);
                     console.log("sendTrackerOrderConfirmationCall", res);
                 });
         }
@@ -495,64 +506,64 @@ export class OrderConfirmationComponent implements OnInit {
                     }),
                 };
                 this._dataService.sendMessage(trackData);
+                console.log('order onfirmation logs ==> completed sendClickStreamData ');
             }
         } catch (error) {
             console.log("sendClickStreamData error", error);
         }
     }
 
-    ngAfterViewInit() {
-        let currentCartSession;
-        setTimeout(() => {
-            currentCartSession = this._cartService.getCartSession();
-            let userSession = this._las.getUserSession();
-            let emptyCart = {
-                cart: {
-                    cartId: currentCartSession.cart.cartId,
-                    sessionId: currentCartSession.cart.sessionId,
-                    agentId: currentCartSession.cart["agentId"],
-                    userId: userSession.userId,
-                    isPersistant: true,
-                    createdAt: null,
-                    updatedAt: null,
-                    closedAt: null,
-                    orderId: null,
-                    totalAmount: null,
-                    totalOffer: null,
-                    totalAmountWithOffer: null,
-                    taxes: null,
-                    totalAmountWithTaxes: null,
-                    shippingCharges: null,
-                    currency: null,
-                    isGift: null,
-                    giftMessage: null,
-                    giftPackingCharges: null,
-                    totalPayableAmount: null,
-                },
-                itemsList: [],
-                addressList: null,
-                payment: null,
-                deliveryMethod: null,
-                offersList: null,
-            };
+    private resetCartSession() {
+        let currentCartSession = this._cartService.getCartSession();
+        let userSession = this._las.getUserSession();
+        let emptyCart = {
+            cart: {
+                cartId: currentCartSession.cart.cartId,
+                sessionId: currentCartSession.cart.sessionId,
+                agentId: currentCartSession.cart["agentId"],
+                userId: userSession.userId,
+                isPersistant: true,
+                createdAt: null,
+                updatedAt: null,
+                closedAt: null,
+                orderId: null,
+                totalAmount: null,
+                totalOffer: null,
+                totalAmountWithOffer: null,
+                taxes: null,
+                totalAmountWithTaxes: null,
+                shippingCharges: null,
+                currency: null,
+                isGift: null,
+                giftMessage: null,
+                giftPackingCharges: null,
+                totalPayableAmount: null,
+            },
+            itemsList: [],
+            addressList: null,
+            payment: null,
+            deliveryMethod: null,
+            offersList: null,
+        };
 
-            /**
-             * For buyNow item remove buynow data from localstorage.
-             */
-            const flashData = this.localStorageService.retrieve("flashData");
-            if (flashData && flashData["buyNow"]) {
-                emptyCart["cart"]["buyNow"] = true;
-                this.localStorageService.clear("flashData");
+        /**
+         * For buyNow item remove buynow data from localstorage.
+         */
+        const flashData = this.localStorageService.retrieve("flashData");
+        if (flashData && flashData["buyNow"]) {
+            emptyCart["cart"]["buyNow"] = true;
+            this.localStorageService.clear("flashData");
+        }
+        //ENDS
+        console.log('order onfirmation logs ==> reset cart call started ', emptyCart);
+        this._cartService.updateCartSession(emptyCart).subscribe((data) => {
+            console.log('order onfirmation logs ==> completed ', data);
+            this._cartService.cart.next(data["noOfItems"]);
+            let res = data;
+            if (res["statusCode"] == 200) {
+                this._cartService.setCartSession(res);
             }
-            //ENDS
-            this._cartService.updateCartSession(emptyCart).subscribe((data) => {
-                this._cartService.cart.next(data["noOfItems"]);
-                let res = data;
-                if (res["statusCode"] == 200) {
-                    this._cartService.setCartSession(res);
-                }
-            });
-        }, 2000);
+        });
     }
 
     ngOnDestroy() {

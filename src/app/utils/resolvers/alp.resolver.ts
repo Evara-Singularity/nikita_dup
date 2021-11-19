@@ -23,11 +23,7 @@ export class AlpResolver implements Resolve<object> {
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
         private http: HttpClient,
-        @Optional() @Inject(RESPONSE) private _response
-
-    )
-    {
-    }
+    ) { }
 
     createDefaultParams(defaultApiParams, currentQueryParams, fragment)
     {
@@ -138,11 +134,13 @@ export class AlpResolver implements Resolve<object> {
                 tap(result =>
                 {
                     this.loaderService.setLoaderState(false);
-                    const RESPONSE = result[0];
-                    this.transferState.set(GET_CIMS_ATTRIBUTE_LISTING, RESPONSE[0] || null);
-                    this.transferState.set(CATEGORY_CODE, RESPONSE[1] || null);
-                    this.transferState.set(BREADCRUMP, RESPONSE[2] || null);
-                    this.transferState.set(LISTING, RESPONSE[3] || null);
+                    if (isPlatformServer(this.platformId)) {
+                        const RESPONSE = result[0];
+                        this.transferState.set(GET_CIMS_ATTRIBUTE_LISTING, RESPONSE[0] || null);
+                        this.transferState.set(CATEGORY_CODE, RESPONSE[1] || null);
+                        this.transferState.set(BREADCRUMP, RESPONSE[2] || null);
+                        this.transferState.set(LISTING, RESPONSE[3] || null);
+                    }
                 })
             );
         }

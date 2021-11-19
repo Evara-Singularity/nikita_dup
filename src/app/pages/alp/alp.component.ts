@@ -107,8 +107,8 @@ export class AlpComponent implements OnInit
     setAttributeListingInfo()
     {
         //TODO:1704 if data is null then 404
-        if (this.alpAttrListingData['data'] === null) {
-            if (this._commonService.isServer) { this._response.status(404);}
+        if (this._commonService.isServer && this.alpAttrListingData['data'] === null) {
+            this._response.status(404);
             return;
         }
         let attributeListing = this.alpAttrListingData['data']['attributesListing'];
@@ -136,8 +136,7 @@ export class AlpComponent implements OnInit
         if (this.isBrowser) {
             this.showLoader = false;
             this.setTrackingData();
-            if ((ict && PRODUCT_COUNT > 0))
-            {
+            if ((ict && PRODUCT_COUNT > 0)) {
                 this.fireTags(this.alpProductListingData);
             }
         }

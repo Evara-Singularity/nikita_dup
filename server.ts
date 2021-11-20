@@ -21,6 +21,7 @@ export function app() {
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
     inlineCriticalCss: true,
+
   }));
 
   server.set('view engine', 'html');
@@ -41,14 +42,12 @@ export function app() {
     res.render(indexHtml, {
       req,
       providers: [
-          { provide: APP_BASE_HREF, useValue: req.baseUrl },
-          { provide: RESPONSE, useValue: (res) }
-        ]
+        { provide: APP_BASE_HREF, useValue: req.baseUrl },
+        { provide: RESPONSE, useValue: (res) }
+      ]
     }, (err: Error, html: string) => {
       // manipulate html string to add preloads for images
-      //res.status(html ? 200 : 500).send(appendImagePreloads(html) || err.message);
-     console.log('isServer notfound  ======>', err, html)
-      res.status(res.statusCode).send(appendImagePreloads(html) || err.message);
+      res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
     });
   });
 

@@ -165,7 +165,23 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 'user'
             ] = this.localAuthService.getUserSession();
         }
+        this.genericButtonClick('/',true);        
     }
+
+    genericButtonClick(url, hamBurgerClick?: boolean) {
+    let PAGE = {
+      channel: "menu_hamburger",
+      pageName: this.router.url,
+      linkName: url,
+      subSection: url + ' link click'
+    };
+
+    if (hamBurgerClick) {
+      PAGE['subSection'] = 'Hamburger icon click';
+      delete PAGE['linkName'];
+    }
+    this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
+  }
 
     async loadSearchNav()
     {

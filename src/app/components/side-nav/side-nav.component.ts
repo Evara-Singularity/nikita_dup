@@ -32,7 +32,6 @@ export class SideNavComponent implements OnInit {
   }
 
   genericButtonClick(url) {
-    alert(url);
     let PAGE = {
       channel: "menu_hamburger",
       pageName: this.router.url,

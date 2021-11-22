@@ -61,7 +61,7 @@
             <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let attribute of API_RESPONSE.category[4].data | slice:0:10 ">
-                        <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                        <a (click)="_commonService.navigateTo(attribute.friendlyUrl, true)">{{ attribute.title }}</a>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
             <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularLinks | slice:0:10 ">
-                        <a href="{{ getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category])  }}">{{ category }}</a>
+                        <a (click)="_commonService.navigateTo(getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category]), true)">{{ category }}</a>
                     </div>
                 </div>
             </div>

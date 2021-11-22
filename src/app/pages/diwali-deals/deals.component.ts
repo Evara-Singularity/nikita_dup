@@ -17,6 +17,7 @@ export class DealsComponent {
   isBrowser: boolean;
   dealsData: any;
 
+
   constructor(
     private meta: Meta,
     private title: Title,
@@ -43,6 +44,8 @@ export class DealsComponent {
       this._renderer2.appendChild(this._document.head, links);
     }
   }
+  ngOnInit() { 
+  }
 
   getDealsData() {
     this.route.data.subscribe((rawData) => {
@@ -65,5 +68,4 @@ export class DealsComponent {
       console.log('Covid19Component API data catch error', error);
     });
   }
-
 }

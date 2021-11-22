@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
 
@@ -17,7 +18,7 @@ export class SideNavComponent implements OnInit {
 
   constructor(
     private localStorageService: LocalStorageService,
-    private localAuthService: LocalAuthService,
+    private globalAnalyticService: GlobalAnalyticsService,
     private router: Router,
   ) { }
 
@@ -28,6 +29,17 @@ export class SideNavComponent implements OnInit {
       this.reStoreHome = false;
     }
     this.localStorageService.observe('tocd').subscribe((value) => this.reStoreHome = true);
+  }
+
+  genericButtonClick(url) {
+    let PAGE = {
+      channel: "menu_hamburger",
+      pageName: this.router.url,
+      linkName: url,
+      subSection: url + ' link click'
+    };
+
+    this.globalAnalyticService.sendAdobeCall({ page: PAGE }, "genericClick");
   }
 
   sideMenu() {

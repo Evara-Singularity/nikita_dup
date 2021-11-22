@@ -1,17 +1,32 @@
-<ul class="deals-list" *ngIf="allofferData" >
-    <li *ngFor="let item of allofferData; let i=index;" >
-        <i class="icon-offers ico_offer"></i>
-        <p class="ofr_txt">
-            <small>{{item.block_data['image_block'][0].image_title}}</small>
-        </p>
-        <span class="ico-right" (click)="sendOfferData(item)" >VIEW</span>
-    </li>
-    <li (click)="openEmiPopup()">
-        <i class="icon-emi ico_offer"></i>
-        <div class="ofr_txt">
-            <strong>EMIs Available</strong>
+<div class="coupen-area">
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            Offers & Coupons
+        </h3>
+    </div>
+    <div class="pwa-row coupen-body-area" *ngFor="let item of allofferData; let i=index;">
+        <div class="cb-icon">
+            <img src="assets/img/coupon-3.svg">
+        </div>
+        <div class="cb-text">
+            <p>Use Code: <span>{{item.block_data['image_block'][0].image_title}}</span></p>
+        </div>
+        <div class="cb-view">
+            <span (click)="sendOfferData(item)">VIEW</span>
+        </div>
+    </div>
+    <div class="pwa-row coupen-body-area" (click)="openEmiPopup()">
+        <div class="cb-icon">
+            <img src="assets/img/emi.svg">
+        </div>
+        <div class="cb-text">
+            <strong>EMIs Available </strong>
             <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
         </div>
-        <span class="ico-right">COMPARE</span>
-    </li>
-</ul>
+        <div class="cb-view">
+            <span *ngIf="!disableEMIView">VIEW</span>
+        </div>
+    </div>
+</div>
+
+

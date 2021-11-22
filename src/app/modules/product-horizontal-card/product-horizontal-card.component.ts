@@ -51,6 +51,10 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input() isAd: boolean = false;
   @Input() hideAd: boolean = false;
   @Input() isFirstView: boolean = false;
+  @Input() pIndex = 0;
+  @Input('section') section: string = '';
+  @Input() enableTracking = false;
+  @Input() analytics = null;
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -525,6 +529,23 @@ export class ProductHorizontalCardComponent implements OnInit {
       'event': 'AdClick',
       'uclids': (this.product.uclid) ? [this.product.uclid] : [],
     })
+  }
+
+  trackProductTitle(title) 
+  { 
+    this.sendTracking(title);
+    this.navigateToPDP();
+  }
+
+  sendTracking(info)
+  {
+      if(!this.enableTracking)return;
+      const page = this.analytics['page'];
+      page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
+      page['productunit'] = this.pIndex;
+      const custData = this.analytics['custData'];
+      const order = this.analytics['order']  ;
+      this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
   }
 
 

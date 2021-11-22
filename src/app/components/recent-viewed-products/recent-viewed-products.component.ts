@@ -20,6 +20,7 @@ export class RecentViewedProductsComponent implements OnInit {
   recentProductItems: ProductsEntity[] = null;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   @Input() outOfStock: boolean = false;
+  @Input() analytics = null;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config

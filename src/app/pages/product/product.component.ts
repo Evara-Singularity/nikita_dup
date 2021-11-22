@@ -1145,7 +1145,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             var taxonomy = this.productCategoryDetails['taxonomyCode'];
             var trackingData = {
                 event_type: "click",
-                label: routerLink == "/quickorder" ? (this.displayCardCta ? "add_to_cart_overlay" : "add_to_cart") : (this.displayCardCta ? "buy_now_overlay" : "buy_now"),
+                label: routerLink == "/quickorder" ? "add_to_cart" : "buy_now",
                 product_name: this.productName,
                 msn: this.productSubPartNumber || this.defaultPartNumber,
                 brand: this.productBrandDetails['brandName'],
@@ -1166,6 +1166,9 @@ export class ProductComponent implements OnInit, AfterViewInit
             sessionDetails["itemsList"] = checkAddToCartData.itemlist;
             sessionDetails = this.cartService.updateCart(sessionDetails);
 
+            console.clear();
+            console.log(trackingData);
+            // return;
 
             this.currentAddedProduct = Object.assign({}, singleProductItem);
             if (!buyNow) {
@@ -2452,7 +2455,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         let page = {
             'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
-            'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
+            'linkName': routerlink == "/quickorder" ? (this.displayCardCta ? "Add to cart Overlay" : "Add to cart" ): (this.displayCardCta ? "Buy Now Overlay" : "Buy Now" ),
             'channel': 'pdp'
         }
         let custData = this.custDataTracking

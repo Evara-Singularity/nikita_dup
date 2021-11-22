@@ -14,7 +14,7 @@ export class AppComponent {
 
   ngAfterViewInit() {
     if (this.pageRefreshed) {
-      window.history.replaceState('', '', '/');
+      window.history.replaceState('', '', '/?back=1');
       window.history.pushState('', '', this.router.url);
       this.pageRefreshed = false;
     }

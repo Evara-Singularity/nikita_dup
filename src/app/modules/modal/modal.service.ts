@@ -1,5 +1,5 @@
-import { Injectable, ComponentFactoryResolver, ApplicationRef, Injector } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -7,11 +7,7 @@ import { Subject, Observable } from 'rxjs';
 export class ModalService {
     private subject = new Subject<{}>();
     private hideModalSub = new Subject<boolean>();
-    
-    constructor(private componentFactoryResolver: ComponentFactoryResolver,
-        private appRef: ApplicationRef,
-        private injector: Injector) {
-    }
+    private componentRefSubject = new BehaviorSubject(null);
 
     getModals(): Observable<any> {
         return this.subject.asObservable();
@@ -22,11 +18,24 @@ export class ModalService {
         this.subject.next(data);
     }
 
+    show_v1(data) {
+        this.subject.next(data);
+        return this.componentRefSubject;
+    }
+
     getYoutubeModalRemove(): Observable<boolean> {
         return this.hideModalSub.asObservable();
     }
 
     remove() {
         this.hideModalSub.next(true);
+    }
+
+    removeComponentRef() {
+        this.componentRefSubject.next(null);
+    }
+
+    setComponentRef(childComponentRef) {
+        this.componentRefSubject.next(childComponentRef);
     }
 }

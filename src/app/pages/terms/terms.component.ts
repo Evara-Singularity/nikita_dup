@@ -1,10 +1,10 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { FooterService } from '@app/utils/services/footer.service';
-declare let $: any;
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'press',
@@ -22,10 +22,10 @@ export class TermsComponent {
         private _renderer2: Renderer2,
         private _router: Router,
         @Inject(DOCUMENT) private _document,
-        @Inject(PLATFORM_ID) platformId,
-        public footerService: FooterService) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        public footerService: FooterService,
+        public _commonService: CommonService) {
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit() {

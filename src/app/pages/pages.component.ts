@@ -1,7 +1,6 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LocalAuthService } from '../utils/services/auth.service';
 import { CartService } from '../utils/services/cart.service';
 import { CommonService } from '../utils/services/common.service';
@@ -17,6 +16,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 declare var dataLayer;
+import { SpeedTestService } from 'ng-speed-test';
 
 @Component({
   selector: 'app-pages',
@@ -25,7 +25,7 @@ declare var dataLayer;
   encapsulation: ViewEncapsulation.None
 })
 
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit, AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true, logo?: boolean, title?: string };
@@ -39,13 +39,13 @@ export class PagesComponent implements OnInit {
     private _cartService: CartService,
     private _localStorageService: LocalStorageService,
     private _router: Router,
-    @Inject(PLATFORM_ID) platformId,
     public router: Router,
     private _aRoute: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private speedTestService: SpeedTestService,
   ) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;;
     this.isMoglixAppInstalled();
 
     this.router.events.subscribe(res => {
@@ -61,7 +61,25 @@ export class PagesComponent implements OnInit {
     })
   }
 
-  
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      setTimeout(() => {
+        // TODO: configure it with 500KB image 
+        this.speedTestService.getMbps({ iterations: 1, file: {
+          path: CONSTANTS.SPEED_TEST_IMAGE,
+          shouldBustCache: true,
+          size: 408949
+        }, retryDelay: 1500 }).subscribe(
+          (speed) => {
+            console.log('speedTestService ngAfterViewInit', speed);
+            this._commonService.setNetworkSpeedState(speed);
+          }
+        )
+      }, 0);
+    }
+  }
+
+    
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty('token')) {
@@ -151,13 +169,15 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
 
-    
+    this.setUserSession();
     if (this.isBrowser) {
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie()
       this.setConnectionType();
+      this.checkWebpSupport();
     }
+    
   }
 
   isMoglixAppInstalled() {
@@ -168,6 +188,19 @@ export class PagesComponent implements OnInit {
           this.updateAppStatus()
         }
       });
+    }
+  }
+
+  checkWebpSupport() {
+    const elem = document.createElement('canvas');
+    if (!!(elem.getContext && elem.getContext('2d'))) {
+      // was able or not to get WebP representation
+      console.log('was able or not to get WebP representation');
+      this._commonService.setWebpSupportState(elem.toDataURL('image/webp').indexOf('data:image/webp') == 0);
+    } else {
+      // very old browser like IE 8, canvas not supported
+      console.log('very old browser like IE 8, canvas not supported');
+      this._commonService.setWebpSupportState(false);
     }
   }
 
@@ -205,6 +238,7 @@ export class PagesComponent implements OnInit {
           map((res) => res)
         )
         .subscribe((res) => {
+          let userSession = this._localAuthService.getUserSession();
           this._localAuthService.setUserSession(res);
           // Below quick order condition is added because getcartbysession is called seperately on quick order page
           if ((this.router.url.indexOf('/quickorder') == -1) && (this.router.url.indexOf('/checkout') == -1)) {

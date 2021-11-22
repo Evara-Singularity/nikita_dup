@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, Renderer2, Inject, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
   selector: 'amazing-deal',
   templateUrl: 'amazingDeals.html',
@@ -17,7 +18,6 @@ export class AmazingDealsComponent implements OnInit, AfterViewInit  {
 
   constructor(
     private elementRef: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private title: Title,
     public router: Router,
     private _renderer2: Renderer2,
@@ -25,10 +25,11 @@ export class AmazingDealsComponent implements OnInit, AfterViewInit  {
     private _document,
     private meta: Meta,
     private activatedRoute: ActivatedRoute,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.getAmazingDealsData();
     this.setMetas();
     this.initializeClicks()

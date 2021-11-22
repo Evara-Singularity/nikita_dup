@@ -2,7 +2,7 @@ import { Injectable, EventEmitter, Optional } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddToCartProductSchema, cartSession } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { concat, Observable, Observer, of, pipe, Subject, throwError } from 'rxjs';
+import { Observable, Observer, of, Subject } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -69,11 +69,8 @@ export class CartService {
 
     ngOnInit() {
         this._dataService.dataServiceCart.subscribe(data => {
-            //  alert('ok');
             this.cart.next(data);
         })
-        let itemsArray = [];
-        
     }
 
     set buyNowSessionDetails(sessionDetails) {

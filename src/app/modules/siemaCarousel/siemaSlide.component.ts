@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, ViewEncapsulation, PLATFORM_ID, Inject, Output, EventEmitter, ViewChild } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, Input, ViewEncapsulation, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 
 import { Subject } from 'rxjs';
@@ -8,6 +7,7 @@ import { ModalService } from '../modal/modal.service';
 import { YoutubePlayerComponent } from '../../components/youtube-player/youtube-player.component';
 import { SiemaCrouselService } from '../../utils/services/siema-crousel.service';
 import CONSTANTS from '../../config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 
 
@@ -17,7 +17,6 @@ import CONSTANTS from '../../config/constants';
     styleUrls: [],
     encapsulation: ViewEncapsulation.None,
 })
-
 export class SiemaSlideComponent {
     @Input() options: any;
     @Input() item: any;
@@ -52,12 +51,12 @@ export class SiemaSlideComponent {
     readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(
-        @Inject(PLATFORM_ID) private platformId: Object,
         private _modalService: ModalService,
         private _siemaCrouselService: SiemaCrouselService,
-        private ngxSiemaService: NgxSiemaService
+        private ngxSiemaService: NgxSiemaService,
+        public _commonService: CommonService
     ) {
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = _commonService.isBrowser;  
     }
 
     ngOnInit() {

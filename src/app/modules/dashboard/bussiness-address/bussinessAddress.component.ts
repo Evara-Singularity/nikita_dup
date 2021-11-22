@@ -2,10 +2,10 @@ import { Component, PLATFORM_ID, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -32,10 +32,10 @@ export class BussinessAddressComponent {
   isServer: boolean;
   isBrowser: boolean;
 
-  constructor(private _localAuthService: LocalAuthService, private meta: Meta, @Inject(PLATFORM_ID) platformId, private _router: Router) {
+  constructor(private _localAuthService: LocalAuthService, private meta: Meta, @Inject(PLATFORM_ID) platformId, private _router: Router, public _commonService:CommonService) {
     this.invoiceType = "retail";
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {

@@ -1,9 +1,9 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, PLATFORM_ID, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, ViewChild, ViewContainerRef, EventEmitter, Renderer2, AfterViewInit, Optional, ElementRef } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { LocalStorageService } from 'ngx-webstorage';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
@@ -37,7 +37,7 @@ interface ProductDataArg {
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit, AfterViewInit {
-
+  encodeURI = encodeURI;
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
@@ -128,6 +128,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemand loaded components for similar products
   similarProductInstance = null;
   @ViewChild('similarProduct', { read: ViewContainerRef }) similarProductContainerRef: ViewContainerRef;
+  // ondemand loaded components for sponsered products
+  sponseredProductsInstance = null;
+  @ViewChild('sponseredProducts', { read: ViewContainerRef }) sponseredProductsContainerRef: ViewContainerRef;
   // ondemand loaded components for recents products
   recentProductsInstance = null;
   @ViewChild('recentProducts', { read: ViewContainerRef }) recentProductsContainerRef: ViewContainerRef;
@@ -155,6 +158,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemad loaded components recent viewd products all pop up
   recentAllInstance = null;
   @ViewChild('recentAll', { read: ViewContainerRef }) recentAllContainerRef: ViewContainerRef;
+  // ondemad loaded components for showing duplicate order
+  globalToastInstance = null;
+  @ViewChild('globalToast', { read: ViewContainerRef }) globalToastContainerRef: ViewContainerRef;
   // ondemad loaded components for post a product review
   writeReviewPopupInstance = null;
   @ViewChild('writeReviewPopup', { read: ViewContainerRef }) writeReviewPopupContainerRef: ViewContainerRef;
@@ -172,6 +178,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // ondemand loaded components for app Promo 
   appPromoInstance = null;
   @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
+  // ondemand product crousel  
+  productCrouselInstance = null;
+  @ViewChild('productCrousel', { read: ViewContainerRef }) productCrouselContainerRef: ViewContainerRef;
+  @ViewChild('productCrouselPseudo', { read: ElementRef }) productCrouselPseudoContainerRef: ElementRef;
+  isProductCrouselLoaded: boolean = false;
 
   iOptions: any = null;
 
@@ -190,6 +201,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
+  }
+
+  get getWhatsText(){
+    return `Hi, I want to buy ${this.productName} (${this.defaultPartNumber})`
   }
 
   constructor(
@@ -217,10 +232,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
     @Inject(DOCUMENT) private document,
-    @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject(RESPONSE) private _response: any) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = commonService.isServer;
+    this.isBrowser = commonService.isBrowser;
   }
 
   ngOnInit(): void {
@@ -281,8 +295,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       if (!rawData['product']['error']) {
         // console.log('getProductApiData rawData', rawData['product'][4]);
         // todo: if productBO not fould redirect to product not found page
-        if (rawData['product'][0]['productBO']) {
-          // originally only load 3 review on viewport intersection load other comments
+        if (rawData['product'][0]['productBO'] && Object.values(rawData['product'][0]['productBO']['productPartDetails'])[0]['images'] !== null ) {
           const rawReviews = Object.assign({}, rawData['product'][1]['data']);
           const rawProductFbtData = Object.assign({}, rawData['product'][4]);
           const rawProductCountData = Object.assign({}, rawData['product'][5]);
@@ -301,6 +314,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.setProductaBreadcrum(rawData['product'][2]);
           this.setQuestionsAnswerData(rawData['product'][3]);
           this.remoteApiCallRecentlyBought();
+          this.duplicateOrderCheck(rawData);
         } else {
           this.showLoader = false;
           this.globalLoader.setLoaderState(false);
@@ -320,67 +334,25 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }, error => {
       this.showLoader = false;
       this.globalLoader.setLoaderState(false);
-      console.log('getProductApiData error', error);
     });
   }
 
+  private duplicateOrderCheck(rawData) {
+    if( rawData && rawData['product'][6] && rawData['product'][6]['data']['date'] ){
+      const userSession = this.localStorageService.retrieve('user');
+      if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && rawData['product'][6] && rawData['product'][6].status) {
+        const date1: any = new Date(rawData['product'][6]['data']['date']);
+        const date2: any = new Date();
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays < 31) {
+          this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+        }
+      }
+    }
+  }
+
   updateAttr(productId) {
-
-    if (this.localStorageService.retrieve('user')) {
-      var user = this.localStorageService.retrieve('user');
-    }
-
-    let taxo1 = '';
-    let taxo2 = '';
-    let taxo3 = '';
-    if (this.productCategoryDetails['taxonomyCode']) {
-      taxo1 = this.productCategoryDetails['taxonomyCode'].split("/")[0] || '';
-      taxo2 = this.productCategoryDetails['taxonomyCode'].split("/")[1] || '';
-      taxo3 = this.productCategoryDetails['taxonomyCode'].split("/")[2] || '';
-    }
-
-    let ele = []; // product tags for adobe;
-    this.productTags.forEach((element) => {
-      ele.push(element.name);
-    });
-    const tagsForAdobe = ele.join("|");
-
-    let page = {
-      'pageName': "moglix: " + taxo1 + ":" + taxo2 + ":" + taxo3 + ": pdp",
-      'channel': "pdp",
-      'subSection': "moglix: " + taxo1 + ":" + taxo2 + ":" + taxo3 + ": pdp : " + this.commonService.getSectionClick().toLowerCase(),
-      'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-    }
-    let custData = {
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-    }
-    let order = {
-      'productID': this.rawProductData['partNumber'],
-      'productCategoryL1': taxo1,
-      'productCategoryL2': taxo2,
-      'productCategoryL3': taxo3,
-      'brand': this.rawProductData['brand'],
-      'price': this.rawProductData['price'],
-      'stockStatus': this.rawProductData['outOfStock'] ? "Out of Stock" : "In Stock",
-      'tags': tagsForAdobe,
-    }
-
-    this.analytics.sendAdobeCall({ page, custData, order });
-
-    this.analytics.sendGTMCall({
-      'event': 'viewItem',
-      'email': (user && user["email"]) ? user["email"] : '',
-      'ProductID': productId,
-      'Category': this.rawProductData['taxonomy'],
-      'CatID': this.rawProductData['taxonomyCode'],
-      'MRP': this.rawProductData['mrp'],
-      'Discount': Math.floor(this.rawProductData['discount']),
-      'ImageURL': this.rawProductData['productAllImage'] ? this.rawProductData['productAllImage'][0]['default'] : ''
-    });
-
     this.removeRfqForm();
     this.showLoader = true;
     this.productService.getGroupProductObj(productId).subscribe(productData => {
@@ -403,7 +375,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   setQuestionsAnswerData(data) {
-    console.log('questionAnswerList', data);
     this.questionAnswerList = data;
   }
 
@@ -428,11 +399,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   sortReviewsList(sortType) {
     this.selectedReviewType = sortType;
-    let list = this.reviews.reviewList;
     if (sortType === "helpful") {
-      list.sort((a, b) => {
-        return b.yes - a.yes;
-      });
+      this.reviews.reviewList = this.sortedReviewByRating(this.reviews.reviewList);
+    } else {
+      this.reviews.reviewList = this.sortedReviewsByDate(this.reviews.reviewList);
     }
   }
 
@@ -457,6 +427,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setProductaBreadcrum(breadcrumbData) {
     this.breadcrumbData = breadcrumbData;
+   
+  }
+  navigateToCategory(){
+    if(this.breadcrumbData){
+      let lastElement = this.breadcrumbData.length - 2;
+      let category = this.breadcrumbData[lastElement]['categoryLink'];
+      this.navigateToUrl(category);
+    }
   }
 
   processProductData(args: ProductDataArg, rawData) {
@@ -486,8 +464,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.priceQuantityCountry = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
     this.productMrp = (this.isProductPriceValid && this.priceQuantityCountry) ? this.priceQuantityCountry['mrp'] : null;
 
-    console.log('isProductPriceValid', this.isProductPriceValid);
-
     if (this.priceQuantityCountry) {
       this.priceQuantityCountry['bulkPricesIndia'] = (this.isProductPriceValid) ? Object.assign({}, this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']) : null;
       this.priceQuantityCountry['bulkPricesModified'] = (this.isProductPriceValid && this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']) ? [...this.rawProductData['productPartDetails'][partNumber]['productPriceQuantity']['india']['bulkPrices']['india']] : null;
@@ -505,6 +481,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.productMinimmumQuantity = (this.priceQuantityCountry && this.priceQuantityCountry['moq']) ? this.priceQuantityCountry['moq'] : 1;
 
     this.setOutOfStockFlag();
+
+    /**
+     * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
+     * then redirect to inStock MSN of same grouped product
+     * check for filterAttributesList for grouped to make sure it is grouped product and check of outofstock and 
+     * then redirect to next inStock msn avaliable in args.nextAvailableMsn
+     * Make sure this condition is called after this.setOutOfStockFlag();
+     * 
+     * Commented: as per request in Sprint-14 (Support)
+    */
+
+    // if (this.productFilterAttributesList && this.productOutOfStock) {
+    //   this.getProductGroupData(args.nextAvailableMsn);
+    // }
 
     if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);
@@ -552,11 +542,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.fbtComponentInstance = null;
       this.fbtComponentContainerRef.remove();
     }
-    // console.log('similarProductInstance 1', this.similarProductInstance);
     if (this.similarProductInstance) {
       this.similarProductInstance = null;
       this.similarProductContainerRef.remove();
       this.onVisibleSimilar(null);
+    }
+    if (this.sponseredProductsInstance) {
+      this.sponseredProductsInstance = null;
+      this.sponseredProductsContainerRef.remove();
+      this.onVisibleSponsered(null);
     }
     // console.log('similarProductInstance 2', this.similarProductInstance);
     if (this.recentProductsInstance) {
@@ -588,14 +582,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.addToCartToastInstance = null;
       this.addToCartToastContainerRef.remove();
     }
-    if (this.similarAllInstance) {
-      this.similarAllInstance = null;
-      this.similarAllContainerRef.remove();
-    }
-    if (this.recentAllInstance) {
-      this.recentAllInstance = null;
-      this.recentAllContainerRef.remove();
-    }
     if (this.writeReviewPopupInstance) {
       this.writeReviewPopupInstance = null;
       this.writeReviewPopupContainerRef.remove();
@@ -607,6 +593,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.alertBoxInstance) {
       this.alertBoxInstance = null;
       this.alertBoxContainerRef.remove();
+    }
+    if (this.globalToastInstance) {
+      this.globalToastInstance = null;
+      this.globalToastContainerRef.remove();
     }
     if (this.productRFQInstance) {
       this.productRFQInstance = null;
@@ -648,7 +638,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       // incase priceQuantityCountry element not present in API
       this.productOutOfStock = true;
     }
-    console.log('setOutOfStockFlag :: ', this.productOutOfStock);
   }
 
   // setAttributesExtra(productPartDetails) {
@@ -691,6 +680,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     imagesArr.forEach(element => {
       this.productAllImages.push({
         src: this.imagePath + "" + element.links.xlarge,
+        xlarge: this.imagePath + "" + element.links.xlarge,
+        large: this.imagePath + "" + element.links.large,
         default: this.imagePath + "" + element.links.default,
         caption: this.imagePath + "" + element.links.icon,
         thumb: this.imagePath + "" + element.links.icon,
@@ -1115,7 +1106,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     };
     let criteoItem = [];
     for (let p = 0; p < this.cartSession["itemsList"].length; p++) {
-      criteoItem.push({ name: this.cartSession["itemsList"][p]['productName'], id: this.cartSession["itemsList"][p]['productId'], price: this.cartSession["itemsList"][p]['productUnitPrice'], quantity: this.cartSession["itemsList"][p]['productQuantity'], image: this.cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this.cartSession["itemsList"][p]['productUrl'] });
+      criteoItem.push({ name: this.cartSession["itemsList"][p]['productName'], brandId:  this.productBrandDetails['idBrand'] ,id: this.cartSession["itemsList"][p]['productId'], price: this.cartSession["itemsList"][p]['productUnitPrice'], quantity: this.cartSession["itemsList"][p]['productQuantity'], image: this.cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this.cartSession["itemsList"][p]['productUrl'] });
       eventData['prodId'] = this.cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
       eventData['prodPrice'] = this.cartSession["itemsList"][p]['productUnitPrice'] * this.cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
       eventData['prodQuantity'] = this.cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
@@ -1326,7 +1317,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   changeBulkQty(value, index) {
-    console.log('changeBulkQty', value, index);
     if (this.isBrowser) {
       (<HTMLInputElement>document.querySelector("#product_quantity")).value = "0";
     }
@@ -1348,7 +1338,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // dynamically load similar section 
   async onVisibleSimilar(htmlElement) {
-    console.log('onVisibleSimilar', 'called');
     if (!this.similarProductInstance) {
       const { SimilarProductsComponent } = await import('./../../components/similar-products/similar-products.component')
       const factory = this.cfr.resolveComponentFactory(SimilarProductsComponent);
@@ -1358,27 +1347,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarProductInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
 
       this.similarProductInstance.instance['outOfStock'] = this.productOutOfStock;
-      (this.similarProductInstance.instance['showAll'] as EventEmitter<any>).subscribe(similarProducts => {
-        this.loadAllSimilar(similarProducts);
-      })
     }
   }
 
-  async loadAllSimilar(similarProducts) {
-    if (!this.similarAllInstance) {
-      this.showLoader = true;
-      const { SimilarProductsPopupComponent } = await import('./../../components/similar-products-popup/similar-products-popup.component').finally(() => {
-        this.showLoader = false;
-      });
-      const factory = this.cfr.resolveComponentFactory(SimilarProductsPopupComponent);
-      this.similarAllInstance = this.similarAllContainerRef.createComponent(factory, null, this.injector);
-      this.similarAllInstance.instance['similarProducts'] = similarProducts;
-      (this.similarAllInstance.instance['out'] as EventEmitter<boolean>).subscribe(status => {
-        this.similarAllInstance = null;
-        this.similarAllContainerRef.detach();
-      });
+    // dynamically load similar section 
+  async onVisibleSponsered(htmlElement) {
+    if (!this.sponseredProductsInstance) {
+      const { ProductSponsoredListComponent } = await import('./../../components/product-sponsored-list/product-sponsored-list.component');
+      const factory = this.cfr.resolveComponentFactory(ProductSponsoredListComponent);
+      this.sponseredProductsInstance = this.sponseredProductsContainerRef.createComponent(factory, null, this.injector);
+      this.sponseredProductsInstance.instance['productName'] = this.productName;
+      this.sponseredProductsInstance.instance['productId'] = this.defaultPartNumber;
+      this.sponseredProductsInstance.instance['categoryCode'] = this.productCategoryDetails['categoryCode'];
+      this.sponseredProductsInstance.instance['outOfStock'] = this.productOutOfStock;
     }
   }
+  
 
   // dynamically recent products section 
   async onVisibleRecentProduct(htmlElement) {
@@ -1387,25 +1371,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const { RecentViewedProductsComponent } = await import('./../../components/recent-viewed-products/recent-viewed-products.component')
       const factory = this.cfr.resolveComponentFactory(RecentViewedProductsComponent);
       this.recentProductsInstance = this.recentProductsContainerRef.createComponent(factory, null, this.injector);
-      (this.recentProductsInstance.instance['showAll'] as EventEmitter<any>).subscribe(recentProducts => {
-        this.loadAllRecent(recentProducts);
-      })
-    }
-  }
-
-  async loadAllRecent(recentProducts) {
-    if (!this.recentAllInstance) {
-      this.showLoader = true;
-      const { RecentViewedPopupComponent } = await import('./../../components/recent-viewed-popup/recent-viewed-popup.component').finally(() => {
-        this.showLoader = false;
-      });
-      const factory = this.cfr.resolveComponentFactory(RecentViewedPopupComponent);
-      this.recentAllInstance = this.recentAllContainerRef.createComponent(factory, null, this.injector);
-      this.recentAllInstance.instance['recentProductList'] = recentProducts;
-      (this.recentAllInstance.instance['out'] as EventEmitter<boolean>).subscribe(status => {
-        this.recentAllInstance = null;
-        this.recentAllContainerRef.detach();
-      });
+      this.recentProductsInstance.instance['outOfStock'] = this.productOutOfStock;
     }
   }
 
@@ -1454,7 +1420,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   // product-rfq 
   async onVisibleProductRFQ(htmlElement) {
     this.removeRfqForm();
-    console.log('productRFQInstance', this.productRFQInstance);
     if (!this.productRFQInstance) {
       this.intiateRFQQuote(false, false);
     }
@@ -1513,7 +1478,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.pincodeFormInstance.instance['productInfo'] = productInfo;
     this.pincodeFormInstance.instance['openPinCodePopup'] = true;
     (this.pincodeFormInstance.instance['out'] as EventEmitter<boolean>).subscribe(data => {
-      console.log('getPincodeForm detached', data);
       // create a new component after component is closed
       // this is required, to refresh input data
       this.pincodeFormInstance = null;
@@ -1546,7 +1510,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async viewPopUpOpen(data) {
-    console.log('viewPopUpOpen', data);
     if (!this.offerPopupInstance) {
       this.showLoader = true;
       const { ProductOfferPopupComponent } = await import('./../../components/product-offer-popup/product-offer-popup.component').finally(() => {
@@ -1557,7 +1520,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.offerPopupInstance.instance['data'] = data['block_data'];
       this.offerPopupInstance.instance['openMobikwikPopup'] = true;
       (this.offerPopupInstance.instance['out'] as EventEmitter<boolean>).subscribe(data => {
-        console.log('viewPopUpOpen detached', data);
         // create a new component after component is closed
         // this is required, to refresh input data
         this.offerPopupInstance = null;
@@ -1686,6 +1648,59 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  async loadProductCrousel(slideIndex) {
+    if (!this.productCrouselInstance) {
+      this.isProductCrouselLoaded = true;
+      const { ProductCrouselComponent } = await import('../../modules/product-crousel/ProductCrousel.component').finally(() => {
+        this.clearPseudoImageCrousel();
+      });
+      const factory = this.cfr.resolveComponentFactory(ProductCrouselComponent);
+      this.productCrouselInstance = this.productCrouselContainerRef.createComponent(factory, null, this.injector);
+      this.productCrouselInstance.instance['options'] = this.iOptions;
+      this.productCrouselInstance.instance['items'] = this.productAllImages;
+      this.productCrouselInstance.instance['moveToSlide$'] = this.moveToSlide$;
+      this.productCrouselInstance.instance['refreshSiemaItems$'] = this.refreshSiemaItems$;
+      this.productCrouselInstance.instance['productName'] = this.productName;
+      setTimeout(() => {
+        (this.productCrouselInstance.instance['moveToSlide$'] as Subject<number>).next(slideIndex);
+      }, 100);
+    }
+  }
+
+  clearPseudoImageCrousel() {
+    this.isProductCrouselLoaded = false;
+    this.productCrouselPseudoContainerRef.nativeElement.remove();
+  }
+
+  onRotatePrevious() {
+    this.loadProductCrousel(1);
+  }
+
+  onRotateNext() {
+    this.loadProductCrousel(1);
+  }
+
+
+  async loadGlobalToastMessage(data, rawData) {
+    if (data['status'] === true) {
+      if (!this.globalToastInstance) {
+        const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component').finally(() => {
+          this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(GlobalToastComponent);
+        this.globalToastInstance = this.alertBoxContainerRef.createComponent(factory, null, this.injector);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const a = data.data.time.split(':');
+        this.globalToastInstance.instance['text'] = 'The same item has been ordered by you on ' + (new Date(data.data.date).toLocaleDateString("en-IN", options)) + ' at ' + (a[0] + ':' + a[1]) + (a[0] < 12 ? ' AM' : ' PM');
+        this.globalToastInstance.instance['btnText'] = 'x';
+        this.globalToastInstance.instance['showTime'] = 100000;
+        this.globalToastInstance.instance['showDuplicateOrderToast'] = true;
+        this.globalToastInstance.instance['positionTop'] = true;
+        this.globalToastInstance.instance['productMsn'] = rawData.partNumber;
+      }
+    }
+  }
+
   async loadAlertBox(mainText, subText = null, extraSectionName: string = null) {
     if (!this.alertBoxInstance) {
       this.showLoader = true;
@@ -1717,6 +1732,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
     this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+    this.appPromoInstance.instance['page'] = 'pdp';
     this.appPromoInstance.instance['isOverlayMode'] = false;
     this.appPromoInstance.instance['showPromoCode'] = false;
     this.appPromoInstance.instance['productMsn'] = this.defaultPartNumber;
@@ -1757,7 +1773,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async showYTVideo(link) {
-    console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
@@ -1780,7 +1795,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let pageTitleName = this.productName;
     const pwot = this.priceWithoutTax;
 
-    if (pwot && pwot > 0) {
+    if (pwot && pwot > 0 && this.rawProductData['quantityAvailable'] > 0) {
       title += " - Buy at Rs." + this.productPrice
     }
 
@@ -2087,6 +2102,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'google_tag_params': google_tag_params
     });
     const user = this.localStorageService.retrieve('user');
+
     gtmDataObj.push({
       'event': 'viewItem',
       'email': (user && user["email"]) ? user["email"] : '',
@@ -2094,6 +2110,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       'Category': this.productCategoryDetails['taxonomy'],
       'CatID': this.productCategoryDetails['taxonomyCode'],
       'MRP': this.productMrp,
+      'brandId': this.productBrandDetails['idBrand'],
       'Discount': Math.floor(this.productDiscount),
       'ImageURL': this.productDefaultImage
     });
@@ -2120,7 +2137,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       ele.push(element.name);
     });
     const tagsForAdobe = ele.join("|");
-
 
     let page = {
       'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
@@ -2201,13 +2217,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
             'id': this.productSubPartNumber, // todo: partnumber
             'price': this.productPrice,
             'brand': this.productBrandDetails['brandName'],
+            'brandId': this.productBrandDetails['idBrand'],
             'category': (this.productCategoryDetails && this.productCategoryDetails['taxonomy']) ? this.productCategoryDetails['taxonomy'] : '',
             'variant': '',
             'quantity': quantity,
             'productImg': this.productDefaultImage,
             'CatId': this.productCategoryDetails['taxonomyCode'],
             'MRP': this.productMrp['amount'],
-            'Discount':  this.productDiscount
+            'Discount': this.productDiscount
           }]
         }
       },
@@ -2373,7 +2390,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   pseudoFnc() {
+  }
 
+  sortedReviewsByDate(reviewList) {
+    return reviewList.sort((a, b) => {
+      return parseInt(b.date_unix) - parseInt(a.date_unix)
+    });
+  }
+
+  sortedReviewByRating(reviewList) {
+    return reviewList.sort((a, b) => {
+      return b.yes - a.yes;
+    });
+  }
+
+  navigateToUrl(url) {
+    this.router.navigateByUrl(url);
   }
 
   ngOnDestroy() {

@@ -8,9 +8,9 @@ export const environment = {
   IMAGE_BASE_URL: 'https://cdn.moglix.com/',
   DOCUMENT_URL: 'https://document.moglix.com/',
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
-  GTM_ANALYTICS_CODE: 'GTM-PMPXQQ',
+  GTM_ANALYTICS_CODE: 'GTM-PKRGCH2',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '3.0',
+  buildVersion: '4.2',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"

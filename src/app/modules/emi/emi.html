@@ -40,7 +40,6 @@
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
                                 <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
-                                        
                                         <input formControlName="bankcode" [checked]="selectedEMIKey == emi.key" type="radio" [value]="emi.key"
                                             (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)" [id]="emi.key">
                                         <span class="custom-box"></span>
@@ -155,7 +154,7 @@
         </form>
     </div>
 
-    <div class="emi-note-text" *ngIf="nocostEmiDiscount > 0">
+    <div class="emi-note-text" *ngIf="(nocostEmiDiscount > 0) && selectedBank !== 'BAJFIN' && selectedBank !== 'BAJAJ'">
         <b>Note: </b>The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is
         already discounted
         from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit will

@@ -1,8 +1,8 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
+import { CommonService } from '../services/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,9 @@ export class IsNotAuthenticatedGuard implements CanActivate {
   private isServer: boolean;
   private isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) platformId, private localStorageService: LocalStorageService, private router: Router) {
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+  constructor(private localStorageService: LocalStorageService, private router: Router, public _commonService: CommonService) {
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   canActivate(

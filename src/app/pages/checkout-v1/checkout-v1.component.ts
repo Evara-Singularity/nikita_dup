@@ -1,5 +1,5 @@
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { makeStateKey, Title, TransferState } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,7 +39,7 @@ export class CheckoutV1Component implements OnInit {
   checkoutAddress: {};
   checkoutAddressIndex: number;
   businessDetails: any;
-  addressFormButtonText: string = 'SAVE';
+  addressFormButtonText: string = 'SAVE ADDRESS';
   windowWidth: number;
   showSocialLogin: boolean;
   step: number = 1;
@@ -71,7 +71,6 @@ export class CheckoutV1Component implements OnInit {
     private _router: Router,
     public _state: GlobalState,
     private _activatedRoute: ActivatedRoute,
-    @Inject(PLATFORM_ID) platformId,
     private _tState: TransferState,
     private formBuilder: FormBuilder,
     private _cartService: CartService,
@@ -96,8 +95,8 @@ export class CheckoutV1Component implements OnInit {
     this.itemsValidationMessage = [];
     this.invoiceType = this._checkoutService.getInvoiceType();
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.windowWidth = this.isBrowser ? window.innerWidth : undefined;
 
     if (this.isServer) {

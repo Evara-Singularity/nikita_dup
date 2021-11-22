@@ -1,16 +1,16 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
 import { mergeMap } from 'rxjs/operators';
-import { Observer, of, Subscription } from 'rxjs';
+import { Observer, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, NavigationExtras, Router } from '@angular/router';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { NavigationExtras, Router } from '@angular/router';
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from './cart.service';
 import { DataService } from "./data.service";
 import { CheckoutService } from './checkout.service';
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -47,26 +47,61 @@ export class CommonService {
     abTesting: any;
 
     updateSortBy: Subject<string> = new Subject();
+    private _networkSpeed:Number = null;
+    private _webpSupport: boolean = false;
+    private networkSpeedState: Subject<number> = new Subject<number>();
+    private webpSupportState: Subject<number> = new Subject<number>();
 
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
-    // useLastSortByState: boolean = false;
-
     private routeData: { currentUrl: string, previousUrl: string };
+    userSession; 
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
+    constructor(@Inject(PLATFORM_ID) platformId, private checkoutService: CheckoutService, private _localStorageService: LocalStorageService, private _activatedRoute: ActivatedRoute, private _dataService: DataService, public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
         private _router: Router) {
         // this.getBusinessDetails();
         this.windowLoaded = false;
         let gaGtmData = this._localStorageService.retrieve('gaGtmData');
         this.gaGtmData = gaGtmData ? gaGtmData : {};
-        this.routeData = { currentUrl: "", previousUrl: "" };
+        this.routeData = { currentUrl: "", previousUrl: "" };   
         this.itemsValidationMessage = [];
-        this.isBrowser = isPlatformBrowser(platformId);
         this.isServer = isPlatformServer(platformId);
+        this.isBrowser = isPlatformBrowser(platformId);
+        this.userSession = this._localStorageService.retrieve('user');
     }
+
+    setNetworkSpeedState(speed) {
+        this._networkSpeed = speed;
+        this.networkSpeedState.next(speed);
+    }
+
+    getNetworkSpeedState(): Observable<number>{
+        return this.networkSpeedState.asObservable();
+    }
+
+    getNetworkSpeed(): Number{
+        return this._networkSpeed;
+    }
+
+    setWebpSupportState(status) {
+        this._webpSupport = status;
+        this.webpSupportState.next(status);
+    }
+
+    getWebpSupportState(): Observable<number>{
+        return this.webpSupportState.asObservable();
+    }
+
+    get networkSpeed(){
+        return this._networkSpeed;
+    }
+
+    get webpSupport(){
+        return this._webpSupport;
+    }
+
 
     get itemsValidationMessage() {
         return this._itemsValidationMessage;
@@ -172,8 +207,6 @@ export class CommonService {
 
     private getBrandData(type, curl, params) {
         const formattedParams = this.formatParams(params);
-        console.log(formattedParams);
-        console.log(params);
 
         return this._dataService.callRestful(type, CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BRAND_NAME, { params: { name: formattedParams['brand'] } })
             .pipe(
@@ -251,7 +284,6 @@ export class CommonService {
             queryParams['orderBy'] = 'price';
             queryParams['orderWay'] = 'desc';
         }
-
         return queryParams;
     }
 
@@ -298,7 +330,6 @@ export class CommonService {
     refreshProducts(flagFromResolver?: boolean): Observable<any> {
         return (new Observable(observer => {
             const defaultParams = this.defaultParams;
-            console.log(this.defaultParams);
 
             if (defaultParams["pageName"] === "CATEGORY" || defaultParams["pageName"] == "ATTRIBUTE") {
                 if (this.currentRequest !== undefined)
@@ -421,6 +452,7 @@ export class CommonService {
 
         actualParams['type'] = 'm';
         actualParams['abt'] = 'n';
+        actualParams['onlineab'] = 'y';
 
         if (queryParams['preProcessRequired']) {
             actualParams['preProcessRequired'] = queryParams['preProcessRequired'];
@@ -443,7 +475,7 @@ export class CommonService {
                 actualParams['category'] = params["category"];
             //10766
             if (queryParams["str"] != undefined)
-                actualParams['str'] = queryParams["str"];
+                actualParams['str'] = (queryParams["str"]) ;
         } else if (params.pageName == "BRAND") {
             if (params["category"]) {
                 actualParams['category'] = params["category"];
@@ -459,16 +491,16 @@ export class CommonService {
                 actualParams['operation'] = "or";
             if (queryParams["category"] != undefined)
                 actualParams['category'] = encodeURIComponent(queryParams["category"]);
-            actualParams['str'] = queryParams["search_query"];
+            actualParams['str'] = (queryParams["search_query"]);
         } else if (params.pageName == "POPULAR SEARCH") {
-            actualParams['str'] = params["searchString"];
+            actualParams['str'] = (params["searchString"]);
         }
         else if (params.pageName == "ATTRIBUTE") {
             if (params["category"] != undefined) {
                 actualParams['category'] = params["category"];
             }
             if (queryParams["str"]) {
-                actualParams['str'] = queryParams["str"];
+                actualParams['str'] = (queryParams["str"]);
             }
             if (queryParams["pageIndex"]) {
                 actualParams['pageIndex'] = queryParams["pageIndex"];
@@ -793,7 +825,12 @@ export class CommonService {
 
     scrollTo(event) {
         if (this.isBrowser) {
-            ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+            if(event.target){
+                ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
+            }else{
+                ClientUtility.scrollToTop(500, event.offsetTop - 50);
+            }
+            
         }
     }
 
@@ -896,15 +933,29 @@ export class CommonService {
         this.toggleFilter(true);
         this._router.navigate([currentRoute], extras);
     }
-
+    
     toggleFilter(forceFillyRemove?: boolean) {
         const mob_filter = document.querySelector('.mob_filter');
         if (mob_filter) {
             forceFillyRemove ? mob_filter.classList.remove('upTrans') : mob_filter.classList.toggle('upTrans');
         }
     }
-
+    
     navigateTo(link) {
         this._router.navigateByUrl(link);
+    }
+
+    sendOtp(data): Observable<{}>
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
+    }
+
+    validateOTP(data)
+    {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_OTP, { body: data });
+    }
+
+    getUniqueGAId(){
+        return this._dataService.getCookie('_ga');
     }
 }

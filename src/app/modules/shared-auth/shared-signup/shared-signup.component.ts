@@ -1,5 +1,4 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, AfterViewInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -63,19 +62,19 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         private commonService: CommonService,
         private toastService: ToastMessageService,
         private localStorageService: LocalStorageService,
-        private meta: Meta, @Inject(PLATFORM_ID) platformId,
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private localAuthService: LocalAuthService,
         private title: Title,
+        private meta: Meta,
         private cartService: CartService,
         private signupUtilService: SharedSignUtilService,
         private authService: SharedAuthService,
         private loaderService: GlobalLoaderService,
-        private checkoutLoginService: CheckoutLoginService
+        private checkoutLoginService: CheckoutLoginService,
     ){
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = commonService.isServer;
+        this.isBrowser = commonService.isBrowser;
     }
 
     ngOnInit()

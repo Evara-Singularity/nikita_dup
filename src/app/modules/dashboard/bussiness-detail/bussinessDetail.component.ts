@@ -1,9 +1,8 @@
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Component, PLATFORM_ID, Inject, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BusinessDetailService } from './businessDetail.service';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Meta } from '@angular/platform-browser';
 import { SpaceValidator } from '@app/utils/validators/space';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -13,6 +12,7 @@ import { stateList } from '@app/utils/data/state';
 import { Step } from '@app/utils/validators/step.validate';
 import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { CommonService } from '@app/utils/services/common.service';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -50,17 +50,17 @@ export class BussinessDetailComponent implements OnDestroy {
   constructor(
     private _localAuthService: LocalAuthService,
     private meta: Meta,
-    @Inject(PLATFORM_ID) platformId,
     private _cartService: CartService,
     private _localStorageService: LocalStorageService,
     private _formBuilder: FormBuilder,
     private _businessDetailService: BusinessDetailService,
     private tms: ToastMessageService,
-    private loaderService:GlobalLoaderService) {
+    private loaderService:GlobalLoaderService,
+    public _commonService: CommonService) {
 
     this.successfulMessage = false;
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.showLoader = false;
   }
 

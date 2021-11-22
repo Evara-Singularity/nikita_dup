@@ -5,25 +5,52 @@ import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-p
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
-import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
+import { EnhanceImgByNetworkPipe } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
+import { ToastMessageService } from '../toastMessage/toast-message.service';
 
 @Component({
   selector: 'product-horizontal-card',
   templateUrl: './product-horizontal-card.component.html',
-  styleUrls: ['./product-horizontal-card.component.scss']
+  styleUrls: ['./product-horizontal-card.component.scss'],
+  providers: [EnhanceImgByNetworkPipe]
 })
 export class ProductHorizontalCardComponent implements OnInit {
 
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
+  readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   @Input() product: ProductsEntity;
+  @Input() cardFeaturesConfig: ProductCardFeature = {
+    // feature config
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFeatures: true,
+    enableRating: true,
+    enableVideo: true,
+    // design config
+    enableCard: false,
+    verticalOrientation: false,
+    horizontalOrientation: true,
+    lazyLoadImage: true,
+  }
+  // currently being used in PDP similar product
+  @Input() cardMetaInfo: ProductCardMetaInfo = {
+    redirectedSectionName: '',
+    redirectedIdentifier: '',
+  }
+  @Input() isAd: boolean = false;
+  @Input() hideAd: boolean = false;
+  @Input() isFirstView: boolean = false;
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -53,15 +80,32 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _injector: Injector,
     private modalService: ModalService,
     private _localAuthService: LocalAuthService,
+    private _commonService: CommonService,
+    private _enhanceImagePipe: EnhanceImgByNetworkPipe,
+    private _analytics: GlobalAnalyticsService,
+    private _toastMessageService: ToastMessageService
   ) {
-
   }
 
   ngOnInit(): void {
-    this.isOutOfStockByQuantity = !this.product.quantityAvailable;
+    this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
+    this.product['discount'] = Math.floor(+(((this.product.mrp - this.product.priceWithoutTax) / this.product.mrp) * 100));
+
+    this.changeThumbImage(this._commonService.getNetworkSpeed());
+    this._commonService.getNetworkSpeedState().subscribe(speed => {
+      this.changeThumbImage(speed);
+    })
+    this.isAd = !this.product.internalProduct
+  }
+
+
+  private changeThumbImage(speed: Number) {
+    if (!this.isFirstView && speed && (speed > CONSTANTS.NETWORK_SPEED_THRESHOD_LIMIT)) {
+      this.product.mainImageThumnailLink = this._enhanceImagePipe.transform(this.product.mainImageThumnailLink);
+    }
   }
 
   buyNow(buyNow = false) {
@@ -69,7 +113,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productMsnId = this.product['moglixPartNumber'];
     this.getProductGroupDetails(productMsnId).pipe(
       map(productRawData => {
-        // console.log('data ==> ', productRawData);
+        console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
           return this.getAddToCartProductRequest(productRawData['productBO'], buyNow);
         } else {
@@ -78,6 +122,10 @@ export class ProductHorizontalCardComponent implements OnInit {
       })
     ).subscribe((productDetails: AddToCartProductSchema) => {
       if (productDetails) {
+        if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
+          this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
+          return;
+        }
         if (productDetails.filterAttributesList) {
           this.loadVariantPop(this.product, productDetails, buyNow);
         } else {
@@ -109,7 +157,7 @@ export class ProductHorizontalCardComponent implements OnInit {
         const productRequest = this.getAddToCartProductRequest(productBO, data.buyNow);
         const product = this.productEntityFromProductBO(productBO);
         const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
-        
+
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
@@ -131,6 +179,12 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
+
+    // incase of promotional ad we need to fire GTM event for tracking
+    if (this.isAd && this._commonService.isBrowser) {
+      this.onlineSalesClickTrackUsingGTM();
+    }
+    this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName, this.cardMetaInfo.redirectedIdentifier);
     this._router.navigateByUrl(this.product.productUrl);
   }
 
@@ -162,12 +216,9 @@ export class ProductHorizontalCardComponent implements OnInit {
     if (isUserLogin) {
       this.getProductGroupDetails(productMsnId).pipe(
         map(productRawData => {
-          console.log(productRawData);
-          // console.log(productRawData['productBO']);
           return this.getRFQProduct(productRawData['productBO'])
         })
       ).subscribe(productDetails => {
-        // console.log('openRfqForm productDetails', productDetails);
         this.intiateRFQQuote(productDetails).then(res => {
           this._loader.setLoaderState(false);
         });
@@ -181,7 +232,6 @@ export class ProductHorizontalCardComponent implements OnInit {
 
 
   async showYTVideo(link) {
-    // console.log(link);
     if (!this.youtubeModalInstance) {
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
@@ -320,9 +370,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   private addToCart(productDetails, buyNow): void {
-    // analytics call
-    this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
-
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
@@ -332,8 +379,10 @@ export class ProductHorizontalCardComponent implements OnInit {
           this.resetVariantData();
           if (!buyNow) {
             this._cartService.setCartSession(result);
-            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });         
+            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
             this.showAddToCartToast();
+            // analytics call
+            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
@@ -350,7 +399,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   productEntityFromProductBO(productBO) {
-    // console.log('productEntityFromProductBO ==>', productBO);
     const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
     const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
     const productPartDetails = productBO['productPartDetails'][partNumber];
@@ -363,9 +411,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productBrandDetails = productBO['brandDetails'];
     const productCategoryDetails = productBO['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-
-    //console.log('productEntityFromProductBO productUrl ==>', productBO['defaultCanonicalUrl'], productBO);
-
     const product: ProductsEntity = {
       moglixPartNumber: partNumber,
       moglixProductNo: null,
@@ -379,6 +424,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       brandId: productBrandDetails['idBrand'],
       brandName: productBrandDetails['brandName'],
       quantityAvailable: priceQuantityCountry['quantityAvailable'],
+      productMinimmumQuantity: productMinimmumQuantity,
       discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
       rating: this.product.rating,
       categoryCodes: productCategoryDetails['categoryCode'],
@@ -391,7 +437,6 @@ export class ProductHorizontalCardComponent implements OnInit {
       ratingCount: this.product.ratingCount,
       reviewCount: this.product.reviewCount
     };
-    //console.log('product ==>', product);
     return product;
   }
 
@@ -408,8 +453,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productBrandDetails = productGroupData['brandDetails'];
     const productCategoryDetails = productGroupData['categoryDetails'][0];
     const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-
-    //console.log('getAddToCartProductRequest productUrl ==>', productGroupData['defaultCanonicalUrl'], productGroupData);
+    const quantityAvailable = (priceQuantityCountry && priceQuantityCountry['quantityAvailable']) ? priceQuantityCountry['quantityAvailable'] : 1;
 
     const product = {
       cartId: null,
@@ -424,11 +468,13 @@ export class ProductHorizontalCardComponent implements OnInit {
       totalPayableAmount: productPrice,
       productName: productGroupData['productName'],
       brandName: productBrandDetails['brandName'],
+      brandId: productBrandDetails['idBrand'],
       priceWithoutTax: priceWithoutTax,
       taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
       productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
       isPersistant: true,
       productQuantity: productMinimmumQuantity,
+      quantityAvailable: quantityAvailable,
       productUnitPrice: productPrice,
       expireAt: null,
       productUrl: productGroupData['defaultCanonicalUrl'],
@@ -443,12 +489,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
       category: productCategoryDetails['taxonomy']
     } as AddToCartProductSchema;
-
-    //console.log('product ==>', product); 
-
     return product
-
-
   }
 
   getRandomValue(arr, n) {
@@ -463,6 +504,27 @@ export class ProductHorizontalCardComponent implements OnInit {
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
+  }
+
+  cardVisisble(htmlElement) {
+    if (this.isAd && this._commonService.isBrowser) {
+
+      this.onlineSalesImpressionTrackUsingGTM();
+    }
+  }
+
+  onlineSalesImpressionTrackUsingGTM() {
+    this._analytics.sendGTMCall({
+      'event': 'AdImpression',
+      'uclids': (this.product.uclid) ? [this.product.uclid] : [],
+    })
+  }
+
+  onlineSalesClickTrackUsingGTM() {
+    this._analytics.sendGTMCall({
+      'event': 'AdClick',
+      'uclids': (this.product.uclid) ? [this.product.uclid] : [],
+    })
   }
 
 

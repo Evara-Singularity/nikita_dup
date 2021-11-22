@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@services/common.service';
-import { ProductListingDataEntity, SearchResponse } from '@utils/models/product.listing.search';
+import { environment } from 'environments/environment';
+import { ProductListingDataEntity, ProductsEntity, SearchResponse } from '@utils/models/product.listing.search';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CartService } from './cart.service';
 import { DataService } from './data.service';
@@ -19,19 +22,49 @@ export class ProductListService {
     private _commonService: CommonService,
     private _analytics: GlobalAnalyticsService,
     private _dataService: DataService,
+    private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
     public _localStorageService: LocalStorageService,
   ) {
   }
 
-  createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading) {
+  showMidPlpFilterLoader: boolean = true;
+  excludeAttributes: string[] = [];
+
+  filterBuckets(buckets: any[])
+    {
+        if (this.excludeAttributes.length > 0) {
+            return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
+        }
+        return buckets;
+    }
+  
+  createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading, bucketAvailable?: boolean) {
+
+    if (bucketAvailable) {
+      if (this.excludeAttributes.length > 0) {
+        rawSearchData.buckets = this.filterBuckets(rawSearchData.buckets);
+      }
+      this.productListingData['filterData'] =  JSON.parse(JSON.stringify(rawSearchData.buckets));
+      this.showMidPlpFilterLoader = false;
+      return;
+    }
+    
+    //Removing Products with null images
+    rawSearchData.productSearchResult.products = rawSearchData.productSearchResult.products.filter(res => res.mainImageLink!=null);
 
     this.productListingData = {
-      totalCount: rawSearchData.productSearchResult ? rawSearchData.productSearchResult.totalCount : 0,
-      products: rawSearchData.productSearchResult.products,
-      filterData: JSON.parse(JSON.stringify(rawSearchData.buckets)),
+      totalCount: rawSearchData.productSearchResult.products.length ? rawSearchData.productSearchResult.totalCount : 0,
+      products: [...rawSearchData.productSearchResult.products].map(product => {
+        product['mainImageThumnailLink'] = this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'thumbnail');
+        product['mainImageMediumLink'] = this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'medium');
+        product['internalProduct'] = true;
+        return product;
+      }),
       listingHeading: heading
     };
+
+    
 
     if (this._commonService.isBrowser) {
       const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
@@ -40,6 +73,35 @@ export class ProductListService {
       this.initializeSortBy();
     }
 
+  }
+
+  getFilterBucket(categoryId, pageName, brandName?: string) {
+    this.showMidPlpFilterLoader = true;
+    
+    let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
+    
+    if (categoryId) {
+      filter_url += "?category=" + categoryId;
+    }
+
+    const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
+    
+    const params = {
+      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(fragment),
+      queryParams: this._activatedRoute.snapshot.queryParams,
+      pageName: pageName
+    };
+    const actualParams = this._commonService.formatParams(params);
+    if (pageName === 'BRAND') {
+      actualParams['brand'] = brandName;
+    }
+    return this._dataService.callRestful("GET",  filter_url, { params: actualParams });
+  }
+
+  getImageFromSearchProductResponse(originImageLink, variantFromName, variantGetName) {
+    const image = originImageLink.split('/');
+    image[image.length - 1] = image[image.length - 1].replace(variantFromName, variantGetName);
+    return image.join('/');
   }
 
   extractFragmentFromUrl(str) {
@@ -213,6 +275,7 @@ export class ProductListService {
             'variant': '',
             'quantity': productDetails['productQuantity'],
             'productImg': productDetails.productImg,
+            'brandId': productDetails['brandId'],
             'CatId': productDetails['taxonomyCode'],
             'MRP': productDetails['amount'],
             'Discount':  (productDetails['discount'] && !isNaN(productDetails['discount']))? parseInt(productDetails['discount']) : null
@@ -250,18 +313,20 @@ export class ProductListService {
       'prodURL': ''
     };
     let criteoItem = [];
-    const cartSession = this._cartService.getCartSession() || {};
-    if (cartSession && cartSession.hasOwnProperty("itemsList")) {
-      for (let p = 0; p < cartSession["itemsList"].length; p++) {
-        criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
-        eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
-        eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
-        eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
-        eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
-        eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
-        eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+    setTimeout(() => {
+      const cartSession = this._cartService.getCartSession() || {};
+      if (cartSession && cartSession.hasOwnProperty("itemsList")) {
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+          criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+          eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+          eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+          eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+          eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+          eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+          eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+        }
       }
-    }
+    }, 0)
     let user = this._localStorageService.retrieve('user');
 
     /*Start Criteo DataLayer Tags */
@@ -277,6 +342,79 @@ export class ProductListService {
     this._dataService.sendMessage(dataLayerObj);
   }
 
+
+  searchResponseToProductEntity(product: any) {
+    const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
+    const productMrp = product['mrp'];
+    const productPrice = product['salesPrice'];
+    const priceWithoutTax = product['priceWithoutTax'];
+    return {
+      moglixPartNumber: partNumber,
+      moglixProductNo: product['moglixProductNo'] || null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: product['productName'],
+      variantName: product['productName'],
+      productUrl: product['productUrl'],
+      shortDesc: product['shortDesc'],
+      brandId: product['brandId'],
+      brandName: product['brandName'],
+      quantityAvailable: product['quantityAvailable'],
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      rating: product['rating'] || null,
+      categoryCodes: null,
+      taxonomy: product['taxonomy'],
+      mainImageLink: (product['moglixImageNumber']) ? product['mainImageLink'] : '',
+      mainImageThumnailLink: this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'thumbnail'),
+      mainImageMediumLink: this.getImageFromSearchProductResponse(product['mainImageLink'], 'large', 'medium'),
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: product.avgRating,
+      itemInPack: null,
+      ratingCount: product.ratingCount,
+      reviewCount: product.reviewCount,
+      uclid: product.uclid,
+      keyFeatures: product.keyFeatures || [],
+      internalProduct: (!product.hasOwnProperty('internalProduct')) ? true : product.internalProduct // if intenal product prop does not exist then it is internal product
+    } as ProductsEntity;
+  }
+
+  recentProductResponseToProductEntity(product: any) {
+    const partNumber = product['partNumber'] || product['defaultPartNumber'] || product['moglixPartNumber'];
+    const productMrp = product['priceMrp'];
+    const productPrice = product['priceWithTax'];
+    const priceWithoutTax = product['priceWithoutTax'];
+    return {
+      moglixPartNumber: partNumber,
+      moglixProductNo: product['moglixProductNo'] || null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: product['productName'],
+      variantName: product['productName'],
+      productUrl: product['url'],
+      shortDesc: product['shortDesc'] || null,
+      brandId: product['brandId'] || null,
+      brandName: product['brandName'],
+      quantityAvailable: 1,
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      rating: product['rating'] || null,
+      categoryCodes: null,
+      taxonomy: product['taxonomy'] || null,
+      mainImageLink: (product['productImage']) ? product['productImage'] : '',
+      mainImageMediumLink: (product['productImage']) ? product['productImage'] : '',
+      mainImageThumnailLink: (product['productImage']) ? product['productImage'] : '',
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: product.avgRating || 0,
+      itemInPack: null,
+      ratingCount: product.ratingCount || 0,
+      reviewCount: product.reviewCount || 0,
+      internalProduct: true,
+      outOfStock: product.outOfStock
+    } as ProductsEntity;
+  }
 
 
 }

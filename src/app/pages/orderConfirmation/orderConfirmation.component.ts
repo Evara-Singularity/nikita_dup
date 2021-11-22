@@ -1,5 +1,4 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, ComponentFactoryResolver, Injector, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OrderConfirmationService } from './orderConfirmation.service';
@@ -8,6 +7,8 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { CommonService } from '@app/utils/services/common.service';
 
 declare let dataLayer;
 declare var ADMITAD;
@@ -36,11 +37,17 @@ export class OrderConfirmationComponent implements OnInit {
     productCategoryCode: Array<any> = [];
     userType;
     couponCodeData;
+    appPromoVisible = true;
+    set showLoader(value: boolean) {
+        this.globalLoader.setLoaderState(value);
+    }
+   // ondemand loaded components for app Promo
+   appPromoInstance = null;
+   @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
 
     constructor(
         private localStorageService: LocalStorageService,
         public _dataService: DataService,
-        @Inject(PLATFORM_ID) platformId,
         private _ocs: OrderConfirmationService,
         private _lss: LocalStorageService,
         private _las: LocalAuthService,
@@ -48,10 +55,15 @@ export class OrderConfirmationComponent implements OnInit {
         private _router: Router,
         private footerService: FooterService,
         private _activatedRoute: ActivatedRoute,
-        private _orderService: OrderConfirmationService) {
+        private _orderService: OrderConfirmationService,
+        private globalLoader: GlobalLoaderService,
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector,
+        public _commonService: CommonService
+        ) {
 
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         this._activatedRoute.params.subscribe((data) => { });
     }
 
@@ -572,4 +584,20 @@ export class OrderConfirmationComponent implements OnInit {
     navigateTo(route) {
         this._router.navigate([route]);
     }
+
+    async onVisibleAppPromo(event) {
+        this.showLoader = true;
+        const { ProductAppPromoComponent } = await import('../../components/product-app-promo/product-app-promo.component').finally(() => {
+          this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
+        this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
+        this.appPromoInstance.instance['page'] = 'order-confirmation';
+        this.appPromoInstance.instance['isOverlayMode'] = false;
+        this.appPromoInstance.instance['showPromoCode'] = false;
+        this.appPromoInstance.instance['isLazyLoaded'] = true;
+        (this.appPromoInstance.instance['appPromoStatus$'] as EventEmitter<boolean>).subscribe((status) => {
+          this.appPromoVisible = status;
+        });
+      }
 }

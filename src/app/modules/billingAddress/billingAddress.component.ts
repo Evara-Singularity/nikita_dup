@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { countryList } from './country';
 import { stateList } from './state';
 import { BillingAddressService } from './billingAddress.service';
@@ -14,8 +14,6 @@ import { ToastMessageService } from '../toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
 import { Step } from '@utils/validators/step.validate';
 import { GlobalLoaderService } from '@services/global-loader.service';
-
-declare let $: any;
 
 @Component({
     selector: 'billing-address',

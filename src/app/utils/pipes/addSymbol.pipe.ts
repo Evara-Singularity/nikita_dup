@@ -8,7 +8,6 @@ const DISCOUNT = "%";
 })
 export class AddFilterSymbol implements PipeTransform
 {
-    constructor() { }
     transform(value:string, name: string): any
     {
         let returnValue = "";
@@ -25,6 +24,10 @@ export class AddFilterSymbol implements PipeTransform
                 case 'discount': {
                     let numericValue = parseInt(value).toString();
                     returnValue = value.replace(numericValue, numericValue + "% or more");
+                    break;
+                }
+                case 'ratings':{
+                    returnValue= value.replace(value, value+ " ★ & above");
                     break;
                 }
                 default:{

@@ -1,43 +1,21 @@
-<section class="Recently-view card">
-    <div *ngIf="recentProductList && recentProductList.length>0" class="card-head container pad-tb-10">
-        <h3 class="f-left">RECENTLY VIEWED</h3>
-        <a *ngIf="recentProductList && recentProductList.length>2" href="javascript:void(0);" class="btn-red f-right"
-            (click)="openViewAllPopup()">
-            View All
-        </a>
+<section class="Bestseller card similar-prod" *ngIf="recentProductItems && recentProductItems.length>0">
+    <div class="upper-view-all-sec">
+        <div class="upper-view-all-sec-left">
+            <h4>RECENTLY VIEWED</h4>
+        </div>
+        <!-- <div class="upper-view-all-sec-right">
+            <button>VIEW ALL</button>
+        </div> -->
     </div>
-    <ul class="list view-products">
-        <ng-container *ngFor="let item of recentProductList; let i = index;">
-            <li *ngIf="i<2">
-                <a (click)="navigateTo(item.url)" class="clearfix">
-                    <div class="product-img">
-                        <img src="{{imagePath}}{{item.productImage}}" alt="{{item['productName']}}">
-                    </div>
-                    <div class="product-description">
-                        <p class="description-txt">{{item['productName']}}</p>
-                        <p class="price" *ngIf="!item.outOfStock">
-                            <span class="before-discount" *ngIf="item.mrp > item.priceWithoutTax">
-                                {{item.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                            </span>
-                            <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'>
-                                {{((item.priceMrp - item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number :
-                                '1.0-0'}}% OFF
-                            </span>
-                            <span class="after-discount" *ngIf="item.priceWithoutTax > 0">
-                                {{item.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                            </span>
-                        </p>
-                        <div class='prod_detail pad-t-5 pad-lr-10' *ngIf="item.outOfStock">
-                            <span class='f-size-13 text-darkgrey text-400 text-left' style="width: 100% !important;">
-                                Available on request
-                            </span>
-                        </div>
-                        <p class="seller">
-                            <span>By :</span> {{item.brandName}}
-                        </p>
-                    </div>
-                </a>
-            </li>
-        </ng-container>
-    </ul>
+    <div class="vertical-scroll-container">
+        <div class="inner-scroll-container" [style.width.px]="recentProductItems.length * 170">
+            <ng-container *ngFor="let product of recentProductItems;" >
+                <product-horizontal-card 
+                    [product]="product"
+                    [cardMetaInfo]='cardMetaInfo'
+                    [cardFeaturesConfig]='cardFeaturesConfig' >
+                </product-horizontal-card>
+            </ng-container>
+        </div>
+    </div>
 </section>

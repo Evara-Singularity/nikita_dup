@@ -1,0 +1,18 @@
+<section class="Bestseller card similar-prod" *ngIf="productList && productList.length>0">
+    <div class="upper-u-may-like-sec">
+        <h4>Products You May Like</h4>
+        <span>AD</span>
+    </div>  
+  <div class="vertical-scroll-container">
+      <div class="inner-scroll-container" [style.width.px]="productList.length * 170">
+          <ng-container *ngFor="let product of productList;" >
+              <product-horizontal-card 
+                  [product]="product"
+                  [cardMetaInfo]='cardMetaInfo'
+                  [hideAd]="true"
+                  [cardFeaturesConfig]='cardFeaturesConfig' >
+              </product-horizontal-card>
+          </ng-container>
+      </div>
+  </div>
+</section>          

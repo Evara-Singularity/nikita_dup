@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation, Inject, PLATFORM_ID, Renderer2, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
   selector: "special-deal",
   templateUrl: "brands-spotlight.html",
@@ -17,52 +18,59 @@ export class BrandSpotlightComponent {
   constructor(
     private elementRef: ElementRef,
     private _renderer2: Renderer2,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private meta: Meta,
     private activatedRoute: ActivatedRoute,
     private title: Title,
     public router: Router,
     private route: ActivatedRoute,
-    @Inject(DOCUMENT) private _document) {
+    @Inject(DOCUMENT) private _document,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
     this.setMetas();
     this.getBrandData();
-    // this.initializeClicks();
   }
 
+  tabClassList = ['power', 'automative', 'plumbing', 'safety'];
+  
   initializeClicks() {
     let tab = this.activatedRoute.snapshot.queryParams["tab"] || 1;
     if (tab < 1 || tab > 6) tab = 1;
     if (!this.isServer) {
-      setTimeout(function () {
-        document.querySelector("li").classList.remove("active");
-        (<HTMLElement>document.querySelector(".tab_num > div")).style.display =
-          "none"; //.hide();
-        (<HTMLElement>(
-          document.querySelector(".tab_num > div:nth-child(" + tab + ")")
-        )).style.display = "block"; //.show();
-        document
-          .querySelector("li:nth-child(" + tab + ")")
-          .classList.add("active");
-        document.querySelector("li").addEventListener("click", (e) => {
-          let className = (<HTMLElement>e.currentTarget).className;
-          let class_num = className.split(" ");
-          if (class_num.length == 1) {
-            (<HTMLElement>(
-              document.querySelector(".tab_num .wp-100")
-            )).style.display = "none"; //.hide();
-            (<HTMLElement>(
-              document.querySelector(".tab_num div." + className)
-            )).style.display = "block"; //.show();
-            document.querySelector("li").classList.remove("active");
-            document.querySelector("li." + className).classList.add("active");
-          }
+      document.querySelector("li").classList.remove("active");
+      (<HTMLElement>document.querySelector(".tab_num > div")).style.display =
+        "none"; //.hide();
+      (<HTMLElement>(
+        document.querySelector(".tab_num > div:nth-child(" + tab + ")")
+      )).style.display = "block"; //.show();
+      document
+        .querySelector("li:nth-child(" + tab + ")")
+        .classList.add("active");
+      const htmlLiCollection = document.getElementsByTagName("li");
+      [].forEach.call(htmlLiCollection, (eachHtmlEl, index) => {
+        eachHtmlEl.addEventListener("click", (e) => {
+          this.resetClass();
+          eachHtmlEl.classList.add("active");
+          const tab = document.querySelector('.tab_num .' + this.tabClassList[index]);
+          tab['style'].display = 'block';
         });
-      }, 3000);
+      })
     }
   }
+
+  resetClass() {
+    const li = document.getElementsByTagName('li');
+    [].forEach.call(li, (eachHtmlEl) => {
+      eachHtmlEl.classList.remove('active');
+    });
+
+    this.tabClassList.forEach(e => {
+      const el = document.querySelector('div.' + e);
+      el['style'].display = 'none';
+    });
+  }
+
 
   setMetas() {
     this.title.setTitle("Explore Best Offers on Moglix.com");
@@ -73,7 +81,7 @@ export class BrandSpotlightComponent {
       links.rel = "canonical";
       links.href = CONSTANTS.PROD + this.router.url;
       this._renderer2.appendChild(this._document.head, links);
-    } 
+    }
   }
 
   getBrandData() {
@@ -84,7 +92,7 @@ export class BrandSpotlightComponent {
         setTimeout(() => {
           this.reinsertLinks();
           this.initializeClicks();
-        }, 1000);
+        }, 0);
 
       } else {
         console.log('BrandsSpotlightComponent API data error', rawData);

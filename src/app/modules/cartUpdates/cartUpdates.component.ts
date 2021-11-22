@@ -1,6 +1,5 @@
 import { ViewEncapsulation } from '@angular/core';
-import { Component, Input, EventEmitter, Output, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { GlobalState } from '@app/utils/global.state';
 import { ModalService } from '../modal/modal.service';
@@ -27,14 +26,13 @@ export class CartUpdatesComponent {
     private cDistroyed = new Subject();
     itemsList: [] = [];
     constructor(        
-        @Inject(PLATFORM_ID) platformId,
         private _commonService: CommonService,
         private _cartService: CartService,
         private _modalService: ModalService,
         public _state: GlobalState,
     ) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
         this.itemsValidationMessage = [];
     };
 

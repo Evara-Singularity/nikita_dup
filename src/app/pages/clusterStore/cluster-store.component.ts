@@ -1,11 +1,10 @@
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	Component,
 	ComponentFactoryResolver,
 	Inject,
 	Injector,
 	OnInit,
-	PLATFORM_ID,
 	Renderer2,
 	ViewChild,
 	ViewContainerRef,
@@ -14,6 +13,9 @@ import {
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
@@ -76,7 +78,6 @@ export class ClusterStoreComponent implements OnInit {
 	constructor(
 		private _router: Router,
 		private _activatedRoute: ActivatedRoute,
-		@Inject(PLATFORM_ID) platformId,
 		public title: Title,
 		public meta: Meta,
 		private _renderer2: Renderer2,
@@ -84,10 +85,13 @@ export class ClusterStoreComponent implements OnInit {
 		private toastMessageService: ToastMessageService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
-		private loaderService: GlobalLoaderService
+		private loaderService: GlobalLoaderService,
+		private _commonService: CommonService, 
+		private _localStorageService: LocalStorageService, 
+		private _analytics: GlobalAnalyticsService
 	) {
-		this.isServer = isPlatformServer(platformId);
-		this.isBrowser = isPlatformBrowser(platformId);
+		this.isServer = _commonService.isServer;
+        this.isBrowser = _commonService.isBrowser;
 		this.isShowLoader = false;
 	}
 
@@ -113,7 +117,35 @@ export class ClusterStoreComponent implements OnInit {
 					text: response['message'],
 				});
 			}
+			if(this.isBrowser){
+				this.setAnalyticTags(rawData.clusterStoreData);
+			}
 		});
+	}
+
+	setAnalyticTags(data) {
+		    let user;
+            if (this._localStorageService.retrieve('user')) {
+                user = this._localStorageService.retrieve('user');
+            }
+            /*Start Adobe Analytics Tags */
+            let page = {
+                'pageName': "moglix:" + data.pageTitle,
+                'channel': "store",
+                'subSection': "moglix:" + data.pageTitle + ":" + this._commonService.getSectionClick().toLowerCase(),
+                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+            }
+            let custData = {
+                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+                'customerType': (user && user["userType"]) ? user["userType"] : '',
+            }
+            let digitalData = {};
+		    digitalData['page'] = page;
+			digitalData['custData'] = custData;
+            setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0 );
+            /*End Adobe Analytics Tags */
 	}
 
 	initialize(response) {

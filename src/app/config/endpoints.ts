@@ -5,7 +5,9 @@ export const ENDPOINTS = {
   BREADCRUMB: "/homepage/getbreadcrumb",
   Q_AND_A: "/quest/getQuest",
   PRODUCT_STATUS_COUNT: "/cmsApi/productStatusCount",
+  DUPLICATE_ORDER: "/checkout/duplicateOrder",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
+  SIMILAR_CATEGORY: "/category/mostSold",
   LOGIN_URL: "/login/sendOTP",
   BHARATPAY_URL: '/marketPlace/cartSessionbyId/',
   LOGIN_OTP: "/login/validateotp",
@@ -81,6 +83,7 @@ export const ENDPOINTS = {
   GET_PrepaidDiscount: "/payment/getPrepaidDiscount",
   VALIDATE_PRODUCT_SER: "/logistics/validateProductsService",
   GET_CATEGORY: "/category/getcategory",
+  GET_BUCKET: "/bucketAggregation",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",
   GET_CMS_LAYOUT: "/cmsapi/getLayoutJsonByCode?layoutCode=",
@@ -102,5 +105,8 @@ export const ENDPOINTS = {
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
   IS_BRAND_CATEGORY: "/search/isBrandCategory",
-  SEARCH: '/search'
+  SEARCH: '/search',
+  SPONSERED_PRODUCTS: '/search/getSponsoredProducts',
+  GET_PARENT_CATEGORY_JSON_BODY: '/category/getparentcategoryjsonbody',
+  SAVE_CORPORATE_GIFTING: '/cmsapi/giftingQuery'
 };

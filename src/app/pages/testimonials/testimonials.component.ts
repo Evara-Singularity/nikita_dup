@@ -1,10 +1,10 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
-declare let $: any;
+import { CommonService } from '@app/utils/services/common.service';
 
 
 @Component({
@@ -18,16 +18,16 @@ export class TestimonialsComponent {
   isBrowser: boolean;
 
   constructor(
-    @Inject(PLATFORM_ID) platformId,
     private title: Title,
     private meta: Meta,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
     public _router: Router,
-    public footerService: FooterService) {
+    public footerService: FooterService,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {

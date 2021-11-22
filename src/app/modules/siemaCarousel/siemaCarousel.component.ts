@@ -1,16 +1,15 @@
 import { 
-    Component, ElementRef, Input, ViewEncapsulation, PLATFORM_ID, 
-    Inject, Output, EventEmitter, ChangeDetectorRef, ComponentFactoryResolver, 
+    Component, ElementRef, Input, ViewEncapsulation, 
+    Output, EventEmitter, ChangeDetectorRef, ComponentFactoryResolver, 
     ViewChild, Injector, ViewRef, ViewContainerRef } 
 from '@angular/core';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { Subject } from 'rxjs';
 
 import { takeUntil } from 'rxjs/operators';
 import { SiemaSlideComponent } from './siemaSlide.component';
-import { SiemaCrouselService } from '../../utils/services/siema-crousel.service';
 import CONSTANTS from '../../config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 
 @Component({
@@ -60,12 +59,13 @@ export class SiemaCarouselComponent {
         private _cfr: ComponentFactoryResolver,
         private _cdr: ChangeDetectorRef,
         private ngxSiemaService: NgxSiemaService,
-        private _siemaCrouselService:  SiemaCrouselService,
-        @Inject(PLATFORM_ID) private platformId: Object) {
-        this.isServer = isPlatformServer(platformId);
-        this.isBrowser = isPlatformBrowser(platformId);
+        public _commonService: CommonService) {
+            this.isServer = _commonService.isServer;
+            this.isBrowser = _commonService.isBrowser;
     }
 
+
+    lazyLoadBannerFlag = true;
 
     ngOnInit() {
 
@@ -150,7 +150,11 @@ export class SiemaCarouselComponent {
             },
             onChange: () => {
                 this.scrollInitialize();
-                this.lazyLoadBanner();
+
+                if (this.lazyLoadBannerFlag) {
+                    this.lazyLoadBanner();
+                }
+                this.lazyLoadBannerFlag = false;
 
                 document.querySelectorAll('iframe').forEach((iframe) => {
                     iframe.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*')

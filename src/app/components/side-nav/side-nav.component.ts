@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
-import { CommonService } from '../../utils/services/common.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 
 @Component({
@@ -14,13 +13,12 @@ export class SideNavComponent implements OnInit {
 
   @Input() sideMenuOpen: boolean = true;
   reStoreHome: boolean = false;
-  user: any = null
+  @Input('user') user: any = null
 
   constructor(
     private localStorageService: LocalStorageService,
     private localAuthService: LocalAuthService,
     private router: Router,
-    private _commonService: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -30,12 +28,9 @@ export class SideNavComponent implements OnInit {
       this.reStoreHome = false;
     }
     this.localStorageService.observe('tocd').subscribe((value) => this.reStoreHome = true);
-    this.user = this.localAuthService.getUserSession();
-    
   }
 
   sideMenu() {
-
     this.sideMenuOpen = !this.sideMenuOpen;
     if (this.sideMenuOpen) {
       this.disableScroll();

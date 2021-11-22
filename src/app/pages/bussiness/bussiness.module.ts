@@ -11,5 +11,4 @@ import { BusinessService } from "./business.service";
   providers: [BusinessService],
 })
 export class BusinessModule {
-  constructor() { }
 }

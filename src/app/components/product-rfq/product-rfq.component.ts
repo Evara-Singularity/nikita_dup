@@ -1,10 +1,9 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Inject, Input, NgModule, OnDestroy, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
-import { GlobalState } from '../../utils/global.state';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { stateList } from '../../utils/data/state';
@@ -73,11 +72,11 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     });
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(private localStorageService: LocalStorageService, private globalState: GlobalState, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
-        @Inject(PLATFORM_ID) private platformId: Object, private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService)
+    constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
+     private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService)
     {
         this.stateList = stateList['dataList'];
-        this.isBrowser = isPlatformBrowser(platformId);
+        this.isBrowser = _commonService.isBrowser;
     }
 
     ngOnInit(): void

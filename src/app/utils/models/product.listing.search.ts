@@ -35,6 +35,7 @@ export interface ProductsEntity {
     priceWithoutTax: number;
     productName: string;
     variantName: string;
+    productMinimmumQuantity?: number;
     productUrl: string;
     shortDesc: string;
     brandId: string;
@@ -45,12 +46,18 @@ export interface ProductsEntity {
     categoryCodes?: null;
     taxonomy?: null;
     mainImageLink: string;
+    mainImageThumnailLink?: string;
+    mainImageMediumLink?: string;
     productTags?: (null)[] | null;
     filterableAttributes: FilterableAttributes;
     itemInPack: string;
     ratingCount: number;
     reviewCount: number;
     avgRating: number;
+    uclid?: string;
+    keyFeatures?: string[];
+    internalProduct?: boolean; // used in case of sponsered Ad
+    outOfStock?: boolean;
 }
 
 export interface FilterableAttributes {
@@ -77,5 +84,21 @@ export interface ProductListingDataEntity {
     totalCount: number, 
     products: ProductsEntity[],
     listingHeading: string,
-    filterData: any,
+    filterData?: any,
+}
+
+export interface ProductCardFeature {
+    enableBuyNow: Boolean,
+    enableAddToCart: Boolean,
+    enableFeatures: Boolean,
+    enableRating: Boolean,
+    enableCard: Boolean,
+    enableVideo: Boolean,
+    verticalOrientation: Boolean,
+    horizontalOrientation: Boolean,
+    lazyLoadImage: Boolean,
+}
+export interface ProductCardMetaInfo {
+    redirectedSectionName?: string,
+    redirectedIdentifier?: string
 }

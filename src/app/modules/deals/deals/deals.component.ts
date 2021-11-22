@@ -1,8 +1,9 @@
 import CONSTANTS from '@app/config/constants';
 import { Title, Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from '@angular/common';
-import { Component, ViewEncapsulation, Renderer2, Inject, PLATFORM_ID, ElementRef } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ViewEncapsulation, Renderer2, Inject,  ElementRef } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'deals',
@@ -17,16 +18,16 @@ export class DealsComponent {
 
   constructor(
     private elementRef: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object,
     private title: Title,
     public router: Router,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
     private route: ActivatedRoute,
-    private meta: Meta) {
+    private meta: Meta,
+    public _commonService: CommonService) {
 
-    this.isServer = isPlatformServer(platformId);
-    this.isBrowser = isPlatformBrowser(platformId);
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
 
     this.setMetas();
     this.getDealsData();

@@ -2455,9 +2455,17 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         let page = {
             'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
-            'linkName': routerlink == "/quickorder" ? (this.displayCardCta ? "Add to cart Overlay" : "Add to cart" ): (this.displayCardCta ? "Buy Now Overlay" : "Buy Now" ),
+            'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
             'channel': 'pdp'
         }
+
+        if (this.displayCardCta) {
+            page['linkName'] = routerlink == "/quickorder" ? 'Add to cart Overlay' : 'Buy Now Overlay';
+            if (this.popupCrouselInstance) {
+                page['linkName'] = routerlink == "/quickorder" ? 'Add to cart Main Image Overlay' : 'Buy Now Main Image Overlay';
+            }
+        }
+
         let custData = this.custDataTracking
         let order = {
             'productID': this.productSubPartNumber || this.defaultPartNumber, // TODO: partNumber

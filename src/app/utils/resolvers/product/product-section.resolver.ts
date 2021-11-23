@@ -8,18 +8,18 @@ import {
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
-import { isPlatformServer } from '@angular/common';
-import { ENDPOINTS } from '../../config/endpoints';
-import { environment } from '../../../environments/environment';
-import { GlobalLoaderService } from '../services/global-loader.service';
-import { CommonService } from '../services/common.service';
+import { ENDPOINTS } from '../../../config/endpoints';
+import { environment } from '../../../../environments/environment';
+import { GlobalLoaderService } from '../../services/global-loader.service';
+import { CommonService } from '../../services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { DataService } from '../services/data.service';
+import { DataService } from '../../services/data.service';
+import { isPlatformServer } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductResolver implements Resolve<object> {
+export class ProductSectionResolver implements Resolve<object> {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,

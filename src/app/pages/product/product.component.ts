@@ -2847,28 +2847,29 @@ export class ProductComponent implements OnInit, AfterViewInit
         return (user && user["authenticated"] == 'true') ? "registered user" : "guest";
     }
 
-    get orderTracking()
-    {
+    get orderTracking() {
         const TAXNONS = this.taxons;
         const TAGS = [];
-        this.productTags.forEach((element) => { TAGS.push(element.name); });
-        const tagsForAdobe = TAGS.join("|");
-        return {
-            'productID': this.productSubPartNumber,
-            'productCategoryL1': TAXNONS[0],
-            'productCategoryL2': TAXNONS[1],
-            'productCategoryL3': TAXNONS[2],
-            'brand': this.productBrandDetails['brandName'],
-            'price': this.productPrice,
-            'stockStatus': this.productOutOfStock ? "Out of Stock" : "In Stock",
-            'tags': tagsForAdobe
+        if (this.productTags && this.productTags.length > 0) {
+            this.productTags.forEach((element) => { TAGS.push(element.name); });
+            const tagsForAdobe = TAGS.join("|");
+            return {
+                'productID': this.productSubPartNumber,
+                'productCategoryL1': TAXNONS[0],
+                'productCategoryL2': TAXNONS[1],
+                'productCategoryL3': TAXNONS[2],
+                'brand': this.productBrandDetails['brandName'],
+                'price': this.productPrice,
+                'stockStatus': this.productOutOfStock ? "Out of Stock" : "In Stock",
+                'tags': tagsForAdobe
+            }
         }
+        return {};
     }
 
-    get taxons()
-    {
+    get taxons() {
         const taxon = [];
-        if (this.productCategoryDetails['taxonomyCode']) {
+        if (this.productCategoryDetails && this.productCategoryDetails.hasOwnProperty('taxonomyCode')) {
             taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[0] || '');
             taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[1] || '');
             taxon.push(this.productCategoryDetails['taxonomyCode'].split("/")[2] || '');

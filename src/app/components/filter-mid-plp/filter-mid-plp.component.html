@@ -11,10 +11,10 @@
                             <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
                                 <div class="inline-filter-card-one" *ngIf="!(item?.selected) && item?.count">
                                     <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData?.name, item)">
-                                        <label>
+                                        <!-- <label>
                                             <input type="checkbox" formControlName="type">
                                             <span class="custom-box icon-box"></span>
-                                        </label>
+                                        </label> -->
                                         {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                 </div>
                             </ng-container>
@@ -22,19 +22,23 @@
                         <ng-container *ngIf="inlineFilterData.terms.length > 4">
                             <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
                                 <div class="inline-filter-card-one" *ngIf="(i < (inlineFilterData.terms.length/2)) && !(item?.selected)  && (item?.count)">
-                                    <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData.name, item)"><label>
+                                    <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData.name, item)">
+                                        <!-- <label>
                                         <input type="checkbox" formControlName="type">
                                         <span class="custom-box icon-box"></span>
-                                    </label>{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
+                                    </label> -->
+                                    {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                 </div>
                             </ng-container>
                             <div class="inner-card-list">
                                 <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
                                     <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData.terms.length/2)) && !(item?.selected) &&  item?.count">
-                                        <div class="inline-filter-card-value card-value-2" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)"><label>
+                                        <div class="inline-filter-card-value card-value-2" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">
+                                            <!-- <label>
                                             <input type="checkbox" formControlName="type">
                                             <span class="custom-box icon-box"></span>
-                                        </label>{{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
+                                        </label> -->
+                                        {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                     </div>
                                 </ng-container>
                             </div>
@@ -53,19 +57,23 @@
                         <ng-container *ngIf="inlineFilterData?.terms[0]?.childCategoryList?.length > 4">
                             <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
                                 <div class="inline-filter-card-one" *ngIf="(i < (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
-                                    <div class="inline-filter-card-value"  [routerLink]="[item?.categoryLink]"><label>
+                                    <div class="inline-filter-card-value"  [routerLink]="[item?.categoryLink]">
+                                        <!-- <label>
                                         <input type="checkbox" formControlName="type">
                                         <span class="custom-box icon-box"></span>
-                                    </label>{{ item.term }}</div>
+                                    </label> -->
+                                    {{ item.term }}</div>
                                 </div>
                             </ng-container>
                             <div class="inner-card-list">
                                 <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
                                     <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
-                                        <div class="inline-filter-card-value card-value-2" ><label>
+                                        <div class="inline-filter-card-value card-value-2" >
+                                        <!-- <label>
                                             <input type="checkbox" formControlName="type">
                                             <span class="custom-box icon-box"></span>
-                                        </label>{{ item.term }}</div>
+                                        </label> -->
+                                        {{ item.term }}</div>
                                     </div>
                                 </ng-container>
                             </div>
@@ -74,9 +82,9 @@
                 </div>
 
         </div>
-        <div class="apl-btn-filter-area">
+        <!-- <div class="apl-btn-filter-area">
             <button class="apl-btn-filter">Apply</button>
-        </div>
+        </div> -->
         
     </div>
 </ng-container>

@@ -17,7 +17,7 @@
     </ng-template>
     <!-- FAQ Data STARTS -->
     <div *ngIf="categoryFooterData?.faqData && categoryFooterData?.faqData.length>0" [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
-        <div class="panel-head" [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
+        <div class="panel-head np-btm" [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="container">
                 <h3 class="heading-3" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
                     <span class="iconaccordian">
@@ -36,30 +36,32 @@
     <div class="body-bg">
         <div class="panel-head" *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0">
             <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
+                <h3 class="heading panel-heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
                 </h3>
             </div>
-            <div id="openCat2" style="display:block" class="">
-                <table width="100%" class="category-tbl common_table  seo-table-data">
-                    <thead>
-                        <tr>
-                            <th>Latest {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Models
-                            </th>
-                            <th>Expected Price</th>
-                            <th>Discount &nbsp; &nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
-                            <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
-                                <td>₹{{product.priceWithoutTax | mathFloor}}</td>
-                                <td>{{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
-                                </td>
+            <div id="openCat2" style="display:block" class="seo-table-container">
+                <div class="seo-table-data">
+                    <table width="100%">
+                        <thead>
+                            <tr>
+                                <th>Latest {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Models
+                                </th>
+                                <th>Expected Price</th>
+                                <th>Discount &nbsp; &nbsp;</th>
                             </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
+                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                                    <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
+                                    <td>₹{{product.priceWithoutTax | mathFloor}}</td>
+                                    <td>{{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -68,36 +70,39 @@
         <div class="panel-head">
             <div class="container">
                 <div class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
-                    <h3>{{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h3>
+                    <h3 class="heading panel-heading">{{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h3>
                 </div>
             </div>
-            <div id="openCat2">
-                <table width="100%" class="category-tbl common_table seo-table-data">
-                    <thead>
-                        <tr>
-                            <th>
-                                {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
-                            </th>
-                            <th>
-                                Min Price
-                            </th>
-                            <th>
-                                Max Price
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let PRTA of categoryFooterData?.PRTA | slice:0:100, let i=index">
-                            <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
-                                <td>
-                                    <a [routerLink]="[PRTA?.categoryLink ? PRTA?.categoryLink : './']">{{PRTA.newName}}</a>
-                                </td>
-                                <td>₹{{PRTA.minPrice}}</td>
-                                <td>₹{{PRTA.maxPrice}}</td>
+            <div id="openCat2" class="seo-table-container">
+                <div class="seo-table-data">
+                    <table width="100%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                                </th>
+                                <th>
+                                    Min Price
+                                </th>
+                                <th>
+                                    Max Price
+                                </th>
                             </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let PRTA of categoryFooterData?.PRTA | slice:0:100, let i=index">
+                                <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
+                                    <td>
+                                        <a [routerLink]="[PRTA?.categoryLink ? PRTA?.categoryLink : './']">{{PRTA.newName}}</a>
+                                    </td>
+                                    <td>₹{{PRTA.minPrice}}</td>
+                                    <td>₹{{PRTA.maxPrice}}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                
                 <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
             </div>
         </div>

@@ -36,9 +36,16 @@
         .right {
             width: 100%;
             .name {
-                min-height: 55px;
-                span {
+                // min-height: 55px;
+                p {
                     text-align: left;
+                    -webkit-line-clamp: 3;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    height: 47px;
+                    margin-bottom: 5px;
                 }
             }
             .brand {

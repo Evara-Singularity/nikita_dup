@@ -38,7 +38,7 @@
                 </div>
                 <div class="name" (click)="navigateToPDP()">
                     <span *ngIf="cardFeaturesConfig.horizontalOrientation" >{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>60">...</span></span>
-                    <span *ngIf="cardFeaturesConfig.verticalOrientation" >{{product.productName | slice:0:40}}<span *ngIf="product.productName.length>45">...</span></span>
+                    <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation" >{{product.productName}}</p>
                 </div>
                 <div class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName}}</span>

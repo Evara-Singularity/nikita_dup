@@ -334,10 +334,12 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
                 contains = true;
             }
         });
+
         if (contains) {
-            this.router.navigateByUrl('/');
+            this.router.navigateByUrl('/')
         } else {
-            this.router.navigateByUrl(url);
+            window.history.back();
+            // this.router.navigateByUrl(url);
         }
     }
 

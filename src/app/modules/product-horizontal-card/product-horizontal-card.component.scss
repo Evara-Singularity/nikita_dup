@@ -24,7 +24,7 @@
     &.grid-view {
         width: 100%;
         padding: 10px 7px;
-        border: 2px solid #e3e3e3;
+        border: 1px solid #e3e3e3;
         border-radius: 6px;
         background-color: #fff;
         flex-direction: column;
@@ -295,7 +295,7 @@
 
 .card-vertical{
     width: 165px;
-    padding: 10px 7px;
+    padding: 5px 7px 20px;
     min-height: 90px;
     background: white;
     float: left;

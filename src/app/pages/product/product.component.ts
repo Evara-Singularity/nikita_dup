@@ -1895,8 +1895,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productCrouselInstance.instance['moveToSlide$'] = this.moveToSlide$;
             this.productCrouselInstance.instance['refreshSiemaItems$'] = this.refreshSiemaItems$;
             this.productCrouselInstance.instance['productName'] = this.productName;
-            setTimeout(() =>
-            {
+            setTimeout(() => {
                 (this.productCrouselInstance.instance['moveToSlide$'] as Subject<number>).next(slideIndex)
             }, 100);
         };
@@ -1913,11 +1912,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.loadProductCrousel(1);
     }
 
-    onRotateNext()
-    {
+    onRotateNext() {
         this.loadProductCrousel(1);
     }
-
 
     async loadGlobalToastMessage(data, rawData)
     {

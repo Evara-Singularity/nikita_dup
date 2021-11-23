@@ -27,27 +27,31 @@
                 </div>
             </div>
 
-            <div id="openCat4" style="display:block" class="brand-tbl common_table">
-                <table width="100%">
-                    <tbody>
-                        <tr>
-                            <th>Latest Models</th>
-                            <th>Expected Price</th>
-                            <th>Discount</th>
-                        </tr>
-                        <ng-container
-                            *ngFor="let product of brandDetailsFooterData?.productSearchResultSEO | slice:0:10, let i=index">
-                            <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
-                                <td>Rs. {{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>
-                                <td>
-                                    {{product.discount == 0? "-": ((product.mrp -
-                                    product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
-                                </td>
+            <div id="openCat4" style="display:block" class="seo-table-container">
+                <div class="seo-table-data">
+                    <table width="100%">
+                        <thead>
+                            <tr>
+                                <th>Latest Models</th>
+                                <th>Expected Price</th>
+                                <th>Discount</th>
                             </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <ng-container
+                                *ngFor="let product of brandDetailsFooterData?.productSearchResultSEO | slice:0:10, let i=index">
+                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                                    <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
+                                    <td>Rs. {{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>
+                                    <td>
+                                        {{product.discount == 0? "-": ((product.mrp -
+                                        product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
                 <span class="date-text">This data was last updated on {{ brandDetailsFooterData?.todayDate |
                     date:'shortDate' }}.</span>
             </div>

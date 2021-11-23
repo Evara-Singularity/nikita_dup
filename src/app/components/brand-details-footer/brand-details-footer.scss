@@ -23,7 +23,7 @@
         }
     }
     .category_data {
-        padding: 0px 15px;
+        padding: 0px 3px;
         background: #f2f2f2;
         h2 {
             font-size: 16px;
@@ -49,6 +49,41 @@
     .body-bg {
         background: #f2f2f2;
     }
+    .seo-table-container{
+        background-color: #ffffff;
+        padding: 0px 10px 15px 10px;
+        .seo-table-data{
+            box-shadow: 0px 3px 6px #0000001A;
+            background: #f2f2f2;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            thead{
+                tr{
+                    border: none;
+                    th{
+                        border: none;
+                        font-size: 12px;
+                        text-align: left;
+                        padding: 5px;
+                  }  }
+            }
+            tbody{
+               background-color: #ffffff;
+               tr{
+                border: none;
+                td{
+                    border: none;
+                    font-size: 12px;
+                    font-weight: normal;
+                    text-align: left;
+                    padding: 5px;
+                }
+            }           
+         }
+        }
+
+    }
+    
     .category-tbl {
         th,
         td {

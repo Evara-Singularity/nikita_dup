@@ -26,7 +26,7 @@ export class SharedAuthService {
   }
 
   getOTP(data) {
-    data['device'] = 'mobile';
+    data['device'] = CONSTANTS.DEVICE.device;
     return this.dataService.callRestful(this.BASEURLS.GETOTP.method, this.BASEURLS.GETOTP.url, { body: data });
   }
 
@@ -41,12 +41,12 @@ export class SharedAuthService {
   }
 
   signUp(data) {
-    data['device'] = 'mobile';
+    data['device'] = CONSTANTS.DEVICE.device;
     return this.dataService.callRestful(this.BASEURLS.SIGNUP.method, this.BASEURLS.SIGNUP.url, { body: data });
   }
 
   authenticate(data) {
-    data['device'] = 'mobile';
+    data['device'] = CONSTANTS.DEVICE.device;
     return this.dataService.callRestful(this.BASEURLS.AUTHENTICATE.method, this.BASEURLS.AUTHENTICATE.url, { body: data });
   }
 

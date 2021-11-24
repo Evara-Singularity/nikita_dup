@@ -161,12 +161,27 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.sideNavInstance.instance['sideMenuOpen'] = !this.sideNavInstance[
                 'sideMenuOpen'
             ];
-            console.log(this.localAuthService.getUserSession());
             this.sideNavInstance.instance[
                 'user'
             ] = this.localAuthService.getUserSession();
         }
+        this.genericButtonClick('/',true);        
     }
+
+    genericButtonClick(url, hamBurgerClick?: boolean) {
+    let PAGE = {
+      channel: "menu_hamburger",
+      pageName: this.router.url,
+      linkName: url,
+      subSection: url + ' link click'
+    };
+
+    if (hamBurgerClick) {
+      PAGE['subSection'] = 'Hamburger icon click';
+      delete PAGE['linkName'];
+    }
+    this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
+  }
 
     async loadSearchNav()
     {
@@ -223,7 +238,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 null,
                 this.injector
             );
-            console.log(this.bottomSheetInstance);
             this.bottomSheetInstance.instance['sbm'] = true;
               
         } else {
@@ -293,15 +307,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
         this.cartService.cart.subscribe((data) => {
             if (typeof data === 'number') {
-                //console.log("data.count number ==>", data);
                 this.noOfCart = data;
             } else {
                 // incase it is object
                 if (data.count == null || data.count == 0) {
-                    //console.log("data.count count 0 ==>", data);
                     this.noOfCart = 0;
                 } else {
-                    //console.log("data.count count NOT 0 ==>", data);
                     this.noOfCart = data.count;
                 }
             }

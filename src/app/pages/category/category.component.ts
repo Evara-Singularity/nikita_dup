@@ -26,7 +26,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 @Component({
     selector: 'category',
     templateUrl: './category.html',
-    styleUrls: ['./category.scss'],
+    styleUrls: ['./category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })
 
 export class CategoryComponent {
@@ -126,11 +126,15 @@ export class CategoryComponent {
             this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
-                    this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
-                    // update footer data
-                    this.genrateAndUpdateCategoryFooterData();
                 }
+                if (res.hasOwnProperty('priceRangeBuckets')) {
+                    this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
+                }
+
+                // update footer data
+                this.genrateAndUpdateCategoryFooterData();
+
                 if (res.hasOwnProperty('categoryLinkList')) {
                     this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                     // genrate popular links data
@@ -434,6 +438,7 @@ export class CategoryComponent {
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
      */
     priceRangeTable(res) {
+        console.log(res);
         let count = 0;
         for (let val of res.productSearchResult.products) {
             if (val.quantityAvailable === 0) {
@@ -441,7 +446,13 @@ export class CategoryComponent {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res['priceRangeBuckets'] ? res['priceRangeBuckets'] : res['buckets'])));
+            let buckets: any[] = null
+            if (res['priceRangeBuckets'] && (res['priceRangeBuckets'] as any[]).length) {
+                buckets = Object.create(res['priceRangeBuckets']);
+            } else {
+                buckets = Object.create(res['buckets']);
+            }
+            this.getBucketForPriceRangeTable(buckets);
         }
     }
 

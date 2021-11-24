@@ -1,0 +1,30 @@
+.urt-contaier {
+    background-color: #ececec;
+    .utr-form {
+        background-color: #ffffff;
+        h3 {
+            font-size: 18px;
+            text-align: left;
+            font: normal normal 600 18px/27px Poppins;
+            letter-spacing: 0px;
+            color: #191919;
+            opacity: 1;
+        }
+        form {
+            label
+            {
+                color: #3C3C3C;
+            }
+            input
+            {
+                border: #3C3C3C;
+                &:placeholder
+                {
+                    color:#3C3C3C;
+                }
+            }
+        }
+    }
+    .utr-notes {
+    }
+}

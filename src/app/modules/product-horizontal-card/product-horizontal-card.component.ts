@@ -378,12 +378,13 @@ export class ProductHorizontalCardComponent implements OnInit {
       } else {
         if (result) {
           this.resetVariantData();
+          // analytics call
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
             this.showAddToCartToast();
-            // analytics call
-            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
+            
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }

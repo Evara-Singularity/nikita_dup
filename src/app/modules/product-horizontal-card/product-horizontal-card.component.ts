@@ -51,6 +51,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input() isAd: boolean = false;
   @Input() hideAd: boolean = false;
   @Input() isFirstView: boolean = false;
+  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' = 'LISTING_PAGES';
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -382,7 +383,7 @@ export class ProductHorizontalCardComponent implements OnInit {
             this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
             this.showAddToCartToast();
             // analytics call
-            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }

@@ -248,6 +248,17 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'main-article',
+				loadChildren: () =>
+					import('./main-article/main-article.module').then((m) => m.MainArticleModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'main-article'
+				},
+			},
+			{
 				path: 'all-categories',
 				loadChildren: () =>
 					import('./view/view.module').then((m) => m.ViewModule),

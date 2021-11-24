@@ -15,8 +15,7 @@ export class AppComponent {
 
   ngAfterViewInit() {
     if (this._commonService.isBrowser && this.pageRefreshed && window.location.pathname !== '/') {
-      window.history.replaceState('', '', '/?back=1');
-      window.history.pushState('', '', this.router.url);
+      window.history.replaceState('', '', '/?back=1');      window.history.pushState('', '', this.router.url);
       this.pageRefreshed = false;
     }
   }

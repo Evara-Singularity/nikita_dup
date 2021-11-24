@@ -1,4 +1,6 @@
+@import '../../scss/variables';
 .filter-container {
+    @extend %cards;
     background-color: #3C3C3C;
     .filter-btn {
         display: inline-block;
@@ -21,10 +23,10 @@
     .filter-heading {
         font-size: 14px;
         margin-bottom: 5px;
-        text-transform: capitalize;
+        // text-transform: capitalize;
         font-weight: bold;
         color: #fff;
-        padding: 10px 0px 0px 10px;
+        padding: 10px 0px 0px 0px;
     }
 }
 
@@ -49,8 +51,7 @@
 //     }
 // }
 .inline-filter-card-list {
-    padding: 5px 40px 10px 10px;
-    border-bottom: 1px solid #d4d5d9;
+    padding: 5px 40px 10px 0px;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
@@ -68,7 +69,15 @@
         vertical-align: bottom;
     }
     .inline-filter-card-value {
-        padding: 10px 20px;
+        label {
+            width: 25px;
+            margin-top: -4px;
+            @extend %custom-check-box-checkout;
+        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 15px;
         font-weight: 500;
         text-align: center;
         width: 100%;
@@ -77,7 +86,7 @@
         margin-top: 5px;
         margin-bottom: 5px;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 14px;
         &.card-value-2 {
             margin-bottom: 5px;
         }
@@ -172,4 +181,33 @@
         background-position: 450px 0;
     }
     
+}
+
+.sachin{
+    label {
+        width: 20px;
+        @extend %custom-check-box-checkout;
+    }
+}
+
+.custom-box {
+    font-size: 14px !important;
+    @extend %transition;
+    
+}
+
+.apl-btn-filter-area{
+    display: flex;
+    justify-content: flex-end;
+    .apl-btn-filter{
+        color: #D9232D;
+        padding: 10px 15px;
+        text-transform: uppercase;
+        border: none;
+        font-size: 12px;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        border-radius: 3px;
+        opacity: 1;
+        font-weight: bold;
+    }
 }

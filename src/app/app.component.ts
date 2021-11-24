@@ -11,12 +11,11 @@ export class AppComponent {
 
   pageRefreshed = true;
 
-  constructor(private router: Router, private _commonService: CommonService) {}
+  constructor(private _commonService :CommonService,private router: Router) {}
 
   ngAfterViewInit() {
-    if (this.pageRefreshed && this._commonService.isBrowser && window) {
-      window.history.replaceState('', '', '/');
-      window.history.pushState('', '', this.router.url);
+    if (this._commonService.isBrowser && this.pageRefreshed && window.location.pathname !== '/') {
+      window.history.replaceState('', '', '/?back=1');      window.history.pushState('', '', this.router.url);
       this.pageRefreshed = false;
     }
   }

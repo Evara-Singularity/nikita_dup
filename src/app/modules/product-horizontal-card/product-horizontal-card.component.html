@@ -19,14 +19,14 @@
                         src="{{imageCdnPath + product.mainImageThumnailLink}}"
                         enhanceImgByNetwork
                         height="125" width="125" 
-                        (click)="$event.stopPropagation();sendTracking('image')"/>
+                        (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();"/>
                 </ng-container>
                 <ng-container *ngIf="!isFirstView && cardFeaturesConfig.lazyLoadImage" >
                     <img 
                         alt="{{product.productName}}"
                         [src]="defaultImage" [lazyLoad]="imageCdnPath + product.mainImageMediumLink"
                         height="125" width="125" 
-                        (click)="$event.stopPropagation();sendTracking('image')"/>
+                        (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();"/>
                 </ng-container>
             </div>
             <div class="right">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="name" (click)="trackProductTitle('title')">
                     <span *ngIf="cardFeaturesConfig.horizontalOrientation" >{{product.productName | slice:0:60}}<span *ngIf="product.productName.length>60">...</span></span>
-                    <span *ngIf="cardFeaturesConfig.verticalOrientation" >{{product.productName | slice:0:40}}<span *ngIf="product.productName.length>45">...</span></span>
+                    <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation" >{{product.productName}}</p>
                 </div>
                 <div class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName}}</span>
@@ -77,7 +77,7 @@
         </div>
         <div class="keyfeatures" *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
             <ul>
-                <li *ngFor="let features of product['keyFeatures']">{{features}}</li>
+                <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,18).join(" ")}}<span *ngIf="features.split(' ').length>18">...</span></li>
             </ul>
         </div>
     </div>

@@ -11,11 +11,11 @@
             <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img src="assets/img/similar-ico.svg"></span>
         </div>
         <ng-container #productCrousel></ng-container>
-        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+        <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
-                    <div class="pinch-zoom element-pseudo" style="transform-origin: 0% 0%;">
+                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()" style="transform-origin: 0% 0%;">
                         <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
                             height="330" width="330" alt="{{productName}}">
                         <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
@@ -90,14 +90,14 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
+            <!-- <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
                 <p class="actual-price">
                     <small>
                         Min Order Qty :
                         <span>{{productMinimmumQuantity}} Pack</span>
                     </small>
                 </p>
-             </div>
+             </div> -->
              <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block"
@@ -117,14 +117,14 @@
                 </div>
             </div>
            </div>
-            <div class="prod-inner-desc" (click)="showRating()">
+            <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
                 <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
                     <i class="icon-rating-star"></i>
                 </span>
                 <div class="prod-status">
                     <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                     <p class="prod-status-right">
-                        <small class="review" *ngIf="reviews?.reviewList?.length > 0"> {{reviews.reviewList.length}}
+                        <small class="review"  (click)="scrollToId('reviewSection')" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                             Reviews
                         </small>
                     </p>
@@ -214,8 +214,8 @@
                     <!-- <i class="icon-combo ico_offer"></i> -->
                     <img class="ofr_img" height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
                     <div class="ofr_txt">
-                        <strong class="text-black">Want to buy even more quantity</strong>
-                        <small>Get quick quotes for bulk queries</small>
+                        <strong class="text-black">Interested to buy in bulk</strong>
+                        <small>Get customized price</small>
                     </div>
                     <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
                 </li>
@@ -290,7 +290,7 @@
                     </div>
                     <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="assets/img/restart-line-3.svg" height="16px"
+                            <img src="assets/img/thumb-down-button.svg" height="16px"
                                 width="16px">
                         </span>
                         <span class="returnTxt">
@@ -327,7 +327,7 @@
                 </li>
             </ul>
             <div (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
-                <span>Show Key Features</span>
+                <span>Show All Key Features</span>
             </div>
         </div>
 
@@ -367,10 +367,10 @@
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
                     <a class="blueText" 
-                    (click)="commonService.navigateTo('/'+productCategoryDetails['categoryLink'])">
+                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText"
-                        (click)="commonService.navigateTo('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
+                        (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
             </ng-container>
@@ -378,7 +378,7 @@
                 <p>
                     {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a
                     well-known ecommerce platform for qualitative range of <a class="blueText"
-                    (click)="commonService.navigateTo('/'+productCategoryDetails['categoryLink'])" >{{productCategoryDetails['categoryName']}}</a>.
+                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])" >{{productCategoryDetails['categoryName']}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
                     manufacture {{productName}}, are sourced
@@ -386,7 +386,7 @@
                     {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high
                     quality. We are dedicatedly involved in
                     providing an excellent quality array of <a class="blueText"
-                    (click)="commonService.navigateTo('/'+productBrandCategoryUrl)" >
+                    (click)="navigateLink('/'+productBrandCategoryUrl)" >
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
@@ -444,16 +444,7 @@
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <!-- <a class="widget-items" [routerLink]="getBrandLink(productBrandDetails)">
-                <span class="content-wrap">
-                    <p>More from {{productBrandDetails['brandName']}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24" >
-            </a> -->
-
-            <a (click)="sendWidgetTracking('category')" class="widget-items"
-                [routerLink]="['/'+productCategoryDetails['categoryLink']]">
+            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -461,8 +452,7 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
-            <a (click)="sendWidgetTracking('brand + category')" class="widget-items"
-                [routerLink]="['/'+productBrandCategoryUrl]">
+            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -475,21 +465,28 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="pdp-section-card">
+        <section class="pdp-section-card" id="reviewSection">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
                 </div>
-                <div class="pwa-col-6 align-right">
+                <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
                     <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
-            <div class="pwa-row">
+
+            <div class="pwa-row"  *ngIf="overallRating < 1">
+                <p class="review_text">
+                    Be the first one to provide review for this product
+                </p>
+                <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+            </div>
+            <div class="pwa-row" *ngIf="overallRating > 0">
                 <p class="extra-small-txt">
                     Customer Reviews on {{ productName}}
                 </p>
             </div>
-            <div class="pwa-row rating-sec">
+            <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
                         <h3>{{ overallRating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
@@ -576,7 +573,7 @@
                 </div>
             </div>
             <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>View {{ rawReviewsData?.summaryData?.review_count }} More Helpful Review</span>
+                <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
         <section class="Qa">
@@ -665,7 +662,7 @@
                 </p>
                 <p class="rfq-thanks-txt">
                     <span>You can also mail us at</span>
-                    <strong>alesenquiry@moglix.com</strong>
+                    <strong>salesenquiry@moglix.com</strong>
                 </p>
             </div>
             <div class="alert-btn-row">

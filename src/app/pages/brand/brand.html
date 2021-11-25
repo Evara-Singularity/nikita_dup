@@ -35,14 +35,14 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'popularBrandCategoryAccord', iconMode : true}">
-                    Popular Brand Categories
+                    Popular Brand Categories 1
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
         </div>
-        <div [id]="'popularBrandCategoryAccord'" style="display:none;" class="panel-body">
+        <div [id]="'popularBrandCategoryAccord'" [style.display]="popularLinks?.length > 0 ? 'block' : 'none'"  class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularLinks | slice:0:10">
                     <a  href="{{getUrlPathName(API_RESPONSE.brand[1][0].categoryLinkList[category])}}">{{ API_RESPONSE['brand'][0].brandName + ' ' + category }} </a>
@@ -54,17 +54,17 @@
         Popular Category from bucket list
     -->
     <ng-container *ngIf="popularCategories?.length > 0 && !_activatedRoute.snapshot.params.category">
-        <div class="panel-head" style="margin-top: 0px;" >
+        <div class="panel-head" style="margin-top:0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'popularCategoryAccord', iconMode : true}">
-                    Popular Categories
+                    Popular Categories 2
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
         </div>
-        <div [id]="'popularCategoryAccord'" style="display:none;" class="panel-body">
+        <div [id]="'popularCategoryAccord'" [style.display]="(popularLinks?.length === 0 && popularCategories?.length > 0)? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularCategories | slice:0:10">
                     <a  href="{{category?.link}}">{{ category?.name }} </a>
@@ -77,14 +77,14 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
-                    Related Searches
+                    Related Searches 3
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
         </div>
-        <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+        <div [id]="'attributeAccoridan'" [style.display]="(popularLinks?.length === 0 && popularCategories?.length === 0 && API_RESPONSE.brand[4].data?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links" *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data" >
                 <div *ngFor="let attribute of API_RESPONSE.brand[4].data | slice:0:10">
                     <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
@@ -96,14 +96,14 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'mostSoldAccoridan', iconMode : true}">
-                    Similar Category
+                    Similar Category 4
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
         </div>
-        <div [id]="'mostSoldAccoridan'" style="display:none;" class="panel-body">
+        <div [id]="'mostSoldAccoridan'" [style.display]="(API_RESPONSE.brand[4].data?.length === 0 &&  popularCategories?.length === 0 && popularLinks?.length === 0 && API_RESPONSE.brand[2]?.mostSoledCategories.length > 0 ) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let attribute of API_RESPONSE.brand[2]?.mostSoledCategories  | slice:0:10">
                     <a  href="{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>

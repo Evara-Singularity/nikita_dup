@@ -35,7 +35,7 @@
                         {{product.avgRating | rating | number : '1.1-1' }}
                         <i class="icon-rating-star"></i>
                     </span>
-                    <span class="count" *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{product.ratingCount}})</span>
+                    <span class="count" *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
                     <span class="ads" *ngIf="!product.internalProduct && !hideAd" >AD</span>
                 </div>
                 <div class="name" (click)="trackProductTitle('title')">

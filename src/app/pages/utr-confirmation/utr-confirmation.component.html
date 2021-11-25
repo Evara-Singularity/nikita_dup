@@ -2,13 +2,15 @@
     <div class="utr-form">
         <h3>Payment Confirmation against Order Ref Id - {{orderId}}</h3>
         <form [formGroup]="utrForm">
-            <div>
-                <label>Payment Amount</label>
-                <input type="text" placeholder="Enter payment acmount" formGroupName="amount">
-            </div>
-            <div>
-                <label>UTR No.</label>
-                <input type="text" placeholder="Enter UTR No." formGroupName="utrNo">
+            <div class="form-input-box">
+                <div class="form-input">
+                    <label>Payment Amount</label><br>
+                    <input type="text" placeholder="Enter payment acmount" formGroupName="amount">
+                </div>
+                <div class="form-input">
+                    <label>UTR No.</label><br>
+                    <input type="text" placeholder="Enter UTR No." formGroupName="utrNo">
+                </div>
             </div>
             <button (click)="submitUTRForm(utrForm.value)">SUBMIT</button>
         </form>

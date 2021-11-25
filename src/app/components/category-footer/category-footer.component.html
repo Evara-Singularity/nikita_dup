@@ -3,16 +3,17 @@
         class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.desc"></div>
 
     <ng-template #noCategoryDesc>
-        <div *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0" class="container">
-
-            <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat' , iconMode : true}">
-                Buy {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Online at Moglix India
-                <span class="inv_span"></span>
-            </h3>
-            <p id="openCat" style="display:block" class="mb-15 lh-18">You can easily buy {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} at Moglix. Shop online for {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} units by browsing through the extensive collection
-                at Moglix.com. The products featured on our online store are from highly reputed brands such as {{getTopTenBrandName(categoryFooterData?.buckets)}} and many more. The collection consists of {{getFeaturedProducts(categoryFooterData?.productSearchResult?.products)}}
-                and more. You can now buy branded {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online at attractive prices with special discounts from Moglix.com. If you have been shirking from buying branded {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
-                because of the prices, here is your chance to bag a great deal! Save loads of money by buying {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online from Moglix.</p>
+        <div class="seo-data-box">
+            <div *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0" class="container">
+                <h2 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat' , iconMode : true}">
+                    Buy {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Online at Moglix India
+                    <span class="inv_span"></span>
+                </h2>
+                <p id="openCat" style="display:block" class="lh-18">You can easily buy {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} at Moglix. Shop online for {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} units by browsing through the extensive collection
+                    at Moglix.com. The products featured on our online store are from highly reputed brands such as {{getTopTenBrandName(categoryFooterData?.buckets)}} and many more. The collection consists of {{getFeaturedProducts(categoryFooterData?.productSearchResult?.products)}}
+                    and more. You can now buy branded {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online at attractive prices with special discounts from Moglix.com. If you have been shirking from buying branded {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                    because of the prices, here is your chance to bag a great deal! Save loads of money by buying {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online from Moglix.</p>
+            </div>
         </div>
     </ng-template>
     <!-- FAQ Data STARTS -->

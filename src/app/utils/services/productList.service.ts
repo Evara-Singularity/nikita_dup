@@ -9,6 +9,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { CartService } from './cart.service';
 import { DataService } from './data.service';
 import { GlobalAnalyticsService } from './global-analytics.service';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -76,26 +77,32 @@ export class ProductListService {
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {
-    this.showMidPlpFilterLoader = true;
-    
-    let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
-    
-    if (categoryId) {
-      filter_url += "?category=" + categoryId;
-    }
 
-    const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
-    
-    const params = {
-      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(fragment),
-      queryParams: this._activatedRoute.snapshot.queryParams,
-      pageName: pageName
-    };
-    const actualParams = this._commonService.formatParams(params);
-    if (pageName === 'BRAND') {
-      actualParams['brand'] = brandName;
+    if (this._commonService.isBrowser) {
+      this.showMidPlpFilterLoader = true;
+
+      let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
+
+      if (categoryId) {
+        filter_url += "?category=" + categoryId;
+      }
+
+      const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
+
+      const params = {
+        filter: this._commonService.updateSelectedFilterDataFilterFromFragment(fragment),
+        queryParams: this._activatedRoute.snapshot.queryParams,
+        pageName: pageName
+      };
+      const actualParams = this._commonService.formatParams(params);
+      if (pageName === 'BRAND') {
+        actualParams['brand'] = brandName;
+      }
+      return this._dataService.callRestful("GET", filter_url, { params: actualParams });
     }
-    return this._dataService.callRestful("GET",  filter_url, { params: actualParams });
+    else {
+      return (new Observable());
+    }
   }
 
   getImageFromSearchProductResponse(originImageLink, variantFromName, variantGetName) {

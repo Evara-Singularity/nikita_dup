@@ -1,5 +1,5 @@
 <ng-container>
-    <div id="openCat3" style="" *ngIf="(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0 && categoryFooterData?.getRelatedCatgory.categoryDetails && categoryFooterData?.getRelatedCatgory.categoryDetails.desc) else noCategoryDesc"
+    <div id="openCat3" *ngIf="(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0 && categoryFooterData?.getRelatedCatgory.categoryDetails && categoryFooterData?.getRelatedCatgory.categoryDetails.desc) else noCategoryDesc"
         class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.desc"></div>
 
     <ng-template #noCategoryDesc>
@@ -19,15 +19,15 @@
     <div *ngIf="categoryFooterData?.faqData && categoryFooterData?.faqData.length>0" [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
         <div class="panel-head" [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                <h3 class="heading-3" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
                     <span class="iconaccordian">
-                        <i class="icon-expand"></i>
+                        <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
             <div id="openFaq" style="display: block;" class="body-bg pad-lr-15">
-                <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div" >
-                    <h2 class="m_faqQuestion"><strong>{{fd["questionText"]}}</strong></h2>
+                <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div " >
+                    <h3 class="m_faqQuestion heading-3"><strong>{{fd["questionText"]}}</strong></h3>
                     <p class="m_faqAnswer">{{fd["answerText"]}}</p>
                 </div>
             </div>
@@ -36,28 +36,32 @@
     <div class="body-bg">
         <div class="panel-head" *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0">
             <div class="container">
-                <h3 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
+                <h3 class="panel-heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
                 </h3>
             </div>
-            <div id="openCat2" style="display:block" class="">
-                <table width="100%" class="category-tbl common_table body-bg">
-                    <tbody>
-                        <tr>
-                            <th>Latest {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Models
-                            </th>
-                            <th>Expected Price</th>
-                            <th>Discount</th>
-                        </tr>
-                        <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
-                            <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
-                                <td>₹{{product.priceWithoutTax | mathFloor}}</td>
-                                <td>{{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
-                                </td>
+            <div id="openCat2" style="display:block" class="seo-table-container">
+                <div class="seo-table-data">
+                    <table width="100%">
+                        <thead>
+                            <tr>
+                                <th>Latest {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Models
+                                </th>
+                                <th>Expected Price</th>
+                                <th>Discount &nbsp; &nbsp;</th>
                             </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
+                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                                    <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
+                                    <td>₹{{product.priceWithoutTax | mathFloor}}</td>
+                                    <td>{{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -66,34 +70,39 @@
         <div class="panel-head">
             <div class="container">
                 <div class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
-                    <h3>{{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h3>
+                    <h3 class="panel-heading">{{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h3>
                 </div>
             </div>
-            <div id="openCat2">
-                <table width="100%" class="category-tbl common_table body-bg">
-                    <tbody>
-                        <tr>
-                            <th>
-                                {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
-                            </th>
-                            <th>
-                                Min Price
-                            </th>
-                            <th>
-                                Max Price
-                            </th>
-                        </tr>
-                        <ng-container *ngFor="let PRTA of categoryFooterData?.PRTA | slice:0:100, let i=index">
-                            <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
-                                <td>
-                                    <a [routerLink]="[PRTA?.categoryLink ? PRTA?.categoryLink : './']">{{PRTA.newName}}</a>
-                                </td>
-                                <td>₹{{PRTA.minPrice}}</td>
-                                <td>₹{{PRTA.maxPrice}}</td>
+            <div id="openCat2" class="seo-table-container">
+                <div class="seo-table-data">
+                    <table width="100%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                                </th>
+                                <th>
+                                    Min Price
+                                </th>
+                                <th>
+                                    Max Price
+                                </th>
                             </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let PRTA of categoryFooterData?.PRTA | slice:0:100, let i=index">
+                                <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
+                                    <td>
+                                        <a [routerLink]="[PRTA?.categoryLink ? PRTA?.categoryLink : './']">{{PRTA.newName}}</a>
+                                    </td>
+                                    <td>₹{{PRTA.minPrice}}</td>
+                                    <td>₹{{PRTA.maxPrice}}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                
                 <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
             </div>
         </div>

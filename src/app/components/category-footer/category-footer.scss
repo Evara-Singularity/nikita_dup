@@ -4,20 +4,73 @@
         padding: 0px 15px;
         background: #f2f2f2;
         h2 {
-            font-size: 16px;
+            font-size: 14px;
             padding: 10px 0;
             text-transform: none;
         }
         p {
             font-size: 12px;
+            color: #7B7B7B;
             line-height: 18px;
+            strong{
+                color: #3C3C3C;
+                font-weight: bold;
+            }
+            a{
+                color: #278BED;
+            }
         }
         a {
-            color: #0061d5 !important
+            color: #278BED;
+        }
+        li{
+            color: #7B7B7B;
+            &::before{
+                content: "> ";
+            }
+        }
+        hr{
+           display: none !important;
         }
     }
     .body-bg {
-        background: #f2f2f2;
+        background: #ffffff;
+        #openCat2{
+            padding: 0px 10px 15px 10px;
+            &.seo-table-container{
+                background-color: #ffffff;
+                padding: 0px 10px 15px 10px;
+                .seo-table-data{
+                    box-shadow: 0px 3px 6px #0000001A;
+                    background: #f2f2f2;
+                    border-radius: 4px;
+                    margin-bottom: 10px;
+                    thead{
+                        tr{
+                            border: none;
+                            th{
+                                border: none;
+                                font-size: 12px;
+                                text-align: left;
+                                padding: 5px;
+                          }  }
+                    }
+                    tbody{
+                       background-color: #ffffff;
+                       tr{
+                        border: none;
+                        td{
+                            border: none;
+                            font-size: 12px;
+                            font-weight: normal;
+                            text-align: left;
+                            padding: 5px;
+                        }
+                    }           
+                 }
+                }
+            }
+        }
     }
 }
 
@@ -25,9 +78,20 @@
     background: #fff;
     margin-top: 10px;
     h3 {
-        padding: 15px 5px;
+        padding: 15px 15px;
         font-weight: bold;
         text-transform: capitalize;
+        .iconaccordian{
+            float: right;
+        }
+    }
+    .panel-heading{
+        padding-left: 5px !important;
+    }
+    & .ico-up {
+        .iconaccordian{
+            transform: rotate(180deg) !important;
+        }
     }
 }
 
@@ -39,12 +103,12 @@
 }
 
 .m_faqQuestion {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 10px 15px;
+    font-size: 14px;
     position: relative;
      :before {
         content: "Q:";
-        font-size: 18px;
+        font-size: 14px;
         position: absolute;
         left: -8px;
         font-weight: bold;
@@ -55,10 +119,10 @@
     font-size: 12px;
     line-height: 18px;
     position: relative;
-    padding: 0px 20px;
+    padding: 0px 15px;
     &:before {
         content: "A:";
-        font-size: 18px;
+        font-size: 14px;
         position: absolute;
         left: -8px;
         font-weight: bold;
@@ -69,7 +133,6 @@
     th,
     td {
         font-size: 12px;
-        font-weight: normal;
         text-align: left;
         border-bottom: 1px solid $border-color;
         padding: 5px;
@@ -81,14 +144,34 @@
     th,
     td {
         font-size: 12px;
-        font-weight: normal;
         text-align: left;
         border-bottom: 1px solid $border-color;
         padding: 5px;
     }
 }
 
-.openFaq_div{
-    padding-left: 20px;
-    padding-right: 20px;
+#openFaq{
+    padding: 5px 0px 15px;
+    .openFaq_div{
+        margin: 0px 10px;
+        box-shadow: 0px 3px 6px #0000001A;
+        border-left: 1px solid #F1F1F1;
+        border-right: 1px solid #F1F1F1;
+        border-bottom: 1px solid #F1F1F1;
+        padding: 0px 10px 10px 15px;
+        &:first-child{
+            border-radius: 4px 4px 0px 0px;
+        }
+        &:last-child{
+            border-radius: 0px 0px 4px 4px;
+        }
+    }
+}
+#openCat3{
+    background-color: #ffffff;
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+.category_data {
+    padding: 10px 10px 20px !important;
 }

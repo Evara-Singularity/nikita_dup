@@ -21,6 +21,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
 import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
+import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import { SharedProductListingModule } from '@app/modules/shared-product-listing/
         NgxSiemaModule.forRoot(),
         MathCeilPipeModule,
         DiscountPipeModule,
-        SharedProductListingModule
+        SharedProductListingModule,
+        ProductListingAppPromoModule
     ],
     declarations: [
         AlpComponent,

@@ -5,15 +5,20 @@
 </div>
 
 <!-- Brand Product List Data -->
-<div class="cate-container"  *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2">
+<div class="cate-container"
+    *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2">
     <div class="sub-cate-container np-btm">
         <div class="container pt-10">
             <p class="desc-brand"> Moglix offers superior quality and genuine
-                <a class="text-blue" [routerLink]="[(this._router.url.split('/brands/' + this._activatedRoute.snapshot.params['brand'])[1]).split('#')[0].split('?')[0]]" style="text-transform: capitalize">
+                <a class="text-blue"
+                    [routerLink]="[(this._router.url.split('/brands/' + this._activatedRoute.snapshot.params['brand'])[1]).split('#')[0].split('?')[0]]"
+                    style="text-transform: capitalize">
                     {{API_RESPONSE['brand'][1][0].categoryName}}
                 </a> from a renowned brand
-                <a class="text-blue" [routerLink]="['/brands/' + API_RESPONSE['brand'][0].friendlyUrl]">{{API_RESPONSE['brand'][0].brandName}}</a>. 
-                Easily browse through our assortment and explore more about price, specifications, availability, and deals online for {{(API_RESPONSE['brand'][1][0]?.heading | removeHTML)}}. Buy these products
+                <a class="text-blue"
+                    [routerLink]="['/brands/' + API_RESPONSE['brand'][0].friendlyUrl]">{{API_RESPONSE['brand'][0].brandName}}</a>.
+                Easily browse through our assortment and explore more about price, specifications, availability, and
+                deals online for {{(API_RESPONSE['brand'][1][0]?.heading | removeHTML)}}. Buy these products
                 at best prices and get them delivered at your doorstep across India.
             </p>
         </div>
@@ -21,18 +26,16 @@
     <div class="clearfix"></div>
 </div>
 
-<shared-product-listing 
-    [pageName]="'BRAND'"
-    [brandName]="API_RESPONSE['brand'][0].brandName"
+<shared-product-listing [pageName]="'BRAND'" [brandName]="API_RESPONSE['brand'][0].brandName"
     [brandUrl]="API_RESPONSE['brand'][0].friendlyUrl"
     [headerName]="'Shop ' + (API_RESPONSE['brand'][1][0]?.heading ? (API_RESPONSE['brand'][1][0]?.heading | removeHTML) : API_RESPONSE['brand'][0].brandName) + (API_RESPONSE['brand'][1][0].categoryName ? ' Online' : ' Products')"
-    [productsListingData]="_productListService?.productListingData" >
+    [productsListingData]="_productListService?.productListingData">
 </shared-product-listing>
 
 
 <div class="accordian_footer_panel">
     <ng-container *ngIf="popularLinks?.length > 0">
-        <div class="panel-head" style="margin-top: 0px;" >
+        <div class="panel-head" style="margin-top: 0px;">
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'popularBrandCategoryAccord', iconMode : true}">
                     Popular Brand Categories 1
@@ -42,19 +45,19 @@
                 </h3>
             </div>
         </div>
-        <div [id]="'popularBrandCategoryAccord'" [style.display]="popularLinks?.length > 0 ? 'block' : 'none'"  class="panel-body">
+        <div [id]="'popularBrandCategoryAccord'" [style.display]="popularLinks?.length > 0 ? 'block' : 'none'"
+            class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularLinks | slice:0:10">
-                    <a  href="{{getUrlPathName(API_RESPONSE.brand[1][0].categoryLinkList[category])}}">{{ API_RESPONSE['brand'][0].brandName + ' ' + category }} </a>
+                    <a href="{{getUrlPathName(API_RESPONSE.brand[1][0].categoryLinkList[category])}}">{{
+                        API_RESPONSE['brand'][0].brandName + ' ' + category }} </a>
                 </div>
             </div>
         </div>
     </ng-container>
-    <!-- 
-        Popular Category from bucket list
-    -->
-    <ng-container *ngIf="popularCategories?.length > 0 && !_activatedRoute.snapshot.params.category">
-        <div class="panel-head" style="margin-top:0px;" >
+
+    <ng-container *ngIf="popularCategories?.length > 0">
+        <div class="panel-head" style="margin-top:0px;">
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'popularCategoryAccord', iconMode : true}">
                     Popular Categories 2
@@ -64,17 +67,19 @@
                 </h3>
             </div>
         </div>
-        <div [id]="'popularCategoryAccord'" [style.display]="(popularLinks?.length === 0 && popularCategories?.length > 0)? 'block' : 'none'" class="panel-body">
+        <div [id]="'popularCategoryAccord'"
+            [style.display]="(popularLinks?.length === 0 && popularCategories?.length > 0)? 'block' : 'none'"
+            class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularCategories | slice:0:10">
-                    <a  href="{{category?.link}}">{{ category?.name }} </a>
+                    <a href="{{category?.link}}">{{ category?.name }} </a>
                 </div>
             </div>
         </div>
     </ng-container>
-    
+
     <ng-container *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data && API_RESPONSE.brand[4].data.length > 0">
-        <div class="panel-head" style="margin-top: 0px;" >
+        <div class="panel-head" style="margin-top: 0px;">
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
                     Related Searches 3
@@ -84,29 +89,36 @@
                 </h3>
             </div>
         </div>
-        <div [id]="'attributeAccoridan'" [style.display]="(popularLinks?.length === 0 && popularCategories?.length === 0 && API_RESPONSE.brand[4].data?.length > 0) ? 'block' : 'none'" class="panel-body">
-            <div class="container category_links" *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data" >
+        <div [id]="'attributeAccoridan'"
+            [style.display]="(!popularLinks?.length && !popularCategories?.length && API_RESPONSE.brand[4].data?.length > 0) ? 'block' : 'none'"
+            class="panel-body">
+            <div class="container category_links" *ngIf="API_RESPONSE.brand[4] && API_RESPONSE.brand[4].data">
                 <div *ngFor="let attribute of API_RESPONSE.brand[4].data | slice:0:10">
-                    <a  href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                    <a href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
                 </div>
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="API_RESPONSE.brand[2]?.mostSoledCategories && API_RESPONSE.brand[2]?.mostSoledCategories.length > 0">
-        <div class="panel-head" style="margin-top: 0px;" >
+
+    <ng-container
+        *ngIf="API_RESPONSE.brand[2]?.mostSoledCategories && API_RESPONSE.brand[2]?.mostSoledCategories.length > 0">
+        <div class="panel-head" style="margin-top: 0px;">
             <div class="container">
                 <h3 class="heading-3" [appKpToggle]="{idName: 'mostSoldAccoridan', iconMode : true}">
-                    Similar Category 4
+                    Similar Category 4 {{ (!popularLinks?.length && !popularCategories?.length &&
+                    !API_RESPONSE.brand[4].data?.length && API_RESPONSE.brand[2].mostSoledCategories.length > 0 ) }}
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
         </div>
-        <div [id]="'mostSoldAccoridan'" [style.display]="(API_RESPONSE.brand[4].data?.length === 0 &&  popularCategories?.length === 0 && popularLinks?.length === 0 && API_RESPONSE.brand[2]?.mostSoledCategories.length > 0 ) ? 'block' : 'none'" class="panel-body">
+        <div [id]="'mostSoldAccoridan'"
+            [style.display]="(!popularLinks?.length && !popularCategories?.length && !API_RESPONSE.brand[4].data?.length && API_RESPONSE.brand[2].mostSoledCategories.length > 0 ) ? 'block' : 'none'"
+            class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let attribute of API_RESPONSE.brand[2]?.mostSoledCategories  | slice:0:10">
-                    <a  href="{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>
+                    <a href="{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>
                 </div>
             </div>
         </div>
@@ -115,10 +127,11 @@
 
 <product-listing-app-promo></product-listing-app-promo>
 
-<brand-details-footer  *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData"></brand-details-footer>
+<brand-details-footer *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData">
+</brand-details-footer>
 
 <!-- Breadcrump of brand page -->
-<ul class="bread-head no-margin mar-b-15"  [ngClass]="{'notFoundEl': !(API_RESPONSE['brand'][0]['active']) }">
+<ul class="bread-head no-margin mar-b-15" [ngClass]="{'notFoundEl': !(API_RESPONSE['brand'][0]['active']) }">
     <li [routerLink]="['/']" class="f-size-12">Home</li>
     <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
     <li class="item f-size-12">

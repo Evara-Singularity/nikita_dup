@@ -306,7 +306,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.cartService.cart.subscribe((data) => {
-            console.log(data);
             if (typeof data === 'number') {
                 this.noOfCart = data;
             } else {

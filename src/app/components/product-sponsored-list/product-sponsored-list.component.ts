@@ -56,7 +56,7 @@ export class ProductSponsoredListComponent implements OnInit {
     const query = {
       a_type: 'PRODUCT',
       client_id: 302211,
-      sku_ids: encodeURIComponent(this.productId.toLowerCase()),
+      sku_ids: encodeURIComponent(this.productId ? this.productId.toLowerCase() : ''),
       pcnt: 10,
       page_type: 'PRODUCT',
       device_id: this.commonService.getUniqueGAId()

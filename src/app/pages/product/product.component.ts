@@ -331,12 +331,12 @@ export class ProductComponent implements OnInit, AfterViewInit
         // data received by product resolver
         this.route.data.subscribe((rawData) =>
         {
-            if (!rawData['product']['error']) {
+            if (!rawData['product']['error'] && rawData['product']) {
 
                 if (rawData['product'][0]['productBO'] && Object.values(rawData['product'][0]['productBO']['productPartDetails'])[0]['images'] !== null) {
-                    const rawReviews = Object.assign({}, rawData['product'][1]['data']);
-                    const rawProductFbtData = Object.assign({}, rawData['product'][4]);
-                    const rawProductCountData = Object.assign({}, rawData['product'][5]);
+                    const rawReviews = Object.assign({}, rawData['product'][1] ? rawData['product'][1]['data'] : {});
+                    const rawProductFbtData = Object.assign({}, rawData['product'][4] ? rawData['product'][4] : {});
+                    const rawProductCountData = Object.assign({}, rawData['product'][1] ? rawData['product'][5] : rawData['product'][5]);
                     this.rawReviewsData = Object.assign({}, rawReviews);
                     this.rawProductFbtData = Object.assign({}, rawProductFbtData);
                     this.rawProductCountData = Object.assign({}, rawProductCountData);
@@ -437,10 +437,11 @@ export class ProductComponent implements OnInit, AfterViewInit
                     element['no'] = Number(element.is_review_helpful_count_no['value']);
                 element['totalReview'] = element['yes'] + element['no']
             });
-            console.log(this.rawReviewsData)
         }
         this.sortReviewsList("date");
-        this.setProductRating(this.rawReviewsData.summaryData.final_average_rating);
+        if (this.rawReviewsData.summaryData && this.rawReviewsData.summaryData.hasOwnProperty('final_average_rating')) {
+            this.setProductRating(this.rawReviewsData.summaryData.final_average_rating);
+        }
     }
 
     sortReviewsList(sortType)
@@ -449,7 +450,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (sortType === "helpful") {
             this.rawReviewsData.reviewList = this.sortedReviewByRating(this.rawReviewsData.reviewList);
         } else {
-            this.rawReviewsData.reviewList = this.sortedReviewsByDate(this.rawReviewsData.reviewList);
+            this.rawReviewsData.reviewList = (this.rawReviewsData.reviewList && this.rawReviewsData.reviewList.length > 0) ? this.sortedReviewsByDate(this.rawReviewsData.reviewList) : [];
         }
     }
 
@@ -2660,8 +2661,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
     }
 
-    sortedReviewsByDate(reviewList)
-    {
+    sortedReviewsByDate(reviewList) {
         return reviewList.sort((a, b) =>
         {
             return parseInt(b.date_unix) - parseInt(a.date_unix)

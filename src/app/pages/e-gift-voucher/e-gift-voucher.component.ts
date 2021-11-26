@@ -17,11 +17,10 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     user: any;
     showSuccessPopup = false;
     showListPopup = false;
-    categoryList= [];
+    categoryList = [];
     brandList = [];
     totalValue: any = "00";
-    rfqEnquiryCustomer: FormGroup = null;
-    rfqEnquiryItemsList: FormArray = null;
+    eGiftForm: FormGroup = null;
 
     readonly PRICE_VALUES = [500, 1000, 2000, 5000, 10000];
     categoryBrandInfo: any = null;
@@ -37,16 +36,18 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     ngOnInit()
     {
         this.fetchVoucherData();
-        this.rfqEnquiryCustomer = new FormGroup(
-            {
-                name: new FormControl("", [Validators.required]),
-                email: new FormControl("", [Validators.required, Step.validateEmail]),
-                mobile: new FormControl("", [Validators.required]),
-                company: new FormControl(""),
-                userId: new FormControl()
-            }
-        );
-        this.rfqEnquiryItemsList = new FormArray([]);
+        this.eGiftForm = new FormGroup({
+            rfqEnquiryCustomer: new FormGroup(
+                {
+                    name: new FormControl("", [Validators.required]),
+                    email: new FormControl("", [Validators.required, Step.validateEmail]),
+                    mobile: new FormControl("", [Validators.required]),
+                    company: new FormControl(""),
+                    userId: new FormControl()
+                }
+            ),
+            rfqEnquiryItemsList: new FormArray([])
+        });
         this.addRequirementForm();
     }
 
@@ -116,16 +117,27 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         this.totalValue = TOTAL_VALUE.reduce((value1, value2) => value1 + value2, 0);
     }
 
+    removeProduct(index)
+    {
+        this.rfqEnquiryItemsList.removeAt(index);
+        this.updateTotalQuantity();
+    }
+
+    updateBrand(formControl: FormControl, brandName)
+    {
+        //TODO:incase if we need to add category
+    }
+
     saveGift()
     {
-        if (this.rfqEnquiryCustomer.invalid || this.rfqEnquiryItemsList.invalid) {
-            this.rfqEnquiryCustomer.markAllAsTouched();
-            this.rfqEnquiryItemsList.markAllAsTouched();
+        if (this.eGiftForm.invalid) {
+            this.eGiftForm.markAllAsTouched();
             return
         }
-        const REQUEST = { rfqEnquiryCustomer: this.rfqEnquiryCustomer.value, rfqEnquiryItemsList: this.rfqEnquiryItemsList.value };
         this.globalLoader.setLoaderState(true);
-        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/createVoucherRfq`, {params:REQUEST}).subscribe(
+        console.clear();
+        console.log(this.eGiftForm.value)
+        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/createVoucherRfq`, { params: this.eGiftForm.value }).subscribe(
             (response) =>
             {
                 if (response['status']) {
@@ -139,30 +151,24 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         );
     }
 
-    removeProduct(index)
-    {
-        this.rfqEnquiryItemsList.removeAt(index);
-        this.updateTotalQuantity();
-    }
-
-    updateBrand(formControl: FormControl, brandName)
-    {
-        //TODO:incase if we need to add category
-    }
-
     checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }
 
     togglePopUp1() { this.showSuccessPopup = !this.showSuccessPopup; }
 
     togglePopUp2() { this.showListPopup = !this.showListPopup; }
 
-    get canAddAnotherCard() { return (this.rfqEnquiryCustomer.valid && this.rfqEnquiryItemsList.valid);}
+    get canAddAnotherCard() { return (this.rfqEnquiryCustomer.valid && this.rfqEnquiryItemsList.valid); }
 
     //getters
+    get rfqEnquiryCustomer() { return (this.eGiftForm.get("rfqEnquiryCustomer") as FormGroup) }
+    get rfqEnquiryItemsList() { return (this.eGiftForm.get("rfqEnquiryItemsList") as FormArray) }
     get name() { return this.rfqEnquiryCustomer.get("name") }
     get email() { return this.rfqEnquiryCustomer.get("email") }
     get mobile() { return this.rfqEnquiryCustomer.get("mobile") }
     get userId() { return this.rfqEnquiryCustomer.get("userId") }
+
+
+
     //validations
     firstName(event)
     {
@@ -179,5 +185,5 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         });
     }
 
-    
+
 }

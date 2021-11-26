@@ -10,8 +10,8 @@
         <div class="centered-btn">
             <h5 (click)="togglePopUp2()">Check list of 200+ brands e-Gift<br> vouchers & validity</h5>
         </div>
-        <form>
-            <div class="personal-details" [formGroup]="rfqEnquiryCustomer">
+        <form [formGroup]="eGiftForm">
+            <div class="personal-details" formGroupName="rfqEnquiryCustomer">
                 <div class="row">
                     <div class="col-md-6 form-pd-field">
                         <label>Full Name*</label>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="gift-card-req" [formGroup]="rfqEnquiryItemsList">
+            <div class="gift-card-req" formArrayName="rfqEnquiryItemsList">
                 <h3>Enter your gift card requirement:</h3>
                 <div class="gift-card-req-form">
                     <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
@@ -93,8 +93,8 @@
                     </ng-container>
                 </div>
             </div>
-            <div [ngClass]="{ 'add-another-card-disabled': !canAddAnotherCard, 'add-another-card': canAddAnotherCard } ">
-                <input type="button" [disabled]="!canAddAnotherCard" (click)="addRequirementForm()"
+            <div [ngClass]="{ 'add-another-card-disabled': eGiftForm.invalid, 'add-another-card': eGiftForm.valid } ">
+                <input type="button" [disabled]="eGiftForm.invalid" (click)="addRequirementForm()"
                     value="+ ADD ANOTHER CARD">
             </div>
             <div class="row submit-and-total">

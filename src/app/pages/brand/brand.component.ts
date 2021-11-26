@@ -29,7 +29,7 @@ export class BrandComponent {
     public productListingData: ProductListingDataEntity;
     public cmsData: any[] = [];
     public API_RESPONSE: any;
-    public popularLinks;
+    public popularLinks = [];
     public brandFooterData;
 
     constructor(
@@ -81,16 +81,17 @@ export class BrandComponent {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
+                    
+                    const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
+                    if (!this._activatedRoute.snapshot.params.category) {
+                        this.setPopularCategories(category.terms);
+                    }
+
 
                     if (res.hasOwnProperty('categoryLinkList')) {
                         this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                         // genrate popular links data
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
-                    }
-                    
-                    const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                    if (!this._activatedRoute.snapshot.params.id) {
-                        this.setPopularCategories(category.terms);
                     }
                     // genrate data for footer
                     this.genrateAndUpdateBrandFooterData();
@@ -482,7 +483,7 @@ export class BrandComponent {
             brand: this.API_RESPONSE.brand[0].brandName,
             productCategoryNames: this.popularLinks,
             categoryLinkLists: this.API_RESPONSE.brand[1][0].categoryLinkList,
-            categoryNames: this.popularLinks.toString(),
+            categoryNames: JSON.parse(JSON.stringify(this.popularLinks)).toString(),
             todayDate: Date.now(),
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)
         };

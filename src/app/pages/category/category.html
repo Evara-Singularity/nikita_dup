@@ -32,7 +32,7 @@
 </div>
 
 <!-- This is sub category section -->
-<div [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">
+<div *ngIf="API_RESPONSE.category[0]?.children?.length > 0" [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">
     <div class="container pt-10">
         <p class="sub_category_heading"  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
             {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
@@ -44,13 +44,12 @@
 </div>
 
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
-
     <!-- This is accordian section -->
     <div class="accordian_footer_panel">
         <ng-container *ngIf="API_RESPONSE.category[4].data.length > 0">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
-                    <h3 class="heading-3" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                    <h3 class="heading-3" [closeOtherTabs]="true" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
                         Related Searches
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
@@ -58,7 +57,7 @@
                     </h3>
                 </div>
             </div>
-            <div [id]="'attributeAccoridan'" style="display:none;" class="panel-body">
+            <div [id]="'attributeAccoridan'" [style.display]="API_RESPONSE.category[4].data?.length > 0 ? 'block' : 'none'" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let attribute of API_RESPONSE.category[4].data | slice:0:10 ">
                         <a (click)="_commonService.navigateTo(attribute.friendlyUrl, true)">{{ attribute.title }}</a>
@@ -66,11 +65,10 @@
                 </div>
             </div>
         </ng-container>
-
         <ng-container *ngIf="popularLinks.length > 0">
             <div class="panel-head" style="margin-top: 0px;">
                 <div class="container">
-                    <h3 class="heading-3" [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
+                    <h3 class="heading-3" [closeOtherTabs]="true" [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
                         Popular Brand Category
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
@@ -78,7 +76,7 @@
                     </h3>
                 </div>
             </div>
-            <div [id]="'popularLinkAccoridan'" style="display:none;" class="panel-body">
+            <div [id]="'popularLinkAccoridan'" [style.display]="(API_RESPONSE.category[4].data?.length === 0 && popularLinks?.length) > 0 ? 'block' : 'none'" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularLinks | slice:0:10 ">
                         <a (click)="_commonService.navigateTo(getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category]), true)">{{ category }}</a>
@@ -87,7 +85,6 @@
             </div>
         </ng-container>
     </div>
-
     <!-- This is recently article section -->
     <div class="recent-article-container" *ngIf="API_RESPONSE.category[1].productSearchResult?.totalCount > 0">
         <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []" [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>

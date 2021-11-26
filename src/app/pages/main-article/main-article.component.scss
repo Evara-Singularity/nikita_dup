@@ -6,11 +6,11 @@
             .multiple-form-field{
                 .top-search-box{
                     background-color: #ffffff;
-                    border: 1px solid #D7D7D7;
                     border-radius: 4px;
                     height: 40px;
                     position: relative;
                     input{
+                        padding: 0px 20px;
                         border: none;
                         height: 36px;
                         margin-left: 10px;
@@ -18,7 +18,8 @@
                     .icon-search{
                         position: absolute;
                         top: 12px;
-                        left: 5px;
+                        left: 10px;
+                        font-size: 15px;
                     }
                 } 
                 .input-field{
@@ -27,6 +28,7 @@
                         font-weight: bold;
                     }
                     select{
+                        border: none;
                         width: 100%;
                         border-radius: 4px;
                         background-color: #FFFFFF;
@@ -34,7 +36,7 @@
                     }
                     .icon-down{
                         top:15px !important;
-                        right: 5px !important;
+                        right: 10px !important;
                         z-index:3;
                         font-size: 12px;
                     }
@@ -51,7 +53,7 @@
             padding-bottom: 20px;
             display: flex;
             flex-direction: column;
-            .upper-title{
+            .heading{
                 padding-left: 15px;
                 margin-top: 10px;
             }

@@ -309,6 +309,7 @@
 }
 .seo-hidden-link{
     pointer-events: none;
-    position: absolute;
-    z-index: -1;
+    opacity:0;
+    height:0px;
+    display:block;
 }

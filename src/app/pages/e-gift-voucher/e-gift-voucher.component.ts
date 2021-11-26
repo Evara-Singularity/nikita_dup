@@ -1,9 +1,9 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -12,158 +12,105 @@ import { LocalStorageService } from 'ngx-webstorage';
     templateUrl: './e-gift-voucher.component.html',
     styleUrls: ['./e-gift-voucher.component.scss']
 })
-export class EGiftVoucherComponent implements OnInit {
-
+export class EGiftVoucherComponent implements OnInit, AfterViewInit
+{
     user: any;
     showSuccessPopup = false;
     showListPopup = false;
-
-
-
     data: Object;
     categoryList: any[];
     brandList: any;
-    TotalValue=0;
+    totalValue: any = "00";
     rfqEnquiryItemsList: any[];
     catListAll: any = [];
     brandListAll: any[] = [];
     userId: any;
     email: any;
     eGiftForm: FormGroup;
-    isFormValid: boolean=false;
-    button: HTMLButtonElement;
-    datalist: HTMLDataListElement;
-    select: HTMLSelectElement;
-    textContent: string;
-    options: HTMLOptionsCollection;
-    // eGiftForm: FormGroup;
+    //10766
+    readonly PRICE_VALUES = [500, 1000, 2000, 5000, 10000];
+    categoryBrandInfo: any = null;
+    categories: any[] = [];
+    brands: any[] = [];
 
 
-
-    constructor(public formBuilder: FormBuilder,
+    constructor(
         private fb: FormBuilder,
         private _dataService: DataService,
         private _tms: ToastMessageService,
         private _localStorageService: LocalStorageService,
-        @Inject(DOCUMENT) private _document,
+        private globalLoader: GlobalLoaderService,
 
+    ) { }
 
-    ) {
-
-    }
-
-
-    ngOnInit() {
-
-
-        this.user = this._localStorageService.retrieve('user');
-
+    ngOnInit()
+    {
+        this.fetchVoucherData();
         this.eGiftForm = this.fb.group({
-            fullName: [this.user.userName, [Validators.required]],
-            emailId: ['this.user.email', [Validators.required, Step.validateEmail]],
-            phone: [this.user.phone, [Validators.required]],
+            fullName: ["", [Validators.required]],
+            emailId: ["", [Validators.required, Step.validateEmail]],
+            phone: ["", [Validators.required]],
             company: [''],
             requirements: new FormArray([])
-        })
-
-
-        //call api store it in a variable data 
-        this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/rfq/getVoucherData').subscribe((res) => {
-            if (res['statusCode'] === 200 && res['data']) {
-                this.categoryList = [];
-                res['data']['categoryList'].forEach(element => {
-                    this.categoryList.push(element);
-                    this.catListAll.push(element.categoryName);
-                });
-
-
-                for (let i = 0; i < this.catListAll.length; i++) {
-                    if (this.categoryList[i].categoryName === this.catListAll[i]) {
-                        for (let j = 0; j < this.categoryList[i].brandList.length; j++) {
-                            console.log(this.categoryList[i].brandList.length)
-                            let popUpObj = {
-                                catName: '',
-                                braName: '',
-                                validity: ''
-                            }
-                            popUpObj['catName'] = this.categoryList[i].categoryName;
-                            popUpObj['braName'] = this.categoryList[i].brandList[j].brandName,
-                                popUpObj['validity'] = this.categoryList[i].brandList[j].validity
-                            this.brandListAll.push(popUpObj)
-                        }
-                    }
-                }
-                this.valueChanged();
-            }
         });
-
-        (this.requirements as FormArray).push(this.getRequirements());
-         this.autoFill();
+        this.addRequirementForm();
     }
 
-    valueChanged() {
-        this.requirements.valueChanges.subscribe((changes) => {
-            // this.calculator(itemForm)
-
-            if (changes[0].category !== "") {
-                this.categoryList.forEach((ele) => {
-                    if (ele['categoryName'] === changes[0].category) {
-                        this.brandList = ele['brandList'];
-                    }
-                })
-            }
-            if (changes[0].value !== "") {
-                this.TotalValue = changes[0].quantity * changes[0].value;
-            }
-        });
+    ngAfterViewInit(): void
+    {
+        this.user = this._localStorageService.retrieve('user');
+        this.updateUserDetails(this.user);
     }
 
-
-    getRequirements() {
-        return this.fb.group(
+    fetchVoucherData()
+    {
+        this.globalLoader.setLoaderState(true);
+        this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/rfq/getVoucherData').subscribe(
+            (response) => 
             {
-                category: ['',[Validators.required]],
-                brand: ['',[Validators.required]],
-                value: [''],
-                quantity: ['1'],
-                totalvalue: ['0'],
-            }
-        )
+                if (!response['status']) { return; }
+                const LIST: any[] = (response['data']['categoryList'] as any[]);
+                let BRANDS = [];
+                this.categoryBrandInfo = {};
+                LIST.forEach((element) =>
+                {
+                    const cName = element['categoryName'];
+                    const bList = element['brandList'];
+                    BRANDS = [...BRANDS, ...bList.map(brand => (brand.brandName as string).trim())]
+                    this.categoryBrandInfo[cName] = bList;
+                });
+                this.brands = this.extractUniqueBrands(BRANDS);
+                this.categories = Object.keys(this.categoryBrandInfo);
+            },
+            (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
+            () => { this.globalLoader.setLoaderState(false);}
+        );
     }
 
-    firstName(event) {
-        var key;
-        key = event.charCode;
-        return ((key > 64 &&
-            key < 91) || (key > 96 && key < 123) || key == 32 || key == 46);
+    updateUserDetails(user)
+    {
+        this.fullName.patchValue(user.userName);
+        this.emailId.patchValue(user.email);
+        this.phone.patchValue(user.phone);
     }
 
-    checkQuantityCode(event) {
-        return event.charCode >= 48 && event.charCode <= 57;
+    addRequirementForm()
+    {
+        const REQUIREMENTS = new FormGroup({
+            brandName: new FormControl("", [Validators.required]),
+            itemValue: new FormControl("", [Validators.required]),
+            quantity: new FormControl("", [Validators.required, Validators.min(1)]),
+            totalValue: new FormControl(""),
+        });
+        (this.requirements as FormArray).push(REQUIREMENTS);
     }
 
-    togglePopUp1() {
-        this.showSuccessPopup = !this.showSuccessPopup;
-    }
-
-    togglePopUp2() {
-        this.showListPopup = !this.showListPopup;
-    }
-
-    removeProduct(index) {
-        (<FormArray>this.requirements).removeAt(index)
-    }
-
-    addProducts() {
-        (this.requirements as FormArray).push(this.getRequirements());
-    }
-
-
-
-    onSubmit(request) {
+    onSubmit(request)
+    {
         if (this.eGiftForm.valid) {
             this.rfqEnquiryItemsList = [];
-            request.requirements.forEach(element => {
+            request.requirements.forEach(element =>
+            {
                 this.rfqEnquiryItemsList.push({
                     "categoryName": element.category,
                     "quantity": element.quantity,
@@ -185,74 +132,102 @@ export class EGiftVoucherComponent implements OnInit {
                     "rfqEnquiryItemsList": this.rfqEnquiryItemsList
 
                 }
-            }).subscribe((res) => {
+            }).subscribe((res) =>
+            {
                 if (res['statusCode'] == 200) {
                     //after success response 
                     this.showSuccessPopup = true;
                     //reset data
                     this.eGiftForm.reset();
-                    this.requirements.value.forEach((e, index) => {
+                    this.requirements.value.forEach((e, index) =>
+                    {
                         (<FormArray>this.requirements).removeAt(index)
                     });
-                    (this.requirements as FormArray).push(this.getRequirements());
+                    this.addRequirementForm();
                     this.autoFill();
                 }
                 else {
                     this._tms.show({ type: 'error', text: 'Something Went Wrong' });
-
-
                 }
             });
         }
-        else if(!this.requirements.valid && (!this.eGiftForm.controls.fullName.valid || !this.eGiftForm.controls.emailId.valid || !this.eGiftForm.controls.phone.valid)){
-            this.eGiftForm.markAllAsTouched();
-            // Object.keys(this.eGiftForm.controls).forEach(field => {
-            //     const control = this.eGiftForm.get(field);
-            //     control.markAsTouched({ onlySelf: true });
-            // });
-            this._tms.show({ type: 'error', text: 'Please mention all details and your gift card requirements' });
-
-        }
-        else if(this.requirements.valid && (!this.eGiftForm.controls.fullName.valid || !this.eGiftForm.controls.emailId.valid || !this.eGiftForm.controls.phone.valid)){
+        else {
             this.eGiftForm.markAllAsTouched();
             this._tms.show({ type: 'error', text: 'Please mention all details' });
-
-        }
-        else if(!this.requirements.valid && (this.eGiftForm.controls.fullName.valid || this.eGiftForm.controls.emailId.valid || this.eGiftForm.controls.phone.valid)){
-            this.eGiftForm.markAllAsTouched();
-            this._tms.show({ type: 'error', text: 'Please mention your gift card requirements' });
-
         }
     }
 
-
-    updateTotatQuantity() {
-        // alert("called")
-        this.TotalValue = 0;
-        this.requirements.value.forEach(element => {
-            if (parseInt(element.value) && element.quantity) {
-                this.TotalValue += (parseInt(element.value) * parseInt(element.quantity));
-            }
-        });
+    updateItemTotalValue(requirement: FormGroup)
+    {
+        if (requirement.invalid) return;
+        const REQUIREMENT = requirement.value;
+        const ITEM_TOTAL_VALUE = Number(REQUIREMENT.itemValue) * Number(REQUIREMENT.quantity)
+        requirement.get("totalValue").setValue(ITEM_TOTAL_VALUE)
+        this.updateTotalQuantity();
     }
 
-    brandClicked() {
-        let categorySelected = this.eGiftForm.controls['category'].value;
+    updateTotalQuantity()
+    {
+        const REQUIREMENTS = (this.requirements.value as any[]);
+        const TOTAL_VALUE = REQUIREMENTS.map(requirement => Number(requirement.itemValue) * Number(requirement.quantity));
+        this.totalValue = TOTAL_VALUE.reduce((value1, value2) => value1 + value2, 0);
     }
 
-    getData() {
-        this._dataService.callRestful("GET", '').subscribe((data) => {
-            this.data = data;
-        });
+
+    checkQuantityCode(event) { return event.charCode >= 48 && event.charCode <= 57; }
+
+    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }
+
+    togglePopUp1() { this.showSuccessPopup = !this.showSuccessPopup; }
+
+    togglePopUp2() { this.showListPopup = !this.showListPopup; }
+
+    removeProduct(index) { 
+        (<FormArray>this.requirements).removeAt(index); 
+        this.updateTotalQuantity();
+    }
+
+    //validations
+    firstName(event)
+    {
+        var key;
+        key = event.charCode;
+        return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 32 || key == 46);
     }
 
     //getters
     get requirements() { return this.eGiftForm.get('requirements') };
+    get fullName() { return this.eGiftForm.get("fullName") }
+    get emailId() { return this.eGiftForm.get("emailId") }
+    get phone() { return this.eGiftForm.get("phone") }
 
-
-    autoFill() {
+    autoFill()
+    {
         this.eGiftForm.controls['fullName'].setValue(this.user.userName)
         this.eGiftForm.controls['phone'].setValue(this.user.phone)
         this.eGiftForm.controls['emailId'].setValue(this.user.email)
+    }
+
+    saveGift(eGift)
+    {
+        if (this.eGiftForm.invalid)
+        {
+            this.eGiftForm.markAllAsTouched();
+            console.log(eGift);
+            return;
+        }
+    }
+
+    extractUniqueBrands(brands)
+    {
+        return brands.sort().filter(function (item, pos, ary)
+        {
+            return !pos || item != ary[pos - 1];
+        });
+    }
+
+    updateState(formControl:FormControl, brandName)
+    {
+        //formControl.setValue(brandName);
     }
 }

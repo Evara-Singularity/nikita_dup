@@ -1,0 +1,23 @@
+.list-container {
+    width: 100%;
+    input {
+        padding: 0px 10px;
+        height: 45px;
+        margin: 5px 0px;
+        background: #ffffff 0% 0% no-repeat padding-box;
+        border: 1px solid #707070;
+        border-radius: 4px;
+        width: 100%;
+    }
+    ul {
+        width: 100%;
+        list-style: none;
+        max-height: 150px;
+        line-height: 2em;
+        padding: 0;
+        margin: 0;
+        overflow: scroll;
+        overflow-x: hidden;
+        background-color: #fff;
+    }
+}

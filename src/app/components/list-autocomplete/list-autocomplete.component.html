@@ -1,0 +1,10 @@
+<div class="list-container">
+    <input type="text" (keyup)="$event.stopPropagation();filter($event.target.value)"
+        (focus)="$event.stopPropagation();toggleListDisplay(true)" [placeholder]="placeholder"
+        (blur)="$event.stopPropagation();toggleListDisplay(false)" [formControl]="control">
+    <ul>
+        <li *ngFor="let item of filteredList" (click)="$event.stopPropagation();onClick(item)">
+            {{item}}
+        </li>
+    </ul>
+</div>

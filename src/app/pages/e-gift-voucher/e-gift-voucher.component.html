@@ -37,15 +37,15 @@
           <div class="gift-card-req-form">
                <!--Requirements-->
                <ng-container *ngFor="let requirement of requirements['controls'];let index=index">
-                <div class="req-flex" [formGroup]="requirement">
-                    <div class="catogary req-flex-child" placeholder="Select">
+                <div class="req-flex req-flex-filled" [formGroup]="requirement">
+                    <!-- <div class="catogary req-flex-child" placeholder="Select">
                         <select (change)="updateTotatQuantity()" formControlName="category">
                             <option value="" selected disabled hidden>Select Category</option>                                        
                             <option *ngFor="let category of categoryList">{{category.categoryName | slice:0:20}}<span *ngIf="category.categoryName.length > 19">...</span></option>
                           </select>
                           <i class="icon-down"></i>
-                    </div>
-                    <div class="brand req-flex-child" >
+                    </div> -->
+                    <div class="brand req-flex-child">
                         <select  (change)="updateTotatQuantity()"  formControlName="brand">
                             <option value="" selected disabled hidden>Select Brand</option>                               
                             <option *ngFor="let brand of brandList">{{brand.brandName | slice:0:20}}<span *ngIf="brand.brandName.length > 19" >...</span></option>
@@ -67,7 +67,7 @@
                         <input (change)="updateTotatQuantity()" #quantity value="10" min="1" type="number"  formControlName="quantity"  step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" >
                     </div>
                     <div class="total-value req-flex-child">
-                        <input [value]="(singleItemPrice.value*quantity.value)" type="text" formControlName="totalvalue" disabled readonly>
+                        <input [value]="(singleItemPrice.value*quantity.value)" type="text" formControlName="totalvalue" placeholder="Total value (INR)" disabled readonly>
                     </div>
                     <div class="action req-flex-child" (click)="removeProduct(index);updateTotatQuantity();" *ngIf="requirements['controls'].length > 1">
                         <div class="bin-area">

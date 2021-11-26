@@ -14,16 +14,16 @@ import { LocalStorageService } from 'ngx-webstorage';
 })
 export class EGiftVoucherComponent implements OnInit, AfterViewInit
 {
+    readonly PRICE_VALUES = [500, 1000, 2000, 5000, 10000];
+    readonly API = CONSTANTS.NEW_MOGLIX_API;
     user: any;
     showSuccessPopup = false;
     showListPopup = false;
+    categoryBrandInfo: any = null;
     categoryList = [];
     brandList = [];
     totalValue: any = "00";
     eGiftForm: FormGroup = null;
-
-    readonly PRICE_VALUES = [500, 1000, 2000, 5000, 10000];
-    categoryBrandInfo: any = null;
 
     constructor(
         private _dataService: DataService,
@@ -60,7 +60,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     fetchVoucherData()
     {
         this.globalLoader.setLoaderState(true);
-        this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + '/rfq/getVoucherData').subscribe(
+        this._dataService.callRestful("GET", `${this.API}/rfq/getVoucherData`).subscribe(
             (response) => 
             {
                 if (!response['status']) { return; }
@@ -137,16 +137,17 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         this.globalLoader.setLoaderState(true);
         console.clear();
         console.log(this.eGiftForm.value)
-        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/createVoucherRfq`, { params: this.eGiftForm.value }).subscribe(
+        this._dataService.callRestful("POST", `${this.API}/rfq/createVoucherRfq`, { body: this.eGiftForm.value }).subscribe(
             (response) =>
             {
                 if (response['status']) {
+                    this._tms.show({ type: 'success', text: 'E-Gift submitted successfully.' });
                     this.showSuccessPopup = true;
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();
                 }
             },
-            (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
+            (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
             () => { this.globalLoader.setLoaderState(false); }
         );
     }

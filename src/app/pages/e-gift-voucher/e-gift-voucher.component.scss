@@ -78,9 +78,6 @@
                 margin-bottom: 10px;
             }
             .gift-card-req-form{
-                .req-flex-filled{
-                    background-color: #38b9181a;
-                }
                 .req-flex{
                     margin: 10px 0px;
                     border-radius: 4px;
@@ -88,6 +85,9 @@
                     flex-wrap: wrap;
                     align-items: center;
                     width: 100%;
+                    &.req-flex-filled{
+                        background-color: #38b9181a;
+                    }
                     .req-flex-child{
                         padding: 7px;
                         position: relative;
@@ -178,11 +178,12 @@
             }
         }
         .submit-and-total{
-            padding: 10px 0px;
+            padding:7px 0px;
             position: fixed;
             bottom: 0;
             border: 1px solid #d9d9d9;
             display: flex;
+            align-items: center;
             width: 100%;
             left: 0;
             background: #fff;
@@ -195,6 +196,7 @@
                     width: 200px;
                     border-radius: 4px;
                     height: 40px;
+                    font-size: 14px;
                     border: none;
                 }
             }

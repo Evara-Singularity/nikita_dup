@@ -1,3 +1,4 @@
+<loader [showLoader]="showLoader"></loader>
 <div class="e-gifting">
     <div class="e-gifting-banner">
         <h1>Get Best Discounts from us on Buying Bulk E-Gift Cards for your Team, Business partners, Dealers, Family.
@@ -15,11 +16,12 @@
                 <div class="row">
                     <div class="col-md-6 form-pd-field">
                         <label>Full Name*</label>
-                        <input type="text" (keypress)="firstName($event)" formControlName="name"
+                        <input type="text" (keypress)="checkForspeciaChars($event)" formControlName="name"
                             placeholder="Enter full name">
                         <div *ngIf="name.touched && name.hasError('required')"
-                            class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name <span
-                                class="f-size-10">(Special characters are not allowed)</span></div>
+                            class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name
+                            <span class="f-size-10">(Special characters are not allowed)</span>
+                        </div>
                     </div>
                     <div class="col-md-6 form-pd-field">
                         <label>Email ID*</label>
@@ -41,7 +43,7 @@
                     </div>
                     <div class="col-md-6 form-pd-field">
                         <label>Company (Optional)</label>
-                        <input (keypress)="firstName($event)" type="text" formControlName="company"
+                        <input (keypress)="checkForspeciaChars($event)" type="text" formControlName="company"
                             placeholder="Enter company name">
                     </div>
                 </div>
@@ -72,18 +74,19 @@
                                 </div>
                             </div>
                             <div class="qty req-flex-child">
-                                <input (change)="updateItemTotalValue(requirement)" type="number" placeholder="Enter Qty"
-                                    formControlName="quantity" (keypress)="checkNumberic($event)">
+                                <input (change)="updateItemTotalValue(requirement)" type="number"
+                                    placeholder="Enter Qty" formControlName="quantity"
+                                    (keypress)="checkNumberic($event)">
                                 <div *ngIf="requirement.get('quantity').touched && requirement.get('quantity').invalid"
                                     class="f-size-12 text-red pad-t-5 pad-l-5">
                                     Kindly enter quantity.
                                 </div>
                             </div>
                             <div class="total-value req-flex-child">
-                                <input type="text" formControlName="totalValue" readonly placeholder="Total value (INR)">
+                                <input type="text" formControlName="totalValue" readonly
+                                    placeholder="Total value (INR)">
                             </div>
-                            <div class="action req-flex-child"
-                                (click)="removeProduct(rIndex);"
+                            <div class="action req-flex-child" (click)="removeProduct(rIndex);"
                                 *ngIf="rfqEnquiryItemsList.length > 1">
                                 <div class="bin-area">
                                     <img src="assets/img/gift-bin-icon.png">
@@ -93,7 +96,7 @@
                     </ng-container>
                 </div>
             </div>
-            <div [ngClass]="{ 'add-another-card-disabled': eGiftForm.invalid, 'add-another-card': eGiftForm.valid } ">
+            <div [ngClass]="{ 'add-another-card-disabled': eGiftForm.invalid, 'add-another-card': eGiftForm.valid }">
                 <input type="button" [disabled]="eGiftForm.invalid" (click)="addRequirementForm()"
                     value="+ ADD ANOTHER CARD">
             </div>
@@ -103,15 +106,14 @@
                     <span class="amount">₹ {{totalValue}}.00 INR</span>
                 </div>
                 <div class="col-md-8 submit-area">
-                    <input class="submit-button" type="button" value="SUBMIT REQUEST"
-                        (click)="saveGift()">
+                    <input class="submit-button" type="button" value="SUBMIT REQUEST" (click)="saveGift()">
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-<!-- start popup 1 -->
+<!-- category+brand+validity popup -->
 <div class="popup_container" *ngIf="showListPopup">
     <div class="list-of-brand-e-gifts">
         <div class="top-head">
@@ -145,7 +147,7 @@
     </div>
 </div>
 
-<!-- popup 2 -->
+<!-- success popup -->
 <div class="popup_container" *ngIf="showSuccessPopup">
     <div class="thanks-pop">
         <div class="top-cross-area" (click)="togglePopUp1()">

@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
@@ -135,8 +135,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             return
         }
         this.globalLoader.setLoaderState(true);
-        console.clear();
-        console.log(this.eGiftForm.value)
         this._dataService.callRestful("POST", `${this.API}/rfq/createVoucherRfq`, { body: this.eGiftForm.value }).subscribe(
             (response) =>
             {
@@ -152,7 +150,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         );
     }
 
-    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }
+    
 
     togglePopUp1() { this.showSuccessPopup = !this.showSuccessPopup; }
 
@@ -168,15 +166,15 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     get mobile() { return this.rfqEnquiryCustomer.get("mobile") }
     get userId() { return this.rfqEnquiryCustomer.get("userId") }
 
-
-
     //validations
-    firstName(event)
+    checkForspeciaChars(event)
     {
         var key;
         key = event.charCode;
         return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 32 || key == 46);
     }
+
+    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }
 
     extractUniqueBrands(brands)
     {
@@ -185,6 +183,4 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             return !pos || item != ary[pos - 1];
         });
     }
-
-
 }

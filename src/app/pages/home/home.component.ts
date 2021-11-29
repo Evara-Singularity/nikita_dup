@@ -22,7 +22,7 @@ import { DataService } from '@app/utils/services/data.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { FooterService } from '@app/utils/services/footer.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
@@ -119,6 +119,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
 		private route: ActivatedRoute,
+		private _router: Router,
 		private _commonService: CommonService,
 		private analytics: GlobalAnalyticsService
 	) {
@@ -356,6 +357,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			pageName: 'moglix:home',
 			channel: 'home',
 			subSection: 'moglix:home',
+			linkName: this._router.url,
 			loginStatus:
 				userSession &&
 					userSession.authenticated &&

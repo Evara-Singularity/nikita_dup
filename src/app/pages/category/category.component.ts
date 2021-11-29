@@ -26,7 +26,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 @Component({
     selector: 'category',
     templateUrl: './category.html',
-    styleUrls: ['./category.scss'],
+    styleUrls: ['./category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })
 
 export class CategoryComponent {
@@ -92,10 +92,11 @@ export class CategoryComponent {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
-            
+
             // set API result data
             this.API_RESPONSE = result;
-            console.log(result);
+
+            this._productListService.excludeAttributes = [];
 
             if (this.cmsInstance) {
                 this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
@@ -116,8 +117,6 @@ export class CategoryComponent {
             // create FAQ section schema
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
-            // genrate popular links data
-            this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
@@ -127,10 +126,19 @@ export class CategoryComponent {
             this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
-                    this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
-                    // update footer data
-                    this.genrateAndUpdateCategoryFooterData();
+                }
+                if (res.hasOwnProperty('priceRangeBuckets')) {
+                    this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
+                }
+
+                // update footer data
+                this.genrateAndUpdateCategoryFooterData();
+
+                if (res.hasOwnProperty('categoryLinkList')) {
+                    this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
+                    // genrate popular links data
+                    this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
                 }
             });
 
@@ -148,7 +156,7 @@ export class CategoryComponent {
     private setCanonicalUrls() {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
 
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
             links.rel = 'canonical';
             if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
@@ -214,7 +222,7 @@ export class CategoryComponent {
     }
 
     private setFaqSchema(faqData) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const data: any[] = (faqData['data'] as any[]);
             if (data.length > 0) {
                 const qaSchema = [];
@@ -430,6 +438,7 @@ export class CategoryComponent {
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
      */
     priceRangeTable(res) {
+        console.log(res);
         let count = 0;
         for (let val of res.productSearchResult.products) {
             if (val.quantityAvailable === 0) {
@@ -437,7 +446,13 @@ export class CategoryComponent {
             }
         }
         if (count !== res.productSearchResult.products.length) {
-            this.getBucketForPriceRangeTable(JSON.parse(JSON.stringify(res['priceRangeBuckets'] ? res['priceRangeBuckets'] : res['buckets'])));
+            let buckets: any[] = null
+            if (res['priceRangeBuckets'] && (res['priceRangeBuckets'] as any[]).length) {
+                buckets = Object.create(res['priceRangeBuckets']);
+            } else {
+                buckets = Object.create(res['buckets']);
+            }
+            this.getBucketForPriceRangeTable(buckets);
         }
     }
 
@@ -588,6 +603,7 @@ export class CategoryComponent {
         } else {
             this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
             this.subCategoryInstance.instance.initializeSubcategoryData(this.API_RESPONSE.category[0].children);
+            this.subCategoryInstance.instance.showList(false);
         }
 
         this.layoutType = 0;
@@ -676,7 +692,7 @@ export class CategoryComponent {
     }
 
     createCategorySchema(productArray) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {

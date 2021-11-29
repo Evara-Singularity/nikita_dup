@@ -71,6 +71,8 @@ export class SearchComponent implements OnInit {
       // Empty the setSearchResultsTrackingData initially.
       this._commonService.setSearchResultsTrackingData({});
 
+      this._productListService.excludeAttributes = [];
+
       // Set the API_RESULT variable
       this.API_RESULT = result;
 

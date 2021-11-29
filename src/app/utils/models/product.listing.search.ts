@@ -35,6 +35,7 @@ export interface ProductsEntity {
     priceWithoutTax: number;
     productName: string;
     variantName: string;
+    productMinimmumQuantity?: number;
     productUrl: string;
     shortDesc: string;
     brandId: string;
@@ -56,6 +57,7 @@ export interface ProductsEntity {
     uclid?: string;
     keyFeatures?: string[];
     internalProduct?: boolean; // used in case of sponsered Ad
+    outOfStock?: boolean;
 }
 
 export interface FilterableAttributes {

@@ -1,10 +1,13 @@
     /* below code for top widgets and trending categories*/
     
     @import '../../scss/variables';
-     ::ng-deep {
-        h2 {
-            font-size: $large-font;
-            text-transform: uppercase;
+     
+    ::ng-deep {
+        .home-parent{
+            h2 {
+                font-size: $large-font;
+                text-transform: uppercase;
+            }
         }
     }
     /*Top Widgets*/

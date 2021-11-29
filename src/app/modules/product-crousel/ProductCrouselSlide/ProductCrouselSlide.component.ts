@@ -3,19 +3,20 @@ import { isPlatformBrowser } from '@angular/common';
 import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { Subject } from 'rxjs';
 import PinchZoom from 'pinch-zoom-js';
-
 import CONSTANTS from '@app/config/constants';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { SiemaCrouselService } from '@app/utils/services/siema-crousel.service';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
-
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ProductCrouselSlide',
   templateUrl: './ProductCrouselSlide.component.html',
   styleUrls: ['./ProductCrouselSlide.component.scss']
 })
-export class ProductCrouselSlideComponent implements OnInit {
+export class ProductCrouselSlideComponent  {
   @Input() options: any;
   @Input() item: any;
   @Input() imagePath: any;
@@ -47,18 +48,18 @@ export class ProductCrouselSlideComponent implements OnInit {
   @ViewChild('pinchZoom') pinchZoom: ElementRef;
   readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
   readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
+  analyticsInfo: any = {};
 
   constructor(
+    private globalAnalyticService: GlobalAnalyticsService,
     @Inject(PLATFORM_ID) private platformId: Object,
+    public localStorageService: LocalStorageService,
     private _modalService: ModalService,
+    private _router: Router,
     private _siemaCrouselService: SiemaCrouselService,
     private ngxSiemaService: NgxSiemaService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
-  }
-
-  ngOnInit() {
-
   }
 
   ngAfterViewInit() {
@@ -70,32 +71,23 @@ export class ProductCrouselSlideComponent implements OnInit {
           this.pzInstance = new PinchZoom(el, {
             // zoom factor
             tapZoomFactor: 2,
-
             // zoom out factor
             zoomOutFactor: null,
-
             // duration in ms
             animationDuration: 300,
-
             // min/max zoom level
             maxZoom: 4,
             minZoom: 0.5,
-
             // draggable unzoomed image
             draggableUnzoomed: false,
-
             lockDragAxis: false,
-
             // compute offsets only once
             setOffsetsOnce: false,
-
             // falls back to 2D transforms when idle
             use2d: false,
-
             // vertical/horizontal padding
             verticalPadding: 0,
             horizontalPadding: 0
-
           });
         }, 0);
       }
@@ -112,7 +104,7 @@ export class ProductCrouselSlideComponent implements OnInit {
     if (this.pzInstance) {
       this.pzInstance.zoomOutAnimation();
     }
-    event.stopPropagation();
+    e.stopPropagation();
   }
 
 
@@ -136,8 +128,20 @@ export class ProductCrouselSlideComponent implements OnInit {
     this._modalService.show(modalData);
   }
 
+  sendTracking(num) {
+    let page = {
+      'channel': "pdp image carausel",
+      'pageName': "moglix:image carausel:pdp",
+      'linkName': "moglix:productmainimageclick_" + num,
+      'subSection': "moglix:pdp carausel main image:pdp",
+      'linkPageName': "moglix:" + this._router.url,
+    }
+    this.globalAnalyticService.sendAdobeCall({ page }, "genericPageLoad");
+  }
+
   clicked() {
     this.ngxSiemaService.currentSlide(this.options.selector).subscribe(result => {
+      this.sendTracking(result.currentSlide);
       this._siemaCrouselService.setProductScrouselPopup({ active: true, slideNumber: result.currentSlide });
     })
   }

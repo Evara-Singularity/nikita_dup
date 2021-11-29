@@ -14,10 +14,12 @@
             <div [id]="'openHomeAccoridan' + i" style="display:none;" class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let data of carouselData[item]['data']['brand_block']">
-                        <a [routerLink]="['/' + data.brand_url]">{{ data.brandName }}</a>
+                        <a (click)="_commonService.navigateTo('/' + data.brand_url, true)">{{ data.brandName }}</a>
                     </div>
                 </div>
             </div>
         </div>
     </ng-container>
 </div>
+
+

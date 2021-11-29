@@ -91,3 +91,80 @@
         padding: 5px 0px 0px 0px;
     }
 }
+.delivery-details-area{
+    padding: 0px 5px;
+    background-color: #fff;
+    .delivery-details{
+        padding: 5px 2px 20px;
+        .delivery-details-inner{
+            display: flex;
+            align-items: center;
+            .delivery-details-inner-img{
+                width: 10%;
+                img{
+                    width: 24px;
+                }
+            }
+            .delivery-details-inner-box{
+                width: 85%;
+                border: 1px solid #707070;
+                border-radius: 4px;
+                height: 40px;
+                position: relative;
+                input{
+                    height: 40px;
+                    width: 75%;
+                    border: none;
+                    padding:0px 10px;
+                }
+                button{
+                    cursor: pointer;
+                    position: absolute;
+                    width: 30%;
+                    top: 0px;
+                    right: -1px;
+                    bottom: 0px;
+                    border: none;
+                    background-color: #D9232D;
+                    border: 2px solid #D9232D;
+                    border-top-right-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                    color: #fff;
+                    font-weight: bold;
+                }
+            }
+            
+        }
+        .availability-text{
+            font-size: 10px;
+            color: #74777A;
+            margin-top:4px;
+        }
+    }
+}
+.about-delivery{
+    min-height: 56px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    &:last-child{
+        border-bottom: 1px solid #E3E3E3;
+    }
+    img{
+        width: 24px;
+        margin-right: 10px;
+    }
+    .about-delivery-txt{
+        h4{
+            font-size: 12px;
+        }
+        span{
+            font-size: 10px;
+            color: #74777A;
+        }
+    }
+}
+.invalid-txt{
+    padding: 5px 45px 0px;
+    color: #D9232D;
+}

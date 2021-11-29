@@ -113,7 +113,6 @@ h3,
     font-size: $large-font;
     padding: 10px 0;
 }
-
 .heading-3-txt {
     color: $dark-gray-color;
     font-size: $medium-font;
@@ -123,10 +122,21 @@ h3,
     font-size: $medium-font;
     font-weight: 400;
 }
+.extra-small-txt{
+    font-size: $small-font;
+    font-weight: 400;
+    line-height:14px;
+}
+
 
 .normal-txt {
     font-weight: 400;
 }
+
+.content{
+    font-size: 14px;
+    line-height: 20px;
+}    
 
 h2,
 .heading-2 {
@@ -209,6 +219,15 @@ a {
     border: 1px solid $btn-color-red;
     font-size: $large-font;
 }
+.redBgButton{
+    background:$color-red-light;
+    color: $btn-color-red;
+    font-weight:bold;
+    font-size: $medium-font;  
+    padding: 8px 15px;
+    box-shadow:none;
+}
+
 
 // Fixed Button
 .bottom-stick {
@@ -262,6 +281,10 @@ a {
 }
 
 //Common Margin & padding classes 
+.pad-lr-0{
+    padding-left:0px;
+    padding-right:0px;
+}
 .pad-15 {
     padding: 15px !important;
 }
@@ -330,7 +353,13 @@ header-nav {
     }
 }
 
-// 
+// Aligment Classes
+.align-right{
+    text-align:right;
+}
+.align-left{
+  text-align:left;
+}
 .align-center {
     text-align: center;
 }
@@ -1090,4 +1119,16 @@ header-nav {
 
 .icon-share-box-line:before {
     content: "\e9b8";
+}
+.icon-wishlist1-inactive:before{
+    content: "\e9c8";
+    color:#30303066;
+}
+.icon-wishlist1-black:before{
+    content: "\e9c8";
+    color:#303030;
+}
+.icon-wishlist1-active:before{
+    content: "\e9c8";
+    color:#D9232D;
 }

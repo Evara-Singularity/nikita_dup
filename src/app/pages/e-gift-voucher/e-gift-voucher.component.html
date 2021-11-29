@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-md-6 form-pd-field">
                         <label>Full Name*</label>
-                        <input type="text" (keypress)="checkForspeciaChars($event)" formControlName="name"
+                        <input type="text" (keypress)="checkForspecialChars($event)" formControlName="name"
                             placeholder="Enter full name">
                         <div *ngIf="name.touched && name.hasError('required')"
                             class="f-size-12 text-red pad-t-5 pad-l-5">Kindly enter your name

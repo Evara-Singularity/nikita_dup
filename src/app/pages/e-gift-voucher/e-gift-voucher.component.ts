@@ -165,7 +165,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     get userId() { return this.rfqEnquiryCustomer.get("userId") }
 
     //validations
-    checkForspeciaChars(event)
+    checkForspecialChars(event)
     {
         var key;
         key = event.charCode;

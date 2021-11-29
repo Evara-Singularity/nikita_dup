@@ -2233,6 +2233,8 @@ export class ProductComponent implements OnInit, AfterViewInit
                     delete schema['offers']['availability'];
                 } else if (this.priceQuantityCountry['quantityAvailable'] == 0) {
                     delete schema['offers']['availability'];
+                } if (this.rawReviewsData?.summaryData?.final_average_rating === 0 || null || ''){
+                    delete schema['aggregateRating'];
                 }
 
                 s.text = JSON.stringify(schema);

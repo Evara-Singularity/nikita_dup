@@ -12,7 +12,7 @@ import { DataService } from '@app/utils/services/data.service';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
-import { LocalStorageService } from 'ngx-webstorage';
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import crypto from 'crypto-browserify';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SpeedTestService } from 'ng-speed-test';
@@ -45,6 +45,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
     private speedTestService: SpeedTestService,
+    private _sessionStorageService: SessionStorageService
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;;
@@ -75,7 +76,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
           }, retryDelay: 1500
         }).subscribe(
           (speed) => {
-            console.log('speedTestService ngAfterViewInit', speed);
+            const absoluteSpeed = isNaN(speed)? 'INVALID': speed.toFixed(0);
+            this._sessionStorageService.store('CLIENT_NETWORK_SPEED_SCORE', absoluteSpeed);
             this._commonService.setNetworkSpeedState(speed);
           }
         )

@@ -35,7 +35,6 @@ export class UTRConfirmationComponent implements OnInit
 
     submitUTRForm()
     {
-        console.log(this.utrForm.value);
         if (this.utrForm.invalid) { this.utrForm.markAllAsTouched(); return; }
         this._globarLodaer.setLoaderState(true);
         this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}`, { body: this.utrForm.value }).subscribe(

@@ -2251,7 +2251,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // ANALYTIC CODE SECTION STARTS
-    /** 
+    /** p
      * Please place all functional code above this section
      */
     callAnalyticForVisit()

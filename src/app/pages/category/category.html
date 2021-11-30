@@ -32,16 +32,17 @@
 </div>
 
 <!-- This is sub category section -->
-<div [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">
+<div *ngIf="API_RESPONSE.category[0]?.children?.length > 0"
+    [class.visibility]="_commonService.selectedFilterData.page > 1" class="sub-cate-container">
     <div class="container pt-10">
         <p class="sub_category_heading" *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
             {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
             <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
                 Categories)</span>
         </p>
-        <ng-container #subCategory></ng-container>
     </div>
 </div>
+<ng-container #subCategory></ng-container>
 
 <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
     <!-- This is accordian section -->

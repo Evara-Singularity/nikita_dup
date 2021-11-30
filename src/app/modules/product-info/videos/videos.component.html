@@ -1,0 +1,9 @@
+<div class="vid-container">
+    <h2 class="heading-3">Videos</h2>
+    <div class="prod-desc-video">
+        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(videos[0]['link'])" type="image"
+            src="{{imagePathAsset}}assets/img/youtube_icon.svg" border="border of the image" alt="text">
+        <img [src]="videos[0]['link'] | ytthumbnail:'hqdefault'">
+    </div>
+    <h3 class="heading-3">{{name}}</h3>
+</div>

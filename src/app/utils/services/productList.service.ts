@@ -9,6 +9,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { CartService } from './cart.service';
 import { DataService } from './data.service';
 import { GlobalAnalyticsService } from './global-analytics.service';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,22 @@ export class ProductListService {
   }
 
   showMidPlpFilterLoader: boolean = true;
+  excludeAttributes: string[] = [];
+
+  filterBuckets(buckets: any[])
+    {
+        if (this.excludeAttributes.length > 0) {
+            return buckets.filter((bucket) => this.excludeAttributes.indexOf(bucket.name) == -1);
+        }
+        return buckets;
+    }
   
   createAndProvideDataToSharedListingComponent(rawSearchData: SearchResponse, heading, bucketAvailable?: boolean) {
 
     if (bucketAvailable) {
+      if (this.excludeAttributes.length > 0) {
+        rawSearchData.buckets = this.filterBuckets(rawSearchData.buckets);
+      }
       this.productListingData['filterData'] =  JSON.parse(JSON.stringify(rawSearchData.buckets));
       this.showMidPlpFilterLoader = false;
       return;
@@ -64,26 +77,32 @@ export class ProductListService {
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {
-    this.showMidPlpFilterLoader = true;
-    
-    let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
-    
-    if (categoryId) {
-      filter_url += "?category=" + categoryId;
-    }
 
-    const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
-    
-    const params = {
-      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(fragment),
-      queryParams: this._activatedRoute.snapshot.queryParams,
-      pageName: pageName
-    };
-    const actualParams = this._commonService.formatParams(params);
-    if (pageName === 'BRAND') {
-      actualParams['brand'] = brandName;
+    if (this._commonService.isBrowser) {
+      this.showMidPlpFilterLoader = true;
+
+      let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
+
+      if (categoryId) {
+        filter_url += "?category=" + categoryId;
+      }
+
+      const fragment = (Object.keys(this.extractFragmentFromUrl(window.location.hash))[0]).split('#').join('');
+
+      const params = {
+        filter: this._commonService.updateSelectedFilterDataFilterFromFragment(fragment),
+        queryParams: this._activatedRoute.snapshot.queryParams,
+        pageName: pageName
+      };
+      const actualParams = this._commonService.formatParams(params);
+      if (pageName === 'BRAND') {
+        actualParams['brand'] = brandName;
+      }
+      return this._dataService.callRestful("GET", filter_url, { params: actualParams });
     }
-    return this._dataService.callRestful("GET",  filter_url, { params: actualParams });
+    else {
+      return (new Observable());
+    }
   }
 
   getImageFromSearchProductResponse(originImageLink, variantFromName, variantGetName) {
@@ -301,18 +320,20 @@ export class ProductListService {
       'prodURL': ''
     };
     let criteoItem = [];
-    const cartSession = this._cartService.getCartSession() || {};
-    if (cartSession && cartSession.hasOwnProperty("itemsList")) {
-      for (let p = 0; p < cartSession["itemsList"].length; p++) {
-        criteoItem.push({ name: cartSession["itemsList"][p]['productName'], 'brandId': cartSession["itemsList"][p]['brandId'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
-        eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
-        eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
-        eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
-        eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
-        eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
-        eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+    setTimeout(() => {
+      const cartSession = this._cartService.getCartSession() || {};
+      if (cartSession && cartSession.hasOwnProperty("itemsList")) {
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+          criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+          eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+          eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+          eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+          eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+          eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+          eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+        }
       }
-    }
+    }, 0)
     let user = this._localStorageService.retrieve('user');
 
     /*Start Criteo DataLayer Tags */
@@ -398,6 +419,7 @@ export class ProductListService {
       ratingCount: product.ratingCount || 0,
       reviewCount: product.reviewCount || 0,
       internalProduct: true,
+      outOfStock: product.outOfStock
     } as ProductsEntity;
   }
 

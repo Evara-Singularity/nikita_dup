@@ -29,7 +29,7 @@ export class BrandComponent {
     public productListingData: ProductListingDataEntity;
     public cmsData: any[] = [];
     public API_RESPONSE: any;
-    public popularLinks;
+    public popularLinks = [];
     public brandFooterData;
 
     constructor(
@@ -69,7 +69,7 @@ export class BrandComponent {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
 
-            this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
+            this._productListService.excludeAttributes = [];
 
             // Total count
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE.brand[1][0].productSearchResult.totalCount;
@@ -83,8 +83,15 @@ export class BrandComponent {
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
                     
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                    if (!this._activatedRoute.snapshot.params.id) {
+                    if (!this._activatedRoute.snapshot.params.category) {
                         this.setPopularCategories(category.terms);
+                    }
+
+
+                    if (res.hasOwnProperty('categoryLinkList')) {
+                        this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
+                        // genrate popular links data
+                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
                     }
                     // genrate data for footer
                     this.genrateAndUpdateBrandFooterData();
@@ -123,18 +130,18 @@ export class BrandComponent {
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
-        if (this.API_RESPONSE.brand[1][0]["title"]) {
-            this.title.setTitle(this.API_RESPONSE.brand[1][0]["title"]);
-            this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0]["title"] });
+        if (this.API_RESPONSE.brand[0].seoDetails.title) {
+            this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
+            this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
         } else {
             let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
         }
 
-        if (this.API_RESPONSE.brand[1][0]["metaDesciption"]) {
-            this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
-            this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[1][0]["metaDesciption"] });
+        if (this.API_RESPONSE.brand[0].seoDetails.metaDescription) {
+            this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
+            this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
         } else {
             let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
             this.meta.addTag({ "name": "description", "content": metaDescription });
@@ -144,7 +151,7 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";
@@ -367,7 +374,7 @@ export class BrandComponent {
             /*End Adobe Analytics Tags */
         }
         /* Setting of product schema for products */
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             const products = this.API_RESPONSE.brand[1][0].productSearchResult.products || [];
             if (products && products.length) {
                 const categoryName = qp && qp['categoryName'];
@@ -377,7 +384,7 @@ export class BrandComponent {
     }
 
     createProductsSchema(productArray, categoryName) {
-        if (this._commonService.isServer) {
+        if (!this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
                 productArray.forEach((product, index) => {
@@ -476,7 +483,7 @@ export class BrandComponent {
             brand: this.API_RESPONSE.brand[0].brandName,
             productCategoryNames: this.popularLinks,
             categoryLinkLists: this.API_RESPONSE.brand[1][0].categoryLinkList,
-            categoryNames: this.popularLinks.toString(),
+            categoryNames: JSON.parse(JSON.stringify(this.popularLinks)).toString(),
             todayDate: Date.now(),
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)
         };

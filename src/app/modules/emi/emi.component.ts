@@ -614,6 +614,9 @@ export class EmiComponent {
             this.onBankChange(this.selectedBank, this._objectToArray.transform(data.value, "associative"));
             this.selectedMonth = null;
             this.selectedYear = null;
+            const emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
+            const tenure = parseInt(emiResponseData[0].tenure.replace('months', ''));
+            this.selectEmI(tenure, emiResponseData[0].emiBankInterest, emiResponseData[0].transactionAmount)
         }
         this.bankSelectPopUp = false;
     }

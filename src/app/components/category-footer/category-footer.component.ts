@@ -42,7 +42,7 @@ export class CategoryFooterComponent{
         return bNames;
     }
     navigateTo(url) {
-        this._router.navigate(['\\' + url]);
+        this._router.navigate(['/' + (url).trim()]);
     }
 
     getFeaturedProducts(products: Array<{}>) {

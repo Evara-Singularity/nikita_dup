@@ -282,7 +282,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         // normal sign up flow
                         let routeData = this.commonService.getRouteData();
-                        console.log('shared otp without checkout', routeData);
                         if (routeData['previousUrl'] && routeData['previousUrl'] == '/') {
                             this.redirectCheck('/');
                         } else if (routeData['previousUrl'] && routeData['previousUrl'] != '' && routeData['previousUrl'] != '/login') {
@@ -290,7 +289,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
                         } else if (routeData['currentUrl'] && routeData['currentUrl'] != '' && routeData['currentUrl'] != '/login') {
                             this.redirectCheck(routeData['currentUrl']);
                         } else {
-                            this.redirectCheck('/');
+                            this.redirectCheck(this.redirectUrl || '/');
                         }
                         this.localAuthService.login$.next(this.redirectUrl);
                         this.toastService.show({ type: 'success', text: 'Sign in successful' });

@@ -12,4 +12,5 @@ import { SpecialDealsComponent } from './specialDeals.component';
     SpecialDealsRoutingModule
   ]
 })
-export class SpecialDealsModule { }
+export class SpecialDealsModule {
+}

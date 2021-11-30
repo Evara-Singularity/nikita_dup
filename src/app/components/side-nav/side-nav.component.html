@@ -16,61 +16,61 @@
         </div>
         <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>
-                <a [routerLink]="['/']">
+                <a (click)="genericButtonClick('/')" [routerLink]="['/']">
                     <i class="icon-home"></i>
                     <span class="text">Home </span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/all-categories']">
+                <a (click)="genericButtonClick('/all-categories')" [routerLink]="['/all-categories']">
                     <i class="icon-all-categories"></i>
                     <span class="text">All Categories</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/brand-store']">
+                <a (click)="genericButtonClick('/brand-store')" [routerLink]="['/brand-store']">
                     <i class="icon-brand_store"></i>
                     <span class="text">Explore All Brands</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/dashboard/order']">
+                <a (click)="genericButtonClick('/dashboard/order')" [routerLink]="['/dashboard/order']">
                     <i class="icon-my-orders"></i>
                     <span class="text">My Orders</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/dashboard/rfq']">
+                <a (click)="genericButtonClick('/dashboard/rfq')" [routerLink]="['/dashboard/rfq']">
                     <i class="icon-my-rfq"></i>
                     <span class="text">My RFQs</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/dashboard/business-detail']">
+                <a  (click)="genericButtonClick('/dashboard/business-detail')" [routerLink]="['/dashboard/business-detail']">
                     <i class="icon-business-details"></i>
                     <span class="text">My Business Details</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/dashboard/address']">
+                <a  (click)="genericButtonClick('/dashboard/address')" [routerLink]="['/dashboard/address']">
                     <i class="icon-location"></i>
                     <span class="text">My Address</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/dashboard/purchase-list']">
+                <a  (click)="genericButtonClick('/dashboard/purchase-list')" [routerLink]="['/dashboard/purchase-list']">
                     <i class="icon-purchase-list"></i>
                     <span class="text">WishList</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/faq']">
+                <a  (click)="genericButtonClick('/faq')" [routerLink]="['/faq']">
                     <i class="icon-faq-side-navigation"></i>
                     <span class="text">FAQ</span>
                 </a>
             </li>
             <li>
-                <a [routerLink]="['/contact']">
+                <a  (click)="genericButtonClick('/contact')" [routerLink]="['/contact']">
                     <i class="icon-call"></i>
                     <span class="text">Contact Us</span>
                 </a>

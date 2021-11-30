@@ -24,6 +24,7 @@ export class SimilarProductsComponent implements OnInit
     @Input('outOfStock') outOfStock = false;
     @Input('productName') productName;
     @Input('categoryCode') categoryCode;
+    @Input('analytics') analytics = null;
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
         enableAddToCart: true,

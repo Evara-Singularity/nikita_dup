@@ -42,7 +42,7 @@ export class ProductService {
     }
 
     getSimilarProducts(productName, categoryId) {
-        const URL = this.basePath + ENDPOINTS.SIMILAR_PRODUCTS +'?str=' + productName + '&category=' + categoryId;
+        const URL = this.basePath + ENDPOINTS.SIMILAR_PRODUCTS +'?str=' + encodeURIComponent(productName) + '&category=' + encodeURIComponent(categoryId);
         return this._dataService.callRestful('GET', URL)
             .pipe(
                 catchError((res: HttpErrorResponse) => {

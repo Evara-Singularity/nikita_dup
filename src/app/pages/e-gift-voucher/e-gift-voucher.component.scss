@@ -1,5 +1,9 @@
 .e-gifting {
     padding-bottom: 85px;
+    .multiple-form-field{
+        display:flex;
+        width:100%;
+    }
     .text-red {
         color: #d9232d;
     }
@@ -386,3 +390,4 @@ select::-ms-expand {
 datalist {
     display: none;
 }
+

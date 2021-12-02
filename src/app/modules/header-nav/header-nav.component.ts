@@ -281,7 +281,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         {
             this.createHeaderData(this.route);
             if (val instanceof NavigationEnd) {
-                if (val['url'] === '/') {
+                if (val['url'] === '/' || val['url'] === '/?back=1') {
                     this.isHomePage = true;
                 } else {
                     this.isHomePage = false;
@@ -306,6 +306,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.cartService.cart.subscribe((data) => {
+            console.log(data);
             if (typeof data === 'number') {
                 this.noOfCart = data;
             } else {

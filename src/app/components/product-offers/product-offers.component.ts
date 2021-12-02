@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { ProductService } from '../../utils/services/product.service';
 
 @Component({
@@ -9,9 +10,8 @@ import { ProductService } from '../../utils/services/product.service';
 })
 export class ProductOffersComponent implements OnInit
 {
-
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     allofferData: any = null;
-    imagePathAsset: any = null;
     @Output() viewPopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Output() emaiComparePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Input() price = 0;

@@ -5,6 +5,7 @@ import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ArrayFilterPipe } from '@app/utils/pipes/k-array-filter.pipe';
@@ -12,6 +13,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { CheckoutService } from '@app/utils/services/checkout.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ClientUtility } from '../../utils/client.utility';
@@ -50,7 +52,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     isBrowser: boolean
     //conditions vars
     rawProductData: any = null;
-    rawProductFbtData: any = null;
     rawProductCountData: any = null;
     rawProductCountMessage = null;
     rawCartNotificationMessage = null;
@@ -280,10 +281,11 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.setQuestionAnswerSchema();
     }
 
-    ngAfterViewInit()
-    {
-        this.getPurchaseList();
+    ngAfterViewInit() {
         this.resetLazyComponents();
+        this.getPurchaseList();
+        this.productFbtData();
+
     }
 
     createSiemaOption()
@@ -332,26 +334,16 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.route.data.subscribe((rawData) =>
         {
             if (!rawData['product']['error']) {
-
                 if (rawData['product'][0]['productBO'] && Object.values(rawData['product'][0]['productBO']['productPartDetails'])[0]['images'] !== null) {
-                    const rawReviews = Object.assign({}, rawData['product'][1]['data']);
-                    const rawProductFbtData = Object.assign({}, rawData['product'][4]);
-                    const rawProductCountData = Object.assign({}, rawData['product'][5]);
-                    this.rawReviewsData = Object.assign({}, rawReviews);
-                    this.rawProductFbtData = Object.assign({}, rawProductFbtData);
-                    this.rawProductCountData = Object.assign({}, rawProductCountData);
-                    rawReviews['reviewList'] = (rawReviews['reviewList'] as []);
-
                     this.processProductData({
                         productBO: rawData['product'][0]['productBO'],
                         refreshCrousel: true,
                         subGroupMsnId: null,
                     }, rawData['product'][0]);
-
-                    this.setReviewsRatingData(rawReviews);
-                    this.setProductaBreadcrum(rawData['product'][2]);
-                    this.setQuestionsAnswerData(rawData['product'][3]);
-                    this.duplicateOrderCheck(rawData);
+                    // Load secondary APIs data from resolver only when product data is received
+                    if(!rawData['productSecondaryApisData']['error']){
+                        this.getSecondaryApiData(rawData['productSecondaryApisData']); 
+                    }
                 } else {
                     this.showLoader = false;
                     this.globalLoader.setLoaderState(false);
@@ -373,6 +365,30 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.showLoader = false;
             this.globalLoader.setLoaderState(false);
         });
+    }
+
+    getSecondaryApiData(secondaryRawData){
+
+        if(secondaryRawData[0]['data']){
+            const rawReviews = Object.assign({}, secondaryRawData[0]['data']);
+            rawReviews['reviewList'] = (rawReviews['reviewList'] as []);
+            this.setReviewsRatingData(rawReviews);
+            this.rawReviewsData = Object.assign({}, rawReviews);
+        }
+
+        if(secondaryRawData[1] && Array.isArray(secondaryRawData[1])){
+            this.setProductaBreadcrum(secondaryRawData[1]);
+        }
+
+        if(secondaryRawData[2]['data']){
+            this.setQuestionsAnswerData(secondaryRawData[2]);
+        }
+
+        
+        // const rawProductCountData = Object.assign({}, secondaryRawData[4]);
+        // this.rawProductCountData = Object.assign({}, rawProductCountData);
+        
+        // this.duplicateOrderCheck(rawData);
     }
 
     private duplicateOrderCheck(rawData)
@@ -416,8 +432,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    setQuestionsAnswerData(data)
-    {
+    setQuestionsAnswerData(data){
         this.questionAnswerList = data;
     }
 
@@ -583,7 +598,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.setProductCommonType(this.rawProductData['filterAttributesList']);
         // this.setAttributesExtra(this.rawProductData['productPartDetails']);
         // this.setSimilarProducts(this.productName, this.productCategoryDetails['categoryCode']);
-        this.fetchFBTProducts(rawData);
+
         this.updateBulkPriceDiscount();
         this.showLoader = false;
         this.remoteApiCallRecentlyBought();
@@ -950,32 +965,22 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // Frequently brought togther functions
-    fetchFBTProducts(rootProduct)
+    fetchFBTProducts(rootProduct, rawProductFbtData)
     {
         if (this.productOutOfStock) {
             this.productUtil.resetFBTSource();
         } else {
             this.fbtFlag = false;
-            let rootvalidation = this.productUtil.validateProduct(rootProduct['productBO']);
-            if (rootProduct['status'] && rootvalidation) {
-                let productId = rootProduct['productBO']['partNumber'];
-                this.processFBTResponse(rootProduct, this.rawProductFbtData);
-                // this.productService.getFBTProducts(productId).subscribe((response) => {
-                //   this.showLoader = false;
-
-                // }, error => {
-                //   this.showLoader = false;
-                //   this.fbtFlag = false;
-                // });
+            let rootvalidation = this.productUtil.validateProduct(rootProduct);
+            if (rootvalidation) {
+                this.processFBTResponse(rootProduct, rawProductFbtData);
             }
         }
     }
 
     processFBTResponse(productResponse, fbtResponse)
     {
-        //console.log('processFBTResponse', 'called');
         if (fbtResponse['status'] && fbtResponse['data']) {
-            //console.log('processFBTResponse', 'in');
             let validFbts: any[] = this.productUtil.validateFBTProducts(fbtResponse['data']);
             if (validFbts.length > 0) {
                 this.productUtil.changeFBTSource(productResponse, validFbts);
@@ -984,7 +989,6 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.fbtFlag = false;
             }
         } else {
-            //console.log('processFBTResponse', 'else');
             this.productUtil.resetFBTSource();
         }
     }
@@ -2891,6 +2895,12 @@ export class ProductComponent implements OnInit, AfterViewInit
         const order = this.orderTracking;
         analytics = { page, custData, order };
         return analytics;
+    }
+
+    productFbtData() {
+        this.productService.getFBTProducts(this.defaultPartNumber).subscribe(rawProductFbtData => {
+            this.fetchFBTProducts(this.rawProductData, Object.assign({}, rawProductFbtData));
+        });
     }
 
     navigateLink(link) { this.router.navigate([link]); }

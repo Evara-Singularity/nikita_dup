@@ -16,7 +16,7 @@
             </div>
             <div (click)="handleEMIStepsPopup()" class="emi-top-details-inner how-it-work">
                 <div class="emi-top-details-inner-left">
-                    <img src="assets/img/how-it-w.png">
+                    <img src="{{imagePathAsset}}assets/img/how-it-w.png">
                 </div>
                 
                 <div class="emi-top-details-inner-mid">
@@ -25,7 +25,7 @@
                      
                 </div>
                 <div class="emi-top-details-inner-last">
-                    <img src="assets/img/arrow-right-blue.png">
+                    <img src="{{imagePathAsset}}assets/img/arrow-right-blue.png">
                 </div>
                 
             </div>
@@ -46,7 +46,7 @@
         <!--cards tab code end-->
             <div *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
                 <div (click)="selectedBankChange(item)" class="payment-accordion_header">
-                    <!-- <img class="ico-accord-left" src="assets/img/emi-bajaj.png"/> -->
+                    <!-- <img class="ico-accord-left" src="{{imagePathAsset}}assets/img/emi-bajaj.png"/> -->
                     <span>{{item['bankname']}}</span>
                     <i  class="icon-down"></i>
                 </div>

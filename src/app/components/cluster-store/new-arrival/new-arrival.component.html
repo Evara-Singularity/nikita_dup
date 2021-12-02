@@ -6,7 +6,7 @@
 <ul class="view-products grid border-top">
     <ng-container *ngFor="let product of data['data'] | slice:0:4; let i = index">
         <li>
-            <a [routerLink]="['/'+product.productlink]" class="clearfix">
+            <a [routerLink]="['/'+product?.productlink]" class="clearfix">
                 <div class="product-img">
                     <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
                 </div>
@@ -43,7 +43,7 @@
         <ul class="view-products grid border-top">
             <ng-container *ngFor="let product of data['data']; let i = index">
                 <li>
-                    <a [routerLink]="['/'+product.productlink]" class="clearfix">
+                    <a [routerLink]="['/'+product?.productlink]" class="clearfix">
                         <div class="product-img">
                             <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
                         </div>

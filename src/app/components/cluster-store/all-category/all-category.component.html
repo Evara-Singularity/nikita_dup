@@ -2,7 +2,7 @@
   <h3 class="l0_heading">{{data.title}}({{data['data'].length}})</h3>
   <ul class="clearfix">
       <li *ngFor="let item of data['data'] | slice:0:5;let i=index">
-          <div [routerLink]="['/'+item.category_url]" class="inner_category">
+          <div [routerLink]="['/'+item?.category_url]" class="inner_category">
               <div class="allcategoryImage">
                 <img src="{{imagePath + item.category_image}}" alt="{{item['CategoryName']}}">
                   <!-- [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}} -->
@@ -13,7 +13,7 @@
       <li *ngIf ="data['data'].length > 5" (click)="openPopup = true;" class="view_all_category">
           <div class="inner_category">
               <div class="viewall_category">
-                  <span>View {{data.title}}</span>
+                  <span>VIEW {{data.title}}</span>
               </div>
           </div>
       </li>
@@ -23,7 +23,7 @@
   <div class="content-popup allCategoryBlock grey_bg" content>
       <ul class="clearfix">
           <li *ngFor="let prod of data['data'] ;let i=index">
-              <div [routerLink]="['/'+prod.category_url]" class="inner_category">
+              <div [routerLink]="['/'+prod?.category_url]" class="inner_category">
                   <div class="allcategoryImage">
                     <img src="{{imagePath + prod.category_image}}" alt="{{prod['CategoryName']}}">
                   </div>

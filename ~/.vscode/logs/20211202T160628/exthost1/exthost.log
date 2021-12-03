@@ -1,0 +1,11 @@
+[2021-12-02 16:06:31.164] [exthost] [info] Extension host with pid 26400 started
+[2021-12-02 16:06:31.342] [exthost] [info] ExtensionService#_doActivateExtension vscode.microsoft-authentication, startup: false, activationEvent: 'onAuthenticationRequest:microsoft'
+[2021-12-02 16:06:31.386] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: true, activationEvent: '*'
+[2021-12-02 16:06:31.389] [exthost] [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*', root cause: vscode.github
+[2021-12-02 16:06:31.621] [exthost] [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+[2021-12-02 16:06:31.659] [exthost] [info] Eager extensions activated
+[2021-12-02 16:06:31.670] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+[2021-12-02 16:06:31.755] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+[2021-12-02 16:06:50.586] [exthost] [warning] [Decorations] CAPPING events from decorations provider vscode.git 298
+[2021-12-02 16:06:51.640] [exthost] [info] extension host terminating: renderer closed the socket
+[2021-12-02 16:06:52.647] [exthost] [info] Extension host with pid 26400 exiting with code 0

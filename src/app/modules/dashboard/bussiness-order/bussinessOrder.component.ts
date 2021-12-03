@@ -88,12 +88,14 @@ export class BussinessOrderComponent {
     let page = this._activatedRoute.snapshot.queryParams.page || 0;
     this.openOrder = this._activatedRoute.snapshot.queryParams.order;
     this.currentRoute = this._commonService.getCurrentRoute(this._router.url);
+    console.log(this.user);
 
     if (!this._activatedRoute.snapshot.queryParams.hasOwnProperty("token")) {
       this.initializePageParams(page);
     } else {
       this._commonService.bharatcraftUserSessionArrived.subscribe((res) => {
-        if (res && this.user.authenticated === "true") {
+        const user = this._localAuthService.getUserSession();
+        if (res && user.authenticated === "true") {
           this.initializePageParams(page);
         } else {
           this._router.navigateByUrl("/login");

@@ -173,8 +173,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
             user_type: obj["userType"],
           });
           this._localStorageService.store("user", obj);
-          this.setUserSession();
           this.handleRedirectionOfPages(queryParams);
+          this.setUserSession();
         }
       });
   }

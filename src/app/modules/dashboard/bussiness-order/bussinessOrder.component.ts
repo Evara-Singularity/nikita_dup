@@ -1,15 +1,20 @@
-import { ViewEncapsulation } from '@angular/core';
-import { Component } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
+import { ViewEncapsulation } from "@angular/core";
+import { Component } from "@angular/core";
+import { Meta } from "@angular/platform-browser";
 import { BusinessOrderService } from "./businessOrder.service";
-import { Router, ActivatedRoute, NavigationEnd, NavigationExtras } from '@angular/router';
-import { map, filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { LocalStorageService } from 'ngx-webstorage';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import CONSTANTS from '@app/config/constants';
-import { CommonService } from '@app/utils/services/common.service';
-import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import {
+  Router,
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationExtras,
+} from "@angular/router";
+import { map, filter } from "rxjs/operators";
+import { Subscription } from "rxjs";
+import { LocalStorageService } from "ngx-webstorage";
+import { LocalAuthService } from "@app/utils/services/auth.service";
+import CONSTANTS from "@app/config/constants";
+import { CommonService } from "@app/utils/services/common.service";
+import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 
 declare var digitalData: {};
 declare let _satellite;
@@ -23,7 +28,7 @@ export class BussinessOrderComponent {
   IsHidden: boolean = true;
   orderArray: Array<any> = [];
   user: { authenticated: string };
-  i:any;
+  i: any;
   orders: Array<{}>;
   orderDetail: any;
   cancelReasons: Array<{}>;
@@ -71,9 +76,9 @@ export class BussinessOrderComponent {
     public _activatedRoute: ActivatedRoute,
     private _commonService: CommonService,
     public localStorageService: LocalStorageService,
-    private loaderService:GlobalLoaderService) {
-  
-      this.isShowLoader = false;
+    private loaderService: GlobalLoaderService
+  ) {
+    this.isShowLoader = false;
   }
 
   ngOnInit() {
@@ -84,14 +89,17 @@ export class BussinessOrderComponent {
     this.openOrder = this._activatedRoute.snapshot.queryParams.order;
     this.currentRoute = this._commonService.getCurrentRoute(this._router.url);
 
-    if (!this._activatedRoute.snapshot.queryParams.hasOwnProperty('token')) {
+    if (!this._activatedRoute.snapshot.queryParams.hasOwnProperty("token")) {
       this.initializePageParams(page);
     } else {
-      setTimeout(() => {
-        this.initializePageParams(page);
-      }, 1000);
+      this._commonService.bharatcraftUserSessionArrived.subscribe((res) => {
+        if (res && this.user.authenticated === "true") {
+          this.initializePageParams(page);
+        } else {
+          this._router.navigateByUrl("/login");
+        }
+      });
     }
-
 
     this.sub = this._router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -138,7 +146,7 @@ export class BussinessOrderComponent {
     digitalData["page"] = pageData;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    if(_satellite){
+    if (_satellite) {
       _satellite.track("genericPageLoad");
     }
   }
@@ -161,42 +169,40 @@ export class BussinessOrderComponent {
   getAllOrders(page) {
     this.currentPage = page + 1;
     this.isShowLoader = true;
-    this._businessOrderService
-      .getOrderbyUserid(page)
-      .subscribe((res) => {
-        this.isShowLoader = false;
-        if (res["status"] == true) {
-          if (res["numberOfOrder"] > this.pageSize)
-            this.pages = res["numberOfOrder"] / this.pageSize + 1;
-          if (this.getPagination) {
-            this.getPagination = false;
-            for (let i = 0; i < res["numberOfOrder"]; i++) {
-              this.pagesArray.push(i);
-            }
-          }
-          this.orders = res["data"];
-          console.log(JSON.stringify(this.orders, null, 2));
-          this.orders.forEach((element) => {
-            element["isOrderVisible"] = false;
-          });
-        } else if (res["statusCode"] == 500 || res["status"] == false) {
-          this.orders = [];
-        }
-        if (this.orders[0]) {
-          if (!this.openOrder) {
-            this.openOrder = this.orders[0]["orderId"];
-          }
-          const result =
-            this.orders.findIndex((x) => x["orderId"] == this.openOrder) || 0;
-          if (result == -1) {
-            this.showOrder(this.orders[0]["orderId"], 0);
-          } else {
-            this.showOrder(this.orders[result]["orderId"], result);
+    this._businessOrderService.getOrderbyUserid(page).subscribe((res) => {
+      this.isShowLoader = false;
+      if (res["status"] == true) {
+        if (res["numberOfOrder"] > this.pageSize)
+          this.pages = res["numberOfOrder"] / this.pageSize + 1;
+        if (this.getPagination) {
+          this.getPagination = false;
+          for (let i = 0; i < res["numberOfOrder"]; i++) {
+            this.pagesArray.push(i);
           }
         }
-      });
+        this.orders = res["data"];
+        console.log(JSON.stringify(this.orders, null, 2));
+        this.orders.forEach((element) => {
+          element["isOrderVisible"] = false;
+        });
+      } else if (res["statusCode"] == 500 || res["status"] == false) {
+        this.orders = [];
+      }
+      if (this.orders[0]) {
+        if (!this.openOrder) {
+          this.openOrder = this.orders[0]["orderId"];
+        }
+        const result =
+          this.orders.findIndex((x) => x["orderId"] == this.openOrder) || 0;
+        if (result == -1) {
+          this.showOrder(this.orders[0]["orderId"], 0);
+        } else {
+          this.showOrder(this.orders[result]["orderId"], result);
+        }
+      }
+    });
   }
-  
+
   clearPosParam() {
     this._router.navigate([this.currentRoute]);
   }
@@ -356,7 +362,7 @@ export class BussinessOrderComponent {
     digitalData["custData"] = custData;
     digitalData["order"] = order;
     console.log(digitalData);
-    if(_satellite){
+    if (_satellite) {
       _satellite.track("genericClick");
     }
     e.stopPropagation();

@@ -172,7 +172,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
             email: obj["email"],
             user_type: obj["userType"],
           });
-
           this._localStorageService.store("user", obj);
           this.setUserSession();
           this.handleRedirectionOfPages(queryParams);
@@ -187,16 +186,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
       queryParams.hasOwnProperty("msn")
     ) {
       this.redirectToProductPage(queryParams["msn"]);
-    } else if (
-      window.location.pathname ===
-      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[1]
-    ) {
-      this.router.navigateByUrl(this.router.url);
-    } else if (
-      window.location.pathname ===
-      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[2]
-    ) {
-      this.router.navigateByUrl(this.router.url);
+    } else {
+      this._commonService.bharatcraftUserSessionArrived.next(true);
     }
   }
 

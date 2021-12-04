@@ -104,15 +104,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
       queryParams.hasOwnProperty("token")
     ) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } else if (
-      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(
-        window.location.pathname
-      )
-    ) {
-      const user = this._localStorageService.retrieve("user");
-      if (!user) {
-        this.router.navigateByUrl("/login");
-      }
     } else {
       this.setUserSession();
     }

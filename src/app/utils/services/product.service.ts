@@ -154,6 +154,18 @@ export class ProductService {
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SPONSERED_PRODUCTS, { params: params });
     }
 
+    getProductStatusCount(productMsnId){
+        const PRODUCT_STATUS_COUNT_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_STATUS_COUNT + "?productId=" + productMsnId.toUpperCase();
+        return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL);
+    }
+
+    getUserDuplicateOrder(productMsnId, userId){
+        let DUPLICATE_ORDER_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.DUPLICATE_ORDER + "?productId=" + productMsnId.toUpperCase();
+        DUPLICATE_ORDER_URL += '&userId=' + userId;
+        return this._dataService.callRestful("GET", DUPLICATE_ORDER_URL);
+    }
+
+
 
 
 }

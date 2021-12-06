@@ -282,10 +282,13 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     ngAfterViewInit() {
-        this.resetLazyComponents();
-        this.getPurchaseList();
-        this.productFbtData();
-
+        if (this.commonService.isBrowser) {
+            this.resetLazyComponents();
+            this.getPurchaseList();
+            this.productFbtData();
+            this.productStatusCount();
+            this.checkDuplicateProduct();
+        }
     }
 
     createSiemaOption()
@@ -375,33 +378,24 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.setReviewsRatingData(rawReviews);
             this.rawReviewsData = Object.assign({}, rawReviews);
         }
-
         if(secondaryRawData[1] && Array.isArray(secondaryRawData[1])){
             this.setProductaBreadcrum(secondaryRawData[1]);
         }
-
         if(secondaryRawData[2]['data']){
             this.setQuestionsAnswerData(secondaryRawData[2]);
         }
-
-        
-        // const rawProductCountData = Object.assign({}, secondaryRawData[4]);
-        // this.rawProductCountData = Object.assign({}, rawProductCountData);
-        
-        // this.duplicateOrderCheck(rawData);
     }
 
-    private duplicateOrderCheck(rawData)
-    {
-        if (rawData && rawData['product'][6] && rawData['product'][6]['data'] && rawData['product'][6]['data']['date']) {
+    private duplicateOrderCheck(duplicateRawResponse){
+        if ( duplicateRawResponse && duplicateRawResponse['data'] && duplicateRawResponse['data']['date']) {
             const userSession = this.localStorageService.retrieve('user');
-            if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && rawData['product'][6] && rawData['product'][6].status) {
-                const date1: any = new Date(rawData['product'][6]['data']['date']);
+            if (this.commonService.isBrowser && userSession && userSession.authenticated == "true" && duplicateRawResponse && duplicateRawResponse.status) {
+                const date1: any = new Date(duplicateRawResponse['data']['date']);
                 const date2: any = new Date();
                 const diffTime = Math.abs(date2 - date1);
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 if (diffDays < 31) {
-                    this.loadGlobalToastMessage(rawData['product'][6], rawData['product'][0]['productBO']);
+                    this.loadGlobalToastMessage(duplicateRawResponse, this.rawProductData);
                 }
             }
         }
@@ -601,7 +595,6 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         this.updateBulkPriceDiscount();
         this.showLoader = false;
-        this.remoteApiCallRecentlyBought();
 
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
@@ -2901,6 +2894,22 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productService.getFBTProducts(this.defaultPartNumber).subscribe(rawProductFbtData => {
             this.fetchFBTProducts(this.rawProductData, Object.assign({}, rawProductFbtData));
         });
+    }
+
+    productStatusCount(){
+        this.productService.getProductStatusCount(this.defaultPartNumber).subscribe(productStatusCountResult => {
+            this.rawProductCountData = Object.assign({}, productStatusCountResult);
+            this.remoteApiCallRecentlyBought();
+        });
+    }
+
+    checkDuplicateProduct() {
+        const userSession = this.localStorageService.retrieve('user');
+        if (userSession && userSession.authenticated == "true") {
+          this.productService.getUserDuplicateOrder(this.defaultPartNumber,userSession['userId']).subscribe(duplicateProductResult => {
+            this.duplicateOrderCheck(duplicateProductResult);
+          });
+        }
     }
 
     navigateLink(link) { this.router.navigate([link]); }

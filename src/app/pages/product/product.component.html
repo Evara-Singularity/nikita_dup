@@ -714,3 +714,264 @@
 
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
+
+<!-- Scrolled pdp container -->
+<div class="pdp-section-header">
+    <h3 class="heading-3">
+        Best Matching In-Stock Products
+    </h3>
+</div>
+<div class="pdp-container pdpCard">
+    <span class="blueTag">1</span>
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
+        [ngClass]="[carouselInitialized ? '' : 'before-init']">
+        <ng-container #productCrousel></ng-container>
+        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+            (previous)="onRotatePrevious()">
+            <div class="img-block-pseudo">
+                <div class="inner-block-pseudo">
+                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()" style="transform-origin: 0% 0%;">
+                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
+                            height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
+                            class="loader-image" />
+                    </div>
+                </div>
+                <ul class="pager">
+                    <ng-container
+                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productAllImages.length>1">
+                        <ng-container *ngFor="let item of productAllImages;let i=index">
+                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
+                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
+                            </li>
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
+                                class="pager_icon_dot">
+                                <em class="icon-youtube"></em>
+                            </li>
+                        </ng-container>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="prod-description">
+        <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
+        <div class="pdp-price-qty-block">
+            <div class="price-block" *ngIf="productMrp > 0">
+            <ng-container *ngIf="productMrp > 0">
+                <p class="mrp" *ngIf="productMrp > priceWithoutTax">
+                    <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                    <span
+                        *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
+                         {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                    </span>
+                    <span
+                        *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
+                        {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
+                    </span>
+                </p>
+                <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
+                    {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    <small *ngIf="taxPercentage">
+                        GST @{{taxPercentage}}% Inc. Price: {{productPrice | mathFloor | currency: 'INR' :
+                        'symbol' : '1.0-0'}}
+                    </small>
+                </p>
+                <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
+                    {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    <small *ngIf="taxPercentage">
+                        GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
+                        'symbol' : '1.0-0'}}
+                    </small>
+                </p>
+            </ng-container>
+        </div>
+         <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
+            <div class="quantity-block">
+                <span class="add-qty qty-block"
+                    (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
+                <input id="product_quantity" [value]="productMinimmumQuantity"
+                    (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
+                <span class="remove-qty qty-block"
+                    (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
+            </div>
+            <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <p>Qty Per Pack :
+                    <span>{{priceQuantityCountry['packageUnit']}}</span>
+                </p>
+                <p>Min Order Qty :
+                    <span>{{productMinimmumQuantity}} Pack</span>
+                </p>
+            </div>
+        </div>
+       </div>
+        <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
+            <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
+                <i class="icon-rating-star"></i>
+            </span>
+            <div class="prod-status">
+                <p class="prod-status-right">
+                    <small class="review"  (click)="scrollToId('reviewSection')" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                        Reviews
+                    </small>
+                </p>
+            </div>
+        </div>
+   </div>
+   <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
+    <div class="inline-heading">
+        <h3 class="heading-3">Key Features</h3>
+        <div class="show-all-strip pad-t-0"><span (click)="handleProductInfoPopup('key features', 'show all specifications')" >View All <i class="icon-next"></i></span></div>
+    </div>
+    <ul class="feature-list">
+        <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
+            <p>
+                <span>{{feature}}.</span>
+            </p>
+        </li>
+    </ul>
+  </div>
+  <div class="bottom-bar nonFixed">
+    <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
+        <i class="icon-cart1"></i>
+        <span>ADD TO CART</span>
+    </button>
+    <div class="buy-now f-right f-14">
+        <button class="f-14" (click)="buyNow('/checkout');">BUY NOW</button>
+    </div>
+</div>
+<div class="pdp-card-breadcrumb">
+    <ul>
+        <li>Power Tools</li>
+        <li>Bosch 500W Professional Impact Drill with 5 Pieces Drill Bit Set, GSB 501</li>
+        <li>Power Tools Combo Kits</li>
+    </ul>
+</div>
+</div>
+<div class="pdp-container pdpCard">
+    <span class="blueTag">2</span>
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
+        [ngClass]="[carouselInitialized ? '' : 'before-init']">
+        <ng-container #productCrousel></ng-container>
+        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+            (previous)="onRotatePrevious()">
+            <div class="img-block-pseudo">
+                <div class="inner-block-pseudo">
+                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()" style="transform-origin: 0% 0%;">
+                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
+                            height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
+                            class="loader-image" />
+                    </div>
+                </div>
+                <ul class="pager">
+                    <ng-container
+                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productAllImages.length>1">
+                        <ng-container *ngFor="let item of productAllImages;let i=index">
+                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
+                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
+                            </li>
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
+                                class="pager_icon_dot">
+                                <em class="icon-youtube"></em>
+                            </li>
+                        </ng-container>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="prod-description">
+        <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
+        <div class="pdp-price-qty-block">
+            <div class="price-block" *ngIf="productMrp > 0">
+            <ng-container *ngIf="productMrp > 0">
+                <p class="mrp" *ngIf="productMrp > priceWithoutTax">
+                    <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                    <span
+                        *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
+                         {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                    </span>
+                    <span
+                        *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
+                        {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
+                    </span>
+                </p>
+                <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
+                    {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    <small *ngIf="taxPercentage">
+                        GST @{{taxPercentage}}% Inc. Price: {{productPrice | mathFloor | currency: 'INR' :
+                        'symbol' : '1.0-0'}}
+                    </small>
+                </p>
+                <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
+                    {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    <small *ngIf="taxPercentage">
+                        GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
+                        'symbol' : '1.0-0'}}
+                    </small>
+                </p>
+            </ng-container>
+        </div>
+         <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
+            <div class="quantity-block">
+                <span class="add-qty qty-block"
+                    (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
+                <input id="product_quantity" [value]="productMinimmumQuantity"
+                    (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
+                <span class="remove-qty qty-block"
+                    (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
+            </div>
+            <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <p>Qty Per Pack :
+                    <span>{{priceQuantityCountry['packageUnit']}}</span>
+                </p>
+                <p>Min Order Qty :
+                    <span>{{productMinimmumQuantity}} Pack</span>
+                </p>
+            </div>
+        </div>
+       </div>
+        <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
+            <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
+                <i class="icon-rating-star"></i>
+            </span>
+            <div class="prod-status">
+                <p class="prod-status-right">
+                    <small class="review"  (click)="scrollToId('reviewSection')" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                        Reviews
+                    </small>
+                </p>
+            </div>
+        </div>
+   </div>
+   <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
+    <div class="inline-heading">
+        <h3 class="heading-3">Key Features</h3>
+        <div class="show-all-strip pad-t-0"><span (click)="handleProductInfoPopup('key features', 'show all specifications')" >View All <i class="icon-next"></i></span></div>
+    </div>
+    <ul class="feature-list">
+        <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
+            <p>
+                <span>{{feature}}.</span>
+            </p>
+        </li>
+    </ul>
+  </div>
+  <div class="bottom-bar nonFixed">
+    <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
+        <i class="icon-cart1"></i>
+        <span>ADD TO CART</span>
+    </button>
+    <div class="buy-now f-right f-14">
+        <button class="f-14" (click)="buyNow('/checkout');">BUY NOW</button>
+    </div>
+</div>
+<div class="pdp-card-breadcrumb">
+    <ul>
+        <li>Hire Tools</li>
+        <li>Bosch 500W Professional Impact Drill with 5 Pieces Drill Bit Set, GSB 501</li>
+        <li>Power Tools Combo Kits</li>
+    </ul>
+</div>
+</div>

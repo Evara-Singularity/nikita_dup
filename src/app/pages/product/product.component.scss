@@ -53,6 +53,17 @@
     background: #f2f2f2;
     position: relative;
     margin-bottom: 60px;
+    .inline-heading{
+        display:flex;
+        align-items:center;
+        .heading-3{
+            width:70%;
+        }
+        & > div{
+            width:30%;
+            text-align:right;
+        }
+    }
 
     &.pdp-container-remove {
         margin-bottom: 0px;
@@ -366,7 +377,7 @@
                 font-size: 24px;
                 display: inline-block;
                 vertical-align: middle;
-                padding-right: 5PX;
+                padding-right:8px;
             }
 
             span {
@@ -405,6 +416,15 @@
                 border: none;
                 color: white;
             }
+        }
+        &.nonFixed{
+          position:relative;
+          box-shadow:none;
+          height:48px;
+          z-index:2;
+          button{
+              border-radius:4px;
+          }
         }
     }
 
@@ -823,17 +843,16 @@
         background: white;
         font-size: $large-font;
         border-bottom: 1px solid $border-color;
-
         .feature-list {
             li {
+                padding-bottom:5px;
                 p:before {
                     content: "•";
-                    font-size: 24px;
+                    font-size: 32px;
                     padding-right: 10px;
                     vertical-align: top;
                     line-height: 21px;
                 }
-
                 span {
                     display: inline-block;
                     width: 80%;
@@ -2783,6 +2802,9 @@
     span {
         color: #008AFF;
         font-weight: 600;
+        i{
+            padding-left:5px;
+        }
     }
 }
 
@@ -2803,3 +2825,48 @@
     font-size: 12px;
     margin-top: -20px;
 }
+.pdpCard{
+  margin:10px 0px 0px;
+  padding:0px;
+  &:first-of-type{
+      margin-top:0px !important;
+      background:red;
+  }
+}
+.blueTag{
+  background:#008AFF;
+  color:#fff;
+  font-size:$extra-large-font;
+  border-top-right-radius:3px;
+  border-bottom-right-radius:3px;
+  position: absolute;
+  padding: 4px 8px;
+  font-weight: 700;
+  top: 30px;
+}
+.pdp-card-breadcrumb{
+    background:$white;
+    padding: 10px 15px;
+    border-bottom:1px solid #E3E3E3;
+    li{
+        list-style: none;
+        display:inline;
+        margin-right: 10px;
+        font-size: $small-font;
+        line-height:16px;
+      
+        &:not(:last-child):after {
+            content: "\e95c";
+            font-family: 'icomooon_pwa' !important;
+            font-weight: bolder;
+            font-size: 8px !important;
+            margin-left: 10px;
+            margin-right: 0px;
+        }
+        &:hover{
+            color: #0061d5 !important;
+         }
+    }
+}
+
+

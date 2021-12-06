@@ -154,4 +154,6 @@ export class ProductService {
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SPONSERED_PRODUCTS, { params: params });
     }
 
+
+
 }

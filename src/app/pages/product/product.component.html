@@ -597,7 +597,7 @@
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
-        <section class="Qa">
+        <section class="Qa" *ngIf="questionAnswerList">
             <div class="">
                 <p class="heading-3">Questions & Answers</p>
                 <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
@@ -643,7 +643,9 @@
             </div>
         </section>
 
-        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0" >
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        </ng-container>
     </div>
     <!-- other sections ends -->
 

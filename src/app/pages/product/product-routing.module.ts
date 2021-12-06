@@ -10,6 +10,7 @@ const routes: Routes = [
     component: ProductComponent,
     resolve: {
       product: ProductResolver,
+      productSecondaryApisData: ProductSectionResolver
     }
   }
 ];

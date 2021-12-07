@@ -1,16 +1,17 @@
-<div id="category-cards-section">
-    <shared-product-listing 
-        [headerName]="titleHeading ? titleHeading : ''" 
-        [pageName]="'ATTRIBUTE'"
-        [productsListingData]="_productListService?.productListingData"
-        *ngIf="_productListService &&_productListService.productListingData" >
-    </shared-product-listing>
+<div *ngIf="!showPageNotFound">
+    <div id="category-cards-section">
+        <shared-product-listing [headerName]="titleHeading ? titleHeading : ''" [pageName]="'ATTRIBUTE'"
+            [productsListingData]="_productListService?.productListingData"
+            *ngIf="_productListService &&_productListService.productListingData">
+        </shared-product-listing>
 
-    <div class="app-promo-container">
-        <product-listing-app-promo></product-listing-app-promo>
+        <div class="app-promo-container">
+            <product-listing-app-promo></product-listing-app-promo>
+        </div>
+
+        <div id="openCat3" *ngIf="firstPageContent && productSearchResult && productSearchResult['products'].length>0"
+            class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
     </div>
-
-    <div id="openCat3" *ngIf="firstPageContent && productSearchResult && productSearchResult['products'].length>0"
-        class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
+    <breadcrumb-nav [breadcrumb]="alpBreadCrumbData"></breadcrumb-nav>
 </div>
-<breadcrumb-nav [breadcrumb]="alpBreadCrumbData"></breadcrumb-nav>
+<app-shared-not-found *ngIf="showPageNotFound"></app-shared-not-found>

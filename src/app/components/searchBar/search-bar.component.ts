@@ -11,6 +11,10 @@ import { TrendingSearchModule } from '../../modules/trendingSearch/trending-sear
 import { SearchHistoryModule } from '../../modules/searchHistory/search-history.module';
 import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive';
 import CONSTANTS from '@app/config/constants';
+import { DataService } from '@app/utils/services/data.service';
+import { ProductListService } from '@app/utils/services/productList.service';
+import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
+import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 
 @Component({
     selector: 'app-search-bar',
@@ -36,6 +40,24 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     topProducts;
     isServer: boolean;
     isBrowser: boolean;
+    searchProducts: ProductsEntity[] = null;
+    cardMetaInfo: ProductCardMetaInfo = {
+        redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.SEARCH,
+        redirectedSectionName: 'search_suggestion_products'
+    };
+    readonly cardFeaturesConfig: ProductCardFeature = {
+        // feature config
+        enableAddToCart: true,
+        enableBuyNow: true,
+        enableFeatures: false,
+        enableRating: true,
+        enableVideo: false,
+        // design config
+        enableCard: true,
+        verticalOrientation: true,
+        horizontalOrientation: false,
+        lazyLoadImage: false
+    }
 
 
     constructor(
@@ -45,7 +67,9 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         private _fb: FormBuilder,
         private service: TypeAheadService,
         private renderer: Renderer2,
-        private _commonService: CommonService
+        private _commonService: CommonService,
+        private _dataService: DataService,
+        private productListService: ProductListService
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -94,6 +118,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
                                 this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
                                 if (cTerm && cTerm.length > 2) {
                                     this.showSuggestionBlock = true;
+                                    this.getSearchProduct(cTerm);
                                 }
                             }
                         });
@@ -104,6 +129,17 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
 
                 }
             );
+    }
+
+    getSearchProduct(cTerm) {
+        const URL = 'https://apinew.moglix.com/nodeApi/v1/search/similarproducts?str=Dr. Morepen Gluco One Monitor without Strips, BG 03&category=115251400'
+        this._dataService.callRestful('GET', URL).subscribe((response) => {
+            // console.log(response);
+            let products = response['products'];
+            if (products && (products as []).length > 0) {
+                this.searchProducts = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -330,10 +366,11 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         SearchHistoryModule,
         FormsModule, 
         ReactiveFormsModule,
+        ProductHorizontalCardModule
     ],
     declarations: [
         SearchBarComponent,
-        AutoFocusDirective
+        AutoFocusDirective,
     ],
     providers: [
         TypeAheadService,

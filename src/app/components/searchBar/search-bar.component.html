@@ -55,6 +55,31 @@
                         </ng-container>
                     </ng-container>
                 </div>
+                <section class="Bestseller card similar-prod" *ngIf="searchProducts && searchProducts.length>0">
+                    <div class="upper-view-all-sec">
+                        <div class="upper-view-all-sec-left">
+                            <h4>Similar Products</h4>
+                        </div>
+                        <!-- <div class="upper-view-all-sec-right">
+                            <button>VIEW ALL</button>
+                        </div> -->
+                    </div>
+                    <div class="vertical-scroll-container">
+                        <div class="inner-scroll-container" [style.width.px]="searchProducts.length * 165">
+                            <ng-container *ngFor="let product of searchProducts;let pIndex=index" >
+                                <product-horizontal-card 
+                                    [section]="'search-popup'"
+                                    [product]="product"
+                                    [cardMetaInfo]='cardMetaInfo'
+                                    [cardFeaturesConfig]='cardFeaturesConfig'
+                                    [pIndex]="pIndex"
+                                    [enableTracking]="true"
+                                    [analytics]="" >
+                                </product-horizontal-card>
+                            </ng-container>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 

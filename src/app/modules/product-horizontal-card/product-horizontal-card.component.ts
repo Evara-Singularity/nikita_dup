@@ -537,15 +537,16 @@ export class ProductHorizontalCardComponent implements OnInit {
     this.navigateToPDP();
   }
 
-  sendTracking(info)
-  {
-      if(!this.enableTracking)return;
+  sendTracking(info) {
+    if (this.analytics) {
+      if (!this.enableTracking) return;
       const page = this.analytics['page'];
       page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
       page['productunit'] = this.pIndex;
       const custData = this.analytics['custData'];
-      const order = this.analytics['order']  ;
+      const order = this.analytics['order'];
       this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
+    }
   }
 
 

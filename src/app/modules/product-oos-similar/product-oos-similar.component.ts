@@ -2,6 +2,7 @@ import { EventEmitter, Component, Input, OnInit, Output } from "@angular/core";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ProductsEntity } from "@app/utils/models/product.listing.search";
 import { ProductService } from "@app/utils/services/product.service";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-product-oos-similar",
@@ -20,7 +21,10 @@ export class ProductOosSimilarComponent implements OnInit {
     new EventEmitter();
   productCardCurrentyInViewPort = 0;
 
-  constructor(public productService: ProductService) {}
+  constructor(
+    public productService: ProductService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.getProductSimilar();
@@ -28,16 +32,14 @@ export class ProductOosSimilarComponent implements OnInit {
 
   updateUrl() {
     if (this.productCardCurrentyInViewPort > 0) {
-      window.history.replaceState(
-        "",
-        "",
+      this.location.replaceState(
         this.productService.oosSimilarProductsData.similarData[
           this.productCardCurrentyInViewPort - 1
         ].productUrl
       );
     } else {
       // PDP page original router
-      window.history.replaceState("", "", this.productBaseUrl);
+      this.location.replaceState(this.productBaseUrl);
     }
   }
 

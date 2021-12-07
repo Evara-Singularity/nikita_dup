@@ -5,7 +5,8 @@ import { map } from "rxjs/operators";
 import CONSTANTS from "@app/config/constants";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
-import { ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { CommonService } from "@app/utils/services/common.service";
 declare var digitalData: {};
 declare let _satellite;
 
@@ -18,9 +19,9 @@ export class BussinessRfqComponent {
   IsHidden: boolean = true;
   isActive = false;
   myRfqList: any;
-  i:any;
+  i: any;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
-  set showLoader(value){
+  set showLoader(value) {
     this.loaderService.setLoaderState(value);
   }
 
@@ -28,19 +29,26 @@ export class BussinessRfqComponent {
     private _localAuthService: LocalAuthService,
     private localStorageService: LocalStorageService,
     private _dashboardService: DashboardService,
+    private _commonService: CommonService,
+    private router: Router,
     public _activatedRoute: ActivatedRoute,
-    private loaderService:GlobalLoaderService) {
-
+    private loaderService: GlobalLoaderService
+  ) {
     this.showLoader = true;
-    
-    if (this._activatedRoute.snapshot.queryParams.hasOwnProperty('token')) {
-      setTimeout(() =>{
-        this.getMyRfqList();
-        this.setData();
-      }, 600);
+
+    if (this._activatedRoute.snapshot.queryParams.hasOwnProperty("token")) {
+      this._commonService.bharatcraftUserSessionArrived.subscribe((res) => {
+        const user = this._localAuthService.getUserSession();
+        if (res && user.authenticated === "true") {
+          this.getMyRfqList();
+          this.setData();
+        } else {
+          this.router.navigateByUrl("/login");
+        }
+      });
     } else {
       this.getMyRfqList();
-        this.setData();
+      this.setData();
     }
   }
 
@@ -53,8 +61,8 @@ export class BussinessRfqComponent {
       subSection: "moglix:account dashboard-myrfq",
       loginStatus:
         userSession &&
-          userSession.authenticated &&
-          userSession.authenticated == "true"
+        userSession.authenticated &&
+        userSession.authenticated == "true"
           ? "registered user"
           : "guest",
     };
@@ -72,7 +80,7 @@ export class BussinessRfqComponent {
     digitalData["page"] = pageData;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    if(_satellite){
+    if (_satellite) {
       _satellite.track("genericPageLoad");
     }
   }

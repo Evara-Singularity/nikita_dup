@@ -225,7 +225,7 @@ export class ProductListService {
     this._analytics.sendAdobeCall({ page, custData, order }, (isSubmitted) ? "genericClick" : "genericPageLoad");
   }
 
-  analyticAddToCart(routerlink, productDetails) {
+  analyticAddToCart(routerlink, productDetails, usedInModule) {
     // console.log('productDetails ==>', productDetails);
     const user = this._localStorageService.retrieve('user');
     const taxonomy = productDetails['taxonomyCode'];
@@ -239,11 +239,11 @@ export class ProductListService {
       taxo3 = productDetails['taxonomyCode'].split("/")[2] || '';
     }
 
-    let ele = [];
+    let ele = [];``
     const tagsForAdobe = ele.join("|");
-    
+    const moduleString = (usedInModule == 'PRODUCT') ? 'pdp' : 'listing';
     let page = {
-      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":listing",
+      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + moduleString,
       'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
       'channel': pageName !== 'category' ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting

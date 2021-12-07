@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import CONSTANTS from '@app/config/constants';
     styleUrls: ['./search-bar.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, AfterViewInit {
 
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     imageAssetPath = CONSTANTS.IMAGE_ASSET_URL;
@@ -28,6 +28,7 @@ export class SearchBarComponent implements OnInit {
     @ViewChild('scrollable') scrollable: ElementRef;
     searchForm: FormGroup;
     @Input() showSuggestionBlock: boolean;
+    @Input() autoFillSearchKeyword: string;
     showSuggestionBlockLoader: boolean;
     suggestionList;
     brandSuggestionList;
@@ -118,6 +119,8 @@ export class SearchBarComponent implements OnInit {
     }
 
 
+
+
     handleSendTextToSearchBar(data: string, e?: Event) {
         if (e) {
             e.preventDefault();
@@ -138,6 +141,9 @@ export class SearchBarComponent implements OnInit {
     ngAfterViewInit() {
         this.suggestionDropDown();
         this.renderer.selectRootElement('#search-input').focus();
+        if(this.autoFillSearchKeyword) {
+            this.searchForm.get('searchTerm').patchValue(this.autoFillSearchKeyword);
+        }
     }
 
     ngOnDestroy() {

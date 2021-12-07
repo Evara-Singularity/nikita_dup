@@ -52,6 +52,8 @@ export class CommonService {
     private networkSpeedState: Subject<number> = new Subject<number>();
     private webpSupportState: Subject<number> = new Subject<number>();
 
+    private _loadSearchPopup: Subject<string> = new Subject<string>();
+
 
     private gaGtmData: { pageFrom?: string, pageTo?: string, list?: string };
 
@@ -79,6 +81,14 @@ export class CommonService {
 
     getNetworkSpeedState(): Observable<number>{
         return this.networkSpeedState.asObservable();
+    }
+
+    updateSearchPopup(searchKeyword) {
+        this._loadSearchPopup.next(searchKeyword);
+    }
+
+    getSearchPopupStatus() {
+        return this._loadSearchPopup.asObservable();
     }
 
     getNetworkSpeed(): Number{

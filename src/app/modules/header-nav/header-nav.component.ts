@@ -183,7 +183,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
   }
 
-    async loadSearchNav()
+    async loadSearchNav(toBeAutoFilledKeyword = '')
     {
         if (!this.searchBarInstance) {
             this.globalLoader.setLoaderState(true);
@@ -211,6 +211,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
+            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
             setTimeout(() =>
             {
@@ -223,6 +224,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
+            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         }
     }
 
@@ -330,6 +332,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.user = this.localAuthService.getUserSession();
             this.isUserLogin = false;
         });
+
+        this._commonService.getSearchPopupStatus().subscribe((searchKeyword) => {
+            this.loadSearchNav(searchKeyword)
+        })
     }
 
     browserCalc()

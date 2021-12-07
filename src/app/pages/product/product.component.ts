@@ -366,6 +366,9 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this._response.status(404);
                 }
             }
+            if(this.productNotFound){
+                this.pageTitle.setTitle("Page Not Found");
+            }
             this.showLoader = false;
             this.globalLoader.setLoaderState(false);
         }, error =>

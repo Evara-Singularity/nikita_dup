@@ -248,7 +248,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'main-article',
+				path: 'main-article/:name',
 				loadChildren: () =>
 					import('./main-article/main-article.module').then((m) => m.MainArticleModule),
 				data: {

@@ -1,5 +1,5 @@
 import { isPlatformServer } from '@angular/common';
-import { Inject, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -8,6 +8,7 @@ import { forkJoin, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DataService } from './../services/data.service';
 
+@Injectable()
 export class MainArticlesResolver implements Resolve<any> {
 
     constructor(
@@ -25,8 +26,8 @@ export class MainArticlesResolver implements Resolve<any> {
             return of([MAIN_ARTICLES_DATA])
         }
         const name = (_activatedRouteSnapshot.params['name'] as string).trim();
-        const MAIN_ARTICLES_URL = `${environment.BASE_URL}${ENDPOINTS.GET_LAYOUT}${name}`;
-        //10766:please add urls in future
+        //const MAIN_ARTICLES_URL = `${environment.BASE_URL}${ENDPOINTS.GET_LAYOUT}${name}`;
+        const MAIN_ARTICLES_URL = `http://myjson.dit.upm.es/api/bins/a8iz`;
         const REQUEST_ARRAY = [this._dataService.callRestful("GET", MAIN_ARTICLES_URL)];
         return forkJoin(REQUEST_ARRAY).pipe(
             catchError((err) => { return of(err); }),

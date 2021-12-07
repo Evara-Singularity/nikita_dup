@@ -1,13 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
-import CONSTANTS from "@app/config/constants";
+import { EventEmitter, Component, Input, OnInit, Output } from "@angular/core";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
-import {
-  ProductCardFeature,
-  ProductCardMetaInfo,
-  ProductsEntity,
-} from "@app/utils/models/product.listing.search";
+import { ProductsEntity } from "@app/utils/models/product.listing.search";
 import { ProductService } from "@app/utils/services/product.service";
-import { ProductListService } from "@app/utils/services/productList.service";
 
 @Component({
   selector: "app-product-oos-similar",
@@ -15,45 +9,35 @@ import { ProductListService } from "@app/utils/services/productList.service";
   styleUrls: ["./product-oos-similar.component.scss"],
 })
 export class ProductOosSimilarComponent implements OnInit {
-  constructor(private productService: ProductService) {}
-  @Input("msn") msn: string;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
-  @Input("defaultCanonicalUrl") defaultCanonicalUrl: string;
-  readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   similarProducts: ProductsEntity[] = null;
+
+  @Input("productBaseUrl") productBaseUrl: string;
   @Input("productName") productName;
   @Input("categoryCode") categoryCode;
-  @Input("analytics") analytics = null;
-  readonly cardFeaturesConfig: ProductCardFeature = {
-    // feature config
-    enableAddToCart: true,
-    enableBuyNow: true,
-    enableFeatures: false,
-    enableRating: true,
-    enableVideo: false,
-    // design config
-    enableCard: true,
-    verticalOrientation: true,
-    horizontalOrientation: false,
-    lazyLoadImage: false,
-  };
-  cardMetaInfo: ProductCardMetaInfo = null;
-  currentInViewPort = 0;
+  @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
+  @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent =
+    new EventEmitter();
+  productCardCurrentyInViewPort = 0;
+
+  constructor(public productService: ProductService) {}
 
   ngOnInit(): void {
     this.getProductSimilar();
   }
 
   updateUrl() {
-    if (this.currentInViewPort > 0) {
+    if (this.productCardCurrentyInViewPort > 0) {
       window.history.replaceState(
         "",
         "",
-        this.similarProducts[this.currentInViewPort - 1].productUrl
+        this.productService.oosSimilarProductsData.similarData[
+          this.productCardCurrentyInViewPort - 1
+        ].productUrl
       );
     } else {
       // PDP page original router
-      window.history.replaceState("", "", this.defaultCanonicalUrl);
+      window.history.replaceState("", "", this.productBaseUrl);
     }
   }
 
@@ -64,8 +48,10 @@ export class ProductOosSimilarComponent implements OnInit {
         window.removeEventListener("scroll", this.windowScrollHandler);
         let products = response["products"];
         if (products && (products as []).length > 0) {
-          this.similarProducts = products;
-          console.log(this.similarProducts);
+          this.productService.oosSimilarProductsData.similarData = products;
+          this.productService.oosSimilarProductsData.similarData = JSON.parse(
+            JSON.stringify(products)
+          );
           // set Scroll
           window.addEventListener(
             "scroll",
@@ -77,19 +63,22 @@ export class ProductOosSimilarComponent implements OnInit {
   }
 
   windowScrollHandler() {
-    this.currentInViewPort = 0;
-    if (this.similarProducts && this.similarProducts.length > 0) {
+    this.productCardCurrentyInViewPort = 0;
+    if (
+      this.productService.oosSimilarProductsData.similarData &&
+      this.productService.oosSimilarProductsData.similarData.length > 0
+    ) {
       for (
-        let i = 1;
+        let i = 0;
         i <
         Math.min(
-          this.similarProducts.length,
-          GLOBAL_CONSTANT.oosSimilarCardCount + 1
+          this.productService.oosSimilarProductsData.similarData.length,
+          GLOBAL_CONSTANT.oosSimilarCardCount
         );
         i++
       ) {
-        if (this.currentInViewPort < 1) {
-          this.currentInViewPort = this.checkIfElementIsInViewport(
+        if (this.productCardCurrentyInViewPort < 1) {
+          this.productCardCurrentyInViewPort = this.checkIfElementIsInViewport(
             document.getElementById("oos-card-" + i)
           )
             ? i

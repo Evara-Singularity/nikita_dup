@@ -353,7 +353,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.isBrowser) {
       this.siemaCrouselService.getProductScrouselPopup().subscribe((result) => {
         if (result.active) {
-          this.openPopUpcrousel(result["slideNumber"]);
+          this.openPopUpcrousel(
+            result["slideNumber"],
+            result["oosProductCardIndex"]
+          );
         }
       });
     }
@@ -1873,10 +1876,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
           null,
           this.injector
         );
-      this.similarProductInstanceOOS.instance["defaultCanonicalUrl"] = this.rawProductData["defaultCanonicalUrl"];
+      this.similarProductInstanceOOS.instance["productBaseUrl"] =
+        this.rawProductData["defaultCanonicalUrl"];
       this.similarProductInstanceOOS.instance["productName"] = this.productName;
       this.similarProductInstanceOOS.instance["categoryCode"] =
         this.productCategoryDetails["categoryCode"];
+      if (this.similarProductInstanceOOS) {
+        (
+          this.similarProductInstanceOOS.instance[
+            "firstImageClickedEvent"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.openPopUpcrousel(0, data);
+        });
+        (
+          this.similarProductInstanceOOS.instance[
+            "showAllKeyFeatureClickEvent"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.handleProductInfoPopup('key features', 'show all specifications', data)
+        });
+      }
     }
   }
 
@@ -2333,7 +2353,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async openPopUpcrousel(slideNumber: number = 1) {
+  async openPopUpcrousel(
+    slideNumber: number = 1,
+    oosProductIndex: number = -1
+  ) {
     if (!this.popupCrouselInstance) {
       this.showLoader = true;
       this.displayCardCta = true;
@@ -2355,7 +2378,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       options.pager = false;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
-        this.productAllImages;
+        oosProductIndex < 0
+          ? this.productAllImages
+          : this.productService.oosSimilarProductsData.similarData[
+              oosProductIndex
+            ].productAllImages;
       this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
 
       (
@@ -3362,7 +3389,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async handleProductInfoPopup(infoType, cta) {
+  async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
     this.sendProductInfotracking(cta);
     this.showLoader = true;
     this.displayCardCta = true;
@@ -3379,7 +3406,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.productInfoPopupInstance.instance["modalData"] =
-      this.getProductInfo(infoType);
+      oosProductIndex > -1
+        ? this.productService.getProductInfo(infoType, oosProductIndex)
+        : this.getProductInfo(infoType);
     this.productInfoPopupInstance.instance["openProductInfo"] = true;
     (
       this.productInfoPopupInstance.instance[

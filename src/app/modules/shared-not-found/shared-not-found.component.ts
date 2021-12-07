@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { FooterService } from '@app/utils/services/footer.service';
@@ -18,7 +19,8 @@ export class SharedNotFoundComponent implements OnInit {
     constructor(
         @Optional() @Inject(RESPONSE) private response,
         public footerService: FooterService,
-        public _commonService: CommonService
+        public _commonService: CommonService,
+        private title:Title
     ) {
 
         this.isServer = _commonService.isServer;
@@ -47,5 +49,6 @@ export class SharedNotFoundComponent implements OnInit {
             this.footerService.setFooterObj({ footerData: true });
             this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
         }
+        this.title.setTitle("Page Not Found");
     }
 }

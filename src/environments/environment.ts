@@ -1,27 +1,29 @@
 export const environment = {
   production: false,
-  PROD_NAME: 'https://www.moglix.com',
-  // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
-  BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
-  IMAGE_ASSET_URL: '/',
+  PROD_NAME: "https://www.moglix.com",
+  BASE_URL: "https://apinew.moglix.com/nodeApi/v1",
+  // BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
+  IMAGE_ASSET_URL: "/",
   SOCKET_URL: "https://socketqa.moglilabs.com",
-  IMAGE_BASE_URL: 'https://cdn.moglix.com/',
-  DOCUMENT_URL: 'https://document.moglix.com/',
-  CDN_IMAGE_URL: 'https://cdn.moglix.com/',
-  GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
-  ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
-  buildVersion: '4.3',
+  IMAGE_BASE_URL: "https://cdn.moglix.com/",
+  DOCUMENT_URL: "https://document.moglix.com/",
+  CDN_IMAGE_URL: "https://cdn.moglix.com/",
+  GTM_ANALYTICS_CODE: "GTM-WW4R83Z",
+  ADOBE_ANALYTIC_SCRIPT:
+    "//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js",
+  buildVersion: "4.3",
   SOCIAL_LOGIN: {
-    "google": {
-      "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"
+    google: {
+      clientId:
+        "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com",
     },
-    "facebook": {
-      "clientId": "775243655917959",
-      "apiVersion": "v2.4"
-    }
+    facebook: {
+      clientId: "775243655917959",
+      apiVersion: "v2.4",
+    },
   },
   AB_TESTING: {
-    NAME: 'ENV_A',
+    NAME: "ENV_A",
     STATUS: false,
   },
   IDS_MAP: {

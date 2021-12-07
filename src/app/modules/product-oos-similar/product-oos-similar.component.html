@@ -1,0 +1,12 @@
+<ng-container *ngIf="similarProducts?.length > 0">
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            Best Matching In-Stock Products
+        </h3>
+    </div>
+    <ng-container
+        *ngFor="let product of similarProducts | slice : GLOBAL_CONSTANT.oosSimilarCardCount; let index = index">
+        <app-product-oos-similar-card [index]="(index + 1)" [productMsn]="product?.moglixPartNumber">
+        </app-product-oos-similar-card>
+    </ng-container>
+</ng-container>

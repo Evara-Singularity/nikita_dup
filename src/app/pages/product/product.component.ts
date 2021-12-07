@@ -160,6 +160,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   similarProductInstance = null;
   @ViewChild("similarProduct", { read: ViewContainerRef })
   similarProductContainerRef: ViewContainerRef;
+  // similarProductInstanceOOS for out of stock
+  similarProductInstanceOOS = null;
+  @ViewChild("similarProductOOS", { read: ViewContainerRef })
+  similarProductInstanceOOSContainerRef: ViewContainerRef;
   // ondemand loaded components for sponsered products
   sponseredProductsInstance = null;
   @ViewChild("sponseredProducts", { read: ViewContainerRef })
@@ -584,7 +588,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.navigateToUrl(category);
     }
   }
-
   processProductData(args: ProductDataArg, rawData) {
     this.rawProductData = args.productBO;
     // required for goruped products
@@ -1817,7 +1820,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // dynamically load similar section
   async onVisibleSimilar(htmlElement) {
-    if (!this.similarProductInstance) {
+    if (!this.similarProductInstance && !this.productOutOfStock) {
       const { SimilarProductsComponent } = await import(
         "./../../components/similar-products/similar-products.component"
       );
@@ -1853,6 +1856,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
         custData: custData,
         order: orderData,
       };
+    }
+  }
+
+  async onVisibleSimilarOOS(event) {
+    if (!this.similarProductInstanceOOS && this.productOutOfStock) {
+      const { ProductOosSimilarComponent } = await import(
+        "./../../modules/product-oos-similar/product-oos-similar.component"
+      );
+      const factory = this.cfr.resolveComponentFactory(
+        ProductOosSimilarComponent
+      );
+      this.similarProductInstanceOOS =
+        this.similarProductInstanceOOSContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+      this.similarProductInstanceOOS.instance["defaultCanonicalUrl"] = this.rawProductData["defaultCanonicalUrl"];
+      this.similarProductInstanceOOS.instance["productName"] = this.productName;
+      this.similarProductInstanceOOS.instance["categoryCode"] =
+        this.productCategoryDetails["categoryCode"];
     }
   }
 

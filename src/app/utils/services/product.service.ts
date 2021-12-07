@@ -42,6 +42,24 @@ export class ProductService {
     );
   }
 
+  getProduct(msn) {
+    return this._dataService.callRestful(
+      "GET",
+      CONSTANTS.NEW_MOGLIX_API +
+        ENDPOINTS.PRODUCT_INFO +
+        `?productId=${msn}&fetchGroup=true`
+    );
+  }
+
+  getProductPageBreadcrum(msn) {
+    return this._dataService.callRestful(
+      "GET",
+      CONSTANTS.NEW_MOGLIX_API +
+        ENDPOINTS.BREADCRUMB +
+        `?source=${msn}&type=product`
+    );
+  }
+
   getSimilarProducts(productName, categoryId) {
     const URL =
       this.basePath +

@@ -16,7 +16,7 @@ export class ProductAppPromoComponent implements OnInit {
   ngOnInit() {
   }
 
-  appPromoStatus(event){
+  appPromoStatus(event) {
     this.appPromoStatus$.emit(event);
   }
 

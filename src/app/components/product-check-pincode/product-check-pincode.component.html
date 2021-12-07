@@ -4,7 +4,7 @@
         <h3 class="heading-3">Delivery Details</h3>
         <div class="delivery-details-inner">
             <div class="delivery-details-inner-img">
-                <img src="assets/img/map-pin-fill.svg">
+                <img src="{{imagePathAsset}}assets/img/map-pin-fill.svg">
             </div>
             <div class="delivery-details-inner-box">
                 <input (keyup)="checkPinocdeKey($event)"
@@ -21,14 +21,14 @@
         <p class="right-txt">Invalid pincode provided</p>
     </div>
     <div class="about-delivery" *ngIf="itemShippingAmount == 0">
-        <img src="assets/img/shipping.svg">
+        <img src="{{imagePathAsset}}assets/img/shipping.svg">
         <div class="about-delivery-txt">
             <h4 class="green-txt">Free Delivery</h4>
                     <span class="green-txt">No shipping charge on this order</span>
         </div>
     </div>
-    <div class="about-delivery" *ngIf="(isPincodeAvailble && !pincode.hasError('pattern')) && (itemShippingAmount>0)">
-        <img src="assets/img/shipping.svg">
+    <div class="about-delivery" *ngIf="itemShippingAmount>0">
+        <img src="{{imagePathAsset}}assets/img/shipping.svg">
         <div class="about-delivery-txt">
             <h4>Shipping applicable - ₹{{itemShippingAmount}}</h4>
                     <span>On this order</span>
@@ -36,26 +36,26 @@
     </div>
     <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern')">
         <div class="about-delivery" *ngIf="isServiceable">
-            <img src="assets/img/delivery_available.svg">
+            <img src="{{imagePathAsset}}assets/img/delivery_available.svg">
             <div class="about-delivery-txt">
                 <h4>Delivery available at {{pincode.value}} in {{deliveryDays}}</h4>
             </div>
         </div>
         <div class="about-delivery" *ngIf="!(isServiceable)">
-            <img src="assets/img/delivery_not_available.svg">
+            <img src="{{imagePathAsset}}assets/img/delivery_not_available.svg">
             <div class="about-delivery-txt">
                 <h4 class="red-txt">Delivery unavailable at {{pincode.value}}</h4>
             </div>
         </div>
         <div class="about-delivery" *ngIf="isServiceable && (isCashOnDelivery)">
-            <img src="assets/img/cod.svg">
+            <img src="{{imagePathAsset}}assets/img/cod.svg">
             <div class="about-delivery-txt">
                 <h4 class="green-txt">COD Available</h4>
                 <span>You can pay at the time of delivery</span>
             </div>
         </div>
         <div class="about-delivery" *ngIf="!isCashOnDelivery">
-            <img src="assets/img/prepaid_payment.svg">
+            <img src="{{imagePathAsset}}assets/img/prepaid_payment.svg">
             <div class="about-delivery-txt">
                 <h4>Prepaid payment only</h4>
             </div>

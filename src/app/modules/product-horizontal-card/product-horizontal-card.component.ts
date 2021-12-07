@@ -74,6 +74,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   // ondemad loaded components for select variant popup
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
+  productReviewCount: string;
 
   constructor(
     private _cartService: CartService,
@@ -104,6 +105,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       this.changeThumbImage(speed);
     })
     this.isAd = !this.product.internalProduct
+    this.productReviewCount=this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
   }
 
 

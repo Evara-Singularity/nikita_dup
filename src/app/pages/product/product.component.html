@@ -8,10 +8,10 @@
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
               </span>
-            <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img src="assets/img/similar-ico.svg"></span>
+            <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg"></span>
         </div>
         <ng-container #productCrousel></ng-container>
-        <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+        <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
@@ -235,7 +235,7 @@
                 <div class="moglix-ben-n-ret-policy-InnerContainer">
                     <div class="moglix-ben-n-ret-policy-Inner">
                         <span class="returnImg">
-                            <img src="assets/img/gst-invo.svg" height="16px"
+                            <img src="{{imagePathAsset}}assets/img/gst-invo.svg" height="16px"
                                 width="16px">
                         </span>
                         <span class="returnTxt benefits-txt">
@@ -244,7 +244,7 @@
                     </div>
                     <div class="moglix-ben-n-ret-policy-Inner">
                         <span class="returnImg">
-                            <img src="assets/img/secure-payment-fill.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/secure-payment-fill.svg" height="16px" width="16px">
                         </span>
                         <span class="returnTxt benefits-txt">
                              Secure <br> Payments
@@ -252,7 +252,7 @@
                     </div>
                     <div class="moglix-ben-n-ret-policy-Inner">
                         <span class="returnImg">
-                            <img src="assets/img/customer-service-fill.svg" height="16px"
+                            <img src="{{imagePathAsset}}assets/img/customer-service-fill.svg" height="16px"
                                 width="16px">
                         </span>
                         <span class="returnTxt benefits-txt">
@@ -264,7 +264,7 @@
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
                     <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="assets/img/restart-line.svg" height="16px"
+                            <img src="{{imagePathAsset}}assets/img/restart-line.svg" height="16px"
                                 width="16px">
                         </span>
                         <span class="returnTxt">
@@ -273,7 +273,7 @@
                     </div>
                     <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="assets/img/wrong-pro.svg" height="16px" width="16px">
+                            <img src="{{imagePathAsset}}assets/img/wrong-pro.svg" height="16px" width="16px">
                         </span>
                         <span class="returnTxt">
                             Wrong <br /> Product
@@ -281,7 +281,7 @@
                     </div>
                     <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="assets/img/restart-line-3.svg" height="16px"
+                            <img src="{{imagePathAsset}}assets/img/restart-line-3.svg" height="16px"
                                 width="16px">
                         </span>
                         <span class="returnTxt">
@@ -290,7 +290,7 @@
                     </div>
                     <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                         <span class="returnImg">
-                            <img src="assets/img/thumb-down-button.svg" height="16px"
+                            <img src="{{imagePathAsset}}assets/img/thumb-down-button.svg" height="16px"
                                 width="16px">
                         </span>
                         <span class="returnTxt">

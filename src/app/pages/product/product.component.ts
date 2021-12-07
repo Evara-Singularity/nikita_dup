@@ -1895,8 +1895,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productCrouselInstance.instance['moveToSlide$'] = this.moveToSlide$;
             this.productCrouselInstance.instance['refreshSiemaItems$'] = this.refreshSiemaItems$;
             this.productCrouselInstance.instance['productName'] = this.productName;
-            setTimeout(() =>
-            {
+            setTimeout(() => {
                 (this.productCrouselInstance.instance['moveToSlide$'] as Subject<number>).next(slideIndex)
             }, 100);
         };
@@ -1913,11 +1912,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.loadProductCrousel(1);
     }
 
-    onRotateNext()
-    {
+    onRotateNext() {
         this.loadProductCrousel(1);
     }
-
 
     async loadGlobalToastMessage(data, rawData)
     {
@@ -2236,6 +2233,8 @@ export class ProductComponent implements OnInit, AfterViewInit
                     delete schema['offers']['availability'];
                 } else if (this.priceQuantityCountry['quantityAvailable'] == 0) {
                     delete schema['offers']['availability'];
+                } if (this.rawReviewsData?.summaryData?.final_average_rating === 0 || null || ''){
+                    delete schema['aggregateRating'];
                 }
 
                 s.text = JSON.stringify(schema);
@@ -2252,7 +2251,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // ANALYTIC CODE SECTION STARTS
-    /** 
+    /** p
      * Please place all functional code above this section
      */
     callAnalyticForVisit()

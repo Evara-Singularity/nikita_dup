@@ -106,14 +106,12 @@ export class AlpComponent implements OnInit
     }
 
     setAttributeListingInfo() {
-        this.alpAttrListingData={ status: false, data: [], message: '{"statusCode":416}' }
         //TODO:1704 if data is null then 404
         this.showPageNotFound = this.alpAttrListingData['data'] === null || Object.keys(this.alpAttrListingData['data']).length === 0 || this.alpAttrListingData['data'].length === 0;
         if (this.showPageNotFound && this._commonService.isServer) {
             this._response.status(404);
             return;
         }
-        if (!this.showPageNotFound) {
             let attributeListing = this.alpAttrListingData['data']['attributesListing'];
             this.titleHeading = attributeListing['title']
             this.pageDescription = attributeListing['pageDescription'];
@@ -121,7 +119,6 @@ export class AlpComponent implements OnInit
             this.metaDescription = attributeListing['metaDescription'];
             this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
             this.fetchCIMSRelatedData();
-        }
     }
 
     fetchCIMSRelatedData()

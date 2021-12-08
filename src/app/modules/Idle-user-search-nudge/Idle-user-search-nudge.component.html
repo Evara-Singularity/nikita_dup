@@ -14,16 +14,15 @@
     </div>
   </div>
 </div> -->
-<div *ngIf="common.isBrowser && enableNudge" class="bottom-options open">
-  <i class="del-ico icon-circle-delete " (click)="close()"></i>
-  <div class="content-box" content>
-    <h1>
-      Looking for
-    </h1>
-    <h4><span>{{headingKeyword}} etc.</span></h4>
-    <p>Use search for better results</p>
-    <div>9
-      <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
-    </div>
-  </div>
-</div>
+<app-bottom-menu *ngIf="common.isBrowser && enableNudge">
+     <div class="idle-search-container" content>
+      <h1>
+        Looking for <br/>
+      </h1>
+      <h4><span>{{headingKeyword}} etc.</span></h4>
+      <p>Use search for better results</p>
+      <div>
+        <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
+      </div>
+     </div>
+</app-bottom-menu>

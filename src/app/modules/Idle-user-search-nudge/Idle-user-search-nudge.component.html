@@ -15,14 +15,16 @@
   </div>
 </div> -->
 <app-bottom-menu *ngIf="common.isBrowser && enableNudge">
-     <div class="idle-search-container" content>
+  <div class="idle-search-container" content>
+    <div class="text-box">
       <h1>
-        Looking for <br/>
+        Looking for <br />
       </h1>
-      <h4><span>{{headingKeyword}} etc.</span></h4>
+      <h2><span>{{headingKeyword}} etc.</span></h2>
       <p>Use search for better results</p>
-      <div>
-        <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
-      </div>
-     </div>
+    </div>
+    <div class="input-box">
+      <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
+    </div>
+  </div>
 </app-bottom-menu>

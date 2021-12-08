@@ -20,7 +20,6 @@
         </form>              
     </div>
     <div class="article-body">
-        
         <div class="article-box recent-three-articles">
             <h3 class="heading">Recent Released Articles</h3>
             <div class="article-box-inner">
@@ -81,7 +80,7 @@
             </div>
         </div>
         <div class="load-more-btn-area">
-            <button class="btn-red-bg">LOAD MORE ARTICLES</button>
+            <button class="btn-red-bg" (click)="$event.stopPropagation();fetchArticles()">LOAD MORE ARTICLES</button>
         </div>
         <div class="more-about-shopping">
             <h3 class="heading-3">More about shopping on Moglix</h3>

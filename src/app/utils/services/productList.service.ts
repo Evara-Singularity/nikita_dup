@@ -392,6 +392,8 @@ export class ProductListService {
     const productMrp = product['priceMrp'];
     const productPrice = product['priceWithTax'];
     const priceWithoutTax = product['priceWithoutTax'];
+    //ODP 1837(Temporary Fix)
+    if (product.productImage.charAt(0) == "/") product.productImage = product.productImage.substr(1);					
     return {
       moglixPartNumber: partNumber,
       moglixProductNo: product['moglixProductNo'] || null,

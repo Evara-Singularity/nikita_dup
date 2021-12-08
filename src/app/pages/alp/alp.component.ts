@@ -112,7 +112,6 @@ export class AlpComponent implements OnInit
             this._response.status(404);
             return;
         }
-        if (!this.showPageNotFound) {
             let attributeListing = this.alpAttrListingData['data']['attributesListing'];
             this.titleHeading = attributeListing['title']
             this.pageDescription = attributeListing['pageDescription'];
@@ -120,7 +119,6 @@ export class AlpComponent implements OnInit
             this.metaDescription = attributeListing['metaDescription'];
             this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
             this.fetchCIMSRelatedData();
-        }
     }
 
     fetchCIMSRelatedData()

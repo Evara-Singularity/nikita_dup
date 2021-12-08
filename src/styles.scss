@@ -654,7 +654,7 @@ header-nav {
     content: "\e921";
 }
 
-.icon-delivery:before {
+.icon-prepaid:before {
     content: "\e922";
 }
 
@@ -1132,3 +1132,74 @@ header-nav {
     content: "\e9c8";
     color:#D9232D;
 }
+
+
+
+[class^="st-icon-"] {
+    display: inline-block;
+    vertical-align: top;
+    white-space: nowrap;
+    /* child elements absolute */
+    position: relative;
+    /* remove inline-block white-space */
+    margin-right: -.16em; /* 5px */
+    /* if not already universally applied */
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /* padding here for text, icons replicate this using size and position:absolute - padding makes touch-target bigger */
+    padding: 0.143em;
+    /* units used in font: 1em = 2048, icons 2400 wide, so icons are 1.171875em (2400/2048). Add padding x2 to get size: */
+    height: 1.45788em;
+    width: 1.45788em;
+    font-size: 1.815em;
+    /* text hidden old-school */
+    text-align: left;
+    text-indent: -9999px; 
+}
+
+// [class^="st-icon-"]:before,
+// [class^="st-icon-"]:after,
+[class^="st-icon-"] span:before
+// [class^="st-icon-"] span:after 
+{
+  display: block;
+  position: absolute;
+  white-space: normal;
+  /* match padding above */
+  top: 0.143em;
+  left: 0.143em;
+  /* undo text hidden */
+  text-indent: 0;
+  /* inherits size from parent, ems cascade */
+  font-family: 'icomooon_pwa' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ }
+
+
+
+    .icon-prepaid_1:before {
+        content: "\e9f2";
+        color:#EFEFF4;
+      }
+      .icon-prepaid_2:before {
+        content: "\e9f3";
+        color:#43B7D9;
+      }
+      .icon-prepaid_3:before {
+        content: "\e9f4";
+        color:#54D8FE;
+      }
+      .icon-prepaid_4:before {
+        content: "\e9fa";
+        color:#399091;
+      }
+      .icon-prepaid_5:before {
+        content: "\e9fb";
+        color:#F6E557
+      }

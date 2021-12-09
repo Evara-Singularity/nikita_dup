@@ -610,6 +610,9 @@
         <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
+        <!--ODP-1779 Past Order-->
+        <past-orders *ngIf="isBrowser"></past-orders>
+        <!--ODP-1779 Past Order-->
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>

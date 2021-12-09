@@ -489,6 +489,11 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
+    onVisiblePastOrders($event)
+    {
+
+    }
+
     onVisibleReviews($event)
     {
         this.setReviewsRatingData(this.rawReviewsData);

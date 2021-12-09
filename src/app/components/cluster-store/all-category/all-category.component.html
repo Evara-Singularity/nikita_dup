@@ -1,4 +1,4 @@
-<div class="allCategoryBlock bg-white">
+<div class="allCategoryBlock bg-white" *ngIf="data['data']">
   <h3 class="l0_heading">{{data.title}}({{data['data'].length}})</h3>
   <ul class="clearfix">
       <li *ngFor="let item of data['data'] | slice:0:5;let i=index">
@@ -9,7 +9,7 @@
               </div>
               <p class="categoryName">{{item['CategoryName']}}</p>
           </div>
-      </li>
+      </li> 
       <li *ngIf ="data['data'].length > 5" (click)="openPopup = true;" class="view_all_category">
           <div class="inner_category">
               <div class="viewall_category">

@@ -1,4 +1,4 @@
-<div class="featuredBanner">
+<div class="featuredBanner" *ngIf="data['data']">
   <div class ="featrBannerBlock">
         <div [style.width.px]="data['data'].length * 350">
               <div class ="featrBannerSlide" *ngFor="let item of data['data'];let i=index" >

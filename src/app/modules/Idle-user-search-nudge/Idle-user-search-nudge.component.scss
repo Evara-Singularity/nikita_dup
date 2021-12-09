@@ -1,34 +1,31 @@
 .idle-search-container {
-    .cross-btn{
+    position: relative;
+    i {
+        position: absolute;
+        font-size: 20px;
+        width: 30px;
+        right: 0px;
         display: flex;
         justify-content: flex-end;
-        color: #303030;
-        border-top: 1px solid #EFEFF4;
         padding: 20px !important;
-        i{
-            font-size:20px;
-            width:30px;
-           
-        }
-            
     }
     .text-box {
-        padding: 0px 40px 20px;
+        padding: 50px 40px 20px;
         h1,
         h2,
         p {
             text-align: center;
         }
-        h1{
+        h1 {
             font-size: 26px;
             line-height: 32px;
         }
-        h2{
+        h2 {
             font-size: 24px;
             line-height: 32px;
             font-weight: 400;
         }
-        p{
+        p {
             font-size: 16px;
             line-height: 32px;
         }
@@ -37,25 +34,25 @@
         background-color: #f7cc7d;
         padding: 30px 40px 20px;
         position: relative;
-        .top-search-box{
+        .top-search-box {
             background-color: #ffffff;
             border-radius: 8px;
             height: 50px;
             position: relative;
-            box-shadow: 0px 0px 6px #F5681E;
-            input{
+            box-shadow: 0px 0px 6px #f5681e;
+            input {
                 padding: 0px 20px;
                 border: none;
                 height: 50px;
                 margin-left: 10px;
             }
-            .icon-search{
+            .icon-search {
                 position: absolute;
                 top: 17px;
                 left: 10px;
                 font-size: 15px;
             }
-        } 
+        }
         .triangle-down {
             position: absolute;
             top: -1px;

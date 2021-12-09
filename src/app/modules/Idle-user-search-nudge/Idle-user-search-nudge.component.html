@@ -16,6 +16,7 @@
 </div> -->
 <app-bottom-menu *ngIf="common.isBrowser && enableNudge">
   <div class="idle-search-container" content>
+    <div class="cross-btn"><i class="icon-circle-delete" (click)="close()" ></i> </div>
     <div class="text-box">
       <h1>
         Looking for <br />
@@ -24,7 +25,9 @@
       <p>Use search for better results</p>
     </div>
     <div class="input-box">
-      <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
+      <div class="triangle-down"></div>
+      <input type="text" placeholder="Search for any products..." style="width: 100%;" (focus)="openSearchPopup()" />
+      
     </div>
   </div>
 </app-bottom-menu>

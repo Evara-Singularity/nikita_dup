@@ -297,7 +297,7 @@ app-search-bar {
 
 //search screen 
 section.search-popup {
-    padding: 10px 15px;
+    padding: 10px 10px;
 }
 
 .popularCategoryHeading {
@@ -317,7 +317,8 @@ section.search-popup {
 
 .search_product_categories {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow: scroll;
     .search_product_category {
         display: inline-flex;
         align-items: center;
@@ -325,15 +326,13 @@ section.search-popup {
         border-radius: 8px;
         padding: 5px;
         margin-right: 10px;
-        width: 48%;
+        flex: 0 0 48%;
         margin-bottom: 10px;
-        overflow: hidden;
+        overflow: auto;
         &.brand {
             justify-content: center;
         }
-        &:nth-child(even) {
-            margin-right: 0px;
-        }
+        
         img {
             width: 36px;
         }
@@ -370,4 +369,10 @@ section.search-popup {
     &.brand {
         justify-content: center;
     }
+}
+.similar-prod{
+    padding: 0px !important;
+}
+.card{
+    border: none;
 }

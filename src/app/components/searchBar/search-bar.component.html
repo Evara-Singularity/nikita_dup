@@ -20,7 +20,7 @@
         </div>
         <div class="ac_results search-result" *ngIf="showSuggestionBlock" id="ac_results">
             <div class="container">
-                <div class="search_suggestion">
+                <!-- <div class="search_suggestion">
                     <h3 class="search_heading">Popular Suggestions</h3>
                     <ul class="plan-list">
                         <ng-container *ngFor="let prod of suggestionList | slice:0:5; let i = index;">
@@ -28,13 +28,11 @@
                                 <span class="search-text">{{prod.term}}</span>
                                 <div class="search-count">
                                     <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>
-                                    <!-- <img (click)="handleSendTextToSearchBar(prod.term, $event)" src="{{imageAssetPath}}assets/img/interface.png"> -->
                                     <i (click)="handleSendTextToSearchBar(prod.term, $event)" class="icon-share-box-line interfaceIcon"></i>
                                 </div>
                             </li>
                         </ng-container>
                     </ul>
-                    <!--categories-->
                     <ng-container *ngIf="categorySuggestionList.length > 0">
                         <h3 class="search_heading rel-cat">Relevant Categories</h3>
                         <div class="search_product_categories">
@@ -54,7 +52,7 @@
                             </div>
                         </ng-container>
                     </ng-container>
-                </div>
+                </div> -->
                 <section class="Bestseller card similar-prod" *ngIf="searchProducts && searchProducts.length>0">
                     <div class="upper-view-all-sec">
                         <div class="upper-view-all-sec-left">

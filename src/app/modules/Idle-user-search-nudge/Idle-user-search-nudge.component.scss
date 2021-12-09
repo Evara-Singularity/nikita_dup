@@ -1,12 +1,55 @@
-.idle-search-container{
-    .text-box{
-        padding: 20px;
-        h1, h2, p{
+.idle-search-container {
+    .cross-btn{
+        display: flex;
+        justify-content: flex-end;
+        color: #303030;
+        border-top: 1px solid #EFEFF4;
+        padding: 20px !important;
+        i{
+            font-size:20px;
+            width:30px;
+           
+        }
+            
+    }
+    .text-box {
+        padding: 0px 30px 20px;
+        h1,
+        h2,
+        p {
             text-align: center;
         }
+        h1{
+            font-size: 26px;
+            line-height: 32px;
+        }
+        h2{
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 400;
+        }
+        p{
+            font-size: 16px;
+            line-height: 32px;
+        }
     }
-    .input-box{
+    .input-box {
         background-color: #f7cc7d;
-        padding: 20px;
+        padding: 40px 30px 20px;
+        position: relative;
+        input{
+            height: 40px;
+        }
+        .triangle-down {
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 15px solid #fff;
+        }
     }
 }

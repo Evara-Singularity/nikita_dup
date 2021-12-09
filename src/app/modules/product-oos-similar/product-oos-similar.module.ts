@@ -5,11 +5,13 @@ import { ProductOosSimilarCardComponent } from "./product-oos-similar-card/produ
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { RouterModule } from "@angular/router";
+import { SwipeDirectiveModule } from "@app/utils/directives/swipe.directive";
 
 @NgModule({
   declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
   imports: [
     RouterModule,
+    SwipeDirectiveModule,
     CommonModule,
     MathFloorPipeModule,
     SliceArrayPipeModule,

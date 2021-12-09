@@ -1894,7 +1894,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
             "showAllKeyFeatureClickEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
-          this.handleProductInfoPopup('key features', 'show all specifications', data)
+          this.handleProductInfoPopup(
+            "key features",
+            "show all specifications",
+            data
+          );
         });
       }
     }
@@ -2850,6 +2854,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
           delete schema["offers"]["availability"];
         } else if (this.priceQuantityCountry["quantityAvailable"] == 0) {
           delete schema["offers"]["availability"];
+        }
+        if (
+          this.rawReviewsData?.summaryData?.final_average_rating === 0 ||
+          null ||
+          ""
+        ) {
+          delete schema["aggregateRating"];
         }
 
         s.text = JSON.stringify(schema);

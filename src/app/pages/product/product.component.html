@@ -9,7 +9,7 @@
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
             </span>
             <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img
-                    src="assets/img/similar-ico.svg"></span>
+                    src="{{imagePathAsset}}assets/img/similar-ico.svg"></span>
         </div>
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
@@ -239,7 +239,7 @@
             <div class="moglix-ben-n-ret-policy-InnerContainer">
                 <div class="moglix-ben-n-ret-policy-Inner">
                     <span class="returnImg">
-                        <img src="assets/img/gst-invo.svg" height="16px" width="16px">
+                        <img src="{{imagePathAsset}}assets/img/gst-invo.svg" height="16px" width="16px">
                     </span>
                     <span class="returnTxt benefits-txt">
                         GST Invoice<br> Available
@@ -247,7 +247,7 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner">
                     <span class="returnImg">
-                        <img src="assets/img/secure-payment-fill.svg" height="16px" width="16px">
+                        <img src="{{imagePathAsset}}assets/img/secure-payment-fill.svg" height="16px" width="16px">
                     </span>
                     <span class="returnTxt benefits-txt">
                         Secure <br> Payments
@@ -255,50 +255,67 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner">
                     <span class="returnImg">
-                        <img src="assets/img/customer-service-fill.svg" height="16px" width="16px">
+                        <img src="{{imagePathAsset}}assets/img/customer-service-fill.svg" height="16px" width="16px">
                     </span>
                     <span class="returnTxt benefits-txt">
                         365 Days <br> Help Desk
                     </span>
                 </div>
             </div>
-            <h2 class="heading-3"> Return Policy</h2>
-            <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="assets/img/restart-line.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Upto 7 days <br /> returnable
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="assets/img/wrong-pro.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Wrong <br /> Product
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="assets/img/restart-line-3.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Damaged <br /> Product
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="assets/img/thumb-down-button.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Defective <br />Product
-                    </span>
-                </div>
+            <div class="moglix-ben-n-ret-policy-Inner">
+                <span class="returnImg">
+                    <img src="assets/img/secure-payment-fill.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt benefits-txt">
+                    Secure <br> Payments
+                </span>
+            </div>
+            <div class="moglix-ben-n-ret-policy-Inner">
+                <span class="returnImg">
+                    <img src="assets/img/customer-service-fill.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt benefits-txt">
+                    365 Days <br> Help Desk
+                </span>
             </div>
         </div>
-        <!-- <div class="payments-block">
+        <h2 class="heading-3"> Return Policy</h2>
+        <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
+            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/restart-line.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    Upto 7 days <br /> returnable
+                </span>
+            </div>
+            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/wrong-pro.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    Wrong <br /> Product
+                </span>
+            </div>
+            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/restart-line-3.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    Damaged <br /> Product
+                </span>
+            </div>
+            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                <span class="returnImg">
+                    <img src="{{imagePathAsset}}assets/img/thumb-down-button.svg" height="16px" width="16px">
+                </span>
+                <span class="returnTxt">
+                    Defective <br />Product
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="payments-block">
             <ul class="deals-list">
                 <li class="clearfix">
                     <span class="gst-icon">
@@ -311,354 +328,353 @@
                 </li>
             </ul>
         </div> -->
-        <div class="pdp-section-header">
-            <h3 class="heading-3">
-                About This Product
-            </h3>
-        </div>
-        <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
-            <h2 class="heading-3">Key Features</h2>
-            <ul class="feature-list">
-                <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
-                    <p>
-                        <span>{{feature}}.</span>
-                    </p>
-                </li>
-            </ul>
-            <div (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
-                <span>Show All Key Features</span>
-            </div>
-        </div>
-
-        <div class="product-specification" *ngIf=" productAttributes != null">
-            <h2 class="heading-3">Product Specifications</h2>
-            <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td class="left">
-                        <div>Brand</div>
-                    </td>
-                    <td class="right">
-                        <div>
-                            <a class="brandName"
-                                (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:3s">
-                    <td class="left">
-                        <div>{{attr.key}}</div>
-                    </td>
-                    <td class="right">
-                        <div *ngFor="let item of attr.value">
-                            {{item}}
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')"
-                class="show-all-strip spec">
-                <span>Show All Specifications</span>
-            </div>
-        </div>
-
-        <div class="prod-detail">
-            <h2 class="heading-3">Product Details</h2>
-            <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
-                <p [innerHTML]="this.productDescripton"></p>
-                <p class="static-desc"> Browse through the extensive list of
-                    <a class="blueText"
-                        (click)="navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
-                        {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                    <a class="blueText" (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails ?
-                        productBrandDetails['brandName'] : ''}}
-                        {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
-                </p>
-            </ng-container>
-            <ng-template #noProdDesc>
-                <p>
-                    {{productName}} is a premium quality product from {{productBrandDetails ?
-                    productBrandDetails['brandName'] : ''}}. Moglix is a
-                    well-known ecommerce platform for qualitative range of <a class="blueText"
-                        (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails ?
-                        productCategoryDetails['categoryName'] : ''}}</a>.
-                    All {{productName}} are manufactured by using quality assured material and advanced techniques,
-                    which make them up to the standard in this highly challenging field. The materials utilized to
-                    manufacture {{productName}}, are sourced
-                    from the most reliable and official vendors, chosen after performing detailed market surveys.
-                    {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely acknowledged in
-                    the market for their high
-                    quality. We are dedicatedly involved in
-                    providing an excellent quality array of <a class="blueText"
-                        (click)="navigateLink('/'+productBrandCategoryUrl)">
-                        {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
-                        {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</a>.
-                </p>
-            </ng-template>
-            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
-                <span>Read More</span>
-            </div>
-        </div>
-
-
-
-        <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
-            <h2 class="heading-3">Product Videos</h2>
-            <div [style.width]="productVideos.length * 252">
-                <div class="prod-desc-video-container clearfix">
-                    <div *ngFor="let video of productVideos" class="prod-desc-video">
-                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])"
-                            type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg"
-                            border="border of the image" alt="text">
-                        <img [src]="video['link'] | ytthumbnail:'hqdefault'">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
-            (visible)="getFbtIntance($event)">
-            <ng-container #fbt></ng-container>
-        </section>
-
-        <section *ngIf="productDocumentInfo && productDocumentInfo.length > 0" class="pdf_section">
-            <h3>Product Specification Document</h3>
-            <div class="pdf_list">
-                <ng-container *ngFor="let pdf of productDocumentInfo">
-                    <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
-                        <div class="pdf_link clearfix">
-                            <span class="pdf-img">
-                                <img src="{{imagePathAsset}}assets/img/download.svg">
-                            </span>
-                            <div class="pdf-text">
-                                <h4>{{pdf.name}}</h4>
-                                <span>DOWNLOAD NOW</span>
-                            </div>
-                        </div>
-                    </a>
-                </ng-container>
-            </div>
-        </section>
-
-        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-            <ng-container #similarProduct></ng-container>
-        </section>
-        <!--widgets section-->
-        <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
-                class="widget-items">
-                <span class="content-wrap">
-                    <p>More from {{productCategoryDetails['categoryName']}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
-            </a>
-
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
-                class="widget-items">
-                <span class="content-wrap">
-                    <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
-                        {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <!-- <span>From ₹999</span> -->
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
-            </a>
-        </section>
-        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
-            <ng-container #sponseredProducts></ng-container>
-        </section>
-
-        <section class="pdp-section-card" id="reviewSection">
-            <div class="pwa-row">
-                <div class="pwa-col-6">
-                    <p class="heading-3">Reviews & Ratings</p>
-                </div>
-                <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
-                    <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
-                </div>
-            </div>
-
-            <div class="pwa-row" *ngIf="overallRating < 1">
-                <p class="review_text">
-                    Be the first one to provide review for this product
-                </p>
-                <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
-            </div>
-            <div class="pwa-row" *ngIf="overallRating > 0">
-                <p class="extra-small-txt">
-                    Customer Reviews on {{ productName}}
-                </p>
-            </div>
-            <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
-                <div class="pwa-col-6">
-                    <div class="overall-rating">
-                        <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
-                        </h3>
-                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
-                            ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
-                    </div>
-                </div>
-                <div class="pwa-col-6">
-                    <div class="rating-scale">
-                        <div class="inner-scale">
-                            <span>5</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar dark-green"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>4</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar light-green"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>3</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar yellow"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>2</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar light-red"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>1</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar red"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;let i=index" class="reviewRow">
-                <div class="pwa-row innerRow">
-                    <div class="pwa-col-6 reviewRow-col">
-                        <div class="small-stars">
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 1"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 2"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 3"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 4"></i>
-                        </div>
-                        <p>{{review?.user_name}}</p>
-                        <p class="small-txt grey-txt cust-date">
-                            {{ review?.date_unix | date: 'longDate' }}
-                        </p>
-                    </div>
-                    <div class="pwa-col-6 align-right">
-                        <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
-                    </div>
-                    <div>
-                        <h3 class="heading-3-txt">
-                            {{ review?.review_subject }}
-                        </h3>
-                        <p class="content">
-                            {{ review?.review_text }}
-                        </p>
-                    </div>
-                </div>
-                <div class="pwa-row like-unlikeRow">
-                    <div class="pwa-col-6">
-                        <!-- <strong>Report Abuse</strong> -->
-                    </div>
-                    <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
-                            <span class="small-txt">{{review.yes}}</span>
-                            <i class="icon-like"></i>
-                        </button>
-                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
-                            <span class="small-txt">{{review.no}}</span>
-                            <i class="icon-dislike"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
-                (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
-            </div>
-        </section>
-        <section class="Qa" *ngIf="questionAnswerList">
-            <div class="">
-                <p class="heading-3">Questions & Answers</p>
-                <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
-                    <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text"
-                        placeholder="Have a Question?">
-                    <button [disabled]="questionAnswerForm.invalid" (click)="postUserQuestion()">SUBMIT</button>
-                </form>
-                <!-- search space  -->
-                <p class="display-qn"
-                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
-                    Displaying Questions
-                    <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
-                    <span>{{questionAnswerList['data']['totalCount']}} </span>
-                </p>
-                <ng-container
-                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
-                    <div class="qn-block" *ngFor="let item of questionAnswerList['data']['qlist'];let i=index">
-                        <div class="question clearfix">
-                            <span class="qn-number">Q{{i+1}}.</span>
-                            <p class="qn-txt">{{item.questionText}}</p>
-                        </div>
-                        <div class="answers">
-                            <div class="answer-block">
-                                <p class="answer">{{item.answerText}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-        </section>
-        <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
-            <ng-container #pdpAccordian></ng-container>
-        </section>
-        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
-            (visible)="onVisibleAppPromo($event)">
-            <ng-container #appPromo></ng-container>
-        </div>
-        <section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
-            [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
-            <ng-container #recentProducts></ng-container>
-            <div class="loader_container" *ngIf="!recentProductsInstance">
-                <div class="loader"></div>
-            </div>
-        </section>
-
-        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
-            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-        </ng-container>
-        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
-            <ng-container #similarProductOOS></ng-container>
-        </section>
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            About This Product
+        </h3>
     </div>
-    <!-- other sections ends -->
+    <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
+        <h2 class="heading-3">Key Features</h2>
+        <ul class="feature-list">
+            <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
+                <p>
+                    <span>{{feature}}.</span>
+                </p>
+            </li>
+        </ul>
+        <div (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
+            <span>Show All Key Features</span>
+        </div>
+    </div>
 
-    <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
-    <ng-container #rfqForm></ng-container>
-    <ng-container #offerPopup></ng-container>
-    <ng-container #offerComparePopup></ng-container>
-    <ng-container #writeReviewPopup></ng-container>
-    <ng-container #alertBox></ng-container>
-    <ng-container #globalToast></ng-container>
-    <ng-container #emiPlansPopup></ng-container>
-    <ng-container #reviewRatingPopup></ng-container>
-    <ng-container #questionAnswersPopup></ng-container>
-    <ng-container #productInfoPopup></ng-container>
+    <div class="product-specification" *ngIf=" productAttributes != null">
+        <h2 class="heading-3">Product Specifications</h2>
+        <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="left">
+                    <div>Brand</div>
+                </td>
+                <td class="right">
+                    <div>
+                        <a class="brandName"
+                            (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:3s">
+                <td class="left">
+                    <div>{{attr.key}}</div>
+                </td>
+                <td class="right">
+                    <div *ngFor="let item of attr.value">
+                        {{item}}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div (click)="handleProductInfoPopup('specifications', 'show all specifications')" class="show-all-strip spec">
+            <span>Show All Specifications</span>
+        </div>
+    </div>
+
+    <div class="prod-detail">
+        <h2 class="heading-3">Product Details</h2>
+        <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
+            <p [innerHTML]="this.productDescripton"></p>
+            <p class="static-desc"> Browse through the extensive list of
+                <a class="blueText"
+                    (click)="navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
+                    {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
+                <a class="blueText" (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails ?
+                    productBrandDetails['brandName'] : ''}}
+                    {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
+            </p>
+        </ng-container>
+        <ng-template #noProdDesc>
+            <p>
+                {{productName}} is a premium quality product from {{productBrandDetails ?
+                productBrandDetails['brandName'] : ''}}. Moglix is a
+                well-known ecommerce platform for qualitative range of <a class="blueText"
+                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails ?
+                    productCategoryDetails['categoryName'] : ''}}</a>.
+                All {{productName}} are manufactured by using quality assured material and advanced techniques,
+                which make them up to the standard in this highly challenging field. The materials utilized to
+                manufacture {{productName}}, are sourced
+                from the most reliable and official vendors, chosen after performing detailed market surveys.
+                {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely acknowledged in
+                the market for their high
+                quality. We are dedicatedly involved in
+                providing an excellent quality array of <a class="blueText"
+                    (click)="navigateLink('/'+productBrandCategoryUrl)">
+                    {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
+                    {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</a>.
+            </p>
+        </ng-template>
+        <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
+            <span>Read More</span>
+        </div>
+    </div>
+
+
+
+    <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
+        <h2 class="heading-3">Product Videos</h2>
+        <div [style.width]="productVideos.length * 252">
+            <div class="prod-desc-video-container clearfix">
+                <div *ngFor="let video of productVideos" class="prod-desc-video">
+                    <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])"
+                        type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg" border="border of the image"
+                        alt="text">
+                    <img [src]="video['link'] | ytthumbnail:'hqdefault'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
+        (visible)="getFbtIntance($event)">
+        <ng-container #fbt></ng-container>
+    </section>
+
+    <section *ngIf="productDocumentInfo && productDocumentInfo.length > 0" class="pdf_section">
+        <h3>Product Specification Document</h3>
+        <div class="pdf_list">
+            <ng-container *ngFor="let pdf of productDocumentInfo">
+                <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
+                    <div class="pdf_link clearfix">
+                        <span class="pdf-img">
+                            <img src="{{imagePathAsset}}assets/img/download.svg">
+                        </span>
+                        <div class="pdf-text">
+                            <h4>{{pdf.name}}</h4>
+                            <span>DOWNLOAD NOW</span>
+                        </div>
+                    </div>
+                </a>
+            </ng-container>
+        </div>
+    </section>
+
+    <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+        <ng-container #similarProduct></ng-container>
+    </section>
+    <!--widgets section-->
+    <section class="widget-container" *ngIf="productCategoryDetails">
+        <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+            class="widget-items">
+            <span class="content-wrap">
+                <p>More from {{productCategoryDetails['categoryName']}}</p>
+                <span class="explore-now">Explore Now</span>
+            </span>
+            <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+        </a>
+
+        <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
+            class="widget-items">
+            <span class="content-wrap">
+                <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
+                    {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
+                <span class="explore-now">Explore Now</span>
+            </span>
+            <!-- <span>From ₹999</span> -->
+            <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+        </a>
+    </section>
+    <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+        <ng-container #sponseredProducts></ng-container>
+    </section>
+
+    <section class="pdp-section-card" id="reviewSection">
+        <div class="pwa-row">
+            <div class="pwa-col-6">
+                <p class="heading-3">Reviews & Ratings</p>
+            </div>
+            <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
+                <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+            </div>
+        </div>
+
+        <div class="pwa-row" *ngIf="overallRating < 1">
+            <p class="review_text">
+                Be the first one to provide review for this product
+            </p>
+            <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+        </div>
+        <div class="pwa-row" *ngIf="overallRating > 0">
+            <p class="extra-small-txt">
+                Customer Reviews on {{ productName}}
+            </p>
+        </div>
+        <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
+            <div class="pwa-col-6">
+                <div class="overall-rating">
+                    <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
+                    </h3>
+                    <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
+                        ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
+                </div>
+            </div>
+            <div class="pwa-col-6">
+                <div class="rating-scale">
+                    <div class="inner-scale">
+                        <span>5</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar dark-green"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>4</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar light-green"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>3</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar yellow"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>2</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar light-red"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>1</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar red"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;let i=index" class="reviewRow">
+            <div class="pwa-row innerRow">
+                <div class="pwa-col-6 reviewRow-col">
+                    <div class="small-stars">
+                        <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>
+                        <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 1"></i>
+                        <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 2"></i>
+                        <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 3"></i>
+                        <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 4"></i>
+                    </div>
+                    <p>{{review?.user_name}}</p>
+                    <p class="small-txt grey-txt cust-date">
+                        {{ review?.date_unix | date: 'longDate' }}
+                    </p>
+                </div>
+                <div class="pwa-col-6 align-right">
+                    <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
+                </div>
+                <div>
+                    <h3 class="heading-3-txt">
+                        {{ review?.review_subject }}
+                    </h3>
+                    <p class="content">
+                        {{ review?.review_text }}
+                    </p>
+                </div>
+            </div>
+            <div class="pwa-row like-unlikeRow">
+                <div class="pwa-col-6">
+                    <!-- <strong>Report Abuse</strong> -->
+                </div>
+                <div class="pwa-col-6 align-right">
+                    <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
+                        (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                        <span class="small-txt">{{review.yes}}</span>
+                        <i class="icon-like"></i>
+                    </button>
+                    <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
+                        (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
+                        <span class="small-txt">{{review.no}}</span>
+                        <i class="icon-dislike"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
+            (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
+        </div>
+    </section>
+    <section class="Qa" *ngIf="questionAnswerList">
+        <div class="">
+            <p class="heading-3">Questions & Answers</p>
+            <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
+                <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text"
+                    placeholder="Have a Question?">
+                <button [disabled]="questionAnswerForm.invalid" (click)="postUserQuestion()">SUBMIT</button>
+            </form>
+            <!-- search space  -->
+            <p class="display-qn"
+                *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
+                Displaying Questions
+                <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
+                <span>{{questionAnswerList['data']['totalCount']}} </span>
+            </p>
+            <ng-container
+                *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
+                <div class="qn-block" *ngFor="let item of questionAnswerList['data']['qlist'];let i=index">
+                    <div class="question clearfix">
+                        <span class="qn-number">Q{{i+1}}.</span>
+                        <p class="qn-txt">{{item.questionText}}</p>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-block">
+                            <p class="answer">{{item.answerText}}</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </section>
+    <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
+        <ng-container #pdpAccordian></ng-container>
+    </section>
+    <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+        (visible)="onVisibleAppPromo($event)">
+        <ng-container #appPromo></ng-container>
+    </div>
+    <section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
+        [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+        <ng-container #recentProducts></ng-container>
+        <div class="loader_container" *ngIf="!recentProductsInstance">
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+    </ng-container>
+    <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+        <ng-container #similarProductOOS></ng-container>
+    </section>
+</div>
+<!-- other sections ends -->
+
+<ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
+<ng-container #rfqForm></ng-container>
+<ng-container #offerPopup></ng-container>
+<ng-container #offerComparePopup></ng-container>
+<ng-container #writeReviewPopup></ng-container>
+<ng-container #alertBox></ng-container>
+<ng-container #globalToast></ng-container>
+<ng-container #emiPlansPopup></ng-container>
+<ng-container #reviewRatingPopup></ng-container>
+<ng-container #questionAnswersPopup></ng-container>
+<ng-container #productInfoPopup></ng-container>
 </div>
 
 <ng-container #addToCartToast></ng-container>

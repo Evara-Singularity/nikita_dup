@@ -123,7 +123,7 @@ export class AlpComponent implements OnInit
     fetchCIMSRelatedData()
     {
         this._commonService.showLoader = false;
-        const ict = this.alpCategoryCodeData['active'];
+        const ict = this.alpCategoryCodeData["categoryDetails"]['active'];
         const PRODUCT_COUNT = this.alpProductListingData['productSearchResult']['totalCount'];
         if (!ict || PRODUCT_COUNT === 0) {
             //TODO 1704 :NO PRODUCTS FOUND SHOULD COME HERE

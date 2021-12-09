@@ -1,8 +1,8 @@
-<div class="otherCategoryBlock trending">
+<div class="otherCategoryBlock trending" *ngIf="data['data']">
     <h3 class="l0_heading">{{data?.title}}</h3>
     <ul class="clearfix">
         <li *ngFor="let item of data['data'] | slice:0:4;let i=index">
-            <div [routerLink] ="['/'+item.image_link]" class="innerCategory">
+            <div [routerLink] ="['/'+item?.image_link]" class="innerCategory">
                 <div class="imgBlock">
                     <img alt="{{item['image_title']}}" src ="{{imagePath + item['image_name']}}">
                 </div>

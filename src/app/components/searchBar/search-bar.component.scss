@@ -376,3 +376,8 @@ section.search-popup {
 .card{
     border: none;
 }
+.card-vertical, .upper-view-all-sec{
+    &:first-child{
+        padding-left: 0px !important;
+    }
+}

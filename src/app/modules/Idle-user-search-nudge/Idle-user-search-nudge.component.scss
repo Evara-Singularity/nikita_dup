@@ -13,7 +13,7 @@
             
     }
     .text-box {
-        padding: 0px 30px 20px;
+        padding: 0px 40px 20px;
         h1,
         h2,
         p {
@@ -35,11 +35,27 @@
     }
     .input-box {
         background-color: #f7cc7d;
-        padding: 40px 30px 20px;
+        padding: 30px 40px 20px;
         position: relative;
-        input{
-            height: 40px;
-        }
+        .top-search-box{
+            background-color: #ffffff;
+            border-radius: 8px;
+            height: 50px;
+            position: relative;
+            box-shadow: 0px 0px 6px #F5681E;
+            input{
+                padding: 0px 20px;
+                border: none;
+                height: 50px;
+                margin-left: 10px;
+            }
+            .icon-search{
+                position: absolute;
+                top: 17px;
+                left: 10px;
+                font-size: 15px;
+            }
+        } 
         .triangle-down {
             position: absolute;
             top: -1px;

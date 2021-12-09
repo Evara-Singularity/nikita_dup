@@ -248,14 +248,14 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'main-article/:name',
+				path: 'main-articles',
 				loadChildren: () =>
-					import('./main-article/main-article.module').then((m) => m.MainArticleModule),
+					import('./main-articles/main-articles.module').then((m) => m.MainArticlesModule),
 				data: {
-					footer: false,
+					footer: true,
 					logo: true,
 					moreOpt: true,
-					pageName: 'main-article'
+					pageName: 'main-articles'
 				},
 			},
 			{

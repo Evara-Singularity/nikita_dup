@@ -24,8 +24,7 @@ export class MainArticlesResolver implements Resolve<any> {
             this.transferState.remove(MAIN_ARTICLES_KEY);
             return of([MAIN_ARTICLES_DATA])
         }
-        const name = (_activatedRouteSnapshot.params['name'] as string).trim();
-        const URL = "/cmsApi/getArticlesListByCategory?pageNumber=0&pageSize=1&categoryCode=1"
+        const URL = "/cmsApi/getArticlesListByCategory?categoryCode=all&pageNumber=0&pageSize=10"
         const MAIN_ARTICLES_URL = `${environment.BASE_URL}${URL}`;
         const REQUEST_ARRAY = [this._dataService.callRestful("GET", MAIN_ARTICLES_URL)];
         return forkJoin(REQUEST_ARRAY).pipe(

@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainArticlesResolver } from './../../utils/resolvers/main-articles.resolver';
-import { MainArticleComponent } from './main-article.component';
+import { MainArticlesResolver } from '../../utils/resolvers/main-articles.resolver';
+import { MainArticlesComponent } from './main-articles.component';
 const routes: Routes = [
     {
         path: '',
-        component: MainArticleComponent,
+        component: MainArticlesComponent,
         resolve: {
             responseData: MainArticlesResolver
         }
     }
 ];
 @NgModule({
-    declarations: [MainArticleComponent],
+    declarations: [MainArticlesComponent],
     imports: [
         CommonModule,
         RouterModule,
@@ -21,4 +21,4 @@ const routes: Routes = [
     ],
     providers: [MainArticlesResolver]
 })
-export class MainArticleModule { }
+export class MainArticlesModule { }

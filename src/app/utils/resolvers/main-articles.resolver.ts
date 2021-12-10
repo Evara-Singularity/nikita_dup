@@ -24,8 +24,7 @@ export class MainArticlesResolver implements Resolve<any> {
             this.transferState.remove(MAIN_ARTICLES_KEY);
             return of([MAIN_ARTICLES_DATA])
         }
-        const URL = "/cmsApi/getArticlesListByCategory?categoryCode=all&pageNumber=0&pageSize=10"
-        const MAIN_ARTICLES_URL = `${environment.BASE_URL}${URL}`;
+        const MAIN_ARTICLES_URL = `${environment.BASE_URL}/cmsApi/getArticlesListByCategory?categoryCode=all&pageNumber=0&pageSize=10`;
         const REQUEST_ARRAY = [this._dataService.callRestful("GET", MAIN_ARTICLES_URL)];
         return forkJoin(REQUEST_ARRAY).pipe(
             catchError((err) => { return of(err); }),

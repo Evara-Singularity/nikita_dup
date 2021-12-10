@@ -30,7 +30,6 @@ export class MainArticlesComponent implements OnInit
     isBrowser = false;
     isServer = false;
     pageNumber = 1;
-    pageSize = 1;
 
 
     constructor(private route: ActivatedRoute, private router: Router, private footerService: FooterService, private _commonService: CommonService, private toastMessageService: ToastMessageService,

@@ -3,7 +3,7 @@
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq" [class.in-instock]="!isOutOfStock">
             <div *ngIf="isOutOfStock" class="rfq_header">
-                <img height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
+                <i class="icon-dropbox-fill"></i>
                 <div class="rfq_header_text">
                     <h3 [class.ins-text]="!isOutOfStock">
                         <ng-container *ngIf="isOutOfStock"> Available on Request. </ng-container>

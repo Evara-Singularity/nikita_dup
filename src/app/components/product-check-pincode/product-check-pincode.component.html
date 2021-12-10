@@ -4,22 +4,7 @@
         <h3 class="heading-3">Delivery Details</h3>
         <div class="delivery-details-inner">
             <div class="delivery-details-inner-img">
-                <!-- <img src="assets/img/map-pin-fill.svg"> -->
-                <span class="st-icon-prepaid">
-                    <span class="icon-prepaid_1"></span>
-                    <span class="icon-prepaid_2"></span>
-                    <span class="icon-prepaid_3"></span>
-                    <span class="icon-prepaid_4"></span>
-                    <span class="icon-prepaid_5"></span>
-                </span>
-                <span class="st-icon-prepaid">
-                    <span class="icon-prepaid_1"></span>
-                    <span class="icon-prepaid_2"></span>
-                    <span class="icon-prepaid_3"></span>
-                    <span class="icon-prepaid_4"></span>
-                    <span class="icon-prepaid_5"></span>
-                </span>
-                <img src="assets/img/prepaid_payment.svg">
+               <i class="icon-map-pin-fill"></i>
             </div>
             <div class="delivery-details-inner-box">
                 <input (keyup)="checkPinocdeKey($event)"
@@ -36,14 +21,32 @@
         <p class="right-txt">Invalid pincode provided</p>
     </div>
     <div class="about-delivery" *ngIf="itemShippingAmount == 0">
-        <img src="assets/img/shipping.svg">
+        <span class="st-icon-shipping">
+            <span class="icon-delivery_1"></span>
+            <span class="icon-delivery_2"></span>
+            <span class="icon-delivery_3"></span>
+            <span class="icon-delivery_4"></span>
+            <span class="icon-delivery_5"></span>
+            <span class="icon-delivery_6"></span>
+            <span class="icon-delivery_7"></span>
+            <span class="icon-delivery_8"></span>
+        </span>
         <div class="about-delivery-txt">
             <h4 class="green-txt">Free Delivery</h4>
                     <span class="green-txt">No shipping charge on this order</span>
         </div>
     </div>
     <div class="about-delivery" *ngIf="itemShippingAmount>0">
-        <img src="assets/img/shipping.svg">
+        <span class="st-icon-shipping">
+            <span class="icon-delivery_1"></span>
+            <span class="icon-delivery_2"></span>
+            <span class="icon-delivery_3"></span>
+            <span class="icon-delivery_4"></span>
+            <span class="icon-delivery_5"></span>
+            <span class="icon-delivery_6"></span>
+            <span class="icon-delivery_7"></span>
+            <span class="icon-delivery_8"></span>
+        </span>
         <div class="about-delivery-txt">
             <h4>Shipping applicable - ₹{{itemShippingAmount}}</h4>
                     <span>On this order</span>
@@ -51,26 +54,49 @@
     </div>
     <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern')">
         <div class="about-delivery" *ngIf="isServiceable">
-            <img src="assets/img/delivery_available.svg">
+            <span class="st-icon-delivery_available">
+                <span class="icon-delivery_y_1"></span>
+                <span class="icon-delivery_y_2"></span>
+                <span class="icon-delivery_y_3"></span>
+                <span class="icon-delivery_y_4"></span>
+                <span class="icon-delivery_y_5"></span>
+            </span>
             <div class="about-delivery-txt">
                 <h4>Delivery available at {{pincode.value}} in {{deliveryDays}}</h4>
             </div>
         </div>
         <div class="about-delivery" *ngIf="!(isServiceable)">
-            <img src="assets/img/delivery_not_available.svg">
+            <span class="st-icon-delivery_not_available">
+                <span class="icon-delivery_n_1"></span>
+                <span class="icon-delivery_n_2"></span>
+                <span class="icon-delivery_n_3"></span>
+                <span class="icon-delivery_n_4"></span>
+                <span class="icon-delivery_n_5"></span>
+            </span>
             <div class="about-delivery-txt">
                 <h4 class="red-txt">Delivery unavailable at {{pincode.value}}</h4>
             </div>
         </div>
         <div class="about-delivery" *ngIf="isServiceable && (isCashOnDelivery)">
-            <img src="assets/img/cod.svg">
+            <span class="st-icon-cod">
+                <span class="icon-cod_1"></span>
+                <span class="icon-cod_2"></span>
+                <span class="icon-cod_3"></span>
+                <span class="icon-cod_4"></span>
+            </span>
             <div class="about-delivery-txt">
                 <h4 class="green-txt">COD Available</h4>
                 <span>You can pay at the time of delivery</span>
             </div>
         </div>
         <div class="about-delivery" *ngIf="!isCashOnDelivery">
-            <img src="assets/img/prepaid_payment.svg">
+            <span class="st-icon-prepaid">
+                <span class="icon-prepaid_1"></span>
+                <span class="icon-prepaid_2"></span>
+                <span class="icon-prepaid_3"></span>
+                <span class="icon-prepaid_4"></span>
+                <span class="icon-prepaid_5"></span>
+            </span>
             <div class="about-delivery-txt">
                 <h4>Prepaid payment only</h4>
             </div>

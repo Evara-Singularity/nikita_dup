@@ -9,7 +9,8 @@
                     <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_PWA_3x.png">
                 </a>
                 <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
-                    <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
+                    <!-- <img src="{{imgAssetPath}}assets/img/moglix-logo.svg"> -->
+                    <i class="icon-moglix_app_logo"></i>
                 </a>
             </div>
             <div class="f-right head-icons" [ngClass]="{'home-icons': isHomePage}" *ngIf="hideElLogin">
@@ -39,7 +40,8 @@
             <i *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')" [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()" class="icon-back" id="icon-back"></i>
             <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }} {{cartHeaderText}}</span>
             <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
-                <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
+                <!-- <img src="{{imgAssetPath}}assets/img/moglix-logo.svg"> -->
+                <i class="icon-moglix_app_logo"></i>
             </a>
             <a class="search-bar-mini" *ngIf="!isHomePage && !isLoginPage && !(routerData && routerData['title'])">
                 <i class="icon-search"></i>

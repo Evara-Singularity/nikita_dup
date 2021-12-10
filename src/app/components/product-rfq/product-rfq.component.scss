@@ -2,8 +2,10 @@
 .rfqForm {
     .rfq_header {
         display: flex;
-        img {
+        align-items:center;
+        i {
             width: 30px;
+            font-size:24px;
         }
         .rfq_header_text {
             margin-left: 15px;

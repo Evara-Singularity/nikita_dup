@@ -169,11 +169,8 @@ header {
         width: 5%;
     }
     .moglix-app-logo {
-        padding-right: 15px !important;
-        img {
-            width: 24px;
-            vertical-align: middle;
-            display: inline-block;
+        i {
+            font-size:24px;
         }
     }
     .search-bar-mini {

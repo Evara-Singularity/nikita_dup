@@ -101,8 +101,9 @@
             align-items: center;
             .delivery-details-inner-img{
                 width: 10%;
-                img{
-                    width: 24px;
+                i{
+                   font-size:24px;
+                   color:#D9232D;
                 }
             }
             .delivery-details-inner-box{
@@ -121,7 +122,7 @@
                     cursor: pointer;
                     position: absolute;
                     width: 30%;
-                    top: 0px;
+                    top: -1px;
                     right: -1px;
                     bottom: 0px;
                     border: none;
@@ -150,9 +151,8 @@
     &:last-child{
         border-bottom: 1px solid #E3E3E3;
     }
-    img{
+    span{
         width: 24px;
-        margin-right: 10px;
     }
     .about-delivery-txt{
         h4{

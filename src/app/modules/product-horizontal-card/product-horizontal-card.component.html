@@ -7,7 +7,7 @@
                 type="image" src="/assets/img/video_icon.svg" alt="text">
         </div>
     </div>
-    <a class="seo-hidden-link" [attr.href]="this.product.productUrl">{{product.productName}}</a>
+    <a class="s-h-l" [attr.href]="'/'+product.productUrl">{{product.productName}}</a>
     <!-- wrapper div for card class -->
     <div [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.enableCard}">
         <div class="card-container"

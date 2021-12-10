@@ -17,7 +17,7 @@ export class TypeAheadService {
   }
 
   getSuggession(query: string): any {
-    const url = CONSTANTS.NEW_MOGLIX_API +'/homepage/getsuggestion' + '?str=' + query;
+    const url = CONSTANTS.NEW_MOGLIX_API +'/homepage/getsuggestion' + '?str=' + encodeURIComponent(query);
     return this._dataService.callRestful('GET', url)
       .pipe(
         catchError((res: HttpErrorResponse) => {

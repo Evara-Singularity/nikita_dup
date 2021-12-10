@@ -105,7 +105,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     ) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
     } else {
-      this.setUserSession();
+      this.checkForUserAndCartSession();
     }
   }
 
@@ -165,7 +165,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
           });
           this._localStorageService.store("user", obj);
           this.handleRedirectionOfPages(queryParams);
-          this.setUserSession();
+          this.checkForUserAndCartSession();
         }
       });
   }
@@ -212,8 +212,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
      */
-
-    this.setUserSession();
     if (this.isBrowser) {
       this.checkAndRedirect();
       // this.dataService.startHistory();
@@ -282,61 +280,14 @@ export class PagesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  setUserSession() {
-    if (this.isBrowser) {
-      this._commonService
-        .getSession()
-        .pipe(map((res) => res))
-        .subscribe((res) => {
-          let userSession = this._localAuthService.getUserSession();
-          this._localAuthService.setUserSession(res);
-          // Below quick order condition is added because getcartbysession is called seperately on quick order page
-          if (
-            this.router.url.indexOf("/quickorder") == -1 &&
-            this.router.url.indexOf("/checkout") == -1
-          ) {
-            this.updateCartSession();
-          }
-          this._localAuthService.login$.next();
-        });
-    }
-  }
-
-  updateCartSession() {
-    const userSession = this._localAuthService.getUserSession();
-
-    let params = { sessionid: userSession.sessionId };
-    this._cartService.getCartBySession(params).subscribe((cartSession) => {
-      if (
-        cartSession["statusCode"] != undefined &&
-        cartSession["statusCode"] == 200
-      ) {
-        let cs = this._cartService.updateCart(cartSession);
-        this._cartService.setCartSession(cs);
-        const val =
-          cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0;
-        this._cartService.cart.next({ count: val });
-        this._cartService.orderSummary.next(cartSession);
-      } else if (
-        /**
-         * Below else if is used, because sometime we are getting session id missmatch. so updating session and cart
-         */
-        cartSession["statusCode"] != undefined &&
-        cartSession["statusCode"] == 202
-      ) {
-        let cs = this._cartService.updateCart(cartSession["cart"]);
-        this._cartService.setCartSession(cs);
-        const val =
-          cartSession["cart"]["cart"] != undefined
-            ? cartSession["cart"]["noOfItems"]
-            : 0;
-        this._cartService.cart.next(val);
-        this._cartService.orderSummary.next(cartSession["cart"]);
-
-        this._localAuthService.setUserSession(cartSession["userData"]);
-        this._localAuthService.logout$.emit();
+  checkForUserAndCartSession() {
+    this._cartService.checkForUserAndCartSessionAndNotify().subscribe(cartSessionStatus => {
+      if (cartSessionStatus) {
+        console.log('CART SESSION SUCCESSFUL.')
+      } else {
+        console.log('CART SESSION FAILED.')
       }
-    });
+    })
   }
 
   createHeaderData(_aRoute) {

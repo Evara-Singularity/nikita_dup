@@ -121,7 +121,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       map(productRawData => {
         console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
-          return this.getAddToCartProductRequest(productRawData['productBO'], buyNow);
+          return this._cartService.getAddToCartProductItemRequest({productGroupData: productRawData['productBO'], buyNow});
         } else {
           return null;
         }
@@ -160,7 +160,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       // console.log('productBO ==>', productBO);
       // productDetails will always have variants as it can be called by variant popup only
       if (this.variantPopupInstance) {
-        const productRequest = this.getAddToCartProductRequest(productBO, data.buyNow);
+        const productRequest = this._cartService.getAddToCartProductItemRequest({ productGroupData: productBO, buyNow: data.buyNow });
         const product = this.productEntityFromProductBO(productBO);
         const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
 
@@ -234,8 +234,6 @@ export class ProductHorizontalCardComponent implements OnInit {
       this._router.navigate(['/login'], navigationExtras);
     }
   }
-
-
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
@@ -324,29 +322,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     }
   }
 
-  private setOutOfStockFlag(priceQuantityCountry) {
-    let productOutOfStock = false
-    if (priceQuantityCountry) {
-      // incase outOfStockFlag of is avaliable then set its value
-      productOutOfStock = priceQuantityCountry['outOfStockFlag'];
-      // apart from outOfStockFlag if mrp is exist and is zero set product of OOS
-      if (priceQuantityCountry['mrp']) {
-        if (parseInt(priceQuantityCountry['mrp']) == 0) {
-          productOutOfStock = true;
-        }
-        if (parseInt(priceQuantityCountry['quantityAvailable']) == 0) {
-          productOutOfStock = true;
-        }
-      } else {
-        productOutOfStock = true;
-      }
-    } else {
-      // incase priceQuantityCountry element not present in API
-      productOutOfStock = true;
-    }
-    return productOutOfStock;
-  }
-
   private getRFQProduct(product) {
     const partNumber = product['partNumber'] || product['defaultPartNumber'];
     const isProductPriceValid = product['productPartDetails'][partNumber]['productPriceQuantity'] != null;
@@ -383,12 +358,12 @@ export class ProductHorizontalCardComponent implements OnInit {
       } else {
         if (result) {
           this.resetVariantData();
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
             this.showAddToCartToast();
             // analytics call
-            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
@@ -444,58 +419,6 @@ export class ProductHorizontalCardComponent implements OnInit {
       reviewCount: this.product.reviewCount
     };
     return product;
-  }
-
-  private getAddToCartProductRequest(productGroupData, buyNow): AddToCartProductSchema {
-    const partNumber = productGroupData['partNumber'] || productGroupData['defaultPartNumber'];
-    const isProductPriceValid = productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
-    const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
-    const productPartDetails = productGroupData['productPartDetails'][partNumber];
-    const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
-    const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
-      (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
-    const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
-    const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
-    const productBrandDetails = productGroupData['brandDetails'];
-    const productCategoryDetails = productGroupData['categoryDetails'][0];
-    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-    const quantityAvailable = (priceQuantityCountry && priceQuantityCountry['quantityAvailable']) ? priceQuantityCountry['quantityAvailable'] : 1;
-
-    const product = {
-      cartId: null,
-      productId: partNumber,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      amount: Number(productMrp),
-      offer: null,
-      amountWithOffer: null,
-      taxes: productTax,
-      amountWithTaxes: null,
-      totalPayableAmount: productPrice,
-      productName: productGroupData['productName'],
-      brandName: productBrandDetails['brandName'],
-      brandId: productBrandDetails['idBrand'],
-      priceWithoutTax: priceWithoutTax,
-      taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
-      productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
-      isPersistant: true,
-      productQuantity: productMinimmumQuantity,
-      quantityAvailable: quantityAvailable,
-      productUnitPrice: productPrice,
-      expireAt: null,
-      productUrl: productGroupData['defaultCanonicalUrl'],
-      bulkPriceMap: priceQuantityCountry['bulkPricesIndia'],
-      bulkPrice: null,
-      bulkPriceWithoutTax: null,
-      categoryCode: productCategoryDetails['categoryCode'],
-      taxonomyCode: productCategoryDetails['taxonomyCode'],
-      buyNow: buyNow,
-      filterAttributesList: productGroupData['filterAttributesList'] || null,
-      isOutOfStock: this.setOutOfStockFlag(priceQuantityCountry),
-      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-      category: productCategoryDetails['taxonomy']
-    } as AddToCartProductSchema;
-    return product
   }
 
   getRandomValue(arr, n) {

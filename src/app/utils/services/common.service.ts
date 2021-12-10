@@ -71,7 +71,6 @@ export class CommonService {
     private _loaderService: GlobalLoaderService,
     private _router: Router
   ) {
-    // this.getBusinessDetails();
     this.windowLoaded = false;
     let gaGtmData = this._localStorageService.retrieve("gaGtmData");
     this.gaGtmData = gaGtmData ? gaGtmData : {};
@@ -303,13 +302,13 @@ export class CommonService {
     const url = location.search.substring(1);
     const queryParams = url
       ? JSON.parse(
-          '{"' +
-            decodeURI(url)
-              .replace(/"/g, '\\"')
-              .replace(/&/g, '","')
-              .replace(/=/g, '":"') +
-            '"}'
-        )
+        '{"' +
+        decodeURI(url)
+          .replace(/"/g, '\\"')
+          .replace(/&/g, '","')
+          .replace(/=/g, '":"') +
+        '"}'
+      )
       : {};
     if (this.selectedFilterData.sortBy === "popularity") {
       delete queryParams["orderBy"];
@@ -1087,5 +1086,36 @@ export class CommonService {
 
   getUniqueGAId() {
     return this._dataService.getCookie("_ga");
+  }
+
+  redirectPostAuth(redirectURL: string) {
+    let routeData = this.getRouteData();
+    if (redirectURL) {
+      this.redirectCheck(redirectURL);
+    }
+    else if (routeData['previousUrl'] && routeData['previousUrl'] == '/') {
+      this.redirectCheck('/');
+    } else if (routeData['previousUrl'] && routeData['previousUrl'] != '' && routeData['previousUrl'] != '/login') {
+      this.redirectCheck(routeData['previousUrl']);
+    } else if (routeData['currentUrl'] && routeData['currentUrl'] != '' && routeData['currentUrl'] != '/login') {
+      this.redirectCheck(routeData['currentUrl']);
+    } else {
+      this.redirectCheck('/');
+    }
+  }
+
+  redirectCheck(url: string) {
+    const exceptUrl = ['login', 'otp', 'forgot-password', 'sign-up']
+    let contains = false;
+    exceptUrl.forEach(element => {
+      if (url.indexOf(element) !== -1) {
+        contains = true;
+      }
+    });
+    if (contains) {
+      this._router.navigateByUrl('/');
+    } else {
+      this._router.navigateByUrl(url);
+    }
   }
 }

@@ -1,3 +1,8 @@
-2021/12/02-16:06:28.807 66d7 Reusing MANIFEST /var/www/html/online_pwa_optimisation/~/.vscode/Service Worker/Database/MANIFEST-000001
-2021/12/02-16:06:28.808 66d7 Recovering log #3
-2021/12/02-16:06:28.808 66d7 Reusing old log /var/www/html/online_pwa_optimisation/~/.vscode/Service Worker/Database/000003.log 
+<<<<<<< HEAD
+2021/12/06-13:36:02.813 1c39d Creating DB /var/www/html/online_pwa_optimisation/~/.vscode/Service Worker/Database since it was missing.
+2021/12/06-13:36:02.982 1c39d Reusing MANIFEST /var/www/html/online_pwa_optimisation/~/.vscode/Service Worker/Database/MANIFEST-000001
+=======
+2021/12/02-16:07:17.689 6809 Reusing MANIFEST /var/www/html/online_pwa_optimisation/~/.vscode/Service Worker/Database/MANIFEST-000001
+2021/12/02-16:07:17.689 6809 Recovering log #3
+2021/12/02-16:07:17.689 6809 Reusing old log /var/www/html/online_pwa_optimisation/~/.vscode/Service Worker/Database/000003.log 
+>>>>>>> f5c9527eab32ab1c36f58af25eed49d6e8022f3b

@@ -1,11 +1,11 @@
-<ng-container *ngIf="productService.oosSimilarProductsData.similarData?.length > 0">
+<ng-container *ngIf="productService.oosSimilarProductsData.similarData?.length > 2">
     <div class="pdp-section-header">
         <h3 class="heading-3">
             Best Matching In-Stock Products
         </h3>
     </div>
     <ng-container
-        *ngFor="let product of productService.oosSimilarProductsData.similarData | slice : 0:GLOBAL_CONSTANT.oosSimilarCardCount; let index = index">
+        *ngFor="let product of productService.oosSimilarProductsData.similarData | slice : GLOBAL_CONSTANT.oosSimilarCardCountTop:(GLOBAL_CONSTANT.oosSimilarCardCountBottom + GLOBAL_CONSTANT.oosSimilarCardCountTop); let index = index">
         <app-product-oos-similar-card (showAllKeyFeatureClickEvent)="showAllKeyFeatureClickEvent.emit(index)"
             (firstImageClickedEvent)="firstImageClickedEvent.emit(index)" [index]="index"
             [productMsn]="product?.moglixPartNumber">

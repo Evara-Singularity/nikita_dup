@@ -65,7 +65,7 @@ export class ProductOosSimilarComponent implements OnInit {
   checkWhichElementIsInViewport() {
     let i = Math.min(
       this.productService.oosSimilarProductsData.similarData.length,
-      GLOBAL_CONSTANT.oosSimilarCardCount
+      GLOBAL_CONSTANT.oosSimilarCardCountBottom
     );
     for (i; i >= 0; i--) {
       if (document.getElementById("oos-card-" + i)) {

@@ -17,30 +17,16 @@ export class ProductOosSimilarComponent implements OnInit {
   @Input("productName") productName;
   @Input("categoryCode") categoryCode;
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
-  @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent =
-    new EventEmitter();
-  productCardCurrentyInViewPort = 0;
+  @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
+  productCardCurrentyInViewPort = -1;
 
   constructor(
     public productService: ProductService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getProductSimilar();
-  }
-
-  updateUrl() {
-    if (this.productCardCurrentyInViewPort > 0) {
-      this.location.replaceState(
-        this.productService.oosSimilarProductsData.similarData[
-          this.productCardCurrentyInViewPort - 1
-        ].productUrl
-      );
-    } else {
-      // PDP page original router
-      this.location.replaceState(this.productBaseUrl);
-    }
   }
 
   getProductSimilar() {
@@ -65,44 +51,49 @@ export class ProductOosSimilarComponent implements OnInit {
   }
 
   windowScrollHandler() {
-    this.productCardCurrentyInViewPort = 0;
     if (
       this.productService.oosSimilarProductsData.similarData &&
-      this.productService.oosSimilarProductsData.similarData.length > 0
+      this.productService.oosSimilarProductsData.similarData.length > 0 && (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop)
     ) {
-      for (
-        let i = 0;
-        i <
-        Math.min(
-          this.productService.oosSimilarProductsData.similarData.length,
-          GLOBAL_CONSTANT.oosSimilarCardCount
-        );
-        i++
-      ) {
-        if (this.productCardCurrentyInViewPort < 1) {
-          this.productCardCurrentyInViewPort = this.checkIfElementIsInViewport(
-            document.getElementById("oos-card-" + i)
-          )
-            ? i
-            : 0;
+      this.checkWhichElementIsInViewport();
+    } else {
+      this.productCardCurrentyInViewPort = -1;
+    }
+    this.updateUrl();
+  }
+
+  checkWhichElementIsInViewport() {
+    let i = Math.min(
+      this.productService.oosSimilarProductsData.similarData.length,
+      GLOBAL_CONSTANT.oosSimilarCardCount
+    );
+    for (i; i >= 0; i--) {
+      if (document.getElementById("oos-card-" + i)) {
+        const cardHeight = document.getElementById("oos-card-" + i).offsetTop;
+        const scrollHeight = window.pageYOffset;
+        if (scrollHeight > cardHeight) {
+          this.productCardCurrentyInViewPort = i;
+          break;
         }
       }
-      this.updateUrl();
     }
   }
 
-  checkIfElementIsInViewport(elem) {
-    if (!elem) {
-      return false;
+  updateUrl() {
+    if (this.productCardCurrentyInViewPort > -1) {
+      if (window.location.pathname !== ('/' + this.productService.oosSimilarProductsData.similarData[
+        this.productCardCurrentyInViewPort
+      ].productUrl)) {
+        this.location.replaceState(
+          this.productService.oosSimilarProductsData.similarData[
+            this.productCardCurrentyInViewPort
+          ].productUrl
+        );
+      }
+    } else {
+      if (window.location.pathname !== ('/' + this.productBaseUrl)) {
+        this.location.replaceState(this.productBaseUrl);
+      }
     }
-    let bounding = elem.getBoundingClientRect();
-    return (
-      bounding.top >= 0 &&
-      bounding.left >= 0 &&
-      bounding.bottom <=
-        (window.innerHeight || document.documentElement.clientHeight) &&
-      bounding.right <=
-        (window.innerWidth || document.documentElement.clientWidth)
-    );
   }
 }

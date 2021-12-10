@@ -322,25 +322,29 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.localAuthService.login$.subscribe((data) =>
         {
             this.user = this.localAuthService.getUserSession();
-            this.isUserLogin = true;
+            this.checkUserLoginState();
         });
 
         this.localAuthService.logout$.subscribe((data) =>
         {
             this.user = this.localAuthService.getUserSession();
-            this.isUserLogin = false;
+            this.checkUserLoginState();
         });
     }
 
     browserCalc()
     {
+        this.checkUserLoginState();
+    }
+
+    checkUserLoginState() {
         // load user information
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin =
             this.user && this.user.authenticated
                 ? (this.user.authenticated as boolean)
                 : false;
-    }
+    }   
 
     createHeaderData(_aRoute)
     {

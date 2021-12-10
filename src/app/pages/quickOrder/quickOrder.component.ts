@@ -122,7 +122,7 @@ export class QuickOrderComponent {
                 }),
             ).subscribe((cartSession) => {
                 this.isShowLoader = true;
-                if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 200) {
+                if (cartSession && cartSession['cart'] && cartSession['itemsList'] && Array.isArray(cartSession['itemsList'])) {
                     cartSession = this.cartService.updateCart(cartSession);
                     this.cartService.setCartSession(cartSession);
                     this.cart = cartSession['cart'];
@@ -164,6 +164,7 @@ export class QuickOrderComponent {
     ngAfterViewInit() {
 
     }
+
     ngOnDestroy() {
         /*this.footerService.setFooterObj({footerData: false});                            
         this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());*/

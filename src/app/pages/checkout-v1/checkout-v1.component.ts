@@ -270,7 +270,7 @@ export class CheckoutV1Component implements OnInit {
       )
       .subscribe((cartSession) => {
         //  ;
-        if (cartSession && cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
+        if (cartSession && cartSession['cart'] && cartSession['itemsList'] && Array.isArray(cartSession['itemsList'])) {
           const cs = this._cartService.updateCart(cartSession);
           this._cartService.setCartSession(cs);
           setTimeout(() => {

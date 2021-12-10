@@ -1231,10 +1231,6 @@ export class CartComponent {
         }
     }
 
-    updateTest() {
-        this._cartService.updateProduct$.emit();
-    }
-
     updateQuantity($event, i) {
 
         // alert(($event.target.value));

@@ -9,6 +9,7 @@ import {
   ViewContainerRef,
   Output,
 } from "@angular/core";
+import { CommonService } from "@app/utils/services/common.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { forkJoin, Subject } from "rxjs";
 @Component({
@@ -46,8 +47,9 @@ export class ProductOosSimilarCardComponent {
   constructor(
     public productService: ProductService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector
-  ) {}
+    private injector: Injector,
+    public commonService: CommonService
+  ) { }
 
   ngOnInit() {
     if (this.productMsn) {
@@ -66,7 +68,7 @@ export class ProductOosSimilarCardComponent {
       if (
         rawData[0]["productBO"] &&
         Object.values(rawData[0]["productBO"]["productPartDetails"])[0][
-          "images"
+        "images"
         ] !== null
       ) {
         this.productService.processProductData(
@@ -134,7 +136,7 @@ export class ProductOosSimilarCardComponent {
       setTimeout(() => {
         (
           this.productCrouselInstance.instance[
-            "moveToSlide$"
+          "moveToSlide$"
           ] as Subject<number>
         ).next(slideIndex);
       }, 100);

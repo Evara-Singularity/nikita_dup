@@ -145,7 +145,7 @@
     <div class="pdp-card-breadcrumb" *ngIf="breadcrumData?.length > 0">
         <ul>
             <li *ngFor="let bread of breadcrumData">
-                <span [routerLink]="bread?.categoryLink">
+                <span (click)="commonService.navigateTo(bread?.categoryLink, true)">
                     {{ bread?.categoryName }}
                 </span>
             </li>

@@ -777,8 +777,8 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('./utr-confirmation/utr-confirmation.module').then((m) => m.UTRConfirmationModule),
                 data: {
-                    title: 'Payment Confirmation',
-                    menuBar: true,
+                    menuBar: false,
+                    logo:true,
                     footer: false,
                 },
             },

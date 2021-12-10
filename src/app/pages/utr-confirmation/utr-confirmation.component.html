@@ -14,7 +14,7 @@
                     <p *ngIf="utrNo.touched && utrNo.invalid">Please enter valid UTR No.</p>
                 </div>
             </div>
-            <button (click)="submitUTRForm()">SUBMIT</button>
+            <button (click)="$event.stopPropagation();submitUTRForm()">SUBMIT</button>
         </form>
     </div>
     <div class="utr-notes">

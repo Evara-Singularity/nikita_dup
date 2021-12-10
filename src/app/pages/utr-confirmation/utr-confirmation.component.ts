@@ -28,6 +28,7 @@ export class UTRConfirmationComponent implements OnInit
             return;
         }
         this.utrForm = new FormGroup({
+            orderId: new FormControl(this.orderId, [Validators.required]),
             amount: new FormControl("", [Validators.required, Validators.min(1)]),
             utrNo: new FormControl("", [Validators.required, Validators.pattern(/^([a-zA-Z0-9]+)$/)])
         })
@@ -38,7 +39,10 @@ export class UTRConfirmationComponent implements OnInit
         if (this.utrForm.invalid) { this.utrForm.markAllAsTouched(); return; }
         this._globarLodaer.setLoaderState(true);
         this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}`, { body: this.utrForm.value }).subscribe(
-            (res) => { this._toastMessage.show({ type: "success", message: "Information submitted successfully" }) },
+            (res) => {   
+                this._toastMessage.show({ type: "success", message: "Information submitted successfully" });
+                this._router.navigate(['.']);
+             },
             (error) => { this._toastMessage.show({ type: "error", message: error.message }) },
             () => { this._globarLodaer.setLoaderState(false); });
     }

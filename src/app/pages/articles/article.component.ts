@@ -27,14 +27,15 @@ export class ArticleComponent implements OnInit
     isBrowser = false;
     isServer = false;
 
-    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, private router: Router,	private _commonService: CommonService, private _localStorageService:LocalStorageService, private _analytics:GlobalAnalyticsService,
+    constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, private router: Router, private _commonService: CommonService, private _localStorageService: LocalStorageService, private _analytics: GlobalAnalyticsService,
         private toastMessageService: ToastMessageService, private title: Title, private renderer2: Renderer2, private meta: Meta, @Inject(DOCUMENT) private document)
     {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
     }
 
-    ngOnInit() {
+    ngOnInit()
+    {
         this.articleUrl = this.articleUrl + (this.router.url.split('?')[0].split('#')[0] as string).toLowerCase();
         if (this.route.snapshot.data['articleData']) {
             let response = this.route.snapshot.data['articleData'];
@@ -46,29 +47,30 @@ export class ArticleComponent implements OnInit
         }
     }
 
-    setAnalyticTags(response) {
-            let user;
-            if (this._localStorageService.retrieve('user')) {
-                user = this._localStorageService.retrieve('user');
-            }
-            /*Start Adobe Analytics Tags */
-            let page = {
-                'pageName': "moglix:" + response.data[0].componentName,
-                'channel': "article",
-                'subSection': "moglix:" + response.data[0].componentName + ":" + this._commonService.getSectionClick().toLowerCase(),
-                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-            };
-            let custData = {
-                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                'customerType': (user && user["userType"]) ? user["userType"] : '',
-            };
-            const digitalData = {};
-            digitalData['page'] = page;
-            digitalData['custData'] = custData;
-            setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0 );
-            /*End Adobe Analytics Tags */
+    setAnalyticTags(response)
+    {
+        let user;
+        if (this._localStorageService.retrieve('user')) {
+            user = this._localStorageService.retrieve('user');
+        }
+        /*Start Adobe Analytics Tags */
+        let page = {
+            'pageName': "moglix:" + response.data[0].componentName,
+            'channel': "article",
+            'subSection': "moglix:" + response.data[0].componentName + ":" + this._commonService.getSectionClick().toLowerCase(),
+            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+        };
+        let custData = {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        };
+        const digitalData = {};
+        digitalData['page'] = page;
+        digitalData['custData'] = custData;
+        setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0);
+        /*End Adobe Analytics Tags */
     }
 
     initialize(response)

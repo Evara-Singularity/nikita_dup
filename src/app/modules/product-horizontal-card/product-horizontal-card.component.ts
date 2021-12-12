@@ -75,6 +75,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
+  prodUrl: string;
 
   constructor(
     private _cartService: CartService,
@@ -106,6 +107,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
     this.isAd = !this.product.internalProduct
     this.productReviewCount=this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.prodUrl = CONSTANTS.PROD;
   }
 
 
@@ -186,7 +188,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
-
     // incase of promotional ad we need to fire GTM event for tracking
     if (this.isAd && this._commonService.isBrowser) {
       this.onlineSalesClickTrackUsingGTM();
@@ -538,7 +539,10 @@ export class ProductHorizontalCardComponent implements OnInit {
   trackProductTitle(title) 
   { 
     this.sendTracking(title);
-    this.navigateToPDP();
+    if (this.isAd && this._commonService.isBrowser) {
+      this.onlineSalesClickTrackUsingGTM();
+    }
+    this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName, this.cardMetaInfo.redirectedIdentifier);
   }
 
   sendTracking(info)

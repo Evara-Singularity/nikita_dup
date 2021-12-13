@@ -121,7 +121,7 @@
         class="key-features">
         <div class="inline-heading">
             <h3 class="heading-3">Key Features</h3>
-            <div class="show-all-strip pad-t-0"><span (click)="this.showAllKeyFeatureClickEvent.emit(index);">View All
+            <div class="show-all-strip pad-t-0"><span (click)="showAllKeyFeatureClickEvent.emit(index);">View All
                     <i class="icon-next"></i></span></div>
         </div>
         <ul class="feature-list">
@@ -134,12 +134,12 @@
         </ul>
     </div>
     <div class="bottom-bar nonFixed">
-        <button class="cart-btn ml-5 bold-txt f-14 f-left">
+        <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)" >
             <i class="icon-cart1"></i>
             <span>ADD TO CART</span>
         </button>
         <div class="buy-now f-right f-14">
-            <button class="f-14" (click)="buyNow('/checkout');">BUY NOW</button>
+            <button class="f-14" (click)="buyNow(true)">BUY NOW</button>
         </div>
     </div>
     <div class="pdp-card-breadcrumb" *ngIf="breadcrumData?.length > 0">
@@ -152,3 +152,8 @@
         </ul>
     </div>
 </div>
+
+<ng-container #variantPopup></ng-container>
+<ng-container #addToCartToast></ng-container>
+<ng-container #productRFQ></ng-container>
+<ng-container #alertBox></ng-container>

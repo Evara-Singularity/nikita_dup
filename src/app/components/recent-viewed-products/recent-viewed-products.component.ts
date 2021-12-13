@@ -8,7 +8,6 @@ import CONSTANTS from '../../config/constants';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
-import { ProductListService } from '@app/utils/services/productList.service';
 
 @Component({
   selector: 'app-recent-viewed-products',
@@ -41,7 +40,6 @@ export class RecentViewedProductsComponent implements OnInit {
     private productService: ProductService,
     public _router: Router,
     private localStorageService: LocalStorageService,
-    private productListService: ProductListService,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +55,7 @@ export class RecentViewedProductsComponent implements OnInit {
     const userId = (user['userId']) ? user['userId'] : null;
     this.productService.getrecentProduct(userId).subscribe(result => {
       if (result['statusCode'] === 200) {
-        this.recentProductItems = (result['data'] as any[]).map(product => this.productListService.recentProductResponseToProductEntity(product));
+        this.recentProductItems = (result['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
       }
     })
   }

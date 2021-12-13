@@ -75,7 +75,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
           if (response['products']) {
             let products = response['products'] || [];
             if (products && (products as []).length > 0) {
-              this.sponseredProductList = (products as any[]).map(product => this._productListService.searchResponseToProductEntity(product));
+              this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
               let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
               const reversedSponseredProductList = this.sponseredProductList.reverse();
               this.productsListingData.products.forEach((product, index) => {

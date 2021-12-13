@@ -7,7 +7,7 @@
                 type="image" src="/assets/img/video_icon.svg" alt="text">
         </div>
     </div>
-    <a class="s-h-l" [attr.href]="prodUrl+'/'+product.productUrl">{{product.productName}}</a>
+    <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+product.productUrl">{{product.productName}}</a> -->
     <!-- wrapper div for card class -->
     <div [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.enableCard}">
         <div class="card-container"
@@ -42,8 +42,8 @@
                             *ngIf="product.productName.length>60">...</span></span>
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div> -->
-                <div class="name" (click)="trackProductTitle('title')">
-                    <a [routerLink]="'/'+product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation"> <span>{{product.productName | slice:0:60}}
+                <div class="name" (click)="trackProductTitle('title');$event.preventDefault()" >
+                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation"> <span>{{product.productName | slice:0:60}}
                         <span *ngIf="product.productName.length>60">...</span></span></a>
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div>

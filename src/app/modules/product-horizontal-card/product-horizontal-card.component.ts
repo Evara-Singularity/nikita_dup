@@ -536,14 +536,10 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
   }
 
-  trackProductTitle(title) 
-  { 
+  trackProductTitle(title) {    
     this.sendTracking(title);
-    if (this.isAd && this._commonService.isBrowser) {
-      this.onlineSalesClickTrackUsingGTM();
+    this.navigateToPDP();
     }
-    this._commonService.setSectionClickInformation(this.cardMetaInfo.redirectedSectionName, this.cardMetaInfo.redirectedIdentifier);
-  }
 
   sendTracking(info)
   {

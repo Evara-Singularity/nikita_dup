@@ -150,7 +150,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const userSession = this._localAuthService.getUserSession();
       let params = { "sessionid": userSession.sessionId };
       this._cartService.getCartBySession(params).subscribe((cartSession) => {
-        this._cartService.cart.next({ count: cartSession['noOfItems'] || null });
+        this._cartService.cart.next({ count: cartSession['noOfItems'] || 0 });
       })
     }
   }

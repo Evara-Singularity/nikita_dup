@@ -124,6 +124,7 @@ export class SharedCheckoutLoginComponent implements OnInit {
         }
         // login scenario
         if (this.isIdentifierVerified && this.identifierForm.valid && this.passwordFrom.value != '') {
+            console.log('insdide login');
             this.isSignInSubmitted = true;
             if (this.passwordFrom.valid) {
                 this.signIn();
@@ -250,9 +251,11 @@ export class SharedCheckoutLoginComponent implements OnInit {
 
 
     processAuthentication() {
+        console.log('insdide processAuthentication');
         this.cartService.performAuthAndCartMerge({
             enableShippingCheck: true,
         }).subscribe(cartSession => {
+            console.log('insdide cartSession', cartSession);
             this.commonService.showLoader = false;
             if (cartSession) {
                 this.updatedStepShared$.emit(2);

@@ -562,7 +562,7 @@ export class OrderConfirmationComponent implements OnInit {
             }
             //ENDS
             this._cartService.updateCartSession(emptyCart).subscribe((data) => {
-                this._cartService.cart.next(data["noOfItems"]);
+                this._cartService.cart.next({count: data["noOfItems"] || 0});
                 let res = data;
                 if (res["statusCode"] == 200) {
                     this._cartService.setCartSession(res);

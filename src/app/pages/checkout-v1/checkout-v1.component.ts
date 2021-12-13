@@ -277,7 +277,7 @@ export class CheckoutV1Component implements OnInit {
             this.cartSessionUpdated$.next(cartSession);
           }, 100);
           this._cartService.orderSummary.next(cartSession);
-          this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
+          this._cartService.cart.next({count: (cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0)});
 
           const buyNow = this._cartService.buyNow;
           if (cartSession["noOfItems"] == 0 && !buyNow) {
@@ -290,7 +290,7 @@ export class CheckoutV1Component implements OnInit {
             this.cartSessionUpdated$.next(cs);
           }, 100);
           this._cartService.orderSummary.next(cs);
-          this._cartService.cart.next(cs["cart"] != undefined ? cs['noOfItems'] : 0);
+          this._cartService.cart.next({count: (cs["cart"] != undefined ? cs['noOfItems'] : 0)});
 
           this._localAuthService.setUserSession(cartSession['userData']);
           this._localAuthService.logout$.emit();

@@ -38,6 +38,7 @@ export class ProductOosSimilarCardComponent {
   productCrouselPseudoContainerRef: ElementRef;
 
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
+  @Output("removeWindowScrollListenerEvent") removeWindowScrollListenerEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent =
     new EventEmitter();
 
@@ -56,6 +57,11 @@ export class ProductOosSimilarCardComponent {
       this.createSiemaOption(this.index);
       this.getProductData();
     }
+  }
+
+  navigateTo(link: string) {
+    this.removeWindowScrollListenerEvent.emit(true);
+    this.commonService.navigateTo(link, true);
   }
 
   getProductData() {

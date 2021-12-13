@@ -6,7 +6,8 @@
     </div>
     <ng-container
         *ngFor="let product of productService.oosSimilarProductsData.similarData | slice : GLOBAL_CONSTANT.oosSimilarCardCountTop:(GLOBAL_CONSTANT.oosSimilarCardCountBottom + GLOBAL_CONSTANT.oosSimilarCardCountTop); let index = index">
-        <app-product-oos-similar-card (showAllKeyFeatureClickEvent)="showAllKeyFeatureClickEvent.emit(index)"
+        <app-product-oos-similar-card (removeWindowScrollListenerEvent)="removeWindowScrollListener($event)"
+            (showAllKeyFeatureClickEvent)="showAllKeyFeatureClickEvent.emit(index)"
             (firstImageClickedEvent)="firstImageClickedEvent.emit(index)" [index]="index"
             [productMsn]="product?.moglixPartNumber">
         </app-product-oos-similar-card>

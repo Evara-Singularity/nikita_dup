@@ -29,11 +29,16 @@ export class ProductOosSimilarComponent implements OnInit {
     this.getProductSimilar();
   }
 
+  removeWindowScrollListener(event) {
+    if (event) {
+      window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
+    }
+  }
+
   getProductSimilar() {
     this.productService
       .getSimilarProducts(this.productName, this.categoryCode)
       .subscribe((response: any) => {
-        window.removeEventListener("scroll", this.windowScrollHandler);
         let products = response["products"];
         if (products && (products as []).length > 0) {
           this.productService.oosSimilarProductsData.similarData = products;
@@ -51,7 +56,8 @@ export class ProductOosSimilarComponent implements OnInit {
   }
 
   windowScrollHandler() {
-    if (
+    console.log('called');
+    if (document.getElementById('similarProductsOos') &&
       this.productService.oosSimilarProductsData.similarData &&
       this.productService.oosSimilarProductsData.similarData.length > 0 && (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop)
     ) {

@@ -102,12 +102,10 @@
              </div> -->
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
-                    <span class="add-qty qty-block"
-                        (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
-                    <input id="product_quantity" [value]="productMinimmumQuantity"
-                        (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
-                    <span class="remove-qty qty-block"
-                        (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
+                    <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
+                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity"
+                        (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
+                    <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                 </div>
                 <div class="quan-details" *ngIf="productMinimmumQuantity>1">
                     <p>Qty Per Pack :
@@ -150,7 +148,7 @@
             <span>ADD TO CART</span>
         </button>
         <div class="buy-now f-right f-14">
-            <button class="f-14" (click)="buyNow('/checkout');">BUY NOW</button>
+            <button class="f-14" (click)="addToCart(true);">BUY NOW</button>
         </div>
     </div>
 
@@ -181,9 +179,10 @@
                 <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of priceQuantityCountry['bulkPricesModified'];let last=last; let index = index;"
-                            (click)="changeBulkQty(items.minQty,index)" class="blk-block"
-                            [ngClass]="{'selected': (bulkPriceSelctedQuatity >= items.minQty && bulkPriceSelctedQuatity < items.maxQty)}">
+                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
+                            (click)="selectProductBulkPrice(items.minQty)" 
+                            class="blk-block"
+                            [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                             <p class="qty">Qty
                                 <span *ngIf="last!==true">{{items.minQty}} {{items.minQty!==items.maxQty ?
                                     -items.maxQty:'' }}</span>

@@ -18,6 +18,7 @@ import { ProductRoutingModule } from "./product-routing.module";
 import { ProductComponent } from "./product.component";
 import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/product-oos-similar.module";
+import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.directive";
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -37,6 +38,7 @@ import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/produc
     ProductInfoModule,
     EmiPlansModule,
     SliceArrayPipeModule,
+    NumberDirectiveModule,
     // Directives
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule,

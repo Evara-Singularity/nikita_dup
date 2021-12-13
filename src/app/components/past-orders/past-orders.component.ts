@@ -8,6 +8,7 @@ import { ProductCardFeature, ProductCardMetaInfo } from '@app/utils/models/produ
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { ProductBrowserService } from '@app/utils/services/product-browser.service';
+import { ProductListService } from '@app/utils/services/productList.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
@@ -36,8 +37,12 @@ export class PastOrdersComponent implements OnInit
     }
     cardMetaInfo: ProductCardMetaInfo = null;
 
+    //TODO:Remove after data testing
+    @Input('productName') productName;
+    @Input('categoryCode') categoryCode;
 
-    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService,) { }
+
+    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService, private productListService: ProductListService,) { }
 
     ngOnInit(): void
     {
@@ -47,9 +52,15 @@ export class PastOrdersComponent implements OnInit
 
     onVisiblePastOrders($event)
     {
-        console.clear();
-        console.log("This is working");
-        //this._productService.getPastOrder(null).subscribe((response) => { if (response['status']) { this.productList = response['data'] } })
+        //1255256,1254884
+        //this._productService.getPastOrder(this.userId).subscribe((response) => { if (response['status']) { this.productList = response['data'] } });
+        this._productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) =>
+        {
+            let products = response['products'];
+            if (products && (products as []).length > 0) {
+                this.productList = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
+            }
+        })
     }
 
     get pageDisplay() { return this.productList.length > 2 && this.userId !== null; }

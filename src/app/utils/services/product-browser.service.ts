@@ -20,7 +20,15 @@ export class ProductBrowserService
     {
         const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${userId}`;
         return this._dataService.callRestful("GET", URL).pipe(
-            catchError((error: HttpErrorResponse) => { return of(ERROR_RESPONSE);})
+            catchError((error: HttpErrorResponse) => { return of(ERROR_RESPONSE); })
+        );
+    }
+
+    getSimilarProducts(productName, categoryId)
+    {
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.SIMILAR_PRODUCTS}?str=${productName}&category=${categoryId}`;
+        return this._dataService.callRestful('GET', URL).pipe(
+            catchError((res: HttpErrorResponse) => { return of({ products: [], httpStatus: res.status }); })
         );
     }
 }

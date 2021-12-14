@@ -18,6 +18,8 @@ import { ProductRoutingModule } from "./product-routing.module";
 import { ProductComponent } from "./product.component";
 import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/product-oos-similar.module";
+import { ProductHorizontalCardModule } from "@app/modules/product-horizontal-card/product-horizontal-card.module";
+import { LazyLoadImageModule } from "ng-lazyload-image";
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -31,6 +33,7 @@ import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/produc
     MathFloorPipeModule,
     MathCeilPipeModule,
     ReactiveFormsModule,
+    // LazyLoadImageModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
     WhatsAppToastModule,
@@ -38,10 +41,11 @@ import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/produc
     EmiPlansModule,
     SliceArrayPipeModule,
     // Directives
+    ProductHorizontalCardModule,
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule,
   ],
   exports: [],
   providers: [NgxSiemaService],
 })
-export class ProductModule {}
+export class ProductModule { }

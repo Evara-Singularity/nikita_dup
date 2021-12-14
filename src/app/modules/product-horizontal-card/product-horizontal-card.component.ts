@@ -93,6 +93,9 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.clear()
+    console.log(this.product);
+    console.log('------------------------------');
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
@@ -104,7 +107,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       this.changeThumbImage(speed);
     })
     this.isAd = !this.product.internalProduct
-    this.productReviewCount=this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
   }
 
 
@@ -121,7 +124,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       map(productRawData => {
         console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
-          return this._cartService.getAddToCartProductItemRequest({productGroupData: productRawData['productBO'], buyNow});
+          return this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
         } else {
           return null;
         }
@@ -456,21 +459,19 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
   }
 
-  trackProductTitle(title) 
-  { 
+  trackProductTitle(title) {
     this.sendTracking(title);
     this.navigateToPDP();
   }
 
-  sendTracking(info)
-  {
-      if(!this.enableTracking)return;
-      const page = this.analytics['page'];
-      page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
-      page['productunit'] = this.pIndex;
-      const custData = this.analytics['custData'];
-      const order = this.analytics['order']  ;
-      this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
+  sendTracking(info) {
+    if (!this.enableTracking) return;
+    const page = this.analytics['page'];
+    page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
+    page['productunit'] = this.pIndex;
+    const custData = this.analytics['custData'];
+    const order = this.analytics['order'];
+    this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
   }
 
 

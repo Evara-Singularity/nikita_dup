@@ -23,7 +23,7 @@ export class ProductService {
     similarData: [],
   };
 
-  constructor(private _dataService: DataService, public http: HttpClient) {}
+  constructor(private _dataService: DataService, public http: HttpClient) { }
 
   getPurchaseList(data) {
     let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
@@ -55,8 +55,8 @@ export class ProductService {
     return this._dataService.callRestful(
       "GET",
       CONSTANTS.NEW_MOGLIX_API +
-        ENDPOINTS.PRODUCT_INFO +
-        `?productId=${msn}&fetchGroup=true`
+      ENDPOINTS.PRODUCT_INFO +
+      `?productId=${msn}&fetchGroup=true`
     );
   }
 
@@ -64,8 +64,8 @@ export class ProductService {
     return this._dataService.callRestful(
       "GET",
       CONSTANTS.NEW_MOGLIX_API +
-        ENDPOINTS.BREADCRUMB +
-        `?source=${msn}&type=product`
+      ENDPOINTS.BREADCRUMB +
+      `?source=${msn}&type=product`
     );
   }
 
@@ -168,9 +168,9 @@ export class ProductService {
     return this._dataService.callRestful(
       "GET",
       CONSTANTS.NEW_MOGLIX_API +
-        ENDPOINTS.PRODUCT_STATUS_COUNT +
-        "?timeInterval=10&productId=" +
-        msn
+      ENDPOINTS.PRODUCT_STATUS_COUNT +
+      "?timeInterval=10&productId=" +
+      msn
     );
   }
 
@@ -244,11 +244,11 @@ export class ProductService {
       productName: this.oosSimilarProductsData.similarData[index].productName,
       imgURL:
         this.oosSimilarProductsData.similarData[index].productAllImages[0][
-          "large"
+        "large"
         ],
       brandName:
         this.oosSimilarProductsData.similarData[index].productBrandDetails[
-          "brandName"
+        "brandName"
         ],
       productMrp: this.oosSimilarProductsData.similarData[index].productMrp,
       productDiscount:
@@ -361,7 +361,7 @@ export class ProductService {
     ) {
       this.oosSimilarProductsData.similarData[index].productCartThumb =
         this.oosSimilarProductsData.similarData[index].productAllImages[0][
-          "thumb"
+        "thumb"
         ];
     }
   }
@@ -374,137 +374,137 @@ export class ProductService {
       args.subGroupMsnId != null
         ? args.subGroupMsnId
         : this.oosSimilarProductsData.similarData[index].rawProductData[
-            "defaultPartNumber"
-          ];
+        "defaultPartNumber"
+        ];
     const partNumber =
       args.subGroupMsnId != null
         ? args.subGroupMsnId
         : this.oosSimilarProductsData.similarData[index].rawProductData[
-            "partNumber"
-          ];
+        "partNumber"
+        ];
     this.oosSimilarProductsData.similarData[index].productSubPartNumber =
       partNumber;
     // mapping general information
     this.oosSimilarProductsData.similarData[index].productName =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "productName"
+      "productName"
       ];
     this.oosSimilarProductsData.similarData[index].isProductReturnAble =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "returnable"
+      "returnable"
       ] || false;
     this.oosSimilarProductsData.similarData[index].productDescripton =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "desciption"
+      "desciption"
       ];
     this.oosSimilarProductsData.similarData[index].productBrandDetails =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "brandDetails"
+      "brandDetails"
       ];
     this.oosSimilarProductsData.similarData[index].productCategoryDetails =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "categoryDetails"
+      "categoryDetails"
       ][0];
     this.oosSimilarProductsData.similarData[index].productUrl =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "defaultCanonicalUrl"
+      "defaultCanonicalUrl"
       ];
     this.oosSimilarProductsData.similarData[index].productKeyFeatures =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "keyFeatures"
+      "keyFeatures"
       ];
     this.oosSimilarProductsData.similarData[index].productVideos =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "videosInfo"
+      "videosInfo"
       ];
     this.oosSimilarProductsData.similarData[index].productDocumentInfo =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "documentInfo"
+      "documentInfo"
       ];
     this.oosSimilarProductsData.similarData[index].productTags =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "productTags"
+      "productTags"
       ];
     this.oosSimilarProductsData.similarData[index].productAttributes =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "productPartDetails"
+      "productPartDetails"
       ][partNumber]["attributes"] || [];
     this.oosSimilarProductsData.similarData[index].productRating =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "productPartDetails"
+      "productPartDetails"
       ][partNumber]["productRating"];
     this.oosSimilarProductsData.similarData[index].productBrandCategoryUrl =
       "brands/" +
       this.oosSimilarProductsData.similarData[index].productBrandDetails[
-        "friendlyUrl"
+      "friendlyUrl"
       ] +
       "/" +
       this.oosSimilarProductsData.similarData[index].productCategoryDetails[
-        "categoryLink"
+      "categoryLink"
       ];
 
     this.oosSimilarProductsData.similarData[index].isProductPriceValid =
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "productPartDetails"
+      "productPartDetails"
       ][partNumber]["productPriceQuantity"] != null;
     this.oosSimilarProductsData.similarData[index].priceQuantityCountry = this
       .oosSimilarProductsData.similarData[index].isProductPriceValid
       ? Object.assign(
-          {},
-          this.oosSimilarProductsData.similarData[index].rawProductData[
-            "productPartDetails"
-          ][partNumber]["productPriceQuantity"]["india"]
-        )
+        {},
+        this.oosSimilarProductsData.similarData[index].rawProductData[
+        "productPartDetails"
+        ][partNumber]["productPriceQuantity"]["india"]
+      )
       : null;
     this.oosSimilarProductsData.similarData[index].productMrp =
       this.oosSimilarProductsData.similarData[index].isProductPriceValid &&
-      this.oosSimilarProductsData.similarData[index].priceQuantityCountry
+        this.oosSimilarProductsData.similarData[index].priceQuantityCountry
         ? this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-            "mrp"
-          ]
+        "mrp"
+        ]
         : null;
 
     if (this.oosSimilarProductsData.similarData[index].priceQuantityCountry) {
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
         "bulkPricesIndia"
       ] = this.oosSimilarProductsData.similarData[index].isProductPriceValid
-        ? Object.assign(
+          ? Object.assign(
             {},
             this.oosSimilarProductsData.similarData[index].rawProductData[
-              "productPartDetails"
+            "productPartDetails"
             ][partNumber]["productPriceQuantity"]["india"]["bulkPrices"]
           )
-        : null;
+          : null;
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
         "bulkPricesModified"
       ] =
         this.oosSimilarProductsData.similarData[index].isProductPriceValid &&
-        this.oosSimilarProductsData.similarData[index].rawProductData[
+          this.oosSimilarProductsData.similarData[index].rawProductData[
           "productPartDetails"
-        ][partNumber]["productPriceQuantity"]["india"]["bulkPrices"]["india"]
+          ][partNumber]["productPriceQuantity"]["india"]["bulkPrices"]["india"]
           ? [
-              ...this.oosSimilarProductsData.similarData[index].rawProductData[
-                "productPartDetails"
-              ][partNumber]["productPriceQuantity"]["india"]["bulkPrices"][
-                "india"
-              ],
-            ]
+            ...this.oosSimilarProductsData.similarData[index].rawProductData[
+            "productPartDetails"
+            ][partNumber]["productPriceQuantity"]["india"]["bulkPrices"][
+            "india"
+            ],
+          ]
           : null;
     }
 
     this.oosSimilarProductsData.similarData[index].priceWithoutTax = this
       .oosSimilarProductsData.similarData[index].priceQuantityCountry
       ? this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-          "priceWithoutTax"
-        ]
+      "priceWithoutTax"
+      ]
       : null;
     if (
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry &&
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-        "mrp"
+      "mrp"
       ] > 0 &&
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-        "priceWithoutTax"
+      "priceWithoutTax"
       ] > 0
     ) {
       this.oosSimilarProductsData.similarData[index].productDiscount =
@@ -512,71 +512,74 @@ export class ProductService {
           "mrp"
         ] -
           this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-            "priceWithoutTax"
+          "priceWithoutTax"
           ]) /
           this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-            "mrp"
+          "mrp"
           ]) *
         100;
     }
     this.oosSimilarProductsData.similarData[index].taxPercentage = this
       .oosSimilarProductsData.similarData[index].priceQuantityCountry
       ? this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-          "taxRule"
-        ]["taxPercentage"]
+      "taxRule"
+      ]["taxPercentage"]
       : null;
     this.oosSimilarProductsData.similarData[index].productPrice =
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry &&
-      !isNaN(
-        this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
+        !isNaN(
+          this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
           "sellingPrice"
-        ]
-      )
+          ]
+        )
         ? Number(
-            this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-              "sellingPrice"
-            ]
-          )
+          this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
+          "sellingPrice"
+          ]
+        )
         : 0;
 
     this.oosSimilarProductsData.similarData[index].productTax =
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry &&
-      !isNaN(
-        this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
+        !isNaN(
+          this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
           "sellingPrice"
-        ]
-      ) &&
-      !isNaN(
-        this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
+          ]
+        ) &&
+        !isNaN(
+          this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
           "sellingPrice"
-        ]
-      )
+          ]
+        )
         ? Number(
-            this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-              "sellingPrice"
-            ]
-          ) -
-          Number(
-            this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-              "sellingPrice"
-            ]
-          )
+          this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
+          "sellingPrice"
+          ]
+        ) -
+        Number(
+          this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
+          "sellingPrice"
+          ]
+        )
         : 0;
     this.oosSimilarProductsData.similarData[index].productMinimmumQuantity =
       this.oosSimilarProductsData.similarData[index].priceQuantityCountry &&
-      this.oosSimilarProductsData.similarData[index].priceQuantityCountry["moq"]
+        this.oosSimilarProductsData.similarData[index].priceQuantityCountry["moq"]
         ? this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-            "moq"
-          ]
+        "moq"
+        ]
         : 1;
 
     // product media processing
     this.setProductImages(
       this.oosSimilarProductsData.similarData[index].rawProductData[
-        "productPartDetails"
+      "productPartDetails"
       ][partNumber]["images"],
       index
     );
+
+    console.log(this.oosSimilarProductsData.similarData[index]);
+    // this.oosSimilarProductsData.similarData[index].mainImageMediumLink = this.oosSimilarProductsData.similarData[index].productMediumImage;
   }
 
   getBrandLink(brandDetails: {}) {

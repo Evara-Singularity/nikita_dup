@@ -19,6 +19,7 @@ import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
+import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
@@ -285,7 +286,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private injector: Injector,
     private sanitizer: DomSanitizer,
     public localStorageService: LocalStorageService,
-    private productService: ProductService,
+    public productService: ProductService,
     private localAuthService: LocalAuthService,
     private _tms: ToastMessageService,
     private productUtil: ProductUtilsService,
@@ -524,7 +525,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     } else {
       this.rawReviewsData.reviewList =
         this.rawReviewsData.reviewList &&
-        this.rawReviewsData.reviewList.length > 0
+          this.rawReviewsData.reviewList.length > 0
           ? this.sortedReviewsByDate(this.rawReviewsData.reviewList)
           : [];
     }
@@ -630,15 +631,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     this.isProductPriceValid =
       this.rawProductData["productPartDetails"][partNumber][
-        "productPriceQuantity"
+      "productPriceQuantity"
       ] != null;
     this.priceQuantityCountry = this.isProductPriceValid
       ? Object.assign(
-          {},
-          this.rawProductData["productPartDetails"][partNumber][
-            "productPriceQuantity"
-          ]["india"]
-        )
+        {},
+        this.rawProductData["productPartDetails"][partNumber][
+        "productPriceQuantity"
+        ]["india"]
+      )
       : null;
     this.productMrp =
       this.isProductPriceValid && this.priceQuantityCountry
@@ -648,22 +649,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.priceQuantityCountry) {
       this.priceQuantityCountry["bulkPricesIndia"] = this.isProductPriceValid
         ? Object.assign(
-            {},
-            this.rawProductData["productPartDetails"][partNumber][
-              "productPriceQuantity"
-            ]["india"]["bulkPrices"]
-          )
+          {},
+          this.rawProductData["productPartDetails"][partNumber][
+          "productPriceQuantity"
+          ]["india"]["bulkPrices"]
+        )
         : null;
       this.priceQuantityCountry["bulkPricesModified"] =
         this.isProductPriceValid &&
-        this.rawProductData["productPartDetails"][partNumber][
+          this.rawProductData["productPartDetails"][partNumber][
           "productPriceQuantity"
-        ]["india"]["bulkPrices"]["india"]
+          ]["india"]["bulkPrices"]["india"]
           ? [
-              ...this.rawProductData["productPartDetails"][partNumber][
-                "productPriceQuantity"
-              ]["india"]["bulkPrices"]["india"],
-            ]
+            ...this.rawProductData["productPartDetails"][partNumber][
+            "productPriceQuantity"
+            ]["india"]["bulkPrices"]["india"],
+          ]
           : null;
     }
 
@@ -686,16 +687,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
       : null;
     this.productPrice =
       this.priceQuantityCountry &&
-      !isNaN(this.priceQuantityCountry["sellingPrice"])
+        !isNaN(this.priceQuantityCountry["sellingPrice"])
         ? Number(this.priceQuantityCountry["sellingPrice"])
         : 0;
 
     this.productTax =
       this.priceQuantityCountry &&
-      !isNaN(this.priceQuantityCountry["sellingPrice"]) &&
-      !isNaN(this.priceQuantityCountry["sellingPrice"])
+        !isNaN(this.priceQuantityCountry["sellingPrice"]) &&
+        !isNaN(this.priceQuantityCountry["sellingPrice"])
         ? Number(this.priceQuantityCountry["sellingPrice"]) -
-          Number(this.priceQuantityCountry["sellingPrice"])
+        Number(this.priceQuantityCountry["sellingPrice"])
         : 0;
     this.productMinimmumQuantity =
       this.priceQuantityCountry && this.priceQuantityCountry["moq"]
@@ -851,6 +852,27 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.similarProducts = products;
           }
         });
+    }
+  }
+
+  updateOutOfStockFlagForCards(index) {
+    if (this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry) {
+      // incase outOfStockFlag of is avaliable then set its value
+      this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["outOfStockFlag"];
+      // apart from outOfStockFlag if mrp is exist and is zero set product of OOS
+      if (this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"]) {
+        if (parseInt(this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"]) == 0) {
+          this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
+        }
+        if (parseInt(this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["quantityAvailable"]) == 0) {
+          this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
+        }
+      } else {
+        this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
+      }
+    } else {
+      // incase priceQuantityCountry element not present in API
+      this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
     }
   }
 
@@ -1038,10 +1060,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
               if (
                 (element.productDetail.productBO &&
                   element.productDetail.productBO.partNumber ==
-                    this.defaultPartNumber) ||
+                  this.defaultPartNumber) ||
                 (element.productDetail.productBO &&
                   element.productDetail.productBO.partNumber ==
-                    this.productSubPartNumber)
+                  this.productSubPartNumber)
               ) {
                 this.isPurcahseListProduct = true;
               }
@@ -1466,7 +1488,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         eventData["prodId"];
       eventData["prodPrice"] =
         this.cartSession["itemsList"][p]["productUnitPrice"] *
-          this.cartSession["itemsList"][p]["productQuantity"] +
+        this.cartSession["itemsList"][p]["productQuantity"] +
         eventData["prodPrice"];
       eventData["prodQuantity"] =
         this.cartSession["itemsList"][p]["productQuantity"] +
@@ -1699,7 +1721,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             }
             if (
               this.priceQuantityCountry["bulkPricesModified"].length - 1 ==
-                index &&
+              index &&
               value >= element.maxQty
             ) {
               isBulkPriceValid = true;
@@ -1884,14 +1906,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       if (this.similarProductInstanceOOS) {
         (
           this.similarProductInstanceOOS.instance[
-            "firstImageClickedEvent"
+          "firstImageClickedEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.openPopUpcrousel(0, data);
         });
         (
           this.similarProductInstanceOOS.instance[
-            "showAllKeyFeatureClickEvent"
+          "showAllKeyFeatureClickEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.handleProductInfoPopup(
@@ -1900,8 +1922,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
             data
           );
         });
+        (
+          this.similarProductInstanceOOS.instance[
+          "metaUpdateEvent"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.handlemetaUpdateEvent(data);
+        });
       }
     }
+  }
+
+  handlemetaUpdateEvent(index) {
+    this.setMetatag(index);
   }
 
   // dynamically load similar section
@@ -2118,7 +2151,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.pincodeFormInstance) {
       (
         this.pincodeFormInstance.instance[
-          "sendAnalyticsCall"
+        "sendAnalyticsCall"
         ] as EventEmitter<any>
       ).subscribe((data) => {
         this.analyticPincodeAvaliabilty(data);
@@ -2153,14 +2186,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.offerSectionInstance.instance["price"] = price;
       (
         this.offerSectionInstance.instance[
-          "viewPopUpHandler"
+        "viewPopUpHandler"
         ] as EventEmitter<boolean>
       ).subscribe((data) => {
         this.viewPopUpOpen(data);
       });
       (
         this.offerSectionInstance.instance[
-          "emaiComparePopUpHandler"
+        "emaiComparePopUpHandler"
         ] as EventEmitter<boolean>
       ).subscribe((status) => {
         this.emiComparePopUpOpen(status);
@@ -2196,7 +2229,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
       (
         this.offerComparePopupInstance.instance[
-          "isLoading"
+        "isLoading"
         ] as EventEmitter<boolean>
       ).subscribe((loaderStatus) => {
         this.toggleLoader(loaderStatus);
@@ -2239,7 +2272,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
       (
         this.offerComparePopupInstance.instance[
-          "isLoading"
+        "isLoading"
         ] as EventEmitter<boolean>
       ).subscribe((loaderStatus) => {
         this.toggleLoader(loaderStatus);
@@ -2333,7 +2366,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.writeReviewPopupInstance.instance["productInfo"] = productInfo;
         (
           this.writeReviewPopupInstance.instance[
-            "removed"
+          "removed"
           ] as EventEmitter<boolean>
         ).subscribe((status) => {
           // console.log('writeReview removed', status);
@@ -2343,7 +2376,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
         (
           this.writeReviewPopupInstance.instance[
-            "submitted"
+          "submitted"
           ] as EventEmitter<boolean>
         ).subscribe((status) => {
           this.loadAlertBox(
@@ -2385,8 +2418,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         oosProductIndex < 0
           ? this.productAllImages
           : this.productService.oosSimilarProductsData.similarData[
-              oosProductIndex
-            ].productAllImages;
+            oosProductIndex
+          ].productAllImages;
       this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
 
       (
@@ -2398,7 +2431,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
       (
         this.popupCrouselInstance.instance[
-          "currentSlide"
+        "currentSlide"
         ] as EventEmitter<boolean>
       ).subscribe((slideData) => {
         if (slideData) {
@@ -2432,7 +2465,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         (
           this.productCrouselInstance.instance[
-            "moveToSlide$"
+          "moveToSlide$"
           ] as Subject<number>
         ).next(slideIndex);
       }, 100);
@@ -2609,61 +2642,104 @@ export class ProductComponent implements OnInit, AfterViewInit {
   /**
    * Please place all functional code above this section
    */
-  setMetatag() {
+  setMetatag(index: number = -1) {
     if (!this.rawProductData) {
       return;
     }
-    let title = this.productName;
-    let pageTitleName = this.productName;
-    const pwot = this.priceWithoutTax;
 
-    if (pwot && pwot > 0 && this.rawProductData["quantityAvailable"] > 0) {
-      title += " - Buy at Rs." + this.productPrice;
+
+    let metaObj
+    if (index > -1) {
+      this.updateOutOfStockFlagForCards(index + GLOBAL_CONSTANT.oosSimilarCardCountTop);
+      metaObj = {
+        title: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productName,
+        productName: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productName,
+        pageTitleName: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productName,
+        pwot: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].priceWithoutTax,
+        quantityAvailable: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].quantityAvailable,
+        productPrice: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productPrice,
+        productOutOfStock: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productOutOfStock,
+        seoDetails: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].seoDetails,
+        productBrandDetails: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productBrandDetails,
+        productCategoryDetails: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productCategoryDetails,
+        productDefaultImage: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productDefaultImage,
+        productUrl: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productUrl,
+        defaultCanonicalUrl: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop]["defaultCanonicalUrl"],
+      };
+    } else {
+      metaObj = {
+        title: this.productName,
+        productName: this.productName,
+        pageTitleName: this.productName,
+        pwot: this.priceWithoutTax,
+        quantityAvailable: this.rawProductData["quantityAvailable"],
+        productPrice: this.productPrice,
+        productOutOfStock: this.productOutOfStock,
+        seoDetails: this.rawProductData["seoDetails"],
+        productBrandDetails: this.productBrandDetails,
+        productCategoryDetails: this.productCategoryDetails,
+        productDefaultImage: this.productDefaultImage,
+        productUrl: this.productUrl,
+        defaultCanonicalUrl: this.rawProductData["defaultCanonicalUrl"]
+      };
     }
 
-    if (this.productOutOfStock == true) {
+
+    let title = metaObj.productName;
+
+    if (metaObj.priceWithoutTax && metaObj.priceWithoutTax > 0 && metaObj["quantityAvailable"] > 0) {
+      title += " - Buy at Rs." + metaObj.productPrice;
+    }
+
+    console.clear();
+    console.log(metaObj);
+    console.log(this.productName);
+    console.log(this.rawProductData);
+    console.log(this.productService.oosSimilarProductsData.similarData);
+
+    if (metaObj.productOutOfStock == true) {
       this.pageTitle.setTitle(
-        "Buy " + pageTitleName + " Online At Best Price On Moglix"
+        "Buy " + metaObj.productName + " Online At Best Price On Moglix"
       );
     } else {
       this.pageTitle.setTitle(
-        "Buy " + pageTitleName + " Online At Price ₹" + this.productPrice
+        "Buy " + metaObj.productName + " Online At Price ₹" + metaObj.productPrice
       );
     }
 
     let metaDescription = "";
 
     if (
-      this.rawProductData["seoDetails"] &&
-      this.rawProductData["seoDetails"]["metaDescription"] != undefined &&
-      this.rawProductData["seoDetails"]["metaDescription"] != null &&
-      this.rawProductData["seoDetails"]["metaDescription"] != ""
+      metaObj["seoDetails"] &&
+      metaObj["seoDetails"]["metaDescription"] != undefined &&
+      metaObj["seoDetails"]["metaDescription"] != null &&
+      metaObj["seoDetails"]["metaDescription"] != ""
     )
-      metaDescription = this.rawProductData["seoDetails"]["metaDescription"];
+      metaDescription = metaObj["seoDetails"]["metaDescription"];
     else {
-      if (this.productOutOfStock == true) {
+      if (metaObj.productOutOfStock == true) {
         metaDescription =
           "Buy " +
-          this.productName +
+          metaObj.productName +
           " Online in India at moglix. Shop from the huge range of " +
-          this.productBrandDetails["brandName"] +
+          metaObj.productBrandDetails["brandName"] +
           " " +
-          this.productCategoryDetails["categoryName"] +
+          metaObj.productCategoryDetails["categoryName"] +
           ". ✯ Branded " +
-          this.productCategoryDetails["categoryName"] +
+          metaObj.productCategoryDetails["categoryName"] +
           " ✯ Lowest Price ✯ Best Deals ✯ COD";
       } else {
         metaDescription =
           "Buy " +
-          this.productName +
+          metaObj.productName +
           " Online in India at price ₹" +
-          this.productPrice +
+          metaObj.productPrice +
           ". Shop from the huge range of " +
-          this.productBrandDetails["brandName"] +
+          metaObj.productBrandDetails["brandName"] +
           " " +
-          this.productCategoryDetails["categoryName"] +
+          metaObj.productCategoryDetails["categoryName"] +
           ". ✯ Branded " +
-          this.productCategoryDetails["categoryName"] +
+          metaObj.productCategoryDetails["categoryName"] +
           " ✯ Lowest Price ✯ Best Deals ✯ COD";
       }
     }
@@ -2675,35 +2751,35 @@ export class ProductComponent implements OnInit, AfterViewInit {
       content: CONSTANTS.PROD + "/" + this.getProductURL(),
     });
     this.meta.addTag({ name: "og:title", content: title });
-    this.meta.addTag({ name: "og:image", content: this.productDefaultImage });
+    this.meta.addTag({ name: "og:image", content: metaObj.productDefaultImage });
     this.meta.addTag({ name: "robots", content: CONSTANTS.META.ROBOT });
     this.meta.addTag({
       name: "keywords",
       content:
-        this.productName +
+        metaObj.productName +
         ", " +
-        this.productCategoryDetails["categoryName"] +
+        metaObj.productCategoryDetails["categoryName"] +
         ", " +
-        this.productBrandDetails["brandName"],
+        metaObj.productBrandDetails["brandName"],
     });
     if (this.isServer) {
       const links = this.renderer2.createElement("link");
 
       links.rel = "canonical";
-      let url = this.productUrl;
+      let url = metaObj.productUrl;
       if (
         !this.isCommonProduct &&
         !this.listOfGroupedCategoriesForCanonicalUrl.includes(
-          this.productCategoryDetails["categoryCode"]
+          metaObj.productCategoryDetails["categoryCode"]
         )
       ) {
         url = this.rawProductData.productPartDetails[
           this.rawProductData["partNumber"]
         ].canonicalUrl
           ? this.rawProductData.productPartDetails[
-              this.rawProductData["partNumber"]
-            ].canonicalUrl
-          : this.rawProductData["defaultCanonicalUrl"];
+            this.rawProductData["partNumber"]
+          ].canonicalUrl
+          : metaObj["defaultCanonicalUrl"];
       }
 
       if (url && url.substring(url.length - 2, url.length) == "-g") {
@@ -2718,7 +2794,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   getProductURL() {
     const productURL =
       this.rawProductData.productPartDetails[this.productSubPartNumber][
-        "canonicalUrl"
+      "canonicalUrl"
       ];
     const finalURL = productURL ? productURL : this.productUrl;
     return finalURL;
@@ -3138,7 +3214,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
               brandId: this.productBrandDetails["idBrand"],
               category:
                 this.productCategoryDetails &&
-                this.productCategoryDetails["taxonomy"]
+                  this.productCategoryDetails["taxonomy"]
                   ? this.productCategoryDetails["taxonomy"]
                   : "",
               variant: "",
@@ -3320,7 +3396,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     ClientUtility.scrollToTop(1000, footerOffset - 30);
   }
 
-  pseudoFnc() {}
+  pseudoFnc() { }
 
   sortedReviewsByDate(reviewList) {
     return reviewList.sort((a, b) => {
@@ -3361,7 +3437,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.reviewRatingPopupInstance.instance["productUrl"] = this.productUrl;
     (
       this.reviewRatingPopupInstance.instance[
-        "closePopup$"
+      "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
       this.reviewRatingPopupInstance = null;
@@ -3369,7 +3445,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     (
       this.reviewRatingPopupInstance.instance[
-        "emitWriteReview$"
+      "emitWriteReview$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
       this.writeReview();
@@ -3392,7 +3468,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       );
     (
       this.questionAnswerPopupInstance.instance[
-        "closePopup$"
+      "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
       this.questionAnswerPopupInstance = null;
@@ -3423,7 +3499,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.productInfoPopupInstance.instance["openProductInfo"] = true;
     (
       this.productInfoPopupInstance.instance[
-        "closePopup$"
+      "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
       // document.getElementById('infoTabs').scrollLeft = 0;

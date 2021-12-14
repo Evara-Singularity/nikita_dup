@@ -19,6 +19,7 @@ export class ProductOosSimilarComponent implements OnInit {
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
   productCardCurrentyInViewPort = -1;
+  @Output("metaUpdateEvent") metaUpdateEvent = new EventEmitter();
 
   constructor(
     public productService: ProductService,
@@ -56,7 +57,6 @@ export class ProductOosSimilarComponent implements OnInit {
   }
 
   windowScrollHandler() {
-    console.log('called');
     if (document.getElementById('similarProductsOos') &&
       this.productService.oosSimilarProductsData.similarData &&
       this.productService.oosSimilarProductsData.similarData.length > 0 && (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop)
@@ -95,10 +95,12 @@ export class ProductOosSimilarComponent implements OnInit {
             this.productCardCurrentyInViewPort
           ].productUrl
         );
+        this.metaUpdateEvent.emit(this.productCardCurrentyInViewPort);
       }
     } else {
       if (window.location.pathname !== ('/' + this.productBaseUrl)) {
         this.location.replaceState(this.productBaseUrl);
+        this.metaUpdateEvent.emit(-1);
       }
     }
   }

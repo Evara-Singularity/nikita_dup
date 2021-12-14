@@ -1,5 +1,7 @@
 @import "../../scss/variables";
 @import "../../scss/carousel";
+@import '../../scss/horizontalProductListing';
+
 
 .page-not-found {
     background: $white;
@@ -2869,4 +2871,26 @@
     }
 }
 
-
+.vertical-scroll-container{
+    background-color: #F2F2F2;
+    padding: 10px;
+    h2{
+        font-size: 16px;
+        line-height: 38px;
+    }
+    .inner-scroll-container{
+        display: flex;
+        product-horizontal-card{
+            margin-left: 15px;
+            &:first-child{
+                margin-left: 0px;
+            }
+            .product-card{
+                .no-card-border{
+                    border-radius: 8px !important;
+                }
+            }
+            
+        }
+    }    
+}

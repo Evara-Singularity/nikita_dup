@@ -1,9 +1,16 @@
-<div id="oosSimilarTopSection"
+<div id="oosSimilarTopSection" class="vertical-scroll-container"
     *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
-    <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[0]">
-    </product-horizontal-card>
-    <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[1]">
-    </product-horizontal-card>
+    <h2>Consider These Available Items</h2>
+    <div class="inner-scroll-container" [style.width.px]="productService.oosSimilarProductsData.similarData.length * 265">
+        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[0]">
+        </product-horizontal-card>
+        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[1]">
+        </product-horizontal-card>
+        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[2]">
+        </product-horizontal-card>
+        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[3]">
+        </product-horizontal-card>
+    </div>  
 </div>
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">

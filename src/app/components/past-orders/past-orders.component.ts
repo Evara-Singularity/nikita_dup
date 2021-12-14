@@ -53,14 +53,12 @@ export class PastOrdersComponent implements OnInit
     onVisiblePastOrders($event)
     {
         //1255256,1254884
-        //this._productService.getPastOrder(this.userId).subscribe((response) => { if (response['status']) { this.productList = response['data'] } });
-        this._productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) =>
+        this._productService.getPastOrderProducts(this.userId).subscribe((response) =>
         {
-            let products = response['products'];
-            if (products && (products as []).length > 0) {
-                this.productList = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
+            if (response['status']) {
+                this.productList = (response['data'] as any[]).map(product => this.productListService.recentProductResponseToProductEntity(product));
             }
-        })
+        });
     }
 
     get pageDisplay() { return this.productList.length > 2 && this.userId !== null; }

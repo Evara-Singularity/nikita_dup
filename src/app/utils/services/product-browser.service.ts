@@ -16,12 +16,19 @@ export class ProductBrowserService
     constructor(private _dataService: DataService, public http: HttpClient)
     { }
 
-    getPastOrder(userId)
+    getPastOrderProducts(userId)
     {
-        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${userId}`;
+        //const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${userId}`;
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.RECENTLY_VIEWED}${userId}`;
         return this._dataService.callRestful("GET", URL).pipe(
             catchError((error: HttpErrorResponse) => { return of(ERROR_RESPONSE); })
         );
+    }
+
+    getRecentProducts(userId)
+    {
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.RECENTLY_VIEWED}${userId}`;
+        return this._dataService.callRestful("GET", URL);
     }
 
     getSimilarProducts(productName, categoryId)

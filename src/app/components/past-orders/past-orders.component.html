@@ -9,7 +9,7 @@
             <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
                 <ng-container *ngFor="let product of productList;let pIndex=index">
                     <product-horizontal-card [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
-                        [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                        [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="false"
                         [analytics]="analytics">
                     </product-horizontal-card>
                 </ng-container>

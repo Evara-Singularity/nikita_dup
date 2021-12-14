@@ -12,12 +12,16 @@ export class EnhanceImgByNetworkPipe implements PipeTransform {
   readonly replaceOptions = CONSTANTS.IMAGE_SIZES_REPLACE_DATA
 
   transform(value: any, args?: any): any {
-    const imageSrc = value;
-    const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
-    const imageSrcChunks = imageSrc.split('/');
-    // console.log('inside imageSrcChunks ===>', imageSrcChunks);
-    imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace(sizeType[0], this.replaceOptions[sizeType[0]]);
-    return imageSrcChunks.join('/');
+    if (value) {
+      const imageSrc = value;
+
+      const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
+      const imageSrcChunks = imageSrc.split('/');
+      // console.log('inside imageSrcChunks ===>', imageSrcChunks);
+      imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace(sizeType[0], this.replaceOptions[sizeType[0]]);
+      return imageSrcChunks.join('/');
+    }
+    return value;
   }
 
 }

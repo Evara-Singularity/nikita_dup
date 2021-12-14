@@ -792,7 +792,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.sponseredProductsContainerRef.remove();
       this.onVisibleSponsered(null);
     }
-    // console.log('similarProductInstance 2', this.similarProductInstance);
+
     if (this.recentProductsInstance) {
       this.recentProductsInstance = null;
       this.recentProductsContainerRef.remove();
@@ -1055,15 +1055,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   checkForBulkPricesProduct() {
-    const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
-    this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
-    this.isBulkPricesProduct = this.productBulkPrices ? true : false;
-    if (this.isBulkPricesProduct) {
-      this.productBulkPrices = this.productBulkPrices.map(priceMap => {
-        const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
-        return { ...priceMap, calculatedDiscount }
-      })
-      this.checkBulkPriceMode();
+    if (this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']) {
+      const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
+      this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
+      this.isBulkPricesProduct = this.productBulkPrices ? true : false;
+      if (this.isBulkPricesProduct) {
+        this.productBulkPrices = this.productBulkPrices.map(priceMap => {
+          const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
+          return { ...priceMap, calculatedDiscount }
+        })
+        this.checkBulkPriceMode();
+      }
     }
   }
 
@@ -2297,12 +2299,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       title += " - Buy at Rs." + metaObj.productPrice;
     }
 
-    console.clear();
-    console.log(metaObj);
-    console.log(this.productName);
-    console.log(this.rawProductData);
-    console.log(this.productService.oosSimilarProductsData.similarData);
-
     if (metaObj.productOutOfStock == true) {
       this.pageTitle.setTitle(
         "Buy " + metaObj.productName + " Online At Best Price On Moglix"
@@ -2408,11 +2404,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setQuestionAnswerSchema() {
     if (this.isServer && this.rawProductData) {
-      // console.log('setQuestionAnswerSchema rawProductData', this.rawProductData);
       const qaSchema: Array<any> = [];
       if (this.isServer) {
         const questionAnswerList = this.questionAnswerList["data"];
-        // console.log('questionAnswerList', questionAnswerList);
         if (questionAnswerList["totalCount"] > 0) {
           (questionAnswerList["qlist"] as []).forEach((element, index) => {
             qaSchema.push({
@@ -2459,8 +2453,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         url: this.productDefaultImage,
         name: this.productName,
       });
-
-      // console.log('schema not 2 1', 'called');
 
       this.renderer2.appendChild(this.document.head, imageSchema);
 
@@ -2528,8 +2520,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           },
         };
 
-        // console.log('schema', schema);
-
         if (!this.priceQuantityCountry) {
           delete schema["offers"]["availability"];
         } else if (!this.priceQuantityCountry["quantityAvailable"]) {
@@ -2550,8 +2540,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       } else {
         console.log("product schema not created due to price zero");
       }
-
-      // console.log('schema not 2 2', 'called');
     } else {
       console.log("product schema not created");
     }
@@ -3038,8 +3026,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.rawReviewsData.productName = this.productName;
     this.reviewRatingPopupInstance.instance["rawReviewsData"] =
       this.rawReviewsData;
-    console.log("----------------------");
-    console.log(this.rawReviewsData);
+
     this.reviewRatingPopupInstance.instance["productUrl"] = this.productUrl;
     (
       this.reviewRatingPopupInstance.instance[

@@ -2324,11 +2324,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "Buy " +
           metaObj.productName +
           " Online in India at moglix. Shop from the huge range of " +
-          metaObj.productBrandDetails["brandName"] +
+          (metaObj.productBrandDetails ? metaObj.productBrandDetails["brandName"] : '') +
           " " +
-          metaObj.productCategoryDetails["categoryName"] +
+          (metaObj.productCategoryDetails ? metaObj.productCategoryDetails["categoryName"] : '') +
           ". ✯ Branded " +
-          metaObj.productCategoryDetails["categoryName"] +
+          (metaObj.productCategoryDetails ? metaObj.productCategoryDetails["categoryName"] : '') +
           " ✯ Lowest Price ✯ Best Deals ✯ COD";
       } else {
         metaDescription =
@@ -2337,11 +2337,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
           " Online in India at price ₹" +
           metaObj.productPrice +
           ". Shop from the huge range of " +
-          metaObj.productBrandDetails["brandName"] +
+          (metaObj.productBrandDetails ? metaObj.productBrandDetails["brandName"] : '') +
           " " +
-          metaObj.productCategoryDetails["categoryName"] +
+          (metaObj.productCategoryDetails ? metaObj.productCategoryDetails["categoryName"] : '') +
           ". ✯ Branded " +
-          metaObj.productCategoryDetails["categoryName"] +
+          (metaObj.productCategoryDetails ? metaObj.productCategoryDetails["categoryName"] : '') +
           " ✯ Lowest Price ✯ Best Deals ✯ COD";
       }
     }
@@ -2360,9 +2360,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       content:
         metaObj.productName +
         ", " +
-        metaObj.productCategoryDetails["categoryName"] +
+        (metaObj.productCategoryDetails ? metaObj.productCategoryDetails["categoryName"] : '') +
         ", " +
-        metaObj.productBrandDetails["brandName"],
+        (metaObj.productBrandDetails ? metaObj.productBrandDetails["brandName"] : ''),
     });
     if (this.isServer) {
       const links = this.renderer2.createElement("link");

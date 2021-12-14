@@ -26,7 +26,7 @@ export class ProductService {
 
   constructor(private _dataService: DataService, public http: HttpClient) { }
 
-  getSimilarProductBoByIndex(index){
+  getSimilarProductBoByIndex(index) {
     return this.oosSimilarProductsData.similarData[index].rawProductData;
   }
 
@@ -582,9 +582,6 @@ export class ProductService {
       ][partNumber]["images"],
       index
     );
-
-    console.log(this.oosSimilarProductsData.similarData[index]);
-    // this.oosSimilarProductsData.similarData[index].mainImageMediumLink = this.oosSimilarProductsData.similarData[index].productMediumImage;
   }
 
   getBrandLink(brandDetails: {}) {

@@ -5,7 +5,12 @@
         [productsListingData]="_productListService?.productListingData"
         *ngIf="_productListService &&_productListService.productListingData" >
     </shared-product-listing>
+
+    <div class="app-promo-container">
+        <product-listing-app-promo></product-listing-app-promo>
+    </div>
+
     <div id="openCat3" *ngIf="firstPageContent && productSearchResult && productSearchResult['products'].length>0"
         class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
 </div>
-<breadcrumb-nav [breadcrumb]="breadcrumbData"></breadcrumb-nav>
+<breadcrumb-nav [breadcrumb]="alpBreadCrumbData"></breadcrumb-nav>

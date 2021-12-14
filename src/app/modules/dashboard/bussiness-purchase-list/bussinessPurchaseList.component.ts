@@ -560,11 +560,7 @@ export class BussinessPurchaseListComponent {
                   this.cartService.orderSummary.next(cartSession);
                   this.sessionDetails = cartSession;
                   sessionCartObject = this.sessionDetails.cart;
-                  this.cartService.cart.next(
-                    cartSession["cart"] != undefined
-                      ? cartSession["noOfItems"]
-                      : 0
-                  );
+                  this.cartService.cart.next({count: (cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0)});
                   this.addProductInCart(
                     routerlink,
                     sessionCartObject,
@@ -648,7 +644,7 @@ export class BussinessPurchaseListComponent {
           this.sessionDetails = data;
           this.uniqueRequestNo = 0;
           this.cartService.setCartSession(data);
-          this.cartService.cart.next(data["noOfItems"]);
+          this.cartService.cart.next({count: data["noOfItems"]});
           this.successMessage = this.selectedIndex;
         } else {
           this.uniqueRequestNo = 0;

@@ -1,0 +1,8 @@
+<<<<<<< HEAD
+2021/12/06-13:36:27.708 1c39d Creating DB /var/www/html/online_pwa_optimisation/~/.vscode/Session Storage since it was missing.
+2021/12/06-13:36:27.925 1c39d Reusing MANIFEST /var/www/html/online_pwa_optimisation/~/.vscode/Session Storage/MANIFEST-000001
+=======
+2021/12/02-16:07:26.234 6806 Reusing MANIFEST /var/www/html/online_pwa_optimisation/~/.vscode/Session Storage/MANIFEST-000001
+2021/12/02-16:07:26.234 6806 Recovering log #3
+2021/12/02-16:07:26.234 6806 Reusing old log /var/www/html/online_pwa_optimisation/~/.vscode/Session Storage/000003.log 
+>>>>>>> f5c9527eab32ab1c36f58af25eed49d6e8022f3b

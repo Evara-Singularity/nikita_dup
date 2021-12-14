@@ -17,7 +17,6 @@ import { AppPromoModule } from '../app-promo/app-promo.module';
     AddFilterSymbolPipeModule,
     NgxPaginationModule,
     ObserveVisibilityDirectiveModule,
-    AppPromoModule
   ],
   exports: [
     SharedProductListingComponent

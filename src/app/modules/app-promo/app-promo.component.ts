@@ -147,18 +147,21 @@ export class AppPromoComponent implements OnInit {
   }
 
   getMobileOperatingSystem(): string {
-    var userAgent = navigator.userAgent || navigator.vendor || window['opera'];
-    // Windows Phone must come first because its UA also contains "Android"
-    if (/windows phone/i.test(userAgent)) {
-      return this.MOBILE_ENVS.WINDOWS;
+    if (this._commonService.isBrowser) {
+      var userAgent = navigator.userAgent || navigator.vendor || window['opera'];
+      // Windows Phone must come first because its UA also contains "Android"
+      if (/windows phone/i.test(userAgent)) {
+        return this.MOBILE_ENVS.WINDOWS;
+      }
+      if (/android/i.test(userAgent)) {
+        return this.MOBILE_ENVS.ANDROID;
+      }
+      // iOS detection from: http://stackoverflow.com/a/9039885/177710
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return this.MOBILE_ENVS.IOS;
+      }
     }
-    if (/android/i.test(userAgent)) {
-      return this.MOBILE_ENVS.ANDROID;
-    }
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-      return this.MOBILE_ENVS.IOS;
-    }
+
     return this.MOBILE_ENVS.OTHERS;
   }
 

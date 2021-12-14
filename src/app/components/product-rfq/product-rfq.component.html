@@ -141,8 +141,11 @@
     </form>
 </ng-template>
 <!--non-popup-->
-<div *ngIf="isOutOfStock">
-    <ng-container *ngTemplateOutlet="rfqFormTemplate"></ng-container>
+<div>
+    <app-bottom-menu *ngIf="isOutOfStock" (outData$)="onUpdate($event)">
+        <h1>Hello Brother</h1>
+        <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
+    </app-bottom-menu>
 </div>
 <!--Popup-->
 <app-pop-up *ngIf="!isOutOfStock && isPopup"

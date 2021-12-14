@@ -14,14 +14,14 @@ import { Step } from '../../utils/validators/step.validate';
 import { ProductUtilsService } from './../../utils/services/product-utils.service';
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 
 @Component({
     selector: 'product-rfq',
     templateUrl: './product-rfq.component.html',
     styleUrls: ['./product-rfq.component.scss']
 })
-export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
-{
+export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
     readonly gstinValidators = [Validators.required, Validators.pattern('[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}')];
     readonly pincodeOptional = 'Pincode';
     readonly pincodeMandate = this.pincodeOptional + '*';
@@ -73,14 +73,12 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
-     private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService)
-    {
+        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService) {
         this.stateList = stateList['dataList'];
         this.isBrowser = _commonService.isBrowser;
     }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.setProductDetails();
         this.userSession = this.localStorageService.retrieve('user');
         this.isUserLoggedIn = (this.userSession && this.userSession.authenticated == 'true');
@@ -94,10 +92,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
 
     ngAfterViewChecked() { this.cd.detectChanges(); }
 
-    addSubscribers()
-    {
-        this.loginSubscriber = this.localAuthService.login$.subscribe((value) =>
-        {
+    addSubscribers() {
+        this.loginSubscriber = this.localAuthService.login$.subscribe((value) => {
             if (value) {
                 this.isUserLoggedIn = true;
                 this.setUserDetails();
@@ -105,23 +101,20 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                 this.getBusinessDetail(this.userSession);
             }
         })
-        this.pincodeSubscriber = this.pincode.valueChanges.subscribe((value: string) =>
-        {
+        this.pincodeSubscriber = this.pincode.valueChanges.subscribe((value: string) => {
             if (value && value.length == 6) {
                 this.fetchStateCityByPincode(value);
             }
         })
-        this.localAuthService.logout$.subscribe((value) =>
-        {
+        this.localAuthService.logout$.subscribe((value) => {
             this.rfqForm.reset();
             this.quantity.setValue(this.productMOQ ? this.productMOQ : 1);
             this.isUserLoggedIn = false;
         })
     }
 
-    initiateLogin($event?)
-    {
-        if($event){
+    initiateLogin($event?) {
+        if ($event) {
             $event.preventDefault();
         }
         if (!this.isUserLoggedIn) {
@@ -130,8 +123,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    setUserDetails()
-    {
+    setUserDetails() {
         this.userSession = this.localAuthService.getUserSession();
         this.firstName.setValue(this.userSession['userName']);
         this.email.setValue(this.userSession.email ? this.userSession.email : '');
@@ -148,23 +140,20 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         });
     }
 
-    setProductDetails()
-    {
+    setProductDetails() {
         this.productMOQ = parseInt(this.product['moq']) ? parseInt(this.product['moq']) : 1;
         this.quantity.setValidators([Validators.required, Validators.pattern(/^[0-9]\d*$/), Validators.min(this.productMOQ), Validators.max(this.productMAQ), Validators.maxLength(3)]);
         this.quantity.setValue(this.productMOQ ? this.productMOQ : 1);
         this.quantity.updateValueAndValidity();
     }
 
-    resetGSTINVarification(message)
-    {
+    resetGSTINVarification(message) {
         this.isGSTINVerified = false;
         this.verifiedGSTINValue = '';
         this.gstinError = message;
     }
 
-    handleBussinessCustomer()
-    {
+    handleBussinessCustomer() {
         if (this.isUserLoggedIn) {
             if (this.isBusinessCustomer.value) {
                 this.rfqForm.addControl('tin', new FormControl(this.verifiedGSTINValue, this.gstinValidators));
@@ -178,8 +167,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    handlePincodeCity()
-    {
+    handlePincodeCity() {
         if (this.isUserLoggedIn) {
             if (this.isPincodeUnKnown.value) {
                 this.pincode.clearValidators();
@@ -198,8 +186,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    increaseQuantity()
-    {
+    increaseQuantity() {
         if (this.isUserLoggedIn) {
             let value = parseInt(this.quantity.value);
             if (isNaN(value) || this.quantity.hasError('min')) {
@@ -215,8 +202,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    decreaseQuantity()
-    {
+    decreaseQuantity() {
         if (this.isUserLoggedIn) {
             let value = parseInt(this.quantity.value);
             if (isNaN(value)) {
@@ -236,11 +222,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
 
     close() { this.isPopup = false; this.isRFQSubmitted = false; }
 
-    getBusinessDetail(userSession)
-    {
+    getBusinessDetail(userSession) {
         let details = { customerId: userSession.userId, userType: 'business' };
-        this.businessDetailService.getBusinessDetail(details).subscribe((response) =>
-        {
+        this.businessDetailService.getBusinessDetail(details).subscribe((response) => {
             if (response['statusCode'] == 200) {
                 this.email.setValue(this.userSession.email ? this.userSession.email : '');
                 this.mobile.setValue(this.userSession.phone);
@@ -256,17 +240,14 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         })
     }
 
-    fetchStateCityByPincode(pincode)
-    {
+    fetchStateCityByPincode(pincode) {
         this.productService.getStateCityByPinCode(pincode).subscribe(
-            (response) =>
-            {
+            (response) => {
                 if (response['status']) {
                     this.isInvalidPincode = false;
                     let dataList = (response['dataList'] as any[])[0];
                     this.city.setValue(dataList.city);
-                    this.stateList.forEach(element =>
-                    {
+                    this.stateList.forEach(element => {
                         if (element.idState == parseInt(dataList['state'])) {
                             this.state.setValue(element.name);
                         }
@@ -280,8 +261,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         )
     }
 
-    processRFQ(rfqDetails)
-    {
+    processRFQ(rfqDetails) {
         if (this.isUserLoggedIn) {
             this.verifyGSTIN(rfqDetails);
         } else {
@@ -289,16 +269,14 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    verifyGSTIN(rfqDetails)
-    {
+    verifyGSTIN(rfqDetails) {
         this.isRFQSubmitted = true;
         this.rfqForm.markAllAsTouched();
         if (this.rfqForm.valid) {
             this.isLoading.emit(true);
             if (this.isBusinessCustomer.value && this.verifiedGSTINValue !== (this.tin.value as string).toUpperCase()) {
                 let gstinValue = (this.tin.value as string).toUpperCase();
-                this.productService.getGSTINDetails(gstinValue).subscribe((response) =>
-                {
+                this.productService.getGSTINDetails(gstinValue).subscribe((response) => {
                     if (response['statusCode'] == 200 && response['taxpayerDetails'] != null) {
                         this.isGSTINVerified = response['valid'];
                         this.verifiedGSTINValue = (gstinValue as string).toUpperCase();;
@@ -308,7 +286,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                         this.isLoading.emit(false);
                     }
                 },
-                (error) => { this.resetGSTINVarification(''); this.isLoading.emit(false); }
+                    (error) => { this.resetGSTINVarification(''); this.isLoading.emit(false); }
                 )
             } else {
                 this.saveRFQ(rfqDetails);
@@ -316,8 +294,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    saveRFQ(rfqDetails)
-    {
+    saveRFQ(rfqDetails) {
         let data = { rfqEnquiryCustomer: null, rfqEnquiryItemsList: null };
         let extraData = {
             'lastName': rfqDetails['last_name'],
@@ -342,8 +319,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }]
         data['rfqEnquiryCustomer'] = { ...rfqDetails, ...extraData };
         this.productService.postBulkEnquiry(data).subscribe(
-            (response) =>
-            {
+            (response) => {
                 if (response['statusCode'] == 200) {
                     this.isOutOfStock ? this.resetOOSFields() : this.rfqForm.reset();
                     this.quantity.setValue(this.productMOQ);
@@ -361,8 +337,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         );
     }
 
-    resetOOSFields()
-    {
+    resetOOSFields() {
         this.setUserDetails();
         this.pincode.reset();
         this.city.reset();
@@ -386,17 +361,20 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     get isPincodeUnKnown() { return this.rfqForm.get('isPincodeUnKnown') };
     get isBusinessCustomer() { return this.rfqForm.get('isBusinessCustomer') };
 
-    ngOnDestroy()
-    {
+    ngOnDestroy() {
         if (this.loginSubscriber) {
             this.loginSubscriber.unsubscribe();
         }
         if (this.pincodeSubscriber) {
             this.pincodeSubscriber.unsubscribe();
         }
-        if(this.getPincodeSubscriber){
+        if (this.getPincodeSubscriber) {
             this.getPincodeSubscriber.unsubscribe();
         }
+    }
+
+    onUpdate(event) {
+        console.log(event);
     }
 }
 
@@ -409,6 +387,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         FormsModule,
         ReactiveFormsModule,
         PopUpModule,
+        BottomMenuModule,
         RouterModule
     ],
 })

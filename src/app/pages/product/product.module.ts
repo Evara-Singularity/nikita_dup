@@ -20,6 +20,7 @@ import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/product-oos-similar.module";
 import { ProductHorizontalCardModule } from "@app/modules/product-horizontal-card/product-horizontal-card.module";
 import { LazyLoadImageModule } from "ng-lazyload-image";
+import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.directive";
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -40,6 +41,7 @@ import { LazyLoadImageModule } from "ng-lazyload-image";
     ProductInfoModule,
     EmiPlansModule,
     SliceArrayPipeModule,
+    NumberDirectiveModule,
     // Directives
     ProductHorizontalCardModule,
     EnhanceImgByNetworkDirectiveModule,

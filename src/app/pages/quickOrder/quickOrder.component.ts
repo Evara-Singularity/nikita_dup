@@ -134,7 +134,7 @@ export class QuickOrderComponent {
                     setTimeout(() => {
                         this.cartSessionUpdated$.next(cartSession);
                         this.cartService.orderSummary.next(cartSession);
-                        this.cartService.cart.next(cartSession['cart'] !== undefined ? cartSession['noOfItems'] : 0);
+                        this.cartService.cart.next({count: cartSession['cart'] !== undefined ? cartSession['noOfItems'].length : 0});
                     }, 0)
                 } else if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
                     const cs = this.cartService.updateCart(cartSession['cart']);
@@ -148,7 +148,7 @@ export class QuickOrderComponent {
                     setTimeout(() => {
                         this.cartSessionUpdated$.next(cs);
                         this.cartService.orderSummary.next(cs);
-                        this.cartService.cart.next(cs['cart'] !== undefined ? cs['noOfItems'] : 0);
+                        this.cartService.cart.next({count: cs['cart'] !== undefined ? cs['noOfItems'] : 0});
                     }, 0)
                     this._localAuthService.setUserSession(cartSession['userData']);
                     this._localAuthService.logout$.emit();
@@ -266,7 +266,7 @@ export class QuickOrderComponent {
 
             if (res['statusCode'] == 200) {
                 alert('Cart quantity updated successfully');
-                this.cartService.cart.next(res['noOfItems']);
+                this.cartService.cart.next({count: res['noOfItems'] || 0});
             }
         });
     }

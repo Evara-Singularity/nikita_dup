@@ -12,9 +12,8 @@ import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { ProductService } from '@app/utils/services/product.service';
 import { ProductListService } from '@app/utils/services/productList.service';
-import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
@@ -88,7 +87,8 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _commonService: CommonService,
     private _enhanceImagePipe: EnhanceImgByNetworkPipe,
     private _analytics: GlobalAnalyticsService,
-    private _toastMessageService: ToastMessageService
+    private _toastMessageService: ToastMessageService,
+    private _productService: ProductService,
   ) {
   }
 
@@ -120,7 +120,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   buyNow(buyNow = false) {
     this._loader.setLoaderState(true);
     const productMsnId = this.product['moglixPartNumber'];
-    this.getProductGroupDetails(productMsnId).pipe(
+    this._productService.getProductGroupDetails(productMsnId).pipe(
       map(productRawData => {
         console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
@@ -151,7 +151,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   changeVariant(data) {
-    this.getProductGroupDetails(data.msn).pipe(
+    this._productService.getProductGroupDetails(data.msn).pipe(
       map(productRawData => {
         if (productRawData['productBO']) {
           return productRawData['productBO'];
@@ -164,7 +164,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       // productDetails will always have variants as it can be called by variant popup only
       if (this.variantPopupInstance) {
         const productRequest = this._cartService.getAddToCartProductItemRequest({ productGroupData: productBO, buyNow: data.buyNow });
-        const product = this.productEntityFromProductBO(productBO);
+        const product = this._productService.productEntityFromProductBO(productBO, {rating: this.product.rating, ratingCount: this.product.ratingCount, });
         const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
 
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
@@ -183,7 +183,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   variantAddToCart(data) {
-    //console.log('variantAddToCart ==>', data)
     this.addToCart(data.product, data.buyNow)
   }
 
@@ -214,29 +213,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     }
   }
 
-  openRfqForm() {
-    const productMsnId = this.product['moglixPartNumber'];
-    this.openRfqFormCore(productMsnId);
-  }
-
-  openRfqFormCore(productMsnId) {
-    const user = this._localAuthService.getUserSession();
-    const isUserLogin = user && user.authenticated && ((user.authenticated) === 'true') ? true : false;
-    if (isUserLogin) {
-      this.getProductGroupDetails(productMsnId).pipe(
-        map(productRawData => {
-          return this.getRFQProduct(productRawData['productBO'])
-        })
-      ).subscribe(productDetails => {
-        this.intiateRFQQuote(productDetails).then(res => {
-          this._loader.setLoaderState(false);
-        });
-      })
-    } else {
-      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
-      this._router.navigate(['/login'], navigationExtras);
-    }
-  }
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
@@ -277,6 +253,31 @@ export class ProductHorizontalCardComponent implements OnInit {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });
+    }
+  }
+
+
+  openRfqForm() {
+    const productMsnId = this.product['moglixPartNumber'];
+    this.openRfqFormCore(productMsnId);
+  }
+
+  openRfqFormCore(productMsnId) {
+    const user = this._localAuthService.getUserSession();
+    const isUserLogin = user && user.authenticated && ((user.authenticated) === 'true') ? true : false;
+    if (isUserLogin) {
+      this._productService.getProductGroupDetails(productMsnId).pipe(
+        map(productRawData => {
+          return this._productService.getRFQProductSchema(productRawData['productBO'])
+        })
+      ).subscribe(productDetails => {
+        this.intiateRFQQuote(productDetails).then(res => {
+          this._loader.setLoaderState(false);
+        });
+      })
+    } else {
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
+      this._router.navigate(['/login'], navigationExtras);
     }
   }
 
@@ -325,33 +326,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     }
   }
 
-  private getRFQProduct(product) {
-    const partNumber = product['partNumber'] || product['defaultPartNumber'];
-    const isProductPriceValid = product['productPartDetails'][partNumber]['productPriceQuantity'] != null;
-    const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, product['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
-    const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
-    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-    const productBrandDetails = product['brandDetails'];
-    const productCategoryDetails = product['categoryDetails'][0];
-    const productTags = product['productTags'];
-    const outOfStock = product['outOfStock'];
-    const quantityAvailable = product['quantityAvailable'];
-
-    return {
-      url: product['friendlyUrl'],
-      price: productPrice,
-      msn: partNumber,
-      moq: productMinimmumQuantity,
-      brand: productBrandDetails['brandName'],
-      taxonomyCode: productCategoryDetails['taxonomy'],
-      productName: product['productName'],
-      adobeTags: '',
-      productTags,
-      outOfStock,
-      quantityAvailable
-    }
-
-  }
 
   private addToCart(productDetails, buyNow): void {
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
@@ -364,7 +338,10 @@ export class ProductHorizontalCardComponent implements OnInit {
           this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
           if (!buyNow) {
             this._cartService.setCartSession(result);
-            this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
+            this._cartService.cart.next({
+              count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
+              currentlyAdded: productDetails
+            });
             this.showAddToCartToast();
             // analytics call
           } else {
@@ -377,52 +354,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
   }
 
-  private getProductGroupDetails(productMsnId): Observable<any> {
-    const PRODUCT_URL = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
-    return this._http.get(PRODUCT_URL)
-  }
-
-  productEntityFromProductBO(productBO) {
-    const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
-    const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
-    const productPartDetails = productBO['productPartDetails'][partNumber];
-    const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
-    const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
-    const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
-      (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
-    const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
-    const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
-    const productBrandDetails = productBO['brandDetails'];
-    const productCategoryDetails = productBO['categoryDetails'][0];
-    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
-    const product: ProductsEntity = {
-      moglixPartNumber: partNumber,
-      moglixProductNo: null,
-      mrp: productMrp,
-      salesPrice: productPrice,
-      priceWithoutTax: priceWithoutTax,
-      productName: productBO['productName'],
-      variantName: productBO['productName'],
-      productUrl: productBO['defaultCanonicalUrl'],
-      shortDesc: productBO['shortDesc'],
-      brandId: productBrandDetails['idBrand'],
-      brandName: productBrandDetails['brandName'],
-      quantityAvailable: priceQuantityCountry['quantityAvailable'],
-      productMinimmumQuantity: productMinimmumQuantity,
-      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-      rating: this.product.rating,
-      categoryCodes: productCategoryDetails['categoryCode'],
-      taxonomy: productCategoryDetails['taxonomyCode'],
-      mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['thumbnail'] : '',
-      productTags: [],
-      filterableAttributes: {},
-      avgRating: this.product.avgRating,
-      itemInPack: null,
-      ratingCount: this.product.ratingCount,
-      reviewCount: this.product.reviewCount
-    };
-    return product;
-  }
 
   getRandomValue(arr, n) {
     var result = new Array(n),

@@ -156,7 +156,7 @@ export class SocialLoginComponent {
                                     let cs = this._cartService.updateCart(res);
                                     this._cartService.setCartSession(cs);
                                     this._cartService.orderSummary.next(res);
-                                    this._cartService.cart.next(res.noOfItems);
+                                    this._cartService.cart.next({ count: res.noOfItems || 0 });
                                 }
 
                                 if (this._cartService.buyNow) {
@@ -168,7 +168,7 @@ export class SocialLoginComponent {
                                             data['userId'] = userSession.userId
                                             this._cartService.setCartSession(data);
                                             this._cartService.orderSummary.next(data);
-                                            this._cartService.cart.next(data.noOfItems);
+                                            this._cartService.cart.next({ count: data.noOfItems || 0 });
                                             // this._router.navigate(['/checkout'], { queryParams: { index: 2 }, replaceUrl: true });
                                         }
                                         this.slWorking$.emit(false);

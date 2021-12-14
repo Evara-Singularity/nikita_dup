@@ -13,12 +13,11 @@ import {
   ViewChild,
   ViewContainerRef,
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import CONSTANTS from "@app/config/constants";
-import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
@@ -27,7 +26,6 @@ import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
-import { environment } from "environments/environment";
 import { LocalStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
@@ -108,7 +106,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productBrandCategoryUrl: string;
   productRating: number;
   productSubPartNumber: string;
+  // Bulk product related vars
   productBulkPrices: any[];
+  isBulkPricesProduct: boolean = false;
+  selectedProductBulkPrice: any;
+  // product returns
   isProductReturnAble: boolean = false;
   //Product Question answer
   questionAnswerForm: FormGroup;
@@ -269,6 +271,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   appPromoVisible: boolean = true;
   productInfo = null;
+
+  // quntity && bulk prices related
+  qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
@@ -703,7 +708,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ? this.priceQuantityCountry["moq"]
         : 1;
 
+
     this.setOutOfStockFlag();
+    this.checkForBulkPricesProduct();
 
     /**
      * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
@@ -718,6 +725,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     // if (this.productFilterAttributesList && this.productOutOfStock) {
     //   this.getProductGroupData(args.nextAvailableMsn);
     // }
+
+    // set qunatity to minQuantity that can be purchased
+    this.qunatityFormControl.setValue(this.productMinimmumQuantity);
 
     if (this.productOutOfStock) {
       this.onVisibleProductRFQ(null);
@@ -992,13 +1002,84 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // showRating()
-  // {
-  //     ClientUtility.scrollToTop(
-  //         2000,
-  //         ClientUtility.offset(<HTMLElement>document.querySelector('#reviewsAll')).top - document.querySelector('header').offsetHeight
-  //     );
-  // }
+  // PDP Cart revamp : product quantity handle START HERE
+
+  get cartQunatityForProduct() {
+    return parseInt(this.qunatityFormControl.value) || 1;
+  }
+
+  onChangeCartQuanityValue() {
+    this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
+  }
+
+  private checkCartQuantityAndUpdate(value): void {
+    if (!value) {
+      this._tms.show({
+        type: 'error',
+        text: 'Please enter valid quantity'
+      })
+      this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+    } else {
+      if (parseInt(value) < parseInt(this.productMinimmumQuantity)) {
+        this._tms.show({
+          type: 'error',
+          text: 'Minimum qty can be ordered is: ' + this.productMinimmumQuantity
+        })
+        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+      } else if (parseInt(value) > parseInt(this.priceQuantityCountry['quantityAvailable'])) {
+        this._tms.show({
+          type: 'error',
+          text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
+        })
+      } else if (isNaN(parseInt(value))) {
+        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+        this.checkBulkPriceMode();
+      } else {
+        this.qunatityFormControl.setValue(value);
+        this.checkBulkPriceMode();
+      }
+    }
+  }
+
+  updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
+    switch (type) {
+      case 'DECREMENT':
+        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct - 1))
+        break;
+      case 'INCREMENT':
+        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct + 1))
+        break;
+      default:
+        break;
+    }
+  }
+
+  checkForBulkPricesProduct() {
+    const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
+    this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
+    this.isBulkPricesProduct = this.productBulkPrices ? true : false;
+    if (this.isBulkPricesProduct) {
+      this.productBulkPrices = this.productBulkPrices.map(priceMap => {
+        const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
+        return { ...priceMap, calculatedDiscount }
+      })
+      this.checkBulkPriceMode();
+    }
+  }
+
+  checkBulkPriceMode() {
+    if (this.isBulkPricesProduct) {
+      const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
+      this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
+    }
+  }
+
+  selectProductBulkPrice(qunatity) {
+    this.qunatityFormControl.setValue(qunatity);
+    this.checkBulkPriceMode();
+  }
+
+  // PDP Cart revamp : product quantity handle END HERE
 
   async loadProductShare() {
     if (!this.productShareInstance) {
@@ -1212,256 +1293,97 @@ export class ProductComponent implements OnInit, AfterViewInit {
         mConfig: { className: "ex" },
       });
     } else {
-      this.addToCart("/quickorder");
+      this.addToCart(false);
     }
   }
 
-  // cart methods
-  buyNow(routerlink) {
-    const buyNow = true;
-    const user = this.localStorageService.retrieve("user");
-    if (!user || !user.authenticated || user.authenticated === "false") {
-      this.addToCart(routerlink, true);
-      return;
-    }
-    this.addToCart(routerlink, buyNow);
+  // cart methods 
+  addToCart(buyNow: boolean) {
+    this.addToCartFromModal(buyNow)
   }
 
-  addToCartFromModal(routerLink) {
-    this.addToCart(routerLink);
-  }
-
-  addToCart(routerlink, buyNow = false) {
-    //  to be called on client side only.
-    let quantity = Number(
-      (<HTMLInputElement>document.querySelector("#product_quantity")).value
-    );
-
-    this.analyticAddToCart(routerlink, quantity); // since legacy buy  now analytic code is used
-
-    if (this.uniqueRequestNo == 0) {
-      this.uniqueRequestNo = 1;
-
-      let sessionDetails = this.cartService.getCartSession();
-
-      if (sessionDetails["cart"]) {
-        this.addProductInCart(
-          routerlink,
-          sessionDetails["cart"],
-          quantity,
-          buyNow
-        );
+  addToCartFromModal(buyNow: boolean) {
+    const cartAddToCartProductRequest = this.cartService.getAddToCartProductItemRequest({
+      productGroupData: this.rawProductData,
+      buyNow: false,
+      selectPriceMap: this.selectedProductBulkPrice,
+      quantity: this.cartQunatityForProduct
+    });
+    this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result => {
+      if (!result && this.cartService.buyNowSessionDetails) {
+        // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
+        this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
       } else {
-        this.localStorageService.clear("user");
-        this.commonService.getSession().subscribe((res) => {
-          if (res["statusCode"] != undefined && res["statusCode"] == 500) {
+        if (result) {
+          this.checkoutService.setCheckoutTabIndex(1);
+          this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
+          this.fireViewBasketEvent(result);
+          this.intialAddtoCartSocketAnalyticEvent(buyNow);
+          this.updateAddtoCartSocketAnalyticEvent(result, buyNow)
+          if (!buyNow) {
+            this.cartService.setCartSession(result);
+            this.cartService.cart.next({ count: result['noOfItems'], currentlyAdded: cartAddToCartProductRequest });
+            this.showAddToCartToast();
           } else {
-            this.localAuthService.setUserSession(res);
-            let userSession = this.localAuthService.getUserSession();
-            let params = { sessionid: userSession.sessionId };
-            this.cartService
-              .getCartBySession(params)
-              .subscribe((cartSession) => {
-                if (
-                  cartSession["statusCode"] != undefined &&
-                  cartSession["statusCode"] == 200
-                ) {
-                  this.cartService.orderSummary.next(cartSession);
-                  this.cartService.cart.next({
-                    count:
-                      cartSession["cart"] != undefined
-                        ? cartSession["noOfItems"]
-                        : 0,
-                    currentlyAdded: this.currentAddedProduct,
-                  });
-                  this.addProductInCart(
-                    routerlink,
-                    cartSession["cart"],
-                    quantity
-                  );
-                }
-              });
+            this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
-        });
-      }
-    }
-  }
-
-  addProductInCart(routerLink, sessionCartObject, quantity, buyNow?) {
-    this.checkoutService.setCheckoutTabIndex(1);
-
-    const userSession = this.localStorageService.retrieve("user");
-    let sessionItemList: Array<any> = [];
-    let sessionDetails = this.cartService.getCartSession();
-
-    if (sessionDetails["itemsList"] == null) {
-      sessionItemList = [];
-    } else {
-      sessionItemList = sessionDetails["itemsList"];
-    }
-
-    if (sessionDetails && sessionDetails["itemsList"]) {
-      sessionDetails["itemsList"].forEach((ele) => {
-        if (
-          ele.productId == this.productSubPartNumber ||
-          ele.productId == this.defaultPartNumber
-        ) {
-          return;
+        } else {
+          console.log('PDP null conditon')
         }
-      });
-    }
-
-    let singleProductItem = {
-      cartId: sessionCartObject.cartId,
-      productId: this.productSubPartNumber || this.defaultPartNumber,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      amount: Number(this.productMrp),
-      offer: null,
-      amountWithOffer: null,
-      taxes: this.productTax,
-      amountWithTaxes: null,
-      totalPayableAmount: this.productPrice,
-      productName: this.productName,
-      brandName: this.productBrandDetails["brandName"],
-      productMRP: this.productMrp,
-      priceWithoutTax: this.priceWithoutTax,
-      tpawot: this.priceWithoutTax,
-      taxPercentage: this.priceQuantityCountry["taxRule"]["taxPercentage"],
-      productSelling: this.productPrice,
-      discount: this.productDiscount,
-      productImg: this.productCartThumb,
-      isPersistant: true,
-      productQuantity: Number(quantity),
-      productUnitPrice: this.productPrice,
-      expireAt: null,
-      productUrl: this.productUrl,
-      bulkPriceMap: this.priceQuantityCountry["bulkPricesIndia"],
-      bulkPrice: this.bulkSellingPrice,
-      bulkPriceWithoutTax: this.bulkPriceWithoutTax,
-      categoryCode: this.productCategoryDetails["categoryCode"],
-      taxonomyCode: this.productCategoryDetails["taxonomyCode"],
-    };
-
-    // console.log('singleProductItem', singleProductItem);
-
-    if (buyNow) {
-      singleProductItem["buyNow"] = buyNow;
-      sessionItemList = [];
-    }
-    const checkAddToCartData = this.checkAddToCart(
-      sessionItemList,
-      singleProductItem
-    );
-
-    if (checkAddToCartData.isvalid) {
-      var taxonomy = this.productCategoryDetails["taxonomyCode"];
-      var trackingData = {
-        event_type: "click",
-        label: routerLink == "/quickorder" ? "add_to_cart" : "buy_now",
-        product_name: this.productName,
-        msn: this.productSubPartNumber || this.defaultPartNumber,
-        brand: this.productBrandDetails["brandName"],
-        price: this.productPrice,
-        quantity: Number(quantity),
-        channel: "PDP",
-        category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
-        category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
-        category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-        page_type: "product_page",
-      };
-
-      this.dataService.sendMessage(trackingData);
-
-      this.showLoader = true;
-
-      sessionDetails["cart"]["buyNow"] = buyNow;
-      sessionDetails["itemsList"] = checkAddToCartData.itemlist;
-      sessionDetails = this.cartService.updateCart(sessionDetails);
-
-      console.clear();
-      console.log(trackingData);
-      // return;
-
-      this.currentAddedProduct = Object.assign({}, singleProductItem);
-      if (!buyNow) {
-        this.cartService.setCartSession(sessionDetails);
       }
-      this.cartSession = this.cartService.getCartSession();
-      this.productUtil.checkRootItemInCart(
-        this.currentAddedProduct["productId"]
-      );
-      this.fireViewBasketEvent();
-      let user = this.localStorageService.retrieve("user");
-      if (buyNow) {
-        const cartSession = this.removePromoCode(sessionDetails);
-        sessionDetails = cartSession;
-      }
-      /**
-       * Below case is only when user is not loggedin or usersession is set to undefined or null.
-       */
-      if (buyNow && (!userSession || userSession["authenticated"] != "true")) {
-        this.cartService.buyNowSessionDetails = sessionDetails;
-        this.router.navigateByUrl("/checkout", {
-          state: buyNow ? { buyNow: buyNow } : {},
-        }); //this redirect to quick order page
-        return;
-      }
-
-      this.showLoader = true;
-
-      this.cartService
-        .updateCartSessions(routerLink, sessionDetails, buyNow)
-        .subscribe(
-          (data) => {
-            this.showLoader = false;
-            this.updateCartSessions(data, routerLink, buyNow);
-          },
-          (err) => {
-            this.showLoader = false;
-            this.updateCartSessions(null, routerLink);
-          }
-        );
-
-      if (
-        this.cartSession["itemsList"] !== null &&
-        this.cartSession["itemsList"]
-      ) {
-        var totQuantity = 0;
-        var trackData = {
-          event_type: "click",
-          page_type: "product_page",
-          label: "cart_updated",
-          channel: "PDP",
-          price: this.cartSession["cart"]["totalPayableAmount"]
-            ? this.cartSession["cart"]["totalPayableAmount"].toString()
-            : "",
-          quantity: this.cartSession["itemsList"].map((item) => {
-            return (totQuantity = totQuantity + item.productQuantity);
-          })[this.cartSession["itemsList"].length - 1],
-          shipping: parseFloat(this.cartSession["shippingCharges"]),
-          itemList: this.cartSession["itemsList"].map((item) => {
-            return {
-              category_l1: item["taxonomyCode"]
-                ? item["taxonomyCode"].split("/")[0]
-                : null,
-              category_l2: item["taxonomyCode"]
-                ? item["taxonomyCode"].split("/")[1]
-                : null,
-              category_l3: item["taxonomyCode"]
-                ? item["taxonomyCode"].split("/")[2]
-                : null,
-              price: item["totalPayableAmount"].toString(),
-              quantity: item["productQuantity"],
-            };
-          }),
-        };
-        this.dataService.sendMessage(trackData);
-      }
-    }
+    })
   }
 
-  fireViewBasketEvent() {
+  intialAddtoCartSocketAnalyticEvent(buynow: boolean) {
+    var trackingData = {
+      event_type: "click",
+      label: !buynow ? "add_to_cart" : "buy_now",
+      product_name: this.productName,
+      msn: this.productSubPartNumber || this.defaultPartNumber,
+      brand: this.productBrandDetails["brandName"],
+      price: this.productPrice,
+      quantity: Number(this.cartQunatityForProduct),
+      channel: "PDP",
+      category_l1: this.productCategoryDetails["taxonomy"].split("/")[0] ? this.productCategoryDetails["taxonomy"].split("/")[0] : null,
+      category_l2: this.productCategoryDetails["taxonomy"].split("/")[1] ? this.productCategoryDetails["taxonomy"].split("/")[1] : null,
+      category_l3: this.productCategoryDetails["taxonomy"].split("/")[2] ? this.productCategoryDetails["taxonomy"].split("/")[2] : null,
+      page_type: "product_page",
+    };
+    this.analytics.sendToClicstreamViaSocket(trackingData);
+  }
+
+  updateAddtoCartSocketAnalyticEvent(cartSession, buynow: boolean) {
+    let totQuantity = 0;
+    let trackData = {
+      event_type: "click",
+      page_type: "product_page",
+      label: "cart_updated",
+      channel: "PDP",
+      price: cartSession["cart"]["totalPayableAmount"] ? cartSession["cart"]["totalPayableAmount"].toString() : "",
+      quantity: cartSession["itemsList"].map((item) => {
+        return (totQuantity = totQuantity + item.productQuantity);
+      })[cartSession["itemsList"].length - 1],
+      shipping: parseFloat(cartSession["shippingCharges"]),
+      itemList: cartSession["itemsList"].map((item) => {
+        return {
+          category_l1: item["taxonomyCode"]
+            ? item["taxonomyCode"].split("/")[0]
+            : null,
+          category_l2: item["taxonomyCode"]
+            ? item["taxonomyCode"].split("/")[1]
+            : null,
+          category_l3: item["taxonomyCode"]
+            ? item["taxonomyCode"].split("/")[2]
+            : null,
+          price: item["totalPayableAmount"].toString(),
+          quantity: item["productQuantity"],
+        };
+      }),
+    };
+    this.analytics.sendToClicstreamViaSocket(trackData);
+  }
+
+  fireViewBasketEvent(cartSession) {
     let eventData = {
       prodId: "",
       prodPrice: 0,
@@ -1471,38 +1393,38 @@ export class ProductComponent implements OnInit, AfterViewInit {
       prodURL: "",
     };
     let criteoItem = [];
-    for (let p = 0; p < this.cartSession["itemsList"].length; p++) {
+    for (let p = 0; p < cartSession["itemsList"].length; p++) {
       criteoItem.push({
-        name: this.cartSession["itemsList"][p]["productName"],
+        name: cartSession["itemsList"][p]["productName"],
         brandId: this.productBrandDetails["idBrand"],
-        id: this.cartSession["itemsList"][p]["productId"],
-        price: this.cartSession["itemsList"][p]["productUnitPrice"],
-        quantity: this.cartSession["itemsList"][p]["productQuantity"],
-        image: this.cartSession["itemsList"][p]["productImg"],
+        id: cartSession["itemsList"][p]["productId"],
+        price: cartSession["itemsList"][p]["productUnitPrice"],
+        quantity: cartSession["itemsList"][p]["productQuantity"],
+        image: cartSession["itemsList"][p]["productImg"],
         url:
-          CONSTANTS.PROD + "/" + this.cartSession["itemsList"][p]["productUrl"],
+          CONSTANTS.PROD + "/" + cartSession["itemsList"][p]["productUrl"],
       });
       eventData["prodId"] =
-        this.cartSession["itemsList"][p]["productId"] +
+        cartSession["itemsList"][p]["productId"] +
         ", " +
         eventData["prodId"];
       eventData["prodPrice"] =
-        this.cartSession["itemsList"][p]["productUnitPrice"] *
-        this.cartSession["itemsList"][p]["productQuantity"] +
+        cartSession["itemsList"][p]["productUnitPrice"] *
+        cartSession["itemsList"][p]["productQuantity"] +
         eventData["prodPrice"];
       eventData["prodQuantity"] =
-        this.cartSession["itemsList"][p]["productQuantity"] +
+        cartSession["itemsList"][p]["productQuantity"] +
         eventData["prodQuantity"];
       eventData["prodImage"] =
-        this.cartSession["itemsList"][p]["productImg"] +
+        cartSession["itemsList"][p]["productImg"] +
         ", " +
         eventData["prodImage"];
       eventData["prodName"] =
-        this.cartSession["itemsList"][p]["productName"] +
+        cartSession["itemsList"][p]["productName"] +
         ", " +
         eventData["prodName"];
       eventData["prodURL"] =
-        this.cartSession["itemsList"][p]["productUrl"] +
+        cartSession["itemsList"][p]["productUrl"] +
         ", " +
         eventData["prodURL"];
     }
@@ -1517,318 +1439,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     };
     this.analytics.sendGTMCall(dataLayerObj);
     this.dataService.sendMessage(dataLayerObj);
-  }
-
-  updateCartSessions(data, routerLink, buyNow?) {
-    if (data && data.status) {
-      // this.sessionDetails = data;
-      this.uniqueRequestNo = 0;
-      this.cartService.setCartSession(data);
-      //  ;
-      this.cartService.cart.next({
-        count: data["noOfItems"],
-        currentlyAdded: this.currentAddedProduct,
-      });
-      this.showAddToCartToast();
-
-      let td: any = new Date();
-      td.setHours(21, 0, 0);
-      td = td.getTime() / 1000;
-      let nd: any = new Date();
-      nd.setHours(8, 0, 0);
-      nd.setDate(nd.getDate() + 1);
-      nd = nd.getTime() / 1000;
-      let cd: any = new Date();
-      cd.setHours(cd.getHours() + 2);
-      cd = cd.getTime() / 1000;
-
-      let NIGHTFLAG = false;
-      if (cd > td && cd < nd) NIGHTFLAG = true;
-
-      if (
-        this.isBrowser &&
-        this.priceQuantityCountry["bulkPricesModified"] == null
-      )
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value =
-          this.productMinimmumQuantity;
-      else {
-        // alert(this.productMinimmumQuantity);
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value =
-          this.bulkPriceSelctedQuatity != 0
-            ? this.bulkPriceSelctedQuatity
-            : this.productMinimmumQuantity;
-      }
-      if (routerLink == "/checkout") {
-        this.router.navigateByUrl(routerLink, {
-          state: buyNow ? { buyNow: buyNow } : {},
-        }); //this redirect to quick order page
-      }
-      // else {
-      //     this._tms.show({ type: 'success', text: this.addCartMessage });
-      // }
-    } else {
-      if (
-        this.isBrowser &&
-        this.priceQuantityCountry["bulkPricesModified"] == null
-      ) {
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value =
-          this.productMinimmumQuantity;
-      } else {
-        // alert(this.bulkPriceSelctedQuatity);
-        // alert(this.productMinimmumQuantity);
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value =
-          this.bulkPriceSelctedQuatity != 0
-            ? this.bulkPriceSelctedQuatity
-            : this.productMinimmumQuantity;
-      }
-      this.uniqueRequestNo = 0;
-    }
-  }
-
-  checkAddToCart(
-    itemsList,
-    addToCartItem
-  ): { itemlist: any; isvalid: boolean } {
-    let isOrderValid: boolean = true;
-    let addToCartItemIsExist: boolean = false;
-    itemsList.forEach((element) => {
-      if (addToCartItem.productId === element.productId) {
-        addToCartItemIsExist = true;
-        let checkProductQuantity =
-          element.productQuantity + addToCartItem.productQuantity;
-        if (
-          checkProductQuantity >
-          Number(this.priceQuantityCountry["quantityAvailable"])
-        ) {
-          element.productQuantity = element.productQuantity;
-          this.uniqueRequestNo = 0;
-          this._tms.show({
-            type: "error",
-            text:
-              this.priceQuantityCountry["quantityAvailable"] +
-              " is the maximum quantity available.",
-          });
-          isOrderValid = false;
-        } else {
-          this.changeBulkPriceQuantity(element.productQuantity);
-          element.productQuantity =
-            element.productQuantity + addToCartItem.productQuantity;
-          element.taxes = element.productQuantity * this.productTax;
-          element.bulkPrice = this.bulkSellingPrice;
-          element.bulkPriceWithoutTax = this.bulkPriceWithoutTax;
-          element.bulkPriceMap = this.priceQuantityCountry["bulkPricesIndia"];
-        }
-        element.productUrl = addToCartItem.productUrl;
-        element.totalPayableAmount =
-          element.totalPayableAmount + addToCartItem.totalPayableAmount;
-        element.tpawot =
-          element.priceWithoutTax + addToCartItem.priceWithoutTax;
-      }
-    });
-    if (!addToCartItemIsExist) {
-      let quantity = Number(
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value
-      );
-      if (
-        addToCartItem.productQuantity >
-        Number(this.priceQuantityCountry["quantityAvailable"])
-      ) {
-        this.uniqueRequestNo = 0;
-        this._tms.show({
-          type: "error",
-          text:
-            this.priceQuantityCountry["quantityAvailable"] +
-            " is the maximum quantity available.",
-        });
-        isOrderValid = false;
-      } else if (!isNaN(quantity) && quantity < this.productMinimmumQuantity) {
-        this._tms.show({
-          type: "error",
-          text: "Quantity cannot  be less than " + this.productMinimmumQuantity,
-        });
-        isOrderValid = false;
-        this.uniqueRequestNo = 0;
-      } else if (!isNaN(quantity) && quantity >= this.productMinimmumQuantity) {
-        this.changeBulkPriceQuantity(0);
-        addToCartItem.bulkPrice = this.bulkSellingPrice;
-        addToCartItem.bulkPriceWithoutTax = this.bulkPriceWithoutTax;
-        addToCartItem.bulkPriceMap =
-          this.priceQuantityCountry["bulkPricesIndia"];
-        itemsList.push(addToCartItem);
-      } else {
-        this.changeBulkPriceQuantity(0);
-        addToCartItem.bulkPrice = this.bulkSellingPrice;
-        addToCartItem.bulkPriceWithoutTax = this.bulkPriceWithoutTax;
-        addToCartItem.bulkPriceMap =
-          this.priceQuantityCountry["bulkPricesIndia"];
-        itemsList.push(addToCartItem);
-      }
-    }
-    return { itemlist: itemsList, isvalid: isOrderValid };
-  }
-
-  changeBulkPriceQuantity(input, eventFrom?: string) {
-    this.bulkPriceSelctedQuatity = 0;
-    let value =
-      Number(
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value
-      ) + input;
-    if (value >= 1) {
-      if (
-        this.priceQuantityCountry["bulkPricesModified"] &&
-        this.priceQuantityCountry["bulkPricesModified"] !== null &&
-        this.priceQuantityCountry["bulkPricesModified"].length > 0
-      ) {
-        this.bulkSellingPrice = null;
-        this.bulkPriceWithoutTax = null;
-        if (isNaN(value)) {
-          value = input;
-        }
-        let isBulkPriceValid: boolean = false;
-
-        this.priceQuantityCountry["bulkPricesModified"].forEach(
-          (element, index) => {
-            if (element.minQty <= value && value <= element.maxQty) {
-              isBulkPriceValid = true;
-              this.bulkPriceSelctedQuatity = element.minQty;
-              this.bulkSellingPrice = element.bulkSellingPrice;
-              this.bulkPriceWithoutTax = element.bulkSPWithoutTax;
-              this.bulkDiscount = element.discount;
-
-              let disc = 0;
-              if (this.productMrp > 0 && this.productPrice > 0) {
-                disc =
-                  ((this.productMrp - this.bulkSellingPrice) /
-                    this.productMrp) *
-                  100;
-                this.productDiscount = disc;
-              }
-              // Update quantity in input box only when bulk price is selected from bulk price table
-              if (
-                eventFrom &&
-                (eventFrom == "bulkTableClick" ||
-                  eventFrom == "incrementButton" ||
-                  eventFrom == "decrementButton")
-              )
-                (<HTMLInputElement>(
-                  document.querySelector("#product_quantity")
-                )).value =
-                  Number(
-                    (<HTMLInputElement>(
-                      document.querySelector("#product_quantity")
-                    )).value
-                  ) + input;
-            }
-            if (
-              this.priceQuantityCountry["bulkPricesModified"].length - 1 ==
-              index &&
-              value >= element.maxQty
-            ) {
-              isBulkPriceValid = true;
-              this.bulkPriceSelctedQuatity = element.minQty;
-              this.bulkSellingPrice = element.bulkSellingPrice;
-              this.bulkPriceWithoutTax = element.bulkSPWithoutTax;
-              this.bulkDiscount = element.discount;
-
-              let disc = 0;
-              if (this.productMrp > 0 && this.productPrice > 0) {
-                disc =
-                  ((this.productMrp - this.bulkSellingPrice) /
-                    this.productMrp) *
-                  100;
-                this.productDiscount = disc;
-              }
-              // Update quantity in input box only when bulk price is selected from bulk price table
-              if (
-                eventFrom &&
-                (eventFrom == "bulkTableClick" ||
-                  eventFrom == "incrementButton" ||
-                  eventFrom == "decrementButton")
-              )
-                (<HTMLInputElement>(
-                  document.querySelector("#product_quantity")
-                )).value =
-                  Number(
-                    (<HTMLInputElement>(
-                      document.querySelector("#product_quantity")
-                    )).value
-                  ) + input;
-            }
-          }
-        );
-        if (
-          !isBulkPriceValid &&
-          (eventFrom == "incrementButton" ||
-            value >= this.productMinimmumQuantity)
-        ) {
-          (<HTMLInputElement>(
-            document.querySelector("#product_quantity")
-          )).value =
-            Number(
-              (<HTMLInputElement>document.querySelector("#product_quantity"))
-                .value
-            ) + input;
-        }
-      } else {
-        if (
-          eventFrom &&
-          (eventFrom == "bulkTableClick" ||
-            eventFrom == "incrementButton" ||
-            (eventFrom == "decrementButton" &&
-              value >= this.productMinimmumQuantity))
-        ) {
-          (<HTMLInputElement>(
-            document.querySelector("#product_quantity")
-          )).value =
-            Number(
-              (<HTMLInputElement>document.querySelector("#product_quantity"))
-                .value
-            ) + input;
-        }
-      }
-    } else {
-      if (
-        eventFrom == "decrementButton" &&
-        value >= this.productMinimmumQuantity
-      ) {
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value =
-          this.productMinimmumQuantity;
-      }
-    }
-
-    if (
-      Number(
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value
-      ) > this.priceQuantityCountry["quantityAvailable"]
-    ) {
-      this._tms.show({
-        type: "error",
-        text:
-          this.priceQuantityCountry["quantityAvailable"] +
-          " is the maximum quantity available.",
-      });
-    }
-  }
-
-  removePromoCode(cartSession) {
-    cartSession["offersList"] = [];
-    cartSession["extraOffer"] = null;
-    cartSession["cart"]["totalOffer"] = 0;
-
-    let itemsList = cartSession["itemsList"];
-    itemsList.forEach((element, index) => {
-      cartSession["itemsList"][index]["offer"] = null;
-    });
-    return cartSession;
-  }
-
-  changeBulkQty(value, index) {
-    if (this.isBrowser) {
-      (<HTMLInputElement>document.querySelector("#product_quantity")).value =
-        "0";
-    }
-    this.selectedBulkQuantityIndex = index;
-    this.changeBulkPriceQuantity(value, "bulkTableClick");
   }
 
   // common functions
@@ -2136,9 +1746,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       null,
       this.injector
     );
-    const quantity = Number(
-      (<HTMLInputElement>document.querySelector("#product_quantity")).value
-    );
+    const quantity = this.cartQunatityForProduct;
     const productInfo = {};
     productInfo["partNumber"] =
       this.productSubPartNumber || this.defaultPartNumber;
@@ -2240,9 +1848,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   async emiComparePopUpOpen(status) {
     if (!this.offerComparePopupInstance && status) {
       this.showLoader = true;
-      const quantity = Number(
-        (<HTMLInputElement>document.querySelector("#product_quantity")).value
-      );
+      const quantity = this.cartQunatityForProduct;
       const { EmiPlansComponent } = await import(
         "./../../modules/emi-plans/emi-plans.component"
       ).finally(() => {

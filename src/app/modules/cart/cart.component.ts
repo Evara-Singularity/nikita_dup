@@ -1193,7 +1193,8 @@ export class CartComponent {
                                 this._tms.show(extraData['showMessage']);
                             }
                             let res = data;
-                            if (res['statusCode'] == 200) {
+                            console.log("cart Sesion", res);
+                            if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
                                 this.uniqueRequestNo = 0;
                                 let itemsList = res['itemsList'];
                                 itemsList.forEach((element, index) => {
@@ -1206,11 +1207,12 @@ export class CartComponent {
                                 this.cartSession = res;
                                 this.itemsList = itemsList;
                                 this.cart = res.cart;
-                                this._cartService.cart.next(this.itemsList == null ? 0 : this.itemsList.length);
+                                this._cartService.cart.next({ count: (res.noOfItems || this.itemsList.length), currentlyAdded: null });
                                 res["itemsList"] = itemsList;
                                 this._cartService.setCartSession(res);
                                 // alert(this.itemsList.length);
                                 this._cartService.orderSummary.next(this.cartSession);
+
                                 /* navigate to quick order page, if no item is present in itemlist */
                                 if (itemsList.length == 0 && this.router.url.indexOf('/checkout') != -1) {
                                     this._location.replaceState('/'); // clears browser history so they can't navigate with back button

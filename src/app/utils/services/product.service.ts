@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
-import { of } from "rxjs";
+import { Observable, of } from "rxjs";
 import { DataService } from "./data.service";
 import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
+import { ProductsEntity } from "../models/product.listing.search";
 interface ProductDataArg {
   productBO: string;
   refreshCrousel?: boolean;
@@ -24,6 +25,10 @@ export class ProductService {
   };
 
   constructor(private _dataService: DataService, public http: HttpClient) { }
+
+  getSimilarProductBoByIndex(index){
+    return this.oosSimilarProductsData.similarData[index].rawProductData;
+  }
 
   getPurchaseList(data) {
     let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
@@ -589,4 +594,193 @@ export class ProductService {
     let d = brandDetails["friendlyUrl"];
     return ["/brands/" + d.toLowerCase()];
   }
+
+  getImageFromSearchProductResponse(
+    originImageLink,
+    variantFromName,
+    variantGetName
+  ) {
+    const image = originImageLink.split("/");
+    image[image.length - 1] = image[image.length - 1].replace(
+      variantFromName,
+      variantGetName
+    );
+    return image.join("/");
+  }
+
+  searchResponseToProductEntity(product: any) {
+    const partNumber =
+      product["partNumber"] ||
+      product["defaultPartNumber"] ||
+      product["moglixPartNumber"];
+    const productMrp = product["mrp"];
+    const productPrice = product["salesPrice"];
+    const priceWithoutTax = product["priceWithoutTax"];
+    return {
+      moglixPartNumber: partNumber,
+      moglixProductNo: product["moglixProductNo"] || null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: product["productName"],
+      variantName: product["productName"],
+      productUrl: product["productUrl"],
+      shortDesc: product["shortDesc"],
+      brandId: product["brandId"],
+      brandName: product["brandName"],
+      quantityAvailable: product["quantityAvailable"],
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(
+        0
+      ),
+      rating: product["rating"] || null,
+      categoryCodes: null,
+      taxonomy: product["taxonomy"],
+      mainImageLink: product["moglixImageNumber"]
+        ? product["mainImageLink"]
+        : "",
+      mainImageThumnailLink: this.getImageFromSearchProductResponse(
+        product["mainImageLink"],
+        "large",
+        "thumbnail"
+      ),
+      mainImageMediumLink: this.getImageFromSearchProductResponse(
+        product["mainImageLink"],
+        "large",
+        "medium"
+      ),
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: product.avgRating,
+      itemInPack: null,
+      ratingCount: product.ratingCount,
+      reviewCount: product.reviewCount,
+      uclid: product.uclid,
+      keyFeatures: product.keyFeatures || [],
+      internalProduct: !product.hasOwnProperty("internalProduct")
+        ? true
+        : product.internalProduct, // if intenal product prop does not exist then it is internal product
+    } as ProductsEntity;
+  }
+
+  recentProductResponseToProductEntity(product: any) {
+    const partNumber =
+      product["partNumber"] ||
+      product["defaultPartNumber"] ||
+      product["moglixPartNumber"];
+    const productMrp = product["priceMrp"];
+    const productPrice = product["priceWithTax"];
+    const priceWithoutTax = product["priceWithoutTax"];
+    return {
+      moglixPartNumber: partNumber,
+      moglixProductNo: product["moglixProductNo"] || null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: product["productName"],
+      variantName: product["productName"],
+      productUrl: product["url"],
+      shortDesc: product["shortDesc"] || null,
+      brandId: product["brandId"] || null,
+      brandName: product["brandName"],
+      quantityAvailable: 1,
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(
+        0
+      ),
+      rating: product["rating"] || null,
+      categoryCodes: null,
+      taxonomy: product["taxonomy"] || null,
+      mainImageLink: product["productImage"] ? product["productImage"] : "",
+      mainImageMediumLink: product["productImage"]
+        ? product["productImage"]
+        : "",
+      mainImageThumnailLink: product["productImage"]
+        ? product["productImage"]
+        : "",
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: product.avgRating || 0,
+      itemInPack: null,
+      ratingCount: product.ratingCount || 0,
+      reviewCount: product.reviewCount || 0,
+      internalProduct: true,
+      outOfStock: product.outOfStock,
+    } as ProductsEntity;
+  }
+
+  productEntityFromProductBO(productBO, overrideProductB0 = null) {
+    const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
+    const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+    const productPartDetails = productBO['productPartDetails'][partNumber];
+    const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+    const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
+    const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
+      (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
+    const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
+    const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
+    const productBrandDetails = productBO['brandDetails'];
+    const productCategoryDetails = productBO['categoryDetails'][0];
+    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1
+
+    const product: ProductsEntity = {
+      moglixPartNumber: partNumber,
+      moglixProductNo: null,
+      mrp: productMrp,
+      salesPrice: productPrice,
+      priceWithoutTax: priceWithoutTax,
+      productName: productBO['productName'],
+      variantName: productBO['productName'],
+      productUrl: productBO['defaultCanonicalUrl'],
+      shortDesc: productBO['shortDesc'],
+      brandId: productBrandDetails['idBrand'],
+      brandName: productBrandDetails['brandName'],
+      quantityAvailable: priceQuantityCountry['quantityAvailable'],
+      productMinimmumQuantity: productMinimmumQuantity,
+      discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+      rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
+      categoryCodes: productCategoryDetails['categoryCode'],
+      taxonomy: productCategoryDetails['taxonomyCode'],
+      mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['thumbnail'] : '',
+      productTags: [],
+      filterableAttributes: {},
+      avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
+      itemInPack: null,
+      ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
+      reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null //this.product.reviewCount
+    };
+    return product;
+  }
+
+  getRFQProductSchema(product) {
+    const partNumber = product['partNumber'] || product['defaultPartNumber'];
+    const isProductPriceValid = product['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+    const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, product['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+    const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
+    const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
+    const productBrandDetails = product['brandDetails'];
+    const productCategoryDetails = product['categoryDetails'][0];
+    const productTags = product['productTags'];
+    const outOfStock = product['outOfStock'];
+    const quantityAvailable = product['quantityAvailable'];
+
+    return {
+      url: product['friendlyUrl'],
+      price: productPrice,
+      msn: partNumber,
+      moq: productMinimmumQuantity,
+      brand: productBrandDetails['brandName'],
+      taxonomyCode: productCategoryDetails['taxonomy'],
+      productName: product['productName'],
+      adobeTags: '',
+      productTags,
+      outOfStock,
+      quantityAvailable
+    }
+
+  }
+
+  getProductGroupDetails(productMsnId): Observable<any> {
+    const PRODUCT_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
+    return this._dataService.callRestful("GET", PRODUCT_URL);
+  }
+
 }

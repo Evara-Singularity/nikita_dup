@@ -353,6 +353,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         }, 0);
       },
     };
+
   }
 
   addSubcriber() {

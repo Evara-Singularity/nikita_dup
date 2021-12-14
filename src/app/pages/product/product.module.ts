@@ -21,6 +21,8 @@ import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/produc
 import { ProductHorizontalCardModule } from "@app/modules/product-horizontal-card/product-horizontal-card.module";
 import { LazyLoadImageModule } from "ng-lazyload-image";
 import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.directive";
+import { ProductInfoModule } from './../../modules/product-info/product-info.module';
+
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -46,6 +48,7 @@ import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.direct
     ProductHorizontalCardModule,
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule,
+    PastOrdersModule
   ],
   exports: [],
   providers: [NgxSiemaService],

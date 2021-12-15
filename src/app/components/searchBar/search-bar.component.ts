@@ -116,9 +116,9 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
                                 this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
                                 this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
                                 this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
+                                this.searchProducts = ((data.topProducts || []) as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
                                 if (cTerm && cTerm.length > 2) {
                                     this.showSuggestionBlock = true;
-                                    this.getSearchProduct(cTerm);
                                 }
                             }
                         });
@@ -131,16 +131,6 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             );
     }
 
-    getSearchProduct(cTerm) {
-        const URL = 'https://apinew.moglix.com/nodeApi/v1/search/similarproducts?str=Dr. Morepen Gluco One Monitor without Strips, BG 03&category=115251400'
-        this._dataService.callRestful('GET', URL).subscribe((response) => {
-            // console.log(response);
-            let products = response['products'];
-            if (products && (products as []).length > 0) {
-                this.searchProducts = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
-            }
-        });
-    }
 
     ngOnInit(): void {
         // Below code is used to hide the search bar popup on route change.

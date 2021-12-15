@@ -93,9 +93,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.clear()
-    console.log(this.product);
-    console.log('------------------------------');
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
@@ -404,6 +401,5 @@ export class ProductHorizontalCardComponent implements OnInit {
     const order = this.analytics['order'];
     this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
   }
-
 
 }

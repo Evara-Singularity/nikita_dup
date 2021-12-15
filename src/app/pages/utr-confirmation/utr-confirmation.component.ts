@@ -13,7 +13,7 @@ import CONSTANTS from '@app/config/constants';
 })
 export class UTRConfirmationComponent implements OnInit
 {
-    orderId = null;
+    readonly SUCCESS_MSG = { type: "success", text: "Information submitted successfully" };
     utrForm: FormGroup = null;
 
     constructor(private _router: Router, private _route: ActivatedRoute,
@@ -22,15 +22,22 @@ export class UTRConfirmationComponent implements OnInit
 
     ngOnInit()
     {
-        this.orderId = this._route.snapshot.params['orderId'];
-        if (!this.orderId) {
-            this._router.navigate['**'];
+        const QPARAMS = this._route.snapshot.queryParams;
+        const ORDERID = Number(QPARAMS['orderId']);
+        const QUOATATIONID = Number(QPARAMS['quotationId']);
+        const QUOATATIONTYPE = QPARAMS['quotationType'];
+        const IS_REDIRECT = !(ORDERID && QUOATATIONID && QUOATATIONTYPE);
+        console.log(IS_REDIRECT);
+        if (IS_REDIRECT) {
+            this._router.navigate(['**']);
             return;
         }
         this.utrForm = new FormGroup({
-            orderId: new FormControl(this.orderId, [Validators.required]),
-            amount: new FormControl("", [Validators.required, Validators.min(1)]),
-            utrNo: new FormControl("", [Validators.required, Validators.pattern(/^([a-zA-Z0-9]+)$/)])
+            orderId: new FormControl(ORDERID, [Validators.required]),
+            quotationId: new FormControl(QUOATATIONID, [Validators.required]),
+            quotationType: new FormControl(QUOATATIONTYPE, [Validators.required]),
+            transactionAmount: new FormControl("", [Validators.required, Validators.min(1)]),
+            bankTransactionNumber: new FormControl("", [Validators.required, Validators.pattern(/^([a-zA-Z0-9]+)$/)])
         })
     }
 
@@ -38,17 +45,23 @@ export class UTRConfirmationComponent implements OnInit
     {
         if (this.utrForm.invalid) { this.utrForm.markAllAsTouched(); return; }
         this._globarLodaer.setLoaderState(true);
-        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}`, { body: this.utrForm.value }).subscribe(
-            (res) => {   
-                this._toastMessage.show({ type: "success", message: "Information submitted successfully" });
-                this._router.navigate(['.']);
+        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/rfqOrderTransaction`, { body: this.utrForm.value }).subscribe(
+            (response) => {   
+                if (response['status'])
+                {
+                    this._toastMessage.show(this.SUCCESS_MSG);
+                    setTimeout(() => { this._router.navigate(['.'])},500);
+                    return;
+                }
+                this._toastMessage.show({ type: "error", text: response['statusDescription'] })
              },
-            (error) => { this._toastMessage.show({ type: "error", message: error.message }) },
+            (error) => { this._toastMessage.show({ type: "error", text: error.statusDescription }) },
             () => { this._globarLodaer.setLoaderState(false); });
     }
 
     checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }
 
-    get amount() { return this.utrForm.get("amount") }
-    get utrNo() { return this.utrForm.get("utrNo") }
+    get orderId() { return this.utrForm.get("orderId") }
+    get transactionAmount() { return this.utrForm.get("transactionAmount") }
+    get bankTransactionNumber() { return this.utrForm.get("bankTransactionNumber") }
 }

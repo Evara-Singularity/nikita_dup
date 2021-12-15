@@ -21,7 +21,8 @@ export class PastOrdersComponent implements OnInit
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     productList: any[] = [];
     @Input('userId') userId = null;
-    analytics = null;
+    @Input('outOfStock') outOfStock: boolean = false;
+    @Input('analytics') analytics = null;
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
         enableAddToCart: true,
@@ -37,12 +38,7 @@ export class PastOrdersComponent implements OnInit
     }
     cardMetaInfo: ProductCardMetaInfo = null;
 
-    //TODO:Remove after data testing
-    @Input('productName') productName;
-    @Input('categoryCode') categoryCode;
-
-
-    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService, private productListService: ProductListService,) { }
+    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService,) { }
 
     ngOnInit(): void
     {
@@ -56,7 +52,7 @@ export class PastOrdersComponent implements OnInit
         this._productService.getPastOrderProducts(this.userId).subscribe((response) =>
         {
             if (response['status']) {
-                this.productList = (response['data'] as any[]).map(product => this.productListService.recentProductResponseToProductEntity(product));
+                this.productList = (response['data'] as any[]).map(product => this._productService.pastOrdersProductResponseToProductEntity(product));
             }
         });
     }

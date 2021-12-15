@@ -1,17 +1,17 @@
 <div class="urt-contaier" *ngIf="utrForm !== null">
     <div class="utr-form">
-        <h3>Payment Confirmation against Order Ref Id - {{orderId}}</h3>
+        <h3>Payment Confirmation against Order Ref Id - {{orderId.value}}</h3>
         <form [formGroup]="utrForm">
             <div class="form-input-box">
                 <div class="form-input">
                     <label>Payment Amount</label><br>
-                    <input type="text" placeholder="Enter payment amount" formControlName="amount" (keypress)="checkNumberic($event)">
-                    <p *ngIf="amount.touched && amount.invalid">Please enter valid amount.</p>
+                    <input type="text" placeholder="Enter payment amount" formControlName="transactionAmount" (keypress)="checkNumberic($event)">
+                    <p *ngIf="transactionAmount.touched && transactionAmount.invalid">Please enter valid amount.</p>
                 </div>
                 <div class="form-input">
                     <label>UTR No.</label><br>
-                    <input type="text" placeholder="Enter UTR No." formControlName="utrNo">
-                    <p *ngIf="utrNo.touched && utrNo.invalid">Please enter valid UTR No.</p>
+                    <input type="text" placeholder="Enter UTR No." formControlName="bankTransactionNumber">
+                    <p *ngIf="bankTransactionNumber.touched && bankTransactionNumber.invalid">Please enter valid UTR No.</p>
                 </div>
             </div>
             <button (click)="$event.stopPropagation();submitUTRForm()">SUBMIT</button>

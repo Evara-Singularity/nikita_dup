@@ -773,7 +773,7 @@ const routes: Routes = [
                 },
             },
             {
-                path: 'utr-confirmation/:orderId',
+                path: 'utr-confirmation',
                 loadChildren: () =>
                     import('./utr-confirmation/utr-confirmation.module').then((m) => m.UTRConfirmationModule),
                 data: {

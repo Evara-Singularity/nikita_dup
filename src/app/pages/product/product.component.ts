@@ -3326,6 +3326,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.router.navigate([link]);
   }
 
+  get pastOrderAnalytics() {
+      const TAXONS = this.taxons;
+      const page = {
+          pageName: null,
+          channel: "pdp",
+          subSection: "Inspired By Your Purchase",
+          linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+          linkName: null,
+          loginStatus: this.loginStatusTracking,
+      };
+      const analytices = { page: page,custData: this.custDataTracking, order: this.orderTracking}
+      return analytices;
+    }
+
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");

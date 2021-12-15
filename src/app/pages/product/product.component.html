@@ -188,8 +188,7 @@
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
                         <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
-                            (click)="selectProductBulkPrice(items.minQty)" 
-                            class="blk-block"
+                            (click)="selectProductBulkPrice(items.minQty)" class="blk-block"
                             [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                             <p class="qty">Qty
                                 <span *ngIf="last!==true">{{items.minQty}} {{items.minQty!==items.maxQty ?
@@ -647,6 +646,9 @@
                 </ng-container>
             </div>
         </section>
+        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+            <ng-container #similarProductOOS></ng-container>
+        </section>
         <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
@@ -665,9 +667,6 @@
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
-        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
-            <ng-container #similarProductOOS></ng-container>
-        </section>
     </div>
     <!-- other sections ends -->
 

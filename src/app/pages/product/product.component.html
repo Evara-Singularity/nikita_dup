@@ -629,7 +629,9 @@
             </div>
         </section>
 
-        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        <div [class.mb-60]="productOutOfStock">
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        </div>
     </div>
     <!-- other sections ends -->
 

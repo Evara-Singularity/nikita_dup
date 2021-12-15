@@ -355,6 +355,11 @@
             </div>
         </div>
 
+        <section *ngIf="productOutOfStock" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleProductRFQ($event)">
+            <ng-container #productRFQ></ng-container>
+        </section>
+
         <div class="prod-detail">
             <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
@@ -426,11 +431,6 @@
                     </a>
                 </ng-container>
             </div>
-        </section>
-
-        <section *ngIf="productOutOfStock" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleProductRFQ($event)">
-            <ng-container #productRFQ></ng-container>
         </section>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">

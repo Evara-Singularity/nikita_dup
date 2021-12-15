@@ -248,6 +248,17 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'main-articles',
+				loadChildren: () =>
+					import('./main-articles/main-articles.module').then((m) => m.MainArticlesModule),
+				data: {
+					footer: true,
+					logo: true,
+					moreOpt: true,
+					pageName: 'main-articles'
+				},
+			},
+			{
 				path: 'all-categories',
 				loadChildren: () =>
 					import('./view/view.module').then((m) => m.ViewModule),
@@ -766,8 +777,8 @@ const routes: Routes = [
                 loadChildren: () =>
                     import('./utr-confirmation/utr-confirmation.module').then((m) => m.UTRConfirmationModule),
                 data: {
-                    title: 'Payment Confirmation',
-                    menuBar: true,
+                    menuBar: false,
+                    logo:true,
                     footer: false,
                 },
             },

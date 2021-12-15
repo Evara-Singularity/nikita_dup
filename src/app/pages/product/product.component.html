@@ -204,6 +204,7 @@
     <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
+
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
     </div>
@@ -225,7 +226,8 @@
             </ul>
         </div>
         <!-- RFQ section ends -->
-        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
+        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
+            *ngIf="!productOutOfStock && isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
             <div class="moglix-ben-n-ret-policy-InnerContainer">
@@ -353,6 +355,11 @@
             </div>
         </div>
 
+        <section *ngIf="productOutOfStock" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleProductRFQ($event)">
+            <ng-container #productRFQ></ng-container>
+        </section>
+
         <div class="prod-detail">
             <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
@@ -425,10 +432,6 @@
                 </ng-container>
             </div>
         </section>
-
-
-
-
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>
@@ -646,11 +649,10 @@
     <ng-container #reviewRatingPopup></ng-container>
     <ng-container #questionAnswersPopup></ng-container>
     <ng-container #productInfoPopup></ng-container>
-    <ng-container #productRFQ></ng-container>
 </div>
 
 <div *ngIf="productOutOfStock" class="stickyBottomBtn">
-    <button (click)="onVisibleProductRFQ()" class="btn-red submit-btn">GET BEST PRICE</button>
+    <button (click)="onVisibleProductRFQ($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
 <ng-container #addToCartToast></ng-container>

@@ -31,7 +31,7 @@
                         "label": "Open Wor&&kspace from File..."
                     },
                     {
-                        "id": "submenuitem.30",
+                        "id": "submenuitem.31",
                         "label": "Open &&Recent",
                         "submenu": {
                             "items": [
@@ -109,7 +109,7 @@
                         "label": "A&&uto Save"
                     },
                     {
-                        "id": "submenuitem.29",
+                        "id": "submenuitem.30",
                         "label": "&&Preferences",
                         "submenu": {
                             "items": [
@@ -351,7 +351,7 @@
                         "id": "vscode.menubar.separator"
                     },
                     {
-                        "id": "submenuitem.20",
+                        "id": "submenuitem.21",
                         "label": "&&Appearance",
                         "submenu": {
                             "items": [
@@ -432,7 +432,7 @@
                         }
                     },
                     {
-                        "id": "submenuitem.27",
+                        "id": "submenuitem.28",
                         "label": "Editor &&Layout",
                         "submenu": {
                             "items": [
@@ -579,7 +579,8 @@
                 "items": [
                     {
                         "id": "workbench.action.navigateBack",
-                        "label": "&&Back"
+                        "label": "&&Back",
+                        "enabled": false
                     },
                     {
                         "id": "workbench.action.navigateForward",
@@ -594,7 +595,7 @@
                         "id": "vscode.menubar.separator"
                     },
                     {
-                        "id": "submenuitem.32",
+                        "id": "submenuitem.33",
                         "label": "Switch &&Editor",
                         "submenu": {
                             "items": [
@@ -643,7 +644,7 @@
                         }
                     },
                     {
-                        "id": "submenuitem.33",
+                        "id": "submenuitem.34",
                         "label": "Switch &&Group",
                         "submenu": {
                             "items": [
@@ -845,7 +846,7 @@
                         "label": "Toggle &&Breakpoint"
                     },
                     {
-                        "id": "submenuitem.28",
+                        "id": "submenuitem.29",
                         "label": "&&New Breakpoint",
                         "submenu": {
                             "items": [
@@ -1485,7 +1486,7 @@
     },
     "windowsState": {
         "lastActiveWindow": {
-            "backupPath": "/var/www/html/online_pwa_optimisation/~/.vscode/Backups/1638285717458",
+            "backupPath": "/var/www/html/online_pwa_optimisation/~/.vscode/Backups/1639559441323",
             "uiState": {
                 "mode": 1,
                 "x": 171,

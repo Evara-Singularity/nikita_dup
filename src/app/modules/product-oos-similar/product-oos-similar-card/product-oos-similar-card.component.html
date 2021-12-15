@@ -63,7 +63,8 @@
                         'symbol' : '1.0-0'}}
                         <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
                             GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc. Price:
-                            {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
+                            {{productService.oosSimi
+                                larProductsData.similarData[index].productPrice | mathFloor |
                             currency: 'INR' :
                             'symbol' : '1.0-0'}}
                         </small>
@@ -81,7 +82,7 @@
                     </p>
                 </ng-container>
             </div>
-            <!-- <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
+            <div class="qty_section" *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block"
                         (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
@@ -90,15 +91,17 @@
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                <div class="quan-details"
+                    *ngIf="productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity>1">
                     <p>Qty Per Pack :
-                        <span>{{priceQuantityCountry['packageUnit']}}</span>
+                        <span>{{productService.oosSimilarProductsData.similarData[index].priceQuantityCountry['packageUnit']}}</span>
                     </p>
                     <p>Min Order Qty :
-                        <span>{{productMinimmumQuantity}} Pack</span>
+                        <span>{{productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity}}
+                            Pack</span>
                     </p>
                 </div>
-            </div> -->
+            </div>
         </div>
         <div class="prod-inner-desc">
             <span class="rating-box"
@@ -134,7 +137,7 @@
         </ul>
     </div>
     <div class="bottom-bar nonFixed">
-        <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)" >
+        <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">
             <i class="icon-cart1"></i>
             <span>ADD TO CART</span>
         </button>

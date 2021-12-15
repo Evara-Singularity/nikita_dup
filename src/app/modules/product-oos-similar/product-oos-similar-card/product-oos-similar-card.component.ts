@@ -121,6 +121,10 @@ export class ProductOosSimilarCardComponent {
     });
   }
 
+  changeBulkPriceQuantity(val, type?) {
+
+  }
+
   createSiemaOption(index) {
     // if (!this.rawProductData) {
     //   return;

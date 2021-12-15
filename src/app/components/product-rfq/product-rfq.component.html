@@ -135,8 +135,10 @@
                 </ng-container>
                 <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
             </div>
-            <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
-                REQUIREMENT</button>
+            <div class="stickyBottomBtn">
+                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
+                    REQUIREMENT</button>
+            </div>
         </div>
     </form>
 </ng-template>

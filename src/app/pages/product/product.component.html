@@ -650,7 +650,7 @@
 </div>
 
 <div *ngIf="productOutOfStock" class="stickyBottomBtn">
-    <button (click)="onVisibleProductRFQ()" class="btn-red submit-btn">GET BEST PRICE</button>
+    <button (click)="onVisibleProductRFQ($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
 <ng-container #addToCartToast></ng-container>

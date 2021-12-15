@@ -136,7 +136,7 @@
                 </ng-container>
                 <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
             </div>
-            <div [class.stickyBottomBtn]="isOutOfStock">
+            <div [class.stickyBottomBtn]="isOutOfStock" [class.mt-60]="!isOutOfStock">
                 <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
                     REQUIREMENT</button>
             </div>
@@ -151,13 +151,16 @@
 <app-pop-up *ngIf="!isOutOfStock && isPopup"
     [data]="{class: 'bulkRequest ', selector: '!isOutOfStock ', headerCustom:true}">
     <div class="head-sec" header>
-        <div class="container">
-            <i class="icon-circle-delete f-left" (click)="close()"></i>
-            <p class="txt">Interested to buy in bulk
-                <span class="subtxt">
-                    Add more details to get the best deal.
-                </span>
-            </p>
+        <div class="rfq_header rfq-popup-header">
+            <img height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
+            <div class="rfq_header_text">
+                <h3>
+                    <ng-container> Available on Request. </ng-container>
+                    Get Best Price
+                </h3>
+                <p>Add more details to get the best deal.</p>
+            </div>
+            <i (click)="isPopup = false;" class="icon-circle-delete del-ico"></i>
         </div>
     </div>
     <div class=" content-popup bulkRequest " content>

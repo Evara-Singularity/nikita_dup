@@ -689,7 +689,7 @@
                     font-size: $medium-font;
                     padding-top: 5px;
                     display: block;
-                    color:gray
+                    color: gray
                 }
 
                 &.location-txt {
@@ -2802,4 +2802,8 @@
     padding-bottom: 20px;
     font-size: 12px;
     margin-top: -20px;
+}
+
+.btn-red {
+    background: $btn-color-red;
 }

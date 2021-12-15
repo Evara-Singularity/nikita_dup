@@ -302,14 +302,14 @@ option {
             }
         }
     }
-    &.open {
-        .overlay-bg {
-            top: 0;
-        }
-        .content-box {
-            bottom: 0;
-        }
-    }
+    // &.open {
+    //     .overlay-bg {
+    //         top: 0;
+    //     }
+    //     .content-box {
+    //         bottom: 0;
+    //     }
+    // }
 }
 
 .open {
@@ -322,6 +322,25 @@ option {
         }
     }
 }
+//Custom Popup
+    .stickyBottomBtn {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 5;
+        padding: 5px;
+        box-shadow: 0px -3px 6px #00000029;
+        background: #F2F2F2;
+        .continue-btn {
+            width: 100%;
+            color: #FFF;
+            background-color: #D9232D;
+            border: 0;
+            height: 50px;
+        }
+    }
+
 
 //Promo PopUp
 .select-offers {

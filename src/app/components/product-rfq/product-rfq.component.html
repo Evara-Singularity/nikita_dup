@@ -11,6 +11,7 @@
                     </h3>
                     <p>Add more details to get the best deal.</p>
                 </div>
+                <i (click)="isPopup = false;" class="icon-circle-delete del-ico"></i>
             </div>
             <div class="req-qty">
                 <label>Enter the required quantity</label>
@@ -135,15 +136,17 @@
                 </ng-container>
                 <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
             </div>
-            <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
-                REQUIREMENT</button>
+            <div>
+                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
+                    REQUIREMENT</button>
+            </div>
         </div>
     </form>
 </ng-template>
 <!--non-popup-->
-<div *ngIf="isOutOfStock">
-    <ng-container *ngTemplateOutlet="rfqFormTemplate"></ng-container>
-</div>
+<app-bottom-menu *ngIf="isOutOfStock && isPopup" (outData$)="onUpdate($event)">
+    <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
+</app-bottom-menu>
 <!--Popup-->
 <app-pop-up *ngIf="!isOutOfStock && isPopup"
     [data]="{class: 'bulkRequest ', selector: '!isOutOfStock ', headerCustom:true}">

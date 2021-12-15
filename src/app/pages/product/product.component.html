@@ -7,15 +7,17 @@
             <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
-              </span>
-            <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg"></span>
+            </span>
+            <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img
+                    src="{{imagePathAsset}}assets/img/similar-ico.svg"></span>
         </div>
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
-                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()" style="transform-origin: 0% 0%;">
+                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"
+                        style="transform-origin: 0% 0%;">
                         <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
                             height="330" width="330" alt="{{productName}}">
                         <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
@@ -51,23 +53,22 @@
     </div>
 
     <div class="prod-description">
-            <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-            <ng-container *ngIf="productTags && productTags != undefined && refinedProdTags.length > 0">
-                <div class="prod-tag">
-                    <div class="tag_container"
-                        *ngFor="let tag of refinedProdTags;let i = index;">
-                        <img src="{{tag.imageUrl}}">
-                    </div>
+        <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
+        <ng-container *ngIf="productTags && productTags != undefined && refinedProdTags.length > 0">
+            <div class="prod-tag">
+                <div class="tag_container" *ngFor="let tag of refinedProdTags;let i = index;">
+                    <img src="{{tag.imageUrl}}">
                 </div>
-            </ng-container>
-            <div class="pdp-price-qty-block">
-                <div class="price-block" *ngIf="productMrp > 0">
+            </div>
+        </ng-container>
+        <div class="pdp-price-qty-block">
+            <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">
                     <p class="mrp" *ngIf="productMrp > priceWithoutTax">
                         <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
                         <span
                             *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
-                             {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                            {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
                         </span>
                         <span
                             *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
@@ -98,7 +99,7 @@
                     </small>
                 </p>
              </div> -->
-             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
+            <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block"
                         (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
@@ -116,26 +117,27 @@
                     </p>
                 </div>
             </div>
-           </div>
-            <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
-                <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
-                    <i class="icon-rating-star"></i>
-                </span>
-                <div class="prod-status">
-                    <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
-                    <p class="prod-status-right">
-                        <small class="review"  (click)="scrollToId('reviewSection')" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
-                            Reviews
-                        </small>
-                    </p>
-                </div>
+        </div>
+        <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
+            <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
+                <i class="icon-rating-star"></i>
+            </span>
+            <div class="prod-status">
+                <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
+                <p class="prod-status-right">
+                    <small class="review" (click)="scrollToId('reviewSection')"
+                        *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                        Reviews
+                    </small>
+                </p>
             </div>
+        </div>
 
-            <!--recently bought product section -->
-            <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
-                <i class="icon-trending"></i>
-                <span class="inner-text">{{rawProductCountMessage}}</span>
-            </div>
+        <!--recently bought product section -->
+        <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
+            <i class="icon-trending"></i>
+            <span class="inner-text">{{rawProductCountMessage}}</span>
+        </div>
         <!-- Share section is loaded on demand  -->
         <ng-container #productShare></ng-container>
     </div>
@@ -168,7 +170,8 @@
     <!-- Product bulk quantity section ends -->
 
     <!-- Product quantity action section starts -->
-    <div class="product-section-detail" *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
+    <div class="product-section-detail"
+        *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
@@ -221,82 +224,70 @@
                 </li>
             </ul>
         </div>
-        <!--Product-RFQ starts-->
-        <div class="payments-block" *ngIf="productOutOfStock">
-            <div observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
-                <ng-container #productRFQ></ng-container>
-            </div>
-        </div>
-        <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
-                <div class="moglix-ben-n-ret-policy-InnerContainer">
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/gst-invo.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            GST Invoice<br> Available
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/secure-payment-fill.svg" height="16px" width="16px">
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                             Secure <br> Payments
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/customer-service-fill.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            365 Days <br> Help Desk
-                        </span>
-                    </div>
+            <div class="moglix-ben-n-ret-policy-InnerContainer">
+                <div class="moglix-ben-n-ret-policy-Inner">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/gst-invo.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt benefits-txt">
+                        GST Invoice<br> Available
+                    </span>
                 </div>
+                <div class="moglix-ben-n-ret-policy-Inner">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/secure-payment-fill.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt benefits-txt">
+                        Secure <br> Payments
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/customer-service-fill.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt benefits-txt">
+                        365 Days <br> Help Desk
+                    </span>
+                </div>
+            </div>
             <h2 class="heading-3"> Return Policy</h2>
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/restart-line.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Upto 7 days <br /> returnable
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/wrong-pro.svg" height="16px" width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Wrong <br /> Product
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/restart-line-3.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Damaged <br /> Product
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <img src="{{imagePathAsset}}assets/img/thumb-down-button.svg" height="16px"
-                                width="16px">
-                        </span>
-                        <span class="returnTxt">
-                            Defective <br />Product
-                        </span>
-                    </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/restart-line.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt">
+                        Upto 7 days <br /> returnable
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/wrong-pro.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt">
+                        Wrong <br /> Product
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/restart-line-3.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt">
+                        Damaged <br /> Product
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="returnImg">
+                        <img src="{{imagePathAsset}}assets/img/thumb-down-button.svg" height="16px" width="16px">
+                    </span>
+                    <span class="returnTxt">
+                        Defective <br />Product
+                    </span>
+                </div>
             </div>
         </div>
         <!-- <div class="payments-block">
@@ -341,7 +332,7 @@
                     <td class="right">
                         <div>
                             <a class="brandName"
-                            (click)="commonService.navigateTo(getBrandLink(productBrandDetails))" >{{productBrandDetails['brandName']}}</a>
+                                (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
                         </div>
                     </td>
                 </tr>
@@ -356,7 +347,8 @@
                     </td>
                 </tr>
             </table>
-            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')" class="show-all-strip spec">
+            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')"
+                class="show-all-strip spec">
                 <span>Show All Specifications</span>
             </div>
         </div>
@@ -366,8 +358,7 @@
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
-                    <a class="blueText" 
-                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">
+                    <a class="blueText" (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText"
                         (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
@@ -378,7 +369,7 @@
                 <p>
                     {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a
                     well-known ecommerce platform for qualitative range of <a class="blueText"
-                    (click)="navigateLink('/'+productCategoryDetails['categoryLink'])" >{{productCategoryDetails['categoryName']}}</a>.
+                        (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails['categoryName']}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
                     manufacture {{productName}}, are sourced
@@ -386,7 +377,7 @@
                     {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high
                     quality. We are dedicatedly involved in
                     providing an excellent quality array of <a class="blueText"
-                    (click)="navigateLink('/'+productBrandCategoryUrl)" >
+                        (click)="navigateLink('/'+productBrandCategoryUrl)">
                         {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
                 </p>
             </ng-template>
@@ -437,14 +428,15 @@
 
 
 
-        
+
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" class="widget-items">
+            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+                class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -452,7 +444,8 @@
                 <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
             </a>
 
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)" class="widget-items">
+            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
+                class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
@@ -475,7 +468,7 @@
                 </div>
             </div>
 
-            <div class="pwa-row"  *ngIf="overallRating < 1">
+            <div class="pwa-row" *ngIf="overallRating < 1">
                 <p class="review_text">
                     Be the first one to provide review for this product
                 </p>
@@ -489,9 +482,10 @@
             <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
-                        <h3>{{ overallRating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
+                        <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
                         </h3>
-                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }} ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
+                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
+                            ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                     </div>
                 </div>
                 <div class="pwa-col-6">
@@ -499,31 +493,41 @@
                         <div class="inner-scale">
                             <span>5</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar dark-green"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar dark-green"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>4</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-green"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar light-green"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>3</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar yellow"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar yellow"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>2</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-red"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar light-red"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>1</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar red"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar red"></span>
                             </span>
                         </div>
                     </div>
@@ -561,18 +565,21 @@
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
                     <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
+                            (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
                             <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
-                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}" (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
+                            (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
                             <span class="small-txt">{{review.no}}</span>
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
+                (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
@@ -625,7 +632,7 @@
         <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </div>
     <!-- other sections ends -->
-    
+
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #rfqForm></ng-container>
     <ng-container #offerPopup></ng-container>
@@ -637,6 +644,11 @@
     <ng-container #reviewRatingPopup></ng-container>
     <ng-container #questionAnswersPopup></ng-container>
     <ng-container #productInfoPopup></ng-container>
+    <ng-container #productRFQ></ng-container>
+</div>
+
+<div *ngIf="productOutOfStock" class="stickyBottomBtn">
+    <button (click)="onVisibleProductRFQ()" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
 <ng-container #addToCartToast></ng-container>
@@ -652,11 +664,11 @@
             <div class="rfq-support-txt">
                 <p class="grey-txt">
                     Our support member will get in touch with you
-                    <br/>
+                    <br />
                     within 24 hours
-                </p> 
+                </p>
                 <p class="rfq-thanks-txt mar-t-10">
-                    For further assistance 
+                    For further assistance
                     <span>Call or Whatsapp</span>
                     @<strong>&nbsp;+91 99996 44044</strong>
                 </p>

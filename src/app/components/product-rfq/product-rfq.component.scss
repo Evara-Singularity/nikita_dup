@@ -1,58 +1,81 @@
 @import "../../scss/variables";
+
 .rfqForm {
     .rfq_header {
         display: flex;
-        margin:-15px;
-        padding:15px;
+        margin: -15px;
+        padding: 15px;
         border-bottom: 1px solid #E2E2E2;
+        position: relative;
+
+        i.icon-circle-delete {
+            font-size: 20px;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
         img {
             width: 30px;
         }
+
         .rfq_header_text {
             margin-left: 15px;
+
             h3 {
                 color: $btn-color-red;
                 font-size: 14px;
                 padding: 5px 0px;
             }
+
             p {
                 color: #53534F;
                 font-size: 12px;
             }
+
             .ins-text {
                 color: #303030;
             }
         }
     }
+
     .product-rfq {
         .multiple-form-field {
             display: flex;
+
             &>div {
                 width: 60%;
+
                 &:first-child {
                     width: 40%;
                     margin-right: 15px;
                 }
             }
         }
+
         .input-field {
             margin-bottom: 15px;
         }
+
         .rfq-checkbox {
             margin-bottom: 15px;
             @extend %clear-fix;
+
             label {
                 @extend %custom-check-box-checkout;
+
                 .custom-box {
                     font-size: 14px;
                     width: 14px;
                     height: 14px;
                 }
             }
+
             .chk-txt {
                 font-size: $medium-font;
                 width: calc(100% - 25px);
                 float: right;
+
                 .heading {
                     font-weight: bold;
                     display: block;
@@ -60,6 +83,7 @@
                     color: #343434;
                     line-height: 21px;
                 }
+
                 .txt {
                     font-size: $medium-font;
                     color: #343434;
@@ -67,6 +91,7 @@
                 }
             }
         }
+
         input,
         select {
             width: 100%;
@@ -79,9 +104,11 @@
             background: #fff;
             font-family: inherit;
         }
+
         label.indusrty {
             position: relative;
             display: block;
+
             select+.icon-down {
                 position: absolute;
                 right: 10px;
@@ -89,6 +116,7 @@
                 font-size: $large-font;
             }
         }
+
         textarea {
             height: 60px;
             border: 1px solid #343434;
@@ -99,16 +127,21 @@
             border-radius: 3px;
             font-family: inherit;
         }
+
         @include placeholder {
             font-size: 14px;
         }
+
         input {
             &:read-only {
                 background: #E7E7E7;
             }
         }
+
         padding: 15px;
+
         p {
+
             // color: #f5681e;
             // font-size: 14px;
             // font-weight: bold;
@@ -117,30 +150,36 @@
                 color: #D7222C;
                 margin-top: 5px;
                 font-weight: normal !important;
+
                 &.break-line {
                     padding-left: 40px;
                 }
             }
         }
+
         span {
             color: #53534f;
             font-weight: 400;
             font-size: 12px;
             line-height: 16px;
         }
+
         .req-qty {
             padding: 20px 0;
             display: flex;
+
             label {
                 width: calc(100% - 160px);
                 font-size: 14px;
                 line-height: 25px;
             }
+
             .quantity-block {
                 width: 160px;
                 display: inline-flex;
                 justify-content: flex-end;
                 flex-wrap: wrap;
+
                 .qty-btn {
                     width: 30px;
                     height: 30px;
@@ -151,12 +190,15 @@
                     font-size: 14px;
                     border-radius: 3px;
                 }
+
                 .add-qty {
                     margin-right: 5px;
                 }
+
                 .remove-qty {
                     margin-left: 5px;
                 }
+
                 input {
                     width: 60px;
                     padding: 0px;
@@ -172,6 +214,7 @@
                 }
             }
         }
+
         .submit-btn {
             // margin-top: 30px;
             background: $btn-color-red;
@@ -186,15 +229,19 @@
             font-weight: 700;
             text-transform: uppercase;
         }
-    }.pdp-rfq-popup{
-        .bottom-options.open[_ngcontent-ssr-pwa-c83] .content-box{
-            bottom:50px;
+    }
+
+    .pdp-rfq-popup {
+        .bottom-options.open[_ngcontent-ssr-pwa-c83] .content-box {
+            bottom: 50px;
         }
     }
+
     .in-instock {
         background: #fff;
         padding: 0px 8px;
     }
+
     .stickyRfqButton {
         position: fixed;
         width: 100%;
@@ -202,12 +249,9 @@
         height: 50px;
         left: 0;
         right: 0;
+
         &.bg-red {
             background: $logo-color;
         }
     }
 }
-
- 
-
-  

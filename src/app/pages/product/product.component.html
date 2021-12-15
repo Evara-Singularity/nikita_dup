@@ -681,6 +681,9 @@
                 </ng-container>
             </div>
         </section>
+        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+            <ng-container #similarProductOOS></ng-container>
+        </section>
         <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
@@ -699,9 +702,6 @@
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
-        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
-            <ng-container #similarProductOOS></ng-container>
-        </section>
     </div>
     <!-- other sections ends -->
 

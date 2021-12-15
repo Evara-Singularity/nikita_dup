@@ -3,17 +3,10 @@
 .rfqForm {
     .rfq_header {
         display: flex;
-        margin: -15px;
-        padding: 15px;
+        margin: 0px -15px;
+        padding: 0px 15px 15px;
         border-bottom: 1px solid #E2E2E2;
-        position: relative;
-
-        i.icon-circle-delete {
-            font-size: 20px;
-            position: absolute;
-            right: 20px;
-            top: 20px;
-        }
+        align-items: center;
 
         img {
             width: 30px;
@@ -36,6 +29,11 @@
             .ins-text {
                 color: #303030;
             }
+        }
+
+        .del-ico {
+            margin-left: auto;
+            font-size: 20px;
         }
     }
 

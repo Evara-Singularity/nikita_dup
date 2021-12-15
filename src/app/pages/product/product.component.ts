@@ -2536,8 +2536,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.reviewRatingPopupInstance = this.reviewRatingPopupContainerRef.createComponent(factory, null, this.injector);
         this.rawReviewsData.productName = this.productName;
         this.reviewRatingPopupInstance.instance['rawReviewsData'] = this.rawReviewsData;
-        console.log('----------------------');
-        console.log(this.rawReviewsData);
         this.reviewRatingPopupInstance.instance['productUrl'] = this.productUrl;
         (this.reviewRatingPopupInstance.instance['closePopup$'] as EventEmitter<boolean>).subscribe(data => {
             this.reviewRatingPopupInstance = null;

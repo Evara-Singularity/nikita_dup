@@ -136,7 +136,7 @@
                 </ng-container>
                 <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
             </div>
-            <div>
+            <div [class.stickyBottomBtn]="isOutOfStock">
                 <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
                     REQUIREMENT</button>
             </div>

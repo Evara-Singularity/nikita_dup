@@ -2877,6 +2877,8 @@
     h2{
         font-size: 16px;
         line-height: 38px;
+        position: sticky;
+        left: 0;
     }
     .inner-scroll-container{
         display: flex;
@@ -2892,13 +2894,22 @@
             }
             
         }
-    } 
-    
-// Skeleton
+    }    
+}
 
-.skeleton-pd-card-container{
-    width: 320px;
+// Skeleton
+.skeleton-card-view{
+    width: 340px;
+    margin-left: 10px;
     margin-top: 10px;
+    .left-sectn{
+        width: 100px !important;
+    }
+    .right-sectn{
+        width: calc(100% - 110px) !important;
+    }
+}
+.skeleton-pd-card-container{
     border-radius: 8px;
     padding: 0.938rem 0.625rem;
     background-color: #fff;
@@ -3168,8 +3179,4 @@
     }
     
 }
-   
-}
-
-
 

@@ -2880,28 +2880,45 @@
         position: sticky;
         left: 0;
     }
-    .inner-scroll-container{
-        display: flex;
-        product-horizontal-card{
-            margin-left: 15px;
-            &:first-child{
-                margin-left: 0px;
-            }
-            .product-card{
-                .no-card-border{
-                    border-radius: 8px !important;
-                }
-            }
+    // .horizontal-scroll-container{
+    //     display: flex;
+    //     product-horizontal-card{
+    //         margin-left: 15px;
+    //         &:first-child{
+    //             margin-left: 0px;
+    //         }
+    //         .product-card{
+    //             .no-card-border{
+    //                 border-radius: 8px !important;
+    //             }
+    //         }
             
-        }
-    }    
+    //     }
+    // }    
 }
+.horizontal-scroll-container{
+    display: flex;
+    product-horizontal-card{
+        margin-left: 15px;
+        &:first-child{
+            margin-left: 0px;
+        }
+        .product-card{
+            .no-card-border{
+                border-radius: 8px !important;
+            }
+        }
+        
+    }
 
 // Skeleton
 .skeleton-card-view{
-    width: 340px;
-    margin-left: 10px;
-    margin-top: 10px;
+    min-width: 340px;
+    max-width: 340px;
+    margin-left: 15px;
+    &:first-child{
+        margin-left: 0px;
+    }
     .left-sectn{
         width: 100px !important;
     }
@@ -3180,3 +3197,4 @@
     
 }
 
+} 

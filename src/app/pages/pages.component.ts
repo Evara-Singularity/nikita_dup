@@ -300,6 +300,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   setEnvIdentiferCookie() {
     const abTesting = this.dataService.getCookie('AB_TESTING');
     const PWA = this.dataService.getCookie('PWA');
+    const buildVersion = environment.buildVersion;
 
     if (!PWA) {
       this.dataService.setCookie('PWA', 'true', 90);
@@ -312,6 +313,9 @@ export class PagesComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.dataService.setCookie('AB_TESTING', CONSTANTS.AB_TESTING.STATUS.toString(), 90);
+    }
+    if(buildVersion){
+      this.dataService.setCookie('BUILD_VERSION', buildVersion.toString(), 90);
     }
   }
 

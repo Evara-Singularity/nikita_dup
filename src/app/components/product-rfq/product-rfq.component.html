@@ -144,7 +144,7 @@
     </form>
 </ng-template>
 <!--non-popup-->
-<app-bottom-menu *ngIf="isOutOfStock && isPopup" (outData$)="onUpdate($event)">
+<app-bottom-menu [isRFQPopUp]="true" *ngIf="isOutOfStock && isPopup" (outData$)="onUpdate($event)">
     <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
 </app-bottom-menu>
 <!--Popup-->

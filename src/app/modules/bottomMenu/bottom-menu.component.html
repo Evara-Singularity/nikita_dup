@@ -1,4 +1,4 @@
-<div class="bottom-options">
+<div class="bottom-options" [class.bottom-options-rfq]="isRFQPopUp">
     <div class="overlay" (click)="updateParent({popupClose : true})"></div>
     <div class="content-box">
         <ng-content select="[content]"></ng-content>

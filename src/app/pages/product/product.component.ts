@@ -1514,7 +1514,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     // product-rfq 
-    async onVisibleProductRFQ() {
+    async onVisibleProductRFQ(event) {
         this.removeRfqForm();
         if (!this.productRFQInstance) {
             this.intiateRFQQuote(true, false);

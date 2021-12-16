@@ -21,6 +21,7 @@ import CONSTANTS from "@app/config/constants";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
+import { ProductCardFeature } from "@app/utils/models/product.listing.search";
 import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -711,6 +712,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
+
+    if (this.productOutOfStock) {
+      this.getProductSimilarForOOS();
+    }
 
     /**
      * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
@@ -1496,6 +1501,40 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+
+  similarForOOSLoaded = true;
+  getProductSimilarForOOS() {
+    this.similarForOOSLoaded = true;
+    this.productService
+      .getSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"])
+      .subscribe((response: any) => {
+        let products = response["products"];
+        if (products && (products as []).length > 0) {
+          this.productService.oosSimilarProductsData.similarData = JSON.parse(
+            JSON.stringify(products.map(p => {
+              p.mainImageMediumLink = p.mainImageLink;
+              return p;
+            }))
+          );
+        }
+        this.similarForOOSLoaded = false;
+      });
+  }
+
+
+  readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
+    // feature config
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFeatures: false,
+    enableRating: true,
+    enableVideo: false,
+    // design config
+    enableCard: true,
+    verticalOrientation: false,
+    horizontalOrientation: true,
+    lazyLoadImage: true
+  }
   async onVisibleSimilarOOS(event) {
     if (!this.similarProductInstanceOOS && this.productOutOfStock) {
       const { ProductOosSimilarComponent } = await import(
@@ -1510,11 +1549,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           null,
           this.injector
         );
-      this.similarProductInstanceOOS.instance["productBaseUrl"] =
-        this.rawProductData["defaultCanonicalUrl"];
-      this.similarProductInstanceOOS.instance["productName"] = this.productName;
-      this.similarProductInstanceOOS.instance["categoryCode"] =
-        this.productCategoryDetails["categoryCode"];
+      this.similarProductInstanceOOS.instance["productBaseUrl"] = this.rawProductData["defaultCanonicalUrl"];
       if (this.similarProductInstanceOOS) {
         (
           this.similarProductInstanceOOS.instance[

@@ -1,75 +1,38 @@
-<div id="oosSimilarTopSection" class="vertical-scroll-container"
-    *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
+<div id="oosSimilarTopSection" class="vertical-scroll-container" *ngIf="productOutOfStock">
     <h2>Consider These Available Items</h2>
     <div class="horizontal-scroll-container">
-        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[1]">
-        </product-horizontal-card>
-        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[1]">
-        </product-horizontal-card>
-        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[2]">
-        </product-horizontal-card>
-        <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[3]">
-        </product-horizontal-card>
-    </div>    
-</div>
-<div id="oosSimilarTopSection" class="vertical-scroll-container"
-    *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
-    <div class="horizontal-scroll-container">
-        
-        <div class="skeleton-pd-card-container skeleton-card-view">
-            <div class="left-sectn">
-                <div class="img"> </div>
-            </div>
-        
-            <div class="right-sectn">
-                <div class="ratings">
-                    <span class="avg-rating"></span>
+        <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
+            <product-horizontal-card [hideAd]="true" *ngFor="let i of [0,1,2,3,4,5]"
+                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                [product]="productService.oosSimilarProductsData.similarData[i]">
+            </product-horizontal-card>
+        </ng-container>
+        <ng-container *ngIf="similarForOOSLoaded">
+            <div *ngFor="let i of [0,1]" class="skeleton-pd-card-container skeleton-card-view">
+                <div class="left-sectn">
+                    <div class="img"> </div>
                 </div>
-                <div class="p-name"></div>
-                <div class="brand-name"></div>
-                <div class="price-details">
-                    <div class="left-sectn">
-                        <div class="price">
+                <div class="right-sectn">
+                    <div class="ratings">
+                        <span class="avg-rating"></span>
+                    </div>
+                    <div class="p-name"></div>
+                    <div class="brand-name"></div>
+                    <div class="price-details">
+                        <div class="left-sectn">
+                            <div class="price">
+                            </div>
+                        </div>
+                        <div class="right-sectn">
+                            <span class="add-cart-butn"></span>
+                            <button class="buy-now-btn"></button>
                         </div>
                     </div>
-        
-                    <div class="right-sectn">
-                        <span class="add-cart-butn"></span>
-                        <button class="buy-now-btn"></button>
-                    </div>
                 </div>
             </div>
-        </div>
-        <div class="skeleton-pd-card-container skeleton-card-view">
-            <div class="left-sectn">
-                <div class="img"> </div>
-            </div>
-        
-            <div class="right-sectn">
-                <div class="ratings">
-                    <span class="avg-rating"></span>
-                </div>
-                <div class="p-name"></div>
-                <div class="brand-name"></div>
-                <div class="price-details">
-                    <div class="left-sectn">
-                        <div class="price">
-                        </div>
-                    </div>
-        
-                    <div class="right-sectn">
-                        <span class="add-cart-butn"></span>
-                        <button class="buy-now-btn"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </ng-container>
     </div>
 </div>
-
-
-
-
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">

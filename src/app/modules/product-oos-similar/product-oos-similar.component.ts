@@ -9,16 +9,12 @@ import { Location } from "@angular/common";
   templateUrl: "./product-oos-similar.component.html",
   styleUrls: ["./product-oos-similar.component.scss"],
 })
-export class ProductOosSimilarComponent implements OnInit {
+export class ProductOosSimilarComponent {
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
-  similarProducts: ProductsEntity[] = null;
-
+  productCardCurrentyInViewPort = -1;
   @Input("productBaseUrl") productBaseUrl: string;
-  @Input("productName") productName;
-  @Input("categoryCode") categoryCode;
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
-  productCardCurrentyInViewPort = -1;
   @Output("metaUpdateEvent") metaUpdateEvent = new EventEmitter();
 
   constructor(
@@ -26,34 +22,23 @@ export class ProductOosSimilarComponent implements OnInit {
     private location: Location
   ) { }
 
-  ngOnInit(): void {
-    this.getProductSimilar();
+  ngAfterViewInit() {
+    this.attachScrollHandler();
+  }
+
+  attachScrollHandler() {
+    // set Scroll
+    window.addEventListener(
+      "scroll",
+      this.windowScrollHandler.bind(this),
+      true
+    );
   }
 
   removeWindowScrollListener(event) {
     if (event) {
       window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
     }
-  }
-
-  getProductSimilar() {
-    this.productService
-      .getSimilarProducts(this.productName, this.categoryCode)
-      .subscribe((response: any) => {
-        let products = response["products"];
-        if (products && (products as []).length > 0) {
-          this.productService.oosSimilarProductsData.similarData = products;
-          this.productService.oosSimilarProductsData.similarData = JSON.parse(
-            JSON.stringify(products)
-          );
-          // set Scroll
-          window.addEventListener(
-            "scroll",
-            this.windowScrollHandler.bind(this),
-            true
-          );
-        }
-      });
   }
 
   windowScrollHandler() {

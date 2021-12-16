@@ -54,6 +54,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input('section') section: string = '';
   @Input() enableTracking = false;
   @Input() analytics = null;
+  @Input() isOosSimilarCard = null;
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -93,9 +94,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.clear()
-    console.log(this.product);
-    console.log('------------------------------');
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
@@ -164,7 +162,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       // productDetails will always have variants as it can be called by variant popup only
       if (this.variantPopupInstance) {
         const productRequest = this._cartService.getAddToCartProductItemRequest({ productGroupData: productBO, buyNow: data.buyNow });
-        const product = this._productService.productEntityFromProductBO(productBO, {rating: this.product.rating, ratingCount: this.product.ratingCount, });
+        const product = this._productService.productEntityFromProductBO(productBO, { rating: this.product.rating, ratingCount: this.product.ratingCount, });
         const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
 
         this.variantPopupInstance.instance['productGroupData'] = productRequest;

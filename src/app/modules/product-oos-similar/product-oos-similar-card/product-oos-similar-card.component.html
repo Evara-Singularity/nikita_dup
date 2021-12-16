@@ -63,8 +63,7 @@
                         'symbol' : '1.0-0'}}
                         <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
                             GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc. Price:
-                            {{productService.oosSimi
-                                larProductsData.similarData[index].productPrice | mathFloor |
+                            {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
                             currency: 'INR' :
                             'symbol' : '1.0-0'}}
                         </small>
@@ -86,7 +85,8 @@
                 <div class="quantity-block">
                     <span class="add-qty qty-block"
                         (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
-                    <input id="product_quantity" [value]="productMinimmumQuantity"
+                    <input id="product_quantity"
+                        [value]="productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity"
                         (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
                     <span class="remove-qty qty-block"
                         (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>

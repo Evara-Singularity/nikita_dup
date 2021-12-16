@@ -714,9 +714,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.checkForBulkPricesProduct();
 
     if (this.productOutOfStock) {
+      this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
-      console.log(this.similarForOOSContainer);
-      this.getProductSimilarForOOS();
+      this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
     }
 
     /**
@@ -750,8 +750,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     this.setProductCommonType(this.rawProductData["filterAttributesList"]);
-    // this.setAttributesExtra(this.rawProductData['productPartDetails']);
-    // this.setSimilarProducts(this.productName, this.productCategoryDetails['categoryCode']);
 
     this.updateBulkPriceDiscount();
     this.showLoader = false;
@@ -858,6 +856,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  similarForOOSContainer = [];
+  similarForOOSLoaded = true;
   setSimilarProducts(productName, categoryCode) {
     this.similarProducts = [];
     if (this.isBrowser) {
@@ -866,8 +866,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
         .subscribe((response: any) => {
           let products = response["products"];
           if (products && (products as []).length > 0) {
-            this.similarProducts = products;
+            if (this.productOutOfStock) {
+              this.productService.oosSimilarProductsData.similarData = JSON.parse(
+                JSON.stringify(products.map(p => {
+                  p.mainImageMediumLink = p.mainImageLink;
+                  return p;
+                }))
+              );
+            } else {
+              this.similarProducts = products;
+            }
           }
+          this.similarForOOSLoaded = false;
         });
     }
   }
@@ -1502,28 +1512,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       };
     }
   }
-
-
-  similarForOOSContainer = [];
-  similarForOOSLoaded = true;
-  getProductSimilarForOOS() {
-    this.similarForOOSLoaded = true;
-    this.productService
-      .getSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"])
-      .subscribe((response: any) => {
-        let products = response["products"];
-        if (products && (products as []).length > 0) {
-          this.productService.oosSimilarProductsData.similarData = JSON.parse(
-            JSON.stringify(products.map(p => {
-              p.mainImageMediumLink = p.mainImageLink;
-              return p;
-            }))
-          );
-        }
-        this.similarForOOSLoaded = false;
-      });
-  }
-
 
   readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
     // feature config

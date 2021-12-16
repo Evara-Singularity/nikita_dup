@@ -1556,6 +1556,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         );
       this.similarProductInstanceOOS.instance["productBaseUrl"] = this.rawProductData["defaultCanonicalUrl"];
       if (this.similarProductInstanceOOS) {
+        // Image cick Event Handler
         (
           this.similarProductInstanceOOS.instance[
           "firstImageClickedEvent"
@@ -1563,6 +1564,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe((data) => {
           this.openPopUpcrousel(0, data);
         });
+        // Show All click Handler
         (
           this.similarProductInstanceOOS.instance[
           "showAllKeyFeatureClickEvent"
@@ -1574,12 +1576,21 @@ export class ProductComponent implements OnInit, AfterViewInit {
             data
           );
         });
+        // meta update event handler
         (
           this.similarProductInstanceOOS.instance[
           "metaUpdateEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.handlemetaUpdateEvent(data);
+        });
+        // meta update event handler
+        (
+          this.similarProductInstanceOOS.instance[
+          "ratingReviewClickEvent"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.handleReviewRatingPopup(data);
         });
       }
     }
@@ -3048,7 +3059,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(url);
   }
 
-  async handleReviewRatingPopup() {
+  async handleReviewRatingPopup(index = -1) {
     this.sendProductInfotracking("view all reviews");
     this.showLoader = true;
     const { ReviewRatingComponent } = await import(
@@ -3065,9 +3076,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       );
     this.rawReviewsData.productName = this.productName;
     this.reviewRatingPopupInstance.instance["rawReviewsData"] =
-      this.rawReviewsData;
+      (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].reviewRatingApiData : this.rawReviewsData;
 
-    this.reviewRatingPopupInstance.instance["productUrl"] = this.productUrl;
+    this.reviewRatingPopupInstance.instance["productUrl"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productUrl : this.productUrl;
     (
       this.reviewRatingPopupInstance.instance[
       "closePopup$"

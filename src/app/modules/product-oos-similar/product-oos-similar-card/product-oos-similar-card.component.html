@@ -103,21 +103,28 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc">
+        <div class="prod-inner-desc" (click)="getReviewsAndRatings()">
             <span class="rating-box"
-                *ngIf="productService.oosSimilarProductsData.similarData[index].starsCount > 0">{{productService.oosSimilarProductsData.similarData[index].starsCount
+                *ngIf="productService.oosSimilarProductsData.similarData[index].avgRating > 0">{{productService.oosSimilarProductsData.similarData[index].avgRating
                 | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <p class="prod-status-right">
                     <small class="review"
-                        *ngIf="productService.oosSimilarProductsData.similarData[index].rawReviewsData?.reviewList?.length > 0">
-                        {{productService.oosSimilarProductsData.similarData[index].rawReviewsData.reviewList.length}}
+                        *ngIf="productService.oosSimilarProductsData.similarData[index].reviewCount > 0">
+                        {{productService.oosSimilarProductsData.similarData[index].reviewCount}}
                         Reviews
                     </small>
                 </p>
             </div>
+        </div>
+        <!--recently bought product section -->
+        <div class="recent-bought-wrap"
+            *ngIf="productService.oosSimilarProductsData.similarData[index].recentBoughtMessage">
+            <i class="icon-trending"></i>
+            <span
+                class="inner-text">{{productService.oosSimilarProductsData.similarData[index].recentBoughtMessage}}</span>
         </div>
     </div>
     <div *ngIf="productService.oosSimilarProductsData.similarData[index].productKeyFeatures && productService.oosSimilarProductsData.similarData[index].productKeyFeatures.length > 0"

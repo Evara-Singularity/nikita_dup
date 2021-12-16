@@ -9,6 +9,7 @@
         <ng-container *ngIf="index >= GLOBAL_CONSTANT.oosSimilarCardCountTop">
             <app-product-oos-similar-card (removeWindowScrollListenerEvent)="removeWindowScrollListener($event)"
                 (showAllKeyFeatureClickEvent)="showAllKeyFeatureClickEvent.emit(index)"
+                (ratingReviewClickEvent)="ratingReviewClickEvent.emit($event)"
                 (firstImageClickedEvent)="firstImageClickedEvent.emit(index)" [index]="index"
                 [productMsn]="product?.moglixPartNumber">
             </app-product-oos-similar-card>

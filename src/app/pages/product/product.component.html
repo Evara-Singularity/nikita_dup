@@ -555,7 +555,7 @@
                             <span>5</span>
                             <span class="rating-bar">
                                 <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    [style.width.%]rawReviewsData="(?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
                                     class="bar dark-green"></span>
                             </span>
                         </div>

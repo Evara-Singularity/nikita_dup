@@ -1,8 +1,8 @@
 import { EventEmitter, Component, Input, OnInit, Output } from "@angular/core";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
-import { ProductsEntity } from "@app/utils/models/product.listing.search";
 import { ProductService } from "@app/utils/services/product.service";
 import { Location } from "@angular/common";
+import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
   selector: "app-product-oos-similar",
@@ -13,12 +13,14 @@ export class ProductOosSimilarComponent {
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   productCardCurrentyInViewPort = -1;
   @Input("productBaseUrl") productBaseUrl: string;
+  @Output("ratingReviewClickEvent") ratingReviewClickEvent = new EventEmitter();
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
   @Output("metaUpdateEvent") metaUpdateEvent = new EventEmitter();
 
   constructor(
     public productService: ProductService,
+    private _commonService: CommonService,
     private location: Location
   ) { }
 
@@ -36,7 +38,7 @@ export class ProductOosSimilarComponent {
   }
 
   removeWindowScrollListener(event) {
-    if (event) {
+    if (this._commonService.isBrowser && event) {
       window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
     }
   }
@@ -87,6 +89,12 @@ export class ProductOosSimilarComponent {
         this.location.replaceState(this.productBaseUrl);
         this.metaUpdateEvent.emit(-1);
       }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._commonService.isBrowser) {
+      window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
     }
   }
 }

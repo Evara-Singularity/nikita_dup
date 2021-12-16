@@ -52,6 +52,8 @@ export class ProductOosSimilarCardComponent {
   @Output("removeWindowScrollListenerEvent") removeWindowScrollListenerEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent =
     new EventEmitter();
+  @Output("ratingReviewClickEvent") ratingReviewClickEvent =
+    new EventEmitter();
 
   iOptions: any = null;
   showProduct: boolean = false;
@@ -79,10 +81,8 @@ export class ProductOosSimilarCardComponent {
     public _productListService: ProductListService,
     private _loader: GlobalLoaderService,
     private localAuthService: LocalAuthService,
-    private modalService: ModalService,
     private _toastMessageService: ToastMessageService,
     private _router: Router,
-    private _http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -102,6 +102,8 @@ export class ProductOosSimilarCardComponent {
     forkJoin([
       this.productService.getProduct(this.productMsn),
       this.productService.getProductPageBreadcrum(this.productMsn),
+      this.productService
+        .getProductStatusCount(this.productMsn)
     ]).subscribe((rawData) => {
       this.breadcrumData = rawData[1];
       if (
@@ -119,8 +121,33 @@ export class ProductOosSimilarCardComponent {
           this.index
         );
         this.showProduct = true;
+        this.setRecentlyBought(rawData[2]);
       }
     });
+  }
+
+  setRecentlyBought(data) {
+    if (data && data.status && data.data.hasOwnProperty('message') && data.data.message) {
+      this.productService.oosSimilarProductsData.similarData[this.index].recentBoughtMessage = data.data.message;
+    }
+  }
+
+  getReviewsAndRatings() {
+    if (!this.productService.oosSimilarProductsData.similarData[this.index].hasOwnProperty('reviewRatingApiData')) {
+      let obj = {
+        review_type: "PRODUCT_REVIEW",
+        item_type: "PRODUCT",
+        item_id: (this.productService.oosSimilarProductsData.similarData[this.index]['defaultPartNumber']).toLowerCase(),
+        user_id: " "
+      }
+
+      this.productService.getReviewsRating(obj).subscribe(data => {
+        this.productService.oosSimilarProductsData.similarData[this.index].reviewRatingApiData = data['data'];
+        this.ratingReviewClickEvent.emit(this.index);
+      });
+    } else {
+      this.ratingReviewClickEvent.emit(this.index);
+    }
   }
 
   changeBulkPriceQuantity(val, type?) {

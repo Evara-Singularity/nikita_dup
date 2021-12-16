@@ -27,7 +27,6 @@ export class UTRConfirmationComponent implements OnInit
         const QUOATATIONID = Number(QPARAMS['quotationId']);
         const QUOATATIONTYPE = QPARAMS['quotationType'];
         const IS_REDIRECT = !(ORDERID && QUOATATIONID && QUOATATIONTYPE);
-        console.log(IS_REDIRECT);
         if (IS_REDIRECT) {
             this._router.navigate(['**']);
             return;

@@ -6,6 +6,7 @@ import { EGiftVoucherRoutingModule } from './e-gift-voucher.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TruncatePipeModule } from '@app/utils/pipes/truncate.pipe';
 import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-autocomplete.component';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-a
         FormsModule,
         ReactiveFormsModule,
         TruncatePipeModule,
-        ListAutocompleteModule
+        ListAutocompleteModule,
+        BottomMenuModule
     ],
     declarations: [
       EGiftVoucherComponent

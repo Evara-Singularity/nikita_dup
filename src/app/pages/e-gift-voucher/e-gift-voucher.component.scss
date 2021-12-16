@@ -83,6 +83,9 @@
                     border-radius: 4px;
                     width: 100%;
                 }
+                p{
+                    color: #d9232d;
+                }
             }
         }
         .gift-card-req {
@@ -203,11 +206,11 @@
             background: #fff;
             z-index: 9;
             .submit-area {
-                width: 60%;
+                width: 45%;
                 .submit-button {
                     background-color: #d9232d;
                     color: #ffffff;
-                    width: 200px;
+                    width: 95%;
                     border-radius: 4px;
                     height: 40px;
                     font-size: 14px;
@@ -215,7 +218,7 @@
                 }
             }
             .total-area {
-                width: 40%;
+                width:55%;
                 padding-left: 10px;
                 span {
                     color: #b1b1b1;
@@ -234,9 +237,6 @@
 
 // start popup 1 css
 .list-of-brand-e-gifts {
-    margin-top: 50px;
-    border: 1px solid #b1b1b1;
-    background-color: #ffffff;
     padding: 10px 0px;
     width: 100%;
     border-radius: 8px;
@@ -286,12 +286,7 @@
 // 2nd pop
 .thanks-pop {
     padding: 20px;
-    background-color: #ffffff;
-    margin-top: 50px;
-    border: 1px solid #b1b1b1;
-    background-color: #ffffff;
     width: 100%;
-    border-radius: 8px;
     .top-cross-area {
         img {
             width: 25px;

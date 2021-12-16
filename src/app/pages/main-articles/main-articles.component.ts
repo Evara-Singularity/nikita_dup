@@ -82,7 +82,7 @@ export class MainArticlesComponent implements OnInit
         this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
     }
 
-    navigateTo(url) { this.router.navigate([`articles/${url}`]); }
+    navigateTo(url) { this.router.navigate([`article/${url}`]); }
 
     setMobileFoooters() { this.footerService.setMobileFoooters(); }
 

@@ -717,6 +717,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
       this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
+    } else {
+      this.removeSimilarProductInstanceOOS();
     }
 
     /**
@@ -777,11 +779,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  removeSimilarProductInstanceOOS() {
+    if (this.similarProductInstanceOOS) {
+      this.similarProductInstanceOOS = null;
+      this.similarProductInstanceOOSContainerRef.remove();
+    }
+  }
+
   resetLazyComponents() {
     // this function  is useable when user is redirect from PDP to PDP
     if (this.productShareInstance) {
       this.productShareInstance = null;
       this.productShareContainerRef.remove();
+    }
+    if (this.similarProductInstanceOOS) {
+      this.similarProductInstanceOOS = null;
+      this.similarProductInstanceOOSContainerRef.remove();
     }
     if (this.fbtComponentInstance) {
       this.fbtComponentInstance = null;

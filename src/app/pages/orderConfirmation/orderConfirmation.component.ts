@@ -146,13 +146,10 @@ export class OrderConfirmationComponent implements OnInit {
                     data["affiliateId"] = 10;
                     this.afType = "iFrame";
                     this.iFrameUrl =
-                        "https://tracking.icubeswire.co/aff_a?offer_id=2584&adv_sub1=" +
+                        "https://tracking.icubeswire.co/aff_a?offer_id=2584&order_id=" +
                         this.queryParams["orderId"] +
                         "&sale_amount=" +
-                        this.queryParams["transactionAmount"] +
-                        this.queryParams["orderId"] +
-                        "&amount=" +
-                        this.queryParams["transactionAmount"];
+                        this.queryParams["transactionAmount"] ;
                     this.id = "pixelcodeurl";
                 }
                 this._ocs.addAffiliateOrder(data).subscribe(() => {
@@ -565,7 +562,7 @@ export class OrderConfirmationComponent implements OnInit {
             }
             //ENDS
             this._cartService.updateCartSession(emptyCart).subscribe((data) => {
-                this._cartService.cart.next(data["noOfItems"]);
+                this._cartService.cart.next({count: data["noOfItems"] || 0});
                 let res = data;
                 if (res["statusCode"] == 200) {
                     this._cartService.setCartSession(res);

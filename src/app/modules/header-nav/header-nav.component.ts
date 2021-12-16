@@ -281,7 +281,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         {
             this.createHeaderData(this.route);
             if (val instanceof NavigationEnd) {
-                if (val['url'] === '/') {
+                if (val['url'] === '/' || val['url'] === '/?back=1') {
                     this.isHomePage = true;
                 } else {
                     this.isHomePage = false;
@@ -306,15 +306,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.cartService.cart.subscribe((data) => {
-            if (typeof data === 'number') {
-                this.noOfCart = data;
-            } else {
-                // incase it is object
-                if (data.count == null || data.count == 0) {
-                    this.noOfCart = 0;
-                } else {
-                    this.noOfCart = data.count;
-                }
+            if(data && data.count){
+                this.noOfCart = data.count;
+            }else{
+                throw new Error('Cart update count should always be present');
             }
             this.setHeader();
         });
@@ -322,25 +317,29 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.localAuthService.login$.subscribe((data) =>
         {
             this.user = this.localAuthService.getUserSession();
-            this.isUserLogin = true;
+            this.checkUserLoginState();
         });
 
         this.localAuthService.logout$.subscribe((data) =>
         {
             this.user = this.localAuthService.getUserSession();
-            this.isUserLogin = false;
+            this.checkUserLoginState();
         });
     }
 
     browserCalc()
     {
+        this.checkUserLoginState();
+    }
+
+    checkUserLoginState() {
         // load user information
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin =
             this.user && this.user.authenticated
                 ? (this.user.authenticated as boolean)
                 : false;
-    }
+    }   
 
     createHeaderData(_aRoute)
     {

@@ -9,6 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 
 import * as compression from 'compression'
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
@@ -20,6 +21,7 @@ export function app() {
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
     inlineCriticalCss: true,
+
   }));
 
   server.set('view engine', 'html');
@@ -39,10 +41,13 @@ export function app() {
   server.get('*', (req, res) => {
     res.render(indexHtml, {
       req,
-      providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }]
+      providers: [
+        { provide: APP_BASE_HREF, useValue: req.baseUrl },
+        { provide: RESPONSE, useValue: (res) }
+      ]
     }, (err: Error, html: string) => {
       // manipulate html string to add preloads for images
-      res.status(html ? 200 : 500).send(appendImagePreloads(html) || err.message);
+      res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
     });
   });
 

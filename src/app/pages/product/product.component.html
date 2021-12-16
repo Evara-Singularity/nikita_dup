@@ -2,13 +2,13 @@
     <h2>Consider These Available Items</h2>
     <div class="horizontal-scroll-container">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
-            <product-horizontal-card [hideAd]="true" *ngFor="let i of [0,1,2,3,4,5]"
+            <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
                 [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
                 [product]="productService.oosSimilarProductsData.similarData[i]">
             </product-horizontal-card>
         </ng-container>
         <ng-container *ngIf="similarForOOSLoaded">
-            <div *ngFor="let i of [0,1]" class="skeleton-pd-card-container skeleton-card-view">
+            <div *ngFor="let skeleton of similarForOOSContainer" class="skeleton-pd-card-container skeleton-card-view">
                 <div class="left-sectn">
                     <div class="img"> </div>
                 </div>

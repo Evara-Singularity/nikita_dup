@@ -714,6 +714,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.checkForBulkPricesProduct();
 
     if (this.productOutOfStock) {
+      this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
+      console.log(this.similarForOOSContainer);
       this.getProductSimilarForOOS();
     }
 
@@ -1502,6 +1504,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
 
+  similarForOOSContainer = [];
   similarForOOSLoaded = true;
   getProductSimilarForOOS() {
     this.similarForOOSLoaded = true;

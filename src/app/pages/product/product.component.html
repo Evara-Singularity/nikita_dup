@@ -681,6 +681,7 @@
         <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
+        <past-orders *ngIf="isBrowser" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics"></past-orders>
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>

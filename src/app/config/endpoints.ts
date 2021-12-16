@@ -109,4 +109,5 @@ export const ENDPOINTS = {
   SPONSERED_PRODUCTS: '/search/getSponsoredProducts',
   GET_PARENT_CATEGORY_JSON_BODY: '/category/getparentcategoryjsonbody',
   SAVE_CORPORATE_GIFTING: '/cmsapi/giftingQuery',
+  GET_PAST_ORDERS:'/checkout/getPastOrders?userId='
 };

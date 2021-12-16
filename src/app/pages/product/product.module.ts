@@ -19,8 +19,9 @@ import { ProductComponent } from "./product.component";
 import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/product-oos-similar.module";
 import { ProductHorizontalCardModule } from "@app/modules/product-horizontal-card/product-horizontal-card.module";
-import { LazyLoadImageModule } from "ng-lazyload-image";
 import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.directive";
+import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
+
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -46,6 +47,7 @@ import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.direct
     ProductHorizontalCardModule,
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule,
+    PastOrdersModule
   ],
   exports: [],
   providers: [NgxSiemaService],

@@ -403,5 +403,4 @@ export class ProductHorizontalCardComponent implements OnInit {
     this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
   }
 
-
 }

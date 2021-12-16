@@ -248,6 +248,17 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'main-articles',
+				loadChildren: () =>
+					import('./main-articles/main-articles.module').then((m) => m.MainArticlesModule),
+				data: {
+					footer: true,
+					logo: true,
+					moreOpt: true,
+					pageName: 'main-articles'
+				},
+			},
+			{
 				path: 'all-categories',
 				loadChildren: () =>
 					import('./view/view.module').then((m) => m.ViewModule),
@@ -758,6 +769,16 @@ const routes: Routes = [
                 data: {
                     title: 'Feedback',
                     menuBar: true,
+                    footer: false,
+                },
+            },
+            {
+                path: 'utr-confirmation',
+                loadChildren: () =>
+                    import('./utr-confirmation/utr-confirmation.module').then((m) => m.UTRConfirmationModule),
+                data: {
+                    menuBar: false,
+                    logo:true,
                     footer: false,
                 },
             },

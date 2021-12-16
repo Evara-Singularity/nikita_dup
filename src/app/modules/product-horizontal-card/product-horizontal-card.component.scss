@@ -363,6 +363,16 @@
     // .card-container {
     //     padding: 0px 10px;
     // }
+    .right {
+        .name {
+            span {
+                max-height: 33px;
+                overflow: hidden;
+                display: inline-block;
+            }
+
+        }
+    }
 }
 
 .seo-hidden-link {

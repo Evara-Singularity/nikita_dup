@@ -579,7 +579,8 @@
                 "items": [
                     {
                         "id": "workbench.action.navigateBack",
-                        "label": "&&Back"
+                        "label": "&&Back",
+                        "enabled": false
                     },
                     {
                         "id": "workbench.action.navigateForward",
@@ -1485,7 +1486,7 @@
     },
     "windowsState": {
         "lastActiveWindow": {
-            "backupPath": "/var/www/html/online_pwa_optimisation/~/.vscode/Backups/1639120734077",
+            "backupPath": "/var/www/html/online_pwa_optimisation/~/.vscode/Backups/1639633921976",
             "uiState": {
                 "mode": 1,
                 "x": 171,

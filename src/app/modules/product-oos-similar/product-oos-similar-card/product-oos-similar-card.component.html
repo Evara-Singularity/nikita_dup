@@ -1,5 +1,5 @@
 <div [id]="'oos-card-' + index" class="pdp-container pdpCard" *ngIf="showProduct">
-    <span class="blueTag">{{index + 1}}</span>
+    <span class="blueTag">{{(index - GLOBAL_CONSTANT.oosSimilarCardCountTop) + 1}}</span>
     <div class="prod-carsl" addClass
         [class.hasOneImage]="productService.oosSimilarProductsData.similarData[index].productAllImages?.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
@@ -68,7 +68,7 @@
                             'symbol' : '1.0-0'}}
                         </small>
                     </p>
-                    <p class="actual-price"
+                    <!-- <p class="actual-price"
                         *ngIf="productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!==null">
                         {{productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax | currency: 'INR'
                         : 'symbol' : '1.0-0'}}
@@ -78,7 +78,7 @@
                             currency: 'INR' :
                             'symbol' : '1.0-0'}}
                         </small>
-                    </p>
+                    </p> -->
                 </ng-container>
             </div>
             <div class="qty_section" *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
@@ -103,21 +103,28 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc">
+        <div class="prod-inner-desc" (click)="getReviewsAndRatings()">
             <span class="rating-box"
-                *ngIf="productService.oosSimilarProductsData.similarData[index].starsCount > 0">{{productService.oosSimilarProductsData.similarData[index].starsCount
+                *ngIf="productService.oosSimilarProductsData.similarData[index].avgRating > 0">{{productService.oosSimilarProductsData.similarData[index].avgRating
                 | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <p class="prod-status-right">
                     <small class="review"
-                        *ngIf="productService.oosSimilarProductsData.similarData[index].rawReviewsData?.reviewList?.length > 0">
-                        {{productService.oosSimilarProductsData.similarData[index].rawReviewsData.reviewList.length}}
+                        *ngIf="productService.oosSimilarProductsData.similarData[index].reviewCount > 0">
+                        {{productService.oosSimilarProductsData.similarData[index].reviewCount}}
                         Reviews
                     </small>
                 </p>
             </div>
+        </div>
+        <!--recently bought product section -->
+        <div class="recent-bought-wrap"
+            *ngIf="productService.oosSimilarProductsData.similarData[index].recentBoughtMessage">
+            <i class="icon-trending"></i>
+            <span
+                class="inner-text">{{productService.oosSimilarProductsData.similarData[index].recentBoughtMessage}}</span>
         </div>
     </div>
     <div *ngIf="productService.oosSimilarProductsData.similarData[index].productKeyFeatures && productService.oosSimilarProductsData.similarData[index].productKeyFeatures.length > 0"

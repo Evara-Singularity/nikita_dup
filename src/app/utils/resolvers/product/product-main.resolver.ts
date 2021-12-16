@@ -41,11 +41,11 @@ export class ProductResolver implements Resolve<object> {
     // make product key
     const PRODUCT_KEY = makeStateKey<object>('product-' + productMsnId);
 
-    if ( this.transferState.hasKey(PRODUCT_KEY) ) {
+    if (this.transferState.hasKey(PRODUCT_KEY)) {
       const productObj = this.transferState.get<object>(PRODUCT_KEY, null);
 
       this.transferState.remove(PRODUCT_KEY);
-      
+
       // Remove loader
       this.loaderService.setLoaderState(false);
 
@@ -59,18 +59,16 @@ export class ProductResolver implements Resolve<object> {
 
       // Store request observable in a validable
       const productObs = this.http.get(PRODUCT_URL);
-      
+
       // List of API's needed for renderig of first fold UI of Product Page 
       const pdpFirstFoldApiList = [productObs];
 
       return forkJoin(pdpFirstFoldApiList).pipe(
-        catchError((err)=>{
+        catchError((err) => {
           this.loaderService.setLoaderState(false);
           return of(err);
         }),
         tap(result => {
-          console.clear();
-          console.log(result[0]);
           if (isPlatformServer(this.platformId)) {
             this.transferState.set(PRODUCT_KEY, result[0]);
             this.loaderService.setLoaderState(false);

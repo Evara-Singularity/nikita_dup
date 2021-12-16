@@ -103,7 +103,6 @@
                     flex-wrap: wrap;
                     align-items: center;
                     width: 100%;
-                    background-color: #37b9180f;
                     .req-flex-child {
                         padding: 7px;
                         position: relative;
@@ -385,4 +384,7 @@ select::-ms-expand {
 datalist {
     display: none;
 }
+
+.valid-row{background-color: #37b9180f;}
+
 

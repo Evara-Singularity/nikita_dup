@@ -49,7 +49,7 @@
                 <h3>Enter your gift card requirement:</h3>
                 <div class="gift-card-req-form">
                     <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
-                        <div class="req-flex" [formGroup]="requirement" *ngIf="brandList.length">
+                        <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement" *ngIf="brandList.length">
                             <div class="brand req-flex-child">
                                 <list-autocomplete [placeholder]="'Brand'" [list]="brandList"
                                     [control]="requirement.get('brandName')"
@@ -102,7 +102,7 @@
             <div class="row submit-and-total">
                 <div class="col-md-4 total-area">
                     <span class="total">Total</span><br>
-                    <span class="amount">₹ {{totalValue}}.00 INR</span>
+                    <span class="amount">₹ {{totalValue | mathFloor | indianCurrency}} INR</span>
                 </div>
                 <div class="col-md-8 submit-area">
                     <input class="submit-button" type="button" value="SUBMIT REQUEST" (click)="saveGift()">

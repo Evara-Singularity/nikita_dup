@@ -1,4 +1,5 @@
 import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { BankNamePipe } from '@app/utils/pipes/bank.pipe';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 import { EmiService } from './../emi/emi.service';
@@ -31,6 +32,7 @@ export class EmiPlansComponent implements OnInit
     emiStepsPopupInstance = null;
     @ViewChild('emiStepsPopup', { read: ViewContainerRef }) emiStepsPopupContainerRef: ViewContainerRef;
     minOrderPlaced = 3000;
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(
         private _emiService: EmiService,

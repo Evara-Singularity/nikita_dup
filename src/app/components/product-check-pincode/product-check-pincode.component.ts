@@ -5,6 +5,7 @@ import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angul
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '../../utils/services/product.service';
+import CONSTANTS from '@app/config/constants';
 @Component({
     selector: 'product-check-pincode',
     templateUrl: './product-check-pincode.component.html',
@@ -25,6 +26,8 @@ export class ProductCheckPincodeComponent implements OnInit
     deliveryDays = null;
     deliveryAnalytics = null;
     itemShippingAmount = 0;
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+
 
     constructor(
         private localStorageService: LocalStorageService,

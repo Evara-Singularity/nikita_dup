@@ -11,6 +11,7 @@ import {
   Output,
 } from "@angular/core";
 import { NavigationExtras, Router } from "@angular/router";
+import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { AddToCartProductSchema } from "@app/utils/models/cart.initial";
@@ -67,6 +68,7 @@ export class ProductOosSimilarCardComponent {
   // ondemad loaded components for select variant popup
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
+  GLOBAL_CONSTANT = GLOBAL_CONSTANT;
 
   constructor(
     public productService: ProductService,

@@ -883,6 +883,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
               this.productService.oosSimilarProductsData.similarData = JSON.parse(
                 JSON.stringify(products.map(p => {
                   p.mainImageMediumLink = p.mainImageLink;
+                  console.log(p.moglixPartNumber);
                   return p;
                 }))
               );

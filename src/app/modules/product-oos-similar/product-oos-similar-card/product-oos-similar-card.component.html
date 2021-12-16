@@ -1,5 +1,5 @@
 <div [id]="'oos-card-' + index" class="pdp-container pdpCard" *ngIf="showProduct">
-    <span class="blueTag">{{index + 1}}</span>
+    <span class="blueTag">{{(index - GLOBAL_CONSTANT.oosSimilarCardCountTop) + 1}}</span>
     <div class="prod-carsl" addClass
         [class.hasOneImage]="productService.oosSimilarProductsData.similarData[index].productAllImages?.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
@@ -68,7 +68,7 @@
                             'symbol' : '1.0-0'}}
                         </small>
                     </p>
-                    <p class="actual-price"
+                    <!-- <p class="actual-price"
                         *ngIf="productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!==null">
                         {{productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax | currency: 'INR'
                         : 'symbol' : '1.0-0'}}
@@ -78,7 +78,7 @@
                             currency: 'INR' :
                             'symbol' : '1.0-0'}}
                         </small>
-                    </p>
+                    </p> -->
                 </ng-container>
             </div>
             <div class="qty_section" *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">

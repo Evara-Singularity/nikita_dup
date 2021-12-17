@@ -754,6 +754,9 @@ const routes: Routes = [
                 data: {
                     footer: false,
                     moreOpt: false,
+                    cart:false,
+                    menuBar: false,
+                    searchBar:false,
                     pageName: 'E-Gift'
                 },
             },

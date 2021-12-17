@@ -641,7 +641,7 @@ export class CartComponent {
                         msg['data'] = { productName: item['productName'], text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
                         msg['type'] = "oos";
                     }
-                    else if (data[item['productId']]['updates']['priceWithoutTax']) {
+                    else if (data[item['productId']]['updates']['priceWithoutTax'] && (data[item['productId']]['productDetails']['priceWithoutTax'] < item["priceWithoutTax"] )) {
                         msg['data'] = { productName: item['productName'], text1: ' price has been updated from ', text2: 'to', oPrice: item["priceWithoutTax"], nPrice: data[item['productId']]['productDetails']['priceWithoutTax'] };
                         // msg['data'] = item['productName']+" has " + (item["priceWithoutTax"]>data[item['productId']]['productDetails']['priceWithoutTax'] ? 'decreased' : 'increased') + " from Rs." + item["priceWithoutTax"] + " to Rs." + data[item['productId']]['productDetails']['priceWithoutTax'];
                         msg['type'] = "price";

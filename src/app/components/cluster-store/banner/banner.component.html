@@ -1,4 +1,4 @@
-<div class="bannerBlock">
+<div class="bannerBlock" *ngIf="data['data'][0]">
   <div class="bannerSlide">
     <a href="{{data['data'][0]['image_link']}}">
     <img alt="{{data['data'][0]['image_title']}}" src="{{imagePath + data['data'][0]['image_name']}}">

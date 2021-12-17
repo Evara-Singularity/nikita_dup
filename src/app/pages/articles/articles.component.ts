@@ -12,11 +12,11 @@ import { environment } from 'environments/environment';
 
 
 @Component({
-    selector: 'main-articles',
-    templateUrl: './main-articles.component.html',
-    styleUrls: ['./main-articles.component.scss']
+    selector: 'articles',
+    templateUrl: './articles.component.html',
+    styleUrls: ['./articles.component.scss']
 })
-export class MainArticlesComponent implements OnInit
+export class ArticlesComponent implements OnInit
 {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly data = 'data';

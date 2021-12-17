@@ -239,7 +239,7 @@ const routes: Routes = [
 			{
 				path: 'article/:name',
 				loadChildren: () =>
-					import('./articles/articles.module').then((m) => m.ArticlesModule),
+					import('./article/article.module').then((m) => m.ArticleModule),
 				data: {
 					footer: false,
 					logo: true,
@@ -250,7 +250,7 @@ const routes: Routes = [
 			{
 				path: 'articles',
 				loadChildren: () =>
-					import('./main-articles/main-articles.module').then((m) => m.MainArticlesModule),
+					import('./articles/articles.module').then((m) => m.ArticlesModule),
 				data: {
 					footer: true,
 					logo: true,
@@ -752,7 +752,9 @@ const routes: Routes = [
                 path: 'e-gift-voucher',
                 loadChildren: () => import('@pages/e-gift-voucher/e-gift-voucher.module').then(m => m.EGiftVoucherModule),
                 data: {
-                    hideHeader: false,
+                    footer: false,
+                    moreOpt: false,
+                    pageName: 'E-Gift'
                 },
             },
             {

@@ -8,7 +8,6 @@ import { ProductCardFeature, ProductCardMetaInfo } from '@app/utils/models/produ
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { ProductBrowserService } from '@app/utils/services/product-browser.service';
-import { ProductListService } from '@app/utils/services/productList.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
@@ -43,12 +42,12 @@ export class PastOrdersComponent implements OnInit
     ngOnInit(): void
     {
         let user = this.localStorageService.retrieve('user');
-        if (user && user.userId) { this.userId = user.userId };
+        if (user && user.authenticated == 'true') { this.userId = user.userId };
     }
 
     onVisiblePastOrders($event)
     {
-        //1255256,1254884
+        if (!this.userId) return;
         this._productService.getPastOrderProducts(this.userId).subscribe((response) =>
         {
             if (response['status']) {

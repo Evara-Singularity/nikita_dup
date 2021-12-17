@@ -49,7 +49,8 @@
                 <h3>Enter your gift card requirement:</h3>
                 <div class="gift-card-req-form">
                     <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
-                        <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement" *ngIf="brandList.length">
+                        <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement"
+                            *ngIf="brandList.length">
                             <div class="brand req-flex-child">
                                 <list-autocomplete [placeholder]="'Brand'" [list]="brandList"
                                     [control]="requirement.get('brandName')"
@@ -82,8 +83,15 @@
                                 </div>
                             </div>
                             <div class="total-value req-flex-child">
-                                <input type="text" formControlName="totalValue" readonly
-                                    placeholder="Total value (INR)">
+                                <!--Yajya:Request to change to span-->
+                                <span>
+                                    <ng-container *ngIf="requirement.get('totalValue').value > 0">
+                                        {{requirement.get('totalValue').value | mathFloor | indianCurrency }}
+                                    </ng-container>
+                                    <ng-container *ngIf="requirement.get('totalValue').value == 0">
+                                        Total value (INR)
+                                    </ng-container>
+                                </span>
                             </div>
                             <div class="action req-flex-child" (click)="removeProduct(rIndex);"
                                 *ngIf="rfqEnquiryItemsList.length > 1">

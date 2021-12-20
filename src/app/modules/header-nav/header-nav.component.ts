@@ -364,7 +364,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
                 this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
                 this.displaySearch = (this.routerData['searchBar'] != undefined) ? this.routerData['searchBar'] : true;
-                console.log(this.routerData);
             });
     }
 

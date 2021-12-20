@@ -20,7 +20,7 @@ export class ArticlesComponent implements OnInit
 {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly data = 'data';
-    readonly URL = "/cmsApi/getArticlesListByCategory?pageNumber=0&pageSize=1&categoryCode=1"
+    readonly URL = "/cmsApi/getArticlesListByCategory?&pageSize=10&categoryCode=all";
     readonly BASE_URL = environment.BASE_URL;
     //SEO
     readonly TITLE = "Online B2B Industrial Products and Equipments Guide - Moglix.com";
@@ -29,7 +29,8 @@ export class ArticlesComponent implements OnInit
     articleList = [];
     isBrowser = false;
     isServer = false;
-    pageNumber = 1;
+    pageNumber = 0;
+    hasNoRecords = false;
 
 
     constructor(private route: ActivatedRoute, private router: Router, private footerService: FooterService, private _commonService: CommonService, private toastMessageService: ToastMessageService,
@@ -57,23 +58,30 @@ export class ArticlesComponent implements OnInit
 
     fetchArticles()
     {
-        this.pageNumber += this.pageNumber;
-        const URL = `${this.BASE_URL}/cmsApi/getArticlesListByCategory?pageNumber=${this.pageNumber}&pageSize=10&categoryCode=all`;
+        if (this.hasNoRecords) return;
+        this.pageNumber = this.pageNumber + 1;
+        const URL = `${this.BASE_URL}${this.URL}&pageNumber=${this.pageNumber}`;
         this._loaderService.setLoaderState(true);
         this._dataService.callRestful("GET", URL).subscribe(
-            (response) => { this.updateArticlesList(response); }, (error) => { this._loaderService.setLoaderState(false); }
+            (response) => { this.updateArticlesList(response); }, 
+            (error) => { this._loaderService.setLoaderState(false); }
         );
     }
 
     updateArticlesList(response)
     {
-        if (response['status'] && response[this.data]) {
-            const LIST = (response[this.data][0]['articleList'] as any[]) || [];
-            this.articleList = [...this.articleList, ...LIST];
-            this._loaderService.setLoaderState(false);
+        this._loaderService.setLoaderState(false);
+        if (response['status'] && response[this.data] && (response[this.data] as any[])) {
+            if ((response[this.data] as any[]).length && (response[this.data][0]['articleList'] as any[]).length) {
+                const LIST = (response[this.data][0]['articleList'] as any[]);
+                this.articleList = [...this.articleList, ...LIST];
+            } else {
+                this.hasNoRecords = true;
+                this.toastMessageService.show({ type: 'error', text: "No more records to display" });
+            }
             return;
         }
-        this.toastMessageService.show({ type: 'error', text: response['message'] });
+        this.toastMessageService.show({ type: 'error', text: response['statusDescription'] });
     }
 
     setFooter()

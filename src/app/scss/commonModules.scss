@@ -1,12 +1,16 @@
 @import '../../app/scss/variables';
+
 // Forms
 .material-form {
+
     // Inside Label Input
     .input-field {
         margin-bottom: 30px;
+
         label {
             display: block;
             position: relative;
+
             input,
             select {
                 width: 100%;
@@ -15,10 +19,12 @@
                 height: 45px;
                 padding: 14px 25px 0 0;
                 font-size: $large-font;
+
                 &.input-password {
                     padding: 14px 140px 0 0;
                 }
             }
+
             textarea {
                 width: 100%;
                 border: solid $border-sec-color;
@@ -27,20 +33,24 @@
                 padding: 14px 25px 0 0;
                 font-size: $large-font;
             }
+
             .input-value {
                 font-size: $extra-large-font;
                 padding-top: 20px;
                 display: block;
             }
+
             select+.icon-down {
                 position: absolute;
                 right: 6px;
                 top: 23px;
                 font-size: $large-font;
             }
+
             select:disabled+.icon-down {
                 color: #898989;
             }
+
             .label {
                 position: absolute;
                 left: 0;
@@ -49,23 +59,28 @@
                 color: $disabled;
                 @extend %transition;
             }
+
             &.is-focus .label,
             input:focus+.label,
             select:focus+.label {
                 font-size: $medium-font;
                 top: 5px;
             }
+
             textarea:focus+.label {
                 font-size: $medium-font;
                 top: 3px;
             }
+
             input:focus,
             textarea:focus {
                 border-color: $active-border-color;
+
                 &+.label {
                     color: $active-border-color;
                 }
             }
+
             .edit-field {
                 position: absolute;
                 right: 0;
@@ -74,22 +89,27 @@
                 font-weight: 500;
                 color: $blue-link-color;
                 cursor: pointer;
+
                 &.verified {
                     color: #36BD40;
+
                     i {
                         padding-left: 5px;
                     }
                 }
             }
+
             &.disableInput {
                 opacity: 0.4;
                 pointer-events: none;
             }
         }
     }
+
     &.material-form-boxed {
         .input-field-boxed {
             margin-bottom: 20px;
+
             input,
             select {
                 width: 100%;
@@ -100,6 +120,7 @@
                 padding: 0px 10px 0px 10px;
                 font-size: $large-font;
             }
+
             &.disabled-boxed {
                 input {
                     background: #F2F2F2;
@@ -108,10 +129,12 @@
                 }
             }
         }
+
         @include placeholder {
             color: #B5B5B5;
             font-size: 14px;
         }
+
         label {
             display: block;
             font-size: $small-font;
@@ -119,6 +142,7 @@
             color: #606060;
             font-weight: bold;
         }
+
         .multiple-form-field {
             display: flex;
         }
@@ -128,6 +152,7 @@
 .input-sec {
     display: block;
     position: relative;
+
     input {
         width: 100%;
         border: solid $border-sec-color;
@@ -136,6 +161,7 @@
         padding: 14px 25px 0 0;
         font-size: $large-font;
     }
+
     .label {
         position: absolute;
         left: 0;
@@ -144,13 +170,16 @@
         color: $disabled;
         @extend %transition;
     }
+
     &.is-focus .label,
     input:focus+.label {
         font-size: $medium-font;
         top: 5px;
     }
+
     input:focus {
         border-color: $active-border-color;
+
         &+.label {
             color: $active-border-color;
         }
@@ -208,6 +237,7 @@ option {
 .error-txt {
     color: $error-color;
     margin-top: 5px;
+
     &.inline-error {
         margin-left: 10px;
         font-size: 12px;
@@ -225,29 +255,35 @@ option {
 // Toggle
 .toggle-panel {
     width: 100%;
+
     &.about_moglix {
         .toggle-head {
             background: $white-color;
             border: 0;
         }
+
         .toggle-content {
             margin: 0;
             border: 0;
         }
     }
+
     .toggle-head {
         border: solid $border-color;
         border-width: 1px 0 1px 0;
         padding: 15px 10px;
         background: $gray-color;
         @extend %clear-fix;
+
         p {
             font-weight: 600;
         }
+
         i {
             font-size: 16px;
         }
     }
+
     .toggle-content {
         margin-top: 10px;
     }
@@ -264,13 +300,24 @@ option {
 
 //Bottom Popup Design 
 .bottom-options {
+    &#bottom-options-rfq {
+        &.open {
+            .content-box {
+                padding-bottom: 50px !important;
+                max-height: 80% !important;
+            }
+        }
+    }
+
     .overlay-bg {
         z-index: 13;
         top: 120%;
     }
+
     .overlay {
         z-index: 13;
     }
+
     .content-box {
         position: fixed;
         bottom: -100%;
@@ -282,17 +329,21 @@ option {
         max-height: 40%;
         overflow: auto;
         @extend %transition;
+
         li {
             padding: 10px 0;
             font-size: $extra-large-font;
         }
+
         .container-head-sec {
             @extend %ico-txt-right;
             margin-bottom: 10px;
+
             .txt {
                 font-size: $extra-large-font;
                 font-weight: 700;
                 line-height: 21px;
+
                 span {
                     display: block;
                     font-size: $medium-font;
@@ -302,14 +353,15 @@ option {
             }
         }
     }
-    &.open {
-        .overlay-bg {
-            top: 0;
-        }
-        .content-box {
-            bottom: 0;
-        }
-    }
+
+    // &.open {
+    //     .overlay-bg {
+    //         top: 0;
+    //     }
+    //     .content-box {
+    //         bottom: 0;
+    //     }
+    // }
 }
 
 .open {
@@ -317,16 +369,39 @@ option {
         .overlay {
             top: 0;
         }
+
         .content-box {
             bottom: 0;
         }
     }
 }
 
+//Custom Popup
+.stickyBottomBtn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    padding: 5px;
+    box-shadow: 0px -3px 6px #00000029;
+    background: #F2F2F2;
+
+    .continue-btn {
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 50px;
+    }
+}
+
+
 //Promo PopUp
 .select-offers {
     &.open {
         background-color: red;
+
         .container {
             height: initial;
         }
@@ -348,6 +423,7 @@ option {
     .overlay {
         z-index: 11;
     }
+
     .content-area {
         @include translate(0, -50%);
         position: fixed;
@@ -359,24 +435,29 @@ option {
         font-size: $large-font;
         @extend %border-radius;
         @extend %clear-fix;
+
         .green-block {
             background: #36BD40;
+
             .del-ico {
                 color: white;
                 font-size: 20px;
                 padding: 10px 0px 0px 10px;
                 display: inline-block;
             }
+
             .inner-txt {
                 padding: 10px 0px 50px 0px;
                 text-align: center;
                 color: white;
+
                 .info-title {
                     font-weight: 600;
                     color: white;
                     font-size: 16px;
                     letter-spacing: 0.5px;
                 }
+
                 i {
                     font-size: 35px;
                     display: inline-block;
@@ -386,28 +467,31 @@ option {
         }
     }
 }
+
 //grid
 
-.pwa-row{
+.pwa-row {
     display: flex;
     flex-wrap: wrap;
-    padding:10px 15px;
+    padding: 10px 15px;
     // justify-content: space-evenly;
-    align-items:center;
+    align-items: center;
 }
+
 @for $i from 1 through 12 {
     $colnum: $i;
-    .pwa-col-#{$i} { 
+
+    .pwa-col-#{$i} {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
         flex: 0 0 ($fullwidth / $colmax)*$colnum;
         max-width: ($fullwidth / $colmax)*$colnum;
         // padding-left: $default-gap;
         // padding-right: $default-gap;
-     }
+    }
 }
 
 // helper classes 
-.flex-dir-col{
-   flex-direction:column;
+.flex-dir-col {
+    flex-direction: column;
 }

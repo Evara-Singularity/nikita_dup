@@ -18,25 +18,22 @@ import { forkJoin } from 'rxjs';
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
-  ACCORDIAN_DATA: Array<any> = [[],[],[]];
-  popularLinks: Array<any>= [];
+  ACCORDIAN_DATA: Array<any> = [[], [], []];
+  popularLinks: Array<any> = [];
 
   constructor(
-    public _commonService: CommonService, 
+    public _commonService: CommonService,
     private _dataService: DataService,
     private _productListService: ProductListService,
     private globalAnalyticService: GlobalAnalyticsService,
-    private _router:Router
-  ){}
+    private _router: Router
+  ) { }
 
   ngOnInit() {
     this.loadShopByAttributeData();
   }
 
   ngAfterViewInit() {
-    const el = document.getElementsByClassName('panel-body')[0];
-    console.log('---------------------------------');
-    console.log(el);
   }
 
   loadShopByAttributeData() {
@@ -62,13 +59,12 @@ export class ProductAccordiansComponent {
 
   }
 
-  sendAdobeTracking(accordian, linkName, link)
-  {
-      const PAGE = this.analyticsInfo['page'];
-      PAGE['subSection'] = accordian;
-      PAGE['linkName'] = link;
-      this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
-      this._router.navigate([`${link}`])
+  sendAdobeTracking(accordian, linkName, link) {
+    const PAGE = this.analyticsInfo['page'];
+    PAGE['subSection'] = accordian;
+    PAGE['linkName'] = link;
+    this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
+    this._router.navigate([`${link}`])
   }
 }
 

@@ -3039,7 +3039,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   scrollToId(id: string) {
     let footerOffset = document.getElementById(id).offsetTop;
-    ClientUtility.scrollToTop(1000, footerOffset - 30);
+    ClientUtility.scrollToTop(1000, footerOffset + 250);
   }
 
   pseudoFnc() { }
@@ -3378,18 +3378,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   get pastOrderAnalytics() {
-      const TAXONS = this.taxons;
-      const page = {
-          pageName: null,
-          channel: "pdp",
-          subSection: "Inspired By Your Purchase",
-          linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-          linkName: null,
-          loginStatus: this.loginStatusTracking,
-      };
-      const analytices = { page: page,custData: this.custDataTracking, order: this.orderTracking}
-      return analytices;
-    }
+    const TAXONS = this.taxons;
+    const page = {
+      pageName: null,
+      channel: "pdp",
+      subSection: "Inspired By Your Purchase",
+      linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+      linkName: null,
+      loginStatus: this.loginStatusTracking,
+    };
+    const analytices = { page: page, custData: this.custDataTracking, order: this.orderTracking }
+    return analytices;
+  }
 
   ngOnDestroy() {
     if (this.isBrowser) {

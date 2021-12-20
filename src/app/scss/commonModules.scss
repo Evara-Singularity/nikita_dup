@@ -354,14 +354,14 @@ option {
         }
     }
 
-    // &.open {
-    //     .overlay-bg {
-    //         top: 0;
-    //     }
-    //     .content-box {
-    //         bottom: 0;
-    //     }
-    // }
+    &.open {
+        .overlay-bg {
+            top: 0;
+        }
+        .content-box {
+            bottom: 0;
+        }
+    }
 }
 
 .open {

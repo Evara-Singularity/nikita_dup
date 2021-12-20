@@ -60,7 +60,11 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
+<<<<<<< HEAD
+          if (res['url'] === '/' || res['url'] == "/?back=1") {
+=======
         if (res["url"] === "/") {
+>>>>>>> eebf0a44c591f927972e2b927633f7c4d8beca3d
           this.isHomePage = true;
         } else {
           this.isHomePage = false;

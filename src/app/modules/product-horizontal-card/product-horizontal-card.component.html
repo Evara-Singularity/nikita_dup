@@ -10,7 +10,7 @@
     <a class="seo-hidden-link" [attr.href]="this.product.productUrl">{{product.productName}}</a>
     <!-- wrapper div for card class -->
     <div [class.available-item-card]="isOosSimilarCard"
-        [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.enableCard}">
+        [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.verticalOrientation}">
         <div class="card-container"
             [ngClass]="{'list-view': (cardFeaturesConfig.horizontalOrientation), 'grid-view': (cardFeaturesConfig.verticalOrientation)}">
             <div class="left" (click)="navigateToPDP()">

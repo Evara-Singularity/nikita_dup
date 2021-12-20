@@ -1585,7 +1585,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe((data) => {
           this.handlemetaUpdateEvent(data);
         });
-        // meta update event handler
+        // rating review event handler
         (
           this.similarProductInstanceOOS.instance[
           "ratingReviewClickEvent"
@@ -1997,7 +1997,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async writeReview() {
+  async writeReview(index = -1) {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
       this.sendProductInfotracking("write a review");
@@ -2019,9 +2019,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           );
 
         const productInfo = {};
-        productInfo["productName"] = this.productName;
+        productInfo["productName"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productName : this.productName;
         productInfo["partNumber"] =
-          this.productSubPartNumber || this.defaultPartNumber;
+          (index > -1) ? (this.productService.oosSimilarProductsData.similarData[index].productSubPartNumber || this.productService.oosSimilarProductsData.similarData[index].defaultPartNumber) : (this.productSubPartNumber || this.defaultPartNumber);
 
         this.writeReviewPopupInstance.instance["productInfo"] = productInfo;
         (
@@ -3076,6 +3076,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.rawReviewsData.productName = this.productName;
+    this.reviewRatingPopupInstance.instance["oosSimilarCardNumber"] = index;
     this.reviewRatingPopupInstance.instance["rawReviewsData"] =
       (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].reviewRatingApiData : this.rawReviewsData;
 
@@ -3093,7 +3094,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "emitWriteReview$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
-      this.writeReview();
+      this.writeReview(data);
     });
   }
 

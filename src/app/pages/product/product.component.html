@@ -8,28 +8,9 @@
             </product-horizontal-card>
         </ng-container>
         <ng-container *ngIf="similarForOOSLoaded">
-            <div *ngFor="let skeleton of similarForOOSContainer" class="skeleton-pd-card-container skeleton-card-view">
-                <div class="left-sectn">
-                    <div class="img"> </div>
-                </div>
-                <div class="right-sectn">
-                    <div class="ratings">
-                        <span class="avg-rating"></span>
-                    </div>
-                    <div class="p-name"></div>
-                    <div class="brand-name"></div>
-                    <div class="price-details">
-                        <div class="left-sectn">
-                            <div class="price">
-                            </div>
-                        </div>
-                        <div class="right-sectn">
-                            <span class="add-cart-butn"></span>
-                            <button class="buy-now-btn"></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
+                class="skeleton-pd-card-container skeleton-card-view">
+            </product-card-skeleton>
         </ng-container>
     </div>
 </div>

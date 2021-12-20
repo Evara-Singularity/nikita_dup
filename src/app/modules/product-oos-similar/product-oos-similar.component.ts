@@ -35,6 +35,8 @@ export class ProductOosSimilarComponent {
       this.windowScrollHandler.bind(this),
       true
     );
+
+    window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
   }
 
   removeWindowScrollListener(event) {

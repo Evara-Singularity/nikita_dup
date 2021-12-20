@@ -42,12 +42,11 @@ export class ProductBrowserService
 
     pastOrdersProductResponseToProductEntity(product: any)
     {
-
         const partNumber = product["msn"];
         const productMrp = product["mrp"];
         const productPrice = product["sellingPrice"];
         const priceWithoutTax = product["priceWithoutTax"];
-        const img = product["productImage"] ? this.removeCDN(product["productImage"]) : "";
+        const img = product["productImage"] ? product["productImage"] : "";
         return {
             moglixPartNumber: partNumber,
             moglixProductNo: product["moglixProductNo"] || null,
@@ -77,14 +76,5 @@ export class ProductBrowserService
             internalProduct: true,
             outOfStock: product.outOfStock,
         } as ProductsEntity;
-    }
-
-    removeCDN(image: string)
-    {
-        const cdn = "/p";
-        const INDEX = image.indexOf(cdn);
-        console.log(image, INDEX, image.substr(INDEX+1, image.length));
-        if (INDEX > -1) { return image.substr(INDEX+1, image.length) }
-        return image
     }
 }

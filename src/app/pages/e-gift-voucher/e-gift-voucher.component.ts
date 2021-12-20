@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { IndianCurrencyPipe } from '@app/utils/pipes/indian-currency.pipe';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Step } from '@app/utils/validators/step.validate';
@@ -25,7 +24,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     brandList = [];
     totalValue: any = 0;
     eGiftForm: FormGroup = null;
-    currencyPipe = null;
 
     constructor(
         private _dataService: DataService,
@@ -33,9 +31,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private _localStorageService: LocalStorageService,
         private globalLoader: GlobalLoaderService,
 
-    ) { 
-        this.currencyPipe = new IndianCurrencyPipe().transform;
-    }
+    ) {     }
 
     ngOnInit()
     {
@@ -100,17 +96,17 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             brandName: new FormControl("", [Validators.required]),
             itemValue: new FormControl("", [Validators.required]),
             quantity: new FormControl("", [Validators.required, Validators.min(1)]),
-            totalValue: new FormControl(),
+            totalValue: new FormControl(0),
         });
         this.rfqEnquiryItemsList.push(REQUIREMENTS);
     }
 
     updateItemTotalValue(requirement: FormGroup)
     {
-        if (requirement.invalid) return;
+        if (requirement.invalid) { requirement.get("totalValue").setValue(0); return} ;
         const REQUIREMENT = requirement.value;
-        const ITEM_TOTAL_VALUE = Number(REQUIREMENT.itemValue) * Number(REQUIREMENT.quantity)
-        requirement.get("totalValue").setValue(this.currencyPipe(ITEM_TOTAL_VALUE))
+        const ITEM_TOTAL_VALUE = Number(REQUIREMENT.itemValue) * Number(REQUIREMENT.quantity);
+        requirement.get("totalValue").setValue(ITEM_TOTAL_VALUE);
         this.updateTotalQuantity();
     }
 

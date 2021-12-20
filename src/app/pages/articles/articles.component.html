@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="load-more-btn-area">
-            <button class="btn-red-bg" (click)="$event.stopPropagation();fetchArticles()">LOAD MORE ARTICLES</button>
+            <button class="btn-red-bg" (click)="$event.stopPropagation();fetchArticles()" *ngIf="!hasNoRecords">LOAD MORE ARTICLES</button>
         </div>
         <!-- <div class="more-about-shopping">
             <h3 class="heading-3">More about shopping on Moglix</h3>

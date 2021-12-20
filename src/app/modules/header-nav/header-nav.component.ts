@@ -77,6 +77,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         '/contact',
     ];
     isLoginPage: boolean = false;
+    displayCart: boolean = false;
+    displayMenu:boolean = false;
+    displaySearch: boolean = false;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
     @Input('extraData') extraData;
 
@@ -335,6 +338,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             )
             .subscribe((rData) => {
                 this.routerData = rData;
+                this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
+                this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
+                this.displaySearch = (this.routerData['searchBar'] != undefined) ? this.routerData['searchBar'] : true;
             });
     }
 

@@ -55,47 +55,47 @@ export class EnhanceImgByNetworkDirective implements OnInit, AfterViewInit {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  startClientSideProcessing() {
-    if (this.whiteListedNode.includes(this.el.nativeElement.nodeName.toLowerCase())) {
-      const imageSrc = this.el.nativeElement.src;
-      // console.log('inside imageSrcChunks ===>', imageSrc);
-      const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
-      const imageSrcChunks = imageSrc.split('/');
-      //console.log('inside imageSrcChunks ===>', sizeType);
-      imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace('-'+sizeType[0], '-'+this.replaceOptions[sizeType[0]]);
-      //console.log('inside imageSrcChunks ===>', imageSrcChunks[(imageSrcChunks.length - 1)] );
-      this.el.nativeElement.src = imageSrcChunks.join('/');
-    } else {
-      // console.log('enhanceImgByNetwork', 'enhanceImgByNetwork directive should be used with Img HTMLElement');
-    }
-  }
+  // startClientSideProcessing() {
+  //   if (this.whiteListedNode.includes(this.el.nativeElement.nodeName.toLowerCase())) {
+  //     const imageSrc = this.el.nativeElement.src;
+  //     // console.log('inside imageSrcChunks ===>', imageSrc);
+  //     const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
+  //     const imageSrcChunks = imageSrc.split('/');
+  //     //console.log('inside imageSrcChunks ===>', sizeType);
+  //     imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace('-'+sizeType[0], '-'+this.replaceOptions[sizeType[0]]);
+  //     //console.log('inside imageSrcChunks ===>', imageSrcChunks[(imageSrcChunks.length - 1)] );
+  //     this.el.nativeElement.src = imageSrcChunks.join('/');
+  //   } else {
+  //     // console.log('enhanceImgByNetwork', 'enhanceImgByNetwork directive should be used with Img HTMLElement');
+  //   }
+  // }
 
-  startServerSideWebpProcessing() {
-    const imageSrc = this.el.nativeElement.src;
-    // console.log('inside imageSrcChunks ===>', imageSrc);
-    const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
-    const imageSrcChunks = imageSrc.split('/');
-    // console.log('inside imageSrcChunks ===>', imageSrcChunks);
-    imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace('.jpg', '.webp').replace('.jpeg', '.webp');
-    // console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
-    this.el.nativeElement.src = imageSrcChunks.join('/');
-  }
+  // startServerSideWebpProcessing() {
+  //   const imageSrc = this.el.nativeElement.src;
+  //   // console.log('inside imageSrcChunks ===>', imageSrc);
+  //   const sizeType = this.imageSizes.filter(size => imageSrc.indexOf(size) != -1);
+  //   const imageSrcChunks = imageSrc.split('/');
+  //   // console.log('inside imageSrcChunks ===>', imageSrcChunks);
+  //   imageSrcChunks[(imageSrcChunks.length - 1)] = imageSrcChunks[(imageSrcChunks.length - 1)].replace('.jpg', '.webp').replace('.jpeg', '.webp');
+  //   // console.log('inside imageSrcChunks ===>', imageSrcChunks, imageSrcChunks.join('/'));
+  //   this.el.nativeElement.src = imageSrcChunks.join('/');
+  // }
 
   ngOnInit() {
-    if (this.isBrowser) {
-      this._commonService.getNetworkSpeedState().subscribe(speed => {
-        // console.log('speed ==>', speed);
-        if (speed && speed > this.THRESHOLD) {
-          this.startClientSideProcessing();
-        }
-      })
-    }
+    // if (this.isBrowser) {
+    //   this._commonService.getNetworkSpeedState().subscribe(speed => {
+    //     // console.log('speed ==>', speed);
+    //     if (speed && speed > this.THRESHOLD) {
+    //       this.startClientSideProcessing();
+    //     }
+    //   })
+    // }
   }
 
   ngAfterViewInit() {
-    if (this.isBrowser && this._commonService.networkSpeed && this._commonService.networkSpeed > this.THRESHOLD) {
-      this.startClientSideProcessing();
-    }
+    // if (this.isBrowser && this._commonService.networkSpeed && this._commonService.networkSpeed > this.THRESHOLD) {
+    //   this.startClientSideProcessing();
+    // }
 
     // checkwhether on server is chrome useragent then replace for webp image
     // console.log('bowserAgent ==>', this.bowserAgent, this.isServer, this.bowserAgent.toLowerCase().indexOf("chrome") != -1);

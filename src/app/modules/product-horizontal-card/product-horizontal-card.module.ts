@@ -4,7 +4,7 @@ import { ProductHorizontalCardComponent } from './product-horizontal-card.compon
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
-import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
+// import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { EnhanceImgByNetworkPipe, EnhanceImgByNetworkPipeModule } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
@@ -17,7 +17,7 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
     RatingPipeModule,
     YTThumnailPipeModule,
     MathFloorPipeModule,
-    EnhanceImgByNetworkDirectiveModule,
+    // EnhanceImgByNetworkDirectiveModule,
     LazyLoadImageModule,
     EnhanceImgByNetworkPipeModule,
     ObserveVisibilityDirectiveModule

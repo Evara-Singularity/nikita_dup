@@ -50,12 +50,10 @@
         "@nguniversal/express-engine": "^11.0.0",
         "@ngx-meta/core": "^9.0.0",
         "angularx-social-login": "^3.5.7",
-        "concat": "^1.0.3",
         "credit-card-type": "^9.1.0",
         "crypto-browserify": "^3.12.0",
         "express": "^4.15.2",
         "jquery": "^3.6.0",
-        "net": "^1.0.2",
         "ng-lazyload-image": "^9.1.0",
         "ng2-cc-library": "^1.0.1",
         "ngx-pagination": "^3.2.1",
@@ -65,9 +63,7 @@
         "pinch-zoom-js": "^2.3.4",
         "rxjs": "^6.6.7",
         "rxjs-compat": "^6.3.3",
-        "stream": "0.0.2",
         "tslib": "^2.0.0",
-        "underscore": "^1.13.1",
         "zone.js": "~0.10.3"
     },
     "devDependencies": {

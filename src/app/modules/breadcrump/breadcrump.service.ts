@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { DataService } from '@app/utils/services/data.service';
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class BreadcrumpService {

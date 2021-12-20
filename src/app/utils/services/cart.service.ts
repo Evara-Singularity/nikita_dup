@@ -45,7 +45,7 @@ export class CartService {
     ngOnInit() {
         // TODO: need to verify , how this is used
         this._dataService.dataServiceCart.subscribe(data => {
-            this.cart.next({count: data});
+            this.cart.next({ count: data });
         })
     }
 
@@ -271,7 +271,8 @@ export class CartService {
         this.setCartSession(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);
-        this.cart.next({count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0)});
+        let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
+        this.cart.next(obj);
         return of(cartSession);
     }
 

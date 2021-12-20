@@ -17,7 +17,7 @@ export const environment = {
     },
     "facebook": {
       "clientId": "775243655917959",
-      "apiVersion": "v2.4"
+      "apiVersion": "v2.5"
     }
   },
   AB_TESTING: {

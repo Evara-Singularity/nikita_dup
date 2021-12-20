@@ -21,6 +21,7 @@
         "build:ssr": "ng build && ng run ssr-pwa:server:local",
         "build:ssr:local": "ng build --configuration=qa && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
         "build:ssr:qa": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa/bundles/ && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
+        "build:ssr:dev": "ng build --configuration=qa --deploy-url=https://cdnx3.moglix.com/online/qa/pwa/bundles/ && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
         "build:ssr:qa:ab": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa-ab/bundles/ && ng run ssr-pwa:server:qa && npm run swupdate:url:qa:ab",
         "build:ssr:vpn": "ng build --configuration=vpn --deploy-url=https://cdn.moglix.com/online/vpn/pwa/bundles/ && ng run ssr-pwa:server:vpn && npm run swupdate:url:vpn && npm run add:webengage:service-worker",
         "build:ssr:prod": "ng build --prod --deploy-url=https://cdn.moglix.com/online/prod/pwa/bundles/ && ng run ssr-pwa:server:production && npm run swupdate:url:prod && npm run add:webengage:service-worker",

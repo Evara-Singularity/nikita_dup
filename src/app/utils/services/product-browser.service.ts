@@ -47,6 +47,7 @@ export class ProductBrowserService
         const productPrice = product["sellingPrice"];
         const priceWithoutTax = product["priceWithoutTax"];
         const img = product["productImage"] ? product["productImage"] : "";
+        const brandName = product["shortDescription"] ? (product["shortDescription"] as string).split(":")[1] : "";
         return {
             moglixPartNumber: partNumber,
             moglixProductNo: product["moglixProductNo"] || null,
@@ -55,10 +56,10 @@ export class ProductBrowserService
             priceWithoutTax: priceWithoutTax,
             productName: product["productName"],
             variantName: product["productName"],
-            productUrl: product["url"],
+            productUrl: product["link"],
             shortDesc: product["shortDesc"] || null,
             brandId: product["brandId"] || null,
-            brandName: product["brandName"],
+            brandName: brandName,
             quantityAvailable: 1,
             discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: product["rating"] || null,

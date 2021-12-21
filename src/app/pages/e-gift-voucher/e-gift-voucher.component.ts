@@ -139,7 +139,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             (response) =>
             {
                 if (response['status']) {
-                    this._tms.show({ type: 'success', text: 'E-Gift submitted successfully.' });
                     this.showSuccessPopup = true;
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();

@@ -5,7 +5,7 @@
         <h3>200+ Brands to choose from!</h3>
     </div>
     <div class="gifting-form-container">
-        <h2>Fill your E-gift card requirements and we will call you with the <span>best discounts</span> within 30 min.
+        <h2>Fill your E-gift card requirements<br/>and we will call you with the <br/><span>best discounts</span> within 30 min.
         </h2>
         <div class="centered-btn">
             <h5 (click)="togglePopUp2()">Check list of 200+ brands e-Gift<br> vouchers & validity</h5>
@@ -49,6 +49,7 @@
                 <h3>Enter your gift card requirement:</h3>
                 <div class="gift-card-req-form">
                     <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
+                        <span class="gift-card-heading">Gift Card {{rIndex+1}}</span>
                         <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement"
                             *ngIf="brandList.length">
                             <div class="brand req-flex-child">
@@ -120,8 +121,8 @@
 </div>
 
 <!-- category+brand+validity popup -->
-<app-bottom-menu>
-    <div content *ngIf="showListPopup">
+<app-bottom-menu *ngIf="showListPopup">
+    <div content>
         <div class="list-of-brand-e-gifts">
             <div class="top-head">
                 <div class="th-left">
@@ -157,8 +158,8 @@
 
 
 <!-- success popup -->
-<app-bottom-menu>
-    <div content *ngIf="showSuccessPopup">
+<app-bottom-menu *ngIf="showSuccessPopup">
+    <div content>
         <div class="thanks-pop">
             <div class="top-cross-area" (click)="togglePopUp1()">
                 <img src="assets/img/close-circle-fill.svg">

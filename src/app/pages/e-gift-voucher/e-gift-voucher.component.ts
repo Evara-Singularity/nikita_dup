@@ -130,25 +130,23 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     saveGift()
     {
-        alert();
-        this.showSuccessPopup = true;
-        // if (this.eGiftForm.invalid) {
-        //     this.eGiftForm.markAllAsTouched();
-        //     return
-        // }
-        // this.globalLoader.setLoaderState(true);
-        // this._dataService.callRestful("POST", `${this.API}/rfq/createVoucherRfq`, { body: this.eGiftForm.value }).subscribe(
-        //     (response) =>
-        //     {
-        //         if (response['status']) {
-        //             this.showSuccessPopup = true;
-        //             this.rfqEnquiryItemsList.clear();
-        //             this.addRequirementForm();
-        //         }
-        //     },
-        //     (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
-        //     () => { this.globalLoader.setLoaderState(false); }
-        // );
+        if (this.eGiftForm.invalid) {
+            this.eGiftForm.markAllAsTouched();
+            return
+        }
+        this.globalLoader.setLoaderState(true);
+        this._dataService.callRestful("POST", `${this.API}/rfq/createVoucherRfq`, { body: this.eGiftForm.value }).subscribe(
+            (response) =>
+            {
+                if (response['status']) {
+                    this.showSuccessPopup = true;
+                    this.rfqEnquiryItemsList.clear();
+                    this.addRequirementForm();
+                }
+            },
+            (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
+            () => { this.globalLoader.setLoaderState(false); }
+        );
     }
 
     togglePopUp1() { this.showSuccessPopup = !this.showSuccessPopup; }

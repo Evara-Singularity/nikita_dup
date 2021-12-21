@@ -21,6 +21,7 @@ import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/produc
 import { ProductHorizontalCardModule } from "@app/modules/product-horizontal-card/product-horizontal-card.module";
 import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.directive";
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
+import { IdleUserSearchNudgeModule } from "@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module";
 
 @NgModule({
   declarations: [ProductComponent],
@@ -47,6 +48,7 @@ import { PastOrdersModule } from '@app/components/past-orders/past-orders.compon
     ProductHorizontalCardModule,
     EnhanceImgByNetworkDirectiveModule,
     SwipeDirectiveModule,
+    IdleUserSearchNudgeModule,
     PastOrdersModule
   ],
   exports: [],

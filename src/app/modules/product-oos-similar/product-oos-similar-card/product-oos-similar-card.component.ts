@@ -10,7 +10,9 @@ import {
   ViewContainerRef,
   Output,
 } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { NavigationExtras, Router } from "@angular/router";
+import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { AddToCartProductSchema } from "@app/utils/models/cart.initial";
@@ -46,14 +48,19 @@ export class ProductOosSimilarCardComponent {
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  selectedProductBulkPrice: null
 
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("removeWindowScrollListenerEvent") removeWindowScrollListenerEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent =
     new EventEmitter();
+  @Output("ratingReviewClickEvent") ratingReviewClickEvent =
+    new EventEmitter();
 
   iOptions: any = null;
   showProduct: boolean = false;
+  // quntity && bulk prices related
+  qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
 
   // add to cart toast msg
   addToCartToastInstance = null;
@@ -67,6 +74,7 @@ export class ProductOosSimilarCardComponent {
   // ondemad loaded components for select variant popup
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
+  GLOBAL_CONSTANT = GLOBAL_CONSTANT;
 
   constructor(
     public productService: ProductService,
@@ -77,10 +85,8 @@ export class ProductOosSimilarCardComponent {
     public _productListService: ProductListService,
     private _loader: GlobalLoaderService,
     private localAuthService: LocalAuthService,
-    private modalService: ModalService,
     private _toastMessageService: ToastMessageService,
     private _router: Router,
-    private _http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -100,6 +106,8 @@ export class ProductOosSimilarCardComponent {
     forkJoin([
       this.productService.getProduct(this.productMsn),
       this.productService.getProductPageBreadcrum(this.productMsn),
+      this.productService
+        .getProductStatusCount(this.productMsn)
     ]).subscribe((rawData) => {
       this.breadcrumData = rawData[1];
       if (
@@ -116,9 +124,100 @@ export class ProductOosSimilarCardComponent {
           },
           this.index
         );
+        this.qunatityFormControl.setValue(this.productService.getSimilarProductInfoByIndex(this.index).productMinimmumQuantity);
         this.showProduct = true;
+        this.setRecentlyBought(rawData[2]);
       }
     });
+  }
+
+  get cartQunatityForProduct() {
+    return parseInt(this.qunatityFormControl.value) || 1;
+  }
+
+  get similarProduct() {
+    return this.productService.getSimilarProductInfoByIndex(this.index);
+  }
+
+  onChangeCartQuanityValue() {
+    this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
+  }
+
+  private checkCartQuantityAndUpdate(value): void {
+    if (!value) {
+      this._toastMessageService.show({
+        type: 'error',
+        text: 'Please enter valid quantity'
+      })
+      this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
+    } else {
+      if (parseInt(value) < parseInt(this.similarProduct.productMinimmumQuantity)) {
+        this._toastMessageService.show({
+          type: 'error',
+          text: 'Minimum qty can be ordered is: ' + this.similarProduct.productMinimmumQuantity
+        })
+        this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
+      } else if (parseInt(value) > parseInt(this.similarProduct.priceQuantityCountry['quantityAvailable'])) {
+        this._toastMessageService.show({
+          type: 'error',
+          text: 'Maximum qty can be ordered is: ' + this.similarProduct.priceQuantityCountry['quantityAvailable']
+        })
+      } else if (isNaN(parseInt(value))) {
+        this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
+        this.checkBulkPriceMode();
+      } else {
+        this.qunatityFormControl.setValue(value);
+        this.checkBulkPriceMode();
+      }
+    }
+  }
+
+  checkBulkPriceMode() {
+    if (this.similarProduct.isBulkPricesProduct) {
+      const selectedProductBulkPrice = this.similarProduct.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
+      this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
+    }
+  }
+
+  updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
+    switch (type) {
+      case 'DECREMENT':
+        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct - 1))
+        break;
+      case 'INCREMENT':
+        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct + 1))
+        break;
+      default:
+        break;
+    }
+  }
+
+  setRecentlyBought(data) {
+    if (data && data.status && data.data.hasOwnProperty('message') && data.data.message) {
+      this.productService.oosSimilarProductsData.similarData[this.index].recentBoughtMessage = data.data.message;
+    }
+  }
+
+  getReviewsAndRatings() {
+    if (!this.productService.oosSimilarProductsData.similarData[this.index].hasOwnProperty('reviewRatingApiData')) {
+      let obj = {
+        review_type: "PRODUCT_REVIEW",
+        item_type: "PRODUCT",
+        item_id: (this.productService.oosSimilarProductsData.similarData[this.index]['defaultPartNumber']).toLowerCase(),
+        user_id: " "
+      }
+
+      this.productService.getReviewsRating(obj).subscribe(data => {
+        this.productService.oosSimilarProductsData.similarData[this.index].reviewRatingApiData = data['data'];
+        this.ratingReviewClickEvent.emit(this.index);
+      });
+    } else {
+      this.ratingReviewClickEvent.emit(this.index);
+    }
+  }
+
+  changeBulkPriceQuantity(val, type?) {
+
   }
 
   createSiemaOption(index) {
@@ -201,7 +300,9 @@ export class ProductOosSimilarCardComponent {
     this._loader.setLoaderState(true);
     of(this._cartService.getAddToCartProductItemRequest({
       productGroupData: this.productService.getSimilarProductBoByIndex(this.index),
-      buyNow
+      buyNow,
+      selectPriceMap: this.selectedProductBulkPrice,
+      quantity: this.cartQunatityForProduct
     })).subscribe((productDetails: AddToCartProductSchema) => {
       if (productDetails) {
         if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {

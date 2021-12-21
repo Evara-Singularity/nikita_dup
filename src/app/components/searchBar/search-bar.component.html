@@ -48,15 +48,41 @@
                     </ng-container>
                     <ng-container *ngIf="brandSuggestionList.length > 0">
                         <h3 class="search_heading">Explore By Brands </h3>
-                        <ng-container *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index;">
-                            <div *ngIf="prod.term" class="search_product_category brand" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" [attr.data-index]="i">
-                                <span class="prodText">{{prod.term}}</span>
-                            </div>
-                        </ng-container>
+                        <div class="search_product_categories">
+                            <ng-container *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index;">
+                                <div *ngIf="prod.term" class="search_product_category brand" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" [attr.data-index]="i">
+                                    <span class="prodText">{{prod.term}}</span>
+                                </div>
+                            </ng-container>
+                        </div>
                     </ng-container>
                 </div>
+                <section class="Bestseller card similar-prod" *ngIf="searchProducts && searchProducts.length>0">
+                    <div class="upper-view-all-sec">
+                        <div class="upper-view-all-sec-left">
+                            <h4>Similar Products</h4>
+                        </div>
+                        <!-- <div class="upper-view-all-sec-right">
+                            <button>VIEW ALL</button>
+                        </div> -->
+                    </div>
+                    <div class="vertical-scroll-container">
+                        <div class="inner-scroll-container" [style.width.px]="searchProducts.length * 165">
+                            <ng-container *ngFor="let product of searchProducts;let pIndex=index" >
+                                <product-horizontal-card 
+                                    [section]="'search-popup'"
+                                    [product]="product"
+                                    [cardMetaInfo]='cardMetaInfo'
+                                    [cardFeaturesConfig]='cardFeaturesConfig'
+                                    [pIndex]="pIndex"
+                                    [enableTracking]="true"
+                                    [analytics]="" >
+                                </product-horizontal-card>
+                            </ng-container>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
-
     </section>
 </div>

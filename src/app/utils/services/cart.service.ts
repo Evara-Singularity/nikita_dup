@@ -45,7 +45,7 @@ export class CartService {
     ngOnInit() {
         // TODO: need to verify , how this is used
         this._dataService.dataServiceCart.subscribe(data => {
-            this.cart.next({count: data});
+            this.cart.next({ count: data });
         })
     }
 
@@ -271,7 +271,8 @@ export class CartService {
         this.setCartSession(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);
-        this.cart.next({count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0)});
+        let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
+        this.cart.next(obj);
         return of(cartSession);
     }
 
@@ -291,7 +292,7 @@ export class CartService {
         return this._checkForUserAndCartSession().pipe((
             // Action : Check whether product already exist in cart itemList if exist exit
             map(cartSession => {
-                console.log('step 1 ==>', cartSession);
+                // console.log('step 1 ==>', cartSession);
                 // incase of buynow do not exlude 
                 // console.log('product info ==> cartSession origin', Object.assign({}, cartSession));
                 let productItemExistInCart = false;
@@ -321,7 +322,7 @@ export class CartService {
         )).pipe(
             // Action : update sessionId & cartId in productDetails
             map(({ cartSession, productItemExistInCart }) => {
-                console.log('step 2 ==>', cartSession);
+                // console.log('step 2 ==>', cartSession);
                 if (!cartSession) {
                     return cartSession;
                 } else {
@@ -350,15 +351,15 @@ export class CartService {
             mergeMap(cartSession => {
                 return this._getUserSession().pipe(
                     map(userSession => {
-                        console.log('step 3 ==>', cartSession);
+                        // console.log('step 3 ==>', cartSession);
                         if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
                             // add temp session for buynow
                             // as per current flow, update cart api should not be called for buynow if user is not logged in
-                            console.log('step 3.1 ==>', cartSession);
+                            // console.log('step 3.1 ==>', cartSession);
                             this.buyNowSessionDetails = cartSession;
                             return null;
                         } else {
-                            console.log('step 3.2 ==>', cartSession);
+                            // console.log('step 3.2 ==>', cartSession);
                             return cartSession;
                         }
                     }),
@@ -366,7 +367,7 @@ export class CartService {
             }),
             mergeMap(request => {
                 if (request) {
-                    console.log('step 4 ==>', request);
+                    // console.log('step 4 ==>', request);
                     return this.updateCartSession(request).pipe(
                         map((cartSession: any) => {
                             return cartSession;

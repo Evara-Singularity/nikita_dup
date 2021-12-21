@@ -1,13 +1,13 @@
 @import "../../scss/variables";
 @import "../../scss/carousel";
-
-
 .pdp-section-header {
     margin-top: 10px;
     padding: 5px 15px;
     background: #fff;
     border-bottom: 1px solid $border-color;
-
+    &.blue-header{
+        background:#E5F3FF;
+    } 
     .heading-3 {
         font-size: $extra-large-font;
         font-weight: bold;
@@ -386,7 +386,7 @@
         &.nonFixed{
           position:relative;
           box-shadow:none;
-          height:48px;
+          height:58px;
           z-index:2;
           button{
               border-radius:4px;

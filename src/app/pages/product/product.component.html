@@ -1,10 +1,20 @@
-<div id="oosSimilarTopSection"
-    *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
-    <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[0]">
-    </product-horizontal-card>
-    <product-horizontal-card [product]="productService.oosSimilarProductsData.similarData[1]">
-    </product-horizontal-card>
+<div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
+    <h2>Consider These Available Items</h2>
+    <div class="horizontal-scroll-container">
+        <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
+            <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
+                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                [product]="productService.oosSimilarProductsData.similarData[i]">
+            </product-horizontal-card>
+        </ng-container>
+        <ng-container *ngIf="similarForOOSLoaded">
+            <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
+                class="skeleton-pd-card-container skeleton-card-view">
+            </product-card-skeleton>
+        </ng-container>
+    </div>
 </div>
+
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 
@@ -17,7 +27,8 @@
             </span>
             <span *ngIf="productOutOfStock"
                 (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
-                class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg"></span>
+                class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
+            </span>
         </div>
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
@@ -188,8 +199,7 @@
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
                         <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
-                            (click)="selectProductBulkPrice(items.minQty)" 
-                            class="blk-block"
+                            (click)="selectProductBulkPrice(items.minQty)" class="blk-block"
                             [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                             <p class="qty">Qty
                                 <span *ngIf="last!==true">{{items.minQty}} {{items.minQty!==items.maxQty ?
@@ -212,6 +222,7 @@
     <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
+
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
     </div>
@@ -223,7 +234,7 @@
             <ul class="deals-list">
                 <li class="clearfix">
                     <!-- <i class="icon-combo ico_offer"></i> -->
-                    <img class="ofr_img" height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
+                    <i class="icon-dropbox-fill"></i>
                     <div class="ofr_txt">
                         <strong class="text-black">Interested to buy in bulk</strong>
                         <small>Get customized price</small>
@@ -232,108 +243,72 @@
                 </li>
             </ul>
         </div>
-        <!--Product-RFQ starts-->
-        <div class="payments-block" *ngIf="productOutOfStock">
-            <div observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
-                <ng-container #productRFQ></ng-container>
-            </div>
-        </div>
-        <!--Product-RFQ ends-->
         <!-- RFQ section ends -->
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
-            <div class="moglix-ben-n-ret-policy-InnerContainer">
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/gst-invo.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        GST Invoice<br> Available
-                    </span>
+                <div class="moglix-ben-n-ret-policy-InnerContainer">
+                    <div class="moglix-ben-n-ret-policy-Inner">
+                        <span class="returnImg">
+                           <i class="icon-Group-14030"></i>     
+                        </span>
+                        <span class="returnTxt benefits-txt">
+                            GST Invoice<br> Available
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner">
+                        <span class="returnImg">
+                            <i class="icon-secure-payment-fill"></i>
+                        </span>
+                        <span class="returnTxt benefits-txt">
+                             Secure <br> Payments
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner">
+                        <span class="returnImg">
+                           <i class="icon-customer-service-fill"></i>
+                        </span>
+                        <span class="returnTxt benefits-txt">
+                            365 Days <br> Help Desk
+                        </span>
+                    </div>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/secure-payment-fill.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        Secure <br> Payments
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/customer-service-fill.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        365 Days <br> Help Desk
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <img src="assets/img/secure-payment-fill.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        Secure <br> Payments
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <img src="assets/img/customer-service-fill.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        365 Days <br> Help Desk
-                    </span>
-                </div>
-            </div>
             <h2 class="heading-3"> Return Policy</h2>
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/restart-line.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Upto 7 days <br /> returnable
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/wrong-pro.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Wrong <br /> Product
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/restart-line-3.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Damaged <br /> Product
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/thumb-down-button.svg" height="16px" width="16px">
-                    </span>
-                    <span class="returnTxt">
-                        Defective <br />Product
-                    </span>
-                </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
+                        <span class="returnImg">
+                            <i class="icon-restart-line"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Upto 7 days <br /> returnable
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                        <span class="returnImg">
+                           <i class="icon-restart-line-1"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Wrong <br /> Product
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                        <span class="returnImg">
+                            <i class="icon-restart-line-3"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Damaged <br /> Product
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                        <span class="returnImg">
+                           <i class="icon-restart-line-2"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Defective <br />Product
+                        </span>
+                    </div>
             </div>
         </div>
-        <!-- <div class="payments-block">
-            <ul class="deals-list">
-                <li class="clearfix">
-                    <span class="gst-icon">
-                        <img src="{{imagePathAsset}}assets/img/poc/gst-invoice.svg" height="20" width="18">
-                    </span>
-                    <div class="coupon-txt">
-                        <p>100% Original Products and Secure Payments</p>
-                        <small>Get your Business GST Invoice</small>
-                    </div>
-                </li>
-            </ul>
-        </div> -->
         <div class="pdp-section-header">
             <h3 class="heading-3">
                 About This Product
@@ -384,6 +359,11 @@
             </div>
         </div>
 
+        <section *ngIf="productOutOfStock" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleProductRFQ($event)">
+            <ng-container #productRFQ></ng-container>
+        </section>
+
         <div class="prod-detail">
             <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
@@ -413,16 +393,14 @@
                     quality. We are dedicatedly involved in
                     providing an excellent quality array of <a class="blueText"
                         (click)="navigateLink('/'+productBrandCategoryUrl)">
-                        {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
-                        {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</a>.
+                        {{productBrandDetails ? productBrandDetails['brandName'] : ''}} {{productCategoryDetails ?
+                        productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>
             </ng-template>
             <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
                 <span>Read More</span>
             </div>
         </div>
-
-
 
         <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
             <h2 class="heading-3">Product Videos</h2>
@@ -647,6 +625,9 @@
                 </ng-container>
             </div>
         </section>
+        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+            <ng-container #similarProductOOS></ng-container>
+        </section>
         <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
@@ -664,11 +645,11 @@
         </section>
 
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
+            <div [class.mb-60]="productOutOfStock">
+
+            </div>
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
-        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
-            <ng-container #similarProductOOS></ng-container>
-        </section>
     </div>
     <!-- other sections ends -->
 
@@ -683,6 +664,10 @@
     <ng-container #reviewRatingPopup></ng-container>
     <ng-container #questionAnswersPopup></ng-container>
     <ng-container #productInfoPopup></ng-container>
+</div>
+
+<div *ngIf="productOutOfStock" class="stickyBottomBtn">
+    <button (click)="onVisibleProductRFQ($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
 <ng-container #addToCartToast></ng-container>
@@ -758,5 +743,9 @@
     </div>
 </section>
 
+<idle-user-search-nudge
+    [searchKeyword]="productBrandDetails['brandName'] + ' ' + this.productCategoryDetails['categoryName']"
+    [headingKeyword]="this.productCategoryDetails['categoryName'] + ', ' + productBrandDetails['brandName'] + ' ' + this.productCategoryDetails['categoryName']">
+</idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>

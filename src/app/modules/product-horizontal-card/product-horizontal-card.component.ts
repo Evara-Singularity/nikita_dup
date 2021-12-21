@@ -54,6 +54,8 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input('section') section: string = '';
   @Input() enableTracking = false;
   @Input() analytics = null;
+  @Input() isOosSimilarCard = null;
+  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' = 'LISTING_PAGES';
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -73,6 +75,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
+  prodUrl: string;
 
   constructor(
     private _cartService: CartService,
@@ -105,6 +108,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.prodUrl = CONSTANTS.PROD;
   }
 
 
@@ -161,7 +165,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       // productDetails will always have variants as it can be called by variant popup only
       if (this.variantPopupInstance) {
         const productRequest = this._cartService.getAddToCartProductItemRequest({ productGroupData: productBO, buyNow: data.buyNow });
-        const product = this._productService.productEntityFromProductBO(productBO, {rating: this.product.rating, ratingCount: this.product.ratingCount, });
+        const product = this._productService.productEntityFromProductBO(productBO, { rating: this.product.rating, ratingCount: this.product.ratingCount, });
         const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
 
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
@@ -184,7 +188,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
-
     // incase of promotional ad we need to fire GTM event for tracking
     if (this.isAd && this._commonService.isBrowser) {
       this.onlineSalesClickTrackUsingGTM();
@@ -332,7 +335,8 @@ export class ProductHorizontalCardComponent implements OnInit {
       } else {
         if (result) {
           this.resetVariantData();
-          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+          // analytics call
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({
@@ -340,7 +344,6 @@ export class ProductHorizontalCardComponent implements OnInit {
               currentlyAdded: productDetails
             });
             this.showAddToCartToast();
-            // analytics call
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
@@ -393,13 +396,15 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   sendTracking(info) {
-    if (!this.enableTracking) return;
-    const page = this.analytics['page'];
-    page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
-    page['productunit'] = this.pIndex;
-    const custData = this.analytics['custData'];
-    const order = this.analytics['order'];
-    this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
+    if (this.analytics) {
+      if (!this.enableTracking) return;
+      const page = this.analytics['page'];
+      page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
+      page['productunit'] = this.pIndex;
+      const custData = this.analytics['custData'];
+      const order = this.analytics['order'];
+      this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
+    }
   }
 
 }

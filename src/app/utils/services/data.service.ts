@@ -14,6 +14,7 @@ import { LocalAuthService } from './auth.service';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { environment } from 'environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -64,7 +65,7 @@ export class DataService {
         xhr.send(obj);
         return xhr;
     }
-    
+
     sendMessage(msg: any) {
         if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
             var userSession = this._localAuthService.getUserSession();
@@ -86,10 +87,12 @@ export class DataService {
                 referrer: document.referrer,
                 previous_url: prevUrl
             }
-            this.socket.emit("track", { ...trackingData, ...msg });
+            if(environment.production){
+                this.socket.emit("track", { ...trackingData, ...msg });
+            }
         }
     }
-    
+
     getMessage() {
         return this.socket
             .fromEvent("track")

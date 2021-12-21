@@ -55,6 +55,7 @@ export class CommonService {
   private _webpSupport: boolean = false;
   private networkSpeedState: Subject<number> = new Subject<number>();
   private webpSupportState: Subject<number> = new Subject<number>();
+  private _loadSearchPopup: Subject<string> = new Subject<string>();
 
   private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -117,6 +118,14 @@ export class CommonService {
 
   set itemsValidationMessage(ivm) {
     this._itemsValidationMessage = ivm;
+  }
+
+  updateSearchPopup(searchKeyword) {
+    this._loadSearchPopup.next(searchKeyword);
+  }
+
+  getSearchPopupStatus() {
+    return this._loadSearchPopup.asObservable();
   }
 
   resetLimitTrendingCategoryNumber() {

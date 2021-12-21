@@ -20,8 +20,7 @@ import { LocalStorageService } from 'ngx-webstorage';
     templateUrl: './header-nav.component.html',
     styleUrls: ['./header-nav.component.scss'],
 })
-export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
-{
+export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     options: AnimationOptions = {
@@ -100,32 +99,28 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         private _state: GlobalState,
         private _checkoutService: CheckoutService,
         private _analytics: GlobalAnalyticsService
-    )
-    {
+    ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
 
         this.commonSubcribers();
     }
-    
 
-    ngOnInit()
-    {
+
+    ngOnInit() {
         if (this.isBrowser) {
             this.browserCalc();
             this.refreshIcon();
-            this.addBrowserSubcribers();
         }
-        this._checkoutService.checkoutHeader.subscribe((tabIndex)=>{
+        this._checkoutService.checkoutHeader.subscribe((tabIndex) => {
             this.setHeader();
         })
     }
 
-    ngAfterViewInit()
-    {
+    ngAfterViewInit() {
         if (this.isBrowser) {
-            window.addEventListener('scroll', (event) =>
-            {
+            this.addBrowserSubcribers();
+            window.addEventListener('scroll', (event) => {
                 let scrollE = document.scrollingElement || document.documentElement;
                 if (scrollE['scrollTop'] > 120) {
                     this.isScrolledHeader = true;
@@ -136,20 +131,17 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         }
     }
 
-    ngOnDestroy()
-    {
+    ngOnDestroy() {
         this.sideNavInstance = null;
         this.searchBarInstance = null;
     }
 
-    async loadSideNav()
-    {
+    async loadSideNav() {
         if (!this.sideNavInstance) {
             this.globalLoader.setLoaderState(true);
             const { SideNavComponent } = await import(
                 './../../components/side-nav/side-nav.component'
-            ).finally(() =>
-            {
+            ).finally(() => {
                 this.globalLoader.setLoaderState(false);
             });
             const factory = this.cfr.resolveComponentFactory(SideNavComponent);
@@ -168,32 +160,31 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 'user'
             ] = this.localAuthService.getUserSession();
         }
-        this.genericButtonClick('/',true);        
+        this.genericButtonClick('/', true);
     }
 
     genericButtonClick(url, hamBurgerClick?: boolean) {
-    let PAGE = {
-      channel: "menu_hamburger",
-      pageName: this.router.url,
-      linkName: url,
-      subSection: url + ' link click'
-    };
+        let PAGE = {
+            channel: "menu_hamburger",
+            pageName: this.router.url,
+            linkName: url,
+            subSection: url + ' link click'
+        };
 
-    if (hamBurgerClick) {
-      PAGE['subSection'] = 'Hamburger icon click';
-      delete PAGE['linkName'];
+        if (hamBurgerClick) {
+            PAGE['subSection'] = 'Hamburger icon click';
+            delete PAGE['linkName'];
+        }
+        this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
     }
-    this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
-  }
 
-    async loadSearchNav()
+    async loadSearchNav(toBeAutoFilledKeyword = '')
     {
         if (!this.searchBarInstance) {
             this.globalLoader.setLoaderState(true);
             const { SearchBarComponent } = await import(
                 './../../components/searchBar/search-bar.component'
-            ).finally(() =>
-            {
+            ).finally(() => {
                 this.globalLoader.setLoaderState(false);
             });
             const factory = this.cfr.resolveComponentFactory(SearchBarComponent);
@@ -209,14 +200,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             (
                 this.searchBarInstance.instance['out'] as EventEmitter<boolean>
-            ).subscribe((status) =>
-            {
+            ).subscribe((status) => {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
+            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
-            setTimeout(() =>
-            {
+            setTimeout(() => {
                 document.getElementById('search-input').focus();
                 document.getElementById('search-input')['value'] = '';
             }, 350);
@@ -226,11 +216,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
+            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         }
     }
 
-    async loadBottomSheet()
-    {
+    async loadBottomSheet() {
         if (!this.bottomSheetInstance) {
             const { NavBottomSheetComponent } = await import(
                 './../../components/nav-bottom-sheet/nav-bottom-sheet.component'
@@ -242,7 +232,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.injector
             );
             this.bottomSheetInstance.instance['sbm'] = true;
-              
+
         } else {
             //toggle side menu
             this.bottomSheetInstance.instance['sbm'] = !(this.bottomSheetInstance.instance['sbm']);
@@ -250,18 +240,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.checkUserLogin();
         this.loadBottomSheetAnalyticEvent();
     }
-    checkUserLogin(){
+    checkUserLogin() {
         let user = this.localStorageService.retrieve('user');
-        if(user && user.authenticated === 'true'){
+        if (user && user.authenticated === 'true') {
             this.bottomSheetInstance.instance['userLogin'] = true;
         }
-        else{
+        else {
             this.bottomSheetInstance.instance['userLogin'] = false;
         }
     }
 
     loadBottomSheetAnalyticEvent() {
-        
+
         const user = this.localStorageService.retrieve('user');
         let page = {
             'linkPageName': "moglix:hamburger-menu",
@@ -278,10 +268,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    commonSubcribers()
-    {
-        this.router.events.subscribe((val) =>
-        {
+    commonSubcribers() {
+        this.router.events.subscribe((val) => {
             this.createHeaderData(this.route);
             if (val instanceof NavigationEnd) {
                 if (val['url'] === '/' || val['url'] === '/?back=1') {
@@ -294,12 +282,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         });
     }
 
-    addBrowserSubcribers()
-    {
+    addBrowserSubcribers() {
         this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((evt: any) =>
-            {
+            .subscribe((evt: any) => {
                 this.currentUrl = evt.url;
                 this.backRedirectUrl = this.currentUrl || '';
                 localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
@@ -309,29 +295,30 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.cartService.cart.subscribe((data) => {
-            if(data && data.count){
+            if (data && data.hasOwnProperty('count')) {
                 this.noOfCart = data.count;
-            }else{
+            } else {
                 throw new Error('Cart update count should always be present');
             }
             this.setHeader();
         });
 
-        this.localAuthService.login$.subscribe((data) =>
-        {
+        this.localAuthService.login$.subscribe((data) => {
             this.user = this.localAuthService.getUserSession();
             this.checkUserLoginState();
         });
 
-        this.localAuthService.logout$.subscribe((data) =>
-        {
+        this.localAuthService.logout$.subscribe((data) => {
             this.user = this.localAuthService.getUserSession();
             this.checkUserLoginState();
         });
+
+        this._commonService.getSearchPopupStatus().subscribe((searchKeyword) => {
+            this.loadSearchNav(searchKeyword)
+        })
     }
 
-    browserCalc()
-    {
+    browserCalc() {
         this.checkUserLoginState();
     }
 
@@ -342,14 +329,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.user && this.user.authenticated
                 ? (this.user.authenticated as boolean)
                 : false;
-    }   
+    }
 
-    createHeaderData(_aRoute)
-    {
+    createHeaderData(_aRoute) {
         of(_aRoute)
             .pipe(
-                map((route) =>
-                {
+                map((route) => {
                     while (route.firstChild) {
                         route = route.firstChild;
                     }
@@ -358,8 +343,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 filter((route) => route.outlet === 'primary'),
                 mergeMap((route) => route.data)
             )
-            .subscribe((rData) =>
-            {
+            .subscribe((rData) => {
                 this.routerData = rData;
                 this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
                 this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
@@ -367,16 +351,15 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
     }
 
-    goBack()
-    {
+    goBack() {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
-        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false){
+        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
             (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
-        }else{
+        } else {
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
-            } else if (isCheckout){
+            } else if (isCheckout) {
                 if (this.checkoutLoginService.isAtFirstSection) {
                     let index = this._checkoutService.getCheckoutTabIndex();
                     if (index === 1) {
@@ -391,21 +374,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 } else {
                     this.checkoutLoginService.enableResetTabSateSub(true);
                 }
-            }else{
+            } else {
                 this.router.navigate(['/']);
             }
         }
     }
 
-    refreshIcon()
-    {
+    refreshIcon() {
         this.cartHeaderText = '';
         this.hideElLogin = true;
         this.setHeader();
     }
 
-    setHeader()
-    {
+    setHeader() {
         this.isLoginPage = false;
         if (
             this.router.url.includes('/forgot-password') ||

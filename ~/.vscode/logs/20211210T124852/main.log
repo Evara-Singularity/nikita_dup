@@ -1,8 +1,0 @@
-[2021-12-10 12:48:53.244] [main] [info] update#setState idle
-[2021-12-10 12:48:54.293] [main] [info] ExtensionHostStarterWorker created
-[2021-12-10 12:48:58.256] [main] [error] vscode-file: Refused to load resource /snap/code/82/usr/share/code/resources/app/extensions/theme-seti/icons/seti.woff from vscode-file: protocol (original URL: vscode-file://vscode-app/snap/code/82/usr/share/code/resources/app/extensions/theme-seti/icons/seti.woff)
-[2021-12-10 12:48:58.653] [main] [info] Starting extension host with pid 233384 (fork() took 31 ms).
-[2021-12-10 12:49:23.246] [main] [info] update#setState checking for updates
-[2021-12-10 12:49:23.250] [main] [info] update#setState idle
-[2021-12-10 12:49:39.161] [main] [info] Waiting for extension host with pid 233384 to exit.
-[2021-12-10 12:49:39.242] [main] [info] Extension host with pid 233384 exited with code: 0, signal: null.

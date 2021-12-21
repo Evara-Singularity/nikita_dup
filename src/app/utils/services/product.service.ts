@@ -6,8 +6,7 @@ import { DataService } from "./data.service";
 import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { ProductsEntity } from "../models/product.listing.search";
-interface ProductDataArg
-{
+interface ProductDataArg {
     productBO: string;
     refreshCrousel?: boolean;
     subGroupMsnId?: string;
@@ -16,8 +15,7 @@ interface ProductDataArg
 @Injectable({
     providedIn: "root",
 })
-export class ProductService
-{
+export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
@@ -28,44 +26,41 @@ export class ProductService
 
     constructor(private _dataService: DataService, public http: HttpClient) { }
 
-    getSimilarProductBoByIndex(index)
-    {
+    getSimilarProductBoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
     }
 
-    getPurchaseList(data)
-    {
+    getSimilarProductInfoByIndex(index) {
+        return this.oosSimilarProductsData.similarData[index];
+    }
+
+    getPurchaseList(data) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
         return this._dataService.callRestful("GET", url, { params: data }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status, data: [] });
             })
         );
     }
 
-    addToPurchaseList(obj)
-    {
+    addToPurchaseList(obj) {
         let url = this.basePath + ENDPOINTS.ADD_PURCHASE_LIST;
         return this._dataService.callRestful("POST", url, { body: obj });
     }
 
-    removePurchaseList(data)
-    {
+    removePurchaseList(data) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RM_PCR_LIST;
         return this._dataService.callRestful("POST", url, { body: data });
     }
 
-    getFBTProducts(msn)
-    {
+    getFBTProducts(msn) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_FBT + "?productId=" + msn
         );
     }
 
-    getProduct(msn)
-    {
+    getProduct(msn) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API +
@@ -74,8 +69,7 @@ export class ProductService
         );
     }
 
-    getProductPageBreadcrum(msn)
-    {
+    getProductPageBreadcrum(msn) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API +
@@ -84,8 +78,7 @@ export class ProductService
         );
     }
 
-    getSimilarProducts(productName, categoryId)
-    {
+    getSimilarProducts(productName, categoryId) {
         const URL =
             this.basePath +
             ENDPOINTS.SIMILAR_PRODUCTS +
@@ -94,65 +87,56 @@ export class ProductService
             "&category=" +
             categoryId;
         return this._dataService.callRestful("GET", URL).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ products: [], httpStatus: res.status });
             })
         );
     }
 
-    getrecentProduct(user_id)
-    {
+    getrecentProduct(user_id) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RECENTLY_VIEWED + user_id
         );
     }
 
-    getGSTINDetails(gstin)
-    {
+    getGSTINDetails(gstin) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.TAXPAYER_BY_TIN + gstin
         );
     }
 
-    postBulkEnquiry(obj)
-    {
+    postBulkEnquiry(obj) {
         let url = CONSTANTS.NEW_MOGLIX_API + "/rfq/createRfq";
         return this._dataService.callRestful("POST", url, { body: obj });
     }
 
-    getStateCityByPinCode(pinCode)
-    {
+    getStateCityByPinCode(pinCode) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CITY_BY_PIN + pinCode
         );
     }
 
-    getLogisticAvailability(data)
-    {
+    getLogisticAvailability(data) {
         let url = CONSTANTS.NEW_MOGLIX_API + "/logistics/getProductLogistics";
         return this._dataService.callRestful("POST", url, { body: data });
     }
 
-    getAllOffers()
-    {
+    getAllOffers() {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp"
         );
     }
 
-    getEmiPlans(price)
-    {
+    getEmiPlans(price) {
         let url = this.basePath + ENDPOINTS.GET_EMI_VAL + "?price=" + price;
         return this._dataService.callRestful("GET", url);
     }
 
-    getGroupProductObj(productID)
-    {
+    getGroupProductObj(productID) {
         const url =
             this.basePath +
             ENDPOINTS.PRODUCT_INFO +
@@ -160,43 +144,36 @@ export class ProductService
             productID +
             "&fetchGroup=true";
         return this._dataService.callRestful("GET", url).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ active: false, httpStatus: res.status });
             })
         );
     }
 
-    postReview(obj)
-    {
+    postReview(obj) {
         const url = this.basePath + ENDPOINTS.SET_REVIEWS;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ data: [], code: res.status });
             })
         );
     }
 
-    postHelpful(obj)
-    {
+    postHelpful(obj) {
         const url = this.basePath + ENDPOINTS.IS_REVIEW_HELPFUL;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ data: [], code: res.status });
             })
         );
     }
 
-    postQuestion(obj)
-    {
+    postQuestion(obj) {
         let url = this.basePath + ENDPOINTS.SET_QUEST;
         return this._dataService.callRestful("POST", url, { body: obj });
     }
 
-    getRecentlyBoughtProducts(msn)
-    {
+    getRecentlyBoughtProducts(msn) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API +
@@ -206,42 +183,36 @@ export class ProductService
         );
     }
 
-    getReviewsRating(obj)
-    {
+    getReviewsRating(obj) {
         const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_REVIEW;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ data: null, httpStatus: res.status });
             })
         );
     }
 
-    getQuestionsAnswers(productId: string)
-    {
+    getQuestionsAnswers(productId: string) {
         const url =
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.Q_AND_A +
             "?itemId=" +
             productId.toUpperCase();
         return this._dataService.callRestful("GET", url).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ data: [], statusCode: res.status });
             })
         );
     }
 
-    getSession()
-    {
+    getSession() {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION
         );
     }
 
-    getCartBySession(params)
-    {
+    getCartBySession(params) {
         return this._dataService.callRestful(
             "GET",
             this.basePath + ENDPOINTS.GET_CartBySession,
@@ -249,8 +220,7 @@ export class ProductService
         );
     }
 
-    getSponseredProducts(params)
-    {
+    getSponseredProducts(params) {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SPONSERED_PRODUCTS,
@@ -258,8 +228,7 @@ export class ProductService
         );
     }
 
-    getProductStatusCount(productMsnId)
-    {
+    getProductStatusCount(productMsnId) {
         const PRODUCT_STATUS_COUNT_URL =
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.PRODUCT_STATUS_COUNT +
@@ -268,8 +237,7 @@ export class ProductService
         return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL);
     }
 
-    getUserDuplicateOrder(productMsnId, userId)
-    {
+    getUserDuplicateOrder(productMsnId, userId) {
         let DUPLICATE_ORDER_URL =
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.DUPLICATE_ORDER +
@@ -279,8 +247,7 @@ export class ProductService
         return this._dataService.callRestful("GET", DUPLICATE_ORDER_URL);
     }
 
-    getProductInfo(infoType, index)
-    {
+    getProductInfo(infoType, index) {
         const productInfo = {};
         productInfo["mainInfo"] = {
             productName: this.oosSimilarProductsData.similarData[index].productName,
@@ -374,8 +341,7 @@ export class ProductService
         return productInfo;
     }
 
-    setProductImages(imagesArr: any[], index)
-    {
+    setProductImages(imagesArr: any[], index) {
         this.oosSimilarProductsData.similarData[index].productDefaultImage =
             imagesArr.length > 0
                 ? this.imagePath + "" + imagesArr[0]["links"]["default"]
@@ -383,8 +349,7 @@ export class ProductService
         this.oosSimilarProductsData.similarData[index].productMediumImage =
             imagesArr.length > 0 ? imagesArr[0]["links"]["medium"] : "";
         this.oosSimilarProductsData.similarData[index].productAllImages = [];
-        imagesArr.forEach((element) =>
-        {
+        imagesArr.forEach((element) => {
             this.oosSimilarProductsData.similarData[index].productAllImages.push({
                 src: this.imagePath + "" + element.links.xlarge,
                 xlarge: this.imagePath + "" + element.links.xlarge,
@@ -410,8 +375,7 @@ export class ProductService
         }
     }
 
-    processProductData(args: ProductDataArg, index)
-    {
+    processProductData(args: ProductDataArg, index) {
         this.oosSimilarProductsData.similarData[index].rawProductData =
             args.productBO;
         // required for goruped products
@@ -624,8 +588,7 @@ export class ProductService
         );
     }
 
-    getBrandLink(brandDetails: {})
-    {
+    getBrandLink(brandDetails: {}) {
         if (brandDetails == undefined) {
             return [];
         }
@@ -637,8 +600,7 @@ export class ProductService
         originImageLink,
         variantFromName,
         variantGetName
-    )
-    {
+    ) {
         const image = originImageLink.split("/");
         image[image.length - 1] = image[image.length - 1].replace(
             variantFromName,
@@ -647,8 +609,7 @@ export class ProductService
         return image.join("/");
     }
 
-    searchResponseToProductEntity(product: any)
-    {
+    searchResponseToProductEntity(product: any) {
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||
@@ -702,8 +663,7 @@ export class ProductService
         } as ProductsEntity;
     }
 
-    recentProductResponseToProductEntity(product: any)
-    {
+    recentProductResponseToProductEntity(product: any) {
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||
@@ -748,8 +708,7 @@ export class ProductService
         } as ProductsEntity;
     }
 
-    productEntityFromProductBO(productBO, overrideProductB0 = null)
-    {
+    productEntityFromProductBO(productBO, overrideProductB0 = null) {
         const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
         const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const productPartDetails = productBO['productPartDetails'][partNumber];
@@ -792,8 +751,7 @@ export class ProductService
         return product;
     }
 
-    getRFQProductSchema(product)
-    {
+    getRFQProductSchema(product) {
         const partNumber = product['partNumber'] || product['defaultPartNumber'];
         const isProductPriceValid = product['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, product['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
@@ -821,8 +779,7 @@ export class ProductService
 
     }
 
-    getProductGroupDetails(productMsnId): Observable<any>
-    {
+    getProductGroupDetails(productMsnId): Observable<any> {
         const PRODUCT_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
         return this._dataService.callRestful("GET", PRODUCT_URL);
     }

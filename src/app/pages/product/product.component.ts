@@ -21,6 +21,7 @@ import CONSTANTS from "@app/config/constants";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
+import { ProductCardFeature } from "@app/utils/models/product.listing.search";
 import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -402,12 +403,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.showLoader = false;
             this.globalLoader.setLoaderState(false);
             this.productNotFound = true;
+            this.pageTitle.setTitle("Page Not Found");
             if (this.isServer && this.productNotFound) {
               this._response.status(404);
             }
           }
         } else {
           this.productNotFound = true;
+          this.pageTitle.setTitle("Page Not Found");
           if (this.isServer && this.productNotFound) {
             this._response.status(404);
           }
@@ -713,6 +716,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
+    if (this.productOutOfStock) {
+      this.similarForOOSLoaded = true;
+      this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
+      this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
+    } else {
+      this.removeSimilarProductInstanceOOS();
+    }
+
     /**
      * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
      * then redirect to inStock MSN of same grouped product
@@ -730,10 +741,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     // set qunatity to minQuantity that can be purchased
     this.qunatityFormControl.setValue(this.productMinimmumQuantity);
 
-    if (this.productOutOfStock) {
-      this.onVisibleProductRFQ(null);
-    }
-
     // product media processing
     this.setProductImages(
       this.rawProductData["productPartDetails"][partNumber]["images"]
@@ -744,8 +751,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
 
     this.setProductCommonType(this.rawProductData["filterAttributesList"]);
-    // this.setAttributesExtra(this.rawProductData['productPartDetails']);
-    // this.setSimilarProducts(this.productName, this.productCategoryDetails['categoryCode']);
 
     this.updateBulkPriceDiscount();
     this.showLoader = false;
@@ -773,11 +778,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  removeSimilarProductInstanceOOS() {
+    if (this.similarProductInstanceOOS) {
+      this.similarProductInstanceOOS = null;
+      this.similarProductInstanceOOSContainerRef.remove();
+    }
+  }
+
   resetLazyComponents() {
     // this function  is useable when user is redirect from PDP to PDP
     if (this.productShareInstance) {
       this.productShareInstance = null;
       this.productShareContainerRef.remove();
+    }
+    if (this.similarProductInstanceOOS) {
+      this.similarProductInstanceOOS = null;
+      this.similarProductInstanceOOSContainerRef.remove();
     }
     if (this.fbtComponentInstance) {
       this.fbtComponentInstance = null;
@@ -852,6 +868,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  similarForOOSContainer = [];
+  similarForOOSLoaded = true;
   setSimilarProducts(productName, categoryCode) {
     this.similarProducts = [];
     if (this.isBrowser) {
@@ -860,8 +878,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
         .subscribe((response: any) => {
           let products = response["products"];
           if (products && (products as []).length > 0) {
-            this.similarProducts = products;
+            if (this.productOutOfStock) {
+              this.productService.oosSimilarProductsData.similarData = JSON.parse(
+                JSON.stringify(products.map(p => {
+                  p.mainImageMediumLink = p.mainImageLink;
+                  console.log(p.moglixPartNumber);
+                  return p;
+                }))
+              );
+            } else {
+              this.similarProducts = products;
+            }
           }
+          this.similarForOOSLoaded = false;
         });
     }
   }
@@ -1497,6 +1526,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
+    // feature config
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFeatures: false,
+    enableRating: true,
+    enableVideo: false,
+    // design config
+    enableCard: true,
+    verticalOrientation: false,
+    horizontalOrientation: true,
+    lazyLoadImage: true
+  }
   async onVisibleSimilarOOS(event) {
     if (!this.similarProductInstanceOOS && this.productOutOfStock) {
       const { ProductOosSimilarComponent } = await import(
@@ -1511,12 +1553,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           null,
           this.injector
         );
-      this.similarProductInstanceOOS.instance["productBaseUrl"] =
-        this.rawProductData["defaultCanonicalUrl"];
-      this.similarProductInstanceOOS.instance["productName"] = this.productName;
-      this.similarProductInstanceOOS.instance["categoryCode"] =
-        this.productCategoryDetails["categoryCode"];
+      this.similarProductInstanceOOS.instance["productBaseUrl"] = this.rawProductData["defaultCanonicalUrl"];
       if (this.similarProductInstanceOOS) {
+        // Image cick Event Handler
         (
           this.similarProductInstanceOOS.instance[
           "firstImageClickedEvent"
@@ -1524,6 +1563,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe((data) => {
           this.openPopUpcrousel(0, data);
         });
+        // Show All click Handler
         (
           this.similarProductInstanceOOS.instance[
           "showAllKeyFeatureClickEvent"
@@ -1535,12 +1575,21 @@ export class ProductComponent implements OnInit, AfterViewInit {
             data
           );
         });
+        // meta update event handler
         (
           this.similarProductInstanceOOS.instance[
           "metaUpdateEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.handlemetaUpdateEvent(data);
+        });
+        // rating review event handler
+        (
+          this.similarProductInstanceOOS.instance[
+          "ratingReviewClickEvent"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.handleReviewRatingPopup(data);
         });
       }
     }
@@ -1674,7 +1723,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   async onVisibleProductRFQ(htmlElement) {
     this.removeRfqForm();
     if (!this.productRFQInstance) {
-      this.intiateRFQQuote(false, false);
+      this.intiateRFQQuote(true, false);
     }
   }
 
@@ -1946,7 +1995,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async writeReview() {
+  async writeReview(index = -1) {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
       this.sendProductInfotracking("write a review");
@@ -1968,9 +2017,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           );
 
         const productInfo = {};
-        productInfo["productName"] = this.productName;
+        productInfo["productName"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productName : this.productName;
         productInfo["partNumber"] =
-          this.productSubPartNumber || this.defaultPartNumber;
+          (index > -1) ? (this.productService.oosSimilarProductsData.similarData[index].productSubPartNumber || this.productService.oosSimilarProductsData.similarData[index].defaultPartNumber) : (this.productSubPartNumber || this.defaultPartNumber);
 
         this.writeReviewPopupInstance.instance["productInfo"] = productInfo;
         (
@@ -2988,7 +3037,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   scrollToId(id: string) {
     let footerOffset = document.getElementById(id).offsetTop;
-    ClientUtility.scrollToTop(1000, footerOffset - 30);
+    ClientUtility.scrollToTop(1000, footerOffset + 250);
   }
 
   pseudoFnc() { }
@@ -3009,7 +3058,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(url);
   }
 
-  async handleReviewRatingPopup() {
+  async handleReviewRatingPopup(index = -1) {
     this.sendProductInfotracking("view all reviews");
     this.showLoader = true;
     const { ReviewRatingComponent } = await import(
@@ -3025,10 +3074,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.rawReviewsData.productName = this.productName;
+    this.reviewRatingPopupInstance.instance["oosSimilarCardNumber"] = index;
     this.reviewRatingPopupInstance.instance["rawReviewsData"] =
-      this.rawReviewsData;
+      (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].reviewRatingApiData : this.rawReviewsData;
 
-    this.reviewRatingPopupInstance.instance["productUrl"] = this.productUrl;
+    this.reviewRatingPopupInstance.instance["productUrl"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productUrl : this.productUrl;
     (
       this.reviewRatingPopupInstance.instance[
       "closePopup$"
@@ -3042,7 +3092,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "emitWriteReview$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
-      this.writeReview();
+      this.writeReview(data);
     });
   }
 
@@ -3327,18 +3377,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   get pastOrderAnalytics() {
-      const TAXONS = this.taxons;
-      const page = {
-          pageName: null,
-          channel: "pdp",
-          subSection: "Inspired By Your Purchase",
-          linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-          linkName: null,
-          loginStatus: this.loginStatusTracking,
-      };
-      const analytices = { page: page,custData: this.custDataTracking, order: this.orderTracking}
-      return analytices;
-    }
+    const TAXONS = this.taxons;
+    const page = {
+      pageName: null,
+      channel: "pdp",
+      subSection: "Inspired By Your Purchase",
+      linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+      linkName: null,
+      loginStatus: this.loginStatusTracking,
+    };
+    const analytices = { page: page, custData: this.custDataTracking, order: this.orderTracking }
+    return analytices;
+  }
 
   ngOnDestroy() {
     if (this.isBrowser) {

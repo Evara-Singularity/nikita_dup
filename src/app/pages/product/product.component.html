@@ -244,78 +244,69 @@
             </ul>
         </div>
         <!-- RFQ section ends -->
-        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
-            *ngIf="!productOutOfStock && isProductReturnAble">
+        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
-            <div class="moglix-ben-n-ret-policy-InnerContainer">
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <i class="icon-Group-14030"></i>
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        GST Invoice<br> Available
-                    </span>
+                <div class="moglix-ben-n-ret-policy-InnerContainer">
+                    <div class="moglix-ben-n-ret-policy-Inner">
+                        <span class="returnImg">
+                           <i class="icon-Group-14030"></i>     
+                        </span>
+                        <span class="returnTxt benefits-txt">
+                            GST Invoice<br> Available
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner">
+                        <span class="returnImg">
+                            <i class="icon-secure-payment-fill"></i>
+                        </span>
+                        <span class="returnTxt benefits-txt">
+                             Secure <br> Payments
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner">
+                        <span class="returnImg">
+                           <i class="icon-customer-service-fill"></i>
+                        </span>
+                        <span class="returnTxt benefits-txt">
+                            365 Days <br> Help Desk
+                        </span>
+                    </div>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <i class="icon-secure-payment-fill"></i>
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        Secure <br> Payments
-                    </span>
-                </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
-                        <i class="icon-customer-service-fill"></i>
-                    </span>
-                    <span class="returnTxt benefits-txt">
-                        365 Days <br> Help Desk
-                    </span>
-                </div>
-            </div>
-            <div class="moglix-ben-n-ret-policy-Inner">
-                <span class="returnImg">
-                    <img src="assets/img/customer-service-fill.svg" height="16px" width="16px">
-                </span>
-                <span class="returnTxt benefits-txt">
-                    365 Days <br> Help Desk
-                </span>
-            </div>
-        </div>
-        <h2 class="heading-3"> Return Policy</h2>
-        <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
-            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                <span class="returnImg">
-                    <i class="icon-restart-line"></i>
-                </span>
-                <span class="returnTxt">
-                    Upto 7 days <br /> returnable
-                </span>
-            </div>
-            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                <span class="returnImg">
-                    <i class="icon-restart-line-1"></i>
-                </span>
-                <span class="returnTxt">
-                    Wrong <br /> Product
-                </span>
-            </div>
-            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                <span class="returnImg">
-                    <i class="icon-restart-line-3"></i>
-                </span>
-                <span class="returnTxt">
-                    Damaged <br /> Product
-                </span>
-            </div>
-            <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                <span class="returnImg">
-                    <i class="icon-restart-line-2"></i>
-                </span>
-                <span class="returnTxt">
-                    Defective <br />Product
-                </span>
+            <h2 class="heading-3"> Return Policy</h2>
+            <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
+                        <span class="returnImg">
+                            <i class="icon-restart-line"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Upto 7 days <br /> returnable
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                        <span class="returnImg">
+                           <i class="icon-restart-line-1"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Wrong <br /> Product
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                        <span class="returnImg">
+                            <i class="icon-restart-line-3"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Damaged <br /> Product
+                        </span>
+                    </div>
+                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                        <span class="returnImg">
+                           <i class="icon-restart-line-2"></i>
+                        </span>
+                        <span class="returnTxt">
+                            Defective <br />Product
+                        </span>
+                    </div>
             </div>
         </div>
         <div class="pdp-section-header">

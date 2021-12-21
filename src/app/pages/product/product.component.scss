@@ -690,6 +690,11 @@
                 line-height: initial;
                 padding-right: 10px;
             }
+            .icon-dropbox-fill{
+                font-size:24px;
+                float: left;
+                padding-right: 10px;
+            }
 
             .gst-icon {
                 float: left;
@@ -2743,7 +2748,10 @@
     margin-top: 10px;
     background: #fff;
     padding: 15px 15px 5px;
-
+      i{
+          font-size:16px;
+          color:#d9232d;
+      }
     .moglix-ben-n-ret-policy-InnerContainer {
         overflow-y: hidden;
         overflow-x: scroll;

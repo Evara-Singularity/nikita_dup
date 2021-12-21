@@ -15,7 +15,6 @@ import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { ProductCrouselSlideComponent } from './ProductCrouselSlide/ProductCrouselSlide.component';
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
-// import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 
 @Component({
   selector: 'ProductCrousel',
@@ -319,7 +318,6 @@ export class ProductCrouselComponent implements OnInit {
     MathCeilPipeModule,
     MathFloorPipeModule,
     NgxSiemaModule.forRoot(),
-    // EnhanceImgByNetworkDirectiveModule,
   ],
   providers: [NgxSiemaService]
 })

@@ -71,9 +71,9 @@ export class ArticlesComponent implements OnInit
     updateArticlesList(response)
     {
         this._loaderService.setLoaderState(false);
-        if (response['status'] && response[this.data] && (response[this.data] as any[])) {
-            if ((response[this.data] as any[]).length && (response[this.data][0]['articleList'] as any[]).length) {
-                const LIST = (response[this.data][0]['articleList'] as any[]);
+        if (response['status'] && response[this.data]) {
+            if ((response[this.data] as any[]).length) {
+                const LIST = (response[this.data] as any[]);
                 this.articleList = [...this.articleList, ...LIST];
             } else {
                 this.hasNoRecords = true;

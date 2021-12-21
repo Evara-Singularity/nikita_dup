@@ -69,8 +69,6 @@ export class ProductResolver implements Resolve<object> {
           return of(err);
         }),
         tap(result => {
-          console.clear();
-          console.log(result[0]);
           if (isPlatformServer(this.platformId)) {
             this.transferState.set(PRODUCT_KEY, result[0]);
             this.loaderService.setLoaderState(false);

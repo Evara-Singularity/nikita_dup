@@ -43,8 +43,10 @@ export class UTRConfirmationComponent implements OnInit
     submitUTRForm()
     {
         if (this.utrForm.invalid) { this.utrForm.markAllAsTouched(); return; }
+        const REQUEST_DATA = this.utrForm.value;
+        REQUEST_DATA['transactionAmount'] = Number(REQUEST_DATA['transactionAmount']);
         this._globarLodaer.setLoaderState(true);
-        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/rfqOrderTransaction`, { body: this.utrForm.value }).subscribe(
+        this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/rfqOrderTransaction`, { body: REQUEST_DATA }).subscribe(
             (response) => {   
                 if (response['status'])
                 {

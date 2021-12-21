@@ -159,7 +159,8 @@
         already discounted
         from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit will
         be consumed for your total purchase amount of <b>Rs. {{this.totalPayableAmount | mathCeil | number : '1.2-2'}}</b> ,
-        and released after the amount is converted to an EMI.
+        and released after the amount is converted to an EMI. <span *ngIf="selectedBankName == 'State Bank of India'">A
+            Processing fee of Rs. 99 + Taxes will be charged for your credit card EMI transactions by SBI Card.</span>
     </div>
 
     <!-- <p class="emi-note-text">

@@ -60,7 +60,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
-        if (res["url"] === "/") {
+          if (res['url'] === '/' || res['url'] == "/?back=1") {
           this.isHomePage = true;
         } else {
           this.isHomePage = false;
@@ -173,7 +173,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   handleRedirectionOfPages(queryParams) {
     if (
       window.location.pathname ===
-        GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
+      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
       queryParams.hasOwnProperty("msn")
     ) {
       this.redirectToProductPage(queryParams["msn"]);
@@ -365,8 +365,9 @@ export class PagesComponent implements OnInit, AfterViewInit {
   }
 
   setEnvIdentiferCookie() {
-    const abTesting = this.dataService.getCookie("AB_TESTING");
-    const PWA = this.dataService.getCookie("PWA");
+    const abTesting = this.dataService.getCookie('AB_TESTING');
+    const PWA = this.dataService.getCookie('PWA');
+    const buildVersion = environment.buildVersion;
 
     if (!PWA) {
       this.dataService.setCookie("PWA", "true", 90);
@@ -387,6 +388,9 @@ export class PagesComponent implements OnInit, AfterViewInit {
         CONSTANTS.AB_TESTING.STATUS.toString(),
         90
       );
+    }
+    if (buildVersion) {
+      this.dataService.setCookie('BUILD_VERSION', buildVersion.toString(), 90);
     }
   }
 }

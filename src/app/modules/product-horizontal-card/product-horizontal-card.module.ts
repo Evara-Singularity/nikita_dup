@@ -9,6 +9,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { EnhanceImgByNetworkPipe, EnhanceImgByNetworkPipeModule } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [ProductHorizontalCardComponent, ProductCardSkeletonComponent],
@@ -20,7 +21,8 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
     // EnhanceImgByNetworkDirectiveModule,
     LazyLoadImageModule,
     EnhanceImgByNetworkPipeModule,
-    ObserveVisibilityDirectiveModule
+    ObserveVisibilityDirectiveModule,
+    RouterModule
   ],
   exports: [
     ProductHorizontalCardComponent,

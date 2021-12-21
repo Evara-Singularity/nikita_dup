@@ -54,6 +54,7 @@ export class AlpComponent implements OnInit
     alpBreadCrumbData = null;
     alpCategoryCodeData = null;
     alpProductListingData = null;
+    showPageNotFound: boolean;
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -104,20 +105,20 @@ export class AlpComponent implements OnInit
         });
     }
 
-    setAttributeListingInfo()
-    {
+    setAttributeListingInfo() {
         //TODO:1704 if data is null then 404
-        if (this._commonService.isServer && this.alpAttrListingData['data'] === null) {
+        this.showPageNotFound = this.alpAttrListingData['data'] === null || Object.keys(this.alpAttrListingData['data']).length === 0 || this.alpAttrListingData['data'].length === 0;
+        if (this.showPageNotFound && this._commonService.isServer) {
             this._response.status(404);
             return;
         }
-        let attributeListing = this.alpAttrListingData['data']['attributesListing'];
-        this.titleHeading = attributeListing['title']
-        this.pageDescription = attributeListing['pageDescription'];
-        this.metaTitle = attributeListing['metaTitle'];
-        this.metaDescription = attributeListing['metaDescription'];
-        this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
-        this.fetchCIMSRelatedData();
+            let attributeListing = this.alpAttrListingData['data']['attributesListing'];
+            this.titleHeading = attributeListing['title']
+            this.pageDescription = attributeListing['pageDescription'];
+            this.metaTitle = attributeListing['metaTitle'];
+            this.metaDescription = attributeListing['metaDescription'];
+            this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
+            this.fetchCIMSRelatedData();
     }
 
     fetchCIMSRelatedData()

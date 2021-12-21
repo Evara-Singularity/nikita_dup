@@ -55,6 +55,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input('section') section: string = '';
   @Input() enableTracking = false;
   @Input() analytics = null;
+  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' = 'LISTING_PAGES';
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -74,6 +75,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
+  prodUrl: string;
 
   constructor(
     private _cartService: CartService,
@@ -105,6 +107,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
     this.isAd = !this.product.internalProduct
     this.productReviewCount=this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.prodUrl = CONSTANTS.PROD;
   }
 
 
@@ -185,7 +188,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
-
     // incase of promotional ad we need to fire GTM event for tracking
     if (this.isAd && this._commonService.isBrowser) {
       this.onlineSalesClickTrackUsingGTM();
@@ -383,12 +385,13 @@ export class ProductHorizontalCardComponent implements OnInit {
       } else {
         if (result) {
           this.resetVariantData();
+          // analytics call
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({ count: result['noOfItems'], currentlyAdded: productDetails });
             this.showAddToCartToast();
-            // analytics call
-            this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+            
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
@@ -533,11 +536,10 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
   }
 
-  trackProductTitle(title) 
-  { 
+  trackProductTitle(title) {    
     this.sendTracking(title);
     this.navigateToPDP();
-  }
+    }
 
   sendTracking(info)
   {

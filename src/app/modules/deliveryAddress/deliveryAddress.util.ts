@@ -9,7 +9,6 @@ export class DeliveryAddressUtil
         if (addressList.length) {
             const filtered = addressList.filter((address) => { return address.phoneVerified });
             const phones = filtered.map((address) => address.phone);
-            console.log(phones);
             verifiedPhones = [...verifiedPhones, ...phones];
         }
         return verifiedPhones;

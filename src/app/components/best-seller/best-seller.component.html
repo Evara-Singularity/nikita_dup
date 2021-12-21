@@ -4,7 +4,7 @@
 </div>
 <ng-container *ngFor="let item of items;index as i;">
     <div class="bestSellerSection" *ngIf="i<5 || viewAll">
-        <a [href]="item.productUrl">
+        <a [href]="item?.productUrl">
             <div class="bestSellerImg  clearfix">
                 <img class="brandImage bestSellerImg" [src]="defaultImage" [lazyLoad]="item.productImage" [alt]="item.productName" />
             </div>
@@ -20,7 +20,7 @@
     <div class="content-popup" content>
         <ul class="view-products no-border list border-top">
             <li *ngFor="let product of items">
-                <a [href]="product.productUrl" class="clearfix">
+                <a [href]="product?.productUrl" class="clearfix">
                     <div class="product-img">
                         <img  [alt]="product.brandName" [src]="product.productImage">
                     </div>

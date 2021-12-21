@@ -1,29 +1,27 @@
-
-import { Component, PLATFORM_ID, Inject, Optional } from '@angular/core';
-import { isPlatformServer } from '@angular/common';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { FooterService } from '@app/utils/services/footer.service';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
-import { Title } from '@angular/platform-browser';
+import { FooterService } from '@app/utils/services/footer.service';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
 
 @Component({
-    selector: 'pagenot-found',
-    templateUrl: './pageNotFound.component.html',
-    styleUrls: ['./pageNotFound.component.scss']
+    selector: 'app-shared-not-found',
+    templateUrl: './shared-not-found.component.html',
+    styleUrls: ['./shared-not-found.component.scss']
 })
-export class PageNotFoundComponent {
-    
+export class SharedNotFoundComponent implements OnInit {
+
     API: {}
     isBrowser: boolean;
     isServer: boolean;
 
     constructor(
-        @Inject(PLATFORM_ID) private platformId: Object,
         @Optional() @Inject(RESPONSE) private response,
         public footerService: FooterService,
         public _commonService: CommonService,
-        private title:Title) {
+        private title:Title
+    ) {
 
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -33,7 +31,7 @@ export class PageNotFoundComponent {
     ngOnInit() {
         debugger;
         this.API = CONSTANTS;
-        if (isPlatformServer(this.platformId)) {
+        if (this.isServer) {
             this.response.status(404);
         }
         if (this.isBrowser) {

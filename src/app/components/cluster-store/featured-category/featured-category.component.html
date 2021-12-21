@@ -1,12 +1,12 @@
-<div class="otherCategoryBlock manufacturer">
+<div class="otherCategoryBlock manufacturer" *ngIf="data['data']">
     <h3 class="l0_heading">{{data.title}}</h3>
     <ul class="clearfix">
         <li *ngFor="let item of data['data'] | slice:0:4;let i=index">
-                <div [routerLink] ="['/'+item.image_link]" class="innerCategory">
+                <div [routerLink] ="['/'+item?.image_link]" class="innerCategory">
                     <div class="imgBlock">
                         <img alt="{{item['image_title']}}" src ="{{imagePath + item['image_name']}}">
                     </div>
-                    <div class="detailsBlock">
+                    <div class="detailsBlock" *ngIf="item['image_general']">
                         <h3>{{item['image_title']}}</h3>
                         <p *ngIf ="item['image_general']  && item['image_general'].length >0">{{item['image_general'][0]['general_text']}}</p>
                     </div>

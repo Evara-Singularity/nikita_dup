@@ -1,0 +1,35 @@
+<!-- <div *ngIf="common.isBrowser && enableNudge" class="bottom-menu">
+  <div class="overlay "></div>
+  <div class="content-area bottom-layout ">
+    <div class="rfq-thanks-popup ">
+      <i class="del-ico icon-circle-delete " (click)="close()" ></i>
+      <h1>
+        Looking for <br/>
+      </h1>
+      <h4><span>{{headingKeyword}} etc.</span></h4>
+      <p>Use search for better results</p>
+      <div>9
+        <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
+      </div>
+    </div>
+  </div>
+</div> -->
+<app-bottom-menu *ngIf="common.isBrowser && enableNudge">
+  <div class="idle-search-container" content>
+    <i class="icon-circle-delete" (click)="close()" ></i>
+    <div class="text-box">
+      <h1>
+        Looking for <br />
+      </h1>
+      <h2><span>{{headingKeyword}} etc.</span></h2>
+      <p>Use search for better results</p>
+    </div>
+    <div class="input-box">
+      <div class="triangle-down"></div>
+      <div class="top-search-box">
+        <input type="text" placeholder="Search for any products..." style="width: 100%;" (focus)="openSearchPopup()" />
+        <i _ngcontent-ssr-pwa-c21="" class="icon-search"></i>
+      </div>
+    </div>
+  </div>
+</app-bottom-menu>

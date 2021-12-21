@@ -178,7 +178,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
     }
 
-    async loadSearchNav() {
+    async loadSearchNav(toBeAutoFilledKeyword = '')
+    {
         if (!this.searchBarInstance) {
             this.globalLoader.setLoaderState(true);
             const { SearchBarComponent } = await import(
@@ -203,6 +204,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
+            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
             setTimeout(() => {
                 document.getElementById('search-input').focus();
@@ -214,6 +216,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
+            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         }
     }
 
@@ -309,6 +312,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.user = this.localAuthService.getUserSession();
             this.checkUserLoginState();
         });
+
+        this._commonService.getSearchPopupStatus().subscribe((searchKeyword) => {
+            this.loadSearchNav(searchKeyword)
+        })
     }
 
     browserCalc() {

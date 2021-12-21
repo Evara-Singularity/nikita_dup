@@ -394,13 +394,15 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   sendTracking(info) {
-    if (!this.enableTracking) return;
-    const page = this.analytics['page'];
-    page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
-    page['productunit'] = this.pIndex;
-    const custData = this.analytics['custData'];
-    const order = this.analytics['order'];
-    this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
+    if (this.analytics) {
+      if (!this.enableTracking) return;
+      const page = this.analytics['page'];
+      page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
+      page['productunit'] = this.pIndex;
+      const custData = this.analytics['custData'];
+      const order = this.analytics['order'];
+      this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
+    }
   }
 
 }

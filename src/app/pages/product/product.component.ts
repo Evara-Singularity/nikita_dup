@@ -403,12 +403,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.showLoader = false;
             this.globalLoader.setLoaderState(false);
             this.productNotFound = true;
+            this.pageTitle.setTitle("Page Not Found");
             if (this.isServer && this.productNotFound) {
               this._response.status(404);
             }
           }
         } else {
           this.productNotFound = true;
+          this.pageTitle.setTitle("Page Not Found");
           if (this.isServer && this.productNotFound) {
             this._response.status(404);
           }
@@ -738,10 +740,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     // set qunatity to minQuantity that can be purchased
     this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-
-    if (this.productOutOfStock) {
-      this.onVisibleProductRFQ(null);
-    }
 
     // product media processing
     this.setProductImages(
@@ -1725,7 +1723,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   async onVisibleProductRFQ(htmlElement) {
     this.removeRfqForm();
     if (!this.productRFQInstance) {
-      this.intiateRFQQuote(false, false);
+      this.intiateRFQQuote(true, false);
     }
   }
 

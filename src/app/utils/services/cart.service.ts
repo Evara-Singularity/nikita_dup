@@ -292,7 +292,7 @@ export class CartService {
         return this._checkForUserAndCartSession().pipe((
             // Action : Check whether product already exist in cart itemList if exist exit
             map(cartSession => {
-                console.log('step 1 ==>', cartSession);
+                // console.log('step 1 ==>', cartSession);
                 // incase of buynow do not exlude 
                 // console.log('product info ==> cartSession origin', Object.assign({}, cartSession));
                 let productItemExistInCart = false;
@@ -322,7 +322,7 @@ export class CartService {
         )).pipe(
             // Action : update sessionId & cartId in productDetails
             map(({ cartSession, productItemExistInCart }) => {
-                console.log('step 2 ==>', cartSession);
+                // console.log('step 2 ==>', cartSession);
                 if (!cartSession) {
                     return cartSession;
                 } else {
@@ -351,15 +351,15 @@ export class CartService {
             mergeMap(cartSession => {
                 return this._getUserSession().pipe(
                     map(userSession => {
-                        console.log('step 3 ==>', cartSession);
+                        // console.log('step 3 ==>', cartSession);
                         if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
                             // add temp session for buynow
                             // as per current flow, update cart api should not be called for buynow if user is not logged in
-                            console.log('step 3.1 ==>', cartSession);
+                            // console.log('step 3.1 ==>', cartSession);
                             this.buyNowSessionDetails = cartSession;
                             return null;
                         } else {
-                            console.log('step 3.2 ==>', cartSession);
+                            // console.log('step 3.2 ==>', cartSession);
                             return cartSession;
                         }
                     }),
@@ -367,7 +367,7 @@ export class CartService {
             }),
             mergeMap(request => {
                 if (request) {
-                    console.log('step 4 ==>', request);
+                    // console.log('step 4 ==>', request);
                     return this.updateCartSession(request).pipe(
                         map((cartSession: any) => {
                             return cartSession;

@@ -1,4 +1,5 @@
 @import './app/scss/variables';
+
 @font-face {
     font-family: 'icomooon_pwa';
     font-display: swap;
@@ -28,6 +29,7 @@ i[class^="icon-"],
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
 //Stacked Icons
 [class^="st-icon-"] {
     display: inline-block;
@@ -39,27 +41,27 @@ i[class^="icon-"],
     box-sizing: border-box;
     height: 24px;
     width: 24px;
-    font-size:22px;
+    font-size: 22px;
     text-align: left;
 }
 
-[class^="st-icon-"] span:before{
-  display: block;
-  position: absolute;
-  white-space: normal;
-  /* match padding above */
-  //   top: 0.143em;
-  top:0px;
-  left:0px;
-  text-indent: 0;
-  font-family: 'icomooon_pwa' !important;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
- }
+[class^="st-icon-"] span:before {
+    display: block;
+    position: absolute;
+    white-space: normal;
+    /* match padding above */
+    //   top: 0.143em;
+    top: 0px;
+    left: 0px;
+    text-indent: 0;
+    font-family: 'icomooon_pwa' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 * {
     margin: 0;
@@ -99,7 +101,8 @@ body {
     text-transform: uppercase;
     font-weight: 600;
 }
-.btn-red-bg{
+
+.btn-red-bg {
     padding: 10px 20px;
     background-color: #D9232D;
     text-transform: uppercase;
@@ -157,6 +160,7 @@ h3,
     font-size: $large-font;
     padding: 10px 0;
 }
+
 .heading-3-txt {
     color: $dark-gray-color;
     font-size: $medium-font;
@@ -166,10 +170,11 @@ h3,
     font-size: $medium-font;
     font-weight: 400;
 }
-.extra-small-txt{
+
+.extra-small-txt {
     font-size: $small-font;
     font-weight: 400;
-    line-height:14px;
+    line-height: 14px;
 }
 
 
@@ -177,10 +182,10 @@ h3,
     font-weight: 400;
 }
 
-.content{
+.content {
     font-size: 14px;
     line-height: 20px;
-}    
+}
 
 h2,
 .heading-2 {
@@ -231,6 +236,7 @@ a {
     border: 0;
     outline: 0;
     @extend %ripple;
+
     &.disabledButton {
         background: #ccc;
         pointer-events: none;
@@ -247,6 +253,7 @@ a {
     height: 45px;
     @extend %ripple;
     font-weight: 800;
+
     &.disabledButton {
         border-color: $disabled;
         color: #fff;
@@ -263,13 +270,14 @@ a {
     border: 1px solid $btn-color-red;
     font-size: $large-font;
 }
-.redBgButton{
-    background:$color-red-light;
+
+.redBgButton {
+    background: $color-red-light;
     color: $btn-color-red;
-    font-weight:bold;
-    font-size: $medium-font;  
+    font-weight: bold;
+    font-size: $medium-font;
     padding: 8px 15px;
-    box-shadow:none;
+    box-shadow: none;
 }
 
 
@@ -306,6 +314,7 @@ a {
         padding-left: 10px;
         width: calc(100% - 115px);
     }
+
     button {
         float: left;
         border: 1px solid $logo-color;
@@ -325,10 +334,11 @@ a {
 }
 
 //Common Margin & padding classes 
-.pad-lr-0{
-    padding-left:0px;
-    padding-right:0px;
+.pad-lr-0 {
+    padding-left: 0px;
+    padding-right: 0px;
 }
+
 .pad-15 {
     padding: 15px !important;
 }
@@ -372,6 +382,10 @@ a {
     margin-bottom: 60px;
 }
 
+.mt-60 {
+    margin-top: 60px;
+}
+
 .mb-65 {
     margin-bottom: 65px;
 }
@@ -399,12 +413,14 @@ header-nav {
 }
 
 // Aligment Classes
-.align-right{
-    text-align:right;
+.align-right {
+    text-align: right;
 }
-.align-left{
-  text-align:left;
+
+.align-left {
+    text-align: left;
 }
+
 .align-center {
     text-align: center;
 }
@@ -437,6 +453,7 @@ header-nav {
         position: relative;
         color: $white;
     }
+
     .icon-cart1 {
         font-size: 22px;
     }
@@ -1165,172 +1182,211 @@ header-nav {
 .icon-share-box-line:before {
     content: "\e9b8";
 }
-.icon-wishlist1-inactive:before{
+
+.icon-wishlist1-inactive:before {
     content: "\e9c8";
-    color:#30303066;
+    color: #30303066;
 }
-.icon-wishlist1-black:before{
+
+.icon-wishlist1-black:before {
     content: "\e9c8";
-    color:#303030;
+    color: #303030;
 }
-.icon-wishlist1-active:before{
+
+.icon-wishlist1-active:before {
     content: "\e9c8";
-    color:#D9232D;
+    color: #D9232D;
 }
-.icon-Group-14030:before{
-    content:"\e9e7";
+
+.icon-Group-14030:before {
+    content: "\e9e7";
 }
-.icon-secure-payment-fill:before{
-    content: "\e9f9"; 
+
+.icon-secure-payment-fill:before {
+    content: "\e9f9";
 }
-.icon-secure-payment-fill:before{
-    content: "\e9f9"; 
+
+.icon-customer-service-fill:before {
+    content: "\e9d3";
 }
-.icon-customer-service-fill:before{
-    content: "\e9d3"; 
+
+.icon-restart-line:before {
+    content: "\e9f8";
 }
-.icon-restart-line:before{
-    content: "\e9f8"; 
+
+.icon-restart-line-1:before {
+    content: "\e9f5";
 }
-.icon-restart-line-1:before{
-    content: "\e9f5"; 
+
+.icon-restart-line-2:before {
+    content: "\e9f6";
 }
-.icon-restart-line-2:before{
-    content: "\e9f6"; 
+
+.icon-restart-line-3:before {
+    content: "\e9f7";
 }
-.icon-restart-line-3:before{
-    content: "\e9f7"; 
+
+.icon-map-pin-fill:before {
+    content: "\e9e8";
 }
-.icon-map-pin-fill:before{
-    content: "\e9e8"; 
+
+.icon-coupon-3-fill-1:before {
+    content: "\e9d1";
 }
-.icon-coupon-3-fill-1:before{
-    content: "\e9d1"; 
+
+.icon-coupon-3-fill1:before {
+    content: "\e9d2";
 }
-.icon-coupon-3-fill1:before{
-    content: "\e9d2"; 
+
+.icon-moglix_app_logo:before {
+    content: "\e9b5";
 }
-.icon-moglix_app_logo:before{
-   content: "\e9b5"; 
+
+.icon-dropbox-fill:before {
+    content: "\e9e6";
 }
-.icon-dropbox-fill:before{
-  content: "\e9e6"; 
-}
-.st-icon-prepaid{
+
+.st-icon-prepaid {
     .icon-prepaid_1:before {
         content: "\e9f2";
-        color:#EFEFF4;
-        }
-        .icon-prepaid_2:before {
+        color: #EFEFF4;
+    }
+
+    .icon-prepaid_2:before {
         content: "\e9f3";
-        color:#2C9091;
-        }
-        .icon-prepaid_3:before {
+        color: #2C9091;
+    }
+
+    .icon-prepaid_3:before {
         content: "\e9f4";
-        color:#54D8FF;
-        }
-        .icon-prepaid_4:before {
+        color: #54D8FF;
+    }
+
+    .icon-prepaid_4:before {
         content: "\e9fa";
-        color:#43B7D9;
-        }
-        .icon-prepaid_5:before {
+        color: #43B7D9;
+    }
+
+    .icon-prepaid_5:before {
         content: "\e9fb";
-        color:#FFE341
+        color: #FFE341
     }
 }
-.st-icon-delivery_available{
- .icon-delivery_y_1:before{
-    content: "\e9f2";
-    color:#EFEFF4;
-    }
- .icon-delivery_y_2:before {
-    content: "\e9ee";
-    color:#FFB74D;
-    }
-    .icon-delivery_y_3:before {
-    content: "\e9ef";
-    color:#FFCC80;
-    }
-    .icon-delivery_y_4:before {
-    content: "\e9f0";
-    color:#795548;
-    }
-    .icon-delivery_y_5:before {
-    content: "\e9f1";
-    color:#4CAF50;
-    }
-}
-.st-icon-delivery_not_available{
-    .icon-delivery_n_1:before{
-       content: "\e9e4";
-       color:#EFEFF4;
-     }
-    .icon-delivery_n_2:before {
-       content: "\e9e5";
-       color:#FFB74D;
-       }
-       .icon-delivery_n_3:before {
-       content: "\e9ea";
-       color:#FFCC80;
-       }
-       .icon-delivery_n_4:before {
-         content: "\e9eb";
-         color:#795548;
-       }
-       .icon-delivery_n_5:before {
-        content: "\e9ec";
-        color:#D9232D;
-      }
-   }
-.st-icon-shipping{
-    .icon-delivery_1:before{
+
+.st-icon-delivery_available {
+    .icon-delivery_y_1:before {
         content: "\e9f2";
-        color:#EFEFF4;
+        color: #EFEFF4;
     }
-    .icon-delivery_2:before{
-        content: "\e9cf";
-        color:#F7BE56;
+
+    .icon-delivery_y_2:before {
+        content: "\e9ee";
+        color: #FFB74D;
     }
-    .icon-delivery_3:before{
-        content: "\e9d0";
-        color:#E56353;
+
+    .icon-delivery_y_3:before {
+        content: "\e9ef";
+        color: #FFCC80;
     }
-    .icon-delivery_4:before{
-        content: "\e9d4";
-        color:#27A2DB; 
+
+    .icon-delivery_y_4:before {
+        content: "\e9f0";
+        color: #795548;
     }
-    .icon-delivery_5:before{
-        content: "\e9d5";
-        color:#3A556A;
+
+    .icon-delivery_y_5:before {
+        content: "\e9f1";
+        color: #4CAF50;
     }
-    .icon-delivery_6:before{
-       content: "\e9d6";
-       color:#2F4859;
-    }
-    .icon-delivery_7:before{
-        content: "\e9d7";
-        color:#64798A;
-     }
-     .icon-delivery_8:before{
-        content: "\e9d8";
-        color:#EBF0F3;
-     }
 }
-.st-icon-cod{
-    .icon-cod_1:before{
+
+.st-icon-delivery_not_available {
+    .icon-delivery_n_1:before {
+        content: "\e9e4";
+        color: #EFEFF4;
+    }
+
+    .icon-delivery_n_2:before {
+        content: "\e9e5";
+        color: #FFB74D;
+    }
+
+    .icon-delivery_n_3:before {
+        content: "\e9ea";
+        color: #FFCC80;
+    }
+
+    .icon-delivery_n_4:before {
+        content: "\e9eb";
+        color: #795548;
+    }
+
+    .icon-delivery_n_5:before {
+        content: "\e9ec";
+        color: #D9232D;
+    }
+}
+
+.st-icon-shipping {
+    .icon-delivery_1:before {
+        content: "\e9f2";
+        color: #EFEFF4;
+    }
+
+    .icon-delivery_2:before {
+        content: "\e9cf";
+        color: #F7BE56;
+    }
+
+    .icon-delivery_3:before {
+        content: "\e9d0";
+        color: #E56353;
+    }
+
+    .icon-delivery_4:before {
+        content: "\e9d4";
+        color: #27A2DB;
+    }
+
+    .icon-delivery_5:before {
+        content: "\e9d5";
+        color: #3A556A;
+    }
+
+    .icon-delivery_6:before {
+        content: "\e9d6";
+        color: #2F4859;
+    }
+
+    .icon-delivery_7:before {
+        content: "\e9d7";
+        color: #64798A;
+    }
+
+    .icon-delivery_8:before {
+        content: "\e9d8";
+        color: #EBF0F3;
+    }
+}
+
+.st-icon-cod {
+    .icon-cod_1:before {
         content: "\e9ca";
-        color:#EFEFF4;
+        color: #EFEFF4;
     }
-    .icon-cod_2:before{
+
+    .icon-cod_2:before {
         content: "\e9cb";
-        color:#3BB54A;
+        color: #3BB54A;
     }
-    .icon-cod_3:before{
+
+    .icon-cod_3:before {
         content: "\e9cc";
-        color:#2BA037;
+        color: #2BA037;
     }
-    .icon-cod_4:before{
+
+    .icon-cod_4:before {
         content: "\e9cd";
-        color:#FEDB41;
+        color: #FEDB41;
     }
 }

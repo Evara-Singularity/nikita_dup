@@ -422,11 +422,13 @@
                 color: white;
             }
         }
+
         &.nonFixed {
             position: relative;
             box-shadow: none;
             height: 58px;
             z-index: 2;
+
             button {
                 border-radius: 4px;
             }
@@ -688,8 +690,9 @@
                 line-height: initial;
                 padding-right: 10px;
             }
-            .icon-dropbox-fill{
-                font-size:24px;
+
+            .icon-dropbox-fill {
+                font-size: 24px;
                 float: left;
                 padding-right: 10px;
             }
@@ -2746,10 +2749,12 @@
     margin-top: 10px;
     background: #fff;
     padding: 15px 15px 5px;
-      i{
-          font-size:16px;
-          color:#d9232d;
-      }
+
+    i {
+        font-size: 16px;
+        color: #d9232d;
+    }
+
     .moglix-ben-n-ret-policy-InnerContainer {
         overflow-y: hidden;
         overflow-x: scroll;
@@ -2863,7 +2868,7 @@
     padding: 4px 8px;
     font-weight: 700;
     top: 30px;
-    z-index:4;
+    z-index: 4;
 }
 
 .pdp-card-breadcrumb {
@@ -2871,6 +2876,7 @@
     padding: 10px 15px;
     border-bottom: 1px solid #E3E3E3;
     margin-bottom: 10px;
+
     li {
         list-style: none;
         display: inline;
@@ -2904,46 +2910,56 @@
         left: 0;
     }
 }
-.oosSimilarTopSection{
-    padding:10px 10px 0px;
-    h2{
-        font-size:$large-font;
-        line-height:38px;
+
+.oosSimilarTopSection {
+    padding: 10px 10px 0px;
+
+    h2 {
+        font-size: $large-font;
+        line-height: 38px;
     }
 }
 
 .horizontal-scroll-container {
     display: flex;
-    overflow:auto;
+    overflow: auto;
+
     &::-webkit-scrollbar {
         display: none;
-    } 
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
-    product-horizontal-card{
-        margin-right:10px;
+    }
+
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+
+    product-horizontal-card {
+        margin-right: 10px;
+
         &:last-child {
             margin-right: 0px;
         }
     }
 }
 
-    // Skeleton
-    .skeleton-card-view {
-        min-width: 340px;
-        max-width: 340px;
-        margin-left: 15px;
+// Skeleton
+.skeleton-card-view {
+    min-width: 340px;
+    max-width: 340px;
+    margin-left: 15px;
 
-        &:first-child {
-            margin-left: 0px;
-        }
-
-        .left-sectn {
-            width: 100px !important;
-        }
-
-        .right-sectn {
-            width: calc(100% - 110px) !important;
-        }
+    &:first-child {
+        margin-left: 0px;
     }
 
+    .left-sectn {
+        width: 100px !important;
+    }
+
+    .right-sectn {
+        width: calc(100% - 110px) !important;
+    }
+}
+
+.btn-red {
+    background: $btn-color-red;
+}

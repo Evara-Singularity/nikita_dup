@@ -177,13 +177,12 @@
 
     <div class="emi-note-text" *ngIf="(nocostEmiDiscount > 0) && selectedBank !== 'BAJFIN' && selectedBank !== 'BAJAJ'">
         <b>Note: </b>The interest to be charged by the bank of <b>Rs. {{nocostEmiDiscount | number : '1.2-2'}} </b>is
-        already discounted
-        from the total price of your purchased order, as No Cost EMI Discount. In case of credit card, the card limit
-        will
+        already discounted from the total price of your purchased order, as No Cost EMI Discount. In case of credit
+        card, the card limit will
         be consumed for your total purchase amount of <b>Rs. {{(this.totalPayableAmount - (this.totalPayableAmount % 1))
-            | number :
-            '1.2-2'}}</b> ,
-        and released after the amount is converted to an EMI.
+            | number : '1.2-2'}}</b> ,
+        and released after the amount is converted to an EMI. <span *ngIf="selectedBankName == 'State Bank of India'">A
+            Processing fee of Rs. 99 + Taxes will be charged for your credit card EMI transactions by SBI Card.</span>
     </div>
 
     <!-- <p class="emi-note-text">

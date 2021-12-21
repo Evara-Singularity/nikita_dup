@@ -21,7 +21,7 @@
         <div *ngIf="pincode.hasError('pattern')" class="invalid-txt">
             <p class="right-txt">Invalid pincode provided</p>
         </div>
-        <div class="about-delivery" *ngIf="itemShippingAmount == 0">
+        <div class="about-delivery" *ngIf="!(itemShippingAmount > 0)">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
                 <span class="icon-delivery_2"></span>
@@ -37,7 +37,7 @@
                 <span class="green-txt">No shipping charge on this order</span>
             </div>
         </div>
-        <div class="about-delivery" *ngIf="itemShippingAmount>0">
+        <div class="about-delivery" *ngIf="isPincodeAvailble && itemShippingAmount > 0">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
                 <span class="icon-delivery_2"></span>

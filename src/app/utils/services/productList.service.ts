@@ -30,7 +30,7 @@ export class ProductListService {
     private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
     public _localStorageService: LocalStorageService
-  ) {}
+  ) { }
 
   showMidPlpFilterLoader: boolean = true;
   excludeAttributes: string[] = [];
@@ -182,13 +182,13 @@ export class ProductListService {
     const url = location.search.substring(1);
     const queryParams = url
       ? JSON.parse(
-          '{"' +
-            decodeURI(url)
-              .replace(/"/g, '\\"')
-              .replace(/&/g, '","')
-              .replace(/=/g, '":"') +
-            '"}'
-        )
+        '{"' +
+        decodeURI(url)
+          .replace(/"/g, '\\"')
+          .replace(/&/g, '","')
+          .replace(/=/g, '":"') +
+        '"}'
+      )
       : {};
 
     if (
@@ -299,7 +299,7 @@ export class ProductListService {
     );
   }
 
-  analyticAddToCart(routerlink, productDetails) {
+  analyticAddToCart(routerlink, productDetails, usedInModule = 'PRODUCT') {
     // console.log('productDetails ==>', productDetails);
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
@@ -313,13 +313,13 @@ export class ProductListService {
       taxo3 = productDetails["taxonomyCode"].split("/")[2] || "";
     }
 
-    let ele = [];
+    let ele = []; ``
     const tagsForAdobe = ele.join("|");
-
+    const moduleString = (usedInModule == 'PRODUCT') ? 'pdp' : 'listing';
     let page = {
-      linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":listing",
-      linkName: routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
-      channel: pageName !== "category" ? pageName : "listing",
+      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + moduleString,
+      'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
+      'channel': pageName !== 'category' ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting
     };
     let custData = {
@@ -420,7 +420,7 @@ export class ProductListService {
             eventData["prodId"];
           eventData["prodPrice"] =
             cartSession["itemsList"][p]["productUnitPrice"] *
-              cartSession["itemsList"][p]["productQuantity"] +
+            cartSession["itemsList"][p]["productQuantity"] +
             eventData["prodPrice"];
           eventData["prodQuantity"] =
             cartSession["itemsList"][p]["productQuantity"] +

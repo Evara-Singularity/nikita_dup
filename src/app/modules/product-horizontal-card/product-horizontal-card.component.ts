@@ -55,6 +55,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input() enableTracking = false;
   @Input() analytics = null;
   @Input() isOosSimilarCard = null;
+  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' = 'LISTING_PAGES';
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;
@@ -74,6 +75,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
+  prodUrl: string;
 
   constructor(
     private _cartService: CartService,
@@ -106,6 +108,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     })
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.prodUrl = CONSTANTS.PROD;
   }
 
 
@@ -185,7 +188,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
 
   navigateToPDP() {
-
     // incase of promotional ad we need to fire GTM event for tracking
     if (this.isAd && this._commonService.isBrowser) {
       this.onlineSalesClickTrackUsingGTM();
@@ -333,7 +335,8 @@ export class ProductHorizontalCardComponent implements OnInit {
       } else {
         if (result) {
           this.resetVariantData();
-          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+          // analytics call
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({
@@ -341,7 +344,6 @@ export class ProductHorizontalCardComponent implements OnInit {
               currentlyAdded: productDetails
             });
             this.showAddToCartToast();
-            // analytics call
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }

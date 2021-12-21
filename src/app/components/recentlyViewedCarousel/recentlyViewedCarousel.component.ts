@@ -102,11 +102,12 @@ export class RecentlyViewedCarouselComponent {
 						this.prodList = this.recentProductList;
 						if (this.prodList && this.prodList.length > 0) {
 							this.isDataAvailable.emit(true);
-							console.log('data hai');
 							if (this.prodList.length > this.options.perPage) {
 								this.options.loop = true;
 							}
 							this.prodList.map((product) => {
+								//ODP-1837 (Temporary fix)
+								if (product.productImage.charAt(0) == "/") product.productImage = product.productImage.substr(1);					
 								if (
 									product &&
 									product.shortDesc &&

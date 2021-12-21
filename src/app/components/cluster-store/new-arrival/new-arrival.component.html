@@ -1,4 +1,4 @@
-<div class="row prod_list newArrivalsSection">
+<div class="row prod_list newArrivalsSection" *ngIf="data['data']">
     <div class="clearfix product_h3">
         <h3 class="f-left">{{data.title}}</h3>
         <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="btn-red f-right">View All</a>
@@ -6,7 +6,7 @@
 <ul class="view-products grid border-top">
     <ng-container *ngFor="let product of data['data'] | slice:0:4; let i = index">
         <li>
-            <a [routerLink]="['/'+product.productlink]" class="clearfix">
+            <a [routerLink]="['/'+product?.productlink]" class="clearfix">
                 <div class="product-img">
                     <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
                 </div>
@@ -43,7 +43,7 @@
         <ul class="view-products grid border-top">
             <ng-container *ngFor="let product of data['data']; let i = index">
                 <li>
-                    <a [routerLink]="['/'+product.productlink]" class="clearfix">
+                    <a [routerLink]="['/'+product?.productlink]" class="clearfix">
                         <div class="product-img">
                             <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
                         </div>

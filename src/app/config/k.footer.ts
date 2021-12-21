@@ -16,7 +16,7 @@ export function footerData() {
       <li> <a href="/about" title="About Us" >About Us</a></li>
       <li><a href="/career" title="Careers" ">Careers</a></li>
       <li><a href="/contact" title="Contact us"> Contact us</a></li>
-      <li class="no-border"><a href="/press" title="_blank">Press</a></li>
+      <li class="no-border"><a href="https://business.moglix.com/news/" title="_blank">Press</a></li>
       <li><a href="/testimonials">Testimonials</a></li>
       <li><a href="https://www.moglix.com/blog/">Blog</a></li>
       <li><a href="/buyer-guide">Buyer Guide</a></li>

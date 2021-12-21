@@ -9,7 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
     templateUrl: './bottom-menu.component.html'
 })
 export class BottomMenuComponent implements OnInit {
-
+    @Input() isRFQPopUp;
     @Input() data: {};
     @Output() outData$: EventEmitter<{}>;
     isServer: boolean;

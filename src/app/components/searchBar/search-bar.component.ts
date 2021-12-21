@@ -5,16 +5,15 @@ import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CommonModule } from '@angular/common';
-// import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CommonService } from '../../utils/services/common.service';
 import { TrendingSearchModule } from '../../modules/trendingSearch/trending-search.module';
 import { SearchHistoryModule } from '../../modules/searchHistory/search-history.module';
 import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive';
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';
-import { ProductListService } from '@app/utils/services/productList.service';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
     selector: 'app-search-bar',
@@ -69,7 +68,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         private renderer: Renderer2,
         private _commonService: CommonService,
         private _dataService: DataService,
-        private productListService: ProductListService
+        private _productService: ProductService,
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -116,7 +115,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
                                 this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
                                 this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
                                 this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
-                                this.searchProducts = ((data.topProducts || []) as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
+                                this.searchProducts = ((data.topProducts || []) as any[]).map(product => this._productService.searchResponseToProductEntity(product));
                                 if (cTerm && cTerm.length > 2) {
                                     this.showSuggestionBlock = true;
                                 }

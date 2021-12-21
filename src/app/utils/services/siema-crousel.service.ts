@@ -1,19 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Observable, Subject } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class SiemaCrouselService{
-
+export class SiemaCrouselService {
   moveToSlideInProduct: Subject<number> = new Subject<number>();
   productCrouselPopupState: Subject<any> = new Subject<any>();
 
-  getMoveProductScrouselSlide(): Observable<number>{
+  getMoveProductScrouselSlide(): Observable<number> {
     return this.moveToSlideInProduct.asObservable();
   }
 
-  setMoveProductScrouselSlide(slideNumber: number){
+  setMoveProductScrouselSlide(slideNumber: number) {
     this.moveToSlideInProduct.next(slideNumber);
   }
 
@@ -21,8 +20,7 @@ export class SiemaCrouselService{
     this.productCrouselPopupState.next(status);
   }
 
-  getProductScrouselPopup(): Observable<any>{
+  getProductScrouselPopup(): Observable<any> {
     return this.productCrouselPopupState.asObservable();
   }
-
 }

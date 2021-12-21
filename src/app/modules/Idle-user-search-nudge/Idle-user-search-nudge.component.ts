@@ -14,7 +14,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   timer: IdleTimer;
   @Input() headingKeyword: string;
   @Input() searchKeyword: string;
-  enableNudge: boolean = true;
+  enableNudge: boolean = false;
 
   constructor(
     public common: CommonService
@@ -26,9 +26,9 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit() {
     this.timer = new IdleTimer({
-      timeout: 10, //expired after 10 secs
+      timeout: 7, //expired after 7 secs
       onTimeout: () => {
-        // this.enableNudge = true;
+        this.enableNudge = true;
       }
     });
   }

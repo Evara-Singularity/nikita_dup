@@ -1,7 +1,7 @@
 <ul class="bread-head  hidden-sm-down">
-    <li [routerLink]="['/']" href="https://www.moglix.com" >Home <span class="arrow-icon">
+    <li [routerLink]="['/']">Home <span class="arrow-icon">
         <i class="icon-next" aria-hidden="true"></i></span> </li>
-    <li class="item f-size-12"> Articles <span class="arrow-icon"><i class="icon-next"
+    <li class="item f-size-12" [routerLink]="['/articles']" > Articles <span class="arrow-icon"><i class="icon-next"
                 aria-hidden="true"></i></span> </li>
     <li class="item f-size-12"> {{breadCrumbTitle}}</li>
 </ul>

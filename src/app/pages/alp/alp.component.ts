@@ -23,13 +23,12 @@ const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
     styleUrls: ['./alp.scss'],
 })
 
-export class AlpComponent implements OnInit {
-    breadcrumbData: any;
+export class AlpComponent implements OnInit
+{
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     showLoader: boolean;
     pageName: string;
     buckets = [];
-    getRelatedCatgory: any;
     productListLength: number;
     isServer: boolean;
     isBrowser: boolean;
@@ -44,41 +43,48 @@ export class AlpComponent implements OnInit {
     taxo2: any;
     taxo3: any;
     trendingSearchData;
-    attributeListingData = null;
     titleHeading = '';
     pageDescription = '';
     metaTitle = '';
     metaDescription = '';
     displayGroupBy = false;
     bestSellerTitle = '';
+    //1704
+    alpAttrListingData = null;
+    alpBreadCrumbData = null;
+    alpCategoryCodeData = null;
+    alpProductListingData = null;
 
     constructor(
-        @Optional() @Inject(RESPONSE) private _response, 
+        @Optional() @Inject(RESPONSE) private _response,
         private _tState: TransferState, private _renderer2: Renderer2,
         private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
         public dataService: DataService,
         public pageTitle: Title, private meta: Meta, public footerService: FooterService,
-        public _router: Router, public _activatedRoute: ActivatedRoute, 
+        public _router: Router, public _activatedRoute: ActivatedRoute,
         private localStorageService: LocalStorageService,
-        public _commonService: CommonService, 
+        public _commonService: CommonService,
         private _categoryService: AlpService,
         public _productListService: ProductListService
-    ) {
-        this.getRelatedCatgory = {};
+    )
+    {
         this.pageName = 'ATTRIBUTE';
     }
 
-    ngOnInit() {
+    ngOnInit()
+    {
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
     }
 
-    setCategoryDataFromResolver() {
+    setCategoryDataFromResolver()
+    {
         this._commonService.showLoader = true;
-        this._activatedRoute.data.subscribe(res => {
+        this._activatedRoute.data.subscribe(res =>
+        {
             this._productListService.excludeAttributes = [];
             // Set config based on query params change
             const queryParamsData = this._activatedRoute.snapshot.queryParams;
@@ -87,142 +93,80 @@ export class AlpComponent implements OnInit {
             // Set config based on params change
             const paramsData = this._activatedRoute.snapshot.params;
             this.updateConfigBasedOnParams(paramsData);
-
-            this.setAttributeListingInfo(res.alp);
+            //TODO:1704 Uncomment
+            this._commonService.showLoader = false;
+            const ALP_DATA = res.alp[0];
+            this.alpAttrListingData = ALP_DATA[0];
+            this.alpCategoryCodeData = ALP_DATA[1];
+            this.alpBreadCrumbData = ALP_DATA[2];
+            this.alpProductListingData = ALP_DATA[3];
+            this.setAttributeListingInfo();
         });
     }
 
-    updateConfigBasedOnQueryParams(queryParamsData) {
-        this.pageNo = queryParamsData['page'];
-        this.displayGroupBy = (queryParamsData['page'] == 1);
-        this.trendingSearchData = queryParamsData;
-
-        if (queryParamsData['page'] == undefined || queryParamsData['page'] == 1) {
-            this.firstPageContent = true;
-        } else {
-            this.firstPageContent = false;
+    setAttributeListingInfo()
+    {
+        //TODO:1704 if data is null then 404
+        if (this._commonService.isServer && this.alpAttrListingData['data'] === null) {
+            this._response.status(404);
+            return;
         }
-    }
-
-    updateConfigBasedOnParams(paramsData) {
-        if (paramsData && paramsData.id && slpPagesExtrasIdMap.hasOwnProperty(paramsData.id)) {
-            this.isSLPPage = true;
-            this.getExtraCategoryData(paramsData).subscribe((paramsData) => {
-                if (paramsData && paramsData['status'] && paramsData['data'] && paramsData['data'].length) {
-                    if (this._commonService.isServer) {
-                        this._tState.set(EDK, paramsData);
-                    }
-                    this.parseData(paramsData['data']);
-                }
-                this.page_title = paramsData['pageTitle'];
-            });
-        } else {
-            this.isSLPPage = false;
-        }
-    }
-
-    setAttributeListingInfo(data) {
-        this.attributeListingData = data[0]['data'];
-        let attributeListing = this.attributeListingData['attributesListing'];
+        let attributeListing = this.alpAttrListingData['data']['attributesListing'];
         this.titleHeading = attributeListing['title']
         this.pageDescription = attributeListing['pageDescription'];
         this.metaTitle = attributeListing['metaTitle'];
         this.metaDescription = attributeListing['metaDescription'];
         this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
-        this.fetchCIMSRelatedData(data[1]);
+        this.fetchCIMSRelatedData();
     }
 
-    
-
-    fetchCIMSRelatedData(res) {
+    fetchCIMSRelatedData()
+    {
         this._commonService.showLoader = false;
-        this.breadcrumbData = res[1];
-        const ict = res[0]['categoryDetails']['active'];
-
-        if (!ict || res[2]['productSearchResult']['totalCount'] === 0) {
+        const ict = this.alpCategoryCodeData["categoryDetails"]['active'];
+        const PRODUCT_COUNT = this.alpProductListingData['productSearchResult']['totalCount'];
+        if (!ict || PRODUCT_COUNT === 0) {
+            //TODO 1704 :NO PRODUCTS FOUND SHOULD COME HERE
             if (this._commonService.isServer) {
-                let httpStatus = 404;
-                if (res[0]['httpStatus']) {
-                    httpStatus = res[0]['httpStatus'];
-                } else if (res[2]['httpStatus']) {
-                    httpStatus = res[2]['httpStatus'];
-                }
-                this._response.status(httpStatus);
+                this._response.status(404);
             }
         }
+        this.initiallizeRelatedCategories(this.alpCategoryCodeData, true);
+        this.initiallizeData(this.alpProductListingData, true);
         if (this.isBrowser) {
             this.showLoader = false;
-        }
-
-        this.initiallizeRelatedCategories(res, true);
-        this.initiallizeData(res[2], true);
-
-        if (this.isBrowser) {
-            this.setTrackingData(res);
-        }
-
-        if (this.isBrowser && (ict && res[2]['productSearchResult']['totalCount'] > 0)) {
-            this.fireTags(res[2]);
+            this.setTrackingData();
+            if ((ict && PRODUCT_COUNT > 0)) {
+                this.fireTags(this.alpProductListingData);
+            }
         }
     }
 
-
-    setTrackingData(res) {
-        var taxonomy = res[0]["categoryDetails"]['taxonomy'];
-        var trackData = {
-            event_type: "page_load",
-            label: "view",
-            product_count: res[1]["productSearchResult"]["totalCount"],
-            category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
-            category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
-            category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-            channel: "Listing",
-            search_query: null,
-            suggestion_click: null,
-            url_complete_load_time: null,
-            page_type: "Category"
-        }
-        this.dataService.sendMessage(trackData);
-    }
-
-    parseData(data) {
-        let relevantObj: any = {};
-        data.forEach(obj => {
-            relevantObj = obj;
-        });
-
-        if (relevantObj.block_data && relevantObj.block_data.product_data) {
-            relevantObj.block_data.product_data.forEach(product => {
-                if (product.discount_percentage && product.pricewithouttax && parseInt(product.discount_percentage) < 100) {
-                    product.discount_percentage = parseInt(product.discount_percentage);
-                    product.pricewithouttax = parseInt(product.pricewithouttax);
-                }
-                let desc = {
-                    Brand: ""
-                };
-                if (product && product.short_description) {
-                    let descArr = product.short_description.split("||");
-                    descArr.forEach(element => {
-                        let splitEl = element.split(":");
-                        if (splitEl[0].toLowerCase() == "brand" || splitEl[0].toLowerCase() == "by") {
-                            desc.Brand = splitEl[1];
-                        } else {
-                            desc[splitEl[0]] = splitEl[1];
-                        }
-                    });
-                }
-                product.descriptionObj = desc;
-            });
+    private initiallizeRelatedCategories(response, flag)
+    {
+        let qps = this._activatedRoute.snapshot.queryParams;
+        if (this.alpCategoryCodeData.categoryDetails.active) {
+            this.meta.addTag({ 'name': 'description', 'content': this.metaDescription });
+            this.meta.addTag({ 'name': 'og:title', 'content': this.metaTitle });
+            this.meta.addTag({ 'name': 'og:description', 'content': this.metaDescription });
+            this.meta.addTag({ 'name': 'og:url', 'content': 'https://www.moglix.com' + this._router.url });
+            this.pageTitle.setTitle(this.metaTitle);
+            const PRODUCTS_LENGTH = (this.alpProductListingData['productSearchResult']['products'] as any[]).length;
+            if (PRODUCTS_LENGTH) {
+                this.meta.addTag({ 'name': 'robots', 'content': (qps["page"] && parseInt(qps["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
+            } else {
+                this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
+            }
         }
     }
-
 
     /**
      *
      * @param response : returned data from category api or transfer state
      * @param flag : true, if TrasnferState exist.
      */
-    private initiallizeData(response: any, flag: boolean) {
+    private initiallizeData(response: any, flag: boolean)
+    {
         this.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.productsUpdated.next(response.productSearchResult.products);
@@ -246,94 +190,28 @@ export class AlpComponent implements OnInit {
         this._commonService.selectedFilterData.totalCount = response.productSearchResult.totalCount;
 
     }
-    // shared product listing data update
-    createProductsSchema(productArray) {
-        if (this._commonService.isServer) {
-            if (productArray.length > 0) {
-                const productList = [];
-                productArray.forEach((product, index) => {
-                    productList.push({
-                        "@type": "ListItem",
-                        "position": index + 1,
-                        "url": CONSTANTS.PROD + '/' + product.productUrl,
-                        "name": product.productName,
-                        "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
-                    })
-                });
-                const schemaObj = {
-                    "@context": "https://schema.org",
-                    "@type": "ItemList",
-                    "numberOfItems": productArray.length,
-                    "url": CONSTANTS.PROD + this._router.url,
-                    "name": this.getRelatedCatgory?.categoryDetails?.categoryName,
-                    "itemListElement": productList
-                }
-                let s = this._renderer2.createElement('script');
-                s.type = "application/ld+json";
 
-                s.text = JSON.stringify(schemaObj);
-                this._renderer2.appendChild(this._document.head, s);
-            }
+    setTrackingData()
+    {
+        var taxonomy = this.alpCategoryCodeData["categoryDetails"]['taxonomy'];
+        var trackData = {
+            event_type: "page_load",
+            label: "view",
+            product_count: this.alpProductListingData["productSearchResult"]["totalCount"],
+            category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
+            category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
+            category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
+            channel: "Listing",
+            search_query: null,
+            suggestion_click: null,
+            url_complete_load_time: null,
+            page_type: "Category"
         }
+        this.dataService.sendMessage(trackData);
     }
 
-    private setCanonicalUrls(response) {
-
-        const currentRoute = this._router.url.split('?')[0].split('#')[0];
-        if (this._commonService.isServer) {
-
-            const links = this._renderer2.createElement('link');
-            //console.log("links ",links);
-            links.rel = 'canonical';
-            if (this.pageNo == undefined || this.pageNo == 1) {
-                links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
-            }
-            else {
-                links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
-            }
-            // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
-            //console.log("links.href", links.href)
-            this._renderer2.appendChild(this._document.head, links);
-
-            // JIRA: ODP-1371
-            // this.setAmpTag('alp');
-        }
-
-        // Start Canonical URL
-        const currentQueryParams = this._activatedRoute.snapshot.queryParams;
-        const pageCountQ = response.productSearchResult.totalCount / 10;
-        const currentPageP = parseInt(currentQueryParams['page']);
-
-        if (pageCountQ > 1 && (currentPageP === 1 || isNaN(currentPageP))) {
-            let links = this._renderer2.createElement('link');
-            links.rel = 'next';
-            links.href = CONSTANTS.PROD + currentRoute + '?page=2';
-            this._renderer2.appendChild(this._document.head, links);
-
-        } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
-            let links = this._renderer2.createElement('link');
-            links.rel = 'prev';
-            if (currentPageP === 2) {
-                links.href = CONSTANTS.PROD + currentRoute;
-            } else {
-                links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
-            }
-
-            this._renderer2.appendChild(this._document.head, links);
-
-            links = this._renderer2.createElement('link');
-            links.rel = 'next';
-            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
-            this._renderer2.appendChild(this._document.head, links);
-        } else if (currentPageP > 1 && pageCountQ + 1 >= currentPageP) {
-            let links = this._renderer2.createElement('link');
-            links.rel = 'prev';
-            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
-            this._renderer2.appendChild(this._document.head, links);
-        }
-    }
-
-    fireTags(response) {
+    fireTags(response)
+    {
 
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
@@ -394,17 +272,17 @@ export class AlpComponent implements OnInit {
                 'event': 'viewList',
                 'email': (user && user.email) ? user.email : '',
                 'ProductIDList': criteoItem,
-                'CategoryId': this.getRelatedCatgory.categoryDetails.taxonomy,
-                'CategoryName': this.getRelatedCatgory.categoryDetails.canonicalURL
+                'CategoryId': this.alpCategoryCodeData.categoryDetails.taxonomy,
+                'CategoryName': this.alpCategoryCodeData.categoryDetails.canonicalURL
             });
 
             /*End Criteo DataLayer Tags */
 
             /*Start Adobe Analytics Tags */
-            if (this.getRelatedCatgory.categoryDetails.taxonomy) {
-                this.taxo1 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[0] || '';
-                this.taxo2 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[1] || '';
-                this.taxo3 = this.getRelatedCatgory.categoryDetails.taxonomy.split("/")[2] || '';
+            if (this.alpCategoryCodeData.categoryDetails.taxonomy) {
+                this.taxo1 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[0] || '';
+                this.taxo2 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[1] || '';
+                this.taxo3 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[2] || '';
             }
             let page = {
                 'pageName': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
@@ -451,7 +329,164 @@ export class AlpComponent implements OnInit {
         }
     }
 
-    getExtraCategoryData(data): Observable<{}> {
+    updateConfigBasedOnQueryParams(queryParamsData)
+    {
+        this.pageNo = queryParamsData['page'];
+        this.displayGroupBy = (queryParamsData['page'] == 1);
+        this.trendingSearchData = queryParamsData;
+
+        if (queryParamsData['page'] == undefined || queryParamsData['page'] == 1) {
+            this.firstPageContent = true;
+        } else {
+            this.firstPageContent = false;
+        }
+    }
+
+    updateConfigBasedOnParams(paramsData)
+    {
+        if (paramsData && paramsData.id && slpPagesExtrasIdMap.hasOwnProperty(paramsData.id)) {
+            this.isSLPPage = true;
+            this.getExtraCategoryData(paramsData).subscribe((paramsData) =>
+            {
+                if (paramsData && paramsData['status'] && paramsData['data'] && paramsData['data'].length) {
+                    if (this._commonService.isServer) {
+                        this._tState.set(EDK, paramsData);
+                    }
+                    this.parseData(paramsData['data']);
+                }
+                this.page_title = paramsData['pageTitle'];
+            });
+        } else {
+            this.isSLPPage = false;
+        }
+    }
+
+    parseData(data)
+    {
+        let relevantObj: any = {};
+        data.forEach(obj =>
+        {
+            relevantObj = obj;
+        });
+
+        if (relevantObj.block_data && relevantObj.block_data.product_data) {
+            relevantObj.block_data.product_data.forEach(product =>
+            {
+                if (product.discount_percentage && product.pricewithouttax && parseInt(product.discount_percentage) < 100) {
+                    product.discount_percentage = parseInt(product.discount_percentage);
+                    product.pricewithouttax = parseInt(product.pricewithouttax);
+                }
+                let desc = {
+                    Brand: ""
+                };
+                if (product && product.short_description) {
+                    let descArr = product.short_description.split("||");
+                    descArr.forEach(element =>
+                    {
+                        let splitEl = element.split(":");
+                        if (splitEl[0].toLowerCase() == "brand" || splitEl[0].toLowerCase() == "by") {
+                            desc.Brand = splitEl[1];
+                        } else {
+                            desc[splitEl[0]] = splitEl[1];
+                        }
+                    });
+                }
+                product.descriptionObj = desc;
+            });
+        }
+    }
+    // shared product listing data update
+    createProductsSchema(productArray)
+    {
+        if (this._commonService.isServer) {
+            if (productArray.length > 0) {
+                const productList = [];
+                productArray.forEach((product, index) =>
+                {
+                    productList.push({
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "url": CONSTANTS.PROD + '/' + product.productUrl,
+                        "name": product.productName,
+                        "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
+                    })
+                });
+                const schemaObj = {
+                    "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "numberOfItems": productArray.length,
+                    "url": CONSTANTS.PROD + this._router.url,
+                    "name": this.alpCategoryCodeData?.categoryDetails?.categoryName,
+                    "itemListElement": productList
+                }
+                let s = this._renderer2.createElement('script');
+                s.type = "application/ld+json";
+
+                s.text = JSON.stringify(schemaObj);
+                this._renderer2.appendChild(this._document.head, s);
+            }
+        }
+    }
+
+    private setCanonicalUrls(response)
+    {
+
+        const currentRoute = this._router.url.split('?')[0].split('#')[0];
+        if (this._commonService.isServer) {
+
+            const links = this._renderer2.createElement('link');
+            //console.log("links ",links);
+            links.rel = 'canonical';
+            if (this.pageNo == undefined || this.pageNo == 1) {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase();
+            }
+            else {
+                links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this.pageNo;
+            }
+            // links.href = CONSTANTS.PROD + currentRoute.toLowerCase()+ "?page="+this.pageNo;
+            //console.log("links.href", links.href)
+            this._renderer2.appendChild(this._document.head, links);
+
+            // JIRA: ODP-1371
+            // this.setAmpTag('alp');
+        }
+
+        // Start Canonical URL
+        const currentQueryParams = this._activatedRoute.snapshot.queryParams;
+        const pageCountQ = response.productSearchResult.totalCount / 10;
+        const currentPageP = parseInt(currentQueryParams['page']);
+
+        if (pageCountQ > 1 && (currentPageP === 1 || isNaN(currentPageP))) {
+            let links = this._renderer2.createElement('link');
+            links.rel = 'next';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=2';
+            this._renderer2.appendChild(this._document.head, links);
+
+        } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
+            let links = this._renderer2.createElement('link');
+            links.rel = 'prev';
+            if (currentPageP === 2) {
+                links.href = CONSTANTS.PROD + currentRoute;
+            } else {
+                links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+            }
+
+            this._renderer2.appendChild(this._document.head, links);
+
+            links = this._renderer2.createElement('link');
+            links.rel = 'next';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
+            this._renderer2.appendChild(this._document.head, links);
+        } else if (currentPageP > 1 && pageCountQ + 1 >= currentPageP) {
+            let links = this._renderer2.createElement('link');
+            links.rel = 'prev';
+            links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+            this._renderer2.appendChild(this._document.head, links);
+        }
+    }
+
+    getExtraCategoryData(data): Observable<{}>
+    {
         if (this._tState.hasKey(EDK)) {
             return of(this._tState.get(EDK, {}));
         } else {
@@ -459,7 +494,8 @@ export class AlpComponent implements OnInit {
         }
     }
 
-    setAmpTag(page) {
+    setAmpTag(page)
+    {
         let currentRoute = this._router.url.split("?")[0].split("#")[0];
         let ampLink;
         ampLink = this._renderer2.createElement('link');
@@ -467,27 +503,6 @@ export class AlpComponent implements OnInit {
         if (page == "alp") {
             ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
             this._renderer2.appendChild(this._document.head, ampLink);
-        }
-    }
-
-    private initiallizeRelatedCategories(response, flag) {
-        this.getRelatedCatgory = response[0];
-        const categoryData = response[2];
-        let qps = this._activatedRoute.snapshot.queryParams;
-
-        if (this.getRelatedCatgory.categoryDetails.active) {
-            this.meta.addTag({ 'name': 'description', 'content': this.metaDescription });
-            this.meta.addTag({ 'name': 'og:title', 'content': this.metaTitle });
-            this.meta.addTag({ 'name': 'og:description', 'content': this.metaDescription });
-            this.meta.addTag({ 'name': 'og:url', 'content': 'https://www.moglix.com' + this._router.url });
-            this.pageTitle.setTitle(this.metaTitle);
-
-            if (categoryData['productSearchResult']['products'] && categoryData['productSearchResult']['products'].length > 0) {
-                this.meta.addTag({ 'name': 'robots', 'content': (qps["page"] && parseInt(qps["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-            } else {
-                this.meta.addTag({ 'name': 'robots', 'content': CONSTANTS.META.ROBOT2 });
-            }
-            // this.spl_subCategory_Dt = this.getRelatedCatgory.children;
         }
     }
 }

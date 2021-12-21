@@ -237,14 +237,25 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'articles/:name',
+				path: 'article/:name',
 				loadChildren: () =>
-					import('./articles/articles.module').then((m) => m.ArticlesModule),
+					import('./article/article.module').then((m) => m.ArticleModule),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
 					pageName: 'article'
+				},
+			},
+			{
+				path: 'articles',
+				loadChildren: () =>
+					import('./articles/articles.module').then((m) => m.ArticlesModule),
+				data: {
+					footer: true,
+					logo: true,
+					moreOpt: true,
+					pageName: 'articles'
 				},
 			},
 			{
@@ -741,7 +752,12 @@ const routes: Routes = [
                 path: 'e-gift-voucher',
                 loadChildren: () => import('@pages/e-gift-voucher/e-gift-voucher.module').then(m => m.EGiftVoucherModule),
                 data: {
-                    hideHeader: false,
+                    footer: false,
+                    moreOpt: false,
+                    cart:false,
+                    menuBar: false,
+                    searchBar:false,
+                    pageName: 'E-Gift'
                 },
             },
             {
@@ -759,6 +775,19 @@ const routes: Routes = [
                     title: 'Feedback',
                     menuBar: true,
                     footer: false,
+                },
+            },
+            {
+                path: 'utr-confirmation',
+                loadChildren: () =>
+                    import('./utr-confirmation/utr-confirmation.module').then((m) => m.UTRConfirmationModule),
+                data: {
+                    footer: false,
+                    moreOpt: false,
+                    cart: false,
+                    menuBar: false,
+                    searchBar: false,
+                    pageName: 'Payment Confirmation'
                 },
             },
 			{

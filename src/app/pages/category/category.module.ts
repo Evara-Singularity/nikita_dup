@@ -9,6 +9,7 @@ import { RecentArticlesModule } from '@app/components/recent-articles/recent-art
 import { CategoryFooterModule } from '@app/components/category-footer/category-footer.component';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
+import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toa
         WhatsAppToastModule,
         CategoryRoutingModule,
         KpToggleDirectiveModule,
-        SharedProductListingModule
+        SharedProductListingModule,
+        ProductListingAppPromoModule
     ],
     declarations: [
         CategoryComponent,

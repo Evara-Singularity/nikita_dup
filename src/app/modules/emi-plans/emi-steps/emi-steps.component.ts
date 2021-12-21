@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'emi-steps',
@@ -9,6 +10,7 @@ export class EmiStepsComponent implements OnInit
 {
     @Input() openEMIStepsPopup: boolean = false;
     @Output() out: EventEmitter<any> = new EventEmitter<any>();
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
 
     constructor() { }

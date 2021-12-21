@@ -41,7 +41,7 @@
             <a *ngIf="!isHomePage && !(routerData && routerData['title'])" class="moglix-app-logo" [routerLink]="['/']">
                 <img src="{{imgAssetPath}}assets/img/moglix-logo.svg">
             </a>
-            <a class="search-bar-mini" *ngIf="!isHomePage && !isLoginPage && !(routerData && routerData['title'])">
+            <a class="search-bar-mini" *ngIf="!isHomePage && !isLoginPage && !(routerData && routerData['title'])  && displaySearch">
                 <i class="icon-search"></i>
                 <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
                 <div class="listing-search-animation">
@@ -49,10 +49,10 @@
                 </div>
             </a>
             <a *ngIf="!isHomePage  && !isLoginPage && (routerData && routerData['title'])" (click)="loadSearchNav()" class="icon-search red-txt"></a>
-            <a *ngIf="!isHomePage && !isLoginPage"  (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
+            <a *ngIf="!isHomePage && !isLoginPage && displayCart"  (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
                 <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>
-            <a *ngIf="!isHomePage && (routerData && !routerData['menuBar']) && !isLoginPage" (click)="loadBottomSheet()" class="icon-more_options"></a>
+            <a *ngIf="!isHomePage && !isLoginPage && (routerData && !routerData['menuBar']) && displayMenu" (click)="loadBottomSheet()" class="icon-more_options"></a>
         </div>
         <!-- When Home page Header is scrolled -->
         <div class="scrolledHeader" *ngIf="isHomePage && isScrolledHeader" [ngClass]="{'headerFixed': isScrolledHeader}">

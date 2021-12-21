@@ -6,6 +6,7 @@ import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { RouterModule } from "@angular/router";
 import { SwipeDirectiveModule } from "@app/utils/directives/swipe.directive";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
@@ -15,6 +16,7 @@ import { SwipeDirectiveModule } from "@app/utils/directives/swipe.directive";
     CommonModule,
     MathFloorPipeModule,
     SliceArrayPipeModule,
+    ReactiveFormsModule
   ],
   exports: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
 })

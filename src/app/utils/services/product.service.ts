@@ -30,6 +30,10 @@ export class ProductService {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
     }
 
+    getSimilarProductInfoByIndex(index) {
+        return this.oosSimilarProductsData.similarData[index];
+    }
+
     getPurchaseList(data) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
         return this._dataService.callRestful("GET", url, { params: data }).pipe(

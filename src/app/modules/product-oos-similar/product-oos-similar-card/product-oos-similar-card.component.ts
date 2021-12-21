@@ -10,6 +10,7 @@ import {
   ViewContainerRef,
   Output,
 } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { NavigationExtras, Router } from "@angular/router";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
@@ -47,6 +48,7 @@ export class ProductOosSimilarCardComponent {
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  selectedProductBulkPrice: null
 
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("removeWindowScrollListenerEvent") removeWindowScrollListenerEvent = new EventEmitter();
@@ -57,6 +59,8 @@ export class ProductOosSimilarCardComponent {
 
   iOptions: any = null;
   showProduct: boolean = false;
+  // quntity && bulk prices related
+  qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
 
   // add to cart toast msg
   addToCartToastInstance = null;
@@ -120,10 +124,72 @@ export class ProductOosSimilarCardComponent {
           },
           this.index
         );
+        this.qunatityFormControl.setValue(this.productService.getSimilarProductInfoByIndex(this.index).productMinimmumQuantity);
         this.showProduct = true;
         this.setRecentlyBought(rawData[2]);
       }
     });
+  }
+
+  get cartQunatityForProduct() {
+    return parseInt(this.qunatityFormControl.value) || 1;
+  }
+
+  get similarProduct() {
+    return this.productService.getSimilarProductInfoByIndex(this.index);
+  }
+
+  onChangeCartQuanityValue() {
+    this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
+  }
+
+  private checkCartQuantityAndUpdate(value): void {
+    if (!value) {
+      this._toastMessageService.show({
+        type: 'error',
+        text: 'Please enter valid quantity'
+      })
+      this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
+    } else {
+      if (parseInt(value) < parseInt(this.similarProduct.productMinimmumQuantity)) {
+        this._toastMessageService.show({
+          type: 'error',
+          text: 'Minimum qty can be ordered is: ' + this.similarProduct.productMinimmumQuantity
+        })
+        this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
+      } else if (parseInt(value) > parseInt(this.similarProduct.priceQuantityCountry['quantityAvailable'])) {
+        this._toastMessageService.show({
+          type: 'error',
+          text: 'Maximum qty can be ordered is: ' + this.similarProduct.priceQuantityCountry['quantityAvailable']
+        })
+      } else if (isNaN(parseInt(value))) {
+        this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
+        this.checkBulkPriceMode();
+      } else {
+        this.qunatityFormControl.setValue(value);
+        this.checkBulkPriceMode();
+      }
+    }
+  }
+
+  checkBulkPriceMode() {
+    if (this.similarProduct.isBulkPricesProduct) {
+      const selectedProductBulkPrice = this.similarProduct.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
+      this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
+    }
+  }
+
+  updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
+    switch (type) {
+      case 'DECREMENT':
+        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct - 1))
+        break;
+      case 'INCREMENT':
+        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct + 1))
+        break;
+      default:
+        break;
+    }
   }
 
   setRecentlyBought(data) {
@@ -234,7 +300,9 @@ export class ProductOosSimilarCardComponent {
     this._loader.setLoaderState(true);
     of(this._cartService.getAddToCartProductItemRequest({
       productGroupData: this.productService.getSimilarProductBoByIndex(this.index),
-      buyNow
+      buyNow,
+      selectPriceMap: this.selectedProductBulkPrice,
+      quantity: this.cartQunatityForProduct
     })).subscribe((productDetails: AddToCartProductSchema) => {
       if (productDetails) {
         if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {

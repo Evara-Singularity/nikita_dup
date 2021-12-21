@@ -83,13 +83,10 @@
             </div>
             <div class="qty_section" *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
                 <div class="quantity-block">
-                    <span class="add-qty qty-block"
-                        (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
-                    <input id="product_quantity"
-                        [value]="productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity"
-                        (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
-                    <span class="remove-qty qty-block"
-                        (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
+                    <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
+                    <input id="product_quantity" [formControl]="qunatityFormControl"
+                        (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
+                    <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                 </div>
                 <div class="quan-details"
                     *ngIf="productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity>1">

@@ -357,20 +357,13 @@
 }
 
 .available-item-card {
-    width: 340px;
+    width:326px;
     border-radius: 8px;
-
-    // .card-container {
-    //     padding: 0px 10px;
-    // }
-    .right {
-        .name {
-            span {
-                max-height: 33px;
-                overflow: hidden;
-                display: inline-block;
-            }
-
+    background: #fff;
+    .card-container {
+        padding:5px;
+        .rating{
+            margin-top:0px;
         }
     }
 }

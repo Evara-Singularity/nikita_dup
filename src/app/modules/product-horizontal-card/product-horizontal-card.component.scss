@@ -357,12 +357,14 @@
 }
 
 .available-item-card {
-    width:332px;
+    width:326px;
     border-radius: 8px;
     background: #fff;
-    margin-right:10px;
     .card-container {
-        padding:5px 10px;
+        padding:5px;
+        .rating{
+            margin-top:0px;
+        }
     }
 }
 

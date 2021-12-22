@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'utr-confirmation',
@@ -13,15 +14,17 @@ import CONSTANTS from '@app/config/constants';
 })
 export class UTRConfirmationComponent implements OnInit
 {
+    readonly TITLE = "Submit NEFT Details For Order Confirmation";
     readonly SUCCESS_MSG = { type: "success", text: "Information submitted successfully" };
     utrForm: FormGroup = null;
 
-    constructor(private _router: Router, private _route: ActivatedRoute,
+    constructor(private _router: Router, private _route: ActivatedRoute, private _title: Title,
         private _dataService: DataService, private _globarLodaer: GlobalLoaderService,
         private _toastMessage: ToastMessageService) { }
 
     ngOnInit()
     {
+        this._title.setTitle(this.TITLE);
         const QPARAMS = this._route.snapshot.queryParams;
         const ORDERID = Number(QPARAMS['orderId']);
         const QUOATATIONID = Number(QPARAMS['quotationId']);

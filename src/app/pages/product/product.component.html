@@ -136,14 +136,14 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
+        <div class="prod-inner-desc" (click)="scrollToResults('reviewSection')">
             <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToId('reviewSection')"
+                    <small class="review" (click)="scrollToResults('reviewSection')"
                         *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                         Reviews
                     </small>
@@ -179,7 +179,7 @@
             <p class="heading-3">{{list.name}}</p>
             <ul>
                 <li *ngFor="let item of list.items;let i = index;"
-                    (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc();">
+                    (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc(); removeOosSimilarSection();">
                     <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
                 </li>
             </ul>
@@ -219,7 +219,8 @@
         </div>
     </div>
     <!-- Product quantity action section ends -->
-    <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+    <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
+        (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
 
@@ -244,69 +245,70 @@
             </ul>
         </div>
         <!-- RFQ section ends -->
-        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix" *ngIf="isProductReturnAble">
+        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
+            *ngIf="isProductReturnAble && !productOutOfStock">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
-                <div class="moglix-ben-n-ret-policy-InnerContainer">
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                           <i class="icon-Group-14030"></i>     
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            GST Invoice<br> Available
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                            <i class="icon-secure-payment-fill"></i>
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                             Secure <br> Payments
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner">
-                        <span class="returnImg">
-                           <i class="icon-customer-service-fill"></i>
-                        </span>
-                        <span class="returnTxt benefits-txt">
-                            365 Days <br> Help Desk
-                        </span>
-                    </div>
+            <div class="moglix-ben-n-ret-policy-InnerContainer">
+                <div class="moglix-ben-n-ret-policy-Inner">
+                    <span class="returnImg">
+                        <i class="icon-Group-14030"></i>
+                    </span>
+                    <span class="returnTxt benefits-txt">
+                        GST Invoice<br> Available
+                    </span>
                 </div>
+                <div class="moglix-ben-n-ret-policy-Inner">
+                    <span class="returnImg">
+                        <i class="icon-secure-payment-fill"></i>
+                    </span>
+                    <span class="returnTxt benefits-txt">
+                        Secure <br> Payments
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner">
+                    <span class="returnImg">
+                        <i class="icon-customer-service-fill"></i>
+                    </span>
+                    <span class="returnTxt benefits-txt">
+                        365 Days <br> Help Desk
+                    </span>
+                </div>
+            </div>
             <h2 class="heading-3"> Return Policy</h2>
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                        <span class="returnImg">
-                            <i class="icon-restart-line"></i>
-                        </span>
-                        <span class="returnTxt">
-                            Upto 7 days <br /> returnable
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                           <i class="icon-restart-line-1"></i>
-                        </span>
-                        <span class="returnTxt">
-                            Wrong <br /> Product
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                            <i class="icon-restart-line-3"></i>
-                        </span>
-                        <span class="returnTxt">
-                            Damaged <br /> Product
-                        </span>
-                    </div>
-                    <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                        <span class="returnImg">
-                           <i class="icon-restart-line-2"></i>
-                        </span>
-                        <span class="returnTxt">
-                            Defective <br />Product
-                        </span>
-                    </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
+                    <span class="returnImg">
+                        <i class="icon-restart-line"></i>
+                    </span>
+                    <span class="returnTxt">
+                        Upto 7 days <br /> returnable
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="returnImg">
+                        <i class="icon-restart-line-1"></i>
+                    </span>
+                    <span class="returnTxt">
+                        Wrong <br /> Product
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="returnImg">
+                        <i class="icon-restart-line-3"></i>
+                    </span>
+                    <span class="returnTxt">
+                        Damaged <br /> Product
+                    </span>
+                </div>
+                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="returnImg">
+                        <i class="icon-restart-line-2"></i>
+                    </span>
+                    <span class="returnTxt">
+                        Defective <br />Product
+                    </span>
+                </div>
             </div>
         </div>
         <div class="pdp-section-header">
@@ -625,7 +627,8 @@
                 </ng-container>
             </div>
         </section>
-        <section id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+        <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
         </section>
         <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
@@ -643,12 +646,9 @@
                 <div class="loader"></div>
             </div>
         </section>
-
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
-            <div [class.mb-60]="productOutOfStock">
-
-            </div>
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+            <div [class.mb-60]="productOutOfStock"></div>
         </ng-container>
     </div>
     <!-- other sections ends -->
@@ -698,7 +698,7 @@
             </div>
             <div class="alert-btn-row">
                 <button *ngIf="similarProducts.length>0"
-                    (click)="scrollToResults(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
+                    (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
                 <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE CATEGORY</p>

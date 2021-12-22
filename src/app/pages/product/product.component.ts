@@ -787,6 +787,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   removeOosSimilarSection() {
+    if (this.isBrowser) {
+      ClientUtility.scrollToTop(100);
+    }
     if (this.similarProductInstanceOOS) {
       this.similarProductInstanceOOS = null;
       this.similarProductInstanceOOSContainerRef.remove();

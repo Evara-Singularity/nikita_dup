@@ -55,17 +55,23 @@
         </div> -->
         <div class="article-box">
             <h1 class="heading upper-title">Articles</h1>
-            <div class="article-box-inner" *ngFor="let article of articleList" (click)="$event.stopPropagation();navigateTo(article.friendlyUrl)">
-                <div class="product-img">
-                    <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}">
+            <div class="article-box-inner" *ngFor="let article of articleList"
+                (click)="$event.stopPropagation();navigateTo(article.friendlyUrl)">
+                <div class="article-box-inner-card">
+                    <div class="product-img">
+                        <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}">
+                    </div>
+                    <div class="product-text">
+                        <h5 class="red-txt">{{article.categoryName}}</h5>
+                        <h3>{{article.title}}.</h3>
+                        <h5 class="gray-txt">{{article.created_At | date:'MMMM: dd, yyyy'}}</h5><!-- | 13K Views-->
+                    </div>
                 </div>
-                <h5 class="red-txt">{{article.categoryName}}</h5>
-                <h3>{{article.title}}.</h3>
-                <h5 class="gray-txt">{{article.created_At | date:'MMMM: dd, yyyy'}}</h5><!-- | 13K Views-->
             </div>
         </div>
         <div class="load-more-btn-area">
-            <button class="btn-red-bg" (click)="$event.stopPropagation();fetchArticles()" *ngIf="!hasNoRecords">LOAD MORE ARTICLES</button>
+            <button class="btn-red-bg" (click)="$event.stopPropagation();fetchArticles()" *ngIf="!hasNoRecords">LOAD
+                MORE ARTICLES</button>
         </div>
         <!-- <div class="more-about-shopping">
             <h3 class="heading-3">More about shopping on Moglix</h3>

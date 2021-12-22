@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
@@ -14,6 +15,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 })
 export class EGiftVoucherComponent implements OnInit, AfterViewInit
 {
+    readonly TITLE = "Gift Cards & Gift Vouchers - Get Bulk Discounts";
     readonly PRICE_VALUES = [500, 1000, 2000, 5000, 10000];
     readonly API = CONSTANTS.NEW_MOGLIX_API;
     user: any;
@@ -30,11 +32,13 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private _tms: ToastMessageService,
         private _localStorageService: LocalStorageService,
         private globalLoader: GlobalLoaderService,
+        private _title: Title,
 
     ) {     }
 
     ngOnInit()
     {
+        this._title.setTitle(this.TITLE);
         this.fetchVoucherData();
         this.eGiftForm = new FormGroup({
             rfqEnquiryCustomer: new FormGroup(

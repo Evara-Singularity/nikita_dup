@@ -631,7 +631,8 @@
             (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
         </section>
-        <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
+        <section id="productAccordianSection" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
         <past-orders *ngIf="isBrowser" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics"></past-orders>
@@ -743,8 +744,7 @@
     </div>
 </section>
 
-<idle-user-search-nudge
-    [searchKeyword]="this.productCategoryDetails['categoryName']"
+<idle-user-search-nudge [searchKeyword]="this.productCategoryDetails['categoryName']"
     [headingKeyword]="this.productCategoryDetails['categoryName'] ">
 </idle-user-search-nudge>
 <div id="pageBottom"></div>

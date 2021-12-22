@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, OnInit, Output } from "@angular/core";
+import { EventEmitter, Component, Input, OnInit, Output, Renderer2 } from "@angular/core";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ProductService } from "@app/utils/services/product.service";
 import { Location } from "@angular/common";
@@ -17,10 +17,12 @@ export class ProductOosSimilarComponent {
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
   @Output("metaUpdateEvent") metaUpdateEvent = new EventEmitter();
+  listener;
 
   constructor(
     public productService: ProductService,
     private _commonService: CommonService,
+    private renderer2: Renderer2,
     private location: Location
   ) { }
 
@@ -29,26 +31,23 @@ export class ProductOosSimilarComponent {
   }
 
   attachScrollHandler() {
-    // set Scroll
-    window.addEventListener(
-      "scroll",
-      this.windowScrollHandler.bind(this),
-      true
-    );
-
-    window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
+    this.listener = this.renderer2.listen('window', 'scroll', (e) => {
+      this.windowScrollHandler();
+    });
   }
 
   removeWindowScrollListener(event) {
     if (this._commonService.isBrowser && event) {
-      window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
+      this.listener();
     }
   }
 
   windowScrollHandler() {
     if (document.getElementById('similarProductsOos') &&
       this.productService.oosSimilarProductsData.similarData &&
-      this.productService.oosSimilarProductsData.similarData.length > 0 && (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop)
+      this.productService.oosSimilarProductsData.similarData.length > 0 &&
+      (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop) &&
+      (window.pageYOffset < document.getElementById('productAccordianSection').offsetTop)
     ) {
       this.checkWhichElementIsInViewport();
     } else {
@@ -96,7 +95,7 @@ export class ProductOosSimilarComponent {
 
   ngOnDestroy() {
     if (this._commonService.isBrowser) {
-      window.removeEventListener("scroll", this.windowScrollHandler.bind(this), false);
+      this.listener();
     }
   }
 }

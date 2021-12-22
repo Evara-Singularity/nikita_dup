@@ -44,6 +44,8 @@ export class CommonService {
 
   public refreshProducts$: Subject<any> = new Subject<any>();
 
+  public oosSimilarCard$: Subject<any> = new Subject<any>();
+
   currentRequest: any;
   cmsData: any;
   replaceHeading: boolean = false;

@@ -1562,6 +1562,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   async onVisibleSimilarOOS(event) {
     if (!this.similarProductInstanceOOS && this.productOutOfStock) {
+      this.commonService.oosSimilarCard$.next(false);
       const { ProductOosSimilarComponent } = await import(
         "./../../modules/product-oos-similar/product-oos-similar.component"
       );

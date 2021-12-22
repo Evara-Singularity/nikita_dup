@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import IdleTimer from '@app/utils/idleTimeDetect';
 import { CommonService } from '@app/utils/services/common.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -15,33 +16,37 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   @Input() headingKeyword: string;
   @Input() searchKeyword: string;
   enableNudge: boolean = false;
+  oosSimilarCardSunscription: Subscription = null;
 
   constructor(
     public common: CommonService
   ) { }
 
   ngOnInit() {
-    
+    this.oosSimilarCardSunscription = this.common.oosSimilarCard$.subscribe(res => {
+      this.enableNudge = res;
+    });
   }
 
   ngAfterViewInit() {
     this.timer = new IdleTimer({
-      timeout: 7, //expired after 7 secs
+      timeout: 2, //expired after 7 secs
       onTimeout: () => {
         this.enableNudge = true;
       }
     });
   }
 
-  openSearchPopup(){
+  openSearchPopup() {
     this.common.updateSearchPopup(this.searchKeyword);
   }
 
   ngOnDestroy() {
-    this.timer.cleanUp()
+    this.timer.cleanUp();
+    this.oosSimilarCardSunscription.unsubscribe();
   }
 
-  close(){
+  close() {
     this.enableNudge = false;
   }
 }

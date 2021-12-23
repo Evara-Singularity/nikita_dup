@@ -78,7 +78,7 @@
         "@angular-devkit/build-angular": "~0.1100.2",
         "@angular/cli": "~11.0.2",
         "@angular/compiler-cli": "~11.0.1",
-        "@bfoese/ngx-preload-fonts": "git+https://github.com/Yogender-moglix/ngx-preload-fonts.git",
+        "@bfoese/ngx-preload-fonts": "github:Yogender-moglix/ngx-preload-fonts",
         "@nguniversal/builders": "^11.0.0",
         "@types/express": "^4.17.8",
         "@types/jasmine": "~3.6.0",

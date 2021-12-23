@@ -437,34 +437,6 @@
 
 
 
-        
-
-        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-            <ng-container #similarProduct></ng-container>
-        </section>
-        <!--widgets section-->
-        <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" class="widget-items">
-                <span class="content-wrap">
-                    <p>More from {{productCategoryDetails['categoryName']}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
-            </a>
-
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)" class="widget-items">
-                <span class="content-wrap">
-                    <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <!-- <span>From ₹999</span> -->
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
-            </a>
-        </section>
-        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
-            <ng-container #sponseredProducts></ng-container>
-        </section>
-
         <section class="pdp-section-card" id="reviewSection">
             <div class="pwa-row">
                 <div class="pwa-col-6">
@@ -576,6 +548,38 @@
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
+
+
+
+        
+
+        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+            <ng-container #similarProduct></ng-container>
+        </section>
+        <!--widgets section-->
+        <section class="widget-container" *ngIf="productCategoryDetails">
+            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" class="widget-items">
+                <span class="content-wrap">
+                    <p>More from {{productCategoryDetails['categoryName']}}</p>
+                    <span class="explore-now">Explore Now</span>
+                </span>
+                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+            </a>
+
+            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)" class="widget-items">
+                <span class="content-wrap">
+                    <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
+                    <span class="explore-now">Explore Now</span>
+                </span>
+                <!-- <span>From ₹999</span> -->
+                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+            </a>
+        </section>
+        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+            <ng-container #sponseredProducts></ng-container>
+        </section>
+
+   
         <section class="Qa">
             <div class="">
                 <p class="heading-3">Questions & Answers</p>

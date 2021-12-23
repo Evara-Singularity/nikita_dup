@@ -10,6 +10,7 @@ import { EnhanceImgByNetworkPipe, EnhanceImgByNetworkPipeModule } from '@app/uti
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { RouterModule } from '@angular/router';
+import { BrandNamePipeModule } from '@app/utils/pipes/brandName.pipe';
 
 @NgModule({
   declarations: [ProductHorizontalCardComponent, ProductCardSkeletonComponent],
@@ -22,7 +23,8 @@ import { RouterModule } from '@angular/router';
     LazyLoadImageModule,
     EnhanceImgByNetworkPipeModule,
     ObserveVisibilityDirectiveModule,
-    RouterModule
+    RouterModule,
+    BrandNamePipeModule
   ],
   exports: [
     ProductHorizontalCardComponent,

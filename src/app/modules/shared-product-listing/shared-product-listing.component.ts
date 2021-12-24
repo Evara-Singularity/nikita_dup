@@ -60,7 +60,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.getUpdatedSession();
   }
 
- 
+
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
   }
@@ -98,7 +98,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
           this.sponseredProductLoadStatus = true;
           console.error('getSponseredProducts failed', error);
         });
-      }else{
+      } else {
         this.sponseredProductLoadStatus = true;
       }
     }
@@ -125,7 +125,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     }
     return request;
   }
-  
+
   private getParamsUsedInModules() {
     const params = {
       filter: this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment),
@@ -140,17 +140,24 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     const queryParams = formatParamsObj.queryParams || {};
     const filterKeys = Object.keys(filter)
     const queryParamsKeys = Object.keys(queryParams);
-    const queryParamConditionOne =  (!queryParamsKeys.includes('orderby') && !queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay')) || (queryParamsKeys.includes('orderby') && queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay'))
-    return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length > 0 && queryParamConditionOne ))
+    const queryParamConditionOne = (!queryParamsKeys.includes('orderby') && !queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay')) || (queryParamsKeys.includes('orderby') && queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay'))
+    return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length > 0 && queryParamConditionOne))
   }
 
   getUpdatedSession() {
-     // incase redirection from checkout with buynow updated count of product should be displayed in header cart icon
+    // incase redirection from checkout with buynow updated count of product should be displayed in header cart icon
     if (this._commonService.isBrowser) {
       const userSession = this._localAuthService.getUserSession();
       let params = { "sessionid": userSession.sessionId };
       this._cartService.getCartBySession(params).subscribe((cartSession) => {
-        this._cartService.cart.next({ count: cartSession['noOfItems'] || 0 });
+
+        let count = 0;
+        if (cartSession['noOfItems']) {
+          count = cartSession['noOfItems'];
+        } else if (cartSession['itemsList']) {
+          count = cartSession['itemsList'].length;
+        }
+        this._cartService.cart.next({ count });
       })
     }
   }
@@ -170,27 +177,27 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     }
     else return 0;
   }
-  
-  ngOnChanges(){
+
+  ngOnChanges() {
     this.updateFilterCountAndSort();
   }
 
   removeFilterChip(key, termName) {
-    this._commonService.genricApplyFilter(key, {term: termName});
+    this._commonService.genricApplyFilter(key, { term: termName });
   }
 
-  updateFilterCountAndSort(){
+  updateFilterCountAndSort() {
     this._productListService.pageName = this.pageName.toLowerCase();
 
     this.appliedFilterCount = Object.keys(this._commonService.selectedFilterData.filter).length;
-    
+
     if (this.paginationInstance) {
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
       this.paginationInstance.instance.initializePageData();
     }
 
     this.filterChipsArray = [];
-    for(let key in this._commonService.selectedFilterData.filter) {
+    for (let key in this._commonService.selectedFilterData.filter) {
       this.filterChipsArray = [...this.filterChipsArray, ...this._commonService.selectedFilterData.filter[key]];
     }
   }
@@ -215,11 +222,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
       if (discountIndex) {
-        this.productsListingData.filterData[discountIndex].terms.sort((a,b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+        this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
       if (ratingIndex) {
-        this.productsListingData.filterData[ratingIndex].terms.sort((a,b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+        this.productsListingData.filterData[ratingIndex].terms.sort((a, b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
@@ -233,11 +240,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this._commonService.toggleFilter();
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
       if (discountIndex) {
-        this.productsListingData.filterData[discountIndex].terms.sort((a,b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+        this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
       if (ratingIndex) {
-        this.productsListingData.filterData[ratingIndex].terms.sort((a,b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
+        this.productsListingData.filterData[ratingIndex].terms.sort((a, b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;

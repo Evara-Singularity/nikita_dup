@@ -438,7 +438,6 @@ export class CategoryComponent {
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
      */
     priceRangeTable(res) {
-        console.log(res);
         let count = 0;
         for (let val of res.productSearchResult.products) {
             if (val.quantityAvailable === 0) {

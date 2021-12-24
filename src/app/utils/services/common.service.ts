@@ -1129,4 +1129,11 @@ export class CommonService {
       this._router.navigateByUrl(url);
     }
   }
+
+  customDebugger(data) {
+    console.clear();
+    console.trace();
+    console.log(data);
+    alert('check console');
+  }
 }

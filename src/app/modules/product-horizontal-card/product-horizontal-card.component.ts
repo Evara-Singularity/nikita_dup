@@ -328,7 +328,6 @@ export class ProductHorizontalCardComponent implements OnInit {
 
 
   private addToCart(productDetails, buyNow): void {
-    alert('buyNow ===> ' + buyNow);
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api

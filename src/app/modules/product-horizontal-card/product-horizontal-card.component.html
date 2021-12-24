@@ -49,7 +49,7 @@
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div>
                 <div class="brand" (click)="navigateToPDP()">
-                    <span>By: {{product.brandName}}</span>
+                    <span>By: {{product.brandName | brandName}}</span>
                 </div>
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">

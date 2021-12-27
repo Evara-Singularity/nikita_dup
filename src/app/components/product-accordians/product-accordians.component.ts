@@ -22,7 +22,7 @@ export class ProductAccordiansComponent {
   @Input('analyticsInfo') analyticsInfo: any;
   ACCORDIAN_DATA: Array<any> = [[],[],[]];
   popularLinks: Array<any>= [];
-  hrefS=CONSTANTS.PROD;
+  prodUrl=CONSTANTS.PROD;
 
   constructor(
     public _commonService: CommonService, 

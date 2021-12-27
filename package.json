@@ -56,6 +56,7 @@
         "@nguniversal/express-engine": "^11.0.0",
         "@ngx-meta/core": "^9.0.0",
         "angularx-social-login": "^3.5.7",
+        "concat": "^1.0.3",
         "credit-card-type": "^9.1.0",
         "crypto-browserify": "^3.12.0",
         "express": "^4.15.2",

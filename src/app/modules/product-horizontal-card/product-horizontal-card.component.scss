@@ -356,14 +356,22 @@
     float: left;
 }
 
-.available-item-card {
+.available-item-card{
     width: 326px;
     border-radius: 8px;
     background: #fff;
-
     .card-container {
         padding: 5px;
-
+        .name{
+            -webkit-line-clamp: 2;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 2.8em;
+            margin-bottom: 5px;
+            line-height: 1.6em;
+        }
         .rating {
             margin-top: 0px;
         }

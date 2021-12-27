@@ -33,6 +33,11 @@
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
+             <div class="oos-tag">
+                <span>
+                   AVAILABLE ON REQUEST
+                </span>
+             </div>
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"

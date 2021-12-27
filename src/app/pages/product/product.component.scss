@@ -2857,6 +2857,19 @@
         background: red;
     }
 }
+.oos-tag{
+    position: absolute;
+    top: 30px;
+    left: 15px;
+    span{
+        padding: 5px 10px;
+        background: #707070;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+}
 
 .blueTag {
     background: #008AFF;

@@ -1,13 +1,13 @@
 .e-gifting {
     padding-bottom: 85px;
-    .multiple-form-field{
-        display:flex;
-        width:100%;
+    .multiple-form-field {
+        display: flex;
+        width: 100%;
     }
-    .gift-card-heading{
-        font-size:14px;
-        font-weight:bold;
-        color:#3c3c3c;
+    .gift-card-heading {
+        font-size: 14px;
+        font-weight: bold;
+        color: #3c3c3c;
     }
     .text-red {
         color: #d9232d;
@@ -39,7 +39,7 @@
         background: #ffffff;
         box-shadow: 0px 3px 12px #00000014;
         border-radius: 8px;
-        padding: 20px;
+        padding: 15px;
         h2 {
             text-align: center;
             font-size: 18px;
@@ -88,7 +88,7 @@
                     border-radius: 4px;
                     width: 100%;
                 }
-                p{
+                p {
                     color: #d9232d;
                 }
             }
@@ -123,6 +123,9 @@
                             background-color: #ffffff;
                             border: 1px solid #707070;
                             padding: 0px 24px 0px 5px;
+                            // &.selected-value{
+                            //     color: #3c3c3c;
+                            // }
                         }
                         .icon-down {
                             pointer-events: none;
@@ -130,6 +133,9 @@
                             top: 22px;
                             right: 15px;
                             z-index: 3;
+                        }
+                        .list-icon-arrow-down {
+                            margin-top: 6px;
                         }
                         input {
                             padding: 0px 10px;
@@ -159,9 +165,12 @@
                             border: none;
                             text-align: left;
                             padding: 10px;
-                            color:#707070;
-                            display:block;
-                            font-size:14px;
+                            color: #707070;
+                            display: block;
+                            font-size: 14px;
+                            // &.calculated-total-value{
+                            //     color: #3C3C3C;
+                            // }
                         }
                     }
                     .action {
@@ -195,7 +204,7 @@
             justify-content: center;
             input {
                 font-size: 14px;
-                font-weight: 500;
+                font-weight: bold;
                 border: none;
                 color: #4490df;
                 background: none;
@@ -222,10 +231,11 @@
                     height: 40px;
                     font-size: 14px;
                     border: none;
+                    font-weight: bold;
                 }
             }
             .total-area {
-                width:55%;
+                width: 55%;
                 padding-left: 10px;
                 span {
                     color: #b1b1b1;
@@ -237,6 +247,9 @@
                 .amount {
                     font-size: 18px;
                 }
+                // .total-amout{
+                //     color: #3c3c3c;
+                // }
             }
         }
     }
@@ -348,7 +361,7 @@ select::-ms-expand {
 
     input {
         font-size: 14px;
-        font-weight: 500;
+        font-weight: bold;
         border: none;
         color: #b1b1b1;
         background: none;
@@ -393,6 +406,10 @@ datalist {
     display: none;
 }
 
-.valid-row{background-color: #37b9180f;}
-
-
+.valid-row {
+    background-color: #37b9180f;
+    padding-top: 5px;
+}
+.validated-dark-text{
+    color: #3c3c3c !important;
+}

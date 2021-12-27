@@ -130,7 +130,7 @@ export class BrandComponent {
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
-        if(this.API_RESPONSE.brand[0].seoDetails == null || this.API_RESPONSE.brand[0].seoDetails === ""){
+        if(!this.API_RESPONSE.brand[0].seoDetails){
             let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title }); 

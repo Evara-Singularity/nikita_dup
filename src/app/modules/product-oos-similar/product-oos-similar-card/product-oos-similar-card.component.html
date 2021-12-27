@@ -128,8 +128,6 @@
         class="key-features">
         <div class="inline-heading">
             <h3 class="heading-3">Key Features</h3>
-            <div class="show-all-strip pad-t-0"><span (click)="showAllKeyFeatureClickEvent.emit(index);">View All
-                    <i class="icon-next"></i></span></div>
         </div>
         <ul class="feature-list">
             <li
@@ -139,6 +137,11 @@
                 </p>
             </li>
         </ul>
+        <div class="show-all-strip">
+            <span (click)="showAllKeyFeatureClickEvent.emit(index);">View All
+               <i class="icon-next"></i>
+           </span>
+        </div>
     </div>
     <div class="bottom-bar nonFixed">
         <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">

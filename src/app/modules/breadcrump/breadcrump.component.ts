@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { BreadcrumpService } from './breadcrump.service';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';
 
 const BRK = makeStateKey<any>('BRK');

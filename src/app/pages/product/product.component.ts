@@ -432,6 +432,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.setReviewsRatingData(rawReviews);
       this.rawReviewsData = Object.assign({}, rawReviews);
     }
+
     if (secondaryRawData[1] && Array.isArray(secondaryRawData[1])) {
       this.setProductaBreadcrum(secondaryRawData[1]);
     }
@@ -785,6 +786,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  removeOosSimilarSection() {
+    if (this.isBrowser) {
+      ClientUtility.scrollToTop(100);
+    }
+    if (this.similarProductInstanceOOS) {
+      this.similarProductInstanceOOS = null;
+      this.similarProductInstanceOOSContainerRef.remove();
+    }
+  }
+
   resetLazyComponents() {
     // this function  is useable when user is redirect from PDP to PDP
     if (this.productShareInstance) {
@@ -804,6 +815,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarProductContainerRef.remove();
       this.onVisibleSimilar(null);
     }
+    if (this.similarProductInstanceOOS) {
+      this.similarProductInstanceOOS = null;
+      this.similarProductInstanceOOSContainerRef.remove();
+      this.onVisibleSimilarOOS(null);
+    }
     if (this.sponseredProductsInstance) {
       this.sponseredProductsInstance = null;
       this.sponseredProductsContainerRef.remove();
@@ -821,11 +837,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
     if (this.pincodeFormInstance) {
       this.pincodeFormInstance = null;
-      this.pincodeFormContainerRef.remove();
+      if (this.pincodeFormContainerRef) {
+        this.pincodeFormContainerRef.remove();
+      }
     }
     if (this.offerSectionInstance) {
       this.offerSectionInstance = null;
-      this.offerSectionContainerRef.remove();
+      if (this.offerSectionContainerRef) {
+        this.offerSectionContainerRef.remove();
+      }
     }
     if (this.offerPopupInstance) {
       this.offerPopupInstance = null;
@@ -882,7 +902,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
               this.productService.oosSimilarProductsData.similarData = JSON.parse(
                 JSON.stringify(products.map(p => {
                   p.mainImageMediumLink = p.mainImageLink;
-                  console.log(p.moglixPartNumber);
                   return p;
                 }))
               );
@@ -895,24 +914,26 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateOutOfStockFlagForCards(index) {
-    if (this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry) {
-      // incase outOfStockFlag of is avaliable then set its value
-      this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["outOfStockFlag"];
-      // apart from outOfStockFlag if mrp is exist and is zero set product of OOS
-      if (this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"]) {
-        if (parseInt(this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"]) == 0) {
-          this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
-        }
-        if (parseInt(this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["quantityAvailable"]) == 0) {
+  updateOutOfStockFlagForCards(index = -1) {
+    if (this.productService.oosSimilarProductsData.similarData[index]) {
+      if (this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry) {
+        // incase outOfStockFlag of is avaliable then set its value
+        this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["outOfStockFlag"];
+        // apart from outOfStockFlag if mrp is exist and is zero set product of OOS
+        if (this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"]) {
+          if (parseInt(this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"]) == 0) {
+            this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
+          }
+          if (parseInt(this.productService.oosSimilarProductsData.similarData[index].priceQuantityCountry["quantityAvailable"]) == 0) {
+            this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
+          }
+        } else {
           this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
         }
       } else {
+        // incase priceQuantityCountry element not present in API
         this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
       }
-    } else {
-      // incase priceQuantityCountry element not present in API
-      this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
     }
   }
 
@@ -1541,6 +1562,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   async onVisibleSimilarOOS(event) {
     if (!this.similarProductInstanceOOS && this.productOutOfStock) {
+      this.commonService.oosSimilarCard$.next(false);
       const { ProductOosSimilarComponent } = await import(
         "./../../modules/product-oos-similar/product-oos-similar.component"
       );
@@ -2308,21 +2330,21 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     let metaObj
     if (index > -1) {
-      this.updateOutOfStockFlagForCards(index + GLOBAL_CONSTANT.oosSimilarCardCountTop);
+      this.updateOutOfStockFlagForCards(index);
       metaObj = {
-        title: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productName,
-        productName: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productName,
-        pageTitleName: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productName,
-        pwot: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].priceWithoutTax,
-        quantityAvailable: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].quantityAvailable,
-        productPrice: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productPrice,
-        productOutOfStock: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productOutOfStock,
-        seoDetails: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].seoDetails,
-        productBrandDetails: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productBrandDetails,
-        productCategoryDetails: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productCategoryDetails,
-        productDefaultImage: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productDefaultImage,
-        productUrl: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop].productUrl,
-        defaultCanonicalUrl: this.productService.oosSimilarProductsData.similarData[index + GLOBAL_CONSTANT.oosSimilarCardCountTop]["defaultCanonicalUrl"],
+        title: this.productService.oosSimilarProductsData.similarData[index].productName,
+        productName: this.productService.oosSimilarProductsData.similarData[index].productName,
+        pageTitleName: this.productService.oosSimilarProductsData.similarData[index].productName,
+        pwot: this.productService.oosSimilarProductsData.similarData[index].priceWithoutTax,
+        quantityAvailable: this.productService.oosSimilarProductsData.similarData[index].quantityAvailable,
+        productPrice: this.productService.oosSimilarProductsData.similarData[index].productPrice,
+        productOutOfStock: this.productService.oosSimilarProductsData.similarData[index].productOutOfStock,
+        seoDetails: this.productService.oosSimilarProductsData.similarData[index].seoDetails,
+        productBrandDetails: this.productService.oosSimilarProductsData.similarData[index].productBrandDetails,
+        productCategoryDetails: this.productService.oosSimilarProductsData.similarData[index].productCategoryDetails,
+        productDefaultImage: this.productService.oosSimilarProductsData.similarData[index].productDefaultImage,
+        productUrl: this.productService.oosSimilarProductsData.similarData[index].productUrl,
+        defaultCanonicalUrl: this.productService.oosSimilarProductsData.similarData[index]["defaultCanonicalUrl"],
       };
     } else {
       metaObj = {
@@ -3031,13 +3053,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   scrollToResults(id: string) {
-    let footerOffset = document.getElementById(".id").offsetTop;
+    let footerOffset = document.getElementById(id).offsetTop;
     ClientUtility.scrollToTop(1000, footerOffset - 30);
   }
 
   scrollToId(id: string) {
     let footerOffset = document.getElementById(id).offsetTop;
-    ClientUtility.scrollToTop(1000, footerOffset + 250);
+    ClientUtility.scrollToTop(1000, footerOffset + 190);
   }
 
   pseudoFnc() { }

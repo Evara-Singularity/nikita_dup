@@ -78,7 +78,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
     isLoginPage: boolean = false;
     displayCart: boolean = false;
-    displayMenu:boolean = false;
+    displayMenu: boolean = false;
     displaySearch: boolean = false;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
     @Input('extraData') extraData;
@@ -178,8 +178,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
     }
 
-    async loadSearchNav(toBeAutoFilledKeyword = '')
-    {
+    async loadSearchNav(toBeAutoFilledKeyword = '') {
         if (!this.searchBarInstance) {
             this.globalLoader.setLoaderState(true);
             const { SearchBarComponent } = await import(
@@ -204,7 +203,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
-            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
+            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
             setTimeout(() => {
                 document.getElementById('search-input').focus();
@@ -216,7 +215,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
-            if(toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
+            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         }
     }
 

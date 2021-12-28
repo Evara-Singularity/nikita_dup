@@ -3,7 +3,7 @@
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq" [class.in-instock]="!isOutOfStock">
             <div *ngIf="isOutOfStock" class="rfq_header">
-                <i class="icon-dropbox-fill"></i>
+                <i class="icon-dropbox-fill f-size-26"></i>
                 <div class="rfq_header_text">
                     <h3 [class.ins-text]="!isOutOfStock">
                         <ng-container *ngIf="isOutOfStock"> Available on Request. </ng-container>
@@ -11,7 +11,8 @@
                     </h3>
                     <p>Add more details to get the best deal.</p>
                 </div>
-                <i (click)="isPopup = false;" class="icon-circle-delete del-ico"></i>
+                <i (click)="isPopup = false; _commonService.oosSimilarCard$.next(false);"
+                    class="icon-circle-delete del-ico"></i>
             </div>
             <div class="req-qty">
                 <label>Enter the required quantity</label>

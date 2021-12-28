@@ -4,7 +4,7 @@ export const GLOBAL_CONSTANT = {
   newAddress: 9999,
   created: 1,
   oosSimilarCardCountTop: 2,
-  oosSimilarCardCountBottom: 5,
+  oosSimilarCardCountBottom: 8,
   whatsapp_number: "+919999034709",
   updated: 2,
   trendingCategoryLimit: 10,

@@ -1,5 +1,6 @@
 .idle-search-container {
     position: relative;
+
     i {
         position: absolute;
         font-size: 20px;
@@ -7,43 +8,53 @@
         right: 20px;
         padding: 20px !important;
     }
+
     .text-box {
-        padding: 50px 40px 20px;
+        padding: 20px 40px 20px;
+
         h1,
         h2,
         p {
             text-align: center;
         }
+
         h1 {
             font-size: 26px;
             line-height: 32px;
+            font-weight: normal;
         }
+
         h2 {
             font-size: 24px;
             line-height: 32px;
-            font-weight: 400;
+            font-weight: 'bold';
         }
+
         p {
             font-size: 16px;
             line-height: 32px;
         }
     }
+
     .input-box {
         background-color: #f7cc7d;
         padding: 30px 40px 20px;
         position: relative;
+
         .top-search-box {
             background-color: #ffffff;
             border-radius: 8px;
             height: 50px;
             position: relative;
             box-shadow: 0px 0px 6px #f5681e;
+
             input {
                 padding: 0px 20px;
                 border: none;
                 height: 50px;
                 margin-left: 10px;
             }
+
             .icon-search {
                 position: absolute;
                 top: -2px;
@@ -51,6 +62,7 @@
                 font-size: 15px;
             }
         }
+
         .triangle-down {
             position: absolute;
             top: -1px;

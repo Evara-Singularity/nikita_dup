@@ -754,3 +754,6 @@
 </idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
+<div class="scroll-arrow" *ngIf="showScrollToTopButton && productOutOfStock" (click)="scrollToTop()">
+    <i class="icon-up"></i>
+</div>

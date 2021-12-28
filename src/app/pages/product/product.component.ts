@@ -57,7 +57,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-
+  showScrollToTopButton: boolean = false;
   isServer: boolean;
   isBrowser: boolean;
   //conditions vars
@@ -318,15 +318,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    if (this.isBrowser) {
-      ClientUtility.scrollToTop(100);
-    }
+    this.scrollToTop();
     this.intializeForm();
     this.getProductApiData();
     this.addSubcriber();
     this.createSiemaOption();
     this.setProductSeoSchema();
     this.setQuestionAnswerSchema();
+  }
+
+  scrollToTop() {
+    if (this.isBrowser) {
+      ClientUtility.scrollToTop(100);
+    }
   }
 
   ngAfterViewInit() {
@@ -1616,6 +1620,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.handleReviewRatingPopup(data);
+        });
+        // rating review event handler
+        (
+          this.similarProductInstanceOOS.instance[
+          "updateScrollToTop"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.showScrollToTopButton = data;
         });
       }
     }

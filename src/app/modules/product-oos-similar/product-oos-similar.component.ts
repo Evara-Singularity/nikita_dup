@@ -17,6 +17,8 @@ export class ProductOosSimilarComponent {
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
   @Output("metaUpdateEvent") metaUpdateEvent = new EventEmitter();
+  @Output("updateScrollToTop") updateScrollToTop = new EventEmitter();
+
   listener;
 
   constructor(
@@ -50,7 +52,13 @@ export class ProductOosSimilarComponent {
       (window.pageYOffset < document.getElementById('productAccordianSection').offsetTop)
     ) {
       this.checkWhichElementIsInViewport();
+      this.updateScrollToTop.emit(true);
     } else {
+      if ((window.pageYOffset > document.getElementById('similarProductsOos').offsetTop)) {
+        this.updateScrollToTop.emit(true);
+      } else {
+        this.updateScrollToTop.emit(false);
+      }
       this.productCardCurrentyInViewPort = -1;
     }
     this.updateUrl();

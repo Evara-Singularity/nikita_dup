@@ -107,14 +107,14 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     updateItemTotalValue(requirement: FormGroup)
     {
-        if (requirement.invalid) { requirement.get("totalValue").setValue(0); return} ;
+        if (requirement.invalid) { requirement.get("totalValue").setValue(0);} ;
         const REQUIREMENT = requirement.value;
         const ITEM_TOTAL_VALUE = Number(REQUIREMENT.itemValue) * Number(REQUIREMENT.quantity);
         requirement.get("totalValue").setValue(ITEM_TOTAL_VALUE);
-        this.updateTotalQuantity();
+        this.updateTotalValue();
     }
 
-    updateTotalQuantity()
+    updateTotalValue()
     {
         const REQUIREMENTS = (this.rfqEnquiryItemsList.value as any[]);
         const TOTAL_VALUE = REQUIREMENTS.map(requirement => Number(requirement.itemValue) * Number(requirement.quantity));
@@ -124,7 +124,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     removeProduct(index)
     {
         this.rfqEnquiryItemsList.removeAt(index);
-        this.updateTotalQuantity();
+        this.updateTotalValue();
     }
 
     updateBrand(formControl: FormControl, brandName)
@@ -175,7 +175,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 32 || key == 46);
     }
 
-    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }
+    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57}
 
     extractUniqueBrands(brands)
     {

@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div class="gift-card-req" formArrayName="rfqEnquiryItemsList">
+            <div class="gift-card-req" formArrayName="rfqEnquiryItemsList" >
                 <h3>Enter your gift card requirement:</h3>
                 <div class="gift-card-req-form valid-row">
                     <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
@@ -64,7 +64,7 @@
                             </div>
                             <div class="multiple-form-field">
                                 <div class="value req-flex-child">
-                                    <select class="validated-dark-text" (change)="updateItemTotalValue(requirement)" formControlName="itemValue">
+                                    <select [class.validated-dark-text]="requirement.get('itemValue').valid" (change)="updateItemTotalValue(requirement)" formControlName="itemValue">
                                         <option value="" selected disabled hidden>Value (INR)</option>
                                         <option *ngFor="let value of PRICE_VALUES" [ngValue]="value">{{value}}</option>
                                     </select>
@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <div class="total-value req-flex-child">
-                                <span class="validated-dark-text">
+                                <span [class.validated-dark-text]="requirement.get('totalValue').value > 0">
                                     <ng-container *ngIf="requirement.get('totalValue').value > 0">
                                         {{requirement.get('totalValue').value | mathFloor | indianCurrency }}
                                     </ng-container>
@@ -111,7 +111,7 @@
             <div class="row submit-and-total">
                 <div class="col-md-4 total-area">
                     <span class="total">Total</span><br>
-                    <span class="amount validated-dark-text">₹ {{totalValue | mathFloor | indianCurrency}} INR</span>
+                    <span class="amount" [class.validated-dark-text]="totalValue > 0">₹ {{totalValue | mathFloor | indianCurrency}} INR</span>
                 </div>
                 <div class="col-md-8 submit-area">
                     <input class="submit-button" type="button" value="SUBMIT REQUEST" (click)="saveGift()">

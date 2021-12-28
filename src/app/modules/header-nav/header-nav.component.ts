@@ -205,6 +205,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
+
             if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
             setTimeout(() => {
@@ -217,6 +218,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
+
             if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         }
     }

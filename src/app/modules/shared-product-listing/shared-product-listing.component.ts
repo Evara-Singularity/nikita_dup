@@ -25,6 +25,9 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   private paginationInstance = null;
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
 
+  private searchBannerCardInstance = null;
+  @ViewChild('searchBannerCard', { read: ViewContainerRef }) searchBannerCardContainerRef: ViewContainerRef;
+
   @Input() productsListingData: ProductListingDataEntity;
   @Input() pageName: 'CATEGORY' | 'BRAND' | 'SEARCH' | 'POPULAR SEARCH' | 'ATTRIBUTE';
   @Input() brandName: string; // only received in case used in brand module
@@ -208,6 +211,21 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const factory = this._componentFactoryResolver.resolveComponentFactory(PaginationComponent);
       this.paginationInstance = this.paginationContainerRef.createComponent(factory, null, this._injector);
       this.paginationInstance.instance['paginationData'] = { itemCount: this._commonService.selectedFilterData.totalCount };
+    }
+  }
+
+  async onVisiblesearchBannerCard() {
+    if (this.pageName != 'SEARCH' && !this.searchBannerCardInstance) {
+      const { SearchBannerCardComponent } = await import('@app/components/search-banner-card/search-banner-card.component');
+      const factory = this._componentFactoryResolver.resolveComponentFactory(SearchBannerCardComponent);
+      this.searchBannerCardInstance = this.searchBannerCardContainerRef.createComponent(factory, null, this._injector);
+      let keyword = '';
+      if (this.pageName == 'CATEGORY' || this.pageName == 'ATTRIBUTE') {
+        keyword = this.categoryName;
+      } else if (this.pageName == 'BRAND') {
+        keyword = this.brandName;
+      }
+      this.searchBannerCardInstance.instance['searchKeyword'] = keyword;
     }
   }
 

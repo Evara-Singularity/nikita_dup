@@ -15,7 +15,7 @@ declare var dataLayer;
 @Component({
     selector: 'paytm-upi',
     templateUrl: './paytmUpi.html',
-    styleUrls:['./paytmUpi.scss']
+    styleUrls: ['./paytmUpi.scss']
 })
 
 export class PaytmUpiComponent {
@@ -26,19 +26,19 @@ export class PaytmUpiComponent {
     upiForm: FormGroup;
     upiData: {};
     upiChecked: boolean;
-    @Input() type:any;
+    @Input() type: any;
     cartSesssion: any;
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
     imagePath = CONSTANTS.CDN_IMAGE_PATH;
     imageFolder = CONSTANTS.pwaImages.imgFolder;
-    upiError:any;
-    validUpi:boolean;
+    upiError: any;
+    validUpi: boolean;
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
     }
-    
+
     constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _paytmUpiService: PaytmUpiService) {
         this.upiData = {};
         this.isValid = false;
@@ -68,7 +68,7 @@ export class PaytmUpiComponent {
         if (!valid)
             return;
 
-        this.upi   = data.upi;
+        this.upi = data.upi;
         let newdata: {};
 
         if (this.uType == CONSTANTS.GLOBAL.paytmUpi) {
@@ -83,7 +83,6 @@ export class PaytmUpiComponent {
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
-                alert(res.description);
                 return;
             }
 
@@ -151,7 +150,7 @@ export class PaytmUpiComponent {
             },
             "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
         };
-        
+
         return upiData;
     }
 
@@ -194,28 +193,28 @@ export class PaytmUpiComponent {
             }
         });
     }
-    paytmApicall(upiValue){
-        this.upiError =""
-            this._paytmUpiService.paytmNewApicall(upiValue.upi).subscribe((res) => {
-                if (res['status'] == true && res['data']['isValid'] == true) {
-                  this.upiError =""
-                  this.validUpi = true;
-                  this.pay(this.upiForm.value, this.upiForm.valid);
-                }
-                else {
-                   this.upiError = {message:res['data']['message']};
-                   this.validUpi = false;
-                    
-                } 
-          });
-        }
+    paytmApicall(upiValue) {
+        this.upiError = ""
+        this._paytmUpiService.paytmNewApicall(upiValue.upi).subscribe((res) => {
+            if (res['status'] == true && res['data']['isValid'] == true) {
+                this.upiError = ""
+                this.validUpi = true;
+                this.pay(this.upiForm.value, this.upiForm.valid);
+            }
+            else {
+                this.upiError = { message: res['data']['message'] };
+                this.validUpi = false;
+
+            }
+        });
+    }
 
     ngOnDestroy() {
         this.prepaidsubscription.unsubscribe();
         this._cartService.setCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
     }
-    resetLoginError(event){
-        this.upiError ="";
+    resetLoginError(event) {
+        this.upiError = "";
     }
 }

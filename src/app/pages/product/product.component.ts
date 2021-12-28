@@ -272,6 +272,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   appPromoVisible: boolean = true;
   productInfo = null;
+  holdRFQForm = false;//this flag is to resolve RFQ pop-up issue on click of similar products icon
 
   // quntity && bulk prices related
   qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
@@ -1545,6 +1546,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         order: orderData,
       };
     }
+    this.holdRFQForm = false;
   }
 
   readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
@@ -1615,6 +1617,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         });
       }
     }
+    this.holdRFQForm = false;
   }
 
   handlemetaUpdateEvent(index) {
@@ -1743,6 +1746,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // product-rfq
   async onVisibleProductRFQ(htmlElement) {
+    if(this.holdRFQForm)return
     this.removeRfqForm();
     if (!this.productRFQInstance) {
       this.intiateRFQQuote(true, false);
@@ -3058,6 +3062,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   scrollToId(id: string) {
+    this.holdRFQForm = true;
     let footerOffset = document.getElementById(id).offsetTop;
     ClientUtility.scrollToTop(1000, footerOffset + 190);
   }

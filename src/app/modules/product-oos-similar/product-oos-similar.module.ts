@@ -7,6 +7,8 @@ import { SliceArrayPipeModule } from "@app/utils/pipes/slice-array.pipe";
 import { RouterModule } from "@angular/router";
 import { SwipeDirectiveModule } from "@app/utils/directives/swipe.directive";
 import { ReactiveFormsModule } from "@angular/forms";
+import { ProductInfoSectionPipeModule } from '@app/utils/pipes/product-oos-similar-card-section.pipe';
+import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 
 @NgModule({
   declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
@@ -16,7 +18,9 @@ import { ReactiveFormsModule } from "@angular/forms";
     CommonModule,
     MathFloorPipeModule,
     SliceArrayPipeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProductInfoSectionPipeModule,
+    ObjectToArrayPipeModule,
   ],
   exports: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
 })

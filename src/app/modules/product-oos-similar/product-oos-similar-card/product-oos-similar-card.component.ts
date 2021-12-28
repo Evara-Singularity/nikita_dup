@@ -16,6 +16,7 @@ import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { AddToCartProductSchema } from "@app/utils/models/cart.initial";
+import { ProductInfoSection } from '@app/utils/pipes/product-oos-similar-card-section.pipe';
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
@@ -76,6 +77,7 @@ export class ProductOosSimilarCardComponent {
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
 
+
   constructor(
     public productService: ProductService,
     private cfr: ComponentFactoryResolver,
@@ -127,6 +129,7 @@ export class ProductOosSimilarCardComponent {
         this.qunatityFormControl.setValue(this.productService.getSimilarProductInfoByIndex(this.index).productMinimmumQuantity);
         this.showProduct = true;
         this.setRecentlyBought(rawData[2]);
+        
       }
     });
   }
@@ -497,6 +500,19 @@ export class ProductOosSimilarCardComponent {
       }, 2000);
     }
   }
+
+    getBrandLink(brandDetails: {})
+    {
+        if (brandDetails == undefined) {
+            return [];
+        }
+        return [`/brands/${brandDetails["friendlyUrl"]}`]
+    }
+
+    navigateLink(link)
+    {
+        this._router.navigate([link]);
+    }
 
 
 }

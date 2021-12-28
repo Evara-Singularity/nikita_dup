@@ -134,15 +134,16 @@
                     <h3 class="heading-3">Key Features</h3>
                 </div>
                 <ul class="feature-list">
-                    <li
-                        *ngFor="let feature of product.productKeyFeatures | sliceArray:3">
+                    <li *ngFor="let feature of product.productKeyFeatures | sliceArray:3">
                         <p>
                             <span>{{feature}}.</span>
                         </p>
                     </li>
                 </ul>
                 <div class="show-all-strip">
-                    <span (click)="showAllKeyFeatureClickEvent.emit(index);">View All
+                    <span
+                        (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'key features', type: 'show all specifications'});">View
+                        Details
                         <i class="icon-next"></i>
                     </span>
                 </div>
@@ -173,8 +174,11 @@
                         </td>
                     </tr>
                 </table>
-                <div (click)="showAllKeyFeatureClickEvent.emit(index);" class="show-all-strip spec">
-                    <span>Show All Specifications</span>
+                <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'specifications', type: 'show all specifications'});"
+                    class="show-all-strip spec">
+                    <span>View Details
+                        <i class="icon-next"></i>
+                    </span>
                 </div>
             </div>
             <!--Details-->
@@ -182,13 +186,15 @@
                 <h2 class="heading-3">Product Details</h2>
                 <ng-container *ngIf="product.productDescripton != undefined else noProdDesc">
                     <p [innerHTML]="product.productDescripton"></p>
-                    <p class="static-desc" > Browse through the extensive list of
-                        <a class="blueText" 
+                    <p class="static-desc"> Browse through the extensive list of
+                        <a class="blueText"
                             (click)="navigateLink('/'+ (product.productCategoryDetails ? product.productCategoryDetails['categoryLink'] : ''))">
                             {{product.productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                        <a class="blueText" (click)="navigateLink('/'+ product.productBrandCategoryUrl)">{{product.productBrandDetails ?
+                        <a class="blueText"
+                            (click)="navigateLink('/'+ product.productBrandCategoryUrl)">{{product.productBrandDetails ?
                             product.productBrandDetails['brandName'] : ''}}
-                            {{product.productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
+                            {{product.productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest
+                        price range.
                     </p>
                 </ng-container>
                 <ng-template #noProdDesc>
@@ -196,23 +202,30 @@
                         {{product.productName}} is a premium quality product from {{product.productBrandDetails ?
                         product.productBrandDetails['brandName'] : ''}}. Moglix is a
                         well-known ecommerce platform for qualitative range of <a class="blueText"
-                            (click)="navigateLink('/'+product.productCategoryDetails['categoryLink'])">{{product.productCategoryDetails ?
+                            (click)="navigateLink('/'+product.productCategoryDetails['categoryLink'])">{{product.productCategoryDetails
+                            ?
                             product.productCategoryDetails['categoryName'] : ''}}</a>.
-                        All {{product.productName}} are manufactured by using quality assured material and advanced techniques,
+                        All {{product.productName}} are manufactured by using quality assured material and advanced
+                        techniques,
                         which make them up to the standard in this highly challenging field. The materials utilized to
                         manufacture {{product.productName}}, are sourced
                         from the most reliable and official vendors, chosen after performing detailed market surveys.
-                        {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}} products are widely acknowledged in
+                        {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}} products are
+                        widely acknowledged in
                         the market for their high
                         quality. We are dedicatedly involved in
                         providing an excellent quality array of <a class="blueText"
                             (click)="navigateLink('/'+product.productBrandCategoryUrl)">
-                            {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}} {{product.productCategoryDetails ?
+                            {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}}
+                            {{product.productCategoryDetails ?
                             product.productCategoryDetails['categoryName'] : ''}}</a>.
                     </p>
                 </ng-template>
-                <div (click)="showAllKeyFeatureClickEvent.emit(index);" class="show-all-strip">
-                    <span>Read More</span>
+                <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'product details', type: 'read more'});"
+                    class="show-all-strip">
+                    <span>View Details
+                        <i class="icon-next"></i>
+                    </span>
                 </div>
             </div>
         </ng-container>

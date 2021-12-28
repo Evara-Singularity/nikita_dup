@@ -723,7 +723,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
       this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
-    } 
+    }
 
     /**
      * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
@@ -1595,9 +1595,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.handleProductInfoPopup(
-            "key features",
-            "show all specifications",
-            data
+            data.section,
+            data.type,
+            data.index
           );
         });
         // meta update event handler

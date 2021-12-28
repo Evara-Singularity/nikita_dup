@@ -33,11 +33,11 @@
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
-             <div class="oos-tag" *ngIf="productOutOfStock">
+            <div class="oos-tag" *ngIf="productOutOfStock">
                 <span>
-                   AVAILABLE ON REQUEST
+                    AVAILABLE ON REQUEST
                 </span>
-             </div>
+            </div>
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"
@@ -672,7 +672,7 @@
     <ng-container #productInfoPopup></ng-container>
 </div>
 
-<div *ngIf="productOutOfStock" class="stickyBottomBtn">
+<div *ngIf="productOutOfStock && oosCardIndex == -1" class="stickyBottomBtn">
     <button (click)="onVisibleProductRFQ($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 

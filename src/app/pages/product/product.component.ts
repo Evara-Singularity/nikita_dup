@@ -718,13 +718,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
+    this.removeSimilarProductInstanceOOS();
     if (this.productOutOfStock) {
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
       this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
-    } else {
-      this.removeSimilarProductInstanceOOS();
-    }
+    } 
 
     /**
      * Incase user lands on PDP page of outofstock variant and nextAvailableMsn in present in product group,
@@ -1562,6 +1561,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     horizontalOrientation: true,
     lazyLoadImage: true
   }
+
+  oosCardIndex = -1;
   async onVisibleSimilarOOS(event) {
     if (!this.similarProductInstanceOOS && this.productOutOfStock) {
       this.commonService.oosSimilarCard$.next(false);
@@ -1605,6 +1606,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "metaUpdateEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
+          this.oosCardIndex = data;
           this.handlemetaUpdateEvent(data);
         });
         // rating review event handler
@@ -1746,7 +1748,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // product-rfq
   async onVisibleProductRFQ(htmlElement) {
-    if(this.holdRFQForm)return
+    if (this.holdRFQForm) return
     this.removeRfqForm();
     if (!this.productRFQInstance) {
       this.intiateRFQQuote(true, false);

@@ -127,7 +127,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isServer = _commonService.isServer;
 		this.isBrowser = _commonService.isBrowser;
 		this.initConstructorData();
-		this._commonService.isFixedHeader = true;
+		this._commonService.isHomeHeader = true;
+		this._commonService.isPLPHeader = false;
 	}
 
 	ngOnInit() {

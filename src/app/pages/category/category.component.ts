@@ -77,7 +77,8 @@ export class CategoryComponent {
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
     ) {
-        this._commonService.isFixedHeader = true;
+        this._commonService.isHomeHeader = false;
+		this._commonService.isPLPHeader = true;
     }
 
     ngOnInit(): void {

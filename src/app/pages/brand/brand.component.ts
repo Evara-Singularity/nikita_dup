@@ -47,7 +47,8 @@ export class BrandComponent {
         public _productListService: ProductListService,
         @Optional() @Inject(RESPONSE) private _response,
     ) {
-        this._commonService.isFixedHeader = true;
+        this._commonService.isHomeHeader = false;
+		this._commonService.isPLPHeader = true;
     }
 
 

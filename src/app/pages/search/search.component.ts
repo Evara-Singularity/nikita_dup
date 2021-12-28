@@ -42,7 +42,8 @@ export class SearchComponent implements OnInit {
     private _analytics: GlobalAnalyticsService,
     private _router: Router
   ) {
-    this._commonService.isFixedHeader = true;
+    this._commonService.isHomeHeader = false;
+    this._commonService.isPLPHeader = true;
   }
 
   ngOnInit(): void {

@@ -46,7 +46,8 @@ export class CommonService {
 
   public oosSimilarCard$: Subject<any> = new Subject<any>();
 
-  isFixedHeader = false;
+  isHomeHeader = false;
+  isPLPHeader = false;
 
   currentRequest: any;
   cmsData: any;

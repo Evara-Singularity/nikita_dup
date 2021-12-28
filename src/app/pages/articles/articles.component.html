@@ -53,13 +53,18 @@
                 <h5 class="gray-txt">February 24, 2021 | 13K Views</h5>
             </div>
         </div> -->
+        <ul class="bread-head  hidden-sm-down">
+            <li><a [routerLink]="['/']">Home <span class="arrow-icon">
+                        <i class="icon-next" aria-hidden="true"></i></span></a> </li>
+            <li class="item"><a>Articles</a></li>
+        </ul>
         <div class="article-box">
             <h1 class="heading upper-title">Articles</h1>
             <div class="article-box-inner" *ngFor="let article of articleList"
                 (click)="$event.stopPropagation();navigateTo(article.friendlyUrl)">
                 <div class="article-box-inner-card">
                     <div class="product-img">
-                        <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}">
+                        <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}" alt="{{article.title}}">
                     </div>
                     <div class="product-text">
                         <h5 class="red-txt">{{article.categoryName}}</h5>

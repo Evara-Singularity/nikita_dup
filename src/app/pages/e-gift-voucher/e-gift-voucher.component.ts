@@ -153,7 +153,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         );
     }
 
-    togglePopUp1() { this.showSuccessPopup = !this.showSuccessPopup; }
+    togglePopUp1() { this.totalValue = 0; this.showSuccessPopup = !this.showSuccessPopup; }
 
     togglePopUp2() { this.showListPopup = !this.showListPopup; }
 

@@ -33,7 +33,7 @@
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
-             <div class="oos-tag">
+             <div class="oos-tag" *ngIf="productOutOfStock">
                 <span>
                    AVAILABLE ON REQUEST
                 </span>

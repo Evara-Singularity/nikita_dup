@@ -14,6 +14,7 @@ import { CheckoutService } from '@app/utils/services/checkout.service';
 import { AnimationOptions } from 'ngx-lottie';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import RoutingMatcher from '@app/utils/routing.matcher';
 
 @Component({
     selector: 'header-nav',
@@ -84,6 +85,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input('extraData') extraData;
 
     constructor(
+        private _routingMatcher: RoutingMatcher,
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
@@ -270,14 +272,16 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     commonSubcribers() {
         this.router.events.subscribe((val) => {
             this.createHeaderData(this.route);
-            if (val instanceof NavigationEnd) {
-                if (val['url'] === '/' || val['url'] === '/?back=1') {
-                    this.isHomePage = true;
-                } else {
-                    this.isHomePage = false;
-                    // (<HTMLElement>document.querySelector('header-nav + div'))['style']['marginTop'] = '';
-                }
-            }
+            // if (val instanceof NavigationEnd) {
+            //     console.log(val['url'].match(/^\d{9}$/));
+            //     if (val['url'] === '/' || val['url'] === '/?back=1') {
+            //         this.isHomePage = true;
+            //         this._commonService.isFixedHeader = true;
+            //     } else {
+            //         this.isHomePage = false;
+            //         this._commonService.isFixedHeader = false;
+            //     }
+            // }
         });
     }
 

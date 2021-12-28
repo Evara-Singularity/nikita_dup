@@ -46,6 +46,8 @@ export class CommonService {
 
   public oosSimilarCard$: Subject<any> = new Subject<any>();
 
+  isFixedHeader = false;
+
   currentRequest: any;
   cmsData: any;
   replaceHeading: boolean = false;

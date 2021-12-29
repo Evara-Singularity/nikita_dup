@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-  AfterViewInit,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { map } from "rxjs/operators";
@@ -17,13 +16,9 @@ import { DataService } from "@app/utils/services/data.service";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { environment } from "environments/environment";
-import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import crypto from "crypto-browserify";
+import { LocalStorageService } from "ngx-webstorage";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 declare var dataLayer;
-import { SpeedTestService } from "ng-speed-test";
-import { HostListener } from "@angular/core";
-import { Location } from "@angular/common";
 
 @Component({
   selector: "app-pages",
@@ -31,7 +26,7 @@ import { Location } from "@angular/common";
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit, AfterViewInit {
+export class PagesComponent implements OnInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true; logo?: boolean; title?: string };
@@ -40,7 +35,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
   footerVisible = false;
   isHomePage: boolean;
   constructor(
-    private _location: Location,
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
@@ -49,8 +43,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
-    private speedTestService: SpeedTestService,
-    private _sessionStorageService: SessionStorageService
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
@@ -69,32 +61,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    if (this.isBrowser) {
-      setTimeout(() => {
-        // TODO: configure it with 500KB image
-        this.speedTestService
-          .getMbps({
-            iterations: 1,
-            file: {
-              path: CONSTANTS.SPEED_TEST_IMAGE,
-              shouldBustCache: true,
-              size: 408949,
-            },
-            retryDelay: 1500,
-          })
-          .subscribe((speed) => {
-            const absoluteSpeed = isNaN(speed) ? "INVALID" : speed.toFixed(0);
-            this._sessionStorageService.store(
-              "CLIENT_NETWORK_SPEED_SCORE",
-              absoluteSpeed
-            );
-            this._commonService.setNetworkSpeedState(speed);
-          });
-      }, 0);
-    }
-  }
-
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
     if (
@@ -109,22 +75,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
     }
   }
 
-  encryptKey(plain_text, encryptionMethod, secret, iv) {
-    const encryptor = crypto.createCipheriv(encryptionMethod, secret, iv);
-    const aes_encrypted =
-      encryptor.update(plain_text, "utf8", "base64") +
-      encryptor.final("base64");
-    return Buffer.from(aes_encrypted).toString("base64");
-  }
-
   loginUserIfUserRedirectedFromBharatpay(queryParams) {
     const token = queryParams["token"];
-    // const secret_key = CONSTANTS.SECRET_KEY;
-    // const secret_iv = 'smslt';
-    // const encryptionMethod = 'AES-256-CBC';
-    // const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
-    // const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
-    // const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
 
     const url =
       environment.BASE_URL.replace("v1", "v2") + ENDPOINTS.BHARATPAY_URL;

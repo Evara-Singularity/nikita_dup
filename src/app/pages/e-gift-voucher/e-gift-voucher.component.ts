@@ -185,6 +185,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         });
     }
     onUpdate(e){
-      
+        this.showSuccessPopup = false;
     }
 }

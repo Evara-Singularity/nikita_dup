@@ -125,7 +125,7 @@
 </div>
 
 <!-- category+brand+validity popup -->
-<app-bottom-menu *ngIf="showListPopup" (outData$)="onUpdate($event)">
+<app-bottom-menu *ngIf="showListPopup" (outData$)="togglePopUp2()">
     <div content>
         <div class="list-of-brand-e-gifts">
             <div class="top-head">
@@ -162,7 +162,7 @@
 
 
 <!-- success popup -->
-<app-bottom-menu *ngIf="showSuccessPopup" (outData$)="onUpdate($event)">
+<app-bottom-menu *ngIf="showSuccessPopup" (outData$)="togglePopUp1()">
     <div content>
         <div class="thanks-pop">
             <div class="top-cross-area" (click)="togglePopUp1()">

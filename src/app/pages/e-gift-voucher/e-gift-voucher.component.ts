@@ -184,4 +184,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             return !pos || item != ary[pos - 1];
         });
     }
+    onUpdate(e){
+      
+    }
 }

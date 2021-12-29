@@ -187,8 +187,11 @@
                             align-items: center;
                             border: 1px solid #f1f1f1;
                             border-radius: 4px;
-                            img {
-                                width: 25px;
+                            i {
+                               font-size:20px;
+                               &.selectedIcon{
+                                   color:#d9232d;
+                               }
                             }
                         }
                     }

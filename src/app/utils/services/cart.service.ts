@@ -69,8 +69,8 @@ export class CartService {
     updateCart(cartSessionResponse) {
         const cartSessionObj = {
             cart: Object.assign({}, cartSessionResponse['cart']),
-            itemsList: [...cartSessionResponse["itemsList"]],
-            addressList: [...cartSessionResponse["addressList"]],
+            itemsList: (cartSessionResponse["itemsList"] ? [...cartSessionResponse["itemsList"]] : []),
+            addressList: (cartSessionResponse["addressList"] ? [...cartSessionResponse["addressList"]] : []),
             payment: cartSessionResponse["payment"],
             offersList: cartSessionResponse["offersList"],
             extraOffer: cartSessionResponse["extraOffer"]

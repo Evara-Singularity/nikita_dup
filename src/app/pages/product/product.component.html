@@ -1,4 +1,5 @@
-<div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
+<div id="oosSimilarTopSection" class="oosSimilarTopSection"
+    *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
     <h2>Consider These Available Items</h2>
     <div class="horizontal-scroll-container">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
@@ -25,7 +26,7 @@
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
             </span>
-            <span *ngIf="productOutOfStock"
+            <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2"
                 (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>

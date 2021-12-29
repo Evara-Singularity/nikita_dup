@@ -100,15 +100,15 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc" (click)="getReviewsAndRatings()">
-            <span class="rating-box"
+        <div class="prod-inner-desc">
+            <span (click)="getReviewsAndRatings()" class="rating-box"
                 *ngIf="productService.oosSimilarProductsData.similarData[index].avgRating > 0">{{productService.oosSimilarProductsData.similarData[index].avgRating
                 | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <p class="prod-status-right">
-                    <small class="review"
+                    <small (click)="getReviewsAndRatings()" class="review"
                         *ngIf="productService.oosSimilarProductsData.similarData[index].reviewCount > 0">
                         {{productService.oosSimilarProductsData.similarData[index].reviewCount}}
                         Reviews

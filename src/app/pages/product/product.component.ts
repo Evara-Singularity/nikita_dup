@@ -1759,6 +1759,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // product-rfq
+  getBestPrice($event)
+  {
+      this.holdRFQForm = false;
+      this.onVisibleProductRFQ($event);
+  }
+
   async onVisibleProductRFQ(htmlElement) {
     if (this.holdRFQForm) return
     this.removeRfqForm();

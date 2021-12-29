@@ -47,7 +47,6 @@ import { PastOrdersModule } from '@app/components/past-orders/past-orders.compon
     SwipeDirectiveModule,
     IdleUserSearchNudgeModule,
     PastOrdersModule,
-    SwipeDirectiveModule
   ],
   exports: [],
   providers: [NgxSiemaService],

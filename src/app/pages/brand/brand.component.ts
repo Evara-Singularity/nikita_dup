@@ -48,7 +48,7 @@ export class BrandComponent {
         @Optional() @Inject(RESPONSE) private _response,
     ) {
         this._commonService.isHomeHeader = false;
-		this._commonService.isPLPHeader = true;
+        this._commonService.isPLPHeader = true;
     }
 
 

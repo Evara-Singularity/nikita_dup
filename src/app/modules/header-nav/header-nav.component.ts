@@ -274,16 +274,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     commonSubcribers() {
         this.router.events.subscribe((val) => {
             this.createHeaderData(this.route);
-            // if (val instanceof NavigationEnd) {
-            //     console.log(val['url'].match(/^\d{9}$/));
-            //     if (val['url'] === '/' || val['url'] === '/?back=1') {
-            //         this.isHomePage = true;
-            //         this._commonService.isFixedHeader = true;
-            //     } else {
-            //         this.isHomePage = false;
-            //         this._commonService.isFixedHeader = false;
-            //     }
-            // }
+            if (val instanceof NavigationEnd) {
+                if (val['url'] === '/' || val['url'] === '/?back=1') {
+                    this._commonService.isHomeHeader = true;
+                    this._commonService.isPLPHeader = false;
+                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0)) {
+                    this._commonService.isHomeHeader = false;
+                    this._commonService.isPLPHeader = true;
+                }
+                else {
+                    this._commonService.isHomeHeader = false;
+                    this._commonService.isPLPHeader = false;
+                }
+            }
         });
     }
 

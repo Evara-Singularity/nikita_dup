@@ -19,6 +19,7 @@ export class ArticleComponent implements OnInit
     readonly componentLabel = 'componentLabel';
     readonly data = 'data';
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
+    breadCrumbList = [];
     articleUrl = CONSTANTS.PROD;
     articles = null;
     metaInformation = null;
@@ -45,6 +46,7 @@ export class ArticleComponent implements OnInit
                 this.toastMessageService.show({ type: 'error', text: response['message'] });
             }
         }
+        this.breadCrumbList = [{ name: "Articles", link: "/articles" }, { name: this.breadCrumbTitle, link: null }];
     }
 
     setAnalyticTags(response)

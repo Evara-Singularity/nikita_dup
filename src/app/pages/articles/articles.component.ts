@@ -22,7 +22,7 @@ export class ArticlesComponent implements OnInit
     readonly data = 'data';
     readonly URL = "/cmsApi/getArticlesListByCategory?&pageSize=10&categoryCode=all";
     readonly BASE_URL = environment.BASE_URL;
-    readonly breadCrumbList = [{ name: "Articles", link: "/articles" }, { name: "Articles", link:null }]
+    readonly breadCrumbList = [{ name: "Articles", link: null }];
     //SEO
     readonly TITLE = "Online B2B Industrial Products and Equipments Guide - Moglix.com";
     readonly DESCRIPTION = "Explore the complete buying guide before purchasing Industrial tools and equipment Online at Moglix.com.Get Tips from Industry Experts for buying all types of industrial hardware tools and Machinery.";

@@ -44,7 +44,6 @@
             <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
                 placeholder="Search Product/Category/Brand...">
             <div class="home-search-animation">
-                <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
             </div>
         </div>
         <!--Category Header-->
@@ -66,9 +65,7 @@
                     *ngIf="!_commonService.isHomeHeader && !isLoginPage && !(routerData && routerData['title'])  && displaySearch">
                     <i class="icon-search"></i>
                     <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
-                    <div class="listing-search-animation">
-                        <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
-                    </div>
+                    
                 </a>
                 <a *ngIf="!_commonService.isHomeHeader  && !isLoginPage && (routerData && routerData['title'])"
                     (click)="loadSearchNav()" class="icon-search red-txt"></a>
@@ -89,7 +86,7 @@
                 <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
                     placeholder="Search Product/Category/Brand...">
                 <div class="home-search-animation">
-                    <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
+
                 </div>
             </a>
             <a *ngIf="_commonService.isHomeHeader && isScrolledHeader"

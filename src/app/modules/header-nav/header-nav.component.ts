@@ -11,7 +11,6 @@ import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
-import { AnimationOptions } from 'ngx-lottie';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import RoutingMatcher from '@app/utils/routing.matcher';
@@ -22,11 +21,6 @@ import RoutingMatcher from '@app/utils/routing.matcher';
     styleUrls: ['./header-nav.component.scss'],
 })
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
-
-
-    options: AnimationOptions = {
-        path: './../../../assets/json/common1.json'
-    };
 
     isHomePage: boolean;
     routerData: any = null;

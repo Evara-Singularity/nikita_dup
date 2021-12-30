@@ -43,8 +43,8 @@
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%;">
-                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}"
-                            height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}" height="330"
+                            width="330" alt="{{productName}}">
                         <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                             class="loader-image" />
                     </div>
@@ -640,7 +640,8 @@
             (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
-        <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics"></past-orders>
+        <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
+        </past-orders>
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
@@ -754,6 +755,8 @@
 </idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
-<div class="scroll-arrow" *ngIf="showScrollToTopButton && productOutOfStock" (click)="scrollToTop()">
-    <i class="icon-up"></i>
-</div>
+<ng-container *ngIf="showScrollToTopButton">
+    <div class="scroll-arrow-pdp" (click)="scrollToTop()">
+        <i class="icon-up"></i>
+    </div>
+</ng-container>

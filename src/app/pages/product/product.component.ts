@@ -1627,9 +1627,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "updateScrollToTop"
           ] as EventEmitter<any>
         ).subscribe((data) => {
-          if (this.commonService.isBrowser) {
-            this.showScrollToTopButton = data;
-          }
+          this.showScrollToTopButton = data;
         });
       }
     }

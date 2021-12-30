@@ -32,6 +32,7 @@ export class CommonService {
     "search-results": string;
   };
   limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
+  enableNudge: boolean = false;
 
   set showLoader(status: boolean) {
     this._loaderService.setLoaderState(status);

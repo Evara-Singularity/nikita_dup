@@ -216,7 +216,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             if (toBeAutoFilledKeyword) {
                 setTimeout(() => {
                     this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
-                }, 400);
+                }, 500);
             }
         }
     }

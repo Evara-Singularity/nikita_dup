@@ -15,44 +15,43 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   timer: IdleTimer;
   @Input() headingKeyword: string;
   @Input() searchKeyword: string;
-  enableNudge: boolean = false;
   oosSimilarCardSunscription: Subscription = null;
 
   constructor(
-    public common: CommonService
+    public _commonService: CommonService
   ) { }
 
   ngOnInit() {
-    if (this.common.isBrowser) {
-      this.oosSimilarCardSunscription = this.common.oosSimilarCard$.subscribe(res => {
-        this.enableNudge = res;
+    if (this._commonService.isBrowser) {
+      this.oosSimilarCardSunscription = this._commonService.oosSimilarCard$.subscribe(res => {
+        this._commonService.enableNudge = res;
       });
     }
   }
 
   ngAfterViewInit() {
-    if (this.common.isBrowser) {
+    if (this._commonService.isBrowser) {
       this.timer = new IdleTimer({
         timeout: 7, //expired after 7 secs
         onTimeout: () => {
-          this.enableNudge = true;
+          this._commonService.enableNudge = true;
         }
       });
     }
   }
 
   openSearchPopup() {
-    this.common.updateSearchPopup(this.searchKeyword);
+    this._commonService.updateSearchPopup(this.searchKeyword);
   }
 
   ngOnDestroy() {
-    if (this.common.isBrowser) {
+    if (this._commonService.isBrowser) {
       this.timer.cleanUp();
       this.oosSimilarCardSunscription.unsubscribe();
     }
   }
 
   close() {
-    this.enableNudge = false;
+    this._commonService.enableNudge = false;
   }
 }

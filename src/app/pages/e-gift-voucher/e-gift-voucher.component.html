@@ -17,8 +17,8 @@
                         <label>Full Name*</label>
                         <input type="text" (keypress)="checkForspecialChars($event)" formControlName="name"
                             placeholder="Enter full name">
-                        <p *ngIf="name.touched && name.hasError('required')" class="">Kindly enter your name
-                            <span class="">(Special characters are not allowed)</span>
+                        <p *ngIf="name.touched && (name.hasError('required') || name.hasError('whitespace'))">Kindly enter your name
+                            <span>(Special characters are not allowed)</span>
                         </p>
                     </div>
                     <div class="form-pd-field">

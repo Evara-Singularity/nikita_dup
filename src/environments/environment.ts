@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
   PROD_NAME: 'https://www.moglix.com',
-  BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
-  // BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
+  // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",
   IMAGE_BASE_URL: 'https://cdn.moglix.com/',
@@ -35,7 +35,7 @@ export const environment = {
     cm814985: "CAT_B",
     cm196070: "CAT_C",
     cm454649: "CAT_D",
-    cm358138: "CAT_E",      console.log('add to card ==>', result);
+    cm358138: "CAT_E",
     cm933249: "CAT_F",
     cm416640: "CAT_G",
     cm973381: "MIDDLE_BANNER_ADS",

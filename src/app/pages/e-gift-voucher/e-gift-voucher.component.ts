@@ -40,7 +40,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     ngOnInit()
     {
         this._title.setTitle(this.TITLE);
-        //this.fetchVoucherData();
+        this.fetchVoucherData();
         this.eGiftForm = new FormGroup({
             rfqEnquiryCustomer: new FormGroup(
                 {
@@ -82,7 +82,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                 this.brandList = this.extractUniqueBrands(BRANDS);
                 this.categoryList = Object.keys(this.categoryBrandInfo);
             },
-            (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
+            (error) => { this.globalLoader.setLoaderState(false);this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
             () => { this.globalLoader.setLoaderState(false); }
         );
     }
@@ -124,6 +124,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     removeProduct(index)
     {
+        if (this.rfqEnquiryItemsList.length === 1) { this._tms.show({ type: 'error', text: 'Atleast one card is required.' });return; }
         this.rfqEnquiryItemsList.removeAt(index);
         this.updateTotalValue();
     }

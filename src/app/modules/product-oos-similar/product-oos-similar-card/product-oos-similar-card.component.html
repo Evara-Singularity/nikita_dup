@@ -100,15 +100,15 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc" (click)="getReviewsAndRatings()">
-            <span class="rating-box"
+        <div class="prod-inner-desc">
+            <span (click)="getReviewsAndRatings()" class="rating-box"
                 *ngIf="productService.oosSimilarProductsData.similarData[index].avgRating > 0">{{productService.oosSimilarProductsData.similarData[index].avgRating
                 | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <p class="prod-status-right">
-                    <small class="review"
+                    <small (click)="getReviewsAndRatings()" class="review"
                         *ngIf="productService.oosSimilarProductsData.similarData[index].reviewCount > 0">
                         {{productService.oosSimilarProductsData.similarData[index].reviewCount}}
                         Reviews
@@ -124,25 +124,112 @@
                 class="inner-text">{{productService.oosSimilarProductsData.similarData[index].recentBoughtMessage}}</span>
         </div>
     </div>
-    <div *ngIf="productService.oosSimilarProductsData.similarData[index].productKeyFeatures && productService.oosSimilarProductsData.similarData[index].productKeyFeatures.length > 0"
-        class="key-features">
-        <div class="inline-heading">
-            <h3 class="heading-3">Key Features</h3>
-        </div>
-        <ul class="feature-list">
-            <li
-                *ngFor="let feature of productService.oosSimilarProductsData.similarData[index].productKeyFeatures | sliceArray:3">
-                <p>
-                    <span>{{feature}}.</span>
-                </p>
-            </li>
-        </ul>
-        <div class="show-all-strip">
-            <span (click)="showAllKeyFeatureClickEvent.emit(index);">View All
-               <i class="icon-next"></i>
-           </span>
-        </div>
-    </div>
+    <!--fallback keyfeatures|specifications|details-->
+    <ng-template #pdpinfo [ngTemplateOutlet]="pdpinfo" let-section="section" let-product="product"
+        [ngTemplateOutletContext]="{ product:productService.oosSimilarProductsData.similarData[index] , section: productService.oosSimilarProductsData.similarData[index] | productInfoSection }">
+        <ng-container [ngSwitch]="section">
+            <!--Features-->
+            <div *ngSwitchCase="'features'" class="key-features">
+                <div class="inline-heading">
+                    <h3 class="heading-3">Key Features</h3>
+                </div>
+                <ul class="feature-list">
+                    <li *ngFor="let feature of product.productKeyFeatures | sliceArray:3">
+                        <p>
+                            <span>{{feature}}.</span>
+                        </p>
+                    </li>
+                </ul>
+                <div class="show-all-strip">
+                    <span
+                        (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'key features', type: 'show all specifications'});">View
+                        Details
+                        <i class="icon-next"></i>
+                    </span>
+                </div>
+            </div>
+            <!--Specifications-->
+            <div *ngSwitchCase="'specifications'" class="product-specification">
+                <h2 class="heading-3">Product Specifications</h2>
+                <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="left">
+                            <div>Brand</div>
+                        </td>
+                        <td class="right">
+                            <div>
+                                <a class="brandName"
+                                    (click)="commonService.navigateTo(getBrandLink(product.productBrandDetails))">{{product['brandName']}}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let attr of product.productAttributes | objectToArray:'associative' | sliceArray:3s">
+                        <td class="left">
+                            <div>{{attr.key}}</div>
+                        </td>
+                        <td class="right">
+                            <div *ngFor="let item of attr.value">
+                                {{item}}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'specifications', type: 'show all specifications'});"
+                    class="show-all-strip spec">
+                    <span>View Details
+                        <i class="icon-next"></i>
+                    </span>
+                </div>
+            </div>
+            <!--Details-->
+            <div *ngSwitchCase="'details'" class="prod-detail">
+                <h2 class="heading-3">Product Details</h2>
+                <ng-container *ngIf="product.productDescripton != undefined else noProdDesc">
+                    <p [innerHTML]="product.productDescripton"></p>
+                    <p class="static-desc"> Browse through the extensive list of
+                        <a class="blueText"
+                            (click)="navigateLink('/'+ (product.productCategoryDetails ? product.productCategoryDetails['categoryLink'] : ''))">
+                            {{product.productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
+                        <a class="blueText"
+                            (click)="navigateLink('/'+ product.productBrandCategoryUrl)">{{product.productBrandDetails ?
+                            product.productBrandDetails['brandName'] : ''}}
+                            {{product.productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest
+                        price range.
+                    </p>
+                </ng-container>
+                <ng-template #noProdDesc>
+                    <p>
+                        {{product.productName}} is a premium quality product from {{product.productBrandDetails ?
+                        product.productBrandDetails['brandName'] : ''}}. Moglix is a
+                        well-known ecommerce platform for qualitative range of <a class="blueText"
+                            (click)="navigateLink('/'+product.productCategoryDetails['categoryLink'])">{{product.productCategoryDetails
+                            ?
+                            product.productCategoryDetails['categoryName'] : ''}}</a>.
+                        All {{product.productName}} are manufactured by using quality assured material and advanced
+                        techniques,
+                        which make them up to the standard in this highly challenging field. The materials utilized to
+                        manufacture {{product.productName}}, are sourced
+                        from the most reliable and official vendors, chosen after performing detailed market surveys.
+                        {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}} products are
+                        widely acknowledged in
+                        the market for their high
+                        quality. We are dedicatedly involved in
+                        providing an excellent quality array of <a class="blueText"
+                            (click)="navigateLink('/'+product.productBrandCategoryUrl)">
+                            {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}}
+                            {{product.productCategoryDetails ?
+                            product.productCategoryDetails['categoryName'] : ''}}</a>.
+                    </p>
+                </ng-template>
+                <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'product details', type: 'read more'});"
+                    class="show-all-strip">
+                    <span>View Details
+                        <i class="icon-next"></i>
+                    </span>
+                </div>
+            </div>
+        </ng-container>
+    </ng-template>
     <div class="bottom-bar nonFixed">
         <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">
             <i class="icon-cart1"></i>

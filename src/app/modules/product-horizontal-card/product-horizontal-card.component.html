@@ -19,7 +19,7 @@
                 </div>
                 <ng-container *ngIf="isFirstView || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
-                        enhanceImgByNetwork height="125" width="125"
+                        height="125" width="125"
                         (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
                 <ng-container *ngIf="!isFirstView && cardFeaturesConfig.lazyLoadImage">

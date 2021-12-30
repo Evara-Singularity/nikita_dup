@@ -2,7 +2,6 @@ import { Component, EventEmitter, Output, Input, SimpleChanges } from '@angular/
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { countryList } from "./country";
 import { stateList } from "./state";
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ShippingBillingAddressService } from './shippingBillingAddress.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { map } from 'rxjs/operators';
@@ -11,6 +10,7 @@ import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { Step } from '../../utils/validators/step.validate';
+import { forkJoin } from 'rxjs';
 
 
 

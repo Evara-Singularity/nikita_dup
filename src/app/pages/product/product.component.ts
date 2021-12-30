@@ -57,7 +57,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-
+  showScrollToTopButton: boolean = false;
   isServer: boolean;
   isBrowser: boolean;
   //conditions vars
@@ -272,6 +272,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   appPromoVisible: boolean = true;
   productInfo = null;
+  holdRFQForm = false;//this flag is to resolve RFQ pop-up issue on click of similar products icon
 
   // quntity && bulk prices related
   qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
@@ -317,15 +318,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    if (this.isBrowser) {
-      ClientUtility.scrollToTop(100);
-    }
+    this.scrollToTop();
     this.intializeForm();
     this.getProductApiData();
     this.addSubcriber();
     this.createSiemaOption();
     this.setProductSeoSchema();
     this.setQuestionAnswerSchema();
+  }
+
+  scrollToTop() {
+    if (this.isBrowser) {
+      ClientUtility.scrollToTop(100);
+    }
   }
 
   ngAfterViewInit() {
@@ -717,12 +722,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
+    this.removeSimilarProductInstanceOOS();
     if (this.productOutOfStock) {
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
       this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
-    } else {
-      this.removeSimilarProductInstanceOOS();
     }
 
     /**
@@ -1545,6 +1549,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         order: orderData,
       };
     }
+    this.holdRFQForm = false;
   }
 
   readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
@@ -1560,6 +1565,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     horizontalOrientation: true,
     lazyLoadImage: true
   }
+
+  oosCardIndex = -1;
   async onVisibleSimilarOOS(event) {
     if (!this.similarProductInstanceOOS && this.productOutOfStock) {
       this.commonService.oosSimilarCard$.next(false);
@@ -1592,9 +1599,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           ] as EventEmitter<any>
         ).subscribe((data) => {
           this.handleProductInfoPopup(
-            "key features",
-            "show all specifications",
-            data
+            data.section,
+            data.type,
+            data.index
           );
         });
         // meta update event handler
@@ -1603,6 +1610,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "metaUpdateEvent"
           ] as EventEmitter<any>
         ).subscribe((data) => {
+          this.oosCardIndex = data;
           this.handlemetaUpdateEvent(data);
         });
         // rating review event handler
@@ -1613,8 +1621,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe((data) => {
           this.handleReviewRatingPopup(data);
         });
+        // rating review event handler
+        (
+          this.similarProductInstanceOOS.instance[
+          "updateScrollToTop"
+          ] as EventEmitter<any>
+        ).subscribe((data) => {
+          this.showScrollToTopButton = data;
+        });
       }
     }
+    this.holdRFQForm = false;
   }
 
   handlemetaUpdateEvent(index) {
@@ -1742,7 +1759,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // product-rfq
+  getBestPrice($event)
+  {
+      this.holdRFQForm = false;
+      this.onVisibleProductRFQ($event);
+  }
+
   async onVisibleProductRFQ(htmlElement) {
+    if (this.holdRFQForm) return
     this.removeRfqForm();
     if (!this.productRFQInstance) {
       this.intiateRFQQuote(true, false);
@@ -3058,6 +3082,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   scrollToId(id: string) {
+    this.holdRFQForm = true;
     let footerOffset = document.getElementById(id).offsetTop;
     ClientUtility.scrollToTop(1000, footerOffset + 190);
   }

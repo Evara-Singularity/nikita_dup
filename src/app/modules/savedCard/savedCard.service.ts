@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from "../../utils/services/data.service";

@@ -11,9 +11,9 @@ import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
-import { AnimationOptions } from 'ngx-lottie';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import RoutingMatcher from '@app/utils/routing.matcher';
 
 @Component({
     selector: 'header-nav',
@@ -21,11 +21,6 @@ import { LocalStorageService } from 'ngx-webstorage';
     styleUrls: ['./header-nav.component.scss'],
 })
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
-
-
-    options: AnimationOptions = {
-        path: './../../../assets/json/common1.json'
-    };
 
     isHomePage: boolean;
     routerData: any = null;
@@ -84,6 +79,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input('extraData') extraData;
 
     constructor(
+        private _routingMatcher: RoutingMatcher,
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
@@ -203,6 +199,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
+
             if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
             setTimeout(() => {
@@ -215,7 +212,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
-            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
+
+            if (toBeAutoFilledKeyword) {
+                setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
+                }, 400);
+            }
         }
     }
 
@@ -272,10 +274,15 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.createHeaderData(this.route);
             if (val instanceof NavigationEnd) {
                 if (val['url'] === '/' || val['url'] === '/?back=1') {
-                    this.isHomePage = true;
-                } else {
-                    this.isHomePage = false;
-                    // (<HTMLElement>document.querySelector('header-nav + div'))['style']['marginTop'] = '';
+                    this._commonService.isHomeHeader = true;
+                    this._commonService.isPLPHeader = false;
+                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0)) {
+                    this._commonService.isHomeHeader = false;
+                    this._commonService.isPLPHeader = true;
+                }
+                else {
+                    this._commonService.isHomeHeader = false;
+                    this._commonService.isPLPHeader = false;
                 }
             }
         });

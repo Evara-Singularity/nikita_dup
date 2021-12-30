@@ -76,7 +76,10 @@ export class CategoryComponent {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-    ) { }
+    ) {
+        this._commonService.isHomeHeader = false;
+		this._commonService.isPLPHeader = true;
+    }
 
     ngOnInit(): void {
         this.setDataFromResolver();

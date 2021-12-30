@@ -8,7 +8,7 @@
         *ngFor="let product of productService.oosSimilarProductsData.similarData | slice : 0 :(GLOBAL_CONSTANT.oosSimilarCardCountBottom + GLOBAL_CONSTANT.oosSimilarCardCountTop); let index = index;">
         <ng-container *ngIf="index >= GLOBAL_CONSTANT.oosSimilarCardCountTop">
             <app-product-oos-similar-card (removeWindowScrollListenerEvent)="removeWindowScrollListener($event)"
-                (showAllKeyFeatureClickEvent)="showAllKeyFeatureClickEvent.emit(index)"
+                (showAllKeyFeatureClickEvent)="showAllKeyFeatureClickEvent.emit($event)"
                 (ratingReviewClickEvent)="ratingReviewClickEvent.emit($event)"
                 (firstImageClickedEvent)="firstImageClickedEvent.emit(index)" [index]="index"
                 [productMsn]="product?.moglixPartNumber">

@@ -23,18 +23,22 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   ) { }
 
   ngOnInit() {
-    this.oosSimilarCardSunscription = this.common.oosSimilarCard$.subscribe(res => {
-      this.enableNudge = res;
-    });
+    if (this.common.isBrowser) {
+      this.oosSimilarCardSunscription = this.common.oosSimilarCard$.subscribe(res => {
+        this.enableNudge = res;
+      });
+    }
   }
 
   ngAfterViewInit() {
-    this.timer = new IdleTimer({
-      timeout: 7, //expired after 7 secs
-      onTimeout: () => {
-        this.enableNudge = true;
-      }
-    });
+    if (this.common.isBrowser) {
+      this.timer = new IdleTimer({
+        timeout: 7, //expired after 7 secs
+        onTimeout: () => {
+          this.enableNudge = true;
+        }
+      });
+    }
   }
 
   openSearchPopup() {
@@ -42,8 +46,10 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   }
 
   ngOnDestroy() {
-    this.timer.cleanUp();
-    this.oosSimilarCardSunscription.unsubscribe();
+    if(this.common.isBrowser){
+      this.timer.cleanUp();
+      this.oosSimilarCardSunscription.unsubscribe();
+    }
   }
 
   close() {

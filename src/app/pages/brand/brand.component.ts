@@ -46,7 +46,10 @@ export class BrandComponent {
         private _localStorageService: LocalStorageService,
         public _productListService: ProductListService,
         @Optional() @Inject(RESPONSE) private _response,
-    ) { }
+    ) {
+        this._commonService.isHomeHeader = false;
+        this._commonService.isPLPHeader = true;
+    }
 
 
     ngOnInit(): void {
@@ -81,7 +84,7 @@ export class BrandComponent {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
-                    
+
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
                     if (!this._activatedRoute.snapshot.params.category) {
                         this.setPopularCategories(category.terms);
@@ -91,7 +94,7 @@ export class BrandComponent {
                     if (res.hasOwnProperty('categoryLinkList')) {
                         this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                         // genrate popular links data
-                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
+                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
                     }
                     // genrate data for footer
                     this.genrateAndUpdateBrandFooterData();
@@ -465,7 +468,7 @@ export class BrandComponent {
         this._router.navigateByUrl(window.location.pathname);
     }
 
-    getUrlPathName(url){
+    getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
     }
@@ -488,5 +491,5 @@ export class BrandComponent {
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)
         };
     }
-    
+
 }

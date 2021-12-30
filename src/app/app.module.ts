@@ -7,15 +7,13 @@ import { AppComponent } from './app.component';
 import { PLATFORM_ID, APP_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { SpeedTestModule } from 'ng-speed-test';
+// import { SpeedTestModule } from 'ng-speed-test';
 
 
-const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'ssr-pwa' }),
@@ -25,14 +23,13 @@ const config: SocketIoConfig = { url: CONSTANTS.SOCKET_URL, options: {} };
     BrowserTransferStateModule,
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
-    SocketIoModule.forRoot(config),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    SpeedTestModule,
+    // SpeedTestModule,
     // ErrorHandlerModule
   ],
   declarations: [

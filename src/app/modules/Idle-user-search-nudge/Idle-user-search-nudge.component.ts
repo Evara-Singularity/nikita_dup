@@ -33,7 +33,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   ngAfterViewInit() {
     if (this.common.isBrowser) {
       this.timer = new IdleTimer({
-        timeout: 7, //expired after 7 secs
+        timeout: 2, //expired after 7 secs
         onTimeout: () => {
           this.enableNudge = true;
         }

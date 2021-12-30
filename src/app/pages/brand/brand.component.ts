@@ -86,7 +86,7 @@ export class BrandComponent {
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
 
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                    if (!this._activatedRoute.snapshot.params.category) {
+                    if (!this._activatedRoute.snapshot.params.category && category.hasOwnProperty('terms')) {
                         this.setPopularCategories(category.terms);
                     }
 

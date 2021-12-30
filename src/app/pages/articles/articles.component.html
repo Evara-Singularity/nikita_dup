@@ -1,3 +1,4 @@
+<static-breadcrumb [breadCrumbList]="breadCrumbList"></static-breadcrumb>
 <div class="main-article">
     <!--ODP-1815:In sprint-17 main only articles to be displayed-->
     <!-- <div class="main-article-header">
@@ -53,18 +54,19 @@
                 <h5 class="gray-txt">February 24, 2021 | 13K Views</h5>
             </div>
         </div> -->
+        
         <div class="article-box">
             <h1 class="heading upper-title">Articles</h1>
             <div class="article-box-inner" *ngFor="let article of articleList"
                 (click)="$event.stopPropagation();navigateTo(article.friendlyUrl)">
                 <div class="article-box-inner-card">
                     <div class="product-img">
-                        <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}">
+                        <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}" alt="{{article.title}}">
                     </div>
                     <div class="product-text">
                         <h5 class="red-txt">{{article.categoryName}}</h5>
                         <h3>{{article.title}}.</h3>
-                        <h5 class="gray-txt">{{article.created_At | date:'MMMM: dd, yyyy'}}</h5><!-- | 13K Views-->
+                        <h5 class="gray-txt">{{article.created_At | date:'MMMM dd, yyyy'}}</h5><!-- | 13K Views-->
                     </div>
                 </div>
             </div>

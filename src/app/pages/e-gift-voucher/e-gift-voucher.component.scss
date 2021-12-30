@@ -1,13 +1,13 @@
 .e-gifting {
     padding-bottom: 85px;
-    .multiple-form-field{
-        display:flex;
-        width:100%;
+    .multiple-form-field {
+        display: flex;
+        width: 100%;
     }
-    .gift-card-heading{
-        font-size:14px;
-        font-weight:bold;
-        color:#3c3c3c;
+    .gift-card-heading {
+        font-size: 14px;
+        font-weight: bold;
+        color: #3c3c3c;
     }
     .text-red {
         color: #d9232d;
@@ -39,7 +39,7 @@
         background: #ffffff;
         box-shadow: 0px 3px 12px #00000014;
         border-radius: 8px;
-        padding: 20px;
+        padding: 15px 0px;
         h2 {
             text-align: center;
             font-size: 18px;
@@ -71,6 +71,7 @@
             background-color: #faf7f7;
             padding: 10px;
             margin-top: 20px;
+            margin: 15px;
             .form-pd-field {
                 margin-top: 7px;
                 margin-bottom: 7px;
@@ -88,7 +89,7 @@
                     border-radius: 4px;
                     width: 100%;
                 }
-                p{
+                p {
                     color: #d9232d;
                 }
             }
@@ -101,6 +102,11 @@
                 margin-bottom: 10px;
             }
             .gift-card-req-form {
+                h3{
+                    margin-bottom:0px;
+                    line-height:16px;
+                    padding-left:15px;
+                }
                 .req-flex {
                     margin: 10px 0px;
                     border-radius: 4px;
@@ -108,6 +114,7 @@
                     flex-wrap: wrap;
                     align-items: center;
                     width: 100%;
+                    padding:10px;
                     .req-flex-child {
                         padding: 7px;
                         position: relative;
@@ -123,6 +130,9 @@
                             background-color: #ffffff;
                             border: 1px solid #707070;
                             padding: 0px 24px 0px 5px;
+                            // &.selected-value{
+                            //     color: #3c3c3c;
+                            // }
                         }
                         .icon-down {
                             pointer-events: none;
@@ -130,6 +140,9 @@
                             top: 22px;
                             right: 15px;
                             z-index: 3;
+                        }
+                        .list-icon-arrow-down {
+                            margin-top: 6px;
                         }
                         input {
                             padding: 0px 10px;
@@ -159,9 +172,12 @@
                             border: none;
                             text-align: left;
                             padding: 10px;
-                            color:#707070;
-                            display:block;
-                            font-size:14px;
+                            color: #707070;
+                            display: block;
+                            font-size: 14px;
+                            // &.calculated-total-value{
+                            //     color: #3C3C3C;
+                            // }
                         }
                     }
                     .action {
@@ -178,8 +194,11 @@
                             align-items: center;
                             border: 1px solid #f1f1f1;
                             border-radius: 4px;
-                            img {
-                                width: 25px;
+                            i {
+                               font-size:20px;
+                               &.selectedIcon{
+                                   color:#d9232d;
+                               }
                             }
                         }
                     }
@@ -187,20 +206,29 @@
             }
         }
         .add-another-card {
-            border: 1px dashed #4490df;
+            border: 1px dashed #b1b1b1;
             border-radius: 4px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 12px 12px 0px;
+            &.add-another-card-enabled {
+                border: 1px dashed #4490df;
+                input{
+                    color:#4490df;
+                }
+            }
             input {
+                color:#b1b1b1;
                 font-size: 14px;
-                font-weight: 500;
+                font-weight: bold;
                 border: none;
-                color: #4490df;
+                color: #b1b1b1;
                 background: none;
             }
         }
+       
         .submit-and-total {
             padding: 7px 0px;
             position: fixed;
@@ -222,10 +250,11 @@
                     height: 40px;
                     font-size: 14px;
                     border: none;
+                    font-weight: bold;
                 }
             }
             .total-area {
-                width:55%;
+                width: 55%;
                 padding-left: 10px;
                 span {
                     color: #b1b1b1;
@@ -237,6 +266,9 @@
                 .amount {
                     font-size: 18px;
                 }
+                // .total-amout{
+                //     color: #3c3c3c;
+                // }
             }
         }
     }
@@ -324,7 +356,7 @@
         button {
             height: 40px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
             border: none;
             border-radius: 4px;
             color: #ffffff;
@@ -338,22 +370,7 @@ select::-ms-expand {
     display: block;
 }
 
-.add-another-card-disabled {
-    border: 1px dashed #b1b1b1;
-    border-radius: 4px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    input {
-        font-size: 14px;
-        font-weight: 500;
-        border: none;
-        color: #b1b1b1;
-        background: none;
-    }
-}
 
 .submit-button-disabled {
     cursor: not-allowed;
@@ -393,6 +410,10 @@ datalist {
     display: none;
 }
 
-.valid-row{background-color: #37b9180f;}
-
-
+.valid-row {
+    background-color: #37b9180f;
+    padding-top: 5px;
+}
+.validated-dark-text{
+    color: #3c3c3c !important;
+}

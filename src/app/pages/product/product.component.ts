@@ -3437,6 +3437,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytices;
   }
 
+    get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true"}
+
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");

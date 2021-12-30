@@ -1,0 +1,28 @@
+.bread-head {
+	padding: 10px;
+	margin: 0px;
+}
+
+.bread-head li {
+	font-weight: 400;
+	list-style: none;
+	display: inline;
+	cursor: pointer;
+	font-size: 10px !important;
+
+	.arrow-icon {
+		padding: 0 5px;
+		i {
+			font-size: 10px;
+		}
+	}
+}
+
+.bread-head li:hover {
+	color: #0061d5 !important;
+}
+
+.bread-head li:last-child {
+	cursor: default;
+	color: black !important;
+}

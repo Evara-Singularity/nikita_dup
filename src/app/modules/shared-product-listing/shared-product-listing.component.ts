@@ -220,7 +220,9 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const factory = this._componentFactoryResolver.resolveComponentFactory(SearchBannerCardComponent);
       this.searchBannerCardInstance = this.searchBannerCardContainerRef.createComponent(factory, null, this._injector);
       let keyword = '';
-      if (this.pageName == 'CATEGORY' || this.pageName == 'ATTRIBUTE') {
+      if (this.pageName == 'CATEGORY') {
+        keyword = this.headerName;
+      } else if (this.pageName == 'ATTRIBUTE') {
         keyword = this.categoryName;
       } else if (this.pageName == 'BRAND') {
         keyword = this.brandName;

@@ -35,7 +35,6 @@ class IdleTimer {
             clearTimeout(this.timeoutTracker);
         }
         this.timeoutTracker = setTimeout(() => {
-            console.log('clear nudge timing')
             localStorage.setItem("_expiredTime", (Date.now() + this.timeout * 1000).toString());
         }, 200);
     }

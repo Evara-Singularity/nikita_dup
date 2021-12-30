@@ -1,10 +1,4 @@
-<ul class="bread-head  hidden-sm-down">
-    <li><a [routerLink]="['/']">Home <span class="arrow-icon">
-        <i class="icon-next" aria-hidden="true"></i></span></a> </li>
-    <li class="item"><a [routerLink]="['/articles']">Articles <span class="arrow-icon"><i class="icon-next"
-        aria-hidden="true"></i></span></a></li>
-    <li class="item"><a>{{breadCrumbTitle}}</a></li>
-</ul>
+<static-breadcrumb [breadCrumbList]="breadCrumbList"></static-breadcrumb>
 <section class="dynamic-articlesmainwrap">
     <section class="container-fluid">
         <cms [cmsData]="articles"></cms>

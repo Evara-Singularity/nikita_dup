@@ -22,6 +22,7 @@ export class PastOrdersComponent implements OnInit
     @Input('userId') userId = null;
     @Input('outOfStock') outOfStock: boolean = false;
     @Input('analytics') analytics = null;
+    isRequested = false;
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
         enableAddToCart: true,
@@ -41,22 +42,27 @@ export class PastOrdersComponent implements OnInit
 
     ngOnInit(): void
     {
-        let user = this.localStorageService.retrieve('user');
-        if (user && user.authenticated == 'true') { this.userId = user.userId };
+        this.userId = this.localStorageService.retrieve('user').userId;
+        this.cardMetaInfo = {
+            redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
+            redirectedSectionName: this.outOfStock ? 'past_orders_product_oos' : 'past_orders__products'
+        }
     }
 
     onVisiblePastOrders($event)
     {
-        if (!this.userId) return;
+        if (!this.userId) { this.isRequested = true;return}
         this._productService.getPastOrderProducts(this.userId).subscribe((response) =>
         {
             if (response['status']) {
-                this.productList = (response['data'] as any[]).map(product => this._productService.pastOrdersProductResponseToProductEntity(product));
+                this.productList = (response['data'] as any[]).slice(0,10).map(product => this._productService.pastOrdersProductResponseToProductEntity(product));
             }
+            this.isRequested = true;
         });
+        
     }
 
-    get pageDisplay() { return this.productList.length > 2 && this.userId !== null; }
+    get pageDisplay() { return !(this.isRequested) || this.productList.length >= 2 }
 }
 
 @NgModule({

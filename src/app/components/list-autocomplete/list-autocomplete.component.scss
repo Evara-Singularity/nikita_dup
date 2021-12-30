@@ -8,6 +8,9 @@
         border: 1px solid #707070;
         border-radius: 4px;
         width: 100%;
+        &::placeholder{
+            color: gray !important;
+        }
     }
     .auto-complete-list{
         position: absolute;

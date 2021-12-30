@@ -34,7 +34,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private globalLoader: GlobalLoaderService,
         private _title: Title,
 
-    ) {     }
+    ) {}
 
     ngOnInit()
     {
@@ -134,6 +134,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     saveGift()
     {
+        debugger;
         if (this.eGiftForm.invalid) {
             this.eGiftForm.markAllAsTouched();
             return

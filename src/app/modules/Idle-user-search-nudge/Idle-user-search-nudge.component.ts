@@ -15,38 +15,50 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   timer: IdleTimer;
   @Input() headingKeyword: string;
   @Input() searchKeyword: string;
-  enableNudge: boolean = false;
   oosSimilarCardSunscription: Subscription = null;
 
   constructor(
-    public common: CommonService
+    public _commonService: CommonService
   ) { }
 
   ngOnInit() {
-    this.oosSimilarCardSunscription = this.common.oosSimilarCard$.subscribe(res => {
-      this.enableNudge = res;
-    });
+    if (this._commonService.isBrowser) {
+      this.oosSimilarCardSunscription = this._commonService.oosSimilarCard$.subscribe(res => {
+        this._commonService.enableNudge = res;
+      });
+    }
   }
 
   ngAfterViewInit() {
-    this.timer = new IdleTimer({
-      timeout: 7, //expired after 7 secs
-      onTimeout: () => {
-        this.enableNudge = true;
-      }
-    });
+    if (this._commonService.isBrowser) {
+      this.timer = new IdleTimer({
+        timeout: 7, //expired after 7 secs
+        onTimeout: () => {
+          this._commonService.enableNudge = true;
+        }
+      });
+    }
   }
 
   openSearchPopup() {
-    this.common.updateSearchPopup(this.searchKeyword);
+    this._commonService.updateSearchPopup(this.searchKeyword);
   }
 
   ngOnDestroy() {
-    this.timer.cleanUp();
-    this.oosSimilarCardSunscription.unsubscribe();
+    if (this._commonService.isBrowser) {
+      this.nudgeStopActivies();
+      this.oosSimilarCardSunscription.unsubscribe();
+    }
   }
 
   close() {
-    this.enableNudge = false;
+    this._commonService.enableNudge = false;
+    this.nudgeStopActivies()
   }
+
+  nudgeStopActivies(){
+    this.timer.cleanUpTimer();
+    this.timer.cleanLocalStorage();
+  }
+
 }

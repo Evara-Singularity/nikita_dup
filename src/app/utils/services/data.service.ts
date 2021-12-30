@@ -7,7 +7,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { Socket } from 'ngx-socket-io';
 import { filter } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 import { LocalAuthService } from './auth.service';
@@ -23,7 +22,6 @@ export class DataService {
     api: any;
     isServer: boolean = typeof window !== "undefined" ? false : true;
     history = [];
-    socket: any;
     public dataServiceCart: Subject<any> = new Subject<any>();
     private getSessionApi: any;
 
@@ -34,9 +32,6 @@ export class DataService {
         private _http: HttpClient,
         private _localAuthService: LocalAuthService,
         private _localStorageService: LocalStorageService) {
-        if (!this.isServer) {
-            this.socket = <Socket>this.injector.get(Socket);
-        }
     }
 
     startHistory() {
@@ -87,16 +82,15 @@ export class DataService {
                 referrer: document.referrer,
                 previous_url: prevUrl
             }
-            if(environment.production){
-                this.socket.emit("track", { ...trackingData, ...msg });
-            }
+            // to be replaced by API solution
+            // this.socket.emit("track", { ...trackingData, ...msg });
         }
     }
 
     getMessage() {
-        return this.socket
-            .fromEvent("track")
-            .pipe(map(data => data));
+        // return this.socket
+        //     .fromEvent("track")
+        //     .pipe(map(data => data));
     }
 
     callRestful(type: string, url: string, options?: { params?: {}, body?: {}, headerData?: {} }) {

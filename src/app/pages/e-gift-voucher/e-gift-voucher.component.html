@@ -35,8 +35,8 @@
                             formControlName="mobile" placeholder="Enter mobile no">
                         <p *ngIf="mobile.touched && mobile.hasError('required')" class="">Kindly enter your phone no.
                         </p>
-                        <div *ngIf="!mobile.hasError('required') && mobile.hasError('minlength')" class="">Kindly enter
-                            10 digit contact no.</div>
+                        <p *ngIf="!mobile.hasError('required') && mobile.hasError('minlength')" class="">Kindly enter
+                            10 digit contact no.</p>
                     </div>
                     <div class="form-pd-field">
                         <label>Company (Optional)</label>
@@ -45,17 +45,20 @@
                     </div>
                 </div>
             </div>
-            <div class="gift-card-req" formArrayName="rfqEnquiryItemsList">
-                <h3>Enter your gift card requirement:</h3>
+            <div class="gift-card-req" formArrayName="rfqEnquiryItemsList" >
                 <div class="gift-card-req-form">
+                      <h3>Enter your gift card requirement:</h3>
                     <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
-                        <span class="gift-card-heading">Gift Card {{rIndex+1}}</span>
                         <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement"
                             *ngIf="brandList.length">
+                            <div class="brand req-flex-child">
+                                 <span class="gift-card-heading">Gift Card {{rIndex+1}}</span>
+                             </div>
                             <div class="brand req-flex-child">
                                 <list-autocomplete [placeholder]="'Brand'" [list]="brandList"
                                     [control]="requirement.get('brandName')"
                                     (onSelect)="updateBrand(requirement.get('brandName'), $event)"></list-autocomplete>
+                                    <i class="icon-down list-icon-arrow-down"></i>
                                 <p *ngIf="requirement.get('brandName').touched && requirement.get('brandName').invalid"
                                     class="error-txt">
                                     Kindly enter brand.
@@ -63,7 +66,7 @@
                             </div>
                             <div class="multiple-form-field">
                                 <div class="value req-flex-child">
-                                    <select (change)="updateItemTotalValue(requirement)" formControlName="itemValue">
+                                    <select [class.validated-dark-text]="requirement.get('itemValue').valid" (change)="updateItemTotalValue(requirement)" formControlName="itemValue">
                                         <option value="" selected disabled hidden>Value (INR)</option>
                                         <option *ngFor="let value of PRICE_VALUES" [ngValue]="value">{{value}}</option>
                                     </select>
@@ -83,34 +86,35 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="total-value req-flex-child">
-                                <span>
-                                    <ng-container *ngIf="requirement.get('totalValue').value > 0">
-                                        {{requirement.get('totalValue').value | mathFloor | indianCurrency }}
-                                    </ng-container>
-                                    <ng-container *ngIf="requirement.get('totalValue').value == 0">
-                                        Total value (INR)
-                                    </ng-container>
-                                </span>
-                            </div>
-                            <div class="action req-flex-child" (click)="removeProduct(rIndex);"
-                                *ngIf="rfqEnquiryItemsList.length > 1">
-                                <div class="bin-area">
-                                    <img src="assets/img/gift-bin-icon.png">
+                            <div class="multiple-form-field">
+                                <div class="total-value req-flex-child">
+                                    <span [class.validated-dark-text]="requirement.get('totalValue').value > 0">
+                                        <ng-container *ngIf="requirement.get('totalValue').value > 0">
+                                            {{requirement.get('totalValue').value | mathFloor | indianCurrency }}
+                                        </ng-container>
+                                        <ng-container *ngIf="requirement.get('totalValue').value == 0">
+                                            Total value (INR)
+                                        </ng-container>
+                                    </span>
+                                </div>
+                                <div class="action req-flex-child" (click)="removeProduct(rIndex);">
+                                    <div class="bin-area">
+                                        <i  [class.selectedIcon]="requirement.valid" class="icon-bin"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            <div [ngClass]="{ 'add-another-card-disabled': eGiftForm.invalid, 'add-another-card': eGiftForm.valid }">
+            <div class="add-another-card" [ngClass]="{ 'add-another-card-enabled': eGiftForm.valid}">
                 <input type="button" [disabled]="eGiftForm.invalid" (click)="addRequirementForm()"
                     value="+ ADD ANOTHER CARD">
             </div>
             <div class="row submit-and-total">
                 <div class="col-md-4 total-area">
                     <span class="total">Total</span><br>
-                    <span class="amount">₹ {{totalValue | mathFloor | indianCurrency}} INR</span>
+                    <span class="amount" [class.validated-dark-text]="totalValue > 0">₹ {{totalValue | mathFloor | indianCurrency}} INR</span>
                 </div>
                 <div class="col-md-8 submit-area">
                     <input class="submit-button" type="button" value="SUBMIT REQUEST" (click)="saveGift()">
@@ -121,12 +125,12 @@
 </div>
 
 <!-- category+brand+validity popup -->
-<app-bottom-menu *ngIf="showListPopup">
+<app-bottom-menu *ngIf="showListPopup" (outData$)="togglePopUp2()">
     <div content>
         <div class="list-of-brand-e-gifts">
             <div class="top-head">
                 <div class="th-left">
-                    <h2>List of 200+ brands e-Gift vouchers & validity</h2>
+                    <h2>List of 200+ brands e-Gift<br> vouchers & validity</h2>
                 </div>
                 <div class="th-right" (click)="togglePopUp2()">
                     <img src="assets/img/close-circle-fill.svg">
@@ -158,7 +162,7 @@
 
 
 <!-- success popup -->
-<app-bottom-menu *ngIf="showSuccessPopup">
+<app-bottom-menu *ngIf="showSuccessPopup" (outData$)="togglePopUp1()">
     <div content>
         <div class="thanks-pop">
             <div class="top-cross-area" (click)="togglePopUp1()">

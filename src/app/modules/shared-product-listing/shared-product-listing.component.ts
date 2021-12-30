@@ -215,12 +215,14 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   }
 
   async onVisiblesearchBannerCard() {
-    if (this.pageName != 'SEARCH' && !this.searchBannerCardInstance) {
+    if ((this.pageName == 'BRAND' || this.pageName == 'CATEGORY' || this.pageName == 'ATTRIBUTE') && !this.searchBannerCardInstance) {
       const { SearchBannerCardComponent } = await import('@app/components/search-banner-card/search-banner-card.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(SearchBannerCardComponent);
       this.searchBannerCardInstance = this.searchBannerCardContainerRef.createComponent(factory, null, this._injector);
       let keyword = '';
-      if (this.pageName == 'CATEGORY' || this.pageName == 'ATTRIBUTE') {
+      if (this.pageName == 'CATEGORY') {
+        keyword = this.headerName;
+      } else if (this.pageName == 'ATTRIBUTE') {
         keyword = this.categoryName;
       } else if (this.pageName == 'BRAND') {
         keyword = this.brandName;

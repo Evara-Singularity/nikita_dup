@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainArticlesResolver } from '../../utils/resolvers/main-articles.resolver';
 import { ArticlesComponent } from './articles.component';
+import { StaticBreadcrumbModule } from '@app/components/static-breadcrumb/static-breadcrumb.component';
 const routes: Routes = [
     {
         path: '',
@@ -16,6 +17,7 @@ const routes: Routes = [
     declarations: [ArticlesComponent],
     imports: [
         CommonModule,
+        StaticBreadcrumbModule,
         RouterModule,
         RouterModule.forChild(routes),
     ],

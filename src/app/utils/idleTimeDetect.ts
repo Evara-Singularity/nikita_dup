@@ -24,7 +24,7 @@ class IdleTimer {
             if (expiredTime < Date.now()) {
                 if (this.onTimeout) {
                     this.onTimeout();
-                    this.cleanUp();
+                    this.cleanUpTimer();
                 }
             }
         }, 1000);
@@ -36,7 +36,7 @@ class IdleTimer {
         }
         this.timeoutTracker = setTimeout(() => {
             localStorage.setItem("_expiredTime", (Date.now() + this.timeout * 1000).toString());
-        }, 300);
+        }, 200);
     }
 
     tracker() {
@@ -45,7 +45,11 @@ class IdleTimer {
         window.addEventListener("keydown", this.eventHandler);
     }
 
-    cleanUp() {
+    cleanLocalStorage() {
+        localStorage.removeItem("_expiredTime");
+    }
+
+    cleanUpTimer() {
         clearInterval(this.interval);
         window.removeEventListener("mousemove", this.eventHandler);
         window.removeEventListener("scroll", this.eventHandler);

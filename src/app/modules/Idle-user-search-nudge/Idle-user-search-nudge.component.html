@@ -14,7 +14,7 @@
     </div>
   </div>
 </div> -->
-<app-bottom-menu *ngIf="common.isBrowser && enableNudge" (outData$)="close()">
+<app-bottom-menu *ngIf="_commonService.isBrowser && _commonService.enableNudge" (outData$)="close()">
   <div class="idle-search-container" content>
     <i class="icon-circle-delete" (click)="close()"></i>
     <div class="text-box">

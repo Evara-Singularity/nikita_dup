@@ -6,7 +6,6 @@ import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { EnhanceImgByNetworkPipe } from '@app/utils/pipes/enhanceImgByNetwork.pipe';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -22,7 +21,7 @@ import { ToastMessageService } from '../toastMessage/toast-message.service';
   selector: 'product-horizontal-card',
   templateUrl: './product-horizontal-card.component.html',
   styleUrls: ['./product-horizontal-card.component.scss'],
-  providers: [EnhanceImgByNetworkPipe]
+  providers: []
 })
 export class ProductHorizontalCardComponent implements OnInit {
 
@@ -88,7 +87,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     private modalService: ModalService,
     private _localAuthService: LocalAuthService,
     private _commonService: CommonService,
-    private _enhanceImagePipe: EnhanceImgByNetworkPipe,
     private _analytics: GlobalAnalyticsService,
     private _toastMessageService: ToastMessageService,
     private _productService: ProductService,
@@ -101,21 +99,9 @@ export class ProductHorizontalCardComponent implements OnInit {
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
     this.product['discount'] = Math.floor(+(((this.product.mrp - this.product.priceWithoutTax) / this.product.mrp) * 100));
-
-    this.changeThumbImage(this._commonService.getNetworkSpeed());
-    this._commonService.getNetworkSpeedState().subscribe(speed => {
-      this.changeThumbImage(speed);
-    })
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
     this.prodUrl = CONSTANTS.PROD;
-  }
-
-
-  private changeThumbImage(speed: Number) {
-    if (!this.isFirstView && speed && (speed > CONSTANTS.NETWORK_SPEED_THRESHOD_LIMIT)) {
-      this.product.mainImageThumnailLink = this._enhanceImagePipe.transform(this.product.mainImageThumnailLink);
-    }
   }
 
   buyNow(buyNow = false) {

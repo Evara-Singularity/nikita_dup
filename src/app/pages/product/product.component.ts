@@ -1362,7 +1362,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   addToCartFromModal(buyNow: boolean) {
     const cartAddToCartProductRequest = this.cartService.getAddToCartProductItemRequest({
       productGroupData: this.rawProductData,
-      buyNow: false,
+      buyNow: buyNow,
       selectPriceMap: this.selectedProductBulkPrice,
       quantity: this.cartQunatityForProduct
     });
@@ -1627,7 +1627,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "updateScrollToTop"
           ] as EventEmitter<any>
         ).subscribe((data) => {
-          this.showScrollToTopButton = data;
+          if (this.commonService.isBrowser) {
+            this.showScrollToTopButton = data;
+          }
         });
       }
     }
@@ -1759,6 +1761,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // product-rfq
+  getBestPrice($event) {
+    this.holdRFQForm = false;
+    this.onVisibleProductRFQ($event);
+  }
+
   async onVisibleProductRFQ(htmlElement) {
     if (this.holdRFQForm) return
     this.removeRfqForm();
@@ -3430,6 +3437,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     const analytices = { page: page, custData: this.custDataTracking, order: this.orderTracking }
     return analytices;
   }
+
+  get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
   ngOnDestroy() {
     if (this.isBrowser) {

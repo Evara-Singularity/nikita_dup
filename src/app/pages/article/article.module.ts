@@ -1,3 +1,4 @@
+import { StaticBreadcrumbModule } from './../../components/static-breadcrumb/static-breadcrumb.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ArticleUtilService } from './article-util.service';
@@ -24,7 +25,8 @@ const routes: Routes = [
         CommonModule,
         CmsModule,
         RouterModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        StaticBreadcrumbModule
     ],
     providers: [
         ArticleUtilService,

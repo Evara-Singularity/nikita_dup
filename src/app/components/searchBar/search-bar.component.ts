@@ -32,6 +32,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     searchForm: FormGroup;
     @Input() showSuggestionBlock: boolean;
     @Input() autoFillSearchKeyword: string;
+
     showSuggestionBlockLoader: boolean;
     suggestionList;
     brandSuggestionList;
@@ -273,6 +274,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     resetSearchBar() {
         this.searchForm.reset();
         this.showSuggestionBlock = false;
+        this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();
     }
 

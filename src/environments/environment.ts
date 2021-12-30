@@ -35,7 +35,7 @@ export const environment = {
     cm814985: "CAT_B",
     cm196070: "CAT_C",
     cm454649: "CAT_D",
-    cm358138: "CAT_E",      console.log('add to card ==>', result);
+    cm358138: "CAT_E",
     cm933249: "CAT_F",
     cm416640: "CAT_G",
     cm973381: "MIDDLE_BANNER_ADS",

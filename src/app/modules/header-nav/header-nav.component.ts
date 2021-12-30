@@ -37,7 +37,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     backRedirectUrl: string = null;
     sideNavInstance = null;
     isUserLogin: any;
-    isScrolledHeader: boolean = false;
+    // isScrolledHeader: boolean = false;
     @ViewChild('sideMenu', { read: ViewContainerRef })
     sideMenuContainerRef: ViewContainerRef;
     searchBarInstance = null;
@@ -125,9 +125,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             window.addEventListener('scroll', (event) => {
                 let scrollE = document.scrollingElement || document.documentElement;
                 if (scrollE['scrollTop'] > 120) {
-                    this.isScrolledHeader = true;
+                    this._commonService.isScrolledHeader = true;
                 } else {
-                    this.isScrolledHeader = false;
+                    this._commonService.isScrolledHeader = false;
                 }
             });
         }

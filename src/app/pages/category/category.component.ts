@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, HostBinding, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { CategoryService } from '@app/utils/services/category.service';
@@ -52,7 +52,7 @@ export class CategoryComponent {
     public API_RESPONSE: any;
 
     @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
-
+    @HostBinding('class') translateCategoryValue: string = 'translateCategory';
     reqArray: any[] = [];
     popularLinks: any[] = [];
     wantedBucket: any[] = [];
@@ -88,8 +88,17 @@ export class CategoryComponent {
             this._footerService.setMobileFoooters();
         }
     }
-
+    
     ngAfterViewInit(): void {
+        alert("bhai here");
+        setTimeout(()=>{ 
+            if (!this._commonService.isScrolledHeader) {
+                this.translateCategoryValue = 'translateCategory';
+            }
+            else{
+                this.translateCategoryValue = '';
+            }
+        },3000);
         this.sharedProductList.getSponseredProducts();
     }
 

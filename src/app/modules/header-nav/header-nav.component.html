@@ -1,6 +1,6 @@
 <header class="inner-pages" *ngIf="!extraData.hideHeader">
     <div class="style-1">
-        <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && !isScrolledHeader"
+        <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
             class="head-strip container">
             <div class="f-left logo-container">
                 <i *ngIf="(_commonService.isHomeHeader) || (routerData && routerData['menuBar'])" class="icon-menu"
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !isScrolledHeader"
+        <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !(_commonService.isScrolledHeader)"
             class="search-bar search-bar-custom">
             <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
                 placeholder="Search Product/Category/Brand...">
@@ -49,7 +49,7 @@
         </div>
         <!--Category Header-->
         <div class="common-category-header container">
-            <ng-container *ngIf="(_commonService.isPLPHeader && isScrolledHeader) || !_commonService.isPLPHeader">
+            <ng-container *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
                 <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
                     class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
                 <i *ngIf="!_commonService.isHomeHeader && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')"
@@ -81,9 +81,9 @@
             </ng-container>
         </div>
         <!-- When Home page Header is scrolled -->
-        <div class="scrolledHeader" *ngIf="_commonService.isHomeHeader && isScrolledHeader"
-            [ngClass]="{'headerFixed': isScrolledHeader}">
-            <a *ngIf="_commonService.isHomeHeader && isScrolledHeader" class="icon-menu header-icon" id="icon-menu"
+        <div class="scrolledHeader" *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
+            [ngClass]="{'headerFixed': _commonService.isScrolledHeader}">
+            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader" class="icon-menu header-icon" id="icon-menu"
                 (click)="loadSideNav()"></a>
             <a class="search-bar">
                 <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
@@ -92,7 +92,7 @@
                     <ng-lottie class="lottie-div" [options]="options"></ng-lottie>
                 </div>
             </a>
-            <a *ngIf="_commonService.isHomeHeader && isScrolledHeader"
+            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
                 (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1 header-icon">
                 <span class="badge onw" *ngIf="noOfCart != 0">{{noOfCart}}</span>
             </a>

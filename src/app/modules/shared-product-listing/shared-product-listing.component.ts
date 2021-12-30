@@ -44,7 +44,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   isBrowser: boolean
   sponseredProductList: ProductsEntity[] = [];
   sponseredProductLoadStatus: boolean = false;
-
+  isHomeHeader:boolean = true; 
   public appliedFilterCount: number = 0;
 
   constructor(

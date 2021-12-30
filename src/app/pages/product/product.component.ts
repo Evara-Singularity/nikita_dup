@@ -392,6 +392,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
               rawData["product"][0]["productBO"]["productPartDetails"]
             )[0]["images"] !== null
           ) {
+            this.commonService.enableNudge = false;
             this.processProductData(
               {
                 productBO: rawData["product"][0]["productBO"],

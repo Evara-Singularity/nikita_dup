@@ -1,4 +1,4 @@
-import { Component, Input, NgModule } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
@@ -9,12 +9,12 @@ import { CommonService } from '@app/utils/services/common.service';
   styleUrls: ['./search-banner-card.component.scss']
 })
 export class SearchBannerCardComponent {
-  @Input('searchKeyword') searchKeyword;
+  @Output() fireSearchEvent$: EventEmitter<boolean> = new EventEmitter<boolean>();
   imgAssetPath = CONSTANTS.IMAGE_ASSET_URL;
   constructor(public _commonService: CommonService) { }
 
   fireSearchEvent() {
-    this._commonService.updateSearchPopup(this.searchKeyword)
+    this.fireSearchEvent$.emit(true);
   }
 }
 

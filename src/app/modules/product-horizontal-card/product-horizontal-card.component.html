@@ -43,12 +43,13 @@
                             *ngIf="product.productName.length>60">...</span></span>
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div> -->
-                <div class="name" (click)="trackProductTitle('title');$event.preventDefault()" >
-                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation"> <span>{{product.productName | slice:0:60}}
-                        <span *ngIf="product.productName.length>60">...</span></span></a>
+                <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
+                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation">
+                        <span>{{product.productName | slice:0:60}}
+                            <span *ngIf="product.productName.length>60">...</span></span></a>
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div>
-                <div class="brand" (click)="navigateToPDP()">
+                <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName | brandName}}</span>
                 </div>
                 <div class="price-details">

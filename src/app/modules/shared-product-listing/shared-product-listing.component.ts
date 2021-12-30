@@ -44,7 +44,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   isBrowser: boolean
   sponseredProductList: ProductsEntity[] = [];
   sponseredProductLoadStatus: boolean = false;
-  isHomeHeader:boolean = true; 
+  isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
 
   constructor(
@@ -219,15 +219,20 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const { SearchBannerCardComponent } = await import('@app/components/search-banner-card/search-banner-card.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(SearchBannerCardComponent);
       this.searchBannerCardInstance = this.searchBannerCardContainerRef.createComponent(factory, null, this._injector);
-      let keyword = '';
-      if (this.pageName == 'CATEGORY') {
-        keyword = this.headerName;
-      } else if (this.pageName == 'ATTRIBUTE') {
-        keyword = this.categoryName;
-      } else if (this.pageName == 'BRAND') {
-        keyword = this.brandName;
-      }
-      this.searchBannerCardInstance.instance['searchKeyword'] = keyword;
+
+      (this.searchBannerCardInstance.instance['fireSearchEvent$'] as EventEmitter<boolean>).subscribe(data => {
+        if (data) {
+          let keyword = '';
+          if (this.pageName == 'CATEGORY') {
+            keyword = this.headerName;
+          } else if (this.pageName == 'ATTRIBUTE') {
+            keyword = this.categoryName;
+          } else if (this.pageName == 'BRAND') {
+            keyword = this.brandName;
+          }
+          this._commonService.updateSearchPopup(keyword);
+        }
+      });
     }
   }
 

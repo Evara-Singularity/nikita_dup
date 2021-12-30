@@ -337,7 +337,8 @@ export class ProductHorizontalCardComponent implements OnInit {
           this.showAddToCartToast('Product already added');
         }
       }
-    })
+    });
+    this._commonService.enableNudge = false;
   }
 
 

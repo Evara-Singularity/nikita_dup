@@ -33,7 +33,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   ngAfterViewInit() {
     if (this.common.isBrowser) {
       this.timer = new IdleTimer({
-        timeout: 2, //expired after 7 secs
+        timeout: 7, //expired after 7 secs
         onTimeout: () => {
           this.enableNudge = true;
         }
@@ -46,7 +46,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   }
 
   ngOnDestroy() {
-    if(this.common.isBrowser){
+    if (this.common.isBrowser) {
       this.timer.cleanUp();
       this.oosSimilarCardSunscription.unsubscribe();
     }

@@ -124,7 +124,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     removeProduct(index)
     {
-        if (this.rfqEnquiryItemsList.length === 1) { this._tms.show({ type: 'error', text: 'Atleast one card is required.' });return; }
+        if (this.rfqEnquiryItemsList.length === 1) { this._tms.show({ type: 'error', text: 'Atleast one gift card is required.' });return; }
         this.rfqEnquiryItemsList.removeAt(index);
         this.updateTotalValue();
     }

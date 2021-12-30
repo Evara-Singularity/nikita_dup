@@ -357,23 +357,35 @@
 }
 
 .available-item-card{
-    width: 326px;
+    width: 330px;
     border-radius: 8px;
     background: #fff;
     .card-container {
-        padding: 5px;
-        .name{
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: 2.8em;
-            margin-bottom: 5px;
-            line-height: 1.6em;
+        padding: 5px 10px 5px 5px;
+        .left{
+            width: 90px;
+            img{
+                width: 90px;
+            }
         }
-        .rating {
-            margin-top: 0px;
+        .right{
+            width: calc(100% - 100px);
+            .name{
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height: 2.8em;
+                margin-bottom: 5px;
+                line-height: 1.6em;
+            }
+            .rating {
+                margin-top: 0px;
+            }
+            .green-label{
+                margin-right: 0px !important;
+            }
         }
     }
 }

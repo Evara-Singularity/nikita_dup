@@ -178,9 +178,9 @@
                             color: #B1B1B1;
                             display: block;
                             font-size: 14px;
-                            // &.calculated-total-value{
-                            //     color: #3C3C3C;
-                            // }
+                            &.calculated-total-value{
+                                color: #3C3C3C;
+                            }
                         }
                     }
                     .action {
@@ -315,6 +315,7 @@
                     td {
                         padding: 10px 0px 10px 5px;
                         text-align: left;
+                        font-size: 10px;
                     }
                     padding: 20px;
                     &:nth-child(odd) {

@@ -5,6 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -39,11 +40,11 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     ngOnInit()
     {
         this._title.setTitle(this.TITLE);
-        this.fetchVoucherData();
+        //this.fetchVoucherData();
         this.eGiftForm = new FormGroup({
             rfqEnquiryCustomer: new FormGroup(
                 {
-                    name: new FormControl("", [Validators.required]),
+                    name: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
                     email: new FormControl("", [Validators.required, Step.validateEmail]),
                     mobile: new FormControl("", [Validators.required]),
                     company: new FormControl(""),
@@ -134,7 +135,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     saveGift()
     {
-        debugger;
         if (this.eGiftForm.invalid) {
             this.eGiftForm.markAllAsTouched();
             return

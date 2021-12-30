@@ -46,12 +46,19 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
 
   ngOnDestroy() {
     if (this._commonService.isBrowser) {
-      this.timer.cleanUp();
+      this.nudgeStopActivies();
       this.oosSimilarCardSunscription.unsubscribe();
     }
   }
 
   close() {
     this._commonService.enableNudge = false;
+    this.nudgeStopActivies()
   }
+
+  nudgeStopActivies(){
+    this.timer.cleanUpTimer();
+    this.timer.cleanLocalStorage();
+  }
+
 }

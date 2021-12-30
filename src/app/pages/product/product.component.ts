@@ -1362,7 +1362,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   addToCartFromModal(buyNow: boolean) {
     const cartAddToCartProductRequest = this.cartService.getAddToCartProductItemRequest({
       productGroupData: this.rawProductData,
-      buyNow: false,
+      buyNow: buyNow,
       selectPriceMap: this.selectedProductBulkPrice,
       quantity: this.cartQunatityForProduct
     });

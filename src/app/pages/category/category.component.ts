@@ -78,7 +78,7 @@ export class CategoryComponent {
         private _componentFactoryResolver: ComponentFactoryResolver,
     ) {
         this._commonService.isHomeHeader = false;
-		this._commonService.isPLPHeader = true;
+        this._commonService.isPLPHeader = true;
     }
 
     ngOnInit(): void {
@@ -88,17 +88,8 @@ export class CategoryComponent {
             this._footerService.setMobileFoooters();
         }
     }
-    
+
     ngAfterViewInit(): void {
-        alert("bhai here");
-        setTimeout(()=>{ 
-            if (!this._commonService.isScrolledHeader) {
-                this.translateCategoryValue = 'translateCategory';
-            }
-            else{
-                this.translateCategoryValue = '';
-            }
-        },3000);
         this.sharedProductList.getSponseredProducts();
     }
 

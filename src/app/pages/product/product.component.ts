@@ -1627,7 +1627,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "updateScrollToTop"
           ] as EventEmitter<any>
         ).subscribe((data) => {
-          this.showScrollToTopButton = data;
+          if (this.commonService.isBrowser) {
+            this.showScrollToTopButton = data;
+          }
         });
       }
     }
@@ -1759,10 +1761,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // product-rfq
-  getBestPrice($event)
-  {
-      this.holdRFQForm = false;
-      this.onVisibleProductRFQ($event);
+  getBestPrice($event) {
+    this.holdRFQForm = false;
+    this.onVisibleProductRFQ($event);
   }
 
   async onVisibleProductRFQ(htmlElement) {
@@ -3437,7 +3438,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytices;
   }
 
-    get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true"}
+  get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
   ngOnDestroy() {
     if (this.isBrowser) {

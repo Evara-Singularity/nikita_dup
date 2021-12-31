@@ -7,8 +7,10 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { FooterService } from '@app/utils/services/footer.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@services/global-loader.service';
 import { environment } from 'environments/environment';
+import { LocalStorageService } from 'ngx-webstorage';
 
 
 @Component({
@@ -34,8 +36,8 @@ export class ArticlesComponent implements OnInit
     hasNoRecords = false;
 
 
-    constructor(private route: ActivatedRoute, private router: Router, private footerService: FooterService, private _commonService: CommonService, private toastMessageService: ToastMessageService,
-        private _dataService: DataService, private _loaderService: GlobalLoaderService, private _title: Title, private _renderer2: Renderer2, private _meta: Meta, @Inject(DOCUMENT) private _document)
+    constructor(private route: ActivatedRoute, private router: Router, private footerService: FooterService, private _commonService: CommonService, private toastMessageService: ToastMessageService, private _analytics: GlobalAnalyticsService,
+        private _localStorageService: LocalStorageService, private _dataService: DataService, private _loaderService: GlobalLoaderService, private _title: Title, private _renderer2: Renderer2, private _meta: Meta, @Inject(DOCUMENT) private _document)
     {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -54,6 +56,7 @@ export class ArticlesComponent implements OnInit
         }
         if (this.isBrowser) {
             (window.outerWidth >= 768) ? this.setFooter() : this.setMobileFoooters();
+            this.setAnalyticTags();
         }
     }
 
@@ -104,5 +107,31 @@ export class ArticlesComponent implements OnInit
         ampLink.rel = "canonical";
         ampLink.href = this.articleUrl;
         this._renderer2.appendChild(this._document.head, ampLink);
+    }
+
+    setAnalyticTags()
+    {
+        let user;
+        if (this._localStorageService.retrieve('user')) {
+            user = this._localStorageService.retrieve('user');
+        }
+        /*Start Adobe Analytics Tags */
+        let page = {
+            'pageName': "moglix:articles",
+            'channel': "article",
+            'subSection': "moglix:articles",
+            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+        };
+        let custData = {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        };
+        const digitalData = {};
+        digitalData['page'] = page;
+        digitalData['custData'] = custData;
+        setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0);
+        /*End Adobe Analytics Tags */
     }
 }

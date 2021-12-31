@@ -3423,6 +3423,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.router.navigate([link]);
   }
 
+    get categoryName() { 
+        if (this.productCategoryDetails && this.productCategoryDetails['categoryName']){
+            return this.productCategoryDetails['categoryName'];
+        }
+        return "Something!!!";
+    }
+
   get pastOrderAnalytics() {
     const TAXONS = this.taxons;
     const page = {

@@ -58,9 +58,9 @@ export class UTRConfirmationComponent implements OnInit
                     setTimeout(() => { this._router.navigate(['.']) }, 500);
                     return;
                 }
-                this._toastMessage.show({ type: "error", text: response['message'] })
+                this._toastMessage.show({ type: "error", text: response['statusDescription'] })
             },
-            (error) => { this._globarLodaer.setLoaderState(false); this._toastMessage.show({ type: "error", text: error.message }) },
+            (error) => { this._globarLodaer.setLoaderState(false); this._toastMessage.show({ type: "error", text: error.statusDescription }) },
         );
     }
 

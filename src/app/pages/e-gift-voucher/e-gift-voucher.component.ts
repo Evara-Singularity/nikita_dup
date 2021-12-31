@@ -5,6 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { NumericValidator } from '@app/utils/validators/numeric.validator.';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -100,7 +101,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         const REQUIREMENTS = new FormGroup({
             brandName: new FormControl("", [Validators.required]),
             itemValue: new FormControl("", [Validators.required]),
-            quantity: new FormControl("", [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
+            quantity: new FormControl("", [Validators.required, NumericValidator.validateNumber]),
             totalValue: new FormControl(0),
         });
         this.rfqEnquiryItemsList.push(REQUIREMENTS);

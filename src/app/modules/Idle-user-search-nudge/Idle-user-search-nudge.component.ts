@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  timer: IdleTimer;
+  
   @Input() headingKeyword: string;
   @Input() searchKeyword: string;
   oosSimilarCardSunscription: Subscription = null;
@@ -31,7 +31,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit() {
     if (this._commonService.isBrowser) {
-      this.timer = new IdleTimer({
+      this._commonService.idleNudgeTimer = new IdleTimer({
         timeout: 7, //expired after 7 secs
         onTimeout: () => {
           this._commonService.enableNudge = true;
@@ -57,8 +57,8 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
   }
 
   nudgeStopActivies(){
-    this.timer.cleanUpTimer();
-    this.timer.cleanLocalStorage();
+    this._commonService.idleNudgeTimer.cleanUpTimer();
+    this._commonService.idleNudgeTimer.cleanLocalStorage();
   }
 
 }

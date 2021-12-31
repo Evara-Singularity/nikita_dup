@@ -199,13 +199,21 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
-
             if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
-            setTimeout(() => {
-                document.getElementById('search-input').focus();
-                document.getElementById('search-input')['value'] = '';
-            }, 350);
+            
+            if (toBeAutoFilledKeyword) {
+                setTimeout(() => {
+                    console.log('toBeAutoFilledKeyword after', toBeAutoFilledKeyword)
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
+                }, 500);
+            }else{
+                setTimeout(() => {
+                    document.getElementById('search-input').focus();
+                    document.getElementById('search-input')['value'] = '';
+                }, 350);
+            }
+
             this.searchBarInstance.instance['data'] = {
                 type: 'home',
                 className: 'secondScroll',
@@ -213,11 +221,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
 
-            if (toBeAutoFilledKeyword) {
-                setTimeout(() => {
-                    this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
-                }, 500);
-            }
+            
         }
     }
 

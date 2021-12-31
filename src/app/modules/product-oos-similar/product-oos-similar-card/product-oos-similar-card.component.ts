@@ -244,6 +244,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   async loadProductCrousel(slideIndex) {
+    this.commonService.enableNudge = false;
     if (!this.productCrouselInstance) {
       this.isProductCrouselLoaded = true;
       const { ProductCrouselComponent } = await import(
@@ -380,6 +381,7 @@ export class ProductOosSimilarCardComponent {
   async loadVariantPop(productEntity, productAddToCartSchema, buyNow = false) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
+      this.commonService.enableNudge = false;
       const { ProductVariantSelectListingPageComponent } = await import('../../../components/product-variant-select-listing-page/product-variant-select-listing-page.component').finally(() => {
         this._loader.setLoaderState(false);
       });
@@ -457,6 +459,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   async intiateRFQQuote(product) {
+    this.commonService.enableNudge = false;
     this._loader.setLoaderState(true);
     const { ProductRFQComponent } = await import('../../../components/product-rfq/product-rfq.component');
     const factory = this.cfr.resolveComponentFactory(ProductRFQComponent);

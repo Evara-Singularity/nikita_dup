@@ -29,6 +29,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject } from "rxjs";
+import { debounce } from "rxjs/operators";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -341,6 +342,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productStatusCount();
       this.checkDuplicateProduct();
     }
+  }
+
+  onScrollOOOSimilar(event){
+    this.commonService.idleNudgeTimer.updateExpiredTime();
   }
 
   createSiemaOption() {

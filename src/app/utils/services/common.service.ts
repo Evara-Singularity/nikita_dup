@@ -18,6 +18,7 @@ import CONSTANTS from "../../config/constants";
 import { GlobalLoaderService } from "./global-loader.service";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
+import IdleTimer from "../idleTimeDetect";
 
 @Injectable({
   providedIn: "root",
@@ -68,6 +69,7 @@ export class CommonService {
 
   private routeData: { currentUrl: string; previousUrl: string };
   userSession;
+  idleNudgeTimer: IdleTimer;
 
   constructor(
     @Inject(PLATFORM_ID) platformId,

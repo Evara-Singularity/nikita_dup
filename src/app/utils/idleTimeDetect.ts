@@ -44,6 +44,7 @@ class IdleTimer {
         window.addEventListener("scroll", this.eventHandler);
         window.addEventListener("keydown", this.eventHandler);
     }
+    
 
     cleanLocalStorage() {
         localStorage.removeItem("_expiredTime");

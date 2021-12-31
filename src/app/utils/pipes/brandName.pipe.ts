@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, NgModule } from '@angular/core';
 
-@Pipe({    name: "brandName"})
+@Pipe({ name: "brandName"})
 export class BrandName implements PipeTransform
 {
     transform(brandName: string): any
@@ -14,7 +14,7 @@ export class BrandName implements PipeTransform
                 returnValue = returnValue.split('||')[0];
             }
         }
-        return returnValue;
+        return returnValue || brandName;
     }
 }
 

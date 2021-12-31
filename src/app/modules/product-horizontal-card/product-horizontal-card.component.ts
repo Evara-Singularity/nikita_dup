@@ -215,6 +215,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       this._loader.setLoaderState(true);
       const { ProductVariantSelectListingPageComponent } = await import('../../components/product-variant-select-listing-page/product-variant-select-listing-page.component').finally(() => {
         this._loader.setLoaderState(false);
+        this._commonService.enableNudge = false;
       });
       const factory = this._cfr.resolveComponentFactory(ProductVariantSelectListingPageComponent);
       this.variantPopupInstance = this.variantPopupInstanceRef.createComponent(factory, null, this._injector);
@@ -269,6 +270,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   async intiateRFQQuote(product) {
     this._loader.setLoaderState(true);
+    this._commonService.enableNudge = false;
     const { ProductRFQComponent } = await import('../../components/product-rfq/product-rfq.component');
     const factory = this._cfr.resolveComponentFactory(ProductRFQComponent);
     this.productRFQInstance = this.productRFQContainerRef.createComponent(factory, null, this._injector);

@@ -71,6 +71,7 @@ export class AlpComponent implements OnInit
     )
     {
         this.pageName = 'ATTRIBUTE';
+        
     }
 
     ngOnInit()
@@ -78,6 +79,8 @@ export class AlpComponent implements OnInit
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
+            this._commonService.isHomeHeader = false;
+            this._commonService.isPLPHeader = true;
         }
     }
 

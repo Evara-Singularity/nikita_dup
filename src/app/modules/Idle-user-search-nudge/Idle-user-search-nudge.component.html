@@ -1,20 +1,4 @@
-<!-- <div *ngIf="common.isBrowser && enableNudge" class="bottom-menu">
-  <div class="overlay "></div>
-  <div class="content-area bottom-layout ">
-    <div class="rfq-thanks-popup ">
-      <i class="del-ico icon-circle-delete " (click)="close()" ></i>
-      <h1>
-        Looking for <br/>
-      </h1>
-      <h4><span>{{headingKeyword}} etc.</span></h4>
-      <p>Use search for better results</p>
-      <div>9
-        <input type="text" style="width: 100%;" (focus)="openSearchPopup()" />
-      </div>
-    </div>
-  </div>
-</div> -->
-<app-bottom-menu *ngIf="_commonService.isBrowser && _commonService.enableNudge" (outData$)="close()">
+<<app-bottom-menu *ngIf="_commonService.isBrowser && _commonService.enableNudge" (outData$)="close()">
   <div class="idle-search-container" content>
     <i class="icon-circle-delete" (click)="close()"></i>
     <div class="text-box">

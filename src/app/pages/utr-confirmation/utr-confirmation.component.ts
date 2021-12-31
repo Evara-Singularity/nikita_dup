@@ -50,17 +50,18 @@ export class UTRConfirmationComponent implements OnInit
         REQUEST_DATA['transactionAmount'] = Number(REQUEST_DATA['transactionAmount']);
         this._globarLodaer.setLoaderState(true);
         this._dataService.callRestful("POST", `${CONSTANTS.NEW_MOGLIX_API}/rfq/rfqOrderTransaction`, { body: REQUEST_DATA }).subscribe(
-            (response) => {   
-                if (response['status'])
-                {
+            (response) =>
+            {
+                this._globarLodaer.setLoaderState(false);
+                if (response['status']) {
                     this._toastMessage.show(this.SUCCESS_MSG);
-                    setTimeout(() => { this._router.navigate(['.'])},500);
+                    setTimeout(() => { this._router.navigate(['.']) }, 500);
                     return;
                 }
-                this._toastMessage.show({ type: "error", text: response['statusDescription'] })
-             },
-            (error) => { this._toastMessage.show({ type: "error", text: error.statusDescription }) },
-            () => { this._globarLodaer.setLoaderState(false); });
+                this._toastMessage.show({ type: "error", text: response['message'] })
+            },
+            (error) => { this._globarLodaer.setLoaderState(false); this._toastMessage.show({ type: "error", text: error.message }) },
+        );
     }
 
     checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57; }

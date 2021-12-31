@@ -750,8 +750,7 @@
     </div>
 </section>
 
-<idle-user-search-nudge [searchKeyword]="this.productCategoryDetails['categoryName']"
-    [headingKeyword]="this.productCategoryDetails['categoryName'] ">
+<idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName" *ngIf="isBrowser">
 </idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>

@@ -100,7 +100,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         const REQUIREMENTS = new FormGroup({
             brandName: new FormControl("", [Validators.required]),
             itemValue: new FormControl("", [Validators.required]),
-            quantity: new FormControl("", [Validators.required, Validators.min(1)]),
+            quantity: new FormControl("", [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
             totalValue: new FormControl(0),
         });
         this.rfqEnquiryItemsList.push(REQUIREMENTS);

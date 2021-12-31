@@ -81,7 +81,7 @@
                                 <div class="qty req-flex-child">
                                     <input (change)="updateItemTotalValue(requirement)" type="number"
                                         placeholder="Enter Qty" formControlName="quantity"
-                                        (input)="checkNumberic($event)">
+                                        (keypress)="checkNumberic($event)">
                                     <p *ngIf="requirement.get('quantity').touched && requirement.get('quantity').invalid"
                                         class="error-txt">
                                         Kindly enter valid quantity.

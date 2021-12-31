@@ -5,6 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 
@@ -34,7 +35,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private globalLoader: GlobalLoaderService,
         private _title: Title,
 
-    ) {     }
+    ) { }
 
     ngOnInit()
     {
@@ -43,7 +44,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         this.eGiftForm = new FormGroup({
             rfqEnquiryCustomer: new FormGroup(
                 {
-                    name: new FormControl("", [Validators.required]),
+                    name: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
                     email: new FormControl("", [Validators.required, Step.validateEmail]),
                     mobile: new FormControl("", [Validators.required]),
                     company: new FormControl(""),
@@ -58,7 +59,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     ngAfterViewInit(): void
     {
         this.user = this._localStorageService.retrieve('user');
-        this.updateUserDetails(this.user);
+        if (this.user && this.user.authenticated == "true") { this.updateUserDetails(this.user); return }
     }
 
     fetchVoucherData()
@@ -81,7 +82,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                 this.brandList = this.extractUniqueBrands(BRANDS);
                 this.categoryList = Object.keys(this.categoryBrandInfo);
             },
-            (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
+            (error) => { this.globalLoader.setLoaderState(false); this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
             () => { this.globalLoader.setLoaderState(false); }
         );
     }
@@ -107,7 +108,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     updateItemTotalValue(requirement: FormGroup)
     {
-        if (requirement.invalid) { requirement.get("totalValue").setValue(0);} ;
+        if (requirement.invalid) { requirement.get("totalValue").setValue(0); };
         const REQUIREMENT = requirement.value;
         const ITEM_TOTAL_VALUE = Number(REQUIREMENT.itemValue) * Number(REQUIREMENT.quantity);
         requirement.get("totalValue").setValue(ITEM_TOTAL_VALUE);
@@ -123,6 +124,10 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
 
     removeProduct(index)
     {
+        if (this.rfqEnquiryItemsList.length === 1) {
+            if (this.rfqEnquiryItemsList.controls[index].valid) { this._tms.show({ type: 'error', text: 'Atleast one gift card is required.' }); }
+            return;
+        }
         this.rfqEnquiryItemsList.removeAt(index);
         this.updateTotalValue();
     }
@@ -175,7 +180,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 32 || key == 46);
     }
 
-    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57}
+    checkNumberic(event) { return event.charCode >= 48 && event.charCode <= 57 }
 
     extractUniqueBrands(brands)
     {
@@ -184,7 +189,8 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             return !pos || item != ary[pos - 1];
         });
     }
-    onUpdate(e){
+    onUpdate(e)
+    {
         this.showSuccessPopup = false;
     }
 }

@@ -98,6 +98,7 @@ export class ArticlesComponent implements OnInit
     //SEO code
     setSEOInfo(metaDescription)
     {
+        this._meta.addTag({ name: 'robots', content: CONSTANTS.META.ROBOT });
         this._meta.addTag({ "name": "description", "content": metaDescription });
         let ampLink = this._renderer2.createElement('link');
         ampLink.rel = "canonical";

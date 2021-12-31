@@ -38,7 +38,7 @@ export class UTRConfirmationComponent implements OnInit
             orderId: new FormControl(ORDERID, [Validators.required]),
             quotationId: new FormControl(QUOATATIONID, [Validators.required]),
             quotationType: new FormControl(QUOATATIONTYPE, [Validators.required]),
-            transactionAmount: new FormControl("", [Validators.required, Validators.min(1)]),
+            transactionAmount: new FormControl("", [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
             bankTransactionNumber: new FormControl("", [Validators.required, Validators.pattern(/^([a-zA-Z0-9]+)$/)])
         })
     }

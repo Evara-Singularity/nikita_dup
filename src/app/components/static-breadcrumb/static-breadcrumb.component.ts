@@ -11,7 +11,7 @@ export class StaticBreadcrumbComponent implements OnInit
 {
 
     @Input('breadCrumbList') breadCrumbList = [];
-    @Input('marginTop') marginTop = 120;
+    @Input('marginTop') marginTop = 50;
     constructor() { }
     ngOnInit() { }
 }

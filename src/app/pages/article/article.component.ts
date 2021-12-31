@@ -37,6 +37,8 @@ export class ArticleComponent implements OnInit
 
     ngOnInit()
     {
+        this._commonService.isHomeHeader = false;
+        this._commonService.isPLPHeader = false;
         this.articleUrl = this.articleUrl + (this.router.url.split('?')[0].split('#')[0] as string).toLowerCase();
         if (this.route.snapshot.data['articleData']) {
             let response = this.route.snapshot.data['articleData'];

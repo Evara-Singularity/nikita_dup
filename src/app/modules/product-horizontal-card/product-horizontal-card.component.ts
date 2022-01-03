@@ -223,20 +223,34 @@ export class ProductHorizontalCardComponent implements OnInit {
       this.variantPopupInstance.instance['productGroupData'] = productGroupData;
       this.variantPopupInstance.instance['buyNow'] = buyNow;
       this.variantPopupInstance.instance['isSelectedVariantOOO'] = false; // on first load always instock and value is passed as false
+      // this._commonService.enableNudge = false;
+      // this._commonService.stopSearchNudge = true;
       (this.variantPopupInstance.instance['selectedVariant$'] as EventEmitter<boolean>).subscribe(data => {
         this.changeVariant(data);
+        // this._commonService.stopSearchNudge = true;
+        // this._commonService.enableNudge = false;
+        console.log('calling selectedVariant$ ' + this._commonService.stopSearchNudge);
       });
       (this.variantPopupInstance.instance['selectedVariantOOO$'] as EventEmitter<boolean>).subscribe(msnId => {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        // this._commonService.stopSearchNudge = true;
+        // this._commonService.enableNudge = false;
+        console.log('calling selectedVariantOOO$ ' + this._commonService.stopSearchNudge);
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantAddToCart(data);
+        // this._commonService.stopSearchNudge = false;
+        // this._commonService.enableNudge = false;
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        console.log('calling continueToCart$ ' + this._commonService.stopSearchNudge);
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
+        // this._commonService.enableNudge = false;
+        // this._commonService.stopSearchNudge = false;
+        console.log('calling hide$ ' + this._commonService.stopSearchNudge);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });

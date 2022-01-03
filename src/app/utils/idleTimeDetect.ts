@@ -27,6 +27,7 @@ class IdleTimer {
                     this.cleanUpTimer();
                 }
             }
+            
         }, 1000);
     }
 

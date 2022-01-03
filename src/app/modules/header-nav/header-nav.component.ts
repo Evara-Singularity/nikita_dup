@@ -201,13 +201,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
-            
+
             if (toBeAutoFilledKeyword) {
                 setTimeout(() => {
                     console.log('toBeAutoFilledKeyword after', toBeAutoFilledKeyword)
                     this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
                 }, 500);
-            }else{
+            } else {
                 setTimeout(() => {
                     document.getElementById('search-input').focus();
                     document.getElementById('search-input')['value'] = '';
@@ -221,7 +221,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
 
-            
+
         }
     }
 
@@ -280,7 +280,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (val['url'] === '/' || val['url'] === '/?back=1') {
                     this._commonService.isHomeHeader = true;
                     this._commonService.isPLPHeader = false;
-                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0)) {
+                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0 || location.pathname.search('alp') > 0)) {
                     this._commonService.isHomeHeader = false;
                     this._commonService.isPLPHeader = true;
                 }

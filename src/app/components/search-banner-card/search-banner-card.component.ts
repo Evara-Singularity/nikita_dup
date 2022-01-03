@@ -19,14 +19,13 @@ export class SearchBannerCardComponent {
 
   fireSearchEvent() {
     const analyticObj: any = {
-      page: {}
+      page: {},
+      custData: this._commonService.custDataTracking
     }
-    analyticObj['page']['linkPageName'] = "moglix:search:nudge:bottom-card",
-    analyticObj['page']['linkName'] = 'Search:nudge',
-    analyticObj['page']['pageName'] = '',
+    analyticObj['page']['pageName'] = "moglix:search:nudge:bottom-card",
+    analyticObj['page']['linkName'] = 'listing',
+    analyticObj['page']['linkPageName'] = '',
     analyticObj['page']['channel'] = '',
-    analyticObj['page']['subSection'] = '',
-    analyticObj['page']['loginStatus'] = ''
     this.globalAnalyticService.sendAdobeCall(analyticObj,'genericClick')
     this.fireSearchEvent$.emit(true);
   }

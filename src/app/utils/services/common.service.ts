@@ -529,7 +529,7 @@ export class CommonService {
     if (params.queryParams != undefined) queryParams = params.queryParams;
 
     actualParams["type"] = "m";
-    actualParams["abt"] = "n";
+    actualParams["abt"] = "y";
     actualParams["onlineab"] = "y";
 
     if (queryParams["preProcessRequired"]) {

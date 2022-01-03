@@ -309,13 +309,16 @@ export class ProductListService {
         str = 'listing'
         break;
       case 'PRODUCT_SIMILAR_OUT_OF_STOCK':
-        str = 'pdp:ooo:similar'
+        str = 'pdp:oos:similar'
         break;
       case 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP':
-        str = 'pdp:ooo:similar:top'
+        str = 'pdp:oos:similar:top'
         break;
       case 'SEACRH_SUGGESTION':
         str = 'search:suggestion'
+        break;
+      case 'PRODUCT_PAST_ORDER':
+        str = 'pdp:past_order'
         break;
       default:
         str = 'pdp-extra'
@@ -338,7 +341,7 @@ export class ProductListService {
       taxo3 = productDetails["taxonomyCode"].split("/")[2] || "";
     }
 
-    let ele = []; ``
+    let ele = []; 
     const tagsForAdobe = ele.join("|");
     let page = {
       'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + this.getModuleString(usedInModule),

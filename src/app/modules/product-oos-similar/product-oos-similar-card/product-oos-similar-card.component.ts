@@ -526,11 +526,11 @@ export class ProductOosSimilarCardComponent {
     this._router.navigate([link]);
   }
 
-    onVisibleInViewPort(){
-      const anaytics = this.productService.getAdobeAnalyticsObjectData(this.index,'ooo:similar:pdp');
-      anaytics.page.channel = 'pdp:'+this.index;
-      this._analytic.sendAdobeCall(anaytics, 'genericPageLoad');
-    }
+  onVisibleInViewPort() {
+    const anaytics = this.productService.getAdobeAnalyticsObjectData(this.index, 'ooo:similar:pdp');
+    anaytics.page.channel = 'pdp:' + this.index;
+    this._analytic.sendAdobeCall(anaytics, 'genericPageLoad');
+  }
 
     
     

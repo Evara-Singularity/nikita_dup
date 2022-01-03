@@ -1,4 +1,4 @@
-<div class="container-height" observeVisibility [debounceTime]="100" (visible)="onVisibleInViewPort()" >
+<div class="container-height" >
     <div [id]="'oos-card-' + index" class="pdp-container pdpCard"  *ngIf="showProduct">
         <span class="blueTag">{{(index - GLOBAL_CONSTANT.oosSimilarCardCountTop) + 1}}</span>
         <div class="prod-carsl" addClass
@@ -231,7 +231,7 @@
                 </div>
             </ng-container>
         </ng-template>
-        <div class="bottom-bar nonFixed">
+        <div class="bottom-bar nonFixed" observeVisibility [debounceTime]="100" (visible)="onVisibleInViewPort()" >
             <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">
                 <i class="icon-cart1"></i>
                 <span>ADD TO CART</span>

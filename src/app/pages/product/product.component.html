@@ -458,7 +458,7 @@
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+                <i class="icon-next"></i>
             </a>
 
             <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
@@ -469,7 +469,7 @@
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <!-- <span>From ₹999</span> -->
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+                <i class="icon-next"></i>
             </a>
         </section>
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">

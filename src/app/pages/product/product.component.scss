@@ -710,7 +710,7 @@
                 font-size: $large-font;
                 float: left;
                 width: 70%;
-                width: calc(100% - 120px);
+                width: calc(100% - 130px);
                 padding-bottom: 2px;
 
                 .first-txt {
@@ -2191,12 +2191,13 @@
             border-bottom: 0;
         }
 
-        &>img {
+        &>i {
             margin-left: auto;
-            width: 24px;
             display: flex;
-        }
-
+            align-items: center;
+            color: #000;
+            font-size: 14px;
+          }
         p {
             color: #303030;
             font-size: 14px;

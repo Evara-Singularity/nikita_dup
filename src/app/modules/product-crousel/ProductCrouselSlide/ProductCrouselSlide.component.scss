@@ -1,12 +1,19 @@
 @import './../../../scss/carousel';
-::ng-deep{
-    .inner_block{
+
+::ng-deep {
+    .inner_block {
         position: relative;
-     }
+    }
 }
-.img-block{
+
+.img-block {
     position: relative;
 }
+
+.oos-tag {
+    z-index: 1;
+}
+
 // .img-block {
 //     width: 100%;
 //     background: white;

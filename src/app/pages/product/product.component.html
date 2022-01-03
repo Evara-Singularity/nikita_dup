@@ -631,6 +631,10 @@
                 </ng-container>
             </div>
         </section>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+            <!-- <div [class.mb-60]="productOutOfStock"></div> -->
+        </ng-container>
         <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
             (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
@@ -652,10 +656,6 @@
                 <div class="loader"></div>
             </div>
         </section>
-        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
-            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-            <div [class.mb-60]="productOutOfStock"></div>
-        </ng-container>
     </div>
     <!-- other sections ends -->
 

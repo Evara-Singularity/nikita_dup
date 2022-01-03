@@ -5,7 +5,7 @@ import { Observer, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NavigationExtras, Router } from "@angular/router";
-import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from "./cart.service";
 import { DataService } from "./data.service";
@@ -71,6 +71,7 @@ export class CommonService {
   private routeData: { currentUrl: string; previousUrl: string };
   userSession;
   idleNudgeTimer: IdleTimer;
+  private _renderer2: Renderer2;
 
   constructor(
     @Inject(PLATFORM_ID) platformId,
@@ -80,6 +81,7 @@ export class CommonService {
     private _dataService: DataService,
     public _cartService: CartService,
     private _loaderService: GlobalLoaderService,
+    private rendererFactory: RendererFactory2,
     private _router: Router
   ) {
     this.windowLoaded = false;
@@ -90,6 +92,7 @@ export class CommonService {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
     this.userSession = this._localStorageService.retrieve("user");
+    this._renderer2 = this.rendererFactory.createRenderer(null, null);
   }
 
   setNetworkSpeedState(speed) {
@@ -1144,7 +1147,7 @@ export class CommonService {
       onTimeout: () => {
         this.enableNudge = true;
       }
-    });
+    }, this._renderer2, this);
   }
 
   customDebugger(data) {

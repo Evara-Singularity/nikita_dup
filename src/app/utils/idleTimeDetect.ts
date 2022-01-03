@@ -1,15 +1,18 @@
-
 class IdleTimer {
-
     timeout: any;
     onTimeout: any;
     eventHandler: any;
     interval: any;
     timeoutTracker: any;
+    renderer2: any;
+    listener;
+    that;
 
-    constructor({ timeout, onTimeout }) {
+    constructor({ timeout, onTimeout }, renderer2, that) {
         this.timeout = timeout;
         this.onTimeout = onTimeout;
+        this.renderer2 = renderer2;
+        this.that = that;
 
         this.eventHandler = this.updateExpiredTime.bind(this);
         this.tracker();
@@ -27,11 +30,12 @@ class IdleTimer {
                     this.cleanUpTimer();
                 }
             }
-            
+
         }, 1000);
     }
 
     updateExpiredTime() {
+        console.log('called baby');
         if (this.timeoutTracker) {
             clearTimeout(this.timeoutTracker);
         }
@@ -41,11 +45,19 @@ class IdleTimer {
     }
 
     tracker() {
+        this.listener = this.renderer2.listen('window', 'scroll', () => {
+            console.log('called scroll event');
+            this.that.enableNudge = false;
+            clearTimeout(this.timeoutTracker);
+            this.timeoutTracker = setTimeout(() => {
+                localStorage.setItem("_expiredTime", (Date.now() + this.timeout * 1000).toString());
+            }, 200);
+        });
         window.addEventListener("mousemove", this.eventHandler);
         window.addEventListener("scroll", this.eventHandler);
         window.addEventListener("keydown", this.eventHandler);
     }
-    
+
 
     cleanLocalStorage() {
         localStorage.removeItem("_expiredTime");
@@ -53,6 +65,7 @@ class IdleTimer {
 
     cleanUpTimer() {
         clearInterval(this.interval);
+        this.listener();
         window.removeEventListener("mousemove", this.eventHandler);
         window.removeEventListener("scroll", this.eventHandler);
         window.removeEventListener("keydown", this.eventHandler);

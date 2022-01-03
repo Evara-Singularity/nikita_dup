@@ -145,6 +145,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productImages = null;
   refinedProdTags = [];
 
+  similarForOOSContainer = [];
+  similarForOOSLoaded = true;
+
   // Q&A vars
   questionMessage: string;
   listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
@@ -326,6 +329,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.createSiemaOption();
     this.setProductSeoSchema();
     this.setQuestionAnswerSchema();
+    this.productService.resetOOOSimilarProductsData();
   }
 
   scrollToTop() {
@@ -730,6 +734,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     this.removeSimilarProductInstanceOOS();
     if (this.productOutOfStock) {
+      this.productService.resetOOOSimilarProductsData();
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
       this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
@@ -898,8 +903,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  similarForOOSContainer = [];
-  similarForOOSLoaded = true;
   setSimilarProducts(productName, categoryCode) {
     this.similarProducts = [];
     if (this.isBrowser) {

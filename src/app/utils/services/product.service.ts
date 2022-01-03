@@ -30,6 +30,12 @@ export class ProductService {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
     }
 
+    resetOOOSimilarProductsData() {
+        this.oosSimilarProductsData = {
+            similarData: [],
+        };
+    }
+
     getSimilarProductInfoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index];
     }

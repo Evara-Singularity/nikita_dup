@@ -35,6 +35,18 @@ export class ProductOosSimilarComponent {
     this.attachScrollHandler();
   }
 
+  handleCheckEventToStopLoader(index) {
+    const visibleSimilarCardLength = (this.productService.oosSimilarProductsData.similarData.slice(0, GLOBAL_CONSTANT.oosSimilarCardCountBottom + GLOBAL_CONSTANT.oosSimilarCardCountTop)).length;
+
+    if ((visibleSimilarCardLength - 1) == index) {
+      this._globalLoader.setLoaderState(false);
+    }
+
+    setTimeout(() => {
+      this._globalLoader.setLoaderState(false);
+    }, 5000)
+  }
+
   attachScrollHandler() {
     this.listener = this.renderer2.listen('window', 'scroll', (e) => {
       this.windowScrollHandler();

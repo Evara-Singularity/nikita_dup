@@ -1,6 +1,5 @@
-<div id="oosSimilarTopSection" class="oosSimilarTopSection"
-    *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
-    <h2>Consider These Available Items</h2>
+<div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
+    <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 0">Consider These Available Items</h2>
     <div class="horizontal-scroll-container" id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
             <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"

@@ -57,6 +57,8 @@ export class ProductOosSimilarCardComponent {
     new EventEmitter();
   @Output("ratingReviewClickEvent") ratingReviewClickEvent =
     new EventEmitter();
+  @Output("checkEventToStopLoader") checkEventToStopLoader =
+    new EventEmitter();
 
   iOptions: any = null;
   showProduct: boolean = false;
@@ -130,7 +132,7 @@ export class ProductOosSimilarCardComponent {
         this.qunatityFormControl.setValue(this.productService.getSimilarProductInfoByIndex(this.index).productMinimmumQuantity);
         this.showProduct = true;
         this.setRecentlyBought(rawData[2]);
-
+        this.checkEventToStopLoader.next(this.index);
       }
     });
   }

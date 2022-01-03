@@ -2269,7 +2269,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     const { ProductAppPromoComponent } = await import(
       "../../components/product-app-promo/product-app-promo.component"
     ).finally(() => {
-      this.showLoader = false;
+      if (!this.productOutOfStock) {
+        this.showLoader = false;
+      }
     });
     const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
     this.appPromoInstance = this.appPromoContainerRef.createComponent(

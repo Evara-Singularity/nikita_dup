@@ -2133,7 +2133,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       );
 
       // sent anaytic call
-      this.sendProductImageClickTracking(":ooo:similar")
+      this.sendProductImageClickTracking(":oos:similar")
 
       const options = Object.assign({}, this.iOptions);
       options.pager = false;

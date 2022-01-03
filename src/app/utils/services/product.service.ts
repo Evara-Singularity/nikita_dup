@@ -340,7 +340,7 @@ export class ProductService {
             loginStatus:
                 this.oosSimilarProductsData.similarData[index].loginStatusTracking,
         };
-        productInfo["analyticsInfo"] = this.getAdobeAnalyticsObjectData(index, 'pdp:ooo:similar');
+        productInfo["analyticsInfo"] = this.getAdobeAnalyticsObjectData(index, 'pdp:oos:similar');
         return productInfo;
     }
 

@@ -74,7 +74,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
       subSection: "moglix:pdp carausel main image:pdp",
     };
     if(this.oosProductIndex > -1){
-      page.channel = page.channel + ':ooo:similar'
+      page.channel = page.channel + ':oos:similar'
     }
     this._analyticService.sendAdobeCall({ page }, "genericPageLoad");
   }

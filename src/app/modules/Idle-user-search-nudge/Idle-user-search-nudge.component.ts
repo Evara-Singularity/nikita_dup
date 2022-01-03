@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import IdleTimer from '@app/utils/idleTimeDetect';
 import { CommonService } from '@app/utils/services/common.service';
 import { Subscription } from 'rxjs';
@@ -31,17 +31,12 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit() {
     if (this._commonService.isBrowser) {
-      // this._commonService.idleNudgeTimer = new IdleTimer({
-      //   timeout: 7, //expired after 7 secs
-      //   onTimeout: () => {
-      //     this._commonService.enableNudge = true;
-      //   }
-      // });
       this._commonService.resetSearchNudgeTimer();
     }
   }
 
   openSearchPopup() {
+    this._commonService.searchNudgeClicked.next(true)
     this._commonService.updateSearchPopup(this.searchKeyword);
   }
 

@@ -3,7 +3,7 @@
     <div class="horizontal-scroll-container" id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
             <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
-                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true" [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
                 [product]="productService.oosSimilarProductsData.similarData[i]">
             </product-horizontal-card>
         </ng-container>
@@ -748,8 +748,9 @@
     </div>
 </section>
 
-<idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
-    *ngIf="isBrowser && !productNotFound">
+<idle-user-search-nudge 
+    [searchKeyword]="categoryName" 
+    [headingKeyword]="categoryName" *ngIf="isBrowser">
 </idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>

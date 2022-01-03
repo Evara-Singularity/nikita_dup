@@ -6,6 +6,7 @@ import { DataService } from "./data.service";
 import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { ProductsEntity } from "../models/product.listing.search";
+import { CommonService } from "./common.service";
 interface ProductDataArg {
     productBO: string;
     refreshCrousel?: boolean;
@@ -24,7 +25,7 @@ export class ProductService {
         similarData: [],
     };
 
-    constructor(private _dataService: DataService, public http: HttpClient) { }
+    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService) { }
 
     getSimilarProductBoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
@@ -339,11 +340,7 @@ export class ProductService {
             loginStatus:
                 this.oosSimilarProductsData.similarData[index].loginStatusTracking,
         };
-        productInfo["analyticsInfo"] = {
-            page: page,
-            custData: this.oosSimilarProductsData.similarData[index].custDataTracking,
-            order: this.oosSimilarProductsData.similarData[index].orderTracking,
-        };
+        productInfo["analyticsInfo"] = this.getAdobeAnalyticsObjectData(index, 'pdp:ooo:similar');
         return productInfo;
     }
 
@@ -789,5 +786,46 @@ export class ProductService {
         const PRODUCT_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
         return this._dataService.callRestful("GET", PRODUCT_URL);
     }
+
+      
+    getAdobeAnalyticsObjectData(index, identifier = 'pdp') {
+
+        const productCategoryDetails = this.oosSimilarProductsData.similarData[index]['productCategoryDetails'];
+        const productSubPartNumber = this.oosSimilarProductsData.similarData[index]['productSubPartNumber'];
+        const productBrandDetails = this.oosSimilarProductsData.similarData[index]['productBrandDetails'];
+        const productPrice = this.oosSimilarProductsData.similarData[index]['productPrice'];
+        const productOutOfStock = this.oosSimilarProductsData.similarData[index]['productPrice'];
+
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+
+        if (productCategoryDetails["taxonomyCode"]) {
+            taxo1 = productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+
+        let page = {
+            pageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier,
+            channel: "pdp",
+            subSection: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier,
+            loginStatus: this._commonService.loginStatusTracking,
+        };
+        let custData = this._commonService.custDataTracking;
+
+        let order = {
+            productID: productSubPartNumber,
+            productCategoryL1: taxo1,
+            productCategoryL2: taxo2,
+            productCategoryL3: taxo3,
+            brand: productBrandDetails["brandName"],
+            price: productPrice,
+            stockStatus: productOutOfStock ? "Out of Stock" : "In Stock",
+        };
+
+        return { page, custData, order }
+    }
+
 
 }

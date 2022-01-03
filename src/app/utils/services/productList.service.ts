@@ -299,8 +299,33 @@ export class ProductListService {
     );
   }
 
+  getModuleString(module) {
+    let str = 'listing';
+    switch (module) {
+      case 'PRODUCT':
+        str = 'pdp'
+        break;
+      case 'LISTING':
+        str = 'listing'
+        break;
+      case 'PRODUCT_SIMILAR_OUT_OF_STOCK':
+        str = 'pdp:ooo:similar'
+        break;
+      case 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP':
+        str = 'pdp:ooo:similar:top'
+        break;
+      case 'SEACRH_SUGGESTION':
+        str = 'search:suggestion'
+        break;
+      default:
+        str = 'pdp-extra'
+        break;
+    }
+    return str;
+  }
+
   analyticAddToCart(routerlink, productDetails, usedInModule = 'PRODUCT') {
-    // console.log('productDetails ==>', productDetails);
+    // console.log('productDetails ==> usedInModule ====>', usedInModule);
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
     const pageName = this.pageName.toLowerCase();
@@ -315,9 +340,8 @@ export class ProductListService {
 
     let ele = []; ``
     const tagsForAdobe = ele.join("|");
-    const moduleString = (usedInModule == 'PRODUCT') ? 'pdp' : 'listing';
     let page = {
-      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + moduleString,
+      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + this.getModuleString(usedInModule),
       'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
       'channel': pageName !== 'category' ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting

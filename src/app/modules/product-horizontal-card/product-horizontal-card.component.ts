@@ -54,7 +54,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input() enableTracking = false;
   @Input() analytics = null;
   @Input() isOosSimilarCard = null;
-  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' = 'LISTING_PAGES';
+  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' | 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP' | 'PRODUCT_SIMILAR_OUT_OF_STOCK' | 'SEACRH_SUGGESTION' = 'LISTING_PAGES';
   productGroupData: any = null;
 
   isOutOfStockByQuantity: boolean = false;

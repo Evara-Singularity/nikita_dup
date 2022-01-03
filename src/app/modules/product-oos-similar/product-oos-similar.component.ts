@@ -3,6 +3,7 @@ import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ProductService } from "@app/utils/services/product.service";
 import { Location } from "@angular/common";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 
 @Component({
   selector: "app-product-oos-similar",
@@ -25,8 +26,10 @@ export class ProductOosSimilarComponent {
     public productService: ProductService,
     private _commonService: CommonService,
     private renderer2: Renderer2,
-    private location: Location
-  ) { }
+    private location: Location,
+    private _globalLoader: GlobalLoaderService,
+  ) {
+  }
 
   ngAfterViewInit() {
     this.attachScrollHandler();

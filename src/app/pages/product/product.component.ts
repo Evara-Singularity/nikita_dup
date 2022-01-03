@@ -334,7 +334,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   scrollToTop() {
     if (this.isBrowser) {
-      ClientUtility.scrollToTop(100);
+      ClientUtility.scrollToTop(2000);
     }
   }
 
@@ -348,7 +348,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onScrollOOOSimilar(event){
+  onScrollOOOSimilar(event) {
     this.commonService.idleNudgeTimer.updateExpiredTime();
   }
 
@@ -3431,12 +3431,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.router.navigate([link]);
   }
 
-    get categoryName() { 
-        if (this.productCategoryDetails && this.productCategoryDetails['categoryName']){
-            return this.productCategoryDetails['categoryName'];
-        }
-        return "Something!!!";
+  get categoryName() {
+    if (this.productCategoryDetails && this.productCategoryDetails['categoryName']) {
+      return this.productCategoryDetails['categoryName'];
     }
+    return "Something!!!";
+  }
 
   get pastOrderAnalytics() {
     const TAXONS = this.taxons;

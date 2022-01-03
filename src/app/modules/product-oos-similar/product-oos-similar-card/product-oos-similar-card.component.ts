@@ -20,6 +20,7 @@ import { ProductInfoSection } from '@app/utils/pipes/product-oos-similar-card-se
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { ProductListService } from "@app/utils/services/productList.service";
@@ -57,6 +58,8 @@ export class ProductOosSimilarCardComponent {
     new EventEmitter();
   @Output("ratingReviewClickEvent") ratingReviewClickEvent =
     new EventEmitter();
+  @Output("checkEventToStopLoader") checkEventToStopLoader =
+    new EventEmitter();
 
   iOptions: any = null;
   showProduct: boolean = false;
@@ -89,6 +92,7 @@ export class ProductOosSimilarCardComponent {
     private localAuthService: LocalAuthService,
     private _toastMessageService: ToastMessageService,
     private _router: Router,
+    private _analytic: GlobalAnalyticsService
   ) { }
 
   ngOnInit() {
@@ -104,6 +108,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   getProductData() {
+    this._loader.setLoaderState(true);
     // Product API url
     forkJoin([
       this.productService.getProduct(this.productMsn),
@@ -129,7 +134,7 @@ export class ProductOosSimilarCardComponent {
         this.qunatityFormControl.setValue(this.productService.getSimilarProductInfoByIndex(this.index).productMinimmumQuantity);
         this.showProduct = true;
         this.setRecentlyBought(rawData[2]);
-
+        this.checkEventToStopLoader.next(this.index);
       }
     });
   }
@@ -338,7 +343,7 @@ export class ProductOosSimilarCardComponent {
       } else {
         if (result) {
           // this.resetVariantData();
-          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails,'PRODUCT_SIMILAR_OUT_OF_STOCK');
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({
@@ -521,5 +526,13 @@ export class ProductOosSimilarCardComponent {
     this._router.navigate([link]);
   }
 
+    onVisibleInViewPort(){
+      const anaytics = this.productService.getAdobeAnalyticsObjectData(this.index,'ooo:similar:pdp');
+      anaytics.page.channel = 'pdp:'+this.index;
+      this._analytic.sendAdobeCall(anaytics, 'genericPageLoad');
+    }
+
+    
+    
 
 }

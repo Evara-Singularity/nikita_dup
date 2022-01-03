@@ -1,10 +1,9 @@
-<div id="oosSimilarTopSection" class="oosSimilarTopSection"
-    *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
-    <h2>Consider These Available Items</h2>
+<div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
+    <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
     <div class="horizontal-scroll-container" id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)">
-        <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
+        <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
             <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
-                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true" [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
                 [product]="productService.oosSimilarProductsData.similarData[i]">
             </product-horizontal-card>
         </ng-container>
@@ -632,6 +631,10 @@
                 </ng-container>
             </div>
         </section>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+            <!-- <div [class.mb-60]="productOutOfStock"></div> -->
+        </ng-container>
         <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
             (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
@@ -653,10 +656,6 @@
                 <div class="loader"></div>
             </div>
         </section>
-        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
-            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-            <div [class.mb-60]="productOutOfStock"></div>
-        </ng-container>
     </div>
     <!-- other sections ends -->
 
@@ -750,8 +749,9 @@
     </div>
 </section>
 
-<idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
-    *ngIf="isBrowser && !productNotFound">
+<idle-user-search-nudge 
+    [searchKeyword]="categoryName" 
+    [headingKeyword]="categoryName" *ngIf="isBrowser">
 </idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>

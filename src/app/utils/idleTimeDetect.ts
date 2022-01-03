@@ -35,7 +35,6 @@ class IdleTimer {
     }
 
     updateExpiredTime() {
-        console.log('called baby');
         if (this.timeoutTracker) {
             clearTimeout(this.timeoutTracker);
         }
@@ -46,7 +45,6 @@ class IdleTimer {
 
     tracker() {
         this.listener = this.renderer2.listen('window', 'scroll', () => {
-            console.log('called scroll event');
             this.that.enableNudge = false;
             clearTimeout(this.timeoutTracker);
             this.timeoutTracker = setTimeout(() => {

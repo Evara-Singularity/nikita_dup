@@ -2,20 +2,21 @@ import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { DataService } from '@app/utils/services/data.service';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { Observable, of } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
-import { ArticleService } from './article.service';
+import CONSTANTS from '../../config/constants';
 
 
 @Injectable()
 export class ArticleResolver implements Resolve<any> {
 
     constructor(
-        private articleService: ArticleService,
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
         @Optional() @Inject(RESPONSE) private response,
+        private _dataService: DataService
     ) {
 
     }
@@ -30,7 +31,7 @@ export class ArticleResolver implements Resolve<any> {
             return of(response);
         }
         else {
-            return this.articleService.getArticlePageData(name)
+            return this._dataService.callRestful("GET", `${CONSTANTS.NEW_MOGLIX_API}${CONSTANTS.GET_LAYOUT}${name}`)
                 .pipe(
                     first(),
                     tap(response => {

@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   PROD_NAME: 'https://www.moglix.com',
-//   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",
@@ -12,13 +12,14 @@ export const environment = {
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
   buildVersion: '5',
   SOCIAL_LOGIN: {
-    "google": {
-      "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"
+    google: {
+      clientId:
+        "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com",
     },
-    "facebook": {
-      "clientId": "775243655917959",
-      "apiVersion": "v2.5"
-    }
+    facebook: {
+      clientId: "775243655917959",
+      apiVersion: "v2.4",
+    },
   },
   AB_TESTING: {
     NAME: 'ENV_A',

@@ -9,7 +9,8 @@
     </div>
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+product.productUrl">{{product.productName}}</a> -->
     <!-- wrapper div for card class -->
-    <div [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.enableCard}">
+    <div [class.available-item-card]="isOosSimilarCard"
+        [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.verticalOrientation}">
         <div class="card-container"
             [ngClass]="{'list-view': (cardFeaturesConfig.horizontalOrientation), 'grid-view': (cardFeaturesConfig.verticalOrientation)}">
             <div class="left" (click)="navigateToPDP()">
@@ -42,13 +43,14 @@
                             *ngIf="product.productName.length>60">...</span></span>
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div> -->
-                <div class="name" (click)="trackProductTitle('title');$event.preventDefault()" >
-                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation"> <span>{{product.productName | slice:0:60}}
-                        <span *ngIf="product.productName.length>60">...</span></span></a>
+                <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
+                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation">
+                        <span>{{product.productName | slice:0:60}}
+                            <span *ngIf="product.productName.length>60">...</span></span></a>
                     <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
                 </div>
-                <div class="brand" (click)="navigateToPDP()">
-                    <span>By: {{product.brandName}}</span>
+                <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
+                    <span>By: {{product.brandName | brandName}}</span>
                 </div>
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">
@@ -80,7 +82,7 @@
                         </ng-container>
                         <ng-container
                             *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
-                            <button class="white" (click)="openRfqForm()">SEND QUERY</button>
+                            <button class="white send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
                         </ng-container>
                     </div>
                 </div>

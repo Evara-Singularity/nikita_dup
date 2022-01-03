@@ -15,10 +15,43 @@
     src: url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype');
   }
 
-// Icons
+// Flat Icons
 i[class^="icon-"],
 [class^="icon-"]::before,
 [class*=" icon-"]::before {
+    font-family: 'icomooon_pwa' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+//Stacked Icons
+[class^="st-icon-"] {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin-right: 10px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    font-size: 22px;
+    text-align: left;
+}
+
+[class^="st-icon-"] span:before {
+    display: block;
+    position: absolute;
+    white-space: normal;
+    /* match padding above */
+    //   top: 0.143em;
+    top: 0px;
+    left: 0px;
+    text-indent: 0;
     font-family: 'icomooon_pwa' !important;
     font-style: normal;
     font-weight: normal;
@@ -65,6 +98,19 @@ body {
     border-radius: 2px;
     text-transform: uppercase;
     font-weight: 600;
+}
+
+.btn-red-bg {
+    padding: 10px 20px;
+    background-color: #D9232D;
+    text-transform: uppercase;
+    color: #FFF;
+    border: 0;
+    margin: 0;
+    border-radius: 3px;
+    display: inline;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .clearfix,
@@ -285,6 +331,10 @@ a {
     display: none;
 }
 
+.plp-container-header-adjust{
+    margin-top: 169px;
+}
+
 //Common Margin & padding classes 
 .pad-lr-0 {
     padding-left: 0px;
@@ -306,6 +356,7 @@ a {
 .pb-15 {
     padding-bottom: 15px;
 }
+
 
 .pad-tb-10 {
     padding-top: 10px;
@@ -667,7 +718,7 @@ header-nav {
     content: "\e921";
 }
 
-.icon-delivery:before {
+.icon-prepaid:before {
     content: "\e922";
 }
 
@@ -1147,4 +1198,211 @@ header-nav {
 .icon-wishlist1-active:before {
     content: "\e9c8";
     color: #D9232D;
+}
+
+.icon-Group-14030:before {
+    content: "\e9e7";
+}
+
+.icon-secure-payment-fill:before {
+    content: "\e9f9";
+}
+
+.icon-customer-service-fill:before {
+    content: "\e9d3";
+}
+
+.icon-restart-line:before {
+    content: "\e9f8";
+}
+
+.icon-restart-line-1:before {
+    content: "\e9f5";
+}
+
+.icon-restart-line-2:before {
+    content: "\e9f6";
+}
+
+.icon-restart-line-3:before {
+    content: "\e9f7";
+}
+
+.icon-map-pin-fill:before {
+    content: "\e9e8";
+}
+
+.icon-coupon-3-fill-1:before {
+    content: "\e9d1";
+}
+
+.icon-coupon-3-fill1:before {
+    content: "\e9d2";
+}
+
+.icon-moglix_app_logo:before {
+    content: "\e9b5";
+}
+
+.icon-dropbox-fill:before {
+    content: "\e9e6";
+}
+.icon-bin:before{
+    content: "\e9fe";
+}
+
+.st-icon-prepaid {
+    .icon-prepaid_1:before {
+        content: "\e9f2";
+        color: #EFEFF4;
+    }
+
+    .icon-prepaid_2:before {
+        content: "\e9f3";
+        color: #2C9091;
+    }
+
+    .icon-prepaid_3:before {
+        content: "\e9f4";
+        color: #54D8FF;
+    }
+
+    .icon-prepaid_4:before {
+        content: "\e9fa";
+        color: #43B7D9;
+    }
+
+    .icon-prepaid_5:before {
+        content: "\e9fb";
+        color: #FFE341
+    }
+}
+
+.st-icon-delivery_available {
+    .icon-delivery_y_1:before {
+        content: "\e9f2";
+        color: #EFEFF4;
+    }
+
+    .icon-delivery_y_2:before {
+        content: "\e9ee";
+        color: #FFB74D;
+    }
+
+    .icon-delivery_y_3:before {
+        content: "\e9ef";
+        color: #FFCC80;
+    }
+
+    .icon-delivery_y_4:before {
+        content: "\e9f0";
+        color: #795548;
+    }
+
+    .icon-delivery_y_5:before {
+        content: "\e9f1";
+        color: #4CAF50;
+    }
+}
+
+.st-icon-delivery_not_available {
+    .icon-delivery_n_1:before {
+        content: "\e9e4";
+        color: #EFEFF4;
+    }
+
+    .icon-delivery_n_2:before {
+        content: "\e9e5";
+        color: #FFB74D;
+    }
+
+    .icon-delivery_n_3:before {
+        content: "\e9ea";
+        color: #FFCC80;
+    }
+
+    .icon-delivery_n_4:before {
+        content: "\e9eb";
+        color: #795548;
+    }
+
+    .icon-delivery_n_5:before {
+        content: "\e9ec";
+        color: #D9232D;
+    }
+}
+
+.st-icon-shipping {
+    .icon-delivery_1:before {
+        content: "\e9f2";
+        color: #EFEFF4;
+    }
+
+    .icon-delivery_2:before {
+        content: "\e9cf";
+        color: #F7BE56;
+    }
+
+    .icon-delivery_3:before {
+        content: "\e9d0";
+        color: #E56353;
+    }
+
+    .icon-delivery_4:before {
+        content: "\e9d4";
+        color: #27A2DB;
+    }
+
+    .icon-delivery_5:before {
+        content: "\e9d5";
+        color: #3A556A;
+    }
+
+    .icon-delivery_6:before {
+        content: "\e9d6";
+        color: #2F4859;
+    }
+
+    .icon-delivery_7:before {
+        content: "\e9d7";
+        color: #64798A;
+    }
+
+    .icon-delivery_8:before {
+        content: "\e9d8";
+        color: #EBF0F3;
+    }
+}
+
+.st-icon-cod {
+    .icon-cod_1:before {
+        content: "\e9ca";
+        color: #EFEFF4;
+    }
+
+    .icon-cod_2:before {
+        content: "\e9cb";
+        color: #3BB54A;
+    }
+
+    .icon-cod_3:before {
+        content: "\e9cc";
+        color: #2BA037;
+    }
+
+    .icon-cod_4:before {
+        content: "\e9cd";
+        color: #FEDB41;
+    }
+}
+.st-icon-whatsapp{
+    .icon-whatsapp_icon1:before{
+        content:"\e9fc";
+        color:#FBFBFB;
+    }
+   
+    .icon-whatsapp_icon2:before{
+        content:"\e9fd";
+        color: #00C841;
+    }
 }

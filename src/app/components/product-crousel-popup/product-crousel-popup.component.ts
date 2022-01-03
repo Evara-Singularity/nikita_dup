@@ -12,6 +12,7 @@ import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.mo
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
 import CONSTANTS from '@app/config/constants';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
   selector: 'app-product-crousel-popup',
@@ -23,6 +24,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   @Input() options: any;
   @Input() productAllImages: any;
   @Input() slideNumber: number;
+  @Input() oosProductIndex: -1
   @Output() out: EventEmitter<any> =  new EventEmitter<any>();
   @Output() currentSlide: EventEmitter<any> =  new EventEmitter<any>();
   ngxSiemaOptions: NgxSiemaOptions
@@ -31,7 +33,8 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   
   constructor(
     private ngxSiemaService: NgxSiemaService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private _analyticService: GlobalAnalyticsService,
   ) { }
 
   ngOnInit(): void {
@@ -58,8 +61,22 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
         }
       },
       onChange: (index) => {
+        this.sendTracking(index)
       },
     }
+  }
+
+  sendTracking(num) {
+    let page = {
+      channel: "pdp image carausel",
+      pageName: "moglix:image carausel:pdp",
+      linkName: "moglix:productmainimageclick_" + num,
+      subSection: "moglix:pdp carausel main image:pdp",
+    };
+    if(this.oosProductIndex > -1){
+      page.channel = page.channel + ':ooo:similar'
+    }
+    this._analyticService.sendAdobeCall({ page }, "genericPageLoad");
   }
 
   outData(data) {

@@ -109,6 +109,7 @@
     &.material-form-boxed {
         .input-field-boxed {
             margin-bottom: 20px;
+            position: relative;
 
             input,
             select {
@@ -118,6 +119,13 @@
                 border-width: 1px;
                 height: 40px;
                 padding: 0px 10px 0px 10px;
+                font-size: $large-font;
+            }
+
+            select+.icon-down {
+                position: absolute;
+                right: 6px;
+                top: 23px;
                 font-size: $large-font;
             }
 
@@ -358,6 +366,7 @@ option {
         .overlay-bg {
             top: 0;
         }
+
         .content-box {
             bottom: 0;
         }
@@ -495,3 +504,13 @@ option {
 .flex-dir-col {
     flex-direction: column;
 }
+
+.pad-t-0 {
+    padding-top: 0px !important;
+}
+
+.pad-b-0 {
+    padding-bottom: 0px !important;
+}
+
+//headerTranslation

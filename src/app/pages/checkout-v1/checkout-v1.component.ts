@@ -216,7 +216,7 @@ export class CheckoutV1Component implements OnInit {
       });
       this._commonService.setWindowLoaded();
     }
-    
+
     this.intialCheckoutVisit();
   }
 
@@ -270,14 +270,14 @@ export class CheckoutV1Component implements OnInit {
       )
       .subscribe((cartSession) => {
         //  ;
-        if (cartSession && cartSession['statusCode'] != undefined && cartSession['statusCode'] == 200) {
+        if (cartSession && cartSession['cart'] && cartSession['itemsList'] && Array.isArray(cartSession['itemsList'])) {
           const cs = this._cartService.updateCart(cartSession);
           this._cartService.setCartSession(cs);
           setTimeout(() => {
             this.cartSessionUpdated$.next(cartSession);
           }, 100);
           this._cartService.orderSummary.next(cartSession);
-          this._cartService.cart.next(cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0);
+          this._cartService.cart.next({ count: (cartSession["cart"] != undefined ? cartSession['noOfItems'] : 0) });
 
           const buyNow = this._cartService.buyNow;
           if (cartSession["noOfItems"] == 0 && !buyNow) {
@@ -290,7 +290,7 @@ export class CheckoutV1Component implements OnInit {
             this.cartSessionUpdated$.next(cs);
           }, 100);
           this._cartService.orderSummary.next(cs);
-          this._cartService.cart.next(cs["cart"] != undefined ? cs['noOfItems'] : 0);
+          this._cartService.cart.next({ count: (cs["cart"] != undefined ? cs['noOfItems'] : 0) });
 
           this._localAuthService.setUserSession(cartSession['userData']);
           this._localAuthService.logout$.emit();
@@ -317,9 +317,6 @@ export class CheckoutV1Component implements OnInit {
                 cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
               }
             }
-            // note1: belowline
-            // Object.assign(this.cartSession, cartSession);
-            // console.log(this.cartSession, cartSession);
           }
           return cartSession;
         })
@@ -372,8 +369,6 @@ export class CheckoutV1Component implements OnInit {
       if (this.cartData["itemsList"][p]['bulkPrice'] != '' && this.cartData["itemsList"][p]['bulkPrice'] != null) {
         price = this.cartData["itemsList"][p]['bulkPrice'];
       }
-
-      console.log(this.cartData["itemsList"][p]['bulkPrice'], this.cartData["itemsList"][p]['productUnitPrice']);
 
       taxo1 = this.cartData["itemsList"][p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
       taxo2 = this.cartData["itemsList"][p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
@@ -502,9 +497,9 @@ export class CheckoutV1Component implements OnInit {
       digitalData['page']['linkName'] = '',
         digitalData['page']['linkPageName'] = ''
       // if(typeof _satellite !== "undefined"){
-        if(_satellite){
-          _satellite.track("genericPageLoad");
-        }
+      if (_satellite) {
+        _satellite.track("genericPageLoad");
+      }
       // } 
     }
   }

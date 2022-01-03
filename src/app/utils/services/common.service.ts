@@ -18,6 +18,7 @@ import CONSTANTS from "../../config/constants";
 import { GlobalLoaderService } from "./global-loader.service";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
+import IdleTimer from "../idleTimeDetect";
 
 @Injectable({
   providedIn: "root",
@@ -32,6 +33,7 @@ export class CommonService {
     "search-results": string;
   };
   limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
+  enableNudge: boolean = false;
 
   set showLoader(status: boolean) {
     this._loaderService.setLoaderState(status);
@@ -44,6 +46,13 @@ export class CommonService {
 
   public refreshProducts$: Subject<any> = new Subject<any>();
 
+  public oosSimilarCard$: Subject<any> = new Subject<any>();
+
+  isHomeHeader = false;
+  isPLPHeader = false;
+  isScrolledHeader = false;
+  stopSearchNudge = false;
+
   currentRequest: any;
   cmsData: any;
   replaceHeading: boolean = false;
@@ -55,11 +64,15 @@ export class CommonService {
   private _webpSupport: boolean = false;
   private networkSpeedState: Subject<number> = new Subject<number>();
   private webpSupportState: Subject<number> = new Subject<number>();
+  private _loadSearchPopup: Subject<string> = new Subject<string>();
+  public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
+  public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
 
   private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
   private routeData: { currentUrl: string; previousUrl: string };
   userSession;
+  idleNudgeTimer: IdleTimer;
 
   constructor(
     @Inject(PLATFORM_ID) platformId,
@@ -71,7 +84,6 @@ export class CommonService {
     private _loaderService: GlobalLoaderService,
     private _router: Router
   ) {
-    // this.getBusinessDetails();
     this.windowLoaded = false;
     let gaGtmData = this._localStorageService.retrieve("gaGtmData");
     this.gaGtmData = gaGtmData ? gaGtmData : {};
@@ -118,6 +130,14 @@ export class CommonService {
 
   set itemsValidationMessage(ivm) {
     this._itemsValidationMessage = ivm;
+  }
+
+  updateSearchPopup(searchKeyword) {
+    this._loadSearchPopup.next(searchKeyword);
+  }
+
+  getSearchPopupStatus() {
+    return this._loadSearchPopup.asObservable();
   }
 
   resetLimitTrendingCategoryNumber() {
@@ -924,6 +944,25 @@ export class CommonService {
     this.sectionClicked = "";
   }
 
+
+  get loginStatusTracking() {
+    const user = this._localStorageService.retrieve("user");
+    return user && user["authenticated"] == "true"
+      ? "registered user"
+      : "guest";
+  }
+
+  get custDataTracking() {
+    const user = this._localStorageService.retrieve("user");
+    return {
+      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
+      emailID: user && user["email"] ? btoa(user["email"]) : "",
+      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
+      customerType: user && user["userType"] ? user["userType"] : "",
+    };
+  }
+
+
   setSectionClickInformation(sectionName, identifier) {
     if (this.isBrowser && sectionName && identifier) {
       sessionStorage.removeItem(identifier + "page");
@@ -1088,4 +1127,53 @@ export class CommonService {
   getUniqueGAId() {
     return this._dataService.getCookie("_ga");
   }
+
+  redirectPostAuth(redirectURL: string) {
+    let routeData = this.getRouteData();
+    if (redirectURL) {
+      this.redirectCheck(redirectURL);
+    }
+    else if (routeData['previousUrl'] && routeData['previousUrl'] == '/') {
+      this.redirectCheck('/');
+    } else if (routeData['previousUrl'] && routeData['previousUrl'] != '' && routeData['previousUrl'] != '/login') {
+      this.redirectCheck(routeData['previousUrl']);
+    } else if (routeData['currentUrl'] && routeData['currentUrl'] != '' && routeData['currentUrl'] != '/login') {
+      this.redirectCheck(routeData['currentUrl']);
+    } else {
+      this.redirectCheck('/');
+    }
+  }
+
+  redirectCheck(url: string) {
+    const exceptUrl = ['login', 'otp', 'forgot-password', 'sign-up']
+    let contains = false;
+    exceptUrl.forEach(element => {
+      if (url.indexOf(element) !== -1) {
+        contains = true;
+      }
+    });
+    if (contains) {
+      this._router.navigateByUrl('/');
+    } else {
+      this._router.navigateByUrl(url);
+    }
+  }
+
+  resetSearchNudgeTimer() {
+    this.idleNudgeTimer = new IdleTimer({
+      timeout: GLOBAL_CONSTANT.searchNudgeTimer,
+      onTimeout: () => {
+        this.enableNudge = true;
+        this.searchNudgeOpened.next(true);
+      }
+    });
+  }
+
+  customDebugger(data) {
+    console.clear();
+    console.trace();
+    console.log(data);
+    alert('check console');
+  }
+  
 }

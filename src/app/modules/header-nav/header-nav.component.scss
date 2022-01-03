@@ -153,6 +153,7 @@ header {
         position: relative;
         font-size: 18px;
         color: $white;
+        width:35px;
     }
     .icon-cart1 {
         font-size: 22px;
@@ -169,11 +170,8 @@ header {
         width: 5%;
     }
     .moglix-app-logo {
-        padding-right: 15px !important;
-        img {
-            width: 24px;
-            vertical-align: middle;
-            display: inline-block;
+        i {
+            font-size:24px;
         }
     }
     .search-bar-mini {

@@ -18,7 +18,7 @@ declare var dataLayer;
 @Component({
     selector: 'net-banking',
     templateUrl: './netBanking.html',
-    styleUrls:['./netBanking.scss']
+    styleUrls: ['./netBanking.scss']
 })
 
 export class NetBankingComponent {
@@ -30,12 +30,12 @@ export class NetBankingComponent {
     isValid: boolean;
     payuData: {};
     dataNBTop: Array<{}>;
-    selectedBankName:any;
-    prepaidDiscount:number=0;
-    totalPayableAmount:number=0;
+    selectedBankName: any;
+    prepaidDiscount: number = 0;
+    totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
     imagePath = CONSTANTS.IMAGE_ASSET_URL;
-    @Input() type : any;
+    @Input() type: any;
     set isShowLoader(value) {
         this._loaderService.setLoaderState(value);
     }
@@ -45,7 +45,7 @@ export class NetBankingComponent {
     topBanks: Array<any> = [];
     othersBanks: Array<any> = [];
     lowSuccessBanks: Array<any> = [];
-    commonFailureMsg: boolean= null;
+    commonFailureMsg: boolean = null;
 
     readonly bankImages = {
         // bankid: image map
@@ -91,7 +91,7 @@ export class NetBankingComponent {
             })
         });
 
-        if(this.successPercentageData){
+        if (this.successPercentageData) {
             const bankData = this.createNetBankingData(this.successPercentageData);
             // console.log('bankData =>', bankData);
             this.topBanks = bankData.topBanks;
@@ -118,7 +118,7 @@ export class NetBankingComponent {
         const banksArr: [] = this._objectToArray.transform(successPercentageData);
         const topBanks = banksArr.filter(item => item['is_top'] == 1)
         const otherBanks = banksArr.filter(item => item['is_top'] != 1)
-        const lowSuccessBanks =  banksArr.filter(item => item['up_status'] == 0)
+        const lowSuccessBanks = banksArr.filter(item => item['up_status'] == 0)
         topBanks.sort((a, b) => (a['name'] > b['name']) ? 1 : -1)
         otherBanks.sort((a, b) => (a['name'] > b['name']) ? 1 : -1)
         return { topBanks, otherBanks, lowSuccessBanks };
@@ -188,7 +188,6 @@ export class NetBankingComponent {
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
-                alert(res.description);
                 return;
             }
 
@@ -287,7 +286,7 @@ export class NetBankingComponent {
                     let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
                     let totalAmount = cart.totalAmount ? cart.totalAmount : 0;
                     let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
-                    this.totalPayableAmount = totalAmount + shipping - totalOffer-this.prepaidDiscount;
+                    this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
                 }
                 this._cartService.setCartSession(cartSession);
                 // console.log(this.cartSesssion);
@@ -316,12 +315,12 @@ export class NetBankingComponent {
         this.bankSelectPopupStatus = false;
     }
 
-    openYearPopUp(){
+    openYearPopUp() {
         this.bankSelectPopupStatus = true;
     }
 
     ngOnDestroy() {
-         
+
         this.prepaidsubscription.unsubscribe();
         this._cartService.setCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);

@@ -44,7 +44,6 @@ export class SimilarProductsComponent implements OnInit
         public commonService: CommonService, 
         private router:Router,
         private productService: ProductService,
-        private productListService: ProductListService,
     ) { }
 
     ngOnInit(): void {
@@ -59,7 +58,7 @@ export class SimilarProductsComponent implements OnInit
         this.productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
-                this.similarProducts = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
+                this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
             }
         })
     }

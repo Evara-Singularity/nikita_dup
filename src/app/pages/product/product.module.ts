@@ -16,32 +16,39 @@ import { ProductInfoModule } from './../../modules/product-info/product-info.mod
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
+import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
+import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { IdleUserSearchNudgeModule } from '@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module';
+import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 @NgModule({
-  declarations: [
-    ProductComponent,
-  ],
+  declarations: [ProductComponent],
   imports: [
     ObserveVisibilityDirectiveModule,
     CommonModule,
     ProductRoutingModule,
+    ProductOosSimilarModule,
     BreadcrumbNavModule,
     // pipes
     ObjectToArrayPipeModule,
     MathFloorPipeModule,
     MathCeilPipeModule,
     ReactiveFormsModule,
+    // LazyLoadImageModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
     WhatsAppToastModule,
     ProductInfoModule,
     EmiPlansModule,
     SliceArrayPipeModule,
+    NumberDirectiveModule,
     // Directives
-    SwipeDirectiveModule
+    ProductHorizontalCardModule,
+    SwipeDirectiveModule,
+    IdleUserSearchNudgeModule,
+    PastOrdersModule,
   ],
   exports: [],
-  providers: [
-    NgxSiemaService
-  ]
+  providers: [NgxSiemaService],
 })
 export class ProductModule { }

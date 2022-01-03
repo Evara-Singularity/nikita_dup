@@ -1,0 +1,38 @@
+<div class="urt-contaier" *ngIf="utrForm !== null">
+    <div class="utr-form">
+        <h3>Payment Confirmation against Order Ref Id - {{orderId.value}}</h3>
+        <form [formGroup]="utrForm">
+            <div class="form-input-box">
+                <div class="form-input">
+                    <label>Payment Amount</label><br>
+                    <input type="text" placeholder="Enter payment amount" formControlName="transactionAmount" (keypress)="checkNumberic($event)">
+                    <p *ngIf="transactionAmount.touched && transactionAmount.invalid">Please enter valid amount.</p>
+                </div>
+                <div class="form-input">
+                    <label>UTR No.</label><br>
+                    <input type="text" placeholder="Enter UTR No." formControlName="bankTransactionNumber">
+                    <p *ngIf="bankTransactionNumber.touched && bankTransactionNumber.invalid">Please enter valid UTR No.</p>
+                </div>
+            </div>
+            <button (click)="$event.stopPropagation();submitUTRForm()">SUBMIT</button>
+        </form>
+    </div>
+    <div class="utr-notes">
+        <h2>Things to keep in mind:</h2>
+        <ul>
+            <li>
+                <div class="note">
+                    <h5>Note 1</h5>
+                    <p>In case payment is done in multiple tranches, please submit UTR number and amount for each of the
+                        transaction one by one</p>
+                </div>
+            </li>
+            <li>
+                <div class="note">
+                    <h5>Note 2</h5>
+                    <p>Actual amount transferred for a given transaction should exactly match with the amount submitted in the form</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

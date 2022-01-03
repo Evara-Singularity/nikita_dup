@@ -47,7 +47,11 @@ export function app() {
       ]
     }, (err: Error, html: string) => {
       // manipulate html string to add preloads for images
-      res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
+      if(html){
+        res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
+      }else{
+        res.status(500).send(err.message || `<h1>Something went wrong.</h1>${req.url}`);
+      }
     });
   });
 

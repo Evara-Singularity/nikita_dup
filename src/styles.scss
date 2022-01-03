@@ -1395,3 +1395,14 @@ header-nav {
         color: #FEDB41;
     }
 }
+.st-icon-whatsapp{
+    .icon-whatsapp_icon1:before{
+        content:"\e9fc";
+        color:#FBFBFB;
+    }
+   
+    .icon-whatsapp_icon2:before{
+        content:"\e9fd";
+        color: #00C841;
+    }
+}

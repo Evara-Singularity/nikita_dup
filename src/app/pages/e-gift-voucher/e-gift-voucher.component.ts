@@ -3,7 +3,9 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { NumericValidator } from '@app/utils/validators/numeric.validator.';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
@@ -35,6 +37,8 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private _localStorageService: LocalStorageService,
         private globalLoader: GlobalLoaderService,
         private _title: Title,
+        private _analytics: GlobalAnalyticsService,
+        private _common: CommonService
 
     ) { }
 
@@ -55,12 +59,26 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             rfqEnquiryItemsList: new FormArray([])
         });
         this.addRequirementForm();
+        if(this._common.isBrowser){
+            this.adobeCall()
+        }
     }
 
     ngAfterViewInit(): void
     {
         this.user = this._localStorageService.retrieve('user');
         if (this.user && this.user.authenticated == "true") { this.updateUserDetails(this.user); return }
+    }
+
+    adobeCall(){
+        const analyticObj: any = {
+            page: {},
+            custData: this._common.custDataTracking
+          }
+          analyticObj['page']['pageName'] = "moglix:e-gift-voucher",
+          analyticObj['page']['linkName'] = '',
+          analyticObj['page']['channel'] = '',
+          this._analytics.sendAdobeCall(analyticObj,'genericPageLoad')
     }
 
     fetchVoucherData()

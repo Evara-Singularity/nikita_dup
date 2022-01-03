@@ -10,6 +10,7 @@
                 <ng-container *ngFor="let product of productList;let pIndex=index">
                     <product-horizontal-card [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
                         [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                        [moduleUsedIn]="'PRODUCT_PAST_ORDER'"
                         [analytics]="analytics">
                     </product-horizontal-card>
                 </ng-container>

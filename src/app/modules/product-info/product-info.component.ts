@@ -95,7 +95,7 @@ export class ProductInfoComponent implements OnInit {
     page["subSection"] = subSection;
     const order = this.analyticsInfo["order"];
     if (this.oosProductIndex > -1) {
-      const obj = this._productService.getAdobeAnalyticsObjectData(this.oosProductIndex, 'pdp:ooo:similar');
+      const obj = this._productService.getAdobeAnalyticsObjectData(this.oosProductIndex, 'pdp:oos:similar');
       obj.page.subSection = subSection;
       this.globalAnalyticService.sendAdobeCall(
         obj,

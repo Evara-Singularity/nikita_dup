@@ -2133,7 +2133,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       );
 
       // sent anaytic call
-      this.sendProductImageClickTracking(":ooo:similar")
+      this.sendProductImageClickTracking(":oos:similar")
 
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
@@ -2834,7 +2834,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let page = {
       pageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier,
       channel: "pdp",
-      subSection: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier + this.commonService.getSectionClick().toLowerCase(),
+      subSection: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier + ":" + this.commonService.getSectionClick().toLowerCase(),
       loginStatus: this.commonService.loginStatusTracking,
     };
     let custData = this.commonService.custDataTracking;

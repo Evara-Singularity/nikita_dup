@@ -631,17 +631,16 @@
                 </ng-container>
             </div>
         </section>
+        <section id="productAccordianSection" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleProductAccordians($event)">
+            <ng-container #pdpAccordian></ng-container>
+        </section>
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-            <!-- <div [class.mb-60]="productOutOfStock"></div> -->
         </ng-container>
         <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
             (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
-        </section>
-        <section id="productAccordianSection" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleProductAccordians($event)">
-            <ng-container #pdpAccordian></ng-container>
         </section>
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
@@ -672,7 +671,7 @@
     <ng-container #productInfoPopup></ng-container>
 </div>
 
-<div *ngIf="productOutOfStock && oosCardIndex == -1" class="stickyBottomBtn">
+<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
     <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 

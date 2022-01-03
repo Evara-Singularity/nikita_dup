@@ -9,6 +9,7 @@ import { SwipeDirectiveModule } from "@app/utils/directives/swipe.directive";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ProductInfoSectionPipeModule } from '@app/utils/pipes/product-oos-similar-card-section.pipe';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
+import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
 
 @NgModule({
   declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
@@ -21,6 +22,7 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
     ReactiveFormsModule,
     ProductInfoSectionPipeModule,
     ObjectToArrayPipeModule,
+    ObserveVisibilityDirectiveModule
   ],
   exports: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
 })

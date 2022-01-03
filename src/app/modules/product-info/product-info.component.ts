@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
+import { ProductService } from "@app/utils/services/product.service";
 import { LocalStorageService } from "ngx-webstorage";
 
 @Component({
@@ -19,6 +20,7 @@ import { LocalStorageService } from "ngx-webstorage";
 export class ProductInfoComponent implements OnInit {
   @Input("openProductInfo") openProductInfo = false;
   @Input("modalData") modalData = null;
+  @Input("oosProductIndex") oosProductIndex = -1;
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   defaultInfo = "";
   selectedIndex = 0;
@@ -45,7 +47,8 @@ export class ProductInfoComponent implements OnInit {
   constructor(
     private globalAnalyticService: GlobalAnalyticsService,
     private _commonService: CommonService,
-    public localStorageService: LocalStorageService
+    public localStorageService: LocalStorageService,
+    private _productService: ProductService
   ) {}
 
   ngOnInit() {
@@ -90,12 +93,20 @@ export class ProductInfoComponent implements OnInit {
   sendTracking(subSection: string) {
     const page = this.analyticsInfo["page"];
     page["subSection"] = subSection;
-    const custData = this.analyticsInfo["custData"];
     const order = this.analyticsInfo["order"];
-    this.globalAnalyticService.sendAdobeCall(
-      { page, custData, order },
-      "genericPageLoad"
-    );
+    if (this.oosProductIndex > -1) {
+      const obj = this._productService.getAdobeAnalyticsObjectData(this.oosProductIndex, 'pdp:ooo:similar');
+      obj.page.subSection = subSection;
+      this.globalAnalyticService.sendAdobeCall(
+        obj,
+        "genericPageLoad"
+      );
+    }else{
+      this.globalAnalyticService.sendAdobeCall(
+        { page, custData: this._commonService.custDataTracking , order },
+        "genericPageLoad"
+      );
+    }
   }
 
   closeProducInfo($event) {

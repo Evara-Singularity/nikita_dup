@@ -20,6 +20,7 @@ import { ProductInfoSection } from '@app/utils/pipes/product-oos-similar-card-se
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { ProductListService } from "@app/utils/services/productList.service";
@@ -91,6 +92,7 @@ export class ProductOosSimilarCardComponent {
     private localAuthService: LocalAuthService,
     private _toastMessageService: ToastMessageService,
     private _router: Router,
+    private _analytic: GlobalAnalyticsService
   ) { }
 
   ngOnInit() {
@@ -341,7 +343,7 @@ export class ProductOosSimilarCardComponent {
       } else {
         if (result) {
           // this.resetVariantData();
-          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails);
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails,'PRODUCT_SIMILAR_OUT_OF_STOCK');
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({
@@ -524,5 +526,13 @@ export class ProductOosSimilarCardComponent {
     this._router.navigate([link]);
   }
 
+    onVisibleInViewPort(){
+      const anaytics = this.productService.getAdobeAnalyticsObjectData(this.index,'ooo:similar:pdp');
+      anaytics.page.channel = 'pdp:'+this.index;
+      this._analytic.sendAdobeCall(anaytics, 'genericPageLoad');
+    }
+
+    
+    
 
 }

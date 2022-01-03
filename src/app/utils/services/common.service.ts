@@ -65,6 +65,8 @@ export class CommonService {
   private networkSpeedState: Subject<number> = new Subject<number>();
   private webpSupportState: Subject<number> = new Subject<number>();
   private _loadSearchPopup: Subject<string> = new Subject<string>();
+  public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
+  public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
 
   private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -942,6 +944,25 @@ export class CommonService {
     this.sectionClicked = "";
   }
 
+
+  get loginStatusTracking() {
+    const user = this._localStorageService.retrieve("user");
+    return user && user["authenticated"] == "true"
+      ? "registered user"
+      : "guest";
+  }
+
+  get custDataTracking() {
+    const user = this._localStorageService.retrieve("user");
+    return {
+      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
+      emailID: user && user["email"] ? btoa(user["email"]) : "",
+      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
+      customerType: user && user["userType"] ? user["userType"] : "",
+    };
+  }
+
+
   setSectionClickInformation(sectionName, identifier) {
     if (this.isBrowser && sectionName && identifier) {
       sessionStorage.removeItem(identifier + "page");
@@ -1143,6 +1164,7 @@ export class CommonService {
       timeout: GLOBAL_CONSTANT.searchNudgeTimer,
       onTimeout: () => {
         this.enableNudge = true;
+        this.searchNudgeOpened.next(true);
       }
     });
   }
@@ -1153,4 +1175,5 @@ export class CommonService {
     console.log(data);
     alert('check console');
   }
+  
 }

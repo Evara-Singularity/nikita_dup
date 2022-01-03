@@ -381,6 +381,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
           );
         }
       });
+
+      this.commonService.searchNudgeClicked.asObservable().subscribe(status => {
+        this.nudgeOpenedClicked();
+      })
+
+      this.commonService.searchNudgeOpened.asObservable().subscribe(status => {
+        this.nudgeOpened();
+      })
+
     }
   }
 
@@ -593,11 +602,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
         subSection: null,
         linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
         linkName: null,
-        loginStatus: this.loginStatusTracking,
+        loginStatus: this.commonService.loginStatusTracking,
       };
       this.pdpAccordianInstance.instance["analyticsInfo"] = {
         page: page,
-        custData: this.custDataTracking,
+        custData: this.commonService.custDataTracking,
         order: this.orderTracking,
       };
     }
@@ -1319,10 +1328,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  sendProductImageClickTracking() {
+  sendProductImageClickTracking(infoStr="") {
     let page = {
-      channel: "pdp image carausel",
-      pageName: "moglix:image carausel:pdp",
+      channel: "pdp image carausel"+infoStr,
+      pageName: "moglix:image carausel:pdp"+infoStr,
       linkName: "moglix:productmainimageclick_0",
       subSection: "moglix:pdp carausel main image:pdp",
       linkPageName: "moglix:" + this.router.url,
@@ -1339,11 +1348,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
         subSection: null,
         linkPageName: null,
         linkName: null,
-        loginStatus: this.loginStatusTracking,
+        loginStatus: this.commonService.loginStatusTracking,
       };
       let analytics = {
         page: page,
-        custData: this.custDataTracking,
+        custData: this.commonService.custDataTracking,
         order: this.orderTracking,
       };
       this.modalService.show({
@@ -1541,7 +1550,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       this.similarProductInstance.instance["outOfStock"] =
         this.productOutOfStock;
-      const custData = this.custDataTracking;
+      const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;
       const TAXONS = this.taxons;
       const page = {
@@ -1550,7 +1559,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         subSection: "Similar Products",
         linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
         linkName: null,
-        loginStatus: this.loginStatusTracking,
+        loginStatus: this.commonService.loginStatusTracking,
       };
       this.similarProductInstance.instance["analytics"] = {
         page: page,
@@ -1669,7 +1678,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.productCategoryDetails["categoryCode"];
       this.sponseredProductsInstance.instance["outOfStock"] =
         this.productOutOfStock;
-      const custData = this.custDataTracking;
+      const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;
       const TAXONS = this.taxons;
       const page = {
@@ -1678,7 +1687,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         subSection: "You May Also Like",
         linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
         linkName: null,
-        loginStatus: this.loginStatusTracking,
+        loginStatus: this.commonService.loginStatusTracking,
       };
       this.sponseredProductsInstance.instance["analytics"] = {
         page: page,
@@ -1706,7 +1715,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         );
       this.recentProductsInstance.instance["outOfStock"] =
         this.productOutOfStock;
-      const custData = this.custDataTracking;
+      const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;
       const TAXONS = this.taxons;
       const page = {
@@ -1715,7 +1724,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         subSection: "Recently Viewed",
         linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
         linkName: null,
-        loginStatus: this.loginStatusTracking,
+        loginStatus: this.commonService.loginStatusTracking,
       };
       this.recentProductsInstance.instance["analytics"] = {
         page: page,
@@ -2012,11 +2021,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
         subSection: null,
         linkPageName: null,
         linkName: null,
-        loginStatus: this.loginStatusTracking,
+        loginStatus: this.commonService.loginStatusTracking,
       };
       this.fbtComponentInstance.instance["analytics"] = {
         page: page,
-        custData: this.custDataTracking,
+        custData: this.commonService.custDataTracking,
         order: this.orderTracking,
       };
     }
@@ -2123,8 +2132,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
 
+      // sent anaytic call
+      this.sendProductImageClickTracking(":ooo:similar")
+
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
+      
+      this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
         oosProductIndex < 0
@@ -2800,8 +2814,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
-  productVisitAdobe() {
-    const user = this.localStorageService.retrieve("user");
+  getAdobeAnalyticsObjectData(identifier = 'pdp') {
 
     let taxo1 = "";
     let taxo2 = "";
@@ -2819,20 +2832,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     const tagsForAdobe = ele.join("|");
 
     let page = {
-      pageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
+      pageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier,
       channel: "pdp",
-      subSection:
-        "moglix:" +
-        taxo1 +
-        ":" +
-        taxo2 +
-        ":" +
-        taxo3 +
-        ":pdp " +
-        this.commonService.getSectionClick().toLowerCase(),
-      loginStatus: this.loginStatusTracking,
+      subSection: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier + this.commonService.getSectionClick().toLowerCase(),
+      loginStatus: this.commonService.loginStatusTracking,
     };
-    let custData = this.custDataTracking;
+    let custData = this.commonService.custDataTracking;
 
     let order = {
       productID: this.productSubPartNumber,
@@ -2847,8 +2852,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       pdpToastMessage: this.rawCartNotificationMessage || "",
     };
 
-    const anlyticData = { page, custData, order };
-    this.analytics.sendAdobeCall(anlyticData);
+    return { page, custData, order }
+  }
+
+  productVisitAdobe() {
+    this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData());
+  }
+
+  outOfStockUpBtnClicked(){
+    this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('outOfStockUpBtn'), 'genericPageLoad');
   }
 
   analyticAddToCart(routerlink, quantity) {
@@ -2886,7 +2898,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       }
     }
 
-    let custData = this.custDataTracking;
+    let custData = this.commonService.custDataTracking;
     let order = {
       productID: this.productSubPartNumber || this.defaultPartNumber, // TODO: partNumber
       parentID: this.productSubPartNumber,
@@ -3013,7 +3025,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       };
     }
 
-    let custData = this.custDataTracking;
+    let custData = this.commonService.custDataTracking;
     let order = {
       productID: this.productSubPartNumber,
       productCategoryL1: taxo1,
@@ -3045,7 +3057,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       channel: "pdp",
       loginStatus: user.userId ? "registered" : "guest",
     };
-    let custData = this.custDataTracking;
+    let custData = this.commonService.custDataTracking;
     let order = {
       productID: this.productSubPartNumber,
       productCategoryL1: taxo1,
@@ -3193,6 +3205,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         null,
         this.injector
       );
+    this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
     this.productInfoPopupInstance.instance["modalData"] =
       oosProductIndex > -1
         ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -3264,11 +3277,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       subSection: null,
       linkPageName: null,
       linkName: null,
-      loginStatus: this.loginStatusTracking,
+      loginStatus: this.commonService.loginStatusTracking,
     };
     productInfo["analyticsInfo"] = {
       page: page,
-      custData: this.custDataTracking,
+      custData: this.commonService.custDataTracking,
       order: this.orderTracking,
     };
     return productInfo;
@@ -3282,9 +3295,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       subSection: null,
       linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
       linkName: cta,
-      loginStatus: this.loginStatusTracking,
+      loginStatus: this.commonService.loginStatusTracking,
     };
-    const custData = this.custDataTracking;
+    const custData = this.commonService.custDataTracking;
     const order = this.orderTracking;
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
   }
@@ -3297,9 +3310,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       subSection: null,
       linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
       linkName: `More from ${widgetType}`,
-      loginStatus: this.loginStatusTracking,
+      loginStatus: this.commonService.loginStatusTracking,
     };
-    const custData = this.custDataTracking;
+    const custData = this.commonService.custDataTracking;
     const order = this.orderTracking;
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     this.commonService.setSectionClickInformation("pdp_widget", "listing");
@@ -3323,43 +3336,28 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return 0;
   }
 
-  get custDataTracking() {
-    const user = this.localStorageService.retrieve("user");
-    return {
-      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-      emailID: user && user["email"] ? btoa(user["email"]) : "",
-      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-      customerType: user && user["userType"] ? user["userType"] : "",
-    };
-  }
-
-  get loginStatusTracking() {
-    const user = this.localStorageService.retrieve("user");
-    return user && user["authenticated"] == "true"
-      ? "registered user"
-      : "guest";
-  }
 
   get orderTracking() {
     const TAXNONS = this.taxons;
     const TAGS = [];
-    if (this.productTags && this.productTags.length > 0) {
+
+    if(this.productTags && this.productTags.length > 0){
       this.productTags.forEach((element) => {
         TAGS.push(element.name);
       });
-      const tagsForAdobe = TAGS.join("|");
-      return {
-        productID: this.productSubPartNumber,
-        productCategoryL1: TAXNONS[0],
-        productCategoryL2: TAXNONS[1],
-        productCategoryL3: TAXNONS[2],
-        brand: this.productBrandDetails["brandName"],
-        price: this.productPrice,
-        stockStatus: this.productOutOfStock ? "Out of Stock" : "In Stock",
-        tags: tagsForAdobe,
-      };
     }
-    return {};
+
+    const tagsForAdobe = TAGS.join("|");
+    return {
+      productID: this.productSubPartNumber,
+      productCategoryL1: TAXNONS[0],
+      productCategoryL2: TAXNONS[1],
+      productCategoryL3: TAXNONS[2],
+      brand: this.productBrandDetails["brandName"],
+      price: this.productPrice,
+      stockStatus: this.productOutOfStock ? "Out of Stock" : "In Stock",
+      tags: tagsForAdobe,
+    };
   }
 
   get taxons() {
@@ -3390,9 +3388,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       subSection: null,
       linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
       linkName: "breadcrumb",
-      loginStatus: this.loginStatusTracking,
+      loginStatus: this.commonService.loginStatusTracking,
     };
-    const custData = this.custDataTracking;
+    const custData = this.commonService.custDataTracking;
     const order = this.orderTracking;
     analytics = { page, custData, order };
     return analytics;
@@ -3429,6 +3427,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  nudgeOpened(){
+    this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('search:nudge'), 'genericClick');
+  }
+
+  nudgeOpenedClicked(){
+    this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('search:nudge:clicked'), 'genericClick');
+  }
+
   navigateLink(link) {
     this.router.navigate([link]);
   }
@@ -3448,9 +3454,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       subSection: "Inspired By Your Purchase",
       linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
       linkName: null,
-      loginStatus: this.loginStatusTracking,
+      loginStatus: this.commonService.loginStatusTracking,
     };
-    const analytices = { page: page, custData: this.custDataTracking, order: this.orderTracking }
+    const analytices = { page: page, custData: this.commonService.custDataTracking, order: this.orderTracking }
     return analytices;
   }
 

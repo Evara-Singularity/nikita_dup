@@ -75,7 +75,7 @@
                     *ngIf="searchProducts && searchProducts.length>0">
                     <div class="upper-view-all-sec">
                         <div class="upper-view-all-sec-left">
-                            <h3 class="search_heading">Best Seller</h3>
+                            <h3 class="search_heading">Best Sellers</h3>
                         </div>
                         <!-- <div class="upper-view-all-sec-right">
                             <button>VIEW ALL</button>
@@ -86,6 +86,7 @@
                             <ng-container *ngFor="let product of searchProducts;let pIndex=index">
                                 <product-horizontal-card [section]="'search-popup'" [product]="product"
                                     [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig'
+                                    [moduleUsedIn]="'SEACRH_SUGGESTION'"
                                     [pIndex]="pIndex" [enableTracking]="true" [analytics]="">
                                 </product-horizontal-card>
                             </ng-container>

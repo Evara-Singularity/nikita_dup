@@ -390,32 +390,29 @@ export class ProductOosSimilarCardComponent {
       this.variantPopupInstance.instance['productGroupData'] = productAddToCartSchema;
       this.variantPopupInstance.instance['buyNow'] = buyNow;
       this.variantPopupInstance.instance['isSelectedVariantOOO'] = false; // on first load always instock and value is passed as false
-      // this.commonService.enableNudge = false;
-      // this.commonService.stopSearchNudge = true;
+      this.commonService.enableNudge = false;
+
       (this.variantPopupInstance.instance['selectedVariant$'] as EventEmitter<boolean>).subscribe(data => {
-        // this.commonService.stopSearchNudge = true;
-        // this.commonService.enableNudge = false;
+        this.commonService.enableNudge = false;
         this.changeVariant(data);
       });
       (this.variantPopupInstance.instance['selectedVariantOOO$'] as EventEmitter<boolean>).subscribe(msnId => {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
-        // this.commonService.stopSearchNudge = true;
-        // this.commonService.enableNudge = false;
+        this.commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantAddToCart(data);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
-        // this.commonService.stopSearchNudge = false;
-        // this.commonService.enableNudge = false;
+        this.commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
-        // this.commonService.enableNudge = false;
-        // this.commonService.stopSearchNudge = false;
+        this.commonService.enableNudge = false;
+        this.commonService.resetSearchNudgeTimer();
       });
     }
   }

@@ -1138,6 +1138,15 @@ export class CommonService {
     }
   }
 
+  resetSearchNudgeTimer() {
+    this.idleNudgeTimer = new IdleTimer({
+      timeout: GLOBAL_CONSTANT.searchNudgeTimer,
+      onTimeout: () => {
+        this.enableNudge = true;
+      }
+    });
+  }
+
   customDebugger(data) {
     console.clear();
     console.trace();

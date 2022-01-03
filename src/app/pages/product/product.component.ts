@@ -2269,7 +2269,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     const { ProductAppPromoComponent } = await import(
       "../../components/product-app-promo/product-app-promo.component"
     ).finally(() => {
-      if (!this.productOutOfStock) {
+      if (!this.productOutOfStock || this.productService.oosSimilarProductsData.similarData.length < 3) {
         this.showLoader = false;
       }
     });

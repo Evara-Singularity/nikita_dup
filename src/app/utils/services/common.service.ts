@@ -51,6 +51,7 @@ export class CommonService {
   isHomeHeader = false;
   isPLPHeader = false;
   isScrolledHeader = false;
+  stopSearchNudge = false;
 
   currentRequest: any;
   cmsData: any;

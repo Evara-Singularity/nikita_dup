@@ -1,7 +1,7 @@
 <div id="oosSimilarTopSection" class="oosSimilarTopSection"
     *ngIf="productOutOfStock && productService.oosSimilarProductsData.similarData.length > 0">
     <h2>Consider These Available Items</h2>
-    <div class="horizontal-scroll-container"  id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)"  >
+    <div class="horizontal-scroll-container" id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 0">
             <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
                 [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
@@ -750,7 +750,8 @@
     </div>
 </section>
 
-<idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName" *ngIf="isBrowser">
+<idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
+    *ngIf="isBrowser && !productNotFound">
 </idle-user-search-nudge>
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>

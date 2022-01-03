@@ -129,7 +129,7 @@ export class ProductOosSimilarCardComponent {
         this.qunatityFormControl.setValue(this.productService.getSimilarProductInfoByIndex(this.index).productMinimmumQuantity);
         this.showProduct = true;
         this.setRecentlyBought(rawData[2]);
-        
+
       }
     });
   }
@@ -381,7 +381,6 @@ export class ProductOosSimilarCardComponent {
   async loadVariantPop(productEntity, productAddToCartSchema, buyNow = false) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
-      this.commonService.enableNudge = false;
       const { ProductVariantSelectListingPageComponent } = await import('../../../components/product-variant-select-listing-page/product-variant-select-listing-page.component').finally(() => {
         this._loader.setLoaderState(false);
       });
@@ -391,22 +390,32 @@ export class ProductOosSimilarCardComponent {
       this.variantPopupInstance.instance['productGroupData'] = productAddToCartSchema;
       this.variantPopupInstance.instance['buyNow'] = buyNow;
       this.variantPopupInstance.instance['isSelectedVariantOOO'] = false; // on first load always instock and value is passed as false
+      // this.commonService.enableNudge = false;
+      // this.commonService.stopSearchNudge = true;
       (this.variantPopupInstance.instance['selectedVariant$'] as EventEmitter<boolean>).subscribe(data => {
+        // this.commonService.stopSearchNudge = true;
+        // this.commonService.enableNudge = false;
         this.changeVariant(data);
       });
       (this.variantPopupInstance.instance['selectedVariantOOO$'] as EventEmitter<boolean>).subscribe(msnId => {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        // this.commonService.stopSearchNudge = true;
+        // this.commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantAddToCart(data);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        // this.commonService.stopSearchNudge = false;
+        // this.commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        // this.commonService.enableNudge = false;
+        // this.commonService.stopSearchNudge = false;
       });
     }
   }
@@ -504,18 +513,16 @@ export class ProductOosSimilarCardComponent {
     }
   }
 
-    getBrandLink(brandDetails: {})
-    {
-        if (brandDetails == undefined) {
-            return [];
-        }
-        return [`/brands/${brandDetails["friendlyUrl"]}`]
+  getBrandLink(brandDetails: {}) {
+    if (brandDetails == undefined) {
+      return [];
     }
+    return [`/brands/${brandDetails["friendlyUrl"]}`]
+  }
 
-    navigateLink(link)
-    {
-        this._router.navigate([link]);
-    }
+  navigateLink(link) {
+    this._router.navigate([link]);
+  }
 
 
 }

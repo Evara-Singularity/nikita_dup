@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  
+
   @Input() headingKeyword: string;
   @Input() searchKeyword: string;
   oosSimilarCardSunscription: Subscription = null;
@@ -56,7 +56,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
     this.nudgeStopActivies()
   }
 
-  nudgeStopActivies(){
+  nudgeStopActivies() {
     this._commonService.idleNudgeTimer.cleanUpTimer();
     this._commonService.idleNudgeTimer.cleanLocalStorage();
   }

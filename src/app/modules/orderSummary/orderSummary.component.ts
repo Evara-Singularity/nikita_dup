@@ -107,7 +107,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this._cartService.orderSummary.subscribe(
                 (data: { cartSession?: {}, extra?: { errorMessage: string } }) => {
-                    console.trace('cartsummary  ===========> ');
+                    // console.trace('cartsummary  ===========> ');
                     this.cartSession = this._cartService.getCartSession();
                     if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                         let items: Array<any> = this.cartSession['itemsList'];

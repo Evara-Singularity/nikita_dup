@@ -1,6 +1,14 @@
 .bread-head {
-    padding: 10px;
     /*border-bottom: 1px solid #eaeaea;*/
+    overflow: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+    display: none;
+    }
+}
+.bread-crumb{
+    padding: 10px 15px;
     background-color: #f2f2f2;
 }
 

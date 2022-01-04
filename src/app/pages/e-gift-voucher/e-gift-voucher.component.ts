@@ -87,6 +87,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         this._dataService.callRestful("GET", `${this.API}/rfq/getVoucherData`).subscribe(
             (response) => 
             {
+                this.globalLoader.setLoaderState(false);
                 if (!response['status']) { return; }
                 const LIST: any[] = (response['data']['categoryList'] as any[]);
                 let BRANDS = [];
@@ -101,8 +102,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                 this.brandList = this.extractUniqueBrands(BRANDS);
                 this.categoryList = Object.keys(this.categoryBrandInfo);
             },
-            (error) => { this.globalLoader.setLoaderState(false); this._tms.show({ type: 'error', text: 'Something Went Wrong' }); },
-            () => { this.globalLoader.setLoaderState(false); }
+            (error) => { this.globalLoader.setLoaderState(false); this._tms.show({ type: 'error', text: 'Something Went Wrong' }); }
         );
     }
 

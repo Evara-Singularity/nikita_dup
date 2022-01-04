@@ -1089,7 +1089,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (!value) {
       this._tms.show({
         type: 'error',
-        text: 'Please enter valid quantity'
+        text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
       })
       this.qunatityFormControl.setValue(this.productMinimmumQuantity);
     } else {
@@ -1104,6 +1104,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           type: 'error',
           text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
         })
+        this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
       } else if (isNaN(parseInt(value))) {
         this.qunatityFormControl.setValue(this.productMinimmumQuantity);
         this.checkBulkPriceMode();

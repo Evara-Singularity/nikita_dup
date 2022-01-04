@@ -155,7 +155,7 @@ export class ProductOosSimilarCardComponent {
     if (!value) {
       this._toastMessageService.show({
         type: 'error',
-        text: 'Please enter valid quantity'
+        text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a valid quantity',
       })
       this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
     } else {
@@ -170,6 +170,7 @@ export class ProductOosSimilarCardComponent {
           type: 'error',
           text: 'Maximum qty can be ordered is: ' + this.similarProduct.priceQuantityCountry['quantityAvailable']
         })
+        this.qunatityFormControl.setValue(this.similarProduct.priceQuantityCountry['quantityAvailable']);
       } else if (isNaN(parseInt(value))) {
         this.qunatityFormControl.setValue(this.similarProduct.productMinimmumQuantity);
         this.checkBulkPriceMode();

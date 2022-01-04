@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, EventEmitter, Output, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription, Subject, Observable, concat, combineLatest } from 'rxjs';
 import { ProductUtilsService } from '../../utils/services/product-utils.service';
 import { CartService } from '../../utils/services/cart.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -136,13 +136,27 @@ export class FbtComponent implements OnInit
         //TODO:Yogender
         let selectedItems = this.mFBTProducts.filter((product) => product['isSelected']);
         selectedItems.unshift(this.rootProduct);
-        selectedItems.forEach((item) => { this.cartService.addToCart({ buyNow: false, productDetails:item}); });
+        const ObservableUpdateCartArray: Observable<any>[] = [...selectedItems].map((item) => {  
+            return this.cartService.addToCart({ buyNow: false, productDetails:item  })
+        });
+
+        combineLatest(ObservableUpdateCartArray).subscribe(result=>{
+            console.log('result', result);
+            // if (result && result.length > 0) {
+            //     this.cartService.setCartSession(result);
+            //     this.cartService.cart.next({ count: result['noOfItems'] });
+            //     this.router.navigateByUrl('/quick-order');
+            //   } else {
+                
+            //   }
+        });
+
     }
 
-    backToCartFlow(routerLink)
+    backToCartFlow()
     {
         this.closePopup$.emit();
-        this.addToCartFromModal(routerLink);
+        this.addToCartFromModal(false);
     }
 
 

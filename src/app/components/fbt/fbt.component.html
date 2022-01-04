@@ -2,7 +2,7 @@
     <div class="container pad-tb-10">
         <h3 class="f-left">Frequently Bought Together With
         </h3>
-        <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow('/quickorder')"
+        <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();addToCart()"
             *ngIf="isModal"></i>
         <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
     </div>
@@ -59,11 +59,11 @@
             </h3>
         </div>
         <div class="f-right" *ngIf="!(isModal)">
-            <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
+            <button class="addToCart" (click)="$event.stopPropagation();addToCart()">{{noOfFBTS?'BUY
                 TOGETHER':'ADD TO CART'}}</button>
         </div>
         <div class="f-right" *ngIf="isModal">
-            <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
+            <button class="addToCart" (click)="$event.stopPropagation();addToCart()">{{noOfFBTS?'BUY
                 TOGETHER':'SKIP & GO TO CART'}}</button>
         </div>
     </div>

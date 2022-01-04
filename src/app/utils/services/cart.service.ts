@@ -431,7 +431,7 @@ export class CartService {
         )
     }
 
-    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?}): AddToCartProductSchema {
+    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?}): AddToCartProductSchema {
         const partNumber = args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
         const isProductPriceValid = args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
@@ -479,6 +479,10 @@ export class CartService {
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
             productMRP: productMrp,
         } as AddToCartProductSchema;
+
+        if(args.isFbt){
+            product['isFbt'] = args.isFbt;
+        }
 
         if (args.selectPriceMap && args.selectPriceMap['bulkSellingPrice'] && args.selectPriceMap['bulkSPWithoutTax']) {
             product['bulkPrice'] = args.selectPriceMap['bulkSellingPrice']

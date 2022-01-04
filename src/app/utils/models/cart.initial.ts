@@ -37,6 +37,7 @@ export interface AddToCartProductSchema {
     productMRP?: number;
     tpawot?: number;
     brandId?: string,
+    isFBT?: boolean;
 }
 
 export interface CartMasterSchema {

@@ -239,7 +239,7 @@ export class CartComponent {
              */
 
             if (this.isBrowser) {
-                console.log('trigger1');
+                // console.log('trigger1');
                 const user = this.localStorageService.retrieve('user');
 
                 if (user && user.authenticated == "true") {
@@ -271,7 +271,7 @@ export class CartComponent {
         )
 
         if (this.isBrowser) {
-            console.log('trigger2');
+            // console.log('trigger2');
             if (this.router.url == '/quickorder') {
                 let criteoItem = [];
                 this.showLink = true;
@@ -954,7 +954,7 @@ export class CartComponent {
                 'prodName': '',
                 'prodURL': ''
             };
-            console.log('trigger3');
+            // console.log('trigger3');
             let criteoItem = [];
             let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
             for (let p = 0; p < this.cartSession["itemsList"].length; p++) {
@@ -1035,7 +1035,7 @@ export class CartComponent {
 
             // Update cart in service
             this._cartService.setCartSession(cartSessions);
-            console.log('trigger4');
+            // console.log('trigger4');
             if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                 var totQuantity = 0;
                 var trackData = {
@@ -1181,7 +1181,7 @@ export class CartComponent {
                 res => {
                     if (res['statusCode'] == 200) {
                         // this.cartSession = this._cartService.getCartSession();
-                        console.log('trigger5');
+                        // console.log('trigger5');
                         cartSessions['cart']['shippingCharges'] = res['data']['totalShippingAmount'];
                         let productShippingCharge = res['data']['itemShippingAmount'];
 
@@ -1201,7 +1201,7 @@ export class CartComponent {
                             if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
                                 this.uniqueRequestNo = 0;
                                 let itemsList = res['itemsList'];
-                                console.log('trigger6');
+                                // console.log('trigger6');
                                 itemsList.forEach((element, index) => {
                                     for (let key in productShippingCharge) {
                                         if (key == element['productId']) {
@@ -1296,7 +1296,7 @@ export class CartComponent {
                     // this.itemsList[i]["amount"] = item["productUnitPrice"] * updatedQuantity;
                     cartSession = this._cartService.updateCart(cartSession);
                     //  this._cartService.orderSummary.next(this.cartSession);
-                    console.log('trigger7');
+                    // console.log('trigger7');
                     if (cartSession['itemsList'] !== null && cartSession['itemsList']) {
                         var totalQuantity = 0;
                         var trackData = {
@@ -1419,7 +1419,7 @@ export class CartComponent {
 
                 //console.log('cartSession updateCart after', Object.assign({}, cartSession), Object.assign({}, this.itemsList));
                 //Update cart object only when isQuantityAvailable returns true.
-                console.log('trigger9');
+                // console.log('trigger9');
                 if (isQua["status"]) {
                     quantityTarget.value = updatedQuantity;
                     itemsList[i]['productQuantity'] = updatedQuantity;
@@ -1522,7 +1522,7 @@ export class CartComponent {
                 cartSession = this._cartService.getCartSession();
                 itemsList = cartSession['itemsList'];
                 //Update cart object only when isQuantityAvailable returns true.
-                console.log('trigger10');
+                // console.log('trigger10');
                 if (isQua["status"]) {
                     quantityTarget.value = updatedQuantity;
                     itemsList[i]['productQuantity'] = updatedQuantity;
@@ -1694,7 +1694,7 @@ export class CartComponent {
             let cs = Object.assign({}, this._cartService.getCartSession());
             let sro = this._cartService.getShippingObj(cs);
             // console.log('updateCartSessionssro', sro); 
-            // console.log('trigger11');
+            // // console.log('trigger11');
             this.getShippingCharges(sro).subscribe(
                 res => {
                     if (res['statusCode'] == 200) {
@@ -1714,7 +1714,7 @@ export class CartComponent {
                         //console.log(this.cartSession);
                         // console.log(cartSession, "getShippingCharges")
                         // console.log('cartSession 2', Object.assign({}, cartSession));
-                        console.log('trigger12');
+                        // console.log('trigger12');
                         this._cartService.updateCartSession(cartSession).subscribe((data) => {
                             console.log('object1 : ', data);
                             this.isShowLoader = false;

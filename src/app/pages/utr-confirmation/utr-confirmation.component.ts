@@ -1,3 +1,4 @@
+import { NumericValidator } from './../../utils/validators/numeric.validator.';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { DataService } from './../../utils/services/data.service';
@@ -17,6 +18,8 @@ export class UTRConfirmationComponent implements OnInit
     readonly TITLE = "Submit NEFT Details For Order Confirmation";
     readonly SUCCESS_MSG = { type: "success", text: "Information submitted successfully" };
     utrForm: FormGroup = null;
+    displayLabelId = "Order Ref";
+    displayId = "";
 
     constructor(private _router: Router, private _route: ActivatedRoute, private _title: Title,
         private _dataService: DataService, private _globarLodaer: GlobalLoaderService,
@@ -26,19 +29,20 @@ export class UTRConfirmationComponent implements OnInit
     {
         this._title.setTitle(this.TITLE);
         const QPARAMS = this._route.snapshot.queryParams;
-        const ORDERID = Number(QPARAMS['orderId']);
+        const ORDERID = Number(QPARAMS['orderId']) || null;
         const QUOATATIONID = Number(QPARAMS['quotationId']);
         const QUOATATIONTYPE = QPARAMS['quotationType'];
-        const IS_REDIRECT = !(ORDERID && QUOATATIONID && QUOATATIONTYPE);
+        const IS_REDIRECT = !(QUOATATIONID && QUOATATIONTYPE);
+        if (!(ORDERID)) { this.displayLabelId = "Quotation"; }
         if (IS_REDIRECT) {
             this._router.navigate(['**']);
             return;
         }
         this.utrForm = new FormGroup({
-            orderId: new FormControl(ORDERID, [Validators.required]),
+            orderId: new FormControl(ORDERID),
             quotationId: new FormControl(QUOATATIONID, [Validators.required]),
             quotationType: new FormControl(QUOATATIONTYPE, [Validators.required]),
-            transactionAmount: new FormControl("", [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
+            transactionAmount: new FormControl("", [Validators.required, NumericValidator.validateNumber]),
             bankTransactionNumber: new FormControl("", [Validators.required, Validators.pattern(/^([a-zA-Z0-9]+)$/)])
         })
     }
@@ -69,4 +73,5 @@ export class UTRConfirmationComponent implements OnInit
     get orderId() { return this.utrForm.get("orderId") }
     get transactionAmount() { return this.utrForm.get("transactionAmount") }
     get bankTransactionNumber() { return this.utrForm.get("bankTransactionNumber") }
+    get quotationId() { return this.utrForm.get("quotationId") }
 }

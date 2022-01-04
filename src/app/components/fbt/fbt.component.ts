@@ -118,7 +118,6 @@ export class FbtComponent implements OnInit
   */
     modifyProduct(product, isFBT)
     {
-        // console.log('modifyProduct', product);
         let returnObj = { mProduct: product, validation: false }
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
@@ -145,7 +144,6 @@ export class FbtComponent implements OnInit
     handleCartSave(items: any[])
     {
         const LENGTH = items.length;
-        console.log(LENGTH)
         this.cartService.addToCart({ buyNow: false, productDetails: items[0] }).subscribe((response) =>//length=1
         {
             this.updateCart(response, items.length === 1);

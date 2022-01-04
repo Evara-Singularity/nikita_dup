@@ -63,8 +63,7 @@ export class ProductOosSimilarComponent {
     if (document.getElementById('similarProductsOos') &&
       this.productService.oosSimilarProductsData.similarData &&
       this.productService.oosSimilarProductsData.similarData.length > 0 &&
-      (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop) &&
-      (window.pageYOffset < document.getElementById('productAccordianSection').offsetTop)
+      (window.pageYOffset > document.getElementById('similarProductsOos').offsetTop)
     ) {
       this.checkWhichElementIsInViewport();
       this.updateScrollToTop.emit(true);

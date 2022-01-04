@@ -111,6 +111,8 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 (data: { cartSession?: {}, extra?: { errorMessage: string } }) => {
 
+                    console.log('order summary', this._cartService.getCartSession())
+
                     this.cartSession = this._cartService.getCartSession();
                     //    console.log(this.cartSession, ' order summary cart ');
                     // this.getAllPromoCodesByUserId();

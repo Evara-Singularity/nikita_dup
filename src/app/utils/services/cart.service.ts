@@ -356,6 +356,7 @@ export class CartService {
                             // add temp session for buynow
                             // as per current flow, update cart api should not be called for buynow if user is not logged in
                             // console.log('step 3.1 ==>', cartSession);
+                            this.buyNow = true;
                             this.buyNowSessionDetails = cartSession;
                             return null;
                         } else {

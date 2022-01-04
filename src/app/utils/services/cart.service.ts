@@ -50,6 +50,7 @@ export class CartService {
     }
 
     getShippingValue(cartSession) {
+        console.trace('getShippingValue cartservice');
         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ShippingValue, { body: cartSession }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
@@ -301,33 +302,24 @@ export class CartService {
                 // incase of buynow do not exlude 
                 // console.log('product info ==> cartSession origin', Object.assign({}, cartSession));
                 let productItemExistInCart = false;
+
                 productItemExistInCart = this._checkProductItemExistInCart(args.productDetails.productId, cartSession);
-                if (args.buyNow) {
-                    return { cartSession, productItemExistInCart };
-                }
+
                 let updatedCartSession = cartSession;
-                if (
-                    productItemExistInCart &&
-                    args.productDetails.bulkPriceMap &&
-                    Object.keys(args.productDetails.bulkPriceMap).length > 0
-                ) {
-                    updatedCartSession =
-                        this._checkQuantityOfProductItemAndUpdate(
-                            args.productDetails,
-                            cartSession,
-                            args.productDetails.productQuantity
-                        );
+
+                updatedCartSession = this._checkQuantityOfProductItemAndUpdate(
+                    args.productDetails,
+                    cartSession,
+                    args.productDetails.productQuantity,
+                    args.buyNow
+                );
+
+                console.log('step 1 ==>', cartSession);
+
+                if (args.buyNow) {
+                    return { cartSession: updatedCartSession, productItemExistInCart };
                 }
-                if (
-                    productItemExistInCart
-                ) {
-                    updatedCartSession =
-                        this._checkQuantityOfProductItemAndUpdate(
-                            args.productDetails,
-                            cartSession,
-                            args.productDetails.productQuantity
-                        );
-                }
+
                 // console.log('product info ==> after update',  Object.assign({}, cartSession), Object.assign({}, updatedCartSession), productItemExistInCart);
                 return {
                     cartSession: updatedCartSession,
@@ -370,7 +362,7 @@ export class CartService {
                         if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
                             // add temp session for buynow
                             // as per current flow, update cart api should not be called for buynow if user is not logged in
-                            // console.log('step 3.1 ==>', cartSession);
+                            console.log('step 3.1 ==>', cartSession);
                             this.buyNow = true;
                             this.buyNowSessionDetails = cartSession;
                             return null;
@@ -383,7 +375,7 @@ export class CartService {
             }),
             mergeMap(request => {
                 if (request) {
-                    // console.log('step 4 ==>', request);
+                    console.log('step 4 ==>', request, args);
                     return this.updateCartSession(request).pipe(
                         map((cartSession: any) => {
                             return cartSession;
@@ -515,8 +507,8 @@ export class CartService {
         return (filteredArr.length > 0) ? filteredArr[0] : null;
     }
 
-    private _checkQuantityOfProductItemAndUpdate(product: AddToCartProductSchema, cartSession, quantity = 1) {
-        const itemsList = (cartSession && cartSession['itemsList']) ? [...cartSession['itemsList']] : [];
+    private _checkQuantityOfProductItemAndUpdate(product: AddToCartProductSchema, cartSession, quantity = 1, buyNow = false) {
+        let itemsList = (cartSession && cartSession['itemsList']) ? [...cartSession['itemsList']] : [];
         itemsList.map((productItem: AddToCartProductSchema) => {
             if (productItem.productId == product.productId) {
                 // increment quantity by 1
@@ -537,7 +529,16 @@ export class CartService {
                 }
             }
             return productItem;
-        })
+        });
+
+        if (buyNow) {
+            itemsList = itemsList.filter(item => item.productId == product.productId);
+            itemsList.map((productItem: AddToCartProductSchema) => {
+                productItem['buyNow'] = true;
+                return productItem;
+            });
+            cartSession['cart']['buyNow'] = buyNow;
+        }
 
         cartSession['itemsList'] = itemsList;
         return cartSession;

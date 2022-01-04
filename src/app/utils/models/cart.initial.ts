@@ -38,6 +38,8 @@ export interface AddToCartProductSchema {
     tpawot?: number;
     brandId?: string,
     isFBT?: boolean;
+    productSmallImage:string;
+    productImage:string
 }
 
 export interface CartMasterSchema {

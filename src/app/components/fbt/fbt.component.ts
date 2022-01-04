@@ -126,10 +126,20 @@ export class FbtComponent implements OnInit
         return returnObj;
     }
 
-
+    initiateAddToCart()
+    {
+        this.setCTAType();
+        this.addToCart();
+    }
 
     addToCart(){
-        
+        //TODO:Yogender
+    }
+
+    backToCartFlow(routerLink)
+    {
+        this.closePopup$.emit();
+        this.addToCartFromModal(routerLink);
     }
 
 
@@ -143,7 +153,7 @@ export class FbtComponent implements OnInit
 
     updateFBT(product, index)
     {
-        let msn = product['partNumber'];
+        let msn = product['productId'];
         this.fbtMSNPrices.hasOwnProperty(msn);
         if (this.fbtMSNPrices.hasOwnProperty(msn)) {
             delete this.fbtMSNPrices[msn];

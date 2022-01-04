@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, EventEmitter, Output, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, Subject, Observable, concat, combineLatest } from 'rxjs';
+import { Subscription, Subject, Observable, concat, combineLatest, zip } from 'rxjs';
 import { ProductUtilsService } from '../../utils/services/product-utils.service';
 import { CartService } from '../../utils/services/cart.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,11 +43,12 @@ export class FbtComponent implements OnInit
     currentCTA = '';
 
     constructor(
-        private cartService: CartService, 
+        private cartService: CartService,
         private _commonService: CommonService,
-        private productUtil: ProductUtilsService, 
+        private productUtil: ProductUtilsService,
         private _analyticsService: GlobalAnalyticsService,
-        private router: Router){
+        private router: Router)
+    {
         this.isBrowser = _commonService.isBrowser;
     }
 
@@ -90,7 +91,8 @@ export class FbtComponent implements OnInit
     }
 
     /**@description  checks main product in cart, merges main product with fbt products list*/
-    startProcess() {
+    startProcess()
+    {
         let mainValidation = this.modifyProduct(this.rootProduct, false);
         this.mFBTProducts = [];
         this.fbtMSNPrices = {};
@@ -99,7 +101,8 @@ export class FbtComponent implements OnInit
             this.rootProduct['isFBT'] = false;
             this.rootProduct['isSelected'] = true;
             this.mainMSNPrice = this.rootProduct['priceWithoutTax'];
-            this.fbtProducts.forEach((item, index) => {
+            this.fbtProducts.forEach((item, index) =>
+            {
                 let fbtValidation = this.modifyProduct(item, false);
                 if (fbtValidation.validation && index < 3) {
                     this.mFBTProducts.push(fbtValidation['mProduct']);
@@ -114,7 +117,8 @@ export class FbtComponent implements OnInit
    * @param product:object to modify as per cart.
    * @param isFBT:boolean value to mark FBT type product or not
   */
-    modifyProduct(product, isFBT) {
+    modifyProduct(product, isFBT)
+    {
         // console.log('modifyProduct', product);
         let returnObj = { mProduct: product, validation: false }
         let partReference = product.partNumber;
@@ -132,26 +136,77 @@ export class FbtComponent implements OnInit
         this.addToCart();
     }
 
-    addToCart(){
+    addToCart()
+    {
         //TODO:Yogender
         let selectedItems = this.mFBTProducts.filter((product) => product['isSelected']);
         selectedItems.unshift(this.rootProduct);
-        const ObservableUpdateCartArray: Observable<any>[] = [...selectedItems].map((item) => {  
-            return this.cartService.addToCart({ buyNow: false, productDetails:item  })
-        });
+        this.handleCartSave(selectedItems);
+        //let index$ = this.cartService.addToCart({ buyNow: false, productDetails: selectedItems[0] });
+        //zip(index$, (name: string) => ({ name })).subscribe(single => { console.log(single.name); })
 
-        combineLatest(ObservableUpdateCartArray).subscribe(result=>{
-            console.log('result', result);
-            // if (result && result.length > 0) {
-            //     this.cartService.setCartSession(result);
-            //     this.cartService.cart.next({ count: result['noOfItems'] });
-            //     this.router.navigateByUrl('/quick-order');
-            //   } else {
-                
-            //   }
-        });
+
+
+        // const ObservableUpdateCartArray: Observable<any>[] = [...selectedItems].map((item) => {  
+        //     return this.cartService.addToCart({ buyNow: false, productDetails:item  })
+        // });
+
+        // combineLatest(ObservableUpdateCartArray).subscribe(result=>{
+        //     console.log('result', result);
+        //     // if (result && result.length > 0) {
+        //     //     this.cartService.setCartSession(result);
+        //     //     this.cartService.cart.next({ count: result['noOfItems'] });
+        //     //     this.router.navigateByUrl('/quick-order');
+        //     //   } else {
+
+        //     //   }
+        // });
 
     }
+
+    handleCartSave(items: any[])
+    {
+        const LENGTH = items.length;
+        console.clear();
+        console.log(LENGTH);
+        switch (LENGTH) {
+            case 1: {
+                let index1$ = this.cartService.addToCart({ buyNow: false, productDetails: items[0] });
+                zip(index1$, (_r1) => ({ _r1 })).subscribe(single => { console.log(single._r1); this.updateCart(single._r1);});
+                break;
+            }
+            case 2: {
+                let index1$ = this.cartService.addToCart({ buyNow: false, productDetails: items[0] });
+                let index2$ = this.cartService.addToCart({ buyNow: false, productDetails: items[1] });
+                zip(index1$, index2$, (_r1, _r2) => ({ _r1, _r2 })).subscribe(double => { 
+                    console.log(double._r1, double._r2); 
+                    this.updateCart(double._r2);
+                })
+                break;
+            }
+            default: {
+                let index1$ = this.cartService.addToCart({ buyNow: false, productDetails: items[0] });
+                let index2$ = this.cartService.addToCart({ buyNow: false, productDetails: items[1] });
+                let index3$ = this.cartService.addToCart({ buyNow: false, productDetails: items[1] });
+                zip(index1$, index2$, index3$, (_r1, _r2, _r3) => ({ _r1, _r2, _r3 })).subscribe(triple =>
+                {
+                    console.log(triple);
+                    this.updateCart(triple._r3);
+                })
+                break;
+            }
+        }
+    }
+
+    updateCart(result)
+    {
+        this.cartService.setCartSession(result);
+        this.cartService.cart.next({ count: (result['itemsList'] as any[]).length });
+        this.router.navigateByUrl('/quickorder');
+    }
+
+
+
 
     backToCartFlow()
     {
@@ -201,8 +256,9 @@ export class FbtComponent implements OnInit
     }
 
 
-    navigateToPDP(url: string){
-        this.router.navigateByUrl('/'+url);
+    navigateToPDP(url: string)
+    {
+        this.router.navigateByUrl('/' + url);
     }
 
 
@@ -220,14 +276,15 @@ export class FbtComponent implements OnInit
 @NgModule({
     declarations: [FbtComponent],
     imports: [
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      ModalModule,
-      MathCeilPipeModule,
-      MathFloorPipeModule
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ModalModule,
+        MathCeilPipeModule,
+        MathFloorPipeModule
     ]
-  })
-  export default class FbtComponentModule {
-  
-  }
+})
+export default class FbtComponentModule
+{
+
+}

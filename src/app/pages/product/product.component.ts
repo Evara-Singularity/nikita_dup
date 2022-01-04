@@ -1341,10 +1341,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  sendProductImageClickTracking(infoStr="") {
+  sendProductImageClickTracking(infoStr = "") {
     let page = {
-      channel: "pdp image carausel"+infoStr,
-      pageName: "moglix:image carausel:pdp"+infoStr,
+      channel: "pdp image carausel" + infoStr,
+      pageName: "moglix:image carausel:pdp" + infoStr,
       linkName: "moglix:productmainimageclick_0",
       subSection: "moglix:pdp carausel main image:pdp",
       linkPageName: "moglix:" + this.router.url,
@@ -2150,7 +2150,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
-      
+
       this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
@@ -2292,14 +2292,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async onVisibleAppPromo(event) {
-    this.showLoader = true;
-    const { ProductAppPromoComponent } = await import(
-      "../../components/product-app-promo/product-app-promo.component"
-    ).finally(() => {
-      setTimeout(()=>{
-        this.showLoader = false;
-      },5000)
-    });
+    const { ProductAppPromoComponent } = await import("../../components/product-app-promo/product-app-promo.component");
     const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
     this.appPromoInstance = this.appPromoContainerRef.createComponent(
       factory,
@@ -2872,7 +2865,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData());
   }
 
-  outOfStockUpBtnClicked(){
+  outOfStockUpBtnClicked() {
     this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('outOfStockUpBtn'), 'genericPageLoad');
   }
 
@@ -3354,7 +3347,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     const TAXNONS = this.taxons;
     const TAGS = [];
 
-    if(this.productTags && this.productTags.length > 0){
+    if (this.productTags && this.productTags.length > 0) {
       this.productTags.forEach((element) => {
         TAGS.push(element.name);
       });
@@ -3430,11 +3423,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  nudgeOpened(){
+  nudgeOpened() {
     this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('search:nudge'), 'genericClick');
   }
 
-  nudgeOpenedClicked(){
+  nudgeOpenedClicked() {
     this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('search:nudge:clicked'), 'genericClick');
   }
 

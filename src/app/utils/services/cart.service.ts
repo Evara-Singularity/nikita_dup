@@ -346,6 +346,16 @@ export class CartService
                             args.productDetails.productQuantity
                         );
                 }
+                if (
+                    productItemExistInCart
+                ) {
+                    updatedCartSession =
+                        this._checkQuantityOfProductItemAndUpdate(
+                            args.productDetails,
+                            cartSession,
+                            args.productDetails.productQuantity
+                        );
+                }
                 // console.log('product info ==> after update',  Object.assign({}, cartSession), Object.assign({}, updatedCartSession), productItemExistInCart);
                 return {
                     cartSession: updatedCartSession,
@@ -561,7 +571,8 @@ export class CartService
                     productItem['productQuantity'] = productItem.quantityAvailable;
                 }
                 // also incase bulk price adjust bulk price
-                if (product.bulkPriceMap) {
+                // console.log('(product.bulkPriceMap ==>', (product.bulkPriceMap))
+                if (product.bulkPriceMap && Object.keys(product.bulkPriceMap).length > 0) {
                     const appliedPriceMap = product.bulkPriceMap['india'].filter(prices => (product.productQuantity >= prices.minQty && product.productQuantity <= prices.maxQty));
                     const selectedProductBulkPrice = (appliedPriceMap.length > 0) ? appliedPriceMap[0] : null;
                     if (selectedProductBulkPrice) {

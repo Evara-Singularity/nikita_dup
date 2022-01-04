@@ -1410,7 +1410,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.updateAddtoCartSocketAnalyticEvent(result, buyNow)
           if (!buyNow) {
             this.cartService.setCartSession(result);
-            this.cartService.cart.next({ count: result['noOfItems'], currentlyAdded: cartAddToCartProductRequest });
+            this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.LENGTH, currentlyAdded: cartAddToCartProductRequest });
             this.showAddToCartToast();
           } else {
             this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });

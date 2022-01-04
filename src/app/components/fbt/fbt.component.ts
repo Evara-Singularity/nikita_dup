@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, EventEmitter, Output, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, Subject, Observable, concat, combineLatest, zip } from 'rxjs';
+import { Subscription, Subject, Observable, concat, combineLatest, zip, forkJoin } from 'rxjs';
 import { ProductUtilsService } from '../../utils/services/product-utils.service';
 import { CartService } from '../../utils/services/cart.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -73,7 +73,6 @@ export class FbtComponent implements OnInit
     {
         this.fbtSubscription = this.productUtil.currentFBTSource.subscribe((fbtSource) =>
         {
-            console.log('fbtSource', fbtSource);
             if (fbtSource['rootProduct'] && fbtSource['fbtProducts']) {
                 this.rootProduct = JSON.parse(JSON.stringify(fbtSource['rootProduct']));
                 this.fbtProducts = JSON.parse(JSON.stringify(fbtSource['fbtProducts']));
@@ -138,71 +137,41 @@ export class FbtComponent implements OnInit
 
     addToCart()
     {
-        //TODO:Yogender
         let selectedItems = this.mFBTProducts.filter((product) => product['isSelected']);
         selectedItems.unshift(this.rootProduct);
         this.handleCartSave(selectedItems);
-        //let index$ = this.cartService.addToCart({ buyNow: false, productDetails: selectedItems[0] });
-        //zip(index$, (name: string) => ({ name })).subscribe(single => { console.log(single.name); })
-
-
-
-        // const ObservableUpdateCartArray: Observable<any>[] = [...selectedItems].map((item) => {  
-        //     return this.cartService.addToCart({ buyNow: false, productDetails:item  })
-        // });
-
-        // combineLatest(ObservableUpdateCartArray).subscribe(result=>{
-        //     console.log('result', result);
-        //     // if (result && result.length > 0) {
-        //     //     this.cartService.setCartSession(result);
-        //     //     this.cartService.cart.next({ count: result['noOfItems'] });
-        //     //     this.router.navigateByUrl('/quick-order');
-        //     //   } else {
-
-        //     //   }
-        // });
-
     }
 
     handleCartSave(items: any[])
     {
         const LENGTH = items.length;
-        console.clear();
-        console.log(LENGTH);
-        switch (LENGTH) {
-            case 1: {
-                let index1$ = this.cartService.addToCart({ buyNow: false, productDetails: items[0] });
-                zip(index1$, (_r1) => ({ _r1 })).subscribe(single => { console.log(single._r1); this.updateCart(single._r1);});
-                break;
-            }
-            case 2: {
-                let index1$ = this.cartService.addToCart({ buyNow: false, productDetails: items[0] });
-                let index2$ = this.cartService.addToCart({ buyNow: false, productDetails: items[1] });
-                zip(index1$, index2$, (_r1, _r2) => ({ _r1, _r2 })).subscribe(double => { 
-                    console.log(double._r1, double._r2); 
-                    this.updateCart(double._r2);
-                })
-                break;
-            }
-            default: {
-                let index1$ = this.cartService.addToCart({ buyNow: false, productDetails: items[0] });
-                let index2$ = this.cartService.addToCart({ buyNow: false, productDetails: items[1] });
-                let index3$ = this.cartService.addToCart({ buyNow: false, productDetails: items[1] });
-                zip(index1$, index2$, index3$, (_r1, _r2, _r3) => ({ _r1, _r2, _r3 })).subscribe(triple =>
+        console.log(LENGTH)
+        this.cartService.addToCart({ buyNow: false, productDetails: items[0] }).subscribe((response) =>//length=1
+        {
+            this.updateCart(response, items.length === 1);
+            if (LENGTH > 1) {
+                this.cartService.addToCart({ buyNow: false, productDetails: items[1] }).subscribe((response) =>//length=2
                 {
-                    console.log(triple);
-                    this.updateCart(triple._r3);
-                })
-                break;
+                    this.updateCart(response, items.length === 2);
+                    if (LENGTH === 3) {
+                        this.cartService.addToCart({ buyNow: false, productDetails: items[2] }).subscribe((response) =>//length=3
+                        {
+                            this.updateCart(response, items.length === 3);
+                        });
+                    }
+                });
             }
-        }
+        });
     }
 
-    updateCart(result)
+    updateCart(result, isNaviagte)
     {
         this.cartService.setCartSession(result);
-        this.cartService.cart.next({ count: (result['itemsList'] as any[]).length });
-        this.router.navigateByUrl('/quickorder');
+        this.cartService.cart.next({ count: result['noOfItems'] });
+        if (isNaviagte)
+        {
+            this.router.navigateByUrl('/quickorder');
+        }
     }
 
 

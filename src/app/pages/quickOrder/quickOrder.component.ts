@@ -134,7 +134,7 @@ export class QuickOrderComponent {
                     setTimeout(() => {
                         this.cartSessionUpdated$.next(cartSession);
                         this.cartService.orderSummary.next(cartSession);
-                        this.cartService.cart.next({count: cartSession['cart'] !== undefined ? cartSession['noOfItems'].length : 0});
+                        this.cartService.cart.next({count:  cartSession['noOfItems'] || cartSession['itemsList'].length});
                     }, 0)
                 } else if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
                     const cs = this.cartService.updateCart(cartSession['cart']);

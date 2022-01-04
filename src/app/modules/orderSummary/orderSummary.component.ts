@@ -65,8 +65,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         if (!this.isServer) {
-            // console.log('Order summary');
-            // this.getAllPromoCodesByUserId();
             this.cartSession = this._cartService.getCartSession();
             this.shippingCharges = this.cartSession['cart']['shippingCharges'];
 
@@ -108,12 +106,9 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             this._cartService.orderSummary.subscribe(
-
                 (data: { cartSession?: {}, extra?: { errorMessage: string } }) => {
-
+                    console.trace('cartsummary  ===========> ');
                     this.cartSession = this._cartService.getCartSession();
-                    //    console.log(this.cartSession, ' order summary cart ');
-                    // this.getAllPromoCodesByUserId();
                     if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                         let items: Array<any> = this.cartSession['itemsList'];
                         this.noOfCart = items.length;
@@ -161,8 +156,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             document.body.addEventListener('click', function (e) {
-                // alert(123);
-                // console.log(e.target);
                 if (e.target && (<Element>e.target).matches('.close-promo .icon-delete_filter')) {
                     document.querySelector('.mobile-promo-box').classList.remove('block');
                 }
@@ -306,11 +299,10 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this.cartSession = data.cartSession;
             this.itemsList = data.cartSession['itemsList'];
         }
-        // console.log(data.cartSession);
     }
 
     outData(data: {}) {
-         ;
+        ;
         if (data && data['pcd']) {
             this.pad = Object.assign({}, this.pad, data['pcd']);
         }

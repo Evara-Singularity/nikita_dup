@@ -239,6 +239,7 @@ export class CartComponent {
              */
 
             if (this.isBrowser) {
+                console.log('trigger1');
                 const user = this.localStorageService.retrieve('user');
 
                 if (user && user.authenticated == "true") {
@@ -250,7 +251,7 @@ export class CartComponent {
                     let reqobj = {
                         "shoppingCartDto": cartobj
                     }
-                    
+
                     this.validateCartApi(reqobj);
                 }
             }
@@ -270,6 +271,7 @@ export class CartComponent {
         )
 
         if (this.isBrowser) {
+            console.log('trigger2');
             if (this.router.url == '/quickorder') {
                 let criteoItem = [];
                 this.showLink = true;
@@ -349,7 +351,7 @@ export class CartComponent {
                 digitalData["page"] = page;
                 digitalData["custData"] = custData;
                 digitalData["order"] = order;
-                if(_satellite){
+                if (_satellite) {
                     _satellite.track("genericPageLoad");
                 }
                 /*End Adobe Analytics Tags */
@@ -577,7 +579,7 @@ export class CartComponent {
     }
 
     deleteValidationMessageLocalstorage(item, type?) {
-        
+
         const userData = this.localStorageService.retrieve('user');
         if (userData && userData.authenticated == "true") {
             /** 
@@ -608,7 +610,7 @@ export class CartComponent {
             // this.localStorageService.store("user", userData);
             this._cartService.setValidateCartMessageApi({ userId: userData['userId'], data: itemsValidationMessage }).subscribe(() => { });
             return [...itemsValidationMessage, ...itemsUnServicableMessage];
-        }else{
+        } else {
             return null;
         }
     }
@@ -641,7 +643,7 @@ export class CartComponent {
                         msg['data'] = { productName: item['productName'], text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
                         msg['type'] = "oos";
                     }
-                    else if (data[item['productId']]['updates']['priceWithoutTax'] && (data[item['productId']]['productDetails']['priceWithoutTax'] < item["priceWithoutTax"] )) {
+                    else if (data[item['productId']]['updates']['priceWithoutTax'] && (data[item['productId']]['productDetails']['priceWithoutTax'] < item["priceWithoutTax"])) {
                         msg['data'] = { productName: item['productName'], text1: ' price has been updated from ', text2: 'to', oPrice: item["priceWithoutTax"], nPrice: data[item['productId']]['productDetails']['priceWithoutTax'] };
                         // msg['data'] = item['productName']+" has " + (item["priceWithoutTax"]>data[item['productId']]['productDetails']['priceWithoutTax'] ? 'decreased' : 'increased') + " from Rs." + item["priceWithoutTax"] + " to Rs." + data[item['productId']]['productDetails']['priceWithoutTax'];
                         msg['type'] = "price";
@@ -952,6 +954,7 @@ export class CartComponent {
                 'prodName': '',
                 'prodURL': ''
             };
+            console.log('trigger3');
             let criteoItem = [];
             let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
             for (let p = 0; p < this.cartSession["itemsList"].length; p++) {
@@ -1025,13 +1028,14 @@ export class CartComponent {
             digitalData["page"] = page;
             digitalData["custData"] = custData;
             digitalData["order"] = order;
-            if(_satellite){
+            if (_satellite) {
                 _satellite.track("genericClick");
             }
             /*End Adobe Analytics Tags */
 
             // Update cart in service
             this._cartService.setCartSession(cartSessions);
+            console.log('trigger4');
             if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                 var totQuantity = 0;
                 var trackData = {
@@ -1177,7 +1181,7 @@ export class CartComponent {
                 res => {
                     if (res['statusCode'] == 200) {
                         // this.cartSession = this._cartService.getCartSession();
-
+                        console.log('trigger5');
                         cartSessions['cart']['shippingCharges'] = res['data']['totalShippingAmount'];
                         let productShippingCharge = res['data']['itemShippingAmount'];
 
@@ -1197,6 +1201,7 @@ export class CartComponent {
                             if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
                                 this.uniqueRequestNo = 0;
                                 let itemsList = res['itemsList'];
+                                console.log('trigger6');
                                 itemsList.forEach((element, index) => {
                                     for (let key in productShippingCharge) {
                                         if (key == element['productId']) {
@@ -1291,6 +1296,7 @@ export class CartComponent {
                     // this.itemsList[i]["amount"] = item["productUnitPrice"] * updatedQuantity;
                     cartSession = this._cartService.updateCart(cartSession);
                     //  this._cartService.orderSummary.next(this.cartSession);
+                    console.log('trigger7');
                     if (cartSession['itemsList'] !== null && cartSession['itemsList']) {
                         var totalQuantity = 0;
                         var trackData = {
@@ -1324,7 +1330,7 @@ export class CartComponent {
                 //Do not update cart object if isQuantityAvailable returns false and revert the entered quantity to previous.
                 else {
                     $event.target.value = this.itemsList[i]['productQuantity'];
-                    this._tms.show({type: 'error', text: productPriceQuantity.quantityAvailable+' is the maximum quantity available.'});
+                    this._tms.show({ type: 'error', text: productPriceQuantity.quantityAvailable + ' is the maximum quantity available.' });
                 }
             });
         }
@@ -1341,11 +1347,11 @@ export class CartComponent {
     checkNumber(quantity): boolean {
         quantity = parseInt(quantity, 10);
         // Check number-range
-        if (quantity >= 1 && quantity <= 999){
+        if (quantity >= 1 && quantity <= 999) {
             return true;
-        }else{
+        } else {
             return false;
-        }   
+        }
     }
 
     fireEvent() {
@@ -1413,6 +1419,7 @@ export class CartComponent {
 
                 //console.log('cartSession updateCart after', Object.assign({}, cartSession), Object.assign({}, this.itemsList));
                 //Update cart object only when isQuantityAvailable returns true.
+                console.log('trigger9');
                 if (isQua["status"]) {
                     quantityTarget.value = updatedQuantity;
                     itemsList[i]['productQuantity'] = updatedQuantity;
@@ -1515,6 +1522,7 @@ export class CartComponent {
                 cartSession = this._cartService.getCartSession();
                 itemsList = cartSession['itemsList'];
                 //Update cart object only when isQuantityAvailable returns true.
+                console.log('trigger10');
                 if (isQua["status"]) {
                     quantityTarget.value = updatedQuantity;
                     itemsList[i]['productQuantity'] = updatedQuantity;
@@ -1570,7 +1578,7 @@ export class CartComponent {
         if (updatedQuantity > productPriceQuantity.quantityAvailable) {
             // alert("Quantity not available");
             this.isShowLoader = false;
-            this.itemsList[index]['message'] =  productPriceQuantity.quantityAvailable+' is the maximum quantity available.';
+            this.itemsList[index]['message'] = productPriceQuantity.quantityAvailable + ' is the maximum quantity available.';
             this._tms.show({ type: 'success', text: this.itemsList[index]['message'] });
             return { status: false, message: "Quantity not available" };
 
@@ -1686,6 +1694,7 @@ export class CartComponent {
             let cs = Object.assign({}, this._cartService.getCartSession());
             let sro = this._cartService.getShippingObj(cs);
             // console.log('updateCartSessionssro', sro); 
+            // console.log('trigger11');
             this.getShippingCharges(sro).subscribe(
                 res => {
                     if (res['statusCode'] == 200) {
@@ -1697,7 +1706,6 @@ export class CartComponent {
                         // let items: Array<any> = this.itemsList;
                         // items.forEach((element) => { delete element['message'] });
                         // cartSession["itemsList"] = items;
-
                         for (let i = 0; i < cartSession['itemsList'].length; i++) {
                             // console.log(res['data']['itemShippingAmount'], cs['itemsList'][i]['productId']);
                             cartSession['itemsList'][i]['shippingCharges'] = res['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
@@ -1706,13 +1714,25 @@ export class CartComponent {
                         //console.log(this.cartSession);
                         // console.log(cartSession, "getShippingCharges")
                         // console.log('cartSession 2', Object.assign({}, cartSession));
+                        console.log('trigger12');
                         this._cartService.updateCartSession(cartSession).subscribe((data) => {
+                            console.log('object1 : ', data);
                             this.isShowLoader = false;
                             // $("#page-loader").hide();
-                            if (data.statusCode == 200) {
+                            if (data.hasOwnProperty('cart') && data.hasOwnProperty('itemsList')) {
                                 // console.log(data, cartSession, "datadatadatadatadatadata");
                                 // console.log('data["itemsList"]', data["itemsList"]);
                                 this.cartSession = data;
+
+                                //console.clear();
+                                //console.log(this.cartSession);
+
+                                for (let i = 0; i < this.cartSession['itemsList'].length; i++) {
+                                    // console.log(res['data']['itemShippingAmount'], cs['itemsList'][i]['productId']);
+                                    this.cartSession['itemsList'][i]['shippingCharges'] = res['data']['itemShippingAmount'][this.cartSession['itemsList'][i]['productId']];
+                                }
+
+
                                 //  this.itemsList = data["itemsList"]
                                 this.uniqueRequestNo = 1;
                                 this.uniqueRequestNo = 0;
@@ -1755,7 +1775,7 @@ export class CartComponent {
         const unAvailableItemsIndex = il.map((uaii) => {
             return uaii['productId'];
         });
-        console.log(il);
+        // console.log(il);
 
         const showMessage = { type: 'error', text: "Product successfully removed from Cart" };
         this.isShowLoader = true;
@@ -3015,6 +3035,7 @@ export class CartComponent {
     }
 
     getShippingCharges(obj) {
+        console.trace('getShippingCharges cart comp');
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this.dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {

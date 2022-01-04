@@ -76,7 +76,7 @@ export class FbtComponent implements OnInit
             if (fbtSource['rootProduct'] && fbtSource['fbtProducts']) {
                 this.rootProduct = JSON.parse(JSON.stringify(fbtSource['rootProduct']));
                 this.fbtProducts = JSON.parse(JSON.stringify(fbtSource['fbtProducts']));
-                this.rootMSN = this.rootProduct['productBO']['partNumber'];
+                this.rootMSN = this.rootProduct['partNumber'];
                 this.startProcess();
             } else {
                 this.fbtProducts = [];
@@ -92,7 +92,7 @@ export class FbtComponent implements OnInit
     /**@description  checks main product in cart, merges main product with fbt products list*/
     startProcess()
     {
-        let mainValidation = this.modifyProduct(this.rootProduct['productBO'], false);
+        let mainValidation = this.modifyProduct(this.rootProduct, false);
         this.mFBTProducts = [];
         this.fbtMSNPrices = {};
         if (mainValidation.validation) {

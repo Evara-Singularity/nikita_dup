@@ -1300,14 +1300,26 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // Frequently brought togther functions
-  fetchFBTProducts(rootProduct, rawProductFbtData) {
+
+  productFbtData() {
+    this.productService
+      .getFBTProducts(this.defaultPartNumber)
+      .subscribe((rawProductFbtData) => {
+        this.fetchFBTProducts(
+          this.rawProductData,
+          Object.assign({}, rawProductFbtData)
+        );
+      });
+  }
+
+  fetchFBTProducts(productBO, rawProductFbtData) {
     if (this.productOutOfStock) {
       this.productUtil.resetFBTSource();
     } else {
       this.fbtFlag = false;
-      let rootvalidation = this.productUtil.validateProduct(rootProduct);
+      let rootvalidation = this.productUtil.validateProduct(productBO);
       if (rootvalidation) {
-        this.processFBTResponse(rootProduct, rawProductFbtData);
+        this.processFBTResponse(productBO, rawProductFbtData);
       }
     }
   }
@@ -3396,16 +3408,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytics;
   }
 
-  productFbtData() {
-    this.productService
-      .getFBTProducts(this.defaultPartNumber)
-      .subscribe((rawProductFbtData) => {
-        this.fetchFBTProducts(
-          this.rawProductData,
-          Object.assign({}, rawProductFbtData)
-        );
-      });
-  }
 
   productStatusCount() {
     this.productService

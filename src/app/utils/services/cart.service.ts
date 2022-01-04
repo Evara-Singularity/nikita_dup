@@ -314,7 +314,7 @@ export class CartService {
                     args.buyNow
                 );
 
-                console.log('step 1 ==>', cartSession);
+                // console.log('step 1 ==>', cartSession);
 
                 if (args.buyNow) {
                     return { cartSession: updatedCartSession, productItemExistInCart };
@@ -362,7 +362,7 @@ export class CartService {
                         if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
                             // add temp session for buynow
                             // as per current flow, update cart api should not be called for buynow if user is not logged in
-                            console.log('step 3.1 ==>', cartSession);
+                            // console.log('step 3.1 ==>', cartSession);
                             this.buyNow = true;
                             this.buyNowSessionDetails = cartSession;
                             return null;
@@ -375,7 +375,7 @@ export class CartService {
             }),
             mergeMap(request => {
                 if (request) {
-                    console.log('step 4 ==>', request, args);
+                    // console.log('step 4 ==>', request, args);
                     return this.updateCartSession(request).pipe(
                         map((cartSession: any) => {
                             return cartSession;

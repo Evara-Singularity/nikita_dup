@@ -1694,7 +1694,7 @@ export class CartComponent {
             let cs = Object.assign({}, this._cartService.getCartSession());
             let sro = this._cartService.getShippingObj(cs);
             // console.log('updateCartSessionssro', sro); 
-            console.log('trigger11');
+            // console.log('trigger11');
             this.getShippingCharges(sro).subscribe(
                 res => {
                     if (res['statusCode'] == 200) {
@@ -1724,8 +1724,8 @@ export class CartComponent {
                                 // console.log('data["itemsList"]', data["itemsList"]);
                                 this.cartSession = data;
 
-                                console.clear();
-                                console.log(this.cartSession);
+                                //console.clear();
+                                //console.log(this.cartSession);
 
                                 for (let i = 0; i < this.cartSession['itemsList'].length; i++) {
                                     // console.log(res['data']['itemShippingAmount'], cs['itemsList'][i]['productId']);
@@ -1775,7 +1775,7 @@ export class CartComponent {
         const unAvailableItemsIndex = il.map((uaii) => {
             return uaii['productId'];
         });
-        console.log(il);
+        // console.log(il);
 
         const showMessage = { type: 'error', text: "Product successfully removed from Cart" };
         this.isShowLoader = true;

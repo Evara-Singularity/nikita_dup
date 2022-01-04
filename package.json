@@ -60,7 +60,7 @@
         "credit-card-type": "^9.1.0",
         "express": "^4.15.2",
         "jquery": "^3.6.0",
-        "ng-lazyload-image": "^9.1.0",
+        "ng-lazyload-image": "9.1.0",
         "ng2-cc-library": "^1.0.1",
         "ngx-pagination": "^3.2.1",
         "ngx-siema": "git+https://github.com/Yogender-moglix/ngx-siema.git",

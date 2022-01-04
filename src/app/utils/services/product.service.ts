@@ -220,6 +220,7 @@ export class ProductService {
     }
 
     getCartBySession(params) {
+        console.trace('getCartBySession product service');
         return this._dataService.callRestful(
             "GET",
             this.basePath + ENDPOINTS.GET_CartBySession,
@@ -787,7 +788,7 @@ export class ProductService {
         return this._dataService.callRestful("GET", PRODUCT_URL);
     }
 
-      
+
     getAdobeAnalyticsObjectData(index, identifier = 'pdp') {
 
         const productCategoryDetails = this.oosSimilarProductsData.similarData[index]['productCategoryDetails'];

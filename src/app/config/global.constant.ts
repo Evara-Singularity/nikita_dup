@@ -7,7 +7,7 @@ export const GLOBAL_CONSTANT = {
   oosSimilarCardCountBottom: 8,
   whatsapp_number: "+919999034709",
   updated: 2,
-  searchNudgeTimer: 7,    //expired after 7 secs
+  searchNudgeTimer: 10,    //expired after 10 secs
   trendingCategoryLimit: 10,
   creditDebitCard: 1,
   brandStoreCmsId: "CM1000031",

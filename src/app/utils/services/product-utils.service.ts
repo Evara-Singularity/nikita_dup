@@ -54,7 +54,7 @@ export class ProductUtilsService{
     {
         this.fbtSource.next({ rootProduct: rootProduct, fbtProducts: fbtProducts });
         if (rootProduct && fbtProducts) {
-            this.checkRootItemInCart(rootProduct['productBO']['partNumber']);
+            this.checkRootItemInCart(rootProduct['partNumber']);
         }
     }
 

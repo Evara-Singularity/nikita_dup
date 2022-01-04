@@ -134,6 +134,9 @@ export class FbtComponent implements OnInit
 
     addToCart(){
         //TODO:Yogender
+        let selectedItems = this.mFBTProducts.filter((product) => product['isSelected']);
+        selectedItems.unshift(this.rootProduct);
+        selectedItems.forEach((item) => { this.cartService.addToCart({ buyNow: false, productDetails:item}); });
     }
 
     backToCartFlow(routerLink)

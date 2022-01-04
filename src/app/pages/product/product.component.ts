@@ -1089,7 +1089,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (!value) {
       this._tms.show({
         type: 'error',
-        text: 'Please enter valid quantity'
+        text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
       })
       this.qunatityFormControl.setValue(this.productMinimmumQuantity);
     } else {
@@ -1104,6 +1104,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           type: 'error',
           text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
         })
+        this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
       } else if (isNaN(parseInt(value))) {
         this.qunatityFormControl.setValue(this.productMinimmumQuantity);
         this.checkBulkPriceMode();
@@ -1300,14 +1301,26 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // Frequently brought togther functions
-  fetchFBTProducts(rootProduct, rawProductFbtData) {
+
+  productFbtData() {
+    this.productService
+      .getFBTProducts(this.defaultPartNumber)
+      .subscribe((rawProductFbtData) => {
+        this.fetchFBTProducts(
+          this.rawProductData,
+          Object.assign({}, rawProductFbtData)
+        );
+      });
+  }
+
+  fetchFBTProducts(productBO, rawProductFbtData) {
     if (this.productOutOfStock) {
       this.productUtil.resetFBTSource();
     } else {
       this.fbtFlag = false;
-      let rootvalidation = this.productUtil.validateProduct(rootProduct);
+      let rootvalidation = this.productUtil.validateProduct(productBO);
       if (rootvalidation) {
-        this.processFBTResponse(rootProduct, rawProductFbtData);
+        this.processFBTResponse(productBO, rawProductFbtData);
       }
     }
   }
@@ -1397,7 +1410,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.updateAddtoCartSocketAnalyticEvent(result, buyNow)
           if (!buyNow) {
             this.cartService.setCartSession(result);
-            this.cartService.cart.next({ count: result['noOfItems'], currentlyAdded: cartAddToCartProductRequest });
+            this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.LENGTH, currentlyAdded: cartAddToCartProductRequest });
             this.showAddToCartToast();
           } else {
             this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
@@ -3396,16 +3409,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytics;
   }
 
-  productFbtData() {
-    this.productService
-      .getFBTProducts(this.defaultPartNumber)
-      .subscribe((rawProductFbtData) => {
-        this.fetchFBTProducts(
-          this.rawProductData,
-          Object.assign({}, rawProductFbtData)
-        );
-      });
-  }
 
   productStatusCount() {
     this.productService

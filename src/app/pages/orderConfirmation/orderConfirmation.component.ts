@@ -103,7 +103,7 @@ export class OrderConfirmationComponent implements OnInit {
                 sessionid: userSession.sessionId
             }).subscribe((cartSession) => {
                 console.log('order onfirmation logs ==> completed response ', cartSession);
-                if (cartSession["statusCode"] != undefined && cartSession["statusCode"] == 200) {
+                if (cartSession["cart"]) {
                     // this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
                     this.setVars(cartSession);
                     // sent to analytics

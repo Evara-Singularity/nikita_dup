@@ -48,6 +48,8 @@ export class CommonService {
 
   public oosSimilarCard$: Subject<any> = new Subject<any>();
 
+  public attachScrollEvent$: Subject<any> = new Subject<any>();
+
   isHomeHeader = false;
   isPLPHeader = false;
   isScrolledHeader = false;
@@ -1172,11 +1174,27 @@ export class CommonService {
     }, this._renderer2, this);
   }
 
+
+  attachHotKeysScrollEvent() {
+    this.attachScrollEvent$.subscribe(className => {
+      const element = document.getElementsByClassName(className)[0];
+      if (element) {
+        element.addEventListener('scroll', this.idleNudgeTimer.eventHandler);
+      }
+    });
+  }
+
+  triggerAttachHotKeysScrollEvent(className) {
+    setTimeout(() => {
+      this.attachScrollEvent$.next(className);
+    }, 1000);
+  }
+
   customDebugger(data) {
     console.clear();
     console.trace();
     console.log(data);
     alert('check console');
   }
-  
+
 }

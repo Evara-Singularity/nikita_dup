@@ -19,12 +19,15 @@ export class BreadcrumbNavComponent implements OnInit {
     @Inject(DOCUMENT) private document,
     private router: Router,
     private _commonService: CommonService,
-    private  globalAnalyticService: GlobalAnalyticsService,
+    private globalAnalyticService: GlobalAnalyticsService,
   ) {
   }
 
   ngOnInit(): void {
     this.breadCrumpCategorySchema();
+  }
+
+  ngAfterViewInit(): void {
   }
 
 
@@ -54,13 +57,13 @@ export class BreadcrumbNavComponent implements OnInit {
       let s = this.renderer2.createElement('script');
       s.type = "application/ld+json";
 
-      s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA , "@type": "BreadcrumbList", "itemListElement": itemsList });
+      s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": itemsList });
       this.renderer2.appendChild(this.document.head, s);
     }
   }
 
   goToCategory(link) {
-    this.globalAnalyticService.sendAdobeCall(this.analytics, "genericClick");      
+    this.globalAnalyticService.sendAdobeCall(this.analytics, "genericClick");
     this.router.navigateByUrl(link);
   }
 

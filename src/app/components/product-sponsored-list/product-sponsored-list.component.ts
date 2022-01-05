@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
@@ -20,6 +20,7 @@ export class ProductSponsoredListComponent implements OnInit {
   @Input() productId: string;
   @Input() categoryCode: string;
   @Input('analytics') analytics = null;
+  @Output('sponseredDataLoaded$') sponseredDataLoaded$ = new EventEmitter();
   readonly lowestCountToDisplay: number = 2
 
   readonly cardFeaturesConfig: ProductCardFeature = {
@@ -63,6 +64,7 @@ export class ProductSponsoredListComponent implements OnInit {
       let products = response['products'];
       if (products && (products as []).length > this.lowestCountToDisplay) {
         this.productList = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+        this.sponseredDataLoaded$.emit(true);
       }
     });
   }

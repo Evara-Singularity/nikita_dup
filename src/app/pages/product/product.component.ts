@@ -345,6 +345,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productFbtData();
       this.productStatusCount();
       this.checkDuplicateProduct();
+      this.commonService.attachHotKeysScrollEvent();
     }
   }
 
@@ -618,6 +619,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   setProductaBreadcrum(breadcrumbData) {
     this.breadcrumbData = breadcrumbData;
+    if (this.breadcrumbData.length > 0) {
+      this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
+    }
   }
   navigateToCategory() {
     if (this.breadcrumbData) {
@@ -929,6 +933,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
               );
             } else {
               this.similarProducts = products;
+            }
+            if (this.productOutOfStock) {
+              this.commonService.triggerAttachHotKeysScrollEvent('consider-these-products');
             }
           }
           this.similarForOOSLoaded = false;
@@ -1564,6 +1571,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       this.similarProductInstance.instance["outOfStock"] =
         this.productOutOfStock;
+      (
+        this.similarProductInstance.instance[
+        "similarDataLoaded$"
+        ] as EventEmitter<any>
+      ).subscribe((data) => {
+        this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
+      });
       const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;
       const TAXONS = this.taxons;
@@ -1692,6 +1706,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.productCategoryDetails["categoryCode"];
       this.sponseredProductsInstance.instance["outOfStock"] =
         this.productOutOfStock;
+      (this.sponseredProductsInstance.instance[
+        "sponseredDataLoaded$"
+      ] as EventEmitter<any>
+      ).subscribe((data) => {
+        this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
+      });
       const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;
       const TAXONS = this.taxons;

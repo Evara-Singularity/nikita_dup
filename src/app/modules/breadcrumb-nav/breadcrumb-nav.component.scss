@@ -1,16 +1,19 @@
 .bread-head {
+    will-change: auto;
     /*border-bottom: 1px solid #eaeaea;*/
     overflow: auto;
     white-space: nowrap;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
-    display: none;
+        display: none;
     }
 }
-.bread-crumb{
+
+.bread-crumb {
     padding: 10px 15px;
     background-color: #f2f2f2;
-    margin-top:10px;
+    margin-top: 10px;
 }
 
 .bread-head li {

@@ -7,16 +7,11 @@
             <button>VIEW ALL</button>
         </div> -->
     </div>
-    <div class="vertical-scroll-container">
+    <div class="vertical-scroll-container similar-products">
         <div class="inner-scroll-container" [style.width.px]="similarProducts.length * 165">
-            <ng-container *ngFor="let product of similarProducts;let pIndex=index" >
-                <product-horizontal-card 
-                    [section]="'similar'" 
-                    [product]="product" 
-                    [cardMetaInfo]='cardMetaInfo'
-                    [cardFeaturesConfig]='cardFeaturesConfig' 
-                    [pIndex]="pIndex" 
-                    [enableTracking]="true" 
+            <ng-container *ngFor="let product of similarProducts;let pIndex=index">
+                <product-horizontal-card [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
                     [analytics]="analytics">
                 </product-horizontal-card>
             </ng-container>

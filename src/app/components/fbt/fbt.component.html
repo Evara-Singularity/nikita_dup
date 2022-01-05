@@ -42,7 +42,7 @@
                             <p class="price">
                                 <span class="after-discount">{{product.priceWithoutTax | mathFloor | currency:
                                     'INR' : 'symbol' : '1.0-0'}}</span>
-                                <span class="before-discount">{{product.mrp | mathFloor | currency: 'INR':
+                                <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
                                     'symbol': '1.0-0'}}</span>
                                 <span class="discount">{{product.discount | mathFloor}}% OFF</span>
                             </p>

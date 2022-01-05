@@ -2,7 +2,7 @@ import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/cor
 import { OrderSummaryService } from './orderSummary.service';
 import { Subject } from 'rxjs';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '../../utils/services/data.service';
 import { CartService } from '../../utils/services/cart.service';
@@ -295,7 +295,11 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this.vof = true;
         } else {
             // this._gState.notifyDataChanged('loginPopup.open',{redirectUrl:'/quickorder'});
-            this.router.navigateByUrl('/login');
+            let navigationExtras: NavigationExtras = {
+                queryParams: { backurl: '/quickorder' },
+            };
+            this.router.navigate(["/login"], navigationExtras);
+            // this.router.navigateByUrl('/login');
         }
     }
 

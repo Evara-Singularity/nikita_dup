@@ -117,6 +117,9 @@ export class ProductOosSimilarCardComponent {
         .getProductStatusCount(this.productMsn)
     ]).subscribe((rawData) => {
       this.breadcrumData = rawData[1];
+      if (this.breadcrumData.length > 0) {
+        this.commonService.triggerAttachHotKeysScrollEvent('oos-card-' + this.index);
+      }
       if (
         rawData[0]["productBO"] &&
         Object.values(rawData[0]["productBO"]["productPartDetails"])[0][
@@ -344,7 +347,7 @@ export class ProductOosSimilarCardComponent {
       } else {
         if (result) {
           // this.resetVariantData();
-          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails,'PRODUCT_SIMILAR_OUT_OF_STOCK');
+          this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, 'PRODUCT_SIMILAR_OUT_OF_STOCK');
           if (!buyNow) {
             this._cartService.setCartSession(result);
             this._cartService.cart.next({
@@ -533,7 +536,7 @@ export class ProductOosSimilarCardComponent {
     this._analytic.sendAdobeCall(anaytics, 'genericPageLoad');
   }
 
-    
-    
+
+
 
 }

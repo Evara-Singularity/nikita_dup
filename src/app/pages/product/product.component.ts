@@ -345,7 +345,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productFbtData();
       this.productStatusCount();
       this.checkDuplicateProduct();
-      this.commonService.attachHotKeysScrollEvent();
+      // this.commonService.attachHotKeysScrollEvent();
     }
   }
 
@@ -619,7 +619,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   setProductaBreadcrum(breadcrumbData) {
     this.breadcrumbData = breadcrumbData;
     if (this.breadcrumbData.length > 0) {
-      this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
+      // this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
     }
   }
   navigateToCategory() {
@@ -934,7 +934,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
               this.similarProducts = products;
             }
             if (this.productOutOfStock) {
-              this.commonService.triggerAttachHotKeysScrollEvent('consider-these-products');
+              // this.commonService.triggerAttachHotKeysScrollEvent('consider-these-products');
             }
           }
           this.similarForOOSLoaded = false;
@@ -1586,7 +1586,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         "similarDataLoaded$"
         ] as EventEmitter<any>
       ).subscribe((data) => {
-        this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
+        // this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
       });
       const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;
@@ -1720,7 +1720,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         "sponseredDataLoaded$"
       ] as EventEmitter<any>
       ).subscribe((data) => {
-        this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
+        // this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
       });
       const custData = this.commonService.custDataTracking;
       const orderData = this.orderTracking;

@@ -164,7 +164,7 @@ export class ProductCrouselSlideComponent {
     this.ngxSiemaService
       .currentSlide(this.options.selector)
       .subscribe((result) => {
-        this._commonService.resetSearchNudgeTimer();
+        // this._commonService.resetSearchNudgeTimer();
         this.sendTracking(result.currentSlide);
         this._siemaCrouselService.setProductScrouselPopup({
           active: true,

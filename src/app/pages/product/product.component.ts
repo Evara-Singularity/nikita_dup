@@ -1660,7 +1660,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe((data) => {
           this.showScrollToTopButton = data;
         });
-        this.commonService.idleNudgeTimer.addIdleEventToClass('"horizontal-scroll-containe');
       }
     }
     this.holdRFQForm = false;

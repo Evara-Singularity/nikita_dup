@@ -16,9 +16,11 @@
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <div class="overall-rating">
-                        <h3>{{ rawReviewsData?.summaryData?.final_average_rating  | number:'1.1-1' }}<i class="icon-rating-star"></i>
+                        <h3>{{ rawReviewsData?.summaryData?.final_average_rating | number:'1.1-1' }}<i
+                                class="icon-rating-star"></i>
                         </h3>
-                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }} ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
+                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
+                            ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                     </div>
                 </div>
                 <div class="pwa-col-6">
@@ -26,31 +28,41 @@
                         <div class="inner-scale">
                             <span>5</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar dark-green"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar dark-green"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>4</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-green"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar light-green"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>3</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar yellow"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar yellow"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>2</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar light-red"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar light-red"></span>
                             </span>
                         </div>
                         <div class="inner-scale">
                             <span>1</span>
                             <span class="rating-bar">
-                                <span class="bar" [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100" class="bar red"></span>
+                                <span class="bar"
+                                    [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                    class="bar red"></span>
                             </span>
                         </div>
                     </div>
@@ -92,13 +104,16 @@
                     <div class="pwa-col-6">
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
+
                     <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like=='1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
-                            <span class="small-txt">{{review.yes}}</span>
+                        <button class="suggstn-btn" [ngClass]="{'active':review.like=='1'}"
+                            (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                            <span class="small-txt">{{review.is_review_helpful_count_yes}}</span>
                             <i class="icon-like"></i>
                         </button>
-                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}" (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
-                            <span class="small-txt">{{review.no}}</span>
+                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
+                            (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
+                            <span class="small-txt">{{review.is_review_helpful_count_no}}</span>
                             <i class="icon-dislike"></i>
                         </button>
                     </div>

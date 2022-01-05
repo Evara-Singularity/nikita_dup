@@ -656,7 +656,9 @@
                 <div class="loader"></div>
             </div>
         </section>
-        <div [class.mb-60]="productOutOfStock"></div>
+        <div *ngIf="recentProductsInstance?.instance?.recentProductItems && recentProductsInstance?.instance?.recentProductItems.length > 0"
+            [class.mb-60]="productOutOfStock">
+        </div>
     </div>
     <!-- other sections ends -->
 

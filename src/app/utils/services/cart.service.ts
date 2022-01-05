@@ -490,8 +490,20 @@ export class CartService
                 } else {
                     // logout user & notify
                     // notify subscribers
-                    this._notifyCartChanges(cartSessionResponse, '');
-                    return true;
+                    if(cartSessionResponse.status && cartSessionResponse.statusCode && cartSessionResponse.status == true && cartSessionResponse.statusCode == 202){
+                        // incase of session mismatch update new cart and userData 
+                        // cartsesion response will be different from regular cart session response
+                        this._notifyCartChanges(cartSessionResponse.cart, '');
+                        this.localAuthService.setUserSession(cartSessionResponse.userData);
+                        return true;
+                    }
+                    
+                    if(cartSessionResponse.status && cartSessionResponse.statusCode && cartSessionResponse.status == true && cartSessionResponse.statusCode == 200){
+                        this._notifyCartChanges(cartSessionResponse, '');
+                        return true;
+                    }
+
+                    return false;
                 }
             })
         )

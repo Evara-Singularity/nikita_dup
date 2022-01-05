@@ -31,6 +31,7 @@ import { YTThumnailPipeModule } from "@app/utils/pipes/ytthumbnail.pipe";
 import { ProductCrouselSlideComponent } from "./ProductCrouselSlide/ProductCrouselSlide.component";
 import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
+import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
   selector: "ProductCrousel",
@@ -40,6 +41,7 @@ import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 export class ProductCrouselComponent implements OnInit {
   image_Path = CONSTANTS.IMAGE_BASE_URL;
 
+  @Input() productOutOfStock: boolean;
   @Input() clickedIndexOfOosProduct: number;
   @Input() options: any;
   @Input() items: any[];
@@ -75,6 +77,7 @@ export class ProductCrouselComponent implements OnInit {
 
   constructor(
     private injector: Injector,
+    private _commonService: CommonService,
     private _cfr: ComponentFactoryResolver,
     private _cdr: ChangeDetectorRef,
     private ngxSiemaService: NgxSiemaService,
@@ -99,6 +102,8 @@ export class ProductCrouselComponent implements OnInit {
 
       if (this.moveToSlide$) {
         this.moveToSlide$.subscribe((slideNumber: number) => {
+          console.log('called');
+          this._commonService.enableNudge = false;
           this.ngxSiemaService.goTo(slideNumber, this.options.selector);
         });
       }
@@ -346,4 +351,4 @@ export class ProductCrouselComponent implements OnInit {
   ],
   providers: [NgxSiemaService],
 })
-export class AlertBoxToastModule {}
+export class AlertBoxToastModule { }

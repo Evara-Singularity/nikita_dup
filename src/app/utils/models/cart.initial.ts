@@ -39,7 +39,8 @@ export interface AddToCartProductSchema {
     brandId?: string,
     isFBT?: boolean;
     productSmallImage:string;
-    productImage:string
+    productImage:string;
+    url:string;
 }
 
 export interface CartMasterSchema {

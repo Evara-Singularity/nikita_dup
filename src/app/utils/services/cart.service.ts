@@ -8,6 +8,7 @@ import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from './auth.service';
+import { GlobalLoaderService } from './global-loader.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -38,6 +39,7 @@ export class CartService {
         private _dataService: DataService,
         private _localStorageService: LocalStorageService,
         private localAuthService: LocalAuthService,
+        private _loaderService: GlobalLoaderService,
     ) {
         this.cartSession = cartSession;
     }
@@ -305,6 +307,7 @@ export class CartService {
                 // console.log('step 1 ==>', cartSession);
                 // incase of buynow do not exlude 
                 // console.log('product info ==> cartSession origin', Object.assign({}, cartSession));
+                this._loaderService.setLoaderState(true);
                 let productItemExistInCart = false;
 
                 productItemExistInCart = this._checkProductItemExistInCart(args.productDetails.productId, cartSession);
@@ -380,12 +383,14 @@ export class CartService {
             mergeMap(request => {
                 if (request) {
                     // console.log('step 4 ==>', request, args);
+                    this._loaderService.setLoaderState(false);
                     return this.updateCartSession(request).pipe(
                         map((cartSession: any) => {
                             return cartSession;
                         })
                     );
                 } else {
+                    this._loaderService.setLoaderState(false);
                     return of(null)
                 }
             })
@@ -444,6 +449,7 @@ export class CartService {
     }
 
     getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?}): AddToCartProductSchema {
+        console.log(args.productGroupData);
         const partNumber = args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
         const isProductPriceValid = args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
@@ -491,7 +497,8 @@ export class CartService {
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
             productMRP: productMrp,
             productSmallImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
-            productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium
+            productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
+            url: productPartDetails.canonicalUrl
         } as AddToCartProductSchema;
 
         if (args.isFbt) {

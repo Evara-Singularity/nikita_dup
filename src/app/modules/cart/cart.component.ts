@@ -1197,7 +1197,7 @@ export class CartComponent {
                                 this._tms.show(extraData['showMessage']);
                             }
                             let res = data;
-                            console.log("cart Sesion", res);
+                            // console.log("cart Sesion", res);
                             if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
                                 this.uniqueRequestNo = 0;
                                 let itemsList = res['itemsList'];

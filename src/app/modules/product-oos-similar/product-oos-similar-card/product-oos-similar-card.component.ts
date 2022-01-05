@@ -118,7 +118,7 @@ export class ProductOosSimilarCardComponent {
     ]).subscribe((rawData) => {
       this.breadcrumData = rawData[1];
       if (this.breadcrumData.length > 0) {
-        this.commonService.triggerAttachHotKeysScrollEvent('oos-card-' + this.index);
+        // this.commonService.triggerAttachHotKeysScrollEvent('oos-card-' + this.index);
       }
       if (
         rawData[0]["productBO"] &&
@@ -421,7 +421,7 @@ export class ProductOosSimilarCardComponent {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
         this.commonService.enableNudge = false;
-        this.commonService.resetSearchNudgeTimer();
+        // this.commonService.resetSearchNudgeTimer();
       });
     }
   }

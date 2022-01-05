@@ -177,7 +177,7 @@ export class QuickOrderComponent {
     }
 
     getShippingValue(cartSession) {
-        console.log('getShippingValue cartSession', cartSession);
+        // console.log('getShippingValue cartSession', cartSession);
         let sro = this.cartService.getShippingObj(cartSession);
         return this.cartService.getShippingValue(sro)
             .pipe(

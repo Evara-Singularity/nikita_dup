@@ -322,7 +322,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.scrollToTop();
+    // this.scrollToTop();
     this.intializeForm();
     this.getProductApiData();
     this.addSubcriber();
@@ -349,7 +349,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   onScrollOOOSimilar(event) {
-    this.commonService.idleNudgeTimer.updateExpiredTime();
   }
 
   createSiemaOption() {
@@ -2202,6 +2201,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productCrouselInstance.instance["refreshSiemaItems$"] =
         this.refreshSiemaItems$;
       this.productCrouselInstance.instance["productName"] = this.productName;
+      this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
       setTimeout(() => {
         (
           this.productCrouselInstance.instance[
@@ -2209,6 +2209,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           ] as Subject<number>
         ).next(slideIndex);
       }, 100);
+    } else {
+      this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
     }
   }
 

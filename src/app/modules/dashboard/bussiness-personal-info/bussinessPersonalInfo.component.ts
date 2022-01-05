@@ -100,7 +100,7 @@ export class BussinessInfoComponent {
             let params = { sessionid: data["sessionId"] };
             return this._cartService.getCartBySession(params).pipe(
               map((res: any) => {
-                return res;
+                return this._cartService.updateCart(res);
               })
             );
           })

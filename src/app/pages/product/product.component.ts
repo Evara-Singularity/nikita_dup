@@ -1410,13 +1410,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       selectPriceMap: this.selectedProductBulkPrice,
       quantity: this.cartQunatityForProduct
     });
-    this.showLoader = true;
     this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result => {
       if (!result && this.cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
       } else {
-        this.showLoader = false;
+        
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
           this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
@@ -1427,6 +1426,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.cartService.setCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
             this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
+            this.globalLoader.setLoaderState(false);
             this.showAddToCartToast();
           } else {
             this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });

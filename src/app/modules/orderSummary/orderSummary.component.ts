@@ -7,6 +7,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '../../utils/services/data.service';
 import { CartService } from '../../utils/services/cart.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { mergeMap } from 'rxjs/operators';
 declare let dataLayer: any;
 
 
@@ -232,7 +233,11 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this.itemsList.forEach((element, index) => {
                 this.cartSession['itemsList'][index]['offer'] = null;
             });
-            this._cartService.updateCartSession(this.cartSession).subscribe(
+            this._cartService.updateCartSession(this.cartSession).pipe(
+                mergeMap(cartSession => {
+                    return this._cartService.getShippingAndUpdateCartSession(cartSession)
+                })
+            ).subscribe(
                 data => {
                     this.isShowLoader = false;
                     this._cartService.setCartSession(data);

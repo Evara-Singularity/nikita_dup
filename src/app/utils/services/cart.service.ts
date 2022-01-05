@@ -50,7 +50,7 @@ export class CartService {
     }
 
     getShippingValue(cartSession) {
-        console.trace('getShippingValue cartservice');
+        // console.trace('getShippingValue cartservice');
         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ShippingValue, { body: cartSession }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
@@ -151,7 +151,7 @@ export class CartService {
     }
 
     getCartBySession(params) {
-        console.trace('getCartBySession cart service');
+        // console.trace('getCartBySession cart service');
         /**
          *  Return cart from server session.
          *  Save returned to service local variable: `cartSession`
@@ -264,6 +264,10 @@ export class CartService {
                     return cartSession;
                 })
             );
+    }
+
+    public getShippingAndUpdateCartSession(cartSession): Observable<any>{
+        return this._getShipping(cartSession);
     }
 
     /**

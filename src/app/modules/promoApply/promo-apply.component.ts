@@ -5,6 +5,7 @@ import { PromoApplyService } from './promo-apply.service';
 import { Subject } from 'rxjs';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import { CartService } from '../../utils/services/cart.service';
+import { mergeMap } from 'rxjs/operators';
 
 declare let dataLayer: any;
 
@@ -143,7 +144,11 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                             this.itemsList = itemsList;
                                             cartSession['itemsList'] = itemsList;
 
-                                            this._cs.updateCartSession(cartSession).subscribe(
+                                            this._cs.updateCartSession(cartSession).pipe(
+                                                mergeMap(cartSession => {
+                                                    return this._cs.getShippingAndUpdateCartSession(cartSession)
+                                                })
+                                            ).subscribe(
                                                 data => {
                                                     this.updateCartSession$.next({ cartSession: data });
                                                     // this.cartSession = data;
@@ -158,6 +163,7 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                                     }, 500);
                                                 }
                                             );
+                                            
                                         } else {
 
                                             cartSession['cart']['totalOffer'] = 0;
@@ -171,7 +177,11 @@ export class PromoApplyComponent implements OnInit, OnChanges {
 
                                             this.appliedPromoCode.promoCode = null;
                                             this.appliedPromoCode.promoDescription = null;
-                                            this._cs.updateCartSession(cartSession).subscribe(
+                                            this._cs.updateCartSession(cartSession).pipe(
+                                                mergeMap(cartSession => {
+                                                    return this._cs.getShippingAndUpdateCartSession(cartSession)
+                                                })
+                                            ).subscribe(
                                                 data => {
                                                     this.updateCartSession$.next({ cartSession: data });
                                                     this.cartSession = data;
@@ -196,7 +206,11 @@ export class PromoApplyComponent implements OnInit, OnChanges {
                                         this.itemsList = itemLists;
                                         cartSession['itemsList'] = itemLists;
 
-                                        this._cs.updateCartSession(cartSession).subscribe(
+                                        this._cs.updateCartSession(cartSession).pipe(
+                                            mergeMap(cartSession => {
+                                                return this._cs.getShippingAndUpdateCartSession(cartSession)
+                                            })
+                                        ).subscribe(
                                             data => {
                                                 this.updateCartSession$.next({ cartSession: data });
                                                 this.cartSession = data;

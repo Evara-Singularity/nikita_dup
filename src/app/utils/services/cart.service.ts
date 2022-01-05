@@ -9,6 +9,8 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from './auth.service';
 import { GlobalLoaderService } from './global-loader.service';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -41,6 +43,8 @@ export class CartService
         private _localStorageService: LocalStorageService,
         private localAuthService: LocalAuthService,
         private _loaderService: GlobalLoaderService,
+        private _toastService: ToastMessageService,
+        private _router: Router,
     )
     {
         this.cartSession = cartSession;
@@ -167,27 +171,48 @@ export class CartService
         return sro;
     }
 
-    getCartBySession(params)
-    {
-        // console.trace('getCartBySession cart service');
+    getCartBySession(params): Observable<any> {
         /**
          *  Return cart from server session.
          *  Save returned to service local variable: `cartSession`
          */
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartBySession, { params: params })
             .pipe(
-                map((cartSessionReponse) =>
-                {
-                    if (cartSessionReponse['status']) {
-                        return this.updateCart(cartSessionReponse)
+                map((cartSessionResponse) => {
+                    if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 200) {
+                        return cartSessionResponse
                     }
-                    return cartSessionReponse;
+
+                    if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
+                        // incase of session mismatch update new cart and userData 
+                        // cartsesion response will be different from regular cart session response
+                        this.localAuthService.setUserSession(cartSessionResponse['userData']);
+                        return cartSessionResponse['cart'];
+                    }
+
+                    if (cartSessionResponse?.['status'] == false) {
+                        // logout user this case so that new valid session can be created
+                        this._toastService.show({ type: 'error', text: "Cart failed, Please login and try again", tDelay: 5000 });
+                        this.logOutAndClearCart();
+                        return null;
+                    }
                 }),
-                share(),
-                first(),
-                debounceTime(3000),
-                distinctUntilChanged()
             );
+    }
+
+    logOutAndClearCart() {
+        this.logoutCall().pipe(
+            map(logoutReponse => {
+                this._localStorageService.clear("user");
+                this.cart.next({ count: 0 });
+                return logoutReponse;
+            }),
+            mergeMap(logoutReponse => this.checkForUserAndCartSessionAndNotify()),
+        ).subscribe(status => {
+            if (status) {
+                this._router.navigate(['/login']);
+            }
+        })
     }
 
     set buyNowSessionDetails(sessionDetails)
@@ -477,32 +502,16 @@ export class CartService
                 return this.getCartBySession(request).pipe(
                     map((res: any) =>
                     {
-                        return res;
+                        return this.updateCart(res);
                     })
                 );
             }),
             map(cartSessionResponse =>
             {
-
-                if (cartSessionResponse.status && cartSessionResponse.statusCode && cartSessionResponse.status == false && cartSessionResponse.statusCode != 200) {
-                    // TODO: Ask backend team in case getsession fails how to logout ? 
-                    return false;
+                if (cartSessionResponse) {
+                    this._notifyCartChanges(cartSessionResponse, '');
+                    return true;
                 } else {
-                    // logout user & notify
-                    // notify subscribers
-                    if(cartSessionResponse.status && cartSessionResponse.statusCode && cartSessionResponse.status == true && cartSessionResponse.statusCode == 202){
-                        // incase of session mismatch update new cart and userData 
-                        // cartsesion response will be different from regular cart session response
-                        this._notifyCartChanges(cartSessionResponse.cart, '');
-                        this.localAuthService.setUserSession(cartSessionResponse.userData);
-                        return true;
-                    }
-                    
-                    if(cartSessionResponse.status && cartSessionResponse.statusCode && cartSessionResponse.status == true && cartSessionResponse.statusCode == 200){
-                        this._notifyCartChanges(cartSessionResponse, '');
-                        return true;
-                    }
-
                     return false;
                 }
             })
@@ -653,31 +662,19 @@ export class CartService
      * or by calling usersession api and then calling getcartsession API
      * use this function to always get cart session no further handling required.
      */
-    private _checkForUserAndCartSession(): Observable<any>
-    {
+    private _checkForUserAndCartSession(): Observable<any> {
         return of(this.getCartSession()).pipe(
-            mergeMap(cartSessionDetails =>
-            {
+            mergeMap(cartSessionDetails => {
                 if (cartSessionDetails && cartSessionDetails['cart']) {
                     return of(this.updateCart(cartSessionDetails));
                 } else {
                     return this._getUserSession().pipe(
-                        map(userSessionDetails =>
-                        {
+                        map(userSessionDetails => {
                             return Object.assign({}, { "sessionid": userSessionDetails['sessionId'] })
                         }),
-                        mergeMap(request =>
-                        {
+                        mergeMap(request => {
                             return this.getCartBySession(request).pipe(
-                                map((res: any) =>
-                                {
-                                    if (res.status) {
-                                        return this.updateCart(res)
-                                    } else {
-                                        return res;
-                                    }
-
-                                })
+                                map((res: any) => this.updateCart(res))
                             );
                         })
                     )
@@ -750,6 +747,10 @@ export class CartService
     {
         let params = { productId: product.productId };
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/product/getProductGroup", { params: params });
+    }
+
+    logoutCall() {
+        return this._dataService.callRestful("GET",CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
     }
 
     getShippingChargesApi(obj)

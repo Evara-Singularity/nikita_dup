@@ -21,6 +21,7 @@ import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-p
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { LocalStorageService } from "ngx-webstorage";
 import { Router } from "@angular/router";
+import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
   selector: "ProductCrouselSlide",
@@ -30,6 +31,7 @@ import { Router } from "@angular/router";
 export class ProductCrouselSlideComponent {
   @Input() clickedIndexOfOosProduct: number;
   @Input() options: any;
+  @Input() productOutOfStock: boolean;
   @Input() item: any;
   @Input() imagePath: any;
   image_Path = CONSTANTS.IMAGE_BASE_URL;
@@ -64,6 +66,7 @@ export class ProductCrouselSlideComponent {
 
   constructor(
     private globalAnalyticService: GlobalAnalyticsService,
+    private _commonService: CommonService,
     @Inject(PLATFORM_ID) private platformId: Object,
     public localStorageService: LocalStorageService,
     private _modalService: ModalService,
@@ -161,6 +164,7 @@ export class ProductCrouselSlideComponent {
     this.ngxSiemaService
       .currentSlide(this.options.selector)
       .subscribe((result) => {
+        this._commonService.resetSearchNudgeTimer();
         this.sendTracking(result.currentSlide);
         this._siemaCrouselService.setProductScrouselPopup({
           active: true,

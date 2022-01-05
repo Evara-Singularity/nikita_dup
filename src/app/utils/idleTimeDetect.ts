@@ -56,6 +56,18 @@ class IdleTimer {
         window.addEventListener("keydown", this.eventHandler);
     }
 
+    addIdleEventToClass(className) {
+        const elements = window.document.getElementsByClassName(className)
+        console.log('idle timer', className);
+        this.listener = this.renderer2.listen(elements[0], 'scroll', () => {
+            console.log('idle timer', 'scrolled========>');
+            this.that.enableNudge = false;
+            clearTimeout(this.timeoutTracker);
+            this.timeoutTracker = setTimeout(() => {
+                localStorage.setItem("_expiredTime", (Date.now() + this.timeout * 1000).toString());
+            }, 200);
+        });
+    }
 
     cleanLocalStorage() {
         localStorage.removeItem("_expiredTime");

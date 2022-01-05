@@ -14,13 +14,14 @@
                                 height="125" width="125" />
                         </div>
                         <div class="right">
-                            <div class="rating">
+                            <!-- TODO: to be  fixed later, do not removes comments -->
+                            <!-- <div class="rating">
                                 <span class="avgrating" *ngIf="product.avgRating">
                                     {{product.avgRating | rating | number : '1.1-1' }}
                                     <i class="icon-rating-star"></i>
                                 </span>
                                 <span class="count" *ngIf="product.ratingCount">( {{product.ratingCount}} )</span>
-                            </div>
+                            </div> -->
                             <div class="name">
                                 <span>{{product.productName | slice:0:60 }}<span
                                         *ngIf="product.productName.length>60">...</span></span>

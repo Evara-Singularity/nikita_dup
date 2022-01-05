@@ -3035,7 +3035,7 @@ export class CartComponent {
     }
 
     getShippingCharges(obj) {
-        console.trace('getShippingCharges cart comp');
+        // console.trace('getShippingCharges cart comp');
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this.dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {

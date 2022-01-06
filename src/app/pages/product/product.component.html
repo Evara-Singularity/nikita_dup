@@ -637,7 +637,7 @@
             (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
-        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
         <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
@@ -657,9 +657,10 @@
                 <div class="loader"></div>
             </div>
         </section>
-        <div *ngIf="recentProductsInstance?.instance?.recentProductItems && recentProductsInstance?.instance?.recentProductItems.length > 0"
-            [class.mb-60]="productOutOfStock">
-        </div>
+        <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        </ng-container>
     </div>
     <!-- other sections ends -->
 
@@ -752,7 +753,6 @@
         </ul>
     </div>
 </section>
-
 <!-- <idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
     *ngIf="isBrowser && !productNotFound">
 </idle-user-search-nudge> -->

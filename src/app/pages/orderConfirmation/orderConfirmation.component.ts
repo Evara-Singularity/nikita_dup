@@ -103,7 +103,7 @@ export class OrderConfirmationComponent implements OnInit {
                 sessionid: userSession.sessionId
             }).subscribe((cartSession) => {
                 console.log('order onfirmation logs ==> completed response ', cartSession);
-                if (cartSession["statusCode"] != undefined && cartSession["statusCode"] == 200) {
+                if (cartSession["cart"]) {
                     // this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
                     this.setVars(cartSession);
                     // sent to analytics
@@ -556,7 +556,7 @@ export class OrderConfirmationComponent implements OnInit {
         }
         //ENDS
         this._cartService.updateCartSession(emptyCart).subscribe((data) => {
-            this._cartService.cart.next({ count: data["noOfItems"] || 0 });
+            this._cartService.cart.next({ count: data["noOfItems"] || (data["itemsList"] as any[]).length || 0 });
             let res = data;
             if (res["statusCode"] == 200) {
                 this._cartService.setCartSession(res);

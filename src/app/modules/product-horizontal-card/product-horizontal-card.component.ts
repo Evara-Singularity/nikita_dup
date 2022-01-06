@@ -242,7 +242,7 @@ export class ProductHorizontalCardComponent implements OnInit {
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this._commonService.enableNudge = false;
-        this._commonService.resetSearchNudgeTimer();
+        // this._commonService.resetSearchNudgeTimer();
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });

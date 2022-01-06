@@ -31,7 +31,7 @@ export class IdleUserSearchNudgeComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit() {
     if (this._commonService.isBrowser) {
-      this._commonService.resetSearchNudgeTimer();
+      // this._commonService.resetSearchNudgeTimer();
     }
   }
 

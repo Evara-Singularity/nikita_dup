@@ -1,6 +1,7 @@
 <div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
     <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
-    <div class="horizontal-scroll-container" id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)">
+    <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
+        (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
             <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
                 [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
@@ -656,7 +657,7 @@
                 <div class="loader"></div>
             </div>
         </section>
-        <div [class.mb-60]="productOutOfStock"></div>
+        <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
@@ -752,9 +753,10 @@
         </ul>
     </div>
 </section>
-<idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
+<!-- <idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
     *ngIf="isBrowser && !productNotFound">
-</idle-user-search-nudge>
+</idle-user-search-nudge> -->
+
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
 <ng-container *ngIf="showScrollToTopButton">

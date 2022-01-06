@@ -26,6 +26,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     imageAssetPath = CONSTANTS.IMAGE_ASSET_URL;
     @Input() ssp: boolean = true; // ssp: show search popup
+    @Input() analytics: any = null; // ssp: show search popup
     @Input() data: { type: string };
     @Output() out: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('scrollable') scrollable: ElementRef;

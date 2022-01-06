@@ -341,7 +341,7 @@ export class ProductListService {
       taxo3 = productDetails["taxonomyCode"].split("/")[2] || "";
     }
 
-    let ele = []; 
+    let ele = [];
     const tagsForAdobe = ele.join("|");
     let page = {
       'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + this.getModuleString(usedInModule),
@@ -367,6 +367,7 @@ export class ProductListService {
       tags: tagsForAdobe,
     };
 
+    console.log({ page, custData, order });
     this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
     this._analytics.sendGTMCall({

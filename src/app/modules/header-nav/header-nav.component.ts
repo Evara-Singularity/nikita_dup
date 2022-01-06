@@ -193,6 +193,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 className: 'secondScroll',
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
+            this.searchBarInstance.instance['analytics'] = this._commonService.createGenricAdobeData('best-seller:search:suggestion', this.routerData['pageName'], 'Product Suggestion');
             (
                 this.searchBarInstance.instance['out'] as EventEmitter<boolean>
             ).subscribe((status) => {

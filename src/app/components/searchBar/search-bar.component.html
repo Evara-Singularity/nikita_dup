@@ -85,9 +85,9 @@
                         <div class="inner-scroll-container" [style.width.px]="searchProducts.length * 165">
                             <ng-container *ngFor="let product of searchProducts;let pIndex=index">
                                 <product-horizontal-card [section]="'search-popup'" [product]="product"
-                                    [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig'
-                                    [moduleUsedIn]="'SEACRH_SUGGESTION'"
-                                    [pIndex]="pIndex" [enableTracking]="true" [analytics]="">
+                                    [enableTracking]="true" [cardMetaInfo]='cardMetaInfo'
+                                    [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'SEACRH_SUGGESTION'"
+                                    [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                                 </product-horizontal-card>
                             </ng-container>
                         </div>

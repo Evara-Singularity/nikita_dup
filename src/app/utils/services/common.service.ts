@@ -19,6 +19,7 @@ import { GlobalLoaderService } from "./global-loader.service";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
+import { GlobalAnalyticsService } from "./global-analytics.service";
 
 @Injectable({
   providedIn: "root",
@@ -84,6 +85,7 @@ export class CommonService {
     private _activatedRoute: ActivatedRoute,
     private _dataService: DataService,
     public _cartService: CartService,
+    private _analytics: GlobalAnalyticsService,
     private _loaderService: GlobalLoaderService,
     private rendererFactory: RendererFactory2,
     private _router: Router
@@ -1182,6 +1184,29 @@ export class CommonService {
         element.addEventListener('scroll', this.idleNudgeTimer.eventHandler);
       }
     });
+  }
+
+  createGenricAdobeData(linkPagename, channel, linkName) {
+    const user = this._localStorageService.retrieve('user');
+    let page = {
+      'linkPageName': "moglix:" + linkPagename,
+      'linkName': linkName,
+      'channel': channel || this._router.url
+    }
+    let custData = {
+      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+      'customerType': (user && user["userType"]) ? user["userType"] : '',
+    }
+    let order = {};
+
+    return { page, custData, order };
+  }
+
+  createAndSendGenricAdobeData(linkPagename, channel, linkName) {
+    const data = this.createGenricAdobeData(linkPagename, channel, linkName);
+    this._analytics.sendAdobeCall(data, "genericClick");
   }
 
   triggerAttachHotKeysScrollEvent(className) {

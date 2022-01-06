@@ -219,7 +219,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const { SearchBannerCardComponent } = await import('@app/components/search-banner-card/search-banner-card.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(SearchBannerCardComponent);
       this.searchBannerCardInstance = this.searchBannerCardContainerRef.createComponent(factory, null, this._injector);
-
+      this.searchBannerCardInstance.instance['categoryTaxonomay'] = this.categoryTaxonomay;
       (this.searchBannerCardInstance.instance['fireSearchEvent$'] as EventEmitter<boolean>).subscribe(data => {
         if (data) {
           let keyword = '';

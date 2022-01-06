@@ -1415,7 +1415,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
       } else {
-        
+
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
           this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
@@ -1488,7 +1488,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   fireViewBasketEvent(cartSession) {
-    if(cartSession && cartSession["itemsList"] && cartSession["itemsList"].length > 0) {
+    if (cartSession && cartSession["itemsList"] && cartSession["itemsList"].length > 0) {
       let eventData = {
         prodId: "",
         prodPrice: 0,
@@ -1534,7 +1534,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           eventData["prodURL"];
       }
       let user = this.localStorageService.retrieve("user");
-  
+
       const dataLayerObj = {
         event: "viewBasket",
         email: user && user.email ? user.email : "",
@@ -2900,7 +2900,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('outOfStockUpBtn'), 'genericPageLoad');
   }
 
-  analyticAddToCart(routerlink, quantity) {
+  analyticAddToCart(buyNow, quantity) {
     const user = this.localStorageService.retrieve("user");
     const taxonomy = this.productCategoryDetails["taxonomyCode"];
     let taxo1 = "";
@@ -2920,16 +2920,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
     let page = {
       linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
-      linkName: routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
+      linkName: !buyNow ? "Add to cart" : "Buy Now",
       channel: "pdp",
     };
 
     if (this.displayCardCta) {
       page["linkName"] =
-        routerlink == "/quickorder" ? "Add to cart Overlay" : "Buy Now Overlay";
+        !buyNow ? "Add to cart Overlay" : "Buy Now Overlay";
       if (this.popupCrouselInstance) {
         page["linkName"] =
-          routerlink == "/quickorder"
+          !buyNow
             ? "Add to cart Main Image Overlay"
             : "Buy Now Main Image Overlay";
       }
@@ -2947,6 +2947,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       brand: this.productBrandDetails["brandName"],
       tags: tagsForAdobe,
     };
+
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
     this.analytics.sendGTMCall({
@@ -2977,28 +2978,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         },
       },
     });
-
-    /**
-     * /**
-     * this is commented as socket calls are already made directly in addtocart followes function
-     * TODO: need to refactor this
-     * /
-     */
-    // var trackingData = {
-    //   event_type: "click",
-    //   label: routerlink == "/quickorder" ? "add_to_cart" : "buy_now",
-    //   product_name: this.productName,
-    //   msn: this.productSubPartNumber,
-    //   brand: this.productBrandDetails['brandName'],
-    //   price: this.productPrice,
-    //   quantity: Number(this.priceQuantityCountry['quantityAvailable']),
-    //   channel: "PDP",
-    //   category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
-    //   category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
-    //   category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-    //   page_type: "product_page"
-    // }
-    // this.analytics.sendToClicstreamViaSocket(trackingData);
   }
 
   analyticRFQ(isSubmitted: boolean = false) {

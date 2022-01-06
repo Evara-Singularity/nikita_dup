@@ -325,6 +325,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
+        this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
         this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
       } else {
         if (result) {
@@ -392,12 +393,14 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   sendTracking(info) {
     if (this.analytics) {
+      alert(info + ' : ' + this.enableTracking);
       if (!this.enableTracking) return;
       const page = this.analytics['page'];
       page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
       page['productunit'] = this.pIndex;
       const custData = this.analytics['custData'];
       const order = this.analytics['order'];
+      console.log({ page, custData, order });
       this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
     }
   }

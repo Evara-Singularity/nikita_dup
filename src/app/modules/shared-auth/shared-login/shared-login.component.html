@@ -39,7 +39,8 @@
                     FORGOT PASSWORD?</p>
             </label>
         </div>
-        <button class="btn signInbtn" type="button" (click)="$event.stopPropagation();verifyUser('LOGIN')">CONTINUE</button>
+        <button class="btn signInbtn" type="button"
+            (click)="$event.stopPropagation();verifyUser('LOGIN')">CONTINUE</button>
         <p class="or_seperator">Or</p>
         <button class="btn otulineButton" (click)="$event.stopPropagation();verifyUser('OTP')">REQUEST OTP</button>
     </div>
@@ -52,7 +53,8 @@
                     <span class="label">Mobile Number*</span>
                 </label>
                 <ng-container *ngIf="isSubmitted && mobile.errors != null">
-                    <p class="error-txt" *ngIf="!isUserExists && (mobile.errors.required || mobile.errors.minlength || mobile.errors.pattern)">
+                    <p class="error-txt"
+                        *ngIf="!isUserExists && (mobile.errors.required || mobile.errors.minlength || mobile.errors.pattern)">
                         Please provide valid Mobile Number.
                     </p>
                 </ng-container>
@@ -66,4 +68,59 @@
             <social-login class="o-hidden "></social-login>
         </div>
     </div>
+</div>
+
+
+
+<!-- new login start -->
+
+<div class="login-card">
+    <h2>Sign-In or Sign Up</h2>
+    <form>
+        <input placeholder="Enter Mobile Number">
+        <div class="error-field">
+            <span class="error-text">Enter 10 digit mobile number</span>
+        </div>
+        <button class="btn-red">CONTINUE</button>
+        <div class="login-seperator-text "> <span>Or</span></div>
+        <button class="btn-dark-grey">CONTINUE WITH EMAIL-ID</button>
+        <div class="space-large">
+        </div>
+        <div class="social-btns">
+            <button class="btn-transparent ">
+                <span><img src="https://cdn.moglix.com/assets/img/google.png"></span>
+                <span>&nbsp; Google</span>
+            </button>
+        </div>
+    </form>
+    <p class="safe-text">Your details are safe with us.</p>
+</div>
+
+<div class="otp-card login-card">
+    <form class="otp-form otp-form-invalid otp-form-varified">
+        <div class="otp-form-inputs">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+        </div>
+        <div class="error-field">
+            <span class="error-text">OTP is not correct</span>
+        </div>
+    </form>
+
+    <div class="otp-text">
+        <div class="otp-text-inner left">
+            <span>Didn’t receive the code?</span><br>
+            <span>Resend in 00:20</span>
+        </div>
+        <div class="otp-text-inner right">
+            <span>RESEND OTP</span>
+        </div>
+    </div>
+    <button class="btn-disable">CONTINUE</button>
+    <div class="login-seperator-text "> <span>Or</span></div>
+    <button class="btn-dark-grey">SIGN-IN WITH PASSWORD</button>
 </div>

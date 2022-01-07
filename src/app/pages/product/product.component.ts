@@ -1411,6 +1411,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       quantity: this.cartQunatityForProduct
     });
     this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result => {
+      // analytic events needs to called here
+      this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
+      this.intialAddtoCartSocketAnalyticEvent(buyNow);
+      this.updateAddtoCartSocketAnalyticEvent(buyNow)
+      this.fireViewBasketEvent(result);
+
       if (!result && this.cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
@@ -1418,10 +1424,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
-          this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
-          this.intialAddtoCartSocketAnalyticEvent(buyNow);
-          this.updateAddtoCartSocketAnalyticEvent(result, buyNow)
-          this.fireViewBasketEvent(result);
           if (!buyNow) {
             this.cartService.setCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
@@ -1456,7 +1458,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendToClicstreamViaSocket(trackingData);
   }
 
-  updateAddtoCartSocketAnalyticEvent(cartSession, buynow: boolean) {
+  updateAddtoCartSocketAnalyticEvent(buynow: boolean) {
+    const cartSession = Object.assign({}, this.cartService.getCartSession())
     let totQuantity = 0;
     let trackData = {
       event_type: "click",
@@ -2948,9 +2951,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       tags: tagsForAdobe,
     };
 
+    console.log('digitalData', { page, custData, order });
+
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
-    this.analytics.sendGTMCall({
+    const digitalData = {
       event: "addToCart",
       ecommerce: {
         currencyCode: "INR",
@@ -2977,7 +2982,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           ],
         },
       },
-    });
+    };
+    this.analytics.sendGTMCall(digitalData);
   }
 
   analyticRFQ(isSubmitted: boolean = false) {

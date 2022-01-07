@@ -310,7 +310,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   buyNow(buyNow) {
-    this._loader.setLoaderState(true);
+    this._loader.setLoaderState(true);      
     of(this._cartService.getAddToCartProductItemRequest({
       productGroupData: this.productService.getSimilarProductBoByIndex(this.index),
       buyNow,
@@ -319,23 +319,24 @@ export class ProductOosSimilarCardComponent {
     })).subscribe((productDetails: AddToCartProductSchema) => {
       if (productDetails) {
         if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
+            setTimeout(() => { this._loader.setLoaderState(false); }, 1000);
           this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
           return;
         }
         if (productDetails.filterAttributesList) {
           // incase grouped product ask for variant
           const productEntity = this.productService.productEntityFromProductBO(this.productService.getSimilarProductBoByIndex(this.index));
+            setTimeout(() => { this._loader.setLoaderState(false); }, 1000);
           this.loadVariantPop(productEntity, productDetails, buyNow);
         } else {
           this.addToCart(productDetails, buyNow)
         }
       } else {
-        this.showAddToCartToast('Product does not exist');
+          setTimeout(() => { this._loader.setLoaderState(false);}, 1000);
+          this.showAddToCartToast('Product does not exist');
       }
     }, error => {
       console.log('buyNow ==>', error);
-    }, () => {
-      this._loader.setLoaderState(false);
     })
   }
 

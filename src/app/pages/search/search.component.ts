@@ -38,10 +38,13 @@ export class SearchComponent implements OnInit {
     private _title: Title,
     private meta: Meta,
     @Inject(DOCUMENT) private _document,
-    private _renderer2: Renderer2, 
+    private _renderer2: Renderer2,
     private _analytics: GlobalAnalyticsService,
     private _router: Router
-  ) { }
+  ) {
+    this._commonService.isHomeHeader = false;
+    this._commonService.isPLPHeader = true;
+  }
 
   ngOnInit(): void {
     if (this._commonService.isBrowser) {
@@ -55,10 +58,10 @@ export class SearchComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.sharedProductList.getSponseredProducts();  
+    this.sharedProductList.getSponseredProducts();
   }
 
-  setHeaderNameBasedOnCondition(){
+  setHeaderNameBasedOnCondition() {
     if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
       this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
     } else if (this.toggleRcommendFlag && ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
@@ -103,7 +106,7 @@ export class SearchComponent implements OnInit {
       this.removeSpacingForSearchInput();
 
       const filterIsNotAppliedAndProductCountIsOne = this.API_RESULT['searchData'][0].productSearchResult['totalCount'] === 1 || this._activatedRoute.snapshot.fragment === null;
-      
+
       if (filterIsNotAppliedAndProductCountIsOne) {
         this._commonService.setSearchResultsTrackingData({ 'search-query': this._activatedRoute.snapshot["queryParams"]["search_query"], 'search-results': '1' });
       }
@@ -123,7 +126,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  setCanonicalUrls(){
+  setCanonicalUrls() {
     //Start Canonical URL 
     let currentQueryParams = this._activatedRoute.snapshot.queryParams;
     let currentRoute = this._commonService.getCurrentRoute(this._router.url);
@@ -132,26 +135,26 @@ export class SearchComponent implements OnInit {
 
     if (pageCountQ > 1 && (currentPageP == 1 || isNaN(currentPageP))) {
 
-        let links = this._renderer2.createElement('link');
-        links.rel = "next";
-        links.href = CONSTANTS.PROD + currentRoute + '?page=2';
-        this._renderer2.appendChild(this._document.head, links);
+      let links = this._renderer2.createElement('link');
+      links.rel = "next";
+      links.href = CONSTANTS.PROD + currentRoute + '?page=2';
+      this._renderer2.appendChild(this._document.head, links);
 
     } else if (currentPageP > 1 && pageCountQ >= currentPageP) {
-        let links = this._renderer2.createElement('link');
-        links.rel = "prev";
-        links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
-        this._renderer2.appendChild(this._document.head, links);
+      let links = this._renderer2.createElement('link');
+      links.rel = "prev";
+      links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+      this._renderer2.appendChild(this._document.head, links);
 
-        links = this._renderer2.createElement('link');
-        links.rel = "next";
-        links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
-        this._renderer2.appendChild(this._document.head, links);
+      links = this._renderer2.createElement('link');
+      links.rel = "next";
+      links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP + 1);
+      this._renderer2.appendChild(this._document.head, links);
     } else if (currentPageP > 1 && pageCountQ + 1 >= currentPageP) {
-        let links = this._renderer2.createElement('link');
-        links.rel = "prev";
-        links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
-        this._renderer2.appendChild(this._document.head, links);
+      let links = this._renderer2.createElement('link');
+      links.rel = "prev";
+      links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
+      this._renderer2.appendChild(this._document.head, links);
     }
   }
 
@@ -163,7 +166,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  sendAnalyticsCall(){
+  sendAnalyticsCall() {
     if (this._commonService.isBrowser && this.API_RESULT['searchData'][0].productSearchResult.products[0]) {
       digitalData["page"]["trendingSearch"] = 'no';
       digitalData['page']['searchTerm'] = this.API_RESULT['searchData'][0].productSearchResult["totalCount"] === 1 ? this.API_RESULT['searchData'][0].productSearchResult.products[0].moglixPartNumber : this._activatedRoute.snapshot.queryParams['search_query'];
@@ -189,16 +192,16 @@ export class SearchComponent implements OnInit {
 
     if (this.API_RESULT['searchData'][0].relatedSearchResult) {
       this.API_RESULT['searchData'][0].relatedSearchResult.filter(((r, index) => {
-            if (index < 3) {
-                if (index === 0) {
-                    relatedSearchResults += r['categoryName'];
-                } else {
-                    relatedSearchResults += ' | ' + r['categoryName'];
-                }
-                return true;
-            }
-            return false;
-        }));
+        if (index < 3) {
+          if (index === 0) {
+            relatedSearchResults += r['categoryName'];
+          } else {
+            relatedSearchResults += ' | ' + r['categoryName'];
+          }
+          return true;
+        }
+        return false;
+      }));
     }
 
     digitalData['page']['categoryRecommended'] = relatedSearchResults;
@@ -209,27 +212,27 @@ export class SearchComponent implements OnInit {
   initializeAdobeTracking() {
     const user = this._localStorageService.retrieve('user');
     let page = {
-        'pageName': "Search Listing Page",
-        'channel': "search",
-        'categoryRecommended': '',
-        'categoryRecSelected': '',
-        'subSection': "moglix:search " + this._commonService.getSectionClick().toLowerCase(),
-        'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+      'pageName': "Search Listing Page",
+      'channel': "search",
+      'categoryRecommended': '',
+      'categoryRecSelected': '',
+      'subSection': "moglix:search " + this._commonService.getSectionClick().toLowerCase(),
+      'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
     }
     let custData = {
-        'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-        'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-        'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-        'customerType': (user && user["userType"]) ? user["userType"] : '',
+      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+      'customerType': (user && user["userType"]) ? user["userType"] : '',
     }
     let order = {}
-    
+
     digitalData["page"] = page;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-}
+  }
 
-  removeSpacingForSearchInput(){
+  removeSpacingForSearchInput() {
     if (this._commonService.isBrowser && (<HTMLInputElement>document.querySelector('#search-input'))) {
       (<HTMLInputElement>document.querySelector('#search-input')).value = this._activatedRoute.snapshot.queryParams['search_query'].trim();
     }

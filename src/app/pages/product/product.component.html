@@ -1,32 +1,58 @@
+<div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
+    <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
+    <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
+        (scroll)="onScrollOOOSimilar($event)">
+        <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
+            <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
+                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
+                [product]="productService.oosSimilarProductsData.similarData[i]">
+            </product-horizontal-card>
+        </ng-container>
+        <ng-container *ngIf="similarForOOSLoaded">
+            <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
+                class="skeleton-pd-card-container skeleton-card-view">
+            </product-card-skeleton>
+        </ng-container>
+    </div>
+</div>
+
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
 
-    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages.length === 1"
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <div class="fixed-strip">
             <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
             </span>
-            <span *ngIf="productOutOfStock" (click)="scrollToId('similarProducts')" class="fixed_ico fixed_ico-img"><img
-                    src="{{imagePathAsset}}assets/img/similar-ico.svg"></span>
+            <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2"
+                (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
+                class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
+            </span>
         </div>
         <ng-container #productCrousel></ng-container>
         <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
+            <div class="oos-tag" *ngIf="productOutOfStock">
+                <span>
+                    AVAILABLE ON REQUEST
+                </span>
+            </div>
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%;">
-                        <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork src="{{productAllImages[0]['large'] }}"
-                            height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}" height="330"
+                            width="330" alt="{{productName}}">
                         <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                             class="loader-image" />
                     </div>
                 </div>
                 <ul class="pager">
                     <ng-container
-                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productAllImages.length>1">
+                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
                         <ng-container *ngFor="let item of productAllImages;let i=index">
                             <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
                                 [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
@@ -42,7 +68,7 @@
         </div>
 
         <!-- TODO: check how this section is used in PQA -->
-        <ng-container *ngIf="productTags != undefined">
+        <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
             <div class="image_tag">
                 <div class="tag_container"
                     *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
@@ -101,12 +127,10 @@
              </div> -->
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
-                    <span class="add-qty qty-block"
-                        (click)="changeBulkPriceQuantity(-1, 'decrementButton')">&#8722;</span>
-                    <input id="product_quantity" [value]="productMinimmumQuantity"
-                        (focusout)="changeBulkPriceQuantity(0)" type="text" min="1" maxlength="3">
-                    <span class="remove-qty qty-block"
-                        (click)="changeBulkPriceQuantity(1, 'incrementButton')">&#43;</span>
+                    <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
+                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity"
+                        (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
+                    <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                 </div>
                 <div class="quan-details" *ngIf="productMinimmumQuantity>1">
                     <p>Qty Per Pack :
@@ -118,14 +142,14 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc" (click)="scrollToId('reviewSection')">
+        <div class="prod-inner-desc" (click)="scrollToResults('reviewSection')">
             <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToId('reviewSection')"
+                    <small class="review" (click)="scrollToResults('reviewSection')"
                         *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                         Reviews
                     </small>
@@ -149,7 +173,7 @@
             <span>ADD TO CART</span>
         </button>
         <div class="buy-now f-right f-14">
-            <button class="f-14" (click)="buyNow('/checkout');">BUY NOW</button>
+            <button class="f-14" (click)="addToCart(true);">BUY NOW</button>
         </div>
     </div>
 
@@ -161,7 +185,7 @@
             <p class="heading-3">{{list.name}}</p>
             <ul>
                 <li *ngFor="let item of list.items;let i = index;"
-                    (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc();">
+                    (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc(); removeOosSimilarSection();">
                     <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
                 </li>
             </ul>
@@ -180,9 +204,9 @@
                 <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of priceQuantityCountry['bulkPricesModified'];let last=last; let index = index;"
-                            (click)="changeBulkQty(items.minQty,index)" class="blk-block"
-                            [ngClass]="{'selected': (bulkPriceSelctedQuatity >= items.minQty && bulkPriceSelctedQuatity < items.maxQty)}">
+                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
+                            (click)="selectProductBulkPrice(items.minQty)" class="blk-block"
+                            [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                             <p class="qty">Qty
                                 <span *ngIf="last!==true">{{items.minQty}} {{items.minQty!==items.maxQty ?
                                     -items.maxQty:'' }}</span>
@@ -201,7 +225,8 @@
         </div>
     </div>
     <!-- Product quantity action section ends -->
-    <div class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+    <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
+        (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
 
@@ -216,7 +241,7 @@
             <ul class="deals-list">
                 <li class="clearfix">
                     <!-- <i class="icon-combo ico_offer"></i> -->
-                    <img class="ofr_img" height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
+                    <i class="icon-dropbox-fill"></i>
                     <div class="ofr_txt">
                         <strong class="text-black">Interested to buy in bulk</strong>
                         <small>Get customized price</small>
@@ -227,13 +252,13 @@
         </div>
         <!-- RFQ section ends -->
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
-            *ngIf="!productOutOfStock && isProductReturnAble">
+            *ngIf="isProductReturnAble && !productOutOfStock">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
             <div class="moglix-ben-n-ret-policy-InnerContainer">
                 <div class="moglix-ben-n-ret-policy-Inner">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/gst-invo.svg" height="16px" width="16px">
+                        <i class="icon-Group-14030"></i>
                     </span>
                     <span class="returnTxt benefits-txt">
                         GST Invoice<br> Available
@@ -241,7 +266,7 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/secure-payment-fill.svg" height="16px" width="16px">
+                        <i class="icon-secure-payment-fill"></i>
                     </span>
                     <span class="returnTxt benefits-txt">
                         Secure <br> Payments
@@ -249,7 +274,7 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/customer-service-fill.svg" height="16px" width="16px">
+                        <i class="icon-customer-service-fill"></i>
                     </span>
                     <span class="returnTxt benefits-txt">
                         365 Days <br> Help Desk
@@ -260,7 +285,7 @@
             <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
                 <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/restart-line.svg" height="16px" width="16px">
+                        <i class="icon-restart-line"></i>
                     </span>
                     <span class="returnTxt">
                         Upto 7 days <br /> returnable
@@ -268,7 +293,7 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/wrong-pro.svg" height="16px" width="16px">
+                        <i class="icon-restart-line-1"></i>
                     </span>
                     <span class="returnTxt">
                         Wrong <br /> Product
@@ -276,7 +301,7 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/restart-line-3.svg" height="16px" width="16px">
+                        <i class="icon-restart-line-3"></i>
                     </span>
                     <span class="returnTxt">
                         Damaged <br /> Product
@@ -284,7 +309,7 @@
                 </div>
                 <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
                     <span class="returnImg">
-                        <img src="{{imagePathAsset}}assets/img/thumb-down-button.svg" height="16px" width="16px">
+                        <i class="icon-restart-line-2"></i>
                     </span>
                     <span class="returnTxt">
                         Defective <br />Product
@@ -292,19 +317,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="payments-block">
-            <ul class="deals-list">
-                <li class="clearfix">
-                    <span class="gst-icon">
-                        <img src="{{imagePathAsset}}assets/img/poc/gst-invoice.svg" height="20" width="18">
-                    </span>
-                    <div class="coupon-txt">
-                        <p>100% Original Products and Secure Payments</p>
-                        <small>Get your Business GST Invoice</small>
-                    </div>
-                </li>
-            </ul>
-        </div> -->
         <div class="pdp-section-header">
             <h3 class="heading-3">
                 About This Product
@@ -365,35 +377,38 @@
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
-                    <a class="blueText" (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">
-                        {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
                     <a class="blueText"
-                        (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails['brandName']}}
+                        (click)="navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
+                        {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
+                    <a class="blueText" (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails ?
+                        productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
             </ng-container>
             <ng-template #noProdDesc>
                 <p>
-                    {{productName}} is a premium quality product from {{productBrandDetails['brandName']}}. Moglix is a
+                    {{productName}} is a premium quality product from {{productBrandDetails ?
+                    productBrandDetails['brandName'] : ''}}. Moglix is a
                     well-known ecommerce platform for qualitative range of <a class="blueText"
-                        (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails['categoryName']}}</a>.
+                        (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails ?
+                        productCategoryDetails['categoryName'] : ''}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
                     manufacture {{productName}}, are sourced
                     from the most reliable and official vendors, chosen after performing detailed market surveys.
-                    {{productBrandDetails['brandName']}} products are widely acknowledged in the market for their high
+                    {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely acknowledged in
+                    the market for their high
                     quality. We are dedicatedly involved in
                     providing an excellent quality array of <a class="blueText"
                         (click)="navigateLink('/'+productBrandCategoryUrl)">
-                        {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</a>.
+                        {{productBrandDetails ? productBrandDetails['brandName'] : ''}} {{productCategoryDetails ?
+                        productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>
             </ng-template>
             <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
                 <span>Read More</span>
             </div>
         </div>
-
-
 
         <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
             <h2 class="heading-3">Product Videos</h2>
@@ -444,17 +459,18 @@
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+                <i class="icon-next"></i>
             </a>
 
             <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
                 class="widget-items">
                 <span class="content-wrap">
-                    <p>More from {{productBrandDetails['brandName']}} {{productCategoryDetails['categoryName']}}</p>
+                    <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
+                        {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <!-- <span>From ₹999</span> -->
-                <img src="{{imagePathAsset}}assets/img/arrow-right.svg" class="arrowRightImg" height="24" width="24">
+                <i class="icon-next"></i>
             </a>
         </section>
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
@@ -586,7 +602,7 @@
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
-        <section class="Qa">
+        <section class="Qa" *ngIf="questionAnswerList">
             <div class="">
                 <p class="heading-3">Questions & Answers</p>
                 <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
@@ -617,9 +633,19 @@
                 </ng-container>
             </div>
         </section>
-        <section observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
+        <section id="productAccordianSection" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        </ng-container>
+        <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
+            (visible)="onVisibleSimilarOOS($event)">
+            <ng-container #similarProductOOS></ng-container>
+        </section>
+        <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
+        </past-orders>
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
@@ -631,10 +657,10 @@
                 <div class="loader"></div>
             </div>
         </section>
-
-        <div [class.mb-60]="productOutOfStock">
+        <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-        </div>
+        </ng-container>
     </div>
     <!-- other sections ends -->
 
@@ -651,8 +677,8 @@
     <ng-container #productInfoPopup></ng-container>
 </div>
 
-<div *ngIf="productOutOfStock" class="stickyBottomBtn">
-    <button (click)="onVisibleProductRFQ($event)" class="btn-red submit-btn">GET BEST PRICE</button>
+<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
+    <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
 <ng-container #addToCartToast></ng-container>
@@ -682,7 +708,8 @@
                 </p>
             </div>
             <div class="alert-btn-row">
-                <button *ngIf="similarProducts.length>0" (click)="scrollToResults('#similarProducts') "
+                <button *ngIf="similarProducts.length>0"
+                    (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
                 <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE CATEGORY</p>
@@ -726,7 +753,14 @@
         </ul>
     </div>
 </section>
-
+<!-- <idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
+    *ngIf="isBrowser && !productNotFound">
+</idle-user-search-nudge> -->
 
 <div id="pageBottom"></div>
 <whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
+<ng-container *ngIf="showScrollToTopButton">
+    <div class="scroll-arrow-pdp" (click)="scrollToTop()">
+        <i class="icon-up"></i>
+    </div>
+</ng-container>

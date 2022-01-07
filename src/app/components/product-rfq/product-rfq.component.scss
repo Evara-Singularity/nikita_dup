@@ -1,7 +1,6 @@
 @import "../../scss/variables";
 
 .rfqForm {
-
     .product-rfq {
         .multiple-form-field {
             display: flex;
@@ -256,5 +255,10 @@
     .del-ico {
         margin-left: auto;
         font-size: 20px;
+        padding:5px;
     }
+}
+
+.f-size-26 {
+    font-size: 26px;
 }

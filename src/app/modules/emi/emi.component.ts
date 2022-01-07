@@ -108,7 +108,7 @@ export class EmiComponent {
                 console.log('console emi response', res);
 
                 if (res["status"] != true) {
-                    alert("Error in placing order, see console");
+                    // alert("Error in placing order, see console");
                     return;
                 }
                 let data = res["data"];
@@ -259,7 +259,7 @@ export class EmiComponent {
         } else {
             this._emiService.getEmiValues({ price: amount }).subscribe((res): void => {
                 if (res["status"] != true) {
-                    alert("Error in placing order, see console");
+                    // alert("Error in placing order, see console");
                     return;
                 }
 

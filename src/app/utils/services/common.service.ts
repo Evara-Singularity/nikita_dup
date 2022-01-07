@@ -1219,7 +1219,7 @@ export class CommonService {
     console.clear();
     console.trace();
     console.log(data);
-    alert('check console');
+    // alert('check console');
   }
 
 }

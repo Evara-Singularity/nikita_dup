@@ -74,7 +74,7 @@ export class PaytmUpiComponent {
         if (this.uType == CONSTANTS.GLOBAL.paytmUpi) {
             newdata = this.createData(data);
         } else {
-            alert("No UPI selected");
+            // alert("No UPI selected");
         }
 
         let userSession = this._localAuthService.getUserSession();

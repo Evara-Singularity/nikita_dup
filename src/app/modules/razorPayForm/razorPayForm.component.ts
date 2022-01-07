@@ -139,7 +139,7 @@ export class RazorPayFormComponent {
     this.razorpay.on('payment.success', function (resp) {
     })
     this.razorpay.on('payment.error', function (resp) {
-      alert(resp.error.description)
+      // alert(resp.error.description)
     });
   }
 

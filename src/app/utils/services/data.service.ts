@@ -166,7 +166,7 @@ export class DataService {
             this._localStorageService.clear('user');
             this.getSession().subscribe((res) => {
                 if (res['statusCode'] !== undefined && res['statusCode'] === 500) {
-                    alert('something went wrong, please try to refresh the page');
+                    // alert('something went wrong, please try to refresh the page');
                 } else {
                     this._localAuthService.setUserSession(res);
                     this.dataServiceCart.next(res['cart'] !== undefined ? res['cart']['noOfItems'] : 0);
@@ -184,7 +184,7 @@ export class DataService {
                     .subscribe((res) => {
                         console.log("Error-401: getsession called");
                         if (res['statusCode'] != undefined && res['statusCode'] == 500) {
-                            alert("something went wrong, please try to refresh the page");
+                            // alert("something went wrong, please try to refresh the page");
                         } else {
                             this._localAuthService.setUserSession(res);
                             this._localAuthService.logout$.emit();

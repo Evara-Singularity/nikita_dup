@@ -393,7 +393,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   sendTracking(info) {
     if (this.analytics) {
-      alert(info + ' : ' + this.enableTracking);
+      // alert(info + ' : ' + this.enableTracking);
       if (!this.enableTracking) return;
       const page = this.analytics['page'];
       page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;

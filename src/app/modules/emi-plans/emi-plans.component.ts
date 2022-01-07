@@ -54,7 +54,7 @@ export class EmiPlansComponent implements OnInit
             {
                 this.isLoading.emit(false);
                 if (res["status"] != true) {
-                    alert("Error in placing order, see console");
+                    // alert("Error in placing order, see console");
                     return;
                 }
                 let data = res["data"];

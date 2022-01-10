@@ -22,7 +22,7 @@ export class SearchBannerCardComponent {
     let taxo1 = '';
     let taxo2 = '';
     let taxo3 = '';
-    if (this.categoryTaxonomay.taxonomy) {
+    if (this.categoryTaxonomay && this.categoryTaxonomay.taxonomy) {
       taxo1 = this.categoryTaxonomay.taxonomy.split("/")[0] || '';
       taxo2 = this.categoryTaxonomay.taxonomy.split("/")[1] || '';
       taxo3 = this.categoryTaxonomay.taxonomy.split("/")[2] || '';

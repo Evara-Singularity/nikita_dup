@@ -61,8 +61,11 @@ export class ProductAccordiansComponent {
     PAGE['subSection'] = accordian;
     PAGE['linkName'] = link;
     this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
-    let url = link.replace('https://' + window.location.hostname, '').replace('http://' + window.location.hostname, '').replace('http://www.moglix.com', '').replace('https://www.moglix.com', '');
-    this._commonService.navigateTo(url, true);
+    if(link.indexOf('http') == -1){
+      this._commonService.navigateTo(link, true);
+    }else{
+      window.location.href = link;
+    }
   }
 }
 

@@ -64,7 +64,7 @@ export class ProductAccordiansComponent {
     if(link.indexOf('http') == -1){
       this._commonService.navigateTo(link, true);
     }else{
-      window.location.href = link;
+      window.location = link;
     }
   }
 }

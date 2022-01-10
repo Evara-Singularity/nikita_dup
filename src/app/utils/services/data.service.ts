@@ -14,6 +14,7 @@ import { ToastMessageService } from '../../modules/toastMessage/toast-message.se
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
+import { GlobalLoaderService } from './global-loader.service';
 
 @Injectable({
     providedIn: 'root'
@@ -31,6 +32,7 @@ export class DataService {
         private _router: Router,
         private _http: HttpClient,
         private _localAuthService: LocalAuthService,
+        private _loaderService: GlobalLoaderService,
         private _localStorageService: LocalStorageService) {
     }
 
@@ -198,6 +200,7 @@ export class DataService {
         } else {
             this.showMessage('error', 'Something went wrong');
         }
+        this._loaderService.setLoaderState(false);
         return throwError(error);
     }
 

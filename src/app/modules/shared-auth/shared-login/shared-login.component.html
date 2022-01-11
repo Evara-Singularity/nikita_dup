@@ -76,8 +76,17 @@
 
 <div class="login-card">
     <h2>Sign-In or Sign Up</h2>
-    <form>
-        <input placeholder="Enter Mobile Number">
+    <form class="material-form">
+        <div class="input-field-login">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Mobile Number/Email Id*</span>
+                <ng-container *ngIf="isSubmitted && username.errors != null">
+                    <p class="error-txt">{{getErrors(username.errors)}}</p>
+                </ng-container>
+            </label>
+        </div>
+        <input class="invalid-input" placeholder="Enter Mobile Number">
         <div class="error-field">
             <span class="error-text">Enter 10 digit mobile number</span>
         </div>
@@ -96,6 +105,11 @@
     <p class="safe-text">Your details are safe with us.</p>
 </div>
 
+<!-- otp-card -->
+<div class="outer-card">
+    <h2>Enter 6 digit OTP for verification</h2>
+    <p>One Time Password sent to 9717311486 & ashish.kumar@gmail.com</p>
+</div>
 <div class="otp-card login-card">
     <form class="otp-form otp-form-invalid otp-form-varified">
         <div class="otp-form-inputs">
@@ -123,4 +137,149 @@
     <button class="btn-disable">CONTINUE</button>
     <div class="login-seperator-text "> <span>Or</span></div>
     <button class="btn-dark-grey">SIGN-IN WITH PASSWORD</button>
+</div>
+
+<!-- password-form -->
+<div class="outer-card">
+    <h2>Enter Password</h2>
+    <p>Linked with 9717311486 & ashish.kumar@gmail.com</p>
+</div>
+<div class="login-card">
+    <h2>Sign-In or Sign Up</h2>
+    <form>
+        <input placeholder="Enter Password">
+        <div class="space-large "></div>
+        <button class="btn-disable">CONTINUE</button>
+        <button class="btn-forgot-pass">FORGOT PASSWORD?</button>
+        <div class="login-seperator-text "> <span>Or</span></div>
+        <button class="btn-dark-grey">SIGN-IN WITH OTP</button>
+    </form>
+</div>
+
+<!-- forgot-password-form -->
+<div class="outer-card">
+    <h2>Forgot Password</h2>
+    <p>Enter register mobile number to receive verification code</p>
+</div>
+<div class="login-card">
+    <form>
+        <input placeholder="Enter Mobile Number/Email-ID">
+        <div class="space-large "></div>
+        <button class="btn-disable">CONTINUE</button>
+        <button class="btn-forgot-pass">BACK TO SIGN IN</button>
+    </form>
+</div>
+
+<!-- Reset-password-form -->
+<div class="outer-card">
+    <h2>Enter 6 digit OTP for verification</h2>
+    <p>One Time Password sent to 9717311486</p>
+</div>
+<div class="login-card otp-card">
+    <form class="otp-form otp-form-invalid otp-form-varified">
+        <div class="otp-form-inputs">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+        </div>
+        <div class="error-field">
+            <span class="error-text">OTP is not correct</span>
+        </div>
+    </form>
+
+    <div class="otp-text">
+        <div class="otp-text-inner left">
+            <span>Didn’t receive the code?</span><br>
+            <span>Resend in 00:20</span>
+        </div>
+        <div class="otp-text-inner right">
+            <span>RESEND OTP</span>
+        </div>
+    </div>
+    <form>
+        <input placeholder="Set Password">
+        <div class="space-large "></div>
+        <button class="btn-disable">CONTINUE</button>
+        <button class="btn-forgot-pass">BACK TO SIGN IN</button>
+    </form>
+</div>
+
+<!-- otp-card-only-otp -->
+<div class="outer-card">
+    <h2>Enter 6 digit OTP for verification</h2>
+    <p>One Time Password sent to 9717311486</p>
+</div>
+<div class="otp-card login-card">
+    <form class="otp-form otp-form-invalid otp-form-varified">
+        <div class="otp-form-inputs">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+            <input placeholder="-">
+        </div>
+        <div class="error-field">
+            <span class="error-text">OTP is not correct</span>
+        </div>
+    </form>
+
+    <div class="otp-text">
+        <div class="otp-text-inner left">
+            <span>Didn’t receive the code?</span><br>
+            <span>Resend in 00:20</span>
+        </div>
+        <div class="otp-text-inner right">
+            <span>RESEND OTP</span>
+        </div>
+    </div>
+    <button class="btn-disable">CONTINUE</button>
+</div>
+
+<!-- sign-up-form -->
+<div class="outer-card">
+    <h2>Almost Done!</h2>
+    <p>Just a few more details</p>
+</div>
+<div class="login-card">
+    <form>
+        <input placeholder="Enter User Name*">
+        <div class="space-large">
+        </div>
+        <input placeholder="Enter Email-ID (Optional)">
+        <!-- <div class="error-field">
+            <span class="error-text">Enter 10 digit mobile number</span>
+        </div> -->
+        <div class="space-large">
+        </div>
+        <button class="btn-disable">SUBMIT NOW</button>
+    </form>
+    <p class="safe-text">Your details are safe with us.</p>
+</div>
+
+<!-- sign-up-form-new -->
+<div class="outer-card">
+    <h2>Looks like you’re new here!</h2>
+    <p>Please provide below information</p>
+</div>
+<div class="login-card">
+    <form>
+        <input placeholder="Enter User Name*">
+        <div class="space-large">
+        </div>
+        <input placeholder="Enter Mobile Number*">
+        <div class="space-large">
+        </div>
+        <input placeholder="Enter Password (optional)">
+        <!-- <div class="error-field">
+            <span class="error-text">Enter 10 digit mobile number</span>
+        </div> -->
+        <div class="space-large">
+        </div>
+        <button class="btn-disable">SIGN-UP NOW</button>
+    </form>
+    <p class="safe-text">Your details are safe with us.</p>
 </div>

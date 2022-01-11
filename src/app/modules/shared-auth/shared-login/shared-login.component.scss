@@ -120,6 +120,18 @@
 }
 
 // New login start
+.outer-card{
+    padding: 15px 15px 0px 15px;
+    h2{
+        font-size: 16px;
+        line-height: 21px;
+        font-weight: bold;
+    }
+    p{
+        font-size: 12px;
+        line-height: 16px;
+    }
+}
 .login-card {
     background-color: #ffffff;
     border-radius: 8px;
@@ -130,13 +142,13 @@
         margin-bottom: 15px;
     }
     .space-small {
-        height: 10px;
-    }
-    .space-medium {
         height: 15px;
     }
-    .space-large {
+    .space-medium {
         height: 20px;
+    }
+    .space-large {
+        height: 25px;
     }
     .error-field {
         min-height: 30px;
@@ -153,6 +165,9 @@
         border-radius: 8px;
         padding: 0px 10px;
         background-color: #ffffff;
+        &.invalid-input{
+            border: 1px solid #d9232d;
+        }
     }
     .btn-red {
         background-color: #d9232d;
@@ -170,6 +185,11 @@
     .btn-disable {
         background-color: #c4c4c4;
         color: #ffffff;
+    }
+    .btn-forgot-pass{
+        background-color: #ffffff;
+        color: #278BED;
+        font-size: 12px;
     }
     button {
         border: none;

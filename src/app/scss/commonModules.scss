@@ -105,6 +105,86 @@
             }
         }
     }
+    .input-field-login {
+        margin-bottom: 30px;
+
+        label {
+            display: block;
+            position: relative;
+
+            input,
+            select {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 45px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+            }
+
+
+            
+
+            .label {
+                position: absolute;
+                left: 10px;
+                font-size: $large-font;
+                top: 15px;
+                color: $disabled;
+                @extend %transition;
+            }
+
+            &.is-focus .label,
+            input:focus+.label,
+            select:focus+.label {
+                font-size: $medium-font;
+                top: -5px;
+                background-color: #ffffff;
+                left: 10px;
+            }
+
+            textarea:focus+.label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+
+            input:focus,
+            textarea:focus {
+                border-color: $active-border-color;
+
+                &+.label {
+                    color: $active-border-color;
+                }
+            }
+
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+
+                &.verified {
+                    color: #36BD40;
+
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
 
     &.material-form-boxed {
         .input-field-boxed {

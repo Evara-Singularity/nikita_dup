@@ -75,7 +75,7 @@
 <!-- new login start -->
 
 <div class="login-card">
-    <h2>Sign-In or Sign Up</h2>
+    <h3 class="heading-custom-3">Sign-In or Sign Up</h3>
     <form class="material-form">
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
@@ -89,9 +89,7 @@
         <button class="btn btn-variant1">CONTINUE</button>
         <div class="login-seperator-text "> <span>Or</span></div>
         <button class="btn btn-variant1 btn-dark-grey">CONTINUE WITH EMAIL-ID</button>
-        <div class="space-large">
-        </div>
-        <div class="clearfix ">
+        <div class="clearfix social-btn">
             <social-login class="o-hidden "></social-login>
         </div>
     </form>
@@ -100,7 +98,7 @@
 
 <!-- otp-card -->
 <div class="outer-card">
-    <h2>Enter 6 digit OTP for verification</h2>
+    <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
     <p>One Time Password sent to 9717311486 & ashish.kumar@gmail.com</p>
 </div>
 <div class="otp-card login-card">
@@ -121,7 +119,7 @@
     <div class="otp-text">
         <div class="otp-text-inner left">
             <span>Didn’t receive the code?</span><br>
-            <span>Resend in 00:20</span>
+            <span class="resend">Resend in 00:20</span>
         </div>
         <div class="otp-text-inner right">
             <span>RESEND OTP</span>
@@ -134,11 +132,11 @@
 
 <!-- password-form -->
 <div class="outer-card">
-    <h2>Enter Password</h2>
+    <h3 class="heading-custom-3">Enter Password</h3>
     <p>Linked with 9717311486 & ashish.kumar@gmail.com</p>
 </div>
 <div class="login-card">
-    <h2>Sign-In or Sign Up</h2>
+    <h3 class="heading-custom-3">Sign-In or Sign Up</h3>
     <form class="material-form">
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
@@ -150,10 +148,7 @@
                 </ng-container>
             </label>
         </div>
-        <!-- <input placeholder="Enter Password"> -->
-        <div class="space-large "></div>
         <button class="btn btn-variant1 btn-disabled">CONTINUE</button>
-        <!-- <button class="btn-forgot-pass">FORGOT PASSWORD?</button> -->
         <a class="forgot-pass" href="#">FORGOT PASSWORD?</a>
         <div class="login-seperator-text "> <span>Or</span></div>
         <button class="btn btn-variant1 btn-dark-grey">SIGN-IN WITH OTP</button>
@@ -162,12 +157,11 @@
 
 <!-- forgot-password-form -->
 <div class="outer-card">
-    <h2>Forgot Password</h2>
+    <h3 class="heading-custom-3">Forgot Password</h3>
     <p>Enter register mobile number to receive verification code</p>
 </div>
 <div class="login-card">
     <form class="material-form">
-        <!-- <input placeholder="Enter Mobile Number/Email-ID"> -->
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input type="text" formControlName="username">
@@ -177,7 +171,6 @@
                 </ng-container>
             </label>
         </div>
-        <div class="space-large "></div>
         <button class="btn btn-variant1 btn-disabled">CONTINUE</button>
         <a class="forgot-pass" href="#">BACK TO SIGN IN</a>
     </form>
@@ -185,7 +178,7 @@
 
 <!-- Reset-password-form -->
 <div class="outer-card">
-    <h2>Enter 6 digit OTP for verification</h2>
+    <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
     <p>One Time Password sent to 9717311486</p>
 </div>
 <div class="login-card otp-card">
@@ -206,14 +199,13 @@
     <div class="otp-text">
         <div class="otp-text-inner left">
             <span>Didn’t receive the code?</span><br>
-            <span>Resend in 00:20</span>
+            <span class="resend">Resend in 00:20</span>
         </div>
         <div class="otp-text-inner right">
             <span>RESEND OTP</span>
         </div>
     </div>
     <form class="material-form">
-        <!-- <input placeholder="Set Password"> -->
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input type="text" formControlName="username">
@@ -223,7 +215,6 @@
                 </ng-container>
             </label>
         </div>
-        <div class="space-large "></div>
         <button class="btn btn-variant1 btn-disabled">CONTINUE</button>
         <a class="forgot-pass" href="#">BACK TO SIGN IN</a>
     </form>
@@ -231,7 +222,7 @@
 
 <!-- otp-card-only-otp -->
 <div class="outer-card">
-    <h2>Enter 6 digit OTP for verification</h2>
+    <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
     <p>One Time Password sent to 9717311486</p>
 </div>
 <div class="otp-card login-card">
@@ -252,7 +243,7 @@
     <div class="otp-text">
         <div class="otp-text-inner left">
             <span>Didn’t receive the code?</span><br>
-            <span>Resend in 00:20</span>
+            <span class="resend">Resend in 00:20</span>
         </div>
         <div class="otp-text-inner right">
             <span>RESEND OTP</span>
@@ -263,12 +254,11 @@
 
 <!-- sign-up-form -->
 <div class="outer-card">
-    <h2>Almost Done!</h2>
+    <h3 class="heading-custom-3">Almost Done!</h3>
     <p>Just a few more details</p>
 </div>
 <div class="login-card">
     <form class="material-form">
-        <!-- <input placeholder="Enter User Name*"> -->
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input type="text" formControlName="username">
@@ -278,9 +268,6 @@
                 </ng-container>
             </label>
         </div>
-        <div class="space-large">
-        </div>
-        <!-- <input placeholder="Enter Email-ID (Optional)"> -->
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input type="text" formControlName="username">
@@ -290,8 +277,6 @@
                 </ng-container>
             </label>
         </div>
-        <div class="space-large">
-        </div>
         <button class="btn btn-variant1 btn-disabled">SUBMIT NOW</button>
     </form>
     <p class="safe-text">Your details are safe with us.</p>
@@ -299,22 +284,16 @@
 
 <!-- sign-up-form-new -->
 <div class="outer-card">
-    <h2>Looks like you’re new here!</h2>
+    <h3 class="heading-custom-3">Looks like you’re new here!</h3>
     <p>Please provide below information</p>
 </div>
 <div class="login-card">
     <form class="material-form">
-        <!-- <input placeholder="Enter User Name*"> -->
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input type="text" formControlName="username">
                 <span class="label">Enter User Name*</span>
-                <!-- <ng-container>
-                    <p class="error-txt"></p>
-                </ng-container> -->
             </label>
-        </div>
-        <div class="space-large">
         </div>
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
@@ -325,8 +304,6 @@
                 </ng-container> -->
             </label>
         </div>
-        <div class="space-large">
-        </div>
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input type="text" formControlName="username">
@@ -336,8 +313,6 @@
                     <p class="error-txt">sachin</p>
                 </ng-container> -->
             </label>
-        </div>
-        <div class="space-large">
         </div>
         <button class="btn btn-variant1 btn-disabled">SIGN-UP NOW</button>
     </form>

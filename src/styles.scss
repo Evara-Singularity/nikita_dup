@@ -207,6 +207,7 @@ a {
         background-color: #D9232D;
         border: 0;
         height: 40px; 
+        font-size: $large-font;
         &.btn-dark-grey {
             background-color: #3c3c3c;
             color: #ffffff;
@@ -214,7 +215,7 @@ a {
         &.btn-disabled {
             border-color: $disabled;
             color: #fff;
-            background: #B6B6B6;
+            background: #c4c4c4;
         }
     }
 }

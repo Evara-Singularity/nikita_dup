@@ -2,11 +2,9 @@
 
 // Forms
 .material-form {
-
     // Inside Label Input
     .input-field {
         margin-bottom: 30px;
-
         label {
             display: block;
             position: relative;
@@ -291,7 +289,6 @@ option {
             font-size: 16px;
         }
     }
-
     .toggle-content {
         margin-top: 10px;
     }
@@ -429,10 +426,14 @@ option {
 
 // Common Alert Box
 .alert-box {
+    &.rfq-thanks-alert{
+        .content-area{
+            border-radius:12px !important;
+        }
+    }
     .overlay {
         z-index: 11;
     }
-
     .content-area {
         @include translate(0, -50%);
         position: fixed;

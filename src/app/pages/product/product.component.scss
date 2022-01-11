@@ -2413,7 +2413,7 @@
             padding: 10px 30px;
             position: relative;
 
-            i {
+            i.del-ico {
                 position: absolute;
                 right: 15px;
                 top: 15px;
@@ -2918,7 +2918,6 @@
 .vertical-scroll-container {
     background-color: #F2F2F2;
     padding: 10px;
-
     h2 {
         font-size: 16px;
         line-height: 38px;
@@ -2993,5 +2992,23 @@
     i {
         color: #fff;
         font-size: 18px;
+    }
+}
+.icon-btn-row{
+    background: #278BED;
+    color: #fff;
+    width: 50%;
+    justify-content: space-around;
+    margin-right: 10px;
+    border-radius: 4px;
+    padding: 10px 15px;
+    .icon-btn{
+        background:#278BED;
+        color:#fff;
+        width:50%;
+        
+        i{
+            font-size:20px;
+        }
     }
 }

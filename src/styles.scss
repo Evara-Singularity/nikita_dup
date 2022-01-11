@@ -154,6 +154,10 @@ h2,
 .heading {
     font-size: $extra-large-font;
 }
+.heading-custom-3{
+    font-size: $extra-large-font;
+    line-height: 21px;
+}
 
 ul {
     list-style: none;
@@ -196,6 +200,22 @@ a {
         pointer-events: none;
         color: $disable-txt;
         border: 1px solid $disabled;
+    }
+    &.btn-variant1{
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 40px; 
+        &.btn-dark-grey {
+            background-color: #3c3c3c;
+            color: #ffffff;
+        }
+        &.btn-disabled {
+            border-color: $disabled;
+            color: #fff;
+            background: #B6B6B6;
+        }
     }
 }
 

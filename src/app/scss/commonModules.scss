@@ -105,13 +105,10 @@
             }
         }
     }
-    .input-field-login {
-        margin-bottom: 30px;
-
+    .outline-input-label {
         label {
             display: block;
             position: relative;
-
             input,
             select {
                 width: 100%;
@@ -125,26 +122,30 @@
                     padding: 14px 140px 0 0;
                 }
             }
-
-
-            
-
             .label {
                 position: absolute;
                 left: 10px;
                 font-size: $large-font;
-                top: 15px;
+                top: 12px;
                 color: $disabled;
                 @extend %transition;
+            }
+            i{
+                position: absolute;
+                right: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
             }
 
             &.is-focus .label,
             input:focus+.label,
             select:focus+.label {
                 font-size: $medium-font;
-                top: -5px;
+                top: -7px;
                 background-color: #ffffff;
                 left: 10px;
+                padding: 0px 5px;
             }
 
             textarea:focus+.label {
@@ -154,10 +155,10 @@
 
             input:focus,
             textarea:focus {
-                border-color: $active-border-color;
+                border-color: #C4C4C4;
 
                 &+.label {
-                    color: $active-border-color;
+                    color: #C4C4C4;
                 }
             }
 
@@ -473,6 +474,17 @@ option {
         background-color: #D9232D;
         border: 0;
         height: 50px;
+    }
+    .btn-variant1{
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 40px; 
+        &.btn-dark-grey {
+            background-color: #3c3c3c;
+            color: #ffffff;
+        }
     }
 }
 

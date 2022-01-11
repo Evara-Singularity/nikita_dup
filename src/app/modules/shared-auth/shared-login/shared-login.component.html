@@ -77,29 +77,22 @@
 <div class="login-card">
     <h2>Sign-In or Sign Up</h2>
     <form class="material-form">
-        <div class="input-field-login">
+        <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
-                <input type="text" formControlName="username">
-                <span class="label">Mobile Number/Email Id*</span>
-                <ng-container *ngIf="isSubmitted && username.errors != null">
-                    <p class="error-txt">{{getErrors(username.errors)}}</p>
+                <input class="invalid-input" type="text" formControlName="username">
+                <span class="label">Enter Mobile Number</span>
+                <ng-container>
+                    <p class="error-field error-txt">Enter 10 digit mobile number</p>
                 </ng-container>
             </label>
         </div>
-        <input class="invalid-input" placeholder="Enter Mobile Number">
-        <div class="error-field">
-            <span class="error-text">Enter 10 digit mobile number</span>
-        </div>
-        <button class="btn-red">CONTINUE</button>
+        <button class="btn btn-variant1">CONTINUE</button>
         <div class="login-seperator-text "> <span>Or</span></div>
-        <button class="btn-dark-grey">CONTINUE WITH EMAIL-ID</button>
+        <button class="btn btn-variant1 btn-dark-grey">CONTINUE WITH EMAIL-ID</button>
         <div class="space-large">
         </div>
-        <div class="social-btns">
-            <button class="btn-transparent ">
-                <span><img src="https://cdn.moglix.com/assets/img/google.png"></span>
-                <span>&nbsp; Google</span>
-            </button>
+        <div class="clearfix ">
+            <social-login class="o-hidden "></social-login>
         </div>
     </form>
     <p class="safe-text">Your details are safe with us.</p>
@@ -146,13 +139,24 @@
 </div>
 <div class="login-card">
     <h2>Sign-In or Sign Up</h2>
-    <form>
-        <input placeholder="Enter Password">
+    <form class="material-form">
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter Password</span>
+                <i class="icon-view-password"></i>
+                <ng-container *ngIf="isSubmitted && username.errors != null">
+                    <p class="error-txt">{{getErrors(username.errors)}}</p>
+                </ng-container>
+            </label>
+        </div>
+        <!-- <input placeholder="Enter Password"> -->
         <div class="space-large "></div>
-        <button class="btn-disable">CONTINUE</button>
-        <button class="btn-forgot-pass">FORGOT PASSWORD?</button>
+        <button class="btn btn-variant1 btn-disabled">CONTINUE</button>
+        <!-- <button class="btn-forgot-pass">FORGOT PASSWORD?</button> -->
+        <a class="forgot-pass" href="#">FORGOT PASSWORD?</a>
         <div class="login-seperator-text "> <span>Or</span></div>
-        <button class="btn-dark-grey">SIGN-IN WITH OTP</button>
+        <button class="btn btn-variant1 btn-dark-grey">SIGN-IN WITH OTP</button>
     </form>
 </div>
 
@@ -162,8 +166,17 @@
     <p>Enter register mobile number to receive verification code</p>
 </div>
 <div class="login-card">
-    <form>
-        <input placeholder="Enter Mobile Number/Email-ID">
+    <form class="material-form">
+        <!-- <input placeholder="Enter Mobile Number/Email-ID"> -->
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter Mobile Number/Email-ID</span>
+                <ng-container *ngIf="isSubmitted && username.errors != null">
+                    <p class="error-txt">{{getErrors(username.errors)}}</p>
+                </ng-container>
+            </label>
+        </div>
         <div class="space-large "></div>
         <button class="btn-disable">CONTINUE</button>
         <button class="btn-forgot-pass">BACK TO SIGN IN</button>
@@ -199,8 +212,17 @@
             <span>RESEND OTP</span>
         </div>
     </div>
-    <form>
-        <input placeholder="Set Password">
+    <form class="material-form">
+        <!-- <input placeholder="Set Password"> -->
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Set Password</span>
+                <ng-container *ngIf="isSubmitted && username.errors != null">
+                    <p class="error-txt">{{getErrors(username.errors)}}</p>
+                </ng-container>
+            </label>
+        </div>
         <div class="space-large "></div>
         <button class="btn-disable">CONTINUE</button>
         <button class="btn-forgot-pass">BACK TO SIGN IN</button>
@@ -245,14 +267,29 @@
     <p>Just a few more details</p>
 </div>
 <div class="login-card">
-    <form>
-        <input placeholder="Enter User Name*">
+    <form class="material-form">
+        <!-- <input placeholder="Enter User Name*"> -->
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter User Name*</span>
+                <ng-container *ngIf="isSubmitted && username.errors != null">
+                    <p class="error-txt">{{getErrors(username.errors)}}</p>
+                </ng-container>
+            </label>
+        </div>
         <div class="space-large">
         </div>
-        <input placeholder="Enter Email-ID (Optional)">
-        <!-- <div class="error-field">
-            <span class="error-text">Enter 10 digit mobile number</span>
-        </div> -->
+        <!-- <input placeholder="Enter Email-ID (Optional)"> -->
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter Email-ID (Optional)</span>
+                <ng-container>
+                    <p class="error-txt"></p>
+                </ng-container>
+            </label>
+        </div>
         <div class="space-large">
         </div>
         <button class="btn-disable">SUBMIT NOW</button>
@@ -266,17 +303,40 @@
     <p>Please provide below information</p>
 </div>
 <div class="login-card">
-    <form>
-        <input placeholder="Enter User Name*">
+    <form class="material-form">
+        <!-- <input placeholder="Enter User Name*"> -->
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter User Name*</span>
+                <!-- <ng-container>
+                    <p class="error-txt"></p>
+                </ng-container> -->
+            </label>
+        </div>
         <div class="space-large">
         </div>
-        <input placeholder="Enter Mobile Number*">
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter Mobile Number*</span>
+                <!-- <ng-container>
+                    <p class="error-txt"></p>
+                </ng-container> -->
+            </label>
+        </div>
         <div class="space-large">
         </div>
-        <input placeholder="Enter Password (optional)">
-        <!-- <div class="error-field">
-            <span class="error-text">Enter 10 digit mobile number</span>
-        </div> -->
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input type="text" formControlName="username">
+                <span class="label">Enter Password (optional)</span>
+                <i class="icon-view-password"></i>
+                <!-- <ng-container>
+                    <p class="error-txt">sachin</p>
+                </ng-container> -->
+            </label>
+        </div>
         <div class="space-large">
         </div>
         <button class="btn-disable">SIGN-UP NOW</button>

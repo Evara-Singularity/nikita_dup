@@ -5,7 +5,6 @@ import { KpToggleDirectiveModule } from "@app/utils/directives/kp-toggle.directi
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
 
-
 @Component({
     selector: 'category-footer',
     templateUrl: './category-footer.component.html',

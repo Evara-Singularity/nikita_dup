@@ -16,10 +16,10 @@ export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;
   @Input('position') position: number;
   @Input('pageName') pageName: string;
-  
+
   public GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   public inlineFilterData: BucketsEntity;
-  
+
   constructor(
     private _activatedRoute: ActivatedRoute,
     public _productListService: ProductListService, private _commonService: CommonService) { }
@@ -30,7 +30,7 @@ export class FilterMidPlpComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.filterData.currentValue && changes.filterData.currentValue.length > 0) {
-      this.genrateInlineFilterData();    
+      this.genrateInlineFilterData();
     }
   }
 
@@ -38,17 +38,28 @@ export class FilterMidPlpComponent implements OnInit {
     this._productListService.inlineFilterData = [];
 
     // if Brand or Brand + Category page then replace brand inline mid filter with category filter
+    let category;
 
-    if(this.pageName === 'BRAND' && !this._activatedRoute.snapshot.params.category) {
+    if (this.pageName === 'BRAND' && !this._activatedRoute.snapshot.params.category) {
       GLOBAL_CONSTANT.inlineFilter[1] = 'category';
     } else {
       GLOBAL_CONSTANT.inlineFilter[1] = 'brand';
     }
+
+    if (this.pageName === 'SEARCH') {
+      // Genrate Category Data and for that Map categoriesRecommended data With checkAndApplyFilter data i.e key and item check this function
+      category;
+    }
+
     if (this.filterData) {
       const brand = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[0]);
       const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
       const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
-      
+
+      // if category exists for search page then push it at the top if the page
+      if (category) {
+        this._productListService.inlineFilterData.push(category);
+      }
       if (brand) {
         this._productListService.inlineFilterData.push(brand);
       }
@@ -58,7 +69,8 @@ export class FilterMidPlpComponent implements OnInit {
       if (discount) {
         this._productListService.inlineFilterData.push(discount);
       }
-  
+
+
       this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
     }
 
@@ -73,10 +85,10 @@ export class FilterMidPlpComponent implements OnInit {
 @Pipe({
   name: 'checkForCount'
 })
-export class CheckForCountPipe implements PipeTransform{
+export class CheckForCountPipe implements PipeTransform {
   transform(val) {
     if (val && val.terms && val.terms.length > 0) {
-      return val.terms.filter( v => {
+      return val.terms.filter(v => {
         if (val.name === 'price') {
           return (!v.selected && v.count)
         }
@@ -91,10 +103,10 @@ export class CheckForCountPipe implements PipeTransform{
 @Pipe({
   name: 'removeSelected'
 })
-export class RemoveSelectedPipe implements PipeTransform{
+export class RemoveSelectedPipe implements PipeTransform {
   transform(val) {
     if (val && val.length > 0) {
-      return val.filter( v => !v.selected );
+      return val.filter(v => !v.selected);
     }
     return val;
   }
@@ -102,9 +114,9 @@ export class RemoveSelectedPipe implements PipeTransform{
 
 @NgModule({
   imports: [
-      CommonModule,
-      RouterModule,
-      AddFilterSymbolPipeModule
+    CommonModule,
+    RouterModule,
+    AddFilterSymbolPipeModule
   ],
   exports: [
     FilterMidPlpComponent

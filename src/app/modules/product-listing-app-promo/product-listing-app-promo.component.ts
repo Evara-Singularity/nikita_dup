@@ -21,7 +21,7 @@ export class ProductListingAppPromoComponent implements OnInit, OnDestroy {
   }
 
   async onVisibleAppPromo(event) {
-    if(!this.appPromoInstance){
+    if (!this.appPromoInstance) {
       const { ProductAppPromoComponent } = await import('../../components/product-app-promo/product-app-promo.component')
       const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
       this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
@@ -39,7 +39,7 @@ export class ProductListingAppPromoComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.appPromoInstance) {
       this.appPromoInstance.destroy();
-      this.appPromoContainerRef.remove()    
+      this.appPromoContainerRef.remove()
     }
   }
 

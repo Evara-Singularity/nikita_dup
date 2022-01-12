@@ -26,6 +26,7 @@ import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
+import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject } from "rxjs";
@@ -313,6 +314,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private renderer2: Renderer2,
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
+    private _trackingService: TrackingService,
     @Inject(DOCUMENT) private document,
     @Optional() @Inject(RESPONSE) private _response: any
   ) {
@@ -2179,6 +2181,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
 
+      this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
       this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
@@ -2390,15 +2393,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
+      const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
+      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
       let ytParams = "?autoplay=1&rel=0&controls=1&loop&enablejsapi=1";
       let videoDetails = { url: link, params: ytParams };
-      let modalData = {
-        component: YoutubePlayerComponent,
-        inputs: null,
-        outputs: {},
-        mConfig: { showVideoOverlay: true },
-      };
-      modalData.inputs = { videoDetails: videoDetails };
+      let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true }, };
+      modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
       this.modalService.show(modalData);
     }
   }
@@ -2407,6 +2407,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   /**
    * Please place all functional code above this section
    */
+
   setMetatag(index: number = -1) {
     if (!this.rawProductData) {
       return;
@@ -3222,6 +3223,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
+    this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
     this.productInfoPopupInstance.instance["modalData"] =
       oosProductIndex > -1
         ? this.productService.getProductInfo(infoType, oosProductIndex)

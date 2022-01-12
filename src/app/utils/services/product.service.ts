@@ -379,6 +379,25 @@ export class ProductService {
         }
     }
 
+    setProductVideo(videoArr, index) {
+        if (this.oosSimilarProductsData.similarData[index].productAllImages.length > 0 && videoArr &&
+            (videoArr as any[]).length > 0) {
+            (videoArr as any[]).reverse().forEach((element) => {
+                this.oosSimilarProductsData.similarData[index].productAllImages.splice(1, 0, {
+                    src: "",
+                    default: "",
+                    caption: "",
+                    thumb: "",
+                    medium: "",
+                    xxlarge: "",
+                    title: element["title"],
+                    video: element["link"],
+                    contentType: "YOUTUBE_VIDEO",
+                });
+            });
+        }
+    }
+
     processProductData(args: ProductDataArg, index) {
         this.oosSimilarProductsData.similarData[index].rawProductData =
             args.productBO;
@@ -590,6 +609,7 @@ export class ProductService {
             ][partNumber]["images"],
             index
         );
+        this.setProductVideo(this.oosSimilarProductsData.similarData[index].rawProductData["videosInfo"], index);
     }
 
     getBrandLink(brandDetails: {}) {

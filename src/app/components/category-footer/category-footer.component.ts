@@ -78,4 +78,3 @@ export class CategoryFooterComponent{
     ]
 })
 export class CategoryFooterModule { }
-// export class CategoryModule extends CategoryFooterModule { }

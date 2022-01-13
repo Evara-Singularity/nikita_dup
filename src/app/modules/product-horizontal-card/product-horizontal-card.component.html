@@ -47,7 +47,7 @@
                     <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation">
                         <span>{{product.productName | slice:0:60}}
                             <span *ngIf="product.productName.length>60">...</span></span></a>
-                    <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
+                    <a [href]="prodUrl + '/' + product.productUrl" class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</a>
                 </div>
                 <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName | brandName}}</span>

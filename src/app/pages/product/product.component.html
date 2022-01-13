@@ -453,7 +453,7 @@
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+            <a [href]="productCategoryDetails['categoryLink']" (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
                 class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
@@ -462,7 +462,7 @@
                 <i class="icon-next"></i>
             </a>
 
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
+            <a [href]="productBrandCategoryUrl" (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
                 class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}

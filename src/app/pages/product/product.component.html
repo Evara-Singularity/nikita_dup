@@ -236,20 +236,6 @@
 
     <!-- other sections starts -->
     <div>
-        <!-- RFQ section starts -->
-        <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
-            <ul class="deals-list">
-                <li class="clearfix">
-                    <!-- <i class="icon-combo ico_offer"></i> -->
-                    <i class="icon-dropbox-fill"></i>
-                    <div class="ofr_txt">
-                        <strong class="text-black">Interested to buy in bulk</strong>
-                        <small>Get customized price</small>
-                    </div>
-                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
-                </li>
-            </ul>
-        </div>
         <!-- RFQ section ends -->
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
             *ngIf="isProductReturnAble && !productOutOfStock">
@@ -447,6 +433,21 @@
                 </ng-container>
             </div>
         </section>
+
+        <!-- GET Quote section starts -->
+        <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
+            <ul class="deals-list">
+                <li class="clearfix">
+                    <!-- <i class="icon-combo ico_offer"></i> -->
+                    <i class="icon-dropbox-fill"></i>
+                    <div class="ofr_txt">
+                        <strong class="text-black">Interested to buy in bulk</strong>
+                        <small>Get customized price</small>
+                    </div>
+                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
+                </li>
+            </ul>
+        </div>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>

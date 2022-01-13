@@ -1,7 +1,7 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
-import { Observer, of } from "rxjs";
+import { Observer, of, Subscription } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NavigationExtras, Router } from "@angular/router";
@@ -563,12 +563,13 @@ export class CommonService
                     });
             } else if (defaultParams["pageName"] == "ATTRIBUTE") {
                 if (this.currentRequest != undefined) this.currentRequest.unsubscribe();
+                let _observerable: Observable<any> = null;
                 if (defaultParams['searchTerm']) {
-                    this.currentRequest = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH, defaultParams)
+                    _observerable = this.getSearchData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH, defaultParams);
                 } else {
-                    this.currentRequest = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams)
+                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams);
                 }
-                this.currentRequest.pipe(
+                this.currentRequest = _observerable.pipe(
                     map((res) =>
                     {
                         res["buckets"].map((bucket) =>

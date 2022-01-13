@@ -31,7 +31,6 @@ export class PageNotFoundComponent {
     }
 
     ngOnInit() {
-        debugger;
         this.API = CONSTANTS;
         if (isPlatformServer(this.platformId)) {
             this.response.status(404);

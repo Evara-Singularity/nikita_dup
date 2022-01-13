@@ -79,7 +79,7 @@ export class FilterMidPlpComponent implements OnInit {
             maxPrice: 0,
             minPrice: 0,
             selected: false, 
-            term: "Safety Shoes",
+            term: "Safety Instrument",
             categoryName: "Safety Shoes",
             categoryId: "116111700",
             confidence: 100.0
@@ -91,7 +91,7 @@ export class FilterMidPlpComponent implements OnInit {
             minPrice: 0,
             selected: false, 
             term: "Safety Gloves",
-            categoryName: "Safety Gloves",
+            categoryName: "Safety Jacket",
             categoryId: "116111701",
             confidence: 100.0
           },
@@ -117,9 +117,6 @@ export class FilterMidPlpComponent implements OnInit {
       if (discount) {
         this._productListService.inlineFilterData.push(discount);
       }
-
-      console.log(this._productListService.inlineFilterData);
-
 
       this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
     }

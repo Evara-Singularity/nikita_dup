@@ -48,7 +48,59 @@ export class FilterMidPlpComponent implements OnInit {
 
     if (this.pageName === 'SEARCH') {
       // Genrate Category Data and for that Map categoriesRecommended data With checkAndApplyFilter data i.e key and item check this function
-      category;
+      category = {
+        name:'Category',
+        terms: [
+          {
+            count: 3,
+            enabled: true,
+            maxPrice: 0,
+            minPrice: 0,
+            selected: false, 
+            term: "Safety Shoes",
+            categoryName: "Safety Shoes",
+            categoryId: "116111700",
+            confidence: 100.0
+          },
+          {
+            count: 3,
+            enabled: true,
+            maxPrice: 0,
+            minPrice: 0,
+            selected: false, 
+            term: "Safety Gloves",
+            categoryName: "Safety Gloves",
+            categoryId: "116111701",
+            confidence: 100.0
+          },
+          {
+            count: 3,
+            enabled: true,
+            maxPrice: 0,
+            minPrice: 0,
+            selected: false, 
+            term: "Safety Shoes",
+            categoryName: "Safety Shoes",
+            categoryId: "116111700",
+            confidence: 100.0
+          },
+          {
+            count: 3,
+            enabled: true,
+            maxPrice: 0,
+            minPrice: 0,
+            selected: false, 
+            term: "Safety Gloves",
+            categoryName: "Safety Gloves",
+            categoryId: "116111701",
+            confidence: 100.0
+          },
+        ]
+      };
+      // if category exists for search page then push it at the top if the page
+      if (category) {
+        this._productListService.inlineFilterData.push(category);
+      }
     }
 
     if (this.filterData) {
@@ -56,10 +108,6 @@ export class FilterMidPlpComponent implements OnInit {
       const price = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[1]);
       const discount = this.filterData.find(x => x.name === GLOBAL_CONSTANT.inlineFilter[2]);
 
-      // if category exists for search page then push it at the top if the page
-      if (category) {
-        this._productListService.inlineFilterData.push(category);
-      }
       if (brand) {
         this._productListService.inlineFilterData.push(brand);
       }
@@ -69,6 +117,8 @@ export class FilterMidPlpComponent implements OnInit {
       if (discount) {
         this._productListService.inlineFilterData.push(discount);
       }
+
+      console.log(this._productListService.inlineFilterData);
 
 
       this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];

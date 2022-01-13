@@ -48,7 +48,7 @@ export class ArticleComponent implements OnInit
                 this.toastMessageService.show({ type: 'error', text: response['message'] });
             }
         }
-        this.breadCrumbList = [{ name: "Articles", link: "/articles" }, { name: this.breadCrumbTitle, link: null }];
+        this.breadCrumbList = [{ name: "Articles", link: "/article" }, { name: this.breadCrumbTitle, link: null }];
     }
 
     setAnalyticTags(response)

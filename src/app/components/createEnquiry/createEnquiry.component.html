@@ -14,42 +14,56 @@
                     <span>All of this within 30 min.</span>
                 </h2>
             </div>
-            <form>
+            <form [formGroup]="bulkEnquiryForm" >
                 <div class="personal-details">
                     <div class="form-pd-field">
                         <label>Full Name*</label>
-                        <input type="text" placeholder="Enter full name">
-                        <div class="error-txt">
-                            Kindly enter your name
+                        <input type="text" formControlName='name' placeholder="Enter full name">
+                        <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" >
+                            Kindly enter name
                         </div>
                     </div>
                     <div class="form-pd-field">
                         <label>Email ID*</label>
-                        <input type="text" placeholder="Enter Email ID">
+                        <input type="text" formControlName='email' placeholder="Enter Email ID">
+                        <div class="error-txt" *ngIf="isFormSubmitted && emailFC.invalid" >
+                            Kindly enter valid email
+                        </div>
                     </div>
                     <div class="form-pd-field">
                         <label>Mobile No*</label>
-                        <input type="text" placeholder="Enter Mobile No">
+                        <input type="text" formControlName='phoneno' placeholder="Enter Mobile No">
+                        <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
+                            Kindly enter valid Phone number
+                        </div>
                     </div>
                     <div class="form-pd-field">
                         <label>Company (optional)</label>
-                        <input type="text" placeholder="Enter Company (optional)">
+                        <input type="text" formControlName='company_name' placeholder="Enter Company (optional)">
                     </div>
-                    <button class="btn btn-variant1 btn-disabled">SUBMIT REQUEST</button>
+                    <button class="btn btn-variant1" (click)="submit()" >SUBMIT REQUEST</button>
                 </div>
             </form>
         </div>
     </div>
     <!-- success popup -->
-    <!-- <div class="thanks-pop">
-        <div class="top-cross-area">
-            <img src="assets/img/close-circle-fill.svg">
-        </div>
-        <div class="pop-img-area">
-            <img src="assets/img/checkbox-circle-fill-m.svg">
-        </div>
-        <div class="pop-text-area">
-            <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
-        </div>
-    </div> -->
+    
 </div>
+
+<app-bottom-menu *ngIf="showThanksPopup" (outData$)="togglePopUp()">
+    <div content>
+        <div class="thanks-pop">
+            <div class="top-cross-area" >
+                <span (click)="togglePopUp()" >
+                    <img src="assets/img/close-circle-fill.svg">
+                </span>
+            </div>
+            <div class="pop-img-area">
+                <img src="assets/img/checkbox-circle-fill-m.svg">
+            </div>
+            <div class="pop-text-area">
+                <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>

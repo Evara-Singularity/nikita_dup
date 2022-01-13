@@ -10,6 +10,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CommonService } from '@app/utils/services/common.service';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 
 @Component({
   selector: 'create-enquiry-component',
@@ -20,7 +21,16 @@ export class CreateEnquiryComponent {
 
   public bulkEnquiryForm: FormGroup;
   public customerId: number;
-  showThanksPopup = false;
+  showThanksPopup = true;
+  isFormSubmitted: boolean= false;
+
+  private userDetails: { name: string, phoneno: string, email: string, company_name: string, isLogin: boolean } = {
+    name: '',
+    phoneno: '',
+    email: '',
+    company_name: '',
+    isLogin: false
+  }
 
   constructor(
     private meta: Meta,
@@ -45,22 +55,7 @@ export class CreateEnquiryComponent {
   initialize() {
     if (this._commonService.isBrowser) {
       this.getuserData();
-      this.getBusinessDetail();
       this.adobeAnayticInitCall();
-    }
-  }
-
-  getBusinessDetail() {
-    let userSession = this.localStorageService.retrieve('user');
-    if (userSession && userSession.authenticated == "true") {
-      let data = { customerId: userSession.userId, userType: "business" };
-      this.bulkEnquiryForm.controls['email'].setValue(userSession.email);
-      this.bulkEnquiryForm.controls['phoneno'].setValue(userSession.phone);
-      this.bulkEnquiryService.getCustomerBusinessDetail(data).subscribe(res => {
-        if (this.bulkEnquiryForm !== undefined && res && res['data']) {
-          this.bulkEnquiryForm.controls['company_name'].setValue(res['data']['companyName']);
-        }
-      })
     }
   }
 
@@ -70,22 +65,55 @@ export class CreateEnquiryComponent {
       if (user && user.authenticated == "true") {
         let name = user.userName.split(" ");
         this.customerId = user.userId;
-        this.bulkEnquiryForm.controls['firstname'].setValue(name[0]);
-        this.bulkEnquiryForm.controls['email'].setValue(user.email);
-        this.bulkEnquiryForm.controls['phoneno'].setValue(user.phone);
+        this.userDetails.isLogin = true;
+        this.userDetails.name = name[0];
+        this.userDetails.email = user.email;
+        this.userDetails.phoneno = user.phone;
+        this.getBusinessDetail();
       }
+    }
+  }
+
+  getBusinessDetail() {
+    let userSession = this.localStorageService.retrieve('user');
+    if (userSession && userSession.authenticated == "true") {
+      let data = { customerId: userSession.userId, userType: "business" };
+      this.userDetails.email = userSession.email;
+      this.userDetails.phoneno = userSession.phone;
+      this.bulkEnquiryService.getCustomerBusinessDetail(data).subscribe(res => {
+        if (this.bulkEnquiryForm !== undefined && res && res['data']) {
+          this.userDetails.company_name = res['data']['companyName'];
+        }
+        this.setLoginUserData();
+      })
+    }
+  }
+
+  setLoginUserData(){
+    if(this.userDetails.isLogin){
+      this.nameFC.setValue(this.userDetails.name);
+      this.emailFC.setValue(this.userDetails.email);
+      this.phoneFC.setValue(this.userDetails.phoneno);
+      this.companyFC.setValue(this.userDetails.company_name);
+    }
+  }
+
+  submit(){
+    this.isFormSubmitted = true;
+    if(this.bulkEnquiryForm.valid){
+      this.sendBulkEnquiry();
     }
   }
 
   sendBulkEnquiry() {
     let obj = {
       "rfqEnquiryCustomer": {
-        "firstName": this.bulkEnquiryForm.controls['firstname'].value,
-        "email": this.bulkEnquiryForm.controls['email'].value,
-        "mobile": this.bulkEnquiryForm.controls['phoneno'].value,
-        "company": this.bulkEnquiryForm.controls['company_name'].value,
+        "firstName": this.nameFC.value,
+        "email": this.emailFC.value,
+        "mobile": this.phoneFC.value,
+        "company": this.companyFC.value,
       },
-      "rfqEnquiryItemsList": this.bulkEnquiryForm.controls['products'].value
+      "rfqEnquiryItemsList": []
     }
     this.bulkEnquiryService.postBulkEnquiry(obj).subscribe(
       res => {
@@ -97,6 +125,13 @@ export class CreateEnquiryComponent {
         }
       }
     );
+  }
+
+  
+  togglePopUp(){
+    this.showThanksPopup = false;
+    this.bulkEnquiryForm.reset();
+    this.setLoginUserData();
   }
 
   private adobeEventAfterSubmission() {
@@ -138,11 +173,28 @@ export class CreateEnquiryComponent {
     this.globalAnalyticService.sendAdobeCall(adobeObj);
   }
 
+  get nameFC(){
+    return this.bulkEnquiryForm.get('name')
+  }
+
+  get emailFC(){
+    return this.bulkEnquiryForm.get('email')
+  }
+
+  get phoneFC(){
+    return this.bulkEnquiryForm.get('phoneno')
+  }
+
+  get companyFC(){
+    return this.bulkEnquiryForm.get('company_name')
+  }
+
 
 }
 
 /* HTML TODO: 
   - Footer accodian not working as exected also padding are also not proper 
+  - Raise a new equest btn missing
   */
 
 @NgModule({
@@ -151,7 +203,8 @@ export class CreateEnquiryComponent {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PopUpModule
+    PopUpModule,
+    BottomMenuModule
   ]
 })
 export default class CreateEnquiryModule {

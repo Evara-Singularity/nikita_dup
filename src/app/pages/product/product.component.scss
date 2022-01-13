@@ -1,5 +1,7 @@
 @import "../../scss/variables";
 @import "../../scss/carousel";
+@import '../../scss/horizontalProductListing';
+
 
 .page-not-found {
     background: $white;
@@ -53,6 +55,20 @@
     background: #f2f2f2;
     position: relative;
     margin-bottom: 60px;
+
+    .inline-heading {
+        display: flex;
+        align-items: center;
+
+        .heading-3 {
+            width: 70%;
+        }
+
+        &>div {
+            width: 30%;
+            text-align: right;
+        }
+    }
 
     &.pdp-container-remove {
         margin-bottom: 0px;
@@ -366,7 +382,7 @@
                 font-size: 24px;
                 display: inline-block;
                 vertical-align: middle;
-                padding-right: 5PX;
+                padding-right: 8px;
             }
 
             span {
@@ -404,6 +420,17 @@
                 height: 100%;
                 border: none;
                 color: white;
+            }
+        }
+
+        &.nonFixed {
+            position: relative;
+            box-shadow: none;
+            height: 58px;
+            z-index: 2;
+
+            button {
+                border-radius: 4px;
             }
         }
     }
@@ -664,6 +691,12 @@
                 padding-right: 10px;
             }
 
+            .icon-dropbox-fill {
+                font-size: 24px;
+                float: left;
+                padding-right: 10px;
+            }
+
             .gst-icon {
                 float: left;
                 padding-right: 10px;
@@ -677,7 +710,7 @@
                 font-size: $large-font;
                 float: left;
                 width: 70%;
-                width: calc(100% - 120px);
+                width: calc(100% - 130px);
                 padding-bottom: 2px;
 
                 .first-txt {
@@ -689,7 +722,7 @@
                     font-size: $medium-font;
                     padding-top: 5px;
                     display: block;
-                    color:gray
+                    color: gray
                 }
 
                 &.location-txt {
@@ -826,9 +859,11 @@
 
         .feature-list {
             li {
+                padding-bottom: 5px;
+
                 p:before {
                     content: "•";
-                    font-size: 24px;
+                    font-size: 32px;
                     padding-right: 10px;
                     vertical-align: top;
                     line-height: 21px;
@@ -2068,7 +2103,7 @@
 }
 
 .returnPolicyContainer {
-    margin: 10px 0px;
+    // margin: 10px 0px;
     background: #fff;
     padding: 15px 15px 5px;
 }
@@ -2156,12 +2191,13 @@
             border-bottom: 0;
         }
 
-        &>img {
+        &>i {
             margin-left: auto;
-            width: 24px;
             display: flex;
-        }
-
+            align-items: center;
+            color: #000;
+            font-size: 14px;
+          }
         p {
             color: #303030;
             font-size: 14px;
@@ -2715,6 +2751,11 @@
     background: #fff;
     padding: 15px 15px 5px;
 
+    i {
+        font-size: 16px;
+        color: #d9232d;
+    }
+
     .moglix-ben-n-ret-policy-InnerContainer {
         overflow-y: hidden;
         overflow-x: scroll;
@@ -2783,6 +2824,10 @@
     span {
         color: #008AFF;
         font-weight: 600;
+
+        i {
+            padding-left: 5px;
+        }
     }
 }
 
@@ -2802,4 +2847,151 @@
     padding-bottom: 20px;
     font-size: 12px;
     margin-top: -20px;
+}
+
+.pdpCard {
+    margin: 10px 0px 0px;
+    padding: 0px;
+
+    &:first-of-type {
+        margin-top: 0px !important;
+        background: red;
+    }
+}
+
+.oos-tag {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+
+    span {
+        padding: 5px 10px;
+        background: #707070;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: bold;
+    }
+}
+
+.blueTag {
+    background: #008AFF;
+    color: #fff;
+    font-size: $extra-large-font;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    position: absolute;
+    padding: 4px 8px;
+    font-weight: 700;
+    top: 30px;
+    z-index: 4;
+}
+
+.pdp-card-breadcrumb {
+    background: $white;
+    padding: 10px 15px;
+    border-bottom: 1px solid #E3E3E3;
+    margin-bottom: 10px;
+
+    li {
+        list-style: none;
+        display: inline;
+        margin-right: 10px;
+        font-size: $small-font;
+        line-height: 16px;
+
+        &:not(:last-child):after {
+            content: "\e95c";
+            font-family: 'icomooon_pwa' !important;
+            font-weight: bolder;
+            font-size: 8px !important;
+            margin-left: 10px;
+            margin-right: 0px;
+        }
+
+        &:hover {
+            color: #0061d5 !important;
+        }
+    }
+}
+
+.vertical-scroll-container {
+    background-color: #F2F2F2;
+    padding: 10px;
+
+    h2 {
+        font-size: 16px;
+        line-height: 38px;
+        position: sticky;
+        left: 0;
+    }
+}
+
+.oosSimilarTopSection {
+    padding: 10px 0px 0px 10px;
+
+    h2 {
+        font-size: $large-font;
+        line-height: 38px;
+    }
+}
+
+.horizontal-scroll-container {
+    display: flex;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+
+    product-horizontal-card {
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0px;
+        }
+    }
+}
+
+// Skeleton
+.skeleton-card-view {
+    min-width: 340px;
+    max-width: 340px;
+    margin-left: 15px;
+
+    &:first-child {
+        margin-left: 0px;
+    }
+
+    .left-sectn {
+        width: 100px !important;
+    }
+
+    .right-sectn {
+        width: calc(100% - 110px) !important;
+    }
+}
+
+.btn-red {
+    background: $btn-color-red;
+}
+
+.scroll-arrow-pdp {
+    background: #3C3C3C;
+    position: fixed;
+    bottom: 80px;
+    right: 10px;
+    padding: 12px;
+    border-radius: 100%;
+    box-shadow: 0px 2px 10px #00000029;
+    z-index: 8;
+    opacity:0.5;
+    i {
+        color: #fff;
+        font-size: 18px;
+    }
 }

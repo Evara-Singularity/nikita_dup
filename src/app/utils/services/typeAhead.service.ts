@@ -17,7 +17,7 @@ export class TypeAheadService {
   }
 
   getSuggession(query: string): any {
-    const url = CONSTANTS.NEW_MOGLIX_API +'/homepage/getsuggestion' + '?str=' + query;
+    const url = CONSTANTS.NEW_MOGLIX_API +'/homepage/getsuggestion' + '?str=' + encodeURIComponent(query);
     return this._dataService.callRestful('GET', url)
       .pipe(
         catchError((res: HttpErrorResponse) => {
@@ -26,7 +26,7 @@ export class TypeAheadService {
       );
   }
   goToDirectBrandCatPage(term) {
-    let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.IS_BRAND_CATEGORY + '?str=' + term;
+    let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.IS_BRAND_CATEGORY + '?str=' + encodeURIComponent(term);
     return this._dataService.callRestful('GET', url);
   }
 

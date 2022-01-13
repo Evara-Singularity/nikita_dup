@@ -8,6 +8,7 @@ import { MyAccountGuard } from '../utils/guards/myAccount.guard'
 import { ModalModule } from '@app/modules/modal/modal.module';
 import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 
+
 @NgModule({
   declarations: [PagesComponent],
   imports: [

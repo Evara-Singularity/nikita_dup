@@ -12,39 +12,35 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
     templateUrl: './review-rating.component.html',
     styleUrls: ['./../../pages/product/product.component.scss']
 })
-export class ReviewRatingComponent
-{
+export class ReviewRatingComponent {
     displayVariant2Popup = true;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Output() emitWriteReview$: EventEmitter<any> = new EventEmitter<any>();
     @Input('modalData') modalData = null;
     @Input('rawReviewsData') rawReviewsData = null;
     @Input('productUrl') productUrl = null;
+    @Input('oosSimilarCardNumber') oosSimilarCardNumber = -1;
     constructor(
         private router: Router,
         public localStorageService: LocalStorageService,
         private productService: ProductService,
         private _tms: ToastMessageService,
     ) { }
-    outData($event)
-    {
+    outData($event) {
         this.closePopup$.emit();
     }
 
-    emitWriteReview()
-    {
+    emitWriteReview() {
         this.closePopup$.emit();
-        this.emitWriteReview$.emit();
+        this.emitWriteReview$.emit(this.oosSimilarCardNumber);
     }
 
-    closeVariant2Popup()
-    {
+    closeVariant2Popup() {
         this.closePopup$.emit();
         this.displayVariant2Popup = false
     }
 
-    postHelpful(item, yes, no, i)
-    {
+    postHelpful(item, yes, no, i) {
         if (this.localStorageService.retrieve('user')) {
             let user = this.localStorageService.retrieve('user');
             if (user.authenticated == "true") {
@@ -57,8 +53,7 @@ export class ReviewRatingComponent
                     "is_review_helpful_count_no": no,
                     "is_review_helpful_count_yes": yes
                 }
-                this.productService.postHelpful(obj).subscribe((res) =>
-                {
+                this.productService.postHelpful(obj).subscribe((res) => {
                     if (res['code'] == 200) {
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         this.rawReviewsData.reviewList[i]['isPost'] = true;
@@ -75,8 +70,7 @@ export class ReviewRatingComponent
         }
     }
 
-    goToLoginPage(link)
-    {
+    goToLoginPage(link) {
         this.closeVariant2Popup();
         let navigationExtras: NavigationExtras = {
             queryParams: { 'backurl': link },

@@ -5,6 +5,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'pagenot-found',
@@ -21,7 +22,8 @@ export class PageNotFoundComponent {
         @Inject(PLATFORM_ID) private platformId: Object,
         @Optional() @Inject(RESPONSE) private response,
         public footerService: FooterService,
-        public _commonService: CommonService) {
+        public _commonService: CommonService,
+        private title:Title) {
 
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -49,5 +51,6 @@ export class PageNotFoundComponent {
             this.footerService.setFooterObj({ footerData: true });
             this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
         }
+        this.title.setTitle("Page Not Found");
     }
 }

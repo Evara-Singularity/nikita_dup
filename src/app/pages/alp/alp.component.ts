@@ -23,8 +23,7 @@ const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
     styleUrls: ['./alp.scss'],
 })
 
-export class AlpComponent implements OnInit
-{
+export class AlpComponent implements OnInit {
     productsUpdated: BehaviorSubject<any> = new BehaviorSubject<any>({});
     showLoader: boolean;
     pageName: string;
@@ -54,6 +53,7 @@ export class AlpComponent implements OnInit
     alpBreadCrumbData = null;
     alpCategoryCodeData = null;
     alpProductListingData = null;
+    showPageNotFound: boolean;
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -67,24 +67,22 @@ export class AlpComponent implements OnInit
         public _commonService: CommonService,
         private _categoryService: AlpService,
         public _productListService: ProductListService
-    )
-    {
+    ) {
         this.pageName = 'ATTRIBUTE';
+        this._commonService.isHomeHeader = false;
+        this._commonService.isPLPHeader = true;
     }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
     }
 
-    setCategoryDataFromResolver()
-    {
+    setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
-        this._activatedRoute.data.subscribe(res =>
-        {
+        this._activatedRoute.data.subscribe(res => {
             this._productListService.excludeAttributes = [];
             // Set config based on query params change
             const queryParamsData = this._activatedRoute.snapshot.queryParams;
@@ -104,10 +102,10 @@ export class AlpComponent implements OnInit
         });
     }
 
-    setAttributeListingInfo()
-    {
+    setAttributeListingInfo() {
         //TODO:1704 if data is null then 404
-        if (this._commonService.isServer && this.alpAttrListingData['data'] === null) {
+        this.showPageNotFound = this.alpAttrListingData['data'] === null || Object.keys(this.alpAttrListingData['data']).length === 0 || this.alpAttrListingData['data'].length === 0;
+        if (this.showPageNotFound && this._commonService.isServer) {
             this._response.status(404);
             return;
         }
@@ -120,8 +118,7 @@ export class AlpComponent implements OnInit
         this.fetchCIMSRelatedData();
     }
 
-    fetchCIMSRelatedData()
-    {
+    fetchCIMSRelatedData() {
         this._commonService.showLoader = false;
         const ict = this.alpCategoryCodeData["categoryDetails"]['active'];
         const PRODUCT_COUNT = this.alpProductListingData['productSearchResult']['totalCount'];
@@ -142,8 +139,7 @@ export class AlpComponent implements OnInit
         }
     }
 
-    private initiallizeRelatedCategories(response, flag)
-    {
+    private initiallizeRelatedCategories(response, flag) {
         let qps = this._activatedRoute.snapshot.queryParams;
         if (this.alpCategoryCodeData.categoryDetails.active) {
             this.meta.addTag({ 'name': 'description', 'content': this.metaDescription });
@@ -165,8 +161,7 @@ export class AlpComponent implements OnInit
      * @param response : returned data from category api or transfer state
      * @param flag : true, if TrasnferState exist.
      */
-    private initiallizeData(response: any, flag: boolean)
-    {
+    private initiallizeData(response: any, flag: boolean) {
         this.showLoader = false;
         this.productListLength = response.productSearchResult['products'].length;
         this.productsUpdated.next(response.productSearchResult.products);
@@ -191,8 +186,7 @@ export class AlpComponent implements OnInit
 
     }
 
-    setTrackingData()
-    {
+    setTrackingData() {
         var taxonomy = this.alpCategoryCodeData["categoryDetails"]['taxonomy'];
         var trackData = {
             event_type: "page_load",
@@ -210,8 +204,7 @@ export class AlpComponent implements OnInit
         this.dataService.sendMessage(trackData);
     }
 
-    fireTags(response)
-    {
+    fireTags(response) {
 
         /**************************GTM START*****************************/
         let cr: any = this._router.url.replace(/\//, ' ').replace(/-/g, ' ');
@@ -329,8 +322,7 @@ export class AlpComponent implements OnInit
         }
     }
 
-    updateConfigBasedOnQueryParams(queryParamsData)
-    {
+    updateConfigBasedOnQueryParams(queryParamsData) {
         this.pageNo = queryParamsData['page'];
         this.displayGroupBy = (queryParamsData['page'] == 1);
         this.trendingSearchData = queryParamsData;
@@ -342,12 +334,10 @@ export class AlpComponent implements OnInit
         }
     }
 
-    updateConfigBasedOnParams(paramsData)
-    {
+    updateConfigBasedOnParams(paramsData) {
         if (paramsData && paramsData.id && slpPagesExtrasIdMap.hasOwnProperty(paramsData.id)) {
             this.isSLPPage = true;
-            this.getExtraCategoryData(paramsData).subscribe((paramsData) =>
-            {
+            this.getExtraCategoryData(paramsData).subscribe((paramsData) => {
                 if (paramsData && paramsData['status'] && paramsData['data'] && paramsData['data'].length) {
                     if (this._commonService.isServer) {
                         this._tState.set(EDK, paramsData);
@@ -361,17 +351,14 @@ export class AlpComponent implements OnInit
         }
     }
 
-    parseData(data)
-    {
+    parseData(data) {
         let relevantObj: any = {};
-        data.forEach(obj =>
-        {
+        data.forEach(obj => {
             relevantObj = obj;
         });
 
         if (relevantObj.block_data && relevantObj.block_data.product_data) {
-            relevantObj.block_data.product_data.forEach(product =>
-            {
+            relevantObj.block_data.product_data.forEach(product => {
                 if (product.discount_percentage && product.pricewithouttax && parseInt(product.discount_percentage) < 100) {
                     product.discount_percentage = parseInt(product.discount_percentage);
                     product.pricewithouttax = parseInt(product.pricewithouttax);
@@ -381,8 +368,7 @@ export class AlpComponent implements OnInit
                 };
                 if (product && product.short_description) {
                     let descArr = product.short_description.split("||");
-                    descArr.forEach(element =>
-                    {
+                    descArr.forEach(element => {
                         let splitEl = element.split(":");
                         if (splitEl[0].toLowerCase() == "brand" || splitEl[0].toLowerCase() == "by") {
                             desc.Brand = splitEl[1];
@@ -396,13 +382,11 @@ export class AlpComponent implements OnInit
         }
     }
     // shared product listing data update
-    createProductsSchema(productArray)
-    {
+    createProductsSchema(productArray) {
         if (this._commonService.isServer) {
             if (productArray.length > 0) {
                 const productList = [];
-                productArray.forEach((product, index) =>
-                {
+                productArray.forEach((product, index) => {
                     productList.push({
                         "@type": "ListItem",
                         "position": index + 1,
@@ -428,8 +412,7 @@ export class AlpComponent implements OnInit
         }
     }
 
-    private setCanonicalUrls(response)
-    {
+    private setCanonicalUrls(response) {
 
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
         if (this._commonService.isServer) {
@@ -485,8 +468,7 @@ export class AlpComponent implements OnInit
         }
     }
 
-    getExtraCategoryData(data): Observable<{}>
-    {
+    getExtraCategoryData(data): Observable<{}> {
         if (this._tState.hasKey(EDK)) {
             return of(this._tState.get(EDK, {}));
         } else {
@@ -494,8 +476,7 @@ export class AlpComponent implements OnInit
         }
     }
 
-    setAmpTag(page)
-    {
+    setAmpTag(page) {
         let currentRoute = this._router.url.split("?")[0].split("#")[0];
         let ampLink;
         ampLink = this._renderer2.createElement('link');

@@ -1,44 +1,61 @@
 import {
-  Component, ElementRef, Input, PLATFORM_ID,
-  Inject, Output, EventEmitter, ChangeDetectorRef, ComponentFactoryResolver,
-  ViewChild, Injector, ViewRef, ViewContainerRef, NgModule, OnInit
-} from '@angular/core';
-import { isPlatformServer, isPlatformBrowser, CommonModule } from '@angular/common';
-import { NgxSiemaModule, NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
-import { Subject } from 'rxjs';
+  Component,
+  ElementRef,
+  Input,
+  PLATFORM_ID,
+  Inject,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  ComponentFactoryResolver,
+  ViewChild,
+  Injector,
+  ViewRef,
+  ViewContainerRef,
+  NgModule,
+  OnInit,
+} from "@angular/core";
+import {
+  isPlatformServer,
+  isPlatformBrowser,
+  CommonModule,
+} from "@angular/common";
+import { NgxSiemaModule, NgxSiemaOptions, NgxSiemaService } from "ngx-siema";
+import { Subject } from "rxjs";
 
-import { takeUntil } from 'rxjs/operators';
-import { SiemaCrouselService } from '../../utils/services/siema-crousel.service';
-import CONSTANTS from '../../config/constants';
+import { takeUntil } from "rxjs/operators";
+import { SiemaCrouselService } from "../../utils/services/siema-crousel.service";
+import CONSTANTS from "../../config/constants";
 
-import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
-import { ProductCrouselSlideComponent } from './ProductCrouselSlide/ProductCrouselSlide.component';
-import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
-import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
-import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
+import { YTThumnailPipeModule } from "@app/utils/pipes/ytthumbnail.pipe";
+import { ProductCrouselSlideComponent } from "./ProductCrouselSlide/ProductCrouselSlide.component";
+import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
+import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
+import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
-  selector: 'ProductCrousel',
-  templateUrl: './ProductCrousel.component.html',
-  styleUrls: ['./ProductCrousel.component.scss']
+  selector: "ProductCrousel",
+  templateUrl: "./ProductCrousel.component.html",
+  styleUrls: ["./ProductCrousel.component.scss"],
 })
 export class ProductCrouselComponent implements OnInit {
-
   image_Path = CONSTANTS.IMAGE_BASE_URL;
 
+  @Input() productOutOfStock: boolean;
+  @Input() clickedIndexOfOosProduct: number;
   @Input() options: any;
   @Input() items: any[];
   @Input() imagePath: any;
   @Input() defaultImage: any;
   @Output() ImageClick: EventEmitter<any> = new EventEmitter<any>();
   @Output() ImageMouseEnter: EventEmitter<any> = new EventEmitter<any>();
-  @Input() refreshSiemaItems$: Subject<{ items: Array<{}>, type: string }>;
+  @Input() refreshSiemaItems$: Subject<{ items: Array<{}>; type: string }>;
   @Input() moveToSlide$: Subject<number>;
   @Input() appendSiemaItems$: Subject<Array<{}>>;
   @Input() productName: any;
   @ViewChild(ProductCrouselSlideComponent) ssc: ProductCrouselSlideComponent;
-  @ViewChild('kelsiema', { read: ElementRef }) kelsiema: ElementRef;
-  @ViewChild('kvcsiema', { read: ViewContainerRef }) kvcsiema: ViewContainerRef;
+  @ViewChild("kelsiema", { read: ElementRef }) kelsiema: ElementRef;
+  @ViewChild("kvcsiema", { read: ViewContainerRef }) kvcsiema: ViewContainerRef;
 
   isServer: boolean;
   isBrowser: boolean;
@@ -60,49 +77,45 @@ export class ProductCrouselComponent implements OnInit {
 
   constructor(
     private injector: Injector,
+    private _commonService: CommonService,
     private _cfr: ComponentFactoryResolver,
     private _cdr: ChangeDetectorRef,
     private ngxSiemaService: NgxSiemaService,
     private _siemaCrouselService: SiemaCrouselService,
-    @Inject(PLATFORM_ID) private platformId: Object) {
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.isServer = isPlatformServer(platformId);
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
-
   ngOnInit() {
-
     if (this.isBrowser) {
-
       if (this.refreshSiemaItems$) {
         this.refreshSiemaItems$
-          .pipe(
-            takeUntil(this.cDistryoyed)
-          ).subscribe((data) => {
+          .pipe(takeUntil(this.cDistryoyed))
+          .subscribe((data) => {
             //  ;
-            this.refreshSiema(data['items']);
-            this._cdr.markForCheck(); // marks path 
+            this.refreshSiema(data["items"]);
+            this._cdr.markForCheck(); // marks path
           });
       }
 
       if (this.moveToSlide$) {
         this.moveToSlide$.subscribe((slideNumber: number) => {
+          console.log('called');
+          this._commonService.enableNudge = false;
           this.ngxSiemaService.goTo(slideNumber, this.options.selector);
-        })
+        });
       }
 
       if (this.appendSiemaItems$) {
-
         this.appendSiemaItems$
-          .pipe(
-            takeUntil(this.cDistryoyed)
-          )
+          .pipe(takeUntil(this.cDistryoyed))
           .subscribe((items: Array<{}>) => {
             this.udpateSiema(items);
-            this._cdr.markForCheck(); // marks path 
+            this._cdr.markForCheck(); // marks path
           });
       }
-
 
       if (window.innerWidth < 768) {
         this.isMobile = true;
@@ -121,7 +134,11 @@ export class ProductCrouselComponent implements OnInit {
       this.interval = this.options.interval;
     }
     let loop = false;
-    if (this.items && this.items.length && this.items.length > this.options.perPage) {
+    if (
+      this.items &&
+      this.items.length &&
+      this.items.length > this.options.perPage
+    ) {
       loop = true;
     }
     if (this.options.loop !== "undefined") {
@@ -129,13 +146,14 @@ export class ProductCrouselComponent implements OnInit {
     }
     if (this.isBrowser) {
       if (document.querySelector(this.options.selector)) {
-        this.scrollTarget = document.querySelector(this.options.selector).firstElementChild;
+        this.scrollTarget = document.querySelector(
+          this.options.selector
+        ).firstElementChild;
       }
     }
 
-
     this.ngxSiemaOptions = {
-      selector: that.options.selector || '.siema',
+      selector: that.options.selector || ".siema",
       duration: that.options.duration || 500,
       perPage: that.options.perPage || that.perPageDefault,
       startIndex: that.options.startIndex || 0,
@@ -147,7 +165,7 @@ export class ProductCrouselComponent implements OnInit {
         window.scrollTo(window.scrollX, window.scrollY - 1);
         this.scrollInitialize();
         that.initialize();
-        if (this.options.onInit && typeof this.options.onInit == 'function') {
+        if (this.options.onInit && typeof this.options.onInit == "function") {
           this.options.onInit.call();
         }
       },
@@ -155,22 +173,27 @@ export class ProductCrouselComponent implements OnInit {
         this.scrollInitialize();
         this.lazyLoadBanner();
 
-        document.querySelectorAll('iframe').forEach((iframe) => {
-          iframe.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*')
+        document.querySelectorAll("iframe").forEach((iframe) => {
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"stopVideo","args":""}',
+            "*"
+          );
         });
 
-        if (that.options.onChange && typeof that.options.onChange == 'function') {
+        if (
+          that.options.onChange &&
+          typeof that.options.onChange == "function"
+        ) {
           that.options.onChange.call();
         }
       },
-    }
+    };
 
     this.initialized = true;
 
     setTimeout(() => {
       this.scrollInitialize();
     }, 1000);
-
   }
 
   ngOnDestroy() {
@@ -179,18 +202,20 @@ export class ProductCrouselComponent implements OnInit {
   }
 
   udpateSiema(items) {
-    const fakeItems = items.map(item => "");
+    const fakeItems = items.map((item) => "");
     this.items = [...this.items, ...fakeItems];
     for (let i = 0; i < items.length; i++) {
-      const componentFactory = this._cfr.resolveComponentFactory(ProductCrouselSlideComponent);
+      const componentFactory = this._cfr.resolveComponentFactory(
+        ProductCrouselSlideComponent
+      );
       const componentRef = componentFactory.create(this.injector);
-      componentRef.instance['options'] = this.options;
-      componentRef.instance['item'] = items[i]
-      componentRef.instance['ngxSiemaOptions'] = this.ngxSiemaOptions
-      componentRef.instance['defaultImage'] = this.defaultImage;
-      componentRef.instance['imagePath'] = this.imagePath;
-      componentRef.instance['itemIndex'] = i + 1;
-      componentRef.instance['imageChange$'] = this.imageChange$;
+      componentRef.instance["options"] = this.options;
+      componentRef.instance["item"] = items[i];
+      componentRef.instance["ngxSiemaOptions"] = this.ngxSiemaOptions;
+      componentRef.instance["defaultImage"] = this.defaultImage;
+      componentRef.instance["imagePath"] = this.imagePath;
+      componentRef.instance["itemIndex"] = i + 1;
+      componentRef.instance["imageChange$"] = this.imageChange$;
       const view: ViewRef = componentRef.hostView;
       this.kvcsiema.insert(view, i);
     }
@@ -198,31 +223,30 @@ export class ProductCrouselComponent implements OnInit {
     let i = 0;
     let len = knl.length;
     for (let i = 0; i < len; i++) {
-      if (i % 1)
-        this.append(this.options.selector, knl[0]);
-      else
-        this.prepend(this.options.selector, knl[0]);
+      if (i % 1) this.append(this.options.selector, knl[0]);
+      else this.prepend(this.options.selector, knl[0]);
     }
     this.startBannerInterval();
   }
 
   refreshSiema(items) {
-
     let oldItemsLength = this.items ? this.items.length : 0;
 
     this.items = items;
     this.kvcsiema.clear();
     for (let i = 0; i < items.length; i++) {
-      const componentFactory = this._cfr.resolveComponentFactory(ProductCrouselSlideComponent);
+      const componentFactory = this._cfr.resolveComponentFactory(
+        ProductCrouselSlideComponent
+      );
       const componentRef = componentFactory.create(this.injector);
-      componentRef.instance['options'] = this.options;
-      componentRef.instance['item'] = items[i]
-      componentRef.instance['ngxSiemaOptions'] = this.ngxSiemaOptions
-      componentRef.instance['defaultImage'] = this.defaultImage;
-      componentRef.instance['imagePath'] = this.imagePath;
-      componentRef.instance['itemIndex'] = i;
-      componentRef.instance['imageChange$'] = this.imageChange$;
-      componentRef.instance['contentType'] = this.items[i]['contentType'];
+      componentRef.instance["options"] = this.options;
+      componentRef.instance["item"] = items[i];
+      componentRef.instance["ngxSiemaOptions"] = this.ngxSiemaOptions;
+      componentRef.instance["defaultImage"] = this.defaultImage;
+      componentRef.instance["imagePath"] = this.imagePath;
+      componentRef.instance["itemIndex"] = i;
+      componentRef.instance["imageChange$"] = this.imageChange$;
+      componentRef.instance["contentType"] = this.items[i]["contentType"];
       const view: ViewRef = componentRef.hostView;
       this.kvcsiema.insert(view, i);
     }
@@ -237,7 +261,10 @@ export class ProductCrouselComponent implements OnInit {
 
     // Remove all elements from using current items in siema
     while (oldItemsLength > 0) {
-      this.remove(this.options.selector, this.items.length + oldItemsLength - 1);
+      this.remove(
+        this.options.selector,
+        this.items.length + oldItemsLength - 1
+      );
       oldItemsLength--;
     }
   }
@@ -256,7 +283,6 @@ export class ProductCrouselComponent implements OnInit {
 
   prepend(selector, element) {
     this.ngxSiemaService.prepend(element, selector);
-
   }
 
   goTo(index, selector) {
@@ -264,31 +290,37 @@ export class ProductCrouselComponent implements OnInit {
   }
 
   scrollInitialize() {
-    this.ngxSiemaService.currentSlide(this.ngxSiemaOptions.selector).subscribe((data) => {
-      if (data && typeof data.currentSlide !== "undefined") {
-        this.currentIndex = data.currentSlide;
-        this.lazyLoadImage(this.currentIndex)
-      }
-    });
+    this.ngxSiemaService
+      .currentSlide(this.ngxSiemaOptions.selector)
+      .subscribe((data) => {
+        if (data && typeof data.currentSlide !== "undefined") {
+          this.currentIndex = data.currentSlide;
+          this.lazyLoadImage(this.currentIndex);
+        }
+      });
     this.imageChange$.next();
   }
 
   lazyLoadBanner() {
-    var imgDefer = document.getElementById("lazyLoad").getElementsByTagName('img');
+    var imgDefer = document
+      .getElementById("lazyLoad")
+      .getElementsByTagName("img");
 
     if (location.pathname == "/") {
       for (var ind = 0; ind < imgDefer.length; ind++) {
-        if (imgDefer[ind] && imgDefer[ind].getAttribute('id')) {
-          imgDefer[ind].setAttribute('src', imgDefer[ind].getAttribute('id'));
+        if (imgDefer[ind] && imgDefer[ind].getAttribute("id")) {
+          imgDefer[ind].setAttribute("src", imgDefer[ind].getAttribute("id"));
         }
       }
     }
   }
 
   lazyLoadImage(i) {
-    var imgDefer = document.getElementById("lazyLoad").getElementsByTagName('img');
-    if (imgDefer[i] && imgDefer[i].getAttribute('id')) {
-      imgDefer[i].setAttribute('src', imgDefer[i].getAttribute('id'));
+    var imgDefer = document
+      .getElementById("lazyLoad")
+      .getElementsByTagName("img");
+    if (imgDefer[i] && imgDefer[i].getAttribute("id")) {
+      imgDefer[i].setAttribute("src", imgDefer[i].getAttribute("id"));
     }
   }
 
@@ -306,10 +338,7 @@ export class ProductCrouselComponent implements OnInit {
       this.ngxSiemaService.next(1, this.options.selector);
     }, this.interval);
   }
-
-
 }
-
 
 @NgModule({
   declarations: [ProductCrouselComponent, ProductCrouselSlideComponent],
@@ -319,9 +348,7 @@ export class ProductCrouselComponent implements OnInit {
     MathCeilPipeModule,
     MathFloorPipeModule,
     NgxSiemaModule.forRoot(),
-    EnhanceImgByNetworkDirectiveModule,
   ],
-  providers: [NgxSiemaService]
+  providers: [NgxSiemaService],
 })
-export class AlertBoxToastModule {
-}
+export class AlertBoxToastModule { }

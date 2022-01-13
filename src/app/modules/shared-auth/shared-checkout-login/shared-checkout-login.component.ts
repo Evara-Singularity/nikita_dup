@@ -124,6 +124,7 @@ export class SharedCheckoutLoginComponent implements OnInit {
         }
         // login scenario
         if (this.isIdentifierVerified && this.identifierForm.valid && this.passwordFrom.value != '') {
+            console.log('insdide login');
             this.isSignInSubmitted = true;
             if (this.passwordFrom.valid) {
                 this.signIn();
@@ -248,68 +249,21 @@ export class SharedCheckoutLoginComponent implements OnInit {
         }, () => { this.commonService.showLoader = false; });
     }
 
+
     processAuthentication() {
-        const userSession = this.localAuthService.getUserSession();
-        const cartSession = Object.assign(this.cartService.getCartSession());
-        cartSession['cart']['userId'] = userSession.userId;
-        this.cartService.getSessionByUserId(cartSession).pipe(
-            mergeMap((cartSession: any) => {
-                if (this.cartService.buyNow) {
-                    const cartId = cartSession['cart']['cartId'];
-                    cartSession = this.cartService.buyNowSessionDetails;
-                    cartSession['cart']['cartId'] = cartId;
-                    cartSession['itemsList'][0]['cartId'] = cartId;
-                }
-                let sro = this.cartService.getShippingObj(cartSession);
-                return this.cartService.getShippingValue(sro)
-                    .pipe(
-                        map((sv: any) => {
-                            if (sv && sv['status'] && sv['statusCode'] === 200) {
-                                cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
-                                if (sv['data']['totalShippingAmount'] !== undefined && sv['data']['totalShippingAmount'] !== null) {
-                                    let itemsList = cartSession['itemsList'];
-                                    for (let i = 0; i < itemsList.length; i++) {
-                                        cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
-                                    }
-                                }
-                            }
-                            return cartSession;
-                        })
-                    );
-            })).subscribe((res) => {
-
-                if (res.statusCode !== undefined && res.statusCode === 200) {
-                    // update cart with items after merging items
-                    const cs = this.cartService.updateCart(res);
-                    this.cartService.setCartSession(cs);
-                    this.cartService.orderSummary.next(res);
-                    this.cartService.cart.next(res.noOfItems);
-
-                    if (this.cartService.buyNow) {
-                        // incase of checkout module only we need to check buynow flow
-                        const sessionDetails = this.cartService.getCartSession();
-                        sessionDetails['cart']['userId'] = userSession.userId;
-                        this.commonService.showLoader = true;
-                        this.cartService.updateCartSessions(null, sessionDetails).subscribe((data) => {
-                            this.localAuthService.login$.next(this.router.url);
-                            data['userId'] = userSession.userId;
-                            this.cartService.setCartSession(data);
-                            this.cartService.orderSummary.next(data);
-                            this.cartService.cart.next(data.noOfItems);
-                            this.commonService.showLoader = false;
-                            this.updatedStepShared$.emit(2);
-                            this.tms.show({ type: 'success', text: 'Sign in successful' });
-                        });
-                    } else {
-                        // without buynow flow in checkout module
-                        this.localAuthService.login$.next(this.router.url);
-                        this.updatedStepShared$.emit(2);
-                        this.tms.show({ type: 'success', text: 'Sign in successful' });
-                    }
-
-                }
-
-            }, () => { this.commonService.showLoader = false; });
+        console.log('insdide processAuthentication');
+        this.cartService.performAuthAndCartMerge({
+            enableShippingCheck: true,
+        }).subscribe(cartSession => {
+            console.log('insdide cartSession', cartSession);
+            this.commonService.showLoader = false;
+            if (cartSession) {
+                this.updatedStepShared$.emit(2);
+                this.tms.show({ type: 'success', text: 'Sign in successful' });
+            } else {
+                this.tms.show({ type: 'error', text: 'Something went wrong' });
+            }
+        });
     }
 
     forgotPassword() {

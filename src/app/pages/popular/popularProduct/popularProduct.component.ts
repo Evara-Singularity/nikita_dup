@@ -6,8 +6,7 @@ import { PopularProductService } from './popularProduct.service';
 import { SortByComponent } from "@components/sortBy/sortBy.component";
 import { CONSTANTS } from '@config/constants';
 import { Title, Meta } from '@angular/platform-browser';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
 
 @Component({
     selector: 'popular-product',

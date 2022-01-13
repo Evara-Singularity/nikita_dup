@@ -6,28 +6,27 @@ import CONSTANTS from '@app/config/constants';
     templateUrl: './payuForm.html',
 })
 
-export class PayuFormComponent{
-    configApi:{};
-    @Input() data:{} = {};
-    constructor(){
+export class PayuFormComponent {
+    configApi: {};
+    @Input() data: {} = {};
+    constructor() {
         this.configApi = CONSTANTS;
     }
 
-    ngOnInit(){
-        
+    ngOnInit() {
     }
 
-    ngAfterViewInit(){
-        setTimeout(()=>{
-            if(document.querySelector('.do-payment'))
-                document.querySelector('.do-payment').innerHTML = "changed"; 
-            (<HTMLFormElement>document.getElementById( "payu_form" )).submit();
+    ngAfterViewInit() {
+        setTimeout(() => {
+            if (document.querySelector('.do-payment'))
+                document.querySelector('.do-payment').innerHTML = "changed";
+            (<HTMLFormElement>document.getElementById("payu_form")).submit();
         }, 200)
     }
 
-    doPayment(){
-        if(document.querySelector('.do-payment'))
-            document.querySelector('.do-payment').innerHTML = "changed"; 
-        (<HTMLFormElement>document.getElementById( "payu_form" )).submit();
+    doPayment() {
+        if (document.querySelector('.do-payment'))
+            document.querySelector('.do-payment').innerHTML = "changed";
+        (<HTMLFormElement>document.getElementById("payu_form")).submit();
     }
 }

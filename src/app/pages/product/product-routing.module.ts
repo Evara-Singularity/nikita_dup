@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProductResolver } from '../../utils/resolvers/product.resolver';
+import { ProductResolver } from '../../utils/resolvers/product/product-main.resolver';
+import { ProductSectionResolver } from '../../utils/resolvers/product/product-section.resolver';
 import { ProductComponent } from './product.component';
 
 const routes: Routes = [
@@ -8,7 +9,8 @@ const routes: Routes = [
     path: '',
     component: ProductComponent,
     resolve: {
-      product: ProductResolver
+      product: ProductResolver,
+      productSecondaryApisData: ProductSectionResolver
     }
   }
 ];

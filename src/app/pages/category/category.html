@@ -1,117 +1,122 @@
-<div
-    [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
-    <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
-        [class.slpLayout2]="layoutType == 2">
-        <div class="container-fluid safetyshoebannersrow">
-            <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
-            <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
-            <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
-            <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
-        </div>
-        <div class="container-fluid safetyshshopbytype">
-            <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
-        </div>
-    </div>
-</div>
+<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
 
-<div class="container-fluid category">
-    <div class="row">
-        <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
-    </div>
-</div>
-
-<div id="category-cards-section">
-    <shared-product-listing #sharedProductList
-        [headerName]="API_RESPONSE?.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
-        [pageName]="'CATEGORY'" [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"
-        [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
-        [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
-        [productsListingData]="_productListService?.productListingData"
-        *ngIf="_productListService &&_productListService.productListingData">
-    </shared-product-listing>
-</div>
-
-<!-- This is sub category section -->
-<div [class.visibility]="_commonService.selectedFilterData.page > 1"
-    [class.sub-cate-container]="API_RESPONSE.category[0]?.children?.length > 0">
-    <div class="container pt-10">
-        <p class="sub_category_heading" *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
-            {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
-            <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
-                Categories)</span>
-        </p>
-    </div>
-    <ng-container #subCategory></ng-container>
-</div>
-
-<ng-container *ngIf="_commonService.selectedFilterData.page < 2">
-    <!-- This is accordian section -->
-    <div class="accordian_footer_panel">
-        <ng-container *ngIf="API_RESPONSE.category[4].data.length > 0">
-            <div class="panel-head" style="margin-top: 0px;">
-                <div class="container">
-                    <h3 class="heading-3" [closeOtherTabs]="true"
-                        [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
-                        Related Searches
-                        <span class="icon-accordian">
-                            <i class="icon-down"></i>
-                        </span>
-                    </h3>
-                </div>
+    
+    <div
+        [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
+        <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
+            [class.slpLayout2]="layoutType == 2">
+            <div class="container-fluid safetyshoebannersrow">
+                <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
+                <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
+                <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
+                <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
             </div>
-            <div [id]="'attributeAccoridan'"
-                [style.display]="API_RESPONSE.category[4].data?.length > 0 ? 'block' : 'none'" class="panel-body">
-                <div class="container category_links">
-                    <div *ngFor="let attribute of API_RESPONSE.category[4].data | slice:0:10 ">
-                        <a (click)="_commonService.navigateTo(attribute.friendlyUrl, true)">{{ attribute.title }}</a>
+            <div class="container-fluid safetyshshopbytype">
+                <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid category">
+        <div class="row">
+            <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
+        </div>
+    </div>
+    
+    <div id="category-cards-section">
+        <shared-product-listing #sharedProductList
+            [headerName]="API_RESPONSE?.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
+            [pageName]="'CATEGORY'" [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"
+            [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
+            [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
+            [productsListingData]="_productListService?.productListingData"
+            *ngIf="_productListService &&_productListService.productListingData">
+        </shared-product-listing>
+    </div>
+    
+    <!-- This is sub category section -->
+    <div [class.visibility]="_commonService.selectedFilterData.page > 1"
+        [class.sub-cate-container]="API_RESPONSE.category[0]?.children?.length > 0">
+        <div class="container pt-10">
+            <p class="sub_category_heading" *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
+                {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+                <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
+                    Categories)</span>
+            </p>
+        </div>
+        <ng-container #subCategory></ng-container>
+    </div>
+    
+    <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+        <!-- This is accordian section -->
+        <div class="accordian_footer_panel">
+            <ng-container *ngIf="API_RESPONSE.category[4].data.length > 0">
+                <div class="panel-head" style="margin-top: 0px;">
+                    <div class="container">
+                        <h3 class="heading-3" [closeOtherTabs]="true"
+                            [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                            Related Searches
+                            <span class="icon-accordian">
+                                <i class="icon-down"></i>
+                            </span>
+                        </h3>
                     </div>
                 </div>
-            </div>
-        </ng-container>
-        <ng-container *ngIf="popularLinks.length > 0">
-            <div class="panel-head" style="margin-top: 0px;">
-                <div class="container">
-                    <h3 class="heading-3" [closeOtherTabs]="true"
-                        [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
-                        Popular Brand Category
-                        <span class="icon-accordian">
-                            <i class="icon-down"></i>
-                        </span>
-                    </h3>
-                </div>
-            </div>
-            <div [id]="'popularLinkAccoridan'"
-                [style.display]="(API_RESPONSE.category[4].data?.length === 0 && popularLinks?.length) > 0 ? 'block' : 'none'"
-                class="panel-body">
-                <div class="container category_links">
-                    <div *ngFor="let category of popularLinks | slice:0:10 ">
-                        <a
-                            (click)="_commonService.navigateTo(getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category]), true)">{{
-                            category }}</a>
+                <div [id]="'attributeAccoridan'"
+                    [style.display]="API_RESPONSE.category[4].data?.length > 0 ? 'block' : 'none'" class="panel-body">
+                    <div class="container category_links">
+                        <div *ngFor="let attribute of API_RESPONSE.category[4].data | slice:0:10 ">
+                            <a (click)="_commonService.navigateTo(attribute.friendlyUrl, true)">{{ attribute.title }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ng-container>
-    </div>
-    <!-- This is recently article section -->
-    <div class="recent-article-container" *ngIf="API_RESPONSE.category[1].productSearchResult?.totalCount > 0">
-        <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
-            [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
-    </div>
-
-    <product-listing-app-promo></product-listing-app-promo>
-
-    <!-- This is footer section -->
-    <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
-</ng-container>
-
-<ng-container *ngIf="_commonService.selectedFilterData.page >= 2">
-    <div style="padding-top: 10px;">
+            </ng-container>
+            <ng-container *ngIf="popularLinks.length > 0">
+                <div class="panel-head" style="margin-top: 0px;">
+                    <div class="container">
+                        <h3 class="heading-3" [closeOtherTabs]="true"
+                            [appKpToggle]="{idName: 'popularLinkAccoridan' , iconMode : true}">
+                            Popular Brand Category
+                            <span class="icon-accordian">
+                                <i class="icon-down"></i>
+                            </span>
+                        </h3>
+                    </div>
+                </div>
+                <div [id]="'popularLinkAccoridan'"
+                    [style.display]="(API_RESPONSE.category[4].data?.length === 0 && popularLinks?.length) > 0 ? 'block' : 'none'"
+                    class="panel-body">
+                    <div class="container category_links">
+                        <div *ngFor="let category of popularLinks | slice:0:10 ">
+                            <a
+                                (click)="_commonService.navigateTo(getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category]), true)">{{
+                                category }}</a>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <!-- This is recently article section -->
+        <div class="recent-article-container" *ngIf="API_RESPONSE.category[1].productSearchResult?.totalCount > 0">
+            <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
+                [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
+        </div>
+    
         <product-listing-app-promo></product-listing-app-promo>
-    </div>
-</ng-container>
+    
+        <!-- This is footer section -->
+        <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+    </ng-container>
+    
+    <ng-container *ngIf="_commonService.selectedFilterData.page >= 2">
+        <div style="padding-top: 10px;">
+            <product-listing-app-promo></product-listing-app-promo>
+        </div>
+    </ng-container>
+    
+    <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
+    <whatsapp-toast
+        [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'">
+    </whatsapp-toast>
 
-<breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
-<whatsapp-toast
-    [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'">
-</whatsapp-toast>
+</div>

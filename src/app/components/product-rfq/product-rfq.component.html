@@ -3,7 +3,7 @@
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq" [class.in-instock]="!isOutOfStock">
             <div *ngIf="isOutOfStock" class="rfq_header">
-                <img height="25" width="25" src="{{imagePathAsset}}assets/img/rfq-header.svg">
+                <i class="icon-dropbox-fill f-size-26"></i>
                 <div class="rfq_header_text">
                     <h3 [class.ins-text]="!isOutOfStock">
                         <ng-container *ngIf="isOutOfStock"> Available on Request. </ng-container>
@@ -11,15 +11,21 @@
                     </h3>
                     <p>Add more details to get the best deal.</p>
                 </div>
+                <i (click)="isPopup = false; _commonService.oosSimilarCard$.next(false);"
+                    class="icon-circle-delete del-ico"></i>
             </div>
             <div class="req-qty">
                 <label>Enter the required quantity</label>
                 <div class="quantity-block">
-                    <button class="add-qty qty-btn" (click)="$event.stopPropagation();decreaseQuantity()">&#8722;</button>
-                    <input type="text" formControlName="quantity" maxlength=3 (click)="isOutOfStock?initiateLogin():false" (keypress)="checkPinocdeKey($event)">
-                    <button class="remove-qty qty-btn" (click)="$event.stopPropagation();increaseQuantity()">&#43;</button>
+                    <button class="add-qty qty-btn"
+                        (click)="$event.stopPropagation();decreaseQuantity()">&#8722;</button>
+                    <input type="text" formControlName="quantity" maxlength=3
+                        (click)="isOutOfStock?initiateLogin():false" (keypress)="checkPinocdeKey($event)">
+                    <button class="remove-qty qty-btn"
+                        (click)="$event.stopPropagation();increaseQuantity()">&#43;</button>
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (quantity.touched || quantity.dirty)">
-                        <p class="error-txt break-line" *ngIf="quantity.hasError('required')">Kindly enter valid quantity.</p>
+                        <p class="error-txt break-line" *ngIf="quantity.hasError('required')">Kindly enter valid
+                            quantity.</p>
                         <p class="error-txt break-line" *ngIf="quantity.hasError('pattern')">
                             Quantity should contain only digits.
                         </p>
@@ -29,8 +35,8 @@
                 </div>
             </div>
             <div class="input-field">
-                <input type="text" placeholder="Full Name*" class="user-name" formControlName="firstName" maxlength="30" placeholder="Full Name*" 
-                (click)="isOutOfStock?initiateLogin():false" name="firstName">
+                <input type="text" placeholder="Full Name*" class="user-name" formControlName="firstName" maxlength="30"
+                    placeholder="Full Name*" (click)="isOutOfStock?initiateLogin():false" name="firstName">
                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (firstName.touched || firstName.dirty)">
                     <p class="error-txt" *ngIf="firstName.hasError('required')">Kindly enter your full name.</p>
                     <p class="error-txt" *ngIf="firstName.hasError('pattern')">Special characters are not allowed.
@@ -39,7 +45,8 @@
             </div>
             <div class="multiple-form-field">
                 <div class="input-field">
-                    <input type="text" name="phone-no" placeholder="Mobile*" type="text" formControlName="mobile" maxlength="10" (click)="isOutOfStock?initiateLogin():false">
+                    <input type="text" name="phone-no" placeholder="Mobile*" type="text" formControlName="mobile"
+                        maxlength="10" (click)="isOutOfStock?initiateLogin():false">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (mobile.touched || mobile.dirty)">
                         <p class="error-txt" *ngIf="mobile.hasError('required')">Kindly enter your mobile no.</p>
                         <p class="error-txt" *ngIf="mobile.hasError('pattern')">Mobile should contain only digits.
@@ -49,7 +56,8 @@
                     </ng-container>
                 </div>
                 <div class="input-field">
-                    <input type="email" name="email" formControlName="email" placeholder="Email*" maxlength="150" (click)="isOutOfStock?initiateLogin():false">
+                    <input type="email" name="email" formControlName="email" placeholder="Email*" maxlength="150"
+                        (click)="isOutOfStock?initiateLogin():false">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (email.touched || email.dirty)">
                         <p class="error-txt" *ngIf="email.hasError('required')">Kindly enter your email id.</p>
                         <p class="error-txt" *ngIf="email.hasError('invalidEmail')">Kindly enter valid email id.
@@ -59,7 +67,9 @@
             </div>
             <div class="multiple-form-field">
                 <div class="input-field">
-                    <input type="text" name="Pincode*" class="pincode" formControlName="pincode" maxlength="6" placeholder="{{isPincodeUnKnown.value?pincodeOptional:pincodeMandate}}" [readonly]="isPincodeUnKnown.value" (click)="isOutOfStock?initiateLogin():false">
+                    <input type="text" name="Pincode*" class="pincode" formControlName="pincode" maxlength="6"
+                        placeholder="{{isPincodeUnKnown.value?pincodeOptional:pincodeMandate}}"
+                        [readonly]="isPincodeUnKnown.value" (click)="isOutOfStock?initiateLogin():false">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched || pincode.dirty)">
                         <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p>
                         <p class="error-txt" *ngIf="pincode.hasError('pattern')">Pincode should contain only digits.
@@ -73,13 +83,16 @@
                     </p>
                 </div>
                 <div class="input-field">
-                    <input type="text" placeholder="City*" name="City*" formControlName="city" maxlength="30" [readonly]="!(isPincodeUnKnown.value)" (click)="isOutOfStock?initiateLogin():false" (paste)="$event.preventDefault()">
+                    <input type="text" placeholder="City*" name="City*" formControlName="city" maxlength="30"
+                        [readonly]="!(isPincodeUnKnown.value)" (click)="isOutOfStock?initiateLogin():false"
+                        (paste)="$event.preventDefault()">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched ||  city.dirty)">
                         <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('required')">
                             Kindly enter your city name.</p>
                         <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('pattern')">
                             Kindly enter your valid city name.</p>
-                        <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('maxlength') && !(city.hasError('pattern'))">
+                        <p class="error-txt"
+                            *ngIf="isPincodeUnKnown.value && city.hasError('maxlength') && !(city.hasError('pattern'))">
                             City should contain 30 characters.
                         </p>
                     </ng-container>
@@ -87,54 +100,64 @@
             </div>
             <div class="rfq-checkbox">
                 <label>
-						<input type="checkbox" formControlName="isPincodeUnKnown" (change)="$event.stopPropagation();handlePincodeCity()">
-						<span class="custom-box icon-box"></span>
-				</label>
+                    <input type="checkbox" formControlName="isPincodeUnKnown"
+                        (change)="$event.stopPropagation();handlePincodeCity()">
+                    <span class="custom-box icon-box"></span>
+                </label>
                 <div class="chk-txt">
                     <span class="heading">I don't know my pincode</span>
                 </div>
             </div>
             <div class=" input-field ">
-                <textarea name="desc " placeholder="Mention details that you'd like to share..." formControlName="description" maxlength="300" (click)="isOutOfStock?initiateLogin():false"></textarea>
+                <textarea name="desc " placeholder="Mention details that you'd like to share..."
+                    formControlName="description" maxlength="300"
+                    (click)="isOutOfStock?initiateLogin():false"></textarea>
                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (description.touched || description.dirty)">
-                    <p class="error-txt" *ngIf="description.hasError('pattern')">Description should contain only characters.</p>
+                    <p class="error-txt" *ngIf="description.hasError('pattern')">Description should contain only
+                        characters.</p>
                 </ng-container>
             </div>
             <div class="rfq-checkbox">
                 <label>
-						<input type="checkbox" formControlName="isBusinessCustomer"  (change)="$event.stopPropagation();handleBussinessCustomer()">
-						<span class="custom-box icon-box mar-t-5"></span>
-				</label>
+                    <input type="checkbox" formControlName="isBusinessCustomer"
+                        (change)="$event.stopPropagation();handleBussinessCustomer()">
+                    <span class="custom-box icon-box mar-t-5"></span>
+                </label>
                 <div class="chk-txt">
                     <span class="heading">Business Purchase</span>
                     <p class="txt" style="color:gray;">Add GSTIN for verification</p>
                 </div>
             </div>
             <div class="input-field" *ngIf="isBusinessCustomer.value">
-                <input type="text" name="phone-no" formControlName="tin" maxlength="15" placeholder="Enter GSTIN*" (click)="isOutOfStock?initiateLogin():false" (keyup)="$event.stopPropagation();gstinError=null">
+                <input type="text" name="phone-no" formControlName="tin" maxlength="15" placeholder="Enter GSTIN*"
+                    (click)="isOutOfStock?initiateLogin():false" (keyup)="$event.stopPropagation();gstinError=null">
                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (tin.touched || tin.dirty)">
                     <p class="error-txt" *ngIf="tin.hasError('required')">Kindly enter GSTIN.</p>
                     <p class="error-txt" *ngIf="tin.hasError('pattern')">Kindly enter valid GSTIN.</p>
                 </ng-container>
                 <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
             </div>
-            <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR REQUIREMENT</button>
+            <div [class.stickyBottomBtn]="isOutOfStock" [class.mt-60]="!isOutOfStock">
+                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="submit-btn">SUBMIT YOUR
+                    REQUIREMENT</button>
+            </div>
         </div>
     </form>
 </ng-template>
 <!--non-popup-->
-<div *ngIf="isOutOfStock">
-    <ng-container *ngTemplateOutlet="rfqFormTemplate"></ng-container>
-</div>
+<app-bottom-menu [isRFQPopUp]="true" *ngIf="isOutOfStock && isPopup" (outData$)="onUpdate($event)">
+    <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
+</app-bottom-menu>
 <!--Popup-->
-<app-pop-up *ngIf="!isOutOfStock && isPopup" [data]="{class: 'bulkRequest ', selector: '!isOutOfStock ', headerCustom:true}">
+<app-pop-up *ngIf="!isOutOfStock && isPopup"
+    [data]="{class: 'bulkRequest ', selector: '!isOutOfStock ', headerCustom:true}">
     <div class="head-sec" header>
         <div class="container">
             <i class="icon-circle-delete f-left" (click)="close()"></i>
             <p class="txt">Interested to buy in bulk
                 <span class="subtxt">
                     Add more details to get the best deal.
-               </span>
+                </span>
             </p>
         </div>
     </div>

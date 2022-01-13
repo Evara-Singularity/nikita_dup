@@ -1,6 +1,6 @@
 @import "../../scss/variables";
+@import '../../scss/horizontalProductListing';
 
-/*Search box*/
 
 .rel-cat {
     margin-top: 15px;
@@ -10,20 +10,29 @@
     color: #A8A8A8;
     font-size: 12px;
     font-weight: normal;
+
     i {
         font-size: 12px;
         margin-right: 5px;
     }
 }
 
+.mar-t--10 {
+    margin-top: -10px;
+}
+
 .search-popup {
     display: none;
+
     .search-result {
+
         // padding: 15px 0;
         .heading-4 {
             color: #969696;
         }
+
         .plan-list {
+
             // padding: 0 0 0 25px;
             li {
                 font-size: 12px;
@@ -33,6 +42,7 @@
                 width: 100%;
                 display: block;
                 padding: 4px 0;
+
                 .search-text {
                     display: inline-block;
                     vertical-align: middle;
@@ -40,6 +50,7 @@
                     float: left;
                     width: calc(100% - 65px);
                 }
+
                 .search-count {
                     float: right;
                     padding: 5px 0 2px;
@@ -49,16 +60,19 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+
                     span {
                         display: inline-block;
                         padding-right: 10px;
                     }
+
                     .interfaceIcon {
                         float: right;
                         font-size: 22px;
                         color: #a3a3ab;
                     }
                 }
+
                 @extend %clear-fix;
             }
         }
@@ -71,13 +85,16 @@
         margin: 0 10px 10px 0;
         padding: 3px 12px;
         border: 1px solid #707070;
+
         &:last-child {
             margin-right: 0;
         }
+
         a {
             color: $blue-link-color;
             font-size: $extra-large-font;
         }
+
         @extend %border-radius;
     }
 }
@@ -86,6 +103,7 @@ app-search-bar {
     .search_open_mini {
         .head-popup {
             box-shadow: none;
+
             input {
                 width: 40px;
                 height: 23px;
@@ -96,6 +114,7 @@ app-search-bar {
                 padding: 5px 10px;
                 opacity: 0;
             }
+
             i.icon-search {
                 top: 3px;
                 color: #fff;
@@ -103,6 +122,7 @@ app-search-bar {
             }
         }
     }
+
     .search_open {
         position: fixed;
         top: 0;
@@ -111,32 +131,40 @@ app-search-bar {
         bottom: 0;
         z-index: 100;
         background: #fff;
+
         .head-popup {
             background: #fff;
             box-shadow: 0px 3px 6px #00000029;
+
             .icon-back {
                 display: block;
                 left: 0px;
                 top: 12px;
             }
         }
+
         .search-popup {
             display: block;
+
             .scroll-able {
                 overflow: auto;
                 height: calc(100vh - 150px);
             }
         }
+
         .icon-search {
             display: none;
         }
+
         form {
             @include placeholder {
                 color: $place-holder-color;
                 font-size: 12px;
             }
+
             width: 85%;
         }
+
         .searchBtn {
             right: 0px;
             position: absolute;
@@ -147,12 +175,14 @@ app-search-bar {
             top: 4px;
             width: 33px;
             height: 33px;
+
             i {
                 right: 0px;
                 top: 8px;
                 left: 0;
             }
         }
+
         .icon-del {
             position: absolute;
             right: 40px;
@@ -171,9 +201,11 @@ app-search-bar {
     @extend %clear-fix;
     background: $logo-color;
     margin-bottom: 0px;
+
     .container {
         position: relative;
     }
+
     i {
         position: absolute;
         left: 10px;
@@ -181,6 +213,7 @@ app-search-bar {
         font-size: 18px;
         color: #303030;
         z-index: 1;
+
         &.icon-delete {
             right: 10px;
             font-size: 14px;
@@ -188,9 +221,11 @@ app-search-bar {
             margin-top: 0px;
         }
     }
+
     .icon-back {
         display: none;
     }
+
     input {
         border-radius: 3px;
         margin: 10px 0;
@@ -206,9 +241,11 @@ app-search-bar {
 .scrolled {
     .head-popup {
         box-shadow: none;
+
         i {
             top: 10px;
         }
+
         input {
             margin: 0px;
         }
@@ -217,25 +254,30 @@ app-search-bar {
 
 .search-strip.all-search {
     background: $logo-color;
-     ::placeholder {
+
+    ::placeholder {
         color: #707070;
         font-size: 14px;
         opacity: 1;
         /* Firefox */
     }
-     :-ms-input-placeholder {
+
+    :-ms-input-placeholder {
         /* Internet Explorer 10-11 */
         color: #707070;
         font-size: 14px;
     }
-     ::-ms-input-placeholder {
+
+    ::-ms-input-placeholder {
         /* Microsoft Edge */
         color: #707070;
         font-size: 14px;
     }
+
     .container {
         position: relative;
         padding: 1px 0;
+
         .searchTextBox {
             margin: 10px 0;
             height: 40px;
@@ -250,6 +292,7 @@ app-search-bar {
             display: inline-block;
             vertical-align: middle;
         }
+
         i {
             position: absolute;
             left: 10px;
@@ -259,15 +302,19 @@ app-search-bar {
             z-index: 15;
         }
     }
+
     &.second-scroll {
         background: none !important;
         margin-top: 3px;
+
         .container {
             width: 100% !important;
+
             i {
                 right: 7px;
                 top: 10px;
             }
+
             .searchTextBox {
                 margin: 0 !important;
                 font-size: 12px;
@@ -278,6 +325,7 @@ app-search-bar {
 
 .icon-search {
     position: relative;
+
     em {
         position: absolute;
         top: 0;
@@ -297,7 +345,7 @@ app-search-bar {
 
 //search screen 
 section.search-popup {
-    padding: 10px 15px;
+    padding: 10px 10px;
 }
 
 .popularCategoryHeading {
@@ -309,6 +357,7 @@ section.search-popup {
 .productImage {
     width: 10%;
     float: left;
+
     .productCategory {
         width: 24px;
         vertical-align: top;
@@ -317,7 +366,9 @@ section.search-popup {
 
 .search_product_categories {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow: scroll;
+
     .search_product_category {
         display: inline-flex;
         align-items: center;
@@ -325,18 +376,18 @@ section.search-popup {
         border-radius: 8px;
         padding: 5px;
         margin-right: 10px;
-        width: 48%;
+        flex: 0 0 48%;
         margin-bottom: 10px;
-        overflow: hidden;
+        overflow: auto;
+
         &.brand {
             justify-content: center;
         }
-        &:nth-child(even) {
-            margin-right: 0px;
-        }
+
         img {
             width: 36px;
         }
+
         .prodText {
             padding-left: 5px;
             line-height: 10px;
@@ -349,6 +400,7 @@ section.search-popup {
     .search-strip.all-search {
         .searchTextBox {
             padding: 0 8px 0 35px !important;
+
             i {
                 font-size: 16px;
             }
@@ -367,7 +419,28 @@ section.search-popup {
     margin-bottom: 10px;
     min-height: 45px;
     overflow: hidden;
+
     &.brand {
         justify-content: center;
+    }
+}
+
+.search-popup {
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+.similar-prod {
+    padding: 0px !important;
+}
+
+.card {
+    border: none;
+}
+
+.card-vertical,
+.upper-view-all-sec {
+    &:first-child {
+        padding-left: 0px !important;
     }
 }

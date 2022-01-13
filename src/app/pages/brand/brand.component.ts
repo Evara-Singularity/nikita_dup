@@ -31,6 +31,7 @@ export class BrandComponent {
     public API_RESPONSE: any;
     public popularLinks = [];
     public brandFooterData;
+    baseDomain=CONSTANTS.PROD;
 
     constructor(
         public _activatedRoute: ActivatedRoute,
@@ -489,4 +490,8 @@ export class BrandComponent {
         };
     }
     
+    accordianNav(url){
+        this._router.navigate(['/'+url]);
+    }
+   
 }

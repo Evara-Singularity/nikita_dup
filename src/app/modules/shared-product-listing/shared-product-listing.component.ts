@@ -246,11 +246,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
-      if (discountIndex) {
+      if (discountIndex>-1) {
         this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
-      if (ratingIndex) {
+      if (ratingIndex>-1) {
         this.productsListingData.filterData[ratingIndex].terms.sort((a, b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
@@ -264,11 +264,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     } else {
       this._commonService.toggleFilter();
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
-      if (discountIndex) {
+      if (discountIndex>-1) {
         this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
-      if (ratingIndex) {
+      if (ratingIndex>-1) {
         this.productsListingData.filterData[ratingIndex].terms.sort((a, b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 

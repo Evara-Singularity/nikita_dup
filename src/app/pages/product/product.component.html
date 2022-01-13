@@ -683,6 +683,7 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
+<!-- <div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert"> -->
 <div class="alert-box rfq-thanks-alert">
     <div class="overlay"></div>
     <div class="content-area bottom-layout ">
@@ -690,32 +691,37 @@
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
             <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
             <h3 class="heading-2">Thanks for submitting the query.</h3>
-            <div class="rfq-support-txt">
-                <p class="grey-txt">
-                    Our support member will get in touch with you
-                    <br />
-                    within 24 hours
-                </p>
-                <p class="rfq-thanks-txt mar-t-10">
-                    For further assistance Call or Whatsapp
+            <p class="grey-txt">
+                Our support member will get in touch with you
+                <br />
+                within 24 hours
+            </p>
+            <div *ngIf="false" class="icon-btn-row">
+                <button class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
+                <span class="grey-txt">OR</span>
+                <button class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</button>
+            </div>
+            <div *ngIf="true" class="rfq-support-txt">
+                <p  class="rfq-thanks-txt mar-t-10">
+                    For further assistance Call or Whatsapp <br/>
                     @<strong>&nbsp;+91 99996 44044</strong>
                 </p>
+            </div>
+            <div class="rfq-support-txt">
                 <p class="rfq-thanks-txt">
-                    <span>You can also mail us at</span>
+                    You can also mail us at <br/>
                     <strong>salesenquiry@moglix.com</strong>
                 </p>
-            </div>
-            <div class="icon-btn-row">
-                <span class="icon-btn"><i class="icon-call"></i>CALL US</span>
-                <span>OR</span>
-                <span class="icon-btn"><i class="icon-whatsapp">WHATSAPP US</i></span>
             </div>
             <div class="alert-btn-row">
                 <button *ngIf="similarProducts.length>0"
                     (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
-                    EXPLORE CATEGORY</p>
+                <!-- <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
+                    EXPLORE CATEGORY</p> -->
+                 <button class="btn explore-category-btn">
+                    EXPLORE AVAILABLE PRODUCTS
+                 </button>   
             </div>
         </div>
     </div>

@@ -1692,12 +1692,14 @@ export class ProductComponent implements OnInit, AfterViewInit
             const factory = this.cfr.resolveComponentFactory(ProductOffersComponent);
             this.offerSectionInstance = this.offerSectionContainerRef.createComponent(factory, null, this.injector);
             let price = 0;
+            let gstPercentage=this.taxPercentage;
             if (this.priceWithoutTax > 0 && this.bulkPriceWithoutTax == null) {
                 price = this.priceWithoutTax;
             } else if (this.bulkPriceWithoutTax !== null) {
                 price = this.priceWithoutTax;
             }
             this.offerSectionInstance.instance['price'] = price;
+            this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
             (this.offerSectionInstance.instance['viewPopUpHandler'] as EventEmitter<boolean>).subscribe(data =>
             {
                 this.viewPopUpOpen(data);
@@ -1720,6 +1722,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             const factory = this.cfr.resolveComponentFactory(ProductOfferPopupComponent);
             this.offerPopupInstance = this.offerPopupContainerRef.createComponent(factory, null, this.injector);
             this.offerPopupInstance.instance['data'] = data['block_data'];
+            let gstPercentage=this.taxPercentage;
+            this.offerPopupInstance.instance['gstPercentage'] = gstPercentage;
             this.offerPopupInstance.instance['openMobikwikPopup'] = true;
             (this.offerPopupInstance.instance['out'] as EventEmitter<boolean>).subscribe(data =>
             {

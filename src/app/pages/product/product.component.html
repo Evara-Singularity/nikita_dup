@@ -695,12 +695,12 @@
                 <br />
                 within 24 hours
             </p>
-            <div *ngIf="false" class="icon-btn-row">
-                <button class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
+            <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
+                <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
                 <span class="grey-txt">OR</span>
-                <button class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</button>
+                <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + convertURL(getWhatsText)" target="_blank" class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</a>
             </div>
-            <div *ngIf="true" class="rfq-support-txt">
+            <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
                 <p  class="rfq-thanks-txt mar-t-10">
                     For further assistance Call or Whatsapp <br/>
                     @<strong>&nbsp;+91 99996 44044</strong>
@@ -718,7 +718,7 @@
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
                 <!-- <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE CATEGORY</p> -->
-                 <button class="btn explore-category-btn">
+                 <button class="btn explore-category-btn" (click)="$event.stopPropagation();closeRFQAlert()">
                     EXPLORE AVAILABLE PRODUCTS
                  </button>   
             </div>

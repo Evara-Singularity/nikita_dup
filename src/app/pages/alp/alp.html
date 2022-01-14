@@ -1,6 +1,7 @@
 <div id="category-cards-section">
     <shared-product-listing 
         [headerName]="titleHeading ? titleHeading : ''" 
+        [titleDescription]="titleDescription"
         [pageName]="'ATTRIBUTE'"
         [productsListingData]="_productListService?.productListingData"
         *ngIf="_productListService &&_productListService.productListingData" >

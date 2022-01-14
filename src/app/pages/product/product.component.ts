@@ -364,6 +364,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       productNew: true,
       pager: true,
       imageAlt: this.productName,
+      loop:true,
       onInit: () => {
         setTimeout(() => {
           this.carouselInitialized = true;

@@ -9,6 +9,7 @@ import { LocalAuthService } from '@services/auth.service';
 import { CommonService } from '@services/common.service';
 import CONSTANTS from '@config/constants';
 import { GlobalLoaderService } from '@services/global-loader.service';
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 declare var dataLayer;
 
@@ -39,7 +40,8 @@ export class PaytmUpiComponent {
         this.loaderService.setLoaderState(value);
     }
 
-    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _paytmUpiService: PaytmUpiService) {
+    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _paytmUpiService: PaytmUpiService
+        , private _trackingService: TrackingService) {
         this.upiData = {};
         this.isValid = false;
         this.uType = CONSTANTS.GLOBAL.paytmUpi;
@@ -78,7 +80,7 @@ export class PaytmUpiComponent {
         }
 
         let userSession = this._localAuthService.getUserSession();
-
+        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:paytm-upi`);
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.isValid = false;

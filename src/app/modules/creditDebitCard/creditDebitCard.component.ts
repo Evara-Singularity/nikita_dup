@@ -10,6 +10,7 @@ import { CheckoutService } from '@app/utils/services/checkout.service';
 import { CreditCardValidator } from 'ng2-cc-library';
 import * as creditCardType from 'credit-card-type';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 declare var dataLayer;
 @Component({
@@ -48,7 +49,8 @@ export class CreditDebitCardComponent {
         private _localAuthService: LocalAuthService, 
         private _cartService: CartService, 
         private loaderService: GlobalLoaderService,
-        private _formBuilder: FormBuilder) {
+        private _formBuilder: FormBuilder,
+        private _trackingService: TrackingService) {
 
         this.API = CONSTANTS;
         this.payuData = {};
@@ -169,6 +171,8 @@ export class CreditDebitCardComponent {
         extra['paymentId'] = newdata['paymentId'];
         //console.log("New Data for pay", newdata);
         //   $("#page-loader").show();
+        const CARD_TYPE = data.mode == "CC" ? "credit" : "debit";
+        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:${CARD_TYPE} card`);
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe( (res) : void => {
 

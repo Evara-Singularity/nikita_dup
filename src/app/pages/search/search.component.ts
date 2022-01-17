@@ -79,55 +79,7 @@ export class SearchComponent implements OnInit {
       // Set the API_RESULT variable
       this.API_RESULT = result;
 
-      this.API_RESULT['searchData'][1]  = {
-        name:'Category',
-        terms: [
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Shoes",
-            categoryName: "Safety Shoes",
-            categoryId: "116111700",
-            confidence: 100.0
-          },
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Gloves",
-            categoryName: "Safety Gloves",
-            categoryId: "116111701",
-            confidence: 100.0
-          },
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Instrument",
-            categoryName: "Safety Shoes",
-            categoryId: "116111700",
-            confidence: 100.0
-          },
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Gloves",
-            categoryName: "Safety Jacket",
-            categoryId: "116111701",
-            confidence: 100.0
-          },
-        ]
-      };
+      this.setCategoriesPrimaryForCategoryMidPlpFilter();
 
       this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 
@@ -334,6 +286,19 @@ export class SearchComponent implements OnInit {
    */
   handleCategoryClicked(event) {
     this.goToRecommendedCategory(event.categoryId, event);
+  }
+
+  setCategoriesPrimaryForCategoryMidPlpFilter() {
+    this.API_RESULT['searchData'][0].categoriesPrimary = {
+      name: GLOBAL_CONSTANT.inlineFilter[3],
+      terms: this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
+        data['term'] = data['categoryName'];
+        data['count'] = 3;
+        data['enabled'] = true;
+        data['selected'] = data['categoryId'] === this._activatedRoute.snapshot.queryParams['category'] ? true : false;
+        return data;
+      })
+    }
   }
 
 }

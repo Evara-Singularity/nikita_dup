@@ -46,6 +46,9 @@ export class FilterMidPlpComponent implements OnInit {
     }
 
     if (this.pageName === 'SEARCH') {
+      this.categoryMidPlpFilterData.terms = this.categoryMidPlpFilterData.terms.filter(data => {
+        return !data.selected
+      });
       // if category exists for search page then push it at the top if the page
       if (this.categoryMidPlpFilterData && this.categoryMidPlpFilterData.terms.length > 0) {
         this._productListService.inlineFilterData.push(this.categoryMidPlpFilterData);

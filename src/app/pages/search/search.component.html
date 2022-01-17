@@ -22,7 +22,7 @@
 
     <shared-product-listing #sharedProductList 
         (categoryClicked)="handleCategoryClicked($event)" 
-        [categoryMidPlpFilterData]="API_RESULT['searchData'][1]"
+        [categoryMidPlpFilterData]="API_RESULT['searchData'][0]?.categoriesPrimary"
         [headerName]="headerNameBasedOnCondition" 
         [pageName]="'SEARCH'"
         [searchKeyword]="API_RESULT['searchData'][0].productSearchResult.inputSearchString"

@@ -10,7 +10,6 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { forkJoin } from 'rxjs';
-import CONSTANTS from '@app/config/constants';
 
 
 @Component({

@@ -75,7 +75,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
-  prodUrl: string;
 
   constructor(
     private _cartService: CartService,

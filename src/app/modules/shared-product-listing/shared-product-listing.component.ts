@@ -33,6 +33,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() brandName: string; // only received in case used in brand module
   @Input() brandUrl: string = ''; // only received in case used in brand module
   @Input() headerName: string;
+  @Input() titleDescription;
   @Input() categoryId: string; // only received in case used in category module
   @Input() categoryName: string; // only received in case used in category module
   @Input() categoryTaxonomay: string; // only received in case used in category module

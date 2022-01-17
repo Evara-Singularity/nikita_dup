@@ -1,9 +1,10 @@
+
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
     
     <div *ngIf="!showPageNotFound">
         <div id="category-cards-section">
             <shared-product-listing [headerName]="titleHeading ? titleHeading : ''" [pageName]="'ATTRIBUTE'"
-                [productsListingData]="_productListService?.productListingData"
+                [productsListingData]="_productListService?.productListingData" [titleDescription]="titleDescription"
                 [categoryName]="alpCategoryCodeData.categoryDetails.categoryName"
                 *ngIf="_productListService &&_productListService.productListingData">
             </shared-product-listing>

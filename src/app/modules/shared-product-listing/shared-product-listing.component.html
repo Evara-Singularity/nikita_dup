@@ -50,6 +50,9 @@
             (productsListingData?.products.length) ? productsListingData?.totalCount :(
             productsListingData?.products.length) ) }} products
         </div>
+        <!-- [innerHTML]="titleDescription.split('.',2)+'.'" -->
+        <div class="right titleDis" *ngIf="productsListingData?.products" [innerHTML]="titleDescription">
+        </div>
     </ng-container>
 </div>
 

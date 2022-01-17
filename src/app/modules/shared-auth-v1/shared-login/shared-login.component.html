@@ -1,1 +1,21 @@
-<p>shared-login works!</p>
+<div class="login-card">
+    <h3 class="heading-custom-3">Sign-In or Sign Up</h3>
+    <form class="material-form">
+        <div class="outline-input-label">
+            <label [class.is-focus]="username.value.length!=0">
+                <input class="invalid-input" type="text" formControlName="username">
+                <span class="label">Enter Mobile Number</span>
+                <ng-container>
+                    <p class="error-field error-txt">Enter 10 digit mobile number</p>
+                </ng-container>
+            </label>
+        </div>
+        <button class="btn btn-variant1">CONTINUE</button>
+        <div class="login-seperator-text "> <span>Or</span></div>
+        <button class="btn btn-variant1 btn-dark-grey">CONTINUE WITH EMAIL-ID</button>
+        <div class="clearfix social-btn">
+            <social-login class="o-hidden "></social-login>
+        </div>
+    </form>
+    <p class="safe-text">Your details are safe with us.</p>
+</div>

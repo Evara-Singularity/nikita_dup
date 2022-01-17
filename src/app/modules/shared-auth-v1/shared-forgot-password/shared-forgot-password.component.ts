@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-shared-forgot-password',
+  selector: 'shared-forgot-password',
   templateUrl: './shared-forgot-password.component.html',
   styleUrls: ['./shared-forgot-password.component.scss']
 })

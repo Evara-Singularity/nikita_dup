@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-shared-otp',
+  selector: 'shared-otp',
   templateUrl: './shared-otp.component.html',
   styleUrls: ['./shared-otp.component.scss']
 })

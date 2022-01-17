@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-shared-singup',
+  selector: 'shared-singup',
   templateUrl: './shared-singup.component.html',
   styleUrls: ['./shared-singup.component.scss']
 })

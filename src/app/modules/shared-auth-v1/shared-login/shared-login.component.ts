@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-shared-login',
+  selector: 'shared-login',
   templateUrl: './shared-login.component.html',
   styleUrls: ['./shared-login.component.scss']
 })

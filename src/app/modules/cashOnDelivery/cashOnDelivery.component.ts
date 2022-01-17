@@ -1,3 +1,4 @@
+import { TrackingService } from './../../utils/services/tracking.service';
 import { Component, EventEmitter } from '@angular/core';
 import { CashOnDeliveryService } from './cashOnDelivery.service';
 import { Router } from '@angular/router';
@@ -34,7 +35,8 @@ export class CashOnDeliveryComponent {
         this._loaderService.setLoaderState(status)
     }
 
-    constructor(private _localStorageService: LocalStorageService, private _tms: ToastMessageService, private _checkoutService: CheckoutService,  private _commonService: CommonService, private _router: Router, private _localAuthService: LocalAuthService, private _cartService: CartService, private _cashOnDeliveryService: CashOnDeliveryService, private _loaderService: GlobalLoaderService) {
+    constructor(private _localStorageService: LocalStorageService, private _tms: ToastMessageService, private _checkoutService: CheckoutService,  private _commonService: CommonService, private _router: Router, private _localAuthService: LocalAuthService, private _cartService: CartService, private _cashOnDeliveryService: CashOnDeliveryService, private _loaderService: GlobalLoaderService,
+        private _trackingService:TrackingService) {
         this.transactionId = null;
         this.isShowLoader = false;
     }
@@ -144,7 +146,7 @@ export class CashOnDeliveryComponent {
                 'validatorRequest': this._commonService.createValidatorRequest(cartSession, userSession, extra)
             }; 
         }   
-
+        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", "pay-initiated:cash on delivery");
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.submittedOnce = false;
@@ -364,5 +366,4 @@ export class CashOnDeliveryComponent {
     changeNumber(){
         this.updateTabIndex.emit(2);
     }
-
 }

@@ -1,4 +1,4 @@
-<div class="youtubeWrap">
+<div class="youtubeWrap" *ngIf="listOfVideos">
     <h4 class="yotubeHeading">{{title | titlecase}}</h4>
     <div class="categoryOverBlk">
         <div [style.width.px]="listOfVideos.length * 252" class="clearfix" #videosDiv>

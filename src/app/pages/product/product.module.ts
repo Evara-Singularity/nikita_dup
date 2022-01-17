@@ -2,12 +2,7 @@ import { EmiPlansModule } from './../../modules/emi-plans/emi-plans.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import ProductCheckPincodeModule from '@app/components/product-check-pincode/product-check-pincode.component';
-import QuestionAnswerModule from '@app/components/question-answer/question-answer.component';
-import ReviewRatingModule from '@app/components/review-rating/review-rating.component';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
-import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
-import { EnhanceImgByNetworkDirectiveModule } from '@app/utils/directives/enhanceImgByNetwork.directive';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
 import { NgxSiemaService } from 'ngx-siema';
@@ -21,33 +16,39 @@ import { ProductInfoModule } from './../../modules/product-info/product-info.mod
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
+import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
+import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+// import { IdleUserSearchNudgeModule } from '@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module';
+import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 @NgModule({
-  declarations: [
-    ProductComponent,
-  ],
+  declarations: [ProductComponent],
   imports: [
     ObserveVisibilityDirectiveModule,
     CommonModule,
     ProductRoutingModule,
+    ProductOosSimilarModule,
     BreadcrumbNavModule,
     // pipes
     ObjectToArrayPipeModule,
     MathFloorPipeModule,
     MathCeilPipeModule,
     ReactiveFormsModule,
+    // LazyLoadImageModule,
     ArrayFilterPipeModule,
     YTThumnailPipeModule,
     WhatsAppToastModule,
     ProductInfoModule,
     EmiPlansModule,
     SliceArrayPipeModule,
+    NumberDirectiveModule,
     // Directives
-    EnhanceImgByNetworkDirectiveModule,
-    SwipeDirectiveModule
+    ProductHorizontalCardModule,
+    SwipeDirectiveModule,
+    // IdleUserSearchNudgeModule,
+    PastOrdersModule,
   ],
   exports: [],
-  providers: [
-    NgxSiemaService
-  ]
+  providers: [NgxSiemaService],
 })
 export class ProductModule { }

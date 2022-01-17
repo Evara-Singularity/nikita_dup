@@ -105,6 +105,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	trendingCategoriesInstance = null;
 	@ViewChild('TrendingCategories', { read: ViewContainerRef })
 	trendingCategoriesContainerRef: ViewContainerRef;
+	oganizationSchema: any;
 
 	constructor(
 		public dataService: DataService,
@@ -124,15 +125,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private analytics: GlobalAnalyticsService
 	) {
 		this.isServer = _commonService.isServer;
-        this.isBrowser = _commonService.isBrowser;
+		this.isBrowser = _commonService.isBrowser;
 		this.initConstructorData();
+		this._commonService.isHomeHeader = true;
+		this._commonService.isPLPHeader = false;
 	}
 
 	ngOnInit() {
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
-				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];				
+				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];
 			}
 		});
 
@@ -317,7 +320,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}
 			this.carouselData = ncd; //carousel data
-			
+
 			if (this.middleImageJsonData && this.middleImageJsonData.block_data) {
 				this.middleImageJsonDataLink = this.middleImageJsonData.block_data[
 					'image_block'
@@ -439,6 +442,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			links.rel = 'canonical';
 			links.href = CONSTANTS.PROD;
 			this._renderer2.appendChild(this._document.head, links);
+			this.orgSchema();
 		}
 	}
 
@@ -480,7 +484,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				potentialAction: {
 					'@type': 'SearchAction',
 					target:
-						CONSTANTS.PROD + '/search?controller=search&orderby=position&orderway=desc&search_query={search_term_string}',
+						CONSTANTS.PROD + '/search?controller=search&search_query={search_term_string}',
 					'query-input': 'required name=search_term_string',
 				},
 			});
@@ -667,5 +671,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.trendingCategoriesInstance = null;
 			this.trendingCategoriesContainerRef.remove();
 		}
+	}
+
+	orgSchema() {
+		this.oganizationSchema = this._renderer2.createElement('script');
+		this.oganizationSchema.type = "application/ld+json";
+		this.oganizationSchema.text = JSON.stringify(
+			{
+				"@context": CONSTANTS.SCHEMA,
+				"@type": "Organization",
+				"name": "Moglix",
+				"url": CONSTANTS.PROD,
+				"logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
+				"contactPoint":
+					[{
+						"@type": "ContactPoint",
+						"telephone": "+91 8448 233 444",
+						"contactType": "customer service"
+					}],
+				"sameAs": ["https://www.facebook.com/moglix.global/", "https://twitter.com/moglix", "https://www.youtube.com/c/MoglixOfficial", "https://www.instagram.com/moglix.official/", "https://www.linkedin.com/company/moglix/"]
+			}
+		)
+		this._renderer2.appendChild(this._document.head, this.oganizationSchema);
 	}
 }

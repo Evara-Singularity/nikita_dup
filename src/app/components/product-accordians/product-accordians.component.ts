@@ -65,7 +65,11 @@ export class ProductAccordiansComponent {
     PAGE['subSection'] = accordian;
     PAGE['linkName'] = link;
     this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
-    this._router.navigate([`${link}`])
+    if(link.indexOf('http') == -1){
+      this._commonService.navigateTo(link, true);
+    }else{
+      window.location = link;
+    }
   }
 }
 

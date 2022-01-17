@@ -281,6 +281,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // quntity && bulk prices related
   qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
+  rfqTotalValue: any;
+  hasGstin: boolean;
+  GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
@@ -1413,6 +1417,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       quantity: this.cartQunatityForProduct
     });
     this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result => {
+      // analytic events needs to called here
+      this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
+      this.intialAddtoCartSocketAnalyticEvent(buyNow);
+      this.updateAddtoCartSocketAnalyticEvent(buyNow)
+      this.fireViewBasketEvent(result);
+
       if (!result && this.cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
         this.router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
@@ -1420,10 +1430,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
-          this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
-          this.intialAddtoCartSocketAnalyticEvent(buyNow);
-          this.updateAddtoCartSocketAnalyticEvent(result, buyNow)
-          this.fireViewBasketEvent(result);
           if (!buyNow) {
             this.cartService.setCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
@@ -1458,7 +1464,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendToClicstreamViaSocket(trackingData);
   }
 
-  updateAddtoCartSocketAnalyticEvent(cartSession, buynow: boolean) {
+  updateAddtoCartSocketAnalyticEvent(buynow: boolean) {
+    const cartSession = Object.assign({}, this.cartService.getCartSession())
     let totQuantity = 0;
     let trackData = {
       event_type: "click",
@@ -1880,6 +1887,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productRFQInstance.instance["isLoading"] as EventEmitter<boolean>
     ).subscribe((loaderStatus) => {
       this.toggleLoader(loaderStatus);
+    });
+    (
+      this.productRFQInstance.instance["hasGstin"] as EventEmitter<boolean>
+    ).subscribe((value) => {
+        this.hasGstin = value
+        console.log("HasGStin",this.hasGstin)
+    });
+    (
+      this.productRFQInstance.instance["rfqQuantity"] as EventEmitter<string>
+    ).subscribe((rfqQuantity) => {
+        this.rfqTotalValue = rfqQuantity * Math.floor(this.productPrice);
     });
     (
       this.productRFQInstance.instance["onRFQSuccess"] as EventEmitter<boolean>
@@ -2953,9 +2971,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       tags: tagsForAdobe,
     };
 
+    console.log('digitalData', { page, custData, order });
+
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
-    this.analytics.sendGTMCall({
+    const digitalData = {
       event: "addToCart",
       ecommerce: {
         currencyCode: "INR",
@@ -2982,7 +3002,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           ],
         },
       },
-    });
+    };
+    this.analytics.sendGTMCall(digitalData);
   }
 
   analyticRFQ(isSubmitted: boolean = false) {
@@ -3458,6 +3479,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return "Something!!!";
   }
 
+  openDialer() {
+    if (this.commonService.isBrowser) {
+      window.location.href = "tel:+91 99996 44044";
+    }
+  }
+
+  convertURL(url){
+    return encodeURIComponent(url);
+  }
+  
   get pastOrderAnalytics() {
     const TAXONS = this.taxons;
     const page = {

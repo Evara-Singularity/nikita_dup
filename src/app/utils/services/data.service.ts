@@ -14,6 +14,7 @@ import { ToastMessageService } from '../../modules/toastMessage/toast-message.se
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
+import { GlobalLoaderService } from './global-loader.service';
 
 @Injectable({
     providedIn: 'root'
@@ -31,6 +32,7 @@ export class DataService {
         private _router: Router,
         private _http: HttpClient,
         private _localAuthService: LocalAuthService,
+        private _loaderService: GlobalLoaderService,
         private _localStorageService: LocalStorageService) {
     }
 
@@ -166,7 +168,7 @@ export class DataService {
             this._localStorageService.clear('user');
             this.getSession().subscribe((res) => {
                 if (res['statusCode'] !== undefined && res['statusCode'] === 500) {
-                    alert('something went wrong, please try to refresh the page');
+                    // alert('something went wrong, please try to refresh the page');
                 } else {
                     this._localAuthService.setUserSession(res);
                     this.dataServiceCart.next(res['cart'] !== undefined ? res['cart']['noOfItems'] : 0);
@@ -184,7 +186,7 @@ export class DataService {
                     .subscribe((res) => {
                         console.log("Error-401: getsession called");
                         if (res['statusCode'] != undefined && res['statusCode'] == 500) {
-                            alert("something went wrong, please try to refresh the page");
+                            // alert("something went wrong, please try to refresh the page");
                         } else {
                             this._localAuthService.setUserSession(res);
                             this._localAuthService.logout$.emit();
@@ -198,6 +200,7 @@ export class DataService {
         } else {
             this.showMessage('error', 'Something went wrong');
         }
+        this._loaderService.setLoaderState(false);
         return throwError(error);
     }
 

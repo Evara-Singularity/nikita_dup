@@ -1,8 +1,6 @@
     /* below code for top widgets and trending categories*/
-    
     @import '../../scss/variables';
-     
-    ::ng-deep {
+     ::ng-deep {
         .home-parent{
             h2 {
                 font-size: $large-font;
@@ -11,19 +9,16 @@
         }
     }
     /*Top Widgets*/
-    
-    .fixed-btm-app-prmo {
+   .fixed-btm-app-prmo {
         position: fixed;
         bottom: 0;
         width: 100%;
         z-index: 9;
     }
-    
-    .categories-container {
+   .categories-container {
         min-height: 300px;
     }
-    
-    .top-widgets {
+   .top-widgets {
         li {
             width: 24.5%;
             @include gridForCategory('4', '15');

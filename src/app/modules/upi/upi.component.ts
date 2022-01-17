@@ -78,7 +78,8 @@ export class UpiComponent {
         if (this.uType == CONSTANTS.GLOBAL.upiTez) {
             newdata = this.createTezData(data);
         } else {
-            alert("No UPI selected");
+            // alert("No UPI selected");
+            console.log('Error: No UPI selected');
         }
 
         let userSession = this._localAuthService.getUserSession();
@@ -87,7 +88,7 @@ export class UpiComponent {
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
-                alert(res.description);
+                // alert(res.description);
                 return;
             }
 

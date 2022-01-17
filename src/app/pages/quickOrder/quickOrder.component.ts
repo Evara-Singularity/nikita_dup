@@ -224,7 +224,7 @@ export class QuickOrderComponent {
             productBO = response;
             let productPriceQuantity = productBO['productBO']['productPartDetails'][item['productId'].toUpperCase()]['productPriceQuantity']['india'];
             if (updatedQuantity > productPriceQuantity.quantityAvailable) {
-                alert('Quantity not available');
+                // alert('Quantity not available');
                 let id = '#quantityInput' + i;
                 if (!this.isServer) {
                     (<HTMLInputElement>document.querySelector(id)).value = this.itemsList[i]['productQuantity'];
@@ -232,7 +232,7 @@ export class QuickOrderComponent {
                 this.itemsList[i]['productQuantity'] = item['productQuantity'];
             }
             else if (updatedQuantity < productPriceQuantity.moq) {
-                alert('Minimum quantity is ' + productPriceQuantity.moq);
+                // alert('Minimum quantity is ' + productPriceQuantity.moq);
                 let id = '#quantityInput' + i;
                 if (!this.isServer) {
                     (<HTMLInputElement>document.querySelector(id)).value = this.itemsList[i]['productQuantity'];
@@ -242,7 +242,7 @@ export class QuickOrderComponent {
             else {
                 let remainder = (productPriceQuantity.quantityAvailable - updatedQuantity) % productPriceQuantity.moq;
                 if (remainder > 0) {
-                    alert('Incremental Count not matched')
+                    // alert('Incremental Count not matched')
                 } else {
                     this.itemsList[i]['productQuantity'] = updatedQuantity;
                     this.itemsList[i]['productUnitPrice'] = item['productUnitPrice'];

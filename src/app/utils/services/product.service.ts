@@ -714,12 +714,12 @@ export class ProductService {
             rating: product["rating"] || null,
             categoryCodes: null,
             taxonomy: product["taxonomy"] || null,
-            mainImageLink: product["productImage"] ? product["productImage"] : "",
+            mainImageLink: product["productImage"] ? this.getForLeadingSlash(product["productImage"]) : "",
             mainImageMediumLink: product["productImage"]
-                ? product["productImage"]
+                ? this.getForLeadingSlash(product["productImage"])
                 : "",
             mainImageThumnailLink: product["productImage"]
-                ? product["productImage"]
+                ? this.getForLeadingSlash(product["productImage"])
                 : "",
             productTags: [],
             filterableAttributes: {},
@@ -730,6 +730,13 @@ export class ProductService {
             internalProduct: true,
             outOfStock: product.outOfStock,
         } as ProductsEntity;
+    }
+
+    getForLeadingSlash(imgUrl){
+        if(imgUrl && imgUrl.startsWith("/")){
+            return imgUrl.substring(1);
+        }
+        return imgUrl;
     }
 
     productEntityFromProductBO(productBO, overrideProductB0 = null) {

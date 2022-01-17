@@ -520,7 +520,6 @@ export class CartService
 
     getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?}): AddToCartProductSchema
     {
-        console.log(args.productGroupData);
         const partNumber = args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
         const isProductPriceValid = args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;

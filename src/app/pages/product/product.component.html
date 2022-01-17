@@ -446,23 +446,19 @@
                 </ng-container>
             </div>
         </section>
-
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
-                class="widget-items">
+            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <i class="icon-next"></i>
             </a>
-
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
-                class="widget-items">
+            <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()" [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
@@ -676,7 +672,7 @@
     <ng-container #productInfoPopup></ng-container>
 </div>
 
-<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
+<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn" [class.highIndex]="displayCardCta">
     <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 

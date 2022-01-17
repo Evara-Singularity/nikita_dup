@@ -244,6 +244,7 @@ export class ProductOosSimilarCardComponent {
       imageAlt:
         this.productService.oosSimilarProductsData.similarData[this.index]
           .productName,
+       loop:true,   
       onInit: () => {
         setTimeout(() => {
           this.carouselInitialized = true;

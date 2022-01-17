@@ -28,7 +28,7 @@ export class AlpResolver implements Resolve<object> {
     createDefaultParams(defaultApiParams, currentQueryParams, fragment)
     {
         let newParams = {
-            category: defaultApiParams['category'], pageName: this.pageName, queryParams: {}, filter: {}
+            searchTerm: defaultApiParams['str'], category: defaultApiParams['category'], pageName: this.pageName, queryParams: {}, filter: {}
         }
         //api params/filters
         if (defaultApiParams['str']) {

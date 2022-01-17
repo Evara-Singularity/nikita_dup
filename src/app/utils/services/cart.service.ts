@@ -186,6 +186,7 @@ export class CartService
                     if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
                         // incase of session mismatch update new cart and userData 
                         // cartsesion response will be different from regular cart session response
+                        console.log('CARTSESSION LOGS ==> mismatch condition encountered', cartSessionResponse);
                         this.localAuthService.setUserSession(cartSessionResponse['userData']);
                         return cartSessionResponse['cart'];
                     }
@@ -337,6 +338,7 @@ export class CartService
     private _notifyCartChanges(result, redirectUrl)
     {
         const cartSession = this.updateCart(result);
+        console.log('CARTSESSION LOGS ==> notifying below cart changes', cartSession, this.localAuthService.getUserSession());
         this.setCartSession(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);

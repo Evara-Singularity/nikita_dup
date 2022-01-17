@@ -2,11 +2,12 @@ import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/cor
 import { OrderSummaryService } from './orderSummary.service';
 import { Subject } from 'rxjs';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '../../utils/services/data.service';
 import { CartService } from '../../utils/services/cart.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { mergeMap } from 'rxjs/operators';
 declare let dataLayer: any;
 
 
@@ -65,8 +66,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         if (!this.isServer) {
-            // console.log('Order summary');
-            // this.getAllPromoCodesByUserId();
             this.cartSession = this._cartService.getCartSession();
             this.shippingCharges = this.cartSession['cart']['shippingCharges'];
 
@@ -108,12 +107,9 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             this._cartService.orderSummary.subscribe(
-
                 (data: { cartSession?: {}, extra?: { errorMessage: string } }) => {
-
+                    // console.trace('cartsummary  ===========> ');
                     this.cartSession = this._cartService.getCartSession();
-                    //    console.log(this.cartSession, ' order summary cart ');
-                    // this.getAllPromoCodesByUserId();
                     if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                         let items: Array<any> = this.cartSession['itemsList'];
                         this.noOfCart = items.length;
@@ -161,8 +157,6 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             document.body.addEventListener('click', function (e) {
-                // alert(123);
-                // console.log(e.target);
                 if (e.target && (<Element>e.target).matches('.close-promo .icon-delete_filter')) {
                     document.querySelector('.mobile-promo-box').classList.remove('block');
                 }
@@ -239,7 +233,11 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this.itemsList.forEach((element, index) => {
                 this.cartSession['itemsList'][index]['offer'] = null;
             });
-            this._cartService.updateCartSession(this.cartSession).subscribe(
+            this._cartService.updateCartSession(this.cartSession).pipe(
+                mergeMap(cartSession => {
+                    return this._cartService.getShippingAndUpdateCartSession(cartSession)
+                })
+            ).subscribe(
                 data => {
                     this.isShowLoader = false;
                     this._cartService.setCartSession(data);
@@ -297,7 +295,11 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this.vof = true;
         } else {
             // this._gState.notifyDataChanged('loginPopup.open',{redirectUrl:'/quickorder'});
-            this.router.navigateByUrl('/login');
+            let navigationExtras: NavigationExtras = {
+                queryParams: { backurl: '/quickorder' },
+            };
+            this.router.navigate(["/login"], navigationExtras);
+            // this.router.navigateByUrl('/login');
         }
     }
 
@@ -306,11 +308,10 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this.cartSession = data.cartSession;
             this.itemsList = data.cartSession['itemsList'];
         }
-        // console.log(data.cartSession);
     }
 
     outData(data: {}) {
-         ;
+        ;
         if (data && data['pcd']) {
             this.pad = Object.assign({}, this.pad, data['pcd']);
         }

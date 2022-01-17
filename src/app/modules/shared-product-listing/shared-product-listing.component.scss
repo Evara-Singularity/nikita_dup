@@ -37,6 +37,11 @@
     box-shadow: 0px 12px 16px #455B631A;
     background: $white;
     @extend %box-shadow;
+    &.translateHeader {
+        transform: translateY(60px);
+        transition-timing-function: ease-in-out;
+        transition: 0.2s all;
+    }
     &.slide-up {
         bottom: 0;
     }

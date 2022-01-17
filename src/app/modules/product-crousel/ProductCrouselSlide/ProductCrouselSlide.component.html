@@ -1,16 +1,26 @@
 <ng-container *ngIf="options.productNew">
   <ng-container *ngIf="contentType=='IMAGE'">
     <div [attr.id]="'prodImg' + itemIndex" class="img-block" (click)="clicked()">
+      <div class="oos-tag">
+        <span *ngIf="productOutOfStock">
+          AVAILABLE ON REQUEST
+        </span>
+      </div>
       <div class="inner_block">
         <div class="pinch-zoom element" style="transform-origin: 0% 0%;">
-          <img *ngIf="itemIndex == 0" enhanceImgByNetwork src="{{item['large'] }}" height="330" width="330" alt="{{productName}}">
-          <img *ngIf="itemIndex > 0" enhanceImgByNetwork src="{{item['large'] }}" height="330" width="330" alt="{{productName}}">
+          <img *ngIf="itemIndex == 0" src="{{item['large'] }}" height="330" width="330" alt="{{productName}}">
+          <img *ngIf="itemIndex > 0" src="{{item['large'] }}" height="330" width="330" alt="{{productName}}">
         </div>
       </div>
     </div>
   </ng-container>
   <ng-container *ngIf="contentType=='YOUTUBE_VIDEO'">
     <div [attr.id]="'prodImg' + itemIndex" class="img-block">
+      <div class="oos-tag">
+        <span *ngIf="productOutOfStock">
+          AVAILABLE ON REQUEST
+        </span>
+      </div>
       <div class="inner_block">
         <div class="inner_element" style="transform-origin: 0% 0%;">
           <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(item['video'])" type="image"

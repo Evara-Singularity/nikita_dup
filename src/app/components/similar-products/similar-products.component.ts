@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../../utils/services/product.service';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
@@ -17,14 +17,14 @@ import { ProductListService } from '@app/utils/services/productList.service';
     templateUrl: './similar-products.component.html',
     styleUrls: ['./similar-products.component.scss']
 })
-export class SimilarProductsComponent implements OnInit
-{
+export class SimilarProductsComponent implements OnInit {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     similarProducts: ProductsEntity[] = null;
     @Input('outOfStock') outOfStock = false;
     @Input('productName') productName;
     @Input('categoryCode') categoryCode;
     @Input('analytics') analytics = null;
+    @Output('similarDataLoaded$') similarDataLoaded$ = new EventEmitter();
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
         enableAddToCart: true,
@@ -41,10 +41,9 @@ export class SimilarProductsComponent implements OnInit
     cardMetaInfo: ProductCardMetaInfo = null;
 
     constructor(
-        public commonService: CommonService, 
-        private router:Router,
+        public commonService: CommonService,
+        private router: Router,
         private productService: ProductService,
-        private productListService: ProductListService,
     ) { }
 
     ngOnInit(): void {
@@ -59,15 +58,16 @@ export class SimilarProductsComponent implements OnInit
         this.productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
-                this.similarProducts = (products as any[]).map(product => this.productListService.searchResponseToProductEntity(product));
+                this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+                this.similarDataLoaded$.emit(true);
             }
         })
     }
 
-    navigateTo(url){
+    navigateTo(url) {
         this.commonService.setSectionClickInformation(this.outOfStock ? 'similar_product_oos' : 'similar_products', 'pdp')
         this.router.navigateByUrl(url);
-        if ( this.commonService.isBrowser ) {
+        if (this.commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
     }

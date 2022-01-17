@@ -22,6 +22,7 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
 import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
 import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
+import { SharedNotFoundModule } from '@app/modules/shared-not-found/shared-not-found.module';
 
 @NgModule({
     imports: [
@@ -43,7 +44,8 @@ import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-p
         MathCeilPipeModule,
         DiscountPipeModule,
         SharedProductListingModule,
-        ProductListingAppPromoModule
+        ProductListingAppPromoModule,
+        SharedNotFoundModule
     ],
     declarations: [
         AlpComponent,

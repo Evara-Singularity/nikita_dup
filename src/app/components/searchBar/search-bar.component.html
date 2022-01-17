@@ -1,11 +1,16 @@
-<div [class.search_open]="ssp" [class.search_open_mini]="!ssp && (data == undefined || data.type == undefined || data.type !== 'home')" [class.second-scroll]="data && data['className']">
+<div [class.search_open]="ssp"
+    [class.search_open_mini]="!ssp && (data == undefined || data.type == undefined || data.type !== 'home')"
+    [class.second-scroll]="data && data['className']">
     <div class="head-popup clearfix" *ngIf="ssp">
         <div class="container" id="search-input-block">
             <i class="icon-back f-left" (click)="enableScroll();resetSearchBar();ssp=false"></i>
             <i class="icon-search"></i>
-            <form class="searchForm" [formGroup]="searchForm" (ngSubmit)="searchData(searchForm.value, searchForm.valid)">
-                <input formControlName="searchTerm" type="text" autocomplete="off" placeholder="Search Product/Category/Brand..." aria-describedby="basic-addon2" id="search-input">
-                <i class="icon-circle-delete icon-del" *ngIf="ssp && showSuggestionBlock" (click)="resetSearchBar()"></i>
+            <form class="searchForm" [formGroup]="searchForm"
+                (ngSubmit)="searchData(searchForm.value, searchForm.valid)">
+                <input formControlName="searchTerm" type="text" autocomplete="off"
+                    placeholder="Search Product/Category/Brand..." aria-describedby="basic-addon2" id="search-input">
+                <i class="icon-circle-delete icon-del" *ngIf="ssp && showSuggestionBlock"
+                    (click)="resetSearchBar()"></i>
                 <button *ngIf="ssp" class="searchBtn" type="submit"><i class="icon-search"
                         style="display: block;"></i></button>
             </form>
@@ -15,31 +20,38 @@
         <div *ngIf="!showSuggestionBlock" class="scroll-able">
             <app-trending-search (outData$)="outData($event)"></app-trending-search>
             <div class="search-result">
-                <app-search-history (outData$)="outData($event)" (sendTextToSearchBar)="handleSendTextToSearchBar($event)"></app-search-history>
+                <app-search-history (outData$)="outData($event)"
+                    (sendTextToSearchBar)="handleSendTextToSearchBar($event)"></app-search-history>
             </div>
         </div>
         <div class="ac_results search-result" *ngIf="showSuggestionBlock" id="ac_results">
             <div class="container">
                 <div class="search_suggestion">
-                    <h3 class="search_heading">Popular Suggestions</h3>
-                    <ul class="plan-list">
-                        <ng-container *ngFor="let prod of suggestionList | slice:0:5; let i = index;">
-                            <li *ngIf="prod.productCount" class="ac_even" type="suggestionList" (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes, prod['brandName'] )" [attr.data-index]="i">
-                                <span class="search-text">{{prod.term}}</span>
-                                <div class="search-count">
-                                    <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>
-                                    <!-- <img (click)="handleSendTextToSearchBar(prod.term, $event)" src="{{imageAssetPath}}assets/img/interface.png"> -->
-                                    <i (click)="handleSendTextToSearchBar(prod.term, $event)" class="icon-share-box-line interfaceIcon"></i>
-                                </div>
-                            </li>
-                        </ng-container>
-                    </ul>
+                    <ng-container *ngIf="suggestionList.length > 0">
+                        <h3 class="search_heading">Popular Suggestions</h3>
+                        <ul class="plan-list">
+                            <ng-container *ngFor="let prod of suggestionList | slice:0:4; let i = index;">
+                                <li *ngIf="prod.productCount" class="ac_even" type="suggestionList"
+                                    (click)="navigateTo('SEARCH', prod.term,null,prod.categoryId,prod.attributes, prod['brandName'] )"
+                                    [attr.data-index]="i">
+                                    <span class="search-text">{{prod.term}}</span>
+                                    <div class="search-count">
+                                        <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>
+                                        <!-- <img (click)="handleSendTextToSearchBar(prod.term, $event)" src="{{imageAssetPath}}assets/img/interface.png"> -->
+                                        <i (click)="handleSendTextToSearchBar(prod.term, $event)"
+                                            class="icon-share-box-line interfaceIcon"></i>
+                                    </div>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </ng-container>
                     <!--categories-->
                     <ng-container *ngIf="categorySuggestionList.length > 0">
                         <h3 class="search_heading rel-cat">Relevant Categories</h3>
                         <div class="search_product_categories">
                             <ng-container *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index">
-                                <div *ngIf="prod.imageLink" class="search_product_category" [attr.data-index]="i" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)">
+                                <div *ngIf="prod.imageLink" class="search_product_category" [attr.data-index]="i"
+                                    (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)">
                                     <img src="{{imagePath + prod.imageLink}}">
                                     <span class="prodText">{{prod.term}}</span>
                                 </div>
@@ -48,15 +60,40 @@
                     </ng-container>
                     <ng-container *ngIf="brandSuggestionList.length > 0">
                         <h3 class="search_heading">Explore By Brands </h3>
-                        <ng-container *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index;">
-                            <div *ngIf="prod.term" class="search_product_category brand" (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)" [attr.data-index]="i">
-                                <span class="prodText">{{prod.term}}</span>
-                            </div>
-                        </ng-container>
+                        <div class="search_product_categories">
+                            <ng-container *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index;">
+                                <div *ngIf="prod.term" class="search_product_category brand"
+                                    (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)"
+                                    [attr.data-index]="i">
+                                    <span class="prodText">{{prod.term}}</span>
+                                </div>
+                            </ng-container>
+                        </div>
                     </ng-container>
                 </div>
+                <section class="Bestseller card similar-prod mar-t--10"
+                    *ngIf="searchProducts && searchProducts.length>0">
+                    <div class="upper-view-all-sec">
+                        <div class="upper-view-all-sec-left">
+                            <h3 class="search_heading">Best Sellers</h3>
+                        </div>
+                        <!-- <div class="upper-view-all-sec-right">
+                            <button>VIEW ALL</button>
+                        </div> -->
+                    </div>
+                    <div class="vertical-scroll-container">
+                        <div class="inner-scroll-container" [style.width.px]="searchProducts.length * 165">
+                            <ng-container *ngFor="let product of searchProducts;let pIndex=index">
+                                <product-horizontal-card [section]="'search-popup'" [product]="product"
+                                    [enableTracking]="true" [cardMetaInfo]='cardMetaInfo'
+                                    [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'SEACRH_SUGGESTION'"
+                                    [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
+                                </product-horizontal-card>
+                            </ng-container>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
-
     </section>
 </div>

@@ -36,7 +36,7 @@ export class ModalComponent implements OnInit {
         //     map(data => data)
         // )
         .subscribe((data) => {
-            console.log("ModalComponentdata",data);
+            //console.log("ModalComponentdata",data);
              ;
             this.showModal = true;
             // Add Unique id for each toast in array
@@ -88,13 +88,13 @@ export class ModalComponent implements OnInit {
 
         this.childComponentRef = childComponentRef;
       
-        console.log(childConfig,"childConfig");
+        //console.log(childConfig,"childConfig");
 
         if(childConfig.mConfig){
             this.modalClass = childConfig.mConfig['className'];
             this.heightFull = childConfig.mConfig['heightFull'];
             this.showVideoOverlay = childConfig.mConfig['showVideoOverlay'];
-            console.log(this.modalClass,"mt");
+            //console.log(this.modalClass,"mt");
         }
 
         // Attach component to the appRef so that it's inside the ng component tree

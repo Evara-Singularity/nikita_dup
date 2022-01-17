@@ -1,4 +1,4 @@
-<section class="Bestseller card similar-prod" *ngIf="similarProducts && similarProducts.length>0">
+<section class="Bestseller card card-wrap" *ngIf="similarProducts && similarProducts.length>0">
     <div class="upper-view-all-sec">
         <div class="upper-view-all-sec-left">
             <h4>Similar Products</h4>
@@ -7,17 +7,12 @@
             <button>VIEW ALL</button>
         </div> -->
     </div>
-    <div class="vertical-scroll-container">
+    <div class="vertical-scroll-container similar-products">
         <div class="inner-scroll-container" [style.width.px]="similarProducts.length * 165">
-            <ng-container *ngFor="let product of similarProducts;let pIndex=index" >
-                <product-horizontal-card 
-                    [section]="'similar'"
-                    [product]="product"
-                    [cardMetaInfo]='cardMetaInfo'
-                    [cardFeaturesConfig]='cardFeaturesConfig'
-                    [pIndex]="pIndex"
-                    [enableTracking]="true"
-                    [analytics]="analytics" >
+            <ng-container *ngFor="let product of similarProducts;let pIndex=index">
+                <product-horizontal-card [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                    [analytics]="analytics">
                 </product-horizontal-card>
             </ng-container>
         </div>

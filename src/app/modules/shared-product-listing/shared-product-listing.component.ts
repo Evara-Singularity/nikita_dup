@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { EventEmitter, Component, Output, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -37,6 +37,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() categoryName: string; // only received in case used in category module
   @Input() categoryTaxonomay: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
+  @Input() categoryMidPlpFilterData: any; // only received in case used in search module
+  @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
@@ -62,7 +64,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
   }
-
 
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'

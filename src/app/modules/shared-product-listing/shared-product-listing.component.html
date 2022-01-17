@@ -55,8 +55,11 @@
 
 <ng-container *ngIf="productsListingData?.products?.length > 0">
     <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-        <filter-mid-plp [pageName]="pageName" [position]="i" [filterData]="productsListingData?.filterData"
-            *ngIf="(i === 5 || i === 10 || i === 15)"></filter-mid-plp>
+        <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)" 
+            [categoryMidPlpFilterData]="categoryMidPlpFilterData"
+            [pageName]="pageName" [position]="i" 
+            [filterData]="productsListingData?.filterData"
+            *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)"></filter-mid-plp>
         <product-card-skeleton
             *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
         </product-card-skeleton>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, Pipe, PipeTransform, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, Pipe, PipeTransform, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BucketsEntity } from '@app/utils/models/product.listing.search';
 import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
@@ -16,6 +16,8 @@ export class FilterMidPlpComponent implements OnInit {
   @Input('filterData') filterData: Array<BucketsEntity>;
   @Input('position') position: number;
   @Input('pageName') pageName: string;
+  @Input('categoryMidPlpFilterData') categoryMidPlpFilterData: any;
+  @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
 
   public GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   public inlineFilterData: BucketsEntity;
@@ -37,9 +39,6 @@ export class FilterMidPlpComponent implements OnInit {
   genrateInlineFilterData() {
     this._productListService.inlineFilterData = [];
 
-    // if Brand or Brand + Category page then replace brand inline mid filter with category filter
-    let category;
-
     if (this.pageName === 'BRAND' && !this._activatedRoute.snapshot.params.category) {
       GLOBAL_CONSTANT.inlineFilter[1] = 'category';
     } else {
@@ -47,59 +46,9 @@ export class FilterMidPlpComponent implements OnInit {
     }
 
     if (this.pageName === 'SEARCH') {
-      // Genrate Category Data and for that Map categoriesRecommended data With checkAndApplyFilter data i.e key and item check this function
-      category = {
-        name:'Category',
-        terms: [
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Shoes",
-            categoryName: "Safety Shoes",
-            categoryId: "116111700",
-            confidence: 100.0
-          },
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Gloves",
-            categoryName: "Safety Gloves",
-            categoryId: "116111701",
-            confidence: 100.0
-          },
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Instrument",
-            categoryName: "Safety Shoes",
-            categoryId: "116111700",
-            confidence: 100.0
-          },
-          {
-            count: 3,
-            enabled: true,
-            maxPrice: 0,
-            minPrice: 0,
-            selected: false, 
-            term: "Safety Gloves",
-            categoryName: "Safety Jacket",
-            categoryId: "116111701",
-            confidence: 100.0
-          },
-        ]
-      };
       // if category exists for search page then push it at the top if the page
-      if (category) {
-        this._productListService.inlineFilterData.push(category);
+      if (this.categoryMidPlpFilterData && this.categoryMidPlpFilterData.terms.length > 0) {
+        this._productListService.inlineFilterData.push(this.categoryMidPlpFilterData);
       }
     }
 
@@ -124,6 +73,10 @@ export class FilterMidPlpComponent implements OnInit {
   }
 
   checkAndApplyFilter(key, item) {
+    if (key.toLowerCase() === GLOBAL_CONSTANT.inlineFilter[3] && item) {
+      this.categoryClicked.emit(item);
+      return;
+    }
     this._commonService.genricApplyFilter(key, item);
   }
 }

@@ -20,7 +20,11 @@
         </ng-container>
     </ng-container>
 
-    <shared-product-listing #sharedProductList [headerName]="headerNameBasedOnCondition" [pageName]="'SEARCH'"
+    <shared-product-listing #sharedProductList 
+        (categoryClicked)="handleCategoryClicked($event)" 
+        [categoryMidPlpFilterData]="API_RESULT['searchData'][1]"
+        [headerName]="headerNameBasedOnCondition" 
+        [pageName]="'SEARCH'"
         [searchKeyword]="API_RESULT['searchData'][0].productSearchResult.inputSearchString"
         [productsListingData]="_productListService?.productListingData">
     </shared-product-listing>

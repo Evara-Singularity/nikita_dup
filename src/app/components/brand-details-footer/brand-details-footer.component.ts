@@ -5,7 +5,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.'
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 export interface BrandDetailsFooterData{
 	brandCatDesc: any;

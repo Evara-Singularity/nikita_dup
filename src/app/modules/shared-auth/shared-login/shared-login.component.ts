@@ -271,76 +271,15 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
     }
 
     updateCartSession() {
-        const userSession = this.localAuthService.getUserSession();
-        const cartSession = Object.assign(this.cartService.getCartSession());
-        cartSession['cart']['userId'] = userSession.userId;
-        this.cartService.getSessionByUserId(cartSession)
-            .pipe(
-                mergeMap((cartSession: any) => {
-                    if (this.cartService.buyNow) {
-                        const cartId = cartSession['cart']['cartId'];
-                        cartSession = this.cartService.buyNowSessionDetails;
-                        cartSession['cart']['cartId'] = cartId;
-                        cartSession['itemsList'][0]['cartId'] = cartId;
-                    }
-                    let sro = this.cartService.getShippingObj(cartSession);
-                    return this.cartService.getShippingValue(sro)
-                        .pipe(
-                            map((sv: any) => {
-                                if (sv && sv['status'] && sv['statusCode'] === 200) {
-                                    cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
-                                    if (sv['data']['totalShippingAmount'] !== undefined && sv['data']['totalShippingAmount'] !== null) {
-                                        let itemsList = cartSession['itemsList'];
-                                        for (let i = 0; i < itemsList.length; i++) {
-                                            cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
-                                        }
-                                    }
-                                }
-                                return cartSession;
-                            })
-                        );
-                })
-            )
-            .subscribe((res) => {
-                if (res.statusCode !== undefined && res.statusCode === 200) {
-                    const cs = this.cartService.updateCart(res);
-                    this.cartService.setCartSession(cs);
-                    this.cartService.orderSummary.next(res);
-                    this.cartService.cart.next(res.noOfItems);
+        this.cartService.performAuthAndCartMerge({ enableShippingCheck: false, redirectUrl: this.redirectUrl })
+            .subscribe(cartSession => {
+                if (cartSession) {
+                    this.tms.show({ type: 'error', text: 'Sign in successfully' });
+                    this.commonService.redirectPostAuth(this.redirectUrl);
+                } else {
+                    this.tms.show({ type: 'error', text: 'Something went wrong' });
                 }
             });
-            this.localAuthService.login$.next(this.redirectUrl);
-            let routeData = this.commonService.getRouteData();
-            if(this.redirectUrl){
-                this.redirectCheck(this.redirectUrl);
-            }
-            else if (routeData['previousUrl'] && routeData['previousUrl'] == '/') {
-                this.redirectCheck('/');
-            } else if (routeData['previousUrl'] && routeData['previousUrl'] != '' && routeData['previousUrl'] != '/login') {
-                this.redirectCheck(routeData['previousUrl']);
-            } else if (routeData['currentUrl'] && routeData['currentUrl'] != '' && routeData['currentUrl'] != '/login') {
-                this.redirectCheck(routeData['currentUrl']);
-            } else {
-                this.redirectCheck('/');
-            }
-            this.tms.show({ type: 'success', text: 'Sign in successful' });
-    }
-
-    redirectCheck(url: string) {
-        const exceptUrl = ['login', 'otp', 'forgot-password', 'sign-up']
-        let contains = false;
-        exceptUrl.forEach(element => {
-            if (url.indexOf(element) !== -1) {
-                contains = true;
-            }
-        });
-
-        if (contains) {
-            this.router.navigateByUrl('/')
-        } else {
-            window.history.back();
-            // this.router.navigateByUrl(url);
-        }
     }
 
     navigateTo(page) {

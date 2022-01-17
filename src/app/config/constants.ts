@@ -29,7 +29,8 @@ export const CONSTANTS = {
   },
   PRODUCT_CARD_MODULE_NAMES: {
     PLP: 'plp',
-    PDP: 'pdp'
+    PDP: 'pdp',
+    SEARCH: 'search',
   },
   META: {
     ROBOT: 'index,follow',

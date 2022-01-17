@@ -208,111 +208,31 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         let cartSession = Object.assign(this.cartService.getCartSession());
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession(cartSession);
+        this.updateCartSession();
     }
 
-    updateCartSession(cartSession) {
-        const userSession = this.localAuthService.getUserSession();
-        cartSession['cart']['userId'] = userSession.userId;
-        this.cartService.getSessionByUserId(cartSession)
-            .pipe(
-                mergeMap((cartSession: any) => {
-                    if (this.cartService.buyNow) {
-                        const cartId = cartSession['cart']['cartId'];
-                        cartSession = this.cartService.buyNowSessionDetails;
-                        cartSession['cart']['cartId'] = cartId;
-                        cartSession['itemsList'][0]['cartId'] = cartId;
-                    }
-                    let sro = this.cartService.getShippingObj(cartSession);
-                    return this.cartService.getShippingValue(sro)
-                        .pipe(
-                            map((sv: any) => {
-                                if (sv && sv['status'] && sv['statusCode'] === 200) {
-                                    cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
-                                    if (sv['data']['totalShippingAmount'] !== undefined && sv['data']['totalShippingAmount'] !== null) {
-                                        let itemsList = cartSession['itemsList'];
-                                        for (let i = 0; i < itemsList.length; i++) {
-                                            cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
-                                        }
-                                    }
-                                }
-                                return cartSession;
-                            })
-                        );
-                })
-            )
-            .subscribe((res) => {
-                if (res.statusCode !== undefined && res.statusCode === 200) {
 
-                    const cs = this.cartService.updateCart(res);
-                    this.cartService.setCartSession(cs);
-                    this.cartService.orderSummary.next(res);
-                    this.cartService.cart.next(res.noOfItems);
-
-                    if (this.isCheckoutModule) {
-                        // incase of checkout module only we need to check buynow flow
-                        if (this.cartService.buyNow) {
-                            console.log('shared otp with checkout buynow', 'called');
-                            const sessionDetails = this.cartService.getCartSession();
-                            sessionDetails['cart']['userId'] = userSession.userId;
-                            this.isReqProcessing = true;
-                            this.cartService.updateCartSessions(null, sessionDetails).subscribe((data) => {
-                                console.log('shared otp buyNow', data);
-                                this.localAuthService.login$.next(this.router.url);
-                                data['userId'] = userSession.userId;
-                                this.cartService.setCartSession(data);
-                                this.cartService.orderSummary.next(data);
-                                this.cartService.cart.next(data.noOfItems);
-                                this.localAuthService.login$.next(this.redirectUrl);
-                                this.isReqProcessing = false;
-                                this.checkoutLoginService.setLoginUsingOTPStatus({
-                                    status: true,
-                                    message: 'Sign in successfull'
-                                })
-                            });
-                        } else {
-                            // without buynow flow in checkout module
-                            console.log('shared otp with checkout without buynow', 'called');
-                            this.localAuthService.login$.next(this.redirectUrl);
-                            this.checkoutLoginService.setLoginUsingOTPStatus({
-                                status: true,
-                                message: 'Sign in successfull'
-                            })
-                        }
-                    } else {
-                        // normal sign up flow
-                        let routeData = this.commonService.getRouteData();
-                        if (routeData['previousUrl'] && routeData['previousUrl'] == '/') {
-                            this.redirectCheck('/');
-                        } else if (routeData['previousUrl'] && routeData['previousUrl'] != '' && routeData['previousUrl'] != '/login') {
-                            this.redirectCheck(routeData['previousUrl']);
-                        } else if (routeData['currentUrl'] && routeData['currentUrl'] != '' && routeData['currentUrl'] != '/login') {
-                            this.redirectCheck(routeData['currentUrl']);
-                        } else {
-                            this.redirectCheck(this.redirectUrl || '/');
-                        }
-                        this.localAuthService.login$.next(this.redirectUrl);
-                        this.toastService.show({ type: 'success', text: 'Sign in successful' });
-                        
-                    }
-
+    updateCartSession() {
+        this.isReqProcessing = true;
+        this.cartService.performAuthAndCartMerge({
+            enableShippingCheck: this.isCheckoutModule,
+            redirectUrl: this.redirectUrl,
+        }).subscribe(cartSession => {
+            this.isReqProcessing = false;
+            if (cartSession) {
+                if (this.isCheckoutModule) {
+                    this.checkoutLoginService.setLoginUsingOTPStatus({
+                        status: true,
+                        message: 'Sign in successful'
+                    })
+                } else {
+                    this.commonService.redirectPostAuth(this.redirectUrl);
+                    this.toastService.show({ type: 'success', text: 'Sign in successful' });
                 }
-            });
-    }
-
-    redirectCheck(url: string) {
-        const exceptUrl = ['login', 'otp', 'forgot-password', 'sign-up']
-        let contains = false;
-        exceptUrl.forEach(element => {
-            if (url.indexOf(element) !== -1) {
-                contains = true;
+            } else {
+                this.toastService.show({ type: 'error', text: 'Something went wrong' });
             }
         });
-        if (contains) {
-            this.router.navigateByUrl('/');
-        } else {
-            this.router.navigateByUrl(url);
-        }
     }
 
     startOTPTimer() {

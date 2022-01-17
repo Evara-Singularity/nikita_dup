@@ -1,0 +1,83 @@
+<static-breadcrumb [breadCrumbList]="breadCrumbList"></static-breadcrumb>
+<div class="main-article">
+    <!--ODP-1815:In sprint-17 main only articles to be displayed-->
+    <!-- <div class="main-article-header">
+        <h2>Article Home</h2>
+        <form action="" class="material-form material-form-boxed">
+            <div class="multiple-form-field">
+                <div class="input-field input-field-boxed top-search-box">
+                    <input type="text" placeholder="search">
+                    <i _ngcontent-ssr-pwa-c21="" class="icon-search"></i>
+                </div>
+                <div class="input-field input-field-boxed">
+                        <select>
+                            <option value="" selected disabled hidden>Sort By</option>                               
+                            <option>sachin<span> 94</span></option>
+                            <option>sachin<span> 94</span></option>
+                            <option>sachin<span> 94</span></option>
+                        </select>
+                        <i class="icon-down"></i>
+                </div>
+            </div>
+        </form>              
+    </div> -->
+    <div class="article-body">
+        <!-- <div class="article-box recent-three-articles">
+            <h3 class="heading">Recent Released Articles</h3>
+            <div class="article-box-inner">
+                <div class="product-img">
+                    <div class="product-img">
+                    <img class="article-img" src="https://cdn.pixabay.com/photo/2020/11/30/03/17/ceiling-fan-5789661_960_720.jpg">
+                </div>
+                <div class="product-info-strip">
+                    <p>Top five ceiling fan brands designed for Indian weather</p>
+                </div>
+                </div>
+                <h5 class="red-txt">OFFICE SUPPLIES</h5>
+                <h3>Mobility Aids – Walk, move and savor the joy of the world.</h3>
+                <h5 class="gray-txt">February 24, 2021 | 13K Views</h5>
+            </div>
+            <div class="article-box-inner">
+                <div class="product-img">
+                    <img class="article-img" src="https://cdn.mos.cms.futurecdn.net/GhNwR6h6UvPMjDbpMHwsEG-1200-80.jpg">
+                </div>
+                <h5 class="red-txt">OFFICE SUPPLIES</h5>
+                <h3>Mobility Aids – Walk, move and savor the joy of the world.</h3>
+                <h5 class="gray-txt">February 24, 2021 | 13K Views</h5>
+            </div>
+            <div class="article-box-inner">
+                <div class="product-img">
+                    <img class="article-img" src="https://in.all.biz/img/in/catalog/241941.jpeg">
+                </div>
+                <h5 class="red-txt">OFFICE SUPPLIES</h5>
+                <h3>Mobility Aids – Walk, move and savor the joy of the world.</h3>
+                <h5 class="gray-txt">February 24, 2021 | 13K Views</h5>
+            </div>
+        </div> -->
+        
+        <div class="article-box">
+            <h1 class="heading upper-title">Articles</h1>
+            <div class="article-box-inner" *ngFor="let article of articleList"
+                (click)="$event.stopPropagation();navigateTo(article.friendlyUrl)">
+                <div class="article-box-inner-card">
+                    <div class="product-img">
+                        <img class="article-img" src="{{imagePath}}{{article.thumbnailImage}}" alt="{{article.title}}">
+                    </div>
+                    <div class="product-text">
+                        <h5 class="red-txt">{{article.categoryName}}</h5>
+                        <h3>{{article.title}}.</h3>
+                        <h5 class="gray-txt">{{article.created_At | date:'MMMM dd, yyyy'}}</h5><!-- | 13K Views-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="load-more-btn-area">
+            <button class="btn-red-bg" (click)="$event.stopPropagation();fetchArticles()" *ngIf="!hasNoRecords">LOAD
+                MORE ARTICLES</button>
+        </div>
+        <!-- <div class="more-about-shopping">
+            <h3 class="heading-3">More about shopping on Moglix</h3>
+            <span>+</span>
+        </div> -->
+    </div>
+</div>

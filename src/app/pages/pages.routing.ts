@@ -3,6 +3,9 @@ import { PagesComponent } from './pages.component';
 import { Routes, RouterModule, UrlSegment } from '@angular/router';
 import { MyAccountGuard } from '@utils/guards/myAccount.guard';
 import { IsNotAuthenticatedGuard } from '@utils/guards/is-not-authenticated.guard';
+import RoutingMatcher from '@utils/routing.matcher';
+
+const _routingMatcher = new RoutingMatcher();
 
 const routes: Routes = [
 	{
@@ -21,7 +24,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				matcher: productMatch,
+				matcher: _routingMatcher.productMatch,
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
 				data: {
@@ -29,7 +32,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				matcher: categoriesMatcher,
+				matcher: _routingMatcher.categoriesMatcher,
 				loadChildren: () =>
 					import('./category/category.module').then((m) => m.CategoryModule),
 				data: {
@@ -60,7 +63,7 @@ const routes: Routes = [
 				}
 			},
 			{
-				matcher: popularProductsMatcher,
+				matcher: _routingMatcher.popularProductsMatcher,
 				loadChildren: () =>
 					import('./popular/popularProduct/popularProduct.module').then(
 						(m) => m.PopularProductModule
@@ -91,18 +94,18 @@ const routes: Routes = [
 					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
-                    logo: true,
+					logo: true,
 					moreOpt: true,
 					pageName: 'listing:brand'
 				},
 			},
 			{
-				matcher: brandCategoriesMatcher,
+				matcher: _routingMatcher.brandCategoriesMatcher,
 				loadChildren: () =>
 					import('./brand/brand.module').then((m) => m.BrandModule),
 				data: {
 					footer: false,
-                    logo: true,
+					logo: true,
 					moreOpt: true,
 					pageName: 'listing:brandCategory'
 				},
@@ -237,14 +240,25 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'articles/:name',
+				path: 'article/:name',
 				loadChildren: () =>
-					import('./articles/articles.module').then((m) => m.ArticlesModule),
+					import('./article/article.module').then((m) => m.ArticleModule),
 				data: {
 					footer: false,
 					logo: true,
 					moreOpt: true,
 					pageName: 'article'
+				},
+			},
+			{
+				path: 'article',
+				loadChildren: () =>
+					import('./articles/articles.module').then((m) => m.ArticlesModule),
+				data: {
+					footer: true,
+					logo: true,
+					moreOpt: true,
+					pageName: 'articles'
 				},
 			},
 			{
@@ -720,47 +734,65 @@ const routes: Routes = [
 					moreOpt: false,
 				},
 			},
-            {
-                path: 'feedback',
-                loadChildren: () =>
-                    import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
-                data: {
-                    title: 'Feedback',
-                    menuBar: true,
-                    footer: false,
-                },
-            },
 			{
-                path: 'assist-verification-success',
-                loadChildren: () => import('@pages/assist-verification-success/assist-verification-success.module').then(m => m.AssistVerificationSuccessModule),
-                data: {
-                    hideHeader: true,
-                },
-            },
+				path: 'feedback',
+				loadChildren: () =>
+					import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
+				data: {
+					title: 'Feedback',
+					menuBar: true,
+					footer: false,
+				},
+			},
 			{
-                path: 'e-gift-voucher',
-                loadChildren: () => import('@pages/e-gift-voucher/e-gift-voucher.module').then(m => m.EGiftVoucherModule),
-                data: {
-                    hideHeader: false,
-                },
-            },
-            {
-                path: 'assist-verification-failure',
-                loadChildren: () => import('@pages/assist-verification-failure/assist-verification-failure.module').then(m => m.AssistVerificationFailureModule),
-                data: {
-                    hideHeader: true,
-                },
-            },
-            {
-                path: 'feedback',
-                loadChildren: () =>
-                    import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
-                data: {
-                    title: 'Feedback',
-                    menuBar: true,
-                    footer: false,
-                },
-            },
+				path: 'assist-verification-success',
+				loadChildren: () => import('@pages/assist-verification-success/assist-verification-success.module').then(m => m.AssistVerificationSuccessModule),
+				data: {
+					hideHeader: true,
+				},
+			},
+			{
+				path: 'e-gift-voucher',
+				loadChildren: () => import('@pages/e-gift-voucher/e-gift-voucher.module').then(m => m.EGiftVoucherModule),
+				data: {
+					footer: false,
+					moreOpt: false,
+					cart: false,
+					menuBar: false,
+					searchBar: false,
+					pageName: 'E-Gift'
+				},
+			},
+			{
+				path: 'assist-verification-failure',
+				loadChildren: () => import('@pages/assist-verification-failure/assist-verification-failure.module').then(m => m.AssistVerificationFailureModule),
+				data: {
+					hideHeader: true,
+				},
+			},
+			{
+				path: 'feedback',
+				loadChildren: () =>
+					import('./general-feedback/general-feedback.module').then((m) => m.GeneralFeedbackModule),
+				data: {
+					title: 'Feedback',
+					menuBar: true,
+					footer: false,
+				},
+			},
+			{
+				path: 'utr-confirmation',
+				loadChildren: () =>
+					import('./utr-confirmation/utr-confirmation.module').then((m) => m.UTRConfirmationModule),
+				data: {
+					footer: false,
+					moreOpt: false,
+					cart: false,
+					menuBar: false,
+					searchBar: false,
+					pageName: 'Payment Confirmation'
+				},
+			},
 			{
 				path: '**',
 				loadChildren: () =>
@@ -781,47 +813,4 @@ const routes: Routes = [
 	imports: [RouterModule.forChild(routes)],
 	exports: [RouterModule],
 })
-export class PagesRoutingModule {}
-
-function productMatch(url: UrlSegment[]): any {
-	const urlLength = url.length;
-	if (urlLength > 2) {
-		const secondURLStrig = url[1].toString();
-		if (secondURLStrig === 'mp') {
-			return { consumed: url, posParams: { msnid: url[2] } };
-		}
-	}
-}
-
-export function categoriesMatcher(url: UrlSegment[]): any {
-	const urlLength = url.length;
-	if (urlLength > 0) {
-		const lastParam = url[urlLength - 1].toString();
-		const brandParam = url[0].toString();
-		if (lastParam.match(/^\d{9}$/) && brandParam !== 'brands') {
-			return { consumed: url, posParams: { id: url[urlLength - 1] } };
-		}
-	}
-}
-
-export function brandCategoriesMatcher(url: UrlSegment[]): any {
-	const urlLength = url.length;
-	if (urlLength > 0) {
-		const lastParam = url[urlLength - 1].toString();
-		const brandParam = url[0].toString();
-		if (lastParam.match(/^\d{9}$/) && brandParam === 'brands') {
-			return {
-				consumed: url,
-				posParams: { category: url[urlLength - 1], brand: url[1] },
-			};
-		}
-	}
-}
-
-export function popularProductsMatcher(url: UrlSegment[]): any {
-	if (url.length > 1) {
-		if (url[0].toString() === 'q') {
-			return { consumed: url, posParams: { searchString: url[1] } };
-		}
-	}
-}
+export class PagesRoutingModule { }

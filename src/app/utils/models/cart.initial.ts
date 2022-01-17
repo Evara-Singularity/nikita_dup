@@ -32,7 +32,60 @@ export interface AddToCartProductSchema {
     bulkPrice: null;
     expireAt: null;
     filterAttributesList?: any;
-    isOutOfStock?: boolean,
-    brandId?: string,
+    isOutOfStock?: boolean;
     quantityAvailable?: number,
+    productMRP?: number;
+    tpawot?: number;
+    brandId?: string,
+    isFBT?: boolean;
+    productSmallImage:string;
+    productImage:string;
+    url:string;
+}
+
+export interface CartMasterSchema {
+    cart: CartObjectSchema;
+    itemsList: AddToCartProductSchema[];
+    addressList: CartAddressObjectSchema[];
+    payment?: any;
+    extraOffer?: any;
+    offersList: any[];
+    noOfItems?: number;
+}
+
+export interface CartAddressObjectSchema {
+    id: number;
+    cartId: number;
+    addressId: number;
+    type: string;
+    createdAt: number;
+    updatedAt: number;
+    invoiceType?: any;
+}
+
+export interface CartObjectSchema {
+    cartId: number;
+    sessionId: string;
+    userId: number;
+    agentId?: any;
+    isPersistant: boolean;
+    createdAt: number;
+    updatedAt: number;
+    closedAt?: any;
+    orderId?: any;
+    totalAmount: number;
+    totalOffer: number;
+    totalAmountWithOffer: number;
+    taxes: number;
+    totalAmountWithTaxes?: any;
+    shippingCharges: number;
+    currency: string;
+    isGift: boolean;
+    giftMessage?: any;
+    giftPackingCharges: number;
+    totalPayableAmount: number;
+    noCostEmiDiscount?: any;
+    buyNow?: any;
+    tawot: number;
+    tpt: number;
 }

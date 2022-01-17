@@ -1,0 +1,19 @@
+<ul class="bread-head  hidden-sm-down" [style.margin-top.px]="marginTop">
+    <li>
+        <a [routerLink]="['/']">Home
+            <span class="arrow-icon">
+                <i class="icon-next" aria-hidden="true"></i>
+            </span>
+        </a>
+    </li>
+    <ng-container *ngFor="let breadcrumb of breadCrumbList">
+        <li class="item" *ngIf="breadcrumb.link">
+            <a routerLink="{{breadcrumb.link}}">{{breadcrumb.name}}
+                <span class="arrow-icon">
+                    <i class="icon-next" aria-hidden="true"></i>
+                </span>
+            </a>
+        </li>
+        <li><a *ngIf="!(breadcrumb.link)">{{breadcrumb.name}}</a></li>
+    </ng-container>
+</ul>

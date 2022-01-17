@@ -18,6 +18,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
+import * as kfooter from '../../config/k.footer';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
@@ -68,6 +69,10 @@ export class ClusterStoreComponent implements OnInit {
 
 	isServer: boolean;
 	isBrowser: boolean;
+	pageNotFound:boolean=false;
+	kfooter: any = kfooter;
+	footerVisible = false;
+	readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
 	extraData: {};
 	private cDistryoyed = new Subject();
 	data: {};
@@ -86,7 +91,7 @@ export class ClusterStoreComponent implements OnInit {
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
 		private loaderService: GlobalLoaderService,
-		private _commonService: CommonService, 
+		public _commonService: CommonService, 
 		private _localStorageService: LocalStorageService, 
 		private _analytics: GlobalAnalyticsService
 	) {
@@ -98,6 +103,9 @@ export class ClusterStoreComponent implements OnInit {
 	ngOnInit() {
 		this._activatedRoute.data.subscribe((rawData) => {
 			let response = rawData['clusterStoreData'];
+			if(!response['data'][0]){
+				this.pageNotFound=true;
+			}
 			if (
 				response['statusCode'] === 200 &&
 				response['data'] != null &&
@@ -112,10 +120,10 @@ export class ClusterStoreComponent implements OnInit {
 					).toLowerCase();
 				this.initialize(response);
 			} else {
-				this.toastMessageService.show({
-					type: 'error',
-					text: response['message'],
-				});
+				// this.toastMessageService.show({
+				// 	type: 'error',
+				// 	text: response['message'],
+				// });
 			}
 			if(this.isBrowser){
 				this.setAnalyticTags(rawData.clusterStoreData);
@@ -130,10 +138,10 @@ export class ClusterStoreComponent implements OnInit {
             }
             /*Start Adobe Analytics Tags */
             let page = {
-                'pageName': "moglix:" + data.pageTitle,
+                'pageName': "moglix:store:" + this._router.url.split('/').pop(),
                 'channel': "store",
-                'subSection': "moglix:" + data.pageTitle + ":" + this._commonService.getSectionClick().toLowerCase(),
-                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+                'subSection': "moglix:store:" + this._router.url.split('/').pop(),
+                'loginStatus': this._commonService.loginStatusTracking
             }
             let custData = {
                 'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
@@ -390,6 +398,14 @@ export class ClusterStoreComponent implements OnInit {
 			}
 		}
 	}
+
+	clickFooter() {
+		this.footerVisible = !this.footerVisible;
+		if (this.footerVisible && document.getElementById('footerContainer')) {
+		  let footerOffset = document.getElementById('footerContainer').offsetTop;
+		  ClientUtility.scrollToTop(1000, footerOffset - 50);
+		}
+	  }
 
 	ngOnDestroy() {
 		this.cDistryoyed.next();

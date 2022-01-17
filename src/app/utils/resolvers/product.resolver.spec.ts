@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProductResolver } from './product.resolver';
+import { ProductResolver } from './product/product-main.resolver';
 
 describe('ProductResolver', () => {
   let resolver: ProductResolver;

@@ -2,7 +2,8 @@
     <div class="container pad-tb-10">
         <h3 class="f-left">Frequently Bought Together With
         </h3>
-        <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow('/quickorder')"
+        <!--TODO:Yogender-->
+        <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()"
             *ngIf="isModal"></i>
         <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
     </div>
@@ -23,7 +24,7 @@
         </a>
     </div>
     <ul class="list view-products fbtList">
-        <li *ngFor="let product of  mFBTProducts;index as fbtIndex">
+        <li *ngFor="let product of mFBTProducts;index as fbtIndex">
             <a class="clearfix">
                 <div class="fbtCheckBox custom-cbox">
                     <label>
@@ -32,7 +33,7 @@
                     </label>
                 </div>
                 <div class="fbTrightContainer">
-                    <a (click)="navigateToPDP(product.url)"  >
+                    <a (click)="navigateToPDP(product.url)">
                         <div class="product-img">
                             <img [src]="product.productImage">
                         </div>
@@ -41,7 +42,7 @@
                             <p class="price">
                                 <span class="after-discount">{{product.priceWithoutTax | mathFloor | currency:
                                     'INR' : 'symbol' : '1.0-0'}}</span>
-                                <span class="before-discount">{{product.mrp | mathFloor | currency: 'INR':
+                                <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
                                     'symbol': '1.0-0'}}</span>
                                 <span class="discount">{{product.discount | mathFloor}}% OFF</span>
                             </p>
@@ -58,6 +59,7 @@
                     Extra)</span>
             </h3>
         </div>
+        <!--TODO:Yogender-->
         <div class="f-right" *ngIf="!(isModal)">
             <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
                 TOGETHER':'ADD TO CART'}}</button>

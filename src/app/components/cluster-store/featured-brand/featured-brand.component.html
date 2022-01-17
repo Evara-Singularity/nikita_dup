@@ -1,8 +1,8 @@
-<div class="featuredBrands">
+<div class="featuredBrands" *ngIf="data['data']">
     <h3 class="l0_heading">{{data.title}}</h3>
     <div class="featrOverBlock">
         <div [style.width.px]="data['data'].length * 95" class="clearfix">
-            <div [routerLink]="['/'+item.brand_url]" class="featrSlide" *ngFor="let item of data['data'];let i=index">
+            <div [routerLink]="['/'+item?.brand_url]" class="featrSlide" *ngFor="let item of data['data'];let i=index">
                 <img src="{{imagePath + item['brand_image']}}" alt="{{item['brandName']}}">
             </div>
         </div>

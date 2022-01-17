@@ -1,25 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ArticleUtilService } from './article-util.service';
-import { ArticleResolver } from './article.resolver';
-import { ArticleService } from './article.service';
-import { ArticlesRoutingModule } from './articles-routing.module';
-import { CmsModule } from '../../modules/cms/cms.module';
-import { ArticleComponent } from './article.component';
-
+import { RouterModule, Routes } from '@angular/router';
+import { MainArticlesResolver } from '../../utils/resolvers/main-articles.resolver';
+import { ArticlesComponent } from './articles.component';
+import { StaticBreadcrumbModule } from '@app/components/static-breadcrumb/static-breadcrumb.component';
+const routes: Routes = [
+    {
+        path: '',
+        component: ArticlesComponent,
+        resolve: {
+            responseData: MainArticlesResolver
+        }
+    }
+];
 @NgModule({
-    declarations: [
-        ArticleComponent,
-    ],
+    declarations: [ArticlesComponent],
     imports: [
         CommonModule,
-        ArticlesRoutingModule,
-        CmsModule,
+        StaticBreadcrumbModule,
+        RouterModule,
+        RouterModule.forChild(routes),
     ],
-    providers: [
-        ArticleService,
-        ArticleUtilService,
-        ArticleResolver
-    ]
+    providers: [MainArticlesResolver]
 })
 export class ArticlesModule { }

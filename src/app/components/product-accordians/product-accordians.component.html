@@ -34,7 +34,7 @@
         <div [id]="'attributeAccoridan'" [style.display]="(ACCORDIAN_DATA[1].length === 0 && ACCORDIAN_DATA[0]?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links" >
                 <div *ngFor="let attribute of ACCORDIAN_DATA[0] | slice:0:10">
-                    <a   (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl, attribute.friendlyUrl);$event.preventDefault()" [href]="[prodUrl+'/'+attribute.friendlyUrl]">
+                    <a  [href]="prodUrl + '/' + attribute.friendlyUrl" (click)="$event.preventDefault();$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl, attribute.friendlyUrl);">
                         {{ attribute.title }}
                     </a>
                 </div>
@@ -55,7 +55,7 @@
         <div [id]="'mostSoldAccoridan'" [style.display]="(ACCORDIAN_DATA[1].length === 0 && ACCORDIAN_DATA[0].length === 0 && ACCORDIAN_DATA[2]?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let attribute of ACCORDIAN_DATA[2]  | slice:0:10">
-                    <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName, attribute.categoryLink);$event.preventDefault()" [href]="[prodUrl+'/'+attribute.categoryLink]">
+                    <a [href]="prodUrl + '/' + attribute.categoryLink" (click)="$event.preventDefault();$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName, attribute.categoryLink);">
                         {{ attribute.categoryName }}
                     </a>
                 </div>

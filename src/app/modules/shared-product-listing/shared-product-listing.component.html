@@ -1,33 +1,32 @@
-<div class="filter-wrapper">
+<div class="filter-wrapper" [class.translateHeader]="!_commonService.isScrolledHeader">
     <button type="button" (click)="toggleSortBy()">
-        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By  
-        <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
-            <ng-container *ngSwitchCase="'popularity'">
-                Popularity
-            </ng-container>
-            <ng-container *ngSwitchCase="'lowPrice'">
-                Low Price
-            </ng-container>
-            <ng-container *ngSwitchCase="'highPrice'">
-                High Price
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-                Popularity
-            </ng-container>
+        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By
+            <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
+                <ng-container *ngSwitchCase="'popularity'">
+                    Popularity
+                </ng-container>
+                <ng-container *ngSwitchCase="'lowPrice'">
+                    Low Price
+                </ng-container>
+                <ng-container *ngSwitchCase="'highPrice'">
+                    High Price
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    Popularity
+                </ng-container>
+            </span>
         </span>
-    </span>
     </button>
-
-    <button *ngIf="productsListingData.filterData && productsListingData.filterData.length > 0" type="button" (click)="filterUp()">
+    <button *ngIf="productsListingData.filterData && productsListingData.filterData.length > 0" type="button"
+        (click)="filterUp()">
         <i class="icon-filter-3-fill" aria-hidden="true"></i>
         <span class="txt">Filters</span>
         <span class="filter_count" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
     </button>
-
-    <button  *ngIf="!productsListingData.filterData || productsListingData?.filterData?.length === 0" class="skeleton-filter-container"> 
+    <button *ngIf="!productsListingData.filterData || productsListingData?.filterData?.length === 0"
+        class="skeleton-filter-container">
         <span class="skeleton-inner"></span>
     </button>
-
 </div>
 <div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">
@@ -47,23 +46,29 @@
             {{ headerName }}
         </h1>
         <div class="right" *ngIf="productsListingData?.products">
-            Showing {{ productsListingData?.products.length }} out of {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount  :( productsListingData?.products.length) ) }} products
+            Showing {{ productsListingData?.products.length }} out of {{ (productsListingData?.totalCount >
+            (productsListingData?.products.length) ? productsListingData?.totalCount :(
+            productsListingData?.products.length) ) }} products
+        </div>
+        <!-- [innerHTML]="titleDescription.split('.',2)+'.'" -->
+        <div class="right titleDis" *ngIf="productsListingData?.products" [innerHTML]="titleDescription">
         </div>
     </ng-container>
 </div>
 
 <ng-container *ngIf="productsListingData?.products?.length > 0">
     <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-            <filter-mid-plp [pageName]="pageName" [position]="i" [filterData]="productsListingData?.filterData"
-                *ngIf="(i === 5 || i === 10 || i === 15)"></filter-mid-plp>        
-            <product-card-skeleton *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
-            </product-card-skeleton>
+        <filter-mid-plp [pageName]="pageName" [position]="i" [filterData]="productsListingData?.filterData"
+            *ngIf="(i === 5 || i === 10 || i === 15)"></filter-mid-plp>
+        <product-card-skeleton
+            *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
+        </product-card-skeleton>
         <product-horizontal-card [product]="product" [isFirstView]="(i < 5)">
         </product-horizontal-card>
 
     </ng-container>
 </ng-container>
-<ng-container  *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
+<ng-container *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
     <div class="align-center">
         <div class="container pt-15">
             <h3 class="pb-15 mt-15 align-center f-16">No Product Found</h3>
@@ -76,7 +81,10 @@
 </ng-container>
 
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
-<ng-template #pagination></ng-template>
+<span observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
 
+<!-- search-card-plp.svg -->
+<ng-template #searchBannerCard></ng-template>
+<ng-template #pagination></ng-template>
 <ng-container #filter></ng-container>
 <ng-container #sortBy></ng-container>

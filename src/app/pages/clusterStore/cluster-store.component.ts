@@ -126,12 +126,12 @@ export class ClusterStoreComponent implements OnInit {
 				// });
 			}
 			if(this.isBrowser){
-				this.setAnalyticTags(rawData.clusterStoreData);
+				this.setAnalyticTags();
 			}
 		});
 	}
 
-	setAnalyticTags(data) {
+	setAnalyticTags() {
 		    let user;
             if (this._localStorageService.retrieve('user')) {
                 user = this._localStorageService.retrieve('user');

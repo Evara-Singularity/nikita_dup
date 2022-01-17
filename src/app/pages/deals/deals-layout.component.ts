@@ -18,8 +18,11 @@ export class DealsLayoutComponent implements OnInit {
   ) {
     this.currentRoute = this.router.url;
   }
+  
   ngOnInit(): void {
-    this.sendAdobeAnalysis();
+    if (this.commonService.isBrowser) {
+      this.sendAdobeAnalysis();
+    }
   }
 
   sendAdobeAnalysis() {

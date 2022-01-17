@@ -10,6 +10,8 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { forkJoin } from 'rxjs';
+import CONSTANTS from '@app/config/constants';
+
 
 @Component({
   selector: 'product-accordian',
@@ -19,9 +21,9 @@ import { forkJoin } from 'rxjs';
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
-  ACCORDIAN_DATA: Array<any> = [[], [], []];
-  popularLinks: Array<any> = [];
-  prodUrl: any;
+  ACCORDIAN_DATA: Array<any> = [[],[],[]];
+  popularLinks: Array<any>= [];
+  prodUrl=CONSTANTS.PROD;
 
   constructor(
     public _commonService: CommonService,

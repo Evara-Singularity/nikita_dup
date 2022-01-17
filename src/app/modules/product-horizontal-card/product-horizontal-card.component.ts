@@ -27,6 +27,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
+  prodUrl=CONSTANTS.PROD;
   @Input() product: ProductsEntity;
   @Input() cardFeaturesConfig: ProductCardFeature = {
     // feature config

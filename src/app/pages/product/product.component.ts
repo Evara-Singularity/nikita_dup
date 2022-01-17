@@ -1551,9 +1551,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // common functions
-  goToLoginPage(link) {
+  goToLoginPage(link, clickedFrom?: string) {
     let navigationExtras: NavigationExtras = {
-      queryParams: { backurl: link },
+      queryParams: { backurl: link, state: clickedFrom },
     };
     this.router.navigate(["/login"], navigationExtras);
   }
@@ -1842,7 +1842,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (user && user.authenticated == "true") {
       this.intiateRFQQuote(true);
     } else {
-      this.goToLoginPage(this.productUrl);
+      this.goToLoginPage(this.productUrl, 'raiseRFQQuote');
     }
   }
 

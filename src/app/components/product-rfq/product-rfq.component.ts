@@ -73,7 +73,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
-        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService) {
+        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, public _commonService: CommonService) {
         this.stateList = stateList['dataList'];
         this.isBrowser = _commonService.isBrowser;
     }
@@ -220,7 +220,11 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    close() { this.isPopup = false; this.isRFQSubmitted = false; }
+    close() {
+        this.isPopup = false;
+        this.isRFQSubmitted = false;
+        this._commonService.oosSimilarCard$.next(false);
+    }
 
     getBusinessDetail(userSession) {
         let details = { customerId: userSession.userId, userType: 'business' };

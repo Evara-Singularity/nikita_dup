@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, HostBinding, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { CategoryService } from '@app/utils/services/category.service';
@@ -52,7 +52,7 @@ export class CategoryComponent {
     public API_RESPONSE: any;
 
     @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
-
+    @HostBinding('class') translateCategoryValue: string = 'translateCategory';
     reqArray: any[] = [];
     popularLinks: any[] = [];
     wantedBucket: any[] = [];
@@ -76,7 +76,10 @@ export class CategoryComponent {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-    ) { }
+    ) {
+        this._commonService.isHomeHeader = false;
+        this._commonService.isPLPHeader = true;
+    }
 
     ngOnInit(): void {
         this.setDataFromResolver();
@@ -438,7 +441,6 @@ export class CategoryComponent {
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
      */
     priceRangeTable(res) {
-        console.log(res);
         let count = 0;
         for (let val of res.productSearchResult.products) {
             if (val.quantityAvailable === 0) {

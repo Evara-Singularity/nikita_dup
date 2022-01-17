@@ -1,16 +1,19 @@
-import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, NavigationStart, RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CommonModule } from '@angular/common';
-// import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CommonService } from '../../utils/services/common.service';
 import { TrendingSearchModule } from '../../modules/trendingSearch/trending-search.module';
 import { SearchHistoryModule } from '../../modules/searchHistory/search-history.module';
 import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive';
 import CONSTANTS from '@app/config/constants';
+import { DataService } from '@app/utils/services/data.service';
+import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
+import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
     selector: 'app-search-bar',
@@ -18,16 +21,19 @@ import CONSTANTS from '@app/config/constants';
     styleUrls: ['./search-bar.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, AfterViewInit {
 
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     imageAssetPath = CONSTANTS.IMAGE_ASSET_URL;
     @Input() ssp: boolean = true; // ssp: show search popup
+    @Input() analytics: any = null; // ssp: show search popup
     @Input() data: { type: string };
     @Output() out: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('scrollable') scrollable: ElementRef;
     searchForm: FormGroup;
     @Input() showSuggestionBlock: boolean;
+    @Input() autoFillSearchKeyword: string;
+
     showSuggestionBlockLoader: boolean;
     suggestionList;
     brandSuggestionList;
@@ -35,6 +41,24 @@ export class SearchBarComponent implements OnInit {
     topProducts;
     isServer: boolean;
     isBrowser: boolean;
+    searchProducts: ProductsEntity[] = null;
+    cardMetaInfo: ProductCardMetaInfo = {
+        redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.SEARCH,
+        redirectedSectionName: 'search_suggestion_products'
+    };
+    readonly cardFeaturesConfig: ProductCardFeature = {
+        // feature config
+        enableAddToCart: true,
+        enableBuyNow: true,
+        enableFeatures: false,
+        enableRating: true,
+        enableVideo: false,
+        // design config
+        enableCard: true,
+        verticalOrientation: true,
+        horizontalOrientation: false,
+        lazyLoadImage: false
+    }
 
 
     constructor(
@@ -44,7 +68,9 @@ export class SearchBarComponent implements OnInit {
         private _fb: FormBuilder,
         private service: TypeAheadService,
         private renderer: Renderer2,
-        private _commonService: CommonService
+        private _commonService: CommonService,
+        private _dataService: DataService,
+        private _productService: ProductService,
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -72,7 +98,7 @@ export class SearchBarComponent implements OnInit {
             .pipe(
                 map((term) => {
                     cTerm = term;
-                    if (!term || term.length <= 2) {
+                    if (!term || term.length < 1) {
                         this.suggestionList = [];
                         this.brandSuggestionList = [];
                         this.categorySuggestionList = [];
@@ -85,18 +111,19 @@ export class SearchBarComponent implements OnInit {
             )
             .subscribe(
                 term => {
-                    if (term && term.length > 2) {
+                    if (term && term.length > 0) {
                         this.service.getSuggession(term).subscribe((data) => {
                             if (data) {
                                 this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
                                 this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
                                 this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
-                                if (cTerm && cTerm.length > 2) {
+                                this.searchProducts = ((data.topProducts || []) as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+                                if (cTerm && cTerm.length > 0) {
                                     this.showSuggestionBlock = true;
                                 }
                             }
                         });
-                    }else{
+                    } else {
                         this.showSuggestionBlock = false;
                         this._commonService.resetLimitTrendingCategoryNumber();
                     }
@@ -104,6 +131,7 @@ export class SearchBarComponent implements OnInit {
                 }
             );
     }
+
 
     ngOnInit(): void {
         // Below code is used to hide the search bar popup on route change.
@@ -116,6 +144,8 @@ export class SearchBarComponent implements OnInit {
             });
 
     }
+
+
 
 
     handleSendTextToSearchBar(data: string, e?: Event) {
@@ -138,6 +168,9 @@ export class SearchBarComponent implements OnInit {
     ngAfterViewInit() {
         this.suggestionDropDown();
         this.renderer.selectRootElement('#search-input').focus();
+        if (this.autoFillSearchKeyword) {
+            this.searchForm.get('searchTerm').patchValue(this.autoFillSearchKeyword);
+        }
     }
 
     ngOnDestroy() {
@@ -242,6 +275,7 @@ export class SearchBarComponent implements OnInit {
     resetSearchBar() {
         this.searchForm.reset();
         this.showSuggestionBlock = false;
+        this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();
     }
 
@@ -276,7 +310,7 @@ export class SearchBarComponent implements OnInit {
             this._cs.setGaGtmData({ list: 'Site Search' });
             this.addSearchToLocalStorage(data, extras);
             this._r.navigate(['search'], extras);
-        } else { 
+        } else {
             this._cs.setGaGtmData({ list: 'Site Search' });
             this._r.navigate([data.productUrl], { queryParams: { source: 'topProduct' } });
         }
@@ -322,15 +356,16 @@ export class SearchBarComponent implements OnInit {
         RouterModule,
         TrendingSearchModule,
         SearchHistoryModule,
-        FormsModule, 
+        FormsModule,
         ReactiveFormsModule,
+        ProductHorizontalCardModule
     ],
     declarations: [
         SearchBarComponent,
-        AutoFocusDirective
+        AutoFocusDirective,
     ],
     providers: [
         TypeAheadService,
     ]
 })
-export class SearchBarModule {}
+export class SearchBarModule { }

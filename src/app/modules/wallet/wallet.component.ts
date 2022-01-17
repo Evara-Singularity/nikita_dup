@@ -137,7 +137,7 @@ export class WalletComponent {
         else if (this.wType=="walletHdfcpay") {
             walletName = "Hdfcpay"
         } else {
-            alert("No Wallet selected");
+            // alert("No Wallet selected");
             return;
         }
 

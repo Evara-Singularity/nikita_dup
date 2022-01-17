@@ -2,7 +2,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
-import { Socket } from 'ngx-socket-io';
 
 declare var dataLayer;
 declare var digitalData;
@@ -13,21 +12,16 @@ declare var _satellite;
 })
 export class GlobalAnalyticsService {
 
-  socket: any;
   isServer: boolean = typeof window !== "undefined" ? false : true;
 
   constructor(
-    private injector: Injector,
     private localStorageService: LocalStorageService
   ) {
-    if (!this.isServer) {
-      this.socket = <Socket>this.injector.get(Socket);
-    }
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
     // console.log(environment["ISCHROME"]);
-    if(_satellite){
+    if(_satellite && _satellite.track){
       digitalData = Object.assign({}, data);
       _satellite.track(trackingname);
     }
@@ -56,7 +50,8 @@ export class GlobalAnalyticsService {
         referrer: document.referrer,
         previous_url:( previousUrl &&  previousUrl.split("$$$").length >= 2) ? localStorage.getItem("previousUrl").split("$$$")[1] : ""
       }
-      this.socket.emit("track", { ...trackingData, ...data });
+      // Comment as we are rmeoving socket and will implement API in future releases
+      // this.socket.emit("track", { ...trackingData, ...data });
     }
   }
 

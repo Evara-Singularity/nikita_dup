@@ -153,6 +153,7 @@ header {
         position: relative;
         font-size: 18px;
         color: $white;
+        width:35px;
     }
     .icon-cart1 {
         font-size: 22px;
@@ -169,11 +170,8 @@ header {
         width: 5%;
     }
     .moglix-app-logo {
-        padding-right: 15px !important;
-        img {
-            width: 24px;
-            vertical-align: middle;
-            display: inline-block;
+        i {
+            font-size:24px;
         }
     }
     .search-bar-mini {
@@ -320,38 +318,4 @@ header {
 .logo-2x {
     width: 64px;
     height: 22px;
-}
-
-//different Animation Classes for Lottie Animations
-.home-search-animation {
-    position: absolute;
-    left: 40px;
-    right: 0;
-    top: 0px;
-    background: #fff;
-    pointer-events: none;
-    bottom: 0px;
-    .lottie-div {
-        position: absolute;
-        top: 0;
-        height: 40px;
-        left: 0;
-        width:180px;
-    }
-}
-
-.listing-search-animation {
-    position: absolute;
-    left: 36px;
-    right: 0;
-    top: 12px;
-    background: #fff;
-    pointer-events: none;
-    bottom: 0px;
-    height: 30px;
-    .lottie-div {
-        position: absolute;
-        top: 4px;
-        height: 24px;
-    }
 }

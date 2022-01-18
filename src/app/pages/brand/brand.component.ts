@@ -161,6 +161,15 @@ export class BrandComponent {
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
 
+        if (this.API_RESPONSE['brand'][1][0].categoryName) {
+            this.title.setTitle(this.API_RESPONSE.brand[1][0].title);
+            this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0].title });
+
+            let metaDescription = this.API_RESPONSE.brand[1][0].metaDesciption;
+            this.meta.addTag({ "name": "description", "content": metaDescription });
+            this.meta.addTag({ "name": "og:description", "content": metaDescription });
+        }
+
         if (!this.API_RESPONSE['brand'][1][0].categoryName) {
 
             if(!this.API_RESPONSE.brand[0].seoDetails){

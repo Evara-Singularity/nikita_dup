@@ -182,7 +182,7 @@ export class NetBankingComponent {
             newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"] = this.netBankingForm.get('requestParams').get('paymentId').value;
 
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:net banking`);
+        this._trackingService.sendAdobeOrderRequestTracking(newdata, `pay-initiated:net banking`);
         this.isShowLoader = true;
         //console.log("New Data for pay", newdata);
         // $("#page-loader").show();

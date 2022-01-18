@@ -93,7 +93,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   showYTVideo(link) {
     let analyticsDetails = null;
     if(this.analyticProduct){
-        analyticsDetails = this._trackingService.getCommonTrackingObject(this.analyticProduct, "plp");      
+        analyticsDetails = this._trackingService.getCommonTrackingObject(this.analyticProduct, "listing");      
     }
     let videoDetails = { url: link, params: this.ytParams };
     let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };

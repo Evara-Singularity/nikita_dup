@@ -56,6 +56,7 @@ export class ProductCrouselComponent implements OnInit {
   @ViewChild(ProductCrouselSlideComponent) ssc: ProductCrouselSlideComponent;
   @ViewChild("kelsiema", { read: ElementRef }) kelsiema: ElementRef;
   @ViewChild("kvcsiema", { read: ViewContainerRef }) kvcsiema: ViewContainerRef;
+  @Input('productBo') productBo: any;
 
   isServer: boolean;
   isBrowser: boolean;

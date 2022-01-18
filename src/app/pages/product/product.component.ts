@@ -2250,6 +2250,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         );
       this.productCrouselInstance.instance["options"] = this.iOptions;
       this.productCrouselInstance.instance["items"] = this.productAllImages;
+      this.productCrouselInstance.instance["productBo"] = this.rawProductData;
       this.productCrouselInstance.instance["moveToSlide$"] = this.moveToSlide$;
       this.productCrouselInstance.instance["refreshSiemaItems$"] =
         this.refreshSiemaItems$;

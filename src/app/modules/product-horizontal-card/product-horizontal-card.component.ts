@@ -205,7 +205,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     if (!this.youtubeModalInstance) {
       const PRODUCT = this._trackingService.basicPLPTracking(this.product);
       this.product['sellingPrice'] = this.product['salesPrice'];
-      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "plp");
+      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "listing");
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };

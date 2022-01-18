@@ -27,9 +27,9 @@ export class TrackingService
         this.sendAdobeCall(TRACKING);
     }
 
-    sendAdobeOrderRequestTracking(request, channel, linkName)
+    sendAdobeOrderRequestTracking(request, linkName)
     {
-        const TRACKING = this.getCommonTrackingObject(null, channel, linkName);
+        const TRACKING = this.getCommonTrackingObject(null, "checkout", linkName);
         TRACKING['payload'] = request;
         this.sendAdobeCall(TRACKING, "genericClick")
     }

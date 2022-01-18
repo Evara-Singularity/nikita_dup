@@ -448,7 +448,7 @@ export class EmiComponent {
             newdata['validatorRequest']["shoppingCartDto"]['cart']['noCostEmiDiscount'] = this.nocostEmiDiscount
         }
 
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:emi`);
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:emi`);
         this.isShowLoader = true;
         /*//// console.log("New Data for pay", newdata);*/
         this._commonService.pay(newdata).subscribe((res): void => {

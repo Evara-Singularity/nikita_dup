@@ -80,7 +80,7 @@ export class PaytmUpiComponent {
         }
 
         let userSession = this._localAuthService.getUserSession();
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:paytm-upi`);
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:paytm-upi`);
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.isValid = false;

@@ -103,7 +103,7 @@ export class NeftRtgsComponent {
                 "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
             };
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:neft-rtgs`);
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:neft-rtgs`);
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe((res) => {
 

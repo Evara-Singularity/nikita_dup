@@ -156,7 +156,7 @@ export class WalletComponent {
         if (this.wType == "walletPaytm"){
             newdata["mode"] = "PAYTM";            
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", "pay-initiated:wallet");
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,"pay-initiated:wallet");
         this._commonService.pay(newdata).subscribe((res): void => {
 
             if (res.status != true) {

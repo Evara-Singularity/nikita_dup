@@ -83,7 +83,7 @@ export class UpiComponent {
         }
 
         let userSession = this._localAuthService.getUserSession();
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:upi`);
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:upi`);
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.isValid = false;

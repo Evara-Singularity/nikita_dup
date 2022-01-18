@@ -172,7 +172,7 @@ export class CreditDebitCardComponent {
         //console.log("New Data for pay", newdata);
         //   $("#page-loader").show();
         const CARD_TYPE = data.mode == "CC" ? "credit" : "debit";
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", `pay-initiated:${CARD_TYPE} card`);
+        this._trackingService.sendAdobeOrderRequestTracking(newdata ,`pay-initiated:${CARD_TYPE} card`);
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe( (res) : void => {
 

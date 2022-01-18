@@ -246,7 +246,7 @@ export class SavedCardComponent {
                 "card_token": this.savedCards[this.selectedCardIndex]['card_token']
             };
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", "pay-initiated:saved card");  
+        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated:saved card");  
         this.isShowLoader = true;
 
         this._savedCardService.pay(newdata).subscribe((res): void => {

@@ -146,7 +146,7 @@ export class CashOnDeliveryComponent {
                 'validatorRequest': this._commonService.createValidatorRequest(cartSession, userSession, extra)
             }; 
         }   
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated", "pay-initiated:cash on delivery");
+        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated:cash on delivery");
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.submittedOnce = false;

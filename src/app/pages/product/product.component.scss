@@ -3038,26 +3038,37 @@
         .button-area{
             margin-top: 10px;
             position: relative;
-            button{
-                background-color: #79BE44;
-                border: none;
-                width: 100%;
-                color: #ffffff;
-                padding: 10px;
-                border-radius: 8px;
-                font-weight: bold;
-            }
             .next-btn{
                 i{
                     color: #ffffff;
                 }
                 position: absolute;
                 top: 0px;
-                right: 0px;
-                background-color: #6BAC39;
+                width: 45px;
                 display: inline;
+                padding: 8.5px;
+                border-radius: 8px;
+                &.next-btn-valid{
+                    background-color: #6BAC39;
+                    right: 0px !important;
+                }
+                &.next-btn-invalid{
+                    background-color: #d9232d;
+                    left: 0px !important;
+                }
+            }
+            button{
+                background-color: #d9232d;
+                opacity: 60%;
+                border: none;
+                width: 100%;
+                color: #ffffff;
                 padding: 10px;
                 border-radius: 8px;
+                font-weight: bold;
+                &.valid-button{
+                    background-color: #79BE44;
+                }
             }
         }
         
@@ -3065,15 +3076,10 @@
 }
 
 .arrow-container {
-   
-    /* cubic-bezier-easing = sine / mehr Beispiele: https://easings.net/ */
-    // animation: bounce 1600ms infinite cubic-bezier(0.445, 0.05, 0.55, 0.95);
-    cursor: pointer;
-    height: 20px;
     i{
-        margin-left: -12px;
+        margin-left: -8px;
         font-weight:bold;
-        font-size:22px;
+        font-size:16px;
     }
     i{
         display:inline-block;

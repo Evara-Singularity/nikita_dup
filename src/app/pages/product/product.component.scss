@@ -2995,3 +2995,71 @@
         font-size: 18px;
     }
 }
+
+
+
+.buy-nowsec{
+    margin-top: 10px;
+    background-color: #ffffff;
+    padding: 15px;
+    h4{
+        font-size: $large-font;
+        line-height: 21px;
+    }
+    p{
+        font-size: $medium-font;
+        line-height: 16x;
+    }
+    .buynow-flex{
+        display: flex;
+        align-items: center;
+        .bn-left{
+            width: 70%;
+            p{
+                font-size: $medium-font;
+                line-height: 20px;
+                margin: 10px 0px;
+            }
+            i{
+                color: #00C100;
+            }
+        }
+        .bn-right{
+            width: 30%;
+        }
+    }
+    .button-sec{
+        background-color: #EAEAEA;
+        padding: 10px;
+        border-radius: 12px;
+        p{
+            text-align: center;
+        }
+        .button-area{
+            margin-top: 10px;
+            position: relative;
+            button{
+                background-color: #79BE44;
+                border: none;
+                width: 100%;
+                color: #ffffff;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            .next-btn{
+                i{
+                    color: #ffffff;
+                }
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                background-color: #6BAC39;
+                display: inline;
+                padding: 10px;
+                border-radius: 8px;
+            }
+        }
+        
+    }
+}

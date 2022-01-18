@@ -11,6 +11,13 @@ const BASEURL = CONSTANTS.NEW_MOGLIX_API;
 })
 export class SharedAuthService {
 
+  readonly AUTH_USING_PHONE = 'AUTH_USING_PHONE';
+  readonly AUTH_USING_EMAIL = 'AUTH_USING_EMAIL';
+  readonly AUTH_SIGNUP_FLOW = 'AUTH_SIGNUP';
+  readonly AUTH_LOGIN_FLOW = 'AUTH_SIGNUP';
+  readonly AUTH_LOGIN_BY_OTP = 'AUTH_LOGIN_BY_OTP';
+  readonly AUTH_LOGIN_BY_PASSWORD = 'AUTH_LOGIN_BY_PASSWORD';
+
   private readonly BASEURLS = {
     GETOTP: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_URL },
     VALIDATEOTP: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_OTP },
@@ -19,7 +26,36 @@ export class SharedAuthService {
     AUTHENTICATE: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_AUTHENTICATE },
     UPDATEPASSWORD: { method: 'POST', url: BASEURL + ENDPOINTS.FORGOT_PASSWORD },
   }
+
+  private _authIdentifierType: 'AUTH_USING_PHONE' | 'AUTH_USING_EMAIL' = null;
+  private _authFlowType: 'AUTH_SIGNUP' | 'AUTH_LOGIN' = null;
+  private _authIdentifier: string | number = null;
+
   constructor(private dataService: DataService) { }
+
+  set authIdentifierType(identifier) {
+    this._authIdentifierType = identifier;
+  }
+
+  get authIdentifierType() {
+    return this._authIdentifierType
+  }
+
+  set authFlowType(type) {
+    this._authFlowType = type;
+  }
+
+  get authFlowType() {
+    return this._authFlowType;
+  }
+
+  set authIdentifier(type) {
+    this._authIdentifier = type;
+  }
+
+  get identifier() {
+    return this._authIdentifier;
+  }
 
   isUserExist(userData) {
     return this.dataService.callRestful(this.BASEURLS.USEREXISTS.method, this.BASEURLS.USEREXISTS.url, { body: userData });

@@ -13,7 +13,6 @@ import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import RoutingMatcher from '@app/utils/routing.matcher';
 
 @Component({
     selector: 'header-nav',
@@ -79,7 +78,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input('extraData') extraData;
 
     constructor(
-        private _routingMatcher: RoutingMatcher,
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,

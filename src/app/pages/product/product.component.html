@@ -694,7 +694,7 @@
             <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
                 <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
                 <span class="grey-txt">OR</span>
-                <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + convertURL(getWhatsText)" target="_blank" class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</a>
+                <button (click)="navigateToWhatsapp()" class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</button>
             </div>
             <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
                 <p  class="rfq-thanks-txt mar-t-10">

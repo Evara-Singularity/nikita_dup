@@ -1892,7 +1892,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productRFQInstance.instance["hasGstin"] as EventEmitter<boolean>
     ).subscribe((value) => {
         this.hasGstin = value
-        console.log("HasGStin",this.hasGstin)
     });
     (
       this.productRFQInstance.instance["rfqQuantity"] as EventEmitter<string>
@@ -3486,8 +3485,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  convertURL(url){
-    return encodeURIComponent(url);
+
+  navigateToWhatsapp() {
+    if (this.isBrowser) {
+      window.location.href = CONSTANTS.WHATS_APP_API + GLOBAL_CONSTANT.whatsapp_number + '&text=' + encodeURIComponent(this.getWhatsText);
+    }
   }
   
   get pastOrderAnalytics() {

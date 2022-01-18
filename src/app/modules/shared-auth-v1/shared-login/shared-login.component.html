@@ -1,6 +1,6 @@
 <div class="login-card">
     <h3 class="heading-custom-3">Sign-In or Sign Up</h3>
-    <form class="material-form">
+    <form class="material-form" [formGroup]="loginForm">
         <div class="outline-input-label">
             <label [class.is-focus]="username.value.length!=0">
                 <input class="invalid-input" type="text" formControlName="username">
@@ -14,7 +14,8 @@
         <div class="login-seperator-text "> <span>Or</span></div>
         <button class="btn btn-variant1 btn-dark-grey">CONTINUE WITH EMAIL-ID</button>
         <div class="clearfix social-btn">
-            <social-login class="o-hidden "></social-login>
+            <!--TODO:social login-->
+            <!-- <social-login class="o-hidden "></social-login> -->
         </div>
     </form>
     <p class="safe-text">Your details are safe with us.</p>

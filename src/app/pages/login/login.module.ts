@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedAuthModule } from '../../modules/shared-auth/shared-auth.module';
+import { SharedAuthModule } from '../../modules/shared-auth-v1/shared-auth.module';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
 

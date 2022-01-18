@@ -1,15 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'shared-forgot-password',
-  templateUrl: './shared-forgot-password.component.html',
-  styleUrls: ['./shared-forgot-password.component.scss']
+    selector: 'shared-forgot-password',
+    templateUrl: './shared-forgot-password.component.html',
+    styleUrls: ['./shared-forgot-password.component.scss']
 })
-export class SharedForgotPasswordComponent implements OnInit {
+export class SharedForgotPasswordComponent implements OnInit
+{
 
-  constructor() { }
+    isSubmitted = false;
+    fpForm = new FormGroup({
+        name: new FormControl("")
+    })
 
-  ngOnInit(): void {
-  }
+
+    constructor() { }
+
+    ngOnInit(): void
+    {
+    }
+
+
+    get name() { return this.fpForm.get("name")}
 
 }

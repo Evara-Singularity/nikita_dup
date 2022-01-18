@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'shared-login',
-  templateUrl: './shared-login.component.html',
-  styleUrls: ['./shared-login.component.scss']
+    selector: 'shared-login',
+    templateUrl: './shared-login.component.html',
+    styleUrls: ['./shared-login.component.scss']
 })
-export class SharedLoginComponent implements OnInit {
+export class SharedLoginComponent implements OnInit
+{
 
-  constructor() { }
+    loginForm = new FormGroup({ username: new FormControl("") })
 
-  ngOnInit(): void {
-  }
+    constructor() { }
+
+    ngOnInit(): void
+    {
+    }
+
+    get username() { return this.loginForm.get("username");}
 
 }

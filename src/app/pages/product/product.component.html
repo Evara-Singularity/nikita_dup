@@ -435,10 +435,9 @@
         </section>
 
         <!-- GET Quote section starts -->
-        <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
+        <!-- <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
             <ul class="deals-list">
                 <li class="clearfix">
-                    <!-- <i class="icon-combo ico_offer"></i> -->
                     <i class="icon-dropbox-fill"></i>
                     <div class="ofr_txt">
                         <strong class="text-black">Interested to buy in bulk</strong>
@@ -447,41 +446,55 @@
                     <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
                 </li>
             </ul>
-        </div>
+        </div> -->
 
-        <div class="buy-nowsec">
+        <!-- New GET Quote section starts -->
+        <div class="buy-nowsec" *ngIf="!productOutOfStock && productMrp > 0">
             <h4>Looking for Safety Shoes</h4>
-            <p>NEOSafe A5022 Brawn Sporty Look Steel Toe…</p>
+            <p> {{ productName }} </p>
             <div class="buynow-flex">
                 <div class="bn-left">
                     <p><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
                     <p><i class="icon-check-active"></i>&nbsp; Get best & customise price</p>
                 </div>
                 <div class="bn-right">
-                    <img src="https://cdn.moglix.com/p/br4DpVzed6PQs-thumbnail.jpg" width="50" height="50">
+                    <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
                 </div>
             </div>
             <div class="button-sec">
-                <p>Thank you! Our support member will get in touch with you within 24 hours.</p>
-                <div class="button-area">
-                    <button>SLIDE TO RAISE REQUEST</button>
-                    <div class="arrow-container next-btn next-btn-invalid">
-                        <i class="icon-next icon-animate-1"></i>
-                        <i class="icon-next icon-animate-2"></i>
-                        <i class="icon-next icon-animate-3"></i>
+                <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
+                <ng-template #nonRaisedTemplate>
+                    <p>We will get in touch with you 
+                        <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
+                            on {{ commonService?.userSession?.phone }}  
+                            <ng-container *ngIf="commonService?.userSession?.email">
+                                {{ commonService?.userSession?.email }}
+                            </ng-container>
+                        </ng-container>
+                    </p>
+                    <div class="button-area">
+                        <input #nonRaisedRange type="range" min="0" max="87" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
+                        <button [class.valid-button]="getQuoteCurrentRange > 50">SLIDE TO RAISE REQUEST </button>
+                        <!-- <button  (click)="raiseRFQQuote();">SLIDE TO RAISE REQUEST</button> -->
+                        <div [style.left.%]="getQuoteCurrentRange" class="arrow-container next-btn" [ngClass]="getQuoteCurrentRange > 50 ? 'next-btn-valid' : 'next-btn-invalid'">
+                            <i class="icon-next icon-animate-1"></i>
+                            <i class="icon-next icon-animate-2"></i>
+                            <i class="icon-next icon-animate-3"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="button-area">
-                    <button class="valid-button">REQUESTED SUCCESSFULLY</button>
-                    <div class="arrow-container next-btn next-btn-valid">
-                        <i class="icon-next icon-animate-1"></i>
-                        <i class="icon-next icon-animate-2"></i>
-                        <i class="icon-next icon-animate-3"></i>
+                </ng-template>
+                <ng-template #raisedTemplate>
+                    <p >Thank you! Our support member will get in touch with you within 24 hours.</p>
+                    <div class="button-area">
+                        <button class="valid-button">REQUESTED SUCCESSFULLY</button>
+                        <div class="arrow-container next-btn next-btn-valid">
+                            <i class="icon-next icon-animate-1"></i>
+                            <i class="icon-next icon-animate-2"></i>
+                            <i class="icon-next icon-animate-3"></i>
+                        </div>
                     </div>
-                </div>
-
+                </ng-template>
             </div>
-
         </div>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">

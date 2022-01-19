@@ -277,6 +277,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   appPromoVisible: boolean = true;
   productInfo = null;
   holdRFQForm = false;//this flag is to resolve RFQ pop-up issue on click of similar products icon
+  rfqQuoteRaised: boolean = false;
 
   // quntity && bulk prices related
   qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
@@ -3416,6 +3417,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
     const order = this.orderTracking;
     analytics = { page, custData, order };
     return analytics;
+  }
+
+  getQuoteCurrentRange: number = 0;
+  debouncedUpdatePositionOfGetQuoteRageSlider =  this.commonService.debounceFunctionAndEvents(((range) => this.updatePositionOfGetQuoteRageSlider(range)));
+  
+  updatePositionOfGetQuoteRageSlider(range) {
+    console.log(range);
+    this.getQuoteCurrentRange = range;
+      // if (range >= 50) {
+      //   this.getQuoteCurrentRange = 87;
+      // } else {
+      //   this.getQuoteCurrentRange = 0;
+      // }
   }
 
 

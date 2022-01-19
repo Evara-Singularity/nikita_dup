@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
  * - Social Login icon
  * - all images to use cdn path
  * - terms and policy links
- * 
+ * - Forgot password screen 
  * Angular TODO:
  *  - Add a loader
  *  - Autocomplete on email after user enters '@' chaacter
@@ -56,11 +56,11 @@ export class SharedLoginComponent implements OnInit {
         switch (logintype) {
             case this.LOGIN_USING_PHONE:
                 this.isLoginNumberFormSubmitted = true;
-                this.validateUserWithPhone();
+                this.loginNumberForm.valid && this.validateUserWithPhone();
                 break;
             case this.LOGIN_USING_EMAIL:
                 this.isLoginEmailFormSubmitted = true;
-                this.validateUserWithEmail();
+                this.loginEmailForm.valid && this.validateUserWithEmail();
                 break;
             default:
                 break;

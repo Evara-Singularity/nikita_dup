@@ -14,7 +14,7 @@ export class SharedAuthService {
   readonly AUTH_USING_PHONE = 'AUTH_USING_PHONE';
   readonly AUTH_USING_EMAIL = 'AUTH_USING_EMAIL';
   readonly AUTH_SIGNUP_FLOW = 'AUTH_SIGNUP';
-  readonly AUTH_LOGIN_FLOW = 'AUTH_SIGNUP';
+  readonly AUTH_LOGIN_FLOW = 'AUTH_LOGIN';
   readonly AUTH_LOGIN_BY_OTP = 'AUTH_LOGIN_BY_OTP';
   readonly AUTH_LOGIN_BY_PASSWORD = 'AUTH_LOGIN_BY_PASSWORD';
 

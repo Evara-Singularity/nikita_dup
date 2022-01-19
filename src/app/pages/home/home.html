@@ -13,7 +13,15 @@
             <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)" [src]="defaultBannerImage" alt="banner">
         </div>
     </div>
+     <!-- section for trending categories-->
+    <home-trendingcategories [tocd]="tocd" [flyOutData]="flyOutData"></home-trendingcategories>
     
+    <section class="banner-ad" *ngFor="let im of middleImageJsonData;let i = index;">
+        <a *ngIf="i==0" href="{{im.image_link}}">
+            <img [src]="imagePath + im.image_name" alt="banner add">
+        </a>
+    </section>
+   
     <div class="allCategory">
         <div class="categoryOverBlk">
             <div class="clearfix">
@@ -44,14 +52,7 @@
             </div>
         </div>
     </div>
-    
-    <section class="banner-ad" *ngFor="let im of middleImageJsonData;let i = index;">
-        <a *ngIf="i==0" href="{{im.image_link}}">
-            <img [src]="imagePath + im.image_name" alt="banner add">
-        </a>
-    </section>
-    <!-- section for trending categories-->
-    <home-trendingcategories [tocd]="tocd" [flyOutData]="flyOutData"></home-trendingcategories>
+
     <!-- <div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
         <div>
             <ng-container #TrendingCategories></ng-container>

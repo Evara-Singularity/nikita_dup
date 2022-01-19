@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
@@ -10,6 +11,7 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { forkJoin } from 'rxjs';
 
+
 @Component({
   selector: 'product-accordian',
   templateUrl: './product-accordians.component.html',
@@ -18,8 +20,9 @@ import { forkJoin } from 'rxjs';
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
-  ACCORDIAN_DATA: Array<any> = [[], [], []];
-  popularLinks: Array<any> = [];
+  ACCORDIAN_DATA: Array<any> = [[],[],[]];
+  popularLinks: Array<any>= [];
+  prodUrl=CONSTANTS.PROD;
 
   constructor(
     public _commonService: CommonService,
@@ -31,6 +34,7 @@ export class ProductAccordiansComponent {
 
   ngOnInit() {
     this.loadShopByAttributeData();
+    this.prodUrl = CONSTANTS.PROD;
   }
 
   loadShopByAttributeData() {

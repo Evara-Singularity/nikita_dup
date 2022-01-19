@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef, Injector } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
-import { ENDPOINTS } from '@app/config/endpoints';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -13,6 +12,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductListService } from '@app/utils/services/productList.service';
+import { TrackingService } from '@app/utils/services/tracking.service';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
@@ -27,6 +27,7 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
+  prodUrl=CONSTANTS.PROD;
   @Input() product: ProductsEntity;
   @Input() cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -74,7 +75,6 @@ export class ProductHorizontalCardComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
-  prodUrl: string;
 
   constructor(
     private _cartService: CartService,
@@ -90,6 +90,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _analytics: GlobalAnalyticsService,
     private _toastMessageService: ToastMessageService,
     private _productService: ProductService,
+    private _trackingService: TrackingService,
   ) {
   }
 
@@ -202,10 +203,13 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
+      const PRODUCT = this._trackingService.basicPLPTracking(this.product);
+      this.product['sellingPrice'] = this.product['salesPrice'];
+      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "listing");
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
-      modalData.inputs = { videoDetails: videoDetails };
+      modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails};
       this.modalService.show(modalData);
     }
   }
@@ -393,14 +397,12 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   sendTracking(info) {
     if (this.analytics) {
-      // alert(info + ' : ' + this.enableTracking);
       if (!this.enableTracking) return;
       const page = this.analytics['page'];
       page['linkName'] = this.section ? `productClick:${info}:${this.section}` : `productClick:${info}`;
       page['productunit'] = this.pIndex;
       const custData = this.analytics['custData'];
       const order = this.analytics['order'];
-      console.log({ page, custData, order });
       this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
     }
   }

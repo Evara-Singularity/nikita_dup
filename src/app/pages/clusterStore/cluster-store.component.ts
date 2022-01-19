@@ -126,22 +126,22 @@ export class ClusterStoreComponent implements OnInit {
 				// });
 			}
 			if(this.isBrowser){
-				this.setAnalyticTags(rawData.clusterStoreData);
+				this.setAnalyticTags();
 			}
 		});
 	}
 
-	setAnalyticTags(data) {
+	setAnalyticTags() {
 		    let user;
             if (this._localStorageService.retrieve('user')) {
                 user = this._localStorageService.retrieve('user');
             }
             /*Start Adobe Analytics Tags */
             let page = {
-                'pageName': "moglix:" + data.pageTitle,
+                'pageName': "moglix:store:" + this._router.url.split('/').pop(),
                 'channel': "store",
-                'subSection': "moglix:" + data.pageTitle + ":" + this._commonService.getSectionClick().toLowerCase(),
-                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+                'subSection': "moglix:store:" + this._router.url.split('/').pop(),
+                'loginStatus': this._commonService.loginStatusTracking
             }
             let custData = {
                 'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',

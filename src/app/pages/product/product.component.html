@@ -19,7 +19,6 @@
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
-
     <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <div class="fixed-strip">
@@ -447,23 +446,19 @@
                 </ng-container>
             </div>
         </section>
-
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
-                class="widget-items">
+            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <i class="icon-next"></i>
             </a>
-
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
-                class="widget-items">
+            <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()" [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
@@ -677,33 +672,39 @@
     <ng-container #productInfoPopup></ng-container>
 </div>
 
-<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
+<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn" [class.highIndex]="displayCardCta">
     <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
-<div *ngIf="this.isBrowser && isRFQSuccessfull" class=" alert-box ">
-    <div class="overlay "></div>
+<div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert">
+    <div class="overlay"></div>
     <div class="content-area bottom-layout ">
-        <div class="rfq-thanks-popup ">
+        <div class="rfq-thanks-popup">
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
             <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
             <h3 class="heading-2">Thanks for submitting the query.</h3>
-            <div class="rfq-support-txt">
-                <p class="grey-txt">
-                    Our support member will get in touch with you
-                    <br />
-                    within 24 hours
-                </p>
-                <p class="rfq-thanks-txt mar-t-10">
-                    For further assistance
-                    <span>Call or Whatsapp</span>
+            <p class="grey-txt">
+                Our support member will get in touch with you
+                <br />
+                within 24 hours
+            </p>
+            <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
+                <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
+                <span class="grey-txt">OR</span>
+                <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + convertURL(getWhatsText)" target="_blank" class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</a>
+            </div>
+            <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
+                <p  class="rfq-thanks-txt mar-t-10">
+                    For further assistance Call or Whatsapp <br/>
                     @<strong>&nbsp;+91 99996 44044</strong>
                 </p>
+            </div>
+            <div class="rfq-support-txt">
                 <p class="rfq-thanks-txt">
-                    <span>You can also mail us at</span>
+                    You can also mail us at <br/>
                     <strong>salesenquiry@moglix.com</strong>
                 </p>
             </div>
@@ -711,8 +712,11 @@
                 <button *ngIf="similarProducts.length>0"
                     (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
-                    EXPLORE CATEGORY</p>
+                <!-- <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
+                    EXPLORE CATEGORY</p> -->
+                 <button class="btn explore-category-btn" (click)="$event.stopPropagation();closeRFQAlert()">
+                    EXPLORE AVAILABLE PRODUCTS
+                 </button>   
             </div>
         </div>
     </div>

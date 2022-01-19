@@ -15,6 +15,7 @@ export class ProductOffersComponent implements OnInit
     @Output() viewPopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Output() emaiComparePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Input() price = 0;
+    @Input() gstPercentage;
     disableEMIView = false;
 
     constructor(

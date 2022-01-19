@@ -13,7 +13,7 @@
         <div [id]="'popularBrandCategoryAccord'" [style.display]="popularLinks?.length > 0 ? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let category of popularLinks | slice:0:10">
-                    <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED BRAND CATEGORY', ACCORDIAN_DATA[1][category], ACCORDIAN_DATA[1][category]);">
+                    <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED BRAND CATEGORY', ACCORDIAN_DATA[1][category], ACCORDIAN_DATA[1][category]);$event.preventDefault()" [href]="[prodUrl+'/'+ACCORDIAN_DATA[1][category]]">
                         {{ categoryBrandDetails.brand.brandName + ' ' + category }} 
                     </a>
                 </div>
@@ -34,7 +34,7 @@
         <div [id]="'attributeAccoridan'" [style.display]="(ACCORDIAN_DATA[1].length === 0 && ACCORDIAN_DATA[0]?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links" >
                 <div *ngFor="let attribute of ACCORDIAN_DATA[0] | slice:0:10">
-                    <a   (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl, attribute.friendlyUrl);">
+                    <a  [href]="prodUrl + '/' + attribute.friendlyUrl" (click)="$event.preventDefault();$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl, attribute.friendlyUrl);">
                         {{ attribute.title }}
                     </a>
                 </div>
@@ -55,7 +55,7 @@
         <div [id]="'mostSoldAccoridan'" [style.display]="(ACCORDIAN_DATA[1].length === 0 && ACCORDIAN_DATA[0].length === 0 && ACCORDIAN_DATA[2]?.length > 0) ? 'block' : 'none'" class="panel-body">
             <div class="container category_links">
                 <div *ngFor="let attribute of ACCORDIAN_DATA[2]  | slice:0:10">
-                    <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName, attribute.categoryLink);">
+                    <a [href]="prodUrl + '/' + attribute.categoryLink" (click)="$event.preventDefault();$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName, attribute.categoryLink);">
                         {{ attribute.categoryName }}
                     </a>
                 </div>

@@ -251,7 +251,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'articles',
+				path: 'article',
 				loadChildren: () =>
 					import('./articles/articles.module').then((m) => m.ArticlesModule),
 				data: {

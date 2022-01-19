@@ -302,7 +302,8 @@ export class ProductOosSimilarCardComponent {
   }
 
   onRotatePrevious() {
-    this.loadProductCrousel(1);
+    // console.log(this.productService.oosSimilarProductsData.similarData ,"a");
+    this.loadProductCrousel( this.productService.oosSimilarProductsData.similarData[this.index].productAllImages.length - 1);
   }
 
   onRotateNext() {

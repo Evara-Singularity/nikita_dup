@@ -1,3 +1,4 @@
+import { SharedAuthUtilService } from './../shared-auth-util.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
@@ -46,10 +47,12 @@ export class SharedLoginComponent implements OnInit {
         private _sharedAuthService: SharedAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
-        private _router: Router
+        private _router: Router,
+        private _sharedAuthUtilService:SharedAuthUtilService
     ) { }
 
     ngOnInit(): void {
+        this._sharedAuthUtilService.clearAuthFlow();
     }
 
     submit(logintype) {
@@ -79,9 +82,9 @@ export class SharedLoginComponent implements OnInit {
         this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
-                this._sharedAuthService.authIdentifierType = this._sharedAuthService.AUTH_USING_PHONE;
-                this._sharedAuthService.authFlowType = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
-                this._sharedAuthService.authIdentifier = this.phoneFC.value;
+                //NOTE:using local storage//flowType, identifierType, identifier, data
+                const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
+                this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
                 const bodyOTP = {
                     'email': '',
                     'phone': this.phoneFC.value,
@@ -89,14 +92,16 @@ export class SharedLoginComponent implements OnInit {
                     'source': (isUserExists) ? 'login_otp' : 'signup',
                     'device': 'mobile'
                 }
-                this._sharedAuthService.getOTP(bodyOTP).subscribe(response => {
-                    if (response['statusCode'] === 200) {
-                        this._router.navigate(['/otp']);
-                    } else {
-                        this._tms.show({ type: 'error', text: response['message'] });
-                    }
-                    this._loader.setLoaderState(false);
-                });
+                //NOTE:UnComment code and remove navigation
+                this._router.navigate(['/otp']);
+                // this._sharedAuthService.getOTP(bodyOTP).subscribe(response => {
+                //     if (response['statusCode'] === 200) {
+                //         this._router.navigate(['/otp']);
+                //     } else {
+                //         this._tms.show({ type: 'error', text: response['message'] });
+                //     }
+                //     this._loader.setLoaderState(false);
+                // });
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
@@ -110,9 +115,10 @@ export class SharedLoginComponent implements OnInit {
         this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
-                this._sharedAuthService.authIdentifierType = this._sharedAuthService.AUTH_USING_EMAIL;
-                this._sharedAuthService.authFlowType = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
-                this._sharedAuthService.authIdentifier = this.emailFC.value;
+                //NOTE:using local storage//flowType, identifierType, identifier, data
+                //CHECK:Email with otp call
+                const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
+                this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
                 if(isUserExists){
                     // login flow with password as only option
                     this._router.navigate(['/otp']);

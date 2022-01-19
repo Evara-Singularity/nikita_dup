@@ -1,3 +1,4 @@
+import { GlobalLoaderModule } from './../global-loader/global-loader.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedLoginComponent } from './shared-login/shared-login.component';
@@ -15,7 +16,7 @@ import { ToastMessageModule } from '../toastMessage/toast-message.module';
         SharedLoginComponent,
         SharedOtpComponent,
         SharedSignupComponent,
-        SharedForgotPasswordComponent
+        SharedForgotPasswordComponent,
     ],
     imports: [
         CommonModule,   
@@ -23,7 +24,8 @@ import { ToastMessageModule } from '../toastMessage/toast-message.module';
         FormsModule,
         ReactiveFormsModule,
         NumberDirectiveModule,
-        ToastMessageModule
+        ToastMessageModule,
+        GlobalLoaderModule
     ],
     exports: [
         SharedLoginComponent,

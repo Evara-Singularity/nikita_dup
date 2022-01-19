@@ -1,65 +1,76 @@
-<!--OTP-->
-<div class="outer-card">
-    <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
-    <p>One Time Password sent to 9717311486 & ashish.kumar@gmail.com</p>
-</div>
-<div class="otp-card login-card">
-    <form class="otp-form otp-form-invalid otp-form-varified">
-        <div class="otp-form-inputs">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-        </div>
-        <div class="error-field">
-            <span class="error-text">OTP is not correct</span>
-        </div>
-    </form>
-
-    <div class="otp-text">
-        <div class="otp-text-inner left">
-            <span>Didn’t receive the code?</span><br>
-            <span class="resend">Resend in 00:20</span>
-        </div>
-        <div class="otp-text-inner right">
-            <span>RESEND OTP</span>
-        </div>
+<!--OTP:do not remove comments-->
+<ng-container *ngIf="authFlow?.identifier">
+    <div *ngIf="isOTPFlow; then otpform else passwordform">
+        <!--depending on the condition template will get rendered-->
     </div>
-    <button class="btn btn-variant1 btn-disabled">CONTINUE</button>
-    <div class="login-seperator-text "> <span>Or</span></div>
-    <button class="btn btn-variant1 btn-dark-grey">SIGN-IN WITH PASSWORD</button>
-</div>
+</ng-container>
 
-<!-- otp-card-only-otp -->
-<div class="outer-card">
-    <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
-    <p>One Time Password sent to 9717311486</p>
-</div>
-<div class="otp-card login-card">
-    <form class="otp-form otp-form-invalid otp-form-varified">
-        <div class="otp-form-inputs">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-            <input placeholder="-">
-        </div>
-        <div class="error-field">
-            <span class="error-text">OTP is not correct</span>
-        </div>
-    </form>
-
-    <div class="otp-text">
-        <div class="otp-text-inner left">
-            <span>Didn’t receive the code?</span><br>
-            <span class="resend">Resend in 00:20</span>
-        </div>
-        <div class="otp-text-inner right">
-            <span>RESEND OTP</span>
-        </div>
+<!--OTP Template-->
+<ng-template #otpform>
+    <div class="outer-card">
+        <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
+        <!--9717311486 & ashish.kumar@gmail.com-->
+        <p>One Time Password sent to {{authFlow?.identifier}}</p>
     </div>
-    <button class="btn btn-variant1 btn-disabled">CONTINUE</button>
-</div>
+    <div class="otp-card login-card">
+        <form class="otp-form" [class.otp-form-invalid]="otpForm.invalid" [class.otp-form-varified]="otpForm.valid">
+            <div class="otp-form-inputs">
+                <ng-container *ngFor="let control of otpForm['controls'];let cIndex=index">
+                    <!--added class='pseudo' for focus purpose-->
+                    <input placeholder="-" numbersOnly [formControl]="control" autofocus class="pseudo" maxlength="1"
+                        (keyup)="$event.stopPropagation();moveFocus(control.valid, cIndex)">
+                </ng-container>
+            </div>
+            <div class="error-field">
+                <span class="error-text">OTP is not correct</span>
+            </div>
+        </form>
+        <div class="otp-text">
+            <div class="otp-text-inner left">
+                <span>Didn’t receive the code?</span><br>
+                <span class="resend">Resend in {{ timer}}</span>
+            </div>
+            <div class="otp-text-inner right">
+                <span (click)="$event.stopPropagation();startOTPTimer()">RESEND OTP</span>
+            </div>
+        </div>
+        <button class="btn btn-variant1" [class.btn-disabled]="otpForm.invalid"
+            (click)="$event.stopPropagation();verifyOTP()">CONTINUE</button>
+        <!--Note:will be displayed only for registered users-->
+        <ng-container *ngIf="authFlow?.isUserExists">
+            <div class="login-seperator-text "> <span>Or</span></div>
+            <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+                SIGN-IN WITH PASSWORD
+            </button>
+        </ng-container>
+    </div>
+</ng-template>
+
+<!--Forgot Password Template-->
+<ng-template #passwordform>
+    <div class="outer-card">
+        <h3 class="heading-custom-3">Forgot Password</h3>
+        <p>Enter register mobile number to receive verification code</p>
+    </div>
+    <div class="login-card">
+        <form class="material-form">
+            <div class="outline-input-label">
+                <label [class.is-focus]="password.value.length!=0">
+                    <input type="text" [formControl]="password">
+                    <span class="label">Enter password</span>
+                    <ng-container *ngIf="isPasswordSubmitted && password.errors != null">
+                        <p class="error-txt" *ngIf="password.errors.required">Please provide password.</p>
+                        <p class="error-txt" *ngIf="password.errors.minlength">Password should be of min. 8 characters
+                        </p>
+                    </ng-container>
+                </label>
+            </div>
+            <button class="btn btn-variant1" [class.btn-disabled]="password.invalid">CONTINUE</button>
+            <div class="login-seperator-text "> <span>Or</span></div>
+            <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+                SIGN-IN WITH OTP
+            </button>
+            <a class="forgot-pass" href="#" (click)="$event.stopPropagation();navigateToLogin()">BACK TO SIGN IN</a>
+        </form>
+    </div>
+</ng-template>

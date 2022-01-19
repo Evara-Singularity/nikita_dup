@@ -3426,7 +3426,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     console.log(range);
     this.getQuoteCurrentRange = range;
       // if (range >= 50) {
-      //   this.getQuoteCurrentRange = 87;
+      //   this.getQuoteCurrentRange = 84;
       // } else {
       //   this.getQuoteCurrentRange = 0;
       // }

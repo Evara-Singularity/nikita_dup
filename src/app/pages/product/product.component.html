@@ -450,21 +450,21 @@
 
         <!-- New GET Quote section starts -->
         <div class="buy-nowsec" *ngIf="!productOutOfStock && productMrp > 0">
-            <h4>Looking for Safety Shoes</h4>
-            <p> {{ productName }} </p>
+            <h4  class="pt">Looking for Safety Shoes</h4>
+            <p  class="small-txt"> {{ productName }} </p>
             <div class="buynow-flex">
                 <div class="bn-left">
-                    <p><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
-                    <p><i class="icon-check-active"></i>&nbsp; Get best & customise price</p>
+                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
+                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Get best & customise price</p>
                 </div>
                 <div class="bn-right">
                     <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
                 </div>
             </div>
-            <div class="button-sec">
+            <div class="button-sec shimmer">
                 <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
                 <ng-template #nonRaisedTemplate>
-                    <p>We will get in touch with you 
+                    <p class="small-txt">We will get in touch with you 
                         <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
                             on {{ commonService?.userSession?.phone }}  
                             <ng-container *ngIf="commonService?.userSession?.email">
@@ -472,9 +472,9 @@
                             </ng-container>
                         </ng-container>
                     </p>
-                    <div class="button-area">
-                        <input #nonRaisedRange type="range" min="0" max="87" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
-                        <button [class.valid-button]="getQuoteCurrentRange > 50">SLIDE TO RAISE REQUEST </button>
+                    <div class="button-area wrapper">
+                        <input #nonRaisedRange type="range" min="0" max="84" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
+                        <button class="shimmer-button" [class.valid-button]="getQuoteCurrentRange > 50">SLIDE TO RAISE REQUEST </button>
                         <!-- <button  (click)="raiseRFQQuote();">SLIDE TO RAISE REQUEST</button> -->
                         <div [style.left.%]="getQuoteCurrentRange" class="arrow-container next-btn" [ngClass]="getQuoteCurrentRange > 50 ? 'next-btn-valid' : 'next-btn-invalid'">
                             <i class="icon-next icon-animate-1"></i>
@@ -484,9 +484,9 @@
                     </div>
                 </ng-template>
                 <ng-template #raisedTemplate>
-                    <p >Thank you! Our support member will get in touch with you within 24 hours.</p>
-                    <div class="button-area">
-                        <button class="valid-button">REQUESTED SUCCESSFULLY</button>
+                    <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                    <div class="button-area wrapper">
+                        <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
                         <div class="arrow-container next-btn next-btn-valid">
                             <i class="icon-next icon-animate-1"></i>
                             <i class="icon-next icon-animate-2"></i>

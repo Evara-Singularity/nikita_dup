@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
  * - continue with email autocomplete UI
  * - Social Login icon
  * - all images to use cdn path
+ * - terms and policy links
  * 
  * Angular TODO:
  *  - Add a loader

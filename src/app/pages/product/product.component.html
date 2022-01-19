@@ -679,9 +679,9 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
-<div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert">
+<div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert">    
     <div class="overlay"></div>
-    <div class="content-area bottom-layout ">
+        <div class="content-area bottom-layout ">
         <div class="rfq-thanks-popup">
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
             <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
@@ -714,7 +714,7 @@
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
                 <!-- <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE CATEGORY</p> -->
-                 <button class="btn explore-category-btn" (click)="$event.stopPropagation();closeRFQAlert()">
+                 <button class="btn explore-category-btn" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE AVAILABLE PRODUCTS
                  </button>   
             </div>

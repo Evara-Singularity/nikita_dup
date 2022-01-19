@@ -2273,7 +2273,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   onRotatePrevious() {
-    this.loadProductCrousel(1);
+    this.loadProductCrousel(this.productAllImages.length - 1);
   }
 
   onRotateNext() {

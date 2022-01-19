@@ -110,7 +110,7 @@ export class SharedLoginComponent implements OnInit {
 
     validateUserWithEmail() {
         this._loader.setLoaderState(true);
-        const body = { email: this.emailFC.valid, phone: '', type: 'e' };
+        const body = { email: this.emailFC.value, phone: '', type: 'e' };
         this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;

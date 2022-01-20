@@ -3232,6 +3232,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
+    this.holdRFQForm = true;
     this.sendProductInfotracking(cta);
     this.showLoader = true;
     this.displayCardCta = true;
@@ -3259,6 +3260,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
+      this.holdRFQForm = false;
       // document.getElementById('infoTabs').scrollLeft = 0;
       this.productInfoPopupInstance = null;
       this.productInfoPopupContainerRef.remove();

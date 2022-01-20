@@ -679,7 +679,7 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
-<div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert">    
+<div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert" [class.rfqThanksPopup]="displayCardCta">    
     <div class="overlay"></div>
         <div class="content-area bottom-layout ">
         <div class="rfq-thanks-popup">

@@ -135,7 +135,7 @@ export class BrandComponent {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
         //for null seo in brand only
-        if(!this.API_RESPONSE.brand[0].seoDetails){
+        if(!this.API_RESPONSE.brand[0].seoDetails && (!this.API_RESPONSE['brand'][1][0].categoryName)){
             let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title }); 
@@ -154,7 +154,7 @@ export class BrandComponent {
             this.meta.addTag({ "name": "og:title", "content": title });
         }
         
-        if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription) {
+        if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription && (!this.API_RESPONSE['brand'][1][0].categoryName)) {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
         } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.metaDescription){

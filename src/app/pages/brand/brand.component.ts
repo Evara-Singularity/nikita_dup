@@ -143,7 +143,7 @@ export class BrandComponent {
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
-        if (this.API_RESPONSE.brand[0].seoDetails.title) {
+        if (this.API_RESPONSE.brand[0].seoDetails?.title) {
             this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
         } else {
@@ -152,7 +152,7 @@ export class BrandComponent {
             this.meta.addTag({ "name": "og:title", "content": title });
         }
         
-        if (this.API_RESPONSE.brand[0].seoDetails.metaDescription) {
+        if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription) {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
         } else {
@@ -161,7 +161,7 @@ export class BrandComponent {
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
 
-        if (this.API_RESPONSE['brand'][1][0].categoryName) {
+        if (this.API_RESPONSE['brand'][1][0]?.categoryName) {
             this.title.setTitle(this.API_RESPONSE.brand[1][0].title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0].title });
 
@@ -181,7 +181,7 @@ export class BrandComponent {
                 this.meta.addTag({ "name": "description", "content": metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": metaDescription });
             }
-            if (this.API_RESPONSE.brand[0].seoDetails.title) {
+            if (this.API_RESPONSE.brand[0].seoDetails?.title) {
                 this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
                 this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
             } else {
@@ -190,7 +190,7 @@ export class BrandComponent {
                 this.meta.addTag({ "name": "og:title", "content": title });
             }
             
-            if (this.API_RESPONSE.brand[0].seoDetails.metaDescription) {
+            if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription) {
                 this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             } else {

@@ -5,6 +5,7 @@ import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedAuthService } from '../shared-auth.service';
 import { Router } from '@angular/router';
+import CONSTANTS from '../../../../app/config/constants';
 
 /**
  * HTML TODO (Yogi): 
@@ -30,6 +31,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./shared-login.component.scss']
 })
 export class SharedLoginComponent implements OnInit {
+    readonly baseImgPath = CONSTANTS.IMAGE_BASE_URL;
 
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;

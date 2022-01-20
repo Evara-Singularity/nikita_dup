@@ -240,7 +240,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'article/:name',
+				path: 'articles/:name',
 				loadChildren: () =>
 					import('./article/article.module').then((m) => m.ArticleModule),
 				data: {
@@ -251,7 +251,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'article',
+				path: 'articles',
 				loadChildren: () =>
 					import('./articles/articles.module').then((m) => m.ArticlesModule),
 				data: {

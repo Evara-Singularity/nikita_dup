@@ -46,6 +46,12 @@
                 </a>
             </li>
             <li>
+                <a (click)="genericButtonClick('/deals')" [routerLink]="['/deals']">
+                    <i class="icon-home-deal"></i>
+                    <span class="text">Best Deals</span>
+                </a>
+            </li>
+            <li>
                 <a  (click)="genericButtonClick('/dashboard/business-detail')" [routerLink]="['/dashboard/business-detail']">
                     <i class="icon-business-details"></i>
                     <span class="text">My Business Details</span>

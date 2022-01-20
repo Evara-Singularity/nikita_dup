@@ -351,8 +351,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productFbtData();
       this.productStatusCount();
       this.checkDuplicateProduct();
+      this.backUrlNavigationHandler();
       // this.commonService.attachHotKeysScrollEvent();
     }
+  }
+
+  backUrlNavigationHandler() {
+    this.commonService.setCurrentNaviagatedModule('PDP', { overrideRedirectUrl: this.productCategoryDetails['categoryLink'] });
   }
 
   onScrollOOOSimilar(event) {
@@ -3513,6 +3518,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");
+      this.commonService.resetCurrentNaviagatedModule();
     }
     this.resetLazyComponents();
   }

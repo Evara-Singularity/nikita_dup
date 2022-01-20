@@ -366,7 +366,20 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
-            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
+            if(window.history.length > 2){
+                if (this._commonService.currentlyOpenedModule && this._commonService.currentlyOpenedModule.data && this._commonService.currentlyOpenedModule.data.overrideRedirectUrl) {
+                    this._commonService.currentlyOpenedModuleUsed = true;
+                    this.router.navigate([this._commonService.currentlyOpenedModule.data.overrideRedirectUrl]);
+                } else {
+                    if( this._commonService.currentlyOpenedModuleUsed == true){
+                        this.router.navigate(['/']);
+                    }else{
+                        this.location.back()
+                    }
+                }
+            }else{
+                this.router.navigate(['/']);
+            }
         } else {
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);

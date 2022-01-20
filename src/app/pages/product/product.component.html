@@ -376,10 +376,10 @@
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
-                    <a class="blueText"
-                        (click)="navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
+                    <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
+                        (click)="$event.preventDefault();navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                    <a class="blueText" (click)="navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails ?
+                    <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl" (click)="$event.preventDefault();navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails ?
                         productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
@@ -388,8 +388,8 @@
                 <p>
                     {{productName}} is a premium quality product from {{productBrandDetails ?
                     productBrandDetails['brandName'] : ''}}. Moglix is a
-                    well-known ecommerce platform for qualitative range of <a class="blueText"
-                        (click)="navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails ?
+                    well-known ecommerce platform for qualitative range of <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
+                        (click)="$event.preventDefault();navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails ?
                         productCategoryDetails['categoryName'] : ''}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
@@ -398,8 +398,8 @@
                     {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely acknowledged in
                     the market for their high
                     quality. We are dedicatedly involved in
-                    providing an excellent quality array of <a class="blueText"
-                        (click)="navigateLink('/'+productBrandCategoryUrl)">
+                    providing an excellent quality array of <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl"
+                        (click)="$event.preventDefault();navigateLink('/'+productBrandCategoryUrl)">
                         {{productBrandDetails ? productBrandDetails['brandName'] : ''}} {{productCategoryDetails ?
                         productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>

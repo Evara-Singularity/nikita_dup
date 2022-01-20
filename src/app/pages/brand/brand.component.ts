@@ -134,6 +134,7 @@ export class BrandComponent {
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
+        //for null seo in brand only
         if(!this.API_RESPONSE.brand[0].seoDetails){
             let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
@@ -143,10 +144,11 @@ export class BrandComponent {
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
-        if (this.API_RESPONSE.brand[0].seoDetails?.title) {
+        //seo in brand only
+        if (this.API_RESPONSE.brand[0].seoDetails?.title && (!this.API_RESPONSE['brand'][1][0].categoryName) ) {
             this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
-        } else {
+        } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.title) {
             let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
@@ -155,12 +157,12 @@ export class BrandComponent {
         if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription) {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
-        } else {
+        } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.metaDescription){
             let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
-
+        //seo in brand+category
         if (this.API_RESPONSE['brand'][1][0]?.categoryName) {
             this.title.setTitle(this.API_RESPONSE.brand[1][0].title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0].title });
@@ -169,7 +171,7 @@ export class BrandComponent {
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
-
+        //for null seo in brand+category 
         if (!this.API_RESPONSE['brand'][1][0].categoryName) {
 
             if(!this.API_RESPONSE.brand[0].seoDetails){

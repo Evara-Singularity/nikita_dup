@@ -672,7 +672,7 @@
     <ng-container #productInfoPopup></ng-container>
 </div>
 
-<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn" [class.highIndex]="displayCardCta">
+<div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
     <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 

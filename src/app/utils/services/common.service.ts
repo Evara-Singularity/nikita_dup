@@ -79,6 +79,8 @@ export class CommonService
     userSession;
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2;
+    public currentlyOpenedModule: {module: 'PDP' | 'LISTING', data?: any} = null;
+    public currentlyOpenedModuleUsed: boolean = false;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -113,6 +115,14 @@ export class CommonService
     getNetworkSpeedState(): Observable<number>
     {
         return this.networkSpeedState.asObservable();
+    }
+
+    setCurrentNaviagatedModule(module, data?) {
+        this.currentlyOpenedModule = { module, data };
+    }
+
+    resetCurrentNaviagatedModule(){
+        this.currentlyOpenedModule = null;
     }
 
     getNetworkSpeed(): Number

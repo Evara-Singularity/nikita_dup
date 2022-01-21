@@ -372,7 +372,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.router.navigate([this._commonService.currentlyOpenedModule.data.overrideRedirectUrl]);
                 } else {
                     if( this._commonService.currentlyOpenedModuleUsed == true){
-                        this.router.navigate(['/']);
+                        this.router.navigateByUrl('/?back=1');
                     }else{
                         this.location.back()
                     }

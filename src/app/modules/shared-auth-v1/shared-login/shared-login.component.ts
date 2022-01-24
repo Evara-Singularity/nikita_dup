@@ -6,15 +6,20 @@ import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedAuthService } from '../shared-auth.service';
 import { Router } from '@angular/router';
+import CONSTANTS from '../../../../app/config/constants';
 
 /**
- * HTML TODO: 
+ * HTML TODO (Yogi): 
  * - Background image
- * - continue with email autocomplete UI
+ * - continue with email autocomplete UI screen 45
  * - Social Login icon
  * - all images to use cdn path
  * - terms and policy links
  * - Forgot password screen 
+ 
+* HTML TODO (Yajya): 
+  css segregation module wise
+ * 
  * Angular TODO:
  *  - Add a loader
  *  - Autocomplete on email after user enters '@' chaacter
@@ -112,7 +117,7 @@ export class SharedLoginComponent implements OnInit {
 
     validateUserWithEmail() {
         this._loader.setLoaderState(true);
-        const body = { email: this.emailFC.valid, phone: '', type: 'e' };
+        const body = { email: this.emailFC.value, phone: '', type: 'e' };
         this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;

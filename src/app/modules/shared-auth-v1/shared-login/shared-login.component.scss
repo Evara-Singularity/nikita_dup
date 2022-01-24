@@ -2,8 +2,8 @@
 // New login start
 .login-banner {
     // background: linear-gradient(to bottom #D9232D 50%, #F5555E 50%);
-    background-image: linear-gradient(#d9232d, #f5555e);
-    height: 100vh;
+    background: linear-gradient(#d9232d, #f5555e);
+    height: 100%;
     .login-bg-img {
         .bg-logo {
             width: 100px;
@@ -24,6 +24,7 @@
         }
         .error-field {
             margin-top: 5px;
+            margin-left: 10px !important;
             .error-text {
                 color: #d9232d;
                 font-size: 10px;

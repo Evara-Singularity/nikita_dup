@@ -129,6 +129,9 @@
                 top: 12px;
                 color: $disabled;
                 @extend %transition;
+                .error-txt{
+                    margin-left: 10px !important;
+                }
             }
             i{
                 position: absolute;

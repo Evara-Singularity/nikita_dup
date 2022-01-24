@@ -4,7 +4,10 @@
         <!--depending on the condition template will get rendered-->
     </div>
 </ng-container>
-
+<div class="transparent-login-header">
+<img class="left-arrow" src="{{assetImgPath}}/assets/img/arrow-left-line.svg">
+    <img class="bg-logo" src="{{assetImgPath}}/assets/img/moglix_logo_PWA_3x.png">
+</div>
 <!--OTP Template-->
 <ng-template #otpform>
     <div class="outer-card">
@@ -56,7 +59,8 @@
         <form class="material-form">
             <div class="outline-input-label">
                 <label [class.is-focus]="password.value.length!=0">
-                    <input type="text" [formControl]="password">
+                    <input type="password" [formControl]="password">
+                    <i class="icon-view-password show-pass" ></i>
                     <span class="label">Enter password</span>
                     <ng-container *ngIf="isPasswordSubmitted && password.errors != null">
                         <p class="error-txt" *ngIf="password.errors.required">Please provide password.</p>

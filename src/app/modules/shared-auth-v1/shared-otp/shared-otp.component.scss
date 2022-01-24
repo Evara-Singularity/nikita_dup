@@ -108,7 +108,7 @@
         }
     }
     .otp-text {
-        padding: 10px 0px 20px 0px;
+        padding: 10px 0px 40px 0px;
         display: flex;
         align-items: center;
         .otp-text-inner {
@@ -130,5 +130,23 @@
                 color: #d9232d;
             }
         }
+    }
+}
+
+.transparent-login-header{
+    height: 50px;
+    display: flex;
+    background: transparent;
+    padding: 0px 15px;
+    align-items: center;
+    .left-arrow{
+        height: 33px;
+        width: 40px;
+
+    }
+    .bg-logo {
+        width: 90px;
+        height: 30;
+        margin-left: 20px;
     }
 }

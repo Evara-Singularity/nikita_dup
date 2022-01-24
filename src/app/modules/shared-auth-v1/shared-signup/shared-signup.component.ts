@@ -10,6 +10,7 @@ import { SharedAuthService } from '../shared-auth.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
+import { CONSTANTS } from '@app/config/constants';
 
 /**
  * User must have auth flow information
@@ -28,6 +29,7 @@ import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.va
 export class SharedSignupComponent implements OnInit
 {
 
+    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
     readonly OTP_URL = "/otp";
     @Input('isCheckout') isCheckout = false;

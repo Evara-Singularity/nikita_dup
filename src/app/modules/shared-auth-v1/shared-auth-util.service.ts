@@ -1,3 +1,4 @@
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -18,7 +19,7 @@ declare var _satellite;
 export class SharedAuthUtilService implements OnInit
 {
     readonly HOME_URL = "/";
-    
+
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
 
     redirectUrl = this.HOME_URL;
@@ -130,8 +131,8 @@ export class SharedAuthUtilService implements OnInit
 
     signupUser(request, isCheckout)
     {
-        this.pushNormalUser(); 
-        const REQUEST = { ...this.SINGUP_REQUEST, request}
+        this.pushNormalUser();
+        const REQUEST = { ...this.SINGUP_REQUEST, request }
         this._globalLoader.setLoaderState(true);
         // this._sharedAuthService.signUp(REQUEST).subscribe(
         //     (response) =>
@@ -168,6 +169,12 @@ export class SharedAuthUtilService implements OnInit
             this.updateCartSession(isCheckout, redirectUrl);
             this.clearAuthFlow();
         }
+    }
+
+    updateOTPControls(otpForm: FormArray,   length: number) 
+    {
+        for (let i = 0; i < length; i++) { otpForm.push(new FormControl("", [Validators.required])) }
+        return otpForm;
     }
 
     //tracking sectoin 

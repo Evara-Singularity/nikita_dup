@@ -33,10 +33,11 @@ import CONSTANTS from '../../../../app/config/constants';
 })
 export class SharedLoginComponent implements OnInit {
     
+    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
-    
     @Input('isCheckout') isCheckout = false;
+    
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
     })
@@ -95,14 +96,13 @@ export class SharedLoginComponent implements OnInit {
                     'email': '',
                     'phone': this.phoneFC.value,
                     'type': 'p',
-                    'source': (isUserExists) ? 'login_otp' : 'signup',
-                    'device': 'mobile'
+                    'source': (isUserExists) ? 'login_otp' : 'signup'
                 }
                 //NOTE:UnComment code and remove navigation
                 this._router.navigate(['/otp']);
-                // this._sharedAuthService.getOTP(bodyOTP).subscribe(response => {
+                // this._sharedAuthService.sendOTP(bodyOTP).subscribe(response => {
                 //     if (response['statusCode'] === 200) {
-                //         this._router.navigate(['/otp']);
+                //         this.navigateToNext(isUserExists);
                 //     } else {
                 //         this._tms.show({ type: 'error', text: response['message'] });
                 //     }
@@ -125,13 +125,14 @@ export class SharedLoginComponent implements OnInit {
                 //CHECK:Email with otp call
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
-                if(isUserExists){
-                    // login flow with password as only option
-                    this._router.navigate(['/otp']);
-                }else{
-                    // sign up with sign-up screen to capture phone and then verify with OTP
-                    this._router.navigate(['/sign-up']);
-                }
+                this.navigateToNext(isUserExists);
+                // if(isUserExists){
+                //     // login flow with password as only option
+                //     this._router.navigate(['/otp']);
+                // }else{
+                //     // sign up with sign-up screen to capture phone and then verify with OTP
+                //     this._router.navigate(['/sign-up']);
+                // }
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
@@ -140,6 +141,12 @@ export class SharedLoginComponent implements OnInit {
     }
 
     // supporting functions
+    navigateToNext(isUserExists) { 
+        const LINK = (isUserExists) ? "/otp" : "/sign-up";
+        this._router.navigate([LINK]);
+    }
+
+
     toggleLoginType(type) {
         this.loginType = type;
         this.resetForms();

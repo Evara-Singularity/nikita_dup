@@ -10,6 +10,7 @@ import { SharedAuthService } from './shared-auth.service';
 import { SharedSignupComponent } from './shared-signup/shared-signup.component';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { ToastMessageModule } from '../toastMessage/toast-message.module';
+import { OTPTimerPipeModule } from '@app/utils/pipes/otp-timer.pipe';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { ToastMessageModule } from '../toastMessage/toast-message.module';
         ReactiveFormsModule,
         NumberDirectiveModule,
         ToastMessageModule,
-        GlobalLoaderModule
+        GlobalLoaderModule,
+        OTPTimerPipeModule
     ],
     exports: [
         SharedLoginComponent,

@@ -86,7 +86,7 @@ export class ProductCheckPincodeComponent implements OnInit
             const msnArr = [];
             msnArr.push(PARTNUMBER);
             this.isLoading.emit(true);
-            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode }).subscribe(
+            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode, price: this.pageData['productPrice'] }).subscribe(
                 (response: any) =>
                 {
                     this.isLoading.emit(false);
@@ -100,7 +100,7 @@ export class ProductCheckPincodeComponent implements OnInit
                     this.deliveryAnalytics = 'NA';
                     if (response.data !== null) {
                         let pincodeResponse = response.data[PARTNUMBER];
-                        this.isCashOnDelivery = this.getCodAvailable && (pincodeResponse.aggregate.codAvailable) || this.FALSE;
+                        this.isCashOnDelivery = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
                         this.isServiceable = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
                         if (this.isServiceable) {
                             let avgLogisticEstimated = pincodeResponse['avgDay'] || null;

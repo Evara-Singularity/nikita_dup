@@ -27,6 +27,8 @@ export class SharedAuthService implements OnInit
     readonly AUTH_LOGIN_FLOW = 'AUTH_LOGIN';
     readonly AUTH_LOGIN_BY_OTP = 'AUTH_LOGIN_BY_OTP';
     readonly AUTH_LOGIN_BY_PASSWORD = 'AUTH_LOGIN_BY_PASSWORD';
+    readonly AUTH_SINGUP_BY_PHONE = 'AUTH_SIGNUP_BY_PHONE';
+    readonly AUTH_SINGUP_BY_EMAIL = 'AUTH_SINGUP_BY_EMAIL';
     readonly HOME_URL = "/";
 
     private readonly BASEURLS = {
@@ -89,7 +91,7 @@ export class SharedAuthService implements OnInit
         return this.dataService.callRestful(this.BASEURLS.USEREXISTS.method, this.BASEURLS.USEREXISTS.url, { body: userData });
     }
 
-    sendOTP(data)
+    sendOTP(data):Observable<any>
     {
         data['device'] = CONSTANTS.DEVICE.device;
         return this.dataService.callRestful(this.BASEURLS.GETOTP.method, this.BASEURLS.GETOTP.url, { body: data });

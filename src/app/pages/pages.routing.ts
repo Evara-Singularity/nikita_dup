@@ -158,7 +158,7 @@ const routes: Routes = [
 			{
 				path: 'login',
 				loadChildren: () =>
-					import('./login/login.module').then((m) => m.LoginModule),
+					import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					footer: false,
 					title: 'Welcome',
@@ -168,7 +168,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'otp',
-				loadChildren: () => import('./otp/otp.module').then((m) => m.OtpModule),
+                loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					title: 'Sign In',
 					footer: false,
@@ -178,10 +178,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'forgot-password',
-				loadChildren: () =>
-					import('./forgot-password/forgot-password.module').then(
-						(m) => m.ForgotPasswordModule
-					),
+				loadChildren: () =>import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					footer: false,
 					title: 'Forgot Password',
@@ -191,8 +188,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'sign-up',
-				loadChildren: () =>
-					import('./sign-up/sign-up.module').then((m) => m.SignUpModule),
+                loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					footer: false,
 					title: 'Sign Up',

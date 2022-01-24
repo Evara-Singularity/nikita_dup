@@ -1,5 +1,5 @@
 import { SharedAuthUtilService } from './../shared-auth-util.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
@@ -27,10 +27,11 @@ import { Router } from '@angular/router';
     styleUrls: ['./shared-login.component.scss']
 })
 export class SharedLoginComponent implements OnInit {
-
+    
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
-
+    
+    @Input('isCheckout') isCheckout = false;
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
     })

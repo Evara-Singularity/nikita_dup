@@ -7,60 +7,47 @@
     <form class="material-form" [formGroup]="signupForm">
         <div class="outline-input-label">
             <label [class.is-focus]="name.value.length!=0">
-                <input type="text" formControlName="name">
+                <input type="text" formControlName="name" maxlength="20">
                 <span class="label">Enter User Name*</span>
-                <ng-container *ngIf="isSubmitted && name.errors != null">
-                    <p class="error-txt"></p>
+                <ng-container *ngIf="(name.touched || name.dirty)">
+                    <p class="error-txt" *ngIf="name.hasError('required')">Please provide valid user name.</p>
+                    <p class="error-txt" *ngIf="!(name.hasError('required')) && name.hasError('whitespace')">Username cannot start with space(s).</p>
                 </ng-container>
             </label>
         </div>
-        <div class="outline-input-label">
-            <label [class.is-focus]="email.value.length!=0">
-                <input type="text" formControlName="email">
-                <span class="label">Enter Email-ID (Optional)</span>
-                <ng-container>
-                    <p class="error-txt"></p>
-                </ng-container>
-            </label>
-        </div>
-        <button class="btn btn-variant1 btn-disabled">SUBMIT NOW</button>
-    </form>
-    <p class="safe-text">Your details are safe with us.</p>
-</div>
-
-<!-- TODO:sign-up-form-new -->
-<!-- <div class="outer-card">
-    <h3 class="heading-custom-3">Looks like you’re new here!</h3>
-    <p>Please provide below information</p>
-</div>
-<div class="login-card">
-    <form class="material-form">
-        <div class="outline-input-label">
-            <label [class.is-focus]="username.value.length!=0">
-                <input type="text" formControlName="username">
-                <span class="label">Enter User Name*</span>
-            </label>
-        </div>
-        <div class="outline-input-label">
-            <label [class.is-focus]="username.value.length!=0">
-                <input type="text" formControlName="username">
+        <div class="outline-input-label" *ngIf="!(isSingupUsingPhone)">
+            <label [class.is-focus]="phone.value.length!=0">
+                <input type="text" numbersOnly formControlName="phone" maxlength="10">
                 <span class="label">Enter Mobile Number*</span>
-                <ng-container>
-                    <p class="error-txt"></p>
+                <ng-container *ngIf="phone.touched || phone.dirty">
+                    <p class="error-txt" *ngIf="phone.errors !== null">Please provide valid mobile number.</p>
+                    <p class="error-txt" *ngIf="isUserExists">Mobile number already exists!</p>
+                </ng-container>
+            </label>
+        </div>
+        <div class="outline-input-label" *ngIf="isSingupUsingPhone">
+            <label [class.is-focus]="email.value.length!=0">
+                <input type="text" formControlName="email" maxlength="100">
+                <span class="label">Enter Email-ID (Optional)</span>
+                <ng-container *ngIf="email.touched || email.dirty">
+                    <p class="error-txt" *ngIf="email.errors && email.errors.invalidCharT">Please provide valid email.</p>
+                    <p class="error-txt" *ngIf="isUserExists">Email-ID already exists!</p>
                 </ng-container>
             </label>
         </div>
         <div class="outline-input-label">
-            <label [class.is-focus]="username.value.length!=0">
-                <input type="text" formControlName="username">
+            <label [class.is-focus]="password.value.length!=0">
+                <input [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20">
                 <span class="label">Enter Password (optional)</span>
-                <i class="icon-view-password"></i>
-                <ng-container>
-                    <p class="error-txt">sachin</p>
+                <i class="icon-view-password" (click)="$event.stopPropagation();togglePasswordType()"></i>
+                <ng-container *ngIf="(password.touched || password.dirty)">
+                    <p class="error-txt" *ngIf="password.hasError('required')">{{password.errors.required}}</p>
+                    <p class="error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>
+                    <p class="error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}</p>
                 </ng-container>
             </label>
         </div>
-        <button class="btn btn-variant1 btn-disabled">SIGN-UP NOW</button>
+        <button class="btn btn-variant1" [class.btn-disabled]="disableContinue" (click)="validateUser($event)">SUBMIT NOW</button>
     </form>
     <p class="safe-text">Your details are safe with us.</p>
-</div> -->
+</div>

@@ -1,12 +1,15 @@
 import { Injectable, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { ToastMessageService } from '../toastMessage/toast-message.service';
+import { map } from 'rxjs/operators';
 import { AuthFlowType } from './modals';
+import { SharedAuthService } from './shared-auth.service';
 declare var dataLayer;
 declare var digitalData: {};
 declare var _satellite;
@@ -14,15 +17,25 @@ declare var _satellite;
 @Injectable({ providedIn: 'root' })
 export class SharedAuthUtilService implements OnInit
 {
+    readonly HOME_URL = "/";
+    
+    readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
+
+    redirectUrl = this.HOME_URL;
 
     constructor(private _localStorage: LocalStorageService,
         private _globalLoader: GlobalLoaderService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _toastService: ToastMessageService, private _commonService: CommonService, private _checkoutLoginService: CheckoutLoginService) { }
+        private _toastService: ToastMessageService, private _commonService: CommonService, private _checkoutLoginService: CheckoutLoginService,
+        private _router: Router, private _activatedRoute: ActivatedRoute,) { }
 
 
     ngOnInit(): void
     {
         let cartSession = this._cartService.getCartSession();
+        //TODO:handle for checkout
+        this._activatedRoute.queryParams.subscribe(
+            data => { this.redirectUrl = data['backurl'] || this.HOME_URL; }
+        );
     }
 
     setAuthFlow(isUserExists, flowType, authIdentifierType, authIdentifier, data = null)
@@ -90,6 +103,51 @@ export class SharedAuthUtilService implements OnInit
         });
     }
 
+    //common section
+    initiateOTP(request)
+    {
+        this._globalLoader.setLoaderState(true);
+        // this._sharedAuthService.sendOTP(request).subscribe(
+        //     (response) =>
+        //     {
+        //         this._globalLoader.setLoaderState(false);
+        //         if (response['statusCode'] !== 200) {
+        //             this.processOTPError(response);
+        //             return;
+        //         }
+        //         this._router.navigate(["/"]);
+        //     },
+        //     (error) => { this._globalLoader.setLoaderState(false); },
+        // )
+    }
+
+    processOTPError(response)
+    {
+        const invalidOTPMessage = (response['message'] as string).toLowerCase();
+        this._toastService.show({ type: 'error', text: invalidOTPMessage });
+        this._router.navigate(["/"]);
+    }
+
+    signupUser(request, isCheckout)
+    {
+        this.pushNormalUser(); 
+        const REQUEST = { ...this.SINGUP_REQUEST, request}
+        this._globalLoader.setLoaderState(true);
+        // this._sharedAuthService.signUp(REQUEST).subscribe(
+        //     (response) =>
+        //     {
+        //         this._globalLoader.setLoaderState(false);
+        //         if (response["status"])
+        //         {
+        //             this.postSignup(request, response, isCheckout, this.redirectUrl);
+        //             return;
+        //         }
+        //         this._router.navigate(["/login"]);
+        //     },
+        //     (error) => { this._globalLoader.setLoaderState(false); }
+        // );
+    }
+
     postSignup(params, response, isCheckout, redirectUrl)
     {
         if (response['status'] !== undefined && response['status'] === 500) {
@@ -112,8 +170,7 @@ export class SharedAuthUtilService implements OnInit
         }
     }
 
-
-    //tracking
+    //tracking sectoin 
     sendAdobeAnalysis()
     {
         let page = {

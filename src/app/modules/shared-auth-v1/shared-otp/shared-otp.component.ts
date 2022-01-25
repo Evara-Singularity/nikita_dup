@@ -8,6 +8,7 @@ import { scan, takeWhile } from 'rxjs/operators';
 import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from './../shared-auth-util.service';
 import { SharedAuthService } from './../shared-auth.service';
+import {CONSTANTS} from '@app/config/constants';
 /**
  * Flows
  * 1. Login(mobile) + OTP + (backurl/home).
@@ -23,6 +24,7 @@ import { SharedAuthService } from './../shared-auth.service';
 })
 export class SharedOtpComponent implements OnInit, AfterViewInit
 {
+    assetImgPath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;

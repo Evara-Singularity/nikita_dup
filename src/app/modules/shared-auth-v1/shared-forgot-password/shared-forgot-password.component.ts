@@ -8,6 +8,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { SharedAuthService } from '../shared-auth.service';
 import { Router } from '@angular/router';
 import { AuthFlowType } from '../modals';
+import {CONSTANTS} from '@app/config/constants';
 
 @Component({
     selector: 'shared-forgot-password',
@@ -16,6 +17,7 @@ import { AuthFlowType } from '../modals';
 })
 export class SharedForgotPasswordComponent implements OnInit
 {
+    assetImgPath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
     readonly OTP_URL = "/otp"
     @Input('isCheckout') isCheckout = false;

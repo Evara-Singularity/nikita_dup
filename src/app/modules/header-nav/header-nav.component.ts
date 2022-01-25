@@ -396,7 +396,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private pdpReirectHack() {
         if (window.history.length > 3) {
-           // console.log('back to home 1.1', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
+           console.log('back to home 1.1', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
             if (this._commonService.currentlyOpenedModuleUsed == true) {
                 this._commonService.currentlyOpenedModuleUsed = false;
                 this.router.navigateByUrl('/?back=1');
@@ -404,12 +404,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.location.back();
             }
         } else {
-           // console.log('back to home 1.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
+           console.log('back to home 1.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
             if (this._commonService.currentlyOpenedModule && this._commonService.currentlyOpenedModule.data && this._commonService.currentlyOpenedModule.data.overrideRedirectUrl) {
                 this._commonService.currentlyOpenedModuleUsed = true;
                 this.router.navigate([this._commonService.currentlyOpenedModule.data.overrideRedirectUrl], { queryParams: { back: 1 } });
             } else {
-               // console.log('back to home 1.2.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
+               console.log('back to home 1.2.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
                 this.location.back();
             }
         }

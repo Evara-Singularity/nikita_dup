@@ -358,6 +358,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   backUrlNavigationHandler() {
     this.commonService.setCurrentNaviagatedModule('PDP', { overrideRedirectUrl: this.productCategoryDetails['categoryLink'] });
+    this.commonService.currentlyOpenedModuleUsed = false;
   }
 
   onScrollOOOSimilar(event) {

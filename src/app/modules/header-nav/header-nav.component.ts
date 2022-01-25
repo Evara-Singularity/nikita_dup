@@ -367,7 +367,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
             console.log('back to home 1', window.history.length);  
-            if(window.history.length > 2){
+            if(window.history.length > 3){
                 console.log('back to home 1.1', this._commonService.currentlyOpenedModule,  this._commonService.currentlyOpenedModuleUsed);
                 if( this._commonService.currentlyOpenedModuleUsed == true){
                     this.router.navigateByUrl('/?back=1');

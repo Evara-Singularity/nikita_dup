@@ -1,11 +1,11 @@
-<div class="featuredBanner" *ngIf="data['data']">
-  <div class ="featrBannerBlock">
-        <div [style.width.px]="data['data'].length * 350">
-              <div class ="featrBannerSlide" *ngFor="let item of data['data'];let i=index" >
-                <a href="{{item?.image_link}}">
-                  <img  [defaultImage]="defaultImage" [lazyLoad]="imagePath + item['image_name']" alt="{{item['image_title']}}">
-                </a>
-              </div>
-        </div>
+<div class="featuredBanner" *ngIf="data['data'] && data['data'].length > 0">
+  <div class="featrBannerBlock">
+    <div [style.width.px]="data['data'].length * 350">
+      <div class="featrBannerSlide" *ngFor="let item of data['data'];let i=index">
+        <a href="{{item?.image_link}}">
+          <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item['image_name']" alt="{{item['image_title']}}">
+        </a>
+      </div>
+    </div>
   </div>
 </div>

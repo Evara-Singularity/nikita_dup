@@ -306,10 +306,14 @@ option {
 //Bottom Popup Design 
 .bottom-options {
     &#bottom-options-rfq {
+        .overlay{
+            z-index:106;
+        }
         &.open {
             .content-box {
                 padding-bottom: 50px !important;
                 max-height: 80% !important;
+                z-index:107;
             }
         }
     }
@@ -429,6 +433,14 @@ option {
     &.rfq-thanks-alert{
         .content-area{
             border-radius:12px !important;
+        }
+        &.rfqThanksPopup{
+            .overlay{
+              z-index:106 !important;
+            }
+            .content-area{
+                z-index:106 !important;
+            }  
         }
     }
     .overlay {

@@ -1,17 +1,17 @@
-<div class="otherCategoryBlock trending" *ngIf="data['data']">
+<div class="otherCategoryBlock trending" *ngIf="data['data'] && data['data'].length > 0">
     <h3 class="l0_heading">{{data?.title}}</h3>
     <ul class="clearfix">
         <li *ngFor="let item of data['data'] | slice:0:4;let i=index">
-            <div [routerLink] ="['/'+item?.image_link]" class="innerCategory">
+            <div [routerLink]="['/'+item?.image_link]" class="innerCategory">
                 <div class="imgBlock">
-                    <img alt="{{item['image_title']}}" src ="{{imagePath + item['image_name']}}">
+                    <img alt="{{item['image_title']}}" src="{{imagePath + item['image_name']}}">
                 </div>
                 <div class="detailsBlock">
                     <h3>{{item['image_title']}}</h3>
-                    <p *ngIf ="item['image_general']  && item['image_general'].length >0">{{item['image_general'][0]['general_text']}}</p>
+                    <p *ngIf="item['image_general']  && item['image_general'].length >0">
+                        {{item['image_general'][0]['general_text']}}</p>
                 </div>
             </div>
         </li>
     </ul>
 </div>
-

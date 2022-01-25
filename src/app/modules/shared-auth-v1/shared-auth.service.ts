@@ -102,11 +102,11 @@ export class SharedAuthService implements OnInit
         return this.dataService.callRestful(this.BASEURLS.VALIDATEOTP.method, this.BASEURLS.VALIDATEOTP.url, { body: data });
     }
 
-    sendOtp(data): Observable<any>
-    {
-        data['device'] = CONSTANTS.DEVICE.device;
-        return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
-    }
+    // sendOtp(data): Observable<any>
+    // {
+    //     data['device'] = CONSTANTS.DEVICE.device;
+    //     return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
+    // }
 
     signUp(data)
     {

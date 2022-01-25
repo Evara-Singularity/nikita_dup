@@ -3,12 +3,12 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
 import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from './../shared-auth-util.service';
 import { SharedAuthService } from './../shared-auth.service';
-import {CONSTANTS} from '@app/config/constants';
+import { CONSTANTS } from '@app/config/constants';
 /**
  * Flows
  * 1. Login(mobile) + OTP + (backurl/home).
@@ -24,8 +24,9 @@ import {CONSTANTS} from '@app/config/constants';
 })
 export class SharedOtpComponent implements OnInit, AfterViewInit
 {
-    assetImgPath = CONSTANTS.IMAGE_ASSET_URL;
+    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
+    readonly FORGOT_PASSWORD_URL = "/forgot-password";
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;
     authFlow: AuthFlowType;//gives flowtype & identifier information
@@ -35,28 +36,41 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     isOTPLimitExceeded = false;
     OTP_INPUTS: HTMLCollectionOf<HTMLInputElement>;
     invalidOTPMessage: string = null;
-    timer;
+    timer = 0;
+    verifiedOTP = "";//to save verified otp + in template number verified or not
+    otpFormSubscriber: Subscription = null;
     //password
+    isPasswordType = true;//to set input[type] = text/password.
     password: FormControl = null;
     isPasswordSubmitted = false;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService:ToastMessageService) { }
+        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService) { }
 
     ngOnInit()
     {
-        this.buildOTPForm();
-        this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
         this.authFlow = this._sharedAuthUtilService.getAuthFlow();
         //if authFlow is empty then navigate to login
-        if (!this.authFlow) { this.navigateToLogin(); return; }
+        if (!(this.authFlow)) { this.navigateToLogin(); return; }// || !(this.authFlow.isUserExists)
+        this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+        this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
+        this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         this.updateFlow(this.authFlow.identifier);
     }
 
     ngAfterViewInit()
     {
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
+        this.addSubscribers();
         this.enableWebOTP();
+    }
+
+    addSubscribers()
+    {
+        this.otpFormSubscriber = this.otpForm.valueChanges.subscribe((value) =>
+        {
+            if (this.otpForm.valid) { this.validateOTP(); }
+        })
     }
 
     //NOTE:check on this.
@@ -83,16 +97,11 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
      */
     updateFlow(identifier)
     {
-        if (!identifier) { this._router.navigate([this.LOGIN_URL]); return }
-        if (this.authFlow.isUserExists) {
-            this.startOTPTimer();
-            if (window) {
-                (this.isCheckout) ? this._sharedAuthUtilService.sendCheckoutAdobeAnalysis() : this._sharedAuthUtilService.sendAdobeAnalysis();
-            }
+        if (window) {
+            (this.isCheckout) ? this._sharedAuthUtilService.sendCheckoutAdobeAnalysis() : this._sharedAuthUtilService.sendAdobeAnalysis();
         }
-        else {
-            this.initiateSingupFlow();
-        }
+        if (this.isOTPFlow) { this.startOTPTimer(); }
+        
     }
 
     initiateOTP()
@@ -107,49 +116,28 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
                     this.invalidOTPMessage = null;
                     this.startOTPTimer();
                     return;
-                } 
+                }
                 this._sharedAuthUtilService.processOTPError(response);
             },
             (error) => { this._globalLoader.setLoaderState(false); },
         )
     }
 
-    verifyOTP()
+    validateOTP()
     {
-        if(!this.isCheckout)
-        {
-            console.log(this.otpForm.value)
-            return;
-        }
         const REQUEST = this._sharedAuthUtilService.getUserData();
         REQUEST['otp'] = (this.otpForm.value as string[]).join();
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-                if (response['statusCode'] === 200 && response['status']) {
-                    this.invalidOTPMessage = null;
-                    //NOTE:If user exists then authenticate flow, otherwise initiate singup
-                    if(this.authFlow.isUserExists){
-                        this._sharedAuthService.authenticateUser(REQUEST, this.isCheckout);
-                    }else{
-                        this.initiateSingupFlow();
-                    }
-                } else {
-                    this.processOTPError(response);
+                if (response['status']) {
+                    this.verifiedOTP = this.otpValue;
+                    return;
                 }
+                this._sharedAuthUtilService.processOTPError(response);
                 this._globalLoader.setLoaderState(true);
             }, (error) => { this._globalLoader.setLoaderState(false); });
-    }
-
-    processOTPError(response)
-    {
-        this.invalidOTPMessage = (response['message'] as string).toLowerCase();
-        this._toastService.show({ type: 'error', text: this.invalidOTPMessage });
-        if (response['status'] == false && response['statusCode'] == 500 && this.invalidOTPMessage.includes('maximum')) {
-            this.isOTPLimitExceeded = true;
-            this.navigateToLogin();
-        }
     }
 
     /**
@@ -157,8 +145,13 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
      * @param isValid : whether otp field control is valid or not
      * @param inputIndex : current otp field index
      */
-    moveFocus(isValid, inputIndex)
+    moveFocus($event, isValid, inputIndex)
     {
+        $event.stopPropagation();
+        //$event.which = 8:means backspace pressed.
+        if ((inputIndex >= 0) && (inputIndex - 1 > -1) && ($event.which === 8)) {
+            this.OTP_INPUTS[inputIndex - 1].focus();
+        }
         if (isValid && (inputIndex < this.OTP_INPUTS.length - 1)) {
             this.OTP_INPUTS[inputIndex + 1].focus();
         }
@@ -192,11 +185,9 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     {
         timer(0, 1000).pipe(scan(acc => --acc, 21), takeWhile(x => x >= 0)).subscribe((time) =>
         {
-            this.timer = time > 9 ? `00:${time}` : `00:0${time}`;
+            this.timer = time;
         })
     }
-
-    buildOTPForm() { for (let i = 0; i < this.OTP_FIELDS_LENGTH; i++) { this.otpForm.push(new FormControl("", [Validators.required])) } }
 
     //password section
     resetPasswordInfo()
@@ -216,10 +207,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     initiateSingupFlow()
     {
         //NOTE:phoneVerified with Pritam & signup otp
-        const OTP = (this.otpForm.value as string[]).join()
         const isSingupUsingPhone = (this.authFlow.identifierType === this._sharedAuthService.AUTH_SINGUP_BY_EMAIL);
-        if (isSingupUsingPhone){
-            this.authFlow.data = { otp: OTP};
+        const OTP = (this.otpForm.value as string[]).join()
+        if (isSingupUsingPhone) {
+            this.authFlow.data = { otp: OTP };
             this._router.navigate(['sign-up']);
             return;
         }
@@ -230,5 +221,15 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     }
 
     //reusable section
+    authenticate() {
+        const REQUEST = this._sharedAuthUtilService.getUserData();
+        REQUEST['otp'] = (this.otpForm.value as string[]).join();
+        this._sharedAuthService.authenticateUser(REQUEST, this.isCheckout);
+    }
     navigateToLogin() { this._router.navigate([this.LOGIN_URL]) }
+    navigateToForgotPassword() { this._router.navigate([this.FORGOT_PASSWORD_URL]) }
+
+    get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
+    get disableContinue() { return this.verifiedOTP && this.otpForm.valid }
+    get otpValue() { return ((this.otpForm.value as string[]).join()); }
 }

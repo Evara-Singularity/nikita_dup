@@ -1,4 +1,4 @@
-<div class="allCategoryBlock bg-white" *ngIf="data['data']">
+<div class="allCategoryBlock bg-white" *ngIf="data['data'] && data['data'].length > 0">
   <h3 class="l0_heading">{{data.title}}({{data['data'].length}})</h3>
   <ul class="clearfix">
       <li *ngFor="let item of data['data'] | slice:0:5;let i=index">

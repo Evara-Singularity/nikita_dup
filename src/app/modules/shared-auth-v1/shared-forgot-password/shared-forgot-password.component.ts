@@ -172,7 +172,7 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.fpForm.valid }
-    get otpValue() { return ((this.otpForm.value as string[]).join()); }
+    get otpValue() { return ((this.otpForm.value as string[]).join("")); }
     get otpForm() { return (this.fpForm.get("otpForm") as FormArray) }
     get password() { return this.fpForm.get("password") }
 

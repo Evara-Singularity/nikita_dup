@@ -58,7 +58,7 @@ export class SharedAuthUtilService implements OnInit
     {
         const FLOW_DATA: AuthFlowType = this.getAuthFlow();
         if (!source) { source = this.getSourceType(FLOW_DATA.isUserExists); }
-        let requestData = { email: '', phone: '', type: FLOW_DATA.identifierType, source: source };
+        let requestData = { email: '', phone: '', type: this.getUserType(FLOW_DATA.identifierType), source: source };
         if (FLOW_DATA.identifierType.includes("PHONE")) {
             requestData.phone = FLOW_DATA.identifier;
             return requestData;

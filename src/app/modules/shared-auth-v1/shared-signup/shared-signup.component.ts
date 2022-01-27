@@ -1,4 +1,4 @@
-import { Validators } from '@angular/forms';
+import { Validators, FormArray } from '@angular/forms';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -28,16 +28,20 @@ import { CONSTANTS } from '@app/config/constants';
 })
 export class SharedSignupComponent implements OnInit
 {
-
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
     readonly OTP_URL = "/otp";
+    readonly SIGN_UP_PHONE_STEPS = { 1: "OTP", 2: "DETAILS" };
+    readonly SIGN_UP_EMAIL_STEPS = { 1: "DETAILS", 2: "OTP" };
+    readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
     @Input('isCheckout') isCheckout = false;
     authFlow: AuthFlowType;//gives flowtype & identifier information
     isUserExists = false;
     isSingupUsingPhone = false;
     isOTPLimitExceeded = false;
     isPasswordType = true;
+    currentStep = "";
+    identifer = null;
 
     signupForm = new FormGroup({
         name: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
@@ -45,6 +49,7 @@ export class SharedSignupComponent implements OnInit
         phone: new FormControl("", [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]\d*$/)]),
         password: new FormControl("", [PasswordValidator.validatePassword]),
     })
+    otpForm = new FormArray([]);
 
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
@@ -55,20 +60,32 @@ export class SharedSignupComponent implements OnInit
         //redirect if authflow details are not available
         //decide and build singup form depending on OTP or Email registration
         //Need to update the mobile after OTP validation
-        if (!this.authFlow && this.authFlow.flowType !== this._sharedAuthService.AUTH_SIGNUP_FLOW) { this.navigateTo(this.LOGIN_URL); return; }
-        this.isSingupUsingPhone = (this.authFlow.identifierType === this._sharedAuthService.AUTH_SINGUP_BY_EMAIL);
+        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
+        if (!this.authFlow) { this.navigateTo(this.LOGIN_URL); return; }
+        this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+        this.isSingupUsingPhone = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         Object.freeze(this.isSingupUsingPhone);
+        this.updateSignupWithIdentifier()
     }
+
+    updateSignupWithIdentifier()
+    {
+        if (this.isSingupUsingPhone)
+        {
+            this.phone.patchValue(this.authFlow.identifier);
+        }
+        else
+        {
+            this.email.patchValue(this.authFlow.identifier);
+        }
+        this.updateSignupStep(1);
+    }
+
 
     validateUser($event)
     {
         $event.stopPropagation();
-        let userInfo = null;
-        if (this.isSingupUsingPhone) {
-            userInfo = { email: this.email.value, phone: "", type: 'e' };
-        } else {
-            userInfo = { email: '', phone: this.phone.value, type: 'p' };
-        }
+        let userInfo = { email: '', phone: this.phone.value, type: 'p' };
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(
             (response) =>
@@ -77,7 +94,7 @@ export class SharedSignupComponent implements OnInit
                 if (response['statusCode'] == 200) {
                     this.isUserExists = response['exists'];
                     if (!this.isUserExists) {
-                        this.processSignup(this.signupForm.value);
+                        this.onDetailsSubmit();
                     }
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });
@@ -87,40 +104,49 @@ export class SharedSignupComponent implements OnInit
         );
     }
 
-    processSignup(singup)
+    captureOTP($event)
     {
-        if (this.isSingupUsingPhone) {
-            this.initiateSingupFlow(singup);
+        if(this.isSingupUsingPhone){
+            this.updateSignupStep(2);
             return;
         }
-        this.initiateOTP();
+        this.initiateSingup();
     }
 
-    initiateOTP()
+    onDetailsSubmit()
     {
-        const REQUEST = this._sharedAuthUtilService.getUserData("signup");
+        if (!(this.isSingupUsingPhone)) {
+            this.updateSignupStep(2);
+            return;
+        }
+        this.initiateSingup();
+    }
+
+    initiateSingup()
+    {
+        if(this.isUserExists)return
+        //NOTE:verify with Pritam as there will be no firstName & lastName
+        this._sharedAuthUtilService.pushNormalUser();
+        let request = this.signupForm.value;
+        request['otp'] = (this.authFlow.data['otp'] as string[]).join("");//need set otp value from otp screen
+        const REQUEST = { ...this.SINGUP_REQUEST, request }
         this._globalLoader.setLoaderState(true);
-        this._sharedAuthService.sendOTP(REQUEST).subscribe(
+        this._sharedAuthService.signUp(REQUEST).subscribe(
             (response) =>
             {
                 this._globalLoader.setLoaderState(false);
-                if (response['statusCode'] !== 200) {
-                    this._sharedAuthUtilService.processOTPError(response);
+                if (response["status"])
+                {
+                    this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, "/login");
                     return;
                 }
-                this.navigateTo(this.OTP_URL);
+                this._router.navigate(["/login"]);
             },
-            (error) => { this._globalLoader.setLoaderState(false); },
-        )
+            (error) => { this._globalLoader.setLoaderState(false); }
+        );
     }
-
-    initiateSingupFlow(singup)
-    {
-        //NOTE:verify with Pritam as there will be no firstName & lastName
-        singup['otp'] = (this.authFlow.data['otp'] as string[]).join();//need set otp value from otp screen
-        this._sharedAuthUtilService.signupUser(singup, this.isCheckout);
-    }
-
+    
+    updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
     navigateTo(link) { this._router.navigate([link]) }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
     get disableContinue() { return this.signupForm.invalid || this.isOTPLimitExceeded }

@@ -1,0 +1,30 @@
+<div class="otp-outer-card">
+    <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
+    <p>One Time Password sent to {{identifier}}</p>
+</div>
+<div class="otp-card">
+    <form class="otp-form" [class.otp-form-invalid]="otpFormArray.invalid" [class.otp-form-varified]="otpFormArray.valid">
+        <div class="otp-form-inputs">
+            <ng-container *ngFor="let control of otpFormArray['controls'];let cIndex=index">
+                <!--added class='pseudo' for focus purpose-->
+                <input placeholder="-" numbersOnly [formControl]="control" autofocus class="pseudo" maxlength="1"
+                    (keyup)="moveFocus($event, control.valid, cIndex)">
+            </ng-container>
+        </div>
+        <!--Yajya:Need to fix error and success text-->
+        <div class="suceess-field" *ngIf="isOTPVerified"><span class="success-text">Number Verified</span> </div>
+        <div class="error-field" *ngIf="!(isOTPVerified)"><span class="error-text">Number not Verified</span> </div>
+    </form>
+    <div class="otp-text">
+        <div class="otp-text-inner left">
+            <span>Didn’t receive the code?</span><br>
+            <span class="resend">Resend in {{ timer | otpTimer}}</span>
+        </div>
+        <!--Yajya:Resend OTP should be button-->
+        <div class="otp-text-inner right" [class.btn-disabled]="timer>0">
+            <span (click)="$event.stopPropagation();initiateOTP()">RESEND OTP</span>
+        </div>
+        <button class="btn btn-variant1" [class.btn-disabled]="isDisabled"
+            (click)="$event.stopPropagation();emitVerifiedOTP()">CONTINUE</button>
+    </div>
+</div>

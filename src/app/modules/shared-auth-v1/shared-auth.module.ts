@@ -11,6 +11,7 @@ import { SharedSignupComponent } from './shared-signup/shared-signup.component';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { ToastMessageModule } from '../toastMessage/toast-message.module';
 import { OTPTimerPipeModule } from '@app/utils/pipes/otp-timer.pipe';
+import { SharedAuthOtpComponent } from './shared-auth-otp/shared-auth-otp.component';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { OTPTimerPipeModule } from '@app/utils/pipes/otp-timer.pipe';
         SharedOtpComponent,
         SharedSignupComponent,
         SharedForgotPasswordComponent,
+        SharedAuthOtpComponent,
     ],
     imports: [
         CommonModule,   

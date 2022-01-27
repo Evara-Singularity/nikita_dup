@@ -24,7 +24,7 @@ import { CONSTANTS } from '@app/config/constants';
 })
 export class SharedOtpComponent implements OnInit, AfterViewInit
 {
-    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
+    readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
     readonly FORGOT_PASSWORD_URL = "/forgot-password";
     readonly OTP_FIELDS_LENGTH = 6;

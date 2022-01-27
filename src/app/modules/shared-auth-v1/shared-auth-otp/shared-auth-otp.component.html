@@ -11,7 +11,7 @@
                     (keyup)="moveFocus($event, control.valid, cIndex)">
             </ng-container>
         </div>
-        <!--Yajya:Need to fix error and success text-->
+        <!--Yajya/Sachin:Need to fix error and success text-->
         <div class="suceess-field" *ngIf="isOTPVerified"><span class="success-text">Number Verified</span> </div>
         <div class="error-field" *ngIf="!(isOTPVerified)"><span class="error-text">Number not Verified</span> </div>
     </form>
@@ -20,11 +20,11 @@
             <span>Didn’t receive the code?</span><br>
             <span class="resend">Resend in {{ timer | otpTimer}}</span>
         </div>
-        <!--Yajya:Resend OTP should be button-->
+        <!--Yajya/Sachin:Resend OTP should be button-->
         <div class="otp-text-inner right" [class.btn-disabled]="timer>0">
             <span (click)="$event.stopPropagation();initiateOTP()">RESEND OTP</span>
         </div>
         <button class="btn btn-variant1" [class.btn-disabled]="isDisabled"
-            (click)="$event.stopPropagation();emitVerifiedOTP()">CONTINUE</button>
+            (click)="$event.stopPropagation();emitVerifiedOTP()">{{label | uppercase}}</button>
     </div>
 </div>

@@ -17,8 +17,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input("otpFormArray") otpFormArray: FormArray;
     @Input("source") source: string;
     @Input("identifier") identifier: string;
-    @Input("initiate") initiate = true;
     @Input("label") label = "CONTINUE";
+    @Input("initiate") initiate = true;
+    @Input("withLabel") withLabel = true;
     @Output("otpEmitter") otpEmitter = new EventEmitter();
     otpFormSubscriber: Subscription = null;
     timerSubscriber: Subscription = null;

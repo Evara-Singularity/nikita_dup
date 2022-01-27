@@ -1,46 +1,43 @@
 <div *ngIf="data" class="l0CategoryContainer">
-    <app-cluster-category *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
+
+    <app-cluster-category
+        *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
         [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category>
+
     <div class="cluster-body">
-        <div *ngIf="data['main_banner'] && data['main_banner']['data'] && data['main_banner']['data'].length > 0" observeVisibility
-            [debounceTime]="100" (visible)="onVisibleAppBanner()">
+
+        <div>
             <ng-container #BannerComponent></ng-container>
         </div>
-        <div class="lazy-components" *ngIf="data['all_categories'] && data['all_categories']['data'] && data['all_categories']['data'].length > 0"
-            observeVisibility [debounceTime]="100" (visible)="onVisibleAllCategoryComponent()">
+        <div>
             <ng-container #AllCategoryComponent></ng-container>
         </div>
-        <div class="lazy-components" *ngIf="data['new_arrival'] && data['new_arrival']['data'] && data['new_arrival']['data'].length > 0"
-            observeVisibility [debounceTime]="100" (visible)="onVisibleNewArrivals()">
+        <div>
             <ng-container #NewArrivalComponent></ng-container>
         </div>
-        <div class="lazy-components"
-            *ngIf="data['trending_categories'] && data['trending_categories']['data'] && data['trending_categories']['data'].length > 0" observeVisibility
-            [debounceTime]="100" (visible)="onVisibleTrendingCategories()">
+        <div>
             <ng-container #TrendingCategoryComponent></ng-container>
         </div>
-        <div class="lazy-components" *ngIf="data['featured_brands'] && data['featured_brands']['data'] && data['featured_brands']['data'].length > 0"
-            observeVisibility [debounceTime]="100" (visible)="onVisibleFeaturedBrands()">
+
+        <div>
             <ng-container #FeaturedBrandComponent></ng-container>
         </div>
-        <div class="lazy-components" *ngIf="data['secondary_banner'] && data['secondary_banner']['data'] && data['secondary_banner']['data'].length > 0"
-            observeVisibility [debounceTime]="100" (visible)="onVisibleFeatureBanner()">
+        <div>
             <ng-container #FeatureBannerComponent></ng-container>
         </div>
-        <div class="lazy-components" *ngIf="data['bestseller'] && data['bestseller']['data'] && data['bestseller'] && data['bestseller']['data'].length > 0"
-            observeVisibility [debounceTime]="100" (visible)="onVisibleBestSeller()">
+        <div>
             <ng-container #BestSellerComponent></ng-container>
         </div>
-        <div class="lazy-components"
-            *ngIf="data['featured_categories'] && data['featured_categories']['data'] && data['featured_categories']['data'].length > 0" observeVisibility
-            [debounceTime]="100" (visible)="onVisibleFeturedCategories()">
+        <div>
             <ng-container #FeaturedCategoryComponent></ng-container>
         </div>
-        <div class="lazy-components" *ngIf="data['video_block'] && data['video_block']['data'] && data['video_block'] && data['video_block']['data'].length > 0"
-            observeVisibility [debounceTime]="100" (visible)="onVisibleClusterVideo()">
+        <div>
             <ng-container #ClusterVideoComponent></ng-container>
         </div>
-        <app-cluster-footer *ngIf="data['footer_data'] && data['footer_data']['data'] && data['footer_data']['data'].length > 0" [data]="data['footer_data']"></app-cluster-footer>
+
+        <app-cluster-footer
+            *ngIf="data['footer_data'] && data['footer_data']['data'] && data['footer_data']['data'].length > 0"
+            [data]="data['footer_data']"></app-cluster-footer>
     </div>
 </div>
 
@@ -49,7 +46,8 @@
         <img src="{{imagePath + '1/img/Truck.png'}}" class=" wp-100">
         <div class="container align-center">
             <h3 class="f-16">Oops!!! Page not Delivered!!</h3>
-            <p class="mb-15 pb-10 f-14">We apologize! The page could not be delivered as the address does not exist on this
+            <p class="mb-15 pb-10 f-14">We apologize! The page could not be delivered as the address does not exist on
+                this
                 planet.
             </p>
             <ul class="categories-list">
@@ -78,17 +76,17 @@
                     <span>more</span>
                 </li>
             </ul>
-        </div>  
+        </div>
     </section>
-          
+
     <section class="test toggle-panel mt-10 about_moglix" id="footerContainer">
-            <div class="toggle-head pad-lr-0">
-                <div class="container" (click)="clickFooter()">
-                    <p class="f-left heading">More about Moglix</p>
-                </div>
+        <div class="toggle-head pad-lr-0">
+            <div class="container" (click)="clickFooter()">
+                <p class="f-left heading">More about Moglix</p>
             </div>
-            <footer class="card-30 toggle-content footerScroll">
-                <div [innerHTML]="kfooter?.footerData()"></div>
-            </footer>
+        </div>
+        <footer class="card-30 toggle-content footerScroll">
+            <div [innerHTML]="kfooter?.footerData()"></div>
+        </footer>
     </section>
 </div>

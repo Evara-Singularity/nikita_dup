@@ -351,8 +351,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productFbtData();
       this.productStatusCount();
       this.checkDuplicateProduct();
+      this.backUrlNavigationHandler();
       // this.commonService.attachHotKeysScrollEvent();
     }
+  }
+
+  backUrlNavigationHandler() {
+    this.commonService.setCurrentNaviagatedModule('PDP', { overrideRedirectUrl: this.productCategoryDetails['categoryLink'] });
+    this.commonService.currentlyOpenedModuleUsed = false;
   }
 
   onScrollOOOSimilar(event) {
@@ -1892,7 +1898,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productRFQInstance.instance["hasGstin"] as EventEmitter<boolean>
     ).subscribe((value) => {
         this.hasGstin = value
-        console.log("HasGStin",this.hasGstin)
     });
     (
       this.productRFQInstance.instance["rfqQuantity"] as EventEmitter<string>
@@ -2250,6 +2255,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         );
       this.productCrouselInstance.instance["options"] = this.iOptions;
       this.productCrouselInstance.instance["items"] = this.productAllImages;
+      this.productCrouselInstance.instance["productBo"] = this.rawProductData;
       this.productCrouselInstance.instance["moveToSlide$"] = this.moveToSlide$;
       this.productCrouselInstance.instance["refreshSiemaItems$"] =
         this.refreshSiemaItems$;
@@ -2273,7 +2279,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   onRotatePrevious() {
-    this.loadProductCrousel(1);
+    this.loadProductCrousel(this.productAllImages.length - 1);
   }
 
   onRotateNext() {
@@ -3232,6 +3238,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
+    this.holdRFQForm = true;
     this.sendProductInfotracking(cta);
     this.showLoader = true;
     this.displayCardCta = true;
@@ -3259,6 +3266,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
+      this.holdRFQForm = false;
       // document.getElementById('infoTabs').scrollLeft = 0;
       this.productInfoPopupInstance = null;
       this.productInfoPopupContainerRef.remove();
@@ -3485,8 +3493,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  convertURL(url){
-    return encodeURIComponent(url);
+
+  navigateToWhatsapp() {
+    if (this.isBrowser) {
+      window.location.href = CONSTANTS.WHATS_APP_API + GLOBAL_CONSTANT.whatsapp_number + '&text=' + encodeURIComponent(this.getWhatsText);
+    }
   }
   
   get pastOrderAnalytics() {
@@ -3508,6 +3519,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");
+      this.commonService.resetCurrentNaviagatedModule();
     }
     this.resetLazyComponents();
   }

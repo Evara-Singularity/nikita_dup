@@ -83,9 +83,13 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this.verifiedOTP = this.otpValue;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this.timer = 0;
+                    //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
+                    if (!(this.withLabel)) { this.otpEmitter.emit(this.otpValue);}
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this._toasterService.show({ type: "error", text: response['message'] });
+                    //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
+                    if (!(this.withLabel)) { this.otpEmitter.emit(""); }
                     return;
                 }
                 this.processOTPError(response);
@@ -156,7 +160,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get otpValue() { return ((this.otpFormArray.value as string[]).join("")); }
-    get isOTPVerified() { return (this.verifiedOTP === this.otpValue); }
+    get isOTPVerified() { return (this.otpValue.length>0) && (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified) }
 
     ngOnDestroy(): void

@@ -440,6 +440,11 @@ header-nav {
             margin-top: 50px;
         }
     }
+    &remove_inner_head {
+        &+div {
+            margin-top: 0px !important;
+        }
+    }
 }
 
 // Aligment Classes

@@ -81,11 +81,13 @@ export class SharedSignupComponent implements OnInit
         this.updateSignupStep(1);
     }
 
-
     validateUser($event)
     {
         $event.stopPropagation();
-        let userInfo = { email: '', phone: this.phone.value, type: 'p' };
+        let userInfo = { email:this.email.value, phone: "", type: 'e' };
+        if(!this.isSingupUsingPhone){
+            userInfo = { email: '', phone: this.phone.value, type: 'p' };
+        }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(
             (response) =>
@@ -115,6 +117,7 @@ export class SharedSignupComponent implements OnInit
 
     onDetailsSubmit()
     {
+        debugger;
         if (!(this.isSingupUsingPhone)) {
             this.updateSignupStep(2);
             return;
@@ -128,8 +131,8 @@ export class SharedSignupComponent implements OnInit
         //NOTE:verify with Pritam as there will be no firstName & lastName
         this._sharedAuthUtilService.pushNormalUser();
         let request = this.signupForm.value;
-        request['otp'] = (this.authFlow.data['otp'] as string[]).join("");//need set otp value from otp screen
-        const REQUEST = { ...this.SINGUP_REQUEST, request }
+        request['otp'] = (this.otpForm.value as string[]).join("");
+        const REQUEST = { ...this.SINGUP_REQUEST, ...request }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.signUp(REQUEST).subscribe(
             (response) =>

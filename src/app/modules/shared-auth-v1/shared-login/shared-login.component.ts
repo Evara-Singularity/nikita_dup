@@ -92,20 +92,7 @@ export class SharedLoginComponent implements OnInit {
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
-                const bodyOTP = {
-                    'email': '',
-                    'phone': this.phoneFC.value,
-                    'type': 'p',
-                    'source': 'login_otp'
-                }
-                this._sharedAuthService.sendOTP(bodyOTP).subscribe(response => {
-                    if (response['statusCode'] === 200) {
-                        this.navigateToNext(isUserExists);
-                    } else {
-                        this._tms.show({ type: 'error', text: response['message'] });
-                    }
-                    this._loader.setLoaderState(false);
-                });
+                this.navigateToNext(isUserExists);
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }

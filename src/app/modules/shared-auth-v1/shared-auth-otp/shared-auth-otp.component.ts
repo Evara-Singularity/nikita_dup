@@ -1,3 +1,4 @@
+import { ToastMessageService } from './../../toastMessage/toast-message.service';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
@@ -20,16 +21,18 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input("label") label = "CONTINUE";
     @Output("otpEmitter") otpEmitter = new EventEmitter();
     otpFormSubscriber: Subscription = null;
+    timerSubscriber: Subscription = null;
     OTP_INPUTS: HTMLCollectionOf<HTMLInputElement>;
     timer = 0;
     verifiedOTP = "";
 
-    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService) { }
+    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService,
+        private _toasterService:ToastMessageService) { }
 
     ngOnInit(): void
     {
         if (this.initiate) {
-            //this.initiateOTP();
+            this.initiateOTP();
         }
     }
 
@@ -69,18 +72,23 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
+                this._globalLoader.setLoaderState(false);
                 if (response['status']) {
                     this.verifiedOTP = this.otpValue;
+                    if(this.timerSubscriber)this.timerSubscriber.unsubscribe();
+                    this.timer = 0;
+                    return;
+                } else if ((response['message'] as string).includes("incorrect")){
+                    this._toasterService.show({ type: "error", text: response['message'] });
                     return;
                 }
                 this._sharedAuthUtilService.processOTPError(response);
-                this._globalLoader.setLoaderState(true);
             }, (error) => { this._globalLoader.setLoaderState(false); });
     }
 
     startOTPTimer()
     {
-        timer(0, 1000).pipe(scan(acc => --acc, 21), takeWhile(x => x >= 0)).subscribe((time) =>
+        this.timerSubscriber = timer(0, 1000).pipe(scan(acc => --acc, 21), takeWhile(x => x >= 0)).subscribe((time) =>
         {
             this.timer = time;
         })
@@ -104,7 +112,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get otpValue() { return ((this.otpFormArray.value as string[]).join("")); }
-    get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
+    get isOTPVerified() { return (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified)}
 
     ngOnDestroy(): void

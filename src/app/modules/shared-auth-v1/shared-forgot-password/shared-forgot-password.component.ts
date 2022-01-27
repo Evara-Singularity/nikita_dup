@@ -42,6 +42,8 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
 
     ngOnInit()
     {
+        debugger;
+        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
         if (!this.authFlow) { this.navigateTo(this.LOGIN_URL); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }

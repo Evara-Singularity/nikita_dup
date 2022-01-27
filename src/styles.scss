@@ -266,6 +266,12 @@ a {
             background: #c4c4c4;
         }
     }
+    &.btn-transparent-red{
+        background: #ffffff;
+        color: #D9232D;
+        box-shadow: none;
+        font-size: 14px;
+    }
 }
 
 .continue-btn,
@@ -438,6 +444,11 @@ header-nav {
     &.inner_head {
         &+div {
             margin-top: 50px;
+        }
+    }
+    &remove_inner_head {
+        &+div {
+            margin-top: 0px !important;
         }
     }
 }
@@ -949,7 +960,9 @@ header-nav {
 .icon-logo:before {
     content: "\e951";
 }
-
+.icon-back-arrow:before{
+    content: "\ea00";
+}
 .icon-logout:before {
     content: "\e952";
 }

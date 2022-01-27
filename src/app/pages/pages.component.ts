@@ -29,7 +29,7 @@ declare var dataLayer;
 export class PagesComponent implements OnInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
-  iData: { footer?: true; logo?: boolean; title?: string };
+  iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   kfooter: any = kfooter;
   footerVisible = false;
@@ -58,6 +58,7 @@ export class PagesComponent implements OnInit {
           this.isHomePage = false;
         }
       }
+      
     });
   }
 

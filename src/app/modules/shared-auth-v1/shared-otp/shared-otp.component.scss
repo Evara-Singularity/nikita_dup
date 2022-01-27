@@ -133,20 +133,23 @@
     }
 }
 
-.transparent-login-header{
+.shared-auth-header{
     height: 50px;
     display: flex;
     background: transparent;
-    padding: 0px 15px;
+    padding: 0px 15px 0px 20px;
     align-items: center;
-    .left-arrow{
-        height: 33px;
-        width: 40px;
-
+    .icon-logo {
+        font-size: 70px;
+        margin-left: 15px;
+        color: #d9232d !important;
     }
-    .bg-logo {
-        width: 90px;
-        height: 30;
-        margin-left: 20px;
+    .icon-back-arrow{
+        font-size: 70px;
+        margin-left: 15px;
+        color: #d9232d !important;
+    }
+    .left-arrow{
+        width: 20px;
     }
 }

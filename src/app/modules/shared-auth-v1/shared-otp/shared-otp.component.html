@@ -4,44 +4,14 @@
         <!--depending on the condition template will get rendered-->
     </div>
 </ng-container>
-<!-- <div class="transparent-login-header">
-    <img class="left-arrow" src="{{imagePath}}/assets/img/arrow-left-line.svg">
-    <img class="bg-logo" src="{{imagePath}}/assets/img/moglix_logo_PWA_3x.png">
-</div> -->
 <!--OTP Template-->
 <ng-template #otpform>
-    <div class="outer-card">
-        <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
-        <!--9717311486 & ashish.kumar@gmail.com-->
-        <p>One Time Password sent to {{authFlow?.identifier}}</p>
-    </div>
-    <div class="otp-card login-card">
-        <form class="otp-form" [class.otp-form-invalid]="otpForm.invalid" [class.otp-form-varified]="otpForm.valid">
-            <div class="otp-form-inputs">
-                <ng-container *ngFor="let control of otpForm['controls'];let cIndex=index">
-                    <!--added class='pseudo' for focus purpose-->
-                    <input placeholder="-" numbersOnly [formControl]="control" autofocus class="pseudo" maxlength="1"
-                        (keyup)="moveFocus($event, control.valid, cIndex)">
-                </ng-container>
-            </div>
-            <!--Yajya:Need to fix error and success text-->
-            <div class="suceess-field" *ngIf="isOTPVerified"><span class="success-text">Number Verified</span> </div>
-            <div class="error-field" *ngIf="!(isOTPVerified)"><span class="error-text">Number not Verified</span> </div>
-        </form>
-        <div class="otp-text">
-            <div class="otp-text-inner left">
-                <span>Didn’t receive the code?</span><br>
-                <span class="resend">Resend in {{ timer | otpTimer}}</span>
-            </div>
-            <!--Yajya:Resend OTP-->
-            <div class="otp-text-inner right" [class.btn-disabled]="timer>0">
-                <span (click)="$event.stopPropagation();startOTPTimer()">RESEND OTP</span>
-            </div>
-        </div>
-        <button class="btn btn-variant1" [class.btn-disabled]="otpForm.invalid"
-            (click)="$event.stopPropagation();authenticate()">CONTINUE</button>
+    <div>
+        <shared-auth-otp [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
+            (otpEmitter)="captureOTP($event)"></shared-auth-otp>
         <!--Note:will be displayed only for registered users-->
-        <ng-container ><!--*ngIf="authFlow?.isUserExists"-->
+        <ng-container>
+            <!--*ngIf="authFlow?.isUserExists"-->
             <div class="login-seperator-text "> <span>Or</span></div>
             <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                 SIGN-IN WITH PASSWORD
@@ -70,7 +40,8 @@
                     </ng-container>
                 </label>
             </div>
-            <button class="btn btn-variant1" [class.btn-disabled]="password.invalid" (click)="$event.stopPropagation();authenticate()">CONTINUE</button>
+            <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"
+                (click)="$event.stopPropagation();submitPassword()">CONTINUE</button>
             <p class="edit-field" (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</p>
             <div class="login-seperator-text"> <span>Or</span></div>
             <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">

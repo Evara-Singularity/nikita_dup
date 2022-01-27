@@ -11,6 +11,7 @@ import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { CONSTANTS } from '@app/config/constants';
+import { LocalStorageService } from 'ngx-webstorage';
 
 /**
  * User must have auth flow information
@@ -33,7 +34,7 @@ export class SharedSignupComponent implements OnInit
     readonly OTP_URL = "/otp";
     readonly SIGN_UP_PHONE_STEPS = { 1: "OTP", 2: "DETAILS" };
     readonly SIGN_UP_EMAIL_STEPS = { 1: "DETAILS", 2: "OTP" };
-    readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
+    readonly SINGUP_REQUEST = { source: 'signup', lastName: '', userType: 'online', phoneVerified: true, emailVerified: false };
     @Input('isCheckout') isCheckout = false;
     authFlow: AuthFlowType;//gives flowtype & identifier information
     isUserExists = false;
@@ -44,7 +45,7 @@ export class SharedSignupComponent implements OnInit
     identifer = null;
 
     signupForm = new FormGroup({
-        name: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
+        firstName: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
         email: new FormControl("", [UsernameValidator.validateEmail]),
         phone: new FormControl("", [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]\d*$/)]),
         password: new FormControl("", [PasswordValidator.validatePassword]),
@@ -53,7 +54,7 @@ export class SharedSignupComponent implements OnInit
 
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService) { }
+        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localStorageService: LocalStorageService,) { }
 
     ngOnInit()
     {
@@ -70,12 +71,10 @@ export class SharedSignupComponent implements OnInit
 
     updateSignupWithIdentifier()
     {
-        if (this.isSingupUsingPhone)
-        {
+        if (this.isSingupUsingPhone) {
             this.phone.patchValue(this.authFlow.identifier);
         }
-        else
-        {
+        else {
             this.email.patchValue(this.authFlow.identifier);
         }
         this.updateSignupStep(1);
@@ -84,10 +83,7 @@ export class SharedSignupComponent implements OnInit
     validateUser($event)
     {
         $event.stopPropagation();
-        let userInfo = { email:this.email.value, phone: "", type: 'e' };
-        if(!this.isSingupUsingPhone){
-            userInfo = { email: '', phone: this.phone.value, type: 'p' };
-        }
+        let userInfo = { email: '', phone: this.phone.value, type: 'p' };
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(
             (response) =>
@@ -108,7 +104,7 @@ export class SharedSignupComponent implements OnInit
 
     captureOTP($event)
     {
-        if(this.isSingupUsingPhone){
+        if (this.isSingupUsingPhone) {
             this.updateSignupStep(2);
             return;
         }
@@ -117,7 +113,6 @@ export class SharedSignupComponent implements OnInit
 
     onDetailsSubmit()
     {
-        debugger;
         if (!(this.isSingupUsingPhone)) {
             this.updateSignupStep(2);
             return;
@@ -127,7 +122,7 @@ export class SharedSignupComponent implements OnInit
 
     initiateSingup()
     {
-        if(this.isUserExists)return
+        if (this.isUserExists) return
         //NOTE:verify with Pritam as there will be no firstName & lastName
         this._sharedAuthUtilService.pushNormalUser();
         let request = this.signupForm.value;
@@ -138,22 +133,17 @@ export class SharedSignupComponent implements OnInit
             (response) =>
             {
                 this._globalLoader.setLoaderState(false);
-                if (response["status"])
-                {
-                    this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, "/login");
-                    return;
-                }
-                this._router.navigate(["/login"]);
+                this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, "/login");
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         );
     }
-    
+
     updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
     navigateTo(link) { this._router.navigate([link]) }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
     get disableContinue() { return this.signupForm.invalid || this.isOTPLimitExceeded }
-    get name() { return this.signupForm.get("name"); }
+    get firstName() { return this.signupForm.get("firstName"); }
     get email() { return this.signupForm.get("email"); }
     get phone() { return this.signupForm.get("phone"); }
     get password() { return this.signupForm.get("password"); }

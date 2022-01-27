@@ -50,7 +50,10 @@ export class SharedAuthUtilService implements OnInit
 
     clearAuthFlow() { this._localStorage.clear("authflow"); }
 
-    getUserType(identifierType: string) { return identifierType.includes("PHONE") ? "p" : "e"; }
+    getUserType(flowType:string , identifierType: string)
+    {
+        return flowType.includes("SIGNUP") || identifierType.includes("PHONE") ? "p" : "e";
+    }
 
     getSourceType(isUserExists) { return (isUserExists) ? "login_otp" : "signup"; }
 
@@ -58,12 +61,12 @@ export class SharedAuthUtilService implements OnInit
     {
         const FLOW_DATA: AuthFlowType = this.getAuthFlow();
         if (!source) { source = this.getSourceType(FLOW_DATA.isUserExists); }
-        let requestData = { email: '', phone: '', type: this.getUserType(FLOW_DATA.identifierType), source: source };
+        let requestData = { email: '', phone: '', type: this.getUserType(FLOW_DATA.flowType, FLOW_DATA.identifierType), source: source };
         if (FLOW_DATA.identifierType.includes("PHONE")) {
             requestData.phone = FLOW_DATA.identifier;
             return requestData;
         }
-        requestData.phone = FLOW_DATA.identifier;
+        requestData.email = FLOW_DATA.identifier;
         return requestData;
     }
 
@@ -76,10 +79,10 @@ export class SharedAuthUtilService implements OnInit
         }
         let cartSession = Object.assign(this._cartService.getCartSession());
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession(isCheckout, redirectUrl);
+        this.updateCartSession('Sign in successful', isCheckout, redirectUrl);
     }
 
-    updateCartSession(isCheckout, redirectUrl)
+    updateCartSession(message, isCheckout, redirectUrl)
     {
         this._globalLoader.setLoaderState(true);
         this._cartService.performAuthAndCartMerge({
@@ -92,11 +95,11 @@ export class SharedAuthUtilService implements OnInit
                 if (isCheckout) {
                     this._checkoutLoginService.setLoginUsingOTPStatus({
                         status: true,
-                        message: 'Sign in successful'
+                        message: message
                     })
                 } else {
                     this._commonService.redirectPostAuth(redirectUrl);
-                    this._toastService.show({ type: 'success', text: 'Sign in successful' });
+                    this._toastService.show({ type: 'success', text: message });
                 }
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
@@ -105,55 +108,10 @@ export class SharedAuthUtilService implements OnInit
     }
 
     //common section
-    initiateOTP(request)
-    {
-        this._globalLoader.setLoaderState(true);
-        // this._sharedAuthService.sendOTP(request).subscribe(
-        //     (response) =>
-        //     {
-        //         this._globalLoader.setLoaderState(false);
-        //         if (response['statusCode'] !== 200) {
-        //             this.processOTPError(response);
-        //             return;
-        //         }
-        //         this._router.navigate(["/"]);
-        //     },
-        //     (error) => { this._globalLoader.setLoaderState(false); },
-        // )
-    }
-
-    processOTPError(response)
-    {
-        const invalidOTPMessage = (response['message'] as string).toLowerCase();
-        this._toastService.show({ type: 'error', text: invalidOTPMessage });
-        this._router.navigate(["/"]);
-    }
-
-    signupUser(request, isCheckout)
-    {
-        this.pushNormalUser();
-        const REQUEST = { ...this.SINGUP_REQUEST, request }
-        this._globalLoader.setLoaderState(true);
-        // this._sharedAuthService.signUp(REQUEST).subscribe(
-        //     (response) =>
-        //     {
-        //         this._globalLoader.setLoaderState(false);
-        //         if (response["status"])
-        //         {
-        //             this.postSignup(request, response, isCheckout, this.redirectUrl);
-        //             return;
-        //         }
-        //         this._router.navigate(["/login"]);
-        //     },
-        //     (error) => { this._globalLoader.setLoaderState(false); }
-        // );
-    }
-
     postSignup(params, response, isCheckout, redirectUrl)
     {
         if (response['status'] !== undefined && response['status'] === 500) {
             if (isCheckout) {
-                this.clearAuthFlow();
                 this._checkoutLoginService.signUpCheckout(false);
             } else {
                 this._toastService.show({ type: 'error', text: response['message'] });
@@ -166,15 +124,22 @@ export class SharedAuthUtilService implements OnInit
             }
             let cartSession = Object.assign(this._cartService.getCartSession());
             cartSession['cart']['userId'] = response['userId'];
-            this.updateCartSession(isCheckout, redirectUrl);
-            this.clearAuthFlow();
+            this.updateCartSession('Signup successful', isCheckout, redirectUrl);
         }
+        this.clearAuthFlow();
     }
 
-    updateOTPControls(otpForm: FormArray,   length: number) 
+    updateOTPControls(otpForm: FormArray, length: number) 
     {
         for (let i = 0; i < length; i++) { otpForm.push(new FormControl("", [Validators.required])) }
         return otpForm;
+    }
+
+    processOTPError(response)
+    {
+        const invalidOTPMessage = (response['message'] as string).toLowerCase();
+        this._toastService.show({ type: 'error', text: invalidOTPMessage });
+        this._router.navigate(["/"]);
     }
 
     //tracking sectoin 

@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -46,7 +47,8 @@ export class SharedAuthService implements OnInit
     redirectUrl = this.HOME_URL;
 
     constructor(private dataService: DataService, private _activatedRoute: ActivatedRoute,
-        private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService) { }
+        private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService,
+        private _cartService: CartService,) { }
 
     ngOnInit()
     {
@@ -133,8 +135,7 @@ export class SharedAuthService implements OnInit
             (response) =>
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    // no toast required 
-                    // this.toastService.show({ type: 'error', text: response['status'] });
+                    console.log("SharedAuthService", "Authentication Failer", response);
                 } else {
                     this._sharedAuthUtilService.processAuthentication(response, isCheckout, this.redirectUrl);
                 }

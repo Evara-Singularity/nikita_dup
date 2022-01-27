@@ -12,12 +12,12 @@
     <div class="login-card">
         <form class="material-form" [formGroup]="signupForm">
             <div class="outline-input-label">
-                <label [class.is-focus]="name.value.length!=0">
-                    <input type="text" formControlName="name" maxlength="20">
+                <label [class.is-focus]="firstName.value.length!=0">
+                    <input type="text" formControlName="firstName" maxlength="20">
                     <span class="label">Enter User Name*</span>
-                    <ng-container *ngIf="(name.touched || name.dirty)">
-                        <p class="error-txt" *ngIf="name.hasError('required')">Please provide valid user name.</p>
-                        <p class="error-txt" *ngIf="!(name.hasError('required')) && name.hasError('whitespace')">
+                    <ng-container *ngIf="(firstName.touched || firstName.dirty)">
+                        <p class="error-txt" *ngIf="firstName.hasError('required')">Please provide valid user name.</p>
+                        <p class="error-txt" *ngIf="!(firstName.hasError('required')) && firstName.hasError('whitespace')">
                             Username
                             cannot start with space(s).</p>
                     </ng-container>

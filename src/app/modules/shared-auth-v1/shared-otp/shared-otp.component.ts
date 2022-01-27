@@ -9,6 +9,7 @@ import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from './../shared-auth-util.service';
 import { SharedAuthService } from './../shared-auth.service';
 import { CONSTANTS } from '@app/config/constants';
+import { CartService } from '@app/utils/services/cart.service';
 /**
  * Flows
  * 1. Login(mobile) + OTP + (backurl/home).
@@ -22,7 +23,7 @@ import { CONSTANTS } from '@app/config/constants';
     templateUrl: './shared-otp.component.html',
     styleUrls: ['./shared-otp.component.scss']
 })
-export class SharedOtpComponent implements OnInit, AfterViewInit
+export class SharedOtpComponent implements OnInit
 {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
@@ -45,7 +46,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     isPasswordSubmitted = false;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService) { }
+        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService) { }
 
     ngOnInit()
     {
@@ -56,39 +57,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
         this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
         this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         this.updateFlow(this.authFlow.identifier);
-    }
-
-    ngAfterViewInit()
-    {
-        this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
-        this.addSubscribers();
-        this.enableWebOTP();
-    }
-
-    addSubscribers()
-    {
-        this.otpFormSubscriber = this.otpForm.valueChanges.subscribe((value) =>
-        {
-            if (this.otpForm.valid) { this.validateOTP(); }
-        })
-    }
-
-    //NOTE:check on this.
-    enableWebOTP()
-    {
-        if (typeof window !== 'undefined') {
-            if ('OTPCredential' in window) {
-                const ac = new AbortController();
-                var reqObj = { otp: { transport: ['sms'] }, signal: ac.signal };
-                navigator.credentials.get(reqObj).then((otp: any) =>
-                {
-                    if (otp && otp.code) {
-                        const OTPS = (otp.code as string).split("");
-                        OTPS.forEach((value, index) => { this.otpForm.controls[index].patchValue(value) })
-                    }
-                }).catch(err => { console.log(err); });
-            }
-        }
     }
 
     /**
@@ -102,59 +70,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
         }
         if (this.isOTPFlow) { this.startOTPTimer(); }
         
-    }
-
-    initiateOTP()
-    {
-        const REQUEST = this._sharedAuthUtilService.getUserData();
-        this._globalLoader.setLoaderState(true);
-        this._sharedAuthService.sendOTP(REQUEST).subscribe(
-            (response) =>
-            {
-                this._globalLoader.setLoaderState(false);
-                if (response['statusCode'] === 200) {
-                    this.invalidOTPMessage = null;
-                    this.startOTPTimer();
-                    return;
-                }
-                this._sharedAuthUtilService.processOTPError(response);
-            },
-            (error) => { this._globalLoader.setLoaderState(false); },
-        )
-    }
-
-    validateOTP()
-    {
-        const REQUEST = this._sharedAuthUtilService.getUserData();
-        REQUEST['otp'] = (this.otpForm.value as string[]).join("");
-        this._globalLoader.setLoaderState(true);
-        this._sharedAuthService.validateOTP(REQUEST).subscribe(
-            (response) =>
-            {
-                if (response['status']) {
-                    this.verifiedOTP = this.otpValue;
-                    return;
-                }
-                this._sharedAuthUtilService.processOTPError(response);
-                this._globalLoader.setLoaderState(true);
-            }, (error) => { this._globalLoader.setLoaderState(false); });
-    }
-
-    /**
-     * @description to focus prceeding otp field if current otp field is valid
-     * @param isValid : whether otp field control is valid or not
-     * @param inputIndex : current otp field index
-     */
-    moveFocus($event, isValid, inputIndex)
-    {
-        $event.stopPropagation();
-        //$event.which = 8:means backspace pressed.
-        if ((inputIndex >= 0) && (inputIndex - 1 > -1) && ($event.which === 8)) {
-            this.OTP_INPUTS[inputIndex - 1].focus();
-        }
-        if (isValid && (inputIndex < this.OTP_INPUTS.length - 1)) {
-            this.OTP_INPUTS[inputIndex + 1].focus();
-        }
     }
 
     /**
@@ -176,7 +91,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     /**@description to reset all otp information.*/
     resetOTPInfo()
     {
-        this.initiateOTP();
         this.otpForm.controls.forEach((control: FormControl) => control.patchValue(""));
     }
 
@@ -198,34 +112,47 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
 
     submitPassword()
     {
-        const REQUEST = this._sharedAuthUtilService.getUserData("");
-        REQUEST['password'] = this.password.value;
-        this._sharedAuthService.authenticateUser(REQUEST, this.isCheckout);
-    }
-
-    //singup section
-    initiateSingupFlow()
-    {
-        //NOTE:phoneVerified with Pritam & signup otp
-        const isSingupUsingPhone = (this.authFlow.identifierType === this._sharedAuthService.AUTH_SINGUP_BY_EMAIL);
-        const OTP = (this.otpForm.value as string[]).join("")
-        if (isSingupUsingPhone) {
-            this.authFlow.data = { otp: OTP };
-            this._router.navigate(['sign-up']);
-            return;
+        let requestData = { password: this.password.value };
+        if (this.authFlow.identifierType.includes("PHONE")) {
+            requestData['phone'] = this.authFlow.identifier;
         }
-        const singup = this.authFlow.data;
-        singup.otp = this.authFlow.data['otp'];
-        this._globalLoader.setLoaderState(false);
-        this._sharedAuthUtilService.signupUser(singup, this.isCheckout);
+        else {
+            requestData['email'] = this.authFlow.identifier;
+        }
+        this._sharedAuthService.authenticate(requestData).subscribe(
+            (response) =>
+            {
+                if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
+                    console.log("SharedAuthService", "Authentication Password Failure", response);
+                    this._toastService.show({type:"error", text:response['message']});
+                } else {
+                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
+                }
+                this._globalLoader.setLoaderState(false);
+            },
+            (error) => { this._globalLoader.setLoaderState(false); }
+        )
     }
 
-    //reusable section
-    authenticate() {
+    captureOTP(otpValue)
+    {
         const REQUEST = this._sharedAuthUtilService.getUserData();
-        REQUEST['otp'] = (this.otpForm.value as string[]).join("");
-        this._sharedAuthService.authenticateUser(REQUEST, this.isCheckout);
+        REQUEST['otp'] = otpValue;
+        this._sharedAuthService.authenticate(REQUEST).subscribe(
+            (response) =>
+            {
+                if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
+                    console.log("SharedAuthService", "Authentication OTP Failure", response);
+                    this._toastService.show({ type: "error", text: response['message'] });
+                } else {
+                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
+                }
+                this._globalLoader.setLoaderState(false);
+            },
+            (error) => { this._globalLoader.setLoaderState(false); }
+        )
     }
+
     navigateToLogin() { this._router.navigate([this.LOGIN_URL]) }
     navigateToForgotPassword() { this._router.navigate([this.FORGOT_PASSWORD_URL]) }
 

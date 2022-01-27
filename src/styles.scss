@@ -266,6 +266,12 @@ a {
             background: #c4c4c4;
         }
     }
+    &.btn-transparent-red{
+        background: #ffffff;
+        color: #D9232D;
+        box-shadow: none;
+        font-size: 14px;
+    }
 }
 
 .continue-btn,

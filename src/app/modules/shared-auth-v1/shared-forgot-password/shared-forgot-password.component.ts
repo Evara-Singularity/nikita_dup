@@ -42,6 +42,8 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
 
     ngOnInit()
     {
+        debugger;
+        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
         if (!this.authFlow) { this.navigateTo(this.LOGIN_URL); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
@@ -172,7 +174,7 @@ export class SharedForgotPasswordComponent implements OnInit, AfterViewInit, OnD
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.fpForm.valid }
-    get otpValue() { return ((this.otpForm.value as string[]).join()); }
+    get otpValue() { return ((this.otpForm.value as string[]).join("")); }
     get otpForm() { return (this.fpForm.get("otpForm") as FormArray) }
     get password() { return this.fpForm.get("password") }
 

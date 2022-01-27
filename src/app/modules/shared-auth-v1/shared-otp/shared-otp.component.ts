@@ -126,7 +126,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     validateOTP()
     {
         const REQUEST = this._sharedAuthUtilService.getUserData();
-        REQUEST['otp'] = (this.otpForm.value as string[]).join();
+        REQUEST['otp'] = (this.otpForm.value as string[]).join("");
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
@@ -208,7 +208,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     {
         //NOTE:phoneVerified with Pritam & signup otp
         const isSingupUsingPhone = (this.authFlow.identifierType === this._sharedAuthService.AUTH_SINGUP_BY_EMAIL);
-        const OTP = (this.otpForm.value as string[]).join()
+        const OTP = (this.otpForm.value as string[]).join("")
         if (isSingupUsingPhone) {
             this.authFlow.data = { otp: OTP };
             this._router.navigate(['sign-up']);
@@ -223,7 +223,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
     //reusable section
     authenticate() {
         const REQUEST = this._sharedAuthUtilService.getUserData();
-        REQUEST['otp'] = (this.otpForm.value as string[]).join();
+        REQUEST['otp'] = (this.otpForm.value as string[]).join("");
         this._sharedAuthService.authenticateUser(REQUEST, this.isCheckout);
     }
     navigateToLogin() { this._router.navigate([this.LOGIN_URL]) }
@@ -231,5 +231,5 @@ export class SharedOtpComponent implements OnInit, AfterViewInit
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.otpForm.valid }
-    get otpValue() { return ((this.otpForm.value as string[]).join()); }
+    get otpValue() { return ((this.otpForm.value as string[]).join("")); }
 }

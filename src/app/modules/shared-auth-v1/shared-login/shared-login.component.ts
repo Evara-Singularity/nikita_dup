@@ -92,22 +92,7 @@ export class SharedLoginComponent implements OnInit {
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
-                const bodyOTP = {
-                    'email': '',
-                    'phone': this.phoneFC.value,
-                    'type': 'p',
-                    'source': (isUserExists) ? 'login_otp' : 'signup'
-                }
-                //NOTE:UnComment code and remove navigation
-                this._router.navigate(['/otp']);
-                // this._sharedAuthService.sendOTP(bodyOTP).subscribe(response => {
-                //     if (response['statusCode'] === 200) {
-                //         this.navigateToNext(isUserExists);
-                //     } else {
-                //         this._tms.show({ type: 'error', text: response['message'] });
-                //     }
-                //     this._loader.setLoaderState(false);
-                // });
+                this.navigateToNext(isUserExists);
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
@@ -122,17 +107,10 @@ export class SharedLoginComponent implements OnInit {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
                 //NOTE:using local storage//flowType, identifierType, identifier, data
-                //CHECK:Email with otp call
+                //CHECK:Email with otp screen with password
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
                 this.navigateToNext(isUserExists);
-                // if(isUserExists){
-                //     // login flow with password as only option
-                //     this._router.navigate(['/otp']);
-                // }else{
-                //     // sign up with sign-up screen to capture phone and then verify with OTP
-                //     this._router.navigate(['/sign-up']);
-                // }
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }

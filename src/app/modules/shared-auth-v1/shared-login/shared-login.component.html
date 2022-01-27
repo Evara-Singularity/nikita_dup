@@ -31,9 +31,20 @@
             <form class="material-form" [formGroup]="loginEmailForm">
                 <div class="outline-input-label">
                     <label [class.is-focus]="emailFC.value.length!=0">
-                        <input [ngClass]="{'invalid-input': isLoginEmailFormSubmitted && emailFC.invalid}" type="text"
-                            formControlName="email">
-                        <span class="label">Enter Email</span>
+                        <div class="list-container">
+                            <input [ngClass]="{'invalid-input': isLoginEmailFormSubmitted && emailFC.invalid}" type="text"
+                                (focus)="clearSuggestion()" (blur)="clearSuggestion()" formControlName="email">
+                            <span class="label">Enter Email</span>
+                            <div class="auto-complete-list">
+                                <ul>
+                                    <ng-container *ngFor="let item of emailAutoCompleteSuggestion">
+                                        <li (click)="fillEmailSuggestion(item)">
+                                            {{item}}
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
                         <ng-container *ngIf="isLoginEmailFormSubmitted && emailFC.invalid">
                             <p class="error-field error-txt">Enter valid email address</p>
                         </ng-container>

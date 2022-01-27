@@ -7,6 +7,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { SharedAuthService } from '../shared-auth.service';
 import { Router } from '@angular/router';
 import CONSTANTS from '../../../../app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * HTML TODO (Yogi): 
@@ -36,6 +38,7 @@ export class SharedLoginComponent implements OnInit {
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
+    readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
     @Input('isCheckout') isCheckout = false;
     
     loginNumberForm = this._fb.group({
@@ -48,6 +51,8 @@ export class SharedLoginComponent implements OnInit {
     isLoginNumberFormSuisLoginNumberFormSubmitted: boolean = false; bmitted: boolean = false;
     isLoginNumberFormSubmitted: boolean = false;
     isLoginEmailFormSubmitted: boolean = false;
+    emailAutoCompleteSuggestion: string[] = [];
+    
 
     constructor(
         private _fb: FormBuilder,
@@ -55,11 +60,21 @@ export class SharedLoginComponent implements OnInit {
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
         private _router: Router,
-        private _sharedAuthUtilService:SharedAuthUtilService
+        private _sharedAuthUtilService:SharedAuthUtilService,
+        private _common: CommonService,
     ) { }
 
     ngOnInit(): void {
-        this._sharedAuthUtilService.clearAuthFlow();
+        if (this._common.isBrowser) {
+            this._sharedAuthUtilService.clearAuthFlow();
+            this.emailFC.valueChanges.pipe(debounceTime(300)).subscribe(value => {
+                if(value.indexOf('@') > -1){
+                    this.createEmailSuggestion(value);
+                }else{
+                    this.clearSuggestion();
+                }
+            });
+        }
     }
 
     submit(logintype) {
@@ -116,6 +131,26 @@ export class SharedLoginComponent implements OnInit {
             }
             this._loader.setLoaderState(false);
         })
+    }
+
+    clearSuggestion(){
+        this.emailAutoCompleteSuggestion = [];
+    }
+
+    createEmailSuggestion(value) {
+        const proposedHostValue = (value.split('@').length > 0) ? value.split('@')[1] : '';
+        if (proposedHostValue) {
+            // show only filtered suggestion as user types
+            this.emailAutoCompleteSuggestion = this.SUGGESTION_EMAIL_HOST.filter(host => host.indexOf(proposedHostValue) > -1)
+                .map(host => `${value.split('@')[0]}@${host}`);;
+        } else {
+            // show all suggestion
+            this.emailAutoCompleteSuggestion = this.SUGGESTION_EMAIL_HOST.map(host => `${value}${host}`);
+        }
+    }
+
+    fillEmailSuggestion(value){
+        this.emailFC.patchValue(value);
     }
 
     // supporting functions

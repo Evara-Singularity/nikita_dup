@@ -3,7 +3,7 @@
     <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
     <p>One Time Password sent to {{identifier}}</p>
 </div>
-<div class="otp-card login-card">
+<div class="otp-card login-card shared-ot-card">
     <form class="otp-form" [class.otp-form-invalid]="otpFormArray.invalid" [class.otp-form-varified]="otpFormArray.valid">
         <div class="otp-form-inputs">
             <ng-container *ngFor="let control of otpFormArray['controls'];let cIndex=index">

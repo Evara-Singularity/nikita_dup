@@ -79,6 +79,8 @@ export class SearchComponent implements OnInit {
       // Set the API_RESULT variable
       this.API_RESULT = result;
 
+      this.setCategoriesPrimaryForCategoryMidPlpFilter();
+
       this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 
       this.setHeaderNameBasedOnCondition();
@@ -276,6 +278,27 @@ export class SearchComponent implements OnInit {
     actualParams['preProcessRequired'] = 'n';
 
     this._router.navigate(['search'], { queryParams: actualParams });
+  }
+
+  /**
+   * 
+   * @param event - Get the category on which the user has currently clicked on specific for SEARCH page
+   */
+  handleCategoryClicked(event) {
+    this.goToRecommendedCategory(event.categoryId, event);
+  }
+
+  setCategoriesPrimaryForCategoryMidPlpFilter() {
+    this.API_RESULT['searchData'][0].categoriesPrimary = {
+      name: GLOBAL_CONSTANT.inlineFilter[3],
+      terms: this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
+        data['term'] = data['categoryName'];
+        data['count'] = 3;
+        data['enabled'] = true;
+        data['selected'] = data['categoryId'] === this._activatedRoute.snapshot.queryParams['category'] ? true : false;
+        return data;
+      })
+    }
   }
 
 }

@@ -32,5 +32,6 @@ export class CatStaticComponent {
     RouterModule,
   ]
 })
+
 export class CatStaticModule { }
 export class CategoryModule extends CatStaticModule { }

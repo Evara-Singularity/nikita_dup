@@ -616,7 +616,9 @@ header-nav {
 .icon-arrow-d:before {
     content: "\e908";
 }
-
+.icon-arrow-right-s-line::before{
+    content: "\e9c9";
+}
 .icon-automotive:before,
 .icon-216000000::before {
     content: "\e909";

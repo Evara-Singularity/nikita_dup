@@ -945,14 +945,12 @@
         padding: 5px 15px 25px;
         .faq-head {
             display: flex;
-            // button {
-            //     background: #fae0e1;
-            //     color: #d9232d;
-            //     font-weight: bold;
-            //     font-size: 12px;
-            //     padding: 8px 15px;
-            //     box-shadow: none;
-            // }
+            h3{
+                width: 75%;
+            }
+            button{
+                width: 25%;
+            }
         }
         .display-qn {
             border-bottom: 1px dashed #e3e3e3;
@@ -964,64 +962,62 @@
             .qn {
                 display: flex;
                 margin-top: 10px;
-                background-color: red;
-                .qn-left {
-                    width: 10%;
-                    background-color: yellow;
-                }
                 .qn-right {
-                    width: 90%;
-                    background-color: yellowgreen;
+                    margin-left: 3px;
                 }
             }
             .answers {
-                padding: 5px 15px;
-                border-bottom: 1px solid #707070;
+                padding: 5px 0px;
+                margin-left: 30px;
                 .answer-block {
                     padding-bottom: 5px;
-
+                    border-bottom: 1px solid #70707036;
+                    display: flex;
                     .answer {
-                        padding: 5px 10px;
+                        padding: 10px 0px;
                     }
-
-                    .answer-post {
-                        color: rgba(48, 48, 48, 0.5);
-                        font-size: $medium-font;
-
-                        .author {
-                            float: left;
-                            line-height: 26px;
-                        }
-
-                        .like-btn {
-                            float: right;
-                            border: 1px solid #707070;
-                            background: none;
-                            text-align: center;
-                            border-radius: 2px;
-
-                            i {
-                                font-size: 16px;
-                                color: #a5a5a5;
-                                border-right: 1px solid #a2a2a2;
-                                display: inline-block;
-                                padding: 5px 20px;
-                            }
-
-                            .like-count {
-                                display: inline-block;
-                                padding: 0 10px;
-                                color: #303030;
-                            }
-                        }
+                    .ans-details {
+                        margin-left: 3px;
                     }
+                    // .answer-post {
+                    //     color: rgba(48, 48, 48, 0.5);
+                    //     font-size: $medium-font;
+
+                    //     .author {
+                    //         float: left;
+                    //         line-height: 26px;
+                    //     }
+
+                    //     .like-btn {
+                    //         float: right;
+                    //         border: 1px solid #707070;
+                    //         background: none;
+                    //         text-align: center;
+                    //         border-radius: 2px;
+
+                    //         i {
+                    //             font-size: 16px;
+                    //             color: #a5a5a5;
+                    //             border-right: 1px solid #a2a2a2;
+                    //             display: inline-block;
+                    //             padding: 5px 20px;
+                    //         }
+
+                    //         .like-count {
+                    //             display: inline-block;
+                    //             padding: 0 10px;
+                    //             color: #303030;
+                    //         }
+                    //     }
+                    // }
                 }
-
                 .view-all {
                     color: #0d99ff;
                     font-size: $large-font;
-                    padding-top: 10px;
-
+                    line-height: 50px;
+                    margin-left: -30px;
+                    display: flex;
+                    align-items: center;
                     .view-txt {
                         float: left;
                         margin-right: 10px;
@@ -1031,6 +1027,21 @@
                         line-height: 21px;
                     }
                 }
+            }
+        }
+        .view-more-faq-strip {
+            padding: 15px 0px;
+            .small-txt {
+                color: #0d99ff;
+                font-weight: bold;
+                position: relative;
+            }
+            i {
+                font-size: 20px;
+                float: right;
+                position: absolute;
+                right: 0px;
+                top: 0px;
             }
         }
     }

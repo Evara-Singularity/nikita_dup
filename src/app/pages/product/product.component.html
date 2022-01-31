@@ -185,7 +185,7 @@
             <p class="heading-3">{{list.name}}</p>
             <ul>
                 <li *ngFor="let item of list.items;let i = index;"
-                    (click)="!item.selected && item.active ? updateAttr(item.msn) : pseudoFnc(); removeOosSimilarSection();">
+                    (click)="!item.selected && item.active ? updateAttr(item.msn) : removeOosSimilarSection();">
                     <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
                 </li>
             </ul>
@@ -236,20 +236,6 @@
 
     <!-- other sections starts -->
     <div>
-        <!-- RFQ section starts -->
-        <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
-            <ul class="deals-list">
-                <li class="clearfix">
-                    <!-- <i class="icon-combo ico_offer"></i> -->
-                    <i class="icon-dropbox-fill"></i>
-                    <div class="ofr_txt">
-                        <strong class="text-black">Interested to buy in bulk</strong>
-                        <small>Get customized price</small>
-                    </div>
-                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
-                </li>
-            </ul>
-        </div>
         <!-- RFQ section ends -->
         <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
             *ngIf="isProductReturnAble && !productOutOfStock">
@@ -447,6 +433,68 @@
                 </ng-container>
             </div>
         </section>
+
+        <!-- GET Quote section starts -->
+        <!-- <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
+            <ul class="deals-list">
+                <li class="clearfix">
+                    <i class="icon-dropbox-fill"></i>
+                    <div class="ofr_txt">
+                        <strong class="text-black">Interested to buy in bulk</strong>
+                        <small>Get customized price</small>
+                    </div>
+                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
+                </li>
+            </ul>
+        </div> -->
+
+        <!-- New GET Quote section starts -->
+        <div id="get-quote-section" class="buy-nowsec" *ngIf="!productOutOfStock && productMrp > 0">
+            <h4  class="pt">Looking for Safety Shoes</h4>
+            <p  class="small-txt"> {{ productName }} </p>
+            <div class="buynow-flex">
+                <div class="bn-left">
+                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
+                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Get best & customise price</p>
+                </div>
+                <div class="bn-right">
+                    <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+                </div>
+            </div>
+            <div class="button-sec shimmer">
+                <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
+                <ng-template #nonRaisedTemplate>
+                    <p class="small-txt">We will get in touch with you 
+                        <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
+                            on {{ commonService?.userSession?.phone }}  
+                            <ng-container *ngIf="commonService?.userSession?.email">
+                                {{ commonService?.userSession?.email }}
+                            </ng-container>
+                        </ng-container>
+                    </p>
+                    <div class="button-area wrapper" (click)="raiseRFQQuote(nonRaisedRange.value);">
+                        <input #nonRaisedRange type="range" min="0" max="83" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
+                        <button class="shimmer-button">SLIDE TO RAISE REQUEST </button>
+                        <div [style.left.%]="getQuoteCurrentRange" class="arrow-container next-btn next-btn-invalid">
+                            <i class="icon-next icon-animate-1"></i>
+                            <i class="icon-next icon-animate-2"></i>
+                            <i class="icon-next icon-animate-3"></i>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #raisedTemplate>
+                    <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                    <div class="button-area wrapper">
+                        <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
+                        <div class="arrow-container next-btn next-btn-valid">
+                            <i class="icon-next icon-animate-1"></i>
+                            <i class="icon-next icon-animate-2"></i>
+                            <i class="icon-next icon-animate-3"></i>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>

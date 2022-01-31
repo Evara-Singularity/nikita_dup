@@ -1215,6 +1215,15 @@ export class CommonService {
     }, 1000);
   }
 
+  debounceFunctionAndEvents(func, timeout = 100){
+    console.log('called : ' + timeout);
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
   customDebugger(data) {
     console.clear();
     console.trace();

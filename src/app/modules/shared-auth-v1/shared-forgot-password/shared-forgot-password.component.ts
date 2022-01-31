@@ -54,10 +54,9 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
                         this._checkoutLoginService.setPasswordResetStatus({
                             status: true, message: 'Password reset successfully. Please login to proceed',
                         })
+                        this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB)
                     } else {
-                        this.isCheckout ?
-                            this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB) :
-                            this.navigateTo(this.LOGIN_URL);
+                        this.navigateTo(this.LOGIN_URL);
                     }
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });

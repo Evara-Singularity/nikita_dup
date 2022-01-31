@@ -8,6 +8,7 @@ import { CheckoutLoginService } from '@app/utils/services/checkout-login.service
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { Observable, Subject } from 'rxjs';
 import { AuthFlowType } from './modals';
 declare var dataLayer;
 declare var digitalData: {};
@@ -19,6 +20,7 @@ export class SharedAuthUtilService implements OnInit
     readonly HOME_URL = "/";
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
     redirectUrl = this.HOME_URL;
+    private _checkoutLoginHandler: Subject<number> = new Subject<number>();
 
     constructor(private _localStorage: LocalStorageService,
         private _globalLoader: GlobalLoaderService, private _cartService: CartService, private _localAuthService: LocalAuthService,
@@ -74,10 +76,12 @@ export class SharedAuthUtilService implements OnInit
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
                 if (isCheckout) {
-                    this._checkoutLoginService.setLoginUsingOTPStatus({
-                        status: true,
-                        message: message
-                    })
+                    // this._checkoutLoginService.setLoginUsingOTPStatus({
+                    //     status: true,
+                    //     message: message
+                    // })
+                    // value: 2 should be emited for checkout login
+                    this.emitCheckoutLogin(2); 
                 } else {
                     this._commonService.redirectPostAuth(redirectUrl);
                     this._toastService.show({ type: 'success', text: message });
@@ -249,5 +253,13 @@ export class SharedAuthUtilService implements OnInit
                 'event': 'registerBusinessUser'
             });
         }
+    }
+
+    emitCheckoutLogin(tabindex) {
+        this._checkoutLoginHandler.next(tabindex);
+    }
+
+    getCheckoutLoginEvent(): Observable<number> {
+        return this._checkoutLoginHandler.asObservable();
     }
 }

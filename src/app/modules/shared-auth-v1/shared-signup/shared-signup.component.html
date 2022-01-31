@@ -1,7 +1,7 @@
 <!-- sign-up-form -->
 <shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
 <ng-container *ngIf="currentStep === 'OTP'">
-    <shared-auth-otp [otpFormArray]="otpForm" [source]="'signup'" [identifier]="phone.value"
+    <shared-auth-otp [otpFormArray]="otpForm" [isCheckout]="isCheckout" [source]="'signup'" [identifier]="phone.value"
         (otpEmitter)="captureOTP($event)"></shared-auth-otp>
 </ng-container>
 

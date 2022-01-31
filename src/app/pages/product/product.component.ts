@@ -1904,18 +1904,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
       let data = this.processRFQGetQuoteData(user);
       this.productService.postBulkEnquiry(data).subscribe((response) => {
             if (response['statusCode'] == 200) {
-              this.getQuoteCurrentRange = 83;
               this._tms.show({ type: 'success', text: response['statusDescription'] });
               this.rfqQuoteRaised = true;
               this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
             } else {
-              this.getQuoteCurrentRange = 0;
               this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
             }
-          },
-          err => { 
-          this.getQuoteCurrentRange = 0;
-        }
+          }
       );
     } else {
       setTimeout(() => {

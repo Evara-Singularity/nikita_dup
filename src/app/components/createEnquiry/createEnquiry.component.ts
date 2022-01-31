@@ -21,7 +21,7 @@ export class CreateEnquiryComponent {
 
   public bulkEnquiryForm: FormGroup;
   public customerId: number;
-  showThanksPopup = true;
+  showThanksPopup = false;
   isFormSubmitted: boolean= false;
 
   private userDetails: { name: string, phoneno: string, email: string, company_name: string, isLogin: boolean } = {
@@ -106,12 +106,21 @@ export class CreateEnquiryComponent {
   }
 
   sendBulkEnquiry() {
+    let user = this.localStorageService.retrieve("user");
     let obj = {
       "rfqEnquiryCustomer": {
         "firstName": this.nameFC.value,
         "email": this.emailFC.value,
         "mobile": this.phoneFC.value,
         "company": this.companyFC.value,
+        "tin": '',
+        "city": '',
+        "description": '',
+        "pincode": '',
+        "businessUser": true,
+        'customerId': (user && user['authenticated'] === 'true') ? user['userId'] : '',
+        "platform": "Desktop",
+        "state": "",
       },
       "rfqEnquiryItemsList": []
     }

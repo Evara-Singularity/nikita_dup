@@ -13,7 +13,7 @@
                             numbersOnly maxlength="10" formControlName="phone">
                         <span class="label">Enter Mobile Number</span>
                         <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
-                            <p class="error-field error-txt">Enter 10 digit mobile number</p>
+                            <p class="error-field error-txt">Enter 10 digit mobile number.</p>
                         </ng-container>
                     </label>
                 </div>
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <ng-container *ngIf="isLoginEmailFormSubmitted && emailFC.invalid">
-                            <p class="error-field error-txt">Enter valid email address</p>
+                            <p class="error-field error-txt">Enter valid Email-ID.</p>
                         </ng-container>
                     </label>
                 </div>

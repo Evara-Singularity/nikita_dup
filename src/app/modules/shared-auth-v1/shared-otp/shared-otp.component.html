@@ -4,11 +4,7 @@
         <!--depending on the condition template will get rendered-->
     </div>
 </ng-container>
-<div class="shared-auth-header">
-    <img class="left-arrow" src="{{imagePath}}assets/img/arrow-left-line.png">
-    <i class="icon-logo"></i>
-    <i class="icon-back-arrow"></i>
-</div>
+
 <!--OTP Template-->
 <ng-template #otpform>
     <div>
@@ -17,10 +13,12 @@
         <!--Note:will be displayed only for registered users-->
         <ng-container>
             <!--*ngIf="authFlow?.isUserExists"-->
-            <div class="login-seperator-text "> <span>Or</span></div>
-            <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
-                SIGN-IN WITH PASSWORD
-            </button>
+            <div class="login-card shared-otp-card">
+                <div class="login-seperator-text "> <span>Or</span></div>
+                <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+                    SIGN-IN WITH PASSWORD
+                </button>
+            </div>
         </ng-container>
     </div>
 </ng-template>
@@ -47,7 +45,7 @@
             </div>
             <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"
                 (click)="$event.stopPropagation();submitPassword()">CONTINUE</button>
-            <p class="edit-field" (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</p>
+                <a class="forgot-pass" (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</a>
             <div class="login-seperator-text"> <span>Or</span></div>
             <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                 SIGN-IN WITH OTP

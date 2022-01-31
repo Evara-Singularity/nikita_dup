@@ -603,37 +603,33 @@
 
 
 
-        <section class="Qa" *ngIf="questionAnswerList">
+        <section class="Qa">
             <div class="">
-                <p class="heading-3">Questions & Answers</p>
-                <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
-                    <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text"
-                        placeholder="Have a Question?">
-                    <button [disabled]="questionAnswerForm.invalid" (click)="postUserQuestion()">SUBMIT</button>
-                </form>
+                <div class="faq-head">
+                    <h3>Frequently Asked Questions</h3>
+                    <button class="btn redBgButton">Ask Now</button>
+                </div>
+
                 <!-- search space  -->
-                <p class="display-qn"
-                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
+                <p class="display-qn">
                     Displaying Questions
-                    <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
-                    <span>{{questionAnswerList['data']['totalCount']}} </span>
+                    <span>1-2</span> of
+                    <span>20 </span>
                 </p>
-                <ng-container
-                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
-                    <div class="qn-block" *ngFor="let item of questionAnswerList['data']['qlist'];let i=index">
-                        <div class="question clearfix">
-                            <span class="qn-number">Q{{i+1}}.</span>
-                            <p class="qn-txt">{{item.questionText}}</p>
+                    <div class="qna-block" >
+                        <div class="qn">
+                            <span class="qn-left heading-3">Q1:</span>
+                            <span class="qn-right heading-3"> What would be the size of the shoes for a 6 feet tall man?</span>
                         </div>
                         <div class="answers">
                             <div class="answer-block">
-                                <p class="answer">{{item.answerText}}</p>
+                                <p class="answer">It will be large size for the 6 feet tall man.</p>
                             </div>
                         </div>
                     </div>
-                </ng-container>
             </div>
         </section>
+        
         <section id="productAccordianSection" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>

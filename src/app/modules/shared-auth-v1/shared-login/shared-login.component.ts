@@ -39,7 +39,7 @@ export class SharedLoginComponent implements OnInit {
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
     readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
-    @Input('isCheckout') isCheckout = false;
+    @Input('isCheckout') isCheckout = true;
     
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]

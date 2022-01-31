@@ -3,12 +3,20 @@
 .login-banner {
     // background: linear-gradient(to bottom #D9232D 50%, #F5555E 50%);
     background: linear-gradient(#d9232d, #f5555e);
-    height: 100%;
+    // height: 100vh !important;
     .login-bg-img {
+        position: relative;
         .bg-logo {
             width: 100px;
             display: block;
             margin: auto;
+        }
+        .skip-btn{
+            position: absolute;
+            top: 10%;
+            right: 20px;
+            font-size: 10px;
+            background-color: #3C3C3C73;
         }
     }
     .login-card {

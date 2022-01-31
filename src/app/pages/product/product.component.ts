@@ -13,6 +13,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from "@angular/core";
+import { Location } from "@angular/common";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
@@ -29,7 +30,6 @@ import { CommonService } from "@app/utils/services/common.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject } from "rxjs";
-import { debounce } from "rxjs/operators";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -297,6 +297,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public objectToArray: ObjectToArray,
     private injector: Injector,
     private sanitizer: DomSanitizer,
+    private location: Location,
     public localStorageService: LocalStorageService,
     public productService: ProductService,
     private localAuthService: LocalAuthService,
@@ -442,12 +443,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
         }
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
+        this.checkForRfqGetQuote();
       },
       (error) => {
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
       }
     );
+  }
+
+  checkForRfqGetQuote(){
+    if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
+      this.raiseRFQQuote(80);
+      setTimeout(() => {
+        this.scrollToResults('get-quote-section');
+      }, 1000);
+    }
   }
 
   getSecondaryApiData(secondaryRawData) {
@@ -1838,10 +1849,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async raiseRFQQuote() {
+  async raiseRFQQuote(value?:number) {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      this.intiateRFQQuote(true);
+      // this.intiateRFQQuote(true);
+      this.raiseRFQGetQuote(value, user);
     } else {
       this.goToLoginPage(this.productUrl, 'raiseRFQQuote');
     }
@@ -1849,6 +1861,67 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   closeRFQAlert() {
     this.isRFQSuccessfull = false;
+  }
+  
+  processRFQGetQuoteData(user) {
+    let data = { rfqEnquiryCustomer: null, rfqEnquiryItemsList: null };
+    let product = {
+      url: this.productUrl,
+      price: this.productPrice,
+      msn: this.productSubPartNumber || this.defaultPartNumber,
+      productName: this.productName,
+      moq: this.productMinimmumQuantity,
+      brand: this.productBrandDetails["brandName"],
+      taxonomyCode: this.productCategoryDetails["taxonomy"],
+      adobeTags: "",
+    };
+    data['rfqEnquiryCustomer'] = {
+      'city': '',
+      'customerId': user['userId'],
+      'description': "",
+      'device': 'mobile',
+      'email': user['email'],
+      'firstName': user['userName'],
+      'mobile': user['phone'],
+      'pincode': '',
+      'rfqValue': this.productPrice * this.qunatityFormControl.value,
+      'state': '',
+      'tin': ''
+    }
+    data['rfqEnquiryItemsList'] = [{
+      brand: product['brand'],
+      outOfStock: 'inStock',
+      prodReference: product['msn'],
+      productName: product['productName'],
+      quantity: this.qunatityFormControl.value,
+      taxonomyCode: product['taxonomyCode'],
+    }];
+    return data;
+  }
+
+  raiseRFQGetQuote(value, user) {    
+    if (value >= 50) {
+      let data = this.processRFQGetQuoteData(user);
+      this.productService.postBulkEnquiry(data).subscribe((response) => {
+            if (response['statusCode'] == 200) {
+              this.getQuoteCurrentRange = 83;
+              this._tms.show({ type: 'success', text: response['statusDescription'] });
+              this.rfqQuoteRaised = true;
+              this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+            } else {
+              this.getQuoteCurrentRange = 0;
+              this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
+            }
+          },
+          err => { 
+          this.getQuoteCurrentRange = 0;
+        }
+      );
+    } else {
+      setTimeout(() => {
+        this.getQuoteCurrentRange = 0;
+      }, 600);
+    }
   }
 
   async intiateRFQQuote(inStock, sendAnalyticOnOpen = true) {
@@ -3132,8 +3205,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     ClientUtility.scrollToTop(1000, footerOffset + 190);
   }
 
-  pseudoFnc() { }
-
   sortedReviewsByDate(reviewList) {
     return reviewList.sort((a, b) => {
       return parseInt(b.date_unix) - parseInt(a.date_unix);
@@ -3423,13 +3494,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   debouncedUpdatePositionOfGetQuoteRageSlider =  this.commonService.debounceFunctionAndEvents(((range) => this.updatePositionOfGetQuoteRageSlider(range)));
   
   updatePositionOfGetQuoteRageSlider(range) {
-    console.log(range);
     this.getQuoteCurrentRange = range;
-      // if (range >= 50) {
-      //   this.getQuoteCurrentRange = 84;
-      // } else {
-      //   this.getQuoteCurrentRange = 0;
-      // }
   }
 
 

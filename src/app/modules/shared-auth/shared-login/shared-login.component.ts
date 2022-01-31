@@ -128,6 +128,9 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         });
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this.redirectUrl += '?state=' + data['state'];
+            }
         });
     }
 
@@ -220,7 +223,6 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
             (response) => {
                 this.isReqProcessing = false;
                 if (response['statusCode'] === 200) {
-                    console.log('219',this.redirectUrl);
                     if(this.redirectUrl){
                         let navigationExtras: NavigationExtras = {
                             queryParams: { 'backurl': this.redirectUrl },

@@ -1,3 +1,4 @@
+import { SharedAuthService } from './../../modules/shared-auth-v1/shared-auth.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,7 +11,8 @@ export class AuthComponent implements OnInit
 {
     flow = "login"
     isCheckout = false;
-    constructor(private _router:Router) { }
+    constructor(private _router:Router, private _sharedAuthService:SharedAuthService) { }
+
     ngOnInit(): void
     {
         this.flow = this._router.url.split("/")[1];

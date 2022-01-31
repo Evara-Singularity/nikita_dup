@@ -44,6 +44,7 @@ export class SharedOtpComponent implements OnInit
     isPasswordType = true;//to set input[type] = text/password.
     password: FormControl = null;
     isPasswordSubmitted = false;
+    incorrectPassword = null;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService) { }
@@ -112,6 +113,7 @@ export class SharedOtpComponent implements OnInit
 
     submitPassword()
     {
+        this._globalLoader.setLoaderState(true);
         let requestData = { password: this.password.value };
         if (this.authFlow.identifierType.includes("PHONE")) {
             requestData['phone'] = this.authFlow.identifier;
@@ -123,9 +125,10 @@ export class SharedOtpComponent implements OnInit
             (response) =>
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    console.log("SharedAuthService", "Authentication Password Failure", response);
+                    this.incorrectPassword = response['message'];
                     this._toastService.show({type:"error", text:response['message']});
                 } else {
+                    this.incorrectPassword = null;
                     this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
                 }
                 this._globalLoader.setLoaderState(false);
@@ -136,13 +139,19 @@ export class SharedOtpComponent implements OnInit
 
     captureOTP(otpValue)
     {
-        const REQUEST = this._sharedAuthUtilService.getUserData();
+        this._globalLoader.setLoaderState(true);
+        const REQUEST = { email: '', phone: '',  source: "login_otp" };
+        REQUEST['type'] = this._sharedAuthUtilService.getUserType(this.authFlow.flowType, this.authFlow.identifierType);
         REQUEST['otp'] = otpValue;
+        if (this.authFlow.identifierType.includes("PHONE")) {
+            REQUEST.phone = this.authFlow.identifier;
+        }else{
+            REQUEST.email = this.authFlow.identifier;
+        }
         this._sharedAuthService.authenticate(REQUEST).subscribe(
             (response) =>
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    console.log("SharedAuthService", "Authentication OTP Failure", response);
                     this._toastService.show({ type: "error", text: response['message'] });
                 } else {
                     this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
@@ -172,4 +181,5 @@ export class SharedOtpComponent implements OnInit
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.otpForm.valid }
     get otpValue() { return ((this.otpForm.value as string[]).join("")); }
+    togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 }

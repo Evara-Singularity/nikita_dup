@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -6,8 +6,6 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
-import { Subscription, timer } from 'rxjs';
-import { scan, takeWhile } from 'rxjs/operators';
 import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';

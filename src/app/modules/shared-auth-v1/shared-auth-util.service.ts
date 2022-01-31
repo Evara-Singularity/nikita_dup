@@ -1,5 +1,5 @@
-import { FormArray, FormControl, Validators } from '@angular/forms';
 import { Injectable, OnInit } from '@angular/core';
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -8,9 +8,7 @@ import { CheckoutLoginService } from '@app/utils/services/checkout-login.service
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { map } from 'rxjs/operators';
 import { AuthFlowType } from './modals';
-import { SharedAuthService } from './shared-auth.service';
 declare var dataLayer;
 declare var digitalData: {};
 declare var _satellite;
@@ -19,9 +17,7 @@ declare var _satellite;
 export class SharedAuthUtilService implements OnInit
 {
     readonly HOME_URL = "/";
-
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
-
     redirectUrl = this.HOME_URL;
 
     constructor(private _localStorage: LocalStorageService,
@@ -53,21 +49,6 @@ export class SharedAuthUtilService implements OnInit
     getUserType(flowType:string , identifierType: string)
     {
         return flowType.includes("SIGNUP") || identifierType.includes("PHONE") ? "p" : "e";
-    }
-
-    getSourceType(isUserExists) { return (isUserExists) ? "login_otp" : "signup"; }
-
-    getUserData(source?)
-    {
-        const FLOW_DATA: AuthFlowType = this.getAuthFlow();
-        if (!source) { source = this.getSourceType(FLOW_DATA.isUserExists); }
-        let requestData = { email: '', phone: '', type: this.getUserType(FLOW_DATA.flowType, FLOW_DATA.identifierType), source: source };
-        if (FLOW_DATA.identifierType.includes("PHONE")) {
-            requestData.phone = FLOW_DATA.identifier;
-            return requestData;
-        }
-        requestData.email = FLOW_DATA.identifier;
-        return requestData;
     }
 
     processAuthentication(response, isCheckout, redirectUrl)
@@ -142,7 +123,7 @@ export class SharedAuthUtilService implements OnInit
         this._router.navigate(["/"]);
     }
 
-    //tracking sectoin 
+    //tracking section
     sendAdobeAnalysis()
     {
         let page = {

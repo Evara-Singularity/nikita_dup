@@ -1,4 +1,4 @@
 <div class="shared-auth-header">
-    <i class="icon-back-arrow"></i>
-    <i class="icon-logo"></i> 
+    <i class="icon-back-arrow" (click)="$event.stopPropagation();handleClick()"></i>
+    <i class="icon-logo" (click)="$event.stopPropagation();navigateTo(HOME_URL)"></i> 
 </div>

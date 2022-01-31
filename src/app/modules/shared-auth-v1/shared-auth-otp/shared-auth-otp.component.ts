@@ -16,22 +16,25 @@ import { Router } from '@angular/router';
 })
 export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 {
-    @Input("otpFormArray") otpFormArray: FormArray;
-    @Input("source") source: string;
-    @Input("identifier") identifier: string;
-    @Input("label") label = "CONTINUE";
-    @Input("initiate") initiate = true;
-    @Input("withLabel") withLabel = true;
-    @Output("otpEmitter") otpEmitter = new EventEmitter();
+    @Input("otpFormArray") otpFormArray: FormArray;//to capture otp fields
+    @Input("source") source: string;//to request for otp as per screens(login=login, sign-up=signup, forgotpassword=forgot_password)
+    @Input("identifier") identifier: string;//mobile number
+    @Input("label") label = "CONTINUE";//CTA label with default value
+    @Input("initiate") initiate = true;//decides whether OTP is send on initialization
+    @Input("withLabel") withLabel = true;//whether to display CTA or not & accordingly emits verified otp(forgot passowrd screen)
+    @Input("isForgotPassword") isForgotPassword = false;//Whether forgotpassword screen or not and manages the css accordingly.
+    @Input('isCheckout') isCheckout = false;
+    @Output("otpEmitter") otpEmitter = new EventEmitter();//Emits otp value accordingly
     otpFormSubscriber: Subscription = null;
     timerSubscriber: Subscription = null;
     OTP_INPUTS: HTMLCollectionOf<HTMLInputElement>;
     timer = 0;
     verifiedOTP = "";
-    authFlow: AuthFlowType;
+    incorrectOTP = null;
+    authFlow: AuthFlowType;//important:gives information on OTP journey
 
-    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService,
-        private _toasterService: ToastMessageService, private _router: Router, private _toastService: ToastMessageService) { }
+    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,
+        private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
     {
@@ -81,13 +84,14 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 this._globalLoader.setLoaderState(false);
                 if (response['status']) {
                     this.verifiedOTP = this.otpValue;
+                    this.incorrectOTP = null;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this.timer = 0;
                     //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
-                    if (!(this.withLabel)) { this.otpEmitter.emit(this.otpValue);}
+                    if (!(this.withLabel)) { this.otpEmitter.emit(this.otpValue); }
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
-                    this._toasterService.show({ type: "error", text: response['message'] });
+                    this.incorrectOTP = "OTP is not correct";
                     //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
                     if (!(this.withLabel)) { this.otpEmitter.emit(""); }
                     return;
@@ -116,10 +120,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    emitVerifiedOTP()
-    {
-        this.otpEmitter.emit(this.otpValue);
-    }
+    emitVerifiedOTP() { this.otpEmitter.emit(this.otpValue); }
 
     processOTPError(response)
     {
@@ -141,7 +142,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         return requestData;
     }
 
-    //NOTE:check on this.
+    //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
         if (typeof window !== 'undefined') {
@@ -160,13 +161,13 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get otpValue() { return ((this.otpFormArray.value as string[]).join("")); }
-    get isOTPVerified() { return (this.otpValue.length>0) && (this.verifiedOTP === this.otpValue); }
+    get isOTPVerified() { return (this.otpValue.length > 0) && (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified) }
+    get isOTPFormDiabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
 
     ngOnDestroy(): void
     {
         this.otpFormArray = null;
         if (this.otpFormSubscriber) this.otpFormSubscriber.unsubscribe();
     }
-
 }

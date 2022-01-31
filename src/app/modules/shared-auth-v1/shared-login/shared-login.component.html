@@ -12,6 +12,7 @@
                         <input [ngClass]="{'invalid-input': isLoginNumberFormSubmitted && phoneFC.invalid}" type="text"
                             numbersOnly maxlength="10" formControlName="phone">
                         <span class="label">Enter Mobile Number</span>
+                        <i class="icon-view-password"></i>
                         <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
                             <p class="error-field error-txt">Enter 10 digit mobile number</p>
                         </ng-container>

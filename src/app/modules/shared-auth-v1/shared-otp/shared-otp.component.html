@@ -8,12 +8,14 @@
 <!--OTP Template-->
 <ng-template #otpform>
     <div>
+        <shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
         <shared-auth-otp [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
             (otpEmitter)="captureOTP($event)"></shared-auth-otp>
         <!--Note:will be displayed only for registered users-->
         <ng-container>
             <!--*ngIf="authFlow?.isUserExists"-->
-            <div class="login-card shared-otp-card">
+            <!--Use this shared-otp-card:use this for forgot paswword-->
+            <div class="login-card ">
                 <div class="login-seperator-text "> <span>Or</span></div>
                 <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                     SIGN-IN WITH PASSWORD
@@ -33,14 +35,15 @@
         <form class="material-form">
             <div class="outline-input-label">
                 <label [class.is-focus]="password.value.length!=0">
-                    <input type="password" [formControl]="password">
-                    <i class="icon-view-password show-pass" *ngIf="password.value"></i>
+                    <input [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
+                    <i class="icon-view-password show-pass" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <span class="label">Enter password</span>
                     <ng-container *ngIf="isPasswordSubmitted && password.errors != null">
                         <p class="error-txt" *ngIf="password.errors.required">Please provide password.</p>
                         <p class="error-txt" *ngIf="password.errors.minlength">Password should be of min. 8 characters
                         </p>
                     </ng-container>
+                    <p class="error-txt" *ngIf="password.valid && incorrectPassword">Please provide password.</p>
                 </label>
             </div>
             <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"
@@ -50,7 +53,7 @@
             <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                 SIGN-IN WITH OTP
             </button>
-            <a class="forgot-pass" href="#" (click)="$event.stopPropagation();navigateToLogin()">BACK TO SIGN IN</a>
+            <a class="forgot-pass" (click)="$event.stopPropagation();navigateToLogin()">BACK TO SIGN IN</a>
         </form>
     </div>
 </ng-template>

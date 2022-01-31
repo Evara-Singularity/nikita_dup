@@ -1,5 +1,5 @@
 import { SharedAuthUtilService } from './../shared-auth-util.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
@@ -39,7 +39,7 @@ export class SharedLoginComponent implements OnInit {
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
     readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
-    @Input('isCheckout') isCheckout = true;
+    @Input('isCheckout') isCheckout = false;
     
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
@@ -155,8 +155,15 @@ export class SharedLoginComponent implements OnInit {
 
     // supporting functions
     navigateToNext(isUserExists) { 
-        const LINK = (isUserExists) ? "/otp" : "/sign-up";
-        this._router.navigate([LINK]);
+        if(this.isCheckout){
+            (isUserExists)?
+                this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.OTP_TAB): 
+                this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.SIGN_UP_TAB)
+            
+        }else{
+            const LINK = (isUserExists) ? "/otp" : "/sign-up";
+            this._router.navigate([LINK]);
+        }
     }
 
 

@@ -62,7 +62,8 @@ export class SharedSignupComponent implements OnInit
         //decide and build singup form depending on OTP or Email registration
         //Need to update the mobile after OTP validation
         this.authFlow = this._sharedAuthUtilService.getAuthFlow();
-        if (!this.authFlow) { this.navigateTo(this.LOGIN_URL); return; }
+        if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
+        if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
         this.isSingupUsingPhone = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         Object.freeze(this.isSingupUsingPhone);

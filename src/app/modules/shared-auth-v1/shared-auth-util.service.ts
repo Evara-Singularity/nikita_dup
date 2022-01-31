@@ -1,5 +1,5 @@
-import { FormArray, FormControl, Validators } from '@angular/forms';
 import { Injectable, OnInit } from '@angular/core';
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -8,21 +8,19 @@ import { CheckoutLoginService } from '@app/utils/services/checkout-login.service
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { AuthFlowType } from './modals';
-import { SharedAuthService } from './shared-auth.service';
 declare var dataLayer;
 declare var digitalData: {};
 declare var _satellite;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class SharedAuthUtilService implements OnInit
 {
     readonly HOME_URL = "/";
-
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
-
     redirectUrl = this.HOME_URL;
+    private _checkoutLoginHandler: Subject<number> = new Subject<number>();
 
     constructor(private _localStorage: LocalStorageService,
         private _globalLoader: GlobalLoaderService, private _cartService: CartService, private _localAuthService: LocalAuthService,
@@ -55,21 +53,6 @@ export class SharedAuthUtilService implements OnInit
         return flowType.includes("SIGNUP") || identifierType.includes("PHONE") ? "p" : "e";
     }
 
-    getSourceType(isUserExists) { return (isUserExists) ? "login_otp" : "signup"; }
-
-    getUserData(source?)
-    {
-        const FLOW_DATA: AuthFlowType = this.getAuthFlow();
-        if (!source) { source = this.getSourceType(FLOW_DATA.isUserExists); }
-        let requestData = { email: '', phone: '', type: this.getUserType(FLOW_DATA.flowType, FLOW_DATA.identifierType), source: source };
-        if (FLOW_DATA.identifierType.includes("PHONE")) {
-            requestData.phone = FLOW_DATA.identifier;
-            return requestData;
-        }
-        requestData.email = FLOW_DATA.identifier;
-        return requestData;
-    }
-
     processAuthentication(response, isCheckout, redirectUrl)
     {
         this._localAuthService.setUserSession(response);
@@ -93,10 +76,12 @@ export class SharedAuthUtilService implements OnInit
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
                 if (isCheckout) {
-                    this._checkoutLoginService.setLoginUsingOTPStatus({
-                        status: true,
-                        message: message
-                    })
+                    // this._checkoutLoginService.setLoginUsingOTPStatus({
+                    //     status: true,
+                    //     message: message
+                    // })
+                    // value: 2 should be emited for checkout login
+                    this.emitCheckoutLogin(2); 
                 } else {
                     this._commonService.redirectPostAuth(redirectUrl);
                     this._toastService.show({ type: 'success', text: message });
@@ -142,7 +127,7 @@ export class SharedAuthUtilService implements OnInit
         this._router.navigate(["/"]);
     }
 
-    //tracking sectoin 
+    //tracking section
     sendAdobeAnalysis()
     {
         let page = {
@@ -268,5 +253,13 @@ export class SharedAuthUtilService implements OnInit
                 'event': 'registerBusinessUser'
             });
         }
+    }
+
+    emitCheckoutLogin(tabindex) {
+        this._checkoutLoginHandler.next(tabindex);
+    }
+
+    getCheckoutLoginEvent(): Observable<number> {
+        return this._checkoutLoginHandler.asObservable();
     }
 }

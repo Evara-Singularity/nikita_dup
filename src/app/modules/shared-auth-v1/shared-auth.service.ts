@@ -1,14 +1,12 @@
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
-import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { environment } from 'environments/environment';
-import { LocalStorageService } from 'ngx-webstorage';
+import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import CONSTANTS from '../../config/constants';
 import { DataService } from '../../utils/services/data.service';
-import { AuthFlowType } from './modals';
 import { SharedAuthUtilService } from './shared-auth-util.service';
 const BASEURL = CONSTANTS.NEW_MOGLIX_API;
 
@@ -16,9 +14,7 @@ const BASEURL = CONSTANTS.NEW_MOGLIX_API;
  * TODO:Device information to be passed-1809
  */
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class SharedAuthService implements OnInit
 {
 
@@ -31,6 +27,11 @@ export class SharedAuthService implements OnInit
     readonly AUTH_SINGUP_BY_PHONE = 'AUTH_SIGNUP_BY_PHONE';
     readonly AUTH_SINGUP_BY_EMAIL = 'AUTH_SINGUP_BY_EMAIL';
     readonly HOME_URL = "/";
+    //checkout purpose
+    readonly LOGIN_TAB = 'LOGIN_TAB';
+    readonly SIGN_UP_TAB = 'SIGN_UP_TAB';
+    readonly OTP_TAB = 'OTP_TAB';
+    readonly FORGET_PASSWORD_TAB = 'FORGET_PASSWORD_TAB';
 
     private readonly BASEURLS = {
         GETOTP: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_URL },
@@ -40,15 +41,12 @@ export class SharedAuthService implements OnInit
         AUTHENTICATE: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_AUTHENTICATE },
         UPDATEPASSWORD: { method: 'POST', url: BASEURL + ENDPOINTS.FORGOT_PASSWORD },
     }
-
-    private _authIdentifierType: 'AUTH_USING_PHONE' | 'AUTH_USING_EMAIL' = null;
-    private _authFlowType: 'AUTH_SIGNUP' | 'AUTH_LOGIN' = null;
-    private _authIdentifier: string | number = null;
+    private _checkoutTabChage: Subject<string> = new Subject<string>();
     redirectUrl = this.HOME_URL;
 
     constructor(private dataService: DataService, private _activatedRoute: ActivatedRoute,
-        private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService,
-        private _cartService: CartService,) { }
+        private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService)
+    { }
 
     ngOnInit()
     {
@@ -58,42 +56,12 @@ export class SharedAuthService implements OnInit
         );
     }
 
-    set authIdentifierType(identifier)
-    {
-        this._authIdentifierType = identifier;
-    }
-
-    get authIdentifierType()
-    {
-        return this._authIdentifierType
-    }
-
-    set authFlowType(type)
-    {
-        this._authFlowType = type;
-    }
-
-    get authFlowType()
-    {
-        return this._authFlowType;
-    }
-
-    set authIdentifier(type)
-    {
-        this._authIdentifier = type;
-    }
-
-    get identifier()
-    {
-        return this._authIdentifier;
-    }
-
     isUserExist(userData)
     {
         return this.dataService.callRestful(this.BASEURLS.USEREXISTS.method, this.BASEURLS.USEREXISTS.url, { body: userData });
     }
 
-    sendOTP(data):Observable<any>
+    sendOTP(data): Observable<any>
     {
         data['device'] = CONSTANTS.DEVICE.device;
         return this.dataService.callRestful(this.BASEURLS.GETOTP.method, this.BASEURLS.GETOTP.url, { body: data });
@@ -103,12 +71,6 @@ export class SharedAuthService implements OnInit
     {
         return this.dataService.callRestful(this.BASEURLS.VALIDATEOTP.method, this.BASEURLS.VALIDATEOTP.url, { body: data });
     }
-
-    // sendOtp(data): Observable<any>
-    // {
-    //     data['device'] = CONSTANTS.DEVICE.device;
-    //     return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
-    // }
 
     signUp(data)
     {
@@ -125,6 +87,7 @@ export class SharedAuthService implements OnInit
 
     updatePassword(data)
     {
+        data['device'] = CONSTANTS.DEVICE.device;
         return this.dataService.callRestful(this.BASEURLS.UPDATEPASSWORD.method, this.BASEURLS.UPDATEPASSWORD.url, { body: data });
     }
 
@@ -143,5 +106,16 @@ export class SharedAuthService implements OnInit
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         )
+    }
+
+    
+    emitCheckoutChangeTab(string) {
+        console.log('checkout login emitCheckoutChangeTab =========>', string);
+        this._checkoutTabChage.next(string);
+    }
+
+    getCheckoutTab(): Observable<string>
+    {
+        return this._checkoutTabChage.asObservable();
     }
 }

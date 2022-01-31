@@ -1,5 +1,5 @@
-<div class="login-banner">
-    <div class="login-bg-img">
+<div class="login-banner checkout-login-baneer">
+    <div class="login-bg-img" *ngIf="!isCheckout" > 
         <img src="{{imagePath}}assets/img/login-bg-img.svg">
         <img class="bg-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">
         <button class="btn skip-btn">SKIP NOW</button>
@@ -15,7 +15,7 @@
                         <span class="label">Enter Mobile Number</span>
                         <i class="icon-view-password"></i>
                         <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
-                            <p class="error-field error-txt">Enter 10 digit mobile number</p>
+                            <p class="error-field error-txt">Enter 10 digit mobile number.</p>
                         </ng-container>
                     </label>
                 </div>
@@ -46,7 +46,7 @@
                                 </ul>
                             </div>
                         <ng-container *ngIf="isLoginEmailFormSubmitted && emailFC.invalid">
-                            <p class="error-field error-txt">Enter valid email address</p>
+                            <p class="error-field error-txt">Enter valid Email-ID.</p>
                         </ng-container>
                     </label>
                 </div>

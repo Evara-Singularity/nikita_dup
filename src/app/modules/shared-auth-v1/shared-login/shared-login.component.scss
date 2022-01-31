@@ -3,7 +3,10 @@
 .login-banner {
     // background: linear-gradient(to bottom #D9232D 50%, #F5555E 50%);
     background: linear-gradient(#d9232d, #f5555e);
-    // height: 100vh !important;
+    min-height: 100vh !important;
+    &.checkout-login-baneer{
+        padding: 30px 0px 15px;
+    }
     .login-bg-img {
         position: relative;
         .bg-logo {

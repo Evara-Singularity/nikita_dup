@@ -271,6 +271,9 @@ a {
         color: #D9232D;
         box-shadow: none;
         font-size: 14px;
+        &.btn-disabled {
+            color: #C4C4C4;
+        }
     }
 }
 

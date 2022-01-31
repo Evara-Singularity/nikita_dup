@@ -8,7 +8,7 @@
 <!--OTP Template-->
 <ng-template #otpform>
     <div>
-        <shared-auth-otp [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
+        <shared-auth-otp [otpFormArray]="otpForm" [isCheckout]="isCheckout" [source]="'login_otp'" [identifier]="authFlow?.identifier"
             (otpEmitter)="captureOTP($event)"></shared-auth-otp>
         <!--Note:will be displayed only for registered users-->
         <ng-container>

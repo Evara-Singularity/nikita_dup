@@ -29,6 +29,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     timer = 0;
     verifiedOTP = "";
     authFlow: AuthFlowType;
+    @Input("isCheckout") isCheckout = false;
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService,
         private _toasterService: ToastMessageService, private _router: Router, private _toastService: ToastMessageService) { }

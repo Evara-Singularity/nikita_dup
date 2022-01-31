@@ -1,4 +1,8 @@
-<shared-auth-header></shared-auth-header>
+<ng-container *ngIf="!isCheckout" >
+    <shared-auth-header></shared-auth-header>
+</ng-container>
+
+
 <div class="otp-outer-card">
     <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
     <p>One Time Password sent to {{identifier}}</p>

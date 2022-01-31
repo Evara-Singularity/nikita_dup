@@ -135,6 +135,7 @@ export class SharedAuthService implements OnInit {
         )
     }
 
+    
     emitCheckoutChangeTab(string) {
         console.log('checkout login emitCheckoutChangeTab =========>', string);
         this._checkoutTabChage.next(string);

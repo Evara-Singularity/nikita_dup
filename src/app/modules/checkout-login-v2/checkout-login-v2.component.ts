@@ -29,12 +29,9 @@ export class CheckoutLoginV2Component implements OnInit {
     if (this._commonService.isBrowser) {
       this._sharedAuthService.getCheckoutTab().subscribe(tab => {
         console.log('checkout login tab subcribed =========>', tab);
-        this.updateTab(tab);
+        this.CURRENT_TAB = tab;
       })
     }
   }
 
-  updateTab(tab) {
-    this.CURRENT_TAB = tab;
-  }
 }

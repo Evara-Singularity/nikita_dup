@@ -7,8 +7,9 @@
     <cart-updates *ngIf="tabIndex<3" [itemsValidationMessage]="itemsValidationMessage"></cart-updates>
     <section class="checkout-container-v2" *ngIf="tabIndex<2 && user != null && user.authenticated == 'false'">
         <div class="container">
-            <checkout-login (updatedStep$)="updatedStep($event)" (socialLoginWorking$)="slWorking($event)">
-            </checkout-login>
+            <!-- <checkout-login (updatedStep$)="updatedStep($event)" (socialLoginWorking$)="slWorking($event)">
+                </checkout-login> -->
+            <checkout-login-v2></checkout-login-v2>
         </div>
     </section>
 

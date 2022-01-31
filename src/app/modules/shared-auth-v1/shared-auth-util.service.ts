@@ -15,7 +15,7 @@ declare var dataLayer;
 declare var digitalData: {};
 declare var _satellite;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class SharedAuthUtilService implements OnInit
 {
     readonly HOME_URL = "/";

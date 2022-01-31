@@ -153,8 +153,21 @@ export class SharedOtpComponent implements OnInit
         )
     }
 
-    navigateToLogin() { this._router.navigate([this.LOGIN_URL]) }
-    navigateToForgotPassword() { this._router.navigate([this.FORGOT_PASSWORD_URL]) }
+    navigateToLogin() {
+        if (this.isCheckout) {
+            this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
+        } else {
+            this._router.navigate([this.LOGIN_URL])
+        }
+    }
+
+    navigateToForgotPassword() {
+        if (this.isCheckout) {
+            this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.FORGET_PASSWORD_TAB);
+        } else {
+            this._router.navigate([this.FORGOT_PASSWORD_URL])
+        }
+    }
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.otpForm.valid }

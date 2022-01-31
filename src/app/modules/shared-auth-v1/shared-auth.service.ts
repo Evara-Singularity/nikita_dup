@@ -5,6 +5,7 @@ import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
+import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import CONSTANTS from '../../config/constants';
 import { DataService } from '../../utils/services/data.service';
@@ -16,11 +17,8 @@ const BASEURL = CONSTANTS.NEW_MOGLIX_API;
  * TODO:Device information to be passed-1809
  */
 
-@Injectable({
-    providedIn: 'root'
-})
-export class SharedAuthService implements OnInit
-{
+@Injectable({providedIn: 'root'})
+export class SharedAuthService implements OnInit {
 
     readonly AUTH_USING_PHONE = 'AUTH_USING_PHONE';
     readonly AUTH_USING_EMAIL = 'AUTH_USING_EMAIL';
@@ -31,6 +29,10 @@ export class SharedAuthService implements OnInit
     readonly AUTH_SINGUP_BY_PHONE = 'AUTH_SIGNUP_BY_PHONE';
     readonly AUTH_SINGUP_BY_EMAIL = 'AUTH_SINGUP_BY_EMAIL';
     readonly HOME_URL = "/";
+    readonly LOGIN_TAB = 'LOGIN_TAB';
+    readonly SIGN_UP_TAB = 'SIGN_UP_TAB';
+    readonly OTP_TAB = 'OTP_TAB';
+    readonly FORGET_PASSWORD_TAB = 'FORGET_PASSWORD_TAB';
 
     private readonly BASEURLS = {
         GETOTP: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_URL },
@@ -44,63 +46,56 @@ export class SharedAuthService implements OnInit
     private _authIdentifierType: 'AUTH_USING_PHONE' | 'AUTH_USING_EMAIL' = null;
     private _authFlowType: 'AUTH_SIGNUP' | 'AUTH_LOGIN' = null;
     private _authIdentifier: string | number = null;
+    private _checkoutTabChage: Subject<string> = new Subject<string>();
+
     redirectUrl = this.HOME_URL;
 
     constructor(private dataService: DataService, private _activatedRoute: ActivatedRoute,
         private _globalLoader: GlobalLoaderService, private _sharedAuthUtilService: SharedAuthUtilService,
-        private _cartService: CartService,) { }
+        private _cartService: CartService,) { 
+    }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         //TODO:handle for checkout
         this._activatedRoute.queryParams.subscribe(
             data => { this.redirectUrl = data['backurl'] || this.HOME_URL; }
         );
     }
 
-    set authIdentifierType(identifier)
-    {
+    set authIdentifierType(identifier) {
         this._authIdentifierType = identifier;
     }
 
-    get authIdentifierType()
-    {
+    get authIdentifierType() {
         return this._authIdentifierType
     }
 
-    set authFlowType(type)
-    {
+    set authFlowType(type) {
         this._authFlowType = type;
     }
 
-    get authFlowType()
-    {
+    get authFlowType() {
         return this._authFlowType;
     }
 
-    set authIdentifier(type)
-    {
+    set authIdentifier(type) {
         this._authIdentifier = type;
     }
 
-    get identifier()
-    {
+    get identifier() {
         return this._authIdentifier;
     }
 
-    isUserExist(userData)
-    {
+    isUserExist(userData) {
         return this.dataService.callRestful(this.BASEURLS.USEREXISTS.method, this.BASEURLS.USEREXISTS.url, { body: userData });
     }
 
-    sendOTP(data):Observable<any>
-    {
+    sendOTP(data): Observable<any> {
         data['device'] = CONSTANTS.DEVICE.device;
         return this.dataService.callRestful(this.BASEURLS.GETOTP.method, this.BASEURLS.GETOTP.url, { body: data });
     }
 
-    validateOTP(data): Observable<any>
-    {
+    validateOTP(data): Observable<any> {
         return this.dataService.callRestful(this.BASEURLS.VALIDATEOTP.method, this.BASEURLS.VALIDATEOTP.url, { body: data });
     }
 
@@ -110,30 +105,25 @@ export class SharedAuthService implements OnInit
     //     return this.dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL, { body: data });
     // }
 
-    signUp(data)
-    {
+    signUp(data) {
         data['device'] = CONSTANTS.DEVICE.device;
         return this.dataService.callRestful(this.BASEURLS.SIGNUP.method, this.BASEURLS.SIGNUP.url, { body: data });
     }
 
-    authenticate(data)
-    {
+    authenticate(data) {
         data['device'] = CONSTANTS.DEVICE.device;
         data['buildVersion'] = environment.buildVersion;
         return this.dataService.callRestful(this.BASEURLS.AUTHENTICATE.method, this.BASEURLS.AUTHENTICATE.url, { body: data });
     }
 
-    updatePassword(data)
-    {
+    updatePassword(data) {
         return this.dataService.callRestful(this.BASEURLS.UPDATEPASSWORD.method, this.BASEURLS.UPDATEPASSWORD.url, { body: data });
     }
 
-    authenticateUser(request, isCheckout)
-    {
+    authenticateUser(request, isCheckout) {
         this._globalLoader.setLoaderState(true);
         this.authenticate(request).subscribe(
-            (response) =>
-            {
+            (response) => {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     console.log("SharedAuthService", "Authentication Failer", response);
                 } else {
@@ -144,4 +134,14 @@ export class SharedAuthService implements OnInit
             (error) => { this._globalLoader.setLoaderState(false); }
         )
     }
+
+    emitCheckoutChangeTab(string) {
+        console.log('checkout login emitCheckoutChangeTab =========>', string);
+        this._checkoutTabChage.next(string);
+    }
+
+    getCheckoutTab(): Observable<string> {
+        return this._checkoutTabChage.asObservable();
+    }
+
 }

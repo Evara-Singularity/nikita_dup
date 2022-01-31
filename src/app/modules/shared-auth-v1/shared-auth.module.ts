@@ -13,7 +13,7 @@ import { ToastMessageModule } from '../toastMessage/toast-message.module';
 import { OTPTimerPipeModule } from '@app/utils/pipes/otp-timer.pipe';
 import { SharedAuthOtpComponent } from './shared-auth-otp/shared-auth-otp.component';
 import { SharedAuthHeaderComponent } from './shared-auth-header/shared-auth-header.component';
-import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-autocomplete.component';
+import { SharedAuthUtilService } from './shared-auth-util.service';
 
 @NgModule({
     declarations: [
@@ -40,8 +40,6 @@ import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-a
         SharedSignupComponent,
         SharedForgotPasswordComponent
     ],
-    providers: [
-        SharedAuthService,
-    ]
+    providers: []
 })
 export class SharedAuthModule { }

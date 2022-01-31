@@ -17,8 +17,7 @@ import { SharedAuthService } from '../shared-auth.service';
     templateUrl: './shared-forgot-password.component.html',
     styleUrls: ['./shared-forgot-password.component.scss']
 })
-export class SharedForgotPasswordComponent implements OnInit, OnDestroy
-{
+export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
     @Input('isCheckout') isCheckout = false;
@@ -35,22 +34,20 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     ) { }
 
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.authFlow = this._sharedAuthUtilService.getAuthFlow();
-        if (!this.authFlow) { this.navigateTo(this.LOGIN_URL); return; }
+        if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
+        if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
 
-    updatePassword()
-    {
+    updatePassword() {
         const REQUEST = this.getUserData();
         REQUEST['oldPassword'] = '';
         REQUEST['newPassword'] = this.password.value;
         REQUEST['otp'] = this.verifiedOTP;
         this._sharedAuthService.updatePassword(REQUEST).subscribe(
-            (response) =>
-            {
+            (response) => {
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
                     this._toastService.show({ type: 'success', text: response['message'] });
@@ -60,7 +57,9 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                             status: true, message: 'Password reset successfully. Please login to proceed',
                         })
                     } else {
-                        this.navigateTo(this.LOGIN_URL);
+                        this.isCheckout ?
+                            this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB) :
+                            this.navigateTo(this.LOGIN_URL);
                     }
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });
@@ -68,21 +67,19 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
             }, (error) => this._globalLoader.setLoaderState(false));
     }
 
-    captureOTP(verifiedOTP)
-    {
+    captureOTP(verifiedOTP) {
         this.verifiedOTP = verifiedOTP;
     }
 
     navigateTo(link) { this._router.navigate([link]); }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
-    getUserData()
-    {
+    getUserData() {
         let requestData = { email: '', phone: '', type: "e", source: 'forgot_password' };
-        if(this.authFlow.identifierType.includes("EMAIL"))        {
+        if (this.authFlow.identifierType.includes("EMAIL")) {
             requestData.email = this.authFlow.identifier;
         }
-        else        {
+        else {
             requestData.phone = this.authFlow.identifier;
             requestData.type = "p";
         }
@@ -91,11 +88,10 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
 
     get otpForm() { return (this.fpForm.get("otpForm") as FormArray) }
     get password() { return this.fpForm.get("password") }
-    get isDisabled() {return this.fpForm.invalid || this.verifiedOTP === ""}
+    get isDisabled() { return this.fpForm.invalid || this.verifiedOTP === "" }
 
 
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
     }
 
 }

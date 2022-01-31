@@ -18,6 +18,7 @@ import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailab
 import { SharedAuthModule } from '../../modules/shared-auth/shared-auth.module';
 import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-header.module';
 import { CheckoutLoginModule } from '../../modules/checkout-login/checkout-login.module';
+import { CheckoutLoginV2Module } from '@app/modules/checkout-login-v2/checkout-login-v2.module';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { CheckoutLoginModule } from '../../modules/checkout-login/checkout-login
     UnAvailableItemsModule,
     SharedAuthModule,
     CheckoutHeaderModule,
-    CheckoutLoginModule
+    //CheckoutLoginModule
+    CheckoutLoginV2Module,
   ],
   providers: [
   ]

@@ -113,6 +113,7 @@ export class SharedOtpComponent implements OnInit
 
     submitPassword()
     {
+        if(this.password.invalid)return
         this._globalLoader.setLoaderState(true);
         let requestData = { password: this.password.value };
         if (this.authFlow.identifierType.includes("PHONE")) {

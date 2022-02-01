@@ -82,7 +82,8 @@ export class SharedSignupComponent implements OnInit
     }
 
     validateUser($event)
-    {
+    {   
+        if (this.signupForm.invalid )return;
         $event.stopPropagation();
         let userInfo = { email: '', phone: this.phone.value, type: 'p' };
         this._globalLoader.setLoaderState(true);

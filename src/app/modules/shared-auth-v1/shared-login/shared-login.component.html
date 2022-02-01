@@ -1,5 +1,5 @@
 <div class="login-bg checkout-login-bg">
-    <!-- <shared-auth-header></shared-auth-header> -->
+    <shared-auth-header *ngIf="isCheckout" [isWhiteHeader]="true"></shared-auth-header>
     <div class="login-bg-img" *ngIf="!isCheckout" > 
         <img src="{{imagePath}}assets/img/login-bg-img.svg">
         <img class="bg-moglix-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">

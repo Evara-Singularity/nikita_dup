@@ -40,7 +40,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     {
         this.authFlow = this._sharedAuthUtilService.getAuthFlow();
         if (this.initiate) {
-            this.initiateOTP();
+            //this.initiateOTP();
         }
     }
 
@@ -120,7 +120,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    emitVerifiedOTP() { this.otpEmitter.emit(this.otpValue); }
+    emitVerifiedOTP() { 
+        if(this.isDisabled)return;
+        this.otpEmitter.emit(this.otpValue); 
+    }
 
     processOTPError(response)
     {

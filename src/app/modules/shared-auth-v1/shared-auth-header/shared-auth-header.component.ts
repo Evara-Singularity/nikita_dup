@@ -14,6 +14,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     readonly OTP_URL = "/otp";
     readonly LOGIN_URL = "/login";
     @Input('isCheckout') isCheckout = false;
+    @Input('isWhiteHeader') isWhiteHeader = false;
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
 
@@ -40,11 +41,11 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     moveTabTo()
     {
-        let nextTab = ""
+        let nextTab = this._sharedAuthService.LOGIN_TAB;
         if (this.tab === this._sharedAuthService.FORGET_PASSWORD_TAB) {
             nextTab = this._sharedAuthService.OTP_TAB;
         }
-        else if (this.tab === this._sharedAuthService.FORGET_PASSWORD_TAB) {
+        else if (this.tab === this._sharedAuthService.OTP_TAB) {
             nextTab = this._sharedAuthService.LOGIN_TAB;
         }
         this._sharedAuthService.emitCheckoutChangeTab(nextTab);

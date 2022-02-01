@@ -40,6 +40,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
     }
 
     updatePassword() {
+        if(this.isDisabled)return;
         this._globalLoader.setLoaderState(true);
         const REQUEST = this.getUserData();
         REQUEST['oldPassword'] = '';

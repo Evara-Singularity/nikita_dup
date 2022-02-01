@@ -1,5 +1,5 @@
-<ng-container *ngIf="!isCheckout">
-    <div class="shared-auth-header">
+<ng-container>
+    <div class="shared-auth-header" [class.white-shared-auth-header]="isWhiteHeader">
         <i class="icon-back-arrow" (click)="$event.stopPropagation();handleClick()"></i>
         <i class="icon-logo" (click)="$event.stopPropagation();navigateTo(HOME_URL)"></i> 
     </div>

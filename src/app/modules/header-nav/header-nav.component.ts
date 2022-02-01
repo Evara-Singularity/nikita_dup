@@ -13,6 +13,7 @@ import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
 
 @Component({
     selector: 'header-nav',
@@ -83,7 +84,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         private localAuthService: LocalAuthService,
         private cartService: CartService,
         private location: Location,
-        private checkoutLoginService: CheckoutLoginService,
+        private sharedAuthService: SharedAuthService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,
@@ -369,19 +370,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
             } else if (isCheckout) {
-                if (this.checkoutLoginService.isAtFirstSection) {
+                if (this.sharedAuthService.isAtCheckoutLoginFirstTab) {
                     let index = this._checkoutService.getCheckoutTabIndex();
                     if (index === 1) {
                         this.location.back();
-                    }
-                    else if (index === 2) {
+                    } else if (index === 2) {
                         this._checkoutService.setCheckoutTabIndex(index - 1);
                         this.location.back();
                     } else {
                         this._state.notifyData('routeChanged', index - 2);
                     }
                 } else {
-                    this.checkoutLoginService.enableResetTabSateSub(true);
+                    this.sharedAuthService.resetCheckoutLoginSteps();
                 }
             } else {
                 this.router.navigate(['/']);

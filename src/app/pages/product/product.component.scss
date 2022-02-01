@@ -3069,41 +3069,23 @@
         display: inline-block;
     }
     .icon-animate-1 {
-        // animation: bounce 1s infinite;
-        // animation-delay: 0.6ms;
-        // animation-timing-function: linear;
-        // -webkit-animation: bounce 1s infinite;
-        // -webkit-animation-delay: 0.6ms;
-        // -webkit-animation-timing-function: linear;
-        // -moz-animation: bounce 1s infinite;
-        // -moz-animation-delay: 0.6ms;
-        // -moz-animation-timing-function: linear;
+        animation: bounce 1s infinite;
+        animation-delay: 0.6ms;
+        animation-timing-function: linear;
         opacity: 0.3;
         // animation: bounce 1600ms infinite cubic-bezier(0.445, 0.05, 0.55, 0.90);
     }
     .icon-animate-2 {
-        // animation: bounce 1s infinite;
-        // animation-delay: 0.4ms;
-        // animation-timing-function: ease-in;
-        // -webkit-animation: bounce 1s infinite;
-        // -webkit-animation-delay: 0.4ms;
-        // -webkit-animation-timing-function: ease-in;
-        // -moz-animation: bounce 1s infinite;
-        // -moz-animation-delay: 0.4ms;
-        // -moz-animation-timing-function: ease-in;
+        animation: bounce 1s infinite;
+        animation-delay: 0.4ms;
+        animation-timing-function: ease-in;
         opacity: 0.7;
         // animation: bounce 1605ms infinite cubic-bezier(0.445, 0.05, 0.55, 0.92);
     }
     .icon-animate-3 {
-        // animation: bounce 1s infinite;
-        // animation-delay: 0.4ms;
-        // animation-timing-function: ease-in-out;
-        // -webkit-animation: bounce 1s infinite;
-        // -webkit-animation-delay: 0.4ms;
-        // -webkit-animation-timing-function: ease-in-out;
-        // -moz-animation: bounce 1s infinite;
-        // -moz-animation-delay: 0.4ms;
-        // -moz-animation-timing-function: ease-in-out;
+        animation: bounce 1s infinite;
+        animation-delay: 0.4ms;
+        animation-timing-function: ease-in-out;
         opacity: 1;
         // animation: bounce 1610ms infinite cubic-bezier(0.445, 0.05, 0.55, 0.94);
     }

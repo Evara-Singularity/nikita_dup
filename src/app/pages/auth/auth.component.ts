@@ -15,6 +15,10 @@ export class AuthComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.flow = this._router.url.split("/")[1];
+        this.flow = this.removeQueryParams(this._router.url).split("/")[1];
+    }
+
+    removeQueryParams(url){
+        return url.split("?")[0];
     }
 }

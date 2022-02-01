@@ -179,6 +179,11 @@ export class SharedLoginComponent implements OnInit {
         this.isLoginNumberFormSubmitted = false;
     }
 
+    navigateHome()
+    {
+        this._router.navigate(["/"]);
+    }
+
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
 

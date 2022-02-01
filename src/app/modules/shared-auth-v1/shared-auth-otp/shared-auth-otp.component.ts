@@ -126,7 +126,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     {
         const invalidOTPMessage = (response['message'] as string).toLowerCase();
         this._toastService.show({ type: 'error', text: invalidOTPMessage });
-        this._router.navigate(["/"]);
+        this._router.navigate(["/login"]);
     }
 
     getUserData()

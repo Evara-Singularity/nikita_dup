@@ -28,7 +28,12 @@ export class CheckoutLoginV2Component implements OnInit {
   commonSubscriber() {
     if (this._commonService.isBrowser) {
       this._sharedAuthService.getCheckoutTab().subscribe(tab => {
-        console.log('checkout login tab subcribed =========>', tab);
+        // this condition is to handle the case when user is at checkout login page and clicks on back button from header
+        if(tab == this.LOGIN_TAB){
+          this._sharedAuthService.isAtCheckoutLoginFirstTab = true;
+        }else{
+          this._sharedAuthService.isAtCheckoutLoginFirstTab = false;
+        }
         this.CURRENT_TAB = tab;
       })
     }

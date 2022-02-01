@@ -74,6 +74,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   bulkDiscount: any;
   selectedBulkQuantityIndex: any;
   productNotFound: boolean = false;
+  bulkPriceSliceNo:number;
   //general product info
   defaultPartNumber: string = null;
   productTags: any[] = null;
@@ -1151,6 +1152,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
       this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
       this.isBulkPricesProduct = this.productBulkPrices ? true : false;
+      //to get the bulkPriceSliceNo
+      if (productBulkPrices[(productBulkPrices).length]) {
+        if(this.rawProductData['quantityAvailable']<productBulkPrices[(productBulkPrices).length-1]['minQty']){      
+          for(let i=0;i<productBulkPrices.length;i++){
+            if(this.rawProductData['quantityAvailable']>=productBulkPrices[i]['minQty'] && this.rawProductData['quantityAvailable']!=1 ){
+              this.bulkPriceSliceNo=i+1;}
+            if(this.rawProductData['quantityAvailable']==1){this.bulkPriceSliceNo=0;}
+          }
+        }
+      }
+      //end     
       if (this.isBulkPricesProduct) {
         this.productBulkPrices = this.productBulkPrices.map(priceMap => {
           const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;

@@ -194,7 +194,7 @@
 
     <!-- Product quantity action section starts -->
     <div class="product-section-detail"
-        *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0">
+        *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable !=1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
@@ -203,7 +203,7 @@
                 <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
+                        <div *ngFor="let items of productBulkPrices.slice(0,bulkPriceSliceNo); let last=last; let index = index;"
                             (click)="selectProductBulkPrice(items.minQty)" class="blk-block"
                             [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                             <p class="qty">Qty

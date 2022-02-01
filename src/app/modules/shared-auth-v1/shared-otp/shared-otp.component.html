@@ -1,4 +1,5 @@
 <!--OTP:do not remove comments-->
+<shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
 <ng-container *ngIf="authFlow?.identifier">
     <div *ngIf="isOTPFlow; then otpform else passwordform">
         <!--depending on the condition template will get rendered-->
@@ -8,7 +9,6 @@
 <!--OTP Template-->
 <ng-template #otpform>
     <div>
-        <shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
         <shared-auth-otp [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
             (otpEmitter)="captureOTP($event)"></shared-auth-otp>
         <!--Note:will be displayed only for registered users-->

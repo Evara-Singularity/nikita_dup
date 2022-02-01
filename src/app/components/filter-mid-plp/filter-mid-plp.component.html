@@ -4,7 +4,7 @@
             Shop by {{ inlineFilterData.name | titlecase}} <ng-container *ngIf="inlineFilterData.name === 'price'">Range</ng-container>
         </p>
         <p class="filter-heading" *ngIf="inlineFilterData.name === 'category-search-plp'">
-            You may be interested in
+            Are you looking for
         </p>
         <div class="inline-filter-card-list">
             
@@ -14,10 +14,6 @@
                             <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
                                 <div class="inline-filter-card-one" *ngIf="!(item?.selected) && item?.count">
                                     <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData?.name, item)">
-                                        <!-- <label>
-                                            <input type="checkbox" formControlName="type">
-                                            <span class="custom-box icon-box"></span>
-                                        </label> -->
                                         {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                 </div>
                             </ng-container>
@@ -26,10 +22,6 @@
                             <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
                                 <div class="inline-filter-card-one" *ngIf="(i < (inlineFilterData.terms.length/2)) && !(item?.selected)  && (item?.count)">
                                     <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData.name, item)">
-                                        <!-- <label>
-                                        <input type="checkbox" formControlName="type">
-                                        <span class="custom-box icon-box"></span>
-                                    </label> -->
                                     {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                 </div>
                             </ng-container>
@@ -37,18 +29,12 @@
                                 <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
                                     <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData.terms.length/2)) && !(item?.selected) &&  item?.count">
                                         <div class="inline-filter-card-value card-value-2" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">
-                                            <!-- <label>
-                                            <input type="checkbox" formControlName="type">
-                                            <span class="custom-box icon-box"></span>
-                                        </label> -->
                                         {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                     </div>
                                 </ng-container>
                             </div>
                         </ng-container>
                     </ng-container>
-
-
                     <ng-container *ngIf="inlineFilterData.name === 'category'">
                         <ng-container *ngIf="inlineFilterData?.terms[0]?.childCategoryList?.length < 5">
                             <ng-container *ngFor="let item of inlineFilterData?.terms[0]?.childCategoryList; let i = index;">

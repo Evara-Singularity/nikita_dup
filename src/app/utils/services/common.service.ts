@@ -585,8 +585,9 @@ export class CommonService {
         queryParams["operation"] == "or"
       )
         actualParams["operation"] = "or";
-      if (queryParams["category"] != undefined)
-        actualParams["category"] = encodeURIComponent(queryParams["category"]);
+      if (queryParams["category"] != undefined) {
+        actualParams["category"] = queryParams["category"];
+      }
       actualParams["str"] = queryParams["search_query"];
     } else if (params.pageName == "POPULAR SEARCH") {
       actualParams["str"] = params["searchString"];

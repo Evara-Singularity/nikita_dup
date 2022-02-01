@@ -46,6 +46,8 @@ export class SearchResolver implements Resolve<any> {
 
       this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       const actualParams = this._commonService.formatParams(params);
+      console.clear();
+      console.log(actualParams);
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
       const URL = environment.BASE_URL + ENDPOINTS.SEARCH + "?bucketReq=n";

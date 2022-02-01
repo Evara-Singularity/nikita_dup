@@ -21,7 +21,7 @@ let digitalData = {
 @Component({
   selector: 'search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss', '../category/category.scss']
+  styleUrls: ['./search.component.scss', '../category/category.scss',  './../../components/homefooter-accordian/homefooter-accordian.component.scss']
 })
 export class SearchComponent implements OnInit {
   public API_RESULT: any;
@@ -71,6 +71,7 @@ export class SearchComponent implements OnInit {
 
   setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
+
       // Empty the setSearchResultsTrackingData initially.
       this._commonService.setSearchResultsTrackingData({});
 

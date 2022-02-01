@@ -1901,17 +1901,28 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   raiseRFQGetQuote(value, user) {    
     if (value >= 50) {
+      setTimeout(() => {
+        this.getQuoteCurrentRange = 83;
+      }, 600);
       let data = this.processRFQGetQuoteData(user);
       this.productService.postBulkEnquiry(data).subscribe((response) => {
-            if (response['statusCode'] == 200) {
-              this._tms.show({ type: 'success', text: response['statusDescription'] });
-              this.rfqQuoteRaised = true;
-              this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
-            } else {
-              this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
-            }
-          }
-      );
+        if (response['statusCode'] == 200) {
+          this._tms.show({ type: 'success', text: response['statusDescription'] });
+          this.rfqQuoteRaised = true;
+          this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+        } else {
+          setTimeout(() => {
+            this.getQuoteCurrentRange = 0;
+          }, 600);
+          console.clear();
+          console.log(response);
+          this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
+        }
+      }, err => {
+        setTimeout(() => {
+          this.getQuoteCurrentRange = 0;
+        }, 600);
+      });
     } else {
       setTimeout(() => {
         this.getQuoteCurrentRange = 0;

@@ -10,24 +10,6 @@ import CONSTANTS from '../../../../app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { debounceTime } from 'rxjs/operators';
 
-/**
- * HTML TODO (Yogi): 
- * - Background image
- * - continue with email autocomplete UI screen 45
- * - Social Login icon
- * - all images to use cdn path
- * - terms and policy links
- * - Forgot password screen 
- 
-* HTML TODO (Yajya): 
-  css segregation module wise
- * 
- * Angular TODO:
- *  - Add a loader
- *  - Autocomplete on email after user enters '@' chaacter
- *  - Remove headers in Auth screens
- */
-
 @Component({
     selector: 'shared-login',
     templateUrl: './shared-login.component.html',

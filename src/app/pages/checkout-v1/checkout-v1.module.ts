@@ -12,7 +12,6 @@ import { InvoiceTypeModule } from '../../modules/invoiceType/invoiceType.module'
 import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
 import { PaymentModule } from '../../modules/payments/payment.module';
 import { SharedAuthModule } from '../../modules/shared-auth/shared-auth.module';
-import { SocialLoginModule } from '../../modules/socialLogin/socialLogin.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
 import { LoginModule } from '../login/login.module';
 import { CheckoutV1RoutingModule } from './checkout-v1-routing.module';
@@ -25,7 +24,6 @@ import { CheckoutV1Component } from './checkout-v1.component';
     CheckoutV1RoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SocialLoginModule,
     CartModule,
     OrderSummaryModule,
     PaymentModule,
@@ -38,7 +36,6 @@ import { CheckoutV1Component } from './checkout-v1.component';
     UnAvailableItemsModule,
     SharedAuthModule,
     CheckoutHeaderModule,
-    //CheckoutLoginModule
     CheckoutLoginV2Module,
   ],
   providers: [

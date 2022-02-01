@@ -14,7 +14,7 @@
     padding: 15px;
     margin: 15px;
     &.shared-otp-card{
-        margin-top: -30px;
+        margin-top: -31px;
         border-radius: 0px 0px 8px 8px;
     }
     h3 {
@@ -40,9 +40,6 @@
         &.invalid-input {
             border: 1px solid #d9232d;
         }
-    }
-    .social-btn{
-        margin-top: 25px;
     }
     .btn {
         border-radius: 8px;

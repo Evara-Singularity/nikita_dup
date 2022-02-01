@@ -1,7 +1,8 @@
-<div class="login-banner checkout-login-baneer">
+<div class="login-bg checkout-login-bg">
+    <!-- <shared-auth-header></shared-auth-header> -->
     <div class="login-bg-img" *ngIf="!isCheckout" > 
         <img src="{{imagePath}}assets/img/login-bg-img.svg">
-        <img class="bg-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">
+        <img class="bg-moglix-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">
         <button class="btn skip-btn">SKIP NOW</button>
     </div>
     <div class="login-card">
@@ -23,7 +24,7 @@
                 <div class="login-seperator-text "> <span>Or</span></div>
                 <button class="btn btn-variant1 btn-dark-grey" (click)="toggleLoginType(LOGIN_USING_EMAIL)">CONTINUE
                     WITH EMAIL-ID</button>
-                <div class="clearfix social-btn">
+                <div class="clearfix mt-25">
                     <!--TODO:social login-->
                     <!-- <social-login class="o-hidden "></social-login> -->
                 </div>
@@ -54,7 +55,7 @@
                 <div class="login-seperator-text "> <span>Or</span></div>
                 <button class="btn btn-variant1 btn-dark-grey" (click)="toggleLoginType(LOGIN_USING_PHONE)">CONTINUE
                     WITH PHONE NUMBER</button>
-                <div class="clearfix social-btn">
+                <div class="clearfix mt-25">
                     <!--TODO:social login-->
                     <!-- <social-login class="o-hidden "></social-login> -->
                 </div>

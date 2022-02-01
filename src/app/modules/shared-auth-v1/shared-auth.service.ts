@@ -111,7 +111,12 @@ export class SharedAuthService implements OnInit
         )
     }
 
-    
+    soicalAuthenticate(params) {
+        params['device'] = CONSTANTS.DEVICE.device;
+        let curl = CONSTANTS.NEW_MOGLIX_API + CONSTANTS.SL.API;
+        return this.dataService.callRestful("POST", curl, { body: params });
+    }
+
     emitCheckoutChangeTab(string) {
         this._checkoutTabChage.next(string);
     }

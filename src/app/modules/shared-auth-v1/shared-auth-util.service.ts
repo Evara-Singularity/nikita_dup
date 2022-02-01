@@ -76,10 +76,6 @@ export class SharedAuthUtilService implements OnInit
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
                 if (isCheckout) {
-                    // this._checkoutLoginService.setLoginUsingOTPStatus({
-                    //     status: true,
-                    //     message: message
-                    // })
                     // value: 2 should be emited for checkout login
                     this.emitCheckoutLogin(2); 
                 } else {

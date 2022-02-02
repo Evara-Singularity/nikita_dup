@@ -472,8 +472,8 @@
                             </ng-container>
                         </ng-container>
                     </p>
-                    <div class="button-area wrapper" (click)="raiseRFQQuote(nonRaisedRange.value);">
-                        <input #nonRaisedRange type="range" min="0" max="83" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
+                    <div class="button-area wrapper">
+                        <input (change)="raiseRFQQuote(nonRaisedRange.value);" #nonRaisedRange type="range" min="0" max="83" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
                         <button class="shimmer-button">SLIDE TO RAISE REQUEST </button>
                         <div [style.left.%]="getQuoteCurrentRange" class="arrow-container next-btn next-btn-invalid">
                             <i class="icon-next icon-animate-1"></i>

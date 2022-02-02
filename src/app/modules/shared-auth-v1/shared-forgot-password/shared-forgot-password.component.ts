@@ -1,3 +1,4 @@
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,7 +28,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
     })
     verifiedOTP = "";
 
-    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
+    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService:LocalAuthService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _checkoutLoginService: CheckoutLoginService
     ) { }
 
@@ -50,6 +51,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
             (response) => {
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
+                    this._localAuthService.clearBackURLTitle();
                     this._toastService.show({ type: 'success', text: response['message'] });
                     //@checkout flow need to integrated here
                     if (this.isCheckout) {

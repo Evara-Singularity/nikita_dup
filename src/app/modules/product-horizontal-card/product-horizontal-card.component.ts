@@ -269,6 +269,7 @@ export class ProductHorizontalCardComponent implements OnInit {
         });
       })
     } else {
+      this._localAuthService.setBackURLTitle(this._router.url, "Continue to raise RFQ");
       let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
       this._router.navigate(['/login'], navigationExtras);
     }

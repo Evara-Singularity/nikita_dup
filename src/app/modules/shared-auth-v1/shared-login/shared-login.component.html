@@ -1,10 +1,11 @@
 <div class="login-bg checkout-login-bg">
-    <shared-auth-header *ngIf="isCheckout" [isWhiteHeader]="true"></shared-auth-header>
-    <div class="login-bg-img" *ngIf="!isCheckout" > 
+    <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="true"></shared-auth-header>
+    <div class="login-bg-img" *ngIf="!isWhiteHeader" > 
         <img src="{{imagePath}}assets/img/login-bg-img.svg">
         <img class="bg-moglix-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">
         <button class="btn skip-btn" (click)="$event.stopPropagation();navigateHome()">SKIP NOW</button>
     </div>
+    <p *ngIf="headerTitle">{{headerTitle}}</p>
     <div class="login-card">
         <h3 class="heading-custom-3">Sign-In <span class="normal-weight">or</span> Sign Up</h3>
         <ng-container *ngIf="loginType == LOGIN_USING_PHONE">

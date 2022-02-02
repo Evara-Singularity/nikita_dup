@@ -100,6 +100,7 @@ export class SharedAuthUtilService implements OnInit
         } else {
             this._localStorage.clear('tocd');
             this._localStorage.store('user', response);
+            this._localAuthService.clearBackURLTitle();
             if (window) {
                 this.sendCriteoDataLayerTags(response['userId'], params);
             }
@@ -163,7 +164,6 @@ export class SharedAuthUtilService implements OnInit
             _satellite.track("genericPageLoad");
         }
     }
-
 
     sendCheckoutAdobeAnalysis()
     {

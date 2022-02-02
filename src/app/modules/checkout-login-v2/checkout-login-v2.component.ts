@@ -1,3 +1,4 @@
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
@@ -18,11 +19,13 @@ export class CheckoutLoginV2Component implements OnInit {
 
   constructor(
     private _sharedAuthService: SharedAuthService,
+    private _localAuthService: LocalAuthService,
     private _commonService: CommonService,
   ) { }
 
   ngOnInit() {
     this.commonSubscriber();
+    this._localAuthService.setBackURLTitle("/checkout", "Continue to checkout");
   }
 
   commonSubscriber() {

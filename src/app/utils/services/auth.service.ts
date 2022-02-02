@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +10,8 @@ export class LocalAuthService{
     public login$: Subject<any> = new Subject<any>();
     public logout$ = new EventEmitter();
     pageHistory = {};
-    constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService){ }
+    constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService){ 
+    }
 
     getUserSession(){
         return this._localStorageService.retrieve('user');
@@ -38,5 +39,21 @@ export class LocalAuthService{
             info = this.pageHistory[pageName];
             return info?info:null;
         }
+    }
+
+    setBackURLTitle(backurl, title?)
+    {
+        const sAuthHeader = { backurl: backurl, title: title?title:""};
+        this._localStorageService.store('sAuthHeader', sAuthHeader);
+    }
+
+    getBackURLTitle()
+    {
+        return this._localStorageService.retrieve('sAuthHeader');
+    }
+
+    clearBackURLTitle()
+    {
+        this._localStorageService.clear("sAuthHeader");
     }
 }

@@ -1,3 +1,4 @@
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
@@ -47,7 +48,8 @@ export class SharedOtpComponent implements OnInit
     incorrectPassword = null;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService) { }
+        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService,
+        private _localAuthService:LocalAuthService) { }
 
     ngOnInit()
     {
@@ -130,6 +132,7 @@ export class SharedOtpComponent implements OnInit
                     this._toastService.show({type:"error", text:response['message']});
                 } else {
                     this.incorrectPassword = null;
+                    this._localAuthService.clearBackURLTitle();
                     this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
                 }
                 this._globalLoader.setLoaderState(false);
@@ -155,6 +158,7 @@ export class SharedOtpComponent implements OnInit
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this._toastService.show({ type: "error", text: response['message'] });
                 } else {
+                    this._localAuthService.clearBackURLTitle();
                     this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
                 }
                 this._globalLoader.setLoaderState(false);

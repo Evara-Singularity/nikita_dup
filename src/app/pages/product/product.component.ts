@@ -1551,11 +1551,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // common functions
-  goToLoginPage(link) {
-    let navigationExtras: NavigationExtras = {
-      queryParams: { backurl: link },
-    };
-    this.router.navigate(["/login"], navigationExtras);
+  goToLoginPage(link, title?) {
+      const QPARAM = { backurl: link };
+      if (title) QPARAM['title'] = title;
+      debugger;
+      this.localAuthService.setBackURLTitle(link, title);
+      let navigationExtras: NavigationExtras = {queryParams: QPARAM};
+      this.router.navigate(["/login"], navigationExtras);
   }
 
   navigateToFAQ() {
@@ -1842,7 +1844,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (user && user.authenticated == "true") {
       this.intiateRFQQuote(true);
     } else {
-      this.goToLoginPage(this.productUrl);
+      this.goToLoginPage(this.productUrl,"Continue to raise RFQ");
     }
   }
 

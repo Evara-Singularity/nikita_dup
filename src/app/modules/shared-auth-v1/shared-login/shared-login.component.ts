@@ -9,6 +9,14 @@ import { Router } from '@angular/router';
 import CONSTANTS from '../../../../app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { debounceTime } from 'rxjs/operators';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { Subscription } from 'rxjs';
+
+export interface BackurlWithTitle
+{
+    backurl:string,
+    title:string
+}
 
 @Component({
     selector: 'shared-login',
@@ -35,11 +43,14 @@ export class SharedLoginComponent implements OnInit
     isLoginNumberFormSubmitted: boolean = false;
     isLoginEmailFormSubmitted: boolean = false;
     emailAutoCompleteSuggestion: string[] = [];
+    bURLTitleSubscriber:Subscription = null;
+    headerTitle = null;
 
 
     constructor(
         private _fb: FormBuilder,
         private _sharedAuthService: SharedAuthService,
+        private _localAuthService: LocalAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
         private _router: Router,
@@ -59,6 +70,16 @@ export class SharedLoginComponent implements OnInit
                     this.clearSuggestion();
                 }
             });
+        }
+        this.handleBackUrlTitle();
+    }
+
+    handleBackUrlTitle()
+    {
+        const DATA:BackurlWithTitle = this._localAuthService.getBackURLTitle();
+        if(DATA) 
+        {
+            this.headerTitle = DATA.title
         }
     }
 
@@ -176,6 +197,8 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateHome() { this._router.navigate(["."]); }
+
+    get isWhiteHeader() { return this.isCheckout || (this.headerTitle != null)  }
 
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }

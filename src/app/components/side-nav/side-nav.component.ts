@@ -20,6 +20,7 @@ export class SideNavComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private globalAnalyticService: GlobalAnalyticsService,
     private router: Router,
+    private _localAuthService: LocalAuthService
   ) { }
 
   ngOnInit(): void {
@@ -77,6 +78,19 @@ export class SideNavComponent implements OnInit {
 
   redirectProfile() {
     this.router.navigateByUrl('/dashboard/info');
+  }
+
+  handleNavigation($event, url, title?)
+  {
+      $event.stopPropagation();
+      $event.preventDefault();
+      this.genericButtonClick(url);
+      let user = this.localStorageService.retrieve("user");
+      if (user && user.authenticated == "true") {
+          this.router.navigate([url]);
+      } else {
+          this._localAuthService.setBackURLTitle(url,title);
+      }
   }
 
 }

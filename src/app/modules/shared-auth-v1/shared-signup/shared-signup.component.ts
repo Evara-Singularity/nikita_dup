@@ -1,3 +1,4 @@
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Validators, FormArray } from '@angular/forms';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -54,7 +55,7 @@ export class SharedSignupComponent implements OnInit
 
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localStorageService: LocalStorageService,) { }
+        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit()
     {

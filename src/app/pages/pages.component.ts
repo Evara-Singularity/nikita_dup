@@ -166,6 +166,7 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
+      
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();
@@ -306,4 +307,6 @@ export class PagesComponent implements OnInit {
     }
 
   }
+
+    get isCheckout() { return this.router.url.includes("checkout") } 
 }

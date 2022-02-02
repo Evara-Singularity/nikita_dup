@@ -38,7 +38,8 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private globalLoader: GlobalLoaderService,
         private _title: Title,
         private _analytics: GlobalAnalyticsService,
-        private _common: CommonService
+        private _common: CommonService,
+        private analytics: GlobalAnalyticsService,
 
     ) { }
 
@@ -175,6 +176,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
             () => { this.globalLoader.setLoaderState(false); }
         );
+        this.sendGtmCall();
     }
 
     togglePopUp1() { this.totalValue = 0; this.showSuccessPopup = !this.showSuccessPopup; }
@@ -211,5 +213,11 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     onUpdate(e)
     {
         this.showSuccessPopup = false;
+    }
+
+    sendGtmCall() {
+        this.analytics.sendGTMCall({
+            event: "Gift Card Request Submitted"
+        })
     }
 }

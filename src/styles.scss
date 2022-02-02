@@ -415,6 +415,9 @@ a {
 .mt-25{
     margin-top: 25px;
 }
+.mt-50{
+    margin-top:50px;
+}
 .mb-15 {
     margin-bottom: 15px;
 }
@@ -451,7 +454,7 @@ header-nav {
             margin-top: 50px;
         }
     }
-    &remove_inner_head {
+    &.remove_inner_head {
         &+div {
             margin-top: 0px !important;
         }

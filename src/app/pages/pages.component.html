@@ -1,5 +1,5 @@
 <global-loader></global-loader>
-<header-nav [extraData]="iData" [ngClass]="{'remove_inner_head':iData?.hideHeader, 'inner_head':!iData?.hideHeader}" class="show"></header-nav>
+<header-nav [extraData]="iData" [ngClass]="{'remove_inner_head':iData?.hideHeader || isCheckout, 'inner_head':!iData?.hideHeader}" class="show" ></header-nav>
 <!--isCheckout-->
 <div [ngClass]="{'ishomepage': isHomePage}">
     <router-outlet></router-outlet>

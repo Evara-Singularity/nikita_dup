@@ -3514,6 +3514,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytices;
   }
 
+  sendTrackingData(){
+    const TAXONS = this.taxons;
+    const page={
+    "linkPageName": `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, 
+    "linkName": "WhatsApp",
+    "loginStatus": this.commonService.loginStatusTracking
+    }
+    const custData = this.commonService.custDataTracking;
+    const order = this.orderTracking;
+    this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
+  }
+
   get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
   ngOnDestroy() {

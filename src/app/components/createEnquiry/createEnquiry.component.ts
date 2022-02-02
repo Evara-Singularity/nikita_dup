@@ -119,7 +119,7 @@ export class CreateEnquiryComponent {
         "pincode": '',
         "businessUser": true,
         'customerId': (user && user['authenticated'] === 'true') ? user['userId'] : '',
-        "platform": "Desktop",
+        "platform": "mobile",
         "state": "",
       },
       "rfqEnquiryItemsList": []

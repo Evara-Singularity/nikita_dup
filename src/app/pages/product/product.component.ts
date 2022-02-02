@@ -1875,12 +1875,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       taxonomyCode: this.productCategoryDetails["taxonomy"],
       adobeTags: "",
     };
+    
     data['rfqEnquiryCustomer'] = {
       'city': '',
       'customerId': user['userId'],
+      'company': '',
+      'businessUser': true,
+      'platform': 'mobile',
       'description': "",
-      'device': 'mobile',
-      'email': user['email'],
+      'email': user['email'] ? user['email'] : '',
       'firstName': user['userName'],
       'mobile': user['phone'],
       'pincode': '',

@@ -8,11 +8,25 @@
 
         .panel-head {
             background: #fff;
+            border-top: 1px solid #D4D4D4;
 
             h3 {
                 padding: 15px 5px;
                 font-weight: bold;
-                text-transform: capitalize;
+                display: flex;
+                align-items: center;
+                position: relative;
+                .related-icon{
+                    font-size: 20px;
+                }
+                .icon-down{
+                    position: absolute;
+                    right: 10px;
+                    top: 18px;
+                    &:focus{
+                        transform: rotate(90deg);
+                    }
+                }
             }
         }
 
@@ -36,23 +50,28 @@
         }
 
         .category_links {
-            display: flex;
-            flex-wrap: wrap;
-
             &>div {
-                display: inline-flex;
-                margin-right: 10px;
-
+                border-bottom: 1px solid #EAEAEA;
+                position: relative;
+                margin-left: 30px;
+                padding: 7px 0px;
+                &:last-child{
+                    border: none;
+                }
                 a {
-                    border: 1px solid #C4C4C4;
-                    margin-bottom: 8px;
                     padding: 7px 10px;
-                    color: #278BED;
+                    color: #303030;
                     border-radius: 4px;
                     white-space: nowrap;
-                    font-weight: bold;
                     font-size: 14px;
                     background: #fff;
+                    display: block;
+                }
+                i{
+                    position: absolute;
+                    top: 10px;
+                    right: 0px;
+                    font-size: 20px;
                 }
             }
         }

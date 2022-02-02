@@ -3,7 +3,7 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [closeOtherTabs]="true" [appKpToggle]="{idName: 'popularBrandCategoryAccord', iconMode : true}">
-                    Popular Brand Categories
+                  <i class="icon-brand_store related-icon"></i>&nbsp; Popular Brand Categories
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
@@ -16,6 +16,7 @@
                     <a (click)="$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED BRAND CATEGORY', ACCORDIAN_DATA[1][category], ACCORDIAN_DATA[1][category]);$event.preventDefault()" [href]="[ACCORDIAN_DATA[1][category]]">
                         {{ categoryBrandDetails.brand.brandName + ' ' + category }} 
                     </a>
+                    <i class="icon-arrow-right-s-line"></i>
                 </div>
             </div> 
         </div>
@@ -24,7 +25,7 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [closeOtherTabs]="true" [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
-                    Related Searches
+                    <i class="icon-search related-icon"></i>&nbsp; Related Searches
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
@@ -37,6 +38,7 @@
                     <a  [href]="prodUrl + '/' + attribute.friendlyUrl" (click)="$event.preventDefault();$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.friendlyUrl, attribute.friendlyUrl);">
                         {{ attribute.title }}
                     </a>
+                    <i class="icon-arrow-right-s-line"></i>
                 </div>
             </div>
         </div>
@@ -45,7 +47,7 @@
         <div class="panel-head" style="margin-top: 0px;" >
             <div class="container">
                 <h3 class="heading-3" [closeOtherTabs]="true" [appKpToggle]="{idName: 'mostSoldAccoridan', iconMode : true}">
-                    Shop by Related Categories
+                    <i class="icon-categories related-icon"></i>&nbsp; Shop by Related Categories
                     <span class="icon-accordian">
                         <i class="icon-down"></i>
                     </span>
@@ -58,6 +60,7 @@
                     <a [href]="prodUrl + '/' + attribute.categoryLink" (click)="$event.preventDefault();$event.stopPropagation();sendAdobeTracking('SHOP BY RELATED CATEGORY', attribute.categoryName, attribute.categoryLink);">
                         {{ attribute.categoryName }}
                     </a>
+                    <i class="icon-arrow-right-s-line"></i>
                 </div>
             </div>
         </div>

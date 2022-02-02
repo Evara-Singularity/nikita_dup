@@ -573,6 +573,7 @@
                 min-height: 90px;
                 border: 0.5px solid #e2e2e2;
                 width: 125px;
+                border-radius: 6px;
                 background: white;
                 margin: 0 10px 0 0;
                 float: left;
@@ -603,6 +604,26 @@
                     border: 0.5px solid $btn-color-red;
                     border: 0.5px solid $btn-color-red;
                     background: $color-red-light;
+                }
+            }
+            .bulk-container-single-grp{
+                &.selected-grp{
+                    background-color: #FFE8E9;
+                    border: 1px solid #d9232d;
+                }
+                border: 1px solid #E2E2E2;
+                padding: 5px 8px;
+                border-radius: 6px;
+                box-shadow: 0px 3px 6px #0000001A;
+                h3{
+                    font-size: 13px;
+                    .green-txt{
+                        font-size: 12px;
+                        font-weight: normal;
+                    }
+                    .right-text{
+                        float: right;
+                    }
                 }
             }
         }

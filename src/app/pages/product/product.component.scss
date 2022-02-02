@@ -2027,6 +2027,8 @@
     .singlewrap {
         border-bottom: 0.5px solid #e3e3e3;
         padding: 0px 15px;
+        overflow:hidden;
+        
 
         &:last-of-type {
             border-bottom: none;
@@ -2036,19 +2038,28 @@
         ul {
             @extend %clear-fix;
             padding: 0px;
-
+            display:flex;
+            overflow-x: scroll;
+            white-space: nowrap;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          
             li {
-                float: left;
                 border: 1px solid #333;
                 border-radius: 2px;
                 margin: 0px 10px 10px 0px;
-
+              
                 a {
-                    display: block;
+                    display: inline-block;
                     padding: 10px;
                     font-size: $medium-font;
                     font-weight: $font-bold;
                     color: $txt-color;
+                    width: 100%;
+                    text-align:center;
 
                     span {
                         padding-right: 5px;

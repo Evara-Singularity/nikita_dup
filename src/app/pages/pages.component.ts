@@ -172,6 +172,7 @@ export class PagesComponent implements OnInit {
       this.setEnvIdentiferCookie();
       this.setConnectionType();
       this.checkWebpSupport();
+      this._localAuthService.clearBackURLTitle(); // for login flow title
     }
   }
 

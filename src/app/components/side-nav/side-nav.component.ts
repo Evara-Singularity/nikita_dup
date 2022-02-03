@@ -32,15 +32,19 @@ export class SideNavComponent implements OnInit {
     this.localStorageService.observe('tocd').subscribe((value) => this.reStoreHome = true);
   }
 
-  genericButtonClick(url) {
+  trackAnalyticAndRedirect(url, checkForloggedIn = false, title=null) {
     let PAGE = {
       channel: "menu_hamburger",
       pageName: this.router.url,
       linkName: url,
       subSection: url + ' link click'
     };
-
     this.globalAnalyticService.sendAdobeCall({ page: PAGE }, "genericClick");
+    if (checkForloggedIn) {
+      this.checkIfUserLoggedIn(url, title);
+    } else {
+      this.router.navigate([url]);
+    }
   }
 
   sideMenu() {
@@ -77,20 +81,20 @@ export class SideNavComponent implements OnInit {
   }
 
   redirectProfile() {
-    this.router.navigateByUrl('/dashboard/info');
+    this.checkIfUserLoggedIn('/dashboard/info')
   }
 
-  handleNavigation($event, url, title?)
-  {
-      $event.stopPropagation();
-      $event.preventDefault();
-      this.genericButtonClick(url);
-      let user = this.localStorageService.retrieve("user");
-      if (user && user.authenticated == "true") {
-          this.router.navigate([url]);
-      } else {
-          this._localAuthService.setBackURLTitle(url,title);
+  checkIfUserLoggedIn(url, title = "") {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      this.router.navigate([url]);
+    } else {
+      const queryParams = { backURL: url };
+      if (title) {
+        queryParams['title'] = title;
       }
+      this.router.navigate(['/login'], { queryParams });
+    }
   }
 
 }

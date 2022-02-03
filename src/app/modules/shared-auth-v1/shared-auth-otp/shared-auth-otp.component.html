@@ -8,7 +8,7 @@
         <div class="otp-form-inputs">
             <ng-container *ngFor="let control of otpFormArray['controls'];let cIndex=index">
                 <!--added class='pseudo' for focus purpose-->
-                <input type="text" placeholder="-" numbersOnly [formControl]="control" autofocus class="pseudo" maxlength="1"
+                <input type="text" placeholder="-" numbersOnly pattern="\d*" [formControl]="control" autofocus class="pseudo" maxlength="1"
                     (keyup)="moveFocus($event, control.valid, cIndex)">
             </ng-container>
         </div>

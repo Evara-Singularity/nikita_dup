@@ -200,7 +200,7 @@ export class CartService
             );
     }
 
-    logOutAndClearCart() {
+    logOutAndClearCart(redirectURL = null) {
         this.logoutCall().pipe(
             map(logoutReponse => {
                 this._localStorageService.clear("user");
@@ -210,7 +210,7 @@ export class CartService
             mergeMap(logoutReponse => this.checkForUserAndCartSessionAndNotify()),
         ).subscribe(status => {
             if (status) {
-                this._router.navigate(['/login']);
+                this._router.navigate([(redirectURL) ? redirectURL : '/login']);
             }
         })
     }

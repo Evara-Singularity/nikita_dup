@@ -296,4 +296,8 @@ export class QuickOrderComponent {
         }
     }
 
+    navigateToCheckout() {
+        this.router.navigate(['/checkout'], { queryParams: { title: 'Continue to checkout' } });
+    }
+
 }

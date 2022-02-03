@@ -44,7 +44,7 @@ export class SharedSocialLoginComponent implements OnInit {
 
         this._sharedAuthService.soicalAuthenticate(params).subscribe((userResponse) => {
           if (userResponse["statusCode"] != undefined && userResponse["statusCode"] == 500) {
-            // TODO: Logout session
+            this._sharedAuthUtilService.logoutUserOnError();
           } else {
             this._localAuthService.setUserSession(userResponse);
             this._sharedAuthUtilService.processAuthentication(userResponse, this.isCheckout, this._sharedAuthService.redirectUrl);       

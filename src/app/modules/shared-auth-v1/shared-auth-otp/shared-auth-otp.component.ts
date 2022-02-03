@@ -32,6 +32,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     verifiedOTP = "";
     incorrectOTP = null;
     authFlow: AuthFlowType;//important:gives information on OTP journey
+    isOTPClean: boolean = true;
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
@@ -110,6 +111,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     moveFocus($event, isValid, inputIndex)
     {
+        this.isOTPClean = false;
         $event.stopPropagation();
         //$event.which = 8:means backspace pressed.
         if ((inputIndex >= 0) && (inputIndex - 1 > -1) && ($event.which === 8)) {

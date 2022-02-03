@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -18,7 +18,10 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
 
-    constructor(private _router: Router, private _sharedAuthService: SharedAuthService,) { }
+    constructor(
+        private _router: Router, 
+        private _route: ActivatedRoute,
+        private _sharedAuthService: SharedAuthService,) { }
 
     ngOnInit() 
     {
@@ -59,9 +62,18 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
             NAVIGATE_TO = this.OTP_URL;
         } else if (URL.includes("sign-up")) {
             NAVIGATE_TO = this.LOGIN_URL;
+        } else if (URL.includes("otp")) {
+            NAVIGATE_TO = this.LOGIN_URL;
         } else {
             NAVIGATE_TO = this.HOME_URL;
         }
+
+        this._route.queryParamMap.subscribe(params =>{
+            if(params.get('backurl')){
+                NAVIGATE_TO = params.get('backurl');
+            }
+        })
+
         this.navigateTo(NAVIGATE_TO);
     }
 

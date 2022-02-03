@@ -1,5 +1,5 @@
 import { LocalAuthService } from '@app/utils/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
 
@@ -8,7 +8,7 @@ import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
   templateUrl: './checkout-login-v2.component.html',
   styleUrls: ['./checkout-login-v2.component.scss']
 })
-export class CheckoutLoginV2Component implements OnInit {
+export class CheckoutLoginV2Component implements OnInit, OnDestroy {
 
   readonly LOGIN_TAB = this._sharedAuthService.LOGIN_TAB;
   readonly SIGN_UP_TAB = this._sharedAuthService.SIGN_UP_TAB;
@@ -25,7 +25,10 @@ export class CheckoutLoginV2Component implements OnInit {
 
   ngOnInit() {
     this.commonSubscriber();
-    this._localAuthService.setBackURLTitle("/checkout", "Continue to checkout");
+  }
+
+  ngOnDestroy(): void {
+      this._localAuthService.clearBackURLTitle();
   }
 
   commonSubscriber() {

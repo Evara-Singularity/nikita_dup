@@ -5,17 +5,16 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedAuthService } from '../shared-auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '../../../../app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { debounceTime } from 'rxjs/operators';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Subscription } from 'rxjs';
 
-export interface BackurlWithTitle
-{
-    backurl:string,
-    title:string
+export interface BackurlWithTitle {
+    backurl: string,
+    title: string
 }
 
 @Component({
@@ -23,8 +22,7 @@ export interface BackurlWithTitle
     templateUrl: './shared-login.component.html',
     styleUrls: ['./shared-login.component.scss']
 })
-export class SharedLoginComponent implements OnInit
-{
+export class SharedLoginComponent implements OnInit {
 
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
@@ -43,7 +41,7 @@ export class SharedLoginComponent implements OnInit
     isLoginNumberFormSubmitted: boolean = false;
     isLoginEmailFormSubmitted: boolean = false;
     emailAutoCompleteSuggestion: string[] = [];
-    bURLTitleSubscriber:Subscription = null;
+    bURLTitleSubscriber: Subscription = null;
     headerTitle = null;
 
 
@@ -54,16 +52,15 @@ export class SharedLoginComponent implements OnInit
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
         private _router: Router,
+        private _route: ActivatedRoute,
         private _sharedAuthUtilService: SharedAuthUtilService,
         private _common: CommonService,
     ) { }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         if (this._common.isBrowser) {
             this._sharedAuthUtilService.clearAuthFlow();
-            this.emailFC.valueChanges.pipe(debounceTime(300)).subscribe(value =>
-            {
+            this.emailFC.valueChanges.pipe(debounceTime(300)).subscribe(value => {
                 if (value.indexOf('@') > -1) {
                     this.createEmailSuggestion(value);
                 } else {
@@ -74,17 +71,17 @@ export class SharedLoginComponent implements OnInit
         this.handleBackUrlTitle();
     }
 
-    handleBackUrlTitle()
-    {
-        const DATA:BackurlWithTitle = this._localAuthService.getBackURLTitle();
-        if(DATA) 
-        {
+    handleBackUrlTitle() {
+        this._route.queryParamMap.subscribe(params => {
+            this.headerTitle = params.get('title');
+        })
+        const DATA: BackurlWithTitle = this._localAuthService.getBackURLTitle();
+        if (DATA) {
             this.headerTitle = DATA.title
         }
     }
 
-    submit(logintype)
-    {
+    submit(logintype) {
         switch (logintype) {
             case this.LOGIN_USING_PHONE:
                 this.isLoginNumberFormSubmitted = true;
@@ -105,12 +102,10 @@ export class SharedLoginComponent implements OnInit
      * signup flow with otp
      * action: redirect to otp without password option, as user registration is not done 
      * */
-    validateUserWithPhone()
-    {
+    validateUserWithPhone() {
         this._loader.setLoaderState(true);
         const body = { email: '', phone: this.phoneFC.value, type: 'p' };
-        this._sharedAuthService.isUserExist(body).subscribe(response =>
-        {
+        this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
                 //NOTE:using local storage//flowType, identifierType, identifier, data
@@ -124,12 +119,10 @@ export class SharedLoginComponent implements OnInit
         })
     }
 
-    validateUserWithEmail()
-    {
+    validateUserWithEmail() {
         this._loader.setLoaderState(true);
         const body = { email: this.emailFC.value, phone: '', type: 'e' };
-        this._sharedAuthService.isUserExist(body).subscribe(response =>
-        {
+        this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
                 //NOTE:using local storage//flowType, identifierType, identifier, data
@@ -144,13 +137,11 @@ export class SharedLoginComponent implements OnInit
         })
     }
 
-    clearSuggestion()
-    {
+    clearSuggestion() {
         this.emailAutoCompleteSuggestion = [];
     }
 
-    createEmailSuggestion(value)
-    {
+    createEmailSuggestion(value) {
         const proposedHostValue = (value.split('@').length > 0) ? value.split('@')[1] : '';
         if (proposedHostValue) {
             // show only filtered suggestion as user types
@@ -162,14 +153,12 @@ export class SharedLoginComponent implements OnInit
         }
     }
 
-    fillEmailSuggestion(value)
-    {
+    fillEmailSuggestion(value) {
         this.emailFC.patchValue(value);
     }
 
     // supporting functions
-    navigateToNext(isUserExists)
-    {
+    navigateToNext(isUserExists) {
         if (this.isCheckout) {
             (isUserExists) ?
                 this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.OTP_TAB) :
@@ -182,14 +171,12 @@ export class SharedLoginComponent implements OnInit
     }
 
 
-    toggleLoginType(type)
-    {
+    toggleLoginType(type) {
         this.loginType = type;
         this.resetForms();
     }
 
-    resetForms()
-    {
+    resetForms() {
         this.phoneFC.setValue('');
         this.emailFC.setValue('');
         this.isLoginEmailFormSubmitted = false;
@@ -198,7 +185,7 @@ export class SharedLoginComponent implements OnInit
 
     navigateHome() { this._router.navigate(["."]); }
 
-    get isWhiteHeader() { return this.isCheckout || (this.headerTitle != null)  }
+    get isWhiteHeader() { return (!this.isCheckout && this.headerTitle != null) }
 
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }

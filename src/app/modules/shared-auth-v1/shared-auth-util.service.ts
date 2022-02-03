@@ -258,4 +258,9 @@ export class SharedAuthUtilService implements OnInit
     getCheckoutLoginEvent(): Observable<number> {
         return this._checkoutLoginHandler.asObservable();
     }
+
+    logoutUserOnError() {
+        this._cartService.logOutAndClearCart()
+    }
+    
 }

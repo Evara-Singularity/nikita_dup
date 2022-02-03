@@ -1,17 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { environment } from 'environments/environment';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-
 @Component({
   selector: 'shared-social-login',
   templateUrl: './shared-social-login.component.html',
   styleUrls: ['./shared-social-login.component.scss']
 })
 export class SharedSocialLoginComponent implements OnInit {
-
+  readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
   @Input('isCheckout') isCheckout = false;
 
   constructor(

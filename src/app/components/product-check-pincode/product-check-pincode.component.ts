@@ -86,7 +86,7 @@ export class ProductCheckPincodeComponent implements OnInit
             const msnArr = [];
             msnArr.push(PARTNUMBER);
             this.isLoading.emit(true);
-            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode }).subscribe(
+            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode, price: this.pageData['productPrice'] }).subscribe(
                 (response: any) =>
                 {
                     this.isLoading.emit(false);
@@ -124,6 +124,13 @@ export class ProductCheckPincodeComponent implements OnInit
                 }
             )
         }
+    }
+
+    get getCodAvailable(): boolean {
+        if (this.pageData['productPrice'] < CONSTANTS.GLOBAL.codMin || this.pageData['productPrice'] > CONSTANTS.GLOBAL.codMax) {
+            return this.FALSE;
+        }
+        return true;
     }
 
     processEstimationInfo(avgLogisticEstimated, avgPlatformEstimated, estimatedDelivery)

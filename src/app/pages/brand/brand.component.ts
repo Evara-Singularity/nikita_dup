@@ -71,6 +71,8 @@ export class BrandComponent {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
+            console.clear();
+            console.log(result);
 
             this._productListService.excludeAttributes = [];
 

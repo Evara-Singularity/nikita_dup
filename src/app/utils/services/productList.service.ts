@@ -60,6 +60,9 @@ export class ProductListService {
       return;
     }
 
+    console.log('-----------------------------------');
+    console.log(rawSearchData);
+
     //Removing Products with null images
     rawSearchData.productSearchResult.products =
       rawSearchData.productSearchResult.products.filter(

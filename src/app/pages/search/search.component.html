@@ -1,7 +1,9 @@
-<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
+<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}">
 
-    <ng-container  *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
-        <ng-container *ngIf="API_RESULT['searchData'][0].productSearchResult.correctedSearchString != undefined && API_RESULT['searchData'][0].productSearchResult.correctedSearchString !== null">
+    <ng-container
+        *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
+        <ng-container
+            *ngIf="API_RESULT['searchData'][0].productSearchResult.correctedSearchString != undefined && API_RESULT['searchData'][0].productSearchResult.correctedSearchString !== null">
             <div class="card">
                 <div class="container">
                     <div class="search-txt">
@@ -17,23 +19,40 @@
             </div>
         </ng-container>
     </ng-container>
-    
-    <div class="mixed_category_result"  *ngIf="API_RESULT['searchData'][0]?.categoriesRecommended && _commonService.selectedFilterData.page < 2">
-        <h3 class="heading-3">Are you looking for…</h3>
-        <ng-container *ngFor="let category of API_RESULT['searchData'][0]?.categoriesRecommended; let i = index;" >
-            <div *ngIf="i < 3">
-                <a (click)="goToRecommendedCategory(category?.categoryId, category)">{{ category?.categoryName }}</a>
-            </div>
-        </ng-container>
-    </div>
-    <shared-product-listing 
-        #sharedProductList
+
+    <shared-product-listing #sharedProductList 
+        (categoryClicked)="handleCategoryClicked($event)" 
+        [categoryMidPlpFilterData]="API_RESULT['searchData'][0]?.categoriesPrimary"
         [headerName]="headerNameBasedOnCondition" 
         [pageName]="'SEARCH'"
         [searchKeyword]="API_RESULT['searchData'][0].productSearchResult.inputSearchString"
-        [productsListingData]="_productListService?.productListingData" >
+        [productsListingData]="_productListService?.productListingData">
     </shared-product-listing>
-    
+
+    <div class="accordian_footer_panel"
+        *ngIf="API_RESULT['searchData'][0]?.categoriesRecommended && _commonService.selectedFilterData.page < 2">
+        <div class="panel-head" style="margin-top: 0px;">
+            <div class="container">
+                <h3 class="heading-3" [closeOtherTabs]="true"
+                    [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
+                    Related Searches
+                    <span class="icon-accordian">
+                        <i class="icon-down"></i>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div [id]="'attributeAccoridan'" [style.display]="'block'" class="panel-body">
+            <div class="container category_links">
+                <div
+                    *ngFor="let category of API_RESULT['searchData'][0]?.categoriesRecommended | slice:0:10; let i = index;">
+                    <a (click)="goToRecommendedCategory(category?.categoryId, category)">{{ category?.categoryName
+                        }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="promo-container">
         <product-listing-app-promo></product-listing-app-promo>
     </div>

@@ -46,6 +46,9 @@ export class SocialLoginComponent {
             data=>
             {
                 this.redirectUrl=data['backurl'];
+                if (data['state']) {
+                    this.redirectUrl += '?state=' + data['state'];
+                }
             }
         );
     }

@@ -141,6 +141,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         this.activatedRoute.queryParams.subscribe(data =>
         {
             this.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this.redirectUrl += '?state=' + data['state'];
+            }
         }
         );
         this.mobileSubscriber = this.mobile.valueChanges.subscribe((value: string) =>

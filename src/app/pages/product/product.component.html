@@ -450,7 +450,7 @@
 
         <!-- New GET Quote section starts -->
         <div id="get-quote-section" class="buy-nowsec" *ngIf="!productOutOfStock && productMrp > 0">
-            <h4  class="pt">Looking for Safety Shoes</h4>
+            <h4  class="pt">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
             <p  class="small-txt"> {{ productName }} </p>
             <div class="buynow-flex">
                 <div class="bn-left">

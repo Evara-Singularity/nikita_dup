@@ -401,6 +401,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
+  updateUserSession() {
+    this.commonService.userSession = this.localStorageService.retrieve('user');
+  }
+
   getProductApiData() {
     // data received by product resolver
     this.route.data.subscribe(
@@ -444,6 +448,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
         this.checkForRfqGetQuote();
+        this.updateUserSession();
       },
       (error) => {
         this.showLoader = false;
@@ -1877,19 +1882,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     };
     
     data['rfqEnquiryCustomer'] = {
-      'city': '',
       'customerId': user['userId'],
-      'company': '',
-      'businessUser': true,
       'platform': 'mobile',
-      'description': "",
       'email': user['email'] ? user['email'] : '',
       'firstName': user['userName'],
       'mobile': user['phone'],
-      'pincode': '',
       'rfqValue': this.productPrice * this.qunatityFormControl.value,
-      'state': '',
-      'tin': ''
     }
     data['rfqEnquiryItemsList'] = [{
       brand: product['brand'],

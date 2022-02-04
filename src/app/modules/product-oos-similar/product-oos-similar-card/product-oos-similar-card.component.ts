@@ -79,6 +79,7 @@ export class ProductOosSimilarCardComponent {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+  rawProductData: any;
 
 
   constructor(
@@ -126,9 +127,10 @@ export class ProductOosSimilarCardComponent {
         "images"
         ] !== null
       ) {
+        this.rawProductData = rawData[0]["productBO"];
         this.productService.processProductData(
           {
-            productBO: rawData[0]["productBO"],
+            productBO: this.rawProductData,
             refreshCrousel: true,
             subGroupMsnId: null,
           },
@@ -244,6 +246,7 @@ export class ProductOosSimilarCardComponent {
       imageAlt:
         this.productService.oosSimilarProductsData.similarData[this.index]
           .productName,
+       loop:true,   
       onInit: () => {
         setTimeout(() => {
           this.carouselInitialized = true;
@@ -276,6 +279,7 @@ export class ProductOosSimilarCardComponent {
           this.index
         ].productAllImages;
       this.productCrouselInstance.instance["moveToSlide$"] = this.moveToSlide$;
+      this.productCrouselInstance.instance["productBo"] = this.rawProductData;
       this.productCrouselInstance.instance["refreshSiemaItems$"] =
         this.refreshSiemaItems$;
       this.productCrouselInstance.instance["productName"] =
@@ -298,7 +302,8 @@ export class ProductOosSimilarCardComponent {
   }
 
   onRotatePrevious() {
-    this.loadProductCrousel(1);
+    // console.log(this.productService.oosSimilarProductsData.similarData ,"a");
+    this.loadProductCrousel( this.productService.oosSimilarProductsData.similarData[this.index].productAllImages.length - 1);
   }
 
   onRotateNext() {

@@ -241,7 +241,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'article/:name',
+				path: 'articles/:name',
 				loadChildren: () =>
 					import('./article/article.module').then((m) => m.ArticleModule),
 				data: {

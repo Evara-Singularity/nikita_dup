@@ -27,6 +27,7 @@ import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
+import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject } from "rxjs";
@@ -281,6 +282,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   // quntity && bulk prices related
   qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
+  rfqTotalValue: any;
+  hasGstin: boolean;
+  GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+
 
   set showLoader(value: boolean) {
     this.globalLoader.setLoaderState(value);
@@ -315,6 +320,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private renderer2: Renderer2,
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
+    private _trackingService: TrackingService,
     @Inject(DOCUMENT) private document,
     @Optional() @Inject(RESPONSE) private _response: any
   ) {
@@ -347,8 +353,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productFbtData();
       this.productStatusCount();
       this.checkDuplicateProduct();
+      this.backUrlNavigationHandler();
       // this.commonService.attachHotKeysScrollEvent();
     }
+  }
+
+  backUrlNavigationHandler() {
+    this.commonService.setCurrentNaviagatedModule('PDP', { overrideRedirectUrl: this.productCategoryDetails['categoryLink'] });
+    this.commonService.currentlyOpenedModuleUsed = false;
   }
 
   onScrollOOOSimilar(event) {
@@ -364,13 +376,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
       productNew: true,
       pager: true,
       imageAlt: this.productName,
+      loop:true,
       onInit: () => {
         setTimeout(() => {
           this.carouselInitialized = true;
         }, 0);
       },
     };
-
   }
 
   addSubcriber() {
@@ -1971,6 +1983,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.toggleLoader(loaderStatus);
     });
     (
+      this.productRFQInstance.instance["hasGstin"] as EventEmitter<boolean>
+    ).subscribe((value) => {
+        this.hasGstin = value
+    });
+    (
+      this.productRFQInstance.instance["rfqQuantity"] as EventEmitter<string>
+    ).subscribe((rfqQuantity) => {
+        this.rfqTotalValue = rfqQuantity * Math.floor(this.productPrice);
+    });
+    (
       this.productRFQInstance.instance["onRFQSuccess"] as EventEmitter<boolean>
     ).subscribe((status) => {
       this.analyticRFQ(true);
@@ -2033,12 +2055,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
       let price = 0;
+      let gstPercentage=this.taxPercentage;
       if (this.priceWithoutTax > 0 && this.bulkPriceWithoutTax == null) {
         price = this.priceWithoutTax;
       } else if (this.bulkPriceWithoutTax !== null) {
         price = this.priceWithoutTax;
       }
       this.offerSectionInstance.instance["price"] = price;
+      this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
       (
         this.offerSectionInstance.instance[
         "viewPopUpHandler"
@@ -2073,6 +2097,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
       this.offerPopupInstance.instance["data"] = data["block_data"];
+      let gstPercentage=this.taxPercentage;
+      this.offerPopupInstance.instance['gstPercentage'] = gstPercentage;
       this.offerPopupInstance.instance["openMobikwikPopup"] = true;
       (
         this.offerPopupInstance.instance["out"] as EventEmitter<boolean>
@@ -2270,6 +2296,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
 
+      this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
       this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
@@ -2316,6 +2343,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         );
       this.productCrouselInstance.instance["options"] = this.iOptions;
       this.productCrouselInstance.instance["items"] = this.productAllImages;
+      this.productCrouselInstance.instance["productBo"] = this.rawProductData;
       this.productCrouselInstance.instance["moveToSlide$"] = this.moveToSlide$;
       this.productCrouselInstance.instance["refreshSiemaItems$"] =
         this.refreshSiemaItems$;
@@ -2339,7 +2367,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   onRotatePrevious() {
-    this.loadProductCrousel(1);
+    this.loadProductCrousel(this.productAllImages.length - 1);
   }
 
   onRotateNext() {
@@ -2481,15 +2509,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
+      const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
+      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
       let ytParams = "?autoplay=1&rel=0&controls=1&loop&enablejsapi=1";
       let videoDetails = { url: link, params: ytParams };
-      let modalData = {
-        component: YoutubePlayerComponent,
-        inputs: null,
-        outputs: {},
-        mConfig: { showVideoOverlay: true },
-      };
-      modalData.inputs = { videoDetails: videoDetails };
+      let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true }, };
+      modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
       this.modalService.show(modalData);
     }
   }
@@ -2498,6 +2523,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   /**
    * Please place all functional code above this section
    */
+
   setMetatag(index: number = -1) {
     if (!this.rawProductData) {
       return;
@@ -3298,6 +3324,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
+    this.holdRFQForm = true;
     this.sendProductInfotracking(cta);
     this.showLoader = true;
     this.displayCardCta = true;
@@ -3314,6 +3341,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
+    this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
     this.productInfoPopupInstance.instance["modalData"] =
       oosProductIndex > -1
         ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -3324,6 +3352,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
+      this.holdRFQForm = false;
       // document.getElementById('infoTabs').scrollLeft = 0;
       this.productInfoPopupInstance = null;
       this.productInfoPopupContainerRef.remove();
@@ -3551,6 +3580,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return "Something!!!";
   }
 
+  openDialer() {
+    if (this.commonService.isBrowser) {
+      window.location.href = "tel:+91 99996 44044";
+    }
+  }
+
+
+  navigateToWhatsapp() {
+    if (this.isBrowser) {
+      window.location.href = CONSTANTS.WHATS_APP_API + GLOBAL_CONSTANT.whatsapp_number + '&text=' + encodeURIComponent(this.getWhatsText);
+    }
+  }
+  
   get pastOrderAnalytics() {
     const TAXONS = this.taxons;
     const page = {
@@ -3570,6 +3612,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");
+      this.commonService.resetCurrentNaviagatedModule();
     }
     this.resetLazyComponents();
   }

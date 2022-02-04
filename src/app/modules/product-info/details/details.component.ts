@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -8,8 +9,11 @@ import { CommonService } from '@app/utils/services/common.service';
 })
 export class DetailsComponent {
     @Input("details") details = null;
+    prodUrl: string;
 
-    constructor(public _commonService: CommonService) { }
+    constructor(public _commonService: CommonService) { 
+        this.prodUrl = CONSTANTS.PROD
+    }
 
     get description() { return this.details['description'] || null }
 

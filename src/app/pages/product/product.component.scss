@@ -2291,7 +2291,17 @@
     padding: 5px;
     margin: 10px 0px;
     align-items: center;
-
+    position: relative;
+    &:after{
+        content: "";
+        position: absolute;
+        bottom:99%;
+        left:8%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #E5FBFA transparent;
+    }
     i {
         color: #d9232d;
         vertical-align: middle;
@@ -2403,17 +2413,24 @@
 
         .rfq-thanks-popup {
             text-align: center;
-            padding: 10px 30px;
+            padding: 15px 20px;
             position: relative;
 
-            i {
+            i.del-ico {
                 position: absolute;
                 right: 15px;
                 top: 15px;
+                font-size:20px;
             }
 
             img {
                 width: 110px;
+            }
+            .grey-txt {
+                color: #7B7B7B;
+                opacity:1;
+                font-size:14px;
+                line-height:20px;
             }
 
             .rfq-support-txt {
@@ -2421,7 +2438,7 @@
 
                 p {
                     font-size: 14px;
-                    line-height: 23px;
+                    line-height: 20px;
                 }
 
                 .grey-txt {
@@ -2440,24 +2457,28 @@
                 }
 
                 .rfq-thanks-txt {
-                    margin-bottom: 15px;
+                    margin:30px 0px; 
 
                     &:last-child {
                         margin-bottom: 0px;
                     }
                 }
             }
-
+            
             .alert-btn-row {
-                margin-top: 10px;
-
-                button {
-                    font-size: 12px;
+                margin:30px 0px;
+               button {
+                    font-size: 13px;
                     font-weight: bold;
-                    background: #f2720f;
-                    padding: 10px 20px;
+                    background: #F2720F;
+                    padding: 10px 10px;
+                    &.explore-category-btn{
+                        color:#D9232D;
+                        width:100%;
+                        background:#F7D3D6;
+                        font-size:14px;
+                     }
                 }
-
                 p {
                     margin: 10px 0px;
                     font-size: 12px;
@@ -2908,7 +2929,6 @@
 .vertical-scroll-container {
     background-color: #f2f2f2;
     padding: 10px;
-
     h2 {
         font-size: 16px;
         line-height: 38px;
@@ -3054,6 +3074,33 @@
                 &.valid-button {
                     background-color: #79be44;
                 }
+            }
+        }
+    }
+}
+.icon-btn-row{
+    display:flex;
+    justify-content: space-around;
+    align-items:center;
+    margin:30px 0px;
+    .icon-btn{
+        background: #278BED;
+        color: #fff;
+        width: 45%;
+        border-radius: 4px;
+        font-size:13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding:8px;
+        i{
+            font-size:14px;
+            padding-right:10px;
+        }
+        &.btn-whatsapp{
+            background: #008E7E;
+            i{
+                font-size:16px;
             }
         }
     }

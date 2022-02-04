@@ -49,6 +49,7 @@ export class SharedAuthService {
   }
 
   updatePassword(data) {
+    data['device'] = CONSTANTS.DEVICE.device;
     return this.dataService.callRestful(this.BASEURLS.UPDATEPASSWORD.method, this.BASEURLS.UPDATEPASSWORD.url, { body: data });
   }
 

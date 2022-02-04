@@ -143,7 +143,9 @@ export class SharedSignupComponent implements OnInit
     }
 
     updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
-    navigateTo(link) { this._router.navigate([link]) }
+    navigateTo(link) { 
+        this._router.navigate([link]) 
+    }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
     get disableContinue() { return this.signupForm.invalid || this.isOTPLimitExceeded }
     get firstName() { return this.signupForm.get("firstName"); }

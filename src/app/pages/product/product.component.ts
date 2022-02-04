@@ -471,7 +471,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   checkForRfqGetQuote(){
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
-      this.raiseRFQQuote(80);
+      this.raiseRFQQuote(true, 80);
       setTimeout(() => {
         this.scrollToResults('get-quote-section');
       }, 1000);
@@ -1585,10 +1585,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   // common functions
-  goToLoginPage(link, title?) {
+  goToLoginPage(link, title?, clickedFrom?: string) {
       const queryParams = { backurl: link };
       if (title) queryParams['title'] = title;
-      debugger;
+      if (clickedFrom) queryParams['state'] = clickedFrom;
       this.localAuthService.setBackURLTitle(link, title);
       let navigationExtras: NavigationExtras = {queryParams: queryParams};
       this.router.navigate(["/login"], navigationExtras);
@@ -1873,13 +1873,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async raiseRFQQuote(value?:number) {
+  async raiseRFQQuote(userHasPhoneNumber=true, value?:number) {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      // this.intiateRFQQuote(true);
-      this.raiseRFQGetQuote(value, user);
+      !userHasPhoneNumber ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(value, user);
     } else {
-      this.goToLoginPage(this.productUrl,"Continue to raise RFQ");
+      this.goToLoginPage(this.productUrl,"Continue to raise RFQ", "raiseRFQQuote");
     }
   }
 

@@ -5,7 +5,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SharedAuthService } from '../shared-auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import CONSTANTS from '../../../../app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { debounceTime } from 'rxjs/operators';
@@ -43,6 +43,7 @@ export class SharedLoginComponent implements OnInit {
     emailAutoCompleteSuggestion: string[] = [];
     bURLTitleSubscriber: Subscription = null;
     headerTitle = null;
+    paramsSubscriber: Subscription = null;
 
 
     constructor(
@@ -51,6 +52,7 @@ export class SharedLoginComponent implements OnInit {
         private _localAuthService: LocalAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
+        private activatedRoute: ActivatedRoute,
         private _router: Router,
         private _route: ActivatedRoute,
         private _sharedAuthUtilService: SharedAuthUtilService,
@@ -69,6 +71,16 @@ export class SharedLoginComponent implements OnInit {
             });
         }
         this.handleBackUrlTitle();
+        this.addQueryParamSubscribers();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     handleBackUrlTitle() {
@@ -166,7 +178,10 @@ export class SharedLoginComponent implements OnInit {
 
         } else {
             const LINK = (isUserExists) ? "/otp" : "/sign-up";
-            this._router.navigate([LINK]);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            };
+            this._router.navigate([LINK], navigationExtras);
         }
     }
 
@@ -183,11 +198,19 @@ export class SharedLoginComponent implements OnInit {
         this.isLoginNumberFormSubmitted = false;
     }
 
-    navigateHome() { this._router.navigate(["."]); }
+    navigateHome() { 
+        this._router.navigate(["."]); 
+    }
 
     get isWhiteHeader() { return (!this.isCheckout && this.headerTitle != null) }
 
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
+
+    ngOnDestroy() {
+        if (this.paramsSubscriber) {
+            this.paramsSubscriber.unsubscribe()
+        }
+    }
 
 }

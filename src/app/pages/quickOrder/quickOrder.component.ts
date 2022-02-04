@@ -265,7 +265,7 @@ export class QuickOrderComponent {
         this._quickOrderService.updateCartSession(this.sessionCart).subscribe(res => {
 
             if (res['statusCode'] == 200) {
-                alert('Cart quantity updated successfully');
+                // alert('Cart quantity updated successfully');
                 this.cartService.cart.next({count: res['noOfItems'] || 0});
             }
         });

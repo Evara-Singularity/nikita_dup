@@ -434,7 +434,7 @@
         </section>
 
         <!-- GET Quote section starts -->
-        <!-- <div class="payments-block" *ngIf="!productOutOfStock && productMrp > 0">
+        <div class="payments-block" *ngIf="!this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <ul class="deals-list">
                 <li class="clearfix">
                     <i class="icon-dropbox-fill"></i>
@@ -442,13 +442,13 @@
                         <strong class="text-black">Interested to buy in bulk</strong>
                         <small>Get customized price</small>
                     </div>
-                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
+                    <span class="ico-right getQuote" (click)="raiseRFQQuote(false);">GET QUOTE</span>
                 </li>
             </ul>
-        </div> -->
+        </div>
 
         <!-- New GET Quote section starts -->
-        <div id="get-quote-section" class="buy-nowsec" *ngIf="!productOutOfStock && productMrp > 0">
+        <div id="get-quote-section" class="buy-nowsec" *ngIf="this.commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <h4  class="pt">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
             <p  class="small-txt"> {{ productName }} </p>
             <div class="buynow-flex">
@@ -472,7 +472,7 @@
                         </ng-container>
                     </p>
                     <div class="button-area wrapper">
-                        <input (change)="raiseRFQQuote(nonRaisedRange.value);" #nonRaisedRange type="range" min="0" max="83" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
+                        <input (change)="raiseRFQQuote(true, nonRaisedRange.value);" #nonRaisedRange type="range" min="0" max="83" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
                         <button class="shimmer-button">SLIDE TO RAISE REQUEST </button>
                         <div [style.left.%]="getQuoteCurrentRange" class="arrow-container next-btn next-btn-invalid">
                             <i class="icon-next icon-animate-1"></i>

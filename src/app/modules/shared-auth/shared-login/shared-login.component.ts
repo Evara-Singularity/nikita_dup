@@ -39,11 +39,11 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
     mobileSubscriber: Subscription = null;
     usernameType = 'p';
     cartSession = null;
-    redirectUrl = '';
     isServer: boolean;
     isBrowser: boolean;
     isUserExists = false;
     isSubmitted: boolean = false;
+    redirectUrl = '';
     set isReqProcessing(value) {
         this.loaderService.setLoaderState(value);
     }

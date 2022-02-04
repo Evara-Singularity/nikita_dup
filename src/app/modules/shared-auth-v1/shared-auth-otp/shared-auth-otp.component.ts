@@ -7,7 +7,7 @@ import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 @Component({
     selector: 'shared-auth-otp',
@@ -33,9 +33,16 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     incorrectOTP = null;
     authFlow: AuthFlowType;//important:gives information on OTP journey
     isOTPClean: boolean = true;
+    paramsSubscriber: Subscription = null;
 
-    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
+    constructor(
+        private _sharedAuthService: SharedAuthService, 
+        private _globalLoader: GlobalLoaderService,
+        private _sharedAuthUtilService: SharedAuthUtilService, 
+        private _router: Router, 
+        private _toastService: ToastMessageService,
+        private _route: ActivatedRoute,
+        ) { }
 
     ngOnInit(): void
     {
@@ -43,6 +50,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.initiate) {
             this.initiateOTP();
         }
+        this.addQueryParamSubscribers();
     }
 
     ngAfterViewInit(): void
@@ -53,6 +61,15 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         });
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
         this.OTP_INPUTS[0].focus();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     initiateOTP()
@@ -131,7 +148,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     {
         const invalidOTPMessage = (response['message'] as string).toLowerCase();
         this._toastService.show({ type: 'error', text: invalidOTPMessage });
-        this._router.navigate(["/login"]);
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+        };
+        this._router.navigate(["/login"], navigationExtras);
     }
 
     getUserData()

@@ -17,6 +17,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     @Input('isWhiteHeader') isWhiteHeader = false;
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
+    paramsSubscriber: Subscription = null;
 
     constructor(
         private _router: Router, 
@@ -31,6 +32,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
                 this.tab = TAB;
             })
         }
+        this.addQueryParamSubscribers();
     }
 
     handleClick()
@@ -77,11 +79,27 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
         this.navigateTo(NAVIGATE_TO);
     }
 
-    navigateTo(link) { this._router.navigate([link]); }
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
+    }
+
+    navigateTo(link) { 
+        this._router.navigate([link]); 
+    }
 
     ngOnDestroy(): void
     {
-        if (this.checkOutTabSubscriber)
+        if (this.checkOutTabSubscriber) {
             this.checkOutTabSubscriber.unsubscribe();
+        }
+
+        if (this.paramsSubscriber) {
+            this.paramsSubscriber.unsubscribe()
+        }
     }
 }

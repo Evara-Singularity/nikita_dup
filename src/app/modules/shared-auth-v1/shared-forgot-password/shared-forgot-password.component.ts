@@ -1,7 +1,7 @@
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
@@ -10,6 +10,7 @@ import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'shared-forgot-password',
@@ -27,8 +28,10 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
         password: new FormControl("", [Validators.required, PasswordValidator.validatePassword])
     })
     verifiedOTP = "";
+    paramsSubscriber: Subscription = null;
 
-    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService:LocalAuthService,
+    constructor(private _sharedAuthService: SharedAuthService, 
+        private _route: ActivatedRoute, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService:LocalAuthService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _checkoutLoginService: CheckoutLoginService
     ) { }
 
@@ -38,6 +41,16 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+        this.addQueryParamSubscribers();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     updatePassword() {
@@ -72,7 +85,9 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
         this.verifiedOTP = verifiedOTP;
     }
 
-    navigateTo(link) { this._router.navigate([link]); }
+    navigateTo(link) { 
+        this._router.navigate([link]); 
+    }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
     getUserData() {
@@ -93,6 +108,9 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy(): void {
+        if (this.paramsSubscriber) {
+            this.paramsSubscriber.unsubscribe()
+        }
     }
 
 }

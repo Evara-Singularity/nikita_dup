@@ -261,6 +261,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  // ondemad loaded components for FAQ listing
+  faqListPopupInstance = null;
+  @ViewChild("faqListPopup", { read: ViewContainerRef })
+  faqListPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components to submit question
+  askQuestionPopupInstance = null;
+  @ViewChild("askQuestionPopup", { read: ViewContainerRef })
+  askQuestionPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components for FAQ success popup
+  faqSuccessPopupInstance = null;
+  @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
+  faqSuccessPopupContainerRef: ViewContainerRef;
 
   iOptions: any = null;
 
@@ -3271,6 +3283,106 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productInfoPopupInstance = null;
       this.productInfoPopupContainerRef.remove();
       this.displayCardCta = false;
+    });
+  }
+
+  async handleFaqListPopup() {
+    this.showLoader = true;
+    const { FaqListPopoupComponent } = await import(
+      "./../../components/faq-list-popup/faq-list-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqListPopoupComponent);
+    this.faqListPopupInstance =
+      this.faqListPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqListPopupInstance.instance["questionAnswerList"] = this.questionAnswerList;
+    (
+      this.faqListPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.faqListPopupInstance = null;
+      this.faqListPopupContainerRef.remove();
+    });
+    (
+      this.faqListPopupInstance.instance[
+      "emitAskQuestinPopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.handleAskQuestionPopup();
+    });
+  }
+
+  async handleAskQuestionPopup() {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      if (!this.askQuestionPopupInstance) {
+        this.showLoader = true;
+        const { AskQuestionPopoupComponent } = await import(
+          "./../../components/ask-question-popup/ask-question-popup.component"
+        ).finally(() => {
+          this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
+        this.askQuestionPopupInstance =
+          this.askQuestionPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+          );
+        this.askQuestionPopupInstance.instance["productCategoryDetails"] = this.productCategoryDetails;
+        this.askQuestionPopupInstance.instance["productSubPartNumber"] = this.productSubPartNumber;
+        this.askQuestionPopupInstance.instance["defaultPartNumber"] = this.defaultPartNumber;
+        (
+          this.askQuestionPopupInstance.instance[
+          "closePopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.askQuestionPopupInstance = null;
+          this.askQuestionPopupContainerRef.remove();
+        });
+        (
+          this.askQuestionPopupInstance.instance[
+          "showSuccessPopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.handleFaqSuccessPopup();
+        });
+      }
+    }
+    else {
+      this.goToLoginPage(this.productUrl);
+    }
+  }
+
+  async handleFaqSuccessPopup() {
+    this.showLoader = true;
+    const { FaqSuccessPopoupComponent } = await import(
+      "./../../components/faq-success-popup/faq-success-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqSuccessPopoupComponent);
+    this.faqSuccessPopupInstance =
+      this.faqSuccessPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqSuccessPopupInstance.instance["rawReviewsData"] = this.questionAnswerList;
+    (
+      this.faqSuccessPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.faqSuccessPopupInstance = null;
+      this.faqSuccessPopupContainerRef.remove();
+      this.commonService.scrollToTop()
     });
   }
 

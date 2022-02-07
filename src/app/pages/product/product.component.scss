@@ -963,7 +963,7 @@
     .Qa {
         background: white;
         margin-top: 15px;
-        padding: 5px 15px 25px;
+        padding: 16px 15px 4px;
         .faq-head {
             display: flex;
             h3 {
@@ -992,7 +992,7 @@
                 margin-left: 30px;
                 .answer-block {
                     padding-bottom: 5px;
-                    border-bottom: 1px solid #70707036;
+                    // border-bottom: 1px solid #70707036;
                     display: flex;
                     .answer {
                         padding: 10px 0px;

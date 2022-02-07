@@ -20,7 +20,7 @@
                         <label>Full Name*</label>
                         <input type="text" formControlName='name' placeholder="Enter full name">
                         <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" >
-                            Kindly enter name
+                            Kindly enter your Fullname
                         </div>
                     </div>
                     <div class="form-pd-field">
@@ -32,9 +32,9 @@
                     </div>
                     <div class="form-pd-field">
                         <label>Mobile No*</label>
-                        <input type="text" formControlName='phoneno' placeholder="Enter Mobile No">
+                        <input type="text" numbersOnly formControlName='phoneno' placeholder="Enter Mobile No">
                         <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
-                            Kindly enter valid Phone number
+                            Kindly enter valid Mobile Number
                         </div>
                     </div>
                     <div class="form-pd-field">

@@ -116,7 +116,7 @@
     
     <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
     <whatsapp-toast
-        [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'">
+        (click)="sendWhatsappTrackingData()" [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'">
     </whatsapp-toast>
 
 </div>

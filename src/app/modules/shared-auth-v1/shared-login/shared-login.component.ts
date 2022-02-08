@@ -1,16 +1,16 @@
-import { SharedAuthUtilService } from './../shared-auth-util.service';
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
-import { FormBuilder, Validators } from '@angular/forms';
-import { SharedAuthService } from '../shared-auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import CONSTANTS from '../../../../app/config/constants';
-import { CommonService } from '@app/utils/services/common.service';
-import { debounceTime } from 'rxjs/operators';
-import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import CONSTANTS from '../../../../app/config/constants';
+import { SharedAuthService } from '../shared-auth.service';
+import { SharedAuthUtilService } from './../shared-auth-util.service';
 
 export interface BackurlWithTitle {
     backurl: string,
@@ -155,6 +155,7 @@ export class SharedLoginComponent implements OnInit {
 
     fillEmailSuggestion(value) {
         this.emailFC.patchValue(value);
+        this.clearSuggestion();
     }
 
     // supporting functions
@@ -181,6 +182,12 @@ export class SharedLoginComponent implements OnInit {
         this.emailFC.setValue('');
         this.isLoginEmailFormSubmitted = false;
         this.isLoginNumberFormSubmitted = false;
+    }
+
+    toggleListDisplay(flag)
+    {
+        if (!(this.emailFC.value as string).includes("@"))return;
+        setTimeout(() => { this.emailAutoCompleteSuggestion = flag ? this.SUGGESTION_EMAIL_HOST : []; }, 150);
     }
 
     navigateHome() { this._router.navigate(["."]); }

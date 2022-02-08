@@ -17,11 +17,11 @@
             <form class="material-form" [formGroup]="loginNumberForm">
                 <div class="outline-input-label">
                     <label [class.is-focus]="phoneFC.value.length!=0">
-                        <input [ngClass]="{'invalid-input': isLoginNumberFormSubmitted && phoneFC.invalid}" type="text"  pattern="\d*"
+                        <input type="tel" [ngClass]="{'invalid-input': isLoginNumberFormSubmitted && phoneFC.invalid}" pattern="\d{10}"
                             numbersOnly maxlength="10" formControlName="phone">
                         <span class="label">Enter Mobile Number</span>
                         <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
-                            <p class="error-field error-txt">Enter 10 digit mobile number.</p>
+                            <p class="error-field error-txt">Enter 10 digit mobile number</p>
                         </ng-container>
                     </label>
                 </div>
@@ -39,8 +39,8 @@
                 <div class="outline-input-label">
                     <label [class.is-focus]="emailFC.value.length!=0">
                             <input [ngClass]="{'invalid-input': isLoginEmailFormSubmitted && emailFC.invalid}" type="text"
-                                (focus)="clearSuggestion()" (blur)="clearSuggestion()" formControlName="email">
-                            <span class="label">Enter Email</span>
+                                (focus)="$event.stopPropagation();toggleListDisplay(true)" (blur)="$event.stopPropagation();toggleListDisplay(false)" formControlName="email">
+                            <span class="label">Enter Email-ID</span>
                             <div class="auto-complete-list">
                                 <ul>
                                     <ng-container *ngFor="let item of emailAutoCompleteSuggestion">
@@ -51,16 +51,16 @@
                                 </ul>
                             </div>
                         <ng-container *ngIf="isLoginEmailFormSubmitted && emailFC.invalid">
-                            <p class="error-field error-txt">Enter valid Email-ID.</p>
+                            <p class="error-field error-txt">Enter valid Email-ID</p>
                         </ng-container>
                     </label>
                 </div>
                 <button class="btn btn-variant1" (click)="submit(LOGIN_USING_EMAIL)">CONTINUE</button>
                 <div class="login-seperator-text "> <span>Or</span></div>
                 <button class="btn btn-variant1 btn-dark-grey" (click)="toggleLoginType(LOGIN_USING_PHONE)">CONTINUE
-                    WITH PHONE NUMBER</button>
+                    WITH MOBILE NUMBER</button>
                 <div class="clearfix mt-25">
-                    <shared-social-login [isCheckout]="this.isCheckout"  ></shared-social-login>
+                    <shared-social-login [isCheckout]="this.isCheckout"></shared-social-login>
                 </div>
             </form>
         </ng-container>

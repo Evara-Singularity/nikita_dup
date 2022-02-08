@@ -106,7 +106,7 @@ export class SharedAuthUtilService implements OnInit
             }
             let cartSession = Object.assign(this._cartService.getCartSession());
             cartSession['cart']['userId'] = response['userId'];
-            this.updateCartSession('Signup successful', isCheckout, redirectUrl);
+            this.updateCartSession(`Welcome to Moglix, ${params['firstName']}` , isCheckout, redirectUrl);
         }
         this.clearAuthFlow();
     }

@@ -17,19 +17,19 @@
                     <input type="text" formControlName="firstName" maxlength="20">
                     <span class="label">Enter User Name*</span>
                     <ng-container *ngIf="(firstName.touched || firstName.dirty)">
-                        <p class="error-txt" *ngIf="firstName.hasError('required')">Please provide valid user name.</p>
+                        <p class="error-txt" *ngIf="firstName.hasError('required')">Enter user name</p>
                         <p class="error-txt"
                             *ngIf="!(firstName.hasError('required')) && firstName.hasError('whitespace')">
-                            Username cannot start with space(s).</p>
+                            Username cannot start with space(s)</p>
                     </ng-container>
                 </label>
             </div>
             <div class="outline-input-label" *ngIf="!(isSingupUsingPhone)">
                 <label [class.is-focus]="phone.value.length!=0">
-                    <input type="text" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
+                    <input type="tel" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
                     <span class="label">Enter Mobile Number*</span>
                     <ng-container *ngIf="phone.touched || phone.dirty">
-                        <p class="error-txt" *ngIf="phone.errors !== null">Please provide valid mobile number.</p>
+                        <p class="error-txt" *ngIf="phone.errors !== null">Please provide valid mobile number</p>
                         <p class="error-txt" *ngIf="isUserExists">Number already exists, try different number or try
                             sign-in</p>
                     </ng-container>
@@ -41,7 +41,7 @@
                     <span class="label">Enter Email-ID (Optional)</span>
                     <ng-container *ngIf="email.touched || email.dirty">
                         <p class="error-txt" *ngIf="email.errors && email.errors.invalidCharT">
-                            Please provide valid email.
+                            Enter valid Email-ID
                         </p>
                         <p class="error-txt" *ngIf="isUserExists">
                             Email already exists, try different email or try sign-in</p>

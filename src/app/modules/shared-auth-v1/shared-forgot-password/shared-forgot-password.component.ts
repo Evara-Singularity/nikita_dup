@@ -52,11 +52,11 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy {
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
                     this._localAuthService.clearBackURLTitle();
-                    this._toastService.show({ type: 'success', text: response['message'] });
+                    this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Sign-In' });
                     //@checkout flow need to integrated here
                     if (this.isCheckout) {
                         this._checkoutLoginService.setPasswordResetStatus({
-                            status: true, message: 'Password reset successfully. Please login to proceed',
+                            status: true, message: 'Password updated successfully. Now try Sign-In',
                         })
                         this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB)
                     } else {

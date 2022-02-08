@@ -55,7 +55,7 @@ export class SharedOtpComponent implements OnInit
     {
         this.authFlow = this._sharedAuthUtilService.getAuthFlow();
         //if authFlow is empty then navigate to login
-        if (!(this.authFlow)) { this.navigateToLogin(); return; }// || !(this.authFlow.isUserExists)
+        if (!(this.authFlow)) { this.navigateToLogin(); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
         this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
         this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);

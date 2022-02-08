@@ -1,7 +1,7 @@
 import { AuthFlowType } from './../modals';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormArray, FormControl } from '@angular/forms';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
@@ -55,7 +55,13 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.OTP_INPUTS[0].focus();
     }
 
-    initiateOTP()
+    @HostListener('window:beforeunload', ['$event'])
+    beforeUnloadHander(event)
+    {
+        this._sharedAuthUtilService.clearAuthFlow();
+    }
+
+    initiateOTP(isResend?)
     {
         if (this.timer > 0) return
         const REQUEST = this.getUserData();
@@ -65,6 +71,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
+                    if (isResend){
+                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email" : "OTP Resent to mention mobile number" ;
+                        this._toastService.show({ type: "success", text: MESSAGE});
+                    }
                     this.startOTPTimer();
                     return;
                 }
@@ -147,6 +157,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         return requestData;
     }
 
+    resendOTP()
+    {
+        this.otpFormArray.controls.forEach((control: FormControl) => control.patchValue(""));
+        this.initiateOTP(true);
+    }
+
     //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
@@ -165,14 +181,19 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
+    
+
     get otpValue() { return ((this.otpFormArray.value as string[]).join("")); }
     get isOTPVerified() { return (this.otpValue.length > 0) && (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified) }
-    get isOTPFormDiabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
+    get isOTPFormDisabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
+    get isEmailLogin() { return this.authFlow && this.authFlow.identifier.includes("@")}
+    get disableResend() {return this.timer > 0 || this.isOTPVerified}
 
     ngOnDestroy(): void
     {
         this.otpFormArray = null;
+        this._sharedAuthUtilService.clearAuthFlow();
         if (this.otpFormSubscriber) this.otpFormSubscriber.unsubscribe();
     }
 }

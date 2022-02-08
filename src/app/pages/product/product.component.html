@@ -366,7 +366,7 @@
             </div>
         </div>
 
-        <section *ngIf="productOutOfStock && !isRFQSuccessfull" observeVisibility [debounceTime]="100"
+        <section *ngIf="productOutOfStock" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
         </section>

@@ -768,7 +768,7 @@
 </idle-user-search-nudge> -->
 
 <div id="pageBottom"></div>
-<whatsapp-toast [customText]="getWhatsText"></whatsapp-toast>
+<whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>
 <ng-container *ngIf="showScrollToTopButton">
     <div class="scroll-arrow-pdp" (click)="scrollToTop()">
         <i class="icon-up"></i>

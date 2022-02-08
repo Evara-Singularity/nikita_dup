@@ -7,7 +7,7 @@ export function listValidator(list: string[]): ValidatorFn
 {
     return (control: AbstractControl): ValidationErrors | null =>
     {
-        const value = (control.value as string).trim();
+        const value = (control.value.toString()).trim();
         return list.includes(value) ? null : { "not-found": "invalid selection name" }
     };
 }
@@ -22,7 +22,8 @@ export class ListAutocompleteComponent implements OnInit
 {
     @Input("control") control: FormControl;
     @Input("placeholder") placeholder: string;
-    @Input("list") list: any[] = [];
+    @Input("brandList") brandList: any[] = [];
+    @Input("amountList") amountList: any[] = [];
     @Output("onSelect") onSelect: EventEmitter<any> = new EventEmitter()
     filteredList: any[] = [];
 
@@ -30,20 +31,34 @@ export class ListAutocompleteComponent implements OnInit
 
     ngOnInit(): void {}
 
-    ngAfterViewInit(): void
-    {
-        if (this.control) {
-            this.control.setValidators([Validators.required, listValidator(this.list)])
+    ngAfterViewInit(): void {
+        if (this.brandList.length) {
+            if (this.control) {
+                this.control.setValidators([Validators.required, listValidator(this.brandList)])
+            }
+        }
+        if (this.amountList.length) {
+            if (this.control) {
+                this.control.setValidators([Validators.required])
+            }
         }
     }
-    
-    filter(value: string)
-    {
-        if (value.length > 0) {
-            value = value.toLowerCase();
-            this.filteredList = this.list.filter((item) => (item as string).toLowerCase().includes(value));
-        } else {
-            this.filteredList = this.list;
+
+    filter(value: string) {
+        if (this.brandList.length) {
+            if (value.length > 0) {
+                value = value.toLowerCase();
+                this.filteredList = this.brandList.filter((item) => (item as string).toLowerCase().includes(value));
+            } else {
+                this.filteredList = this.brandList;
+            }
+        }
+        if (this.amountList.length) {
+            if (value.length > 0) {
+                this.filteredList = this.amountList.filter((item) => (item.toString()).includes(value));
+            } else {
+                this.filteredList = this.amountList;
+            }
         }
     }
 
@@ -55,7 +70,7 @@ export class ListAutocompleteComponent implements OnInit
 
     toggleListDisplay(flag)
     {
-        setTimeout(() => { this.filteredList = flag ? this.list : []; }, 150);
+        setTimeout(() => { this.filteredList = flag ? this.brandList : []; }, 150);
     }
 
 }

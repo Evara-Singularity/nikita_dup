@@ -140,6 +140,9 @@
                 top: 12px;
                 color: $disabled;
             }
+            .active-password-icon{
+                color: #303030;
+            }
 
             &.is-focus .label,
             input:focus+.label,

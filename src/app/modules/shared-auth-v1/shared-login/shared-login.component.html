@@ -1,4 +1,4 @@
-<div class="login-bg checkout-login-bg">
+<div class="login-bg"  [class.checkout-login-bg]="isCheckout">
 
     
     <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="true"></shared-auth-header>

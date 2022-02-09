@@ -52,7 +52,7 @@
                 <label [class.is-focus]="password.value.length!=0">
                     <input [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20" autocomplete="off">
                     <span class="label">Enter Password (Optional)</span>
-                    <i class="icon-view-password active-password-icon" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
+                    <i class="icon-view-password" [class.active-password-icon]="isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <ng-container *ngIf="(password.touched || password.dirty)">
                         <p class="error-txt" *ngIf="password.hasError('required')">{{password.errors.required}}</p>
                         <p class="error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>

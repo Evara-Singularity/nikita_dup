@@ -36,7 +36,7 @@
             <div class="outline-input-label">
                 <label [class.is-focus]="password.value.length!=0">
                     <input [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
-                    <i class="icon-view-password show-pass active-password-icon" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
+                    <i class="icon-view-password show-pass" [class.active-password-icon]="isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <span class="label">Enter Password</span>
                     <ng-container *ngIf="isPasswordSubmitted && password.errors != null">
                         <p class="error-txt" *ngIf="password.errors.required">Please provide password</p>

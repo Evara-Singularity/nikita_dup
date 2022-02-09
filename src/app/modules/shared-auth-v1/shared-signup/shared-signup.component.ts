@@ -1,18 +1,16 @@
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { Validators, FormArray } from '@angular/forms';
-import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CONSTANTS } from '@app/config/constants';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { PasswordValidator } from '@app/utils/validators/password.validator';
+import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { PasswordValidator } from '@app/utils/validators/password.validator';
-import { UsernameValidator } from '@app/utils/validators/username.validator';
-import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
-import { CONSTANTS } from '@app/config/constants';
-import { LocalStorageService } from 'ngx-webstorage';
 
 /**
  * User must have auth flow information

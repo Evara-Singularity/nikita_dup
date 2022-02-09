@@ -39,9 +39,10 @@
                 <div class="outline-input-label">
                     <label [class.is-focus]="emailFC.value.length!=0">
                             <input [ngClass]="{'invalid-input': isLoginEmailFormSubmitted && emailFC.invalid}" type="text"
+                                (keyup)="$event.stopPropagation();filter($event.target.value)"
                                 (focus)="$event.stopPropagation();toggleListDisplay(true)" (blur)="$event.stopPropagation();toggleListDisplay(false)" formControlName="email">
                             <span class="label">Enter Email-ID</span>
-                            <div class="auto-complete-list">
+                            <div class="auto-complete-list" *ngIf="displaySuggestion">
                                 <ul>
                                     <ng-container *ngFor="let item of emailAutoCompleteSuggestion">
                                         <li (click)="fillEmailSuggestion(item)">

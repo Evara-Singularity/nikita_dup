@@ -7,8 +7,8 @@
 
 <ng-container *ngIf="currentStep === 'DETAILS'">
     <div class="outer-card">
-        <h3 class="heading-custom-3">Almost Done!</h3>
-        <p>Just a few more details</p>
+        <h3 class="heading-custom-3">{{isSingupUsingPhone?'Almost Done!':'Looks like you’re new here!'}}</h3>
+        <p>{{isSingupUsingPhone?'Just a few more details':'Please provide below information'}}</p>
     </div>
     <div class="login-card">
         <form class="material-form" [formGroup]="signupForm">
@@ -29,8 +29,8 @@
                     <input type="tel" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
                     <span class="label">Enter Mobile Number*</span>
                     <ng-container *ngIf="phone.touched || phone.dirty">
-                        <p class="error-txt" *ngIf="phone.errors !== null">Please provide valid mobile number</p>
-                        <p class="error-txt" *ngIf="isUserExists">Number already exists, try different number or try
+                        <p class="error-txt" *ngIf="phone.errors !== null">Enter 10 digit mobile number</p>
+                        <p class="error-txt" *ngIf="signupForm.valid && isUserExists">Number already exists, try different number or try
                             sign-in</p>
                     </ng-container>
                 </label>
@@ -51,7 +51,7 @@
             <div class="outline-input-label">
                 <label [class.is-focus]="password.value.length!=0">
                     <input [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20" autocomplete="off">
-                    <span class="label">Enter Password (optional)</span>
+                    <span class="label">Enter Password (Optional)</span>
                     <i class="icon-view-password" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <ng-container *ngIf="(password.touched || password.dirty)">
                         <p class="error-txt" *ngIf="password.hasError('required')">{{password.errors.required}}</p>
@@ -61,7 +61,7 @@
                 </label>
             </div>
             <button class="btn btn-variant1" [class.btn-disabled]="disableContinue" (click)="validateUser($event)">
-                SUBMIT NOW
+                SIGN-UP NOW
             </button>
         </form>
         <p class="safe-text">Your details are safe with us.</p>

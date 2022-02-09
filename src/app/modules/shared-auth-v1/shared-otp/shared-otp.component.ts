@@ -129,10 +129,9 @@ export class SharedOtpComponent implements OnInit
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this.incorrectPassword = response['message'];
-                    this._toastService.show({type:"error", text:response['message']});
+                    this._toastService.show({ type: "error", text: response['status']});
                 } else {
                     this.incorrectPassword = null;
-                    this._localAuthService.clearBackURLTitle();
                     this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
                 }
                 this._globalLoader.setLoaderState(false);
@@ -156,10 +155,11 @@ export class SharedOtpComponent implements OnInit
             (response) =>
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    this._toastService.show({ type: "error", text: response['message'] });
+                    this._toastService.show({ type: "error", text: response['status'] });
                 } else {
-                    this._localAuthService.clearBackURLTitle();
-                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
+                    const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+                    const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
                 }
                 this._globalLoader.setLoaderState(false);
             },

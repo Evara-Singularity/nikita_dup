@@ -1576,7 +1576,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   goToLoginPage(link, title?) {
       const queryParams = { backurl: link };
       if (title) queryParams['title'] = title;
-      debugger;
       this.localAuthService.setBackURLTitle(link, title);
       let navigationExtras: NavigationExtras = {queryParams: queryParams};
       this.router.navigate(["/login"], navigationExtras);
@@ -1864,7 +1863,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   async raiseRFQQuote(value?:number) {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      // this.intiateRFQQuote(true);
       this.raiseRFQGetQuote(value, user);
     } else {
       this.goToLoginPage(this.productUrl,"Continue to raise RFQ");

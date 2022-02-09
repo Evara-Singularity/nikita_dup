@@ -55,6 +55,7 @@ export class SharedAuthUtilService implements OnInit
 
     processAuthentication(response, isCheckout, redirectUrl)
     {
+        this._localAuthService.clearBackURLTitle();
         this._localAuthService.setUserSession(response);
         this.clearAuthFlow();
         if (window) {
@@ -62,7 +63,7 @@ export class SharedAuthUtilService implements OnInit
         }
         let cartSession = Object.assign(this._cartService.getCartSession());
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession('Sign in successful', isCheckout, redirectUrl);
+        this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);
     }
 
     updateCartSession(message, isCheckout, redirectUrl)

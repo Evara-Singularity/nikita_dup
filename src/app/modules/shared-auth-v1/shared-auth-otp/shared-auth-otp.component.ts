@@ -181,8 +181,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    
-
     get otpValue() { return ((this.otpFormArray.value as string[]).join("")); }
     get isOTPVerified() { return (this.otpValue.length > 0) && (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified) }

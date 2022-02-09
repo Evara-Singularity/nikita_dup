@@ -3,16 +3,17 @@
 .login-bg {
     background: linear-gradient(#d9232d, #f5555e);
     min-height: 100vh !important;
+    overflow-y: scroll;
     &.checkout-login-bg{
-        padding: 30px 0px 15px;
+        padding: 0px 0px 15px;
     }
     .login-bg-img {
+       background-image: url("../../../../assets/img/login-bg-img.svg");
         position: relative;
-        .bg-moglix-logo {
-            width: 100px;
-            display: block;
-            margin: auto;
-        }
+        min-height: 250px;
+        max-height: 300px;
+        background-position: bottom;
+        background-size: initial;
         .skip-btn{
             position: absolute;
             top: 10%;
@@ -20,6 +21,11 @@
             font-size: 10px;
             background-color: #3C3C3C73;
         }
+    }
+    .bg-moglix-logo {
+        width: 100px;
+        display: block;
+        margin: auto;
     }
     .heading{
         color:$white;

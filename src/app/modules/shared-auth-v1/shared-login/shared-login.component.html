@@ -4,10 +4,11 @@
     <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="true"></shared-auth-header>
 
     <div class="login-bg-img" *ngIf="!isCheckout && !this.headerTitle" > 
-        <img src="{{imagePath}}assets/img/login-bg-img.svg">
-        <img class="bg-moglix-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">
+        <!-- <img src="{{imagePath}}assets/img/login-bg-img.svg"> -->
+        <!-- <img class="bg-moglix-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png"> -->
         <button class="btn skip-btn" (click)="$event.stopPropagation();navigateHome()">SKIP NOW</button>
     </div>
+    <img class="bg-moglix-logo" src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png">
 
     <h3 class="heading" [ngClass]="{'heading-padding': isCheckout}" *ngIf="headerTitle">{{headerTitle}}</h3>
 

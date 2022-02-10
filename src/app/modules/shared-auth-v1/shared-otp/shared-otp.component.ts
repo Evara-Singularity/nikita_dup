@@ -129,7 +129,6 @@ export class SharedOtpComponent implements OnInit
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this.incorrectPassword = response['message'];
-                    this._toastService.show({ type: "error", text: response['status']});
                 } else {
                     this.incorrectPassword = null;
                     this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
@@ -186,5 +185,6 @@ export class SharedOtpComponent implements OnInit
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.otpForm.valid }
     get otpValue() { return ((this.otpForm.value as string[]).join("")); }
+    get isLoginUsingEmail() { return this.authFlow && (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_EMAIL);}
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 }

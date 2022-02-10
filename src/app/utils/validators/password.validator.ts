@@ -6,7 +6,7 @@ export class PasswordValidator
         let value: string = control.value;
         if (value.indexOf(' ') > -1) {
             return { 'space': 'Password cannot contain space.' }
-        } else if (value.length > 0 && value.length < 8) {
+        } else if (!(value) || value.length === 0 || value.length < 8) {
             return { 'minlength': 'Password should be of min. 8 characters.' }
         }
         return null

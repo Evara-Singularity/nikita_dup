@@ -3,12 +3,12 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
-import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -60,7 +60,7 @@ export class SharedSignupComponent implements OnInit
         //redirect if authflow details are not available
         //decide and build singup form depending on OTP or Email registration
         //Need to update the mobile after OTP validation
-        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
+        this.authFlow = this._localAuthService.getAuthFlow();
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
@@ -103,8 +103,9 @@ export class SharedSignupComponent implements OnInit
         );
     }
 
-    captureOTP($event)
+    captureOTP(otpValue)
     {
+        if (!otpValue) return;
         if (this.isSingupUsingPhone) {
             this.updateSignupStep(2);
             return;

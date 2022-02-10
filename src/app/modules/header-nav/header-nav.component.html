@@ -47,8 +47,7 @@
             </div>
         </div>
         <!--Category Header-->
-        <!--displayHeader:used to hide the header in checkout case-->
-        <div class="common-category-header container" *ngIf="displayHeader">
+        <div class="common-category-header container">
             <ng-container *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
                 <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
                     class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>

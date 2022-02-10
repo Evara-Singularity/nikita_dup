@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { Observable, Subject } from "rxjs";
+import { AuthFlowType } from '../models/auth.modals';
 
 @Injectable({
     providedIn: 'root'
@@ -56,4 +57,15 @@ export class LocalAuthService{
     {
         this._localStorageService.clear("sAuthHeader");
     }
+
+    setAuthFlow(isUserExists, flowType, authIdentifierType, authIdentifier, data = null)
+    {
+        const MAUTH: AuthFlowType = { isUserExists: isUserExists, flowType: flowType, identifierType: authIdentifierType, identifier: authIdentifier, data: data };
+        this.clearAuthFlow();
+        this._localStorageService.store("authflow", MAUTH);
+    }
+
+    getAuthFlow(): AuthFlowType { return this._localStorageService.retrieve("authflow"); }
+
+    clearAuthFlow() { this._localStorageService.clear("authflow"); }
 }

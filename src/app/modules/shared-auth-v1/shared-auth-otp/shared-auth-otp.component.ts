@@ -1,13 +1,14 @@
-import { AuthFlowType } from './../modals';
-import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'shared-auth-otp',
@@ -34,12 +35,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     authFlow: AuthFlowType;//important:gives information on OTP journey
     isOTPClean: boolean = true;
 
-    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,
+    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,private _localAuthService:LocalAuthService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
     {
-        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
+        this.authFlow = this._localAuthService.getAuthFlow();
         if (this.initiate) {
             this.initiateOTP();
         }
@@ -58,7 +59,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @HostListener('window:beforeunload', ['$event'])
     beforeUnloadHander(event)
     {
-        this._sharedAuthUtilService.clearAuthFlow();
+        this._localAuthService.clearAuthFlow();
     }
 
     initiateOTP(isResend?)
@@ -92,19 +93,17 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-                this._globalLoader.setLoaderState(false);
+                
                 if (response['status']) {
                     this.verifiedOTP = this.otpValue;
                     this.incorrectOTP = null;
-                    if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this.timer = 0;
-                    //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
-                    if (!(this.withLabel)) { this.otpEmitter.emit(this.otpValue); }
+                    if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
+                    if (!(this.withLabel)) { setTimeout(() => { this._globalLoader.setLoaderState(false);this.otpEmitter.emit(this.otpValue);}, 200)};
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
-                    //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
-                    if (!(this.withLabel)) { this.otpEmitter.emit(""); }
+                    this._globalLoader.setLoaderState(false);
                     return;
                 }
                 this.processOTPError(response);
@@ -191,7 +190,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnDestroy(): void
     {
         this.otpFormArray = null;
-        this._sharedAuthUtilService.clearAuthFlow();
         if (this.otpFormSubscriber) this.otpFormSubscriber.unsubscribe();
     }
 }

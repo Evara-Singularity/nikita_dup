@@ -2,12 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import CONSTANTS from '../../../../app/config/constants';
 import { SharedAuthService } from '../shared-auth.service';
 import { SharedAuthUtilService } from './../shared-auth-util.service';
@@ -46,6 +46,7 @@ export class SharedLoginComponent implements OnInit
     bURLTitleSubscriber: Subscription = null;
     headerTitle = null;
     displaySuggestion = true;
+    authFlow:AuthFlowType = null;
 
 
     constructor(
@@ -63,9 +64,23 @@ export class SharedLoginComponent implements OnInit
     ngOnInit(): void
     {
         if (this._common.isBrowser) {
-            this._sharedAuthUtilService.clearAuthFlow();
+            this.authFlow = this._localAuthService.getAuthFlow();
+            if (this.authFlow) { 
+                this.updateControls(this.authFlow.identifier)
+            }
         }
         this.handleBackUrlTitle();
+    }
+
+    updateControls(identifier:string)
+    {
+        if (identifier.includes("@")){
+            this.emailFC.patchValue(identifier);
+            this.loginType = this.LOGIN_USING_EMAIL;
+            return;
+        }
+        this.phoneFC.patchValue(identifier);
+        this.loginType = this.LOGIN_USING_PHONE;
     }
 
     handleBackUrlTitle()
@@ -112,7 +127,7 @@ export class SharedLoginComponent implements OnInit
                 const isUserExists = response['exists'] as boolean;
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
-                this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
+                this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
                 this.navigateToNext(isUserExists);
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
@@ -132,7 +147,7 @@ export class SharedLoginComponent implements OnInit
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 //CHECK:Email with otp screen with password
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
-                this._sharedAuthUtilService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
+                this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
                 this.navigateToNext(isUserExists);
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
@@ -206,10 +221,8 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateHome() { this._router.navigate(["."]); }
-
-    get isWhiteHeader() { return (!this.isCheckout && this.headerTitle != null) }
-
+    get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
-
+    get isNormalLogin() { return this.isCheckout === false && this.headerTitle == null  }
 }

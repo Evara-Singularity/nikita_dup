@@ -3553,6 +3553,87 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
+
+getAnimateSlider(){
+  var initialMouse = 0;
+  var slideMovementTotal = 0;
+  var mouseIsDown = false;
+  var slider = document.getElementById('slider');
+  var buttonBg = document.getElementById('button-background');
+
+  function addListenerMulti(element, eventNames, listener) {
+    var events = eventNames.split(' ');
+    for (var i=0, iLen=events.length; i<iLen; i++) {
+      element.addEventListener(events[i], listener, false);
+    }
+    console.log(events,"eventNames");
+  }
+  
+  // slider.on('mousedown touchstart', function(event){
+    addListenerMulti(slider, 'mousemove touchmove', function(event){
+      console.log(event,"event");
+      mouseIsDown = true;
+      slideMovementTotal = (parseInt(buttonBg.style.width) - parseInt(slider.style.width)) + 10;
+      initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
+    });
+    
+  // });
+
+  // $(document.body, '#slider').on('mouseup touchend', function (event) {
+    addListenerMulti(slider, 'mousemove touchmove', function(event){
+      if (!mouseIsDown)
+      return;
+    mouseIsDown = false;
+    var currentMouse = event.clientX || event.changedTouches[0].pageX;
+    var relativeMouse = currentMouse - initialMouse;
+
+    if (relativeMouse < slideMovementTotal) {
+      // $('.slide-text').fadeTo(300, 1);
+      slider.animate({
+        left: "-10px"
+      }, 300);
+      return;
+    }
+    slider.classList.add('unlocked');
+    // $('#locker').text('lock_outline');
+    setTimeout(function(){
+      addListenerMulti(slider, 'click tap', function(){
+        // slider.on('click tap', function(event){
+          if (!slider.classList.contains('unlocked'))
+          return;
+        slider.classList.contains('unlocked');
+        // $('#locker').text('lock_open');
+        // slider.off('click tap');
+      });
+    }, 0);
+  });
+    
+  // });
+
+  addListenerMulti(document.body, 'mousemove touchmove', function(event){
+  // $(document.body).on('mousemove touchmove', function(event){
+    if (!mouseIsDown)
+      return;
+
+	var currentMouse = event.clientX || event.originalEvent.touches[0].pageX;
+	var relativeMouse = currentMouse - initialMouse;
+	var slidePercent = 1 - (relativeMouse / slideMovementTotal);
+	
+	// $('.slide-text').fadeTo(0, slidePercent);
+
+	if (relativeMouse <= 0) {
+		slider.style.left = '-10px';
+		return;
+	}
+	if (relativeMouse >= slideMovementTotal + 10) {
+		slider.style.left= slideMovementTotal + 'px';
+		return;
+	}
+	 slider.style.left = (relativeMouse - 10)+'px';
+// });
+
+  });
+}
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");

@@ -225,4 +225,5 @@ export class SharedLoginComponent implements OnInit
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
     get isNormalLogin() { return this.isCheckout === false && this.headerTitle == null  }
+    get isWhiteHeader() { return this.isCheckout || this.headerTitle !== null}
 }

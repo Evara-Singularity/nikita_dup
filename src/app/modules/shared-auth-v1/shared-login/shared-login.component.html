@@ -1,5 +1,5 @@
 <div class="login-bg"  [class.checkout-login-bg]="true">
-    <shared-auth-header *ngIf="isAuthHeader"  [isWhiteHeader]="isAuthHeader"></shared-auth-header>
+    <shared-auth-header *ngIf="isWhiteHeader"  [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
     <div class="login-bg-img" *ngIf="isNormalLogin" > 
         <button class="btn skip-btn" (click)="$event.stopPropagation();navigateHome()">SKIP NOW</button>
     </div>

@@ -156,6 +156,7 @@ export class SharedOtpComponent implements OnInit
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this._toastService.show({ type: "error", text: response['status'] });
+                    this._cartService.logOutAndClearCart();
                 } else {
                     const BACKURLTITLE = this._localAuthService.getBackURLTitle();
                     const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;

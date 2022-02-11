@@ -13,7 +13,7 @@
       line-height: 27px;
       color: #ffffff;
       text-align: center;
-      font-weight: 400;
+      font-weight: 'bold';
     }
   }
   .rfq-form-container {
@@ -90,4 +90,13 @@
       text-align: center;
     }
   }
+  .pop-text-area-v2 {
+    margin-top: 40px;
+    text-align: 'center';
+    button.btn-variant1 {
+      width: 100%;
+      margin: auto;
+    }
+  }
+
 }

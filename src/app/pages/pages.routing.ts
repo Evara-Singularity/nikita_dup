@@ -731,8 +731,8 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
-					title: 'RFQ',
 					moreOpt: false,
+					logo: true,
 				},
 			},
 			{

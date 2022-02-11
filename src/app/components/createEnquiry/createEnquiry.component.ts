@@ -22,7 +22,7 @@ export class CreateEnquiryComponent {
 
   public bulkEnquiryForm: FormGroup;
   public customerId: number;
-  showThanksPopup = false;
+  showThanksPopup = true;
   isFormSubmitted: boolean= false;
 
   private userDetails: { name: string, phoneno: string, email: string, company_name: string, isLogin: boolean } = {

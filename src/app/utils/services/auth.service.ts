@@ -6,66 +6,73 @@ import { AuthFlowType } from '../models/auth.modals';
 @Injectable({
     providedIn: 'root'
 })
-export class LocalAuthService{
+export class LocalAuthService
+{
     // public login$ = new EventEmitter();
     public login$: Subject<any> = new Subject<any>();
     public logout$ = new EventEmitter();
     pageHistory = {};
-    constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService){ 
+    constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService)
+    {
     }
 
-    getUserSession(){
+    getUserSession()
+    {
         return this._localStorageService.retrieve('user');
     }
 
-    setUserSession(data){
+    setUserSession(data)
+    {
         this._localStorageService.store('user', data);
     }
 
-    setPageInfo(pageName, info){
+    setPageInfo(pageName, info)
+    {
         this.pageHistory['pageName'] = info;
         this._sessionStorageService.store(pageName, JSON.stringify(info));
     }
 
-    removePageInfo(pageName){
+    removePageInfo(pageName)
+    {
         this._sessionStorageService.clear(pageName);
         delete this.pageHistory[pageName];
     }
 
-    getPageInfo(pageName){
+    getPageInfo(pageName)
+    {
         let info = this._sessionStorageService.retrieve(pageName);
-        if(info){
+        if (info) {
             return JSON.parse(info);
-        }else{
+        } else {
             info = this.pageHistory[pageName];
-            return info?info:null;
+            return info ? info : null;
         }
     }
 
     setBackURLTitle(backurl, title?)
     {
-        const sAuthHeader = { backurl: backurl, title: title?title:""};
-        this._localStorageService.store('sAuthHeader', sAuthHeader);
+        const sAuthHeader = { backurl: backurl, title: title ? title : "" };
+        this._sessionStorageService.store('sAuthHeader', sAuthHeader);
     }
 
     getBackURLTitle()
     {
-        return this._localStorageService.retrieve('sAuthHeader');
+        return this._sessionStorageService.retrieve('sAuthHeader');
     }
 
     clearBackURLTitle()
     {
-        this._localStorageService.clear("sAuthHeader");
+        this._sessionStorageService.clear("sAuthHeader");
     }
 
     setAuthFlow(isUserExists, flowType, authIdentifierType, authIdentifier, data = null)
     {
         const MAUTH: AuthFlowType = { isUserExists: isUserExists, flowType: flowType, identifierType: authIdentifierType, identifier: authIdentifier, data: data };
         this.clearAuthFlow();
-        this._localStorageService.store("authflow", MAUTH);
+        this._sessionStorageService.store("authflow", MAUTH);
     }
 
-    getAuthFlow(): AuthFlowType { return this._localStorageService.retrieve("authflow"); }
+    getAuthFlow(): AuthFlowType { return this._sessionStorageService.retrieve("authflow"); }
 
-    clearAuthFlow() { this._localStorageService.clear("authflow"); }
+    clearAuthFlow() { this._sessionStorageService.clear("authflow"); }
 }

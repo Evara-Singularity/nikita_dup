@@ -219,12 +219,14 @@ export class SharedLoginComponent implements OnInit
         }
     }
 
-    navigateHome() {
-        // const BACKURL = this._route.snapshot.queryParams['backurl'];
-        // const URL = BACKURL || "."
-        // this._router.navigate([URL]);
-        this._router.navigate(["."]);
+    navigateSkipNow() {
+        const BACK_URL_STRING = decodeURIComponent(localStorage.getItem("backRedirectUrl"));
+        const BACK_URL = BACK_URL_STRING.split("backurl=")[1];
+        const URL = BACK_URL || "."
+        this._router.navigate([URL]);
     }
+
+    navigateHome() { this._router.navigate(["."])}
 
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }

@@ -68,11 +68,8 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
         } else {
             NAVIGATE_TO = this.HOME_URL;
         }
-        this._route.queryParamMap.subscribe(params =>{
-            if(params.get('backurl')){
-                NAVIGATE_TO = params.get('backurl');
-            }
-        })
+        const BACKURL = this._route.snapshot.queryParams['backurl'];
+        if (BACKURL) { NAVIGATE_TO = BACKURL}
         this.navigateTo(NAVIGATE_TO);
     }
 

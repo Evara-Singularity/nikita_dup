@@ -42,6 +42,8 @@ import { ProductService } from "../../utils/services/product.service";
 import { SiemaCrouselService } from "../../utils/services/siema-crousel.service";
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
+import * as $ from 'jquery';
+
 interface ProductDataArg {
   productBO: string;
   refreshCrousel?: boolean;
@@ -3644,26 +3646,29 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   mouseUpTouched(event) {
+    console.log('mouseUpTouched ::::::::::::::::');
     let sliderId = this.document.getElementById('slider');
-      if (!this.mouseIsDown) {
-        return;
-      }
-      this.mouseIsDown = false;
-      let currentMouse = event.clientX || event.changedTouches[0].pageX;
-      let relativeMouse = currentMouse - this.initialMouse;
-      
-      if (relativeMouse < this.slideMovementTotal) {
-        // $('.slide-text').fadeTo(300, 1);
-        this.sliderAnimation();
-        return;
-      }
-      sliderId.classList.add('unlocked');
-      this.raiseRFQQuote(true, 80);
-      setTimeout(() => {
-        sliderId.addEventListener('click', (event) => this.toggleSliderClasses(event), false);
-        sliderId.addEventListener('tap', (event) => this.toggleSliderClasses(event), false);
-      }, 0);
+    if (!this.mouseIsDown) {
+      return;
     }
+    this.mouseIsDown = false;
+    let currentMouse = event.clientX || event.changedTouches[0].pageX;
+    let relativeMouse = currentMouse - this.initialMouse;
+    console.log('currentMouse -> ' + currentMouse);
+    console.log('relativeMouse -> ' + relativeMouse);
+    
+    if (relativeMouse < this.slideMovementTotal) {
+      // $('.slide-text').fadeTo(300, 1);
+      this.sliderAnimation();
+      return;
+    }
+    sliderId.classList.add('unlocked');
+    this.raiseRFQQuote(true, 80);
+    // setTimeout(() => {
+    //   sliderId.addEventListener('click', (event) => this.toggleSliderClasses(event), false);
+    //   sliderId.addEventListener('tap', (event) => this.toggleSliderClasses(event), false);
+    // }, 0);
+  }
 
     toggleSliderClasses(event) {
       let sliderId = this.document.getElementById('slider');
@@ -3671,8 +3676,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return;
       }
       sliderId.classList.remove('unlocked');
-      sliderId.removeEventListener('click');
-      sliderId.removeEventListener('tap');
+      sliderId.removeEventListener('click', this.toggleSliderClasses);
+      sliderId.removeEventListener('tap', this.toggleSliderClasses);
     }
     
     mouseMoveTouchMoveEvent(event) {
@@ -3683,10 +3688,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       let currentMouse = event.clientX || event.originalEvent.touches[0].pageX;
       let relativeMouse = currentMouse - this.initialMouse;
-      // let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
+      let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
+      // $('.slide-text').fadeTo(0, slidePercent);
       
       if (relativeMouse <= 0) {
-        sliderId.style.left = '-10px';
+        sliderId.style.left = '0px';
         return;
       }
       if (relativeMouse >= this.slideMovementTotal + 10) {
@@ -3699,7 +3705,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
-	  this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth + 10;
+	  this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
+    console.clear();
+    console.log('-----------------------');
+    console.log('slideMovementTotal : ' + this.slideMovementTotal);
 	  this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
   }
 

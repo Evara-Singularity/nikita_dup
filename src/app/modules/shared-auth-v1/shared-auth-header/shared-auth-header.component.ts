@@ -22,8 +22,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     constructor(
         private _router: Router, 
         private _route: ActivatedRoute,
-        private _sharedAuthService: SharedAuthService,
-        private _localAuthService: LocalAuthService) { }
+        private _sharedAuthService: SharedAuthService) { }
 
     ngOnInit() 
     {
@@ -78,7 +77,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     }
 
     navigateToHome(link){
-        this._localAuthService.clearBackURLTitle();
         this.navigateTo(link);
     }
 

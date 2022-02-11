@@ -10,7 +10,7 @@ import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { Subscription } from 'rxjs';
 import CONSTANTS from '../../../../app/config/constants';
 import { SharedAuthService } from '../shared-auth.service';
-import { SharedAuthUtilService } from './../shared-auth-util.service';
+
 
 export interface BackurlWithTitle
 {
@@ -57,7 +57,6 @@ export class SharedLoginComponent implements OnInit
         private _tms: ToastMessageService,
         private _router: Router,
         private _route: ActivatedRoute,
-        private _sharedAuthUtilService: SharedAuthUtilService,
         private _common: CommonService,
     ) { }
 
@@ -220,7 +219,13 @@ export class SharedLoginComponent implements OnInit
         }
     }
 
-    navigateHome() { this._router.navigate(["."]); }
+    navigateHome() {
+        // const BACKURL = this._route.snapshot.queryParams['backurl'];
+        // const URL = BACKURL || "."
+        // this._router.navigate([URL]);
+        this._router.navigate(["."]);
+    }
+
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }

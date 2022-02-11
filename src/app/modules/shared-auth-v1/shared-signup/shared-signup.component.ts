@@ -5,6 +5,7 @@ import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
@@ -52,7 +53,7 @@ export class SharedSignupComponent implements OnInit
     otpForm = new FormArray([]);
 
 
-    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
+    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit()
@@ -135,7 +136,19 @@ export class SharedSignupComponent implements OnInit
             (response) =>
             {
                 this._globalLoader.setLoaderState(false);
-                this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, "/login");
+                if (response['status'] !== undefined && response['status'] === 500) {
+                    if (this.isCheckout) {
+                        this._checkoutLoginService.signUpCheckout(false);
+                    } else {
+                        this._toastService.show({ type: 'error', text: response['message'] });
+                    }
+                    return;
+                }
+                const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+                const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
+                this._localAuthService.clearAuthFlow();
+                this._localAuthService.clearBackURLTitle();
+                this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, REDIRECT_URL);
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         );

@@ -436,4 +436,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.cartHeaderText = '';
         }
     }
+
+    navigateToLogin($event)
+    {
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.localAuthService.clearAuthFlow();
+        this.localAuthService.clearBackURLTitle();
+        this.router.navigate(['/login']);
+    }
 }

@@ -21,7 +21,7 @@
             <div class="f-right head-icons"
                 [ngClass]="{'home-icons': (_commonService.isHomeHeader || _commonService.isPLPHeader)}"
                 *ngIf="hideElLogin">
-                <a [routerLink]="['/login']"
+                <a (click)="navigateToLogin($event)"
                     *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (isUserLogin == 'false' || !isUserLogin )"
                     class="f-size-16 login-txt text-500">Login</a>
                 <a [routerLink]="['/deals']" *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader)"

@@ -131,7 +131,7 @@ export class SharedOtpComponent implements OnInit
                     //this._cartService.logOutAndClearCart();
                 } else {
                     this.incorrectPassword = null;
-                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
+                    this.processAuthenticaton(response);
                 }
                 this._globalLoader.setLoaderState(false);
             },
@@ -154,18 +154,25 @@ export class SharedOtpComponent implements OnInit
         this._sharedAuthService.authenticate(REQUEST).subscribe(
             (response) =>
             {
+                this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this._toastService.show({ type: "error", text: response['status'] });
                     this._cartService.logOutAndClearCart();
-                } else {
-                    const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-                    const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
-                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
-                }
-                this._globalLoader.setLoaderState(false);
+                    return;
+                } 
+                this.processAuthenticaton(response);
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         )
+    }
+
+    processAuthenticaton(response)
+    {
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
     }
 
     navigateToLogin() {

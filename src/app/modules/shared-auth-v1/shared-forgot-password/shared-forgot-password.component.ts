@@ -8,6 +8,7 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
+import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -30,7 +31,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     verifiedOTP = "";
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _checkoutLoginService: CheckoutLoginService
+        private _route:ActivatedRoute, private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _checkoutLoginService: CheckoutLoginService
     ) { }
 
 

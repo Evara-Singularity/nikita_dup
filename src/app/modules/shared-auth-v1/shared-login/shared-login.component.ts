@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -47,7 +47,7 @@ export class SharedLoginComponent implements OnInit
     headerTitle = null;
     displaySuggestion = true;
     authFlow:AuthFlowType = null;
-
+    paramsSubscriber = null;
 
     constructor(
         private _fb: FormBuilder,

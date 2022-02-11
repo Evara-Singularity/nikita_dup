@@ -471,7 +471,27 @@
                             </ng-container>
                         </ng-container>
                     </p>
-                    <div class="button-area wrapper">
+                    <!-- <div class="swipper">
+                        <div id="button-background" class="button-area wrapper">
+                            <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST</button>
+                            <div id="slider" class="arrow-container next-btn next-btn-invalid" (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                                <i class="icon-next icon-animate-1"></i>
+                                <i class="icon-next icon-animate-2"></i>
+                                <i class="icon-next icon-animate-3"></i>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="swipper">
+                        <div id="button-background" class="button-area wrapper">
+                            <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
+                            <div id="slider" class="arrow-container next-btn next-btn-invalid"  (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                                    <i class="icon-next icon-animate-1"></i>
+                                    <i class="icon-next icon-animate-2"></i>
+                                    <i class="icon-next icon-animate-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="button-area wrapper">
                         <input (change)="raiseRFQQuote(true, nonRaisedRange.value);" #nonRaisedRange type="range" min="0" max="83" [attr.value]="getQuoteCurrentRange" class="slider" class="range_slider" (change)="debouncedUpdatePositionOfGetQuoteRageSlider(nonRaisedRange.value)">
                         <button class="shimmer-button">SLIDE TO RAISE REQUEST </button>
                         <div [style.left.%]="getQuoteCurrentRange" class="arrow-container next-btn next-btn-invalid">
@@ -479,7 +499,7 @@
                             <i class="icon-next icon-animate-2"></i>
                             <i class="icon-next icon-animate-3"></i>
                         </div>
-                    </div>
+                    </div> -->
                 </ng-template>
                 <ng-template #raisedTemplate>
                     <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>

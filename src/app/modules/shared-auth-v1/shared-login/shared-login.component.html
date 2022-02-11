@@ -15,7 +15,9 @@
                             numbersOnly maxlength="10" formControlName="phone">
                         <span class="label">Enter Mobile Number</span>
                         <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
-                            <p class="error-field error-txt">Enter 10 digit mobile number</p>
+                            <!--startwithzero-->
+                            <p class="error-field error-txt" *ngIf="phoneFC.hasError('startwithzero')">Mobile Number should not begin with 0</p>
+                            <p class="error-field error-txt" *ngIf="!phoneFC.hasError('startwithzero')">Enter 10 digit mobile number</p>
                         </ng-container>
                     </label>
                 </div>
@@ -38,9 +40,8 @@
                             <span class="label">Enter Email-ID</span>
                             <div class="auto-complete-list" *ngIf="displaySuggestion">
                                 <ul>
-                                    <li class="email-recoman-text">Email recommendation</li>
+                                    <li class="email-recoman-text" *ngIf="emailAutoCompleteSuggestion.length">Email recommendation</li>
                                     <ng-container *ngFor="let item of emailAutoCompleteSuggestion">
-                                        
                                         <li (click)="fillEmailSuggestion(item)">
                                             {{item}}
                                         </li>

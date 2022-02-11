@@ -354,6 +354,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productStatusCount();
       this.checkDuplicateProduct();
       this.backUrlNavigationHandler();
+      this.attachSwipeEvents();
       // this.commonService.attachHotKeysScrollEvent();
     }
   }
@@ -3608,87 +3609,101 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
+  initialMouse;
+  slideMovementTotal;
+  mouseIsDown;
+  slider;
+  attachSwipeEvents() {
+    this.initialMouse = 0;
+    this.slideMovementTotal = 0;
+    this.mouseIsDown = false;
+    
+    // Custom events on slider
+    this.document.getElementById('slider').addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
+    this.document.getElementById('slider').addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
 
-getAnimateSlider(){
-  var initialMouse = 0;
-  var slideMovementTotal = 0;
-  var mouseIsDown = false;
-  var slider = document.getElementById('slider');
-  var buttonBg = document.getElementById('button-background');
+    // Custom events on Body
+    this.document.body.addEventListener('mousemove', (e) => this.mouseMoveTouchMoveEvent(e), false);
+    this.document.body.addEventListener('touchmove', (e) => this.mouseMoveTouchMoveEvent(e), false);
+    
+  }
 
-  function addListenerMulti(element, eventNames, listener) {
-    var events = eventNames.split(' ');
-    for (var i=0, iLen=events.length; i<iLen; i++) {
-      element.addEventListener(events[i], listener, false);
-    }
-    console.log(events,"eventNames");
+  sliderAnimation() {
+    let id = null;
+    let pos = 0;
+    const elem = document.getElementById("slider");
+    clearInterval(id);
+    id = setInterval(() => {
+      if (pos == 100) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.left = 0 + 'px';
+      }
+    }, 5); 
   }
   
-  // slider.on('mousedown touchstart', function(event){
-    addListenerMulti(slider, 'mousemove touchmove', function(event){
-      console.log(event,"event");
-      mouseIsDown = true;
-      slideMovementTotal = (parseInt(buttonBg.style.width) - parseInt(slider.style.width)) + 10;
-      initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
-    });
-    
-  // });
-
-  // $(document.body, '#slider').on('mouseup touchend', function (event) {
-    addListenerMulti(slider, 'mousemove touchmove', function(event){
-      if (!mouseIsDown)
-      return;
-    mouseIsDown = false;
-    var currentMouse = event.clientX || event.changedTouches[0].pageX;
-    var relativeMouse = currentMouse - initialMouse;
-
-    if (relativeMouse < slideMovementTotal) {
-      // $('.slide-text').fadeTo(300, 1);
-      slider.animate({
-        left: "-10px"
-      }, 300);
-      return;
+  mouseUpTouched(event) {
+    let sliderId = this.document.getElementById('slider');
+      if (!this.mouseIsDown) {
+        return;
+      }
+      this.mouseIsDown = false;
+      let currentMouse = event.clientX || event.changedTouches[0].pageX;
+      let relativeMouse = currentMouse - this.initialMouse;
+      
+      if (relativeMouse < this.slideMovementTotal) {
+        // $('.slide-text').fadeTo(300, 1);
+        this.sliderAnimation();
+        return;
+      }
+      sliderId.classList.add('unlocked');
+      this.raiseRFQQuote(true, 80);
+      setTimeout(() => {
+        sliderId.addEventListener('click', (event) => this.toggleSliderClasses(event), false);
+        sliderId.addEventListener('tap', (event) => this.toggleSliderClasses(event), false);
+      }, 0);
     }
-    slider.classList.add('unlocked');
-    // $('#locker').text('lock_outline');
-    setTimeout(function(){
-      addListenerMulti(slider, 'click tap', function(){
-        // slider.on('click tap', function(event){
-          if (!slider.classList.contains('unlocked'))
-          return;
-        slider.classList.contains('unlocked');
-        // $('#locker').text('lock_open');
-        // slider.off('click tap');
-      });
-    }, 0);
-  });
+
+    toggleSliderClasses(event) {
+      let sliderId = this.document.getElementById('slider');
+      if (!sliderId.classList.contains('unlocked')) {
+        return;
+      }
+      sliderId.classList.remove('unlocked');
+      sliderId.removeEventListener('click');
+      sliderId.removeEventListener('tap');
+    }
     
-  // });
+    mouseMoveTouchMoveEvent(event) {
+      let sliderId = this.document.getElementById('slider');
+      if (!this.mouseIsDown) {
+        return;
+      }
 
-  addListenerMulti(document.body, 'mousemove touchmove', function(event){
-  // $(document.body).on('mousemove touchmove', function(event){
-    if (!mouseIsDown)
-      return;
+      let currentMouse = event.clientX || event.originalEvent.touches[0].pageX;
+      let relativeMouse = currentMouse - this.initialMouse;
+      // let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
+      
+      if (relativeMouse <= 0) {
+        sliderId.style.left = '-10px';
+        return;
+      }
+      if (relativeMouse >= this.slideMovementTotal + 10) {
+        sliderId.style.left = this.slideMovementTotal + 'px';
+        return;
+      }
+      sliderId.style.left = relativeMouse - 10 + 'px';
+    
+  }
 
-	var currentMouse = event.clientX || event.originalEvent.touches[0].pageX;
-	var relativeMouse = currentMouse - initialMouse;
-	var slidePercent = 1 - (relativeMouse / slideMovementTotal);
-	
-	// $('.slide-text').fadeTo(0, slidePercent);
+  sliderMouseDownEvent(event) {
+    this.mouseIsDown = true;
+	  this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth + 10;
+	  this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
+  }
 
-	if (relativeMouse <= 0) {
-		slider.style.left = '-10px';
-		return;
-	}
-	if (relativeMouse >= slideMovementTotal + 10) {
-		slider.style.left= slideMovementTotal + 'px';
-		return;
-	}
-	 slider.style.left = (relativeMouse - 10)+'px';
-// });
 
-  });
-}
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");

@@ -33,6 +33,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() brandName: string; // only received in case used in brand module
   @Input() brandUrl: string = ''; // only received in case used in brand module
   @Input() headerName: string;
+  @Input() titleDescription;
   @Input() categoryId: string; // only received in case used in category module
   @Input() categoryName: string; // only received in case used in category module
   @Input() categoryTaxonomay: string; // only received in case used in category module
@@ -265,11 +266,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     } else {
       this._commonService.toggleFilter();
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
-      if (discountIndex) {
+      if (discountIndex>-1) {
         this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
-      if (ratingIndex) {
+      if (ratingIndex>-1) {
         this.productsListingData.filterData[ratingIndex].terms.sort((a, b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
@@ -314,6 +315,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resetLazyComponents();
+    this._commonService.currentlyOpenedModuleUsed = false;
   }
 
 }

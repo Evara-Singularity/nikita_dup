@@ -12,6 +12,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { Bajaj_CCNumValidator } from '../../utils/bajajCCNum';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { BankNamePipe } from '@app/utils/pipes/bank.pipe';
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 declare var dataLayer;
 
@@ -66,7 +67,8 @@ export class EmiComponent {
     selectedEMIKey = null;
 
 
-    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray, private _emiService: EmiService, private elementRef: ElementRef, private loaderService: GlobalLoaderService, private _bankNamePipe: BankNamePipe) {
+    constructor(private _localStorageService: LocalStorageService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray, private _emiService: EmiService, private elementRef: ElementRef, private loaderService: GlobalLoaderService, private _bankNamePipe: BankNamePipe
+        , private _trackingService: TrackingService) {
         this.step = 0;
         this.payuData = {};
         this.API = CONSTANTS;
@@ -446,7 +448,7 @@ export class EmiComponent {
             newdata['validatorRequest']["shoppingCartDto"]['cart']['noCostEmiDiscount'] = this.nocostEmiDiscount
         }
 
-
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:emi`);
         this.isShowLoader = true;
         /*//// console.log("New Data for pay", newdata);*/
         this._commonService.pay(newdata).subscribe((res): void => {

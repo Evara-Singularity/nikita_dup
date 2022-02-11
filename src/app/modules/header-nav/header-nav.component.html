@@ -24,8 +24,8 @@
                 <a (click)="navigateToLogin($event)"
                     *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (isUserLogin == 'false' || !isUserLogin )"
                     class="f-size-16 login-txt text-500">Login</a>
-                <a [routerLink]="['/deals']" *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader)"
-                    class="icon-home-deal red-txt"></a>
+                <a [routerLink]="['/store/brands']" *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader)"
+                    class="icon-brand_store red-txt"></a>
                 <!-- <a *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader)" (click)="loadSearchNav()" class="icon-search red-txt"></a> -->
                 <div class="search-bar" *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader)">
                     <i class="icon-search"></i>

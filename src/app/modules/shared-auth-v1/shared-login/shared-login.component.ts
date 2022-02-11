@@ -55,6 +55,7 @@ export class SharedLoginComponent implements OnInit
         private _localAuthService: LocalAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
+        private activatedRoute: ActivatedRoute,
         private _router: Router,
         private _route: ActivatedRoute,
         private _common: CommonService,
@@ -69,6 +70,16 @@ export class SharedLoginComponent implements OnInit
             }
         }
         this.handleBackUrlTitle();
+        this.addQueryParamSubscribers();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     updateControls(identifier:string)
@@ -183,7 +194,10 @@ export class SharedLoginComponent implements OnInit
 
         } else {
             const LINK = (isUserExists) ? "/otp" : "/sign-up";
-            this._router.navigate([LINK]);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            };
+            this._router.navigate([LINK], navigationExtras);
         }
     }
 

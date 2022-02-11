@@ -240,7 +240,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				path: 'article/:name',
+				path: 'articles/:name',
 				loadChildren: () =>
 					import('./article/article.module').then((m) => m.ArticleModule),
 				data: {
@@ -730,8 +730,8 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
-					title: 'RFQ',
 					moreOpt: false,
+					logo: true,
 				},
 			},
 			{

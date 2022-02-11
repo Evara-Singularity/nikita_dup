@@ -98,8 +98,11 @@ export class OrderConfirmationComponent implements OnInit {
 
         console.log('order onfirmation logs ==> getCartSessionAnalyticsCall started');
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            let buyNow = false;
+            const FLASHDATA = this.localStorageService.retrieve("flashData");
+            if (FLASHDATA){buyNow = FLASHDATA['buyNow'];}
             this._cartService.getCartBySession({
-                buyNow: this.localStorageService.retrieve("flashData") || 'false',
+                buyNow: buyNow,
                 sessionid: userSession.sessionId
             }).subscribe((cartSession) => {
                 console.log('order onfirmation logs ==> completed response ', cartSession);
@@ -263,6 +266,7 @@ export class OrderConfirmationComponent implements OnInit {
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
+        console.log(digitalData);
         _satellite.track("genericPageLoad");
         console.log('order onfirmation logs ==> abobeTracking completed');
     }
@@ -406,7 +410,7 @@ export class OrderConfirmationComponent implements OnInit {
             if (utm_medium && utm_medium == "admitad") {
                 dataObj.orderedItem.push({
                     Product: {
-                        category: "1",
+                        category: ['214000000', '250000000'].includes(element.categoryCode.toString().trim()) ? "2" : "1",
                         price: element.productUnitPrice,
                         priceCurrency: "INR", // currency code in the ISO-4217 alfa-3 format
                     },

@@ -1,7 +1,7 @@
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
@@ -28,6 +28,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         password: new FormControl("", [Validators.required, PasswordValidator.validatePassword])
     })
     verifiedOTP = "";
+    paramsSubscriber: Subscription = null;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _checkoutLoginService: CheckoutLoginService
@@ -40,6 +41,16 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+        this.addQueryParamSubscribers();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     updatePassword()
@@ -76,7 +87,12 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this.verifiedOTP = verifiedOTP;
     }
 
-    navigateTo(link) { this._router.navigate([link]); }
+    navigateTo(link) { 
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+        };
+        this._router.navigate([link], navigationExtras); 
+    }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
     getUserData()
@@ -97,4 +113,5 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     get isDisabled() { return this.fpForm.invalid || this.verifiedOTP === "" }
 
     ngOnDestroy(): void { }
+
 }

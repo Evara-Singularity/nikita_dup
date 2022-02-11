@@ -51,13 +51,12 @@
                 class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularLinks | slice:0:10">
-                        <a href="{{getUrlPathName(API_RESPONSE.brand[1][0].categoryLinkList[category])}}">{{
+                        <a (click)="accordianNav(getUrlPathName(API_RESPONSE.brand[1][0].categoryLinkList[category]));$event.preventDefault()" href="{{API_RESPONSE.brand[1][0].categoryLinkList[category]}}">{{
                             API_RESPONSE['brand'][0].brandName + ' ' + category }} </a>
                     </div>
                 </div>
             </div>
         </ng-container>
-    
         <ng-container *ngIf="popularCategories?.length > 0">
             <div class="panel-head" style="margin-top:0px;">
                 <div class="container">
@@ -74,7 +73,7 @@
                 class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let category of popularCategories | slice:0:10">
-                        <a href="{{category?.link}}">{{ category?.name }} </a>
+                        <a (click)="accordianNav(category?.link);$event.preventDefault()" href="{{baseDomain}}/{{category?.link}}">{{ category?.name }} </a>
                     </div>
                 </div>
             </div>
@@ -96,12 +95,11 @@
                 class="panel-body">
                 <div class="container category_links" *ngIf="API_RESPONSE.brand[5] && API_RESPONSE.brand[5].data">
                     <div *ngFor="let attribute of API_RESPONSE.brand[5].data | slice:0:10">
-                        <a href="{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
+                        <a (click)="accordianNav(attribute.friendlyUrl);$event.preventDefault()" href="{{baseDomain}}/{{attribute.friendlyUrl}}">{{ attribute.title }}</a>
                     </div>
                 </div>
             </div>
         </ng-container>
-    
         <ng-container
             *ngIf="API_RESPONSE.brand[2]?.mostSoledSiblingCategories && API_RESPONSE.brand[2]?.mostSoledSiblingCategories.length > 0">
             <div class="panel-head" style="margin-top: 0px;">
@@ -119,18 +117,18 @@
                 class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let attribute of API_RESPONSE.brand[2]?.mostSoledSiblingCategories  | slice:0:10">
-                        <a href="{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>
+                        <a (click)="accordianNav(attribute.categoryLink);$event.preventDefault()" href="{{baseDomain}}/{{attribute.categoryLink}}">{{ attribute.categoryName }}</a>
                     </div>
                 </div>
             </div>
         </ng-container>
         
         <ng-container
-            *ngIf="API_RESPONSE.brand[3]?.searchBrandInfoList && API_RESPONSE.brand[3]?.searchBrandInfoList.length > 0">
+            *ngIf="!this._activatedRoute.snapshot.params.category && API_RESPONSE.brand[3]?.searchBrandInfoList && API_RESPONSE.brand[3]?.searchBrandInfoList.length > 0">
             <div class="panel-head" style="margin-top: 0px;">
                 <div class="container">
                     <h3 class="heading-3" [appKpToggle]="{idName: 'otherBrandAccoridan', iconMode : true}">
-                        Other Brands
+                        Related Brands
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
                         </span>
@@ -142,7 +140,7 @@
                 class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let attribute of API_RESPONSE.brand[3]?.searchBrandInfoList  | slice:0:10">
-                        <a href="{{attribute.brandLink}}">{{ attribute.brandName }}</a>
+                        <a [attr.href]="'/' + attribute.brandLink">{{ attribute.brandName }}</a>
                     </div>
                 </div>
             </div>

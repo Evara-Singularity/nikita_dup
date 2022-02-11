@@ -14,6 +14,7 @@ export class TrendingCategoryComponent implements OnInit {
   defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 
   ngOnInit() {
+    console.log('data', this.data);
   }
 
 }

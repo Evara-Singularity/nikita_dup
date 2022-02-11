@@ -17,7 +17,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     @Input('isWhiteHeader') isWhiteHeader = false;
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
-    paramsSubscriber: Subscription = null;
 
     constructor(
         private _router: Router, 
@@ -84,10 +83,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     {
         if (this.checkOutTabSubscriber) {
             this.checkOutTabSubscriber.unsubscribe();
-        }
-
-        if (this.paramsSubscriber) {
-            this.paramsSubscriber.unsubscribe()
         }
     }
 }

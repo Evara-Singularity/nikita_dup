@@ -220,10 +220,11 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
-        const BACK_URL_STRING = decodeURIComponent(localStorage.getItem("backRedirectUrl"));
-        const BACK_URL = BACK_URL_STRING.split("backurl=")[1];
-        const URL = BACK_URL || "."
-        this._router.navigate([URL]);
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || ".";
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        this._router.navigate([REDIRECT_URL]);
     }
 
     navigateHome() { this._router.navigate(["."])}
@@ -231,6 +232,6 @@ export class SharedLoginComponent implements OnInit
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
-    get isNormalLogin() { return this.isCheckout === false && this.headerTitle == null  }
+    get isNormalLogin() { return this.isCheckout === false && !(this.headerTitle)  }
     get isWhiteHeader() { return this.isCheckout || this.headerTitle !== null}
 }

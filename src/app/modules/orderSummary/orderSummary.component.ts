@@ -8,6 +8,7 @@ import { DataService } from '../../utils/services/data.service';
 import { CartService } from '../../utils/services/cart.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { mergeMap } from 'rxjs/operators';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 declare let dataLayer: any;
 
 
@@ -45,6 +46,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
         public _cartService: CartService,
         private _tms: ToastMessageService,
         private localStorageService: LocalStorageService,
+        private _localAuthService: LocalAuthService,
         private loaderService: GlobalLoaderService) {
 
         this.shippingCharges = 0;
@@ -294,12 +296,8 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
         if (user && user.authenticated == "true") {
             this.vof = true;
         } else {
-            // this._gState.notifyDataChanged('loginPopup.open',{redirectUrl:'/quickorder'});
-            let navigationExtras: NavigationExtras = {
-                queryParams: { backurl: '/quickorder' },
-            };
-            this.router.navigate(["/login"], navigationExtras);
-            // this.router.navigateByUrl('/login');
+            this._localAuthService.setBackURLTitle('/quickorder', null);
+            this.router.navigate(["/login"]);
         }
     }
 

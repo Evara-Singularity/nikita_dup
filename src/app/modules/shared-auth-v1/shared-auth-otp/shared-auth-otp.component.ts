@@ -73,7 +73,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
                     if (isResend){
-                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email" : "OTP Resent to mention mobile number" ;
+                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email & associated mobile number" : "OTP Resent to mention mobile number" ;
                         this._toastService.show({ type: "success", text: MESSAGE});
                     }
                     this.startOTPTimer();

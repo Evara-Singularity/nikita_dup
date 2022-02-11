@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SharedAuthService } from '../shared-auth.service';
-import { LocalAuthService } from './../../../utils/services/auth.service';
 
 @Component({
     selector: 'shared-auth-header',
@@ -18,7 +17,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     @Input('isWhiteHeader') isWhiteHeader = false;
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
-    paramsSubscriber: Subscription = null;
 
     constructor(
         private _router: Router, 
@@ -33,7 +31,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
                 this.tab = TAB;
             })
         }
-        this.addQueryParamSubscribers();
     }
 
     handleClick()
@@ -86,10 +83,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     {
         if (this.checkOutTabSubscriber) {
             this.checkOutTabSubscriber.unsubscribe();
-        }
-
-        if (this.paramsSubscriber) {
-            this.paramsSubscriber.unsubscribe()
         }
     }
 }

@@ -70,16 +70,6 @@ export class SharedLoginComponent implements OnInit
             }
         }
         this.handleBackUrlTitle();
-        this.addQueryParamSubscribers();
-    }
-
-    addQueryParamSubscribers() {
-        this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
-            this._sharedAuthService.redirectUrl = data['backurl'];
-            if (data['state']) {
-                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            }
-        });
     }
 
     updateControls(identifier:string)
@@ -194,10 +184,7 @@ export class SharedLoginComponent implements OnInit
 
         } else {
             const LINK = (isUserExists) ? "/otp" : "/sign-up";
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
-            };
-            this._router.navigate([LINK], navigationExtras);
+            this._router.navigate([LINK]);
         }
     }
 

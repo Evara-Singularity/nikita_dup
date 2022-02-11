@@ -55,10 +55,6 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
-                    const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-                    const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this.LOGIN_URL;
-                    this._localAuthService.clearAuthFlow();
-                    this._localAuthService.clearBackURLTitle();
                     this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Sign-In' });
                     //@checkout flow need to integrated here
                     if (this.isCheckout) {
@@ -68,7 +64,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                         this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
                         return;
                     } 
-                    this.navigateTo(REDIRECT_URL);
+                    this.navigateTo(this.LOGIN_URL);
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });
                 }

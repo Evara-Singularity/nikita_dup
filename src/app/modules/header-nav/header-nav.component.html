@@ -21,7 +21,7 @@
             <div class="f-right head-icons"
                 [ngClass]="{'home-icons': (_commonService.isHomeHeader || _commonService.isPLPHeader)}"
                 *ngIf="hideElLogin">
-                <a [routerLink]="['/login']"
+                <a (click)="navigateToLogin($event)"
                     *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (isUserLogin == 'false' || !isUserLogin )"
                     class="f-size-16 login-txt text-500">Login</a>
                 <a [routerLink]="['/store/brands']" *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader)"
@@ -47,8 +47,7 @@
             </div>
         </div>
         <!--Category Header-->
-        <!--displayHeader:used to hide the header in checkout case-->
-        <div class="common-category-header container" *ngIf="displayHeader">
+        <div class="common-category-header container">
             <ng-container *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
                 <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
                     class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>

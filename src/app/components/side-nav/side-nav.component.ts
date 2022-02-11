@@ -89,11 +89,8 @@ export class SideNavComponent implements OnInit {
     if (user && user.authenticated == "true") {
       this.router.navigate([url]);
     } else {
-      const queryParams = { backURL: url };
-      if (title) {
-        queryParams['title'] = title;
-      }
-      this.router.navigate(['/login'], { queryParams });
+      this._localAuthService.setBackURLTitle(url, title);
+      this.router.navigate(['/login']);
     }
   }
 

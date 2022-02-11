@@ -1,18 +1,17 @@
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { Validators, FormArray } from '@angular/forms';
-import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CONSTANTS } from '@app/config/constants';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { AuthFlowType } from '../modals';
+import { PasswordValidator } from '@app/utils/validators/password.validator';
+import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
+import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { PasswordValidator } from '@app/utils/validators/password.validator';
-import { UsernameValidator } from '@app/utils/validators/username.validator';
-import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
-import { CONSTANTS } from '@app/config/constants';
-import { LocalStorageService } from 'ngx-webstorage';
 
 /**
  * User must have auth flow information
@@ -54,7 +53,7 @@ export class SharedSignupComponent implements OnInit
     otpForm = new FormArray([]);
 
 
-    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
+    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit()
@@ -62,7 +61,7 @@ export class SharedSignupComponent implements OnInit
         //redirect if authflow details are not available
         //decide and build singup form depending on OTP or Email registration
         //Need to update the mobile after OTP validation
-        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
+        this.authFlow = this._localAuthService.getAuthFlow();
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
@@ -105,8 +104,9 @@ export class SharedSignupComponent implements OnInit
         );
     }
 
-    captureOTP($event)
+    captureOTP(otpValue)
     {
+        if (!otpValue) return;
         if (this.isSingupUsingPhone) {
             this.updateSignupStep(2);
             return;
@@ -136,7 +136,19 @@ export class SharedSignupComponent implements OnInit
             (response) =>
             {
                 this._globalLoader.setLoaderState(false);
-                this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, "/login");
+                if (response['status'] !== undefined && response['status'] === 500) {
+                    if (this.isCheckout) {
+                        this._checkoutLoginService.signUpCheckout(false);
+                    } else {
+                        this._toastService.show({ type: 'error', text: response['message'] });
+                    }
+                    return;
+                }
+                const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+                const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
+                this._localAuthService.clearAuthFlow();
+                this._localAuthService.clearBackURLTitle();
+                this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, REDIRECT_URL);
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         );

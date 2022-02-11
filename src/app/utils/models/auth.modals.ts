@@ -1,6 +1,6 @@
 export interface AuthFlowType
 {
-    isUserExists:boolean;
+    isUserExists: boolean;
     flowType: string;
     identifierType: string;
     identifier: string;

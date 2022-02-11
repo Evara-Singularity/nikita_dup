@@ -1,16 +1,16 @@
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { CONSTANTS } from '@app/config/constants';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
-import { AuthFlowType } from '../modals';
 import { SharedAuthUtilService } from './../shared-auth-util.service';
 import { SharedAuthService } from './../shared-auth.service';
-import { CONSTANTS } from '@app/config/constants';
-import { CartService } from '@app/utils/services/cart.service';
 /**
  * Flows
  * 1. Login(mobile) + OTP + (backurl/home).
@@ -55,9 +55,8 @@ export class SharedOtpComponent implements OnInit
 
     ngOnInit()
     {
-        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
-        //if authFlow is empty then navigate to login
-        if (!(this.authFlow)) { this.navigateToLogin(); return; }// || !(this.authFlow.isUserExists)
+        this.authFlow = this._localAuthService.getAuthFlow();
+        if (!(this.authFlow)) { this.navigateToLogin(); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
         this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
         this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
@@ -141,11 +140,10 @@ export class SharedOtpComponent implements OnInit
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this.incorrectPassword = response['message'];
-                    this._toastService.show({type:"error", text:response['message']});
+                    //this._cartService.logOutAndClearCart();
                 } else {
                     this.incorrectPassword = null;
-                    this._localAuthService.clearBackURLTitle();
-                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
+                    this.processAuthenticaton(response);
                 }
                 this._globalLoader.setLoaderState(false);
             },
@@ -155,6 +153,7 @@ export class SharedOtpComponent implements OnInit
 
     captureOTP(otpValue)
     {
+        if (!otpValue)return;
         this._globalLoader.setLoaderState(true);
         const REQUEST = { email: '', phone: '',  source: "login_otp" };
         REQUEST['type'] = this._sharedAuthUtilService.getUserType(this.authFlow.flowType, this.authFlow.identifierType);
@@ -167,16 +166,25 @@ export class SharedOtpComponent implements OnInit
         this._sharedAuthService.authenticate(REQUEST).subscribe(
             (response) =>
             {
-                if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    this._toastService.show({ type: "error", text: response['message'] });
-                } else {
-                    this._localAuthService.clearBackURLTitle();
-                    this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, this._sharedAuthService.redirectUrl);
-                }
                 this._globalLoader.setLoaderState(false);
+                if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
+                    this._toastService.show({ type: "error", text: response['status'] });
+                    this._cartService.logOutAndClearCart();
+                    return;
+                } 
+                this.processAuthenticaton(response);
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         )
+    }
+
+    processAuthenticaton(response)
+    {
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
     }
 
     navigateToLogin() {
@@ -204,6 +212,7 @@ export class SharedOtpComponent implements OnInit
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.otpForm.valid }
     get otpValue() { return ((this.otpForm.value as string[]).join("")); }
+    get isLoginUsingEmail() { return this.authFlow && (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_EMAIL);}
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
     ngOnDestroy() {

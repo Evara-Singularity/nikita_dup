@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SharedAuthService } from '../shared-auth.service';
+import { LocalAuthService } from './../../../utils/services/auth.service';
 
 @Component({
     selector: 'shared-auth-header',
@@ -22,7 +23,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     constructor(
         private _router: Router, 
         private _route: ActivatedRoute,
-        private _sharedAuthService: SharedAuthService,) { }
+        private _sharedAuthService: SharedAuthService) { }
 
     ngOnInit() 
     {
@@ -69,28 +70,17 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
         } else {
             NAVIGATE_TO = this.HOME_URL;
         }
-
-        this._route.queryParamMap.subscribe(params =>{
-            if(params.get('backurl')){
-                NAVIGATE_TO = params.get('backurl');
-            }
-        })
-
+        const BACKURL = this._route.snapshot.queryParams['backurl'];
+        if (BACKURL) { NAVIGATE_TO = BACKURL}
         this.navigateTo(NAVIGATE_TO);
     }
 
-    addQueryParamSubscribers() {
-        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
-            this._sharedAuthService.redirectUrl = data['backurl'];
-            if (data['state']) {
-                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            }
-        });
+    navigateToHome(link){
+        this.navigateTo(link);
     }
 
-    navigateTo(link) { 
-        this._router.navigate([link]); 
-    }
+    navigateTo(link) { this._router.navigate([link]); }
+
 
     ngOnDestroy(): void
     {

@@ -75,7 +75,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     displayCart: boolean = false;
     displayMenu: boolean = false;
     displaySearch: boolean = false;
-    displayHeader:boolean = true;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
     @Input('extraData') extraData;
 
@@ -359,7 +358,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
                 this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
                 this.displaySearch = (this.routerData['searchBar'] != undefined) ? this.routerData['searchBar'] : true;
-                this.displayHeader = (this.routerData['hideHeader'] != undefined) ? this.routerData['hideHeader'] : true;
             });
     }
 
@@ -461,5 +459,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.changeDetectorRef.detectChanges();
             this.cartHeaderText = '';
         }
+    }
+
+    navigateToLogin($event)
+    {
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.localAuthService.clearAuthFlow();
+        this.localAuthService.clearBackURLTitle();
+        this.router.navigate(['/login']);
     }
 }

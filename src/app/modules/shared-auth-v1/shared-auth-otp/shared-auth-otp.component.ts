@@ -1,13 +1,14 @@
-import { AuthFlowType } from './../modals';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormArray, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 @Component({
     selector: 'shared-auth-otp',
@@ -35,18 +36,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     isOTPClean: boolean = true;
     paramsSubscriber: Subscription = null;
 
-    constructor(
-        private _sharedAuthService: SharedAuthService, 
-        private _globalLoader: GlobalLoaderService,
-        private _sharedAuthUtilService: SharedAuthUtilService, 
-        private _router: Router, 
-        private _toastService: ToastMessageService,
-        private _route: ActivatedRoute,
-        ) { }
+    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,private _localAuthService:LocalAuthService,
+        private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
     {
-        this.authFlow = this._sharedAuthUtilService.getAuthFlow();
+        this.authFlow = this._localAuthService.getAuthFlow();
         if (this.initiate) {
             this.initiateOTP();
         }
@@ -63,16 +58,13 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.OTP_INPUTS[0].focus();
     }
 
-    addQueryParamSubscribers() {
-        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
-            this._sharedAuthService.redirectUrl = data['backurl'];
-            if (data['state']) {
-                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            }
-        });
+    @HostListener('window:beforeunload', ['$event'])
+    beforeUnloadHander(event)
+    {
+        this._localAuthService.clearAuthFlow();
     }
 
-    initiateOTP()
+    initiateOTP(isResend?)
     {
         if (this.timer > 0) return
         const REQUEST = this.getUserData();
@@ -82,6 +74,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
+                    if (isResend){
+                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email & associated mobile number" : "OTP Resent to mention mobile number" ;
+                        this._toastService.show({ type: "success", text: MESSAGE});
+                    }
                     this.startOTPTimer();
                     return;
                 }
@@ -99,19 +95,17 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-                this._globalLoader.setLoaderState(false);
+                
                 if (response['status']) {
                     this.verifiedOTP = this.otpValue;
                     this.incorrectOTP = null;
-                    if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this.timer = 0;
-                    //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
-                    if (!(this.withLabel)) { this.otpEmitter.emit(this.otpValue); }
+                    if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
+                    if (!(this.withLabel)) { setTimeout(() => { this._globalLoader.setLoaderState(false);this.otpEmitter.emit(this.otpValue);}, 200)};
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
-                    //Below is for only forgot-password case becoz "CONTINUE" CTA will not be there.
-                    if (!(this.withLabel)) { this.otpEmitter.emit(""); }
+                    this._globalLoader.setLoaderState(false);
                     return;
                 }
                 this.processOTPError(response);
@@ -167,6 +161,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         return requestData;
     }
 
+    resendOTP()
+    {
+        this.otpFormArray.controls.forEach((control: FormControl) => control.patchValue(""));
+        this.initiateOTP(true);
+    }
+
     //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
@@ -188,7 +188,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     get otpValue() { return ((this.otpFormArray.value as string[]).join("")); }
     get isOTPVerified() { return (this.otpValue.length > 0) && (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified) }
-    get isOTPFormDiabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
+    get isOTPFormDisabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
+    get isEmailLogin() { return this.authFlow && this.authFlow.identifier.includes("@")}
+    get disableResend() {return this.timer > 0 || this.isOTPVerified}
 
     ngOnDestroy(): void
     {

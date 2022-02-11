@@ -433,20 +433,6 @@
             </div>
         </section>
 
-        <!-- GET Quote section starts -->
-        <div class="payments-block" *ngIf="!this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <ul class="deals-list">
-                <li class="clearfix">
-                    <i class="icon-dropbox-fill"></i>
-                    <div class="ofr_txt">
-                        <strong class="text-black">Interested to buy in bulk</strong>
-                        <small>Get customized price</small>
-                    </div>
-                    <span class="ico-right getQuote" (click)="raiseRFQQuote(false);">GET QUOTE</span>
-                </li>
-            </ul>
-        </div>
-
         <!-- New GET Quote section starts -->
         <div id="get-quote-section" class="buy-nowsec" *ngIf="this.commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <h4  class="pt">Looking for {{ productCategoryDetails["categoryName"] }}</h4>

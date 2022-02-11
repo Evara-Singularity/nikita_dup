@@ -153,7 +153,6 @@ const routes: Routes = [
 					footer: false,
 					title: 'Checkout',
 					moreOpt: true,
-                    // hideHeader:false
 				},
 			},
 			{

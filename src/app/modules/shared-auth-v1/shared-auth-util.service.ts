@@ -9,12 +9,11 @@ import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, Subject } from 'rxjs';
-import { AuthFlowType } from './modals';
 declare var dataLayer;
 declare var digitalData: {};
 declare var _satellite;
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class SharedAuthUtilService implements OnInit
 {
     readonly HOME_URL = "/";
@@ -37,18 +36,7 @@ export class SharedAuthUtilService implements OnInit
         );
     }
 
-    setAuthFlow(isUserExists, flowType, authIdentifierType, authIdentifier, data = null)
-    {
-        const MAUTH: AuthFlowType = { isUserExists: isUserExists, flowType: flowType, identifierType: authIdentifierType, identifier: authIdentifier, data: data };
-        this.clearAuthFlow();
-        this._localStorage.store("authflow", MAUTH);
-    }
-
-    getAuthFlow(): AuthFlowType { return this._localStorage.retrieve("authflow"); }
-
-    clearAuthFlow() { this._localStorage.clear("authflow"); }
-
-    getUserType(flowType:string , identifierType: string)
+    getUserType(flowType: string, identifierType: string)
     {
         return flowType.includes("SIGNUP") || identifierType.includes("PHONE") ? "p" : "e";
     }
@@ -56,13 +44,13 @@ export class SharedAuthUtilService implements OnInit
     processAuthentication(response, isCheckout, redirectUrl)
     {
         this._localAuthService.setUserSession(response);
-        this.clearAuthFlow();
+        this._localAuthService.clearAuthFlow();
         if (window) {
-            this.sendCriteoLayerTags(response);//ATUL
+            this.sendCriteoLayerTags(response);
         }
         let cartSession = Object.assign(this._cartService.getCartSession());
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession('Sign in successful', isCheckout, redirectUrl);
+        this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);
     }
 
     updateCartSession(message, isCheckout, redirectUrl)
@@ -77,7 +65,7 @@ export class SharedAuthUtilService implements OnInit
             if (cartSession) {
                 if (isCheckout) {
                     // value: 2 should be emited for checkout login
-                    this.emitCheckoutLogin(2); 
+                    this.emitCheckoutLogin(2);
                 } else {
                     this._commonService.redirectPostAuth(redirectUrl);
                     this._toastService.show({ type: 'success', text: message });
@@ -91,24 +79,14 @@ export class SharedAuthUtilService implements OnInit
     //common section
     postSignup(params, response, isCheckout, redirectUrl)
     {
-        if (response['status'] !== undefined && response['status'] === 500) {
-            if (isCheckout) {
-                this._checkoutLoginService.signUpCheckout(false);
-            } else {
-                this._toastService.show({ type: 'error', text: response['message'] });
-            }
-        } else {
-            this._localStorage.clear('tocd');
-            this._localStorage.store('user', response);
-            this._localAuthService.clearBackURLTitle();
-            if (window) {
-                this.sendCriteoDataLayerTags(response['userId'], params);
-            }
-            let cartSession = Object.assign(this._cartService.getCartSession());
-            cartSession['cart']['userId'] = response['userId'];
-            this.updateCartSession('Signup successful', isCheckout, redirectUrl);
+        this._localStorage.clear('tocd');
+        this._localStorage.store('user', response);
+        if (window) {
+            this.sendCriteoDataLayerTags(response['userId'], params);
         }
-        this.clearAuthFlow();
+        let cartSession = Object.assign(this._cartService.getCartSession());
+        cartSession['cart']['userId'] = response['userId'];
+        this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, redirectUrl);
     }
 
     updateOTPControls(otpForm: FormArray, length: number) 
@@ -123,6 +101,23 @@ export class SharedAuthUtilService implements OnInit
         this._toastService.show({ type: 'error', text: invalidOTPMessage });
         this._router.navigate(["/"]);
     }
+
+    extractBackURL()
+    {
+        //_activatedRoute
+        const REDIRECT_1 = this._activatedRoute.snapshot.queryParams['backurl'];
+        //_localAuthService
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        const REDIRECT_2: string = ((BACKURLTITLE && BACKURLTITLE['backurl']) as string);
+        //localstorage
+        const BACK_URL_STRING = decodeURIComponent(localStorage.getItem("backRedirectUrl"));
+        let REDIRECT_3:string = (BACK_URL_STRING.split("backurl=")[1] as string);
+        if (REDIRECT_3.includes("&")) {
+            REDIRECT_3 = REDIRECT_2.split("&")[0];
+        }
+        //home
+    }
+
 
     //tracking section
     sendAdobeAnalysis()
@@ -251,16 +246,19 @@ export class SharedAuthUtilService implements OnInit
         }
     }
 
-    emitCheckoutLogin(tabindex) {
+    emitCheckoutLogin(tabindex)
+    {
         this._checkoutLoginHandler.next(tabindex);
     }
 
-    getCheckoutLoginEvent(): Observable<number> {
+    getCheckoutLoginEvent(): Observable<number>
+    {
         return this._checkoutLoginHandler.asObservable();
     }
 
-    logoutUserOnError() {
+    logoutUserOnError()
+    {
         this._cartService.logOutAndClearCart()
     }
-    
+
 }

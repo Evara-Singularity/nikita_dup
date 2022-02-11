@@ -1591,7 +1591,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   goToLoginPage(link, title?, clickedFrom?: string) {
       const queryParams = { backurl: link };
       if (title) queryParams['title'] = title;
-      if (clickedFrom) queryParams['state'] = clickedFrom;
       this.localAuthService.setBackURLTitle(link, title);
       let navigationExtras: NavigationExtras = {queryParams: queryParams};
       this.router.navigate(["/login"], navigationExtras);

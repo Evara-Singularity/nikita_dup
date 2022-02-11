@@ -61,14 +61,22 @@
                     overflow: scroll;
                     overflow-x: hidden;
                     background-color: #fff;
-                    box-shadow: 0px 12px 16px #b1abab;
-                    border-radius:3px;
+                    box-shadow: 0px 3px 16px #b1abab;
+                    border-radius: 8px;
+
                     li{
-                        padding:5px 10px;
+                        padding:10px;
                         color: #303030;
                         font-size:14px;
                         line-height: 2em;
                         border-bottom: 1px solid #EFEFF4;
+                        &.email-recoman-text{
+                            font-size: 10px;
+                            color: #979797;
+                            font-weight: bold;
+                            border-bottom: none;
+                            padding-bottom: 0px;
+                        }
                     }
                 }
             }

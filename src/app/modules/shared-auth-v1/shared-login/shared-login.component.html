@@ -38,7 +38,9 @@
                             <span class="label">Enter Email-ID</span>
                             <div class="auto-complete-list" *ngIf="displaySuggestion">
                                 <ul>
+                                    <li class="email-recoman-text">Email recommendation</li>
                                     <ng-container *ngFor="let item of emailAutoCompleteSuggestion">
+                                        
                                         <li (click)="fillEmailSuggestion(item)">
                                             {{item}}
                                         </li>

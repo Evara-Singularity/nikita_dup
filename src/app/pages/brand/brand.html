@@ -124,11 +124,11 @@
         </ng-container>
         
         <ng-container
-            *ngIf="API_RESPONSE.brand[3]?.searchBrandInfoList && API_RESPONSE.brand[3]?.searchBrandInfoList.length > 0">
+            *ngIf="!this._activatedRoute.snapshot.params.category && API_RESPONSE.brand[3]?.searchBrandInfoList && API_RESPONSE.brand[3]?.searchBrandInfoList.length > 0">
             <div class="panel-head" style="margin-top: 0px;">
                 <div class="container">
                     <h3 class="heading-3" [appKpToggle]="{idName: 'otherBrandAccoridan', iconMode : true}">
-                        Other Brands
+                        Related Brands
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
                         </span>
@@ -140,7 +140,7 @@
                 class="panel-body">
                 <div class="container category_links">
                     <div *ngFor="let attribute of API_RESPONSE.brand[3]?.searchBrandInfoList  | slice:0:10">
-                        <a href="{{attribute.brandLink}}">{{ attribute.brandName }}</a>
+                        <a [attr.href]="'/' + attribute.brandLink">{{ attribute.brandName }}</a>
                     </div>
                 </div>
             </div>

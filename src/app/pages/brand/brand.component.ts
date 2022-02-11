@@ -54,6 +54,9 @@ export class BrandComponent {
 
 
     ngOnInit(): void {
+        console.clear();
+        console.log(this._activatedRoute.snapshot.params);
+
         if (this._commonService.isBrowser) {
 
             // set some extra meta tags if brand is a category page
@@ -72,8 +75,6 @@ export class BrandComponent {
         this._activatedRoute.data.subscribe(result => {
             // pass data to this genric data holder
             this.API_RESPONSE = result;
-            console.clear();
-            console.log(result);
 
             this._productListService.excludeAttributes = [];
 

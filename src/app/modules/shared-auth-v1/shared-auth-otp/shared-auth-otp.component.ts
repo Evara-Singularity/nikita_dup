@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -37,7 +37,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     paramsSubscriber: Subscription = null;
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,private _localAuthService:LocalAuthService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
+        private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
     {
@@ -45,7 +45,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.initiate) {
             this.initiateOTP();
         }
-        this.addQueryParamSubscribers();
     }
 
     ngAfterViewInit(): void

@@ -47,8 +47,8 @@ export class SharedSignupComponent implements OnInit
     signupForm = new FormGroup({
         firstName: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
         email: new FormControl("", [UsernameValidator.validateEmail]),
-        phone: new FormControl("", [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]\d*$/)]),
-        password: new FormControl("", [PasswordValidator.validatePassword]),
+        phone: new FormControl("", [UsernameValidator.validatePhone]),
+        password: new FormControl("", [PasswordValidator.validateSignupPassword]),
     })
     otpForm = new FormArray([]);
 

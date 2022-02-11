@@ -70,6 +70,10 @@ export class UsernameValidator
             return error;
         }
         let phone = c.value;
+        if((phone as string).startsWith("0")){
+            error = { 'startwithzero': true };
+            return error;
+        }
         if (phone.match(phoneRegex) != null) {
             error = null;
         } else {

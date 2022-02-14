@@ -1591,6 +1591,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   goToLoginPage(link, title?, clickedFrom?: string) {
       const queryParams = { backurl: link };
       if (title) queryParams['title'] = title;
+      if (clickedFrom) queryParams['state'] = clickedFrom;
       this.localAuthService.setBackURLTitle(link, title);
       let navigationExtras: NavigationExtras = {queryParams: queryParams};
       this.router.navigate(["/login"], navigationExtras);
@@ -3705,9 +3706,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
 	  this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    console.clear();
-    console.log('-----------------------');
-    console.log('slideMovementTotal : ' + this.slideMovementTotal);
 	  this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
   }
 

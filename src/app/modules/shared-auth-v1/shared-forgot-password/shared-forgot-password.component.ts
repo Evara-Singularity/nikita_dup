@@ -8,6 +8,7 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
+import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -28,8 +29,10 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         password: new FormControl("", [Validators.required, PasswordValidator.validatePassword])
     })
     verifiedOTP = "";
+    paramsSubscriber: Subscription = null;
 
-    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
+
+    constructor(private _route: ActivatedRoute, private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _checkoutLoginService: CheckoutLoginService
     ) { }
 
@@ -40,6 +43,16 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+        this.addQueryParamSubscribers();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     updatePassword()

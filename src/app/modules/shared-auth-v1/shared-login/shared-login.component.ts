@@ -70,7 +70,18 @@ export class SharedLoginComponent implements OnInit
             }
         }
         this.handleBackUrlTitle();
+        this.addQueryParamSubscribers();
     }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
+    }
+
 
     updateControls(identifier:string)
     {

@@ -58,6 +58,7 @@ export class CategoryComponent {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    prodUrl=CONSTANTS.PROD;
 
     constructor(
         public _router: Router,

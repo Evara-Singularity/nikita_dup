@@ -66,7 +66,7 @@
                     [style.display]="API_RESPONSE.category[4].data?.length > 0 ? 'block' : 'none'" class="panel-body">
                     <div class="container category_links">
                         <div *ngFor="let attribute of API_RESPONSE.category[4].data | slice:0:10 ">
-                            <a (click)="_commonService.navigateTo(attribute.friendlyUrl, true)">{{ attribute.title }}</a>
+                            <a (click)="$event.preventDefault();_commonService.navigateTo(attribute.friendlyUrl, true);" [href]="[prodUrl+'/'+attribute.friendlyUrl]">{{ attribute.title }}</a>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                     <div class="container category_links">
                         <div *ngFor="let category of popularLinks | slice:0:10 ">
                             <a
-                                (click)="_commonService.navigateTo(getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category]), true)">{{
+                                (click)="$event.preventDefault();_commonService.navigateTo(getUrlPathName(API_RESPONSE.category[1].categoryLinkList[category]), true)" [href]="[API_RESPONSE.category[1].categoryLinkList[category]]">{{
                                 category }}</a>
                         </div>
                     </div>

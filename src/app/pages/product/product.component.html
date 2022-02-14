@@ -450,7 +450,7 @@
         <!-- New GET Quote section starts -->
         <div id="get-quote-section" class="buy-nowsec" *ngIf="this.commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <h4  class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-            <p  class="small-txt"> {{ productName }} </p>
+            <p  class="small-txt prodct-name"> {{ productName }} </p>
             <div class="buynow-flex">
                 <div class="bn-left">
                     <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
@@ -463,9 +463,9 @@
             <div class="button-sec shimmer">
                 <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
                 <ng-template #nonRaisedTemplate>
-                    <p class="small-txt">We will get in touch with you 
+                    <p class="small-txt">We will get in touch with you on<br>
                         <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                            on {{ '+91-' + commonService?.userSession?.phone }}  
+                             {{ '+91-' + commonService?.userSession?.phone }}  
                             <ng-container *ngIf="commonService?.userSession?.email">
                                 {{ ' | ' +commonService?.userSession?.email }}
                             </ng-container>

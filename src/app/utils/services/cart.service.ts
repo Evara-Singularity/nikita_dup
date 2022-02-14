@@ -338,7 +338,6 @@ export class CartService
     private _notifyCartChanges(result, redirectUrl)
     {
         const cartSession = this.updateCart(result);
-        console.log('CARTSESSION LOGS ==> notifying below cart changes', cartSession, this.localAuthService.getUserSession());
         this.setCartSession(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);

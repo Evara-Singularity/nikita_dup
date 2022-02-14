@@ -1,4 +1,4 @@
-<app-pop-up  [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
+<app-pop-up [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
@@ -7,39 +7,31 @@
     </div>
     <div class="content-popup card mt-15 hp-100 pad-b-70" content>
         <section class="pdp-section-card">
-            <div class="pwa-row">
-                <p class="display-qn">
-                    Displaying Questions
-                    <span>{{questionAnswerList?.data.qlist.length}}</span> of
-                    <span>{{questionAnswerList?.data.qlist.length}} </span>
-                </p>
-            </div>
-            <div *ngFor="let item of questionAnswerList?.data.qlist; let i = index;" class="reviewRow popup-reviewRow">
-                <div class="pwa-row innerRow popup-innerRow">
-                    <div class="qna-block">
-                        <div class="qn">
-                            <span class="heading-3">Q{{i+1}}:</span>
-                            <span class="qn-right heading-3"> {{item.questionText}}</span>
+            <p class="display-qn">
+                Displaying Questions
+                <span>{{questionAnswerList?.data.qlist.length}}</span> of
+                <span>{{questionAnswerList?.data.qlist.length}} </span>
+            </p>
+            <div *ngFor="let item of questionAnswerList?.data.qlist; let i = index;">
+                <div class="qna-block">
+                    <div class="qn">
+                        <span class="heading-3">Q{{i+1}}:</span>
+                        <span class="qn-right heading-3"> {{item.questionText}}</span>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-block">
+                            <p class=" answer">Ans:</p>
+                            <p class="ans-details answer">{{item.answerText}}</p>
                         </div>
                     </div>
                 </div>
-                <p style="margin-left: 29px;">Ans: {{item.answerText}}</p>
+
             </div>
-            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
-                <div class="qn">
-                    <span class="heading-3">Q{{i+1}}:</span>
-                    <span class="qn-right heading-3">{{item.questionText}}</span>
-                </div>
-                <div class="answers">
-                    <div class="answer-block">
-                        <p class=" answer">Ans:</p>
-                        <p class="ans-details answer">{{item.answerText}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="question-submit">
-                <button (click)="toggleAskQuestionPopup()" class="btn btn-red">ASK YOUR QUESTION</button>
-            </div>
+            
         </section>
+        <div class="question-submit">
+            <p>Didn’t get the right answer you are looking for</p>
+            <button (click)="toggleAskQuestionPopup()" class="btn btn-red-bg">ASK YOUR QUESTION</button>
+        </div>
     </div>
 </app-pop-up>

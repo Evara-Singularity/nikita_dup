@@ -1,17 +1,8 @@
-@import './../../app/scss/variables';
-.Qa {
-    background: white;
-    margin-top: 15px;
-    padding: 16px 15px 4px;
-    .faq-head {
-        display: flex;
-        h3 {
-            width: 75%;
-        }
-        button {
-            width: 25%;
-        }
-    }
+@import "./../../app/scss/variables";
+@import "./../../styles.scss";
+.pdp-section-card {
+    padding: 0px 15px;
+    margin-bottom: 50px;
     .display-qn {
         border-bottom: 1px dashed #e3e3e3;
         font-size: $medium-font;
@@ -19,6 +10,7 @@
     }
     .qna-block {
         border-bottom: 1px dashed #a2a2a2;
+        width: 100%;
         .qn {
             display: flex;
             margin-top: 10px;
@@ -39,37 +31,6 @@
                 .ans-details {
                     margin-left: 3px;
                 }
-                // .answer-post {
-                //     color: rgba(48, 48, 48, 0.5);
-                //     font-size: $medium-font;
-
-                //     .author {
-                //         float: left;
-                //         line-height: 26px;
-                //     }
-
-                //     .like-btn {
-                //         float: right;
-                //         border: 1px solid #707070;
-                //         background: none;
-                //         text-align: center;
-                //         border-radius: 2px;
-
-                //         i {
-                //             font-size: 16px;
-                //             color: #a5a5a5;
-                //             border-right: 1px solid #a2a2a2;
-                //             display: inline-block;
-                //             padding: 5px 20px;
-                //         }
-
-                //         .like-count {
-                //             display: inline-block;
-                //             padding: 0 10px;
-                //             color: #303030;
-                //         }
-                //     }
-                // }
             }
             .view-all {
                 color: #0d99ff;
@@ -89,19 +50,21 @@
             }
         }
     }
-    .view-more-faq-strip {
-        padding: 15px 0px;
-        .small-txt {
-            color: #0d99ff;
-            font-weight: bold;
-            position: relative;
-        }
-        i {
-            font-size: 20px;
-            float: right;
-            position: absolute;
-            right: 0px;
-            top: 0px;
-        }
+}
+.question-submit {
+    position: fixed;
+    bottom: 0px;
+    box-shadow: 0px -3px 6px #00000029;
+    background-color: #ffffff;
+    width: 100%;
+    padding: 20px 10px;
+    p {
+        text-align: center;
+    }
+    button {
+        width: 100%;
+        height: 40px;
+        font-size: 12px;
+        margin-top: 12px;
     }
 }

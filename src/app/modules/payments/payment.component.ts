@@ -1,3 +1,4 @@
+import { GlobalSessionStorageService } from './../../utils/services/global-session-storage.service';
 import { FormGroup } from '@angular/forms';
 import { Component, EventEmitter, AfterViewInit, OnInit, ElementRef } from '@angular/core';
 import { PaymentService } from './payment.service';
@@ -40,13 +41,17 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     }
     successPercentageRawData = null; 
 
-    constructor(public _dataService: DataService, private loaderService: GlobalLoaderService, public cartService: CartService, private _paymentService: PaymentService, private _localAuthService: LocalAuthService, public checkOutService: CheckoutService, public commonService: CommonService, private elementRef: ElementRef) {
+    constructor(public _dataService: DataService, private loaderService: GlobalLoaderService, public cartService: CartService, private _paymentService: PaymentService, private _localAuthService: LocalAuthService, public checkOutService: CheckoutService, public commonService: CommonService, private elementRef: ElementRef
+        ,private _globalSessionService:GlobalSessionStorageService) {
         this.globalConstants = CONSTANTS.GLOBAL;
         this.isSavedCardExist = false;
         this.isShowLoader = true;
     }
 
     ngOnInit() {
+        const _cartItems = this.cartService.getCartSession()['itemsList'];
+        const _cartMSNs = (_cartItems as any[]).map(item => item['productId']);
+        this._globalSessionService.updatePaymentMsns(_cartMSNs);
         let invoiceType = this.checkOutService.getInvoiceType();
         this.invoiceType = invoiceType;
 

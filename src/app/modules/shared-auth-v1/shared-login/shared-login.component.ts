@@ -184,7 +184,10 @@ export class SharedLoginComponent implements OnInit
 
         } else {
             const LINK = (isUserExists) ? "/otp" : "/sign-up";
-            this._router.navigate([LINK]);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            };
+            this._router.navigate([LINK], navigationExtras);
         }
     }
 
@@ -225,7 +228,10 @@ export class SharedLoginComponent implements OnInit
         const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || ".";
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
-        this._router.navigate([REDIRECT_URL]);
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+        };
+        this._router.navigate([REDIRECT_URL], navigationExtras);
     }
 
     navigateHome() { this._router.navigate(["."])}

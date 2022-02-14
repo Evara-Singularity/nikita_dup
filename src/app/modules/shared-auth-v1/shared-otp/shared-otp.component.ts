@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -191,7 +191,10 @@ export class SharedOtpComponent implements OnInit
         if (this.isCheckout) {
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
         } else {
-            this._router.navigate([this.LOGIN_URL])
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            };
+            this._router.navigate([this.LOGIN_URL], navigationExtras)
         }
     }
 
@@ -199,7 +202,10 @@ export class SharedOtpComponent implements OnInit
         if (this.isCheckout) {
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.FORGET_PASSWORD_TAB);
         } else {
-            this._router.navigate([this.FORGOT_PASSWORD_URL])
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            };
+            this._router.navigate([this.FORGOT_PASSWORD_URL], navigationExtras)
         }
     }
 

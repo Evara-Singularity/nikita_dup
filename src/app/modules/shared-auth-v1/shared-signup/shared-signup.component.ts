@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -155,8 +155,11 @@ export class SharedSignupComponent implements OnInit
     }
 
     updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
-    navigateTo(link) { 
-        this._router.navigate([link]) 
+    navigateTo(link) {
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+        };
+        this._router.navigate([link], navigationExtras) 
     }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
     get disableContinue() { return this.signupForm.invalid || this.isOTPLimitExceeded }

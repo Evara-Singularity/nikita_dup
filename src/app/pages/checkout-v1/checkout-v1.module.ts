@@ -11,9 +11,7 @@ import { DeliveryAddressModule } from '../../modules/deliveryAddress/deliveryAdd
 import { InvoiceTypeModule } from '../../modules/invoiceType/invoiceType.module';
 import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
 import { PaymentModule } from '../../modules/payments/payment.module';
-import { SharedAuthModule } from '../../modules/shared-auth/shared-auth.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
-import { LoginModule } from '../login/login.module';
 import { CheckoutV1RoutingModule } from './checkout-v1-routing.module';
 import { CheckoutV1Component } from './checkout-v1.component';
 
@@ -29,12 +27,10 @@ import { CheckoutV1Component } from './checkout-v1.component';
     PaymentModule,
     DeliveryAddressModule,
     ContinueModule,
-    LoginModule,
     RouterModule,
     InvoiceTypeModule,
     CartUpdatesModule,
     UnAvailableItemsModule,
-    SharedAuthModule,
     CheckoutHeaderModule,
     CheckoutLoginV2Module,
   ],

@@ -11,6 +11,7 @@ import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CommonService } from '@app/utils/services/common.service';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 
 @Component({
   selector: 'create-enquiry-component',
@@ -129,6 +130,7 @@ export class CreateEnquiryComponent {
         if (res['statusCode'] == 200) {
           ClientUtility.scrollToTop(1000);
           this.showThanksPopup = true;
+          this.isFormSubmitted = false;
           this.bulkEnquiryForm.reset();
           this.adobeEventAfterSubmission();
         }
@@ -213,7 +215,8 @@ export class CreateEnquiryComponent {
     FormsModule,
     ReactiveFormsModule,
     PopUpModule,
-    BottomMenuModule
+    BottomMenuModule,
+    NumberDirectiveModule
   ]
 })
 export default class CreateEnquiryModule {

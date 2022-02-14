@@ -22,6 +22,7 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { LocalStorageService } from "ngx-webstorage";
 import { Router } from "@angular/router";
 import { CommonService } from "@app/utils/services/common.service";
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 @Component({
   selector: "ProductCrouselSlide",
@@ -63,6 +64,7 @@ export class ProductCrouselSlideComponent {
   readonly ytParams = "?enablejsapi=1&autoplay=1&rel=0&controls=1&loop";
   readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
   analyticsInfo: any = {};
+  @Input('productBo') productBo: any;
 
   constructor(
     private globalAnalyticService: GlobalAnalyticsService,
@@ -72,7 +74,8 @@ export class ProductCrouselSlideComponent {
     private _modalService: ModalService,
     private _router: Router,
     private _siemaCrouselService: SiemaCrouselService,
-    private ngxSiemaService: NgxSiemaService
+    private ngxSiemaService: NgxSiemaService,
+    private _trackingService: TrackingService,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -138,6 +141,12 @@ export class ProductCrouselSlideComponent {
   }
 
   showYTVideo(link) {
+    let analyticsDetails = null;
+    if(this.productBo)
+    {
+        const PRODUCT = this._trackingService.basicPDPTracking(this.productBo);
+        analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
+    }
     let videoDetails = { url: link, params: this.ytParams };
     let modalData = {
       component: YoutubePlayerComponent,
@@ -145,7 +154,7 @@ export class ProductCrouselSlideComponent {
       outputs: {},
       mConfig: { showVideoOverlay: true },
     };
-    modalData.inputs = { videoDetails: videoDetails };
+    modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
     this._modalService.show(modalData);
   }
 

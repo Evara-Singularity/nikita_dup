@@ -1,4 +1,4 @@
-<div class="featuredBrands" *ngIf="data['data']">
+<div class="featuredBrands" *ngIf="data['data'] && data['data'].length > 0">
     <h3 class="l0_heading">{{data.title}}</h3>
     <div class="featrOverBlock">
         <div [style.width.px]="data['data'].length * 95" class="clearfix">

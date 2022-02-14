@@ -8,6 +8,7 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 declare var dataLayer;
 
@@ -36,7 +37,8 @@ export class NeftRtgsComponent {
         private _router: Router,
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
-        private loaderService: GlobalLoaderService) {
+        private loaderService: GlobalLoaderService,
+        private _trackingService: TrackingService) {
         this.type = _checkoutService.getInvoiceType();
         this.API = CONSTANTS;
     }
@@ -101,7 +103,7 @@ export class NeftRtgsComponent {
                 "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
             };
         }
-
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:neft-rtgs`);
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe((res) => {
 

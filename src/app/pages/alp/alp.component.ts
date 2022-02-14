@@ -43,6 +43,7 @@ export class AlpComponent implements OnInit {
     taxo3: any;
     trendingSearchData;
     titleHeading = '';
+    titleDescription='';
     pageDescription = '';
     metaTitle = '';
     metaDescription = '';
@@ -111,6 +112,7 @@ export class AlpComponent implements OnInit {
         }
         let attributeListing = this.alpAttrListingData['data']['attributesListing'];
         this.titleHeading = attributeListing['title']
+        this.titleDescription=attributeListing['titleDescription'];
         this.pageDescription = attributeListing['pageDescription'];
         this.metaTitle = attributeListing['metaTitle'];
         this.metaDescription = attributeListing['metaDescription'];

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -36,7 +36,7 @@ export class SharedLoginComponent implements OnInit
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
     })
     loginEmailForm = this._fb.group({
-        email: ['', [Validators.required, UsernameValidator.validateEmail]]
+        email: ['', [Validators.required, UsernameValidator.validateAuthEmail]]
     })
     loginType = this.LOGIN_USING_PHONE; // default login using phone number
     isLoginNumberFormSuisLoginNumberFormSubmitted: boolean = false; bmitted: boolean = false;
@@ -47,7 +47,7 @@ export class SharedLoginComponent implements OnInit
     headerTitle = null;
     displaySuggestion = true;
     authFlow:AuthFlowType = null;
-
+    paramsSubscriber = null;
 
     constructor(
         private _fb: FormBuilder,
@@ -55,6 +55,7 @@ export class SharedLoginComponent implements OnInit
         private _localAuthService: LocalAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
+        private activatedRoute: ActivatedRoute,
         private _router: Router,
         private _route: ActivatedRoute,
         private _common: CommonService,
@@ -220,10 +221,11 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
-        const BACK_URL_STRING = decodeURIComponent(localStorage.getItem("backRedirectUrl"));
-        const BACK_URL = BACK_URL_STRING.split("backurl=")[1];
-        const URL = BACK_URL || "."
-        this._router.navigate([URL]);
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || ".";
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        this._router.navigate([REDIRECT_URL]);
     }
 
     navigateHome() { this._router.navigate(["."])}
@@ -231,6 +233,6 @@ export class SharedLoginComponent implements OnInit
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
-    get isNormalLogin() { return this.isCheckout === false && this.headerTitle == null  }
+    get isNormalLogin() { return this.isCheckout === false && !(this.headerTitle)  }
     get isWhiteHeader() { return this.isCheckout || this.headerTitle !== null}
 }

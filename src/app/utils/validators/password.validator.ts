@@ -11,4 +11,13 @@ export class PasswordValidator
         }
         return null
     }
+
+    static validateSignupPassword(control: AbstractControl): ValidationErrors | null
+    {
+        let value: string = control.value;
+        if (value && (value.length === 0 || value.length < 8)) {
+            return { 'minlength': 'Password should be of min. 8 characters.' }
+        }
+        return null
+    }
 }

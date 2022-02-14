@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SharedAuthService } from '../shared-auth.service';
-import { LocalAuthService } from './../../../utils/services/auth.service';
 
 @Component({
     selector: 'shared-auth-header',
@@ -79,9 +78,11 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     navigateTo(link) { this._router.navigate([link]); }
 
+
     ngOnDestroy(): void
     {
-        if (this.checkOutTabSubscriber)
+        if (this.checkOutTabSubscriber) {
             this.checkOutTabSubscriber.unsubscribe();
+        }
     }
 }

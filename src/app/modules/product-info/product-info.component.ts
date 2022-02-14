@@ -21,6 +21,7 @@ export class ProductInfoComponent implements OnInit {
   @Input("openProductInfo") openProductInfo = false;
   @Input("modalData") modalData = null;
   @Input("oosProductIndex") oosProductIndex = -1;
+  @Input('analyticProduct') analyticProduct = null;
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   defaultInfo = "";
   selectedIndex = 0;

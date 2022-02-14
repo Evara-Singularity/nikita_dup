@@ -1,15 +1,15 @@
-import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { AuthFlowType } from '@app/utils/models/auth.modals';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { AuthFlowType } from '@app/utils/models/auth.modals';
 
 @Component({
     selector: 'shared-forgot-password',
@@ -55,10 +55,6 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
-                    const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-                    const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this.LOGIN_URL;
-                    this._localAuthService.clearAuthFlow();
-                    this._localAuthService.clearBackURLTitle();
                     this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Sign-In' });
                     //@checkout flow need to integrated here
                     if (this.isCheckout) {
@@ -68,7 +64,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                         this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
                         return;
                     } 
-                    this.navigateTo(REDIRECT_URL);
+                    this.navigateTo(this.LOGIN_URL);
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });
                 }
@@ -80,7 +76,12 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this.verifiedOTP = verifiedOTP;
     }
 
-    navigateTo(link) { this._router.navigate([link]); }
+    navigateTo(link) { 
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+        };
+        this._router.navigate([link], navigationExtras); 
+    }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
     getUserData()
@@ -101,4 +102,5 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     get isDisabled() { return this.fpForm.invalid || this.verifiedOTP === "" }
 
     ngOnDestroy(): void { }
+
 }

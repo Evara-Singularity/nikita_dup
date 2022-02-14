@@ -126,22 +126,22 @@ export class ClusterStoreComponent implements OnInit {
 				// });
 			}
 			if(this.isBrowser){
-				this.setAnalyticTags(rawData.clusterStoreData);
+				this.setAnalyticTags();
 			}
 		});
 	}
 
-	setAnalyticTags(data) {
+	setAnalyticTags() {
 		    let user;
             if (this._localStorageService.retrieve('user')) {
                 user = this._localStorageService.retrieve('user');
             }
             /*Start Adobe Analytics Tags */
             let page = {
-                'pageName': "moglix:" + data.pageTitle,
+                'pageName': "moglix:store:" + this._router.url.split('/').pop(),
                 'channel': "store",
-                'subSection': "moglix:" + data.pageTitle + ":" + this._commonService.getSectionClick().toLowerCase(),
-                'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+                'subSection': "moglix:store:" + this._router.url.split('/').pop(),
+                'loginStatus': this._commonService.loginStatusTracking
             }
             let custData = {
                 'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
@@ -157,11 +157,15 @@ export class ClusterStoreComponent implements OnInit {
 	}
 
 	initialize(response) {
+		console.log('initialize ==>', 'callled');
+		if(this.isBrowser){	
+			this.reInitializeLazyComponents();
+		}
+		
 		this.getSelectedCategoryTop(
 			response['data'][0]['block_data']['category_cluster']
 		);
 		this.data = response['data'][0]['block_data'];
-		this.reInitializeLazyComponents();
 		if (this.isServer) {
 			this.setMetaInformation(
 				response['metaTitle'],
@@ -171,7 +175,13 @@ export class ClusterStoreComponent implements OnInit {
 		} else {
 			this.title.setTitle(response['metaTitle']);
 		}
+
+		if(this.isBrowser){	
+			this.callAllLzayComponents();
+		}
 	}
+
+
 	setMetaInformation(title, description) {
 		this.meta.addTag({ name: 'robots', content: CONSTANTS.META.ROBOT });
 		this.title.setTitle(title);
@@ -204,198 +214,199 @@ export class ClusterStoreComponent implements OnInit {
 	}
 
 	async onVisibleAppBanner() {
-		const { BannerComponent } = await import(
-			'../../components/cluster-store/banner/banner.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(BannerComponent);
-		this.appBannerInstance = this.appBannerContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.appBannerInstance.instance['data'] = this.data['main_banner'];
+		if(this.data['main_banner'] && this.data['main_banner']['data'] && this.data['main_banner']['data'].length > 0){
+			const { BannerComponent } = await import(
+				'../../components/cluster-store/banner/banner.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(BannerComponent);
+			this.appBannerInstance = this.appBannerContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.appBannerInstance.instance['data'] = this.data['main_banner'];
+		}
 	}
 
 	async onVisibleAllCategoryComponent() {
-		const { AllCategoryComponent } = await import(
-			'../../components/cluster-store/all-category/all-category.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(AllCategoryComponent);
-		this.allcategoriesInstance = this.allCategoriesContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.allcategoriesInstance.instance['data'] = this.data['all_categories'];
+		if(this.data['all_categories'] && this.data['all_categories']['data'] && this.data['all_categories']['data'].length > 0){
+			const { AllCategoryComponent } = await import(
+				'../../components/cluster-store/all-category/all-category.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(AllCategoryComponent);
+			this.allcategoriesInstance = this.allCategoriesContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.allcategoriesInstance.instance['data'] = this.data['all_categories'];
+		}
 	}
 
 	async onVisibleNewArrivals() {
-		const { NewArrivalComponent } = await import(
-			'../../components/cluster-store/new-arrival/new-arrival.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(NewArrivalComponent);
-		this.newArrivalInstance = this.newArrivalContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.newArrivalInstance.instance['data'] = this.data['new_arrival'];
+		if(this.data['new_arrival'] && this.data['new_arrival']['data'] && this.data['new_arrival']['data'].length > 0){
+			const { NewArrivalComponent } = await import(
+				'../../components/cluster-store/new-arrival/new-arrival.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(NewArrivalComponent);
+			this.newArrivalInstance = this.newArrivalContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.newArrivalInstance.instance['data'] = this.data['new_arrival'];
+		}
 	}
 
 	async onVisibleTrendingCategories() {
-		const { TrendingCategoryComponent } = await import(
-			'../../components/cluster-store/trending-category/trending-category.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(TrendingCategoryComponent);
-		this.trendingCategoryInstance = this.trendingCategoryContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.trendingCategoryInstance.instance['data'] = this.data[
-			'trending_categories'
-		];
+		if (this.data['trending_categories'] && this.data['trending_categories']['data'] && this.data['trending_categories']['data'].length > 0) {
+			const { TrendingCategoryComponent } = await import(
+				'../../components/cluster-store/trending-category/trending-category.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(TrendingCategoryComponent);
+			this.trendingCategoryInstance = this.trendingCategoryContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.trendingCategoryInstance.instance['data'] = this.data['trending_categories'];
+		}
 	}
 
 	async onVisibleFeaturedBrands() {
-		const { FeaturedBrandComponent } = await import(
-			'../../components/cluster-store/featured-brand/featured-brand.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(FeaturedBrandComponent);
-		this.featuredBrandInstance = this.featuredBrandContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.featuredBrandInstance.instance['data'] = this.data['featured_brands'];
+		if(this.data['featured_brands'] && this.data['featured_brands']['data'] && this.data['featured_brands']['data'].length > 0){
+			const { FeaturedBrandComponent } = await import(
+				'../../components/cluster-store/featured-brand/featured-brand.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(FeaturedBrandComponent);
+			this.featuredBrandInstance = this.featuredBrandContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.featuredBrandInstance.instance['data'] = this.data['featured_brands'];
+		}
 	}
 
 	async onVisibleFeatureBanner() {
-		const { FeatureBannerComponent } = await import(
-			'../../components/cluster-store/feature-banner/feature-banner.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(FeatureBannerComponent);
-		this.featureBannerInstance = this.featureBannerContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.featureBannerInstance.instance['data'] = this.data['secondary_banner'];
+		if(this.data['secondary_banner'] &&this. data['secondary_banner']['data'] &&this. data['secondary_banner']['data'].length > 0){
+			const { FeatureBannerComponent } = await import(
+				'../../components/cluster-store/feature-banner/feature-banner.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(FeatureBannerComponent);
+			this.featureBannerInstance = this.featureBannerContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.featureBannerInstance.instance['data'] = this.data['secondary_banner'];
+		}
 	}
 
 	async onVisibleBestSeller() {
-		const { BestsellerComponent } = await import(
-			'../../components/cluster-store/bestseller/bestseller.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(BestsellerComponent);
-		this.bestSellerInstance = this.bestSellerContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.bestSellerInstance.instance['data'] = this.data['bestseller'];
+		if(this.data['bestseller'] && this.data['bestseller']['data'] && this.data['bestseller'] && this.data['bestseller']['data'].length > 0){
+			const { BestsellerComponent } = await import(
+				'../../components/cluster-store/bestseller/bestseller.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(BestsellerComponent);
+			this.bestSellerInstance = this.bestSellerContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.bestSellerInstance.instance['data'] = this.data['bestseller'];
+		}
 	}
 
 	async onVisibleFeturedCategories() {
-		const { FeaturedCategoryComponent } = await import(
-			'../../components/cluster-store/featured-category/featured-category.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(FeaturedCategoryComponent);
-		this.featuredCategoriesInstance = this.featuredCategoriesContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.featuredCategoriesInstance.instance['data'] = this.data[
-			'featured_categories'
-		];
+		if(this.data['featured_categories'] && this.data['featured_categories']['data'] && this.data['featured_categories']['data'].length > 0){
+			const { FeaturedCategoryComponent } = await import(
+				'../../components/cluster-store/featured-category/featured-category.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(FeaturedCategoryComponent);
+			this.featuredCategoriesInstance = this.featuredCategoriesContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.featuredCategoriesInstance.instance['data'] = this.data[
+				'featured_categories'
+			];
+		}
 	}
 
 	async onVisibleClusterVideo() {
-		const { ClusterVideoComponent } = await import(
-			'../../components/cluster-store/cluster-video/cluster-video.component'
-		);
-		const factory = this.cfr.resolveComponentFactory(ClusterVideoComponent);
-		this.clusterVideoInstance = this.clusterVideoContainerRef.createComponent(
-			factory,
-			null,
-			this.injector
-		);
-		this.clusterVideoInstance.instance['listOfVideos'] = this.data[
-			'video_block'
-		]['data'];
-		this.clusterVideoInstance.instance['title'] = this.data['video_block'][
-			'title'
-		];
+		if(this.data['video_block'] && this.data['video_block']['data'] && this.data['video_block'] && this.data['video_block']['data'].length > 0){
+			const { ClusterVideoComponent } = await import(
+				'../../components/cluster-store/cluster-video/cluster-video.component'
+			);
+			const factory = this.cfr.resolveComponentFactory(ClusterVideoComponent);
+			this.clusterVideoInstance = this.clusterVideoContainerRef.createComponent(
+				factory,
+				null,
+				this.injector
+			);
+			this.clusterVideoInstance.instance['listOfVideos'] = this.data[
+				'video_block'
+			]['data'];
+			this.clusterVideoInstance.instance['title'] = this.data['video_block'][
+				'title'
+			];
+		}
 	}
 
 
-	reInitializeLazyComponents(initComponent = true) {
+	callAllLzayComponents() {
+		this.onVisibleAppBanner();
+		this.onVisibleAllCategoryComponent();
+		this.onVisibleNewArrivals();
+		this.onVisibleTrendingCategories();
+		this.onVisibleFeaturedBrands();
+		this.onVisibleFeatureBanner();
+		this.onVisibleBestSeller();
+		this.onVisibleFeturedCategories();
+		this.onVisibleClusterVideo();
+	}
+
+	reInitializeLazyComponents() {
 		if(this.isBrowser) {
 			ClientUtility.scrollToTop(0);
 		}
 		if (this.appBannerInstance) {
 			this.appBannerInstance = null;
 			this.appBannerContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleAppBanner();
-			}
 		}
 		if (this.allcategoriesInstance) {
 			this.allcategoriesInstance = null;
 			this.allCategoriesContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleAllCategoryComponent();
-			}
 		}
 		if (this.newArrivalInstance) {
 			this.newArrivalInstance = null;
 			this.newArrivalContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleNewArrivals();
-			}
 		}
 		if (this.trendingCategoryInstance) {
 			this.trendingCategoryInstance = null;
 			this.trendingCategoryContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleTrendingCategories();
-			}
 		}
 		if (this.featuredBrandInstance) {
 			this.featuredBrandInstance = null;
 			this.featuredBrandContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleFeaturedBrands();
-			}
 		}
 		if (this.featureBannerInstance) {
 			this.featureBannerInstance = null;
 			this.featureBannerContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleFeatureBanner();
-			}
 		}
 		if (this.bestSellerInstance) {
 			this.bestSellerInstance = null;
 			this.bestSellerContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleBestSeller();
-			}
 		}
 		if (this.featuredCategoriesInstance) {
 			this.featuredCategoriesInstance = null;
 			this.featuredCategoriesContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleFeturedCategories();
-			}
 		}
 		if (this.clusterVideoInstance) {
 			this.clusterVideoInstance = null;
 			this.clusterVideoContainerRef.remove();
-			if (initComponent) {
-				this.onVisibleClusterVideo();
-			}
 		}
 	}
 
@@ -410,6 +421,6 @@ export class ClusterStoreComponent implements OnInit {
 	ngOnDestroy() {
 		this.cDistryoyed.next();
 		this.cDistryoyed.unsubscribe();
-		this.reInitializeLazyComponents(false);
+		this.reInitializeLazyComponents();
 	}
 }

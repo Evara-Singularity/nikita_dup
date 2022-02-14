@@ -29,7 +29,8 @@
                     <input type="tel" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
                     <span class="label">Enter Mobile Number*</span>
                     <ng-container *ngIf="phone.touched || phone.dirty">
-                        <p class="error-txt" *ngIf="phone.errors !== null">Enter 10 digit mobile number</p>
+                        <p class="error-field error-txt" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile Number should not begin with 0</p>
+                        <p class="error-field error-txt" *ngIf="phone.invalid && !phone.hasError('startwithzero')">Enter 10 digit mobile number</p>
                         <p class="error-txt" *ngIf="signupForm.valid && isUserExists">Number already exists, try different number or try
                             sign-in</p>
                     </ng-container>

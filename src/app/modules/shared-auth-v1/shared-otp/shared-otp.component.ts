@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -46,10 +46,12 @@ export class SharedOtpComponent implements OnInit
     password: FormControl = null;
     isPasswordSubmitted = false;
     incorrectPassword = null;
-
+    paramsSubscriber: Subscription = null;
+    
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService,
-        private _localAuthService:LocalAuthService) { }
+        private _localAuthService:LocalAuthService,
+        private activatedRoute: ActivatedRoute,) { }
 
     ngOnInit()
     {
@@ -59,6 +61,16 @@ export class SharedOtpComponent implements OnInit
         this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
         this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         this.updateFlow(this.authFlow.identifier);
+        this.addQueryParamSubscribers();
+    }
+
+    addQueryParamSubscribers() {
+        this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
+            this._sharedAuthService.redirectUrl = data['backurl'];
+            if (data['state']) {
+                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            }
+        });
     }
 
     /**
@@ -196,4 +208,10 @@ export class SharedOtpComponent implements OnInit
     get otpValue() { return ((this.otpForm.value as string[]).join("")); }
     get isLoginUsingEmail() { return this.authFlow && (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_EMAIL);}
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
+
+    ngOnDestroy() {
+        if (this.paramsSubscriber) {
+            this.paramsSubscriber.unsubscribe()
+        }
+    }
 }

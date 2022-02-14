@@ -41,6 +41,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     //outputs
     @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output('onRFQSuccess') onRFQSuccess = new EventEmitter();
+    @Output('hasGstin') hasGstin = new EventEmitter();
+    @Output('rfqQuantity') rfqQuantity = new EventEmitter();
+
     //subscriber
     loginSubscriber: Subscription = null;
     pincodeSubscriber: Subscription = null;
@@ -325,6 +328,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.productService.postBulkEnquiry(data).subscribe(
             (response) => {
                 if (response['statusCode'] == 200) {
+                    this.hasGstin.emit(this.isBusinessCustomer.value ? true : false);
+                    this.rfqQuantity.emit(this.quantity.value)
                     this.isOutOfStock ? this.resetOOSFields() : this.rfqForm.reset();
                     this.quantity.setValue(this.productMOQ);
                     this.isLoading.emit(false);

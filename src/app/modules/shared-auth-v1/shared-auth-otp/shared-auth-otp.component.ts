@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -36,7 +36,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     isOTPClean: boolean = true;
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,private _localAuthService:LocalAuthService,
-        private _sharedAuthUtilService: SharedAuthUtilService, private _router: Router, private _toastService: ToastMessageService) { }
+        private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
     {
@@ -73,7 +73,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
                     if (isResend){
-                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email" : "OTP Resent to mention mobile number" ;
+                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email & associated mobile number" : "OTP Resent to mention mobile number" ;
                         this._toastService.show({ type: "success", text: MESSAGE});
                     }
                     this.startOTPTimer();

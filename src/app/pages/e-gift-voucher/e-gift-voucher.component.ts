@@ -39,7 +39,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private _title: Title,
         private _analytics: GlobalAnalyticsService,
         private _common: CommonService
-
     ) { }
 
     ngOnInit()
@@ -170,6 +169,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     this.showSuccessPopup = true;
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();
+                    this.sendGtmCall('Gift Card Request Submitted');
                 }
             },
             (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
@@ -211,5 +211,9 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     onUpdate(e)
     {
         this.showSuccessPopup = false;
+    }
+
+    sendGtmCall(data) {
+        this._analytics.sendGTMCall({ event: data })
     }
 }

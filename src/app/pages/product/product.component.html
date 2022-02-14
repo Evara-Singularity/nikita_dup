@@ -465,9 +465,9 @@
                 <ng-template #nonRaisedTemplate>
                     <p class="small-txt">We will get in touch with you 
                         <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                            on {{ commonService?.userSession?.phone }}  
+                            on {{ '+91-' + commonService?.userSession?.phone }}  
                             <ng-container *ngIf="commonService?.userSession?.email">
-                                {{ commonService?.userSession?.email }}
+                                {{ ' | ' +commonService?.userSession?.email }}
                             </ng-container>
                         </ng-container>
                     </p>

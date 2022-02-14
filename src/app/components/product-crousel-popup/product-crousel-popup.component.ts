@@ -1,3 +1,4 @@
+import { TrackingService } from '@app/utils/services/tracking.service';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -12,6 +13,7 @@ import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.mo
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
 import CONSTANTS from '@app/config/constants';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
   selector: 'app-product-crousel-popup',
@@ -23,6 +25,8 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   @Input() options: any;
   @Input() productAllImages: any;
   @Input() slideNumber: number;
+  @Input() oosProductIndex: -1
+  @Input('analyticProduct') analyticProduct = null;
   @Output() out: EventEmitter<any> =  new EventEmitter<any>();
   @Output() currentSlide: EventEmitter<any> =  new EventEmitter<any>();
   ngxSiemaOptions: NgxSiemaOptions
@@ -31,7 +35,9 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   
   constructor(
     private ngxSiemaService: NgxSiemaService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private _analyticService: GlobalAnalyticsService,
+    private _trackingService : TrackingService,
   ) { }
 
   ngOnInit(): void {
@@ -58,8 +64,22 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
         }
       },
       onChange: (index) => {
+        this.sendTracking(index)
       },
     }
+  }
+
+  sendTracking(num) {
+    let page = {
+      channel: "pdp image carausel",
+      pageName: "moglix:image carausel:pdp",
+      linkName: "moglix:productmainimageclick_" + num,
+      subSection: "moglix:pdp carausel main image:pdp",
+    };
+    if(this.oosProductIndex > -1){
+      page.channel = page.channel + ':oos:similar'
+    }
+    this._analyticService.sendAdobeCall({ page }, "genericPageLoad");
   }
 
   outData(data) {
@@ -71,9 +91,13 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   }
 
   showYTVideo(link) {
+    let analyticsDetails = null;
+    if(this.analyticProduct){
+        analyticsDetails = this._trackingService.getCommonTrackingObject(this.analyticProduct, "listing");      
+    }
     let videoDetails = { url: link, params: this.ytParams };
     let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
-    modalData.inputs = { videoDetails: videoDetails };
+    modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
     this.modalService.show(modalData);
   }
 

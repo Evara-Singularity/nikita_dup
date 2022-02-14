@@ -47,7 +47,11 @@ export function app() {
       ]
     }, (err: Error, html: string) => {
       // manipulate html string to add preloads for images
-      res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
+      if(html){
+        res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
+      }else{
+        res.status(500).send(err.message || `<h1>Something went wrong.</h1>${req.url}`);
+      }
     });
   });
 
@@ -67,12 +71,13 @@ function appendImagePreloads(indexHtml) {
   const regexImage = /<img.*?src=".*?"/g
   const regexImageSrc = /src=".*?"/g
   // maxLimit is to make sure only images coming in first view ports are being preloaded.
-  const maxLimit = 5;
+  const maxLimit = 10;
   let urls = [];
   if (indexHtml.match(regexImage)) {
     urls = indexHtml.match(regexImage).map((val, index) => {
       // extract image URL from extacted img tags
       if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit) {
+      // if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0)) {
         return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
         `;
       } else {

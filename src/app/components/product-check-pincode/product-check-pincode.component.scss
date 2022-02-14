@@ -4,12 +4,15 @@
     .container {
         width: 88%;
     }
+
     .head-sec {
         margin: 15px 0 25px;
+
         i {
             font-size: 20px;
             line-height: 20px;
         }
+
         .txt {
             font-size: 14px;
             font-weight: 500;
@@ -17,8 +20,10 @@
             margin-left: 15px;
         }
     }
+
     .input-pincode {
         overflow: hidden;
+
         .inp-box {
             height: 40px;
             border: 1px solid #707070;
@@ -26,9 +31,11 @@
             width: 70%;
             float: left;
         }
+
         .inp-box::-webkit-input-placeholder {
             font-size: 13px;
         }
+
         .btn-submit {
             float: left;
             height: 40px;
@@ -40,14 +47,17 @@
             border: none;
         }
     }
+
     .current-location {
         @extend %ico-txt;
         color: #0D99FF;
         margin: 15px 0px 15px;
+
         i {
             font-size: 16px;
             line-height: 20px;
         }
+
         .right-txt {
             line-height: 20px;
             margin-left: 30px;
@@ -55,73 +65,91 @@
             font-weight: 500;
         }
     }
+
     .validity-pin {
         margin: 0px 0px 20px 0px;
     }
+
     .pin-validation {
         font-size: $medium-font;
         margin-top: 10px;
+
         i {
             font-size: $medium-font;
             line-height: 20px;
             padding-right: 10px;
         }
+
         .right-txt {
             line-height: 20px;
             margin-left: 20px;
             font-size: 12px;
         }
     }
+
     .valid {
         color: #5BA621;
     }
+
     .invalid {
         color: #D9232D;
+
         input {
             pointer-events: none;
         }
     }
+
     .ship-txt {
         font-size: $medium-font;
         color: #303030;
         opacity: 0.5;
     }
+
     .delivery-txt {
         font-size: 11px;
         padding: 5px 0px 0px 0px;
     }
 }
-.delivery-details-area{
+
+.delivery-details-area {
     padding: 0px 5px 15px;
     background-color: #fff;
-    .delivery-details{
+
+    .delivery-details {
         padding: 5px 2px 20px;
-        .delivery-details-inner{
+
+        .delivery-details-inner {
             display: flex;
             align-items: center;
-            .delivery-details-inner-img{
+
+            .delivery-details-inner-img {
                 width: 10%;
-                img{
-                    width: 24px;
+
+                i {
+                    font-size: 24px;
+                    color: #D9232D;
                 }
             }
-            .delivery-details-inner-box{
+
+            .delivery-details-inner-box {
                 width: 85%;
                 border: 1px solid #707070;
                 border-radius: 4px;
                 height: 40px;
                 position: relative;
-                input{
+
+                input {
                     height: 40px;
                     width: 75%;
                     border: none;
-                    padding:0px 10px;
+                    padding: 0px 10px;
                 }
-                button{
+
+                button {
                     cursor: pointer;
                     position: absolute;
                     width: 30%;
-                    top: 0px;
+                    top: -1px;
                     right: -1px;
                     bottom: 0px;
                     border: none;
@@ -133,38 +161,43 @@
                     font-weight: bold;
                 }
             }
-            
+
         }
-        .availability-text{
+
+        .availability-text {
             font-size: 10px;
             color: #74777A;
-            margin-top:4px;
+            margin-top: 4px;
         }
     }
 }
-.about-delivery{
+
+.about-delivery {
     min-height: 56px;
     padding: 10px;
     display: flex;
     align-items: center;
+
     // &:last-child{
     //     border-bottom: 1px solid #E3E3E3;
     // }
-    img{
+    img {
         width: 24px;
-        margin-right: 10px;
     }
-    .about-delivery-txt{
-        h4{
+
+    .about-delivery-txt {
+        h4 {
             font-size: 12px;
         }
-        span{
+
+        span {
             font-size: 10px;
             color: #74777A;
         }
     }
 }
-.invalid-txt{
+
+.invalid-txt {
     padding: 5px 45px 0px;
     color: #D9232D;
 }

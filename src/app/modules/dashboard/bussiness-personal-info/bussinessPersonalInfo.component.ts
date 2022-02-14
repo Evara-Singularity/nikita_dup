@@ -84,7 +84,7 @@ export class BussinessInfoComponent {
     this._commonService.logout().subscribe((response) => {
       this._localStorageService.clear("user");
       console.log(this._localStorageService.retrieve("user"));
-      this._cartService.cart.next(0);
+      this._cartService.cart.next({count:0});
       if (this.isBrowser) {
       }
       this._commonService
@@ -100,7 +100,7 @@ export class BussinessInfoComponent {
             let params = { sessionid: data["sessionId"] };
             return this._cartService.getCartBySession(params).pipe(
               map((res: any) => {
-                return res;
+                return this._cartService.updateCart(res);
               })
             );
           })
@@ -109,9 +109,7 @@ export class BussinessInfoComponent {
           let cartSession = response;
           const cs = this._cartService.updateCart(cartSession);
           this._cartService.setCartSession(cs);
-          this._cartService.cart.next(
-            cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0
-          );
+          this._cartService.cart.next({count:cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0});
           this._cartService.orderSummary.next(cartSession);
         });
       this._localAuthService.logout$.emit();

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
@@ -10,6 +11,7 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { forkJoin } from 'rxjs';
 
+
 @Component({
   selector: 'product-accordian',
   templateUrl: './product-accordians.component.html',
@@ -18,8 +20,9 @@ import { forkJoin } from 'rxjs';
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
-  ACCORDIAN_DATA: Array<any> = [[], [], []];
-  popularLinks: Array<any> = [];
+  ACCORDIAN_DATA: Array<any> = [[],[],[]];
+  popularLinks: Array<any>= [];
+  prodUrl=CONSTANTS.PROD;
 
   constructor(
     public _commonService: CommonService,
@@ -31,9 +34,7 @@ export class ProductAccordiansComponent {
 
   ngOnInit() {
     this.loadShopByAttributeData();
-  }
-
-  ngAfterViewInit() {
+    this.prodUrl = CONSTANTS.PROD;
   }
 
   loadShopByAttributeData() {
@@ -52,8 +53,8 @@ export class ProductAccordiansComponent {
         this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
         this.popularLinks = Object.keys(res[1]['categoryLinkList']);
       }
-      if (res[2].hasOwnProperty('mostSoledCategories')) {
-        this.ACCORDIAN_DATA[2] = res[2]['mostSoledCategories'];
+      if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
+        this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
       }
     });
 
@@ -64,7 +65,11 @@ export class ProductAccordiansComponent {
     PAGE['subSection'] = accordian;
     PAGE['linkName'] = link;
     this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
-    this._router.navigate([`${link}`])
+    if(link.indexOf('http') == -1){
+      this._commonService.navigateTo(link, true);
+    }else{
+      window.location = link;
+    }
   }
 }
 

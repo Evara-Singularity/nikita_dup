@@ -31,6 +31,7 @@ export class BrandComponent {
     public API_RESPONSE: any;
     public popularLinks = [];
     public brandFooterData;
+    baseDomain=CONSTANTS.PROD;
 
     constructor(
         public _activatedRoute: ActivatedRoute,
@@ -46,7 +47,10 @@ export class BrandComponent {
         private _localStorageService: LocalStorageService,
         public _productListService: ProductListService,
         @Optional() @Inject(RESPONSE) private _response,
-    ) { }
+    ) {
+        this._commonService.isHomeHeader = false;
+        this._commonService.isPLPHeader = true;
+    }
 
 
     ngOnInit(): void {
@@ -81,9 +85,9 @@ export class BrandComponent {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
-                    
+
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                    if (!this._activatedRoute.snapshot.params.category) {
+                    if (!this._activatedRoute.snapshot.params.category && category.hasOwnProperty('terms')) {
                         this.setPopularCategories(category.terms);
                     }
 
@@ -91,7 +95,7 @@ export class BrandComponent {
                     if (res.hasOwnProperty('categoryLinkList')) {
                         this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                         // genrate popular links data
-                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList ||  {});
+                        this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
                     }
                     // genrate data for footer
                     this.genrateAndUpdateBrandFooterData();
@@ -130,22 +134,73 @@ export class BrandComponent {
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
-        if (this.API_RESPONSE.brand[0].seoDetails.title) {
+        //for null seo in brand only
+        if(!this.API_RESPONSE.brand[0].seoDetails && (!this.API_RESPONSE['brand'][1][0].categoryName)){
+            let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+            this.title.setTitle(title);
+            this.meta.addTag({ "name": "og:title", "content": title }); 
+            
+            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+            this.meta.addTag({ "name": "description", "content": metaDescription });
+            this.meta.addTag({ "name": "og:description", "content": metaDescription });
+        }
+        //seo in brand only
+        if (this.API_RESPONSE.brand[0].seoDetails?.title && (!this.API_RESPONSE['brand'][1][0].categoryName) ) {
             this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
-        } else {
+        } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.title) {
             let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
         }
-
-        if (this.API_RESPONSE.brand[0].seoDetails.metaDescription) {
+        
+        if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription && (!this.API_RESPONSE['brand'][1][0].categoryName)) {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
-        } else {
+        } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.metaDescription){
             let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
+        }
+        //seo in brand+category
+        if (this.API_RESPONSE['brand'][1][0]?.categoryName) {
+            this.title.setTitle(this.API_RESPONSE.brand[1][0].title);
+            this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[1][0].title });
+
+            let metaDescription = this.API_RESPONSE.brand[1][0].metaDesciption;
+            this.meta.addTag({ "name": "description", "content": metaDescription });
+            this.meta.addTag({ "name": "og:description", "content": metaDescription });
+        }
+        //for null seo in brand+category 
+        if (!this.API_RESPONSE['brand'][1][0].categoryName) {
+
+            if(!this.API_RESPONSE.brand[0].seoDetails){
+                let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+                this.title.setTitle(title);
+                this.meta.addTag({ "name": "og:title", "content": title }); 
+                
+                let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+                this.meta.addTag({ "name": "description", "content": metaDescription });
+                this.meta.addTag({ "name": "og:description", "content": metaDescription });
+            }
+            if (this.API_RESPONSE.brand[0].seoDetails?.title) {
+                this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
+                this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
+            } else {
+                let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+                this.title.setTitle(title);
+                this.meta.addTag({ "name": "og:title", "content": title });
+            }
+            
+            if (this.API_RESPONSE.brand[0].seoDetails?.metaDescription) {
+                this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
+                this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
+            } else {
+                let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+                this.meta.addTag({ "name": "description", "content": metaDescription });
+                this.meta.addTag({ "name": "og:description", "content": metaDescription });
+            }
+            
         }
 
         //this.meta.addTag({ "name": "og:title", "content": title });
@@ -184,7 +239,7 @@ export class BrandComponent {
                         "position": 2,
                         "item":
                         {
-                            "@id": CONSTANTS.PROD + '/' + this.API_RESPONSE.brand[0].friendlyUrl,
+                            "@id": CONSTANTS.PROD + '/brands/' + this.API_RESPONSE.brand[0].friendlyUrl,
                             "name": this.API_RESPONSE.brand[1][0]["brandName"]
                         }
                     },
@@ -465,7 +520,7 @@ export class BrandComponent {
         this._router.navigateByUrl(window.location.pathname);
     }
 
-    getUrlPathName(url){
+    getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
     }
@@ -489,4 +544,7 @@ export class BrandComponent {
         };
     }
     
+    accordianNav(url){
+        this._router.navigate(['/'+url]);
+    }
 }

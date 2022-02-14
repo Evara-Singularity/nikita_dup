@@ -1,0 +1,20 @@
+<section class="card card-wrap mb-10" [debounceTime]="200" observeVisibility (visible)="onVisiblePastOrders($event)" *ngIf="pageDisplay">
+    <ng-container id="past-orders" class="Bestseller card similar-prod" >
+        <div class="upper-view-all-sec">
+            <div class="upper-view-all-sec-left">
+                <h4>Buy It Again</h4>
+            </div>
+        </div>
+        <div class="vertical-scroll-container">
+            <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
+                <ng-container *ngFor="let product of productList;let pIndex=index">
+                    <product-horizontal-card [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                        [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                        [moduleUsedIn]="'PRODUCT_PAST_ORDER'"
+                        [analytics]="analytics">
+                    </product-horizontal-card>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+</section>

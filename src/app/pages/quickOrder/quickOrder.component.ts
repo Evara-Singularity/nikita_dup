@@ -122,7 +122,7 @@ export class QuickOrderComponent {
                 }),
             ).subscribe((cartSession) => {
                 this.isShowLoader = true;
-                if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 200) {
+                if (cartSession && cartSession['cart'] && cartSession['itemsList'] && Array.isArray(cartSession['itemsList'])) {
                     cartSession = this.cartService.updateCart(cartSession);
                     this.cartService.setCartSession(cartSession);
                     this.cart = cartSession['cart'];
@@ -134,7 +134,7 @@ export class QuickOrderComponent {
                     setTimeout(() => {
                         this.cartSessionUpdated$.next(cartSession);
                         this.cartService.orderSummary.next(cartSession);
-                        this.cartService.cart.next(cartSession['cart'] !== undefined ? cartSession['noOfItems'] : 0);
+                        this.cartService.cart.next({count:  cartSession['noOfItems'] || cartSession['itemsList'].length});
                     }, 0)
                 } else if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
                     const cs = this.cartService.updateCart(cartSession['cart']);
@@ -148,7 +148,7 @@ export class QuickOrderComponent {
                     setTimeout(() => {
                         this.cartSessionUpdated$.next(cs);
                         this.cartService.orderSummary.next(cs);
-                        this.cartService.cart.next(cs['cart'] !== undefined ? cs['noOfItems'] : 0);
+                        this.cartService.cart.next({count: cs['cart'] !== undefined ? cs['noOfItems'] : 0});
                     }, 0)
                     this._localAuthService.setUserSession(cartSession['userData']);
                     this._localAuthService.logout$.emit();
@@ -164,6 +164,7 @@ export class QuickOrderComponent {
     ngAfterViewInit() {
 
     }
+
     ngOnDestroy() {
         /*this.footerService.setFooterObj({footerData: false});                            
         this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());*/
@@ -176,7 +177,7 @@ export class QuickOrderComponent {
     }
 
     getShippingValue(cartSession) {
-        console.log('getShippingValue cartSession', cartSession);
+        // console.log('getShippingValue cartSession', cartSession);
         let sro = this.cartService.getShippingObj(cartSession);
         return this.cartService.getShippingValue(sro)
             .pipe(
@@ -223,7 +224,7 @@ export class QuickOrderComponent {
             productBO = response;
             let productPriceQuantity = productBO['productBO']['productPartDetails'][item['productId'].toUpperCase()]['productPriceQuantity']['india'];
             if (updatedQuantity > productPriceQuantity.quantityAvailable) {
-                alert('Quantity not available');
+                // alert('Quantity not available');
                 let id = '#quantityInput' + i;
                 if (!this.isServer) {
                     (<HTMLInputElement>document.querySelector(id)).value = this.itemsList[i]['productQuantity'];
@@ -231,7 +232,7 @@ export class QuickOrderComponent {
                 this.itemsList[i]['productQuantity'] = item['productQuantity'];
             }
             else if (updatedQuantity < productPriceQuantity.moq) {
-                alert('Minimum quantity is ' + productPriceQuantity.moq);
+                // alert('Minimum quantity is ' + productPriceQuantity.moq);
                 let id = '#quantityInput' + i;
                 if (!this.isServer) {
                     (<HTMLInputElement>document.querySelector(id)).value = this.itemsList[i]['productQuantity'];
@@ -241,7 +242,7 @@ export class QuickOrderComponent {
             else {
                 let remainder = (productPriceQuantity.quantityAvailable - updatedQuantity) % productPriceQuantity.moq;
                 if (remainder > 0) {
-                    alert('Incremental Count not matched')
+                    // alert('Incremental Count not matched')
                 } else {
                     this.itemsList[i]['productQuantity'] = updatedQuantity;
                     this.itemsList[i]['productUnitPrice'] = item['productUnitPrice'];
@@ -265,7 +266,7 @@ export class QuickOrderComponent {
 
             if (res['statusCode'] == 200) {
                 alert('Cart quantity updated successfully');
-                this.cartService.cart.next(res['noOfItems']);
+                this.cartService.cart.next({count: res['noOfItems'] || 0});
             }
         });
     }

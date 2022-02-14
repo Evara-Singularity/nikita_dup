@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, HostBinding, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { CategoryService } from '@app/utils/services/category.service';
@@ -52,7 +52,7 @@ export class CategoryComponent {
     public API_RESPONSE: any;
 
     @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
-
+    @HostBinding('class') translateCategoryValue: string = 'translateCategory';
     reqArray: any[] = [];
     popularLinks: any[] = [];
     wantedBucket: any[] = [];
@@ -76,7 +76,10 @@ export class CategoryComponent {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-    ) { }
+    ) {
+        this._commonService.isHomeHeader = false;
+        this._commonService.isPLPHeader = true;
+    }
 
     ngOnInit(): void {
         this.setDataFromResolver();
@@ -438,7 +441,6 @@ export class CategoryComponent {
      *  In this method condition is checked that if all products  have 0 quantity available, ie all products are "Available on request" then price table code is not proceeded , inversaly it proceeds.
      */
     priceRangeTable(res) {
-        console.log(res);
         let count = 0;
         for (let val of res.productSearchResult.products) {
             if (val.quantityAvailable === 0) {
@@ -815,6 +817,29 @@ export class CategoryComponent {
     getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
+    }
+
+    sendWhatsappTrackingData(){
+        let taxo1;
+        let taxo2;
+        let taxo3;
+        if (this.API_RESPONSE.category[0].categoryDetails.taxonomy) {
+            taxo1 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[0] || '';
+            taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
+            taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
+        }
+        const page = {
+            "linkPageName": "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+            "linkName": "WhatsApp",
+            "channel": "listing"
+        };
+        const custData = this._commonService.custDataTracking;
+        const order = {
+            "productCategoryL1": taxo1,
+            "productCategoryL2": taxo2,
+            "productCategoryL3": taxo3
+        } 
+        this._analytics.sendAdobeCall({ page,custData,order }, "genericClick");
     }
 
     ngOnDestroy() {

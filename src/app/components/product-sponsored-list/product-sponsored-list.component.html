@@ -1,21 +1,16 @@
-<section class="Bestseller card similar-prod" *ngIf="productList && productList.length>0">
+<section class="Bestseller card card-wrap" *ngIf="productList && productList.length>0">
     <div class="upper-u-may-like-sec">
         <h4>You May Also Like</h4>
         <span>AD</span>
-    </div>  
-  <div class="vertical-scroll-container">
-      <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
-          <ng-container *ngFor="let product of productList;let pIndex=index" >
-              <product-horizontal-card 
-                  [product]="product"
-                  [cardMetaInfo]='cardMetaInfo'
-                  [hideAd]="true"
-                  [cardFeaturesConfig]='cardFeaturesConfig'
-                  [pIndex]="pIndex"
-                  [enableTracking]="true"
-                  [analytics]="analytics" >
-              </product-horizontal-card>
-          </ng-container>
-      </div>
-  </div>
-</section>          
+    </div>
+    <div class="vertical-scroll-container sponsered-products">
+        <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
+            <ng-container *ngFor="let product of productList;let pIndex=index">
+                <product-horizontal-card [product]="product" [cardMetaInfo]='cardMetaInfo' [hideAd]="true"
+                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                    [analytics]="analytics">
+                </product-horizontal-card>
+            </ng-container>
+        </div>
+    </div>
+</section>

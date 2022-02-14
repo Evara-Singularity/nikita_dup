@@ -37,12 +37,12 @@ export class RazorPayFormComponent {
   isServer: boolean;
   isBrowser: boolean;
   constructor(
-      private _checkoutService: CheckoutService, 
-      private _commonService: CommonService, 
-      private _localAuthService: LocalAuthService, 
-      private _cartService: CartService, 
-      private loaderService: GlobalLoaderService,
-      private _formBuilder: FormBuilder) {
+    private _checkoutService: CheckoutService,
+    private _commonService: CommonService,
+    private _localAuthService: LocalAuthService,
+    private _cartService: CartService,
+    private loaderService: GlobalLoaderService,
+    private _formBuilder: FormBuilder) {
     this.API = CONSTANTS;
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
@@ -133,12 +133,13 @@ export class RazorPayFormComponent {
       razorData['token'] = this.data['token'];
     }
 
+
     this.razorpay.createPayment(razorData);
     const that = this;
     this.razorpay.on('payment.success', function (resp) {
     })
     this.razorpay.on('payment.error', function (resp) {
-      alert(resp.error.description)
+      // alert(resp.error.description)
     });
   }
 

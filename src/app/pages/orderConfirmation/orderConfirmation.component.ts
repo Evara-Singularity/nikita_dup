@@ -42,9 +42,9 @@ export class OrderConfirmationComponent implements OnInit {
     set showLoader(value: boolean) {
         this.globalLoader.setLoaderState(value);
     }
-   // ondemand loaded components for app Promo
-   appPromoInstance = null;
-   @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
+    // ondemand loaded components for app Promo
+    appPromoInstance = null;
+    @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
 
     constructor(
         private localStorageService: LocalStorageService,
@@ -63,7 +63,6 @@ export class OrderConfirmationComponent implements OnInit {
         public _commonService: CommonService,
         private _globalSessionService:GlobalSessionStorageService
         ) {
-
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
         this._activatedRoute.params.subscribe((data) => { });
@@ -79,7 +78,7 @@ export class OrderConfirmationComponent implements OnInit {
         this.orderId = this.queryParams["orderId"];
         this.amount = this.queryParams["transactionAmount"];
 
-        console.log('order onfirmation logs ==> routeUrl, queryParams, mode, orderId, amount', this.routeUrl, this.queryParams, this.mode, this.orderId, this.amount )
+        console.log('order onfirmation logs ==> routeUrl, queryParams, mode, orderId, amount', this.routeUrl, this.queryParams, this.mode, this.orderId, this.amount)
 
         if (this.isBrowser) {
 
@@ -92,7 +91,7 @@ export class OrderConfirmationComponent implements OnInit {
             this.getCartSessionAnalyticsCall(userSession, utm_medium);
             this.footerService.setFooterObj({ footerData: false });
             this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
-            
+
         }
     }
 
@@ -100,31 +99,34 @@ export class OrderConfirmationComponent implements OnInit {
 
         console.log('order onfirmation logs ==> getCartSessionAnalyticsCall started');
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            let buyNow = false;
+            const FLASHDATA = this.localStorageService.retrieve("flashData");
+            if (FLASHDATA){buyNow = FLASHDATA['buyNow'];}
             this._cartService.getCartBySession({
-                buyNow:  this.localStorageService.retrieve("flashData") || 'false',
+                buyNow: buyNow,
                 sessionid: userSession.sessionId
-            }).subscribe( (cartSession) => {
-                     console.log('order onfirmation logs ==> completed response ', cartSession);
-                    if (cartSession["statusCode"] != undefined && cartSession["statusCode"] == 200) {
-                        // this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
-                        this.setVars(cartSession);
-                        // sent to analytics
-                        const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
-                        console.log('order onfirmation logs ==> completed processed obj ', anayticsData);
-                        this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
-                        this.gtmTracking(userSession, anayticsData);
-                        this.abobeTracking(userSession, anayticsData);
-                        this.sendClickStreamData(cartSession);
-                        this.resetCartSession();
-                    }
-                },
+            }).subscribe((cartSession) => {
+                console.log('order onfirmation logs ==> completed response ', cartSession);
+                if (cartSession["cart"]) {
+                    // this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
+                    this.setVars(cartSession);
+                    // sent to analytics
+                    const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
+                    console.log('order onfirmation logs ==> completed processed obj ', anayticsData);
+                    this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
+                    this.gtmTracking(userSession, anayticsData);
+                    this.abobeTracking(userSession, anayticsData);
+                    this.sendClickStreamData(cartSession);
+                    this.resetCartSession();
+                }
+            },
                 (reponseError) => {
                     this.sendClickStreamDataError(
                         "order_completed_api_error",
                         reponseError
                     );
                 },
-                
+
             );
         }
     }
@@ -162,7 +164,7 @@ export class OrderConfirmationComponent implements OnInit {
             // Important! If order data is loaded via AJAX, uncomment this string.
             console.log('order onfirmation logs ==> admitAdsTracking completed');
             ADMITAD.Tracking.processPositions();
-            
+
         }
     }
 
@@ -265,6 +267,7 @@ export class OrderConfirmationComponent implements OnInit {
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
+        console.log(digitalData);
         _satellite.track("genericPageLoad");
         console.log('order onfirmation logs ==> abobeTracking completed');
     }
@@ -321,9 +324,9 @@ export class OrderConfirmationComponent implements OnInit {
                     this.queryParams["transactionAmount"];
                 this.id = "pixelcodeurl";
             }
-            console.log('order onfirmation logs ==> started with body' , data);
+            console.log('order onfirmation logs ==> started with body', data);
             this._ocs.addAffiliateOrder(data).subscribe((res) => {
-                console.log('order onfirmation logs ==> completed with res' , res);
+                console.log('order onfirmation logs ==> completed with res', res);
             });
         }
     }
@@ -413,7 +416,7 @@ export class OrderConfirmationComponent implements OnInit {
             if (utm_medium && utm_medium == "admitad") {
                 dataObj.orderedItem.push({
                     Product: {
-                        category: "1",
+                        category: ['214000000', '250000000'].includes(element.categoryCode.toString().trim()) ? "2" : "1",
                         price: element.productUnitPrice,
                         priceCurrency: "INR", // currency code in the ISO-4217 alfa-3 format
                     },
@@ -562,10 +565,8 @@ export class OrderConfirmationComponent implements OnInit {
             this.localStorageService.clear("flashData");
         }
         //ENDS
-        console.log('order onfirmation logs ==> reset cart call started ', emptyCart);
         this._cartService.updateCartSession(emptyCart).subscribe((data) => {
-            console.log('order onfirmation logs ==> completed ', data);
-            this._cartService.cart.next(data["noOfItems"]);
+            this._cartService.cart.next({ count: data["noOfItems"] || (data["itemsList"] as any[]).length || 0 });
             let res = data;
             if (res["statusCode"] == 200) {
                 this._cartService.setCartSession(res);
@@ -587,7 +588,7 @@ export class OrderConfirmationComponent implements OnInit {
     async onVisibleAppPromo(event) {
         this.showLoader = true;
         const { ProductAppPromoComponent } = await import('../../components/product-app-promo/product-app-promo.component').finally(() => {
-          this.showLoader = false;
+            this.showLoader = false;
         });
         const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
         this.appPromoInstance = this.appPromoContainerRef.createComponent(factory, null, this.injector);
@@ -596,9 +597,9 @@ export class OrderConfirmationComponent implements OnInit {
         this.appPromoInstance.instance['showPromoCode'] = false;
         this.appPromoInstance.instance['isLazyLoaded'] = true;
         (this.appPromoInstance.instance['appPromoStatus$'] as EventEmitter<boolean>).subscribe((status) => {
-          this.appPromoVisible = status;
+            this.appPromoVisible = status;
         });
-      }
+    }
 }
 
 

@@ -11,22 +11,16 @@ import { GlobalState } from '../../utils/global.state';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
-import { AnimationOptions } from 'ngx-lottie';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import RoutingMatcher from '@app/utils/routing.matcher';
 
 @Component({
     selector: 'header-nav',
     templateUrl: './header-nav.component.html',
     styleUrls: ['./header-nav.component.scss'],
 })
-export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
-{
-
-
-    options: AnimationOptions = {
-        path: './../../../assets/json/common1.json'
-    };
+export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     isHomePage: boolean;
     routerData: any = null;
@@ -37,7 +31,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     backRedirectUrl: string = null;
     sideNavInstance = null;
     isUserLogin: any;
-    isScrolledHeader: boolean = false;
+    // isScrolledHeader: boolean = false;
     @ViewChild('sideMenu', { read: ViewContainerRef })
     sideMenuContainerRef: ViewContainerRef;
     searchBarInstance = null;
@@ -78,10 +72,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         '/contact',
     ];
     isLoginPage: boolean = false;
+    displayCart: boolean = false;
+    displayMenu: boolean = false;
+    displaySearch: boolean = false;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
     @Input('extraData') extraData;
 
     constructor(
+        private _routingMatcher: RoutingMatcher,
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
@@ -97,56 +95,49 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         private _state: GlobalState,
         private _checkoutService: CheckoutService,
         private _analytics: GlobalAnalyticsService
-    )
-    {
+    ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
 
         this.commonSubcribers();
     }
-    
 
-    ngOnInit()
-    {
+
+    ngOnInit() {
         if (this.isBrowser) {
             this.browserCalc();
             this.refreshIcon();
-            this.addBrowserSubcribers();
         }
-        this._checkoutService.checkoutHeader.subscribe((tabIndex)=>{
+        this._checkoutService.checkoutHeader.subscribe((tabIndex) => {
             this.setHeader();
         })
     }
 
-    ngAfterViewInit()
-    {
+    ngAfterViewInit() {
         if (this.isBrowser) {
-            window.addEventListener('scroll', (event) =>
-            {
+            this.addBrowserSubcribers();
+            window.addEventListener('scroll', (event) => {
                 let scrollE = document.scrollingElement || document.documentElement;
                 if (scrollE['scrollTop'] > 120) {
-                    this.isScrolledHeader = true;
+                    this._commonService.isScrolledHeader = true;
                 } else {
-                    this.isScrolledHeader = false;
+                    this._commonService.isScrolledHeader = false;
                 }
             });
         }
     }
 
-    ngOnDestroy()
-    {
+    ngOnDestroy() {
         this.sideNavInstance = null;
         this.searchBarInstance = null;
     }
 
-    async loadSideNav()
-    {
+    async loadSideNav() {
         if (!this.sideNavInstance) {
             this.globalLoader.setLoaderState(true);
             const { SideNavComponent } = await import(
                 './../../components/side-nav/side-nav.component'
-            ).finally(() =>
-            {
+            ).finally(() => {
                 this.globalLoader.setLoaderState(false);
             });
             const factory = this.cfr.resolveComponentFactory(SideNavComponent);
@@ -165,32 +156,30 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 'user'
             ] = this.localAuthService.getUserSession();
         }
-        this.genericButtonClick('/',true);        
+        this.genericButtonClick('/', true);
     }
 
     genericButtonClick(url, hamBurgerClick?: boolean) {
-    let PAGE = {
-      channel: "menu_hamburger",
-      pageName: this.router.url,
-      linkName: url,
-      subSection: url + ' link click'
-    };
+        let PAGE = {
+            channel: "menu_hamburger",
+            pageName: this.router.url,
+            linkName: url,
+            subSection: url + ' link click'
+        };
 
-    if (hamBurgerClick) {
-      PAGE['subSection'] = 'Hamburger icon click';
-      delete PAGE['linkName'];
+        if (hamBurgerClick) {
+            PAGE['subSection'] = 'Hamburger icon click';
+            delete PAGE['linkName'];
+        }
+        this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
     }
-    this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
-  }
 
-    async loadSearchNav()
-    {
+    async loadSearchNav(toBeAutoFilledKeyword = '') {
         if (!this.searchBarInstance) {
             this.globalLoader.setLoaderState(true);
             const { SearchBarComponent } = await import(
                 './../../components/searchBar/search-bar.component'
-            ).finally(() =>
-            {
+            ).finally(() => {
                 this.globalLoader.setLoaderState(false);
             });
             const factory = this.cfr.resolveComponentFactory(SearchBarComponent);
@@ -204,30 +193,40 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 className: 'secondScroll',
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
+            this.searchBarInstance.instance['analytics'] = this._commonService.createGenricAdobeData('best-seller:search:suggestion', this.routerData['pageName'], 'Product Suggestion');
             (
                 this.searchBarInstance.instance['out'] as EventEmitter<boolean>
-            ).subscribe((status) =>
-            {
+            ).subscribe((status) => {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
+            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
         } else {
-            setTimeout(() =>
-            {
-                document.getElementById('search-input').focus();
-                document.getElementById('search-input')['value'] = '';
-            }, 350);
+
+            if (toBeAutoFilledKeyword) {
+                setTimeout(() => {
+                    console.log('toBeAutoFilledKeyword after', toBeAutoFilledKeyword)
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    document.getElementById('search-input').focus();
+                    document.getElementById('search-input')['value'] = '';
+                }, 350);
+            }
+
             this.searchBarInstance.instance['data'] = {
                 type: 'home',
                 className: 'secondScroll',
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
+
+
         }
     }
 
-    async loadBottomSheet()
-    {
+    async loadBottomSheet() {
         if (!this.bottomSheetInstance) {
             const { NavBottomSheetComponent } = await import(
                 './../../components/nav-bottom-sheet/nav-bottom-sheet.component'
@@ -239,7 +238,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.injector
             );
             this.bottomSheetInstance.instance['sbm'] = true;
-              
+
         } else {
             //toggle side menu
             this.bottomSheetInstance.instance['sbm'] = !(this.bottomSheetInstance.instance['sbm']);
@@ -247,18 +246,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.checkUserLogin();
         this.loadBottomSheetAnalyticEvent();
     }
-    checkUserLogin(){
+    checkUserLogin() {
         let user = this.localStorageService.retrieve('user');
-        if(user && user.authenticated === 'true'){
+        if (user && user.authenticated === 'true') {
             this.bottomSheetInstance.instance['userLogin'] = true;
         }
-        else{
+        else {
             this.bottomSheetInstance.instance['userLogin'] = false;
         }
     }
 
     loadBottomSheetAnalyticEvent() {
-        
+
         const user = this.localStorageService.retrieve('user');
         let page = {
             'linkPageName': "moglix:hamburger-menu",
@@ -275,28 +274,29 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    commonSubcribers()
-    {
-        this.router.events.subscribe((val) =>
-        {
+    commonSubcribers() {
+        this.router.events.subscribe((val) => {
             this.createHeaderData(this.route);
             if (val instanceof NavigationEnd) {
                 if (val['url'] === '/' || val['url'] === '/?back=1') {
-                    this.isHomePage = true;
-                } else {
-                    this.isHomePage = false;
-                    // (<HTMLElement>document.querySelector('header-nav + div'))['style']['marginTop'] = '';
+                    this._commonService.isHomeHeader = true;
+                    this._commonService.isPLPHeader = false;
+                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0 || location.pathname.search('alp') > 0)) {
+                    this._commonService.isHomeHeader = false;
+                    this._commonService.isPLPHeader = true;
+                }
+                else {
+                    this._commonService.isHomeHeader = false;
+                    this._commonService.isPLPHeader = false;
                 }
             }
         });
     }
 
-    addBrowserSubcribers()
-    {
+    addBrowserSubcribers() {
         this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((evt: any) =>
-            {
+            .subscribe((evt: any) => {
                 this.currentUrl = evt.url;
                 this.backRedirectUrl = this.currentUrl || '';
                 localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
@@ -306,35 +306,34 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             });
 
         this.cartService.cart.subscribe((data) => {
-            console.log(data);
-            if (typeof data === 'number') {
-                this.noOfCart = data;
+            if (data && data.hasOwnProperty('count')) {
+                this.noOfCart = data.count;
             } else {
-                // incase it is object
-                if (data.count == null || data.count == 0) {
-                    this.noOfCart = 0;
-                } else {
-                    this.noOfCart = data.count;
-                }
+                throw new Error('Cart update count should always be present');
             }
             this.setHeader();
         });
 
-        this.localAuthService.login$.subscribe((data) =>
-        {
+        this.localAuthService.login$.subscribe((data) => {
             this.user = this.localAuthService.getUserSession();
-            this.isUserLogin = true;
+            this.checkUserLoginState();
         });
 
-        this.localAuthService.logout$.subscribe((data) =>
-        {
+        this.localAuthService.logout$.subscribe((data) => {
             this.user = this.localAuthService.getUserSession();
-            this.isUserLogin = false;
+            this.checkUserLoginState();
         });
+
+        this._commonService.getSearchPopupStatus().subscribe((searchKeyword) => {
+            this.loadSearchNav(searchKeyword)
+        })
     }
 
-    browserCalc()
-    {
+    browserCalc() {
+        this.checkUserLoginState();
+    }
+
+    checkUserLoginState() {
         // load user information
         this.user = this.localAuthService.getUserSession();
         this.isUserLogin =
@@ -343,12 +342,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 : false;
     }
 
-    createHeaderData(_aRoute)
-    {
+    createHeaderData(_aRoute) {
         of(_aRoute)
             .pipe(
-                map((route) =>
-                {
+                map((route) => {
                     while (route.firstChild) {
                         route = route.firstChild;
                     }
@@ -357,22 +354,26 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 filter((route) => route.outlet === 'primary'),
                 mergeMap((route) => route.data)
             )
-            .subscribe((rData) =>
-            {
+            .subscribe((rData) => {
                 this.routerData = rData;
+                this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
+                this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
+                this.displaySearch = (this.routerData['searchBar'] != undefined) ? this.routerData['searchBar'] : true;
             });
     }
 
-    goBack()
-    {
+    goBack() {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
-        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false){
-            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
-        }else{
+        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
+           // console.log('back to home 1', window.history.length);  
+            this.pdpReirectHack();
+        } else {
+           // console.log('back to home 2', window.history.length);  
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
+               // console.log('back to home 2.1', window.history.length);  
                 this.router.navigate(['/']);
-            } else if (isCheckout){
+            } else if (isCheckout) {
                 if (this.checkoutLoginService.isAtFirstSection) {
                     let index = this._checkoutService.getCheckoutTabIndex();
                     if (index === 1) {
@@ -387,21 +388,40 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 } else {
                     this.checkoutLoginService.enableResetTabSateSub(true);
                 }
-            }else{
-                this.router.navigate(['/']);
+            } else {
+               this.pdpReirectHack();
             }
         }
     }
 
-    refreshIcon()
-    {
+    private pdpReirectHack() {
+        if (window.history.length > 3) {
+           console.log('back to home 1.1', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
+            if (this._commonService.currentlyOpenedModuleUsed == true) {
+                this._commonService.currentlyOpenedModuleUsed = false;
+                this.router.navigateByUrl('/?back=1');
+            } else {
+                this.location.back();
+            }
+        } else {
+           console.log('back to home 1.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
+            if (this._commonService.currentlyOpenedModule && this._commonService.currentlyOpenedModule.data && this._commonService.currentlyOpenedModule.data.overrideRedirectUrl) {
+                this._commonService.currentlyOpenedModuleUsed = true;
+                this.router.navigate([this._commonService.currentlyOpenedModule.data.overrideRedirectUrl], { queryParams: { back: 1 } });
+            } else {
+               console.log('back to home 1.2.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
+                this.location.back();
+            }
+        }
+    }
+
+    refreshIcon() {
         this.cartHeaderText = '';
         this.hideElLogin = true;
         this.setHeader();
     }
 
-    setHeader()
-    {
+    setHeader() {
         this.isLoginPage = false;
         if (
             this.router.url.includes('/forgot-password') ||

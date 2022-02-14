@@ -6,7 +6,13 @@
 
 :host {
     display: block;
-    margin-top: 108px;
+    margin-top: 120px;
+    &.translateCategory{
+        // transform: translateY(64px);
+        transition-timing-function: ease-in-out;
+        transition: 0.5s all;
+        margin-top:170px;
+    }
     .slide-up {
         transform: translateY(0);
     }

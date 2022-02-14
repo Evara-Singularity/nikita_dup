@@ -41,6 +41,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     //outputs
     @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output('onRFQSuccess') onRFQSuccess = new EventEmitter();
+    @Output('hasGstin') hasGstin = new EventEmitter();
+    @Output('rfqQuantity') rfqQuantity = new EventEmitter();
+
     //subscriber
     loginSubscriber: Subscription = null;
     pincodeSubscriber: Subscription = null;
@@ -73,7 +76,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
-        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, private _commonService: CommonService) {
+        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, public _commonService: CommonService) {
         this.stateList = stateList['dataList'];
         this.isBrowser = _commonService.isBrowser;
     }
@@ -220,7 +223,11 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
     }
 
-    close() { this.isPopup = false; this.isRFQSubmitted = false; }
+    close() {
+        this.isPopup = false;
+        this.isRFQSubmitted = false;
+        this._commonService.oosSimilarCard$.next(false);
+    }
 
     getBusinessDetail(userSession) {
         let details = { customerId: userSession.userId, userType: 'business' };
@@ -321,6 +328,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.productService.postBulkEnquiry(data).subscribe(
             (response) => {
                 if (response['statusCode'] == 200) {
+                    this.hasGstin.emit(this.isBusinessCustomer.value ? true : false);
+                    this.rfqQuantity.emit(this.quantity.value)
                     this.isOutOfStock ? this.resetOOSFields() : this.rfqForm.reset();
                     this.quantity.setValue(this.productMOQ);
                     this.isLoading.emit(false);

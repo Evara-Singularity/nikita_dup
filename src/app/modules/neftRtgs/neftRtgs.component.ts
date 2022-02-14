@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 import { LocalStorageService } from 'ngx-webstorage';
 
 import CONSTANTS from '../../config/constants';
@@ -8,6 +8,7 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 declare var dataLayer;
 
@@ -16,7 +17,7 @@ declare var dataLayer;
     templateUrl: './neftRtgs.html'
 })
 
-export class NeftRtgsComponent{
+export class NeftRtgsComponent {
 
 
     API: {};
@@ -24,7 +25,7 @@ export class NeftRtgsComponent{
     isNeftEnable: boolean = true;
     invoiceType: string;
     totalPayableAmount: number = 0;
-    type:any;
+    type: any;
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
     }
@@ -36,16 +37,17 @@ export class NeftRtgsComponent{
         private _router: Router,
         private _localAuthService: LocalAuthService,
         private _cartService: CartService,
-        private loaderService: GlobalLoaderService) {
+        private loaderService: GlobalLoaderService,
+        private _trackingService: TrackingService) {
         this.type = _checkoutService.getInvoiceType();
         this.API = CONSTANTS;
     }
 
-    ngOnInit(){
+    ngOnInit() {
         let cartSession = this._cartService.getCartSession();
         let invoiceType = this._checkoutService.getInvoiceType();
         this.invoiceType = invoiceType;
-        if(cartSession["cart"]["totalPayableAmount"]<2000){
+        if (cartSession["cart"]["totalPayableAmount"] < 2000) {
             this.message = "NEFT not available below Rs. 2000";
             this.isNeftEnable = false;
         }
@@ -53,16 +55,16 @@ export class NeftRtgsComponent{
         // this.totalPayableAmount = cartSession["cart"]["totalPayableAmount"];
     }
 
-    ngAfterViewInit(){
+    ngAfterViewInit() {
     }
 
-    pay(){
+    pay() {
         let cartSession = this._cartService.getCartSession();
 
         let userSession = this._localAuthService.getUserSession();
         let addressList = this._checkoutService.getCheckoutAddress()
         let newdata = {};
-        
+
         let shippingInformation = {
             'shippingCost': cartSession['cart']['shippingCharges'],
             'couponUsed': cartSession['cart']['totalOffer'],
@@ -75,14 +77,14 @@ export class NeftRtgsComponent{
             'city': addressList["city"],
             'paymentMode': 'NEFT'
         });
-        
+
         let extra = {
-            "mode" : "NEFT",
+            "mode": "NEFT",
             "paymentId": 4,
             addressList: addressList
         };
 
-        if(this.invoiceType === 'retail'){
+        if (this.invoiceType === 'retail') {
             newdata = {
                 "platformCode": "online",
                 "mode": "NEFT",
@@ -90,7 +92,7 @@ export class NeftRtgsComponent{
                 "paymentGateway": "payu",
                 "requestParams": null,
                 "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
-            }; 
+            };
         } else {
             newdata = {
                 "platformCode": "online",
@@ -99,29 +101,28 @@ export class NeftRtgsComponent{
                 "paymentGateway": "razorpay",
                 "requestParams": null,
                 "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
-            }; 
-        } 
+            };
+        }
+        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:neft-rtgs`);
+        this.isShowLoader = true;
+        this._commonService.pay(newdata).subscribe((res) => {
 
-        this.isShowLoader=true;
-        this._commonService.pay(newdata).subscribe((res)=>{
-
-            if(res.status != true) {
-                this.isShowLoader=false;
-                alert(res.description);
+            if (res.status != true) {
+                this.isShowLoader = false;
                 return;
             }
 
             let data = res.data;
 
             let extras = {
-                queryParams:{
+                queryParams: {
                     mode: 'NEFT',
-                    orderId:data.orderId,
+                    orderId: data.orderId,
                     transactionAmount: data.orderAmount
                 },
-                replaceUrl:true
+                replaceUrl: true
             };
-            this.isShowLoader=false;
+            this.isShowLoader = false;
             this.updateBuyNowToLocalStorage();
             this._router.navigate(["order-confirmation"], extras);
         });

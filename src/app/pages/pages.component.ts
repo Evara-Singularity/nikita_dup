@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-  AfterViewInit,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { map } from "rxjs/operators";
@@ -17,13 +16,9 @@ import { DataService } from "@app/utils/services/data.service";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { environment } from "environments/environment";
-import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import crypto from "crypto-browserify";
+import { LocalStorageService } from "ngx-webstorage";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 declare var dataLayer;
-import { SpeedTestService } from "ng-speed-test";
-import { HostListener } from "@angular/core";
-import { Location } from "@angular/common";
 
 @Component({
   selector: "app-pages",
@@ -31,7 +26,7 @@ import { Location } from "@angular/common";
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit, AfterViewInit {
+export class PagesComponent implements OnInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true; logo?: boolean; title?: string };
@@ -40,7 +35,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
   footerVisible = false;
   isHomePage: boolean;
   constructor(
-    private _location: Location,
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
     private _cartService: CartService,
@@ -49,8 +43,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
-    private speedTestService: SpeedTestService,
-    private _sessionStorageService: SessionStorageService
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
@@ -60,39 +52,13 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
-          if (res['url'] === '/' || res['url'] == "/?back=1") {
+        if (res['url'] === '/' || res['url'] == "/?back=1") {
           this.isHomePage = true;
         } else {
           this.isHomePage = false;
         }
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    if (this.isBrowser) {
-      setTimeout(() => {
-        // TODO: configure it with 500KB image
-        this.speedTestService
-          .getMbps({
-            iterations: 1,
-            file: {
-              path: CONSTANTS.SPEED_TEST_IMAGE,
-              shouldBustCache: true,
-              size: 408949,
-            },
-            retryDelay: 1500,
-          })
-          .subscribe((speed) => {
-            const absoluteSpeed = isNaN(speed) ? "INVALID" : speed.toFixed(0);
-            this._sessionStorageService.store(
-              "CLIENT_NETWORK_SPEED_SCORE",
-              absoluteSpeed
-            );
-            this._commonService.setNetworkSpeedState(speed);
-          });
-      }, 0);
-    }
   }
 
   checkAndRedirect() {
@@ -105,26 +71,12 @@ export class PagesComponent implements OnInit, AfterViewInit {
     ) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
     } else {
-      this.setUserSession();
+      this.checkForUserAndCartSession();
     }
-  }
-
-  encryptKey(plain_text, encryptionMethod, secret, iv) {
-    const encryptor = crypto.createCipheriv(encryptionMethod, secret, iv);
-    const aes_encrypted =
-      encryptor.update(plain_text, "utf8", "base64") +
-      encryptor.final("base64");
-    return Buffer.from(aes_encrypted).toString("base64");
   }
 
   loginUserIfUserRedirectedFromBharatpay(queryParams) {
     const token = queryParams["token"];
-    // const secret_key = CONSTANTS.SECRET_KEY;
-    // const secret_iv = 'smslt';
-    // const encryptionMethod = 'AES-256-CBC';
-    // const key = crypto.createHash('sha512').update(secret_key, 'utf-8').digest('hex').substr(0, 32);
-    // const iv = crypto.createHash('sha512').update(secret_iv, 'utf-8').digest('hex').substr(0, 16);
-    // const encryptedToken = this.encryptKey(token, encryptionMethod, key, iv);
 
     const url =
       environment.BASE_URL.replace("v1", "v2") + ENDPOINTS.BHARATPAY_URL;
@@ -165,7 +117,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
           });
           this._localStorageService.store("user", obj);
           this.handleRedirectionOfPages(queryParams);
-          this.setUserSession();
+          this.checkForUserAndCartSession();
         }
       });
   }
@@ -212,8 +164,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
      */
-
-    this.setUserSession();
     if (this.isBrowser) {
       this.checkAndRedirect();
       // this.dataService.startHistory();
@@ -282,61 +232,16 @@ export class PagesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  setUserSession() {
-    if (this.isBrowser) {
-      this._commonService
-        .getSession()
-        .pipe(map((res) => res))
-        .subscribe((res) => {
-          let userSession = this._localAuthService.getUserSession();
-          this._localAuthService.setUserSession(res);
-          // Below quick order condition is added because getcartbysession is called seperately on quick order page
-          if (
-            this.router.url.indexOf("/quickorder") == -1 &&
-            this.router.url.indexOf("/checkout") == -1
-          ) {
-            this.updateCartSession();
-          }
-          this._localAuthService.login$.next();
-        });
+  checkForUserAndCartSession() {
+    if (this.router.url.indexOf('checkout') < 0 && this.router.url.indexOf('payment') < 0) {
+      this._cartService.checkForUserAndCartSessionAndNotify().subscribe(cartSessionStatus => {
+        if (cartSessionStatus) {
+          console.log('CART SESSION SUCCESSFUL.')
+        } else {
+          console.log('CART SESSION FAILED.')
+        }
+      })
     }
-  }
-
-  updateCartSession() {
-    const userSession = this._localAuthService.getUserSession();
-
-    let params = { sessionid: userSession.sessionId };
-    this._cartService.getCartBySession(params).subscribe((cartSession) => {
-      if (
-        cartSession["statusCode"] != undefined &&
-        cartSession["statusCode"] == 200
-      ) {
-        let cs = this._cartService.updateCart(cartSession);
-        this._cartService.setCartSession(cs);
-        const val =
-          cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0;
-        this._cartService.cart.next({ count: val });
-        this._cartService.orderSummary.next(cartSession);
-      } else if (
-        /**
-         * Below else if is used, because sometime we are getting session id missmatch. so updating session and cart
-         */
-        cartSession["statusCode"] != undefined &&
-        cartSession["statusCode"] == 202
-      ) {
-        let cs = this._cartService.updateCart(cartSession["cart"]);
-        this._cartService.setCartSession(cs);
-        const val =
-          cartSession["cart"]["cart"] != undefined
-            ? cartSession["cart"]["noOfItems"]
-            : 0;
-        this._cartService.cart.next(val);
-        this._cartService.orderSummary.next(cartSession["cart"]);
-
-        this._localAuthService.setUserSession(cartSession["userData"]);
-        this._localAuthService.logout$.emit();
-      }
-    });
   }
 
   createHeaderData(_aRoute) {
@@ -367,7 +272,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   setEnvIdentiferCookie() {
     const abTesting = this.dataService.getCookie('AB_TESTING');
     const PWA = this.dataService.getCookie('PWA');
-    const buildVersion = environment.buildVersion;
+    const buildVersion = this.dataService.getCookie('BUILD_VERSION');
 
     if (!PWA) {
       this.dataService.setCookie("PWA", "true", 90);
@@ -389,8 +294,15 @@ export class PagesComponent implements OnInit, AfterViewInit {
         90
       );
     }
-    if (buildVersion) {
+
+    if (!buildVersion) {
       this.dataService.setCookie('BUILD_VERSION', buildVersion.toString(), 90);
+    } else {
+      if (buildVersion != environment.buildVersion.toString()) {
+        this.dataService.deleteCookie("BUILD_VERSION");
+        this.dataService.setCookie('BUILD_VERSION', environment.buildVersion.toString(), 90);
+      }
     }
+
   }
 }

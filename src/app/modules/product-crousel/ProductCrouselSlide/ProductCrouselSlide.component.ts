@@ -1,23 +1,38 @@
-import { Component, ElementRef, Input, ViewEncapsulation, PLATFORM_ID, Inject, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
-import { Subject } from 'rxjs';
-import PinchZoom from 'pinch-zoom-js';
-import CONSTANTS from '@app/config/constants';
-import { ModalService } from '@app/modules/modal/modal.service';
-import { SiemaCrouselService } from '@app/utils/services/siema-crousel.service';
-import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { LocalStorageService } from 'ngx-webstorage';
-import { Router } from '@angular/router';
+import {
+  Component,
+  ElementRef,
+  Input,
+  ViewEncapsulation,
+  PLATFORM_ID,
+  Inject,
+  Output,
+  EventEmitter,
+  ViewChild,
+  OnInit,
+} from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { NgxSiemaOptions, NgxSiemaService } from "ngx-siema";
+import { Subject } from "rxjs";
+import PinchZoom from "pinch-zoom-js";
+import CONSTANTS from "@app/config/constants";
+import { ModalService } from "@app/modules/modal/modal.service";
+import { SiemaCrouselService } from "@app/utils/services/siema-crousel.service";
+import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
+import { LocalStorageService } from "ngx-webstorage";
+import { Router } from "@angular/router";
+import { CommonService } from "@app/utils/services/common.service";
+import { TrackingService } from '@app/utils/services/tracking.service';
 
 @Component({
-  selector: 'ProductCrouselSlide',
-  templateUrl: './ProductCrouselSlide.component.html',
-  styleUrls: ['./ProductCrouselSlide.component.scss']
+  selector: "ProductCrouselSlide",
+  templateUrl: "./ProductCrouselSlide.component.html",
+  styleUrls: ["./ProductCrouselSlide.component.scss"],
 })
-export class ProductCrouselSlideComponent  {
+export class ProductCrouselSlideComponent {
+  @Input() clickedIndexOfOosProduct: number;
   @Input() options: any;
+  @Input() productOutOfStock: boolean;
   @Input() item: any;
   @Input() imagePath: any;
   image_Path = CONSTANTS.IMAGE_BASE_URL;
@@ -45,28 +60,30 @@ export class ProductCrouselSlideComponent  {
   splitUrlByComma;
   splitUrlByCommaAlt;
   pzInstance: any;
-  @ViewChild('pinchZoom') pinchZoom: ElementRef;
-  readonly ytParams = '?enablejsapi=1&autoplay=1&rel=0&controls=1&loop';
+  @ViewChild("pinchZoom") pinchZoom: ElementRef;
+  readonly ytParams = "?enablejsapi=1&autoplay=1&rel=0&controls=1&loop";
   readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
   analyticsInfo: any = {};
+  @Input('productBo') productBo: any;
 
   constructor(
     private globalAnalyticService: GlobalAnalyticsService,
+    private _commonService: CommonService,
     @Inject(PLATFORM_ID) private platformId: Object,
     public localStorageService: LocalStorageService,
     private _modalService: ModalService,
     private _router: Router,
     private _siemaCrouselService: SiemaCrouselService,
-    private ngxSiemaService: NgxSiemaService
+    private ngxSiemaService: NgxSiemaService,
+    private _trackingService: TrackingService,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngAfterViewInit() {
     if (this.isBrowser) {
-
       if (this.pinchZoom) {
-        let el = (this.pinchZoom.nativeElement as HTMLElement);
+        let el = this.pinchZoom.nativeElement as HTMLElement;
         setTimeout(() => {
           this.pzInstance = new PinchZoom(el, {
             // zoom factor
@@ -87,26 +104,21 @@ export class ProductCrouselSlideComponent  {
             use2d: false,
             // vertical/horizontal padding
             verticalPadding: 0,
-            horizontalPadding: 0
+            horizontalPadding: 0,
           });
         }, 0);
       }
-
-
     }
-
-
   }
 
   closeZoom(e) {
     let el = document.querySelector(".prod-carsl");
-    el.classList.remove('zoomView');
+    el.classList.remove("zoomView");
     if (this.pzInstance) {
       this.pzInstance.zoomOutAnimation();
     }
     e.stopPropagation();
   }
-
 
   imageAlt(link) {
     this.splitUrlByCommaAlt = link.split(",");
@@ -115,40 +127,63 @@ export class ProductCrouselSlideComponent  {
 
   setBannerCookie(caption) {
     const date = new Date();
-    date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
     if (this.isBrowser) {
-      document.cookie = "adobeClick=" + "Banner" + "_" + caption + "; expires=" + date.toUTCString() + ";path=/";
+      document.cookie =
+        "adobeClick=" +
+        "Banner" +
+        "_" +
+        caption +
+        "; expires=" +
+        date.toUTCString() +
+        ";path=/";
     }
   }
 
   showYTVideo(link) {
+    let analyticsDetails = null;
+    if(this.productBo)
+    {
+        const PRODUCT = this._trackingService.basicPDPTracking(this.productBo);
+        analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
+    }
     let videoDetails = { url: link, params: this.ytParams };
-    let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
-    modalData.inputs = { videoDetails: videoDetails };
+    let modalData = {
+      component: YoutubePlayerComponent,
+      inputs: null,
+      outputs: {},
+      mConfig: { showVideoOverlay: true },
+    };
+    modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
     this._modalService.show(modalData);
   }
 
   sendTracking(num) {
     let page = {
-      'channel': "pdp image carausel",
-      'pageName': "moglix:image carausel:pdp",
-      'linkName': "moglix:productmainimageclick_" + num,
-      'subSection': "moglix:pdp carausel main image:pdp",
-      'linkPageName': "moglix:" + this._router.url,
-    }
+      channel: "pdp image carausel",
+      pageName: "moglix:image carausel:pdp",
+      linkName: "moglix:productmainimageclick_" + num,
+      subSection: "moglix:pdp carausel main image:pdp",
+      linkPageName: "moglix:" + this._router.url,
+    };
     this.globalAnalyticService.sendAdobeCall({ page }, "genericPageLoad");
   }
 
   clicked() {
-    this.ngxSiemaService.currentSlide(this.options.selector).subscribe(result => {
-      this.sendTracking(result.currentSlide);
-      this._siemaCrouselService.setProductScrouselPopup({ active: true, slideNumber: result.currentSlide });
-    })
+    this.ngxSiemaService
+      .currentSlide(this.options.selector)
+      .subscribe((result) => {
+        // this._commonService.resetSearchNudgeTimer();
+        this.sendTracking(result.currentSlide);
+        this._siemaCrouselService.setProductScrouselPopup({
+          active: true,
+          slideNumber: result.currentSlide,
+          oosProductCardIndex: this.clickedIndexOfOosProduct,
+        });
+      });
   }
 
   goTo(index, selector) {
     this.ngxSiemaService.goTo(index, selector);
   }
-
 }
-

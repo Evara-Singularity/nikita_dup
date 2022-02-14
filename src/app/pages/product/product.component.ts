@@ -474,7 +474,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   checkForRfqGetQuote(){
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
-      this.raiseRFQQuote(true, 80);
+      this.raiseRFQQuote();
       setTimeout(() => {
         this.scrollToResults('get-quote-section');
       }, 1000);
@@ -1876,10 +1876,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async raiseRFQQuote(userHasPhoneNumber=true, value?:number) {
+  async raiseRFQQuote() {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      !userHasPhoneNumber ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(value, user);
+      !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
     } else {
       this.goToLoginPage(this.productUrl,"Continue to raise RFQ", "raiseRFQQuote");
     }
@@ -1922,11 +1922,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   raiseRFQGetQuoteSubscription: Subscription;
-  raiseRFQGetQuote(value, user) {    
-    if (value >= 50) {
-      setTimeout(() => {
-        this.getQuoteCurrentRange = 83;
-      }, 600);
+  raiseRFQGetQuote(user) {
       let data = this.processRFQGetQuoteData(user);
       let params = { customerId: user.userId, invoiceType: "retail" };
       this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res => {
@@ -1941,24 +1937,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
             this.rfqQuoteRaised = true;
             this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
           } else {
-            setTimeout(() => {
-              this.getQuoteCurrentRange = 0;
-            }, 600);
-            console.clear();
-            console.log(response);
             this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
           }
         }, err => {
-          setTimeout(() => {
-            this.getQuoteCurrentRange = 0;
-          }, 600);
+          this.rfqQuoteRaised = false;
         });
       });
-    } else {
-      setTimeout(() => {
-        this.getQuoteCurrentRange = 0;
-      }, 600);
-    }
   }
 
   async intiateRFQQuote(inStock, sendAnalyticOnOpen = true) {
@@ -3672,11 +3656,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       return;
     }
     sliderId.classList.add('unlocked');
-    this.raiseRFQQuote(true, 80);
-    // setTimeout(() => {
-    //   sliderId.addEventListener('click', (event) => this.toggleSliderClasses(event), false);
-    //   sliderId.addEventListener('tap', (event) => this.toggleSliderClasses(event), false);
-    // }, 0);
+    this.raiseRFQQuote();
   }
 
     toggleSliderClasses(event) {
@@ -3724,7 +3704,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       sessionStorage.removeItem("pdp-page");
       this.commonService.resetCurrentNaviagatedModule();
     }
-    this.raiseRFQGetQuoteSubscription.unsubscribe();
+    if (this.raiseRFQGetQuoteSubscription) {
+      this.raiseRFQGetQuoteSubscription.unsubscribe();
+    }
     this.resetLazyComponents();
   }
 }

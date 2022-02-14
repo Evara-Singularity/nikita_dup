@@ -14,47 +14,5 @@
             </div>
         </div>
     </div>
-    <div class="cat_seo"
-        *ngIf="brandDetailsFooterData?.productSearchResult && brandDetailsFooterData?.productSearchResult['products'].length>0">
-        <div *ngIf="brandDetailsFooterData?.productSearchResultSEO.length">
-            <div class="panel-head">
-                <div class="container">
-                    <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
-                        [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
-                        <p>Top Selling {{brandDetailsFooterData?.heading ? (brandDetailsFooterData?.heading |
-                            removeHTML) : brandDetailsFooterData?.brand}} Price List in India</p>
-                    </h3>
-                </div>
-            </div>
-
-            <div id="openCat4" style="display:block" class="seo-table-container">
-                <div class="seo-table-data">
-                    <table width="100%">
-                        <thead>
-                            <tr>
-                                <th>Latest Models</th>
-                                <th>Price</th>
-                                <th>Discount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container
-                                *ngFor="let product of brandDetailsFooterData?.productSearchResultSEO | slice:0:10, let i=index">
-                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                    <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
-                                    <td>₹{{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>
-                                    <td>
-                                        {{product.discount == 0? "-": ((product.mrp -
-                                        product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-                <span class="date-text">This data was last updated on {{ brandDetailsFooterData?.todayDate |
-                    date:'shortDate' }}.</span>
-            </div>
-        </div>
-    </div>
+    <app-price-list-table [priceListData]="brandDetailsFooterData"></app-price-list-table>
 </div>

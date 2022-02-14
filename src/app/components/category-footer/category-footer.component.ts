@@ -4,6 +4,7 @@ import { Component, Input, NgModule } from "@angular/core";
 import { KpToggleDirectiveModule } from "@app/utils/directives/kp-toggle.directive";
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
+import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 
 
 @Component({
@@ -15,7 +16,6 @@ export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;
     todayDate;
     constructor(public _commonService: CommonService, private _router: Router){
-        this.todayDate = Date.now();
     }
 
     getTopTenBrandName(buckets: Array<{}>) {
@@ -72,6 +72,7 @@ export class CategoryFooterComponent{
         RouterModule,
         MathFloorPipeModule,
         KpToggleDirectiveModule,
+        SeoTablesModule
     ],
     exports: [
         CategoryFooterComponent

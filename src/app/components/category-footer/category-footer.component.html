@@ -1,112 +1,56 @@
 <ng-container>
-    <div id="openCat3" *ngIf="(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0 && categoryFooterData?.getRelatedCatgory.categoryDetails && categoryFooterData?.getRelatedCatgory.categoryDetails.desc) else noCategoryDesc"
-        class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.desc"></div>
+    <div id="openCat3"
+        *ngIf="(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0 && categoryFooterData?.getRelatedCatgory.categoryDetails && categoryFooterData?.getRelatedCatgory.categoryDetails.desc) else noCategoryDesc"
+        class="category_data pad-t-15 pad-b-30 pad-lr-15"
+        [innerHTML]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.desc"></div>
 
     <ng-template #noCategoryDesc>
         <div class="seo-data-box">
-            <div *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0" class="container">
-                <h2 class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat' , iconMode : true}">
+            <div *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0"
+                class="container">
+                <h2 class="heading" (click)="_commonService.scrollTo($event)"
+                    [appKpToggle]="{idName: 'openCat' , iconMode : true}">
                     Buy {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Online at Moglix India
                     <span class="inv_span"></span>
                 </h2>
-                <p id="openCat" style="display:block" class="lh-18">You can easily buy {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} at Moglix. Shop online for {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} units by browsing through the extensive collection
-                    at Moglix.com. The products featured on our online store are from highly reputed brands such as {{getTopTenBrandName(categoryFooterData?.buckets)}} and many more. The collection consists of {{getFeaturedProducts(categoryFooterData?.productSearchResult?.products)}}
-                    and more. You can now buy branded {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online at attractive prices with special discounts from Moglix.com. If you have been shirking from buying branded {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
-                    because of the prices, here is your chance to bag a great deal! Save loads of money by buying {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online from Moglix.</p>
+                <p id="openCat" style="display:block" class="lh-18">You can easily buy
+                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} at Moglix. Shop online for
+                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} units by browsing through
+                    the extensive collection
+                    at Moglix.com. The products featured on our online store are from highly reputed brands such as
+                    {{getTopTenBrandName(categoryFooterData?.buckets)}} and many more. The collection consists of
+                    {{getFeaturedProducts(categoryFooterData?.productSearchResult?.products)}}
+                    and more. You can now buy branded
+                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online at attractive prices
+                    with special discounts from Moglix.com. If you have been shirking from buying branded
+                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                    because of the prices, here is your chance to bag a great deal! Save loads of money by buying
+                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} online from Moglix.</p>
             </div>
         </div>
     </ng-template>
     <!-- FAQ Data STARTS -->
-    <div *ngIf="categoryFooterData?.faqData && categoryFooterData?.faqData.length>0" [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
-        <div class="panel-head" [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
+    <div *ngIf="categoryFooterData?.faqData && categoryFooterData?.faqData.length>0"
+        [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
+        <div class="panel-head"
+            [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="container">
-                <h3 class="heading-3" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                <h3 class="heading-3" (click)="_commonService.scrollTo($event)"
+                    [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently Asked Questions about
+                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
                     <span class="iconaccordian">
                         <i class="icon-down"></i>
                     </span>
                 </h3>
             </div>
             <div id="openFaq" style="display: block;" class="body-bg pad-lr-15">
-                <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div " >
+                <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div ">
                     <h3 class="m_faqQuestion heading-3"><strong>{{fd["questionText"]}}</strong></h3>
                     <p class="m_faqAnswer">{{fd["answerText"]}}</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="body-bg">
-        <div class="panel-head" *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0">
-            <div class="container">
-                <h3 class="panel-heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">Top Selling {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Price List in India
-                </h3>
-            </div>
-            <div id="openCat2" style="display:block" class="seo-table-container">
-                <div class="seo-table-data">
-                    <table width="100%">
-                        <thead>
-                            <tr>
-                                <th>Latest {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} Models
-                                </th>
-                                <th>Price</th>
-                                <th>Discount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let product of categoryFooterData?.productSearchResultSEO | slice:0:10, let i=index">
-                                <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                    <td> <a (click)="navigateTo(product.productUrl)">{{product.productName}}</a></td>
-                                    <td>₹{{product.priceWithoutTax | mathFloor}}</td>
-                                    <td>{{product.discount == 0? "-": ((product.mrp - product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="body-bg" *ngIf="categoryFooterData?.PRTA?.length>0">
-        <div class="panel-head">
-            <div class="container">
-                <div class="heading" (click)="_commonService.scrollTo($event)" [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
-                    <h3 class="panel-heading">{{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}} - Price Range</h3>
-                </div>
-            </div>
-            <div id="openCat2" class="seo-table-container">
-                <div class="seo-table-data">
-                    <table width="100%">
-                        <thead>
-                            <tr>
-                                <th>
-                                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
-                                </th>
-                                <th>
-                                    Min Price
-                                </th>
-                                <th>
-                                    Max Price
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let PRTA of categoryFooterData?.PRTA | slice:0:100, let i=index">
-                                <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
-                                    <td>
-                                        <a [routerLink]="[PRTA?.categoryLink ? '/' + PRTA?.categoryLink : './']">{{PRTA.newName}}</a>
-                                    </td>
-                                    <td>₹{{PRTA.minPrice}}</td>
-                                    <td>₹{{PRTA.maxPrice}}</td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
-            </div>
-        </div>
-    </div>
-
+    <app-price-list-table [priceListData]="categoryFooterData"></app-price-list-table>
+    <app-price-rangle-table [priceRangeData]="categoryFooterData"></app-price-rangle-table>
 </ng-container>

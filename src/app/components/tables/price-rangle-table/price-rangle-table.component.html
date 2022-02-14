@@ -1,0 +1,44 @@
+<div class="body-bg" *ngIf="priceRangeData?.PRTA?.length>0">
+    <div class="panel-head">
+        <div class="container">
+            <div class="heading" (click)="_commonService.scrollTo($event)"
+                [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
+                <h3 class="panel-heading">{{priceRangeData?.getRelatedCatgory?.categoryDetails?.categoryName}} -
+                    Price Range</h3>
+            </div>
+        </div>
+        <div id="openCat2" class="seo-table-container">
+            <div class="seo-table-data">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{priceRangeData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                            </th>
+                            <th>
+                                Min Price
+                            </th>
+                            <th>
+                                Max Price
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let PRTA of priceRangeData?.PRTA | slice:0:100, let i=index">
+                            <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
+                                <td>
+                                    <a
+                                        [routerLink]="[PRTA?.categoryLink ? '/' + PRTA?.categoryLink : './']">{{PRTA.newName}}</a>
+                                </td>
+                                <td>₹{{PRTA.minPrice}}</td>
+                                <td>₹{{PRTA.maxPrice}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+            <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
+        </div>
+    </div>
+</div>

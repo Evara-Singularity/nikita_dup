@@ -25,6 +25,18 @@
                 </div>
                 <p style="margin-left: 29px;">Ans: {{item.answerText}}</p>
             </div>
+            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                <div class="qn">
+                    <span class="heading-3">Q{{i+1}}:</span>
+                    <span class="qn-right heading-3">{{item.questionText}}</span>
+                </div>
+                <div class="answers">
+                    <div class="answer-block">
+                        <p class=" answer">Ans:</p>
+                        <p class="ans-details answer">{{item.answerText}}</p>
+                    </div>
+                </div>
+            </div>
             <div class="question-submit">
                 <button (click)="toggleAskQuestionPopup()" class="btn btn-red">ASK YOUR QUESTION</button>
             </div>

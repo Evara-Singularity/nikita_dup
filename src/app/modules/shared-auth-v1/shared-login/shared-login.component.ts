@@ -36,7 +36,7 @@ export class SharedLoginComponent implements OnInit
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
     })
     loginEmailForm = this._fb.group({
-        email: ['', [Validators.required, UsernameValidator.validateEmail]]
+        email: ['', [Validators.required, UsernameValidator.validateAuthEmail]]
     })
     loginType = this.LOGIN_USING_PHONE; // default login using phone number
     isLoginNumberFormSuisLoginNumberFormSubmitted: boolean = false; bmitted: boolean = false;

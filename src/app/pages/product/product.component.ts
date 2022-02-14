@@ -30,7 +30,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService } from "ngx-webstorage";
-import { BehaviorSubject, Subject } from "rxjs";
+import { BehaviorSubject, Subject, Subscription } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -1921,29 +1921,38 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return data;
   }
 
+  raiseRFQGetQuoteSubscription: Subscription;
   raiseRFQGetQuote(value, user) {    
     if (value >= 50) {
       setTimeout(() => {
         this.getQuoteCurrentRange = 83;
       }, 600);
       let data = this.processRFQGetQuoteData(user);
-      this.productService.postBulkEnquiry(data).subscribe((response) => {
-        if (response['statusCode'] == 200) {
-          this._tms.show({ type: 'success', text: response['statusDescription'] });
-          this.rfqQuoteRaised = true;
-          this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
-        } else {
+      let params = { customerId: user.userId, invoiceType: "retail" };
+      this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res => {
+        if (res['status'] && res['addressList'].length > 0) {
+          data['rfqEnquiryCustomer']['pincode'] = res['addressList'][0]['postCode'];
+        }
+      });
+      this.raiseRFQGetQuoteSubscription.add(() => {
+        this.productService.postBulkEnquiry(data).subscribe((response) => {
+          if (response['statusCode'] == 200) {
+            this._tms.show({ type: 'success', text: response['statusDescription'] });
+            this.rfqQuoteRaised = true;
+            this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+          } else {
+            setTimeout(() => {
+              this.getQuoteCurrentRange = 0;
+            }, 600);
+            console.clear();
+            console.log(response);
+            this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
+          }
+        }, err => {
           setTimeout(() => {
             this.getQuoteCurrentRange = 0;
           }, 600);
-          console.clear();
-          console.log(response);
-          this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
-        }
-      }, err => {
-        setTimeout(() => {
-          this.getQuoteCurrentRange = 0;
-        }, 600);
+        });
       });
     } else {
       setTimeout(() => {
@@ -3715,6 +3724,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       sessionStorage.removeItem("pdp-page");
       this.commonService.resetCurrentNaviagatedModule();
     }
+    this.raiseRFQGetQuoteSubscription.unsubscribe();
     this.resetLazyComponents();
   }
 }

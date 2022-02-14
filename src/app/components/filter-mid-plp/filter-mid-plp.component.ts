@@ -31,7 +31,7 @@ export class FilterMidPlpComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.filterData.currentValue && changes.filterData.currentValue.length > 0) {
+    if (changes.filterData && changes.filterData.currentValue && changes.filterData.currentValue.length > 0) {
       this.genrateInlineFilterData();
     }
   }

@@ -32,12 +32,12 @@ export class ListAutocompleteComponent implements OnInit
     ngOnInit(): void {}
 
     ngAfterViewInit(): void {
-        if (this.brandList.length) {
+        if (this.brandList.length) {         //for case brands
             if (this.control) {
                 this.control.setValidators([Validators.required, listValidator(this.brandList)])
             }
         }
-        if (this.amountList.length) {
+        else if (this.amountList.length) {   //for case amount
             if (this.control) {
                 this.control.setValidators([Validators.required])
             }
@@ -45,7 +45,7 @@ export class ListAutocompleteComponent implements OnInit
     }
 
     filter(value: string) {
-        if (this.brandList.length) {
+        if (this.brandList.length) {          //for case brands
             if (value.length > 0) {
                 value = value.toLowerCase();
                 this.filteredList = this.brandList.filter((item) => (item as string).toLowerCase().includes(value));
@@ -53,7 +53,7 @@ export class ListAutocompleteComponent implements OnInit
                 this.filteredList = this.brandList;
             }
         }
-        if (this.amountList.length) {
+        else if (this.amountList.length) {    //for case amount
             if (value.length > 0) {
                 this.filteredList = this.amountList.filter((item) => (item.toString()).includes(value));
             } else {
@@ -70,7 +70,11 @@ export class ListAutocompleteComponent implements OnInit
 
     toggleListDisplay(flag)
     {
+        if(this.brandList.length)              //for case brands
         setTimeout(() => { this.filteredList = flag ? this.brandList : []; }, 150);
+
+        else if(this.amountList.length)        //for case amount
+        setTimeout(() => { this.filteredList = flag ? this.amountList : []; }, 150);
     }
 
 }

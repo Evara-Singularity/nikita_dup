@@ -9,7 +9,7 @@ import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ArrayFilterPipeModule } from "@app/utils/pipes/k-array-filter.pipe";
 import { ShowAvailableOnRequestLastPipeModule } from "@app/utils/pipes/show-available-on-request-last.pipe";
-
+import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 
 @NgModule({
     imports: [
@@ -22,6 +22,7 @@ import { ShowAvailableOnRequestLastPipeModule } from "@app/utils/pipes/show-avai
         ShowAvailableOnRequestLastPipeModule, 
         ArrayFilterPipeModule, 
         RatingPipeModule,
+        NotFoundModule
     ],
     exports: [ProductListComponent],
     declarations: [ProductListComponent],

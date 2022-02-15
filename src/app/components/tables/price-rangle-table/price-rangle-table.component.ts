@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
   templateUrl: './price-rangle-table.component.html',
   styleUrls: ['./../../../scss/priceTables.scss']
 })
-export class PriceRangleTableComponent implements OnInit {
+export class PriceRangleTableComponent {
   @Input('priceRangeData') priceRangeData;
   todayDate: number;
 
@@ -14,8 +14,5 @@ export class PriceRangleTableComponent implements OnInit {
     public _commonService: CommonService
   ) { 
     this.todayDate = Date.now();
-  }
-
-  ngOnInit(): void {
   }
 }

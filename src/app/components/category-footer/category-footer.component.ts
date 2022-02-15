@@ -2,7 +2,6 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { Component, Input, NgModule } from "@angular/core";
 import { KpToggleDirectiveModule } from "@app/utils/directives/kp-toggle.directive";
-import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 
@@ -70,7 +69,6 @@ export class CategoryFooterComponent{
     imports: [
         CommonModule,
         RouterModule,
-        MathFloorPipeModule,
         KpToggleDirectiveModule,
         SeoTablesModule
     ],

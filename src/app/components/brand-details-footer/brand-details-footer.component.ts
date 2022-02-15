@@ -13,25 +13,7 @@ import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 export class BrandDetailsFooterComponent {
     @Input('footerData') footerData: Subject<any>;
 	@Input('brandDetailsFooterData') brandDetailsFooterData;
-	constructor() {
-		this.brandDetailsFooterData = {
-			brandCatDesc: null,
-			firstPageContent: true,
-			brandShortDesc: null,
-			brandContent: null,
-			categoryLinkLists: null,
-			productCategoryNames: null,
-			categoryNames: null,
-			iba: true,
-			showDesc: false,
-			productSearchResult: '',
-			productSearchResultSEO: '',
-			productCount: '',
-			heading: '',
-			brand: '',
-			todayDate: true,
-		};
-	}
+	constructor() {}
 }
 
 @NgModule({

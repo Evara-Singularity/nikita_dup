@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 
@@ -25,7 +25,7 @@ export interface PriceListData {
 	templateUrl: './price-list-table.component.html',
 	styleUrls: ['./../../../scss/priceTables.scss']
 })
-export class PriceListTableComponent implements OnInit {
+export class PriceListTableComponent {
 	@Input('priceListData') priceListData: PriceListData;
 	todayDate: number;
 
@@ -35,11 +35,7 @@ export class PriceListTableComponent implements OnInit {
 			this.todayDate = Date.now();
 		 }
 
-	ngOnInit(): void {
-	}
-
 	goToProducturl(url) {
 		this.router.navigateByUrl(url);
 	}
-
 }

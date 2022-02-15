@@ -32,15 +32,11 @@ export class ListAutocompleteComponent implements OnInit
     ngOnInit(): void {}
 
     ngAfterViewInit(): void {
-        if (this.brandList.length) {         //for case brands
-            if (this.control) {
-                this.control.setValidators([Validators.required, listValidator(this.brandList)])
-            }
+        if (this.brandList.length && this.control) {         //for case brands
+            this.control.setValidators([Validators.required, listValidator(this.brandList)])
         }
-        else if (this.amountList.length) {   //for case amount
-            if (this.control) {
-                this.control.setValidators([Validators.required])
-            }
+        else if (this.amountList.length && this.control) {   //for case amount
+            this.control.setValidators([Validators.required])
         }
     }
 

@@ -222,6 +222,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="bulk-container-single-grp selected-grp">
+                    <h3>More than 5 Qty <span class="green-txt">(Get 10% OFF)</span> <span class="right-text">₹ 1,205
+                            <span class="small-txt">/pc</span></span></h3>
+                </div>
             </div>
         </div>
     </div>
@@ -381,7 +385,9 @@
                     <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
                         (click)="$event.preventDefault();navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                    <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl" (click)="$event.preventDefault();navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails ?
+                    <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl"
+                        (click)="$event.preventDefault();navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails
+                        ?
                         productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
                 </p>
@@ -390,8 +396,10 @@
                 <p>
                     {{productName}} is a premium quality product from {{productBrandDetails ?
                     productBrandDetails['brandName'] : ''}}. Moglix is a
-                    well-known ecommerce platform for qualitative range of <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
-                        (click)="$event.preventDefault();navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails ?
+                    well-known ecommerce platform for qualitative range of <a class="blueText"
+                        [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
+                        (click)="$event.preventDefault();navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails
+                        ?
                         productCategoryDetails['categoryName'] : ''}}</a>.
                     All {{productName}} are manufactured by using quality assured material and advanced techniques,
                     which make them up to the standard in this highly challenging field. The materials utilized to
@@ -400,7 +408,8 @@
                     {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely acknowledged in
                     the market for their high
                     quality. We are dedicatedly involved in
-                    providing an excellent quality array of <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl"
+                    providing an excellent quality array of <a class="blueText"
+                        [href]="baseDomain + '/' + productBrandCategoryUrl"
                         (click)="$event.preventDefault();navigateLink('/'+productBrandCategoryUrl)">
                         {{productBrandDetails ? productBrandDetails['brandName'] : ''}} {{productCategoryDetails ?
                         productCategoryDetails['categoryName'] : ''}}</a>.
@@ -449,7 +458,6 @@
             </div>
         </section>
 
-                
         <section class="pdp-section-card" id="reviewSection">
             <div class="pwa-row">
                 <div class="pwa-col-6">
@@ -582,14 +590,16 @@
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
+            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+                [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <i class="icon-next"></i>
             </a>
-            <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()" [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
+            <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()"
+                [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
@@ -603,39 +613,36 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-
-
-        <section class="Qa" *ngIf="questionAnswerList">
-            <div class="">
-                <p class="heading-3">Questions & Answers</p>
-                <form class="promo-code clearfix" [formGroup]="questionAnswerForm">
-                    <input class="faq" formControlName="question" id="inlineFormInputGroup" type="text"
-                        placeholder="Have a Question?">
-                    <button [disabled]="questionAnswerForm.invalid" (click)="postUserQuestion()">SUBMIT</button>
-                </form>
-                <!-- search space  -->
-                <p class="display-qn"
-                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] > 0">
-                    Displaying Questions
-                    <span>1-{{questionAnswerList['data']['totalCount']}}</span> of
-                    <span>{{questionAnswerList['data']['totalCount']}} </span>
-                </p>
-                <ng-container
-                    *ngIf="questionAnswerList && questionAnswerList['data'] && questionAnswerList['data']['totalCount'] != 0">
-                    <div class="qn-block" *ngFor="let item of questionAnswerList['data']['qlist'];let i=index">
-                        <div class="question clearfix">
-                            <span class="qn-number">Q{{i+1}}.</span>
-                            <p class="qn-txt">{{item.questionText}}</p>
-                        </div>
-                        <div class="answers">
-                            <div class="answer-block">
-                                <p class="answer">{{item.answerText}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
+        <section class="Qa">
+            <div class="faq-head">
+                <h3>Frequently Asked Questions</h3>
+                <button (click)="$event.stopPropagation();handleAskQuestionPopup()" class="btn redBgButton">Ask Now</button>
             </div>
+            <ng-container *ngIf="questionAnswerList.data.qlist.length > 1">
+            
+            <p class="display-qn">
+                Displaying Questions
+                <span>1-2</span> of
+                <span>{{questionAnswerList.data.qlist.length}} </span>
+            </p>
+            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                <div class="qn">
+                    <span class="heading-3">Q{{i+1}}:</span>
+                    <span class="qn-right heading-3">{{item.questionText}}</span>
+                </div>
+                <div class="answers">
+                    <div class="answer-block">
+                        <p class=" answer">Ans:</p>
+                        <p class="ans-details answer">{{item.answerText}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
+                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+            </div>
+        </ng-container>
         </section>
+
         <section id="productAccordianSection" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
@@ -678,6 +685,9 @@
     <ng-container #reviewRatingPopup></ng-container>
     <ng-container #questionAnswersPopup></ng-container>
     <ng-container #productInfoPopup></ng-container>
+    <ng-container #faqListPopup></ng-container>
+    <ng-container #askQuestionPopup></ng-container>
+    <ng-container #faqSuccessPopup></ng-container>
 </div>
 
 <div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
@@ -687,9 +697,10 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
-<div *ngIf="this.isBrowser && isRFQSuccessfull"  class="alert-box rfq-thanks-alert" [class.rfqThanksPopup]="displayCardCta">    
+<div *ngIf="this.isBrowser && isRFQSuccessfull" class="alert-box rfq-thanks-alert"
+    [class.rfqThanksPopup]="displayCardCta">
     <div class="overlay"></div>
-        <div class="content-area bottom-layout ">
+    <div class="content-area bottom-layout ">
         <div class="rfq-thanks-popup">
             <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
             <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
@@ -702,17 +713,18 @@
             <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
                 <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
                 <span class="grey-txt">OR</span>
-                <button (click)="navigateToWhatsapp()" class="btn icon-btn btn-whatsapp"><i class="icon-whatsapp"></i>WHATSAPP US</button>
+                <button (click)="navigateToWhatsapp()" class="btn icon-btn btn-whatsapp"><i
+                        class="icon-whatsapp"></i>WHATSAPP US</button>
             </div>
             <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
-                <p  class="rfq-thanks-txt mar-t-10">
-                    For further assistance Call or Whatsapp <br/>
+                <p class="rfq-thanks-txt mar-t-10">
+                    For further assistance Call or Whatsapp <br />
                     @<strong>&nbsp;+91 99996 44044</strong>
                 </p>
             </div>
             <div class="rfq-support-txt">
                 <p class="rfq-thanks-txt">
-                    You can also mail us at <br/>
+                    You can also mail us at <br />
                     <strong>salesenquiry@moglix.com</strong>
                 </p>
             </div>
@@ -722,9 +734,10 @@
                     class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
                 <!-- <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE CATEGORY</p> -->
-                 <button class="btn explore-category-btn" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
+                <button class="btn explore-category-btn"
+                    (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
                     EXPLORE AVAILABLE PRODUCTS
-                 </button>   
+                </button>
             </div>
         </div>
     </div>

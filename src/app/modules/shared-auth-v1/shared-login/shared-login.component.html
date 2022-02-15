@@ -1,7 +1,10 @@
 <div class="login-bg" [class.checkout-login-bg]="true">
     <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
-    <div class="login-bg-img" *ngIf="isNormalLogin">
+    <!-- <div class="login-bg-img" *ngIf="isNormalLogin">
         <button class="btn skip-btn" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
+    </div> -->
+    <button class="btn skip-btn" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
+    <div class="login-bg-img " *ngIf="isNormalLogin">
     </div>
     <div class="fixed-view">
         <img class="bg-moglix-logo" (click)="$event.stopPropagation();navigateHome()"

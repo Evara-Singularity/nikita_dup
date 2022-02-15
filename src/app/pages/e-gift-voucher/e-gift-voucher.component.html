@@ -68,7 +68,7 @@
                             </div>
                             <div class="multiple-form-field">
                                 <div class="value req-flex-child">
-                                    <list-autocomplete [control]="requirement.get('itemValue')" [placeholder]="'Value (INR)'" [amountList]="PRICE_VALUES">
+                                    <list-autocomplete class="value-auto-co" [control]="requirement.get('itemValue')" [placeholder]="'Value (INR)'" [amountList]="PRICE_VALUES">
                                     </list-autocomplete>
                                     <i class="icon-down"></i>
                                     <p *ngIf="requirement.get('itemValue').touched && requirement.get('itemValue').invalid"

@@ -524,6 +524,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       .getGroupProductObj(productId)
       .subscribe((productData) => {
         if (productData["status"] == true) {
+         
           this.processProductData(
             {
               productBO: productData["productBO"],
@@ -764,7 +765,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ? this.priceQuantityCountry["moq"]
         : 1;
 
-
+    this.getFirstAttributeValue();
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
@@ -829,7 +830,25 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
+  getFirstAttributeValue(){
+    let selectedValue;
+    this.productFilterAttributesList.forEach((singleAttrList, index) => {
+      if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
+        singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
+          if(item.selected == 0){
+            console.log(item);
+             return true;
+          }
+          selectedValue = item;
+             return false;
+       }); 
+     
+       console.log(this.productFilterAttributesList,"productFilterAttributesList");
+       singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
+       console.log(singleAttrList["items"],"singleAttrList");
+      }
+    });
+  }
   removeSimilarProductInstanceOOS() {
     if (this.similarProductInstanceOOS) {
       this.similarProductInstanceOOS = null;

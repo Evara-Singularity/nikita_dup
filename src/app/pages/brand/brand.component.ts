@@ -239,7 +239,7 @@ export class BrandComponent {
                         "position": 2,
                         "item":
                         {
-                            "@id": CONSTANTS.PROD + '/' + this.API_RESPONSE.brand[0].friendlyUrl,
+                            "@id": CONSTANTS.PROD + '/brands/' + this.API_RESPONSE.brand[0].friendlyUrl,
                             "name": this.API_RESPONSE.brand[1][0]["brandName"]
                         }
                     },

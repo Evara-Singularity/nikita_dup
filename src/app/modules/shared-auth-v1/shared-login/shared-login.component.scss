@@ -8,24 +8,43 @@
     &.checkout-login-bg {
         padding: 0px 0px 15px;
     }
+    // .login-bg-img {
+    //     min-height: 250px;
+    //     max-height: 300px;
+    //     background-position: bottom;
+    //     background-size: initial;
+    //     .skip-btn {
+    //         position: absolute;
+    //         top: 10%;
+    //         right: 20px;
+    //         font-size: 10px;
+    //         background-color: #3c3c3c73;
+    //     }
+    // }
+    .skip-btn {
+        position: absolute;
+        top: 4%;
+        z-index: 99;
+        right: 20px;
+        font-size: 10px;
+        background-color: #3c3c3c73;
+    }
     .login-bg-img {
-        background-image: url("../../../../assets/img/login-bg-img.svg");
-        position: relative;
-        min-height: 250px;
-        max-height: 300px;
+        background-image: url("../../../../assets/img/login-bg-img.png");
+        min-height: 100px;
+        position: absolute;
+        bottom: 494px;
+        top: 0px;
+        width: 100%;
         background-position: bottom;
-        background-size: initial;
-        .skip-btn {
-            position: absolute;
-            top: 10%;
-            right: 20px;
-            font-size: 10px;
-            background-color: #3c3c3c73;
-        }
+        background-size: 130%;
+        background-position-x: center;
     }
     .fixed-view {
         position: absolute;
         bottom: 20px;
+        left: 0;
+        right: 0;
         .bg-moglix-logo {
             width: 100px;
             display: block;

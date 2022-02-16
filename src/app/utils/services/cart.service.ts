@@ -532,6 +532,7 @@ export class CartService
         const productBrandDetails = args.productGroupData['brandDetails'];
         const productCategoryDetails = args.productGroupData['categoryDetails'][0];
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
+        const productLinks = productPartDetails['productLinks'];
 
         const product = {
             cartId: null,
@@ -553,7 +554,7 @@ export class CartService
             productQuantity: (args.quantity && !isNaN(args.quantity) && +args.quantity > productMinimmumQuantity) ? args.quantity : productMinimmumQuantity,
             productUnitPrice: productPrice,
             expireAt: null,
-            productUrl: args.productGroupData['defaultCanonicalUrl'],
+            productUrl: productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default'],
             bulkPriceMap: priceQuantityCountry['bulkPrices'],
             bulkPrice: null,
             bulkPriceWithoutTax: null,

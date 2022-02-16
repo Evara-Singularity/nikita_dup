@@ -10,12 +10,12 @@
 }
 .login-card {
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 15px;
     margin: 15px;
     &.shared-otp-card{
-        margin-top: -31px;
-        border-radius: 0px 0px 8px 8px;
+        margin-top: -51px;
+        border-radius: 0px 0px 12px 12px;
     }
     h3 {
         margin-bottom: 15px;
@@ -109,7 +109,7 @@
         }
     }
     .otp-text {
-        padding: 10px 0px 40px 0px;
+        padding: 20px 0px;
         display: flex;
         align-items: center;
         .otp-text-inner {
@@ -124,7 +124,7 @@
             }
         }
         .right {
-            text-align: center;
+            text-align: right;
             span {
                 font-size: $large-font;
                 font-weight: bold;

@@ -39,7 +39,6 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         private _title: Title,
         private _analytics: GlobalAnalyticsService,
         private _common: CommonService
-
     ) { }
 
     ngOnInit()

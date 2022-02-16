@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -7,6 +8,7 @@ import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
 import { SharedAuthUtilService } from './../shared-auth-util.service';
@@ -24,7 +26,7 @@ import { SharedAuthService } from './../shared-auth.service';
     templateUrl: './shared-otp.component.html',
     styleUrls: ['./shared-otp.component.scss']
 })
-export class SharedOtpComponent implements OnInit
+export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
@@ -44,34 +46,45 @@ export class SharedOtpComponent implements OnInit
     //password
     isPasswordType = true;//to set input[type] = text/password.
     password: FormControl = null;
-    isPasswordSubmitted = false;
     incorrectPassword = null;
-    paramsSubscriber: Subscription = null;
-    
+    passwordValueSubscription :Subscription= null;
+    //paramsSubscriber: Subscription = null;
+
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService,
-        private _localAuthService:LocalAuthService,
-        private activatedRoute: ActivatedRoute,) { }
+        private _localAuthService: LocalAuthService,
+        //private activatedRoute: ActivatedRoute,
+    ) { }
+
 
     ngOnInit()
     {
         this.authFlow = this._localAuthService.getAuthFlow();
         if (!(this.authFlow)) { this.navigateToLogin(); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
-        this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
+        this.password = new FormControl("", [PasswordValidator.validatePassword]);
         this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         this.updateFlow(this.authFlow.identifier);
-        this.addQueryParamSubscribers();
+        //this.addQueryParamSubscribers();
     }
 
-    addQueryParamSubscribers() {
-        this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
-            this._sharedAuthService.redirectUrl = data['backurl'];
-            if (data['state']) {
-                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            }
-        });
+    ngAfterViewInit(): void
+    {
+        this.passwordValueSubscription = this.password.valueChanges.subscribe(
+            (value) => { if (this.incorrectPassword) this.incorrectPassword = null;}
+        )
     }
+
+    // addQueryParamSubscribers()
+    // {
+    //     this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data =>
+    //     {
+    //         this._sharedAuthService.redirectUrl = data['backurl'];
+    //         if (data['state']) {
+    //             this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+    //         }
+    //     });
+    // }
 
     /**
      * @description:depending identifier,decides the flow.
@@ -83,7 +96,6 @@ export class SharedOtpComponent implements OnInit
             (this.isCheckout) ? this._sharedAuthUtilService.sendCheckoutAdobeAnalysis() : this._sharedAuthUtilService.sendAdobeAnalysis();
         }
         if (this.isOTPFlow) { this.startOTPTimer(); }
-        
     }
 
     /**
@@ -105,7 +117,8 @@ export class SharedOtpComponent implements OnInit
     /**@description to reset all otp information.*/
     resetOTPInfo()
     {
-        this.otpForm.controls.forEach((control: FormControl) => control.patchValue(""));
+        this.otpForm.reset()
+        this.otpForm.controls.forEach((control: FormControl) => control.setValue(""));
     }
 
     /** @description to handle otp timer*/
@@ -120,13 +133,13 @@ export class SharedOtpComponent implements OnInit
     //password section
     resetPasswordInfo()
     {
-        this.isPasswordSubmitted = false;
-        this.password.patchValue("");
+        (this.password as FormControl).reset();
+        (this.password as FormControl).setValue("");
     }
 
     submitPassword()
     {
-        if(this.password.invalid)return
+        if (this.password.invalid) return
         this._globalLoader.setLoaderState(true);
         let requestData = { password: this.password.value };
         if (this.authFlow.identifierType.includes("PHONE")) {
@@ -153,14 +166,14 @@ export class SharedOtpComponent implements OnInit
 
     captureOTP(otpValue)
     {
-        if (!otpValue)return;
+        if (!otpValue) return;
         this._globalLoader.setLoaderState(true);
-        const REQUEST = { email: '', phone: '',  source: "login_otp" };
+        const REQUEST = { email: '', phone: '', source: "login_otp" };
         REQUEST['type'] = this._sharedAuthUtilService.getUserType(this.authFlow.flowType, this.authFlow.identifierType);
         REQUEST['otp'] = otpValue;
         if (this.authFlow.identifierType.includes("PHONE")) {
             REQUEST.phone = this.authFlow.identifier;
-        }else{
+        } else {
             REQUEST.email = this.authFlow.identifier;
         }
         this._sharedAuthService.authenticate(REQUEST).subscribe(
@@ -171,7 +184,7 @@ export class SharedOtpComponent implements OnInit
                     this._toastService.show({ type: "error", text: response['status'] });
                     this._cartService.logOutAndClearCart();
                     return;
-                } 
+                }
                 this.processAuthenticaton(response);
             },
             (error) => { this._globalLoader.setLoaderState(false); }
@@ -187,7 +200,8 @@ export class SharedOtpComponent implements OnInit
         this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
     }
 
-    navigateToLogin() {
+    navigateToLogin()
+    {
         if (this.isCheckout) {
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
         } else {
@@ -195,7 +209,8 @@ export class SharedOtpComponent implements OnInit
         }
     }
 
-    navigateToForgotPassword() {
+    navigateToForgotPassword()
+    {
         if (this.isCheckout) {
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.FORGET_PASSWORD_TAB);
         } else {
@@ -206,12 +221,15 @@ export class SharedOtpComponent implements OnInit
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }
     get disableContinue() { return this.verifiedOTP && this.otpForm.valid }
     get otpValue() { return ((this.otpForm.value as string[]).join("")); }
-    get isLoginUsingEmail() { return this.authFlow && (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_EMAIL);}
+    get isLoginUsingEmail() { return this.authFlow && (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_EMAIL); }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
-    ngOnDestroy() {
-        if (this.paramsSubscriber) {
-            this.paramsSubscriber.unsubscribe()
-        }
+    ngOnDestroy()
+    {
+        // if (this.paramsSubscriber) {
+        //     this.paramsSubscriber.unsubscribe()
+        // }
+
+        if (this.passwordValueSubscription) this.passwordValueSubscription.unsubscribe();
     }
 }

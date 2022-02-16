@@ -121,6 +121,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
             $event.preventDefault();
         }
         if (!this.isUserLoggedIn) {
+            //use locaauthservice as it is hard to carry back url in otp
+            this.localAuthService.setBackURLTitle(this.product['url'], "Continue to raise RFQ");
             let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this.product['url'] } };
             this.router.navigate(['/login'], navigationExtras);
         }

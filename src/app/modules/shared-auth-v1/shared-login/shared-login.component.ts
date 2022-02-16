@@ -192,6 +192,7 @@ export class SharedLoginComponent implements OnInit
     {
         this.loginType = type;
         this.resetForms();
+        this.clearSuggestion();
     }
 
     resetForms()

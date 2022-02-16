@@ -38,8 +38,10 @@
                     <input [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
                     <i class="icon-view-password show-pass" [class.active-password-icon]="!isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <span class="label">Enter Password</span>
-                    <ng-container *ngIf="isPasswordSubmitted && password.errors != null">
-                        <p class="error-txt" *ngIf="password.errors.minlength">{{password.errors.minlength}}
+                    <ng-container *ngIf="password.touched || password.dirty">
+                        <p class="error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}
+                        </p>
+                        <p class="error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}
                         </p>
                     </ng-container>
                     <p class="error-txt" *ngIf="password.valid && incorrectPassword">Incorrect password, please try with correct password</p>
@@ -52,7 +54,6 @@
             <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                 SIGN-IN WITH OTP
             </button>
-            <a class="forgot-pass" (click)="$event.stopPropagation();navigateToLogin()" *ngIf="isLoginUsingEmail">BACK TO SIGN IN</a>
         </form>
     </div>
 </ng-template>

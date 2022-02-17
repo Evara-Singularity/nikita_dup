@@ -352,6 +352,7 @@
             </div>
         </div>
 
+
         <section *ngIf="productOutOfStock" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
@@ -433,97 +434,6 @@
             </div>
         </section>
 
-        <!-- GET Quote section starts -->
-        <div class="payments-block" *ngIf="!this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <ul class="deals-list">
-                <li class="clearfix">
-                    <i class="icon-dropbox-fill"></i>
-                    <div class="ofr_txt">
-                        <strong class="text-black">Interested to buy in bulk</strong>
-                        <small>Get customized price</small>
-                    </div>
-                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- New GET Quote section starts -->
-        <div id="get-quote-section" class="buy-nowsec" *ngIf="this.commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <h4  class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-            <p  class="small-txt prodct-name"> {{ productName }} </p>
-            <div class="buynow-flex">
-                <div class="bn-left">
-                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
-                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Get best & customise price</p>
-                </div>
-                <div class="bn-right">
-                    <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
-                </div>
-            </div>
-            <div class="button-sec shimmer">
-                <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
-                <ng-template #nonRaisedTemplate>
-                    <p class="small-txt">We will get in touch with you on<br>
-                        <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                             {{ '+91-' + commonService?.userSession?.phone }}  
-                            <ng-container *ngIf="commonService?.userSession?.email">
-                                {{ ' | ' +commonService?.userSession?.email }}
-                            </ng-container>
-                        </ng-container>
-                    </p>
-                    <div class="swipper">
-                        <div id="button-background" class="button-area wrapper">
-                            <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="slider" class="arrow-container next-btn next-btn-invalid"  (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
-                                    <i class="icon-next icon-animate-1"></i>
-                                    <i class="icon-next icon-animate-2"></i>
-                                    <i class="icon-next icon-animate-3"></i>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template #raisedTemplate>
-                    <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
-                    <div class="button-area wrapper">
-                        <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
-                        <div class="arrow-container next-btn next-btn-valid">
-                            <i class="icon-next icon-animate-1"></i>
-                            <i class="icon-next icon-animate-2"></i>
-                            <i class="icon-next icon-animate-3"></i>
-                        </div>
-                    </div>
-                </ng-template>
-            </div>
-        </div>
-
-        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-            <ng-container #similarProduct></ng-container>
-        </section>
-        <!--widgets section-->
-        <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
-                class="widget-items">
-                <span class="content-wrap">
-                    <p>More from {{productCategoryDetails['categoryName']}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <i class="icon-next"></i>
-            </a>
-
-            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
-                class="widget-items">
-                <span class="content-wrap">
-                    <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
-                        {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
-                    <span class="explore-now">Explore Now</span>
-                </span>
-                <!-- <span>From ₹999</span> -->
-                <i class="icon-next"></i>
-            </a>
-        </section>
-        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
-            <ng-container #sponseredProducts></ng-container>
-        </section>
 
         <section class="pdp-section-card" id="reviewSection">
             <div class="pwa-row">
@@ -534,7 +444,7 @@
                     <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
-
+        
             <div class="pwa-row" *ngIf="overallRating < 1">
                 <p class="review_text">
                     Be the first one to provide review for this product
@@ -649,22 +559,83 @@
                 (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
-        </section>
-
+        </section>   
+        
+                <!-- New GET Quote section starts -->
+                <div id="get-quote-section" class="buy-nowsec" *ngIf="this.commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+                    <h4  class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+                    <p  class="small-txt prodct-name"> {{ productName }} </p>
+                    <div class="buynow-flex">
+                        <div class="bn-left">
+                            <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
+                            <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
+                        </div>
+                        <div class="bn-right">
+                            <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+                        </div>
+                    </div>
+                    <div class="button-sec shimmer">
+                        <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
+                        <ng-template #nonRaisedTemplate>
+                            <p class="small-txt">We will get in touch with you on<br>
+                                <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
+                                     {{ '+91-' + commonService?.userSession?.phone }}  
+                                    <ng-container *ngIf="commonService?.userSession?.email">
+                                        {{ ' | ' +commonService?.userSession?.email }}
+                                    </ng-container>
+                                </ng-container>
+                            </p>
+                            <div class="swipper">
+                                <div id="button-background" class="button-area wrapper">
+                                    <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
+                                    <div id="slider" class="arrow-container next-btn next-btn-invalid"  (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                                            <i class="icon-next icon-animate-1"></i>
+                                            <i class="icon-next icon-animate-2"></i>
+                                            <i class="icon-next icon-animate-3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #raisedTemplate>
+                            <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                            <div class="button-area wrapper">
+                                <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+        
+        
+        <!-- GET Quote section starts -->
+        <div class="payments-block" *ngIf="!this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+            <ul class="deals-list">
+                <li class="clearfix">
+                    <i class="icon-dropbox-fill"></i>
+                    <div class="ofr_txt">
+                        <strong class="text-black">Interested to buy in bulk</strong>
+                        <small>Get customized price</small>
+                    </div>
+                    <span class="ico-right getQuote" (click)="raiseRFQQuote();">GET QUOTE</span>
+                </li>
+            </ul>
+        </div>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>
         </section>
         <!--widgets section-->
         <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
+            <a (click)="sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+                class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
                 </span>
                 <i class="icon-next"></i>
             </a>
-            <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()" [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
+
+            <a (click)="sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true)"
+                class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
@@ -677,8 +648,6 @@
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
         </section>
-
-
 
         <section class="Qa" *ngIf="questionAnswerList">
             <div class="">
@@ -711,23 +680,29 @@
                 </ng-container>
             </div>
         </section>
+
         <section id="productAccordianSection" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
+
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
+
         <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
             (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
         </section>
+
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
+
         <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
+
         <section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
             [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
             <ng-container #recentProducts></ng-container>
@@ -735,6 +710,7 @@
                 <div class="loader"></div>
             </div>
         </section>
+
         <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
         <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>

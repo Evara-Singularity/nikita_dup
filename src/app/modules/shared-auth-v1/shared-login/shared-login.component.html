@@ -1,12 +1,9 @@
 <div class="login-bg" [class.checkout-login-bg]="true">
     <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
-    <!-- <div class="login-bg-img" *ngIf="isNormalLogin">
+    <div class="login-bg-img" *ngIf="isNormalLogin">
         <button class="btn skip-btn" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
-    </div> -->
-    <button class="btn skip-btn" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
-    <div class="login-bg-img " *ngIf="isNormalLogin">
     </div>
-    <div class="fixed-view">
+    <div class="fixed-view" [class.bottom-value]="isNormalLogin">
         <img class="bg-moglix-logo" (click)="$event.stopPropagation();navigateHome()"
             src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png" *ngIf="isNormalLogin">
         <h3 class="heading" [ngClass]="{'heading-padding': isCheckout}" *ngIf="headerTitle">{{headerTitle}}</h3>
@@ -54,7 +51,8 @@
                                 </ul>
                             </div>
                             <ng-container *ngIf="isLoginEmailFormSubmitted && emailFC.invalid">
-                                <p class="error-field error-txt">Enter valid Email-ID</p>
+                                <p class="error-field error-txt" *ngIf="emailFC.hasError('required')">Enter Email-ID</p>
+                                <p class="error-field error-txt" *ngIf="emailFC.hasError('invalidCharT')">Enter valid Email-ID</p>
                             </ng-container>
                         </label>
                     </div>

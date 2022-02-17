@@ -131,6 +131,18 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
+    onPaste(event: ClipboardEvent, inputIndex) {
+        let clipboardData = event.clipboardData || window['clipboardData'] || '';
+        let pastedText = (clipboardData) ? clipboardData.getData('text') : '';
+        const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
+        if(isPasteTextValid){
+            for (let index = 0; index < 6; index++) {
+                this.OTP_INPUTS[index].value = pastedText[index];
+            }
+            this.otpEmitter.emit(pastedText);
+        }
+    }
+
     emitVerifiedOTP() { 
         if(this.isDisabled)return;
         this.otpEmitter.emit(this.otpValue); 

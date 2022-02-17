@@ -410,7 +410,7 @@ export class OrderConfirmationComponent implements OnInit {
             if (utm_medium && utm_medium == "admitad") {
                 dataObj.orderedItem.push({
                     Product: {
-                        category: ['214000000', '250000000'].includes(element.categoryCode.toString().trim()) ? "2" : "1",
+                        category: ((element.taxonomyCode.split('/').filter(categoryId => ['214000000', '250000000'].includes(categoryId))).length > 0) ? "2" : "1",
                         price: element.productUnitPrice,
                         priceCurrency: "INR", // currency code in the ISO-4217 alfa-3 format
                     },

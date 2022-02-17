@@ -117,7 +117,9 @@ export class SearchComponent implements OnInit {
       }
 
       // Send Adobe Tracking Data
-      this.setAdobeTrackingData();
+      if (this._commonService.isBrowser) {
+        this.setAdobeTrackingData();
+      }
 
       // Send GTM call
       this.sendGTMCall();

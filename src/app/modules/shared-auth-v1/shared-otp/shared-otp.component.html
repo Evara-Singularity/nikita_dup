@@ -35,7 +35,9 @@
         <form class="material-form">
             <div class="outline-input-label">
                 <label [class.is-focus]="password.value.length!=0">
-                    <input [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
+                    <input 
+                        [ngClass]="{'invalid-input': (password.touched || password.dirty) && (password.hasError('space') || password.hasError('minlength') || (password.valid && incorrectPassword))  }"
+                        [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
                     <i class="icon-view-password show-pass" [class.active-password-icon]="!isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <span class="label">Enter Password</span>
                     <ng-container *ngIf="password.touched || password.dirty">

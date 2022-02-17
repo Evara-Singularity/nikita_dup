@@ -357,7 +357,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.checkDuplicateProduct();
       this.backUrlNavigationHandler();
       this.attachSwipeEvents();
-      // this.commonService.attachHotKeysScrollEvent();
     }
   }
 
@@ -3612,10 +3611,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.initialMouse = 0;
     this.slideMovementTotal = 0;
     this.mouseIsDown = false;
+
+    let slider = this.document.getElementById('slider');
+    if (!slider ) {
+      return;
+    }
     
     // Custom events on slider
-    this.document.getElementById('slider').addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
-    this.document.getElementById('slider').addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
+    slider.addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
+    slider.addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
 
     // Custom events on Body
     this.document.body.addEventListener('mousemove', (e) => this.mouseMoveTouchMoveEvent(e), false);
@@ -3639,7 +3643,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   mouseUpTouched(event) {
-    console.log('mouseUpTouched ::::::::::::::::');
     let sliderId = this.document.getElementById('slider');
     if (!this.mouseIsDown) {
       return;
@@ -3694,8 +3697,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
-	  this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-	  this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
+    this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
+    this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
   }
 
 

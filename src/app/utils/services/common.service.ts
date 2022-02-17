@@ -1376,6 +1376,20 @@ export class CommonService
         }, 1000);
     }
 
+    extractQueryParamsManually (url) {
+        const queryParams = url
+            ? JSON.parse(
+            '{"' +
+            decodeURI(url)
+                .replace(/"/g, '\\"')
+                .replace(/&/g, '","')
+                .replace(/=/g, '":"') +
+            '"}'
+            )
+            : {};
+            return queryParams;
+    }
+
     customDebugger(data)
     {
         console.clear();

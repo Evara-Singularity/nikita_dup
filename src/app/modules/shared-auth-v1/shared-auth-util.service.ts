@@ -48,6 +48,10 @@ export class SharedAuthUtilService implements OnInit
         if (window) {
             this.sendCriteoLayerTags(response);
         }
+        const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
+        if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
+            redirectUrl += '?state=' + queryParams['state'];
+        }
         let cartSession = Object.assign(this._cartService.getCartSession());
         cartSession['cart']['userId'] = response['userId'];
         this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);

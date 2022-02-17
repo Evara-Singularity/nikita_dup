@@ -43,7 +43,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
-        this.addQueryParamSubscribers();
+        // this.addQueryParamSubscribers();
     }
 
     addQueryParamSubscribers() {
@@ -91,7 +91,11 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
 
     navigateTo(link) { 
         let navigationExtras: NavigationExtras = {
-            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            queryParams: { 
+                'backurl': this._sharedAuthService.redirectUrl,
+                'state': this._route.snapshot.queryParams.state
+        },
+            
         };
         this._router.navigate([link], navigationExtras); 
     }

@@ -48,6 +48,7 @@ export class SharedLoginComponent implements OnInit
     displaySuggestion = true;
     authFlow:AuthFlowType = null;
     paramsSubscriber = null;
+    state;
 
     constructor(
         private _fb: FormBuilder,
@@ -76,9 +77,9 @@ export class SharedLoginComponent implements OnInit
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];
-            if (data['state']) {
-                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            }
+            // if (data['state']) {
+            //     this._sharedAuthService.redirectUrl += '?state=' + data['state'];
+            // }
         });
     }
 
@@ -196,7 +197,10 @@ export class SharedLoginComponent implements OnInit
         } else {
             const LINK = (isUserExists) ? "/otp" : "/sign-up";
             let navigationExtras: NavigationExtras = {
-                queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+                queryParams: { 
+                    'backurl': this._sharedAuthService.redirectUrl,
+                    'state': this.activatedRoute.snapshot.queryParams.state
+                },
             };
             this._router.navigate([LINK], navigationExtras);
         }
@@ -240,7 +244,10 @@ export class SharedLoginComponent implements OnInit
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
         let navigationExtras: NavigationExtras = {
-            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            queryParams: { 
+                'backurl': this._sharedAuthService.redirectUrl,
+                'state': this.activatedRoute.snapshot.queryParams.state
+            },
         };
         this._router.navigate([REDIRECT_URL], navigationExtras);
     }

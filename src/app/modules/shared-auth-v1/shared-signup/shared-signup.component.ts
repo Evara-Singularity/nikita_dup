@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -53,7 +53,7 @@ export class SharedSignupComponent implements OnInit
     otpForm = new FormArray([]);
 
 
-    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
+    constructor(private activatedRoute:ActivatedRoute, private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit()
@@ -157,7 +157,10 @@ export class SharedSignupComponent implements OnInit
     updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
     navigateTo(link) {
         let navigationExtras: NavigationExtras = {
-            queryParams: { 'backurl': this._sharedAuthService.redirectUrl },
+            queryParams: { 
+                'backurl': this._sharedAuthService.redirectUrl,
+                'state': this.activatedRoute.snapshot.queryParams.state
+            },
         };
         this._router.navigate([link], navigationExtras) 
     }

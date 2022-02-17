@@ -1,7 +1,7 @@
 import { Validators } from '@angular/forms';
 import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -27,7 +27,7 @@ import { SharedAuthService } from './../shared-auth.service';
     templateUrl: './shared-otp.component.html',
     styleUrls: ['./shared-otp.component.scss']
 })
-export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
+export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
@@ -48,14 +48,14 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
     isPasswordType = true;//to set input[type] = text/password.
     password: FormControl = null;
     incorrectPassword = null;
-    passwordValueSubscription :Subscription= null;
+    passwordValueSubscription: Subscription = null;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService,
-        private _localAuthService: LocalAuthService,
+        private _localAuthService: LocalAuthService, private _commonService: CommonService, private _activatedRoute: ActivatedRoute
     ) { }
 
-  ngOnInit()
+    ngOnInit()
     {
         this.authFlow = this._localAuthService.getAuthFlow();
         if (!(this.authFlow)) { this.navigateToLogin(); return; }
@@ -68,7 +68,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
     ngAfterViewInit(): void
     {
         this.passwordValueSubscription = this.password.valueChanges.subscribe(
-            (value) => { if (this.incorrectPassword) this.incorrectPassword = null;}
+            (value) => { if (this.incorrectPassword) this.incorrectPassword = null; }
         )
     }
 
@@ -181,7 +181,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
     {
         const BACKURLTITLE = this._localAuthService.getBackURLTitle();
         let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
-        const queryParams = this.commonService.extractQueryParamsManually(location.search.substring(1))
+        const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
         if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
             REDIRECT_URL += '?state=' + queryParams['state'];
         }
@@ -196,10 +196,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
         } else {
             let navigationExtras: NavigationExtras = {
-                queryParams: { 
+                queryParams: {
                     'backurl': this._sharedAuthService.redirectUrl,
-                    'state': this.activatedRoute.snapshot.queryParams.state
-            },
+                    'state': this._activatedRoute.snapshot.queryParams.state
+                },
             };
             this._router.navigate([this.LOGIN_URL], navigationExtras)
         }
@@ -211,9 +211,9 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.FORGET_PASSWORD_TAB);
         } else {
             let navigationExtras: NavigationExtras = {
-                queryParams: { 
+                queryParams: {
                     'backurl': this._sharedAuthService.redirectUrl,
-                    'state': this.activatedRoute.snapshot.queryParams.state
+                    'state': this._activatedRoute.snapshot.queryParams.state
                 },
             };
             this._router.navigate([this.FORGOT_PASSWORD_URL], navigationExtras)

@@ -6,7 +6,6 @@ import { AddressListComponent } from './address-list/address-list.component';
 import { AllAddressesComponent } from './all-addresses/all-addresses.component';
 import { CartListComponent } from './cart-list/cart-list.component';
 import { CouponsComponent } from './coupons/coupons.component';
-import { CreateEditAddressComponent } from './create-edit-address/create-edit-address.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { OffersComponent } from './offers/offers.component';
 import { PaymentSummaryComponent } from './payment-summary/payment-summary.component';
@@ -22,7 +21,6 @@ import { CreateEditBillingAddressComponent } from './create-edit-billing-address
         NotificationsComponent,
         AddressListComponent,
         AllAddressesComponent,
-        CreateEditAddressComponent,
         CreateEditDeliveryAddressComponent,
         CreateEditBillingAddressComponent
     ],
@@ -39,7 +37,6 @@ import { CreateEditBillingAddressComponent } from './create-edit-billing-address
         NotificationsComponent,
         AddressListComponent,
         AllAddressesComponent,
-        CreateEditAddressComponent
     ]
 })
 export class SharedCheckoutModule { }

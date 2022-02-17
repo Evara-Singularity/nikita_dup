@@ -58,6 +58,7 @@ export class CategoryComponent {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    prodUrl=CONSTANTS.PROD;
 
     constructor(
         public _router: Router,
@@ -817,6 +818,29 @@ export class CategoryComponent {
     getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
+    }
+
+    sendWhatsappTrackingData(){
+        let taxo1;
+        let taxo2;
+        let taxo3;
+        if (this.API_RESPONSE.category[0].categoryDetails.taxonomy) {
+            taxo1 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[0] || '';
+            taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
+            taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
+        }
+        const page = {
+            "linkPageName": "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+            "linkName": "WhatsApp",
+            "channel": "listing"
+        };
+        const custData = this._commonService.custDataTracking;
+        const order = {
+            "productCategoryL1": taxo1,
+            "productCategoryL2": taxo2,
+            "productCategoryL3": taxo3
+        } 
+        this._analytics.sendAdobeCall({ page,custData,order }, "genericClick");
     }
 
     ngOnDestroy() {

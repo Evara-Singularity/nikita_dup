@@ -101,7 +101,7 @@ export class ProductCheckPincodeComponent implements OnInit
                     if (response.data !== null) {
                         let pincodeResponse = response.data[PARTNUMBER];
                         this.isCashOnDelivery = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
-                        this.isServiceable = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
+                        this.isServiceable = (pincodeResponse.aggregate.serviceable) || this.FALSE;
                         if (this.isServiceable) {
                             let avgLogisticEstimated = pincodeResponse['avgDay'] || null;
                             let avgPlatformEstimated = null;

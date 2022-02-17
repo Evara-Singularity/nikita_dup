@@ -65,13 +65,5 @@
     </ul>
 </div>
 
-<div class="align-center" *ngIf="products != undefined && products.length==0">
-    <div class="container pt-15">
-        <h3 class="pb-15 mt-15 align-center f-16">No Product Found</h3>
-        <img class="no-product" src="{{imagePath}}b/I/P/B/d/no-search-result.svg" />
-        <p class="pad-tb-15 f-16">
-            Maybe your search was too specific. Contact for this specific product.
-        </p>
-    </div>
-    <!-- <button class="continue-btn bottom-stick" [routerLink]="['/rfq']">Get Quote</button> -->
-</div>
+<app-search-not-found *ngIf="products != undefined && products.length==0"></app-search-not-found>
+    

@@ -294,7 +294,7 @@ export class SearchComponent implements OnInit {
   setCategoriesPrimaryForCategoryMidPlpFilter() {
     this.API_RESULT['searchData'][0].categoriesPrimary = {
       name: GLOBAL_CONSTANT.inlineFilter[3],
-      terms: this.API_RESULT['searchData'][0].categoriesPrimary ? this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
+      terms: (this.API_RESULT['searchData'][0].categoriesPrimary && this.API_RESULT['searchData'][0].categoriesPrimary.length > 0) ? this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
         data['term'] = data['categoryName'];
         data['count'] = 3;
         data['enabled'] = true;

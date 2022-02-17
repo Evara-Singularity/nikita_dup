@@ -71,7 +71,7 @@
                         placeholder="Pincode"
                         [readonly]="isPincodeUnKnown.value" (click)="isOutOfStock?initiateLogin():false">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched || pincode.dirty)">
-                        <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p>
+                        <!-- <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p> -->
                         <p class="error-txt" *ngIf="pincode.hasError('pattern')">Pincode should contain only digits.
                         </p>
                         <p class="error-txt" *ngIf="pincode.hasError('minlength') && !(pincode.hasError('pattern'))">

@@ -30,7 +30,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService } from "ngx-webstorage";
-import { BehaviorSubject, Subject } from "rxjs";
+import { BehaviorSubject, Subject, Subscription } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -357,7 +357,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.checkDuplicateProduct();
       this.backUrlNavigationHandler();
       this.attachSwipeEvents();
-      // this.commonService.attachHotKeysScrollEvent();
     }
   }
 
@@ -474,7 +473,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   checkForRfqGetQuote(){
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
-      this.raiseRFQQuote(true, 80);
+      this.raiseRFQQuote();
       setTimeout(() => {
         this.scrollToResults('get-quote-section');
       }, 1000);
@@ -1591,6 +1590,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   goToLoginPage(link, title?, clickedFrom?: string) {
       const queryParams = { backurl: link };
       if (title) queryParams['title'] = title;
+      if (clickedFrom) queryParams['state'] = clickedFrom;
       this.localAuthService.setBackURLTitle(link, title);
       let navigationExtras: NavigationExtras = {queryParams: queryParams};
       this.router.navigate(["/login"], navigationExtras);
@@ -1875,10 +1875,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async raiseRFQQuote(userHasPhoneNumber=true, value?:number) {
+  async raiseRFQQuote() {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      !userHasPhoneNumber ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(value, user);
+      !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
     } else {
       this.goToLoginPage(this.productUrl,"Continue to raise RFQ", "raiseRFQQuote");
     }
@@ -1920,35 +1920,28 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return data;
   }
 
-  raiseRFQGetQuote(value, user) {    
-    if (value >= 50) {
-      setTimeout(() => {
-        this.getQuoteCurrentRange = 83;
-      }, 600);
+  raiseRFQGetQuoteSubscription: Subscription;
+  raiseRFQGetQuote(user) {
       let data = this.processRFQGetQuoteData(user);
-      this.productService.postBulkEnquiry(data).subscribe((response) => {
-        if (response['statusCode'] == 200) {
-          this._tms.show({ type: 'success', text: response['statusDescription'] });
-          this.rfqQuoteRaised = true;
-          this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
-        } else {
-          setTimeout(() => {
-            this.getQuoteCurrentRange = 0;
-          }, 600);
-          console.clear();
-          console.log(response);
-          this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
+      let params = { customerId: user.userId, invoiceType: "retail" };
+      this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res => {
+        if (res['status'] && res['addressList'].length > 0) {
+          data['rfqEnquiryCustomer']['pincode'] = res['addressList'][0]['postCode'];
         }
-      }, err => {
-        setTimeout(() => {
-          this.getQuoteCurrentRange = 0;
-        }, 600);
       });
-    } else {
-      setTimeout(() => {
-        this.getQuoteCurrentRange = 0;
-      }, 600);
-    }
+      this.raiseRFQGetQuoteSubscription.add(() => {
+        this.productService.postBulkEnquiry(data).subscribe((response) => {
+          if (response['statusCode'] == 200) {
+            this._tms.show({ type: 'success', text: response['statusDescription'] });
+            this.rfqQuoteRaised = true;
+            this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+          } else {
+            this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
+          }
+        }, err => {
+          this.rfqQuoteRaised = false;
+        });
+      });
   }
 
   async intiateRFQQuote(inStock, sendAnalyticOnOpen = true) {
@@ -3618,10 +3611,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.initialMouse = 0;
     this.slideMovementTotal = 0;
     this.mouseIsDown = false;
+
+    let slider = this.document.getElementById('slider');
+    if (!slider ) {
+      return;
+    }
     
     // Custom events on slider
-    this.document.getElementById('slider').addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
-    this.document.getElementById('slider').addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
+    slider.addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
+    slider.addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
 
     // Custom events on Body
     this.document.body.addEventListener('mousemove', (e) => this.mouseMoveTouchMoveEvent(e), false);
@@ -3645,7 +3643,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   mouseUpTouched(event) {
-    console.log('mouseUpTouched ::::::::::::::::');
     let sliderId = this.document.getElementById('slider');
     if (!this.mouseIsDown) {
       return;
@@ -3662,11 +3659,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       return;
     }
     sliderId.classList.add('unlocked');
-    this.raiseRFQQuote(true, 80);
-    // setTimeout(() => {
-    //   sliderId.addEventListener('click', (event) => this.toggleSliderClasses(event), false);
-    //   sliderId.addEventListener('tap', (event) => this.toggleSliderClasses(event), false);
-    // }, 0);
+    this.raiseRFQQuote();
   }
 
     toggleSliderClasses(event) {
@@ -3704,11 +3697,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
-	  this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    console.clear();
-    console.log('-----------------------');
-    console.log('slideMovementTotal : ' + this.slideMovementTotal);
-	  this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
+    this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
+    this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
   }
 
 
@@ -3716,6 +3706,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");
       this.commonService.resetCurrentNaviagatedModule();
+    }
+    if (this.raiseRFQGetQuoteSubscription) {
+      this.raiseRFQGetQuoteSubscription.unsubscribe();
     }
     this.resetLazyComponents();
   }

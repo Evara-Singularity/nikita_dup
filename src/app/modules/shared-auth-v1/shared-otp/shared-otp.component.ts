@@ -7,6 +7,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { Subscription, timer } from 'rxjs';
@@ -52,11 +53,9 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService,
         private _localAuthService: LocalAuthService,
-        //private activatedRoute: ActivatedRoute,
     ) { }
 
-
-    ngOnInit()
+  ngOnInit()
     {
         this.authFlow = this._localAuthService.getAuthFlow();
         if (!(this.authFlow)) { this.navigateToLogin(); return; }
@@ -181,7 +180,11 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
     processAuthenticaton(response)
     {
         const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+        let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+        const queryParams = this.commonService.extractQueryParamsManually(location.search.substring(1))
+        if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
+            REDIRECT_URL += '?state=' + queryParams['state'];
+        }
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
         this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
@@ -192,7 +195,13 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
         if (this.isCheckout) {
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
         } else {
-            this._router.navigate([this.LOGIN_URL])
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 
+                    'backurl': this._sharedAuthService.redirectUrl,
+                    'state': this.activatedRoute.snapshot.queryParams.state
+            },
+            };
+            this._router.navigate([this.LOGIN_URL], navigationExtras)
         }
     }
 
@@ -201,7 +210,13 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
         if (this.isCheckout) {
             this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.FORGET_PASSWORD_TAB);
         } else {
-            this._router.navigate([this.FORGOT_PASSWORD_URL])
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 
+                    'backurl': this._sharedAuthService.redirectUrl,
+                    'state': this.activatedRoute.snapshot.queryParams.state
+                },
+            };
+            this._router.navigate([this.FORGOT_PASSWORD_URL], navigationExtras)
         }
     }
 

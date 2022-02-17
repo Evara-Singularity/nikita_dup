@@ -62,10 +62,12 @@ export class SearchComponent implements OnInit {
   }
 
   setHeaderNameBasedOnCondition() {
-    if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
+    if (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
       this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
-    } else if (this.toggleRcommendFlag && ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
+    } else if (this.toggleRcommendFlag && (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
       this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
+    } else {
+      this.headerNameBasedOnCondition = this.API_RESULT['searchData'][0].productSearchResult.displayString;
     }
   }
 
@@ -292,13 +294,13 @@ export class SearchComponent implements OnInit {
   setCategoriesPrimaryForCategoryMidPlpFilter() {
     this.API_RESULT['searchData'][0].categoriesPrimary = {
       name: GLOBAL_CONSTANT.inlineFilter[3],
-      terms: this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
+      terms: this.API_RESULT['searchData'][0].categoriesPrimary ? this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
         data['term'] = data['categoryName'];
         data['count'] = 3;
         data['enabled'] = true;
         data['selected'] = data['categoryId'] === this._activatedRoute.snapshot.queryParams['category'] ? true : false;
         return data;
-      })
+      }) : []
     }
   }
 

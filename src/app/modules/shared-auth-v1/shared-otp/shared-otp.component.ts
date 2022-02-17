@@ -48,7 +48,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
     password: FormControl = null;
     incorrectPassword = null;
     passwordValueSubscription :Subscription= null;
-    //paramsSubscriber: Subscription = null;
 
     constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _cartService: CartService,
@@ -65,7 +64,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
         this.password = new FormControl("", [PasswordValidator.validatePassword]);
         this.isOTPFlow = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE);
         this.updateFlow(this.authFlow.identifier);
-        //this.addQueryParamSubscribers();
     }
 
     ngAfterViewInit(): void
@@ -74,17 +72,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
             (value) => { if (this.incorrectPassword) this.incorrectPassword = null;}
         )
     }
-
-    // addQueryParamSubscribers()
-    // {
-    //     this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data =>
-    //     {
-    //         this._sharedAuthService.redirectUrl = data['backurl'];
-    //         if (data['state']) {
-    //             this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-    //         }
-    //     });
-    // }
 
     /**
      * @description:depending identifier,decides the flow.
@@ -226,10 +213,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit,OnDestroy
 
     ngOnDestroy()
     {
-        // if (this.paramsSubscriber) {
-        //     this.paramsSubscriber.unsubscribe()
-        // }
-
         if (this.passwordValueSubscription) this.passwordValueSubscription.unsubscribe();
     }
 }

@@ -39,12 +39,12 @@
                     <i class="icon-view-password show-pass" [class.active-password-icon]="!isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <span class="label">Enter Password</span>
                     <ng-container *ngIf="password.touched || password.dirty">
-                        <p class="error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}
+                        <p class="error-field error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}
                         </p>
-                        <p class="error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}
+                        <p class="error-field error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}
                         </p>
                     </ng-container>
-                    <p class="error-txt" *ngIf="password.valid && incorrectPassword">Incorrect password, please try with correct password</p>
+                    <p class="error-field error-txt" *ngIf="password.valid && incorrectPassword">Incorrect password, please try with correct password</p>
                 </label>
             </div>
             <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"

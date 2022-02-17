@@ -16,7 +16,7 @@ import {
 import { Location } from "@angular/common";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
-import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import CONSTANTS from "@app/config/constants";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
@@ -43,6 +43,7 @@ import { SiemaCrouselService } from "../../utils/services/siema-crousel.service"
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
+import { filter } from "rxjs/operators";
 
 interface ProductDataArg {
   productBO: string;
@@ -361,8 +362,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   backUrlNavigationHandler() {
-    this.commonService.setCurrentNaviagatedModule('PDP', { overrideRedirectUrl: this.productCategoryDetails['categoryLink'] });
-    this.commonService.currentlyOpenedModuleUsed = false;
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      if (this.location.getState()['navigationId'] == 2) {
+        this.router.navigateByUrl(this.productCategoryDetails['categoryLink']);
+      }
+    });
   }
 
   onScrollOOOSimilar(event) {
@@ -3705,7 +3711,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     if (this.isBrowser) {
       sessionStorage.removeItem("pdp-page");
-      this.commonService.resetCurrentNaviagatedModule();
     }
     if (this.raiseRFQGetQuoteSubscription) {
       this.raiseRFQGetQuoteSubscription.unsubscribe();

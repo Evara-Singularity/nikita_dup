@@ -35,7 +35,9 @@
         <form class="material-form">
             <div class="outline-input-label">
                 <label [class.is-focus]="password.value.length!=0">
-                    <input [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
+                    <input 
+                        [ngClass]="{'invalid-input': (password.touched || password.dirty) && (password.hasError('space') || password.hasError('minlength') || (password.valid && incorrectPassword))  }"
+                        [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
                     <i class="icon-view-password show-pass" [class.active-password-icon]="!isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <span class="label">Enter Password</span>
                     <ng-container *ngIf="password.touched || password.dirty">
@@ -49,7 +51,9 @@
             </div>
             <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"
                 (click)="$event.stopPropagation();submitPassword()">CONTINUE</button>
-                <a class="forgot-pass" (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</a>
+              <div class="forgot-pass">
+                <a  (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</a>
+              </div>  
             <div class="login-seperator-text"> <span>Or</span></div>
             <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                 SIGN-IN WITH OTP

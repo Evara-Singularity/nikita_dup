@@ -1,3 +1,4 @@
+import { LocalAuthService } from './../../../utils/services/auth.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -21,7 +22,8 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     constructor(
         private _router: Router, 
         private _route: ActivatedRoute,
-        private _sharedAuthService: SharedAuthService) { }
+        private _sharedAuthService: SharedAuthService,
+        private _localAuthService:LocalAuthService) { }
 
     ngOnInit() 
     {
@@ -56,6 +58,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     navigateBack()
     {
+        debugger;
         const URL = (this._router.url as string).toLowerCase();
         let NAVIGATE_TO = this.HOME_URL;
         if (URL.includes("forgot-password")) {
@@ -66,9 +69,11 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
             NAVIGATE_TO = this.LOGIN_URL;
         } else {
             NAVIGATE_TO = this.HOME_URL;
+            const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+            if (BACKURLTITLE) { NAVIGATE_TO = BACKURLTITLE['backurl'] }
+            this._router.navigateByUrl(NAVIGATE_TO);
+            return;
         }
-        const BACKURL = this._route.snapshot.queryParams['backurl'];
-        if (BACKURL) { NAVIGATE_TO = BACKURL}
         this.navigateTo(NAVIGATE_TO);
     }
 

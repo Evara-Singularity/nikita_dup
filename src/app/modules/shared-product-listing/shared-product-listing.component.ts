@@ -315,7 +315,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resetLazyComponents();
-    this._commonService.currentlyOpenedModuleUsed = false;
   }
 
 }

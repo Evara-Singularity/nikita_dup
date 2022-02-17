@@ -548,8 +548,6 @@
                     margin: 0px;
                     padding: 0px 5px;
                     columns: #343434;
-
-                    span {}
                 }
             }
         }
@@ -561,48 +559,49 @@
                 scrollbar-width: none;
                 /* Firefox 64 */
                 width: auto;
-
-                .inner-blk-contain {
-                    //  width: 210%;
-                }
             }
-
-            .blk-block {
-                padding: 10px 10px;
-                margin: 15px 0px;
-                min-height: 90px;
-                border: 0.5px solid #e2e2e2;
-                width: 125px;
-                background: white;
-                margin: 0 10px 0 0;
-                float: left;
-                text-align: center;
+            .bulk-block {
+                border: 1px solid #e2e2e2;
+                border-radius: 6px;
                 box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
                 -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-                font-weight: 500;
-
                 .qty {
                     font-size: $large-font;
                     color: #333;
                     padding-bottom: 10px;
                 }
-
                 .per-qty {
                     font-size: 13px;
                     padding-bottom: 8px;
                     font-weight: bold;
                     letter-spacing: 0.5px;
                 }
-
-                .qty-discount {
-                    font-size: $medium-font;
-                    color: #5BA621;
-                }
-
                 &.selected {
-                    border: 0.5px solid $btn-color-red;
-                    border: 0.5px solid $btn-color-red;
+                    border: 1px solid $btn-color-red;
                     background: $color-red-light;
+                }
+            }
+            .bulk-block-multi-grp{
+                padding: 10px 10px;
+                margin: 15px 0px;
+                min-height: 90px;
+                width: 125px;
+                margin: 0 10px 0 0;
+                float: left;
+                text-align: center;
+                font-weight: 500;
+            }
+            .bulk-container-single-grp{
+                padding: 5px 8px;
+                h3{
+                    font-size: 13px;
+                    .green-txt{
+                        font-size: 12px;
+                        font-weight: normal;
+                    }
+                    .right-text{
+                        float: right;
+                    }
                 }
             }
         }

@@ -111,6 +111,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productSubPartNumber: string;
   // Bulk product related vars
   productBulkPrices: any[];
+  blockCount:number=0;
   isBulkPricesProduct: boolean = false;
   selectedProductBulkPrice: any;
   // product returns
@@ -1156,6 +1157,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
           const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
           return { ...priceMap, calculatedDiscount }
         })
+        for(var i=0;i<this.productBulkPrices.length;i++){
+          if(this.rawProductData['quantityAvailable']>=productBulkPrices[i]['minQty']){
+           this.blockCount++;}
+        }
         this.checkBulkPriceMode();
       }
     }

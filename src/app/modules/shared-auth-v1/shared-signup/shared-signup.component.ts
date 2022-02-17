@@ -1,7 +1,6 @@
-import { Observable, Subscription } from 'rxjs';
-import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -11,6 +10,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
+import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -55,7 +55,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     otpForm = new FormArray([]);
 
 
-    constructor(private activatedRoute:ActivatedRoute, private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
+    constructor(private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
     
     
@@ -78,7 +78,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     {
         const observable = (this.isSingupUsingPhone) ? this.email.valueChanges : this.phone.valueChanges;
         this.emailorphonevalueSubscription = observable.subscribe((value) => { 
-            if (!this.isUserExists) { this.isUserExists = false;}
+             this.isUserExists = false
         });
     }
 

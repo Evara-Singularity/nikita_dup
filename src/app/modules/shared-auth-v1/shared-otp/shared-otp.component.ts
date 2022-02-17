@@ -68,7 +68,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     ngAfterViewInit(): void
     {
         this.passwordValueSubscription = this.password.valueChanges.subscribe(
-            (value) => { if (this.incorrectPassword) this.incorrectPassword = null; }
+            (value) => { this.incorrectPassword = null; }
         )
     }
 

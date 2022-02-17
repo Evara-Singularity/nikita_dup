@@ -29,7 +29,6 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         password: new FormControl("", [Validators.required, PasswordValidator.validatePassword])
     })
     verifiedOTP = "";
-    paramsSubscriber: Subscription = null;
 
 
     constructor(private _route: ActivatedRoute, private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
@@ -43,15 +42,6 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
-    }
-
-    addQueryParamSubscribers() {
-        this.paramsSubscriber = this._route.queryParams.subscribe(data => {
-            this._sharedAuthService.redirectUrl = data['backurl'];
-            if (data['state']) {
-                this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            }
-        });
     }
 
     updatePassword()
@@ -75,7 +65,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                         })
                         this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
                         return;
-                    } 
+                    }
                     this.navigateTo(this.LOGIN_URL);
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });
@@ -88,16 +78,18 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this.verifiedOTP = verifiedOTP;
     }
 
-    navigateTo(link) { 
+    navigateTo(link)
+    {
         let navigationExtras: NavigationExtras = {
-            queryParams: { 
+            queryParams: {
                 'backurl': this._sharedAuthService.redirectUrl,
                 'state': this._route.snapshot.queryParams.state
-        },
-            
+            },
+
         };
-        this._router.navigate([link], navigationExtras); 
+        this._router.navigate([link], navigationExtras);
     }
+    
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
 
     getUserData()

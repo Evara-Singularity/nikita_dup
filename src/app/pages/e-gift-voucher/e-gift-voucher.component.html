@@ -110,6 +110,13 @@
                 <input type="button" [disabled]="eGiftForm.invalid" (click)="addRequirementForm()"
                     value="+ ADD ANOTHER CARD">
             </div>
+            <div formGroupName="rfqEnquiryCustomer" class=" custom-cbox e-Gift-checkbox">
+                <label>
+                    <input [checked]="isCheckboxChecked" (change)="toggleCheckbox()" class="hidden" type="checkbox" formControlName="sendMail">
+                    <span class="custom-box icon-box"></span>
+                    <span class="chk-txt">I want an email receipt</span>
+                </label>
+            </div>
             <div class="row submit-and-total">
                 <div class="col-md-4 total-area">
                     <span class="total">Total</span><br>

@@ -30,6 +30,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     brandList = [];
     totalValue: any = 0;
     eGiftForm: FormGroup = null;
+    isCheckboxChecked = false;
 
     constructor(
         private _dataService: DataService,
@@ -52,7 +53,8 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     email: new FormControl("", [Validators.required, Step.validateEmail]),
                     mobile: new FormControl("", [Validators.required]),
                     company: new FormControl(""),
-                    userId: new FormControl()
+                    userId: new FormControl(),
+                    sendMail: new FormControl("")
                 }
             ),
             rfqEnquiryItemsList: new FormArray([])
@@ -61,6 +63,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         if(this._common.isBrowser){
             this.adobeCall()
         }
+        this.rfqEnquiryCustomer.get("sendMail").patchValue(this.isCheckboxChecked)
     }
 
     ngAfterViewInit(): void
@@ -169,6 +172,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     this.showSuccessPopup = true;
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();
+                    this.isCheckboxChecked = false;
                 }
             },
             (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
@@ -210,5 +214,10 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     onUpdate(e)
     {
         this.showSuccessPopup = false;
+    }
+
+    toggleCheckbox(){
+        this.isCheckboxChecked = !this.isCheckboxChecked
+        this.eGiftForm.value.rfqEnquiryCustomer.sendMail = this.isCheckboxChecked
     }
 }

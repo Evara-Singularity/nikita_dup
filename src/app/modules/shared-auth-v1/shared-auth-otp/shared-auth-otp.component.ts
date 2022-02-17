@@ -64,7 +64,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     initiateOTP(isResend?)
     {
-        if (this.timer > 0) return
+        
         const REQUEST = this.getUserData();
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.sendOTP(REQUEST).subscribe(
@@ -73,7 +73,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
                     if (isResend){
-                        const MESSAGE = this.isEmailLogin ? "OTP Resent to mentioned email & associated mobile number" : "OTP Resent to mention mobile number" ;
+                        const MESSAGE = this.isEmailLogin ? "OTP resent to the mentioned email & associated mobile number" : "OTP resent to the mentioned mobile number" ;
                         this._toastService.show({ type: "success", text: MESSAGE});
                     }
                     this.startOTPTimer();
@@ -170,6 +170,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     resendOTP()
     {
+        if (this.disableResend) return
         this.otpFormArray.controls.forEach((control: FormControl) => control.patchValue(""));
         this.initiateOTP(true);
     }

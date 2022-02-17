@@ -1,23 +1,26 @@
 <div class="otp-outer-card">
     <h3 class="heading-custom-3">Enter 6 digit OTP for verification</h3>
-    <p>
-        One Time Password sent to {{identifier}} 
+    <p> One Time Password sent to {{identifier}}
         <ng-container *ngIf="isEmailLogin">& associated mobile number.</ng-container>
     </p>
 </div>
 <!--shared-otp-card:class used for only forgot password case to megre OTP and forgot password field.-->
 <div class="otp-card login-card" [class.shared-otp-card]="isForgotPassword">
-    <form class="otp-form" [class.otp-form-invalid]="otpFormArray.dirty && isOTPFormDisabled" [class.otp-form-varified]="otpFormArray.dirty && !(isOTPFormDisabled)">
+    <form class="otp-form" [class.otp-form-invalid]="otpFormArray.dirty && isOTPFormDisabled"
+        [class.otp-form-varified]="otpFormArray.dirty && !(isOTPFormDisabled)">
         <div class="otp-form-inputs">
             <ng-container *ngFor="let control of otpFormArray['controls'];let cIndex=index">
                 <!--added class='pseudo' for focus purpose-->
-                <input type="tel" (paste)="onPaste($event,cIndex)" placeholder="-" numbersOnly pattern="\d*" [formControl]="control" autofocus class="pseudo" maxlength="1"
-                    (keyup)="moveFocus($event, control.valid, cIndex)" [readonly]="isOTPVerified">
+                <input type="tel" placeholder="-" numbersOnly pattern="\d*" [formControl]="control" autofocus
+                    class="pseudo" maxlength="1" (keyup)="moveFocus($event, control.valid, cIndex)"
+                    [readonly]="isOTPVerified">
             </ng-container>
         </div>
-        <div class="error-field" *ngIf="otpFormArray.dirty && (otpFormArray.invalid) && !(isOTPVerified)"><span class="error-text">Number not Verified</span> </div>
-        <div class="error-field" *ngIf="(otpFormArray.valid) && incorrectOTP"><span class="error-text">{{incorrectOTP}}</span> </div>
-        <div class="success-field" *ngIf="isOTPVerified"><span class="success-text">Number Verified</span> </div>
+        <div class="error-field" *ngIf="otpFormArray.dirty && (otpFormArray.invalid) && !(isOTPVerified)"><span
+                class="error-text">Number not Verified</span> </div>
+        <div class="error-field" *ngIf="(otpFormArray.valid) && incorrectOTP"><span
+                class="error-text">{{incorrectOTP}}</span> </div>
+        <div class="success-field" *ngIf="isOTPVerified"><span class="success-text">Number Verified</span></div>
     </form>
     <div class="otp-text">
         <div class="otp-text-inner left">
@@ -25,9 +28,10 @@
             <span class="resend">Resend in {{ timer | otpTimer}}</span>
         </div>
         <div class="otp-text-inner right">
-            <button class="btn btn-transparent-red" [class.btn-disabled]="disableResend" (click)="$event.stopPropagation();resendOTP()">RESEND OTP</button>
+            <button class="btn btn-transparent-red" [class.btn-disabled]="disableResend"
+                (click)="$event.stopPropagation();resendOTP()">RESEND OTP</button>
         </div>
     </div>
     <button class="btn btn-variant1" [class.btn-disabled]="isDisabled" *ngIf="withLabel"
-            (click)="$event.stopPropagation();emitVerifiedOTP()">{{label | uppercase}}</button>
+        (click)="$event.stopPropagation();emitVerifiedOTP()">{{label | uppercase}}</button>
 </div>

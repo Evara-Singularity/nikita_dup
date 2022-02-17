@@ -8,7 +8,7 @@
 <ng-container *ngIf="currentStep === 'DETAILS'">
     <div class="outer-card">
         <h3 class="heading-custom-3">{{isSingupUsingPhone?'Almost Done!':'Looks like you’re new here!'}}</h3>
-        <p>{{isSingupUsingPhone?'Just a few more details':'Please provide below information'}}</p>
+        <p class="error-field error-txt">{{isSingupUsingPhone?'Just a few more details':'Please provide below information'}}</p>
     </div>
     <div class="login-card">
         <form class="material-form" [formGroup]="signupForm">
@@ -17,8 +17,8 @@
                     <input type="text" formControlName="firstName" maxlength="20">
                     <span class="label">Enter User Name*</span>
                     <ng-container *ngIf="(firstName.touched || firstName.dirty)">
-                        <p class="error-txt" *ngIf="firstName.hasError('required')">Enter user name</p>
-                        <p class="error-txt"
+                        <p class="error-field error-txt" *ngIf="firstName.hasError('required')">Enter user name</p>
+                        <p class="error-field error-txt"
                             *ngIf="!(firstName.hasError('required')) && firstName.hasError('whitespace')">
                             Username cannot start with space(s)</p>
                     </ng-container>
@@ -31,7 +31,7 @@
                     <ng-container *ngIf="phone.touched || phone.dirty">
                         <p class="error-field error-txt" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile Number should not begin with 0</p>
                         <p class="error-field error-txt" *ngIf="phone.invalid && !phone.hasError('startwithzero')">Enter 10 digit mobile number</p>
-                        <p class="error-txt" *ngIf="signupForm.valid && isUserExists">Number already exists, try different number or try
+                        <p class="error-field error-txt" *ngIf="signupForm.valid && isUserExists">Number already exists, try different number or try
                             sign-in</p>
                     </ng-container>
                 </label>
@@ -41,10 +41,10 @@
                     <input type="text" formControlName="email" maxlength="100" autocomplete="off">
                     <span class="label">Enter Email-ID (Optional)</span>
                     <ng-container *ngIf="email.touched || email.dirty">
-                        <p class="error-txt" *ngIf="email.errors && email.errors.invalidCharT">
+                        <p class="error-field error-txt" *ngIf="email.errors && email.errors.invalidCharT">
                             Enter valid Email-ID
                         </p>
-                        <p class="error-txt" *ngIf="isUserExists">
+                        <p class="error-field error-txt" *ngIf="signupForm.valid && isUserExists">
                             Email already exists, try different email or try sign-in</p>
                     </ng-container>
                 </label>
@@ -53,10 +53,10 @@
                 <label [class.is-focus]="password.value.length!=0">
                     <input [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20" autocomplete="off">
                     <span class="label">Enter Password (Optional)</span>
-                    <i class="icon-view-password" [class.active-password-icon]="!isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
+                    <i class="icon-view-password" [class.active-password-icon]="!isPasswordType" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <ng-container *ngIf="(password.touched || password.dirty)">
-                        <p class="error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>
-                        <p class="error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}</p>
+                        <p class="error-field error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>
+                        <p class="error-field error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}</p>
                     </ng-container>
                 </label>
             </div>

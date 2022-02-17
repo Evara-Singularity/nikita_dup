@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -27,7 +28,7 @@ import { SharedAuthService } from '../shared-auth.service';
     templateUrl: './shared-signup.component.html',
     styleUrls: ['./shared-signup.component.scss']
 })
-export class SharedSignupComponent implements OnInit
+export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
@@ -43,6 +44,7 @@ export class SharedSignupComponent implements OnInit
     isPasswordType = true;
     currentStep = "";
     identifer = null;
+    emailorphonevalueSubscription:Subscription = null;
 
     signupForm = new FormGroup({
         firstName: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
@@ -55,6 +57,8 @@ export class SharedSignupComponent implements OnInit
 
     constructor(private activatedRoute:ActivatedRoute, private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
+    
+    
 
     ngOnInit()
     {
@@ -70,6 +74,14 @@ export class SharedSignupComponent implements OnInit
         this.updateSignupWithIdentifier()
     }
 
+    ngAfterViewInit(): void
+    {
+        const observable = (this.isSingupUsingPhone) ? this.email.valueChanges : this.phone.valueChanges;
+        this.emailorphonevalueSubscription = observable.subscribe((value) => { 
+            if (!this.isUserExists) { this.isUserExists = false;}
+        });
+    }
+
     updateSignupWithIdentifier()
     {
         if (this.isSingupUsingPhone) {
@@ -82,10 +94,15 @@ export class SharedSignupComponent implements OnInit
     }
 
     validateUser($event)
-    {   
-        if (this.signupForm.invalid )return;
+    {
+        if (this.signupForm.invalid) return;
         $event.stopPropagation();
-        let userInfo = { email: '', phone: this.phone.value, type: 'p' };
+        let userInfo = null;
+        if (this.isSingupUsingPhone) {
+            userInfo = { email: this.email.value, phone: '', type: 'e' };
+        } else {
+            userInfo = { email: '', phone: this.phone.value, type: 'p' };
+        }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(
             (response) =>
@@ -155,19 +172,17 @@ export class SharedSignupComponent implements OnInit
     }
 
     updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
-    navigateTo(link) {
-        let navigationExtras: NavigationExtras = {
-            queryParams: { 
-                'backurl': this._sharedAuthService.redirectUrl,
-                'state': this.activatedRoute.snapshot.queryParams.state
-            },
-        };
-        this._router.navigate([link], navigationExtras) 
-    }
+
+    navigateTo(link)    {        this._router.navigate([link])    }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }
     get disableContinue() { return this.signupForm.invalid || this.isOTPLimitExceeded }
     get firstName() { return this.signupForm.get("firstName"); }
     get email() { return this.signupForm.get("email"); }
     get phone() { return this.signupForm.get("phone"); }
     get password() { return this.signupForm.get("password"); }
+
+    ngOnDestroy(): void
+    {
+        if(this.emailorphonevalueSubscription)this.emailorphonevalueSubscription.unsubscribe();
+    }
 }

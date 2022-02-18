@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { Observable, Subject } from "rxjs";
@@ -12,7 +13,8 @@ export class LocalAuthService
     public login$: Subject<any> = new Subject<any>();
     public logout$ = new EventEmitter();
     pageHistory = {};
-    constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService)
+    constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService,
+        private _router:Router)
     {
     }
 
@@ -75,4 +77,16 @@ export class LocalAuthService
     getAuthFlow(): AuthFlowType { return this._sessionStorageService.retrieve("authflow"); }
 
     clearAuthFlow() { this._sessionStorageService.clear("authflow"); }
+
+    handleBackURL(isClear?)
+    {
+        const BACKURLTITLE = this.getBackURLTitle();
+        let NAVIGATE_TO = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
+        const URL = (this._router.url as string).toLowerCase();
+        if (URL.toLowerCase().includes("login") || isClear) {
+            this.clearBackURLTitle();
+            this.clearAuthFlow();
+        }
+        this._router.navigateByUrl(NAVIGATE_TO);
+    }
 }

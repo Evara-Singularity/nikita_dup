@@ -44,7 +44,7 @@ export class SharedLoginComponent implements OnInit
     isLoginEmailFormSubmitted: boolean = false;
     emailAutoCompleteSuggestion: string[] = [];
     bURLTitleSubscriber: Subscription = null;
-    headerTitle = null;
+    headerTitle:string = null;
     displaySuggestion = true;
     authFlow:AuthFlowType = null;
     paramsSubscriber = null;
@@ -240,17 +240,7 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
-        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || ".";
-        this._localAuthService.clearAuthFlow();
-        this._localAuthService.clearBackURLTitle();
-        let navigationExtras: NavigationExtras = {
-            queryParams: { 
-                'backurl': this._sharedAuthService.redirectUrl,
-                'state': this.activatedRoute.snapshot.queryParams.state
-            },
-        };
-        this._router.navigate([REDIRECT_URL], navigationExtras);
+        this._localAuthService.handleBackURL(true);
     }
 
     navigateHome() { this._router.navigate(["."])}
@@ -259,5 +249,5 @@ export class SharedLoginComponent implements OnInit
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
     get isNormalLogin() { return this.isCheckout === false && !(this.headerTitle)  }
-    get isWhiteHeader() { return this.isCheckout || this.headerTitle !== null}
+    get isWhiteHeader() { return this.isCheckout || (this.headerTitle && this.headerTitle.length>0)}
 }

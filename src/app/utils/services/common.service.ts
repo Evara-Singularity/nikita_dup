@@ -79,8 +79,6 @@ export class CommonService
     userSession;
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2;
-    public currentlyOpenedModule: {module: 'PDP' | 'LISTING', data?: any} = null;
-    public currentlyOpenedModuleUsed: boolean = false;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -115,14 +113,6 @@ export class CommonService
     getNetworkSpeedState(): Observable<number>
     {
         return this.networkSpeedState.asObservable();
-    }
-
-    setCurrentNaviagatedModule(module, data?) {
-        this.currentlyOpenedModule = { module, data };
-    }
-
-    resetCurrentNaviagatedModule(){
-        this.currentlyOpenedModule = null;
     }
 
     getNetworkSpeed(): Number
@@ -1309,6 +1299,15 @@ export class CommonService
         }
     }
 
+    debounceFunctionAndEvents(func, timeout = 100){
+        console.log('called : ' + timeout);
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
     resetSearchNudgeTimer()
     {
         this.idleNudgeTimer = new IdleTimer({
@@ -1336,10 +1335,11 @@ export class CommonService
     createGenricAdobeData(linkPagename, channel, linkName)
     {
         const user = this._localStorageService.retrieve('user');
-        let page = {
-            'linkPageName': "moglix:" + linkPagename,
-            'linkName': linkName,
-            'channel': channel || this._router.url
+        let page = {getUniqueGAId()
+            {
+                return this._dataService.getCookie("_ga");
+            }
+        
         }
         let custData = {
             'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
@@ -1364,6 +1364,20 @@ export class CommonService
         {
             this.attachScrollEvent$.next(className);
         }, 1000);
+    }
+
+    extractQueryParamsManually (url) {
+        const queryParams = url
+            ? JSON.parse(
+            '{"' +
+            decodeURI(url)
+                .replace(/"/g, '\\"')
+                .replace(/&/g, '","')
+                .replace(/=/g, '":"') +
+            '"}'
+            )
+            : {};
+            return queryParams;
     }
 
     customDebugger(data)

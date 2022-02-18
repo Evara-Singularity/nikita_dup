@@ -29,7 +29,7 @@ declare var dataLayer;
 export class PagesComponent implements OnInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
-  iData: { footer?: true; logo?: boolean; title?: string };
+  iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   kfooter: any = kfooter;
   footerVisible = false;
@@ -58,6 +58,7 @@ export class PagesComponent implements OnInit {
           this.isHomePage = false;
         }
       }
+      
     });
   }
 
@@ -165,6 +166,7 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
+      
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();
@@ -305,4 +307,6 @@ export class PagesComponent implements OnInit {
     }
 
   }
+
+    get isCheckout() { return this.router.url.includes("checkout") } 
 }

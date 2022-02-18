@@ -21,7 +21,7 @@ let digitalData = {
 @Component({
   selector: 'search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss', '../category/category.scss']
+  styleUrls: ['./search.component.scss', '../category/category.scss',  './../../components/homefooter-accordian/homefooter-accordian.component.scss']
 })
 export class SearchComponent implements OnInit {
   public API_RESULT: any;
@@ -62,15 +62,18 @@ export class SearchComponent implements OnInit {
   }
 
   setHeaderNameBasedOnCondition() {
-    if ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
+    if (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
       this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
-    } else if (this.toggleRcommendFlag && ((this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === undefined || this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString === null) && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
+    } else if (this.toggleRcommendFlag && (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
       this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
+    } else {
+      this.headerNameBasedOnCondition = this.API_RESULT['searchData'][0].productSearchResult.displayString;
     }
   }
 
   setDataFromResolver() {
     this._activatedRoute.data.subscribe(result => {
+
       // Empty the setSearchResultsTrackingData initially.
       this._commonService.setSearchResultsTrackingData({});
 
@@ -78,6 +81,8 @@ export class SearchComponent implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
+
+      this.setCategoriesPrimaryForCategoryMidPlpFilter();
 
       this._title.setTitle(GLOBAL_CONSTANT.genricTitleBarText);
 
@@ -112,7 +117,9 @@ export class SearchComponent implements OnInit {
       }
 
       // Send Adobe Tracking Data
-      this.setAdobeTrackingData();
+      if (this._commonService.isBrowser) {
+        this.setAdobeTrackingData();
+      }
 
       // Send GTM call
       this.sendGTMCall();
@@ -249,6 +256,7 @@ export class SearchComponent implements OnInit {
     extras['queryParams']['search_query'] = this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString ? this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
     extras['queryParams']['category'] = categoryId;
     extras['queryParams']['toggleRcommendFlag'] = true;
+    extras['queryParams']['page'] = 1;
     delete extras['queryParams']['orderWay'];
     delete extras['queryParams']['orderBy'];
     this._router.navigate(['search'], extras);
@@ -276,6 +284,27 @@ export class SearchComponent implements OnInit {
     actualParams['preProcessRequired'] = 'n';
 
     this._router.navigate(['search'], { queryParams: actualParams });
+  }
+
+  /**
+   * 
+   * @param event - Get the category on which the user has currently clicked on specific for SEARCH page
+   */
+  handleCategoryClicked(event) {
+    this.goToRecommendedCategory(event.categoryId, event);
+  }
+
+  setCategoriesPrimaryForCategoryMidPlpFilter() {
+    this.API_RESULT['searchData'][0].categoriesPrimary = {
+      name: GLOBAL_CONSTANT.inlineFilter[3],
+      terms: (this.API_RESULT['searchData'][0].categoriesPrimary && this.API_RESULT['searchData'][0].categoriesPrimary.length > 0) ? this.API_RESULT['searchData'][0].categoriesPrimary.map(data => {
+        data['term'] = data['categoryName'];
+        data['count'] = 3;
+        data['enabled'] = true;
+        data['selected'] = data['categoryId'] === this._activatedRoute.snapshot.queryParams['category'] ? true : false;
+        return data;
+      }) : []
+    }
   }
 
 }

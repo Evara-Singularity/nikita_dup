@@ -1,0 +1,75 @@
+<div class="login-bg" [class.checkout-login-bg]="true">
+    <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
+    <div class="login-bg-img" *ngIf="isNormalLogin">
+        <button class="btn skip-btn" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
+    </div>
+    <div class="fixed-view" [class.bottom-value]="isNormalLogin">
+        <img class="bg-moglix-logo" (click)="$event.stopPropagation();navigateHome()"
+            src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png" *ngIf="isNormalLogin">
+        <h3 class="heading" [ngClass]="{'heading-padding': isCheckout}" *ngIf="headerTitle">{{headerTitle}}</h3>
+        <div class="login-card">
+            <h3 class="heading-custom-3">Sign-In <span class="normal-weight">or</span> Sign Up</h3>
+            <ng-container *ngIf="loginType == LOGIN_USING_PHONE">
+                <form class="material-form" [formGroup]="loginNumberForm">
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="phoneFC.value.length!=0">
+                            <input type="tel"
+                                [ngClass]="{'invalid-input': isLoginNumberFormSubmitted && phoneFC.invalid}"
+                                pattern="\d{10}" numbersOnly maxlength="10" formControlName="phone">
+                            <span class="label">Enter Mobile Number</span>
+                            <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
+                                <p class="error-field error-txt">Enter 10 digit mobile number</p>
+                            </ng-container>
+                        </label>
+                    </div>
+                    <button class="btn btn-variant1" (click)="submit(LOGIN_USING_PHONE)">CONTINUE</button>
+                    <div class="login-seperator-text "> <span>Or</span></div>
+                    <button class="btn btn-variant1 btn-dark-grey" (click)="toggleLoginType(LOGIN_USING_EMAIL)">CONTINUE
+                        WITH EMAIL-ID</button>
+                    <div class="clearfix mt-25">
+                        <shared-social-login [isCheckout]="this.isCheckout"></shared-social-login>
+                    </div>
+                </form>
+            </ng-container>
+            <ng-container *ngIf="loginType == LOGIN_USING_EMAIL">
+                <form class="material-form" [formGroup]="loginEmailForm">
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="emailFC.value.length!=0">
+                            <input [ngClass]="{'invalid-input': isLoginEmailFormSubmitted && emailFC.invalid}"
+                                type="text" (keyup)="$event.stopPropagation();filter($event.target.value)"
+                                (focus)="$event.stopPropagation();toggleListDisplay(true)"
+                                (blur)="$event.stopPropagation();toggleListDisplay(false)" formControlName="email">
+                            <span class="label">Enter Email-ID</span>
+                            <div class="auto-complete-list" *ngIf="displaySuggestion">
+                                <ul>
+                                    <li class="email-recoman-text" *ngIf="emailAutoCompleteSuggestion.length">Email recommendation</li>
+                                    <ng-container *ngFor="let item of emailAutoCompleteSuggestion">
+                                        <li (click)="fillEmailSuggestion(item)">
+                                            {{item}}
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                            <ng-container *ngIf="isLoginEmailFormSubmitted && emailFC.invalid">
+                                <p class="error-field error-txt" *ngIf="emailFC.hasError('required')">Enter Email-ID</p>
+                                <p class="error-field error-txt" *ngIf="emailFC.hasError('invalidCharT')">Enter valid Email-ID</p>
+                            </ng-container>
+                        </label>
+                    </div>
+                    <button class="btn btn-variant1" (click)="submit(LOGIN_USING_EMAIL)">CONTINUE</button>
+                    <div class="login-seperator-text "> <span>Or</span></div>
+                    <button class="btn btn-variant1 btn-dark-grey" (click)="toggleLoginType(LOGIN_USING_PHONE)">CONTINUE
+                        WITH MOBILE NUMBER</button>
+                    <div class="clearfix mt-25">
+                        <shared-social-login [isCheckout]="this.isCheckout"></shared-social-login>
+                    </div>
+                </form>
+            </ng-container>
+            <p class="safe-text">Your details are safe with us.</p>
+        </div>
+        <div class="terms-n-policy">
+            <p>By continuing, you agree to our <a target="blank" href="terms">Terms of Service</a> & <a target="blank"
+                    href="privacy">Privacy Policy</a></p>
+        </div>
+    </div>
+</div>

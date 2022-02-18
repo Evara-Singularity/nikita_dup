@@ -8,6 +8,7 @@ export const ENDPOINTS = {
   DUPLICATE_ORDER: "/checkout/duplicateOrder",
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   SIMILAR_CATEGORY: "/category/mostSold",
+  SIMILAR_BRAND: "/brand/getsimilarbrands",
   LOGIN_URL: "/login/sendOTP",
   BHARATPAY_URL: '/marketPlace/cartSessionbyId/',
   LOGIN_OTP: "/login/validateotp",

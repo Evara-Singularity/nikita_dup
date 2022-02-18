@@ -1,0 +1,7 @@
+
+<ng-container [ngSwitch]="flow">
+    <shared-login *ngSwitchCase="'login'"></shared-login>
+    <shared-otp *ngSwitchCase="'otp'"></shared-otp>
+    <shared-forgot-password *ngSwitchCase="'forgot-password'"></shared-forgot-password>
+    <shared-singup *ngSwitchCase="'sign-up'"></shared-singup>
+</ng-container>

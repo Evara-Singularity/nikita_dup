@@ -103,6 +103,93 @@
             }
         }
     }
+    .outline-input-label {
+        label {
+            display: block;
+            position: relative;
+            input,
+            select {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 1px;
+                height: 45px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+            }
+            .label {
+                position: absolute;
+                left: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
+                @extend %transition;
+                .error-txt{
+                    margin-left: 10px !important;
+                }
+            }
+            i{
+                position: absolute;
+                right: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
+            }
+            .active-password-icon{
+                color: #303030;
+            }
+
+            &.is-focus .label,
+            input:focus+.label,
+            select:focus+.label {
+                font-size: $medium-font;
+                top: -7px;
+                background-color: #ffffff;
+                left: 10px;
+                padding: 0px 5px;
+            }
+
+            textarea:focus+.label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+
+            input:focus,
+            textarea:focus {
+                border-color: #C4C4C4;
+
+                &+.label {
+                    color: #C4C4C4;
+                }
+            }
+
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+
+                &.verified {
+                    color: #36BD40;
+
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
 
     &.material-form-boxed {
         .input-field-boxed {
@@ -403,6 +490,17 @@ option {
         background-color: #D9232D;
         border: 0;
         height: 50px;
+    }
+    .btn-variant1{
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 40px; 
+        &.btn-dark-grey {
+            background-color: #3c3c3c;
+            color: #ffffff;
+        }
     }
 }
 

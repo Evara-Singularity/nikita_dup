@@ -158,45 +158,45 @@ const routes: Routes = [
 			{
 				path: 'login',
 				loadChildren: () =>
-					import('./login/login.module').then((m) => m.LoginModule),
+					import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					footer: false,
 					title: 'Welcome',
 					moreOpt: true,
+					hideHeader: true,
 				},
 				canActivate: [IsNotAuthenticatedGuard],
 			},
 			{
 				path: 'otp',
-				loadChildren: () => import('./otp/otp.module').then((m) => m.OtpModule),
+                loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					title: 'Sign In',
 					footer: false,
 					moreOpt: true,
+					hideHeader: true,
 				},
 				canActivate: [IsNotAuthenticatedGuard],
 			},
 			{
 				path: 'forgot-password',
-				loadChildren: () =>
-					import('./forgot-password/forgot-password.module').then(
-						(m) => m.ForgotPasswordModule
-					),
+				loadChildren: () =>import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					footer: false,
 					title: 'Forgot Password',
 					moreOpt: false,
+					hideHeader: true,
 				},
 				canActivate: [IsNotAuthenticatedGuard],
 			},
 			{
 				path: 'sign-up',
-				loadChildren: () =>
-					import('./sign-up/sign-up.module').then((m) => m.SignUpModule),
+                loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
 				data: {
 					footer: false,
 					title: 'Sign Up',
 					moreOpt: true,
+					hideHeader: true,
 				},
 				canActivate: [IsNotAuthenticatedGuard],
 			},
@@ -730,8 +730,8 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
-					title: 'RFQ',
 					moreOpt: false,
+					logo: true,
 				},
 			},
 			{

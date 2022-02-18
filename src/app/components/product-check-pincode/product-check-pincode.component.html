@@ -37,7 +37,7 @@
                 <span class="green-txt">No shipping charge on this order</span>
             </div>
         </div>
-        <div class="about-delivery" *ngIf="isPincodeAvailble && itemShippingAmount > 0">
+        <div class="about-delivery" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
                 <span class="icon-delivery_2"></span>
@@ -90,7 +90,7 @@
                     <span>You can pay at the time of delivery</span>
                 </div>
             </div>
-            <div class="about-delivery" *ngIf="!isCashOnDelivery">
+            <div class="about-delivery" *ngIf="isServiceable && !isCashOnDelivery">
                 <span class="st-icon-prepaid">
                     <span class="icon-prepaid_1"></span>
                     <span class="icon-prepaid_2"></span>

@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="CURRENT_TAB">
+  <ng-container *ngSwitchCase="LOGIN_TAB">
+    <shared-login [isCheckout]="true"></shared-login>
+  </ng-container>
+  <ng-container *ngSwitchCase="OTP_TAB">
+    <shared-otp [isCheckout]="true"></shared-otp>
+  </ng-container>
+  <ng-container *ngSwitchCase="SIGN_UP_TAB">
+    <shared-singup [isCheckout]="true"></shared-singup>
+  </ng-container>
+  <ng-container *ngSwitchCase="FORGET_PASSWORD_TAB">
+    <shared-forgot-password [isCheckout]="true"></shared-forgot-password>
+  </ng-container>
+</ng-container>

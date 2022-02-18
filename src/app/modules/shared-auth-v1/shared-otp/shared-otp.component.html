@@ -1,0 +1,63 @@
+<!--OTP:do not remove comments-->
+<shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
+<ng-container *ngIf="authFlow?.identifier">
+    <div *ngIf="isOTPFlow; then otpform else passwordform">
+        <!--depending on the condition template will get rendered-->
+    </div>
+</ng-container>
+
+<!--OTP Template-->
+<ng-template #otpform>
+    <div>
+        <shared-auth-otp [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
+            (otpEmitter)="captureOTP($event)" [withLabel]="false"></shared-auth-otp>
+        <!--Note:will be displayed only for registered users-->
+        <ng-container>
+            <!--*ngIf="authFlow?.isUserExists"-->
+            <!--Use this shared-otp-card:use this for forgot paswword-->
+            <div class="login-card shared-otp-card">
+                <div class="login-seperator-text "> <span>Or</span></div>
+                <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+                    SIGN-IN WITH PASSWORD
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+<!--Forgot Password Template-->
+<ng-template #passwordform>
+    <div class="outer-card">
+        <h3 class="heading-custom-3">Enter Password</h3>
+        <p>Linked with {{authFlow?.identifier}}</p>
+    </div>
+    <div class="login-card">
+        <form class="material-form">
+            <div class="outline-input-label">
+                <label [class.is-focus]="password.value.length!=0">
+                    <input 
+                        [ngClass]="{'invalid-input': (password.touched || password.dirty) && (password.hasError('space') || password.hasError('minlength') || (password.valid && incorrectPassword))  }"
+                        [type]="isPasswordType?'password':'text'" [formControl]="password" autocomplete="off">
+                    <i class="icon-view-password show-pass" [class.active-password-icon]="!isPasswordType"  *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
+                    <span class="label">Enter Password</span>
+                    <ng-container *ngIf="password.touched || password.dirty">
+                        <p class="error-field error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}
+                        </p>
+                        <p class="error-field error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}
+                        </p>
+                    </ng-container>
+                    <p class="error-field error-txt" *ngIf="password.valid && incorrectPassword">Incorrect password, please try with correct password</p>
+                </label>
+            </div>
+            <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"
+                (click)="$event.stopPropagation();submitPassword()">CONTINUE</button>
+              <div class="forgot-pass">
+                <a  (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</a>
+              </div>  
+            <div class="login-seperator-text"> <span>Or</span></div>
+            <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+                SIGN-IN WITH OTP
+            </button>
+        </form>
+    </div>
+</ng-template>

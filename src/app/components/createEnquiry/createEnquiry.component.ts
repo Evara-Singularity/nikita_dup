@@ -1,16 +1,17 @@
 import { Step } from '../../utils/validators/step.validate';
-import { Component, Inject, NgModule } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormArray, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, NgModule } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BulkEnquiryService } from '../../pages/bulkEnquiry/bulkEnquiry.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { DOCUMENT, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ClientUtility } from "../../utils/client.utility";
 import { Meta } from '@angular/platform-browser';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CommonService } from '@app/utils/services/common.service';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 
 @Component({
   selector: 'create-enquiry-component',
@@ -19,114 +20,44 @@ import { CommonService } from '@app/utils/services/common.service';
 })
 export class CreateEnquiryComponent {
 
-  isServer: boolean;
-  isBrowser: boolean;
-  API: {};
-  isChecked: boolean;
-  tabOpen = 'productDetail';
-  itemsSave: Array<any> = [];
-
-  public formdata: FormGroup;
   public bulkEnquiryForm: FormGroup;
-  public isQuerySuccessfull: boolean = false;
-  public image: File;
-  public rfqlimit: boolean;
   public customerId: number;
-  public buyerList: Array<any> = [{ "buyerId": 1, "buyerType": "Manufacturer", "description": null }, { "buyerId": 2, "buyerType": "Retailer", "description": null }, { "buyerId": 3, "buyerType": "Reseller", "description": null }, { "buyerId": 4, "buyerType": "Corporate", "description": null }, { "buyerId": 5, "buyerType": "Individual", "description": null }];
   showThanksPopup = false;
+  isFormSubmitted: boolean= false;
+
+  private userDetails: { name: string, phoneno: string, email: string, company_name: string, isLogin: boolean } = {
+    name: '',
+    phoneno: '',
+    email: '',
+    company_name: '',
+    isLogin: false
+  }
 
   constructor(
     private meta: Meta,
-    @Inject(DOCUMENT) private _document,
-    public activatedRoute: ActivatedRoute,
     public formBuilder: FormBuilder,
     public bulkEnquiryService: BulkEnquiryService,
     public localStorageService: LocalStorageService,
     private globalAnalyticService: GlobalAnalyticsService,
     public _commonService: CommonService) {
-
-    this.isChecked = false;
-    this.isServer = _commonService.isServer;
-    this.isBrowser = _commonService.isBrowser;
-    this.API = CONSTANTS;
-  }
-
-  checkCustomer() {
-    this.isChecked = !this.isChecked;
-    this.bulkEnquiryForm.patchValue({
-      buyertype: ""
-    });
-    return this.isChecked;
   }
 
   ngOnInit() {
     this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
     this.bulkEnquiryForm = this.formBuilder.group({
-      products: this.formBuilder.array([
-        this.addProductForm()
-      ]),
-      firstname: ['', [Validators.required]],
+      name: ['', [Validators.required]],
       email: ['', [Validators.required, Step.validateEmail]],
-      phoneno: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      description: ['', []],
-      tin: [null, [Validators.pattern('[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}')]],
-      panno: [null, []],
+      phoneno: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       company_name: [''],
-      brandName: [''],
-      usertype: [this.isChecked, [Validators.required]],
-      buyertype: ["", []],
     });
-
-    this.getuserData();
-    this.getBusinessDetail();
-
-    const user = this.localStorageService.retrieve('user');
-    let page = {
-      'pageName': "moglix:bulk query form",
-      'channel': "”bulk query form",
-      'subSection': "moglix:bulk query form",
-      'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
-    }
-    let custData = {
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-    }
-    let order = {}
-    let adobeObj = {}
-    adobeObj["page"] = page;
-    adobeObj["custData"] = custData;
-    adobeObj["order"] = order;
-    this.globalAnalyticService.sendAdobeCall(adobeObj);
-
+    this.initialize();
   }
 
-  getBusinessDetail() {
-    let userSession = this.localStorageService.retrieve('user');
-    if (userSession && userSession.authenticated == "true") {
-      let data = { customerId: userSession.userId, userType: "business" };
-      this.bulkEnquiryForm.controls['email'].setValue(userSession.email);
-      this.bulkEnquiryForm.controls['phoneno'].setValue(userSession.phone);
-      this.bulkEnquiryService.getCustomerBusinessDetail(data).subscribe(res => {
-        if (this.bulkEnquiryForm !== undefined && res && res['data']) {
-          this.bulkEnquiryForm.controls['company_name'].setValue(res['data']['companyName']);
-          this.bulkEnquiryForm.controls['tin'].setValue(res['data']['gstin']);
-          this.bulkEnquiryForm.controls['buyertype'].setValue(res['data']['industry']);
-          this.bulkEnquiryForm.controls['panno'].setValue(res['data']['pan']);
-        }
-      })
+  initialize() {
+    if (this._commonService.isBrowser) {
+      this.getuserData();
+      this.adobeAnayticInitCall();
     }
-  }
-
-  changeOosUserType() {
-    this.isChecked = !this.isChecked;
-    this.bulkEnquiryForm.patchValue({
-
-      buyertype: "",
-      usertype: this.isChecked
-    });
-    return this.isChecked;
   }
 
   getuserData() {
@@ -135,104 +66,147 @@ export class CreateEnquiryComponent {
       if (user && user.authenticated == "true") {
         let name = user.userName.split(" ");
         this.customerId = user.userId;
-        this.bulkEnquiryForm.controls['firstname'].setValue(name[0]);
-        this.bulkEnquiryForm.controls['email'].setValue(user.email);
-        this.bulkEnquiryForm.controls['phoneno'].setValue(user.phone);
+        this.userDetails.isLogin = true;
+        this.userDetails.name = name[0];
+        this.userDetails.email = user.email;
+        this.userDetails.phoneno = user.phone;
+        this.getBusinessDetail();
       }
     }
   }
 
-  addProductForm() {
-    return this.formBuilder.group(
-      {
-        productName: ['', [Validators.required]],
-        quantity: [null, [Validators.required, Validators.maxLength(3)]],
-        brand: ['', [Validators.required]]
-      }
-    )
-  }
-
-  addProduct() {
-    let control = <FormArray>this.bulkEnquiryForm.controls['products'];
-    this.rfqlimit = false;
-    if (this.bulkEnquiryForm.controls['products'].valid) {
-      if (this.bulkEnquiryForm.controls['products']["controls"].length < 5)
-        control.push(this.addProductForm());
-      else
-        this.rfqlimit = true;
+  getBusinessDetail() {
+    let userSession = this.localStorageService.retrieve('user');
+    if (userSession && userSession.authenticated == "true") {
+      let data = { customerId: userSession.userId, userType: "business" };
+      this.userDetails.email = userSession.email;
+      this.userDetails.phoneno = userSession.phone;
+      this.bulkEnquiryService.getCustomerBusinessDetail(data).subscribe(res => {
+        if (this.bulkEnquiryForm !== undefined && res && res['data']) {
+          this.userDetails.company_name = res['data']['companyName'];
+        }
+        this.setLoginUserData();
+      })
     }
   }
 
-  removeProduct(i) {
-    let control = <FormArray>this.bulkEnquiryForm.controls['products'];
-    control.removeAt(i)
-    if (this.bulkEnquiryForm.controls['products']["controls"].length < 5) {
-      this.rfqlimit = false;
+  setLoginUserData(){
+    if(this.userDetails.isLogin){
+      this.nameFC.setValue(this.userDetails.name);
+      this.emailFC.setValue(this.userDetails.email);
+      this.phoneFC.setValue(this.userDetails.phoneno);
+      this.companyFC.setValue(this.userDetails.company_name);
     }
   }
 
-  checkQuantityCode(event) {
-    return event.charCode >= 48 && event.charCode <= 57;
+  submit(){
+    this.isFormSubmitted = true;
+    if(this.bulkEnquiryForm.valid){
+      this.sendBulkEnquiry();
+    }
   }
 
   sendBulkEnquiry() {
-
+    let user = this.localStorageService.retrieve("user");
     let obj = {
       "rfqEnquiryCustomer": {
-        "firstName": this.bulkEnquiryForm.controls['firstname'].value,
-        "email": this.bulkEnquiryForm.controls['email'].value,
-        "mobile": this.bulkEnquiryForm.controls['phoneno'].value,
+        "firstName": this.nameFC.value,
+        "email": this.emailFC.value,
+        "mobile": this.phoneFC.value,
+        "company": this.companyFC.value,
+        "tin": '',
+        "city": '',
+        "description": '',
+        "pincode": '',
         "businessUser": true,
-        "company": this.bulkEnquiryForm.controls['company_name'].value,
-        "buyerId": this.bulkEnquiryForm.controls['buyertype'].value,
-        "tin": this.bulkEnquiryForm.controls['tin'].value,
-        "description": this.bulkEnquiryForm.controls['description'].value,
-        "device": "mobile"
+        'customerId': (user && user['authenticated'] === 'true') ? user['userId'] : '',
+        "platform": "mobile",
+        "state": "",
       },
-      "rfqEnquiryItemsList": this.bulkEnquiryForm.controls['products'].value
+      "rfqEnquiryItemsList": []
     }
-
     this.bulkEnquiryService.postBulkEnquiry(obj).subscribe(
       res => {
         if (res['statusCode'] == 200) {
-
-          this.isQuerySuccessfull = true;
-          this.isChecked = false;
           ClientUtility.scrollToTop(1000);
           this.showThanksPopup = true;
+          this.isFormSubmitted = false;
           this.bulkEnquiryForm.reset();
-          
-          setTimeout(() => {
-            this.closeAlert()
-          }, 5000)
-
-          
-          // analytics
-          const analyticObj: any = {
-            page: {}
-          }
-          analyticObj['page']['linkPageName'] = "moglix:bulk query form",
-          analyticObj['page']['linkName'] = 'Submit RFQ',
-          analyticObj['page']['pageName'] = '',
-          analyticObj['page']['channel'] = '',
-          analyticObj['page']['subSection'] = '',
-          analyticObj['page']['loginStatus'] = ''
-
-          this.globalAnalyticService.sendGTMCall({
-            'event': 'rfq_boqp'
-          })
-          this.globalAnalyticService.sendAdobeCall(analyticObj,'genericClick')
-
+          this.adobeEventAfterSubmission();
         }
       }
     );
   }
 
-  closeAlert() {
+  
+  togglePopUp(){
     this.showThanksPopup = false;
+    this.bulkEnquiryForm.reset();
+    this.setLoginUserData();
   }
 
+  private adobeEventAfterSubmission() {
+    const analyticObj: any = {
+      page: {}
+    };
+    analyticObj['page']['linkPageName'] = "moglix:bulk query form",
+      analyticObj['page']['linkName'] = 'Submit RFQ',
+      analyticObj['page']['pageName'] = '',
+      analyticObj['page']['channel'] = '',
+      analyticObj['page']['subSection'] = '',
+      analyticObj['page']['loginStatus'] = '';
+
+    this.globalAnalyticService.sendGTMCall({
+      'event': 'rfq_boqp'
+    });
+    this.globalAnalyticService.sendAdobeCall(analyticObj, 'genericClick');
+  }
+
+  private adobeAnayticInitCall() {
+    const user = this.localStorageService.retrieve('user');
+    let page = {
+      'pageName': "moglix:bulk query form",
+      'channel': "”bulk query form",
+      'subSection': "moglix:bulk query form",
+      'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+    };
+    let custData = {
+      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+      'customerType': (user && user["userType"]) ? user["userType"] : '',
+    };
+    let order = {};
+    let adobeObj = {};
+    adobeObj["page"] = page;
+    adobeObj["custData"] = custData;
+    adobeObj["order"] = order;
+    this.globalAnalyticService.sendAdobeCall(adobeObj);
+  }
+
+  get nameFC(){
+    return this.bulkEnquiryForm.get('name')
+  }
+
+  get emailFC(){
+    return this.bulkEnquiryForm.get('email')
+  }
+
+  get phoneFC(){
+    return this.bulkEnquiryForm.get('phoneno')
+  }
+
+  get companyFC(){
+    return this.bulkEnquiryForm.get('company_name')
+  }
+
+
 }
+
+/* HTML TODO: 
+  - Footer accodian not working as exected also padding are also not proper 
+  - Raise a new equest btn missing
+  */
 
 @NgModule({
   declarations: [CreateEnquiryComponent],
@@ -240,7 +214,9 @@ export class CreateEnquiryComponent {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PopUpModule
+    PopUpModule,
+    BottomMenuModule,
+    NumberDirectiveModule
   ]
 })
 export default class CreateEnquiryModule {

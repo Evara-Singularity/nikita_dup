@@ -20,10 +20,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     tab: string = null;
 
     constructor(
-        private _router: Router, 
-        private _route: ActivatedRoute,
+        private _router: Router,
         private _sharedAuthService: SharedAuthService,
-        private _localAuthService:LocalAuthService) { }
+        private _localAuthService: LocalAuthService) { }
 
     ngOnInit() 
     {
@@ -67,20 +66,14 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
         } else if (URL.includes("otp")) {
             NAVIGATE_TO = this.LOGIN_URL;
         } else {
-            NAVIGATE_TO = this.HOME_URL;
-            const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-            if (BACKURLTITLE) { NAVIGATE_TO = BACKURLTITLE['backurl'] };
-            if (URL.toLowerCase().includes("login")){
-                this._localAuthService.clearBackURLTitle();
-                this._localAuthService.clearAuthFlow();
-            }
-            this._router.navigateByUrl(NAVIGATE_TO);
+            this._localAuthService.handleBackURL(true);
             return;
         }
         this.navigateTo(NAVIGATE_TO);
     }
 
-    navigateToHome(link){
+    navigateToHome(link)
+    {
         this.navigateTo(link);
     }
 

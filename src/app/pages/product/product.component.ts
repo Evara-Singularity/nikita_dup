@@ -3235,14 +3235,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   scrollToResults(id: string) {
-    let footerOffset = document.getElementById(id).offsetTop;
-    ClientUtility.scrollToTop(1000, footerOffset - 30);
+    if (document.getElementById(id)) {
+      let footerOffset = document.getElementById(id).offsetTop;
+      ClientUtility.scrollToTop(1000, footerOffset - 30);
+    }
   }
 
   scrollToId(id: string) {
     this.holdRFQForm = true;
-    let footerOffset = document.getElementById(id).offsetTop;
-    ClientUtility.scrollToTop(1000, footerOffset + 190);
+    if (document.getElementById(id)) {
+      let footerOffset = document.getElementById(id).offsetTop;
+      ClientUtility.scrollToTop(1000, footerOffset + 190);
+    }
   }
 
   sortedReviewsByDate(reviewList) {

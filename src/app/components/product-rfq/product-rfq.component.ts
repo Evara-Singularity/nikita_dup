@@ -25,7 +25,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     readonly gstinValidators = [Validators.required, Validators.pattern('[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}')];
     readonly pincodeOptional = 'Pincode';
     readonly pincodeMandate = this.pincodeOptional + '*';
-    readonly pincodeValidators = [Validators.required, Validators.minLength(6), Validators.pattern(/^[0-9]\d*$/)];
+    readonly pincodeValidators = [Validators.minLength(6), Validators.pattern(/^[0-9]\d*$/)];
     readonly stateList: Array<{ 'idState': number, 'idCountry': number, 'name': string }>;
     readonly borf = 'gbqn';
     //inputs
@@ -139,7 +139,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     setPincode() {
         let params = { customerId: this.localStorageService.retrieve('user').userId, invoiceType: "retail" };
         this.getPincodeSubscriber = this._commonService.getAddressList(params).subscribe((res) => {
-            if (res["statusCode"] == 200) {
+            if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 1) {
                 this.pincode.setValue(res["addressList"][0].postCode);
             }
         });
@@ -175,8 +175,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     handlePincodeCity() {
         if (this.isUserLoggedIn) {
             if (this.isPincodeUnKnown.value) {
-                this.pincode.clearValidators();
-                this.isInvalidPincode = false;
+                // this.pincode.clearValidators();
+                // this.isInvalidPincode = false;
                 this.state.setValue('');
             } else {
                 this.pincode.setValidators(this.pincodeValidators);
@@ -281,6 +281,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     verifyGSTIN(rfqDetails) {
         this.isRFQSubmitted = true;
         this.rfqForm.markAllAsTouched();
+
         if (this.rfqForm.valid) {
             this.isLoading.emit(true);
             if (this.isBusinessCustomer.value && this.verifiedGSTINValue !== (this.tin.value as string).toUpperCase()) {

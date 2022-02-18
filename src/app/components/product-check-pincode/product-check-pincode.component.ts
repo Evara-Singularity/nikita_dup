@@ -44,7 +44,7 @@ export class ProductCheckPincodeComponent implements OnInit
             let params = { customerId: user.userId, invoiceType: "retail" };
             this._commonService.getAddressList(params).subscribe((res) =>
             {
-                if (res["statusCode"] == 200) {
+                if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 0) {
                     this.pincode.setValue(res["addressList"][0].postCode);
                     this.checkAvailblityOnPinCode();
                 }

@@ -832,18 +832,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   getFirstAttributeValue(){
     let selectedValue;
-    this.productFilterAttributesList.forEach((singleAttrList, index) => {
-      if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
-        singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
-          if(item.selected == 0){
-             return true;
-          }
-          selectedValue = item;
-             return false;
-       }); 
-       singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
-      }
-    });
+    if (this.productFilterAttributesList && this.productFilterAttributesList.length > 0) {
+      this.productFilterAttributesList.forEach((singleAttrList, index) => {
+        if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
+          singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
+            if(item.selected == 0){
+              return true;
+            }
+            selectedValue = item;
+            return false;
+          });
+          singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
+        }
+      });
+    }
   }
   removeSimilarProductInstanceOOS() {
     if (this.similarProductInstanceOOS) {

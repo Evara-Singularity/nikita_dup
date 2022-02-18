@@ -2,8 +2,9 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { Component, Input, NgModule } from "@angular/core";
 import { KpToggleDirectiveModule } from "@app/utils/directives/kp-toggle.directive";
-import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
+import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
+import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
 
 
 @Component({
@@ -15,7 +16,6 @@ export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;
     todayDate;
     constructor(public _commonService: CommonService, private _router: Router){
-        this.todayDate = Date.now();
     }
 
     getTopTenBrandName(buckets: Array<{}>) {
@@ -70,8 +70,9 @@ export class CategoryFooterComponent{
     imports: [
         CommonModule,
         RouterModule,
-        MathFloorPipeModule,
         KpToggleDirectiveModule,
+        SeoTablesModule,
+        ReplacePipeModule
     ],
     exports: [
         CategoryFooterComponent

@@ -607,7 +607,7 @@
         
         
         <!-- GET Quote section starts -->
-        <div class="payments-block" *ngIf="!this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <div class="payments-block" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <ul class="deals-list">
                 <li class="clearfix">
                     <i class="icon-dropbox-fill"></i>

@@ -619,28 +619,28 @@
                 <button (click)="$event.stopPropagation();handleAskQuestionPopup()" class="btn redBgButton">Ask Now</button>
             </div>
             <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-            
-            <p class="display-qn">
-                Displaying Questions
-                <span>1-2</span> of
-                <span>{{questionAnswerList.data.qlist.length}} </span>
-            </p>
-            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
-                <div class="qn">
-                    <span class="heading-3">Q{{i+1}}:</span>
-                    <span class="qn-right heading-3">{{item.questionText}}</span>
-                </div>
-                <div class="answers">
-                    <div class="answer-block">
-                        <p class=" answer">Ans:</p>
-                        <p class="ans-details answer">{{item.answerText}}</p>
+        
+                <p class="display-qn">
+                    Displaying Questions
+                    <span>1-2</span> of
+                    <span>{{questionAnswerList.data.qlist.length}} </span>
+                </p>
+                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                    <div class="qn">
+                        <span class="heading-3">Q{{i+1}}:</span>
+                        <span class="qn-right heading-3">{{item.questionText}}</span>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-block">
+                            <p class=" answer">Ans:</p>
+                            <p class="ans-details answer">{{item.answerText}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
-                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
-            </div>
-        </ng-container>
+                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
+                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+                </div>
+            </ng-container>
         </section>
 
         <section id="productAccordianSection" observeVisibility [debounceTime]="100"

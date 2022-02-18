@@ -16,9 +16,6 @@ export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;
     todayDate;
     constructor(public _commonService: CommonService, private _router: Router){
-        console.log("categoryFooterData",this.categoryFooterData?.productSearchResult)
-        console.log("categoryFooterData",this.categoryFooterData?.productSearchResultSEO)
-
     }
 
     getTopTenBrandName(buckets: Array<{}>) {

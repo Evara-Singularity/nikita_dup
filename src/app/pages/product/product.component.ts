@@ -836,16 +836,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
       if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
         singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
           if(item.selected == 0){
-            console.log(item);
              return true;
           }
           selectedValue = item;
              return false;
        }); 
-     
-       console.log(this.productFilterAttributesList,"productFilterAttributesList");
        singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
-       console.log(singleAttrList["items"],"singleAttrList");
       }
     });
   }

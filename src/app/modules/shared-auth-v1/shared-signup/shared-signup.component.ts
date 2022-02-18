@@ -95,14 +95,14 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
 
     validateUser($event)
     {
-        if (this.signupForm.invalid) return;
         $event.stopPropagation();
+        if (this.signupForm.invalid) return;
+        if (this.isSingupUsingPhone && !(this.email.value)) { this.initiateSingup(); }
         let userInfo = null;
-       
         if (this.isSingupUsingPhone) {
-            userInfo = { email: '', phone: this.phone.value, type: 'p' };
-        } else {
             userInfo = { email: this.email.value, phone: '', type: 'e' };
+        } else {
+            userInfo = { email: '', phone: this.phone.value, type: 'p' };
         }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(

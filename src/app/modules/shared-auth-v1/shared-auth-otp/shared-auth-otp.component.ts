@@ -99,7 +99,8 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
-                    if (!(this.withLabel)) { setTimeout(() => { this._globalLoader.setLoaderState(false);this.otpEmitter.emit(this.otpValue);}, 200)};
+                    this._globalLoader.setLoaderState(false);
+                    if (!(this.withLabel)) { setTimeout(() => {this.otpEmitter.emit(this.otpValue);}, 200)};
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";

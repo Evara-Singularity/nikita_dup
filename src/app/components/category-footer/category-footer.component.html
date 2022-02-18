@@ -51,6 +51,12 @@
             </div>
         </div>
     </div>
-    <app-price-list-table [priceListData]="categoryFooterData"></app-price-list-table>
-    <app-price-rangle-table [priceRangeData]="categoryFooterData"></app-price-rangle-table>
+    <app-price-list-table [heading]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
+        *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length > 0 && categoryFooterData?.productSearchResultSEO.length > 0"
+        [priceListData]="categoryFooterData.productSearchResultSEO">
+    </app-price-list-table>
+    <app-price-range-table *ngIf="categoryFooterData?.PRTA?.length>0"
+        [heading]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
+        [priceRangeData]="categoryFooterData">
+    </app-price-range-table>
 </ng-container>

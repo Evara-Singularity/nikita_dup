@@ -1,12 +1,10 @@
-<div class="body-bg"
-    *ngIf="priceListData?.productSearchResult && priceListData?.productSearchResult['products'].length>0">
-    <div *ngIf="priceListData?.productSearchResultSEO.length">
+<div class="body-bg">
+    <div >
         <div class="panel-head">
             <div class="container">
                 <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
                     [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
-                    <p>Top Selling {{priceListData?.heading ? (priceListData?.heading |
-                        removeHTML) : priceListData?.brand}} Price List in India</p>
+                    <p>Top Selling {{heading}} Price List in India</p>
                 </h3>
             </div>
         </div>
@@ -23,7 +21,7 @@
                     </thead>
                     <tbody>
                         <ng-container
-                            *ngFor="let product of priceListData?.productSearchResultSEO | slice:0:10, let i=index">
+                            *ngFor="let product of priceListData | slice:0:10, let i=index">
                             <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
                                 <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
                                 <td>₹{{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>

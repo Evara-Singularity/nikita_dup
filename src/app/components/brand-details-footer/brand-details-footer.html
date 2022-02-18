@@ -14,5 +14,9 @@
             </div>
         </div>
     </div>
-    <app-price-list-table [priceListData]="brandDetailsFooterData"></app-price-list-table>
+    <app-price-list-table
+        [heading]="brandDetailsFooterData?.heading ? (brandDetailsFooterData?.heading | removeHTML) : brandDetailsFooterData?.brand"
+        *ngIf="brandDetailsFooterData?.productSearchResult && brandDetailsFooterData?.productSearchResult['products'].length>0 && brandDetailsFooterData?.productSearchResultSEO.length > 0"
+        [priceListData]="brandDetailsFooterData.productSearchResultSEO">
+    </app-price-list-table>
 </div>

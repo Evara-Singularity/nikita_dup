@@ -422,3 +422,16 @@ datalist {
 .validated-dark-text{
     color: #3c3c3c !important;
 }
+
+::ng-deep {
+    .value {
+        .value-auto-co {
+            .list-container {
+                input {
+                    margin-top: 0px !important;
+                    height: 40px !important;
+                }
+            }
+        }
+    }
+}

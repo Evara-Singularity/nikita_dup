@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
+import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class BrandDetailsFooterComponent {
 @NgModule({
 	imports: [
 		CommonModule,
+		ReplacePipeModule,
 		SeoTablesModule
 	],
 	declarations: [

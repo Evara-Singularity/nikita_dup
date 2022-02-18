@@ -240,17 +240,7 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
-        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-        const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || ".";
-        this._localAuthService.clearAuthFlow();
-        this._localAuthService.clearBackURLTitle();
-        let navigationExtras: NavigationExtras = {
-            queryParams: { 
-                'backurl': this._sharedAuthService.redirectUrl,
-                'state': this.activatedRoute.snapshot.queryParams.state
-            },
-        };
-        this._router.navigate([REDIRECT_URL], navigationExtras);
+        this._localAuthService.handleBackURL(true);
     }
 
     navigateHome() { this._router.navigate(["."])}

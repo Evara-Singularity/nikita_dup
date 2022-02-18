@@ -58,7 +58,6 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     navigateBack()
     {
-        debugger;
         const URL = (this._router.url as string).toLowerCase();
         let NAVIGATE_TO = this.HOME_URL;
         if (URL.includes("forgot-password")) {
@@ -70,7 +69,11 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
         } else {
             NAVIGATE_TO = this.HOME_URL;
             const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-            if (BACKURLTITLE) { NAVIGATE_TO = BACKURLTITLE['backurl'] }
+            if (BACKURLTITLE) { NAVIGATE_TO = BACKURLTITLE['backurl'] };
+            if (URL.toLowerCase().includes("login")){
+                this._localAuthService.clearBackURLTitle();
+                this._localAuthService.clearAuthFlow();
+            }
             this._router.navigateByUrl(NAVIGATE_TO);
             return;
         }

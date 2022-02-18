@@ -256,6 +256,7 @@ export class SearchComponent implements OnInit {
     extras['queryParams']['search_query'] = this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString ? this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
     extras['queryParams']['category'] = categoryId;
     extras['queryParams']['toggleRcommendFlag'] = true;
+    extras['queryParams']['page'] = 1;
     delete extras['queryParams']['orderWay'];
     delete extras['queryParams']['orderBy'];
     this._router.navigate(['search'], extras);

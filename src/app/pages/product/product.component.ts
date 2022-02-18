@@ -362,13 +362,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   backUrlNavigationHandler() {
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      if (this.location.getState()['navigationId'] == 2) {
-        this.router.navigateByUrl(this.productCategoryDetails['categoryLink']);
-      }
-    });
+    // this.router.events.pipe(
+    //   filter((event) => event instanceof NavigationEnd)
+    // ).subscribe((event: NavigationEnd) => {
+    //   if (this.location.getState()['navigationId'] == 2) {
+    //     this.router.navigateByUrl(this.productCategoryDetails['categoryLink']);
+    //   }
+    // });
   }
 
   onScrollOOOSimilar(event) {

@@ -29,7 +29,7 @@ import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
-import { LocalStorageService } from "ngx-webstorage";
+import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject, Subscription } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
@@ -307,6 +307,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer,
     private location: Location,
     public localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService,
     public productService: ProductService,
     private localAuthService: LocalAuthService,
     private _tms: ToastMessageService,
@@ -362,13 +363,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   backUrlNavigationHandler() {
-    // this.router.events.pipe(
-    //   filter((event) => event instanceof NavigationEnd)
-    // ).subscribe((event: NavigationEnd) => {
-    //   if (this.location.getState()['navigationId'] == 2) {
-    //     this.router.navigateByUrl(this.productCategoryDetails['categoryLink']);
-    //   }
-    // });
+    // make sure no browser history is present
+    if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
+      this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
+      window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
+      window.history.pushState('', '', this.router.url);
+    }
   }
 
   onScrollOOOSimilar(event) {

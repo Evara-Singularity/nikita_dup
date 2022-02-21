@@ -72,8 +72,8 @@ export class SharedAuthUtilService implements OnInit
                     this.emitCheckoutLogin(2);
                 } else {
                     this._commonService.redirectPostAuth(redirectUrl);
-                    this._toastService.show({ type: 'success', text: message });
                 }
+                this._toastService.show({ type: 'success', text: message });
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }

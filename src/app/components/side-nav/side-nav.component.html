@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li>
-                <a (click)="trackAnalyticAndRedirect('/brand-store')"  [routerLink]="['/store/brands']">
+                <a (click)="trackAnalyticAndRedirect('/store/brands')"  [routerLink]="['/store/brands']">
                     <i class="icon-brand_store"></i>
                     <span class="text">Explore All Brands</span>
                 </a>
@@ -43,6 +43,12 @@
                 <a (click)="trackAnalyticAndRedirect('/dashboard/rfq', true, 'Continue to view your RFQs')" >
                     <i class="icon-my-rfq"></i>
                     <span class="text">My RFQs</span>
+                </a>
+            </li>
+            <li>
+                <a (click)="trackAnalyticAndRedirect('/deals')" [routerLink]="['/deals']">
+                    <i class="icon-home-deal"></i>
+                    <span class="text">Best Deals</span>
                 </a>
             </li>
             <li>

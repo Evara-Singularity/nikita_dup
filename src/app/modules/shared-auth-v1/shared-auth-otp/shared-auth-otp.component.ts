@@ -5,6 +5,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { environment } from 'environments/environment';
 import { Subscription, timer } from 'rxjs';
 import { scan, takeWhile } from 'rxjs/operators';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
@@ -158,7 +159,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     getUserData()
     {
-        let requestData = { email: '', phone: '', type: "p", source: this.source };
+        let requestData = { email: '', phone: '', type: "p", source: this.source, buildVersion: environment.buildVersion };
         if (this.authFlow.flowType.includes("SIGNUP") || this.authFlow.identifierType.includes("PHONE")) {
             requestData['phone'] = this.identifier;
         }

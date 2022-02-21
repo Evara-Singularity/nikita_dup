@@ -10,6 +10,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
 import { StartWithSpaceValidator } from '@app/utils/validators/startwithspace.validator';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
+import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
@@ -148,7 +149,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthUtilService.pushNormalUser();
         let request = this.signupForm.value;
         request['otp'] = (this.otpForm.value as string[]).join("");
-        const REQUEST = { ...this.SINGUP_REQUEST, ...request }
+        const REQUEST = { ...this.SINGUP_REQUEST, ...request, ... { buildVersion: environment.buildVersion } }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.signUp(REQUEST).subscribe(
             (response) =>

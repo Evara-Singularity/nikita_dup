@@ -1,4 +1,3 @@
-import { SharedCartModule } from './../../components/shared-cart/shared-cart.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
@@ -12,7 +11,10 @@ import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { CartModule } from '../../modules/cart/cart.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
-import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
+
+// Newly created Modules
+import { SharedCartModule } from '../../components/shared-cart-v2/shared-cart.module';
+import { OrderSummaryModule } from '../../components/shared-cart-v2/orderSummary/orderSummary.module';
 
 @NgModule({
     imports: [

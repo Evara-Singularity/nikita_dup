@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: QuickOrderComponent,
         resolve: {
-            qores: QuickOrderResolver
+            data: QuickOrderResolver
         }
     }
 ];

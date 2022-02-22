@@ -38,6 +38,9 @@ export class QuickOrderComponent {
     private cDistryoyed = new Subject();
     itemsValidationMessage: Array<{}>;
 
+    // New Variables
+    API_RESPONSE: any;
+
     constructor(
         private _gState: GlobalState,
         private meta: Meta,
@@ -48,10 +51,30 @@ export class QuickOrderComponent {
         public footerService: FooterService,
         public cartService: CartService,
         private _quickOrderService: QuickOrderService,
-        private _commonService: CommonService,
+        public _commonService: CommonService,
         private _analytics: GlobalAnalyticsService,
         public router: Router) {
         this.itemsList = [];
     }
 
+    ngOnInit() {
+        this.setDataFromResolver();
+    }
+
+    setDataFromResolver() {
+        this._activatedRoute.data.subscribe(result => {
+            this.API_RESPONSE = result.data;
+
+            this.updateUserSession();
+        });
+    }
+    
+    updateUserSession() {
+        this._commonService.userSession = this.localStorageService.retrieve('user');
+    }
+
+    navigateToCheckout() {
+        this._localAuthService.setBackURLTitle(null, 'Continue to checkout');
+        this.router.navigate(['/checkout'], { queryParams: { title: 'Continue to checkout' } });
+    }
 }

@@ -36,7 +36,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     authFlow: AuthFlowType;//important:gives information on OTP journey
     isOTPClean: boolean = true;
 
-    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService,private _localAuthService:LocalAuthService,
+    constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
@@ -55,6 +55,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         });
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
         this.OTP_INPUTS[0].focus();
+        this.enableWebOTP();
     }
 
     @HostListener('window:beforeunload', ['$event'])
@@ -65,7 +66,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     initiateOTP(isResend?)
     {
-        
+
         const REQUEST = this.getUserData();
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.sendOTP(REQUEST).subscribe(
@@ -73,9 +74,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
-                    if (isResend){
-                        const MESSAGE = this.isEmailLogin ? "OTP resent to the mentioned email & associated mobile number" : "OTP resent to the mentioned mobile number" ;
-                        this._toastService.show({ type: "success", text: MESSAGE});
+                    if (isResend) {
+                        const MESSAGE = this.isEmailLogin ? "OTP resent to the mentioned email & associated mobile number" : "OTP resent to the mentioned mobile number";
+                        this._toastService.show({ type: "success", text: MESSAGE });
                     }
                     this.startOTPTimer();
                     return;
@@ -94,14 +95,14 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-                
+
                 if (response['status']) {
                     this.verifiedOTP = this.otpValue;
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => {this.otpEmitter.emit(this.otpValue);}, 200)};
+                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(this.otpValue); }, 200) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
@@ -133,11 +134,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    onPaste(event: ClipboardEvent, inputIndex) {
+    onPaste(event: ClipboardEvent, inputIndex)
+    {
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
         let pastedText = (clipboardData) ? clipboardData.getData('text') : '';
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
-        if(isPasteTextValid){
+        if (isPasteTextValid) {
             for (let index = 0; index < 6; index++) {
                 this.OTP_INPUTS[index].value = pastedText[index];
             }
@@ -145,9 +147,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    emitVerifiedOTP() { 
-        if(this.isDisabled)return;
-        this.otpEmitter.emit(this.otpValue); 
+    emitVerifiedOTP()
+    {
+        if (this.isDisabled) return;
+        this.otpEmitter.emit(this.otpValue);
     }
 
     processOTPError(response)
@@ -180,18 +183,21 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
-        if (typeof window !== 'undefined') {
-            if ('OTPCredential' in window) {
+        if (typeof window !== 'undefined' && 'OTPCredential' in window) {
+            window.addEventListener('DOMContentLoaded', e =>
+            {
                 const ac = new AbortController();
                 var reqObj = { otp: { transport: ['sms'] }, signal: ac.signal };
-                navigator.credentials.get(reqObj).then((otp: any) =>
+                navigator.credentials.get(reqObj).then(otp =>
                 {
-                    if (otp && otp.code) {
-                        const OTPS = (otp.code as string).split("");
+                    if (otp && otp['code']) {
+                        const OTPS = (otp['code'] as string).split("");
                         OTPS.forEach((value, index) => { this.otpFormArray.controls[index].patchValue(value) })
                     }
-                }).catch(err => { console.log(err); });
-            }
+                }).catch(err => { console.log(err) });
+            })
+        } else {
+            alert('WebOTP not supported!.')
         }
     }
 
@@ -199,8 +205,8 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     get isOTPVerified() { return (this.otpValue.length > 0) && (this.verifiedOTP === this.otpValue); }
     get isDisabled() { return this.otpFormArray.invalid || !(this.isOTPVerified) }
     get isOTPFormDisabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
-    get isEmailLogin() { return this.authFlow && this.authFlow.identifier.includes("@")}
-    get disableResend() {return this.timer > 0 || this.isOTPVerified}
+    get isEmailLogin() { return this.authFlow && this.authFlow.identifier.includes("@") }
+    get disableResend() { return this.timer > 0 || this.isOTPVerified }
 
     ngOnDestroy(): void
     {

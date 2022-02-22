@@ -197,7 +197,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 }).catch(err => { console.log(err) });
             })
         } else {
-            alert('WebOTP not supported!.')
+            console.log('WebOTP not supported!.');
         }
     }
 

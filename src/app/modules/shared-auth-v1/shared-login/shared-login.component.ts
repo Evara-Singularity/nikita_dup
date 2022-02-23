@@ -190,8 +190,8 @@ export class SharedLoginComponent implements OnInit
     navigateToNext(isUserExists)
     {
         const LINK = (isUserExists) ?
-            ((!this.isCheckout) ? "/checkout/otp" : "/otp") :
-            ((!this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
+            ((this.isCheckout) ? "/checkout/otp" : "/otp") :
+            ((this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
         let navigationExtras: NavigationExtras = {
             queryParams: { 
                 'backurl': this._sharedAuthService.redirectUrl,

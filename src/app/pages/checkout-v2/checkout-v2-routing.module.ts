@@ -8,6 +8,7 @@ const routes: Routes = [
     path: '',
     component: CheckoutV2Component,
     children: [
+      { path: '', redirectTo: '/checkout/address', pathMatch: 'full' },
       {
         path: 'login',
         loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
@@ -39,13 +40,22 @@ const routes: Routes = [
       {
         path: 'address',
         loadChildren: () => import('./checkout-address/checkout-address.module').then((m) => m.CheckoutAddressModule),
-        canActivate: [IsAuthenticatedCheckoutLogin]
+        canActivate: [IsAuthenticatedCheckoutLogin],
+        data: {
+					footer: false,
+					title: 'Checkout',
+				},
       },
       {
         path: 'payment',
         loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
-        canActivate: [IsAuthenticatedCheckoutLogin]
+        canActivate: [IsAuthenticatedCheckoutLogin],
+        data: {
+					footer: false,
+					title: 'Payment',
+				},
       },
+      
     ]
   }
 ];

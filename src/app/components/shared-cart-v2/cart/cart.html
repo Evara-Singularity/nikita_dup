@@ -1,0 +1,85 @@
+<div *ngIf="cartData?.itemsList && cartData?.itemsList.length > 0">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartData?.itemsList; let i = index">
+        <div *ngIf="item['text1']" class="realTimePrice">
+            <span>{{item['text1']}}
+                <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
+                    {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
+        </div>
+        <div class="container pb-15" [ngClass]="{'oos':item.oos}">
+            <div class="product-left">
+                <div class="product-img product-img-v2">
+                    <img (click)="redirectToProductURL(showLink,item.productUrl)" src="{{item.productImg}}">
+                </div>
+
+            </div>
+            <div class="product-detail">
+                <div class="p-name">
+                    <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
+                </div>
+                <p class="seller">
+                    Brand: {{item.brandName}}
+                </p>
+                <p class="price clearfix">
+                    <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹ {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
+                    <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax  | mathFloor | number : '1.2-2'}}</span>
+                </p>
+                <!-- <div *ngIf="!item.oos" class="remove-btn" (click)="showPopup(sbm.index = i)">
+                    <span>REMOVE</span>
+                </div> -->
+            </div>
+        </div>
+        <!-- <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="showPopup(sbm.index = i)">
+            <span>REMOVE</span>
+        </div> -->
+        <!-- <div class="alert-box" *ngIf="removePopup && sbm.index == i">
+            <div class="overlay"></div>
+            <div class="content-area">
+                <div class="info-area">
+                    <p class="info-title">Remove Item</p>
+                    <p class="info">Are you sure you want to remove this item?</p>
+                </div>
+                <div class="button-area">
+                    <button (click)="cancelRemove()" class="cancel">CANCEL</button>
+                    <button (click)="deleteProduct(sbm.index = i)" class="continue">REMOVE</button>
+                </div>
+            </div>
+        </div> -->
+        <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle">
+            <div class="volume">
+                <span class="f-left txt">Qty :&nbsp;</span>
+                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">-</span>
+                <input type="text" min="1" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
+                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
+            </div>
+            <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+                <div class="f-right">
+                    <div class="f-left">
+                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2'}}</h3>
+                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2'}}</h3>
+                        <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
+                        <span class="grey-txt" *ngIf="item.shippingCharges == 0 && !item.oos">Price Details</span>
+                        <span class="grey-txt" *ngIf="item.shippingCharges > 0 && !item.oos">Price + Shipping Details</span>
+                        <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                    </div>
+                    <i [style.color]="item.oos ? '#9c9292' : '#3875FD'" class="icon-down"></i>
+                </div>
+            </div>
+        </div>
+        <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(i+1)" style="display: none">
+            <ul class="txt-list">
+                    <li>
+                        <span class="tag-label">{{item.taxPercentage}}% GST </span>
+                        <span class="tag-value">₹ {{item.tax | mathFloor | number : '1.2-2'}}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Shipping</span>
+                        <span class="tag-value">₹ {{item.shippingCharges | mathFloor | number : '1.2-2'}}</span>
+                    </li>
+                    <li class="bold-txt">
+                        <span class="tag-label">Total</span>
+                        <span class="tag-value">₹ {{item.totalPayableAmount + item.shippingCharges - item.offer | mathFloor |number : '1.2-2'}}</span>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>

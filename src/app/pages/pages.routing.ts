@@ -134,7 +134,7 @@ const routes: Routes = [
 			{
 				path: 'quickorder',
 				loadChildren: () =>
-					import('./quickOrder/quickOrder.module').then(
+					import('./quickOrder-v2/quickOrder.module').then(
 						(m) => m.QuickOrderModule
 					),
 				data: {

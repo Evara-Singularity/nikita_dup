@@ -86,22 +86,25 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
 
-    async displayAddressFormPopup($event, addressType: string, idAddress?: number)
+    async displayAddressFormPopup($event, addressType: string, address?)
     {
         $event.stopPropagation();
         let factory = null;
+        let verifiedPhones = null;
         if (addressType === this.ADDRESS_TYPES.DELIVERY) {
             const { CreateEditDeliveryAddressComponent } = await import("./../create-edit-delivery-address/create-edit-delivery-address.component").finally(() => { });
             factory = this.cfr.resolveComponentFactory(CreateEditDeliveryAddressComponent);
+            verifiedPhones = this._addressService.getVerifiedPhones(this.deliveryAddressList);
         }
         else {
             const { CreateEditBillingAddressComponent } = await import("./../create-edit-billing-address/create-edit-billing-address.component").finally(() => { });
             factory = this.cfr.resolveComponentFactory(CreateEditBillingAddressComponent);
+            verifiedPhones = this._addressService.getVerifiedPhones(this.billingAddressList);
         }
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
-        this.addressListInstance.instance['isAddMode'] = !(idAddress);
-        this.addressListInstance.instance['verifiedPhones'] = this._addressService.getVerifiedPhones([]);
-        this.addressListInstance.instance['address'] = null ;
+        this.addressListInstance.instance['isAddMode'] = !(address);
+        this.addressListInstance.instance['verifiedPhones'] = verifiedPhones;
+        this.addressListInstance.instance['address'] = address || null ;
         this.addressListInstance.instance['displayCreateEditPopup'] = true;
         this.createEditAddressSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
         {

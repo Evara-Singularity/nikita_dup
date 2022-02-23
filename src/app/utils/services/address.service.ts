@@ -5,7 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AddressListModel } from '../models/shared-checkout.models';
+import { AddressListModel, DeliveryAddressModel } from '../models/shared-checkout.models';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
 
@@ -21,7 +21,7 @@ export class AddressService
     readonly EMPTY_ADDRESS: AddressListModel = { deliveryAddressList: [], billingAddressList: [] };
 
     constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService,
-        private _localAuthService:LocalAuthService) { }
+        private _localAuthService: LocalAuthService) { }
 
     getAddressList(params)
     {
@@ -46,6 +46,12 @@ export class AddressService
             );
     }
 
+    postAddress(address)
+    {
+        const URL = `${this.API}${ENDPOINTS.POST_ADD}?onlineab=y`;
+        return this._dataService.callRestful("POST", URL, { body: address });
+    }
+
     getStateList(countryId)
     {
         this._globaleLoader.setLoaderState(true);
@@ -55,33 +61,35 @@ export class AddressService
             map((response) =>
             {
                 this._globaleLoader.setLoaderState(false);
-                return response
+                if (response['status']) { return response['dataList'] }
+                return [];
             }),
             catchError((res: HttpErrorResponse) =>
             {
                 this._globaleLoader.setLoaderState(false);
-                return of({ status: false, statusCode: res.status, addressList: [] });
+                return of([]);
             }),
         );
     }
 
     getCountryList()
     {
-        this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.GET_CountryList}`;
         return this._dataService.callRestful("GET", URL)
             .pipe(
                 map((response) =>
                 {
-                    this._globaleLoader.setLoaderState(false);
-                    return response
+                    if (response['status']) { return response['dataList'] }
+                    return [];
                 }),
-                catchError((res: HttpErrorResponse) =>
-                {
-                    this._globaleLoader.setLoaderState(false);
-                    return of({ status: false, statusCode: res.status, dataList: [] });
-                })
+                catchError((res: HttpErrorResponse) => { return of([]); })
             );
+    }
+
+    getCityByPinCode(pinCode)
+    {
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CITY_BY_PIN }${pinCode}`;
+        return this._dataService.callRestful("GET", URL);
     }
 
     getVerifiedPhones(addressList: any[]): any[]
@@ -99,6 +107,43 @@ export class AddressService
         return verifiedPhones;
     }
 
+    getCreateEditDeliveryAddressType(address, countryList, stateList)
+    {
+        const COUNTRY_ID = this.getCountry(countryList, address);
+        const STATE_ID = this.getCountry(stateList, address);
+        const ADDRESS = {};
+        ADDRESS['idCountry'] = COUNTRY_ID;
+        ADDRESS['idState'] = STATE_ID;
+        ADDRESS['idAddress'] = address['idAddress'];
+        ADDRESS['addressCustomerName'] = address['addressCustomerName'];
+        ADDRESS['phone'] = address['phone'];
+        ADDRESS['alternatePhone'] = address['alternatePhone'];
+        ADDRESS['postCode'] = address['postCode'];
+        ADDRESS['landmark'] = address['landmark'];
+        ADDRESS['addressLine'] = address['addressLine'];
+        ADDRESS['city'] = address['city'];
+        ADDRESS['email'] = address['email'];
+        ADDRESS['phoneVerified'] = address['phoneVerified'] || false;
+        return ADDRESS;
+    }
+
+    getCountry(countryList, address)
+    {
+        if (address && address['country'] && address['country']['idCountry']) {
+            return parseInt(address['country']['idCountry']);
+        } else {
+            return countryList[0]['idCountry'];
+        }
+    }
+
+    getState(stateList, address)
+    {
+        if (address && address['state'] && address['state']['idState']) {
+            return parseInt(address['state']['idState']);
+        } else {
+            return stateList[0]['idState'];
+        }
+    }
 
     //idAddressType=1 implies delivery
     //idAddressType=2 implies billing

@@ -138,6 +138,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     {
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
         let pastedText = (clipboardData) ? clipboardData.getData('text') : '';
+        this.autoFillOTP(pastedText);
+    }
+
+    private autoFillOTP(pastedText: any) {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {
             for (let index = 0; index < 6; index++) {
@@ -192,7 +196,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 {
                     if (otp && otp['code']) {
                         const OTPS = (otp['code'] as string).split("");
-                        OTPS.forEach((value, index) => { this.otpFormArray.controls[index].patchValue(value) })
+                        this.autoFillOTP(OTPS)
                     }
                 }).catch(err => { console.log(err) });
             })

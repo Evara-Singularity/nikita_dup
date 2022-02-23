@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SharedAuthService } from '@app/modules/shared-auth-v1/shared-auth.service';
 
 @Component({
   selector: 'app-checkout-login',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutLoginComponent implements OnInit {
 
-  constructor() { }
+  flow = "login"
+  isCheckout = false;
+  constructor(
+    private _router: Router,
+  ) { }
 
   ngOnInit(): void {
+    this.flow = this.removeQueryParams(this._router.url).split("/")[2];
+  }
+
+  removeQueryParams(url) {
+    return url.split("?")[0];
   }
 
 }

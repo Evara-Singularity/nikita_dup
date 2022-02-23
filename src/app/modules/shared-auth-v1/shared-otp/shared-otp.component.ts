@@ -31,7 +31,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
+    readonly CHECKOUT_LOGIN_URL = "/checkout/login";
+    readonly CHECKOUT_ADDRESS = "/checkout/address";
     readonly FORGOT_PASSWORD_URL = "/forgot-password";
+    readonly CHECKOUT_PASSWORD_URL = "/checkout/forgot-password";
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;
     authFlow: AuthFlowType;//gives flowtype & identifier information
@@ -187,35 +190,38 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
-        this._sharedAuthUtilService.processAuthentication(response, this.isCheckout, REDIRECT_URL);
+        this._sharedAuthUtilService.processAuthentication(
+            response,
+            this.isCheckout,
+            ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
+        );
     }
 
-    navigateToLogin()
-    {
+    navigateToLogin() {
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                'backurl': this._sharedAuthService.redirectUrl,
+                'state': this._activatedRoute.snapshot.queryParams.state
+            },
+        };
         if (this.isCheckout) {
-            this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
+            this._router.navigate([this.CHECKOUT_LOGIN_URL])
         } else {
-            let navigationExtras: NavigationExtras = {
-                queryParams: {
-                    'backurl': this._sharedAuthService.redirectUrl,
-                    'state': this._activatedRoute.snapshot.queryParams.state
-                },
-            };
             this._router.navigate([this.LOGIN_URL], navigationExtras)
         }
     }
 
     navigateToForgotPassword()
     {
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                'backurl': this._sharedAuthService.redirectUrl,
+                'state': this._activatedRoute.snapshot.queryParams.state
+            },
+        };
         if (this.isCheckout) {
-            this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.FORGET_PASSWORD_TAB);
+            this._router.navigate([this.CHECKOUT_PASSWORD_URL])
         } else {
-            let navigationExtras: NavigationExtras = {
-                queryParams: {
-                    'backurl': this._sharedAuthService.redirectUrl,
-                    'state': this._activatedRoute.snapshot.queryParams.state
-                },
-            };
             this._router.navigate([this.FORGOT_PASSWORD_URL], navigationExtras)
         }
     }

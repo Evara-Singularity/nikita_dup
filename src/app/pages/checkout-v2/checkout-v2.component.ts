@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'app-checkout-v2',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutV2Component implements OnInit {
 
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit(): void {
+    
   }
 
 }

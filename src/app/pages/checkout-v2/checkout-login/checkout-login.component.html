@@ -1,1 +1,6 @@
-<p>checkout-login works!</p>
+<ng-container [ngSwitch]="flow">
+    <shared-login [isCheckout]="true" *ngSwitchCase="'login'"></shared-login>
+    <shared-otp [isCheckout]="true" *ngSwitchCase="'otp'"></shared-otp>
+    <shared-forgot-password [isCheckout]="true" *ngSwitchCase="'forgot-password'"></shared-forgot-password>
+    <shared-singup [isCheckout]="true" *ngSwitchCase="'sign-up'"></shared-singup>
+</ng-container>

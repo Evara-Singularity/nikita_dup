@@ -1,0 +1,12 @@
+<app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)" [class.open1]="displayCreateEditPopup"
+    [data]="{class: 'payment-popup addAddressPopup',headerCustom:true}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="handlePopup($event)"></i>
+            <p class="txt header_text page-name"> {{modeType }} {{addressType}} Address</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15 pad-15" content>
+        TODO
+    </div>
+</app-pop-up-variant2>

@@ -2,7 +2,7 @@ import { PopUpVariant2Module } from './../../pop-up-variant2/pop-up-variant2.mod
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CreateEditAddressModal } from '@app/utils/models/shared-checkout.modals';
+import { CreateEditAddressModel } from '@app/utils/models/shared-checkout.models';
 
 @Component({
     selector: 'create-edit-delivery-address',
@@ -11,11 +11,12 @@ import { CreateEditAddressModal } from '@app/utils/models/shared-checkout.modals
 })
 export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 {
-    @Input("addressType") addressType = "Delivery";
+    readonly ADDRESS_TYPE = "Delivery";
     @Input("displayCreateEditPopup") displayCreateEditPopup = false;
     @Input("isAddMode") isAddMode = true;
     @Input("address") address = null;
-    @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<CreateEditAddressModal> = new EventEmitter<CreateEditAddressModal>();
+    @Input("verifiedPhones") verifiedPhones: string[];
+    @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<CreateEditAddressModel> = new EventEmitter<CreateEditAddressModel>();
     addressForm:FormGroup = null;
     constructor() { }
     ngOnInit() 

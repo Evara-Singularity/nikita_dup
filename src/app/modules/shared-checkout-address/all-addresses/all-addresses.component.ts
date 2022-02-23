@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@app/utils/services/address.service';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
-import { AddressListModal } from '@app/utils/models/shared-checkout.modals';
+import { AddressListModel } from '@app/utils/models/shared-checkout.models';
 
 @Component({
     selector: 'all-addresses',
@@ -62,7 +62,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     updateAddressType(userId, type: string)
     {
         const params = { customerId: userId, invoiceType: type };
-        this._addressService.getAddressList(params).subscribe((response: AddressListModal) =>
+        this._addressService.getAddressList(params).subscribe((response: AddressListModel) =>
         {
             this.deliveryAddressList = response.deliveryAddressList;
             this.billingAddressList = response.billingAddressList;
@@ -99,8 +99,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             factory = this.cfr.resolveComponentFactory(CreateEditBillingAddressComponent);
         }
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
-        this.addressListInstance.instance['addressType'] = addressType;
         this.addressListInstance.instance['isAddMode'] = !(idAddress);
+        this.addressListInstance.instance['verifiedPhones'] = this._addressService.getVerifiedPhones([]);
         this.addressListInstance.instance['address'] = null ;
         this.addressListInstance.instance['displayCreateEditPopup'] = true;
         this.createEditAddressSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
@@ -110,6 +110,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             this.addressListRef.remove();
         });
     }
+
 
     get displayBillingAddresses() { return this.isGSTInvoice.value ? 'block' : 'none'; }
 

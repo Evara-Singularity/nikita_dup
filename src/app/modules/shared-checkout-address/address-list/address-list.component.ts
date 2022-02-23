@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, NgModule } from '@angular/core';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
-import { AddressListActionModal } from '@app/utils/models/shared-checkout.modals';
+import { AddressListActionModel } from '@app/utils/models/shared-checkout.models';
 import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pipe';
 
 //expected actions are Add, Edit, Deliver Here(default/selected)
@@ -17,7 +17,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy
     @Input("addressType") addressType = "Delivery";
     @Input("displayAddressListPopup") displayAddressListPopup = false;
     @Input("addresses") addresses = [];
-    @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<AddressListActionModal> = new EventEmitter<AddressListActionModal>();
+    @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
 
     constructor() { }
 

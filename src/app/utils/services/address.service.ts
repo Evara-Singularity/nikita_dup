@@ -1,10 +1,11 @@
+import { LocalAuthService } from '@services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AddressListModal } from './../models/shared-checkout.modals';
+import { AddressListModel } from '../models/shared-checkout.models';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
 
@@ -17,9 +18,10 @@ import { GlobalLoaderService } from './global-loader.service';
 export class AddressService
 {
     readonly API = CONSTANTS.NEW_MOGLIX_API;
-    readonly EMPTY_ADDRESS: AddressListModal = { deliveryAddressList: [], billingAddressList: [] };
+    readonly EMPTY_ADDRESS: AddressListModel = { deliveryAddressList: [], billingAddressList: [] };
 
-    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService) { }
+    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService,
+        private _localAuthService:LocalAuthService) { }
 
     getAddressList(params)
     {
@@ -81,6 +83,22 @@ export class AddressService
                 })
             );
     }
+
+    getVerifiedPhones(addressList: any[]): any[]
+    {
+        const USER_SESSION = this._localAuthService.getUserSession();
+        let verifiedPhones = [];
+        if (USER_SESSION && USER_SESSION['phoneVerified']) {
+            verifiedPhones.push(USER_SESSION['phone']);
+        }
+        if (addressList.length) {
+            const filtered = addressList.filter((address) => { return address.phoneVerified });
+            const phones = filtered.map((address) => address.phone);
+            verifiedPhones = [...verifiedPhones, ...phones];
+        }
+        return verifiedPhones;
+    }
+
 
     //idAddressType=1 implies delivery
     //idAddressType=2 implies billing

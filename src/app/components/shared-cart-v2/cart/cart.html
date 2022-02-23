@@ -1,10 +1,10 @@
 <div *ngIf="cartData?.itemsList && cartData?.itemsList.length > 0">
     <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartData?.itemsList; let i = index">
-        <!-- <div *ngIf="item['text1']" class="realTimePrice">
+        <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
-        </div> -->
+        </div>
         <div class="container pb-15" [ngClass]="{'oos':item.oos}">
             <div class="product-left">
                 <div class="product-img product-img-v2">
@@ -23,15 +23,15 @@
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹ {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax  | mathFloor | number : '1.2-2'}}</span>
                 </p>
-                <div *ngIf="!item.oos" class="remove-btn" (click)="showPopup(sbm.index = i)">
+                <!-- <div *ngIf="!item.oos" class="remove-btn" (click)="showPopup(sbm.index = i)">
                     <span>REMOVE</span>
-                </div>
+                </div> -->
             </div>
         </div>
-        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="showPopup(sbm.index = i)">
+        <!-- <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="showPopup(sbm.index = i)">
             <span>REMOVE</span>
-        </div>
-        <div class="alert-box" *ngIf="removePopup && sbm.index == i">
+        </div> -->
+        <!-- <div class="alert-box" *ngIf="removePopup && sbm.index == i">
             <div class="overlay"></div>
             <div class="content-area">
                 <div class="info-area">
@@ -43,13 +43,13 @@
                     <button (click)="deleteProduct(sbm.index = i)" class="continue">REMOVE</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle">
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>
-                <span class="btn-volume" (click)="decrementQuantity(quantityTarget, i)">-</span>
-                <input type="text" min="1" maxlength="3" [value]="item.productQuantity" (focusout)="updateQuantity($event, i)" #quantityTarget>
-                <span class="btn-volume" (click)="incrementQuantity(quantityTarget, i)">+</span>
+                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">-</span>
+                <input type="text" min="1" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
+                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
             </div>
             <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
                 <div class="f-right">

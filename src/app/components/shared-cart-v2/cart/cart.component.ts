@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 
 import { DOCUMENT, Location } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -47,18 +49,80 @@ export class CartComponent {
         private _tState: TransferState,
         public footerService: FooterService,
         public activatedRoute: ActivatedRoute,
+        private _loader: GlobalLoaderService,
         public dataService: DataService,
         public commonService: CommonService,
         public checkOutService: CheckoutService,
         public localStorageService: LocalStorageService,
-        public router: Router,
+        public _router: Router,
         private _localAuthService: LocalAuthService,
+        private _toastMessageService: ToastMessageService,
         private _cartService: CartService,
         private _productService: ProductService,
-        private _loaderService: GlobalLoaderService,
-        private _tms: ToastMessageService) {}
+        private _loaderService: GlobalLoaderService) {}
 
         ngOnInit() {
             console.log(this.cartData);
+        }
+
+        updateCartItemQuantity(quantityTarget, index, action, buyNow = false) {
+            if (quantityTarget < 1) return;
+            if (action = 'increment') {
+                this.cartData.itemsList[index].productQuantity = this.cartData.itemsList[index].productQuantity + 1;
+            } else if (action = 'decrement') {
+                alert(action);
+                alert(this.cartData.itemsList[index].productQuantity);
+                alert(this.cartData.itemsList[index].productQuantity - 1);
+                this.cartData.itemsList[index].productQuantity = this.cartData.itemsList[index].productQuantity - 2;
+            } else if (action = 'update'){
+                this.cartData.itemsList[index].productQuantity = parseInt(quantityTarget);
+            }
+            alert(action + ' : ' + this.cartData.itemsList[index].productQuantity);
+            return;
+            this._loader.setLoaderState(true);
+            const productMsnId = this.cartData.itemsList[index].productId;
+            this._productService.getProductGroupDetails(productMsnId).pipe(
+                map(productRawData => {
+                    console.log('data ==> ', productRawData);
+                    if (productRawData['productBO']) {
+                return this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
+            } else {
+                return null;
+            }
+            })
+            ).subscribe((productDetails: AddToCartProductSchema) => {
+                console.log(productDetails);
+                if (productDetails) {
+                    if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
+                        this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
+                        return;
+                    }
+                    this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
+                        if (!result && this._cartService.buyNowSessionDetails) {
+                            this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+                        } else {
+                            if (result) {
+                                if (!buyNow) {
+                                    this._cartService.setCartSession(result);
+                                    this._cartService.cart.next({
+                                        count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
+                                        currentlyAdded: productDetails
+                                    });
+                                    // this.showAddToCartToast();
+                                } else {
+                                    this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+                                }
+                            } else {
+                                // this.showAddToCartToast('Product already added');
+                            }
+                        }
+                    });
+                } else {
+                    // this.showAddToCartToast('Product does not exist');
+                }
+                this._loader.setLoaderState(false);
+            }, error => {}, () => {
+                this._loader.setLoaderState(false);
+            });
         }
 }

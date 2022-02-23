@@ -8,13 +8,13 @@
         <div class="container pb-15" [ngClass]="{'oos':item.oos}">
             <div class="product-left">
                 <div class="product-img product-img-v2">
-                    <img (click)="redirectToProductURL(showLink,item.productUrl)" src="{{item.productImg}}">
+                    <img (click)="redirectToProductURL(null,item.productUrl)" src="{{item.productImg}}">
                 </div>
 
             </div>
             <div class="product-detail">
                 <div class="p-name">
-                    <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
+                    <a  (click)="redirectToProductURL(null,item.productUrl)" > {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
                 </div>
                 <p class="seller">
                     Brand: {{item.brandName}}

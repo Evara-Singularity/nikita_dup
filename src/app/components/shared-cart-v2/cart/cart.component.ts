@@ -65,6 +65,11 @@ export class CartComponent {
             console.log(this.cartData);
         }
 
+        // added dummy function to resolve compile time error
+        redirectToProductURL(showLink, productUrl){
+
+        }
+
         updateCartItemQuantity(quantityTarget, index, action, buyNow = false) {
             if (quantityTarget < 1) return;
             if (action = 'increment') {

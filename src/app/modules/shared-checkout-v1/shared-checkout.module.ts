@@ -1,16 +1,13 @@
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AddressListComponent } from './address-list/address-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pipe';
 import { AllAddressesComponent } from './all-addresses/all-addresses.component';
 import { CartListComponent } from './cart-list/cart-list.component';
 import { CouponsComponent } from './coupons/coupons.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { OffersComponent } from './offers/offers.component';
 import { PaymentSummaryComponent } from './payment-summary/payment-summary.component';
-import { CreateEditDeliveryAddressComponent } from './create-edit-delivery-address/create-edit-delivery-address.component';
-import { CreateEditBillingAddressComponent } from './create-edit-billing-address/create-edit-billing-address.component';
 
 @NgModule({
     declarations: [
@@ -19,15 +16,13 @@ import { CreateEditBillingAddressComponent } from './create-edit-billing-address
         CouponsComponent,
         OffersComponent,
         NotificationsComponent,
-        AddressListComponent,
         AllAddressesComponent,
-        CreateEditDeliveryAddressComponent,
-        CreateEditBillingAddressComponent
     ],
     imports: [
         CommonModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CheckoutAddressPipeModule,
     ],
     exports: [
         CartListComponent,
@@ -35,7 +30,6 @@ import { CreateEditBillingAddressComponent } from './create-edit-billing-address
         CouponsComponent,
         OffersComponent,
         NotificationsComponent,
-        AddressListComponent,
         AllAddressesComponent,
     ]
 })

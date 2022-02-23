@@ -7,7 +7,7 @@ export function listValidator(list: string[]): ValidatorFn
 {
     return (control: AbstractControl): ValidationErrors | null =>
     {
-        const value = (control.value as string).trim();
+        const value = (control.value.toString()).trim();
         return list.includes(value) ? null : { "not-found": "invalid selection name" }
     };
 }
@@ -36,7 +36,7 @@ export class ListAutocompleteComponent implements OnInit
             this.control.setValidators([Validators.required, listValidator(this.brandList)])
         }
         else if (this.amountList.length && this.control) {   //for case amount
-            this.control.setValidators([Validators.required, Validators.pattern(/^[0-9]\d*$/), Validators.min(1)])
+            this.control.setValidators([Validators.required])
         }
     }
 

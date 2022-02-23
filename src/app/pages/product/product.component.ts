@@ -264,6 +264,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  // ondemad loaded components for FAQ listing
+  faqListPopupInstance = null;
+  @ViewChild("faqListPopup", { read: ViewContainerRef })
+  faqListPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components to submit question
+  askQuestionPopupInstance = null;
+  @ViewChild("askQuestionPopup", { read: ViewContainerRef })
+  askQuestionPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components for FAQ success popup
+  faqSuccessPopupInstance = null;
+  @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
+  faqSuccessPopupContainerRef: ViewContainerRef;
 
   iOptions: any = null;
 
@@ -537,6 +549,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       .getGroupProductObj(productId)
       .subscribe((productData) => {
         if (productData["status"] == true) {
+         
           this.processProductData(
             {
               productBO: productData["productBO"],
@@ -777,7 +790,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ? this.priceQuantityCountry["moq"]
         : 1;
 
-
+    this.getFirstAttributeValue();
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
@@ -842,7 +855,23 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
+  getFirstAttributeValue(){
+    let selectedValue;
+    if (this.productFilterAttributesList && this.productFilterAttributesList.length > 0) {
+      this.productFilterAttributesList.forEach((singleAttrList, index) => {
+        if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
+          singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
+            if(item.selected == 0){
+              return true;
+            }
+            selectedValue = item;
+            return false;
+          });
+          singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
+        }
+      });
+    }
+  }
   removeSimilarProductInstanceOOS() {
     if (this.similarProductInstanceOOS) {
       this.similarProductInstanceOOS = null;
@@ -3364,6 +3393,106 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
+  async handleFaqListPopup() {
+    this.showLoader = true;
+    const { FaqListPopoupComponent } = await import(
+      "./../../components/faq-list-popup/faq-list-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqListPopoupComponent);
+    this.faqListPopupInstance =
+      this.faqListPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqListPopupInstance.instance["questionAnswerList"] = this.questionAnswerList;
+    (
+      this.faqListPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.faqListPopupInstance = null;
+      this.faqListPopupContainerRef.remove();
+    });
+    (
+      this.faqListPopupInstance.instance[
+      "emitAskQuestinPopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.handleAskQuestionPopup();
+    });
+  }
+
+  async handleAskQuestionPopup() {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      if (!this.askQuestionPopupInstance) {
+        this.showLoader = true;
+        const { AskQuestionPopoupComponent } = await import(
+          "./../../components/ask-question-popup/ask-question-popup.component"
+        ).finally(() => {
+          this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
+        this.askQuestionPopupInstance =
+          this.askQuestionPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+          );
+        this.askQuestionPopupInstance.instance["productCategoryDetails"] = this.productCategoryDetails;
+        this.askQuestionPopupInstance.instance["productSubPartNumber"] = this.productSubPartNumber;
+        this.askQuestionPopupInstance.instance["defaultPartNumber"] = this.defaultPartNumber;
+        (
+          this.askQuestionPopupInstance.instance[
+          "closePopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.askQuestionPopupInstance = null;
+          this.askQuestionPopupContainerRef.remove();
+        });
+        (
+          this.askQuestionPopupInstance.instance[
+          "showSuccessPopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.handleFaqSuccessPopup();
+        });
+      }
+    }
+    else {
+      this.goToLoginPage(this.productUrl);
+    }
+  }
+
+  async handleFaqSuccessPopup() {
+    this.showLoader = true;
+    const { FaqSuccessPopoupComponent } = await import(
+      "./../../components/faq-success-popup/faq-success-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqSuccessPopoupComponent);
+    this.faqSuccessPopupInstance =
+      this.faqSuccessPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqSuccessPopupInstance.instance["rawReviewsData"] = this.questionAnswerList;
+    (
+      this.faqSuccessPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.faqSuccessPopupInstance = null;
+      this.faqSuccessPopupContainerRef.remove();
+      this.commonService.scrollToTop()
+    });
+  }
+
   getProductInfo(infoType) {
     const productInfo = {};
     productInfo["mainInfo"] = {
@@ -3609,6 +3738,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
     };
     const analytices = { page: page, custData: this.commonService.custDataTracking, order: this.orderTracking }
     return analytices;
+  }
+
+  sendTrackingData(){
+    const TAXONS = this.taxons;
+    const page={
+    "linkPageName": `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, 
+    "linkName": "WhatsApp",
+    "loginStatus": this.commonService.loginStatusTracking
+    }
+    const custData = this.commonService.custDataTracking;
+    const order = this.orderTracking;
+    this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
   }
 
   get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }

@@ -22,7 +22,8 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
 import { BreadcrumbNavModule } from '@app/modules/breadcrumb-nav/breadcrumb-nav.module';
 import { SharedProductListingModule } from '@app/modules/shared-product-listing/shared-product-listing.module';
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
-import { SharedNotFoundModule } from '@app/modules/shared-not-found/shared-not-found.module';
+import { NotFoundModule } from '@app/modules/not-found/not-found.module';
+import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 
 @NgModule({
     imports: [
@@ -45,7 +46,8 @@ import { SharedNotFoundModule } from '@app/modules/shared-not-found/shared-not-f
         DiscountPipeModule,
         SharedProductListingModule,
         ProductListingAppPromoModule,
-        SharedNotFoundModule
+        NotFoundModule,
+        SeoTablesModule
     ],
     declarations: [
         AlpComponent,

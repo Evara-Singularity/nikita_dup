@@ -173,6 +173,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();
                     this.isCheckboxChecked = false;
+                    this.sendGtmCall('Gift Card Request Submitted');
                 }
             },
             (error) => { this._tms.show({ type: 'error', text: 'Something Went Wrong.' }); },
@@ -219,5 +220,9 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     toggleCheckbox(){
         this.isCheckboxChecked = !this.isCheckboxChecked
         this.eGiftForm.value.rfqEnquiryCustomer.sendMail = this.isCheckboxChecked
+    } 
+       
+    sendGtmCall(data) {
+        this._analytics.sendGTMCall({ event: data })
     }
 }

@@ -25,18 +25,6 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 })
 
 export class QuickOrderComponent {
-    @Input() showHeading: boolean = false;
-    cartSessionUpdated$: Subject<any> = new Subject<any>();
-    sessionCart: {};
-    itemsList: Array<{}>;
-    cart: {};
-    isServer: boolean;
-    isBrowser: boolean;
-    public isShowLoader: boolean = false;
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
-    signInText;
-    private cDistryoyed = new Subject();
-    itemsValidationMessage: Array<{}>;
 
     // New Variables
     API_RESPONSE: any;
@@ -54,7 +42,6 @@ export class QuickOrderComponent {
         public _commonService: CommonService,
         private _analytics: GlobalAnalyticsService,
         public router: Router) {
-        this.itemsList = [];
     }
 
     ngOnInit() {
@@ -62,15 +49,46 @@ export class QuickOrderComponent {
     }
 
     setDataFromResolver() {
-        this._activatedRoute.data.subscribe(result => {
-            this.API_RESPONSE = result.data;
-
-            this.updateUserSession();
+        this._activatedRoute.data.pipe(
+            mergeMap((data: any) => {
+                console.clear();
+                const cartSession = data.data;
+                //  ;
+                if (this._commonService.isServer) {
+                    return of(null);
+                }
+                /**
+                 * return cartsession, if session id missmatch
+                 */
+                if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
+                    return of(cartSession);
+                }
+                return this.getShippingValue(cartSession);
+            }),
+        ) .subscribe(result => {
+            this.API_RESPONSE = result;
+            this.API_RESPONSE = this.cartService.updateCart(result);
+            this.cartService.setCartSession(this.API_RESPONSE);
         });
     }
-    
-    updateUserSession() {
-        this._commonService.userSession = this.localStorageService.retrieve('user');
+
+    getShippingValue(cartSession) {
+        let sro = this.cartService.getShippingObj(cartSession);
+        return this.cartService.getShippingValue(sro)
+            .pipe(
+                map((sv: any) => {
+                    if (sv && sv['status'] && sv['statusCode'] == 200) {
+                        cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
+                        if (sv['data']['totalShippingAmount'] != undefined && sv['data']['totalShippingAmount'] != null) {
+                            let itemsList = cartSession['itemsList'];
+                            for (let i = 0; i < itemsList.length; i++) {
+                                cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
+                            }
+                        }
+                    }
+                    return cartSession;
+                })
+            );
     }
 
     navigateToCheckout() {

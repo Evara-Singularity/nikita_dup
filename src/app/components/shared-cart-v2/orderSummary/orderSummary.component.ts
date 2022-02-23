@@ -29,10 +29,8 @@ export class OrderSummaryComponent {
         private _localAuthService: LocalAuthService,
         private loaderService: GlobalLoaderService) {
     }
+    shippingCharges = 0;
 
     @Input('orderSummaryData') orderSummaryData;
 
-    ngOnInit() {
-        console.log(this.orderSummaryData);    
-    }
 }

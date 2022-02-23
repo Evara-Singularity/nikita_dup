@@ -1,8 +1,8 @@
-import { SharedCheckoutModule } from './../../modules/shared-checkout-v1/shared-checkout.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CheckoutRevampComponent } from './checkout-revamp.component';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedCheckoutAddressModule } from '@app/modules/shared-checkout-address/shared-checkout-address.module';
 
 const routes: Routes = [
     {
@@ -18,7 +18,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule,
     RouterModule.forChild(routes),
-    SharedCheckoutModule
+    SharedCheckoutAddressModule
   ]
 })
 export class CheckoutRevampModule { }

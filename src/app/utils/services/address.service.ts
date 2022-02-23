@@ -1,11 +1,10 @@
-import { Observable } from 'rxjs';
-import { AddressListModal } from './../models/shared-checkout.modals';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AddressListModal } from './../models/shared-checkout.modals';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
 
@@ -18,11 +17,11 @@ import { GlobalLoaderService } from './global-loader.service';
 export class AddressService
 {
     readonly API = CONSTANTS.NEW_MOGLIX_API;
-    readonly EMPTY_ADDRESS:AddressListModal = { shippingAddressList: [], billingAddressList: [] };
+    readonly EMPTY_ADDRESS: AddressListModal = { deliveryAddressList: [], billingAddressList: [] };
 
     constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService) { }
 
-    getAddressList(params): Observable<AddressListModal>
+    getAddressList(params)
     {
         this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.GET_ADD_LIST}`;
@@ -33,7 +32,7 @@ export class AddressService
                 {
                     this._globaleLoader.setLoaderState(false);
                     if (response['status']) {
-                        return this.separateShippingAndBillingAddress(response['addressList']);
+                        return this.separateDeliveryAndBillingAddress(response['addressList']);
                     }
                     return this.EMPTY_ADDRESS;
                 }),
@@ -83,22 +82,22 @@ export class AddressService
             );
     }
 
-    //idAddressType=1 implies shipping
+    //idAddressType=1 implies delivery
     //idAddressType=2 implies billing
-    separateShippingAndBillingAddress(addressList: any[])
+    separateDeliveryAndBillingAddress(addressList: any[])
     {
-        let shippingAddressList: any[] = null;
+        let deliveryAddressList: any[] = null;
         let billingAddressList: any[] = null;
-        if (addressList.length === 0) { return { shippingAddressList: [], billingAddressList: [] } }
+        if (addressList.length === 0) { return { deliveryAddressList: [], billingAddressList: [] } }
         addressList.sort((address1, address2) =>
         {
             const a1 = address1['addressType']['idAddressType'];
             const a2 = address2['addressType']['idAddressType'];
             return (a1 < a2) ? -1 : 1;
         });
-        shippingAddressList = addressList.filter((address) => address['addressType']['idAddressType'] === 1);
-        if (shippingAddressList.length === addressList.length) { return { shippingAddressList: shippingAddressList, billingAddressList: [] } }
-        billingAddressList = addressList.slice(shippingAddressList.length);
-        return { shippingAddressList: shippingAddressList, billingAddressList: billingAddressList }
+        deliveryAddressList = addressList.filter((address) => address['addressType']['idAddressType'] === 1);
+        if (deliveryAddressList.length === addressList.length) { return { deliveryAddressList: deliveryAddressList, billingAddressList: [] } }
+        billingAddressList = addressList.slice(deliveryAddressList.length);
+        return { shippingAddressList: deliveryAddressList, billingAddressList: billingAddressList }
     }
 }

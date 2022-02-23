@@ -13,26 +13,37 @@
 
 <!--shipping container-->
 <section>
-    <ng-container *ngTemplateOutlet="tAddress; context: {address : shippingAddressList, label:'Delibery Address'}">
+    <ng-container
+        *ngTemplateOutlet="tAddress; context: {addresses : deliveryAddressList, label:ADDRESS_TYPES.DELIVERY}">
     </ng-container>
 </section>
 
 <!--billing container-->
 <section [style.display]="displayBillingAddresses">
-    <ng-container *ngTemplateOutlet="tAddress; context: {address : billingAddressList, label:'Billing Address'}">
+    <ng-container *ngTemplateOutlet="tAddress; context: {addresses : billingAddressList, label:ADDRESS_TYPES.BILLING}">
     </ng-container>
 </section>
 
+<!--common section to display both delivery and shipping-->
+<section>
+    <ng-container #addressListRef></ng-container>
+</section>
+
+
+<section>
+    <ng-container #createEditAddressRef></ng-container>
+</section>
+
 <!--common template to display address-->
-<ng-template #tAddress let-address="address" let-label="label">
+<ng-template #tAddress let-addresses="addresses" let-label="label">
     <div class="address-container">
         <div class="sub-strip">
             <div class="container">
-                <h4 class="heading">{{label}} ({{address.length}})</h4>
+                <h4 class="heading">{{label}} Address ({{addresses.length}})</h4>
             </div>
         </div>
         <div class="address-list">
-            <div class="multiple-address" *ngFor="let address of shippingAddressList; let i = index">
+            <div class="multiple-address" *ngFor="let address of addresses; let addressIndex = index">
                 <label>
                     <span class="chk-txt">
                         <span class="heading-container">
@@ -41,20 +52,21 @@
                                 <span>{{address.phone}}</span>
                             </span>
                         </span>
-                        <span class="txt">{{displayAddress(address)}}</span>
+                        <span class="txt">{{address | checkoutAddress}}</span>
                     </span>
                 </label>
             </div>
         </div>
-    </div>
-    <div class="addButtonContainer">
-        <div class="container">
-            <button class="btn blue-border-btn-full" *ngIf="shippingAddressList.length > 0">
-                CHANGE OR ADD ADDRESS
-            </button>
-            <button class="blue-border-btn-full" *ngIf="shippingAddressList.length == 0">
-                ADD NEW ADDRESS
-            </button>
+        <div class="addButtonContainer">
+            <div class="container">
+                <button class="btn blue-border-btn-full" *ngIf="addresses.length > 0"
+                    (click)="displayAddressListPopup($event,label)">
+                    CHANGE OR ADD ADDRESS
+                </button>
+                <button class="blue-border-btn-full" (click)="displayAddressFormPopup($event, label)">
+                    ADD NEW ADDRESS
+                </button>
+            </div>
         </div>
     </div>
 </ng-template>

@@ -2,28 +2,43 @@ import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@app/utils/services/address.service';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
 import { AddressListModal } from '@app/utils/models/shared-checkout.modals';
 
 @Component({
     selector: 'all-addresses',
     templateUrl: './all-addresses.component.html',
-    styleUrls: ['./all-addresses.component.scss']
+    styleUrls: ['./../common-checkout.scss']
 })
 export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
+    readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
 
     invoiceValue: FormControl = null;
     isGSTInvoice: FormControl = null;
-    invoiceSubscription: Subscription = null;
+    addressListInstance = null;
+    createEditAddressInstance = null;
 
-
-    shippingAddressList = [];
+    deliveryAddressList = [];
     billingAddressList = [];
 
-    constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService) 
+    @ViewChild("addressListRef", { read: ViewContainerRef })
+    addressListRef: ViewContainerRef;
+
+    @ViewChild("createEditAddressRef", { read: ViewContainerRef })
+    createEditAddressRef: ViewContainerRef;
+
+
+    invoiceSubscription: Subscription = null;
+    addressListSubscription: Subscription = null;
+    createEditAddressSubscription: Subscription = null;
+
+
+
+    constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
+        private injector: Injector) 
     {
         this.USER_SESSION = this._localAuthService.getUserSession();
     }
@@ -49,32 +64,51 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         const params = { customerId: userId, invoiceType: type };
         this._addressService.getAddressList(params).subscribe((response: AddressListModal) =>
         {
-            this.shippingAddressList = response.shippingAddressList;
+            this.deliveryAddressList = response.deliveryAddressList;
             this.billingAddressList = response.billingAddressList;
         });
     }
 
-    displayAddress(address)
+    async displayAddressListPopup($event, addressType: string)
     {
-        const a = [];
-        if (address.addressLine !== undefined) {
-            a.push(address.addressLine);
-        }
-        if (address.city !== undefined) {
-            a.push(address.city);
-        }
-        if (address.state !== undefined && address.state.name !== undefined) {
-            a.push(address.state.name);
-        }
-        if (address.country !== undefined && address.country.name !== undefined) {
-            a.push(address.country.name);
-        }
-        return a.join(', ') + ' - ' + address.postCode;
+        $event.stopPropagation();
+        const { AddressListComponent } = await import("./../address-list/address-list.component").finally(() => { });
+        const factory = this.cfr.resolveComponentFactory(AddressListComponent);
+        this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
+        this.addressListInstance.instance['addresses'] = (addressType === this.ADDRESS_TYPES.DELIVERY) ? this.deliveryAddressList : this.billingAddressList;
+        this.addressListInstance.instance['addressType'] = addressType;
+        this.addressListInstance.instance['displayAddressListPopup'] = true;
+        this.addressListSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
+        {
+            console.log('Address List',data);
+            this.addressListInstance.instance['displayAddressListPopup'] = false;
+            this.addressListRef.remove();
+        });
     }
 
-    getAddressessCount(addressList, type)
+    async displayAddressFormPopup($event, addressType: string, idAddress?: number)
     {
-        return addressList.filter(a => a['addressType']['idAddressType'] === type).length;
+        $event.stopPropagation();
+        let factory = null;
+        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
+            const { CreateEditDeliveryAddressComponent } = await import("./../create-edit-delivery-address/create-edit-delivery-address.component").finally(() => { });
+            factory = this.cfr.resolveComponentFactory(CreateEditDeliveryAddressComponent);
+        }
+        else {
+            const { CreateEditBillingAddressComponent } = await import("./../create-edit-billing-address/create-edit-billing-address.component").finally(() => { });
+            factory = this.cfr.resolveComponentFactory(CreateEditBillingAddressComponent);
+        }
+        this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
+        this.addressListInstance.instance['addressType'] = addressType;
+        this.addressListInstance.instance['isAddMode'] = !(idAddress);
+        this.addressListInstance.instance['address'] = null ;
+        this.addressListInstance.instance['displayCreateEditPopup'] = true;
+        this.createEditAddressSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
+        {
+            console.log('Create Edit', data);
+            this.addressListInstance.instance['displayCreateEditPopup'] = false;
+            this.addressListRef.remove();
+        });
     }
 
     get displayBillingAddresses() { return this.isGSTInvoice.value ? 'block' : 'none'; }
@@ -82,6 +116,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnDestroy(): void
     {
         this.invoiceSubscription.unsubscribe();
+        if (this.addressListSubscription) this.addressListSubscription.unsubscribe();
+        if (this.createEditAddressSubscription) this.createEditAddressSubscription.unsubscribe();
     }
 
     consoleValues()

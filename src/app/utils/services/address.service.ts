@@ -48,8 +48,22 @@ export class AddressService
 
     postAddress(address)
     {
+        this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.POST_ADD}?onlineab=y`;
-        return this._dataService.callRestful("POST", URL, { body: address });
+        return this._dataService.callRestful("POST", URL, { body: address }).pipe(
+            map((response)=>{
+                this._globaleLoader.setLoaderState(false);
+                if (response['status']) {
+                    return response['addressList'];
+                }
+                return this.EMPTY_ADDRESS;
+            }),
+            catchError((res: HttpErrorResponse) =>
+            {
+                this._globaleLoader.setLoaderState(false);
+                return of(this.EMPTY_ADDRESS);
+            }),
+        );
     }
 
     getStateList(countryId)

@@ -10,7 +10,7 @@ import { IsAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-login.g
   declarations: [CheckoutV2Component],
   imports: [
     CommonModule,
-    CheckoutV2RoutingModule
+    CheckoutV2RoutingModule,
   ],
   providers: [
     IsAuthenticatedCheckoutLogin

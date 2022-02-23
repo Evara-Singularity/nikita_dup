@@ -7,13 +7,13 @@ import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pip
 
 
 @NgModule({
-    declarations: [AllAddressesComponent],
+  declarations: [AllAddressesComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     CheckoutAddressPipeModule
   ],
-    exports: [AllAddressesComponent]
+  exports: [AllAddressesComponent]
 })
 export class SharedCheckoutAddressModule { }

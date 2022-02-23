@@ -12,6 +12,6 @@ import { OffersComponent } from './offers/offers.component';
   declarations: [OrderSummaryComponent, CartListComponent, NotficationsComponent, CouponsComponent, OffersComponent],
   imports: [
     CommonModule
-  ]
+  ],
 })
 export class SharedCheckoutQuickorderModule { }

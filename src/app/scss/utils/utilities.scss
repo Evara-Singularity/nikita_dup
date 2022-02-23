@@ -1,0 +1,34 @@
+// Aligment Classes
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+//float
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+//border
+.no-border {
+    border: 0 !important;
+}
+// border
+.border-top {
+    border-top: 1px solid $border-color;
+}
+
+//common classes
+.container {
+    @extend %container;
+}

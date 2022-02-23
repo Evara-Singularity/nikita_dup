@@ -1,0 +1,160 @@
+button {
+    outline: 0;
+}
+.btn-red {
+    border: 1px solid $logo-color;
+    padding: 7px 9px;
+    color: $logo-color;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.btn-red-bg {
+    padding: 10px 20px;
+    background-color: #D9232D;
+    text-transform: uppercase;
+    color: #FFF;
+    border: 0;
+    margin: 0;
+    border-radius: 3px;
+    display: inline;
+    font-size: 12px;
+    font-weight: bold;
+}
+// Buttons
+.btn {
+    padding: 7px 9px;
+    color: $white;
+    border: 0;
+    outline: 0;
+    font-size: $extra-large-font;
+    font-weight: 600;
+    @extend %border-radius;
+    @extend %box-shadow;
+    border: 0;
+    outline: 0;
+    @extend %ripple;
+
+    &.disabledButton {
+        background: #ccc;
+        pointer-events: none;
+        color: $disable-txt;
+        border: 1px solid $disabled;
+    }
+    &.btn-variant1{
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 40px; 
+        font-size: $large-font;
+        &.btn-dark-grey {
+            background-color: #3c3c3c;
+            color: #ffffff;
+        }
+        &.btn-disabled {
+            border-color: $disabled;
+            color: #fff;
+            background: #c4c4c4;
+        }
+    }
+
+    &.btn-transparent-red{
+        background: #ffffff;
+        color: #D9232D;
+        box-shadow: none;
+        font-size: 14px;
+        &.btn-disabled {
+            color: #C4C4C4;
+        }
+    }
+    
+}
+
+
+.continue-btn,
+.signInbtn {
+    background: $btn-color-red;
+    text-align: center;
+    width: 100%;
+    height: 45px;
+    @extend %ripple;
+    font-weight: 800;
+
+    &.disabledButton {
+        border-color: $disabled;
+        color: #fff;
+        background: #B6B6B6;
+    }
+}
+
+.otulineButton {
+    background: $white-color;
+    color: $btn-color-red;
+    font-weight: 800;
+    width: 100%;
+    height: 45px;
+    border: 1px solid $btn-color-red;
+    font-size: $large-font;
+}
+
+.redBgButton {
+    background: $color-red-light;
+    color: $btn-color-red;
+    font-weight: bold;
+    font-size: $medium-font;
+    padding: 8px 15px;
+    box-shadow: none;
+}
+// Blue btn
+.blue-border-btn-full {
+    color: $blue-link-color;
+    border: 1px solid #278BED;
+    padding: 8px 10px;
+    width: 100%;
+    text-align: center;
+    background: $white;
+    font-weight: 600;
+    font-size: $medium-font;
+}
+
+
+
+// Fixed Button
+.bottom-stick {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    z-index: 2;
+}
+.stickyBottomBtn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    padding: 5px;
+    box-shadow: 0px -3px 6px #00000029;
+    background: #F2F2F2;
+
+    .continue-btn {
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 50px;
+    }
+    .btn-variant1{
+        width: 100%;
+        color: #FFF;
+        background-color: #D9232D;
+        border: 0;
+        height: 40px; 
+        &.btn-dark-grey {
+            background-color: #3c3c3c;
+            color: #ffffff;
+        }
+    }
+}

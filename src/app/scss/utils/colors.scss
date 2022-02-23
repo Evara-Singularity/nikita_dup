@@ -1,0 +1,28 @@
+
+.green-txt {
+    color: $green-color;
+}
+.red-txt {
+    color: $logo-color;
+}
+.orange-txt {
+    color: $btn-color;
+}
+.success-txt {
+    color: $green-color;
+    margin: 5px 0;
+}
+.bg-white {
+    background: $white;
+}
+// Error Mesgs
+.error-txt {
+    color: $error-color;
+    margin-top: 5px;
+    &.inline-error {
+        margin-left: 10px;
+        font-size: 12px;
+        display: inline-block;
+        margin-top: 0px;
+    }
+}

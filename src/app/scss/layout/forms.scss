@@ -1,0 +1,340 @@
+input,
+select {
+    background-image: none;
+    background: none;
+    line-height: 18px;
+    position: relative;
+}
+.material-form {
+    // Inside Label Input
+    .input-field {
+        margin-bottom: 30px;
+        label {
+            display: block;
+            position: relative;
+
+            input,
+            select {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 45px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+            }
+
+            textarea {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 65px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+            }
+
+            .input-value {
+                font-size: $extra-large-font;
+                padding-top: 20px;
+                display: block;
+            }
+
+            select+.icon-down {
+                position: absolute;
+                right: 6px;
+                top: 23px;
+                font-size: $large-font;
+            }
+
+            select:disabled+.icon-down {
+                color: #898989;
+            }
+
+            .label {
+                position: absolute;
+                left: 0;
+                font-size: $large-font;
+                top: 20px;
+                color: $disabled;
+                @extend %transition;
+            }
+
+            &.is-focus .label,
+            input:focus+.label,
+            select:focus+.label {
+                font-size: $medium-font;
+                top: 5px;
+            }
+
+            textarea:focus+.label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+
+            input:focus,
+            textarea:focus {
+                border-color: $active-border-color;
+
+                &+.label {
+                    color: $active-border-color;
+                }
+            }
+
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+
+                &.verified {
+                    color: #36BD40;
+
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
+    .outline-input-label {
+        label {
+            display: block;
+            position: relative;
+            input,
+            select {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 1px;
+                height: 45px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+            }
+            .label {
+                position: absolute;
+                left: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
+                @extend %transition;
+                .error-txt{
+                    margin-left: 10px !important;
+                }
+            }
+            i{
+                position: absolute;
+                right: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
+            }
+            .active-password-icon{
+                color: #303030;
+            }
+
+            &.is-focus .label,
+            input:focus+.label,
+            select:focus+.label {
+                font-size: $medium-font;
+                top: -7px;
+                background-color: #ffffff;
+                left: 10px;
+                padding: 0px 5px;
+            }
+
+            textarea:focus+.label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+
+            input:focus,
+            textarea:focus {
+                border-color: #C4C4C4;
+
+                &+.label {
+                    color: #C4C4C4;
+                }
+            }
+
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+
+                &.verified {
+                    color: #36BD40;
+
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
+
+    &.material-form-boxed {
+        .input-field-boxed {
+            margin-bottom: 20px;
+            position: relative;
+
+            input,
+            select {
+                width: 100%;
+                border: solid $border-grey;
+                border-radius: 4px;
+                border-width: 1px;
+                height: 40px;
+                padding: 0px 10px 0px 10px;
+                font-size: $large-font;
+            }
+
+            select+.icon-down {
+                position: absolute;
+                right: 6px;
+                top: 23px;
+                font-size: $large-font;
+            }
+
+            &.disabled-boxed {
+                input {
+                    background: #F2F2F2;
+                    border: 1px solid $border-grey;
+                    pointer-events: none;
+                }
+            }
+        }
+
+        @include placeholder {
+            color: #B5B5B5;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: $small-font;
+            margin-bottom: 5px;
+            color: #606060;
+            font-weight: bold;
+        }
+
+        .multiple-form-field {
+            display: flex;
+        }
+    }
+}
+
+.input-sec {
+    display: block;
+    position: relative;
+
+    input {
+        width: 100%;
+        border: solid $border-sec-color;
+        border-width: 0 0 1px 0;
+        height: 45px;
+        padding: 14px 25px 0 0;
+        font-size: $large-font;
+    }
+
+    .label {
+        position: absolute;
+        left: 0;
+        font-size: $large-font;
+        top: 20px;
+        color: $disabled;
+        @extend %transition;
+    }
+
+    &.is-focus .label,
+    input:focus+.label {
+        font-size: $medium-font;
+        top: 5px;
+    }
+
+    input:focus {
+        border-color: $active-border-color;
+
+        &+.label {
+            color: $active-border-color;
+        }
+    }
+}
+
+textarea,
+input.text,
+input,
+select,
+.input-checkbox {
+    -webkit-appearance: none;
+    border-radius: 0;
+    outline: none;
+}
+
+input,
+select {
+    // background-image: none;
+    // background: none;
+    line-height: 18px;
+    position: relative;
+}
+
+select {
+    z-index: 2;
+}
+
+select.select-form {
+    width: 100%;
+    border: 1px solid #343434;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 1px;
+}
+
+select.select-form+.icon-down {
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    font-size: 14px;
+}
+
+input[type=text],
+input[type=number] {
+    font-size: $large-font !important;
+}
+
+option {
+    padding: 5px;
+}
+// Sort By Filter
+.custom-cbox {
+    label {
+        display: block;
+        padding: 10px 0;
+        @extend %clear-fix;
+        @extend %custom-check-box;
+    }
+}

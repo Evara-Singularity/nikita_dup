@@ -269,3 +269,9 @@
         height: calc(100% - 50px) !important;
     }
 }
+.page-name {
+    line-height: 26px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: $white;
+}

@@ -1,0 +1,64 @@
+/*Heading Classes*/
+h2,
+h3 {
+    color: #444;
+}
+h3,
+.heading-3 {
+    font-size: $large-font;
+    padding: 10px 0;
+}
+//Common Heading
+.heading-3,
+h3 {
+    font-size: 14px;
+    padding: 10px 0;
+    font-weight: bold;
+}
+.heading-3-txt {
+    color: $dark-gray-color;
+    font-size: $medium-font;
+}
+
+.small-txt {
+    font-size: $medium-font;
+    font-weight: 400;
+}
+
+.extra-small-txt {
+    font-size: $small-font;
+    font-weight: 400;
+    line-height: 14px;
+}
+
+
+.normal-txt {
+    font-weight: 400;
+}
+
+.content {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+h2,
+.heading-2 {
+    font-size: 18px;
+}
+
+.heading-4 {
+    font-size: $large-font;
+    font-weight: 400;
+}
+
+.heading {
+    font-size: $extra-large-font;
+}
+.heading-custom-3{
+    font-size: $extra-large-font;
+    line-height: 21px;
+    padding: 0px;
+    .normal-weight{
+        font-weight: normal;
+    }
+}

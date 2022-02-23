@@ -14,6 +14,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
+import { AccordiansDetails,AccordianDataItem, AccordianToggleItem } from '@app/utils/models/accordianInterface';
 
 let digitalData = {
     page: {},
@@ -58,6 +59,7 @@ export class CategoryComponent {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    accordiansDetails:AccordiansDetails[]=[];
     prodUrl=CONSTANTS.PROD;
 
     constructor(
@@ -143,6 +145,11 @@ export class CategoryComponent {
                     this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                     // genrate popular links data
                     this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
+
+                    //accordian data
+                    var popularBrandCategoryToggle={idName:"popularLinkAccoridan", styleDisplay:(this.API_RESPONSE.category[4].data?.length === 0 && this.popularLinks?.length) > 0} as AccordianToggleItem;
+                    var popularBrandCategory = Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem);                   
+                    this.accordiansDetails.push({name: 'Popular Brand Category', data: popularBrandCategory, toggle: popularBrandCategoryToggle });
                 }
             });
 
@@ -154,6 +161,12 @@ export class CategoryComponent {
 
             // send tracking data 
             this.sendTrackingData();
+
+            //accordian data
+            var relatedSearchesToggle={idName:"attributeAccoridan", styleDisplay:this.API_RESPONSE.category[4].data?.length > 0 } as AccordianToggleItem;
+            var relatedSearches = this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem);
+            this.accordiansDetails.push({name: 'Related Searches', data: relatedSearches,toggle: relatedSearchesToggle});
+
         });
     }
 

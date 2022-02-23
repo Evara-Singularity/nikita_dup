@@ -98,6 +98,6 @@ export class AddressService
         deliveryAddressList = addressList.filter((address) => address['addressType']['idAddressType'] === 1);
         if (deliveryAddressList.length === addressList.length) { return { deliveryAddressList: deliveryAddressList, billingAddressList: [] } }
         billingAddressList = addressList.slice(deliveryAddressList.length);
-        return { shippingAddressList: deliveryAddressList, billingAddressList: billingAddressList }
+        return { deliveryAddressList: deliveryAddressList, billingAddressList: billingAddressList }
     }
 }

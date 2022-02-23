@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'coupons',
+  selector: 'app-coupons',
   templateUrl: './coupons.component.html',
-  styleUrls: ['./coupons.component.scss']
+  styleUrls: ['./coupons.component.css']
 })
 export class CouponsComponent implements OnInit {
 

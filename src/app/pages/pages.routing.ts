@@ -146,12 +146,12 @@ const routes: Routes = [
 			{
 				path: 'checkout',
 				loadChildren: () =>
-					import('./checkout-v1/checkout-v1.module').then(
-						(m) => m.CheckoutV1Module
+					import('./checkout-v2/checkout-v2.module').then(
+						(m) => m.CheckoutV2Module
 					),
 				data: {
 					footer: false,
-					title: 'Checkout',
+					// title: 'Checkout',
 					moreOpt: true,
 				},
 			},

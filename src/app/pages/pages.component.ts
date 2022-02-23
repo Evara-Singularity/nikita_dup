@@ -274,7 +274,8 @@ export class PagesComponent implements OnInit {
   setEnvIdentiferCookie() {
     const abTesting = this.dataService.getCookie('AB_TESTING');
     const PWA = this.dataService.getCookie('PWA');
-    const buildVersion = this.dataService.getCookie('BUILD_VERSION');
+    const buildVersion = this.dataService.getCookie('BUILD_VERSION') || null;
+    const updatedBuildaVersion = environment.buildVersion.toString();
 
     if (!PWA) {
       this.dataService.setCookie("PWA", "true", 90);
@@ -298,11 +299,13 @@ export class PagesComponent implements OnInit {
     }
 
     if (!buildVersion) {
-      this.dataService.setCookie('BUILD_VERSION', buildVersion.toString(), 90);
+      this.dataService.setCookie('BUILD_VERSION', updatedBuildaVersion, 90);
     } else {
-      if (buildVersion != environment.buildVersion.toString()) {
-        this.dataService.deleteCookie("BUILD_VERSION");
-        this.dataService.setCookie('BUILD_VERSION', environment.buildVersion.toString(), 90);
+      if (buildVersion != updatedBuildaVersion) {
+        this.dataService.deleteCookieV2('BUILD_VERSION');
+        setTimeout(() => {
+          this.dataService.setCookie('BUILD_VERSION',updatedBuildaVersion, 90);
+        }, 100);
       }
     }
 

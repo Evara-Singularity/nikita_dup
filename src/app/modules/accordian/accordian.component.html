@@ -1,9 +1,9 @@
 <div class="accordian_footer_panel">
-    <div *ngFor="let details of accordiansDetails">
+    <div *ngFor="let details of accordiansDetails; let i = index">
         <ng-container *ngIf="details.data?.length > 0">
-            <div class="panel-head" style="margin-top: 0px;">
+            <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
-                    <h3 class="heading-3" [appKpToggle]="{idName: details.toggle.idName, iconMode : true}">
+                    <h3 class="heading-3" (click)="changeTab(i)"  >
                         {{details.name}}
                         <span class="icon-accordian">
                             <i class="icon-down"></i>
@@ -11,13 +11,13 @@
                     </h3>
                 </div>
             </div>
-            <div [id]=[details.toggle.idName]
-            [style.display]="details.toggle.styleDisplay? 'block' : 'none'" 
-                class="panel-body">
+            <div class="panel-body" [ngClass]="{'open': currentOpenIndex == i}" >
                 <div class="container category_links">
                     <div *ngFor="let data of  details.data | slice:0:10">
-                        <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link))" [href]="[data.link.includes('http') ? data.link : prodUrl + '/' + data.link ]">
-                            <span *ngIf="details.name=='Popular Brand Categories'">{{details.toggle.idName}} </span>{{data.name}}</a>
+                        <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link))"
+                            [href]="[data.link.includes('http') ? data.link : prodUrl + '/' + data.link ]">
+                            <span *ngIf="details.name=='Popular Brand Categories'">
+                            </span>{{data.name}}</a>
                     </div>
                 </div>
             </div>

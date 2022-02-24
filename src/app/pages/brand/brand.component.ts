@@ -11,7 +11,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DOCUMENT } from '@angular/common';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { AccordiansDetails,AccordianDataItem, AccordianToggleItem } from '@app/utils/models/accordianInterface';
+import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 
 let digitalData = {
     page: {},
@@ -33,7 +33,8 @@ export class BrandComponent {
     public popularLinks = [];
     public brandFooterData;
     baseDomain=CONSTANTS.PROD;
-    accordiansDetails:AccordiansDetails[]=[];
+    accordiansDetails: AccordiansDetails[] = [];
+    popularCategories = [];
 
     constructor(
         public _activatedRoute: ActivatedRoute,
@@ -99,43 +100,41 @@ export class BrandComponent {
                         // genrate popular links data
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
                     }
+                    // create accordians data
+                    this.createFooterAccordianData();
                     // genrate data for footer
                     this.genrateAndUpdateBrandFooterData();
-
-                    // accordians data
-                    var popularBrandCategoriesToggle={idName:this.API_RESPONSE['brand'][0].brandName, styleDisplay:this.popularLinks?.length > 0} as AccordianToggleItem;
-                    var popularBrandCategories = Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem);
-                    this.accordiansDetails.push({name: 'Popular Brand Categories', data: popularBrandCategories,toggle: popularBrandCategoriesToggle});
-
-                    var popularCategoriesToggle={idName:"popularCategoryAccord", styleDisplay:this.popularLinks?.length === 0 && popularCategories?.length > 0} as AccordianToggleItem;
-                    var popularCategories = this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem);
-                    this.accordiansDetails.push({name: 'Popular Categories', data: popularCategories, toggle: popularCategoriesToggle });
-
-                    var similarCategoryToggle={idName:"mostSoldAccoridan", styleDisplay:!this.popularLinks?.length && !popularCategories?.length && !this.API_RESPONSE.brand[4].data?.length && this.API_RESPONSE.brand[2].mostSoledCategories.length > 0} as AccordianToggleItem;
-                    var similarCategory=this.API_RESPONSE.brand[2]?.mostSoledCategories?.map(e => ({name:e.categoryName, link:e.categoryLink}) as AccordianDataItem);
-                    this.accordiansDetails.push({name:'Similar Category',data:similarCategory,toggle: similarCategoryToggle});
-                    
-                    var relatedSearchesToggle={idName:"attributeAccoridan", styleDisplay:!this.popularLinks?.length && !popularCategories?.length && this.API_RESPONSE.brand[4].data?.length > 0} as AccordianToggleItem;
-                    var relatedSearches=this.API_RESPONSE.brand[4]?.data?.map(e => ({name:e.title, link:e.friendlyUrl}) as AccordianDataItem);
-                    this.accordiansDetails.push({name:'Related Searches',data:relatedSearches,toggle: relatedSearchesToggle});
-                        
-
                 }
             });
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
-
-
             // Send Adobe Tracking Data
             this.setAdobeTrackingData();
-
             // Set Amp tags
             // this.setAmpTag(this._activatedRoute.snapshot.params['category'] ? 'brand-category' : 'brand');
 
         });
     }
 
-    popularCategories = [];
+    private createFooterAccordianData() {
+        this.accordiansDetails.push({
+            name: 'Popular Brand Categories',
+            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
+        });
+        this.accordiansDetails.push({
+            name: 'Popular Categories',
+            data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem)
+        });
+        this.accordiansDetails.push({
+            name: 'Similar Category',
+            data: this.API_RESPONSE.brand[2]?.mostSoledCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem)
+        });
+        this.accordiansDetails.push({
+            name: 'Related Searches',
+            data: this.API_RESPONSE.brand[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem)
+        });
+    }
+
     setPopularCategories(data) {
         data.forEach(d => {
             let b = {};

@@ -12,21 +12,26 @@ import { AccordiansDetails } from '@app/utils/models/accordianInterface';
 })
 export class AccordianComponent implements OnInit {
 
-  @Input() accordiansDetails:AccordiansDetails[]=[];
-  prodUrl=CONSTANTS.PROD;
-  
+  @Input() accordiansDetails: AccordiansDetails[] = [];
+  prodUrl = CONSTANTS.PROD;
+  currentOpenIndex = 0;
+
   constructor(
     public _router: Router,
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   getUrlPathName(url) {
     const originSlash = /^https?:\/\/[^/]+\//i;
     return url.replace(originSlash, '');
   }
 
-  accordianNav(url){
-    this._router.navigate(['/'+url]);
-}
+  accordianNav(url) {
+    this._router.navigate(['/' + url]);
+  }
+
+  changeTab(index){
+    this.currentOpenIndex = index;
+  }
 }

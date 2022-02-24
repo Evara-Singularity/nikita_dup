@@ -15,8 +15,11 @@
         .panel-body {
             padding: 0px 5px 10px;
             background: #fff;
+            display: none;
         }
-
+        .open{
+            display: block !important;
+        }
         .icon-accordian {
             float: right;
 

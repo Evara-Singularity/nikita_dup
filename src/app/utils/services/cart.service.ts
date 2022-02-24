@@ -380,8 +380,6 @@ export class CartService
         return of(cartSession);
     }
 
-<<<<<<< Updated upstream
-=======
 
     // PAYMENTS RELATED UTILS STARTS 
 
@@ -498,7 +496,6 @@ export class CartService
     }
      // PAYMENTS RELATED UTILS STARTS 
 
->>>>>>> Stashed changes
     // COMMON CART LOGIC IMPLEMENTATION STARTS
     /** 
      * Target modules Product listing pages i.e. search, brand, category, brand+categrory

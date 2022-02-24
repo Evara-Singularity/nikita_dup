@@ -172,7 +172,6 @@ export class PaymentComponent implements OnInit {
             return;
         }
         else {
-            // ClientUtility.scrollToTop(1000, (<HTMLElement>document.querySelector('.tab-content')).offsetTop);
             this.paymentBlock = block;
             this.spp = true;
         }

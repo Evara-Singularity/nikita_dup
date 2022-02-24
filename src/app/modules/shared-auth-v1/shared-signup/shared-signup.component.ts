@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -42,6 +42,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     isUserExists = false;
     isSingupUsingPhone = false;
     isOTPLimitExceeded = false;
+    isSubmitted = false;
     isPasswordType = true;
     currentStep = "";
     identifer = null;
@@ -96,6 +97,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
 
     validateUser($event)
     {
+        this.isSubmitted = true;
         $event.stopPropagation();
         if (this.signupForm.invalid) return;
         if (this.isSingupUsingPhone && !(this.email.value)) { this.initiateSingup(); return;}
@@ -145,7 +147,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     initiateSingup()
     {
         if (this.isUserExists) return
-        //NOTE:verify with Pritam as there will be no firstName & lastName
         this._sharedAuthUtilService.pushNormalUser();
         let request = this.signupForm.value;
         request['otp'] = (this.otpForm.value as string[]).join("");
@@ -163,6 +164,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                     }
                     return;
                 }
+                this._sharedAuthUtilService.sendGenericPageClickTracking(false);
                 const BACKURLTITLE = this._localAuthService.getBackURLTitle();
                 const REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
                 this._localAuthService.clearAuthFlow();
@@ -173,7 +175,14 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         );
     }
 
-    updateSignupStep(value) { this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] }
+    updateSignupStep(value) { 
+        this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value];
+        if(this.currentStep === "DETAILS")
+        {
+            const SUB_SECTION = this.isSingupUsingPhone ? "phone" : "email";
+            this._sharedAuthUtilService.sendSingupDetailsPageLoadTracking(SUB_SECTION);
+        }
+    }
 
     navigateTo(link)    {        this._router.navigate([link])    }
     togglePasswordType() { this.isPasswordType = !(this.isPasswordType); }

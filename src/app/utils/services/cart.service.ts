@@ -17,6 +17,8 @@ export class CartService
 {
 
     readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
+    readonly INVOICE_TYPE_RETAIL = 'retail';
+    readonly INVOICE_TYPE_TAX = 'tax';
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     public cartUpdated: Subject<any> = new Subject();
     public extra: Subject<{ errorMessage: string }> = new Subject();
@@ -33,6 +35,11 @@ export class CartService
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
 
+    // checkout related global vars
+    private _billingAddress: null;
+    private _shippingAddress: null;
+    private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
+
     // vars used in revamped cart login 
     private _buyNow;
     private _buyNowSessionDetails;
@@ -45,11 +52,37 @@ export class CartService
         private _loaderService: GlobalLoaderService,
         private _toastService: ToastMessageService,
         private _router: Router,
-    )
-    {
+    ) {
         this.cartSession = cartSession;
     }
 
+    set billingAddress(address) {
+        this._billingAddress = address
+    }
+
+    get billingAddress() {
+        return this._billingAddress
+    }
+
+    set shippingAddress(address) {
+        this._shippingAddress = address
+    }
+
+    get shippingAddress() {
+        return this._shippingAddress
+    }
+
+    /**
+     * Use const INVOICE_TYPE_RETAIL && INVOICE_TYPE_TAX
+     */
+    set invoiceType(type: 'retail' | 'tax') {
+        this._invoiceType = type
+    }
+
+    get invoiceType() {
+        return this._invoiceType
+    }
+    
     ngOnInit()
     {
         // TODO: need to verify , how this is used

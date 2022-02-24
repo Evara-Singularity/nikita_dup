@@ -11,6 +11,7 @@ import { LocalAuthService } from './auth.service';
 import { GlobalLoaderService } from './global-loader.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Router } from '@angular/router';
+import { Address } from '../models/address.modal';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -36,8 +37,8 @@ export class CartService
     public codNotAvailableObj = {}; // cart.component
 
     // checkout related global vars
-    private _billingAddress: null;
-    private _shippingAddress: null;
+    private _billingAddress: Address;
+    private _shippingAddress: Address;
     private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
 
     // vars used in revamped cart login 
@@ -56,7 +57,7 @@ export class CartService
         this.cartSession = cartSession;
     }
 
-    set billingAddress(address) {
+    set billingAddress(address: Address) {
         this._billingAddress = address
     }
 
@@ -64,7 +65,7 @@ export class CartService
         return this._billingAddress
     }
 
-    set shippingAddress(address) {
+    set shippingAddress(address: Address) {
         this._shippingAddress = address
     }
 
@@ -379,6 +380,125 @@ export class CartService
         return of(cartSession);
     }
 
+<<<<<<< Updated upstream
+=======
+
+    // PAYMENTS RELATED UTILS STARTS 
+
+    createValidatorRequest(extra) {
+        const cart = this.cartSession["cart"];
+        const cartItems = this.cartSession["itemsList"];
+        const billingAddress = this.billingAddress;
+        const userSession = this._localStorageService.retrieve('user');
+        const offersList =  Object.assign([], this.cartSession["offersList"]);;
+
+        if (offersList != undefined && offersList.length > 0) {
+            for (let key in offersList) {
+                delete offersList[key]["createdAt"];
+                delete offersList[key]["updatedAt"];
+            }
+        }
+
+        let obj = {
+            shoppingCartDto: {
+                cart: {
+                    cartId: cart["cartId"],
+                    sessionId: cart["sessionId"],
+                    userId: userSession["userId"],
+                    agentId: cart["agentId"] ? cart["agentId"] : null,
+                    isPersistant: true,
+                    createdAt: null,
+                    updatedAt: null,
+                    closedAt: null,
+                    orderId: null,
+                    totalAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    totalOffer: cart["totalOffer"] == null ? 0 : cart["totalOffer"],
+                    totalAmountWithOffer: cart["totalAmountWithOffer"] == null ? 0 : cart["totalAmountWithOffer"],
+                    taxes: cart["taxes"] == null ? 0 : cart["taxes"],
+                    totalAmountWithTaxes: cart["totalAmountWithTax"],
+                    shippingCharges: cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
+                    currency: cart["currency"] == null ? "INR" : cart["currency"],
+                    isGift: cart["gift"] == null ? false : cart["gift"],
+                    giftMessage: cart["giftMessage"],
+                    giftPackingCharges: cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
+                    totalPayableAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    noCostEmiDiscount: extra.noCostEmiDiscount == 0 ? 0 : extra.noCostEmiDiscount,
+                },
+                itemsList: this.getItemsList(cartItems),
+                addressList: [{
+                    addressId: extra.addressList.idAddress,
+                    type: "shipping",
+                    invoiceType: this.invoiceType,
+                }],
+                payment: {
+                    paymentMethodId: extra.paymentId,
+                    type: extra.mode,
+                    bankName: extra.bankname,
+                    bankEmi: extra.bankcode,
+                    emiFlag: extra.emitenure,
+                    gateway: extra.gateway,
+                },
+                deliveryMethod: {
+                    deliveryMethodId: 77,
+                    type: "kjhlh",
+                },
+                offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
+                extraOffer: this.cartSession["extraOffer"] ? this.cartSession["extraOffer"] : null,
+                device: CONSTANTS.DEVICE.device,
+            },
+        };
+
+        if (cart["buyNow"]) {
+            obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
+        }
+
+        if (billingAddress !== undefined && billingAddress !== null) {
+            obj.shoppingCartDto.addressList.push({
+                addressId: billingAddress['idAddress'],
+                type: "billing",
+                invoiceType: this.invoiceType,
+            });
+        }
+        return obj;
+    }
+
+    private getItemsList(cartItems) {
+        let itemsList = [];
+        if (cartItems != undefined && cartItems != null && cartItems.length > 0) {
+            for (let i = 0; i < cartItems.length; i++) {
+                let item = {
+                    productId: cartItems[i]["productId"],
+                    productName: cartItems[i]["productName"],
+                    brandName: cartItems[i]["brandName"],
+                    productImg: cartItems[i]["productImg"],
+                    amount: cartItems[i]["amount"],
+                    offer: cartItems[i]["offer"],
+                    amountWithOffer: cartItems[i]["amountWithOffer"],
+                    taxes: cartItems[i]["taxes"],
+                    amountWithTaxes: cartItems[i]["amountWithTaxes"],
+                    totalPayableAmount: cartItems[i]["totalPayableAmount"],
+                    isPersistant: true,
+                    productQuantity: cartItems[i]["productQuantity"],
+                    productUnitPrice: cartItems[i]["productUnitPrice"],
+                    expireAt: cartItems[i]["expireAt"],
+                    bulkPriceMap: cartItems[i]["bulkPriceMap"],
+                    bulkPrice: cartItems[i]["bulkPrice"],
+                    priceWithoutTax: cartItems[i]["priceWithoutTax"],
+                    bulkPriceWithoutTax: cartItems[i]["bulkPriceWithoutTax"],
+                    taxPercentage: cartItems[i]["taxPercentage"],
+                    categoryCode: cartItems[i]["categoryCode"],
+                    taxonomyCode: cartItems[i]["taxonomyCode"],
+                };
+                if (cartItems[i]["buyNow"]) {
+                    item["buyNow"] = true;
+                }
+                itemsList.push(item);
+            }
+        }
+    }
+     // PAYMENTS RELATED UTILS STARTS 
+
+>>>>>>> Stashed changes
     // COMMON CART LOGIC IMPLEMENTATION STARTS
     /** 
      * Target modules Product listing pages i.e. search, brand, category, brand+categrory

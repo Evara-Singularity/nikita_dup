@@ -14,6 +14,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
+import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 
 let digitalData = {
     page: {},
@@ -58,6 +59,7 @@ export class CategoryComponent {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    accordiansDetails:AccordiansDetails[]=[];
     prodUrl=CONSTANTS.PROD;
 
     constructor(
@@ -156,6 +158,8 @@ export class CategoryComponent {
                     this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                     // genrate popular links data
                     this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
+                    //accordian data            
+                    this.createFooterAccordianData();
                 }
             });
 
@@ -167,6 +171,17 @@ export class CategoryComponent {
 
             // send tracking data 
             this.sendTrackingData();
+        });
+    }
+
+    private createFooterAccordianData() {
+        this.accordiansDetails.push({
+            name: 'Popular Brand Category',
+            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
+        });
+        this.accordiansDetails.push({
+            name: 'Related Searches',
+            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem)
         });
     }
 

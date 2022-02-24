@@ -66,6 +66,12 @@ export class AddressService
         );
     }
 
+    getBusinessDetail(data)
+    {
+        const URL = `${this.API}${ENDPOINTS.CBD}`;
+        return this._dataService.callRestful("GET", URL, { params: data });
+    }
+
     getStateList(countryId)
     {
         this._globaleLoader.setLoaderState(true);

@@ -66,13 +66,11 @@ export class CartComponent {
         }
 
         updateCartItemQuantity(quantityTarget, index, action, buyNow = false) {
+            alert(action);
             if (quantityTarget < 1) return;
             if (action = 'increment') {
                 this.cartData.itemsList[index].productQuantity = this.cartData.itemsList[index].productQuantity + 1;
             } else if (action = 'decrement') {
-                alert(action);
-                alert(this.cartData.itemsList[index].productQuantity);
-                alert(this.cartData.itemsList[index].productQuantity - 1);
                 this.cartData.itemsList[index].productQuantity = this.cartData.itemsList[index].productQuantity - 2;
             } else if (action = 'update'){
                 this.cartData.itemsList[index].productQuantity = parseInt(quantityTarget);

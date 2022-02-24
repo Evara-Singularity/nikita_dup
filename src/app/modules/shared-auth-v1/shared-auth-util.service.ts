@@ -188,7 +188,6 @@ export class SharedAuthUtilService implements OnInit
         };
         let custData = {};
         let order = {}
-        console.log("Digital Data", { page, custData, order });
         this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 

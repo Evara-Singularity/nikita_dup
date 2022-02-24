@@ -56,7 +56,7 @@
                     </ng-container>
                 </div>
                 <div class="input-field">
-                    <input type="email" name="email" formControlName="email" placeholder="Email*" maxlength="150"
+                    <input type="email" name="email" formControlName="email" placeholder="Email" maxlength="150"
                         (click)="isOutOfStock?initiateLogin():false">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (email.touched || email.dirty)">
                         <p class="error-txt" *ngIf="email.hasError('required')">Kindly enter your email id.</p>
@@ -68,10 +68,10 @@
             <div class="multiple-form-field">
                 <div class="input-field">
                     <input type="text" name="Pincode*" class="pincode" formControlName="pincode" maxlength="6"
-                        placeholder="{{isPincodeUnKnown.value?pincodeOptional:pincodeMandate}}"
+                        placeholder="Pincode"
                         [readonly]="isPincodeUnKnown.value" (click)="isOutOfStock?initiateLogin():false">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched || pincode.dirty)">
-                        <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p>
+                        <!-- <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p> -->
                         <p class="error-txt" *ngIf="pincode.hasError('pattern')">Pincode should contain only digits.
                         </p>
                         <p class="error-txt" *ngIf="pincode.hasError('minlength') && !(pincode.hasError('pattern'))">
@@ -83,7 +83,7 @@
                     </p>
                 </div>
                 <div class="input-field">
-                    <input type="text" placeholder="City*" name="City*" formControlName="city" maxlength="30"
+                    <input type="text" placeholder="City" name="City*" formControlName="city" maxlength="30"
                         [readonly]="!(isPincodeUnKnown.value)" (click)="isOutOfStock?initiateLogin():false"
                         (paste)="$event.preventDefault()">
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched ||  city.dirty)">

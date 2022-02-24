@@ -25,7 +25,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     readonly gstinValidators = [Validators.required, Validators.pattern('[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}')];
     readonly pincodeOptional = 'Pincode';
     readonly pincodeMandate = this.pincodeOptional + '*';
-    readonly pincodeValidators = [Validators.required, Validators.minLength(6), Validators.pattern(/^[0-9]\d*$/)];
+    readonly pincodeValidators = [Validators.minLength(6), Validators.pattern(/^[0-9]\d*$/)];
     readonly stateList: Array<{ 'idState': number, 'idCountry': number, 'name': string }>;
     readonly borf = 'gbqn';
     //inputs
@@ -65,9 +65,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         quantity: new FormControl(1),
         firstName: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[a-z\s]+$/i)]),
         mobile: new FormControl('', [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]\d*$/)]),
-        email: new FormControl('', [Validators.required, Step.validateEmail]),
-        pincode: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(/^[0-9]\d*$/)]),
-        city: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.pattern(/^(?![\s-])[a-zA-Z\s-]+$/)]),
+        email: new FormControl('', [Step.validateEmail]),
+        pincode: new FormControl('', [Validators.minLength(6), Validators.pattern(/^[0-9]\d*$/)]),
+        city: new FormControl('', [Validators.maxLength(30), Validators.pattern(/^(?![\s-])[a-zA-Z\s-]+$/)]),
         description: new FormControl('', [Validators.pattern(/^[a-z\d\-_\s]+$/i)]),
         state: new FormControl(''),
         isPincodeUnKnown: new FormControl(false),
@@ -121,6 +121,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
             $event.preventDefault();
         }
         if (!this.isUserLoggedIn) {
+            //use locaauthservice as it is hard to carry back url in otp
+            this.localAuthService.setBackURLTitle(this.product['url'], "Continue to raise RFQ");
             let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this.product['url'] } };
             this.router.navigate(['/login'], navigationExtras);
         }
@@ -137,7 +139,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     setPincode() {
         let params = { customerId: this.localStorageService.retrieve('user').userId, invoiceType: "retail" };
         this.getPincodeSubscriber = this._commonService.getAddressList(params).subscribe((res) => {
-            if (res["statusCode"] == 200) {
+            if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 1) {
                 this.pincode.setValue(res["addressList"][0].postCode);
             }
         });
@@ -173,8 +175,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     handlePincodeCity() {
         if (this.isUserLoggedIn) {
             if (this.isPincodeUnKnown.value) {
-                this.pincode.clearValidators();
-                this.isInvalidPincode = false;
+                // this.pincode.clearValidators();
+                // this.isInvalidPincode = false;
                 this.state.setValue('');
             } else {
                 this.pincode.setValidators(this.pincodeValidators);
@@ -279,6 +281,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     verifyGSTIN(rfqDetails) {
         this.isRFQSubmitted = true;
         this.rfqForm.markAllAsTouched();
+
         if (this.rfqForm.valid) {
             this.isLoading.emit(true);
             if (this.isBusinessCustomer.value && this.verifiedGSTINValue !== (this.tin.value as string).toUpperCase()) {

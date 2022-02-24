@@ -239,6 +239,10 @@ export class DataService {
         this.setCookie(name, "", -1);
     }
 
+    public deleteCookieV2(name) {
+        document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+      
     public setCookie(name: string, value: string, expireDays: number) {
         if (!this.isServer) {
             let d: Date = new Date();

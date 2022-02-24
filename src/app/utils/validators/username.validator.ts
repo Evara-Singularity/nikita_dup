@@ -61,6 +61,23 @@ export class UsernameValidator
         return null;
     }
 
+    static validateAuthEmail(c: FormControl)
+    {
+        let emailRegex = /^[a-zA-Z0-9]*([\._a-zA-Z0-9])*[a-zA-Z0-9]@[a-zA-Z0-9-]+\.[a-zA-Z]{2,6}(\.[a-zA-Z]{2,6})?$/;
+        if (c.value) {
+            let email = c.value;
+            if (emailRegex.test(email)) {
+                return null;
+            } else if (!(email)){
+                return { 'required': true };
+            }
+            else {
+                return { 'invalidCharT': true };
+            }
+        }
+        return null;
+    }
+
     static validatePhone(c: FormControl)
     {
         let phoneRegex = '^[1-9][0-9]{9}$';
@@ -70,6 +87,10 @@ export class UsernameValidator
             return error;
         }
         let phone = c.value;
+        if((phone as string).startsWith("0")){
+            error = { 'startwithzero': true };
+            return error;
+        }
         if (phone.match(phoneRegex) != null) {
             error = null;
         } else {

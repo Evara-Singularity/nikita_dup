@@ -265,7 +265,7 @@ export class QuickOrderComponent {
         this._quickOrderService.updateCartSession(this.sessionCart).subscribe(res => {
 
             if (res['statusCode'] == 200) {
-                alert('Cart quantity updated successfully');
+                // alert('Cart quantity updated successfully');
                 this.cartService.cart.next({count: res['noOfItems'] || 0});
             }
         });
@@ -294,6 +294,11 @@ export class QuickOrderComponent {
         else {
             this._gState.notifyDataChanged('loginPopup.open', { redirectUrl: '/checkout', template: 2 });
         }
+    }
+
+    navigateToCheckout() {
+        this._localAuthService.setBackURLTitle(null, 'Continue to checkout');
+        this.router.navigate(['/checkout'], { queryParams: { title: 'Continue to checkout' } });
     }
 
 }

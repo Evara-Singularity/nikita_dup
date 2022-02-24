@@ -44,7 +44,7 @@ export class ProductCheckPincodeComponent implements OnInit
             let params = { customerId: user.userId, invoiceType: "retail" };
             this._commonService.getAddressList(params).subscribe((res) =>
             {
-                if (res["statusCode"] == 200) {
+                if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 0) {
                     this.pincode.setValue(res["addressList"][0].postCode);
                     this.checkAvailblityOnPinCode();
                 }
@@ -86,7 +86,7 @@ export class ProductCheckPincodeComponent implements OnInit
             const msnArr = [];
             msnArr.push(PARTNUMBER);
             this.isLoading.emit(true);
-            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode }).subscribe(
+            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode, price: this.pageData['productPrice'] }).subscribe(
                 (response: any) =>
                 {
                     this.isLoading.emit(false);
@@ -124,6 +124,13 @@ export class ProductCheckPincodeComponent implements OnInit
                 }
             )
         }
+    }
+
+    get getCodAvailable(): boolean {
+        if (this.pageData['productPrice'] < CONSTANTS.GLOBAL.codMin || this.pageData['productPrice'] > CONSTANTS.GLOBAL.codMax) {
+            return this.FALSE;
+        }
+        return true;
     }
 
     processEstimationInfo(avgLogisticEstimated, avgPlatformEstimated, estimatedDelivery)

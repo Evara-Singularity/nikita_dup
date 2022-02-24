@@ -186,6 +186,7 @@ export class CartService
                     if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
                         // incase of session mismatch update new cart and userData 
                         // cartsesion response will be different from regular cart session response
+                        console.log('CARTSESSION LOGS ==> mismatch condition encountered', cartSessionResponse);
                         this.localAuthService.setUserSession(cartSessionResponse['userData']);
                         return cartSessionResponse['cart'];
                     }
@@ -200,7 +201,7 @@ export class CartService
             );
     }
 
-    logOutAndClearCart() {
+    logOutAndClearCart(redirectURL = null) {
         this.logoutCall().pipe(
             map(logoutReponse => {
                 this._localStorageService.clear("user");
@@ -210,7 +211,7 @@ export class CartService
             mergeMap(logoutReponse => this.checkForUserAndCartSessionAndNotify()),
         ).subscribe(status => {
             if (status) {
-                this._router.navigate(['/login']);
+                this._router.navigate([(redirectURL) ? redirectURL : '/login']);
             }
         })
     }

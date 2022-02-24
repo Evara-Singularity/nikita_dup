@@ -42,11 +42,6 @@ export class SelectCustomerTypeComponent {
         }
     }
 
-
-    outData(data) {
-        // alert();
-    }
-
     dontShowAgain() {
         this._lss.store('tocd', {dsa: true});
     }

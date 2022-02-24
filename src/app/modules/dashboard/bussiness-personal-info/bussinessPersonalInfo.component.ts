@@ -81,6 +81,8 @@ export class BussinessInfoComponent {
   }
 
   logout() {
+    this._localAuthService.clearAuthFlow();
+    this._localAuthService.clearBackURLTitle();
     this._commonService.logout().subscribe((response) => {
       this._localStorageService.clear("user");
       console.log(this._localStorageService.retrieve("user"));

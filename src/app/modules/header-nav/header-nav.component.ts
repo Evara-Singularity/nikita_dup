@@ -13,7 +13,7 @@ import { environment } from 'environments/environment';
 import { CheckoutService } from '@app/utils/services/checkout.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import RoutingMatcher from '@app/utils/routing.matcher';
+import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
 
 @Component({
     selector: 'header-nav',
@@ -79,13 +79,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input('extraData') extraData;
 
     constructor(
-        private _routingMatcher: RoutingMatcher,
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
         private cartService: CartService,
         private location: Location,
-        private checkoutLoginService: CheckoutLoginService,
+        private sharedAuthService: SharedAuthService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,
@@ -362,19 +361,17 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
+
     goBack() {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
-           // console.log('back to home 1', window.history.length);  
-            this.pdpReirectHack();
+            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
         } else {
-           // console.log('back to home 2', window.history.length);  
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
-               // console.log('back to home 2.1', window.history.length);  
                 this.router.navigate(['/']);
             } else if (isCheckout) {
-                if (this.checkoutLoginService.isAtFirstSection) {
+                if (this.sharedAuthService.isAtCheckoutLoginFirstTab) {
                     let index = this._checkoutService.getCheckoutTabIndex();
                     if (index === 1) {
                         this.location.back();
@@ -386,31 +383,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                         this._state.notifyData('routeChanged', index - 2);
                     }
                 } else {
-                    this.checkoutLoginService.enableResetTabSateSub(true);
+                    this.sharedAuthService.resetCheckoutLoginSteps();
                 }
             } else {
-               this.pdpReirectHack();
-            }
-        }
-    }
-
-    private pdpReirectHack() {
-        if (window.history.length > 3) {
-           console.log('back to home 1.1', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
-            if (this._commonService.currentlyOpenedModuleUsed == true) {
-                this._commonService.currentlyOpenedModuleUsed = false;
-                this.router.navigateByUrl('/?back=1');
-            } else {
-                this.location.back();
-            }
-        } else {
-           console.log('back to home 1.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
-            if (this._commonService.currentlyOpenedModule && this._commonService.currentlyOpenedModule.data && this._commonService.currentlyOpenedModule.data.overrideRedirectUrl) {
-                this._commonService.currentlyOpenedModuleUsed = true;
-                this.router.navigate([this._commonService.currentlyOpenedModule.data.overrideRedirectUrl], { queryParams: { back: 1 } });
-            } else {
-               console.log('back to home 1.2.2', this._commonService.currentlyOpenedModule, this._commonService.currentlyOpenedModuleUsed);
-                this.location.back();
+                this.router.navigate(['/']);
             }
         }
     }
@@ -461,5 +437,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.changeDetectorRef.detectChanges();
             this.cartHeaderText = '';
         }
+    }
+
+    navigateToLogin($event)
+    {
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.localAuthService.clearAuthFlow();
+        this.localAuthService.clearBackURLTitle();
+        this.router.navigate(['/login']);
     }
 }

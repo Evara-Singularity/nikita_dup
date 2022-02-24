@@ -30,6 +30,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     brandList = [];
     totalValue: any = 0;
     eGiftForm: FormGroup = null;
+    isCheckboxChecked = false;
 
     constructor(
         private _dataService: DataService,
@@ -52,7 +53,8 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     email: new FormControl("", [Validators.required, Step.validateEmail]),
                     mobile: new FormControl("", [Validators.required]),
                     company: new FormControl(""),
-                    userId: new FormControl()
+                    userId: new FormControl(),
+                    sendMail: new FormControl("")
                 }
             ),
             rfqEnquiryItemsList: new FormArray([])
@@ -61,6 +63,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         if(this._common.isBrowser){
             this.adobeCall()
         }
+        this.rfqEnquiryCustomer.get("sendMail").patchValue(this.isCheckboxChecked)
     }
 
     ngAfterViewInit(): void
@@ -169,6 +172,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     this.showSuccessPopup = true;
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();
+                    this.isCheckboxChecked = false;
                     this.sendGtmCall('Gift Card Request Submitted');
                 }
             },
@@ -213,6 +217,11 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         this.showSuccessPopup = false;
     }
 
+    toggleCheckbox(){
+        this.isCheckboxChecked = !this.isCheckboxChecked
+        this.eGiftForm.value.rfqEnquiryCustomer.sendMail = this.isCheckboxChecked
+    } 
+       
     sendGtmCall(data) {
         this._analytics.sendGTMCall({ event: data })
     }

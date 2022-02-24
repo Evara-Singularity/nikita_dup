@@ -6,7 +6,6 @@ import { CommonService } from "@app/utils/services/common.service";
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
 
-
 @Component({
     selector: 'category-footer',
     templateUrl: './category-footer.component.html',
@@ -79,4 +78,3 @@ export class CategoryFooterComponent{
     ]
 })
 export class CategoryFooterModule { }
-// export class CategoryModule extends CategoryFooterModule { }

@@ -12,7 +12,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { DataService } from '@app/utils/services/data.service';
-import { LocalStorageService } from 'ngx-webstorage';
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 
@@ -70,6 +70,7 @@ export class CategoryComponent {
         public _footerService: FooterService,
         private _analytics: GlobalAnalyticsService,
         private _localStorageService: LocalStorageService,
+        private _sessionStorageService: SessionStorageService,
         private _dataService: DataService,
         private _title: Title,
         @Optional() @Inject(RESPONSE) private _response,
@@ -94,6 +95,18 @@ export class CategoryComponent {
 
     ngAfterViewInit(): void {
         this.sharedProductList.getSponseredProducts();
+        this.backUrlNavigationHandler();
+    }
+
+    backUrlNavigationHandler() {
+        if (this._commonService.isBrowser) {
+            const NO_HISTRORY_PDP = this._sessionStorageService.retrieve('NO_HISTROY_PDP');
+            if (NO_HISTRORY_PDP === 'NO_HISTROY_PDP') {
+                window.history.replaceState('', '', '/?back=1');
+                window.history.pushState('', '', this._router.url);
+                this._sessionStorageService.clear('NO_HISTROY_PDP');
+            }
+        }
     }
 
     setDataFromResolver() {

@@ -31,4 +31,5 @@ export class PaymentService{
         url += (type == "retail") ? "payu" : "razorpay";
         return this._dataService.callRestful('GET', url);
     }
+    
 }

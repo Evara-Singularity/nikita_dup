@@ -48,7 +48,7 @@ const routes: Routes = [
       },
       {
         path: 'payment',
-        loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
+        loadChildren: () => import('./checkout-payment/checkout-payment.module').then((m) => m.CheckoutPaymentModule),
         canActivate: [IsAuthenticatedCheckoutLogin],
         data: {
 					footer: false,

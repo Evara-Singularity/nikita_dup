@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -19,24 +19,23 @@ declare var dataLayer;
     styleUrls:['./creditDebit.scss']
 })
 
-export class CreditDebitCardComponent {
-    API: {}
+export class CreditDebitCardComponent implements OnInit  {
+
+    @Input()type:any;
+
+    API: any = CONSTANTS;
     prepaidsubscription: Subscription;
     creditDebitCardForm: FormGroup;
-    isValid: boolean;
-    payuData: {};
+    isValid: boolean = false;
+    payuData: {} = {};
     cart: {};
     cartItems: Array<{}>;
-    expYrs: Array<any>;
+    expYrs: Array<any> = [];
     cartSession: any;
-    expMons: Array<{ key: string, value: string }>;
+    expMons: Array<{ key: string, value: string }> =  CONSTANTS.GLOBAL.expMons;
     cartSessionObject: any;
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
-    @Input()type:any;
-    set isShowLoader(value) {
-        this.loaderService.setLoaderState(value);
-    }
     monthSelectPopupStatus: boolean = false;
     selectedMonth: string = null;
     yearSelectPopupStatus: boolean = false;
@@ -48,23 +47,25 @@ export class CreditDebitCardComponent {
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
         private _cartService: CartService, 
-        private loaderService: GlobalLoaderService,
+        private _loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder,
         private _trackingService: TrackingService) {
 
-        this.API = CONSTANTS;
-        this.payuData = {};
-        this.expYrs = [];
-        this.expMons = CONSTANTS.GLOBAL.expMons;
+        this.createYears();
+        this.intializeForm();
+
+    }
+
+    private createYears() {
         let todayDate = new Date();
-        ////console.log(todayDate);
         let currentYear = todayDate.getFullYear();
         for (let i = 0; i < 20; i++) {
-            this.expYrs.push({key: currentYear, value: currentYear});
+            this.expYrs.push({ key: currentYear, value: currentYear });
             currentYear = currentYear + 1;
         }
+    }
 
-        this.isValid = false;
+    private intializeForm() {
         this.creditDebitCardForm = this._formBuilder.group({
             "store_card": [true],
             "mode": ['CC', [Validators.required]],
@@ -76,27 +77,22 @@ export class CreditDebitCardComponent {
                 "ccvv": [null, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
             }),
         });
+    }
 
-        let userSession = this._localAuthService.getUserSession();
-        //console.log(userSession);
-        let params = { "sessionid": userSession.sessionId };
+    set isShowLoader(value) {
+        this._loaderService.setLoaderState(value);
     }
 
     ngOnInit() {
-        this.cartSession = Object.assign({}, this._cartService.getCartSession());
-        this.getPrePaidDiscount('CC');
-    
-        this.prepaidsubscription=this._cartService.prepaidDiscountSubject.subscribe((data) => {
-           this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
-          // this._cartService.prepaidDiscountSubject.unsubscribe();
+        this.cartSession = this._cartService.getCartSession();
+        this.getPrePaidDiscount('CC'); // Credit card as default options
+
+        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+            this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
         })
-        //console.log("ngOnInit Called");
-        //console.log('Checkout Address', this._checkoutService.getCheckoutAddress());
+        
     }
 
-    ngAfterViewInit() {
-        //console.log("ngAfterViewInit Called")
-    }
 
     pay(data, valid) {
         // console.log(this.creditDebitCardForm, data)
@@ -291,8 +287,6 @@ export class CreditDebitCardComponent {
         this.selectedYear = null;
     }
 
-
-
     getBankCode(ccnum) {
         //console.log("Get Bank Code", ccnum);
         let cardType = creditCardType(ccnum);
@@ -315,7 +309,6 @@ export class CreditDebitCardComponent {
     }
 
     selectMonth(data) {
-        // console.log('selectMonth ==>', data);
         if (data) {
             this.selectedMonth = data['key'];
             (this.creditDebitCardForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
@@ -328,7 +321,6 @@ export class CreditDebitCardComponent {
     }
 
     selectYear(data) {
-        // console.log('selectMonth ==>', data);
         if (data) {
             
             this.selectedYear = data['value'];
@@ -343,7 +335,6 @@ export class CreditDebitCardComponent {
 
     ngOnDestroy() {
         this.prepaidsubscription.unsubscribe();
-      //  this._cartService.prepaidDiscountSubject.complete();
         this._cartService.setCartSession(this.cartSession);
         this._cartService.orderSummary.next(this.cartSession);
     }

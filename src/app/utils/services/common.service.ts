@@ -852,8 +852,7 @@ export class CommonService
         );
     }
 
-    createValidatorRequest(cartSession, userSession, extra)
-    {
+    createValidatorRequest(cartSession, userSession, extra) {
         let cart = cartSession["cart"];
         let cartItems = cartSession["itemsList"];
         let billingAddress: any = this.checkoutService.getBillingAddress();

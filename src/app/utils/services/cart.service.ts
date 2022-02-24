@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AddToCartProductSchema, cartSession } from "../models/cart.initial";
+import { AddToCartProductSchema } from "../models/cart.initial";
 import { DataService } from './data.service';
 import { Observable, of, Subject } from 'rxjs';
-import { first, share, debounceTime, distinctUntilChanged, catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -36,7 +36,11 @@ export class CartService
     // vars used in revamped cart login 
     private _buyNow;
     private _buyNowSessionDetails;
-    private cartSession: {};
+    private cartSession: any = {
+        "noOfItems": 0,
+        "cart": {},
+        "itemsList": [],
+    };
 
     constructor(
         private _dataService: DataService,
@@ -47,7 +51,6 @@ export class CartService
         private _router: Router,
     )
     {
-        this.cartSession = cartSession;
     }
 
     ngOnInit()
@@ -339,12 +342,108 @@ export class CartService
     {
         const cartSession = this.updateCart(result);
         this.setCartSession(cartSession);
-        this.orderSummary.next(result);
+        this.orderSummary.next(result);ˀ
         this.localAuthService.login$.next(redirectUrl);
         let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
         this.cart.next(obj);
         return of(cartSession);
     }
+
+
+    // PAYMENTS RELATED UTILS STARTS 
+
+    createValidatorRequest(extra) {
+        let cart = cartSession["cart"];
+        let cartItems = cartSession["itemsList"];
+        let billingAddress: any = this.checkoutService.getBillingAddress();
+
+        let offersList: Array<{}> = [];
+
+        Object.assign(offersList, cartSession["offersList"]);
+
+        if (offersList != undefined && offersList.length > 0) {
+            for (let key in offersList) {
+                delete offersList[key]["createdAt"];
+                delete offersList[key]["updatedAt"];
+            }
+        }
+
+        let obj = {
+            shoppingCartDto: {
+                cart: {
+                    cartId: cart["cartId"],
+                    sessionId: cart["sessionId"],
+                    userId: userSession["userId"],
+                    agentId: cart["agentId"] ? cart["agentId"] : null,
+                    isPersistant: true,
+                    createdAt: null,
+                    updatedAt: null,
+                    closedAt: null,
+                    orderId: null,
+                    totalAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    totalOffer: cart["totalOffer"] == null ? 0 : cart["totalOffer"],
+                    totalAmountWithOffer:
+                        cart["totalAmountWithOffer"] == null
+                            ? 0
+                            : cart["totalAmountWithOffer"],
+                    taxes: cart["taxes"] == null ? 0 : cart["taxes"],
+                    totalAmountWithTaxes: cart["totalAmountWithTax"],
+                    shippingCharges:
+                        cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
+                    currency: cart["currency"] == null ? "INR" : cart["currency"],
+                    isGift: cart["gift"] == null ? false : cart["gift"],
+                    giftMessage: cart["giftMessage"],
+                    giftPackingCharges:
+                        cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
+                    totalPayableAmount:
+                        cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    noCostEmiDiscount:
+                        extra.noCostEmiDiscount == 0 ? 0 : extra.noCostEmiDiscount,
+                },
+                itemsList: this.getItemsList(cartItems),
+                addressList: [
+                    {
+                        addressId: extra.addressList.idAddress,
+                        type: "shipping",
+                        invoiceType: this.checkoutService.getInvoiceType(),
+                    },
+                ],
+                payment: {
+                    paymentMethodId: extra.paymentId,
+                    type: extra.mode,
+                    bankName: extra.bankname,
+                    bankEmi: extra.bankcode,
+                    emiFlag: extra.emitenure,
+                    gateway: extra.gateway,
+                },
+                deliveryMethod: {
+                    deliveryMethodId: 77,
+                    type: "kjhlh",
+                },
+                offersList:
+                    offersList != undefined && offersList.length > 0 ? offersList : null,
+                extraOffer: cartSession["extraOffer"]
+                    ? cartSession["extraOffer"]
+                    : null,
+                device: CONSTANTS.DEVICE.device,
+            },
+        };
+
+        if (cart["buyNow"]) {
+            obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
+        }
+
+        if (billingAddress !== undefined && billingAddress !== null) {
+            obj.shoppingCartDto.addressList.push({
+                addressId: billingAddress.idAddress,
+                type: "billing",
+                invoiceType: this.checkoutService.getInvoiceType(),
+            });
+        }
+        return obj;
+    }
+
+     // PAYMENTS RELATED UTILS STARTS 
 
     // COMMON CART LOGIC IMPLEMENTATION STARTS
     /** 

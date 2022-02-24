@@ -136,6 +136,10 @@ export class BrandComponent {
             name: 'Related Searches',
             data: this.API_RESPONSE.brand[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem)
         });
+        this.accordiansDetails.push({
+            name: 'Related Brands',
+            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem)
+        });
     }
 
     setPopularCategories(data) {

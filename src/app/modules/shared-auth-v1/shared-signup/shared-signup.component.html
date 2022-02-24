@@ -15,10 +15,10 @@
             <div class="outline-input-label">
                 <label [class.is-focus]="firstName.value.length!=0">
                     <input 
-                        [ngClass]="{'invalid-input': ( isSubmitted && (firstName.hasError('required') || (!(firstName.hasError('required')) && firstName.hasError('whitespace'))))  }"
+                        [ngClass]="{'invalid-input': (isSubmitted && (firstName.hasError('required') || (!(firstName.hasError('required')) && firstName.hasError('whitespace'))))  }"
                         type="text" formControlName="firstName" maxlength="20">
                     <span class="label">Enter User Name*</span>
-                    <ng-container *ngIf="isSubmitted && (firstName.touched || firstName.dirty)">
+                    <ng-container *ngIf="isSubmitted && firstName.invalid">
                         <p class="error-field error-txt" *ngIf="firstName.hasError('required')">Enter user name</p>
                         <p class="error-field error-txt"
                             *ngIf="!(firstName.hasError('required')) && firstName.hasError('whitespace')">
@@ -32,12 +32,12 @@
                         [ngClass]="{'invalid-input': ( isSubmitted && ((phone.invalid && phone.hasError('startwithzero')) || (phone.invalid && !phone.hasError('startwithzero')) || (signupForm.valid && isUserExists)) )} "
                         type="tel" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
                     <span class="label">Enter Mobile Number*</span>
-                    <ng-container *ngIf="isSubmitted && (phone.touched || phone.dirty)">
+                    <ng-container *ngIf="isSubmitted && phone.invalid">
                         <p class="error-field error-txt" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile Number should not begin with 0</p>
                         <p class="error-field error-txt" *ngIf="phone.invalid && !phone.hasError('startwithzero')">Enter 10 digit mobile number</p>
-                        <p class="error-field error-txt" *ngIf="signupForm.valid && isUserExists">Number already exists, try different number or try
-                            sign-in</p>
                     </ng-container>
+                    <p class="error-field error-txt" *ngIf="isSubmitted && signupForm.valid && isUserExists">Number already exists, try different number or try
+                        sign-in</p>
                 </label>
             </div>
             <div class="outline-input-label" *ngIf="isSingupUsingPhone">
@@ -46,13 +46,13 @@
                     [ngClass]="{'invalid-input': (isSubmitted && ((email.errors && email.errors.invalidCharT) || (signupForm.valid && isUserExists)) ) }"
                     type="text" formControlName="email" maxlength="100" autocomplete="off">
                     <span class="label">Enter Email-ID (Optional)</span>
-                    <ng-container *ngIf="isSubmitted && (email.touched || email.dirty)">
+                    <ng-container *ngIf="isSubmitted && email.invalid">
                         <p class="error-field error-txt" *ngIf="email.errors && email.errors.invalidCharT">
                             Enter valid Email-ID
                         </p>
-                        <p class="error-field error-txt" *ngIf="signupForm.valid && isUserExists">
-                            Email already exists, try different email or try sign-in</p>
                     </ng-container>
+                    <p class="error-field error-txt" *ngIf="isSubmitted && signupForm.valid && isUserExists">
+                        Email already exists, try different email or try sign-in</p>
                 </label>
             </div>
             <div class="outline-input-label">
@@ -62,7 +62,7 @@
                         [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20" autocomplete="off">
                     <span class="label">Enter Password (Optional)</span>
                     <i class="icon-view-password" [class.active-password-icon]="!isPasswordType" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
-                    <ng-container *ngIf="isSubmitted && (password.touched || password.dirty)">
+                    <ng-container *ngIf="isSubmitted && password.invalid">
                         <p class="error-field error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>
                         <p class="error-field error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}</p>
                     </ng-container>

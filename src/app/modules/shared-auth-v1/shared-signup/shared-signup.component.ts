@@ -47,7 +47,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     currentStep = "";
     identifer = null;
     emailorphonevalueSubscription:Subscription = null;
-    signupSubscription: Subscription = null;
 
     signupForm = new FormGroup({
         firstName: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
@@ -83,7 +82,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         this.emailorphonevalueSubscription = observable.subscribe((value) => { 
              this.isUserExists = false
         });
-        this.signupSubscription = this.signupForm.valueChanges.subscribe((value)=>{this.isSubmitted=false})
     }
 
     updateSignupWithIdentifier()
@@ -197,6 +195,5 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnDestroy(): void
     {
         if(this.emailorphonevalueSubscription)this.emailorphonevalueSubscription.unsubscribe();
-        if (this.signupSubscription)this.signupSubscription.unsubscribe();
     }
 }

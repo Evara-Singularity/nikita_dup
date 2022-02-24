@@ -183,7 +183,7 @@ export class SharedAuthUtilService implements OnInit
             channel: "login/signup",
             linkPageName: isLogin ? "moglix:login page" : "moglix:signup form",
             subSection: isLogin ? "moglix:login page: Login Success" : "moglix:signup form:Sign up success",
-            linkName: isLogin ? "Login up CTA" : "Sign up CTA",
+            linkName: isLogin ? "Login CTA" : "Sign up CTA",
             loginStatus: isLogin ? "registered" : "guest",
         };
         let custData = {};

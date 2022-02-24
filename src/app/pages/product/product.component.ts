@@ -1185,6 +1185,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
           const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
           return { ...priceMap, calculatedDiscount }
         })
+        //filtering Data to show the 
+        this.productBulkPrices=this.productBulkPrices.filter((bulkPrice)=>{
+          return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty']
+
+        });
+
         this.checkBulkPriceMode();
       }
     }

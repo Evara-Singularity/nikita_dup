@@ -1,14 +1,8 @@
 .accordian_footer_panel {
     margin-top: 10px;
-}
-
-.accordian_footer_panel {
-    margin-top: 1px;
-
     .panel-head {
         background: #fff;
         border-top: 1px solid #d4d4d4;
-
         h3 {
             padding: 15px 5px;
             font-weight: bold;
@@ -25,7 +19,6 @@
             }
         }
     }
-
     .panel-body {
         padding: 0px 5px 10px;
         background-color: red;
@@ -35,7 +28,6 @@
     .open {
         display: block !important;
     }
-
     .icon-accordian {
         float: right;
 
@@ -43,13 +35,11 @@
             font-size: 14px;
         }
     }
-
     .ico-up {
         .icon-accordian {
             transform: rotate(180deg);
         }
     }
-
     .category_links {
         & > div {
             border-bottom: 1px solid #eaeaea;

@@ -1,4 +1,3 @@
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { SavedCardService } from './savedCard.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -12,6 +11,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { CheckoutService } from '../../utils/services/checkout.service';
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare var dataLayer;
 
@@ -42,7 +42,7 @@ export class SavedCardComponent {
     }
 
     constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _objectToArray: ObjectToArray, private _savedCardService: SavedCardService, private _formBuilder: FormBuilder
-        ,private _trackingService:TrackingService) {
+        ,private _analytics:GlobalAnalyticsService) {
         this.removeTab$ = new EventEmitter<any>();
         this.savedCards = [];
         // this.selectedCardIndex = 0;
@@ -246,7 +246,7 @@ export class SavedCardComponent {
                 "card_token": this.savedCards[this.selectedCardIndex]['card_token']
             };
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated:saved card");  
+        this._analytics.sendAdobeOrderRequestTracking(newdata, "pay-initiated:saved card");  
         this.isShowLoader = true;
 
         this._savedCardService.pay(newdata).subscribe((res): void => {

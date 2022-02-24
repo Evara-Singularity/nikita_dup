@@ -11,7 +11,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
-import { TrackingService } from '@app/utils/services/tracking.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare var dataLayer;
 
@@ -42,7 +42,7 @@ export class UpiComponent {
     lsrMessage = null;
     
     constructor(private _localStorageService: LocalStorageService,private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _upiService: UpiService, private _formBuilder: FormBuilder, private _objectToArray: ObjectToArray,
-        private lsr: LowSuccessMessagePipe, private _trackingService: TrackingService) {
+        private lsr: LowSuccessMessagePipe, private _analytics: GlobalAnalyticsService) {
         this.upiData = {};
         this.isValid = false;
         this.uType = CONSTANTS.GLOBAL.upiTez;
@@ -83,7 +83,7 @@ export class UpiComponent {
         }
 
         let userSession = this._localAuthService.getUserSession();
-        this._trackingService.sendAdobeOrderRequestTracking(newdata,`pay-initiated:upi`);
+        this._analytics.sendAdobeOrderRequestTracking(newdata,`pay-initiated:upi`);
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.isValid = false;

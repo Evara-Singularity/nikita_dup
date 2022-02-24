@@ -10,7 +10,7 @@ import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
-import { TrackingService } from '@app/utils/services/tracking.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare let dataLayer: any;
 
@@ -53,7 +53,7 @@ export class WalletComponent {
         private _objectToArray: ObjectToArray,
         private loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder,
-        private _trackingService: TrackingService,
+        private _analytics: GlobalAnalyticsService,
         private lsr: LowSuccessMessagePipe) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -156,7 +156,7 @@ export class WalletComponent {
         if (this.wType == "walletPaytm"){
             newdata["mode"] = "PAYTM";            
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata,"pay-initiated:wallet");
+        this._analytics.sendAdobeOrderRequestTracking(newdata,"pay-initiated:wallet");
         this._commonService.pay(newdata).subscribe((res): void => {
 
             if (res.status != true) {

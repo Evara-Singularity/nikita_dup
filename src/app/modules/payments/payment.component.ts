@@ -119,31 +119,6 @@ export class PaymentComponent implements OnInit {
             });
     }
 
-    private analyticVisit(cartData: any) {
-        if (cartData['itemsList'] !== null && cartData['itemsList']) {
-            var trackData = {
-                event_type: "page_load",
-                page_type: "payment",
-                label: "view",
-                channel: "Checkout",
-                price: cartData["cart"]["totalPayableAmount"].toString(),
-                quantity: cartData["noOfItems"],
-                shipping: parseFloat(cartData["shippingCharges"]),
-                invoiceType: this.invoiceType,
-                itemList: cartData["itemsList"].map(item => {
-                    return {
-                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
-                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
-                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
-                        price: item["totalPayableAmount"].toString(),
-                        quantity: item["productQuantity"]
-                    };
-                })
-            };
-            this._analytics.sendToClicstreamViaSocket(trackData);
-        }
-    }
-
     updatePaymentBlock(block, mode?, elementId?) {
         let cart = this._cartService.getCartSession();
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
@@ -178,6 +153,15 @@ export class PaymentComponent implements OnInit {
 
         this.isPaymentSelected = true;
 
+        this.changeInPaymentBlockAnalytic(cart, mode);
+
+        if (elementId) {
+            this.scollToSection(elementId);
+        }
+
+    }
+
+    private changeInPaymentBlockAnalytic(cart: any, mode: any) {
         if (cart['itemsList'] !== null && cart['itemsList']) {
             var trackData = {
                 event_type: "click",
@@ -196,16 +180,36 @@ export class PaymentComponent implements OnInit {
                         category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
                         price: item["totalPayableAmount"].toString(),
                         quantity: item["productQuantity"]
-                    }
+                    };
                 })
-            }
-            this._dataService.sendMessage(trackData);
+            };
+            this._analytics.sendToClicstreamViaSocket(trackData);
         }
+    }
 
-        if (elementId) {
-            this.scollToSection(elementId);
+    private analyticVisit(cartData: any) {
+        if (cartData['itemsList'] !== null && cartData['itemsList']) {
+            var trackData = {
+                event_type: "page_load",
+                page_type: "payment",
+                label: "view",
+                channel: "Checkout",
+                price: cartData["cart"]["totalPayableAmount"].toString(),
+                quantity: cartData["noOfItems"],
+                shipping: parseFloat(cartData["shippingCharges"]),
+                invoiceType: this.invoiceType,
+                itemList: cartData["itemsList"].map(item => {
+                    return {
+                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
+                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
+                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
+                        price: item["totalPayableAmount"].toString(),
+                        quantity: item["productQuantity"]
+                    };
+                })
+            };
+            this._analytics.sendToClicstreamViaSocket(trackData);
         }
-
     }
 
     scollToSection(elementId) {

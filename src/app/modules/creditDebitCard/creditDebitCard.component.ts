@@ -10,7 +10,6 @@ import { CheckoutService } from '@app/utils/services/checkout.service';
 import { CreditCardValidator } from 'ng2-cc-library';
 import * as creditCardType from 'credit-card-type';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare var dataLayer;
@@ -50,9 +49,7 @@ export class CreditDebitCardComponent implements OnInit  {
         private _cartService: CartService, 
         private _loaderService: GlobalLoaderService,
         private _analytics: GlobalAnalyticsService,
-        private _formBuilder: FormBuilder,
-        private _trackingService: TrackingService) {
-
+        private _formBuilder: FormBuilder) {
         this.createYears();
         this.intializeForm();
 
@@ -99,7 +96,6 @@ export class CreditDebitCardComponent implements OnInit  {
 
         if (!valid) return;
            
-        
         const cartSession = this._cartService.getCartSession();
         const ccnum = data.requestParams.ccnum.replace(/ /g, '');
         const bankcode = this.getBankCode(ccnum);
@@ -110,9 +106,8 @@ export class CreditDebitCardComponent implements OnInit  {
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-        this.paymentInitiatedAnalyticCall(shippingInformation, addressList, data);
 
-        let extra = {
+        const extra = {
             "mode": data.mode,
             "paymentId": data.mode == 'CC' ? 9 : 2,
             addressList: addressList
@@ -122,8 +117,7 @@ export class CreditDebitCardComponent implements OnInit  {
             extra["paymentId"] = data.mode=="CC" ?  131 : 130;    
         }
             
-
-        let newdata = {
+        const newdata = {
             "platformCode": "online",
             "mode": extra.mode,
             "paymentId": extra.paymentId,
@@ -151,10 +145,10 @@ export class CreditDebitCardComponent implements OnInit  {
             newdata["paymentId"] = data.mode=="CC" ?  131 : 130;            
         }
         extra['paymentId'] = newdata['paymentId'];
-        //console.log("New Data for pay", newdata);
-        //   $("#page-loader").show();
+
         const CARD_TYPE = data.mode == "CC" ? "credit" : "debit";
-        this._trackingService.sendAdobeOrderRequestTracking(newdata ,`pay-initiated:${CARD_TYPE} card`);
+        
+        this._analytics.sendAdobeOrderRequestTracking(newdata ,`pay-initiated:${CARD_TYPE} card`);
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe( (res) : void => {
 

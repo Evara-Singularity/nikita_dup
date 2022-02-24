@@ -375,7 +375,7 @@ export class CartService
     {
         const cartSession = this.updateCart(result);
         this.setCartSession(cartSession);
-        this.orderSummary.next(result);ˀ
+        this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);
         let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
         this.cart.next(obj);

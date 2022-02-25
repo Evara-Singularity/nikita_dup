@@ -62,6 +62,9 @@ export class AskQuestionPopoupComponent {
                     }
                 );
             }
+            else {
+                this._tms.show({ type: 'success', text: 'Kindly enter your question' });
+            }
         }
         else {
             this.goToLoginPage(this.productUrl);

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OtpPopupComponent } from '@app/components/otp-popup/otp-popup.component';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -26,24 +26,25 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     @Input("displayCreateEditPopup") displayCreateEditPopup = false;
     @Input("isAddMode") isAddMode = true;
+    @Input("invoiceType") invoiceType = "retail";
     @Input("address") address = null;
     @Input("verifiedPhones") verifiedPhones: string[];
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
     addressForm: FormGroup = null;
     userSesssion = null;
-    lastSearchedPincode = null;
+    lastSearchedPostcode = null;
 
     countryList = [];
     stateList = [];
 
-    isVerifyingPincode = false;
-    isPincodeValid = false;
+    isVerifyingPostcode = false;
+    isPostcodeValid = false;
 
     phoneSubscription: Subscription = null;
     postCodeSubscription: Subscription = null;
 
-    constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService,
+    constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private _formBuilder:FormBuilder,
         private _commonService: CommonService, private _modalService: ModalService, private _toastMessage: ToastMessageService,)
     {
         this.userSesssion = this._localAuthService.getUserSession();
@@ -51,7 +52,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     ngOnInit() 
     {
-        this.createAddressForm();
+        this.createAddressForm(this.address);
         this._addressService.getCountryList().subscribe((countryList: CountryListModel[]) =>
         {
             this.countryList = countryList;
@@ -61,14 +62,13 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     ngAfterViewInit()
     {
-
         // valueChanges is subcribed two times once when valid is filled and second time on lost focus making two API calls
-        // lastSearchedPincode is implemented to avoid similar API calls
+        // lastSearchedPostcode is implemented to avoid similar API calls
         this.postCodeSubscription = this.postCode.valueChanges.subscribe(
             data =>
             {
-                if (this.postCode.valid && data && data.toString().length == 6 && data != this.lastSearchedPincode) {
-                    this.getCityByPincode();
+                if (this.postCode.valid && data && data.toString().length == 6 && data != this.lastSearchedPostcode) {
+                    this.getCityByPostcode();
                 }
             }
         );
@@ -76,9 +76,27 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             (phone: string) =>
             {
                 const isPhoneVerfied = ((phone.length === 10) && (this.verifyPhone(phone, this.verifiedPhones)));
-                this.phoneVerified.setValue(isPhoneVerfied);
+                this.phoneVerified.patchValue(isPhoneVerfied);
             }
         );
+    }
+
+    createAddressForm(address)
+    {
+        this.addressForm = this._formBuilder.group({
+            'idAddress': address && address.idAddress ? address.idAddress : null,
+            'addressCustomerName': [(address && address.addressCustomerName) ? address.addressCustomerName : this.userSesssion['userName'], [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+            'phone': [(address && address.phone) ? address.phone : this.userSesssion['phone'], [Validators.required, Step.validatePhone]],
+            'alternatePhone': [(address && address.alternatePhone) ? address.alternatePhone : this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]],
+            'postCode': [(address && address.postCode) ? address.postCode : null, [Validators.required, Step.validatePostCode]],
+            'landmark': [(address && address.landmark) ? address.landmark : null, [Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+            'addressLine': [(address && address.addressLine) ? address.addressLine : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+            'city': [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]],
+            'idCountry': [null, [Validators.required]],
+            'idState': [null, [Validators.required]],
+            'email': [address ? address.email : this.userSesssion['email'], [Step.validateEmail]],
+            'phoneVerified': [(address && address.phoneVerified) ? address.phoneVerified : false]
+        });
     }
 
     fetchStateList(countryId)
@@ -90,49 +108,31 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         })
     }
 
-    // called only on valuechange on pincode
-    getCityByPincode()
+    // called only on valuechange on Postcode
+    getCityByPostcode()
     {
-        this.isVerifyingPincode = true;
-        this.isPincodeValid = false;
+        this.isVerifyingPostcode = true;
+        this.isPostcodeValid = false;
         if (this.postCode.valid) {
-            this.lastSearchedPincode = this.postCode.value;
-            this._addressService.getCityByPinCode(this.postCode.value).subscribe(res =>
+            this.lastSearchedPostcode = this.postCode.value;
+            this._addressService.getCityByPostcode(this.postCode.value).subscribe(res =>
             {
                 if (res['status']) {
-                    this.isPincodeValid = true;
-                    this.isVerifyingPincode = false;
-                    this.city.setValue(res['dataList'][0]['city']);
+                    this.isPostcodeValid = true;
+                    this.isVerifyingPostcode = false;
+                    this.city.patchValue(res['dataList'][0]['city']);
                     this.stateList.forEach(element =>
                     {
                         if (element.idState == parseInt(res['dataList'][0]['state'])) {
-                            this.idState.setValue(element.idState);
+                            this.idState.patchValue(element.idState);
                         }
                     })
                 } else {
-                    this.isPincodeValid = false;
-                    this.isVerifyingPincode = false;
+                    this.isPostcodeValid = false;
+                    this.isVerifyingPostcode = false;
                 }
             })
         }
-    }
-
-    createAddressForm()
-    {
-        this.addressForm = new FormGroup({
-            idAddress: new FormControl(null),
-            addressCustomerName: new FormControl(this.userSesssion['userName'], [Validators.required, Validators.pattern('[a-zA-Z ]*')]),
-            phone: new FormControl(this.userSesssion['phone'], [Validators.required, Step.validatePhone]),
-            alternatePhone: new FormControl(this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]),
-            postCode: new FormControl(null, [Validators.required, Step.validatePostCode]),
-            landmark: new FormControl(null, [Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]),
-            addressLine: new FormControl(null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]),
-            city: new FormControl(null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]),
-            idCountry: new FormControl(null, [Validators.required]),
-            idState: new FormControl(null, [Validators.required]),
-            email: new FormControl(this.userSesssion['email'], [Step.validateEmail]),
-            phoneVerified: new FormControl(this.verifyPhone(this.userSesssion['phone'], this.verifiedPhones))
-        });
     }
 
     updateAddressForm()
@@ -141,15 +141,11 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         const STATE_ID = this._addressService.getState(this.stateList, null);
         this.idCountry.patchValue(COUNTRY_ID);
         this.idState.patchValue(STATE_ID);
-        if (this.address) {
-            const ADDRESS = this._addressService.getCreateEditDeliveryAddressType(this.address, this.countryList, this.stateList);
-            Object.keys(ADDRESS).forEach((key) => { this.addressForm.get(key).patchValue(ADDRESS[key]) });
-        }
     }
-    
+
     saveOrUpdateAddress(address)
     {
-        if (this.disableAction) return;
+        if (!this.canSubmit) return;
         if (this.phoneVerified.value) { this.saveAddress(address); return }
         const request = { device: 'mobile', email: '', phone: this.phone.value, type: 'p', source: "address", userId: this.userSesssion["userId"] };
         this._commonService.sendOtp(request).subscribe((response) =>
@@ -171,7 +167,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             (cInstance.instance['phoneValidation$'] as EventEmitter<any>).subscribe((validatedPhone) =>
             {
                 if (validatedPhone === phone) {
-                    this.phoneVerified.setValue(true);
+                    this.phoneVerified.patchValue(true);
                     this.verifiedPhones.push(phone);
                     this._toastMessage.show({ type: 'success', text: "Phone number verified successfully." });
                 }
@@ -181,25 +177,25 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     saveAddress(address)
     {
-        const aType = (address && address['idAddress']) ? this.globalConstants['updated'] : this.globalConstants['created'];
-        this._addressService.postAddress(this.getRequestData(address)).subscribe((addressList:any[]) =>
+        const A_TYPE = (this.idAddress.value) ? this.globalConstants['updated'] : this.globalConstants['created'];
+        this._addressService.postAddress(this.getRequestData(address)).subscribe((addressList: any[]) =>
         {
             if (addressList.length) {
-                this.closeAddressPopUp$.emit({ aType: aType, action: this.modeType, addresses: addressList });
+                this.closeAddressPopUp$.emit({ aType: A_TYPE, action: this.modeType, addresses: addressList });
             }
         });
     }
 
     getRequestData(address)
     {
-        let aRquest = { idCustomer: this.userSesssion['userId'], idAddressType: 1, active: true, invoiceType:"retail" };
-        let request = { ...address, ...aRquest};
+        let aRquest = { idCustomer: this.userSesssion['userId'], idAddressType: 1, active: true, invoiceType: this.invoiceType };
+        let request = { ...address, ...aRquest };
         return request;
     }
 
-    handlePopup($event) { this.closeAddressPopUp$.emit({ action: null, address: null }); }
+    handlePopup($event) { this.closeAddressPopUp$.emit({ aType: null, action: null, addresses: null }); }
+    get canSubmit() { return this.addressForm.valid && this.isPostcodeValid && !(this.isVerifyingPostcode)}
     get modeType() { return this.isAddMode ? "Add" : "Edit"; }
-    get disableAction() { return this.addressForm.invalid || !(this.isPincodeValid) }
     verifyPhone(phone: string, verifiedPhones: string[]) { return verifiedPhones.includes(phone); }
 
     //getters

@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
-import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CountryListModel, StateListModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
@@ -10,7 +9,6 @@ import { CommonService } from '@app/utils/services/common.service';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'create-edit-billing-address',
@@ -25,6 +23,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     @Input("displayCreateEditPopup") displayCreateEditPopup = false;
     @Input("isAddMode") isAddMode = true;
+    @Input("invoiceType") invoiceType = "tax";
     @Input("address") address = null;
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
@@ -65,7 +64,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     {
         if (this.address) {
             this.isPostcodeValid = true;
-            //TODO:verify gstin value
             this.isGSTINVerified = this.address['gstinVerified'] ? true : false;
             this.companyName.markAsDirty();
             this.addressLine.markAsDirty();
@@ -110,7 +108,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
             this.isGSTINVerified = false;
         })
         this.postCodeSubscription = this.postCode.valueChanges.subscribe(
-            data =>
+            (data) =>
             {
                 if (this.postCode.valid && data && data.toString().length == 6 && data != this.lastSearchedPostcode) {
                     this.getCityByPostcode();
@@ -125,22 +123,15 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         this.isPostcodeValid = false;
         if (this.postCode) {
             this.lastSearchedPostcode = this.postCode.value;
-            //TODO:getCityByPinCode to getCityByPostCode
-            this._addressService.getCityByPinCode(this.lastSearchedPostcode).subscribe(
-                //TODO:Modify Response
-                (response) =>
+            this._addressService.getCityByPostcode(this.lastSearchedPostcode).subscribe(
+                (cityList: any[]) =>
                 {
-                    if (response['status']) {
+                    if (cityList.length) {
                         this.isPostcodeValid = true;
                         this.isVerifyingPostcode = false;
-                        this.city.patchValue(response['dataList'][0]['city']);
-                        this.stateList.forEach(element =>
-                        {
-                            //TODO:Move to service or util
-                            if (element.idState === parseInt(response['dataList'][0]['state'])) {
-                                this.addressForm.controls.billingAddress['controls']['idState'].setValue(element.idState);
-                            }
-                        });
+                        this.city.patchValue(cityList[0]['city']);
+                        const ID_STATE = this._addressService.getStateId(this.stateList, cityList['state']);
+                        this.idState.patchValue(ID_STATE);
                         return;
                     }
                     this.isVerifyingPostcode = false;
@@ -154,8 +145,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         this._addressService.getGSTINDetails(this.gstin.value).subscribe(
             (response) =>
             {
-                //TODO:handle response in service
-                if (response['statusCode'] == 200 && response['taxpayerDetails'] != null) {
+                if (response && response['taxpayerDetails'] != null) {
                     this.verifiedGSTINDetails = response['taxpayerDetails'];
                     this.isGSTINVerified = response['valid'];
                     this.postGSTINVerification();
@@ -168,21 +158,12 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     postGSTINVerification()
     {
-        let billingAddress = this.verifiedGSTINDetails['billing_address']['addr'];
-
+        const billingAddress = this.verifiedGSTINDetails['billing_address']['addr'];
         this.companyName.markAsDirty();
         this.companyName.patchValue(this.verifiedGSTINDetails['legal_name_of_business']);
-        let temp = '';
-        //TODO:MOVE to service
-        this.addressLineKeys.forEach((name) =>
-        {
-            let key = (billingAddress[name] as string).trim();
-            if (key && key.length > 0) {
-                temp = temp + key + ', ';
-            }
-        });
         this.addressLine.markAsDirty();
-        this.addressLine.setValue(temp.substring(0, temp.lastIndexOf(',')));
+        const ADDRESS_LINE = this._addressService.getFormattedAddressLine(this.addressLineKeys, billingAddress);
+        this.addressLine.patchValue(ADDRESS_LINE)
         this.postCode.patchValue(billingAddress['pncd']);
         //this.getCityByPostcode();//TODO:not required as subscriber should do job
     }
@@ -196,7 +177,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     createAddressForm(address)
     {
-        return this._formBuilder.group({
+        this.addressForm = this._formBuilder.group({
             businessDetail: this._formBuilder.group({
                 companyName: [address && address.addressCustomerName ? address.addressCustomerName : null, [Validators.required]],
                 gstin: [(address && address.gstin) ? address.gstin : null, [Validators.required, Validators.minLength(15)]],
@@ -224,7 +205,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         BILLING_DETAILS['idCustomer'] = this.userSesssion['userId'];
         BILLING_DETAILS['idAddressType'] = 2;
         BILLING_DETAILS['active'] = true;
-        BILLING_DETAILS['invoiceType'] = "tax";//TODO:send from all-address
+        BILLING_DETAILS['invoiceType'] = this.invoiceType;
         BILLING_DETAILS['isGstInvoice'] = 1;
         BILLING_DETAILS['addressCustomerName'] = BUSINESS_DETAILS['companyName'];
         BILLING_DETAILS['gstin'] = BUSINESS_DETAILS['gstin'];
@@ -238,43 +219,33 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         );
         const A_TYPE = IS_IDADDRESSEXITS ? this.globalConstants['updated'] : this.globalConstants['created'];
         if (this._commonService.isBrowser) {
-            //TODO:check as fetched in oninit
-            let user = this._localStorageService.retrieve('user');
-            //TODO:Modify Service here
-            let fjData = [this._addressService.postAddress(BILLING_DETAILS).pipe(map(res => res))];
+            let fjData = [this._addressService.postAddress(BILLING_DETAILS)];
             if (!this.isBusinessDetailExists && !(IS_IDADDRESSEXITS)) {
                 request['postCode'] = request['address']['postCode'];
-                //TODO:Modify Service here
-                fjData = [...fjData, this._addressService.setBusinessDetail(request).pipe(map(res => res))];
+                fjData = [...fjData, this._addressService.setBusinessDetail(request)];
             }
             forkJoin(fjData).subscribe((responses) =>
             {
-                let response1 = responses[0];
-                if (response1['status'] == false && response1['statusDescription'] != null) {
-                    this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] });
-                } else {
-                    let successCount: number = 0;
-                    //TODO:Move to service
-                    for (let i = 0; i < responses.length; i++) {
-                        if (responses[i]['status'] && responses[i]['statusCode'] == 200) {
-                            successCount++;
-                        }
-                    }
+                let response1: any[] = responses[0];
+                if (response1.length) {
+                    let successCount: number = this._addressService.getSuccessCount(responses);
                     if (responses.length == successCount) {
                         if (!this.isBusinessDetailExists && !(IS_IDADDRESSEXITS)) {
-                            user['userType'] = 'business';
-                            this._localStorageService.store('user', user);
+                            this.userSesssion['userType'] = 'business';
+                            this._localStorageService.store('user', this.userSesssion);
                         }
-                        //TODO:important modify emitter
-                        //this.acou$.emit({ aType: aType, addressList: results[0]['addressList'] });
+                        this.closeAddressPopUp$.emit({ aType: A_TYPE, action: this.modeType, addresses: responses[0] });
                     }
+                    return;
                 }
+                this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] });
             });
         }
-
     }
 
-    get canSubmit() { return this.addressForm.valid && this.isPostcodeValid && !(this.isGSTINVerified) && this.isGSTINVerified }
+    get modeType() { return this.isAddMode ? "Add" : "Edit"; }
+    handlePopup($event) { this.closeAddressPopUp$.emit({ aType: null, action: null, addresses: null }); }
+    get canSubmit() { return this.addressForm.valid && this.isPostcodeValid && !(this.isVerifyingPostcode) && this.isGSTINVerified }
 
     //getters
     get gstin() { return this.addressForm.get('businessDetail').get('gstin'); }

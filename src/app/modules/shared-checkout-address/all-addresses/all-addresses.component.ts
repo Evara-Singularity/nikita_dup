@@ -103,6 +103,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         }
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
         this.addressListInstance.instance['isAddMode'] = !(address);
+        this.addressListInstance.instance['invoiceType'] = this.isGSTInvoice ? "tax" : "retial";
         this.addressListInstance.instance['verifiedPhones'] = verifiedPhones;
         this.addressListInstance.instance['address'] = address || null ;
         this.addressListInstance.instance['displayCreateEditPopup'] = true;

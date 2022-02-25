@@ -1,17 +1,15 @@
-import { LocalAuthService } from '@services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { LocalAuthService } from '@services/auth.service';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AddressListModel, DeliveryAddressModel } from '../models/shared-checkout.models';
+import { AddressListModel } from '../models/shared-checkout.models';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
 
-//TODO:Below methods in common service.
-
-
+//TODO:Below methods in common service so clean up accordigly.
 @Injectable({
     providedIn: 'root'
 })
@@ -19,10 +17,12 @@ export class AddressService
 {
     readonly API = CONSTANTS.NEW_MOGLIX_API;
     readonly EMPTY_ADDRESS: AddressListModel = { deliveryAddressList: [], billingAddressList: [] };
+    handleError = (returnValue) => { this._globaleLoader.setLoaderState(false); return of(returnValue); }
 
     constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService,
         private _localAuthService: LocalAuthService) { }
 
+    //serviceable methods
     getAddressList(params)
     {
         this._globaleLoader.setLoaderState(true);
@@ -38,11 +38,7 @@ export class AddressService
                     }
                     return this.EMPTY_ADDRESS;
                 }),
-                catchError((res: HttpErrorResponse) =>
-                {
-                    this._globaleLoader.setLoaderState(false);
-                    return of(this.EMPTY_ADDRESS);
-                }),
+                catchError((error: HttpErrorResponse) => this.handleError(this.EMPTY_ADDRESS))
             );
     }
 
@@ -51,25 +47,31 @@ export class AddressService
         this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.POST_ADD}?onlineab=y`;
         return this._dataService.callRestful("POST", URL, { body: address }).pipe(
-            map((response)=>{
+            map((response) =>
+            {
                 this._globaleLoader.setLoaderState(false);
                 if (response['status']) {
                     return response['addressList'];
                 }
                 return this.EMPTY_ADDRESS;
             }),
-            catchError((res: HttpErrorResponse) =>
-            {
-                this._globaleLoader.setLoaderState(false);
-                return of(this.EMPTY_ADDRESS);
-            }),
+            catchError((error: HttpErrorResponse) => this.handleError([])),
         );
     }
 
     getGSTINDetails(gstin)
     {
         const URL = `${this.API}${ENDPOINTS.TAXPAYER_BY_TIN}${gstin}`;
-        return this._dataService.callRestful("GET", URL);
+        return this._dataService.callRestful("GET", URL).pipe(
+            map((response) =>
+            {
+                if (response['status']) {
+                    return response;
+                }
+                return null;
+            }),
+            catchError((error: HttpErrorResponse) => { return of(null); })
+        );
     }
 
     getBusinessDetail(data)
@@ -77,24 +79,21 @@ export class AddressService
         this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.CBD}`;
         return this._dataService.callRestful("GET", URL, { params: data }).pipe(
-            map((response)=>{
+            map((response) =>
+            {
                 this._globaleLoader.setLoaderState(false);
                 if (response['status']) {
                     return response['data'];
                 }
                 return null;
             }),
-            catchError((error: HttpErrorResponse) =>
-            {
-                this._globaleLoader.setLoaderState(false);
-                return of(null);
-            })
+            catchError((error: HttpErrorResponse) => this.handleError(null)),
         );
     }
 
     setBusinessDetail(obj)
     {
-        let URL = `${this.API}${ENDPOINTS.UPD_CUS}`;  
+        let URL = `${this.API}${ENDPOINTS.UPD_CUS}`;
         return this._dataService.callRestful("POST", URL, { body: obj });
     }
 
@@ -110,11 +109,7 @@ export class AddressService
                 if (response['status']) { return response['dataList'] }
                 return [];
             }),
-            catchError((res: HttpErrorResponse) =>
-            {
-                this._globaleLoader.setLoaderState(false);
-                return of([]);
-            }),
+            catchError((error: HttpErrorResponse) => this.handleError([]))
         );
     }
 
@@ -128,14 +123,47 @@ export class AddressService
                     if (response['status']) { return response['dataList'] }
                     return [];
                 }),
-                catchError((res: HttpErrorResponse) => { return of([]); })
+                catchError((error: HttpErrorResponse) => { return of([]); })
             );
     }
 
-    getCityByPinCode(pinCode)
+    getCityByPostcode(postCode)
     {
-        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CITY_BY_PIN }${pinCode}`;
-        return this._dataService.callRestful("GET", URL);
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CITY_BY_PIN}${postCode}`;
+        return this._dataService.callRestful("GET", URL).pipe(
+            map((response) =>
+            {
+                if (response['status']) { return response['dataList'] }
+                return [];
+            }),
+            catchError((error: HttpErrorResponse) => { return of([]); })
+        );
+    }
+
+    //utility methods
+    getSuccessCount(responses: any[])
+    {
+        let count = 0;
+        for (let i = 0; i < responses.length; i++) {
+            if (responses[i]['status'] && responses[i]['statusCode'] == 200) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+    getFormattedAddressLine(addressLineKeys: any[], billingAddress)
+    {
+        let temp = '';
+        addressLineKeys.forEach((name) =>
+        {
+            let key = (billingAddress[name] as string).trim();
+            if (key && key.length > 0) {
+                temp = temp + key + ', ';
+            }
+        });
+        return temp.substring(0, temp.lastIndexOf(','));
     }
 
     getVerifiedPhones(addressList: any[]): any[]
@@ -189,6 +217,18 @@ export class AddressService
         } else {
             return stateList[0]['idState'];
         }
+    }
+
+    getStateId(stateList, cityList)
+    {
+        let idState = -1;
+        stateList.forEach(element =>
+        {
+            if (element.idState === parseInt(cityList['state'])) {
+                idState = element.idState
+            }
+        });
+        return idState;
     }
 
     //idAddressType=1 implies delivery

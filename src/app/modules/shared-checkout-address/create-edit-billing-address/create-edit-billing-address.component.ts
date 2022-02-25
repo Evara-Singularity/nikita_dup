@@ -140,8 +140,9 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         }
     }
 
-    verifyGSTIN()
+    verifyGSTIN($event)
     {
+        $event.stopPropagation();
         this._addressService.getGSTINDetails(this.gstin.value).subscribe(
             (response) =>
             {

@@ -99,7 +99,7 @@
                         class="error-txt">
                         Pincode should contain valid 6 digits
                     </p>
-                    <p *ngIf="postCode.valid && !isPincodeValid" class="error-txt">Invalid Pincode
+                    <p *ngIf="postCode.valid && !(isPostcodeValid)" class="error-txt">Invalid Pincode
                     </p>
                 </div>
             </div>

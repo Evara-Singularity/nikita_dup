@@ -666,7 +666,7 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="Qa">
+        <section id="ask-question-section" class="Qa">
             <div class="faq-head">
                 <h3>Frequently Asked Questions</h3>
                 <button (click)="$event.stopPropagation();handleAskQuestionPopup()" class="btn redBgButton">Ask Now</button>
@@ -754,7 +754,7 @@
 </div> -->
 <div *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2"
     class="pdp-container">
-    <div class="bottom-bar stickyBottomBtn" *ngIf="productOutOfStock && !showScrollToTopButton">
+    <div class="bottom-bar stickyBottomBtn">
         <button (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
             class="cart-btn ml-5 bold-txt f-14 f-left">
             <span>VIEW IN-STOCK</span>

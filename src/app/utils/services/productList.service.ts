@@ -60,6 +60,9 @@ export class ProductListService {
       return;
     }
 
+    console.log('-----------------------------------');
+    console.log(rawSearchData);
+
     //Removing Products with null images
     rawSearchData.productSearchResult.products =
       rawSearchData.productSearchResult.products.filter(
@@ -179,17 +182,7 @@ export class ProductListService {
   }
 
   initializeSortBy() {
-    const url = location.search.substring(1);
-    const queryParams = url
-      ? JSON.parse(
-        '{"' +
-        decodeURI(url)
-          .replace(/"/g, '\\"')
-          .replace(/&/g, '","')
-          .replace(/=/g, '":"') +
-        '"}'
-      )
-      : {};
+    const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1));
 
     if (
       queryParams.hasOwnProperty("orderBy") &&

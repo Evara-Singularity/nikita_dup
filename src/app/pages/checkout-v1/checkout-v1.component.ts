@@ -19,6 +19,7 @@ import { CheckoutService } from '../../utils/services/checkout.service';
 import { CommonService } from '../../utils/services/common.service';
 import { DataService } from '../../utils/services/data.service';
 import { FooterService } from '../../utils/services/footer.service';
+import { SharedAuthUtilService } from '@app/modules/shared-auth-v1/shared-auth-util.service';
 
 const ICWL: any = makeStateKey<boolean>('ICWL'); // ICWL: Is Checkout Window Loaded
 declare let dataLayer;
@@ -84,6 +85,7 @@ export class CheckoutV1Component implements OnInit {
     private loaderService: GlobalLoaderService,
     private _checkoutService: CheckoutService,
     private _deliveryAddressService: DeliveryAddressService,
+    private _authUtilService: SharedAuthUtilService,
     private _tms: ToastMessageService) {
 
     const state = this.router.getCurrentNavigation().extras.state;
@@ -218,6 +220,16 @@ export class CheckoutV1Component implements OnInit {
     }
 
     this.intialCheckoutVisit();
+    this.handleAuth();
+  }
+
+
+  handleAuth() {
+    if (this._commonService.isBrowser) {
+      this._authUtilService.getCheckoutLoginEvent().subscribe(index => {
+        this.updatedStep(index);
+      })
+    }
   }
 
   getBusinessDetails() {

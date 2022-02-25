@@ -11,9 +11,10 @@ export class AppComponent {
 
   pageRefreshed = true;
 
-  constructor(private _commonService :CommonService,private router: Router) {
+  constructor(private _commonService: CommonService, private router: Router) {
     if (this._commonService.isBrowser && this.pageRefreshed && window.location.pathname !== '/') {
-      window.history.replaceState('', '', '/?back=1');      window.history.pushState('', '', this.router.url);
+      window.history.replaceState('', '', '/?back=1');
+      window.history.pushState('', '', this.router.url);
       this.pageRefreshed = false;
     }
   }

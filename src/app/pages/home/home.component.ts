@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private route: ActivatedRoute,
 		private _router: Router,
 		private _commonService: CommonService,
-		private analytics: GlobalAnalyticsService
+		private analytics: GlobalAnalyticsService,
 	) {
 		this.isServer = _commonService.isServer;
 		this.isBrowser = _commonService.isBrowser;
@@ -494,6 +494,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngAfterViewInit() {
 		if (this.isBrowser) {
+            this._localAuthService.clearBackURLTitle();
+            this._localAuthService.clearAuthFlow();
 			setTimeout(function () {
 				Array.prototype.map.call(
 					document.querySelectorAll('.high_res_img'),

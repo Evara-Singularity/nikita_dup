@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { EventEmitter, Component, Output, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -38,6 +38,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() categoryName: string; // only received in case used in category module
   @Input() categoryTaxonomay: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
+  @Input() categoryMidPlpFilterData: any; // only received in case used in search module
+  @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   filterChipsArray: Array<any> = [];
@@ -63,7 +65,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
   }
-
 
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
@@ -247,11 +248,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const factory = this._componentFactoryResolver.resolveComponentFactory(FilterComponent);
       this.filterInstance = this.filterContainerRef.createComponent(factory, null, this._injector);
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
-      if (discountIndex>-1) {
+      if (discountIndex && this.productsListingData.filterData && this.productsListingData.filterData[discountIndex]) {
         this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       const ratingIndex = this.productsListingData.filterData.findIndex(f => f.name === 'ratings');
-      if (ratingIndex>-1) {
+      if (ratingIndex && this.productsListingData.filterData  && this.productsListingData.filterData[ratingIndex]) {
         this.productsListingData.filterData[ratingIndex].terms.sort((a, b) => (parseInt(a.term) < parseInt(b.term)) ? 1 : ((parseInt(b.term) < parseInt(a.term)) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
@@ -314,7 +315,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resetLazyComponents();
-    this._commonService.currentlyOpenedModuleUsed = false;
   }
 
 }

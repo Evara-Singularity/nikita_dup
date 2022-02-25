@@ -110,7 +110,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     const productMsnId = this.product['moglixPartNumber'];
     this._productService.getProductGroupDetails(productMsnId).pipe(
       map(productRawData => {
-        console.log('data ==> ', productRawData);
+        // console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
           return this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
         } else {
@@ -273,7 +273,8 @@ export class ProductHorizontalCardComponent implements OnInit {
         });
       })
     } else {
-      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
+      this._localAuthService.setBackURLTitle(this._router.url, "Continue to raise RFQ");
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url, title: 'Continue to raise RFQ' } };
       this._router.navigate(['/login'], navigationExtras);
     }
   }
@@ -330,7 +331,12 @@ export class ProductHorizontalCardComponent implements OnInit {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
         this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
-        this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+        this._router.navigate(['/checkout'], {
+          queryParams: {
+            title: 'Continue to place order',
+          },
+          state: (buyNow ? { buyNow: buyNow } : {})
+        });
       } else {
         if (result) {
           this.resetVariantData();

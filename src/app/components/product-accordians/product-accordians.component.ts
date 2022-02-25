@@ -53,8 +53,8 @@ export class ProductAccordiansComponent {
         this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
         this.popularLinks = Object.keys(res[1]['categoryLinkList']);
       }
-      if (res[2].hasOwnProperty('mostSoledCategories')) {
-        this.ACCORDIAN_DATA[2] = res[2]['mostSoledCategories'];
+      if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
+        this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
       }
     });
 

@@ -36,29 +36,33 @@ export class BrandResolver implements Resolve<any> {
     const CMS_DATA_KEY = makeStateKey<object>('cms-data-pwa');
     const ATTRIBUTE_KEY = makeStateKey<object>('attribute-url-data-pwa');
     const SIMILAR_KEY = makeStateKey<object>('similar-category-pwa');
+    const SIMILAR_BRAND_KEY = makeStateKey<object>('similar-brand-pwa');
 
     if (
       this.transferState.hasKey(BRAND_DESC_KEY) && 
       this.transferState.hasKey(BRAND_LIST_KEY) && 
       this.transferState.hasKey(CMS_DATA_KEY) &&
       this.transferState.hasKey(ATTRIBUTE_KEY) &&
-      this.transferState.hasKey(SIMILAR_KEY)
+      this.transferState.hasKey(SIMILAR_KEY) &&
+      this.transferState.hasKey(SIMILAR_BRAND_KEY) 
     ) {
       const brandCategory_data = this.transferState.get<object>(BRAND_DESC_KEY, null);
       const brandList_data = this.transferState.get<object>(BRAND_LIST_KEY, null);
       const cms_data = this.transferState.get<object>(CMS_DATA_KEY, null);
       const attribute_data = this.transferState.get<object>(ATTRIBUTE_KEY, null);
       const similar_category_data = this.transferState.get<object>(SIMILAR_KEY, null);
+      const similar_brand_data = this.transferState.get<object>(SIMILAR_BRAND_KEY, null);
 
       this.transferState.remove(BRAND_DESC_KEY);
       this.transferState.remove(BRAND_LIST_KEY);
       this.transferState.remove(CMS_DATA_KEY);
       this.transferState.remove(ATTRIBUTE_KEY);
       this.transferState.remove(SIMILAR_KEY);
+      this.transferState.remove(SIMILAR_BRAND_KEY);
 
       this.loaderService.setLoaderState(false);
 
-      return of([brandCategory_data, brandList_data, similar_category_data,  cms_data, attribute_data]);
+      return of([brandCategory_data, brandList_data, similar_category_data,  cms_data, attribute_data, similar_brand_data]);
     } else {
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + encodeURIComponent(_activatedRouteSnapshot.params.brand);
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
@@ -66,6 +70,7 @@ export class BrandResolver implements Resolve<any> {
       let CMS_DATA_API_URL = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED_PAGES + '&brandName=' + _activatedRouteSnapshot.params.brand;
       const ATTRIBUTE_URL = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + _activatedRouteSnapshot.params.category;
       const SIMILAR_CATEGORY_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + _activatedRouteSnapshot.params.category;
+      const SIMILAR_BRAND_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_BRAND + "?brand=" + _activatedRouteSnapshot.params.brand;
 
       const params = {
         filter:  this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
@@ -82,7 +87,9 @@ export class BrandResolver implements Resolve<any> {
 
       const similarCategoryObs = this.http.get(SIMILAR_CATEGORY_URL);
 
-      const dataList = [isBrandCategoryObs, null, similarCategoryObs];
+      const similarBrandObs = this.http.get(SIMILAR_BRAND_URL);
+
+      const dataList = [isBrandCategoryObs, null, similarCategoryObs, similarBrandObs];
 
       if (_activatedRouteSnapshot.params.hasOwnProperty('category')) {
         CMS_DATA_API_URL += '&categoryCode=' + _activatedRouteSnapshot.params.category;

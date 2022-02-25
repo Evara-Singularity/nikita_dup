@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 .e-gifting {
     padding-bottom: 85px;
     .multiple-form-field {
@@ -421,4 +422,34 @@ datalist {
 }
 .validated-dark-text{
     color: #3c3c3c !important;
+}
+
+::ng-deep {
+    .value {
+        .value-auto-co {
+            .list-container {
+                input {
+                    margin-top: 0px !important;
+                    height: 40px !important;
+                }
+            }
+        }
+    }
+}
+.e-Gift-checkbox{
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 15px;
+    color: #3C3C3C;
+    label {
+     @extend %custom-check-box-checkout;
+     .custom-box {
+        font-size: 20px;
+        &::before {
+            content: "\e915";
+            font-family: 'icomooon_pwa';
+            color: #A8A8A8;
+        }
+     }
+    }
 }

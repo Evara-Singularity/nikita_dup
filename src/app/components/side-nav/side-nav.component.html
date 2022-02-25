@@ -16,67 +16,67 @@
         </div>
         <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>
-                <a (click)="genericButtonClick('/')" [routerLink]="['/']">
+                <a (click)="trackAnalyticAndRedirect('/')" >
                     <i class="icon-home"></i>
                     <span class="text">Home </span>
                 </a>
             </li>
             <li>
-                <a (click)="genericButtonClick('/all-categories')" [routerLink]="['/all-categories']">
+                <a (click)="trackAnalyticAndRedirect('/all-categories')" >
                     <i class="icon-all-categories"></i>
                     <span class="text">All Categories</span>
                 </a>
             </li>
             <li>
-                <a (click)="genericButtonClick('/brand-store')" [routerLink]="['/store/brands']">
+                <a (click)="trackAnalyticAndRedirect('/store/brands')"  [routerLink]="['/store/brands']">
                     <i class="icon-brand_store"></i>
                     <span class="text">Explore All Brands</span>
                 </a>
             </li>
             <li>
-                <a (click)="genericButtonClick('/dashboard/order')" [routerLink]="['/dashboard/order']">
+                <a (click)="trackAnalyticAndRedirect('/dashboard/order',true, 'Continue to track your orders')" >
                     <i class="icon-my-orders"></i>
                     <span class="text">My Orders</span>
                 </a>
             </li>
             <li>
-                <a (click)="genericButtonClick('/dashboard/rfq')" [routerLink]="['/dashboard/rfq']">
+                <a (click)="trackAnalyticAndRedirect('/dashboard/rfq', true, 'Continue to view your RFQs')" >
                     <i class="icon-my-rfq"></i>
                     <span class="text">My RFQs</span>
                 </a>
             </li>
             <li>
-                <a (click)="genericButtonClick('/deals')" [routerLink]="['/deals']">
+                <a (click)="trackAnalyticAndRedirect('/deals')" [routerLink]="['/deals']">
                     <i class="icon-home-deal"></i>
                     <span class="text">Best Deals</span>
                 </a>
             </li>
             <li>
-                <a  (click)="genericButtonClick('/dashboard/business-detail')" [routerLink]="['/dashboard/business-detail']">
+                <a  (click)="trackAnalyticAndRedirect('/dashboard/business-detail', true, 'Continue to view your Business Details')" >
                     <i class="icon-business-details"></i>
                     <span class="text">My Business Details</span>
                 </a>
             </li>
             <li>
-                <a  (click)="genericButtonClick('/dashboard/address')" [routerLink]="['/dashboard/address']">
+                <a  (click)="trackAnalyticAndRedirect('/dashboard/address', true, 'Continue to view your address')" >
                     <i class="icon-location"></i>
                     <span class="text">My Address</span>
                 </a>
             </li>
             <li>
-                <a  (click)="genericButtonClick('/dashboard/purchase-list')" [routerLink]="['/dashboard/purchase-list']">
+                <a  (click)="trackAnalyticAndRedirect('/dashboard/purchase-list', true, 'Continue to view your wishlist')" >
                     <i class="icon-purchase-list"></i>
                     <span class="text">WishList</span>
                 </a>
             </li>
             <li>
-                <a  (click)="genericButtonClick('/faq')" [routerLink]="['/faq']">
+                <a  (click)="trackAnalyticAndRedirect('/faq')" >
                     <i class="icon-faq-side-navigation"></i>
                     <span class="text">FAQ</span>
                 </a>
             </li>
             <li>
-                <a  (click)="genericButtonClick('/contact')" [routerLink]="['/contact']">
+                <a  (click)="trackAnalyticAndRedirect('/contact')" >
                     <i class="icon-call"></i>
                     <span class="text">Contact Us</span>
                 </a>

@@ -28,7 +28,7 @@ export class SearchResolver implements Resolve<any> {
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
-    const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa' + _activatedRouteSnapshot.fragment);
+    const SEARCH_DATA_KEY = makeStateKey<object>('search-pwa' + _activatedRouteSnapshot.fragment + Math.random());
 
     if ( this.transferState.hasKey(SEARCH_DATA_KEY) ) {
       const search_data = this.transferState.get<object>(SEARCH_DATA_KEY, null);
@@ -46,6 +46,8 @@ export class SearchResolver implements Resolve<any> {
 
       this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment);
       const actualParams = this._commonService.formatParams(params);
+      console.clear();
+      console.log(actualParams);
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
       const URL = environment.BASE_URL + ENDPOINTS.SEARCH + "?bucketReq=n";

@@ -349,6 +349,8 @@ export class ProductOosSimilarCardComponent {
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
+        //use locaauthservice as it is hard to carry back url in otp
+        this.localAuthService.setBackURLTitle(this._router.url, "Continue to place order");
         this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
       } else {
         if (result) {
@@ -363,6 +365,8 @@ export class ProductOosSimilarCardComponent {
             this.showAddToCartToast();
             // analytics call
           } else {
+            //use locaauthservice as it is hard to carry back url in otp
+            this.localAuthService.setBackURLTitle(this._router.url, "Continue to place order");
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
         } else {
@@ -474,6 +478,8 @@ export class ProductOosSimilarCardComponent {
         });
       })
     } else {
+        //use locaauthservice as it is hard to carry back url in otp
+        this.localAuthService.setBackURLTitle(this._router.url, "Continue to raise RFQ");
       let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
       this._router.navigate(['/login'], navigationExtras);
     }

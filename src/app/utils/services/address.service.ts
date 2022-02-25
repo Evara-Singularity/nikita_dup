@@ -66,10 +66,36 @@ export class AddressService
         );
     }
 
+    getGSTINDetails(gstin)
+    {
+        const URL = `${this.API}${ENDPOINTS.TAXPAYER_BY_TIN}${gstin}`;
+        return this._dataService.callRestful("GET", URL);
+    }
+
     getBusinessDetail(data)
     {
+        this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.CBD}`;
-        return this._dataService.callRestful("GET", URL, { params: data });
+        return this._dataService.callRestful("GET", URL, { params: data }).pipe(
+            map((response)=>{
+                this._globaleLoader.setLoaderState(false);
+                if (response['status']) {
+                    return response['data'];
+                }
+                return null;
+            }),
+            catchError((error: HttpErrorResponse) =>
+            {
+                this._globaleLoader.setLoaderState(false);
+                return of(null);
+            })
+        );
+    }
+
+    setBusinessDetail(obj)
+    {
+        let URL = `${this.API}${ENDPOINTS.UPD_CUS}`;  
+        return this._dataService.callRestful("POST", URL, { body: obj });
     }
 
     getStateList(countryId)

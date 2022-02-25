@@ -194,13 +194,13 @@
 
     <!-- Product quantity action section starts -->
     <div class="product-section-detail"
-        *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
+        *ngIf="productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
-                <div *ngIf="productBulkPrices.length>1" class="blk-contain">
+                <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
                         <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
@@ -225,8 +225,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div *ngIf="productBulkPrices.length==1" class="bulk-block bulk-container-single-grp selected">
+    <div class="product-section-detail"
+        *ngIf="productBulkPrices.length==1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
+        <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
+            <div class="bulk-qty">
+                <div class="bul-qty-head">
+                    <p class="heading-3">Buy More & Save More</p>
+                </div>
+                <div class="bulk-block bulk-container-single-grp selected">
                     <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"(click)="selectProductBulkPrice(items.minQty)">
                         <div *ngIf="rawProductData['quantityAvailable']>=items.minQty"
                             [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
@@ -238,6 +248,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- Product quantity action section ends -->
     <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
         (visible)="onVisibleOffer($event)">

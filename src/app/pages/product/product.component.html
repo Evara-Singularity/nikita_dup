@@ -713,7 +713,7 @@
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
 
-        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+        <div class="mt-10" [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>

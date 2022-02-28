@@ -3,9 +3,9 @@
         <ng-container *ngIf="details.data?.length > 0">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
-                    <h3 class="heading-3" (click)="changeTab(i)"  >
+                    <h3 class="heading-3" (click)="changeTab(i)" [ngClass]="{'rotate-icon':isShown}" >
                         <i class="icon-brand_store related-icon"></i>&nbsp; {{details.name}}
-                        <span class="icon-accordian">
+                             <span class="icon-accordian">
                             <i class="icon-down"></i>
                         </span>
                     </h3>

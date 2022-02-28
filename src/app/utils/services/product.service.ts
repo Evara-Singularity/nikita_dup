@@ -85,14 +85,20 @@ export class ProductService {
         );
     }
 
-    getSimilarProducts(productName, categoryId) {
-        const URL =
+    getSimilarProducts(productName, categoryId, productId, groupId) {
+        let URL =
             this.basePath +
             ENDPOINTS.SIMILAR_PRODUCTS +
             "?str=" +
             productName +
             "&category=" +
-            categoryId;
+            categoryId + 
+            "&productId=" +
+            productId;
+    
+        if (groupId) {
+            URL += "&groupId=" + groupId;
+        }
         return this._dataService.callRestful("GET", URL).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ products: [], httpStatus: res.status });

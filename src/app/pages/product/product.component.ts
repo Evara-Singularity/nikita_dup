@@ -786,7 +786,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productService.resetOOOSimilarProductsData();
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
-      this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
+      this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"], this.rawProductData['partNumber'], this.rawProductData['groupId']);
     }
 
     /**
@@ -952,11 +952,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setSimilarProducts(productName, categoryCode) {
+  setSimilarProducts(productName, categoryCode, productId, groupId) {
     this.similarProducts = [];
     if (this.isBrowser) {
       this.productService
-        .getSimilarProducts(productName, categoryCode)
+        .getSimilarProducts(productName, categoryCode, productId, groupId)
         .subscribe((response: any) => {
           let products = response["products"];
           if (products && (products as []).length > 0) {
@@ -1622,6 +1622,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.injector
         );
 
+      this.similarProductInstance.instance["partNumber"] = this.rawProductData['partNumber'];
+      this.similarProductInstance.instance["groupId"] = this.rawProductData['groupId'];
       this.similarProductInstance.instance["productName"] = this.productName;
       this.similarProductInstance.instance["categoryCode"] =
         this.productCategoryDetails["categoryCode"];

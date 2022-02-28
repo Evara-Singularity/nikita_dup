@@ -15,6 +15,7 @@ export class AccordianComponent implements OnInit {
   @Input() accordiansDetails: AccordiansDetails[] = [];
   prodUrl = CONSTANTS.PROD;
   currentOpenIndex = 0;
+  isShown:boolean=true;
 
   constructor(
     public _router: Router,
@@ -33,5 +34,12 @@ export class AccordianComponent implements OnInit {
 
   changeTab(index){
     this.currentOpenIndex = index;
+    this.toggleShow();
   }
+  toggleShow( ) {
+
+    this.isShown = ! this.isShown;
+
+    
+    }
 }

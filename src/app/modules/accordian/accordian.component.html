@@ -11,7 +11,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="panel-body" [ngClass]="{'open': currentOpenIndex == i}" >
+            <div  *ngIf="isShown" class="panel-body" [ngClass]="{'open': currentOpenIndex == i}" >
                 <div class="container category_links">
                     <div *ngFor="let data of  details.data | slice:0:10">
                         <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link))"

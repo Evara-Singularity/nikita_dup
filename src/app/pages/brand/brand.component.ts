@@ -233,7 +233,7 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-        if (!this._commonService.isServer) {
+        if (this._commonService.isServer) {
             //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";

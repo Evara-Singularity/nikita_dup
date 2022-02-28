@@ -102,6 +102,7 @@ export class CommonService
         this.isBrowser = isPlatformBrowser(platformId);
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
+        this.abTesting = this._dataService.getCookie('AB_TESTING')
     }
 
     setNetworkSpeedState(speed)

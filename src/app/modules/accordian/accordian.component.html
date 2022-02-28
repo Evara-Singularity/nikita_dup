@@ -1,6 +1,6 @@
 <div class="accordian_footer_panel">
     <div *ngFor="let details of accordiansDetails; let i = index">
-        <ng-container *ngIf="details.data?.length > 0">
+        <ng-container *ngIf="details.data?.length > 0 && !details.isNotVisible">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
                     <h3 class="heading-3" (click)="changeTab(i)"  >
@@ -16,9 +16,9 @@
                     <div *ngFor="let data of  details.data | slice:0:10">
                         <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link))"
                             [href]="[data.link.includes('http') ? data.link : prodUrl + '/' + data.link ]">
-                            <span *ngIf="details.name=='Popular Brand Categories'">
-                            </span>{{data.name}}</a>
-                            <i class="icon-arrow-right-s-line"></i>
+                            <span *ngIf="details.name=='Popular Brand Categories'">{{details.extra}} </span>{{data.name}}
+                        </a>
+                        <i class="icon-arrow-right-s-line"></i>
                     </div>
                 </div>
             </div>

@@ -55,6 +55,7 @@ export class ProductAccordiansComponent {
         // accordian data
         this.accordiansDetails.push({
           name: 'Popular Brand Categories',
+          extra:this.categoryBrandDetails.brand.brandName,
           data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
         });
       }

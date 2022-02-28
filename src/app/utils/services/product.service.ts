@@ -95,9 +95,12 @@ export class ProductService {
             categoryId + 
             "&productId=" +
             productId;
-    
+            
         if (groupId) {
             URL += "&groupId=" + groupId;
+        }
+        if (this._commonService.abTesting) {
+            URL += '&abt=y'
         }
         return this._dataService.callRestful("GET", URL).pipe(
             catchError((res: HttpErrorResponse) => {

@@ -681,7 +681,7 @@
         <section id="ask-question-section" class="Qa">
             <div class="faq-head">
                 <h3>Frequently Asked Questions</h3>
-                <button (click)="$event.stopPropagation();handleAskQuestionPopup()" class="btn redBgButton">Ask Now</button>
+                <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">Ask Now</button>
             </div>
             <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
         
@@ -725,7 +725,7 @@
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
 
-        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+        <div class="mt-10" [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>

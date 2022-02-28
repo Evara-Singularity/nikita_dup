@@ -229,7 +229,6 @@ export class ProductService {
     }
 
     getCartBySession(params) {
-        console.trace('getCartBySession product service');
         return this._dataService.callRestful(
             "GET",
             this.basePath + ENDPOINTS.GET_CartBySession,

@@ -366,8 +366,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     // make sure no browser history is present
     if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
       this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
-      window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
-      window.history.pushState('', '', this.router.url);
+      if (this.productCategoryDetails && this.productCategoryDetails['categoryLink']) {
+        window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
+        window.history.pushState('', '', this.router.url);
+      }
     }
   }
 

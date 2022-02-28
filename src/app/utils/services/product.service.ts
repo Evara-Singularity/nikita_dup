@@ -247,7 +247,7 @@ export class ProductService {
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.PRODUCT_STATUS_COUNT +
             "?productId=" +
-            productMsnId.toUpperCase();
+            (productMsnId ? productMsnId.toUpperCase() : '');
         return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL);
     }
 

@@ -953,13 +953,16 @@
         .display-qn {
             border-bottom: 1px dashed #e3e3e3;
             font-size: $medium-font;
-            padding: 20px 0px 5px 0px;
+            padding: 10px 0px 5px 0px;
         }
         .qna-block {
             border-bottom: 1px dashed #a2a2a2;
             .qn {
                 display: flex;
                 margin-top: 10px;
+                .heading-3{
+                    padding-bottom: 0px !important;
+                }
                 .qn-right {
                     margin-left: 3px;
                 }
@@ -1028,7 +1031,7 @@
             }
         }
         .view-more-faq-strip {
-            padding: 15px 0px;
+            padding: 15px 0px 5px;
             .small-txt {
                 color: #0d99ff;
                 font-weight: bold;
@@ -3138,6 +3141,7 @@
 // start new ask now section
 .ask-question-area {
     background-color: $white-color;
+    padding: 5px 0px;
     .question-text-field {
         position: relative;
         textarea {

@@ -103,7 +103,7 @@
                         <p *ngIf="postCode.touched && postCode.errors && postCode.errors['invalidPostCode']"
                             class="error-txt">Pincode should contain 6 digits</p>
                         <p class="error-txt"
-                            *ngIf="postCode.valid && !isPinCodeApiValid">
+                            *ngIf="postCode.valid && !(isPostcodeValid)">
                             Invalid Pincode</p>
                     </div>
                 </div>
@@ -137,7 +137,8 @@
                     </label>
                 </div>
             </div>
-            <button type="submit" class="btn continue-btn" [class.disabledButton]="!(canSave)">SAVE ADDRESS</button>
+            <!--[class.disabledButton]="!(canSave)"-->
+            <button type="submit" class="btn continue-btn" >SAVE ADDRESS</button>
         </form>
     </div>
 </app-pop-up-variant2>

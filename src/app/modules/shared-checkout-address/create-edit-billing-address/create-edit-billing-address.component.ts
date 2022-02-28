@@ -1,7 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
+import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { CountryListModel, StateListModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -27,7 +30,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     @Input("address") address = null;
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
-    addressForm = null;
+    addressForm:FormGroup = null;
     userSesssion = null;
     lastSearchedPostcode = null;
     verifiedGSTINDetails = null;
@@ -249,15 +252,15 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     get canSubmit() { return this.addressForm.valid && this.isPostcodeValid && !(this.isVerifyingPostcode) && this.isGSTINVerified }
 
     //getters
-    get gstin() { return this.addressForm.get('businessDetail').get('gstin'); }
-    get companyName() { return this.addressForm.get('businessDetail').get('companyName'); }
-    get email() { return this.addressForm.get('businessDetail').get('email'); }
-    get phone() { return this.addressForm.get('businessDetail').get('phone'); }
-    get postCode() { return this.addressForm.get('billingAddress').get('postCode'); }
-    get addressLine() { return this.addressForm.get('billingAddress').get('addressLine'); }
-    get city() { return this.addressForm.get('billingAddress').get('city'); }
-    get idState() { return this.addressForm.get('billingAddress').get('idState'); }
-    get idCountry() { return this.addressForm.get('billingAddress').get('idCountry'); }
+    get gstin() { return this.addressForm.get('businessDetail').get('gstin') as FormControl; }
+    get companyName() { return this.addressForm.get('businessDetail').get('companyName') as FormControl; }
+    get email() { return this.addressForm.get('businessDetail').get('email') as FormControl; }
+    get phone() { return this.addressForm.get('businessDetail').get('phone') as FormControl; }
+    get postCode() { return this.addressForm.get('billingAddress').get('postCode') as FormControl; }
+    get addressLine() { return this.addressForm.get('billingAddress').get('addressLine') as FormControl; }
+    get city() { return this.addressForm.get('billingAddress').get('city') as FormControl; }
+    get idState() { return this.addressForm.get('billingAddress').get('idState') as FormControl; }
+    get idCountry() { return this.addressForm.get('billingAddress').get('idCountry') as FormControl; }
 
     ngOnDestroy(): void
     {
@@ -265,3 +268,10 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         this.postCodeSubscription.unsubscribe();
     }
 }
+
+@NgModule({
+    declarations: [CreateEditBillingAddressComponent],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, PopUpVariant2Module, NumberDirectiveModule],
+    exports: [CreateEditBillingAddressComponent]
+})
+export class CreateEditDeliveryAddressModule { }

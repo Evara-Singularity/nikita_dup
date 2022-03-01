@@ -11,8 +11,8 @@ export class FaqSuccessPopoupComponent {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     constructor() { }
 
-    closeVariant2Popup() {
-        this.closePopup$.emit();
+    closeVariant2Popup(section) {
+        this.closePopup$.emit(section);
     }
 }
 

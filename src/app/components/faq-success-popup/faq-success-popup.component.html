@@ -1,7 +1,7 @@
 <app-pop-up [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
-            <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
+            <i class="icon-back f-left white_text" (click)="closeVariant2Popup('backToAskQues')"></i>
             <p class="txt header_text page-name">Question posted successfully</p>
         </div>
     </div>
@@ -18,7 +18,7 @@
                             <p>We will notify you when someone<br> answer your question.</p>
                         </div>
                         <div class="popup-btn">
-                            <button (click)="closeVariant2Popup()" class="btn btn-red">BACK TO PRODUCT</button>
+                            <button (click)="closeVariant2Popup('backToPdp')" class="btn btn-red">BACK TO PRODUCT</button>
                         </div>
                     </div>
                 </div>

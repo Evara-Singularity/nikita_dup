@@ -22,7 +22,6 @@ export class AccordianComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
-    this.isShown=new Array(this.accordiansDetails.length).fill(false)
     this.isShown[0]=true;
   }
 
@@ -35,19 +34,17 @@ export class AccordianComponent implements OnInit {
     this._router.navigate(['/' + url]);
   }
 
-  changeTab(index){
+  changeTab(index) {
     let val = this.isShown[index];
-    this.isShown=new Array(this.accordiansDetails.length).fill(false);
+    this.isShown = new Array(this.accordiansDetails.length).fill(false);
     if (this.currentOpenIndex === index) {
       this.isShown[index] = val;
     }
     this.currentOpenIndex = index;
     this.toggleShow(index);
   }
-  toggleShow(index ) {
+  toggleShow(index) {
 
     this.isShown[index] = !this.isShown[index];
-
-    
-    }
+  }
 }

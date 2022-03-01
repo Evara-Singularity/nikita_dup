@@ -111,9 +111,9 @@ export class ProductInfoComponent implements OnInit {
 
   processContentInfo(contentInfo, infoType) {
     this.contentInfo = contentInfo;
-      this.tabs = Object.keys(contentInfo);
-      this.selectedIndex = this.tabs.indexOf(infoType);
-      this.updateTab(infoType, this.selectedIndex);
+    this.tabs = Object.keys(contentInfo);
+    this.selectedIndex = this.tabs.indexOf(infoType);
+    this.updateTab(infoType, this.selectedIndex);
   }
 
   updateTab(tab: string, index) {
@@ -121,7 +121,7 @@ export class ProductInfoComponent implements OnInit {
     this.defaultInfo = tab;
     this.sendTracking(tab.toUpperCase());
   }
-  
+
   scrollInitialize(index)
   {
       this.ngxSiemaService
@@ -179,11 +179,11 @@ export class ProductInfoComponent implements OnInit {
     this.openProductInfo = false;
     this.closePopup$.emit();
   }
-  goTo(index, selector, tab: string)
+  goTo(index,selector,tab: string)
     {
-        this.ngxSiemaService.goTo(index, selector);
-        this.updateTab(tab, index);
-        this.moveTheSelectedIndex(this.selectedIndex);
+      this.ngxSiemaService.goTo(index, selector);
+      this.updateTab(tab, index);
+      this.moveTheSelectedIndex(this.selectedIndex);
     }
   displaySlide(slide: string) { return this.tabs.includes(slide) }
 }

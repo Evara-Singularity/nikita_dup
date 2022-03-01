@@ -59,6 +59,7 @@
         </section>
         <!-- Tabs body -->
         <div class="tab-content">
+            {{contentInfo['videos'] | json}}
             <ngx-siema [options]="ngxSiemaOptions">
                 <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
                     <key-features [features]="contentInfo['key features']"> </key-features>
@@ -66,7 +67,7 @@
                 <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
                     <specifications [specifications]="contentInfo['specifications']"></specifications>
                 </ngx-siema-slide>
-                <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
+                <ngx-siema-slide *ngIf="displaySlide(defaultInfo) && contentInfo['videos'] && contentInfo['videos'].length > 0">
                     <videos [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName">
                     </videos>
                 </ngx-siema-slide>

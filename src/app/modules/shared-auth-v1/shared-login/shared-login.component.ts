@@ -80,19 +80,6 @@ export class SharedLoginComponent implements OnInit
         this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage");
     }
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event)
-    {
-        console.log(event.target.innerHeight);
-        console.log(event.target.innerWidth);
-        this.innerHeight = event.target.innerHeight;
-        this.innerWidth = event.target.innerWidth;
-        const metaViewport = document.querySelector('meta[name = viewport]');
-        metaViewport.setAttribute('content', 'width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0');
-        document.body.style.height = this.innerHeight.toString() + 'px';;
-        document.body.style.width = this.innerWidth.toString() + 'px';;
-      }
-
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];

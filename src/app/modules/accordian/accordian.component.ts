@@ -36,11 +36,12 @@ export class AccordianComponent implements OnInit {
   }
 
   changeTab(index){
+    let val = this.isShown[index];
     this.isShown=new Array(this.accordiansDetails.length).fill(false);
-    if (this.currentOpenIndex==index) {
-      this.isShown[index]=true;
+    if (this.currentOpenIndex === index) {
+      this.isShown[index] = val;
     }
-    this.currentOpenIndex=index;
+    this.currentOpenIndex = index;
     this.toggleShow(index);
   }
   toggleShow(index ) {

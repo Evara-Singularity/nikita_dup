@@ -79,3 +79,8 @@
   background: red;
   height: 50px;
 }
+ngx-siema-slide{
+  ::ng-deep {
+    display:block;
+  }
+}

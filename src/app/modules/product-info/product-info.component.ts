@@ -1,7 +1,9 @@
+import { DOCUMENT } from "@angular/common";
 import {
   Component,
   EventEmitter,
   HostListener,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -10,6 +12,7 @@ import {
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { ProductService } from "@app/utils/services/product.service";
+import { NgxSiemaOptions, NgxSiemaService } from "ngx-siema";
 import { LocalStorageService } from "ngx-webstorage";
 
 @Component({
@@ -25,6 +28,7 @@ export class ProductInfoComponent implements OnInit {
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   defaultInfo = "";
   selectedIndex = 0;
+  selectedTabIndex = 0;
   productInfo = null;
   //new code
   mainInfo = null;
@@ -44,12 +48,32 @@ export class ProductInfoComponent implements OnInit {
   productOutOfStock = false;
   loginStatus = "guest";
   pageName = null;
+  ngxSiemaOptions: NgxSiemaOptions = {
+    selector: '.prod-info-siema',
+    duration: 500,
+    perPage: 1,
+    startIndex: this.selectedIndex,
+    draggable: true,
+    threshold: 20,
+    loop: false,
+    onInit: () =>
+    {
+        window.scrollTo(window.scrollX, window.scrollY + 1);
+        window.scrollTo(window.scrollX, window.scrollY - 1);
+    },
+    onChange: (index) =>
+    {
+        this.scrollInitialize(index);
+    },
+}
 
   constructor(
     private globalAnalyticService: GlobalAnalyticsService,
     private _commonService: CommonService,
     public localStorageService: LocalStorageService,
-    private _productService: ProductService
+    private _productService: ProductService,
+    private ngxSiemaService: NgxSiemaService,
+    @Inject(DOCUMENT) private _document,
   ) {}
 
   ngOnInit() {
@@ -64,6 +88,13 @@ export class ProductInfoComponent implements OnInit {
     const user = this.localStorageService.retrieve("user");
     this.loginStatus =
       user && user["authenticated"] == "true" ? "registered user" : "guest";
+  }
+  ngAfterViewInit()
+  {
+      if (this._commonService.isBrowser && this.selectedIndex) {
+          this.moveTheSelectedIndex(this.selectedIndex);
+          this.ngxSiemaService.goTo(this.selectedIndex);
+      }
   }
 
   processMainInfo(mainInfo) {
@@ -91,6 +122,40 @@ export class ProductInfoComponent implements OnInit {
     this.sendTracking(tab.toUpperCase());
   }
 
+  scrollInitialize(index)
+  {
+      this.ngxSiemaService
+          .currentSlide(this.ngxSiemaOptions.selector)
+          .subscribe((data) =>
+          {
+              if (data && typeof data.currentSlide !== "undefined") {
+                  this.selectedIndex = data.currentSlide;
+                  this.moveTheSelectedIndex(this.selectedIndex);
+                  this.updateTab(this.tabs[this.selectedIndex], this.selectedIndex);
+              }
+          });
+  }
+  moveTheSelectedIndex(selectedValue)
+    {
+        if (this._commonService.isBrowser) {
+            let tabsId = document.getElementById("infoTabs");
+            if (selectedValue > 1) {
+                tabsId.scroll({
+                    left: 330,
+                    top: 0,
+                    behavior: 'smooth'
+                })
+            }
+            if (selectedValue <= 1) {
+                tabsId.scroll({
+                    left: 0,
+                    top: 0,
+                    behavior: 'smooth'
+                })
+            }
+        }
+    }
+
   sendTracking(subSection: string) {
     const page = this.analyticsInfo["page"];
     page["subSection"] = subSection;
@@ -114,13 +179,11 @@ export class ProductInfoComponent implements OnInit {
     this.openProductInfo = false;
     this.closePopup$.emit();
   }
-
-  ngAfterViewInit() {
-    if (this._commonService.isBrowser) {
-      // const productDetailBtn = document.getElementById('tab-2');
-      // productDetailBtn.onclick = function () {
-      //     document.getElementById('infoTabs').scrollLeft += 150;
-      // };
+  goTo(index,selector,tab: string)
+    {
+      this.ngxSiemaService.goTo(index, selector);
+      this.updateTab(tab, index);
+      this.moveTheSelectedIndex(this.selectedIndex);
     }
-  }
+  displaySlide(slide: string) { return this.tabs.includes(slide) }
 }

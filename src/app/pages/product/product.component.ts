@@ -480,6 +480,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
         this.checkForRfqGetQuote();
+        this.checkForAskQuestion();
         this.updateUserSession();
       },
       (error) => {
@@ -494,6 +495,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.raiseRFQQuote();
       setTimeout(() => {
         this.scrollToResults('get-quote-section');
+      }, 1000);
+    }
+  }
+
+  checkForAskQuestion(){
+    if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+      this.askQuestion();
+      setTimeout(() => {
+        this.scrollToResults('ask-question-section');
       }, 1000);
     }
   }
@@ -3427,14 +3437,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "emitAskQuestinPopup$"
       ] as EventEmitter<boolean>
     ).subscribe(() => {
-      this.handleAskQuestionPopup();
+      this.askQuestion();
     });
   }
 
-  async handleAskQuestionPopup() {
+  async askQuestion() {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      if (!this.askQuestionPopupInstance) {
+      this.askQuestionPopup();
+      } else {
+      this.goToLoginPage(this.productUrl,"Continue to ask question", "askQuestion");
+   }
+  }
+
+  async askQuestionPopup() {
         this.showLoader = true;
         const { AskQuestionPopoupComponent } = await import(
           "./../../components/ask-question-popup/ask-question-popup.component"
@@ -3466,11 +3482,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe(() => {
           this.handleFaqSuccessPopup();
         });
-      }
-    }
-    else {
-      this.goToLoginPage(this.productUrl);
-    }
   }
 
   async handleFaqSuccessPopup() {
@@ -3492,10 +3503,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.faqSuccessPopupInstance.instance[
       "closePopup$"
       ] as EventEmitter<boolean>
-    ).subscribe(() => {
+    ).subscribe((section) => {
       this.faqSuccessPopupInstance = null;
       this.faqSuccessPopupContainerRef.remove();
-      this.commonService.scrollToTop()
+      if (section === 'backToAskQues') {
+        this.askQuestion();
+      }
+      else if (section === 'backToPdp') {
+        this.commonService.scrollToTop()
+      }
     });
   }
 

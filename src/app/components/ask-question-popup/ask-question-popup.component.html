@@ -6,10 +6,10 @@
         </div>
     </div>
     <div class="content-popup card mt-15 hp-100 pad-b-70" content>
-        <section class="pdp-section-card">
+        <section>
             <div class="pwa-row">
-                <div class="ask-question-area pad-15 mt-10">
-                    <div class="question-text-field pb-10">
+                <div class="ask-question-area">
+                    <div class="question-text-field pb-15">
                         <textarea [(ngModel)]="questionText" maxlength="200"
                             placeholder="Type your question"></textarea>
                         <p class="char-counter-text">{{questionText.length}}/200</p>
@@ -18,14 +18,14 @@
                         <ul class="ml-10">
                             <li>Be specific, ask questions about the product and not about price, delivery, service etc
                             </li>
-                            <li>Be specific, ask questions about the product and not about price, delivery, service etc
+                            <li>Ask for information which isn't captured in the product specification
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="question-submit">
-                <button (click)="postQuestion()" class="btn btn-red">ASK YOUR QUESTION</button>
+                <button (click)="postQuestion()" class="btn btn-red">SUBMIT YOUR QUESTION</button>
             </div>
         </section>
     </div>

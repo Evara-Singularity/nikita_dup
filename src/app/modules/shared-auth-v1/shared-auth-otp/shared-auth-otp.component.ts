@@ -60,8 +60,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.enableWebOTP();
     }
 
-    
-
     @HostListener('window:beforeunload', ['$event'])
     beforeUnloadHander(event)
     {
@@ -79,7 +77,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     initiateOTP(isResend?)
     {
-
         const REQUEST = this.getUserData();
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.sendOTP(REQUEST).subscribe(
@@ -150,18 +147,16 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     onPaste(event: ClipboardEvent, inputIndex)
     {
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
-        let pastedText = (clipboardData) ? clipboardData.getData('text') : '';
+        let pastedText:string = (clipboardData) ? clipboardData.getData('text') : '';
         this.autoFillOTP(pastedText);
     }
 
-    private autoFillOTP(pastedText: any)
+    autoFillOTP(pastedText: any)
     {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {
-            for (let index = 0; index < 6; index++) {
-                this.OTP_INPUTS[index].value = pastedText[index];
-            }
-            this.otpEmitter.emit(pastedText);
+            const OTPS:any[] = pastedText.split("");
+            OTPS.forEach((value, index) => { this.otpFormArray.controls[index].patchValue(value)})
         }
     }
 

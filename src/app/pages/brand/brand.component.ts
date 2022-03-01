@@ -122,6 +122,7 @@ export class BrandComponent {
     private createFooterAccordianData() {
         this.accordiansDetails.push({
             name: 'Popular Brand Categories',
+            extra: this.API_RESPONSE['brand'][0].brandName,
             data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
         });
         this.accordiansDetails.push({
@@ -138,6 +139,7 @@ export class BrandComponent {
         });
         this.accordiansDetails.push({
             name: 'Related Brands',
+            isNotVisible:!!this._activatedRoute.snapshot.params.category,
             data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem)
         });
     }
@@ -233,7 +235,7 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-        if (!this._commonService.isServer) {
+        if (this._commonService.isServer) {
             //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";

@@ -35,6 +35,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     incorrectOTP = null;
     authFlow: AuthFlowType;//important:gives information on OTP journey
     isOTPClean: boolean = true;
+    
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService, private _sharedAuthUtilService: SharedAuthUtilService,) { }
@@ -59,6 +60,14 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.enableWebOTP();
     }
 
+    
+
+    @HostListener('window:beforeunload', ['$event'])
+    beforeUnloadHander(event)
+    {
+        this._localAuthService.clearAuthFlow();
+    }
+
     sendTracking()
     {
         let SUB_SECTION = null;
@@ -66,12 +75,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             SUB_SECTION = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE) ? "phone" : "email";
         }
         this._sharedAuthUtilService.sendOTPGenericPageLoadTracking(this.authFlow.isUserExists, SUB_SECTION)
-    }
-
-    @HostListener('window:beforeunload', ['$event'])
-    beforeUnloadHander(event)
-    {
-        this._localAuthService.clearAuthFlow();
     }
 
     initiateOTP(isResend?)
@@ -151,7 +154,8 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.autoFillOTP(pastedText);
     }
 
-    private autoFillOTP(pastedText: any) {
+    private autoFillOTP(pastedText: any)
+    {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {
             for (let index = 0; index < 6; index++) {
@@ -197,19 +201,16 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
-        if (typeof window !== 'undefined' && 'OTPCredential' in window) {
-            window.addEventListener('DOMContentLoaded', e =>
+        if ('OTPCredential' in window) {
+            const ac = new AbortController();
+            var reqObj = { otp: { transport: ['sms'] }, signal: ac.signal };
+            navigator.credentials.get(reqObj).then(otp =>
             {
-                const ac = new AbortController();
-                var reqObj = { otp: { transport: ['sms'] }, signal: ac.signal };
-                navigator.credentials.get(reqObj).then(otp =>
-                {
-                    if (otp && otp['code']) {
-                        const OTPS = (otp['code'] as string).split("");
-                        this.autoFillOTP(OTPS)
-                    }
-                }).catch(err => { console.log(err) });
-            })
+                if (otp && otp['code']) {
+                    const OTPS = (otp['code'] as string).split("");
+                    this.autoFillOTP(OTPS)
+                }
+            }).catch(err => { console.log(err) });
         } else {
             console.log('WebOTP not supported!.');
         }

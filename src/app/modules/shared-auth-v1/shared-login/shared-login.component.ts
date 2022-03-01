@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -50,6 +50,8 @@ export class SharedLoginComponent implements OnInit
     authFlow:AuthFlowType = null;
     paramsSubscriber = null;
     state;
+    //Testing
+    innerHeight = 0;
 
     constructor(
         private _fb: FormBuilder,
@@ -75,6 +77,15 @@ export class SharedLoginComponent implements OnInit
         this.handleBackUrlTitle();
         this.addQueryParamSubscribers();
         this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage");
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event)
+    {
+        console.log(event.target.innerHeight);
+        innerHeight = event.target.innerHeight;
+        const metaViewport = document.querySelector('meta[name = viewport]');
+        metaViewport.setAttribute('content', 'width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0');
     }
 
     addQueryParamSubscribers() {

@@ -3503,13 +3503,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.faqSuccessPopupInstance.instance[
       "closePopup$"
       ] as EventEmitter<boolean>
-    ).subscribe((backToAskQues) => {
+    ).subscribe((section) => {
       this.faqSuccessPopupInstance = null;
       this.faqSuccessPopupContainerRef.remove();
-      if (backToAskQues) {
-         this.askQuestion(); 
+      if (section === 'backToAskQues') {
+        this.askQuestion();
       }
-      else this.commonService.scrollToTop()
+      else if (section === 'backToPdp') {
+        this.commonService.scrollToTop()
+      }
     });
   }
 

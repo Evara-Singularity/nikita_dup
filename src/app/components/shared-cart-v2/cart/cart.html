@@ -14,7 +14,7 @@
             </div>
             <div class="product-detail">
                 <div class="p-name">
-                    <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length > 50) ? (( item.productName | slice:0:48 ) + '..') : ( item.productName ) }}</a>
+                    <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length > 50) ? (item.productName | slice:0:48)  : ( item.productName ) }}</a>
                 </div>
                 <p class="seller">
                     Brand: {{item.brandName}}

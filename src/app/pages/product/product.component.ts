@@ -500,7 +500,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   checkForAskQuestion(){
-    if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+    if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
       this.askQuestion();
       setTimeout(() => {
         this.scrollToResults('ask-question-section');

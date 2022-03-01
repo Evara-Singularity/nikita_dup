@@ -52,6 +52,7 @@ export class SharedLoginComponent implements OnInit
     state;
     //Testing
     innerHeight = 0;
+    innerWidth = 0;
 
     constructor(
         private _fb: FormBuilder,
@@ -83,7 +84,9 @@ export class SharedLoginComponent implements OnInit
     onResize(event)
     {
         console.log(event.target.innerHeight);
-        innerHeight = event.target.innerHeight;
+        console.log(event.target.innerWidth);
+        this.innerHeight = event.target.innerHeight;
+        this.innerHeight = event.target.innerWidth;
         const metaViewport = document.querySelector('meta[name = viewport]');
         metaViewport.setAttribute('content', 'width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0');
     }

@@ -51,7 +51,7 @@ export class SharedAuthUtilService implements OnInit
         const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
         if (queryParams.hasOwnProperty('state') && ((
             queryParams.state === 'raiseRFQQuote') ||
-            queryParams.state === 'handleAskQuestionPopup')) {
+            queryParams.state === 'askQuestion')) {
             redirectUrl += '?state=' + queryParams['state'];
         }
         let cartSession = Object.assign(this._cartService.getCartSession());

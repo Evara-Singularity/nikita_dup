@@ -500,8 +500,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   checkForAskQuestion(){
-    if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'handleAskQuestionPopup') {
-      this.handleAskQuestionPopup();
+    if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+      this.askQuestion();
       setTimeout(() => {
         this.scrollToResults('ask-question-section');
       }, 1000);
@@ -3437,17 +3437,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "emitAskQuestinPopup$"
       ] as EventEmitter<boolean>
     ).subscribe(() => {
-      this.handleAskQuestionPopup();
+      this.askQuestion();
     });
   }
 
-  async handleAskQuestionPopup() {
+  async askQuestion() {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
       this.askQuestionPopup();
       } else {
-      this.goToLoginPage(this.productUrl,"Continue to ask question", "handleAskQuestionPopup");
-    }
+      this.goToLoginPage(this.productUrl,"Continue to ask question", "askQuestion");
+   }
   }
 
   async askQuestionPopup() {

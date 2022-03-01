@@ -151,7 +151,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.autoFillOTP(pastedText);
     }
 
-    autoFillOTP(pastedText: any)
+    autoFillOTP(pastedText: any)  
     {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {

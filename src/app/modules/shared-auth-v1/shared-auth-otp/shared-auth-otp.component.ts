@@ -202,7 +202,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             navigator.credentials.get(reqObj).then(otp =>
             {
                 if (otp && otp['code']) {
-                    const OTPS = (otp['code'] as string).split("");
+                    const OTPS = (otp['code'] as string);
                     this.autoFillOTP(OTPS)
                 }
             }).catch(err => { console.log(err) });

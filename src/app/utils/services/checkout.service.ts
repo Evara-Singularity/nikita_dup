@@ -11,6 +11,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
     providedIn: "root"
 })
 export class CheckoutService {
+    
     billingAddress: {};
     checkoutAddress: {};
     invoiceType: string;

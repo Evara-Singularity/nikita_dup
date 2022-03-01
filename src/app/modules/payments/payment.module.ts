@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {PaymentService} from './payment.service';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PaymentService } from './payment.service';
 import { CreditDebitCardModule } from '../creditDebitCard/creditDebitCard.module';
 import { NetBankingModule } from '../netBanking/netBanking.module';
 import { WalletModule } from '../wallet/wallet.module';
@@ -43,4 +43,4 @@ import { PaymentComponent } from './payment.component';
     ]
 })
 
-export class PaymentModule {}
+export class PaymentModule { }

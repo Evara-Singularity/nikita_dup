@@ -122,6 +122,7 @@ export class BrandComponent {
     private createFooterAccordianData() {
         this.accordiansDetails.push({
             name: 'Popular Brand Categories',
+            extra: this.API_RESPONSE['brand'][0].brandName,
             data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
         });
         this.accordiansDetails.push({
@@ -138,6 +139,7 @@ export class BrandComponent {
         });
         this.accordiansDetails.push({
             name: 'Related Brands',
+            isNotVisible:!!this._activatedRoute.snapshot.params.category,
             data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem)
         });
     }

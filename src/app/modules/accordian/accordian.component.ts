@@ -15,12 +15,15 @@ export class AccordianComponent implements OnInit {
   @Input() accordiansDetails: AccordiansDetails[] = [];
   prodUrl = CONSTANTS.PROD;
   currentOpenIndex = 0;
+  isShown:Array<boolean>=[];
 
   constructor(
     public _router: Router,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.isShown[0]=true;
+  }
 
   getUrlPathName(url) {
     const originSlash = /^https?:\/\/[^/]+\//i;
@@ -31,7 +34,17 @@ export class AccordianComponent implements OnInit {
     this._router.navigate(['/' + url]);
   }
 
-  changeTab(index){
+  changeTab(index) {
+    let val = this.isShown[index];
+    this.isShown = new Array(this.accordiansDetails.length).fill(false);
+    if (this.currentOpenIndex === index) {
+      this.isShown[index] = val;
+    }
     this.currentOpenIndex = index;
+    this.toggleShow(index);
+  }
+  toggleShow(index) {
+
+    this.isShown[index] = !this.isShown[index];
   }
 }

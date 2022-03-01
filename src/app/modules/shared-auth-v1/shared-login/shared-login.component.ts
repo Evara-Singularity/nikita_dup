@@ -89,7 +89,9 @@ export class SharedLoginComponent implements OnInit
         this.innerWidth = event.target.innerWidth;
         const metaViewport = document.querySelector('meta[name = viewport]');
         metaViewport.setAttribute('content', 'width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0');
-    }
+        document.body.style.height = this.innerHeight.toString() + 'px';;
+        document.body.style.width = this.innerWidth.toString() + 'px';;
+      }
 
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {

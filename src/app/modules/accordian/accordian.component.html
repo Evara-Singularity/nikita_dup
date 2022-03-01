@@ -3,7 +3,7 @@
         <ng-container *ngIf="details.data?.length > 0">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
-                    <h3 class="heading-3" (click)="changeTab(i)" [ngClass]="{'rotate-icon':isShown}" >
+                    <h3 class="heading-3" (click)="changeTab(i)" [ngClass]="{'rotate-icon':isShown[i]}" >
                         <i class="icon-brand_store related-icon"></i>&nbsp; {{details.name}}
                              <span class="icon-accordian">
                             <i class="icon-down"></i>
@@ -11,7 +11,7 @@
                     </h3>
                 </div>
             </div>
-            <div  *ngIf="isShown" class="panel-body" [ngClass]="{'open': currentOpenIndex == i}" >
+            <div class="panel-body" [ngClass]="{'open':isShown[i]}" >
                 <div class="container category_links">
                     <div *ngFor="let data of  details.data | slice:0:10">
                         <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link))"

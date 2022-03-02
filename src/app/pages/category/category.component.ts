@@ -177,11 +177,13 @@ export class CategoryComponent {
     private createFooterAccordianData() {
         this.accordiansDetails.push({
             name: 'Popular Brand Category',
-            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
+            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
             name: 'Related Searches',
-            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem)
+            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            icon:'icon-attribute'
         });
     }
 

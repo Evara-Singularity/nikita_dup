@@ -1,8 +1,46 @@
 <header class="inner-pages" *ngIf="!extraData.hideHeader">
     <div class="style-1">
-        <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
+        <!-- <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
             class="head-strip container">
             <div class="f-left logo-container">
+                <i *ngIf="(_commonService.isHomeHeader) || (routerData && routerData['menuBar'])" class="icon-menu"
+                    id="icon-menu" (click)="loadSideNav()"></i>
+                <i *ngIf="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])"
+                    (click)="goBack()" class="icon-back" id="icon-back"></i>
+                
+                <a *ngIf="(routerData && routerData['logo']) && (_commonService.isHomeHeader || _commonService.isPLPHeader)"
+                    class="moglix-app-logo" [routerLink]="['/']">
+                    <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_PWA_3x.png">
+                </a>
+                <a *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader) && !(routerData && routerData['title'])"
+                    class="moglix-app-logo" [routerLink]="['/']">
+                   
+                    <i class="icon-moglix_app_logo"></i>
+                </a>
+            </div>
+            <div class="f-right head-d-flex-inner head-icons"
+                [ngClass]="{'home-icons': (_commonService.isHomeHeader || _commonService.isPLPHeader)}"
+                *ngIf="hideElLogin">
+                <a (click)="navigateToLogin($event)"
+                    *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (isUserLogin == 'false' || !isUserLogin )"
+                    class="f-size-16 login-txt text-500">Login</a>
+                <a [routerLink]="['/store/brands']" *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader)"
+                    class="icon-brand_store red-txt"></a>
+                
+                <div class="search-bar" *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader)">
+                    <i class="icon-search"></i>
+                    <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
+                </div>
+                <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
+                    <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
+                </a>
+                <a *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])"
+                    (click)="loadBottomSheet()" class="icon-more_options"></a>
+            </div>
+        </div> -->
+<!-- start new header upper -->
+        <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)" class="head-d-flex">
+            <div class="head-d-flex-inner logo-container">
                 <i *ngIf="(_commonService.isHomeHeader) || (routerData && routerData['menuBar'])" class="icon-menu"
                     id="icon-menu" (click)="loadSideNav()"></i>
                 <i *ngIf="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])"
@@ -18,7 +56,7 @@
                     <i class="icon-moglix_app_logo"></i>
                 </a>
             </div>
-            <div class="f-right head-icons"
+            <div class="head-d-flex-inner head-icons"
                 [ngClass]="{'home-icons': (_commonService.isHomeHeader || _commonService.isPLPHeader)}"
                 *ngIf="hideElLogin">
                 <a (click)="navigateToLogin($event)"
@@ -40,7 +78,7 @@
         </div>
 
         <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !(_commonService.isScrolledHeader)"
-            class="search-bar search-bar-custom">
+            class="search-bar">
             <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
                 placeholder="Search Product/Category/Brand...">
             <div class="home-search-animation">
@@ -48,24 +86,25 @@
         </div>
         <!--Category Header-->
         <div class="common-category-header container">
-            <ng-container *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
+            <ng-container
+                *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
                 <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
                     class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
                 <i *ngIf="!_commonService.isHomeHeader && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')"
                     [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()"
                     class="icon-back" id="icon-back"></i>
-                <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
-                    {{cartHeaderText}}</span>
+                <!-- <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
+                    {{cartHeaderText}}</span> -->
                 <a *ngIf="!_commonService.isHomeHeader && !(routerData && routerData['title'])" class="moglix-app-logo"
                     [routerLink]="['/']">
-                    <!-- <img src="{{imgAssetPath}}assets/img/moglix-logo.svg"> -->
+
                     <i class="icon-moglix_app_logo"></i>
                 </a>
                 <a class="search-bar-mini"
                     *ngIf="!_commonService.isHomeHeader && !isLoginPage && !(routerData && routerData['title'])  && displaySearch">
                     <i class="icon-search"></i>
                     <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
-                    
+
                 </a>
                 <a *ngIf="!_commonService.isHomeHeader  && !isLoginPage && (routerData && routerData['title'])"
                     (click)="loadSearchNav()" class="icon-search red-txt"></a>

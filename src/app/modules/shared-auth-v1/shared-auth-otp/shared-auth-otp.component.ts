@@ -56,7 +56,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             const OTPS:string = (this.otpFormArray.value as any[]).join("").trim();
             if (OTPS.length === 6 && this.otpFormArray.valid)
             {
-                setTimeout(() => { this.validateOTP();}, 300)
+                setTimeout(() => { this.validateOTP(OTPS);}, 200)
             }
         });
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
@@ -101,10 +101,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         )
     }
 
-    validateOTP()
+    validateOTP(otpValue)
     {
         const REQUEST = this.getUserData();
-        REQUEST['otp'] = (this.otpFormArray.value as string[]).join("");
+        REQUEST['otp'] = otpValue;
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>

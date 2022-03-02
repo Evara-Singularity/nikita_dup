@@ -28,8 +28,6 @@ export class AskQuestionPopoupComponent {
         private _tms: ToastMessageService ) { }
 
     closeVariant2Popup() {
-        console.log("back button called")
-
         this.closePopup$.emit();
     }
 

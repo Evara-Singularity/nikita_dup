@@ -3847,7 +3847,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      let currentMouse = event.clientX || event.originalEvent ? event.originalEvent.touches[0].pageX : 0;
+      let currentMouse = event.clientX || (event.originalEvent ? event.originalEvent.touches[0].pageX : 0);
       let relativeMouse = currentMouse - this.initialMouse;
       let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
       // $('.slide-text').fadeTo(0, slidePercent);
@@ -3867,7 +3867,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
     this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    this.initialMouse = event.clientX || event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0;
+    this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
   }
 
 

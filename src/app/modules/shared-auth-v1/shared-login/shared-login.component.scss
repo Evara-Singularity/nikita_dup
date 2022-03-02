@@ -171,27 +171,31 @@
 @media (max-height:666px) {
   .login-bg{
     .bottom-value{
-        bottom: 5px;
+        bottom:10px;
     }
     .login-bg-img{
-        bottom:370px !important;;  
+        bottom:390px !important;;  
     } 
     .login-card{
-        padding: 10px !important;
+        padding: 8px !important;
         .outline-input-label{
-            margin-bottom: 1.2em !important; 
+            margin-bottom: 1em !important; 
            }
         .login-seperator-text {
-            margin: 0.8em auto !important;
+            margin: 0.5em auto !important;
         }
         .safe-text{
-            margin-top:1em !important;
+            margin-top:0.8em !important;
          }
          .heading-custom-3{
             margin-bottom:0.5em !important;
          }
        .mt-1-xs{
          margin-top:1em !important;
+       }
+       .btn-variant1{
+           height:35px;
+           font-size: 13px;
        }
      }  
    } 

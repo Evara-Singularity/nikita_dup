@@ -11,6 +11,7 @@ import { DOCUMENT } from '@angular/common';
 import { Meta, Title } from '@angular/platform-browser';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
+import { AccordiansDetails,AccordianDataItem } from '@utils/models/accordianInterface';
 
 let digitalData = {
   page: {},
@@ -28,6 +29,7 @@ export class SearchComponent implements OnInit {
   public didYouMean: any;
   public headerNameBasedOnCondition;
   @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
+  accordiansDetails: AccordiansDetails[] = [];
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -121,6 +123,9 @@ export class SearchComponent implements OnInit {
         this.setAdobeTrackingData();
       }
 
+      // set Accordian data
+      this.setAccordianData();
+
       // Send GTM call
       this.sendGTMCall();
 
@@ -130,6 +135,16 @@ export class SearchComponent implements OnInit {
       // Set canonical Urls
       this.setCanonicalUrls();
 
+    });
+  }
+
+  private setAccordianData() {
+    this.accordiansDetails = [];
+    this.accordiansDetails.push({
+        name: 'Related Searches',
+        outerNavRouteEvent: true,
+        isNotVisible: !(this._commonService.selectedFilterData.page < 2),
+        data: this.API_RESULT['searchData'][0]?.categoriesRecommended.map(e => ({ name: e.categoryName, link: '', category: e }) as AccordianDataItem)
     });
   }
 
@@ -247,7 +262,10 @@ export class SearchComponent implements OnInit {
 
   toggleRcommendFlag = true;
   recommendedCategory: string = '';
-  goToRecommendedCategory(categoryId, cat) {
+  goToRecommendedCategory(data) {
+    console.log(data);
+    let categoryId = data.categoryId;
+    let cat = data.category;
     this.toggleRcommendFlag = false;
     this.recommendedCategory = cat['categoryName'];
     let extras = {
@@ -291,7 +309,7 @@ export class SearchComponent implements OnInit {
    * @param event - Get the category on which the user has currently clicked on specific for SEARCH page
    */
   handleCategoryClicked(event) {
-    this.goToRecommendedCategory(event.categoryId, event);
+    this.goToRecommendedCategory(event);
   }
 
   setCategoriesPrimaryForCategoryMidPlpFilter() {

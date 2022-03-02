@@ -5,7 +5,7 @@
                 <div class="container">
                     <h3 class="heading-3" (click)="changeTab(i)" [ngClass]="{'rotate-icon':isShown[i]}" >
                         <i class="icon-brand_store related-icon"></i>&nbsp; {{details.name}}
-                             <span class="icon-accordian">
+                            <span class="icon-accordian">
                             <i class="icon-down"></i>
                         </span>
                     </h3>
@@ -14,7 +14,7 @@
             <div class="panel-body" [ngClass]="{'open':isShown[i]}" >
                 <div class="container category_links">
                     <div *ngFor="let data of  details.data | slice:0:10">
-                        <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link))"
+                        <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link), details?.outerNavRouteEvent, data)"
                             [href]="[data.link.includes('http') ? data.link : prodUrl + '/' + data.link ]">
                             <span *ngIf="details.name=='Popular Brand Categories'">{{details.extra}} </span>{{data.name}}
                         </a>

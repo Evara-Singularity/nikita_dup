@@ -56,7 +56,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             const OTPS:string = (this.otpFormArray.value as any[]).join("").trim();
             if (OTPS.length === 6 && this.otpFormArray.valid)
             {
-                setTimeout(() => { this.validateOTP(OTPS);}, 200)
+                setTimeout(() => { this.validateOTP(OTPS);}, 500)
             }
         });
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
@@ -103,9 +103,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     validateOTP(otpValue)
     {
+        this._globalLoader.setLoaderState(true);
         const REQUEST = this.getUserData();
         REQUEST['otp'] = otpValue;
-        this._globalLoader.setLoaderState(true);
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
@@ -115,7 +115,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(this.otpValue); }, 200) };
+                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(this.otpValue); }, 500) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";

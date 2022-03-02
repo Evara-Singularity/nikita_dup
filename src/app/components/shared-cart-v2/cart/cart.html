@@ -8,13 +8,14 @@
         <div class="container pb-15" [ngClass]="{'oos':item.oos}">
             <div class="product-left">
                 <div class="product-img product-img-v2">
-                    <img (click)="redirectToProductURL(null,item.productUrl)" src="{{item.productImg}}">
+                    <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
                 </div>
 
             </div>
             <div class="product-detail">
                 <div class="p-name">
-                    <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length > 50) ? (item.productName | slice:0:48)  : ( item.productName ) }}</a>
+                    <a> {{ (item.productName.length>50) ? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
+                    <!-- <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length > 50) }}</a> -->
                 </div>
                 <p class="seller">
                     Brand: {{item.brandName}}
@@ -54,8 +55,8 @@
             <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
                 <div class="f-right">
                     <div class="f-left">
-                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2'}}</h3>
-                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2'}}</h3>
+                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                         <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
                         <span class="grey-txt" *ngIf="item.shippingCharges == 0 && !item.oos">Price Details</span>
                         <span class="grey-txt" *ngIf="item.shippingCharges > 0 && !item.oos">Price + Shipping Details</span>
@@ -83,3 +84,5 @@
         </div>
     </div>
 </div>
+
+

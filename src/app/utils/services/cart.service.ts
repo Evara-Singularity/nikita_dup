@@ -530,7 +530,8 @@ export class CartService
                     args.productDetails,
                     cartSession,
                     args.productDetails.productQuantity,
-                    args.buyNow
+                    args.buyNow,
+                    args.productDetails.isProductUpdate
                 );
 
                 // console.log('step 1 ==>', cartSession);
@@ -721,7 +722,8 @@ export class CartService
             productMRP: productMrp,
             productSmallImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
             productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
-            url: productPartDetails.canonicalUrl
+            url: productPartDetails.canonicalUrl,
+            isProductUpdate: 0,
         } as AddToCartProductSchema;
 
         if (args.isFbt) {
@@ -742,14 +744,17 @@ export class CartService
         return (filteredArr.length > 0) ? filteredArr[0] : null;
     }
 
-    private _checkQuantityOfProductItemAndUpdate(product: AddToCartProductSchema, cartSession, quantity = 1, buyNow = false)
+    private _checkQuantityOfProductItemAndUpdate(product: AddToCartProductSchema, cartSession, quantity: number = 1, buyNow: boolean = false, isProductUpdate: number = 0)
     {
         let itemsList = (cartSession && cartSession['itemsList']) ? [...cartSession['itemsList']] : [];
         itemsList.map((productItem: AddToCartProductSchema) =>
         {
             if (productItem.productId == product.productId) {
                 // increment quantity by 1
-                productItem['productQuantity'] = +productItem['productQuantity'] + (+quantity)
+                productItem['productQuantity'] = +productItem['productQuantity'] + +quantity;
+                if (isProductUpdate > 0) {
+                    productItem['productQuantity'] = isProductUpdate;
+                }
                 // make sure quantity is not greater than avaliable qunatity
                 if (product.productQuantity > productItem.quantityAvailable) {
                     productItem['productQuantity'] = productItem.quantityAvailable;

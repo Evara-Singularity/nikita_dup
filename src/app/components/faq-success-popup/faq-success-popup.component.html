@@ -1,4 +1,4 @@
-<app-pop-up [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
+<app-pop-up-variant2 [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup('backToAskQues')"></i>
@@ -18,11 +18,11 @@
                             <p>We will notify you when someone<br> answer your question.</p>
                         </div>
                         <div class="popup-btn">
-                            <button (click)="closeVariant2Popup('backToPdp')" class="btn btn-red">BACK TO PRODUCT</button>
+                            <button (click)="closeVariant2Popup('pdpPage')" class="btn btn-red">BACK TO PRODUCT</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-</app-pop-up>
+</app-pop-up-variant2>

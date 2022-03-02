@@ -69,7 +69,15 @@
         $trackeryellow:#EDCE09;
         $yellow-txt:#FDB92C;
         $dark-green:#309615;
+        $border-radius:4px;
        
+        // variable spacing 
+
+        html{
+            --padding:.5em;
+            --padding-tb-rl: 1em .5em;
+            --margin:.5em;
+        }
          
         //width
         $fullwidth:100%;

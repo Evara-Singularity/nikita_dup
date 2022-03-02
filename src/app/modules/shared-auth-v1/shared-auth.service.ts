@@ -83,7 +83,6 @@ export class SharedAuthService implements OnInit
 
     authenticate(data)
     {
-        console.trace();
         data['device'] = CONSTANTS.DEVICE.device;
         data['buildVersion'] = environment.buildVersion;
         return this.dataService.callRestful(this.BASEURLS.AUTHENTICATE.method, this.BASEURLS.AUTHENTICATE.url, { body: data });

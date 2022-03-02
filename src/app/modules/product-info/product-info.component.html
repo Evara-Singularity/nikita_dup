@@ -59,7 +59,6 @@
         </section>
         <!-- Tabs body -->
         <div class="tab-content">
-            {{contentInfo['videos'] | json}}
             <ngx-siema [options]="ngxSiemaOptions">
                 <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
                     <key-features [features]="contentInfo['key features']"> </key-features>

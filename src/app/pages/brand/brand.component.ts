@@ -124,24 +124,29 @@ export class BrandComponent {
         this.accordiansDetails.push({
             name: 'Popular Brand Categories',
             extra: this.API_RESPONSE['brand'][0].brandName,
-            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem)
+            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
             name: 'Popular Categories',
-            data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem)
+            data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem),
+            icon:'icon-categories'
         });
         this.accordiansDetails.push({
             name: 'Similar Category',
-            data: this.API_RESPONSE.brand[2]?.mostSoledCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem)
+            data: this.API_RESPONSE.brand[2]?.mostSoledCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            icon:'icon-categories'
         });
         this.accordiansDetails.push({
             name: 'Related Searches',
-            data: this.API_RESPONSE.brand[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem)
+            data: this.API_RESPONSE.brand[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            icon:'icon-attribute'
         });
         this.accordiansDetails.push({
             name: 'Related Brands',
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
-            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem)
+            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
+            icon:'icon-brand_store'
         });
     }
 

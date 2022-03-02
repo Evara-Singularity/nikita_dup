@@ -502,9 +502,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   checkForAskQuestion(){
     if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
       this.askQuestion();
-      setTimeout(() => {
-        this.scrollToResults('ask-question-section');
-      }, 1000);
     }
   }
 
@@ -3506,10 +3503,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     ).subscribe((section) => {
       this.faqSuccessPopupInstance = null;
       this.faqSuccessPopupContainerRef.remove();
-      if (section === 'backToAskQues') {
-        this.askQuestion();
-      }
-      else if (section === 'backToPdp') {
+       if (section === 'pdpPage') {
+        this.askQuestionPopupInstance = null;
+        this.askQuestionPopupContainerRef.remove();
         this.commonService.scrollToTop()
       }
     });

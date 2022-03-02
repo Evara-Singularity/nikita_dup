@@ -57,9 +57,6 @@ export class BrandComponent {
 
 
     ngOnInit(): void {
-        console.clear();
-        console.log(this._activatedRoute.snapshot.params);
-
         if (this._commonService.isBrowser) {
 
             // set some extra meta tags if brand is a category page

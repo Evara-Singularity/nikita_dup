@@ -23,6 +23,7 @@ export class AccordianComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
+    this.isShown = new Array(this.accordiansDetails.length).fill(false);
     this.isShown[0]=true;
   }
 

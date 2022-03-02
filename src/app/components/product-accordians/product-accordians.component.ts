@@ -44,31 +44,37 @@ export class ProductAccordiansComponent {
       if (res[0]['status']) {
         this.ACCORDIAN_DATA[0] = res[0]['data'];
         // accordian data
-        this.accordiansDetails.push({
-          name: 'Related Searches',
-          data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
-          icon:'icon-attribute'
-        });
+        if (this.ACCORDIAN_DATA[0].length > 0) {
+          this.accordiansDetails.push({
+            name: 'Related Searches',
+            data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            icon:'icon-attribute'
+          });
+        }
       }
       if (res[1].hasOwnProperty('categoryLinkList') && res[1]['categoryLinkList']) {
         this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
 
         // accordian data
-        this.accordiansDetails.push({
-          name: 'Popular Brand Categories',
-          extra:this.categoryBrandDetails.brand.brandName,
-          data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
-          icon:'icon-brand_store'
-        });
+        if (this.ACCORDIAN_DATA[1].length > 0) {
+          this.accordiansDetails.push({
+            name: 'Popular Brand Categories',
+            extra:this.categoryBrandDetails.brand.brandName,
+            data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            icon:'icon-brand_store'
+          });
+        }
       }
       if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
         this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
         // accordian data
-        this.accordiansDetails.push({
-          name: ' Shop by Related Categories',
-          data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
-          icon:'icon-categories'
-        });
+        if (this.ACCORDIAN_DATA[2].length > 0) {
+          this.accordiansDetails.push({
+            name: ' Shop by Related Categories',
+            data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            icon:'icon-categories'
+          });
+        }
       }
     });
   }

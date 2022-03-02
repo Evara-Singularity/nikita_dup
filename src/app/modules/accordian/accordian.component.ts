@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { AccordiansDetails } from '@app/utils/models/accordianInterface';
@@ -13,6 +13,7 @@ import { AccordiansDetails } from '@app/utils/models/accordianInterface';
 export class AccordianComponent implements OnInit {
 
   @Input() accordiansDetails: AccordiansDetails[] = [];
+  @Output('outerRoutingEvent') outerRoutingEvent = new EventEmitter<any>();
   prodUrl = CONSTANTS.PROD;
   currentOpenIndex = 0;
   isShown:Array<boolean>=[];
@@ -30,7 +31,11 @@ export class AccordianComponent implements OnInit {
     return url.replace(originSlash, '');
   }
 
-  accordianNav(url) {
+  accordianNav(url, outerNavRouteEvent, data) {
+    if (outerNavRouteEvent) {
+      const catData = {categoryId: data['category']['categoryId'], category: data.category};
+      this.outerRoutingEvent.emit(catData);
+    }
     this._router.navigate(['/' + url]);
   }
 

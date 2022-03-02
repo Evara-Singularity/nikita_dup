@@ -2,7 +2,8 @@ export interface AccordiansDetails {
     name:string,
     isNotVisible?:boolean,
     data:AccordianDataItem[],
-    extra?:any
+    extra?:any,
+    outerNavRouteEvent?: boolean
 }
 
 export interface AccordianDataItem {

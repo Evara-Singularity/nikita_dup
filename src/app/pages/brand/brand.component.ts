@@ -120,6 +120,7 @@ export class BrandComponent {
     }
 
     private createFooterAccordianData() {
+        this.accordiansDetails = [];
         this.accordiansDetails.push({
             name: 'Popular Brand Categories',
             extra: this.API_RESPONSE['brand'][0].brandName,

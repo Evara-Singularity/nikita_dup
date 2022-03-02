@@ -110,12 +110,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             (response) =>
             {
                 if (response['status']) {
-                    this.verifiedOTP = this.otpValue;
+                    this.verifiedOTP = otpValue;
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(this.otpValue); }, 500) };
+                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(otpValue); }, 500) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
@@ -171,6 +171,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     processOTPError(response)
     {
+        this._globalLoader.setLoaderState(false);
         const invalidOTPMessage = (response['message'] as string).toLowerCase();
         this._toastService.show({ type: 'error', text: invalidOTPMessage });
         this._router.navigate(["/login"]);

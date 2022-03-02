@@ -263,7 +263,6 @@ export class SearchComponent implements OnInit {
   toggleRcommendFlag = true;
   recommendedCategory: string = '';
   goToRecommendedCategory(data) {
-    console.log(data);
     let categoryId = data.categoryId;
     let cat = data.category;
     this.toggleRcommendFlag = false;

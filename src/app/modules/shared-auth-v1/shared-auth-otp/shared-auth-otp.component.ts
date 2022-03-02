@@ -51,9 +51,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     ngAfterViewInit(): void
     {
         this.sendTracking();
-        this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((value) =>
+        this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((otps:any[]) =>
         {
-            const OTPS:string = (this.otpFormArray.value as any[]).join("").trim();
+            const OTPS: string = otps.join("").trim();
             if (OTPS.length === 6 && this.otpFormArray.valid)
             {
                 this.validateOTP(OTPS);
@@ -149,6 +149,8 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     onPaste(event: ClipboardEvent, inputIndex)
     {
+        event.stopPropagation();
+        event.preventDefault();
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
         let pastedText:string = (clipboardData) ? clipboardData.getData('text') : '';
         this.autoFillOTP(pastedText);

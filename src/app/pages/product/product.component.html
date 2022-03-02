@@ -236,13 +236,14 @@
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
-                <div class="bulk-block bulk-container-single-grp selected">
-                    <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"(click)="selectProductBulkPrice(items.minQty)">
-                        <div *ngIf="rawProductData['quantityAvailable']>=items.minQty"
-                            [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
-                            <h3>More than {{items.minQty}} Qty  <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount | number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}<span
-                                        class="small-txt">/pc</span></span></h3>
-                        </div>
+                <div class="bulk-block bulk-container-single-grp"
+                    *ngFor="let items of productBulkPrices; let last=last; let index = index;"
+                    (click)="selectProductBulkPrice(items.minQty)"
+                    [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
+                    <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
+                        <h3>More than {{items.minQty}} Qty <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
+                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor |
+                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">/pc</span></span></h3>
                     </div>
                 </div>
             </div>

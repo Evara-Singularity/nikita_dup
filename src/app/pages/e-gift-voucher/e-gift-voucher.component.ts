@@ -224,6 +224,8 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     } 
        
     sendGtmCall(data) {
-        this._analytics.sendGTMCall({ event: data })
+        if (data) {
+            this._analytics.sendGTMCall({ event: data })
+        }
     }
 }

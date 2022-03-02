@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@services/productList.service';
-import { Router } from '@angular/router';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -263,15 +262,12 @@ export class SearchComponent implements OnInit {
   toggleRcommendFlag = true;
   recommendedCategory: string = '';
   goToRecommendedCategory(data) {
-    let categoryId = data.categoryId;
-    let cat = data.category;
     this.toggleRcommendFlag = false;
-    this.recommendedCategory = cat['categoryName'];
     let extras = {
       queryParams: { ...this._activatedRoute.snapshot.queryParams }
     };
     extras['queryParams']['search_query'] = this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString ? this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
-    extras['queryParams']['category'] = categoryId;
+    extras['queryParams']['category'] = data.categoryId;
     extras['queryParams']['toggleRcommendFlag'] = true;
     extras['queryParams']['page'] = 1;
     delete extras['queryParams']['orderWay'];

@@ -35,6 +35,7 @@ export class AccordianComponent implements OnInit {
     if (outerNavRouteEvent) {
       const catData = {categoryId: data['category']['categoryId'], category: data.category};
       this.outerRoutingEvent.emit(catData);
+      return;
     }
     this._router.navigate(['/' + url]);
   }

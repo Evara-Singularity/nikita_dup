@@ -591,6 +591,36 @@
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>   
+
+        <section id="ask-question-section" class="Qa">
+            <div class="faq-head">
+                <h3>Frequently Asked Questions</h3>
+                <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">Ask Now</button>
+            </div>
+            <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
+        
+                <p class="display-qn">
+                    Displaying Questions
+                    <span>1-2</span> of
+                    <span>{{questionAnswerList.data.qlist.length}} </span>
+                </p>
+                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                    <div class="qn">
+                        <span class="heading-3">Q{{i+1}}:</span>
+                        <span class="qn-right heading-3">{{item.questionText}}</span>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-block">
+                            <p class=" answer">Ans:</p>
+                            <p class="ans-details answer">{{item.answerText}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
+                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+                </div>
+            </ng-container>
+        </section>
         
         <!-- New GET Quote section starts -->
         <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
@@ -650,37 +680,6 @@
                 </li>
             </ul>
         </div>
-
-
-        <section id="ask-question-section" class="Qa">
-            <div class="faq-head">
-                <h3>Frequently Asked Questions</h3>
-                <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">Ask Now</button>
-            </div>
-            <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-        
-                <p class="display-qn">
-                    Displaying Questions
-                    <span>1-2</span> of
-                    <span>{{questionAnswerList.data.qlist.length}} </span>
-                </p>
-                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
-                    <div class="qn">
-                        <span class="heading-3">Q{{i+1}}:</span>
-                        <span class="qn-right heading-3">{{item.questionText}}</span>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-block">
-                            <p class=" answer">Ans:</p>
-                            <p class="ans-details answer">{{item.answerText}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
-                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
-                </div>
-            </ng-container>
-        </section>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>

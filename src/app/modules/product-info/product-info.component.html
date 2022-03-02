@@ -61,20 +61,20 @@
         <div class="tab-content">
             {{contentInfo['videos'] | json}}
             <ngx-siema [options]="ngxSiemaOptions">
-                <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
+                <ngx-siema-slide *ngIf="displaySlide('key features')">
                     <key-features [features]="contentInfo['key features']"> </key-features>
                 </ngx-siema-slide>
-                <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
+                <ngx-siema-slide *ngIf="displaySlide('specifications')">
                     <specifications [specifications]="contentInfo['specifications']"></specifications>
                 </ngx-siema-slide>
-                <ngx-siema-slide *ngIf="displaySlide(defaultInfo) && contentInfo['videos'] && contentInfo['videos'].length > 0">
+                <ngx-siema-slide *ngIf="contentInfo['videos'] && contentInfo['videos'].length > 0">
                     <videos [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName">
                     </videos>
                 </ngx-siema-slide>
-                <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
+                <ngx-siema-slide *ngIf="displaySlide('product details')">
                     <product-details [details]="contentInfo['product details']"></product-details>
                 </ngx-siema-slide>
-                <ngx-siema-slide *ngIf="displaySlide(defaultInfo)">
+                <ngx-siema-slide *ngIf="displaySlide('images')">
                     <images [images]="contentInfo['images']"></images>
                 </ngx-siema-slide>
             </ngx-siema>

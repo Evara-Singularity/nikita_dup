@@ -300,6 +300,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   rfqTotalValue: any;
   hasGstin: boolean;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+  isAskQuestionPopupOpen: boolean;
 
 
   set showLoader(value: boolean) {
@@ -494,7 +495,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
       this.raiseRFQQuote();
       setTimeout(() => {
-        this.scrollToResults('get-quote-section');
+        this.scrollToResults('get-quote-section',-30);
       }, 1000);
     }
   }
@@ -502,6 +503,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
   checkForAskQuestion(){
     if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
       this.askQuestion();
+      setTimeout(() => {
+        this.scrollToResults('ask-question-section',166);
+      }, 1000);
     }
   }
 
@@ -3276,10 +3280,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
   }
 
-  scrollToResults(id: string) {
+  scrollToResults(id: string,offset) {
     if (document.getElementById(id)) {
       let footerOffset = document.getElementById(id).offsetTop;
-      ClientUtility.scrollToTop(1000, footerOffset - 30);
+      ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
 
@@ -3444,7 +3448,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.askQuestionPopup();
       } else {
       this.goToLoginPage(this.productUrl,"Continue to ask question", "askQuestion");
-   }
+    }
   }
 
   async askQuestionPopup() {
@@ -3453,6 +3457,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "./../../components/ask-question-popup/ask-question-popup.component"
         ).finally(() => {
           this.showLoader = false;
+          this.isAskQuestionPopupOpen = true;
         });
         const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
         this.askQuestionPopupInstance =
@@ -3471,6 +3476,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe(() => {
           this.askQuestionPopupInstance = null;
           this.askQuestionPopupContainerRef.remove();
+          this.isAskQuestionPopupOpen = false;
         });
         (
           this.askQuestionPopupInstance.instance[

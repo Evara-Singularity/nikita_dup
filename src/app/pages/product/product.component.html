@@ -241,7 +241,11 @@
                     (click)="selectProductBulkPrice(items.minQty)"
                     [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                     <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
-                        <h3>More than {{items.minQty}} Qty <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
+                        <h3>Buy <span *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                            {{items.minQty!==items.maxQty ?
+                            -items.maxQty:'' }}</span>
+                        <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty
+                            <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
                                 number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor |
                                 currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">/pc</span></span></h3>
                     </div>

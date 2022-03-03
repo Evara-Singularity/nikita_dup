@@ -58,7 +58,7 @@ export class TrackingService
     {
         let order = {};
         this.COMMON_ORDER_KEYS.forEach((key) => { order[key] = product[key] });
-        if (product['productTags'].length) {
+        if (product['productTags'] && product['productTags'].length) {
             order['tags'] = (product['productTags'] as any[]).map((tag) => tag.name || tag.tagName).join("|");
         } else {
             order['tags'] = "";

@@ -264,6 +264,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  // ondemad loaded components for FAQ listing
+  faqListPopupInstance = null;
+  @ViewChild("faqListPopup", { read: ViewContainerRef })
+  faqListPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components to submit question
+  askQuestionPopupInstance = null;
+  @ViewChild("askQuestionPopup", { read: ViewContainerRef })
+  askQuestionPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components for FAQ success popup
+  faqSuccessPopupInstance = null;
+  @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
+  faqSuccessPopupContainerRef: ViewContainerRef;
 
   iOptions: any = null;
 
@@ -288,6 +300,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   rfqTotalValue: any;
   hasGstin: boolean;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+  isAskQuestionPopupOpen: boolean;
 
 
   set showLoader(value: boolean) {
@@ -470,6 +483,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
         this.checkForRfqGetQuote();
+        this.checkForAskQuestion();
         this.updateUserSession();
       },
       (error) => {
@@ -483,7 +497,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
       this.raiseRFQQuote();
       setTimeout(() => {
-        this.scrollToResults('get-quote-section');
+        this.scrollToResults('get-quote-section',-30);
+      }, 1000);
+    }
+  }
+
+  checkForAskQuestion(){
+    if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+      this.askQuestion();
+      setTimeout(() => {
+        this.scrollToResults('ask-question-section',166);
       }, 1000);
     }
   }
@@ -539,6 +562,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       .getGroupProductObj(productId)
       .subscribe((productData) => {
         if (productData["status"] == true) {
+         
           this.processProductData(
             {
               productBO: productData["productBO"],
@@ -779,7 +803,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ? this.priceQuantityCountry["moq"]
         : 1;
 
-
+    this.getFirstAttributeValue();
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
@@ -844,7 +868,23 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
+  getFirstAttributeValue(){
+    let selectedValue;
+    if (this.productFilterAttributesList && this.productFilterAttributesList.length > 0) {
+      this.productFilterAttributesList.forEach((singleAttrList, index) => {
+        if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
+          singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
+            if(item.selected == 0){
+              return true;
+            }
+            selectedValue = item;
+            return false;
+          });
+          singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
+        }
+      });
+    }
+  }
   removeSimilarProductInstanceOOS() {
     if (this.similarProductInstanceOOS) {
       this.similarProductInstanceOOS = null;
@@ -1183,6 +1223,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
           const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
           return { ...priceMap, calculatedDiscount }
         })
+        //filtering Data to show the 
+        this.productBulkPrices=this.productBulkPrices.filter((bulkPrice)=>{
+          return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty']
+
+        });
+
         this.checkBulkPriceMode();
       }
     }
@@ -3238,10 +3284,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
   }
 
-  scrollToResults(id: string) {
+  scrollToResults(id: string,offset) {
     if (document.getElementById(id)) {
       let footerOffset = document.getElementById(id).offsetTop;
-      ClientUtility.scrollToTop(1000, footerOffset - 30);
+      ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
 
@@ -3365,6 +3411,113 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productInfoPopupInstance = null;
       this.productInfoPopupContainerRef.remove();
       this.displayCardCta = false;
+    });
+  }
+
+  async handleFaqListPopup() {
+    this.showLoader = true;
+    const { FaqListPopoupComponent } = await import(
+      "./../../components/faq-list-popup/faq-list-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqListPopoupComponent);
+    this.faqListPopupInstance =
+      this.faqListPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqListPopupInstance.instance["questionAnswerList"] = this.questionAnswerList;
+    (
+      this.faqListPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.faqListPopupInstance = null;
+      this.faqListPopupContainerRef.remove();
+    });
+    (
+      this.faqListPopupInstance.instance[
+      "emitAskQuestinPopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.askQuestion();
+    });
+  }
+
+  async askQuestion() {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      this.askQuestionPopup();
+      } else {
+      this.goToLoginPage(this.productUrl,"Continue to ask question", "askQuestion");
+    }
+  }
+
+  async askQuestionPopup() {
+        this.showLoader = true;
+        const { AskQuestionPopoupComponent } = await import(
+          "./../../components/ask-question-popup/ask-question-popup.component"
+        ).finally(() => {
+          this.showLoader = false;
+          this.isAskQuestionPopupOpen = true;
+        });
+        const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
+        this.askQuestionPopupInstance =
+          this.askQuestionPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+          );
+        this.askQuestionPopupInstance.instance["productCategoryDetails"] = this.productCategoryDetails;
+        this.askQuestionPopupInstance.instance["productSubPartNumber"] = this.productSubPartNumber;
+        this.askQuestionPopupInstance.instance["defaultPartNumber"] = this.defaultPartNumber;
+        (
+          this.askQuestionPopupInstance.instance[
+          "closePopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.askQuestionPopupInstance = null;
+          this.askQuestionPopupContainerRef.remove();
+          this.isAskQuestionPopupOpen = false;
+        });
+        (
+          this.askQuestionPopupInstance.instance[
+          "showSuccessPopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.handleFaqSuccessPopup();
+        });
+  }
+
+  async handleFaqSuccessPopup() {
+    this.showLoader = true;
+    const { FaqSuccessPopoupComponent } = await import(
+      "./../../components/faq-success-popup/faq-success-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqSuccessPopoupComponent);
+    this.faqSuccessPopupInstance =
+      this.faqSuccessPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqSuccessPopupInstance.instance["rawReviewsData"] = this.questionAnswerList;
+    (
+      this.faqSuccessPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe((section) => {
+      this.faqSuccessPopupInstance = null;
+      this.faqSuccessPopupContainerRef.remove();
+       if (section === 'pdpPage') {
+        this.askQuestionPopupInstance = null;
+        this.askQuestionPopupContainerRef.remove();
+        this.commonService.scrollToTop()
+      }
     });
   }
 
@@ -3615,6 +3768,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytices;
   }
 
+  sendTrackingData(){
+    const TAXONS = this.taxons;
+    const page={
+    "linkPageName": `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, 
+    "linkName": "WhatsApp",
+    "loginStatus": this.commonService.loginStatusTracking
+    }
+    const custData = this.commonService.custDataTracking;
+    const order = this.orderTracking;
+    this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
+  }
+
   get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
   initialMouse;
@@ -3692,7 +3857,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      let currentMouse = event.clientX || event.originalEvent.touches[0].pageX;
+      let currentMouse = event.clientX || (event.originalEvent ? event.originalEvent.touches[0].pageX : 0);
       let relativeMouse = currentMouse - this.initialMouse;
       let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
       // $('.slide-text').fadeTo(0, slidePercent);
@@ -3712,7 +3877,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
     this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
+    this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
   }
 
 

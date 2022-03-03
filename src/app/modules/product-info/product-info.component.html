@@ -49,19 +49,34 @@
             </div>
         </div>
         <section id="infoTabs" class="tabs-container">
-            <ul class="tabs">
-                <ng-container *ngFor="let tab of tabs; let i = index">
-                    <li [id]="'tab-' + i" class="tab" [class.selectedTab]="selectedIndex === i" (click)="updateTab(tab,i)">
+            <ul [style.width.px]="250 * tabs.length" class="tabs" id="elementTabs">
+                <ng-container *ngFor="let tab of tabs;let tabIndex = index">
+                    <li [id]="'tab'+tabIndex" class="tab" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
+                        (click)="goTo(tabIndex,ngxSiemaOptions.selector,tab)">
                         {{tab | titlecase}}</li>
                 </ng-container>
             </ul>
         </section>
-        <div class="tab-content" [ngSwitch]="defaultInfo">
-            <key-features *ngSwitchCase="'key features'"  [features]="contentInfo['key features']" ></key-features>
-            <specifications *ngSwitchCase="'specifications'" [specifications]="contentInfo['specifications']" > </specifications>
-            <product-details *ngSwitchCase="'product details'" [details]="contentInfo['product details']" ></product-details>
-            <videos *ngSwitchCase="'videos'" [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName" ></videos>
-            <images *ngSwitchCase="'images'"  [images]="contentInfo['images']" ></images>
+        <!-- Tabs body -->
+        <div class="tab-content" id="siemaTabContent">
+            <ngx-siema [options]="ngxSiemaOptions">
+                <ngx-siema-slide *ngIf="displaySlide('key features')">
+                    <key-features [features]="contentInfo['key features']"> </key-features>
+                </ngx-siema-slide>
+                <ngx-siema-slide *ngIf="displaySlide('specifications')">
+                    <specifications [specifications]="contentInfo['specifications']"></specifications>
+                </ngx-siema-slide>
+                <ngx-siema-slide *ngIf="contentInfo['videos'] && contentInfo['videos'].length > 0">
+                    <videos [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName">
+                    </videos>
+                </ngx-siema-slide>
+                <ngx-siema-slide *ngIf="displaySlide('product details')">
+                    <product-details [details]="contentInfo['product details']"></product-details>
+                </ngx-siema-slide>
+                <ngx-siema-slide *ngIf="displaySlide('images')">
+                    <images [images]="contentInfo['images']"></images>
+                </ngx-siema-slide>
+            </ngx-siema>
         </div>
     </div>
 </app-pop-up>

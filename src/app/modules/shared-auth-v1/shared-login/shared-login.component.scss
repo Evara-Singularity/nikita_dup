@@ -168,7 +168,9 @@
     }
 
 }
-@media (max-height:666px) {
+@media only screen 
+and (min-resolution:160dpi) and (max-device-height: 640px)
+{
   .login-bg{
     .bottom-value{
         bottom:10px;
@@ -200,3 +202,17 @@
      }  
    } 
 } 
+@media only screen 
+and (min-device-width: 800px) 
+and (max-device-height: 1280px) 
+and (min-resolution: 192dpi)
+and (-webkit-device-pixel-ratio:2)
+and (orientation : portrait) 
+
+{
+  .galaxy {background-color:red;}
+  .onlygalaxyportrait {display:block !important; background-color:green;}
+
+
+
+}

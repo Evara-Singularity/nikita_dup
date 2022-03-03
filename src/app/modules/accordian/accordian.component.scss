@@ -4,6 +4,11 @@
         background: #fff;
         border-top: 1px solid #d4d4d4;
         h3 {
+            &.rotate-icon{
+                .icon-down{
+                    transform: rotate(180deg); 
+                }
+            }
             padding: 15px 5px;
             font-weight: bold;
             display: flex;

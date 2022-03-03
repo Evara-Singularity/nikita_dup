@@ -141,14 +141,14 @@
                 </div>
             </div>
         </div>
-        <div class="prod-inner-desc" (click)="scrollToResults('reviewSection')">
+        <div class="prod-inner-desc" (click)="scrollToResults('reviewSection',-30)">
             <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToResults('reviewSection')"
+                    <small class="review" (click)="scrollToResults('reviewSection',-30)"
                         *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                         Reviews
                     </small>
@@ -194,13 +194,13 @@
 
     <!-- Product quantity action section starts -->
     <div class="product-section-detail"
-        *ngIf="priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
+        *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
-                <div *ngIf="productBulkPrices.length>1" class="blk-contain">
+                <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
                         <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
@@ -220,24 +220,41 @@
                                     <span>/pc</span>
                                 </p>
                                 <p *ngIf="items.discount>0" class="green-txt">
-                                    {{ items.discount | number:'1.0-2' }} %OFF</p>
+                                    {{ items.discount | number:'1.0-2' }}% OFF</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div *ngIf="productBulkPrices.length==1" class="bulk-block bulk-container-single-grp selected">
-                    <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"(click)="selectProductBulkPrice(items.minQty)">
-                        <div *ngIf="rawProductData['quantityAvailable']>=items.minQty"
-                            [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
-                            <h3>More than {{items.minQty}}  <span *ngIf="items.discount>0" class="green-txt">({{ items.discount | number:'1.0-2' }} %OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}<span
-                                        class="small-txt">/pc</span></span></h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="product-section-detail"
+        *ngIf="productBulkPrices && productBulkPrices.length==1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
+        <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
+            <div class="bulk-qty">
+                <div class="bul-qty-head">
+                    <p class="heading-3">Buy More & Save More</p>
+                </div>
+                <div class="bulk-block bulk-container-single-grp"
+                    *ngFor="let items of productBulkPrices; let last=last; let index = index;"
+                    (click)="selectProductBulkPrice(items.minQty)"
+                    [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
+                    <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
+                        <h3>Buy <span *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                            {{items.minQty!==items.maxQty ?
+                            -items.maxQty:'' }}</span>
+                        <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty
+                            <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
+                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor |
+                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">/pc</span></span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Product quantity action section ends -->
     <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
         (visible)="onVisibleOffer($event)">
@@ -367,7 +384,7 @@
             </div>
         </div>
 
-        <section *ngIf="productOutOfStock && !isRFQSuccessfull" observeVisibility [debounceTime]="100"
+        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
         </section>
@@ -578,6 +595,37 @@
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>   
+
+        <section id="ask-question-section" class="Qa">
+            <div class="faq-head">
+                <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding <br> this product?</h3>
+                <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
+                <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
+            </div>
+            <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
+        
+                <p class="display-qn">
+                    Displaying Questions
+                    <span>1-2</span> of
+                    <span>{{questionAnswerList.data.qlist.length}} </span>
+                </p>
+                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                    <div class="qn">
+                        <span class="heading-3">Q{{i+1}}:</span>
+                        <span class="qn-right heading-3">{{item.questionText}}</span>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-block">
+                            <p class=" answer">Ans:</p>
+                            <p class="ans-details answer">{{item.answerText}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
+                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+                </div>
+            </ng-container>
+        </section>
         
         <!-- New GET Quote section starts -->
         <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
@@ -666,35 +714,6 @@
             <ng-container #sponseredProducts></ng-container>
         </section>
 
-        <section class="Qa">
-            <div class="faq-head">
-                <h3>Frequently Asked Questions</h3>
-                <button (click)="$event.stopPropagation();handleAskQuestionPopup()" class="btn redBgButton">Ask Now</button>
-            </div>
-            <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-        
-                <p class="display-qn">
-                    Displaying Questions
-                    <span>1-2</span> of
-                    <span>{{questionAnswerList.data.qlist.length}} </span>
-                </p>
-                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
-                    <div class="qn">
-                        <span class="heading-3">Q{{i+1}}:</span>
-                        <span class="qn-right heading-3">{{item.questionText}}</span>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-block">
-                            <p class=" answer">Ans:</p>
-                            <p class="ans-details answer">{{item.answerText}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
-                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
-                </div>
-            </ng-container>
-        </section>
 
         <section id="productAccordianSection" observeVisibility [debounceTime]="100"
             (visible)="onVisibleProductAccordians($event)">
@@ -713,7 +732,7 @@
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
 
-        <div [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+        <div class="mt-10" [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
             <ng-container #appPromo></ng-container>
         </div>
@@ -754,7 +773,7 @@
 </div> -->
 <div *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2"
     class="pdp-container">
-    <div class="bottom-bar stickyBottomBtn" *ngIf="productOutOfStock && !showScrollToTopButton">
+    <div class="bottom-bar stickyBottomBtn">
         <button (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
             class="cart-btn ml-5 bold-txt f-14 f-left">
             <span>VIEW IN-STOCK</span>

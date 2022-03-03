@@ -300,6 +300,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   rfqTotalValue: any;
   hasGstin: boolean;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+  isAskQuestionPopupOpen: boolean;
 
 
   set showLoader(value: boolean) {
@@ -480,6 +481,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
         this.checkForRfqGetQuote();
+        this.checkForAskQuestion();
         this.updateUserSession();
       },
       (error) => {
@@ -493,7 +495,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
       this.raiseRFQQuote();
       setTimeout(() => {
-        this.scrollToResults('get-quote-section');
+        this.scrollToResults('get-quote-section',-30);
+      }, 1000);
+    }
+  }
+
+  checkForAskQuestion(){
+    if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+      this.askQuestion();
+      setTimeout(() => {
+        this.scrollToResults('ask-question-section',166);
       }, 1000);
     }
   }
@@ -3269,10 +3280,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
   }
 
-  scrollToResults(id: string) {
+  scrollToResults(id: string,offset) {
     if (document.getElementById(id)) {
       let footerOffset = document.getElementById(id).offsetTop;
-      ClientUtility.scrollToTop(1000, footerOffset - 30);
+      ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
 
@@ -3427,19 +3438,26 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "emitAskQuestinPopup$"
       ] as EventEmitter<boolean>
     ).subscribe(() => {
-      this.handleAskQuestionPopup();
+      this.askQuestion();
     });
   }
 
-  async handleAskQuestionPopup() {
+  async askQuestion() {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {
-      if (!this.askQuestionPopupInstance) {
+      this.askQuestionPopup();
+      } else {
+      this.goToLoginPage(this.productUrl,"Continue to ask question", "askQuestion");
+    }
+  }
+
+  async askQuestionPopup() {
         this.showLoader = true;
         const { AskQuestionPopoupComponent } = await import(
           "./../../components/ask-question-popup/ask-question-popup.component"
         ).finally(() => {
           this.showLoader = false;
+          this.isAskQuestionPopupOpen = true;
         });
         const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
         this.askQuestionPopupInstance =
@@ -3458,6 +3476,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe(() => {
           this.askQuestionPopupInstance = null;
           this.askQuestionPopupContainerRef.remove();
+          this.isAskQuestionPopupOpen = false;
         });
         (
           this.askQuestionPopupInstance.instance[
@@ -3466,11 +3485,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ).subscribe(() => {
           this.handleFaqSuccessPopup();
         });
-      }
-    }
-    else {
-      this.goToLoginPage(this.productUrl);
-    }
   }
 
   async handleFaqSuccessPopup() {
@@ -3492,10 +3506,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.faqSuccessPopupInstance.instance[
       "closePopup$"
       ] as EventEmitter<boolean>
-    ).subscribe(() => {
+    ).subscribe((section) => {
       this.faqSuccessPopupInstance = null;
       this.faqSuccessPopupContainerRef.remove();
-      this.commonService.scrollToTop()
+       if (section === 'pdpPage') {
+        this.askQuestionPopupInstance = null;
+        this.askQuestionPopupContainerRef.remove();
+        this.commonService.scrollToTop()
+      }
     });
   }
 
@@ -3835,7 +3853,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      let currentMouse = event.clientX || event.originalEvent ? event.originalEvent.touches[0].pageX : 0;
+      let currentMouse = event.clientX || (event.originalEvent ? event.originalEvent.touches[0].pageX : 0);
       let relativeMouse = currentMouse - this.initialMouse;
       let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
       // $('.slide-text').fadeTo(0, slidePercent);
@@ -3855,7 +3873,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
     this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    this.initialMouse = event.clientX || event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0;
+    this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
   }
 
 

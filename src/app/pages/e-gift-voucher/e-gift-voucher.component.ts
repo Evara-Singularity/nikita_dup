@@ -60,10 +60,10 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
             rfqEnquiryItemsList: new FormArray([])
         });
         this.addRequirementForm();
+        this.toggleCheckbox(false);
         if(this._common.isBrowser){
             this.adobeCall()
         }
-        this.rfqEnquiryCustomer.get("sendMail").patchValue(this.isCheckboxChecked)
     }
 
     ngAfterViewInit(): void
@@ -172,7 +172,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
                     this.showSuccessPopup = true;
                     this.rfqEnquiryItemsList.clear();
                     this.addRequirementForm();
-                    this.isCheckboxChecked = false;
+                    this.toggleCheckbox(false);
                     this.sendGtmCall('Gift Card Request Submitted');
                 }
             },
@@ -194,6 +194,7 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
     get email() { return this.rfqEnquiryCustomer.get("email") }
     get mobile() { return this.rfqEnquiryCustomer.get("mobile") }
     get userId() { return this.rfqEnquiryCustomer.get("userId") }
+    get sendMail() { return this.rfqEnquiryCustomer.get("sendMail") }
 
     //validations
     checkForspecialChars(event)
@@ -217,12 +218,14 @@ export class EGiftVoucherComponent implements OnInit, AfterViewInit
         this.showSuccessPopup = false;
     }
 
-    toggleCheckbox(){
-        this.isCheckboxChecked = !this.isCheckboxChecked
-        this.eGiftForm.value.rfqEnquiryCustomer.sendMail = this.isCheckboxChecked
+    toggleCheckbox(checked) {
+        this.isCheckboxChecked = checked ? !this.isCheckboxChecked : checked;
+        this.sendMail.patchValue(this.isCheckboxChecked);
     } 
        
     sendGtmCall(data) {
-        this._analytics.sendGTMCall({ event: data })
+        if (data) {
+            this._analytics.sendGTMCall({ event: data })
+        }
     }
 }

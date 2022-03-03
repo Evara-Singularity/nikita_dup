@@ -1,6 +1,6 @@
-import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, NgModule, Output } from '@angular/core';
+import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
 
 @Component({
     selector: 'faq-success-popup',
@@ -11,8 +11,8 @@ export class FaqSuccessPopoupComponent {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     constructor() { }
 
-    closeVariant2Popup() {
-        this.closePopup$.emit();
+    closeVariant2Popup(section) {
+        this.closePopup$.emit(section);
     }
 }
 
@@ -20,7 +20,7 @@ export class FaqSuccessPopoupComponent {
     declarations: [FaqSuccessPopoupComponent],
     imports: [
         CommonModule,
-        PopUpModule
+        PopUpVariant2Module
     ],
     exports: [FaqSuccessPopoupComponent]
 })

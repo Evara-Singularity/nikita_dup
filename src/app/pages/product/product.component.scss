@@ -580,7 +580,7 @@
                     background: $color-red-light;
                 }
             }
-            .bulk-block-multi-grp{
+            .bulk-block-multi-grp {
                 padding: 10px 10px;
                 margin: 15px 0px;
                 min-height: 90px;
@@ -590,15 +590,15 @@
                 text-align: center;
                 font-weight: 500;
             }
-            .bulk-container-single-grp{
+            .bulk-container-single-grp {
                 padding: 5px 8px;
-                h3{
+                h3 {
                     font-size: 13px;
-                    .green-txt{
+                    .green-txt {
                         font-size: 12px;
-                        font-weight: normal;
+                        font-weight: bold;
                     }
-                    .right-text{
+                    .right-text {
                         float: right;
                     }
                 }
@@ -943,23 +943,28 @@
         padding: 12px 15px;
         .faq-head {
             display: flex;
-            h3 {
-                width: 75%;
-            }
+            justify-content: space-between;
+            align-items: center;
+            // h3 {
+            //     width: 75%;
+            // }
             button {
-                width: 25%;
+                max-height: 32%;
             }
         }
         .display-qn {
             border-bottom: 1px dashed #e3e3e3;
             font-size: $medium-font;
-            padding: 20px 0px 5px 0px;
+            padding: 10px 0px 5px 0px;
         }
         .qna-block {
             border-bottom: 1px dashed #a2a2a2;
             .qn {
                 display: flex;
                 margin-top: 10px;
+                .heading-3 {
+                    padding-bottom: 0px !important;
+                }
                 .qn-right {
                     margin-left: 3px;
                 }
@@ -1028,7 +1033,7 @@
             }
         }
         .view-more-faq-strip {
-            padding: 15px 0px;
+            padding: 15px 0px 5px;
             .small-txt {
                 color: #0d99ff;
                 font-weight: bold;
@@ -1039,7 +1044,7 @@
                 float: right;
                 position: absolute;
                 right: 0px;
-                top: 0px;
+                top: -3px;
             }
         }
     }
@@ -2038,8 +2043,7 @@
     .singlewrap {
         border-bottom: 0.5px solid #e3e3e3;
         padding: 0px 15px;
-        overflow:hidden;
-        
+        overflow: hidden;
 
         &:last-of-type {
             border-bottom: none;
@@ -2049,7 +2053,7 @@
         ul {
             @extend %clear-fix;
             padding: 0px;
-            display:flex;
+            display: flex;
             overflow-x: scroll;
             white-space: nowrap;
             &::-webkit-scrollbar {
@@ -2057,12 +2061,12 @@
             }
             -ms-overflow-style: none;
             scrollbar-width: none;
-          
+
             li {
                 border: 1px solid #333;
                 border-radius: 2px;
                 margin: 0px 10px 10px 0px;
-              
+
                 a {
                     display: inline-block;
                     padding: 10px;
@@ -2070,7 +2074,7 @@
                     font-weight: $font-bold;
                     color: $txt-color;
                     width: 100%;
-                    text-align:center;
+                    text-align: center;
 
                     span {
                         padding-right: 5px;
@@ -3058,7 +3062,7 @@
             }
         }
     }
-    
+
     .button-sec {
         background-color: #eaeaea;
         padding: 10px;
@@ -3138,6 +3142,8 @@
 // start new ask now section
 .ask-question-area {
     background-color: $white-color;
+    width: 100%;
+    padding: 5px 0px;
     .question-text-field {
         position: relative;
         textarea {
@@ -3148,17 +3154,23 @@
             border-radius: 4px;
             resize: none;
             color: $note-text;
+            &::placeholder {
+                color: #acacac;
+                font-size: $large-font;
+            }
         }
         .char-counter-text {
             position: absolute;
             bottom: 20px;
             right: 10px;
-            color: $note-text;
+            font-size: $small-font;
+            color: #acacac;
+
             background-color: $white-color;
         }
     }
     .guidence-text {
-        border-top: 1px dashed #a2a2a2;
+        border-top: 1px dashed #acacac;
         ul {
             list-style: disc;
             li {
@@ -3168,7 +3180,7 @@
         }
     }
 }
-.question-submit{
+.question-submit {
     padding: 2px;
     position: fixed;
     bottom: 0;
@@ -3229,7 +3241,6 @@
         }
     }
 }
-
 
 @keyframes bounce {
     50% {

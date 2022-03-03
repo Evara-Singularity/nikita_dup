@@ -122,8 +122,7 @@ export class ProductInfoComponent implements OnInit {
     this.sendTracking(tab.toUpperCase());
   }
 
-  scrollInitialize(index)
-  {
+  scrollInitialize(index) {
       this.ngxSiemaService
           .currentSlide(this.ngxSiemaOptions.selector)
           .subscribe((data) =>
@@ -132,9 +131,19 @@ export class ProductInfoComponent implements OnInit {
                   this.selectedIndex = data.currentSlide;
                   this.moveTheSelectedIndex(this.selectedIndex);
                   this.updateTab(this.tabs[this.selectedIndex], this.selectedIndex);
+                  this.updateTabContentHeight(data.currentSlide);
               }
           });
   }
+
+  updateTabContentHeight(num) {
+    let el = document.querySelector(`.prod-info-siema > div div:nth-child(${+num+1})`);
+    if (el) {
+      const height = el.clientHeight;
+      document.getElementById('siemaTabContent').style.height = el.clientHeight + 'px';
+    }
+  }
+
   moveTheSelectedIndex(selectedValue)
     {
         if (this._commonService.isBrowser) {

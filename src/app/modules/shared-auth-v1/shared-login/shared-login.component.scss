@@ -168,7 +168,7 @@
     }
 
 }
-@media (max-height:666px) {
+@media only screen and (max-height:666px) and (min-resolution: 135dpi) and (-webkit-device-pixel-ratio:3) {
   .login-bg{
     .bottom-value{
         bottom:10px;

@@ -31,14 +31,6 @@ export class ProductBrowserService
         return this._dataService.callRestful("GET", URL);
     }
 
-    getSimilarProducts(productName, categoryId)
-    {
-        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.SIMILAR_PRODUCTS}?str=${productName}&category=${categoryId}`;
-        return this._dataService.callRestful('GET', URL).pipe(
-            catchError((res: HttpErrorResponse) => { return of({ products: [], httpStatus: res.status }); })
-        );
-    }
-
 
     pastOrdersProductResponseToProductEntity(product: any)
     {

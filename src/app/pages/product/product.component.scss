@@ -943,11 +943,13 @@
         padding: 12px 15px;
         .faq-head {
             display: flex;
-            h3 {
-                width: 75%;
-            }
+            justify-content: space-between;
+            align-items: center;
+            // h3 {
+            //     width: 75%;
+            // }
             button {
-                width: 25%;
+                max-height: 32%;
             }
         }
         .display-qn {
@@ -3140,6 +3142,7 @@
 // start new ask now section
 .ask-question-area {
     background-color: $white-color;
+    width: 100%;
     padding: 5px 0px;
     .question-text-field {
         position: relative;

@@ -175,6 +175,7 @@ export class CategoryComponent {
     }
 
     private createFooterAccordianData() {
+        this.accordiansDetails = [];
         this.accordiansDetails.push({
             name: 'Popular Brand Category',
             data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),

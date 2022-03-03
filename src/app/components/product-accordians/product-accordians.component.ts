@@ -43,8 +43,9 @@ export class ProductAccordiansComponent {
     forkJoin(apiList).subscribe(res => {
       if (res[0]['status']) {
         this.ACCORDIAN_DATA[0] = res[0]['data'];
+        this.accordiansDetails = [];
         // accordian data
-        if (this.ACCORDIAN_DATA[0].length > 0) {
+        if (this.ACCORDIAN_DATA[0]?.length > 0) {
           this.accordiansDetails.push({
             name: 'Related Searches',
             data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
@@ -56,7 +57,7 @@ export class ProductAccordiansComponent {
         this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
 
         // accordian data
-        if (this.ACCORDIAN_DATA[1].length > 0) {
+        if (this.ACCORDIAN_DATA[1]?.length > 0) {
           this.accordiansDetails.push({
             name: 'Popular Brand Categories',
             extra:this.categoryBrandDetails.brand.brandName,
@@ -68,7 +69,7 @@ export class ProductAccordiansComponent {
       if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
         this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
         // accordian data
-        if (this.ACCORDIAN_DATA[2].length > 0) {
+        if (this.ACCORDIAN_DATA[2]?.length > 0) {
           this.accordiansDetails.push({
             name: ' Shop by Related Categories',
             data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),

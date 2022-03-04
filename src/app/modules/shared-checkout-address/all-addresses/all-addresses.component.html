@@ -60,10 +60,10 @@
         <div class="addButtonContainer">
             <div class="container">
                 <button class="btn blue-border-btn-full" *ngIf="addresses.length > 0"
-                    (click)="displayAddressListPopup($event,label)">
+                    (click)="$event.stopPropagation();displayAddressListPopup(label)">
                     CHANGE OR ADD ADDRESS
                 </button>
-                <button class="blue-border-btn-full" (click)="displayAddressFormPopup($event, label)">
+                <button class="blue-border-btn-full" (click)="$event.stopPropagation();displayAddressFormPopup(label)">
                     ADD NEW ADDRESS
                 </button>
             </div>

@@ -17,26 +17,27 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy
     @Input("addressType") addressType = "Delivery";
     @Input("displayAddressListPopup") displayAddressListPopup = false;
     @Input("addresses") addresses = [];
-    @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
+    @Output("emitCloseEvent$") emitCloseEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
+    @Output("emitActionEvent$") emitActionEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
 
     constructor() { }
 
     ngOnInit() { }
 
-    handlePopup($event)
+    ngAfterViewInit()
     {
-        this.closeAddressPopUp$.emit({ action: null, idAddress: null });
+
+    }
+
+    handleClose($event)
+    {
+        this.emitCloseEvent$.emit({ action: null, idAddress: null });
     }
 
     handleAction($event, action, idAddress)
     {
-        $event.stopPropagation()
-        this.closeAddressPopUp$.emit({ action: action, idAddress: idAddress });
-    }
-
-    ngAfterViewInit()
-    {
-
+        $event.stopPropagation();
+        this.emitActionEvent$.emit({ action: action, idAddress: idAddress });
     }
 
     get headerText() { return `${this.addressType} Address` }

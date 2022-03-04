@@ -3,7 +3,8 @@ import { FormControl } from '@angular/forms';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@app/utils/services/address.service';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
-import { AddressListModel } from '@app/utils/models/shared-checkout.models';
+import { AddressListActionModel, AddressListModel } from '@app/utils/models/shared-checkout.models';
+import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 
 @Component({
     selector: 'all-addresses',
@@ -32,10 +33,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
 
     invoiceSubscription: Subscription = null;
-    addressListSubscription: Subscription = null;
+    addressListCloseSubscription: Subscription = null;
+    addressListActionSubscription: Subscription = null;
     createEditAddressSubscription: Subscription = null;
-
-
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
         private injector: Injector) 
@@ -47,7 +47,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     {
         this.isGSTInvoice = new FormControl(false);
         this.invoiceValue = new FormControl(this.INVOICE_TYPES.RETAIL);
-        this.updateAddressType(this.USER_SESSION.userId, this.INVOICE_TYPES.TAX);
+        this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.TAX);
     }
 
     ngAfterViewInit(): void
@@ -55,11 +55,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.invoiceSubscription = this.isGSTInvoice.valueChanges.subscribe((isTax) =>
         {
             this.invoiceValue.patchValue(isTax ? this.INVOICE_TYPES.RETAIL : this.INVOICE_TYPES.RETAIL);
-            this.consoleValues();
         })
     }
 
-    updateAddressType(userId, type: string)
+    updateAddressTypes(userId, type: string)
     {
         const params = { customerId: userId, invoiceType: type };
         this._addressService.getAddressList(params).subscribe((response: AddressListModel) =>
@@ -69,26 +68,46 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
 
-    async displayAddressListPopup($event, addressType: string)
+    async displayAddressListPopup(addressType: string)
     {
-        $event.stopPropagation();
         const { AddressListComponent } = await import("./../address-list/address-list.component").finally(() => { });
         const factory = this.cfr.resolveComponentFactory(AddressListComponent);
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
-        this.addressListInstance.instance['addresses'] = (addressType === this.ADDRESS_TYPES.DELIVERY) ? this.deliveryAddressList : this.billingAddressList;
+        const ADDRESSES = (addressType === this.ADDRESS_TYPES.DELIVERY) ? this.deliveryAddressList : this.billingAddressList;
+        this.addressListInstance.instance['addresses'] = ADDRESSES;
         this.addressListInstance.instance['addressType'] = addressType;
         this.addressListInstance.instance['displayAddressListPopup'] = true;
-        this.addressListSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
+        this.addressListCloseSubscription = (this.addressListInstance.instance["emitCloseEvent$"] as EventEmitter<any>).subscribe((actionInfo: AddressListActionModel) =>
         {
-            console.log('Address List',data);
-            this.addressListInstance.instance['displayAddressListPopup'] = false;
-            this.addressListRef.remove();
+            this.closeAddressListPopup();
+        });
+        this.addressListActionSubscription = (this.addressListInstance.instance["emitActionEvent$"] as EventEmitter<any>).subscribe((actionInfo: AddressListActionModel) =>
+        {
+            //EXPECTED ACTIONS: ADD or EDIT or SELECTED;
+            if (actionInfo.action === "ADD" || actionInfo.action === "EDIT") {
+                const ADDRESS_FOR_ACTION = SharedCheckoutAddressUtil.filterAddressesById(ADDRESSES, actionInfo.idAddress);
+                this.displayAddressFormPopup(addressType, ADDRESS_FOR_ACTION);
+                return;
+            }
+            if (actionInfo.action === "SELECTED")
+            {
+                //TODO:update the delivery address as selected
+                this.closeAddressListPopup();
+                return;
+            }
         });
     }
 
-    async displayAddressFormPopup($event, addressType: string, address?)
+    closeAddressListPopup()
     {
-        $event.stopPropagation();
+        if (!this.addressListInstance) return
+        this.addressListInstance.instance['displayAddressListPopup'] = false;
+        this.addressListRef.remove();
+        this.addressListInstance = null;
+    }
+
+    async displayAddressFormPopup(addressType: string, address?)
+    {
         let factory = null;
         let verifiedPhones = null;
         if (addressType === this.ADDRESS_TYPES.DELIVERY) {
@@ -103,15 +122,19 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         }
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
         this.addressListInstance.instance['isAddMode'] = !(address);
-        this.addressListInstance.instance['invoiceType'] = this.isGSTInvoice ? "tax" : "retial";
+        this.addressListInstance.instance['invoiceType'] = this.isGSTInvoice ? "tax" : "retail";
         this.addressListInstance.instance['verifiedPhones'] = verifiedPhones;
-        this.addressListInstance.instance['address'] = address || null ;
+        this.addressListInstance.instance['address'] = address || null;
         this.addressListInstance.instance['displayCreateEditPopup'] = true;
         this.createEditAddressSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
         {
-            console.log('Create Edit', data);
             this.addressListInstance.instance['displayCreateEditPopup'] = false;
             this.addressListRef.remove();
+            //TODO:update the addresses based on addresstype
+            if (this.addressListInstance)
+            {
+                //TODO:update list of addresses in address list pop-up
+            }
         });
     }
 
@@ -121,13 +144,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnDestroy(): void
     {
         this.invoiceSubscription.unsubscribe();
-        if (this.addressListSubscription) this.addressListSubscription.unsubscribe();
+        if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();
+        if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();
         if (this.createEditAddressSubscription) this.createEditAddressSubscription.unsubscribe();
-    }
-
-    consoleValues()
-    {
-        console.log(this.isGSTInvoice.value);
-        console.log(this.invoiceValue.value);
     }
 }

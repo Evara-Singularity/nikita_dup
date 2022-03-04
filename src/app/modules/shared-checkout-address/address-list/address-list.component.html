@@ -1,7 +1,7 @@
-<app-pop-up (outData$)="handlePopup($event)" class="bs-popup"
+<app-pop-up (outData$)="handleClose($event)" class="bs-popup"
     [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:displayAddressListPopup, headerText:headerText}">
     <div class="head-sec" header>
-        <i class="icon-circle-delete f-left" (click)="handleAction($event, ACTION_TYPES.SELECTED, null)"></i>
+        <i class="icon-circle-delete f-left"></i>
         <p class="txt">Delivery Address ({{addresses.length}})</p>
     </div>
     <div class="content-popup" content>

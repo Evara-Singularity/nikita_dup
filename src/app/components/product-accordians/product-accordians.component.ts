@@ -43,7 +43,6 @@ export class ProductAccordiansComponent {
     forkJoin(apiList).subscribe(res => {
       if (res[0]['status']) {
         this.ACCORDIAN_DATA[0] = res[0]['data'];
-        this.accordiansDetails = [];
         // accordian data
         if (this.ACCORDIAN_DATA[0]?.length > 0) {
           this.accordiansDetails.push({
@@ -57,14 +56,12 @@ export class ProductAccordiansComponent {
         this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
 
         // accordian data
-        if (this.ACCORDIAN_DATA[1]?.length > 0) {
-          this.accordiansDetails.push({
-            name: 'Popular Brand Categories',
-            extra:this.categoryBrandDetails.brand.brandName,
-            data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
-            icon:'icon-brand_store'
-          });
-        }
+        this.accordiansDetails.push({
+          name: 'Popular Brand Categories',
+          extra: this.categoryBrandDetails.brand.brandName,
+          data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+          icon: 'icon-brand_store'
+        });
       }
       if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
         this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];

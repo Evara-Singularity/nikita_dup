@@ -965,13 +965,16 @@
                 .heading-3 {
                     padding-bottom: 0px !important;
                 }
-                .qn-right {
-                    margin-left: 3px;
+                .qn-number{
+                    width: 30px;
+                }
+                .qn-right{
+                    margin-left: 2px;
                 }
             }
             .answers {
                 padding: 5px 0px;
-                margin-left: 30px;
+                margin-left: 32px;
                 .answer-block {
                     padding-bottom: 5px;
                     // border-bottom: 1px solid #70707036;

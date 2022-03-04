@@ -217,7 +217,7 @@
                                 </p>
                                 <p class="per-qty">
                                     {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                                    <span> /pc</span>
+                                    <span>&nbsp;/pc</span>
                                 </p>
                                 <p *ngIf="items.discount>0" class="green-txt">
                                     {{ items.discount | number:'1.0-2' }}% OFF</p>
@@ -247,7 +247,7 @@
                         <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty
                             <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
                                 number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor |
-                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt"> /pc</span></span></h3>
+                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span></h3>
                     </div>
                 </div>
             </div>
@@ -611,7 +611,7 @@
                 </p>
                 <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
                     <div class="qn">
-                        <span class="heading-3">Q{{i+1}}:</span>
+                        <span class="qn-number heading-3">Q{{i+1}}:</span>
                         <span class="qn-right heading-3">{{item.questionText}}</span>
                     </div>
                     <div class="answers">

@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@app/utils/services/address.service';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
-import { AddressListActionModel, AddressListModel } from '@app/utils/models/shared-checkout.models';
+import { AddressListActionModel, AddressListModel, CreateEditAddressModel } from '@app/utils/models/shared-checkout.models';
 import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 
 @Component({
@@ -30,7 +30,6 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
     @ViewChild("createEditAddressRef", { read: ViewContainerRef })
     createEditAddressRef: ViewContainerRef;
-
 
     invoiceSubscription: Subscription = null;
     addressListCloseSubscription: Subscription = null;
@@ -89,8 +88,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
                 this.displayAddressFormPopup(addressType, ADDRESS_FOR_ACTION);
                 return;
             }
-            if (actionInfo.action === "SELECTED")
-            {
+            if (actionInfo.action === "SELECTED") {
                 //TODO:update the delivery address as selected
                 this.closeAddressListPopup();
                 return;
@@ -110,6 +108,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     {
         let factory = null;
         let verifiedPhones = null;
+        verifiedPhones = this._addressService.getVerifiedPhones(this.deliveryAddressList);
         if (addressType === this.ADDRESS_TYPES.DELIVERY) {
             const { CreateEditDeliveryAddressComponent } = await import("./../create-edit-delivery-address/create-edit-delivery-address.component").finally(() => { });
             factory = this.cfr.resolveComponentFactory(CreateEditDeliveryAddressComponent);
@@ -120,24 +119,37 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             factory = this.cfr.resolveComponentFactory(CreateEditBillingAddressComponent);
             verifiedPhones = this._addressService.getVerifiedPhones(this.billingAddressList);
         }
-        this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
-        this.addressListInstance.instance['isAddMode'] = !(address);
-        this.addressListInstance.instance['invoiceType'] = this.isGSTInvoice ? "tax" : "retail";
-        this.addressListInstance.instance['verifiedPhones'] = verifiedPhones;
-        this.addressListInstance.instance['address'] = address || null;
-        this.addressListInstance.instance['displayCreateEditPopup'] = true;
-        this.createEditAddressSubscription = (this.addressListInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((data) =>
+        this.createEditAddressInstance = this.addressListRef.createComponent(factory, null, this.injector);
+        this.createEditAddressInstance.instance['isAddMode'] = !(address);
+        this.createEditAddressInstance.instance['invoiceType'] = this.isGSTInvoice ? "tax" : "retail";
+        this.createEditAddressInstance.instance['verifiedPhones'] = verifiedPhones;
+        this.createEditAddressInstance.instance['address'] = address || null;
+        this.createEditAddressInstance.instance['displayCreateEditPopup'] = true;
+        this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
         {
-            this.addressListInstance.instance['displayCreateEditPopup'] = false;
-            this.addressListRef.remove();
-            //TODO:update the addresses based on addresstype
-            if (this.addressListInstance)
+            if(response.action)
             {
-                //TODO:update list of addresses in address list pop-up
+                const ADDRESSES = response['addresses'];
+                this.updateAddressAfterAction(addressType, ADDRESSES);
             }
+            this.createEditAddressInstance.instance['displayCreateEditPopup'] = false;
+            this.createEditAddressRef.remove();
         });
     }
 
+    updateAddressAfterAction(addressType, addresses)
+    {
+        if (!addresses)return
+        if (this.addressListInstance) {
+            this.addressListInstance.instance['addresses'] = addresses;
+        }
+        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
+            this.deliveryAddressList = addresses;
+        }
+        else {
+            this.billingAddressList = addresses;
+        }
+    }
 
     get displayBillingAddresses() { return this.isGSTInvoice.value ? 'block' : 'none'; }
 

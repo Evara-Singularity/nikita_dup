@@ -12,6 +12,7 @@ export interface AddressListActionModel
 
 export interface CreateEditAddressModel
 {
+    aType:string
     action: string,
     address: any,
 }

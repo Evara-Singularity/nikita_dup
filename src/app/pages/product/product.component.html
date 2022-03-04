@@ -598,7 +598,7 @@
 
         <section id="ask-question-section" class="Qa">
             <div class="faq-head">
-                <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?</h3>
+                <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
                 <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
                 <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
             </div>

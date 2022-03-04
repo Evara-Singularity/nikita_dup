@@ -57,8 +57,9 @@
             <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
                 [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
         </div>
-    
-        <product-listing-app-promo></product-listing-app-promo>
+        <div class="promo-container">
+           <product-listing-app-promo></product-listing-app-promo>
+        </div>
     
         <!-- This is footer section -->
         <category-footer [categoryFooterData]='categoryFooterData'></category-footer>

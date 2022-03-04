@@ -21,6 +21,7 @@ import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.direct
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 // import { IdleUserSearchNudgeModule } from '@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
+import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -47,6 +48,7 @@ import { PastOrdersModule } from '@app/components/past-orders/past-orders.compon
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
+    NotFoundModule
   ],
   exports: [],
   providers: [NgxSiemaService],

@@ -29,29 +29,7 @@
         [productsListingData]="_productListService?.productListingData">
     </shared-product-listing>
 
-    <div class="accordian_footer_panel"
-        *ngIf="API_RESULT['searchData'][0]?.categoriesRecommended && _commonService.selectedFilterData.page < 2">
-        <div class="panel-head" style="margin-top: 0px;">
-            <div class="container">
-                <h3 class="heading-3" [closeOtherTabs]="true"
-                    [appKpToggle]="{idName: 'attributeAccoridan', iconMode : true}">
-                    Related Searches
-                    <span class="icon-accordian">
-                        <i class="icon-down"></i>
-                    </span>
-                </h3>
-            </div>
-        </div>
-        <div [id]="'attributeAccoridan'" [style.display]="'block'" class="panel-body">
-            <div class="container category_links">
-                <div
-                    *ngFor="let category of API_RESULT['searchData'][0]?.categoriesRecommended | slice:0:10; let i = index;">
-                    <a (click)="goToRecommendedCategory(category?.categoryId, category)">{{ category?.categoryName
-                        }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <app-accordian (outerRoutingEvent)="goToRecommendedCategory($event)" [accordiansDetails]="accordiansDetails"></app-accordian>
 
     <div class="promo-container">
         <product-listing-app-promo></product-listing-app-promo>

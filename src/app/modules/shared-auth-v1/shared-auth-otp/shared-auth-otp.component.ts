@@ -51,9 +51,13 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     ngAfterViewInit(): void
     {
         this.sendTracking();
-        this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((value) =>
+        this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((otps:any[]) =>
         {
-            if (this.otpFormArray.valid) { this.validateOTP(); }
+            const OTPS: string = otps.join("").trim();
+            if (OTPS.length === 6 && this.otpFormArray.valid)
+            {
+                this.validateOTP(OTPS);
+            }
         });
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
         this.OTP_INPUTS[0].focus();
@@ -97,22 +101,21 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         )
     }
 
-    validateOTP()
+    validateOTP(otpValue)
     {
-        const REQUEST = this.getUserData();
-        REQUEST['otp'] = (this.otpFormArray.value as string[]).join("");
         this._globalLoader.setLoaderState(true);
+        const REQUEST = this.getUserData();
+        REQUEST['otp'] = otpValue;
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-
                 if (response['status']) {
-                    this.verifiedOTP = this.otpValue;
+                    this.verifiedOTP = otpValue;
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(this.otpValue); }, 200) };
+                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(otpValue); }, 200) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
@@ -146,6 +149,8 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     onPaste(event: ClipboardEvent, inputIndex)
     {
+        event.stopPropagation();
+        event.preventDefault();
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
         let pastedText:string = (clipboardData) ? clipboardData.getData('text') : '';
         this.autoFillOTP(pastedText);
@@ -168,6 +173,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     processOTPError(response)
     {
+        this._globalLoader.setLoaderState(false);
         const invalidOTPMessage = (response['message'] as string).toLowerCase();
         this._toastService.show({ type: 'error', text: invalidOTPMessage });
         this._router.navigate(["/login"]);

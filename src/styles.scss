@@ -389,9 +389,11 @@ a {
 .pt-15 {
     padding-top: 15px;
 }
-
-.pb-15 {
+.pb-10 {
     padding-bottom: 15px;
+}
+.pb-15 {
+    padding-bottom: 10px;
 }
 
 
@@ -411,7 +413,6 @@ a {
 .mb-10{
     margin-bottom:10px;
 }
-
 .mt-15 {
     margin-top: 15px;
 }
@@ -421,8 +422,11 @@ a {
 .mt-25{
     margin-top: 25px;
 }
-.mt-50{
-    margin-top:50px;
+.ml-10{
+    margin-left: 10px;
+}
+.ml-15{
+    margin-left: 15px;
 }
 .mb-15 {
     margin-bottom: 15px;
@@ -668,6 +672,15 @@ header-nav {
 }
 .icon-google-login:before{
     content: "\e938";
+}
+.icon-arrow-right-s-line::before{
+    content: "\e9c9";
+}
+.icon-attribute::before{
+    content: "\ea01";
+}
+.icon-categories:before{
+    content: "\e9c0";
 }
 .icon-automotive:before,
 .icon-216000000::before {

@@ -453,3 +453,23 @@ datalist {
      }
     }
 }
+
+.chk-txt {
+    font-size: $medium-font;
+    width: calc(100% - 25px);
+    float: right;
+
+    .heading {
+        font-weight: bold;
+        display: block;
+        font-size: $large-font;
+        color: #343434;
+        line-height: 21px;
+    }
+
+    .txt {
+        font-size: $medium-font;
+        color: #343434;
+        font-weight: bold;
+    }
+}

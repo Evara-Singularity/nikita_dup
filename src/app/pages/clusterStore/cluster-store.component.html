@@ -42,42 +42,7 @@
 </div>
 
 <div *ngIf="pageNotFound">
-    <section class="page-not-found">
-        <img src="{{imagePath + '1/img/Truck.png'}}" class=" wp-100">
-        <div class="container align-center">
-            <h3 class="f-16">Oops!!! Page not Delivered!!</h3>
-            <p class="mb-15 pb-10 f-14">We apologize! The page could not be delivered as the address does not exist on
-                this
-                planet.
-            </p>
-            <ul class="categories-list">
-                <li (click)="_commonService.navigateTo('/electricals/211000000')">
-                    <i class="icon-electricals"></i>
-                    <span>Electricals</span>
-                </li>
-                <li (click)="_commonService.navigateTo('/hand-tools/112000000')">
-                    <i class="icon-hand-tool"></i>
-                    <span>Hand Tools</span>
-                </li>
-                <li (click)="_commonService.navigateTo('/safety-and-security/116000000')">
-                    <i class="icon-safety"></i>
-                    <span>Safety</span>
-                </li>
-                <li (click)="_commonService.navigateTo('/security/120000000')">
-                    <i class="icon-security"></i>
-                    <span>Security</span>
-                </li>
-                <li (click)="_commonService.navigateTo('/power-tools/114000000')">
-                    <i class="icon-power-tool"></i>
-                    <span>Power Tools</span>
-                </li>
-                <li (click)="_commonService.navigateTo('/all-categories')">
-                    <i class="icon-all-category"></i>
-                    <span>more</span>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <app-page-not-delivered></app-page-not-delivered>
 
     <section class="test toggle-panel mt-10 about_moglix" id="footerContainer">
         <div class="toggle-head pad-lr-0">

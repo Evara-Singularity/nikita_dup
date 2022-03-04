@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@services/productList.service';
-import { Router } from '@angular/router';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -11,6 +10,7 @@ import { DOCUMENT } from '@angular/common';
 import { Meta, Title } from '@angular/platform-browser';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
+import { AccordiansDetails,AccordianDataItem } from '@utils/models/accordianInterface';
 
 let digitalData = {
   page: {},
@@ -28,6 +28,7 @@ export class SearchComponent implements OnInit {
   public didYouMean: any;
   public headerNameBasedOnCondition;
   @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
+  accordiansDetails: AccordiansDetails[] = [];
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -121,6 +122,9 @@ export class SearchComponent implements OnInit {
         this.setAdobeTrackingData();
       }
 
+      // set Accordian data
+      this.setAccordianData();
+
       // Send GTM call
       this.sendGTMCall();
 
@@ -130,6 +134,17 @@ export class SearchComponent implements OnInit {
       // Set canonical Urls
       this.setCanonicalUrls();
 
+    });
+  }
+
+  private setAccordianData() {
+    this.accordiansDetails = [];
+    this.accordiansDetails.push({
+        name: 'Related Searches',
+        outerNavRouteEvent: true,
+        isNotVisible: !(this._commonService.selectedFilterData.page < 2),
+        data: this.API_RESULT['searchData'][0]?.categoriesRecommended.map(e => ({ name: e.categoryName, link: '', category: e }) as AccordianDataItem),
+        icon:'icon-attribute'
     });
   }
 
@@ -247,14 +262,13 @@ export class SearchComponent implements OnInit {
 
   toggleRcommendFlag = true;
   recommendedCategory: string = '';
-  goToRecommendedCategory(categoryId, cat) {
+  goToRecommendedCategory(data) {
     this.toggleRcommendFlag = false;
-    this.recommendedCategory = cat['categoryName'];
     let extras = {
       queryParams: { ...this._activatedRoute.snapshot.queryParams }
     };
     extras['queryParams']['search_query'] = this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString ? this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString : extras['queryParams']['search_query'];
-    extras['queryParams']['category'] = categoryId;
+    extras['queryParams']['category'] = data.categoryId;
     extras['queryParams']['toggleRcommendFlag'] = true;
     extras['queryParams']['page'] = 1;
     delete extras['queryParams']['orderWay'];
@@ -291,7 +305,7 @@ export class SearchComponent implements OnInit {
    * @param event - Get the category on which the user has currently clicked on specific for SEARCH page
    */
   handleCategoryClicked(event) {
-    this.goToRecommendedCategory(event.categoryId, event);
+    this.goToRecommendedCategory(event);
   }
 
   setCategoriesPrimaryForCategoryMidPlpFilter() {

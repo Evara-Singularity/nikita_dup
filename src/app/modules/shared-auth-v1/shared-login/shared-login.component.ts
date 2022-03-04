@@ -50,9 +50,6 @@ export class SharedLoginComponent implements OnInit
     authFlow:AuthFlowType = null;
     paramsSubscriber = null;
     state;
-    //Testing
-    innerHeight = 0;
-    innerWidth = 0;
 
     constructor(
         private _fb: FormBuilder,
@@ -83,9 +80,6 @@ export class SharedLoginComponent implements OnInit
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];
-            // if (data['state']) {
-            //     this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            // }
         });
     }
 

@@ -12,7 +12,6 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductListService } from '@app/utils/services/productList.service';
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
@@ -78,7 +77,6 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   constructor(
     private _cartService: CartService,
-    private _http: HttpClient,
     public _productListService: ProductListService,
     private _loader: GlobalLoaderService,
     private _router: Router,
@@ -90,7 +88,6 @@ export class ProductHorizontalCardComponent implements OnInit {
     private _analytics: GlobalAnalyticsService,
     private _toastMessageService: ToastMessageService,
     private _productService: ProductService,
-    private _trackingService: TrackingService,
   ) {
   }
 
@@ -203,9 +200,9 @@ export class ProductHorizontalCardComponent implements OnInit {
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
-      const PRODUCT = this._trackingService.basicPLPTracking(this.product);
+      const PRODUCT = this._analytics.basicPLPTracking(this.product);
       this.product['sellingPrice'] = this.product['salesPrice'];
-      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "listing");
+      let analyticsDetails = this._analytics.getCommonTrackingObject(PRODUCT, "listing");
       let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };

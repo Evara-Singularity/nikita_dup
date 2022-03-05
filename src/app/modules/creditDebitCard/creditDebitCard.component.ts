@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -10,7 +10,7 @@ import { CheckoutService } from '@app/utils/services/checkout.service';
 import { CreditCardValidator } from 'ng2-cc-library';
 import * as creditCardType from 'credit-card-type';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { TrackingService } from '@app/utils/services/tracking.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare var dataLayer;
 @Component({
@@ -19,24 +19,23 @@ declare var dataLayer;
     styleUrls:['./creditDebit.scss']
 })
 
-export class CreditDebitCardComponent {
-    API: {}
+export class CreditDebitCardComponent implements OnInit  {
+
+    @Input()type:any;
+
+    API: any = CONSTANTS;
     prepaidsubscription: Subscription;
     creditDebitCardForm: FormGroup;
-    isValid: boolean;
-    payuData: {};
+    isValid: boolean = false;
+    payuData: {} = {};
     cart: {};
     cartItems: Array<{}>;
-    expYrs: Array<any>;
+    expYrs: Array<any> = [];
     cartSession: any;
-    expMons: Array<{ key: string, value: string }>;
+    expMons: Array<{ key: string, value: string }> =  CONSTANTS.GLOBAL.expMons;
     cartSessionObject: any;
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
-    @Input()type:any;
-    set isShowLoader(value) {
-        this.loaderService.setLoaderState(value);
-    }
     monthSelectPopupStatus: boolean = false;
     selectedMonth: string = null;
     yearSelectPopupStatus: boolean = false;
@@ -48,23 +47,24 @@ export class CreditDebitCardComponent {
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
         private _cartService: CartService, 
-        private loaderService: GlobalLoaderService,
-        private _formBuilder: FormBuilder,
-        private _trackingService: TrackingService) {
+        private _loaderService: GlobalLoaderService,
+        private _analytics: GlobalAnalyticsService,
+        private _formBuilder: FormBuilder) {
+        this.createYears();
+        this.intializeForm();
 
-        this.API = CONSTANTS;
-        this.payuData = {};
-        this.expYrs = [];
-        this.expMons = CONSTANTS.GLOBAL.expMons;
+    }
+
+    private createYears() {
         let todayDate = new Date();
-        ////console.log(todayDate);
         let currentYear = todayDate.getFullYear();
         for (let i = 0; i < 20; i++) {
-            this.expYrs.push({key: currentYear, value: currentYear});
+            this.expYrs.push({ key: currentYear, value: currentYear });
             currentYear = currentYear + 1;
         }
+    }
 
-        this.isValid = false;
+    private intializeForm() {
         this.creditDebitCardForm = this._formBuilder.group({
             "store_card": [true],
             "mode": ['CC', [Validators.required]],
@@ -76,78 +76,53 @@ export class CreditDebitCardComponent {
                 "ccvv": [null, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
             }),
         });
+    }
 
-        let userSession = this._localAuthService.getUserSession();
-        //console.log(userSession);
-        let params = { "sessionid": userSession.sessionId };
+    set isShowLoader(value) {
+        this._loaderService.setLoaderState(value);
     }
 
     ngOnInit() {
-        this.cartSession = Object.assign({}, this._cartService.getCartSession());
-        this.getPrePaidDiscount('CC');
-    
-        this.prepaidsubscription=this._cartService.prepaidDiscountSubject.subscribe((data) => {
-           this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
-          // this._cartService.prepaidDiscountSubject.unsubscribe();
+        this.cartSession = this._cartService.getCartSession();
+        this.getPrePaidDiscount('CC'); // Credit card as default options
+
+        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+            this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
         })
-        //console.log("ngOnInit Called");
-        //console.log('Checkout Address', this._checkoutService.getCheckoutAddress());
     }
 
-    ngAfterViewInit() {
-        //console.log("ngAfterViewInit Called")
-    }
 
     pay(data, valid) {
-        // console.log(this.creditDebitCardForm, data)
-        if (!valid)
-            return;
-        //console.log(data);
 
-        let cartSession = this._cartService.getCartSession();
-        let cart = cartSession["cart"];
-        let cartItems = cartSession["itemsList"];
-
-        let ccnum = data.requestParams.ccnum.replace(/ /g, '');
-
-        //console.log(ccnum, creditCardType(ccnum));
-
-        let bankcode = this.getBankCode(ccnum);
-
-        let userSession = this._localAuthService.getUserSession();
-
-        let addressList = this._checkoutService.getCheckoutAddress();
-
-        let shippingInformation = {
+        if (!valid) return;
+           
+        const cartSession = this._cartService.getCartSession();
+        const ccnum = data.requestParams.ccnum.replace(/ /g, '');
+        const bankcode = this.getBankCode(ccnum);
+        const userSession = this._localAuthService.getUserSession();
+        const addressList = this._checkoutService.getCheckoutAddress();
+        const shippingInformation = {
             'shippingCost': cartSession['cart']['shippingCharges'],
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
 
-        dataLayer.push({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': data.mode
-        });
-
-        let extra = {
+        const extra = {
             "mode": data.mode,
             "paymentId": data.mode == 'CC' ? 9 : 2,
             addressList: addressList
         };
-        if(this.type == 'tax')
-            extra["paymentId"] = data.mode=="CC" ?  131 : 130;    
 
-        let newdata = {
+        if(this.type == 'tax'){
+            extra["paymentId"] = data.mode=="CC" ?  131 : 130;    
+        }
+            
+        const newdata = {
             "platformCode": "online",
             "mode": extra.mode,
             "paymentId": extra.paymentId,
             "requestParams": {
-                //"firstname": "Kuldeep",
-                // "firstname": userSession["userName"].split(' ').slice(0, -1).join(' '),
                 "firstname": addressList["addressCustomerName"].split(' ')[0],
-                // "phone": userSession["phone"] != undefined ? userSession["phone"] : "",
                 "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
                 "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
                 "ccexpyr": data.requestParams.ccexpyr,
@@ -163,16 +138,17 @@ export class CreditDebitCardComponent {
             },
             "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
         };
+
         if(this.type=="tax"){
             newdata["paymentGateway"]="razorpay";
             newdata.requestParams['bankcode'] = "card";
             newdata["paymentId"] = data.mode=="CC" ?  131 : 130;            
         }
         extra['paymentId'] = newdata['paymentId'];
-        //console.log("New Data for pay", newdata);
-        //   $("#page-loader").show();
+
         const CARD_TYPE = data.mode == "CC" ? "credit" : "debit";
-        this._trackingService.sendAdobeOrderRequestTracking(newdata ,`pay-initiated:${CARD_TYPE} card`);
+        
+        this._analytics.sendAdobeOrderRequestTracking(newdata ,`pay-initiated:${CARD_TYPE} card`);
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe( (res) : void => {
 
@@ -190,25 +166,16 @@ export class CreditDebitCardComponent {
                 payuData = {
                     formUrl: data.formUrl,
                     key: (data.key != undefined && data.key != null) ? data.key : "",
-                    //key: "gtKFFx",
                     txnid: (data.txnid != undefined && data.txnid != null) ? data.txnid : "",
-                    //txnid: "987678567",
                     amount: (data.amount != undefined && data.amount != null) ? data.amount : "",
-                    //amount: "1.01",
                     productinfo: data.productinfo,
-                    //productinfo: "MSNghihjbc",
                     firstname: data.firstname,
-                    //firstname: "Kuldeep",
-                    //lastname: (data.lastname != undefined && data.lastname != null) ? data.lastname : "",
-                    //zipcode: (data.zipcode != undefined && data.zipcode != null) ? data.zipcode : "",
                     email: data.email,
-                    //email: "kuldeep.panchal669@moglix.com",
                     phone: data.phone,
                     surl: data.surl,
                     furl: data.furl,
                     curl: data.curl,
                     hash: data.hash,
-                    //hash:"3bcbc9f6b5c4c8ab751b433f73a42e42f42057e3179458f71d8ffe8f92df55ff73ce967f7c99bf050054bfcfcde8b1c464df5d3f26e5199a784d7b969072da05",
                     pg: data.pg,
                     bankcode: data.bankcode,
                     ccnum: data.ccnum,
@@ -226,13 +193,19 @@ export class CreditDebitCardComponent {
             this.updateBuyNowToLocalStorage();
 
             this.payuData = payuData;
-
-            //console.log(payuData);
             this.isValid = true;
             setTimeout(() => {
                 this.isShowLoader = false;
-                // $("#page-loader").hide();
             }, 1000);
+        });
+    }
+
+    private paymentInitiatedAnalyticCall(shippingInformation: { shippingCost: any; couponUsed: any; GST: string; }, addressList: {}, data: any) {
+        this._analytics.sendGTMCall({
+            'event': 'checkoutStarted',
+            'shipping_Information': shippingInformation,
+            'city': addressList["city"],
+            'paymentMode': data.mode
         });
     }
 
@@ -291,8 +264,6 @@ export class CreditDebitCardComponent {
         this.selectedYear = null;
     }
 
-
-
     getBankCode(ccnum) {
         //console.log("Get Bank Code", ccnum);
         let cardType = creditCardType(ccnum);
@@ -315,7 +286,6 @@ export class CreditDebitCardComponent {
     }
 
     selectMonth(data) {
-        // console.log('selectMonth ==>', data);
         if (data) {
             this.selectedMonth = data['key'];
             (this.creditDebitCardForm.get('requestParams.ccexpmon') as FormControl).setValue(data.key);
@@ -328,7 +298,6 @@ export class CreditDebitCardComponent {
     }
 
     selectYear(data) {
-        // console.log('selectMonth ==>', data);
         if (data) {
             
             this.selectedYear = data['value'];
@@ -343,7 +312,6 @@ export class CreditDebitCardComponent {
 
     ngOnDestroy() {
         this.prepaidsubscription.unsubscribe();
-      //  this._cartService.prepaidDiscountSubject.complete();
         this._cartService.setCartSession(this.cartSession);
         this._cartService.orderSummary.next(this.cartSession);
     }

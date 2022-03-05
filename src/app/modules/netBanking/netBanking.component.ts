@@ -10,7 +10,7 @@ import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { TrackingService } from '@app/utils/services/tracking.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare var dataLayer;
 
@@ -75,7 +75,7 @@ export class NetBankingComponent {
         private _objectToArray: ObjectToArray,
         private _loaderService: GlobalLoaderService,
         private _formBuilder: FormBuilder,
-        private _trackingService: TrackingService) {
+        private _analytics: GlobalAnalyticsService) {
         this.payuData = {};
         this.isValid = false;
     }
@@ -182,7 +182,7 @@ export class NetBankingComponent {
             newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"] = this.netBankingForm.get('requestParams').get('paymentId').value;
 
         }
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, `pay-initiated:net banking`);
+        this._analytics.sendAdobeOrderRequestTracking(newdata, `pay-initiated:net banking`);
         this.isShowLoader = true;
         //console.log("New Data for pay", newdata);
         // $("#page-loader").show();

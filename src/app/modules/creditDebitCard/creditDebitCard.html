@@ -1,6 +1,7 @@
 <section class="creditDebitCardInner">
     <h3 class="heading-3">Please Enter Your Debit/Credit Card Details</h3>
-    <form class="material-form material-form-boxed" [formGroup]="creditDebitCardForm" (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
+    <form class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
+        (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
         <div class="radio-with-label-container">
             <label class="radio-with-label ">
                 <input type="radio" (change)="getPrePaidDiscount('CC')" formControlName="mode" value="CC">
@@ -16,7 +17,8 @@
         <ng-container formGroupName="requestParams">
             <div class="input-field-boxed">
                 <label>Card Number</label>
-                <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff placeholder="Enter Card Details">
+                <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff
+                    placeholder="Enter Card Details">
             </div>
             <div class="card-expiryDate">
                 <label>Expiry Date</label>
@@ -28,10 +30,10 @@
                                 <span>{{selectedMonth || 'MM'}}</span>
                             </div>
                         </div>
-                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus" (selectedValue$)="selectMonth($event)" [type]="'MONTH'" [compare]="selectedMonth"></select-popup>
-                        <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
-                            <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
-                        </select> -->
+                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
+                            [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
+                            (selectedValue$)="selectMonth($event)" [type]="'MONTH'" [compare]="selectedMonth">
+                        </select-popup>
                     </div>
                     <div class="input-field-boxed">
                         <input type="hidden" formControlName="ccexpyr" #expireYear />
@@ -40,10 +42,10 @@
                                 <span>{{selectedYear || 'YYYY'}}</span>
                             </div>
                         </div>
-                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'" [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus" (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear"></select-popup>
-                        <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
-                            <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
-                        </select> -->
+                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
+                            [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
+                            (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
+                        </select-popup>
                     </div>
                 </div>
             </div>
@@ -51,7 +53,8 @@
                 <label>Enter CVV</label>
                 <div class="multiple-form-field">
                     <div class="input-field-boxed">
-                        <input type="password" placeholder="CVV" id="cc-cvc" formControlName="ccvv" type="password" class="w-60" #ccCvc kpAutocompleteOff maxlength="3">
+                        <input type="password" placeholder="CVV" id="cc-cvc" formControlName="ccvv" type="password"
+                            class="w-60" #ccCvc kpAutocompleteOff maxlength="3">
                     </div>
                     <i class="icon-cvv"></i>
                     <span class="cvv-text">
@@ -74,7 +77,8 @@
         <div class="continue-button">
             <div class="container">
                 <p class="total-mount" *ngIf="totalPayableAmount>0">
-                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                    <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number :
+                    '1.2-2'}}
                 </p>
                 <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn">PAY</button>
             </div>

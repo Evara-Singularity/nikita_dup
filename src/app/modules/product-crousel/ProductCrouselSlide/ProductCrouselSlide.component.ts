@@ -22,7 +22,6 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { LocalStorageService } from "ngx-webstorage";
 import { Router } from "@angular/router";
 import { CommonService } from "@app/utils/services/common.service";
-import { TrackingService } from '@app/utils/services/tracking.service';
 
 @Component({
   selector: "ProductCrouselSlide",
@@ -67,7 +66,6 @@ export class ProductCrouselSlideComponent {
   @Input('productBo') productBo: any;
 
   constructor(
-    private globalAnalyticService: GlobalAnalyticsService,
     private _commonService: CommonService,
     @Inject(PLATFORM_ID) private platformId: Object,
     public localStorageService: LocalStorageService,
@@ -75,7 +73,7 @@ export class ProductCrouselSlideComponent {
     private _router: Router,
     private _siemaCrouselService: SiemaCrouselService,
     private ngxSiemaService: NgxSiemaService,
-    private _trackingService: TrackingService,
+    private _analytics: GlobalAnalyticsService,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -144,8 +142,8 @@ export class ProductCrouselSlideComponent {
     let analyticsDetails = null;
     if(this.productBo)
     {
-        const PRODUCT = this._trackingService.basicPDPTracking(this.productBo);
-        analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
+        const PRODUCT = this._analytics.basicPDPTracking(this.productBo);
+        analyticsDetails = this._analytics.getCommonTrackingObject(PRODUCT, "pdp");
     }
     let videoDetails = { url: link, params: this.ytParams };
     let modalData = {
@@ -166,7 +164,7 @@ export class ProductCrouselSlideComponent {
       subSection: "moglix:pdp carausel main image:pdp",
       linkPageName: "moglix:" + this._router.url,
     };
-    this.globalAnalyticService.sendAdobeCall({ page }, "genericPageLoad");
+    this._analytics.sendAdobeCall({ page }, "genericPageLoad");
   }
 
   clicked() {

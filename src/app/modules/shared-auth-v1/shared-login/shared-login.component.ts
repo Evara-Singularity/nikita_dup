@@ -192,21 +192,16 @@ export class SharedLoginComponent implements OnInit
     // supporting functions
     navigateToNext(isUserExists)
     {
-        if (this.isCheckout) {
-            (isUserExists) ?
-                this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.OTP_TAB) :
-                this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.SIGN_UP_TAB)
-
-        } else {
-            const LINK = (isUserExists) ? "/otp" : "/sign-up";
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 
-                    'backurl': this._sharedAuthService.redirectUrl,
-                    'state': this.activatedRoute.snapshot.queryParams.state
-                },
-            };
-            this._router.navigate([LINK], navigationExtras);
-        }
+        const LINK = (isUserExists) ?
+            ((this.isCheckout) ? "/checkout/otp" : "/otp") :
+            ((this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 
+                'backurl': this._sharedAuthService.redirectUrl,
+                'state': this.activatedRoute.snapshot.queryParams.state
+            },
+        };
+        this._router.navigate([LINK], navigationExtras);
     }
 
     toggleLoginType(type)

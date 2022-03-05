@@ -1,4 +1,3 @@
-import { TrackingService } from './../../utils/services/tracking.service';
 import { Component, EventEmitter } from '@angular/core';
 import { CashOnDeliveryService } from './cashOnDelivery.service';
 import { Router } from '@angular/router';
@@ -12,6 +11,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import CONSTANTS from '../../config/constants';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare var dataLayer;
 @Component({
@@ -35,8 +35,17 @@ export class CashOnDeliveryComponent {
         this._loaderService.setLoaderState(status)
     }
 
-    constructor(private _localStorageService: LocalStorageService, private _tms: ToastMessageService, private _checkoutService: CheckoutService,  private _commonService: CommonService, private _router: Router, private _localAuthService: LocalAuthService, private _cartService: CartService, private _cashOnDeliveryService: CashOnDeliveryService, private _loaderService: GlobalLoaderService,
-        private _trackingService:TrackingService) {
+    constructor(
+        private _localStorageService: LocalStorageService,
+        private _tms: ToastMessageService,
+        private _checkoutService: CheckoutService,
+        private _commonService: CommonService,
+        private _router: Router,
+        private _localAuthService: LocalAuthService,
+        private _cartService: CartService,
+        private _cashOnDeliveryService: CashOnDeliveryService,
+        private _loaderService: GlobalLoaderService,
+        private _analytics: GlobalAnalyticsService) {
         this.transactionId = null;
         this.isShowLoader = false;
     }
@@ -146,7 +155,7 @@ export class CashOnDeliveryComponent {
                 'validatorRequest': this._commonService.createValidatorRequest(cartSession, userSession, extra)
             }; 
         }   
-        this._trackingService.sendAdobeOrderRequestTracking(newdata, "pay-initiated:cash on delivery");
+        this._analytics.sendAdobeOrderRequestTracking(newdata, "pay-initiated:cash on delivery");
         this._commonService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {
                 this.submittedOnce = false;

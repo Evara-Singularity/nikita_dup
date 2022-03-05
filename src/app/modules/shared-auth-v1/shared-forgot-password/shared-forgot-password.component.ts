@@ -21,6 +21,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly LOGIN_URL = "/login";
+    readonly CHECKOUT_LOGIN_URL = "/checkout/login";
     @Input('isCheckout') isCheckout = false;
     isPasswordType = true;//to set input[type] = text/password.
     authFlow: AuthFlowType;//gives flowtype & identifier information
@@ -40,7 +41,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     {
         this.authFlow = this._localAuthService.getAuthFlow();
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
-        if (!this.authFlow && this.isCheckout) { this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB); return; }
+        if (!this.authFlow && this.isCheckout) {  this.navigateTo(this.CHECKOUT_LOGIN_URL); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
 
@@ -63,10 +64,11 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                         this._checkoutLoginService.setPasswordResetStatus({
                             status: true, message: 'Password updated successfully. Now try Sign-In',
                         })
-                        this._sharedAuthService.emitCheckoutChangeTab(this._sharedAuthService.LOGIN_TAB);
+                        this.navigateTo(this.CHECKOUT_LOGIN_URL);
                         return;
+                    }else{
+                        this.navigateTo(this.LOGIN_URL);
                     }
-                    this.navigateTo(this.LOGIN_URL);
                 } else {
                     this._toastService.show({ type: 'error', text: response['message'] });
                 }

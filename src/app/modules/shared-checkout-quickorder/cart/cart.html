@@ -14,8 +14,7 @@
             </div>
             <div class="product-detail">
                 <div class="p-name">
-                    <a> {{ (item.productName.length>50) ? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
-                    <!-- <a  (click)="redirectToProductURL(showLink,item.productUrl)" > {{ (item.productName.length > 50) }}</a> -->
+                    <a  (click)="redirectToProductURL(item.productUrl)" > {{ (item.productName.length > 50) ? (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
                 </div>
                 <p class="seller">
                     Brand: {{item.brandName}}
@@ -24,15 +23,15 @@
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹ {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax  | mathFloor | number : '1.2-2'}}</span>
                 </p>
-                <!-- <div *ngIf="!item.oos" class="remove-btn" (click)="showPopup(sbm.index = i)">
+                <div *ngIf="!item.oos" class="remove-btn" (click)="removePopup = true">
                     <span>REMOVE</span>
-                </div> -->
+                </div>
             </div>
         </div>
-        <!-- <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="showPopup(sbm.index = i)">
+        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true">
             <span>REMOVE</span>
-        </div> -->
-        <!-- <div class="alert-box" *ngIf="removePopup && sbm.index == i">
+        </div>
+        <div class="alert-box" *ngIf="removePopup">
             <div class="overlay"></div>
             <div class="content-area">
                 <div class="info-area">
@@ -40,11 +39,11 @@
                     <p class="info">Are you sure you want to remove this item?</p>
                 </div>
                 <div class="button-area">
-                    <button (click)="cancelRemove()" class="cancel">CANCEL</button>
+                    <button (click)="removePopup = false" class="cancel">CANCEL</button>
                     <button (click)="deleteProduct(sbm.index = i)" class="continue">REMOVE</button>
                 </div>
             </div>
-        </div> -->
+        </div>
         <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle">
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>

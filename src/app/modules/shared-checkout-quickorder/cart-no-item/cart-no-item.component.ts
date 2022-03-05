@@ -1,3 +1,4 @@
+import { CartService } from '@services/cart.service';
 import { CONSTANTS } from '@config/constants';
 import { Component, Input } from '@angular/core';
 
@@ -9,4 +10,6 @@ import { Component, Input } from '@angular/core';
 
 export class CartNoItemComponent {
     imagePath = CONSTANTS.IMAGE_BASE_URL;
+
+    constructor(public cartService: CartService){}
 }

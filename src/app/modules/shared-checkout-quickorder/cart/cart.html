@@ -1,5 +1,5 @@
-<div *ngIf="cartData?.itemsList && cartData?.itemsList.length > 0">
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartData?.itemsList; let i = index">
+<div *ngIf="cartSession?.itemsList && cartSession?.itemsList.length > 0">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartSession?.itemsList; let i = index">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="button-area">
                     <button (click)="removePopup = false" class="cancel">CANCEL</button>
-                    <button (click)="deleteProduct(sbm.index = i)" class="continue">REMOVE</button>
+                    <button (click)="deleteProduct(i)" class="continue">REMOVE</button>
                 </div>
             </div>
         </div>

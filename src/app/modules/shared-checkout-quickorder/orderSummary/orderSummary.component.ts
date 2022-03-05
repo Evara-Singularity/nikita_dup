@@ -18,19 +18,9 @@ declare let dataLayer: any;
     styleUrls: ['./orderSummary.scss'],
 })
 export class OrderSummaryComponent {
-
-    constructor(
-        public router: Router,
-        public _dataService: DataService,
-        public orderSummaryService: OrderSummaryService,
-        public _cartService: CartService,
-        private _tms: ToastMessageService,
-        private localStorageService: LocalStorageService,
-        private _localAuthService: LocalAuthService,
-        private loaderService: GlobalLoaderService) {
-    }
-    shippingCharges = 0;
-
+    shippingCharges: number = 0;
     @Input('orderSummaryData') orderSummaryData;
+
+    constructor() {}
 
 }

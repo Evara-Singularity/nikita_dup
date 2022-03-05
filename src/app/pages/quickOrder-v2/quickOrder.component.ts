@@ -66,7 +66,6 @@ export class QuickOrderComponent {
                 return this.getShippingValue(cartSession);
             }),
         ) .subscribe(result => {
-            this.API_RESPONSE = result;
             this.API_RESPONSE = this.cartService.updateCart(result);
             this.cartService.setCartSession(this.API_RESPONSE);
         });

@@ -36,10 +36,6 @@ declare let _satellite;
 })
 
 export class CartComponent {
-    @Input('cartData') cartData;
-    addToCartToastInstance = null;
-    @ViewChild('addToCartToast', { read: ViewContainerRef }) addToCartToastContainerRef: ViewContainerRef;
-
     constructor(
         private _location: Location,
         public _state: GlobalState,
@@ -64,29 +60,29 @@ export class CartComponent {
         private _tms: ToastMessageService,
         private _productService: ProductService,
     ) {
-        this.sbm = { index: null }; // sbm: show bottom menu
     }
 
     ngOnInit() {
-        console.log(this.cartData);
+        this.cartSession = this._cartService.getCartSession();
     }
 
     updateCartItemQuantity(quantityTarget, index, action, buyNow = false) {
         if (quantityTarget < 1) return;
 
-        let updatedCartItemCount = this.cartData.itemsList[index].productQuantity;
+        let updatedCartItemCount = this.cartSession.itemsList[index].productQuantity;
         let incrementOrDecrementBy = 0;
         
         if (action === 'increment') {
             incrementOrDecrementBy = 1;
-            updatedCartItemCount = this.cartData.itemsList[index].productQuantity + 1;
+            updatedCartItemCount = this.cartSession.itemsList[index].productQuantity + 1;
         } else if (action === 'decrement') {
             if (quantityTarget < 2) return;
             incrementOrDecrementBy = -1;
-            updatedCartItemCount = this.cartData.itemsList[index].productQuantity - 1;
+            updatedCartItemCount = this.cartSession.itemsList[index].productQuantity - 1;
         }
         this._loader.setLoaderState(true);
-        const productMsnId = this.cartData.itemsList[index].productId;
+
+        const productMsnId = this.cartSession.itemsList[index].productId;
         this._productService.getProductGroupDetails(productMsnId).pipe(
             map(productRawData => {
                 if (productRawData['productBO']) {
@@ -105,39 +101,142 @@ export class CartComponent {
                     this._tms.show({ type: 'error', text: "Quantity not available" });
                     return;
                 }
-                productDetails.productQuantity = incrementOrDecrementBy; 
-                this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
-                    if (!result && this._cartService.buyNowSessionDetails) {
-                        this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
-                    } else {
-                        if (result) {
-                            if (!buyNow) {
-                                this._cartService.setCartSession(result);
-                                this._cartService.cart.next({
-                                    count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
-                                    currentlyAdded: productDetails
-                                });
-                                this.cartData.itemsList[index].productQuantity = updatedCartItemCount;
-                                this.cartData.itemsList[index]['message'] = "Cart quantity updated successfully";
-                                this._tms.show({ type: 'success', text: this.cartData.itemsList[index]['message'] });
-                            } else {
-                                this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
-                            }
+                productDetails.productQuantity = incrementOrDecrementBy;
+                let isQua = this.isQuantityAvailable(updatedCartItemCount, productDetails, index);
+                if (isQua["status"]) {
+                    this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
+                        if (!result && this._cartService.buyNowSessionDetails) {
+                            this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
                         } else {
-                            this._tms.show(('Product already added'));
+                            if (result) {
+                                if (!buyNow) {
+                                    this._cartService.setCartSession(result);
+                                    this._cartService.cart.next({
+                                        count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
+                                        currentlyAdded: productDetails
+                                    });
+                                    this.cartSession.itemsList[index].productQuantity = updatedCartItemCount;
+                                    this.cartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
+                                    this._tms.show({ type: 'success', text: this.cartSession.itemsList[index]['message'] });
+                                } else {
+                                    this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+                                }
+                            } else {
+                                this._tms.show(('Product already added'));
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    this._tms.show({ type: 'error', text: productDetails.quantityAvailable + ' is the maximum quantity available.' });
+                }
             } else {
                 this._tms.show('Product does not exist');
             }
             this._loader.setLoaderState(false);
         }, error => {}, () => {
             this._loader.setLoaderState(false);
-        });
+        });        
     }
 
-    sbm: { index?: number, type?: number, address?: {} }; // sbm: show bottom menu
+    isQuantityAvailable(updatedQuantity, productPriceQuantity, index) {
+        if (updatedQuantity > productPriceQuantity.quantityAvailable) {
+            this._loader.setLoaderState(false);
+            this.cartSession.itemsList[index]['message'] = productPriceQuantity.quantityAvailable + ' is the maximum quantity available.';
+            this._tms.show({ type: 'success', text: this.cartSession.itemsList[index]['message'] });
+            return { status: false, message: "Quantity not available" };
+
+        }
+        else if (updatedQuantity < productPriceQuantity.moq) {
+
+            this._loader.setLoaderState(false);
+            this.cartSession.itemsList[index]['message'] = "Minimum quantity is " + productPriceQuantity.moq;
+            // this.showPopup(index);
+            if (this.removePopup == false) {
+                this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
+            }
+            return { status: false, message: "Minimum quantity is " + productPriceQuantity.moq };
+        }
+        else {
+            let remainder = (updatedQuantity - productPriceQuantity.moq) % productPriceQuantity.incrementUnit;
+            if (remainder > 0) {
+                this._loader.setLoaderState(false);
+                this.cartSession.itemsList[index]['message'] = "Incremental Count not matched";
+                this._tms.show({ type: 'success', text: this.cartSession.itemsList[index]['message'] });
+                // alert("Incremental Count not matched");
+                return { status: false, message: "Incremental Count not matched" };
+            } else {
+                let bulkPrice = null;
+                let bulkPriceWithoutTax = null;
+                let bulkPricesWithInida: Array<any> = [];
+                if (productPriceQuantity['bulkPrices'] && productPriceQuantity['bulkPrices']['india'])
+                    bulkPricesWithInida = productPriceQuantity['bulkPrices']['india'];
+
+
+                if (bulkPricesWithInida && bulkPricesWithInida !== null && bulkPricesWithInida !== undefined && bulkPricesWithInida.length > 0) {
+                    let isvalid: boolean = true;
+
+                    let bulkPrices: Array<any> = productPriceQuantity['bulkPrices']['india'];
+                    bulkPrices.forEach((element, index) => {
+                        if (!element.active) {
+                            bulkPrices.splice(index, 1);
+                        }
+                    })
+                    let minQty = 0;
+                    if (bulkPrices.length > 0) {
+                        minQty = bulkPrices[0].minQty
+                    }
+                    bulkPrices.forEach((element, bindex) => {
+                        if (productPriceQuantity['moq'] == minQty || !isvalid) {
+                            isvalid = false;
+                            element.minQty = element.minQty + 1;
+
+                            element.maxQty = element.maxQty + 1;
+                        }
+                        if (isvalid && productPriceQuantity['moq'] > minQty && productPriceQuantity['moq'] > 1) {
+
+                            element.minQty = element.minQty + productPriceQuantity['moq'];
+
+                            element.maxQty = element.maxQty + productPriceQuantity['moq'];
+
+                        }
+
+
+                    });
+
+                    bulkPrices.forEach((element, indexBulk) => {
+                        if (element.minQty <= updatedQuantity && updatedQuantity <= element.maxQty) {
+
+                            bulkPrice = element.bulkSellingPrice;
+                            bulkPriceWithoutTax = element.bulkSPWithoutTax;
+
+
+                        }
+                        if (bulkPrices.length - 1 === indexBulk && updatedQuantity >= element.maxQty) {
+
+                            bulkPrice = element.bulkSellingPrice;
+                            bulkPriceWithoutTax = element.bulkSPWithoutTax;
+
+                        }
+
+
+                    });
+                }
+
+                this.cartSession.itemsList[index]['bulkPrice'] = bulkPrice;
+                this.cartSession.itemsList[index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
+                this.cartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
+                // 
+                const cartSession = this._cartService.getCartSession();
+                cartSession['itemsList'][index]['bulkPrice'] = bulkPrice;
+                cartSession['itemsList'][index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
+
+                this._cartService.setCartSession(cartSession);
+                return { status: true, message: "Cart quantity updated successfully", items: this.cartSession.itemsList };
+
+            }
+        }
+    }
+
     removePopup: boolean = false;
     cartSession;
     deleteProduct(index) {

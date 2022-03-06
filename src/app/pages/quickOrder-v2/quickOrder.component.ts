@@ -28,6 +28,7 @@ export class QuickOrderComponent {
 
     // New Variables
     API_RESPONSE: any;
+    itemsValidationMessage: Array<{}>;
 
     constructor(
         private _gState: GlobalState,
@@ -42,10 +43,17 @@ export class QuickOrderComponent {
         public _commonService: CommonService,
         private _analytics: GlobalAnalyticsService,
         public router: Router) {
+            this.itemsValidationMessage = [];
     }
 
     ngOnInit() {
         this.setDataFromResolver();
+    }
+
+    itemsValidationMessageUpdated(itemsValidationMessage) {
+        console.log(itemsValidationMessage);
+        itemsValidationMessage = this._commonService.itemsValidationMessage;
+        this.itemsValidationMessage = itemsValidationMessage;
     }
 
     setDataFromResolver() {

@@ -65,7 +65,7 @@ export class AddressService
         return this._dataService.callRestful("GET", URL).pipe(
             map((response) =>
             {
-                if (response['status']) {
+                if (response['statusCode'] && response['valid']) {
                     return response;
                 }
                 return null;
@@ -217,18 +217,6 @@ export class AddressService
         } else {
             return stateList[0]['idState'];
         }
-    }
-
-    getStateId(stateList, cityList)
-    {
-        let idState = -1;
-        stateList.forEach(element =>
-        {
-            if (element.idState === parseInt(cityList['state'])) {
-                idState = element.idState
-            }
-        });
-        return idState;
     }
 
     //idAddressType=1 implies delivery

@@ -11,6 +11,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalAuthService } from '@services/auth.service';
 import { Subscription } from 'rxjs';
+import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 import { CONSTANTS } from './../../../config/constants';
 import { PopUpVariant2Module } from './../../pop-up-variant2/pop-up-variant2.module';
 
@@ -117,18 +118,14 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         this.isPostcodeValid = false;
         if (this.postCode.valid) {
             this.lastSearchedPostcode = this.postCode.value;
-            this._addressService.getCityByPostcode(this.postCode.value).subscribe((dataList: any[]) =>
+            this._addressService.getCityByPostcode(this.postCode.value).subscribe((cityList: any[]) =>
             {
-                if (dataList && dataList.length) {
+                if (cityList && cityList.length) {
                     this.isPostcodeValid = true;
                     this.isVerifyingPostcode = false;
-                    this.city.patchValue(dataList[0]['city']);
-                    this.stateList.forEach(element =>
-                    {
-                        if (element.idState == parseInt(dataList[0]['state'])) {
-                            this.idState.patchValue(element.idState);
-                        }
-                    })
+                    this.city.patchValue(cityList[0]['city']);
+                    const ID_STATE = SharedCheckoutAddressUtil.getStateId(this.stateList, cityList[0]['state']);
+                    this.idState.patchValue(ID_STATE);
                 } else {
                     this.isPostcodeValid = false;
                     this.isVerifyingPostcode = false;

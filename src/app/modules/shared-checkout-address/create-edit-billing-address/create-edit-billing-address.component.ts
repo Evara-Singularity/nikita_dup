@@ -1,3 +1,4 @@
+import { trackData } from './../../../utils/clickStream';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +13,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, Subscription } from 'rxjs';
+import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 
 @Component({
     selector: 'create-edit-billing-address',
@@ -30,7 +32,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     @Input("address") address = null;
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
-    addressForm:FormGroup = null;
+    businessForm: FormGroup = null;
     userSesssion = null;
     lastSearchedPostcode = null;
     verifiedGSTINDetails = null;
@@ -42,6 +44,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     isPostcodeValid = false;
     isGSTINVerified = false;
     isBusinessDetailExists = false;
+    isSubmitted = false;
 
     gstingSubscription: Subscription = null;
     postCodeSubscription: Subscription = null;
@@ -55,7 +58,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     ngOnInit() 
     {
-        this.createAddressForm(this.address);
+        this.createBusinessForm(this.address);
         this._addressService.getCountryList().subscribe((countryList: CountryListModel[]) =>
         {
             this.countryList = countryList;
@@ -70,7 +73,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
             this.isGSTINVerified = this.address['gstinVerified'] ? true : false;
             this.companyName.markAsDirty();
             this.addressLine.markAsDirty();
-            this.addSubscribers();
             return;
         }
     }
@@ -87,7 +89,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                 this.phone.patchValue(response['phone']);
                 this.email.patchValue(response['email']);
                 this.companyName.markAsDirty();
-                this.addSubscribers();
             }
         });
     }
@@ -102,6 +103,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
             this.idCountry.patchValue(COUNTRY_ID);
             this.idState.patchValue(STATE_ID);
         })
+        this.addSubscribers()
     }
 
     addSubscribers()
@@ -133,7 +135,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                         this.isPostcodeValid = true;
                         this.isVerifyingPostcode = false;
                         this.city.patchValue(cityList[0]['city']);
-                        const ID_STATE = this._addressService.getStateId(this.stateList, cityList['state']);
+                        const ID_STATE = SharedCheckoutAddressUtil.getStateId(this.stateList, cityList[0]['state']);
                         this.idState.patchValue(ID_STATE);
                         return;
                     }
@@ -179,9 +181,9 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         this._toastMessageService.show({ type: "error", text: message });
     }
 
-    createAddressForm(address)
+    createBusinessForm(address)
     {
-        this.addressForm = this._formBuilder.group({
+        this.businessForm = this._formBuilder.group({
             businessDetail: this._formBuilder.group({
                 companyName: [address && address.addressCustomerName ? address.addressCustomerName : null, [Validators.required]],
                 gstin: [(address && address.gstin) ? address.gstin : null, [Validators.required, Validators.minLength(15)]],
@@ -194,14 +196,16 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                 landmark: [(address && address.landmark) ? address.landmark : null],
                 addressLine: [(address && address.addressLine) ? address.addressLine : null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._;, \/()-]*$/)]],
                 city: [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
-                idCountry: [null, [Validators.required]],
-                idState: [null, [Validators.required]],
+                idCountry: [{value:null, disabled:true}, [Validators.required]],
+                idState: [{ value: null, disabled: true }, [Validators.required]],
             })
         });
     }
 
-    onSubmit(data)
+    onSubmit()
     {
+        this.isSubmitted = true;
+        let data = this.businessForm.getRawValue();
         if (!(this.canSubmit)) return;
         const BILLING_DETAILS = data['billingAddress'];
         const BUSINESS_DETAILS = data['businessDetail'];
@@ -249,18 +253,28 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     get modeType() { return this.isAddMode ? "Add" : "Edit"; }
     handlePopup($event) { this.closeAddressPopUp$.emit({ aType: null, action: null, addresses: null }); }
-    get canSubmit() { return this.addressForm.valid && this.isPostcodeValid && !(this.isVerifyingPostcode) && this.isGSTINVerified }
+    get canSubmit() { return this.businessForm.valid && this.isPostcodeValid && !(this.isVerifyingPostcode) && this.isGSTINVerified }
+    isBusinessFieldFocus(control: string)
+    {
+        const VALUE = this.businessForm.get('businessDetail').get(control).value;
+        return VALUE?true:false;
+    }
+    isBillingFieldFocus(control: string) { 
+        const VALUE = this.businessForm.get('billingAddress').get(control).value
+        return VALUE ? true : false; 
+    }
 
     //getters
-    get gstin() { return this.addressForm.get('businessDetail').get('gstin') as FormControl; }
-    get companyName() { return this.addressForm.get('businessDetail').get('companyName') as FormControl; }
-    get email() { return this.addressForm.get('businessDetail').get('email') as FormControl; }
-    get phone() { return this.addressForm.get('businessDetail').get('phone') as FormControl; }
-    get postCode() { return this.addressForm.get('billingAddress').get('postCode') as FormControl; }
-    get addressLine() { return this.addressForm.get('billingAddress').get('addressLine') as FormControl; }
-    get city() { return this.addressForm.get('billingAddress').get('city') as FormControl; }
-    get idState() { return this.addressForm.get('billingAddress').get('idState') as FormControl; }
-    get idCountry() { return this.addressForm.get('billingAddress').get('idCountry') as FormControl; }
+    get gstin() { return this.businessForm.get('businessDetail').get('gstin') as FormControl; }
+    get companyName() { return this.businessForm.get('businessDetail').get('companyName') as FormControl; }
+    get email() { return this.businessForm.get('businessDetail').get('email') as FormControl; }
+    get phone() { return this.businessForm.get('businessDetail').get('phone') as FormControl; }
+    get postCode() { return this.businessForm.get('billingAddress').get('postCode') as FormControl; }
+    get addressLine() { return this.businessForm.get('billingAddress').get('addressLine') as FormControl; }
+    get city() { return this.businessForm.get('billingAddress').get('city') as FormControl; }
+    get idState() { return this.businessForm.get('billingAddress').get('idState') as FormControl; }
+    get idCountry() { return this.businessForm.get('billingAddress').get('idCountry') as FormControl; }
+    get displayError() { return (this.isGSTINVerified && this.isSubmitted) ? true : false }
 
     ngOnDestroy(): void
     {

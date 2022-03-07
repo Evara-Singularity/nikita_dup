@@ -63,7 +63,7 @@
                     (click)="$event.stopPropagation();displayAddressListPopup(label)">
                     CHANGE OR ADD ADDRESS
                 </button>
-                <button class="blue-border-btn-full" (click)="$event.stopPropagation();displayAddressFormPopup(label)">
+                <button class="blue-border-btn-full" *ngIf="addresses.length == 0" (click)="$event.stopPropagation();displayAddressFormPopup(label)">
                     ADD NEW ADDRESS
                 </button>
             </div>

@@ -94,24 +94,6 @@ export class SharedAuthService implements OnInit
         return this.dataService.callRestful(this.BASEURLS.UPDATEPASSWORD.method, this.BASEURLS.UPDATEPASSWORD.url, { body: data });
     }
 
-    authenticateUser(request, isCheckout)
-    {
-        this._globalLoader.setLoaderState(true);
-        this.authenticate(request).subscribe(
-            (response) =>
-            {
-                if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    console.log("SharedAuthService", "Authentication Failer", response);
-                    this._sharedAuthUtilService.sendGenericPageErrorTracking();
-                } else {
-                    this._sharedAuthUtilService.processAuthentication(response, isCheckout, this.redirectUrl);
-                }
-                this._globalLoader.setLoaderState(false);
-            },
-            (error) => { this._globalLoader.setLoaderState(false); }
-        )
-    }
-
     soicalAuthenticate(params) {
         params['device'] = CONSTANTS.DEVICE.device;
         let curl = CONSTANTS.NEW_MOGLIX_API + CONSTANTS.SL.API;

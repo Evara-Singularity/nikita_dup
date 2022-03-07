@@ -11,6 +11,7 @@ import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { DOCUMENT } from '@angular/common';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 
 let digitalData = {
     page: {},
@@ -32,6 +33,8 @@ export class BrandComponent {
     public popularLinks = [];
     public brandFooterData;
     baseDomain=CONSTANTS.PROD;
+    accordiansDetails: AccordiansDetails[] = [];
+    popularCategories = [];
 
     constructor(
         public _activatedRoute: ActivatedRoute,
@@ -54,9 +57,6 @@ export class BrandComponent {
 
 
     ngOnInit(): void {
-        console.clear();
-        console.log(this._activatedRoute.snapshot.params);
-
         if (this._commonService.isBrowser) {
 
             // set some extra meta tags if brand is a category page
@@ -100,24 +100,53 @@ export class BrandComponent {
                         // genrate popular links data
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
                     }
+                    // create accordians data
+                    this.createFooterAccordianData();
                     // genrate data for footer
                     this.genrateAndUpdateBrandFooterData();
                 }
             });
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
-
-
             // Send Adobe Tracking Data
             this.setAdobeTrackingData();
-
             // Set Amp tags
             // this.setAmpTag(this._activatedRoute.snapshot.params['category'] ? 'brand-category' : 'brand');
 
         });
     }
 
-    popularCategories = [];
+    private createFooterAccordianData() {
+        this.accordiansDetails = [];
+        this.accordiansDetails.push({
+            name: 'Popular Brand Categories',
+            extra: this.API_RESPONSE['brand'][0].brandName,
+            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            icon:'icon-brand_store'
+        });
+        this.accordiansDetails.push({
+            name: 'Popular Categories',
+            data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem),
+            icon:'icon-categories'
+        });
+        this.accordiansDetails.push({
+            name: 'Similar Category',
+            data: this.API_RESPONSE.brand[2]?.mostSoledCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            icon:'icon-categories'
+        });
+        this.accordiansDetails.push({
+            name: 'Related Searches',
+            data: this.API_RESPONSE.brand[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            icon:'icon-attribute'
+        });
+        this.accordiansDetails.push({
+            name: 'Related Brands',
+            isNotVisible:!!this._activatedRoute.snapshot.params.category,
+            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
+            icon:'icon-brand_store'
+        });
+    }
+
     setPopularCategories(data) {
         data.forEach(d => {
             let b = {};
@@ -209,7 +238,7 @@ export class BrandComponent {
         //this.meta.addTag({ "name": "og:title", "content": title });
         this.meta.addTag({ "name": "og:url", "content": CONSTANTS.PROD + this._router.url });
         this.meta.addTag({ "name": "robots", "content": (qp["page"] && parseInt(qp["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });
-        if (!this._commonService.isServer) {
+        if (this._commonService.isServer) {
             //canonical
             let links = this._renderer2.createElement('link');
             links.rel = "canonical";
@@ -242,7 +271,7 @@ export class BrandComponent {
                         "position": 2,
                         "item":
                         {
-                            "@id": CONSTANTS.PROD + '/' + this.API_RESPONSE.brand[0].friendlyUrl,
+                            "@id": CONSTANTS.PROD + '/brands/' + this.API_RESPONSE.brand[0].friendlyUrl,
                             "name": this.API_RESPONSE.brand[1][0]["brandName"]
                         }
                     },
@@ -523,11 +552,6 @@ export class BrandComponent {
         this._router.navigateByUrl(window.location.pathname);
     }
 
-    getUrlPathName(url) {
-        const originSlash = /^https?:\/\/[^/]+\//i;
-        return url.replace(originSlash, '');
-    }
-
     genrateAndUpdateBrandFooterData() {
         this.brandFooterData = {
             brandCatDesc: this.API_RESPONSE.brand[1][0].desciption,
@@ -545,9 +569,5 @@ export class BrandComponent {
             todayDate: Date.now(),
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)
         };
-    }
-    
-    accordianNav(url){
-        this._router.navigate(['/'+url]);
     }
 }

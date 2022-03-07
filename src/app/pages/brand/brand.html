@@ -36,8 +36,10 @@
     
     <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
     
-    <product-listing-app-promo></product-listing-app-promo>
-    
+    <div class ="promo-container">
+        <product-listing-app-promo></product-listing-app-promo>
+    </div>
+       
     <brand-details-footer *ngIf="_commonService.selectedFilterData.page < 2" [brandDetailsFooterData]="brandFooterData">
     </brand-details-footer>
     

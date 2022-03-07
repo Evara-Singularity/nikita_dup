@@ -560,7 +560,7 @@ export class BrandComponent {
             firstPageContent: this._commonService.selectedFilterData.page < 2,
             productSearchResult: this.API_RESPONSE.brand[1][0].productSearchResult,
             productSearchResultSEO: this.genrateProductSearchResultSEOData(),
-            heading: this.API_RESPONSE.brand[1][0].heading,
+            heading: this.API_RESPONSE.brand[1][0].heading || this.API_RESPONSE['brand'][0].brandName,
             productCount: this.API_RESPONSE.brand[1][0].productSearchResult.totalCount,
             brand: this.API_RESPONSE.brand[0].brandName,
             productCategoryNames: this.popularLinks,

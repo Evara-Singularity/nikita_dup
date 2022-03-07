@@ -143,7 +143,7 @@ export class SearchComponent implements OnInit {
         name: 'Related Searches',
         outerNavRouteEvent: true,
         isNotVisible: !(this._commonService.selectedFilterData.page < 2),
-        data: this.API_RESULT['searchData'][0]?.categoriesRecommended.map(e => ({ name: e.categoryName, link: '', category: e }) as AccordianDataItem),
+        data: this.API_RESULT['searchData'][0].categoriesRecommended ? this.API_RESULT['searchData'][0].categoriesRecommended.map(e => ({ name: e.categoryName, link: '', category: e }) as AccordianDataItem) : [],
         icon:'icon-attribute'
     });
   }

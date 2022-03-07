@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@app/utils/services/address.service';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter, Output } from '@angular/core';
 import { AddressListActionModel, AddressListModel, CreateEditAddressModel } from '@app/utils/models/shared-checkout.models';
 import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 
@@ -17,7 +17,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
 
-    invoiceValue: FormControl = null;
+    @Output("emitAddressEvent$") emitAddressEvent$: EventEmitter<any> = new EventEmitter<any>();
+
+    invoiceType: FormControl = null;
     isGSTInvoice: FormControl = null;
     addressListInstance = null;
     createEditAddressInstance = null;
@@ -45,7 +47,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnInit()
     {
         this.isGSTInvoice = new FormControl(false);
-        this.invoiceValue = new FormControl(this.INVOICE_TYPES.RETAIL);
+        this.invoiceType = new FormControl(this.INVOICE_TYPES.RETAIL);
         this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.TAX);
     }
 
@@ -53,7 +55,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     {
         this.invoiceSubscription = this.isGSTInvoice.valueChanges.subscribe((isTax) =>
         {
-            this.invoiceValue.patchValue(isTax ? this.INVOICE_TYPES.RETAIL : this.INVOICE_TYPES.RETAIL);
+            this.invoiceType.patchValue(isTax ? this.INVOICE_TYPES.RETAIL : this.INVOICE_TYPES.RETAIL);
         })
     }
 
@@ -152,6 +154,13 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get displayBillingAddresses() { return this.isGSTInvoice.value ? 'block' : 'none'; }
+
+    emitAddressEvent()
+    {
+        const INVOIDE_TYPE = this.invoiceType.value;
+        const ADDRESS = null;
+        this.emitAddressEvent$.emit({ invoiceType: INVOIDE_TYPE, address: ADDRESS});
+    }
 
     ngOnDestroy(): void
     {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddToCartProductSchema } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, pipe, Subject } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -214,27 +214,29 @@ export class CartService
          */
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartBySession, { params: params })
             .pipe(
-                map((cartSessionResponse) => {
-                    if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 200) {
-                        return cartSessionResponse
-                    }
-
-                    if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
-                        // incase of session mismatch update new cart and userData 
-                        // cartsesion response will be different from regular cart session response
-                        console.log('CARTSESSION LOGS ==> mismatch condition encountered', cartSessionResponse);
-                        this.localAuthService.setUserSession(cartSessionResponse['userData']);
-                        return cartSessionResponse['cart'];
-                    }
-
-                    if (cartSessionResponse?.['status'] == false) {
-                        // logout user this case so that new valid session can be created
-                        this._toastService.show({ type: 'error', text: "Cart failed, Please login and try again", tDelay: 5000 });
-                        this.logOutAndClearCart();
-                        return null;
-                    }
-                }),
+                map((cartSessionResponse) => this.handleCartResponse(cartSessionResponse)),
             );
+    }
+
+    private handleCartResponse(cartSessionResponse): any {
+        if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 200) {
+            return cartSessionResponse
+        }
+
+        if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
+            // incase of session mismatch update new cart and userData 
+            // cartsesion response will be different from regular cart session response
+            console.log('CARTSESSION LOGS ==> mismatch condition encountered', cartSessionResponse);
+            this.localAuthService.setUserSession(cartSessionResponse['userData']);
+            return cartSessionResponse['cart'];
+        }
+
+        if (cartSessionResponse?.['status'] == false) {
+            // logout user this case so that new valid session can be created
+            this._toastService.show({ type: 'error', text: "Cart failed, Please login and try again", tDelay: 5000 });
+            this.logOutAndClearCart();
+            return null;
+        }
     }
 
     logOutAndClearCart(redirectURL = null) {
@@ -496,6 +498,56 @@ export class CartService
             }
         }
     }
+
+    private _getPrepaidDiscount(body) {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PrepaidDiscount, { body: body }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    validatePaymentsDiscount(paymentMode, paymentId): Observable<any> {
+        return of({
+            "mode": paymentMode,
+            "paymentId": paymentId,
+            addressList: this.shippingAddress
+        }).pipe(
+            map((args) => {
+                const validatorRequest = this.createValidatorRequest(args);
+                return validatorRequest.shoppingCartDto;
+            }),
+            mergeMap((payload) => {
+                return this._getPrepaidDiscount(payload).pipe(map((cartSessionResponse) => {
+                    if (cartSessionResponse) {
+                        return this._notifyCartChanges(cartSessionResponse, null);
+                    }
+                    return null;
+                }))
+            }),
+            map((cartSession) => {
+                if (!cartSession) return null;
+                let prepaidDiscount = 0;
+                let totalPayableAmount = 0;
+                if (cartSession['extraOffer'] && cartSession['extraOffer']['prepaid']) {
+                    prepaidDiscount = cartSession['extraOffer']['prepaid']
+                }
+                if (cartSession && cartSession['cart']) {
+                    const cart = Object.assign({}, cartSession['cart']);
+                    let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
+                    let totalAmount = cart.totalAmount ? cart.totalAmount : 0;
+                    let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
+                    totalPayableAmount = totalAmount + shipping - totalOffer - prepaidDiscount;
+                }
+                return {
+                    prepaidDiscount,
+                    totalPayableAmount,
+                    cartSession
+                }
+            })
+        )
+    }
+
      // PAYMENTS RELATED UTILS STARTS 
 
     // COMMON CART LOGIC IMPLEMENTATION STARTS

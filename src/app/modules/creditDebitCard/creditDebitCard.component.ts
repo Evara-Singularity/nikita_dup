@@ -12,13 +12,11 @@ import * as creditCardType from 'credit-card-type';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
-declare var dataLayer;
 @Component({
     selector: 'credit-debit-card',
     templateUrl: './creditDebitCard.html',
     styleUrls:['./creditDebit.scss']
 })
-
 export class CreditDebitCardComponent implements OnInit  {
 
     @Input()type:any;
@@ -96,66 +94,19 @@ export class CreditDebitCardComponent implements OnInit  {
 
         if (!valid) return;
            
-        const cartSession = this._cartService.getCartSession();
-        const ccnum = data.requestParams.ccnum.replace(/ /g, '');
-        const bankcode = this.getBankCode(ccnum);
-        const userSession = this._localAuthService.getUserSession();
-        const addressList = this._checkoutService.getCheckoutAddress();
-        const shippingInformation = {
-            'shippingCost': cartSession['cart']['shippingCharges'],
-            'couponUsed': cartSession['cart']['totalOffer'],
-            'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
-        };
-
-        const extra = {
-            "mode": data.mode,
-            "paymentId": data.mode == 'CC' ? 9 : 2,
-            addressList: addressList
-        };
-
-        if(this.type == 'tax'){
-            extra["paymentId"] = data.mode=="CC" ?  131 : 130;    
-        }
-            
-        const newdata = {
-            "platformCode": "online",
-            "mode": extra.mode,
-            "paymentId": extra.paymentId,
-            "requestParams": {
-                "firstname": addressList["addressCustomerName"].split(' ')[0],
-                "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
-                "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
-                "ccexpyr": data.requestParams.ccexpyr,
-                "ccnum": ccnum,
-                "ccexpmon": data.requestParams.ccexpmon,
-                "productinfo": "msninrq7qv4",
-                "ccname": data.requestParams.ccname,
-                "bankcode": bankcode,
-                "ccvv": data.requestParams.ccvv,
-                //Below user_id is sent only for reference to store card in backend.
-                "user_id": userSession["userId"],
-                "store_card": data.store_card == true ? "true" : "false",
-            },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
-        };
-
-        if(this.type=="tax"){
-            newdata["paymentGateway"]="razorpay";
-            newdata.requestParams['bankcode'] = "card";
-            newdata["paymentId"] = data.mode=="CC" ?  131 : 130;            
-        }
+        const { extra, newdata, shippingInformation, addressList } = this.createPayRequestPayload(data);
         extra['paymentId'] = newdata['paymentId'];
 
         const CARD_TYPE = data.mode == "CC" ? "credit" : "debit";
-        
+
+        this.paymentInitiatedAnalyticCall(shippingInformation, addressList, data)
         this._analytics.sendAdobeOrderRequestTracking(newdata ,`pay-initiated:${CARD_TYPE} card`);
+
         this.isShowLoader = true;
         this._commonService.pay(newdata).subscribe( (res) : void => {
-
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
-                // alert(res.description);
                 return;
             }
 
@@ -200,6 +151,58 @@ export class CreditDebitCardComponent implements OnInit  {
         });
     }
 
+    private createPayRequestPayload(data: any) {
+        const cartSession = this._cartService.getCartSession();
+        const ccnum = data.requestParams.ccnum.replace(/ /g, '');
+        const bankcode = this.getBankCode(ccnum);
+        const userSession = this._localAuthService.getUserSession();
+        const addressList = this._checkoutService.getCheckoutAddress();
+        const shippingInformation = {
+            'shippingCost': cartSession['cart']['shippingCharges'],
+            'couponUsed': cartSession['cart']['totalOffer'],
+            'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
+        };
+
+        const extra = {
+            "mode": data.mode,
+            "paymentId": data.mode == 'CC' ? 9 : 2,
+            addressList: addressList
+        };
+
+        if (this.type == 'tax') {
+            extra["paymentId"] = data.mode == "CC" ? 131 : 130;
+        }
+
+        const newdata = {
+            "platformCode": "online",
+            "mode": extra.mode,
+            "paymentId": extra.paymentId,
+            "requestParams": {
+                "firstname": addressList["addressCustomerName"].split(' ')[0],
+                "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
+                "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
+                "ccexpyr": data.requestParams.ccexpyr,
+                "ccnum": ccnum,
+                "ccexpmon": data.requestParams.ccexpmon,
+                "productinfo": "msninrq7qv4",
+                "ccname": data.requestParams.ccname,
+                "bankcode": bankcode,
+                "ccvv": data.requestParams.ccvv,
+                //Below user_id is sent only for reference to store card in backend.
+                "user_id": userSession["userId"],
+                "store_card": data.store_card == true ? "true" : "false",
+            },
+            "validatorRequest": this._cartService.createValidatorRequest(extra),
+        };
+
+        if (this.type == "tax") {
+            newdata["paymentGateway"] = "razorpay";
+            newdata.requestParams['bankcode'] = "card";
+            newdata["paymentId"] = data.mode == "CC" ? 131 : 130;
+        }
+        return { extra, newdata, shippingInformation, addressList };
+    }
+
     private paymentInitiatedAnalyticCall(shippingInformation: { shippingCost: any; couponUsed: any; GST: string; }, addressList: {}, data: any) {
         this._analytics.sendGTMCall({
             'event': 'checkoutStarted',
@@ -224,44 +227,17 @@ export class CreditDebitCardComponent implements OnInit  {
     }
 
     getPrePaidDiscount(mode) {
-        let cartSession = this._cartService.getCartSession();
-
-        let userSession = this._localAuthService.getUserSession();
-
-        let addressList = this._checkoutService.getCheckoutAddress();
-
-        let extra = {
-            "mode": mode,
-            "paymentId": mode == 'CC' ? 9 : 2,
-            addressList: addressList
-        };
-        cartSession["extraOffer"] = null;
-
-        let validatorRequest = this._commonService.createValidatorRequest(cartSession, userSession, extra);
-
-        let body = validatorRequest.shoppingCartDto;
         this.isShowLoader = true;
-        this._checkoutService.getPrepaidDiscountUpdate(body).subscribe((res) => {
-            if (res['status']) {
-                cartSession['extraOffer'] = res['data']['extraOffer'];
-                let cart = res['data']['cart'];
-                if (res['data']['extraOffer'] && res['data']['extraOffer']['prepaid']) {
-                    this.prepaidDiscount = res['data']['extraOffer']['prepaid']
-                }
-                if (cart) {
-                    let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
-                    let totalAmount = cart.totalAmount ? cart.totalAmount : 0;
-                    let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
-                    this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
-                }
-                this._cartService.setCartSession(cartSession);
-                this._cartService.orderSummary.next(cartSession);
-                this.isShowLoader = false;
-            }
-        });
         (this.creditDebitCardForm.get('requestParams') as FormControl).reset();
         this.selectedMonth = null;
         this.selectedYear = null;
+        this._cartService.validatePaymentsDiscount(mode, (mode == 'CC' ? 9 : 2)).subscribe(response => {
+            this.isShowLoader = false;
+            if (response) {
+                this.prepaidDiscount = response['prepaidDiscount'];
+                this.totalPayableAmount = response['totalPayableAmount']
+            }
+        })
     }
 
     getBankCode(ccnum) {
@@ -309,12 +285,5 @@ export class CreditDebitCardComponent implements OnInit  {
     openYearPopUp(){
         this.yearSelectPopupStatus = true;
     }
-
-    ngOnDestroy() {
-        this.prepaidsubscription.unsubscribe();
-        this._cartService.setCartSession(this.cartSession);
-        this._cartService.orderSummary.next(this.cartSession);
-    }
-    
     
 }

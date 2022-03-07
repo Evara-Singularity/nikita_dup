@@ -16,9 +16,7 @@ declare var dataLayer;
     selector: 'neft-rtgs',
     templateUrl: './neftRtgs.html'
 })
-
 export class NeftRtgsComponent {
-
 
     API: {};
     message: string;
@@ -40,20 +38,19 @@ export class NeftRtgsComponent {
         private loaderService: GlobalLoaderService,
         private _analytics: GlobalAnalyticsService
     ) {
-        this.type = _checkoutService.getInvoiceType();
+        this.type = this._checkoutService.invoiceType;
         this.API = CONSTANTS;
     }
 
     ngOnInit() {
         let cartSession = this._cartService.getCartSession();
-        let invoiceType = this._checkoutService.getInvoiceType();
+        let invoiceType = this._checkoutService.invoiceType;
         this.invoiceType = invoiceType;
         if (cartSession["cart"]["totalPayableAmount"] < 2000) {
             this.message = "NEFT not available below Rs. 2000";
             this.isNeftEnable = false;
         }
         this.totalPayableAmount = cartSession['cart']['totalAmount'] + cartSession['cart']['shippingCharges'] - cartSession['cart']['totalOffer'];
-        // this.totalPayableAmount = cartSession["cart"]["totalPayableAmount"];
     }
 
     ngAfterViewInit() {

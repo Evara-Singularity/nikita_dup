@@ -11,9 +11,6 @@ import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { LowSuccessMessagePipe } from '@app/utils/pipes/low-success-rate.pipe';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-
-declare let dataLayer: any;
-
 @Component({
     selector: 'wallet',
     templateUrl: './wallet.html',
@@ -62,33 +59,27 @@ export class WalletComponent {
     }
 
     ngOnInit() {
-
-        this.getPrePaidDiscount();
+       
         this.walletMap = CONSTANTS.GLOBAL.walletMap[this.type];
         this.walletMapKeys = Object.keys(this.walletMap);
         this.wType = this.walletMapKeys[0];
-        console.log("this.walletMap", this.walletMap, this.walletMapKeys, this.wType);
         this.walletForm = this._formBuilder.group({
             "wType": [this.wType, [Validators.required]],
         });
+
         this.cartSesssion = Object.assign({}, this._cartService.getCartSession());
+        
+        this.getPrePaidDiscount();
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
         })
 
         this.lowSuccessBanks();
-        // console.log("successPercentageData ==>",this.successPercentageData);
 
     }
-
-    ngAfterViewInit() {
-        //console.log("ngAfterViewInit Called")
-    }
-
 
 
     pay(data, valid) {
-
         this.isShowLoader = true;
         if (!valid)
             return;
@@ -144,9 +135,7 @@ export class WalletComponent {
         }
 
         if(this.isBrowser) {
-            let userSession = this._localAuthService.getUserSession();
-            let t = {'event': "paymentButtonClick", 'payment': walletName};
-            dataLayer.push(t);
+            this._analytics.sendGTMCall({'event': "paymentButtonClick", 'payment': walletName});
         }
         
         if(this.type == "tax"){
@@ -217,59 +206,27 @@ export class WalletComponent {
     }
 
     getPrePaidDiscount() {
-        let cartSession = this._cartService.getCartSession();
-
-        let userSession = this._localAuthService.getUserSession();
-
-        let addressList = this._checkoutService.getCheckoutAddress();
-
-        let extra = {
-            mode: "WALLET",
-            paymentId: 51,
-            addressList: addressList
-        };
-        cartSession["extraOffer"] = null;
-
-        let validatorRequest = this._commonService.createValidatorRequest(cartSession, userSession, extra);
-
-        let body = validatorRequest.shoppingCartDto;
         this.isShowLoader = true;
-        this._checkoutService.getPrepaidDiscountUpdate(body).subscribe((res) => {
-
-            if (res['status']) {
-                cartSession['extraOffer'] = res['data']['extraOffer'];
-                let cart = res['data']['cart'];
-                if (res['data']['extraOffer'] && res['data']['extraOffer']['prepaid']) {
-                    this.prepaidDiscount = res['data']['extraOffer']['prepaid']
-                }
-                if (cart) {
-                    let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
-                    let totalAmount = cart.totalAmount ? cart.totalAmount : 0;
-                    let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
-                    this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
-                }
-                this._cartService.setCartSession(cartSession);
-                this._cartService.orderSummary.next(cartSession);
-                this.isShowLoader = false;
+        this._cartService.validatePaymentsDiscount("WALLET", 51).subscribe(response => {
+            this.isShowLoader = false;
+            if(response){
+                this.prepaidDiscount = response['prepaidDiscount'];
+                this.totalPayableAmount = response['totalPayableAmount']
             }
-        });
+        })
     }
 
     createWalletData(paymentId, mode , bankcode, type) {
         let cartSession = this._cartService.getCartSession();
-        let cart = cartSession["cart"];
-        let cartItems = cartSession["itemsList"];
-
         let userSession = this._localAuthService.getUserSession();
         let addressList = this._checkoutService.getCheckoutAddress();
-
         let shippingInformation = {
             'shippingCost': cartSession['cart']['shippingCharges'],
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
 
-        dataLayer.push({
+        this._analytics.sendGTMCall({
             'event': 'checkoutStarted',
             'shipping_Information': shippingInformation,
             'city': addressList["city"],
@@ -281,7 +238,6 @@ export class WalletComponent {
             paymentId:paymentId,
             addressList: addressList
         };
-
         let freechargeData = {
             "platformCode": "online",
             "mode": mode,
@@ -293,9 +249,8 @@ export class WalletComponent {
                 "productinfo": "MSNghihjbc",
                 "bankcode": bankcode,
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
-
         return freechargeData;
     }
 
@@ -313,9 +268,4 @@ export class WalletComponent {
         }
     }
 
-    ngOnDestroy() {
-        this.prepaidsubscription.unsubscribe();
-        this._cartService.setCartSession(this.cartSesssion);
-        this._cartService.orderSummary.next(this.cartSesssion);
-    }
 }

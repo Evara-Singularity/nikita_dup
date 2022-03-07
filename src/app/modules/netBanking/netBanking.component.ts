@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -11,18 +11,13 @@ import { CartService } from '../../utils/services/cart.service';
 import { ObjectToArray } from '../../utils/pipes/object-to-array.pipe';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-
-declare var dataLayer;
-
-// import * as $ from "jquery";
-
 @Component({
     selector: 'net-banking',
     templateUrl: './netBanking.html',
     styleUrls: ['./netBanking.scss']
 })
 
-export class NetBankingComponent {
+export class NetBankingComponent implements OnInit {
 
     dataNB: Array<{}>;
     cartSesssion: any;
@@ -83,9 +78,6 @@ export class NetBankingComponent {
     ngOnInit() {
 
         this.netBankingForm = this._formBuilder.group({
-            /*"platformCode": [null],
-             "mode": [null],
-             "paymentId": [2],*/
             "requestParams": this._formBuilder.group({
                 "paymentId": [this.type == 'tax' ? 74 : 5],
                 "bankname": ['', [Validators.required]],
@@ -126,62 +118,14 @@ export class NetBankingComponent {
         return { topBanks, otherBanks, lowSuccessBanks };
     }
 
-    ngAfterViewInit() {
-
-    }
-
-
     pay(data, valid) {
         if (!valid)
             return;
         ////console.log(data.requestParams);
 
-        let cartSession = this._cartService.getCartSession();
-        let cart = cartSession["cart"];
-        let cartItems = cartSession["itemsList"];
+        let { shippingInformation, addressList, newdata } = this.createPayRequestPayload();
 
-        let userSession = this._localAuthService.getUserSession();
-
-        let addressList = this._checkoutService.getCheckoutAddress();
-
-        let shippingInformation = {
-            'shippingCost': cartSession['cart']['shippingCharges'],
-            'couponUsed': cartSession['cart']['totalOffer'],
-            'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
-        };
-
-        dataLayer.push({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': 'NB'
-        });
-
-        let extra = {
-            "mode": "NB",
-            "paymentId": 5,
-            addressList: addressList
-        };
-
-        let newdata = {
-            "platformCode": "online",
-            "mode": extra.mode,
-            "paymentId": this.netBankingForm.get('requestParams').get('paymentId').value,
-            "requestParams": {
-                "firstname": addressList["addressCustomerName"].split(' ').slice(0, -1).join(' '),
-                "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
-                "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
-                "productinfo": "MSNghihjbc",
-                "bankcode": this.selectedBankCode,
-            },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
-        };
-        if (this.type == "tax") {
-            // newdata["requestParams"]["paymentId"]=this.netBankingForm.get('requestParams').get('paymentId').value;
-            newdata["paymentGateway"] = "razorpay";
-            newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"] = this.netBankingForm.get('requestParams').get('paymentId').value;
-
-        }
+        this.initPaymentStartAnalytics(shippingInformation, addressList);
         this._analytics.sendAdobeOrderRequestTracking(newdata, `pay-initiated:net banking`);
         this.isShowLoader = true;
         //console.log("New Data for pay", newdata);
@@ -200,34 +144,18 @@ export class NetBankingComponent {
                 payuData = {
                     formUrl: data.formUrl,
                     key: (data.key != undefined && data.key != null) ? data.key : "",
-                    //key: "o0O7UA",
                     txnid: (data.txnid != undefined && data.txnid != null) ? data.txnid : "",
-                    //txnid: "9878767",
                     amount: (data.amount != undefined && data.amount != null) ? data.amount : "",
-                    //amount: "1.01",
                     productinfo: data.productinfo,
-                    //productinfo: "MSNghihjbc",
                     firstname: data.firstname,
-                    //firstname: "Kuldeep",
-                    //lastname: (data.lastname != undefined && data.lastname != null) ? data.lastname : "",
-                    //zipcode: (data.zipcode != undefined && data.zipcode != null) ? data.zipcode : "",
                     email: data.email,
-                    //email: "kuldeep.panchal669@moglix.com",
                     phone: data.phone,
                     surl: data.surl,
                     furl: data.furl,
                     curl: data.curl,
                     hash: data.hash,
-                    //hash:"556dbad0696d0f97287175d0a416f80cfa24f935b9cc461331fedb2474b4bf9096ee20cd4cce0030a09f644e22454a01880e3f8b185490c7a28a126beb211192",
                     pg: data.pg,
                     bankcode: data.bankcode,
-                    //ccnum: data.ccnum,
-                    //ccname: data.ccname,
-                    //ccvv: data.ccvv,
-                    //ccexpmon: data.ccexpmon,
-                    //ccexpyr: data.ccexpyr,
-                    //store_card: data.store_card,
-                    //user_credentials: data.key+':'+data.email
                 };
             } else {
                 payuData = data;
@@ -245,6 +173,50 @@ export class NetBankingComponent {
         });
     }
 
+    private createPayRequestPayload() {
+        let cartSession = this._cartService.getCartSession();
+        let userSession = this._localAuthService.getUserSession();
+        let addressList = this._checkoutService.getCheckoutAddress();
+        let shippingInformation = {
+            'shippingCost': cartSession['cart']['shippingCharges'],
+            'couponUsed': cartSession['cart']['totalOffer'],
+            'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
+        };
+        let extra = {
+            "mode": "NB",
+            "paymentId": 5,
+            addressList: addressList
+        };
+        let newdata = {
+            "platformCode": "online",
+            "mode": extra.mode,
+            "paymentId": this.netBankingForm.get('requestParams').get('paymentId').value,
+            "requestParams": {
+                "firstname": addressList["addressCustomerName"].split(' ').slice(0, -1).join(' '),
+                "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
+                "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
+                "productinfo": "MSNghihjbc",
+                "bankcode": this.selectedBankCode,
+            },
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
+        };
+        if (this.type == "tax") {
+            // newdata["requestParams"]["paymentId"]=this.netBankingForm.get('requestParams').get('paymentId').value;
+            newdata["paymentGateway"] = "razorpay";
+            newdata["validatorRequest"]["shoppingCartDto"]["payment"]["paymentMethodId"] = this.netBankingForm.get('requestParams').get('paymentId').value;
+        }
+        return { shippingInformation, addressList, newdata };
+    }
+
+    private initPaymentStartAnalytics(shippingInformation: { shippingCost: any; couponUsed: any; GST: string; }, addressList: {}) {
+        this._analytics.sendGTMCall({
+            'event': 'checkoutStarted',
+            'shipping_Information': shippingInformation,
+            'city': addressList["city"],
+            'paymentMode': 'NB'
+        })
+    }
+
     /**
      * Set buyNow state to localstorage for removing buyNow 
      * item from cart after successfull/failure of payment.
@@ -260,50 +232,19 @@ export class NetBankingComponent {
     }
 
     getPrePaidDiscount() {
-        let cartSession = this._cartService.getCartSession();
-
-        let userSession = this._localAuthService.getUserSession();
-
-        let addressList = this._checkoutService.getCheckoutAddress();
-
-        let extra = {
-            "mode": "NB",
-            "paymentId": 5,
-            addressList: addressList
-        };
-        cartSession["extraOffer"] = null;
-
-        let validatorRequest = this._commonService.createValidatorRequest(cartSession, userSession, extra);
-
-        let body = validatorRequest.shoppingCartDto;
         this.isShowLoader = true;
-        this._checkoutService.getPrepaidDiscountUpdate(body).subscribe((res) => {
-
-            if (res['status']) {
-                cartSession['extraOffer'] = res['data']['extraOffer'];
-                let cart = res['data']['cart'];
-                if (res['data']['extraOffer'] && res['data']['extraOffer']['prepaid']) {
-                    this.prepaidDiscount = res['data']['extraOffer']['prepaid']
-                }
-                if (cart) {
-                    let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
-                    let totalAmount = cart.totalAmount ? cart.totalAmount : 0;
-                    let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
-                    this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
-                }
-                this._cartService.setCartSession(cartSession);
-                // console.log(this.cartSesssion);
-                this._cartService.orderSummary.next(cartSession);
-                this.isShowLoader = false;
+        this._cartService.validatePaymentsDiscount("NB", 5).subscribe(response => {
+            this.isShowLoader = false;
+            if(response){
+                this.prepaidDiscount = response['prepaidDiscount'];
+                this.totalPayableAmount = response['totalPayableAmount']
             }
-        });
+        })
     }
 
     selectBank(data, isTopBank = false) {
-        // console.log('selectbak==> ', data, isTopBank);
         if (data) {
             this.selectedBankCode = data.code;
-            // only set incase value selected from select popup
             if (!isTopBank) {
                 this.selectedBankName = data.name;
                 this.commonFailureMsg = false;
@@ -323,9 +264,6 @@ export class NetBankingComponent {
     }
 
     ngOnDestroy() {
-
         this.prepaidsubscription.unsubscribe();
-        this._cartService.setCartSession(this.cartSesssion);
-        this._cartService.orderSummary.next(this.cartSesssion);
     }
 }

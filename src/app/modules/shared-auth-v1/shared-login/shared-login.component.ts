@@ -9,6 +9,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { Subscription } from 'rxjs';
 import CONSTANTS from '../../../../app/config/constants';
+import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
 
@@ -53,6 +54,7 @@ export class SharedLoginComponent implements OnInit
     constructor(
         private _fb: FormBuilder,
         private _sharedAuthService: SharedAuthService,
+        private _sharedAuthUtilService: SharedAuthUtilService,
         private _localAuthService: LocalAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
@@ -72,6 +74,7 @@ export class SharedLoginComponent implements OnInit
         }
         this.handleBackUrlTitle();
         this.addQueryParamSubscribers();
+        this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage");
     }
 
     addQueryParamSubscribers() {

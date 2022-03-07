@@ -81,9 +81,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
      */
     updateFlow(identifier)
     {
-        if (window) {
-            (this.isCheckout) ? this._sharedAuthUtilService.sendCheckoutAdobeAnalysis() : this._sharedAuthUtilService.sendAdobeAnalysis();
-        }
         if (this.isOTPFlow) { this.startOTPTimer(); }
     }
 
@@ -182,6 +179,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     processAuthenticaton(response)
     {
+        this._sharedAuthUtilService.sendGenericPageClickTracking(true);
         const BACKURLTITLE = this._localAuthService.getBackURLTitle();
         let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
         const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))

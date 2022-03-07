@@ -7,115 +7,8 @@ header {
             color: $white-color;
             margin-right: 10px;
         }
-        // .head-strip {
-        //     padding: 2px 0;
-        //     min-height: 52px;
-        //     .logo-container {
-        //         i,
-        //         a {
-        //             float: left;
-        //             padding: 12px 10px;
-        //             color: $white;
-        //         }
-        //         & :first-child {
-        //             padding-left: 0;
-        //         }
-        //         .page-name {
-        //             color: $white;
-        //         }
-        //         .icon-back {
-        //             font-size: 20px;
-        //             color: $white-color;
-        //
-        //         }
-        //         .icon-menu {
-        //             font-size: 15px;
-        //             padding: 15px 10px 0 0;
-        //             color: $white-color;
-        //         }
-        //         .icon-logo {
-        //             font-size: 71px;
-        //             line-height: 21px;
-        //             padding-left: 0;
-        //             padding-bottom: 0;
-        //             margin-left: 5px;
-        //         }
-        //     }
-        // }
-        // .search-strip {
-        //     background: $logo-color;
-        //     .container {
-        //         position: relative;
-        //         input {
-        //             margin: 10px 0;
-        //             width: 100%;
-        //             height: 30px;
-        //             padding: 8px;
-        //             @extend %border-radius;
-        //             background: $white;
-        //         }
-        //         i {
-        //             position: absolute;
-        //             right: 10px;
-        //             top: 17px;
-        //             font-size: 18px;
-        //             color: $link-color;
-        //         }
-        //     }
-        // }
     }
 }
-
-// .head-popup {
-//     padding: 1px 0;
-//     @extend %clear-fix;
-//     background: $logo-color;
-//     margin-bottom: 0px;
-//     .container {
-//         position: relative;
-//     }
-//     i {
-//         position: absolute;
-//         left: 10px;
-//         top: 20px;
-//         font-size: 18px;
-//         color: #303030;
-//         z-index: 1;
-//         &.icon-delete {
-//             right: 10px;
-//             font-size: 14px;
-//             left: auto;
-//             margin-top: 0px;
-//         }
-//     }
-//     .icon-back {
-//         display: none;
-//     }
-//     input {
-//         border-radius: 3px;
-//         margin: 10px 0;
-//         height: 40px;
-//         // line-height: 40px;
-//         width: 100%;
-//         border: 0;
-//         padding: 0 36px 0 40px;
-//         background: #fff;
-//         font-size: 14px;
-//         color: #707070;
-//     }
-// }
-
-// .scrolled {
-//     .head-popup {
-//         box-shadow: none;
-//         i {
-//             top: 10px;
-//         }
-//         input {
-//             margin: 0px;
-//         }
-//     }
-// }
 
 .inner-pages {
     @extend %box-shadow;
@@ -154,7 +47,6 @@ header {
         padding: 12px 8px;
         display: table-cell;
         vertical-align: middle;
-        // text-align: center;
         position: relative;
         font-size: 18px;
         color: $white;
@@ -203,51 +95,7 @@ header {
             border-radius: 6px 0 0 6px;
         }
     }
-    //     ::placeholder {
-    //         font-size: 13px;
-    //         color: #898989;
-    //     }
-    // }
-    // /*search bar css*/
-    // .logo-wrapper {
-    //     display: inline-block;
-    //     img {
-    //         vertical-align: top;
-    //     }
-    // }
-    // .head-icons {
-    //     & > * {
-    //         float: left;
-    //         margin-left: 12px;
-    //         font-size: 20px;
-    //         padding: 10px 5px;
-    //         position: relative;
-    //         color: #fff;
-    //     }
-    //     .badge {
-    //         position: absolute;
-    //         top: 4px;
-    //         right: -5px;
-    //         width: 18px;
-    //         height: 18px;
-    //         text-align: center;
-    //         line-height: 18px;
-    //         border-radius: 50%;
-    //         color: $logo-color;
-    //         background: $white;
-    //         font-size: 11px;
-    //         font-family: "Roboto", sans-serif;
-    //     }
-    // }
 }
-
-// .headerFixed {
-//     position: fixed;
-//     width: 100%;
-//     top: 0px;
-//     left: 0px;
-//     z-index: 89;
-// }
 
 // Common Search Bar
 .search-bar {
@@ -279,48 +127,7 @@ header {
         color: #303030;
         font-size: 18px;
     }
-    // &.search-bar-custom {
-    //     margin: 10px;
-    // }
 }
-
-// When Header is scrolled
-// .scrolledHeader {
-//     width: 100%;
-//     height: 54px;
-//     display: table;
-//     table-layout: fixed;
-//     z-index: 90;
-//     padding: 5px 0;
-//     background: $logo-color;
-//     &>* {
-//         color: $white;
-//     }
-//     a {
-//         display: table-cell;
-//         vertical-align: middle;
-//         text-align: center;
-//         position: relative;
-//         display: inline-block;
-//         &.search-bar {
-//             width: 76%;
-//             margin: 2px 0px;
-//         }
-//         &.header-icon {
-//             max-width: 48px;
-//             width: 12%;
-//             font-size: 24px;
-//             &.icon-menu {
-//                 font-size: 15px;
-//             }
-//         }
-//     }
-//     .badge {
-//         top: -9px;
-//         right: 2px;
-//         color: #333;
-//     }
-// }
 
 .scrolledHeader {
     width: 100%;

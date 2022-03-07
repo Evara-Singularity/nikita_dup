@@ -21,6 +21,18 @@ export class OrderSummaryComponent {
     shippingCharges: number = 0;
     @Input('orderSummaryData') orderSummaryData;
 
-    constructor() {}
+    constructor(
+        public router: Router,
+        private localStorageService: LocalStorageService
+    ) {}
 
+    vof: boolean = false;
+    openOfferPopUp() {
+        const user = this.localStorageService.retrieve('user');
+        if (user && user.authenticated == "true") {
+            this.vof = true;
+        } else {
+            this.router.navigate(["/login"]);
+        }
+    }
 }

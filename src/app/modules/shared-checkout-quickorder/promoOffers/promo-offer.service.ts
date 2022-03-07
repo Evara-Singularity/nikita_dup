@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ENDPOINTS } from '@app/config/endpoints';
-import CONSTANTS from '../../config/constants';
-import { DataService } from '../../utils/services/data.service';
+import CONSTANTS from '../../../config/constants';
+import { DataService } from '../../../utils/services/data.service';
 
 
 @Injectable()

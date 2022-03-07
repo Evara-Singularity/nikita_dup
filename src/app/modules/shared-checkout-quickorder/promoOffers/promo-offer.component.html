@@ -1,11 +1,11 @@
 <section class="screen-view popup select-offers open">
   <div class="container">
     <div class="head-sec">
-      <i class="icon-circle-delete f-left" (click)="closePopup()"></i>
+      <i class="icon-circle-delete f-left"></i>
       <p class="txt">ALL OFFERS</p>
     </div>
   </div>
-    <app-promo-apply (updateCartSession$)="updateCartSession($event)" [updatePromo$]="updatePromo$" (outData$)="outData($event)" [iData]="{type: 'cart', text: iData['pcd']['text'], isApplied: iData['pcd']['isApplied']}"></app-promo-apply>
+    <!-- <app-promo-apply (updateCartSession$)="updateCartSession($event)" [updatePromo$]="updatePromo$" (outData$)="outData($event)" [iData]="{type: 'cart', text: iData['pcd']['text'], isApplied: iData['pcd']['isApplied']}"></app-promo-apply> -->
 
     <div class="custom-cbox">
       <p class="mt-15 border-top">Take advantage of our exclusive offers</p>

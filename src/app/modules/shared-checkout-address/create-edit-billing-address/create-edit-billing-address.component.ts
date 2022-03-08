@@ -1,7 +1,6 @@
-import { trackData } from './../../../utils/clickStream';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -98,8 +97,8 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         this._addressService.getStateList(countryId).subscribe((stateList: StateListModel[]) =>
         {
             this.stateList = stateList;
-            const COUNTRY_ID = this._addressService.getCountry(this.countryList, null);
-            const STATE_ID = this._addressService.getState(this.stateList, null);
+            const COUNTRY_ID = SharedCheckoutAddressUtil.getCountry(this.countryList, null);
+            const STATE_ID = SharedCheckoutAddressUtil.getState(this.stateList, null);
             this.idCountry.patchValue(COUNTRY_ID);
             this.idState.patchValue(STATE_ID);
         })
@@ -168,10 +167,9 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         this.companyName.markAsDirty();
         this.companyName.patchValue(this.verifiedGSTINDetails['legal_name_of_business']);
         this.addressLine.markAsDirty();
-        const ADDRESS_LINE = this._addressService.getFormattedAddressLine(this.addressLineKeys, billingAddress);
+        const ADDRESS_LINE = SharedCheckoutAddressUtil.getFormattedAddressLine(this.addressLineKeys, billingAddress);
         this.addressLine.patchValue(ADDRESS_LINE)
         this.postCode.patchValue(billingAddress['pncd']);
-        //this.getCityByPostcode();//TODO:not required as subscriber should do job
     }
 
     resetGSTINVarification(message)
@@ -234,10 +232,12 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
             }
             forkJoin(fjData).subscribe((responses) =>
             {
+                debugger;
                 let response1: any[] = responses[0];
+                let response2: any[] = responses[1] ? responses[1] : true;
                 if (response1.length) {
-                    let successCount: number = this._addressService.getSuccessCount(responses);
-                    if (responses.length == successCount) {
+                    this._toastMessageService.show({ type: "success", text: `${this.ADDRESS_TYPE} address saved successfully` });
+                    if (response2) {
                         if (!this.isBusinessDetailExists && !(IS_IDADDRESSEXITS)) {
                             this.userSesssion['userType'] = 'business';
                             this._localStorageService.store('user', this.userSesssion);
@@ -246,7 +246,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                     }
                     return;
                 }
-                this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] });
+                this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] || "Unable to save address"});
             });
         }
     }

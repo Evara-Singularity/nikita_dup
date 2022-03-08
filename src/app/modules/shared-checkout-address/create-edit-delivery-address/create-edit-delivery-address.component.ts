@@ -136,8 +136,8 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     updateAddressForm()
     {
-        const COUNTRY_ID = this._addressService.getCountry(this.countryList, null);
-        const STATE_ID = this._addressService.getState(this.stateList, null);
+        const COUNTRY_ID = SharedCheckoutAddressUtil.getCountry(this.countryList, null);
+        const STATE_ID = SharedCheckoutAddressUtil.getState(this.stateList, null);
         this.idCountry.patchValue(COUNTRY_ID);
         this.idState.patchValue(STATE_ID);
     }
@@ -181,7 +181,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         this._addressService.postAddress(this.getRequestData(address)).subscribe((addressList: any[]) =>
         {
             if (addressList.length) {
-                this._toastMessage.show({ type: "success", text: `${this.ADDRESS_TYPE} saved successfully`})
+                this._toastMessage.show({ type: "success", text: `${this.ADDRESS_TYPE} address saved successfully`});
                 this.closeAddressPopUp$.emit({ aType: A_TYPE, action: this.modeType, addresses: addressList });
             }
         });

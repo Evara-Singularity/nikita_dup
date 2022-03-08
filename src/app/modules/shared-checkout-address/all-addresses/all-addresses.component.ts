@@ -1,11 +1,16 @@
-import { Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { AddressService } from '@app/utils/services/address.service';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector, EventEmitter, Output } from '@angular/core';
-import { AddressListActionModel, AddressListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
-import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
+/**
+ * This is cemtralised component in which delivery & billing address can be viewed, added & edited.
+ * AddressListComponent: to display all the address list for selection as pop-up
+ * CreateEditDeliveryComponent/CreateEditDeliveryComponent: to handle add or edit of delivery or billing details as pop-up
+ */
 
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AddressListActionModel, AddressListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { AddressService } from '@app/utils/services/address.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { Subscription } from 'rxjs';
+import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'all-addresses',
     templateUrl: './all-addresses.component.html',
@@ -16,7 +21,7 @@ export class AllAddressesComponent implements OnInit, OnDestroy
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
-
+    //emits invoicetype, selected delivery & billing address which is to used for checkout
     @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<any> = new EventEmitter<any>();
 
     invoiceType: FormControl = null;
@@ -50,13 +55,22 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.TAX);
     }
 
-    updateInvoiceType(isGST)
+    /**
+     * @description:to trace invoicetype as 'tax' or 'retail'
+     * @param isGST: comes from template by event binding 
+     */
+    updateInvoiceType(isGST: boolean)
     {
         this.invoiceType.patchValue(isGST ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL);
         this.emitAddressEvent(null, null);
     }
 
-    updateAddressTypes(userId, type: string)
+    /**
+     * @description:to fetch delivery & billing address list
+     * @param userId : comes local storage
+     * @param type: TODO:can be removed after discussion with Pritam
+     */
+    updateAddressTypes(userId: number, type: string)
     {
         const params = { customerId: userId, invoiceType: type };
         this._addressService.getAddressList(params).subscribe((response: AddressListModel) =>
@@ -67,6 +81,10 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         });
     }
 
+    /**
+     * @description:displays list of delivery or billing addreses depending on 'addressType'
+     * @param addressType :Delivery or Billing
+     */
     async displayAddressListPopup(addressType: string)
     {
         const { AddressListComponent } = await import("./../address-list/address-list.component").finally(() => { });
@@ -91,11 +109,13 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         });
         this.addressListActionSubscription = (this.addressListInstance.instance["emitActionEvent$"] as EventEmitter<any>).subscribe((actionInfo: AddressListActionModel) =>
         {
-            //EXPECTED ACTIONS: ADD or EDIT or SELECTED;
+            //Expected Actions from Address List component are : ADD or EDIT or SELECTED;
+            //Below code is to handle "Add or Edit".
             if (actionInfo.action === "ADD" || actionInfo.action === "EDIT") {
                 this.displayAddressFormPopup(addressType, actionInfo.address);
                 return;
             }
+            //Below code is to handle "Deliver Here".
             if (actionInfo.action === "SELECTED") {
                 this.closeAddressListPopup();
                 this.updateDeliveryOrBillingAddress(addressType, actionInfo.address);
@@ -104,29 +124,34 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         });
     }
 
-    async displayAddressFormPopup(addressType: string, address?)
+    /**
+     * @description: to add or edit existing delivery or billing address
+     * @param addressType: Delivery or Billing
+     * @param address: can be delivery or billing address or 'null' in case of addition
+     */
+    async displayAddressFormPopup(addressType: string, address)
     {
         let factory = null;
         let verifiedPhones = null;
-        verifiedPhones = this._addressService.getVerifiedPhones(this.deliveryAddressList);
+        verifiedPhones = SharedCheckoutAddressUtil.getVerifiedPhones(this.USER_SESSION, this.deliveryAddressList);
         if (addressType === this.ADDRESS_TYPES.DELIVERY) {
             const { CreateEditDeliveryAddressComponent } = await import("./../create-edit-delivery-address/create-edit-delivery-address.component").finally(() => { });
             factory = this.cfr.resolveComponentFactory(CreateEditDeliveryAddressComponent);
-            verifiedPhones = this._addressService.getVerifiedPhones(this.deliveryAddressList);
+            verifiedPhones = SharedCheckoutAddressUtil.getVerifiedPhones(this.USER_SESSION, this.deliveryAddressList);
         }
         else {
             const { CreateEditBillingAddressComponent } = await import("./../create-edit-billing-address/create-edit-billing-address.component").finally(() => { });
             factory = this.cfr.resolveComponentFactory(CreateEditBillingAddressComponent);
-            verifiedPhones = this._addressService.getVerifiedPhones(this.billingAddressList);
+            verifiedPhones = SharedCheckoutAddressUtil.getVerifiedPhones(this.USER_SESSION, this.billingAddressList);
         }
         this.createEditAddressInstance = this.addressListRef.createComponent(factory, null, this.injector);
         this.createEditAddressInstance.instance['isAddMode'] = !(address);
         this.createEditAddressInstance.instance['invoiceType'] = this.invoiceType.value;
         this.createEditAddressInstance.instance['verifiedPhones'] = verifiedPhones;
-        this.createEditAddressInstance.instance['address'] = address || null;
         this.createEditAddressInstance.instance['displayCreateEditPopup'] = true;
         this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
         {
+            //Expected Actions: "Add or Edit or null", null implies no action to be taken
             if (response.action) {
                 const ADDRESSES = response['addresses'];
                 this.updateAddressAfterAction(addressType, ADDRESSES);
@@ -136,23 +161,11 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         });
     }
 
-    updateDeliveryOrBillingAddress(addressType, address)
-    {
-        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
-            this.emitAddressEvent(address, null);
-            return;
-        }
-        this.emitAddressEvent(null, address);
-    }
-
-    closeAddressListPopup()
-    {
-        if (!this.addressListInstance) return
-        this.addressListInstance.instance['displayAddressListPopup'] = false;
-        this.addressListRef.remove();
-        this.addressListInstance = null;
-    }
-
+    /**
+     * @description : to handle case in which address list pop-up is opened & to update list of addresses depending on address type
+     * @param addressType:Delivery or Billing
+     * @param addresses :can be delivery or billing address or 'null' in case of addition
+     */
     updateAddressAfterAction(addressType, addresses)
     {
         if (!addresses) return
@@ -166,6 +179,25 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         this.billingAddressList = addresses;
     }
 
+    /**
+     * @description decides which event to be updated
+     * @param addressType: Delivery or Billing
+     * @param address: can be delivery or billing address 
+     */
+    updateDeliveryOrBillingAddress(addressType, address)
+    {
+        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
+            this.emitAddressEvent(address, null);
+            return;
+        }
+        this.emitAddressEvent(null, address);
+    }
+
+    /**
+     * @description:emits invoicetype, delivery & billling address type to parent in which this module is used
+     * @param deliveryAddress 
+     * @param billingAddress 
+     */
     emitAddressEvent(deliveryAddress, billingAddress)
     {
         const INVOICE_TYPE = this.invoiceType.value;
@@ -175,10 +207,23 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         this.emitAddressSelectEvent$.emit(DATA);
     }
 
+    /**
+     * @description:closes the address list pop-up depending on address form pop-up
+     */
+    closeAddressListPopup()
+    {
+        if (!this.addressListInstance) return
+        this.addressListInstance.instance['displayAddressListPopup'] = false;
+        this.addressListRef.remove();
+        this.addressListInstance = null;
+    }
+
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
 
     ngOnDestroy(): void
     {
+        this.addressListInstance = null;
+        this.createEditAddressInstance = null;
         if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();
         if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();
         if (this.createEditAddressSubscription) this.createEditAddressSubscription.unsubscribe();

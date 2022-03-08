@@ -1,15 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-checkout-address',
-  templateUrl: './checkout-address.component.html',
-  styleUrls: ['./checkout-address.component.css']
+    selector: 'app-checkout-address',
+    templateUrl: './checkout-address.component.html',
+    styleUrls: ['./checkout-address.component.css']
 })
-export class CheckoutAddressComponent implements OnInit {
+export class CheckoutAddressComponent implements OnInit
+{
 
-  constructor() { }
+    addressSubscription
 
-  ngOnInit(): void {
-  }
+    constructor() { }
+
+    ngOnInit(): void
+    {
+    }
+
+    //Address Information
+    handleAddressEvents(addressInformation)
+    {
+        console.log(addressInformation)
+    }
+
+
+
+
+
+
+
 
 }

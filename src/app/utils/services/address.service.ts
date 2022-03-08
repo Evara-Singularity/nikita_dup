@@ -94,7 +94,14 @@ export class AddressService
     setBusinessDetail(obj)
     {
         let URL = `${this.API}${ENDPOINTS.UPD_CUS}`;
-        return this._dataService.callRestful("POST", URL, { body: obj });
+        return this._dataService.callRestful("POST", URL, { body: obj }).pipe(
+            map((response) =>
+            {
+                if (response['status']) { return response['status'] }
+                return false;
+            }),
+            catchError((error: HttpErrorResponse) => this.handleError(false))
+        );;
     }
 
     getStateList(countryId)
@@ -140,84 +147,7 @@ export class AddressService
         );
     }
 
-    //utility methods
-    getSuccessCount(responses: any[])
-    {
-        let count = 0;
-        for (let i = 0; i < responses.length; i++) {
-            if (responses[i]['status'] && responses[i]['statusCode'] == 200) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-
-    getFormattedAddressLine(addressLineKeys: any[], billingAddress)
-    {
-        let temp = '';
-        addressLineKeys.forEach((name) =>
-        {
-            let key = (billingAddress[name] as string).trim();
-            if (key && key.length > 0) {
-                temp = temp + key + ', ';
-            }
-        });
-        return temp.substring(0, temp.lastIndexOf(','));
-    }
-
-    getVerifiedPhones(addressList: any[]): any[]
-    {
-        const USER_SESSION = this._localAuthService.getUserSession();
-        let verifiedPhones = [];
-        if (USER_SESSION && USER_SESSION['phoneVerified']) {
-            verifiedPhones.push(USER_SESSION['phone']);
-        }
-        if (addressList.length) {
-            const filtered = addressList.filter((address) => { return address.phoneVerified });
-            const phones = filtered.map((address) => address.phone);
-            verifiedPhones = [...verifiedPhones, ...phones];
-        }
-        return verifiedPhones;
-    }
-
-    getCreateEditDeliveryAddressType(address, countryList, stateList)
-    {
-        const COUNTRY_ID = this.getCountry(countryList, address);
-        const STATE_ID = this.getCountry(stateList, address);
-        const ADDRESS = {};
-        ADDRESS['idCountry'] = COUNTRY_ID;
-        ADDRESS['idState'] = STATE_ID;
-        ADDRESS['idAddress'] = address['idAddress'];
-        ADDRESS['addressCustomerName'] = address['addressCustomerName'];
-        ADDRESS['phone'] = address['phone'];
-        ADDRESS['alternatePhone'] = address['alternatePhone'];
-        ADDRESS['postCode'] = address['postCode'];
-        ADDRESS['landmark'] = address['landmark'];
-        ADDRESS['addressLine'] = address['addressLine'];
-        ADDRESS['city'] = address['city'];
-        ADDRESS['email'] = address['email'];
-        ADDRESS['phoneVerified'] = address['phoneVerified'] || false;
-        return ADDRESS;
-    }
-
-    getCountry(countryList, address)
-    {
-        if (address && address['country'] && address['country']['idCountry']) {
-            return parseInt(address['country']['idCountry']);
-        } else {
-            return countryList[0]['idCountry'];
-        }
-    }
-
-    getState(stateList, address)
-    {
-        if (address && address['state'] && address['state']['idState']) {
-            return parseInt(address['state']['idState']);
-        } else {
-            return stateList[0]['idState'];
-        }
-    }
+    //utility methods section 
 
     //idAddressType=1 implies delivery
     //idAddressType=2 implies billing

@@ -1,6 +1,6 @@
 <div>
     <div class="apply-promo no-border">
-        <!-- <app-promo-apply (updatecartSession$)="updatecartSession($event)" (outData$)="outData($event)" [iData]="pad"></app-promo-apply> -->
+        <app-promo-apply (removeCustomPromoCode)="handleRemoveCustomPromoCode($event)" (applyCustomPromoCode)="handleApplyCustomPromoCode($event)"></app-promo-apply>
         <p class="open-offers" (click)="openOfferPopUp()">VIEW ALL OFFERS</p>
     </div>
 

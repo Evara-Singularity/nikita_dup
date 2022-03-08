@@ -4,7 +4,10 @@ import { NgModule } from "@angular/core";
 import { CartNoItemComponent } from "./cart-no-item/cart-no-item.component";
 
 @NgModule({
-    imports: [CommonModule, RouterModule],
+    imports: [
+        CommonModule, 
+        RouterModule
+    ],
     exports: [CartNoItemComponent],
     declarations: [CartNoItemComponent],
     providers: []

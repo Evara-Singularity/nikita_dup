@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
-import { FormsModule } from '@angular/forms';
 import { routing } from "./quickOrder.routing";
-
 import { QuickOrderComponent } from "./quickOrder.component";
 import { QuickOrderService } from "./quickOrder.service";
 import { QuickOrderResolver } from './quickOrder.resolver';
@@ -24,7 +22,6 @@ import { OrderSummaryModule } from '@modules/shared-checkout-quickorder/orderSum
         ObjectToArrayPipeModule,
         MathFloorPipeModule,
         OrderSummaryModule,
-        FormsModule,
         CartModule,
         CartUpdatesModule,
         UnAvailableItemsModule,

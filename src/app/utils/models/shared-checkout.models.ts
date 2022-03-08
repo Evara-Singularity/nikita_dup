@@ -3,11 +3,10 @@ export interface AddressListModel
     deliveryAddressList: any[],
     billingAddressList: any[]
 }
-
 export interface AddressListActionModel
 {
     action: string,
-    idAddress: number
+    address: any
 }
 
 export interface CreateEditAddressModel
@@ -30,21 +29,9 @@ export interface CountryListModel
     name: string
 }
 
-export interface DeliveryAddressModel
+export interface SelectedAddressModel
 {
-    idAddress: any;
-    addressCustomerName: any;
-    phone: any
-    alternatePhone: any;
-    postCode: any;
-    landmark: any;
-    addressLi: any;
-    city: any
-    idCountry: any;
-    idState: any
-    email: any;
-    phoneVerified: any;
+    invoiceType:string;
+    deliveryAddress:any;
+    billingAddress:any;
 }
-
-
-

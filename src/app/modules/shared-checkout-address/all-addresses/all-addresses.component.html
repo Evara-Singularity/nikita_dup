@@ -1,7 +1,7 @@
 <section class="invoice-container">
     <div class="invoice-select">
         <label>
-            <input type="checkbox" [formControl]="isGSTInvoice">
+            <input type="checkbox" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
             <span class="custom-box icon-box"></span>
         </label>
         <div class="invoice-txt">
@@ -14,13 +14,14 @@
 <!--shipping container-->
 <section>
     <ng-container
-        *ngTemplateOutlet="tAddress; context: {addresses : deliveryAddressList, label:ADDRESS_TYPES.DELIVERY}">
+        *ngTemplateOutlet="tAddress; context: {address : selectedDeliveryAddress, label:ADDRESS_TYPES.DELIVERY, addressCount:deliveryAddressList.length}">
     </ng-container>
 </section>
 
 <!--billing container-->
 <section [style.display]="displayBillingAddresses">
-    <ng-container *ngTemplateOutlet="tAddress; context: {addresses : billingAddressList, label:ADDRESS_TYPES.BILLING}">
+    <ng-container
+        *ngTemplateOutlet="tAddress; context: {address : selectedBillingAddress, label:ADDRESS_TYPES.BILLING, addressCount:billingAddressList.length}">
     </ng-container>
 </section>
 
@@ -35,15 +36,15 @@
 </section>
 
 <!--common template to display address-->
-<ng-template #tAddress let-addresses="addresses" let-label="label">
+<ng-template #tAddress let-address="address" let-label="label" let-addressCount="addressCount">
     <div class="address-container">
         <div class="sub-strip">
             <div class="container">
-                <h4 class="heading">{{label}} Address ({{addresses.length}})</h4>
+                <h4 class="heading">{{label}} Address ({{addressCount}})</h4>
             </div>
         </div>
         <div class="address-list">
-            <div class="multiple-address" *ngFor="let address of addresses; let addressIndex = index">
+            <div class="multiple-address" *ngIf="address">
                 <label>
                     <span class="chk-txt">
                         <span class="heading-container">
@@ -59,11 +60,12 @@
         </div>
         <div class="addButtonContainer">
             <div class="container">
-                <button class="btn blue-border-btn-full" *ngIf="addresses.length > 0"
+                <button class="btn blue-border-btn-full" *ngIf="addressCount > 0"
                     (click)="$event.stopPropagation();displayAddressListPopup(label)">
                     CHANGE OR ADD ADDRESS
                 </button>
-                <button class="blue-border-btn-full" *ngIf="addresses.length == 0" (click)="$event.stopPropagation();displayAddressFormPopup(label)">
+                <button class="blue-border-btn-full" *ngIf="addressCount == 0"
+                    (click)="$event.stopPropagation();displayAddressFormPopup(label)">
                     ADD NEW ADDRESS
                 </button>
             </div>

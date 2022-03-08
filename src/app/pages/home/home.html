@@ -21,7 +21,7 @@
         </a>
     </section>
    
-    <div class="allCategory">
+    <!-- <div class="allCategory">
         <div class="categoryOverBlk">
             <div class="clearfix">
                 <div class="commonCategorySlide" *ngFor="let item of clustorCategories | slice:0:5">
@@ -50,10 +50,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  -->
 
-    <category-card></category-card>
-
+        <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'" [routerLink]="item.category_url"
+            [image]="imagePath + 'img/cluster/'+item.category_image" [title]="item['CategoryName']">
+        </category-card>
+        <category-card [page]="'home'" [routerLink]="['/all-categories']" [image]="imagePath + 'img/cluster/Group 10310.svg'"
+            [title]="'View All Categories'">
+        </category-card>
     <!-- <div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
         <div>
             <ng-container #TrendingCategories></ng-container>

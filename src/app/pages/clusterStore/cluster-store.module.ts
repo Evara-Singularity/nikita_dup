@@ -9,6 +9,7 @@ import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe
 import { ClusterCategoryComponent } from '@app/components/cluster-store/cluster-category/cluster-category.component';
 import { ClusterStoreResolver } from './cluster-store.resolver';
 import { ClusterFooterComponent } from '@app/components/cluster-store/cluster-footer/cluster-footer.component';
+import CategoryCardModule from '@app/components/category-card/category-card.component';
 
 @NgModule({
 	declarations: [ClusterStoreComponent, ClusterCategoryComponent, ClusterFooterComponent],
@@ -18,6 +19,7 @@ import { ClusterFooterComponent } from '@app/components/cluster-store/cluster-fo
 		routing,
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
+		CategoryCardModule
 	],
 	providers: [ClusterStoreService, ClusterStoreResolver],
 })

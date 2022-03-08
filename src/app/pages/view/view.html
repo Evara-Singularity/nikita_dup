@@ -1,7 +1,7 @@
 <section id="view_all-page" class="category-container">
   <nav id="sidebar" class="sidebar">
     <div class="sidebar-content">
-      <div *ngIf="clusterCategoryData" class="allCategory">
+      <!-- <div *ngIf="clusterCategoryData" class="allCategory">
         <div class="categoryOverBlk">
           <div class="clearfix">
             <div class="commonCategorySlide" *ngFor="let item of clusterCategoryData['data']">
@@ -18,7 +18,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+      <category-card *ngFor="let item of clusterCategoryData['data']" [page]="'all-categories'"
+        [routerLink]="['/'+item.image_general[0].general_url]" [image]="API['IMAGE_BASE_URL'] + item.image_name"
+        [title]="item['image_title']">
+      </category-card>
       <div class="clearfix breadcrumbs border-bottom">
         <h1 (click)="goto(0)" style="font-size:14pt;">All Categories</h1>
         <ng-container *ngFor="let cat of clickedCategories; let i=index;">

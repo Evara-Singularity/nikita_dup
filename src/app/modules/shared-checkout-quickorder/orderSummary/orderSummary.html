@@ -4,7 +4,7 @@
         <p class="open-offers" (click)="openOfferPopUp()">VIEW ALL OFFERS</p>
     </div>
 
-    <app-promo-offer *ngIf="vof"></app-promo-offer>
+    <app-promo-offer (closePromoOfferPopup)="showPromoOfferPopup = $event" *ngIf="showPromoOfferPopup"></app-promo-offer>
 
     <div class="order-summary no-border" id="payment_summary">
         <h3>Payment Summary</h3>

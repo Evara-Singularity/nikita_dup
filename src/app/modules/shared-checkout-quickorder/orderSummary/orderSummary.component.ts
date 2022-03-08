@@ -9,6 +9,7 @@ import { CartService } from '@utils/services/cart.service';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { mergeMap } from 'rxjs/operators';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 declare let dataLayer: any;
 
 
@@ -19,18 +20,17 @@ declare let dataLayer: any;
 })
 export class OrderSummaryComponent {
     shippingCharges: number = 0;
+    showPromoOfferPopup: boolean = false;
     @Input('orderSummaryData') orderSummaryData;
 
     constructor(
         public router: Router,
-        private localStorageService: LocalStorageService
+        private _commonService: CommonService,
     ) {}
 
-    vof: boolean = false;
     openOfferPopUp() {
-        const user = this.localStorageService.retrieve('user');
-        if (user && user.authenticated == "true") {
-            this.vof = true;
+        if (this._commonService.userSession.authenticated == "true") {
+            this.showPromoOfferPopup = true;
         } else {
             this.router.navigate(["/login"]);
         }

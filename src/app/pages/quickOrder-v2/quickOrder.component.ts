@@ -1,3 +1,4 @@
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 import { LocalStorageService } from 'ngx-webstorage';
 import { Component, ViewEncapsulation, Input } from '@angular/core';
@@ -36,6 +37,7 @@ export class QuickOrderComponent {
         private _activatedRoute: ActivatedRoute,
         private _localAuthService: LocalAuthService,
         private title: Title,
+        private _loaderService: GlobalLoaderService,
         private localStorageService: LocalStorageService,
         public footerService: FooterService,
         public cartService: CartService,
@@ -57,11 +59,10 @@ export class QuickOrderComponent {
     }
 
     setDataFromResolver() {
+        this._loaderService.setLoaderState(true);
         this._activatedRoute.data.pipe(
             mergeMap((data: any) => {
-                console.clear();
                 const cartSession = data.data;
-                //  ;
                 if (this._commonService.isServer) {
                     return of(null);
                 }
@@ -74,6 +75,7 @@ export class QuickOrderComponent {
                 return this.getShippingValue(cartSession);
             }),
         ) .subscribe(result => {
+            this._loaderService.setLoaderState(false);
             this.API_RESPONSE = this.cartService.updateCart(result);
             this.cartService.setCartSession(this.API_RESPONSE);
         });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import CONSTANTS from '../../config/constants';
-import { ENDPOINTS } from '../../config/endpoints';
-import { DataService } from '../../utils/services/data.service';
+import CONSTANTS from '../../../config/constants';
+import { ENDPOINTS } from '../../../config/endpoints';
+import { DataService } from '../../../utils/services/data.service';
 
 @Injectable()
 export class PromoApplyService {

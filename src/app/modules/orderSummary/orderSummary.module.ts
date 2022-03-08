@@ -6,7 +6,7 @@ import {OrderSummaryComponent} from './orderSummary.component';
 import {OrderSummaryService} from './orderSummary.service';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PromoOfferModule } from '../shared-checkout-quickorder/promoOffers/promo-offer.module';
-import { PromoApplyModule } from '../promoApply/promo-apply.module';
+import { PromoApplyModule } from '../shared-checkout-quickorder/promoApply/promo-apply.module';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
 import { MathFloorPipeModule } from '@pipes/math-floor';
 

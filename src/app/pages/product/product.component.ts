@@ -5,6 +5,7 @@ import {
   ComponentFactoryResolver,
   ElementRef,
   EventEmitter,
+  HostListener,
   Inject,
   Injector,
   OnInit,
@@ -151,7 +152,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   similarForOOSContainer = [];
   similarForOOSLoaded = true;
-
   // Q&A vars
   questionMessage: string;
   listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
@@ -374,6 +374,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.attachSwipeEvents();
     }
   }
+  
 
   backUrlNavigationHandler() {
     // make sure no browser history is present
@@ -2319,6 +2320,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
+  handleRoutingForPopUps() {
+    window.history.replaceState('', '', this.router.url);
+    window.history.pushState('', '', this.router.url);
+  }
+
+  handleRestoreRoutingForPopups() {
+    window.history.replaceState('', '', this.commonService.getPreviousUrl);
+    window.history.pushState('', '', this.router.url);
+  }
+
   async openPopUpcrousel(
     slideNumber: number = 1,
     oosProductIndex: number = -1
@@ -2360,9 +2371,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
       (
         this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>
       ).subscribe((status) => {
-        this.displayCardCta = false;
-        this.popupCrouselInstance = null;
-        this.popupCrouselContainerRef.remove();
+        this.clearImageCrouselPopup();
+        this.handleRestoreRoutingForPopups();
       });
       (
         this.popupCrouselInstance.instance[
@@ -2373,7 +2383,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.moveToSlide$.next(slideData.currentSlide);
         }
       });
+      this.handleRoutingForPopUps();
     }
+  }
+
+  private clearImageCrouselPopup() {
+    this.displayCardCta = false;
+    this.popupCrouselInstance = null;
+    this.popupCrouselContainerRef.remove();
   }
 
   async loadProductCrousel(slideIndex) {
@@ -3406,12 +3423,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
-      this.holdRFQForm = false;
-      // document.getElementById('infoTabs').scrollLeft = 0;
-      this.productInfoPopupInstance = null;
-      this.productInfoPopupContainerRef.remove();
-      this.displayCardCta = false;
+      this.closeProductInfoPopup();
+      this.handleRestoreRoutingForPopups();
     });
+    this.handleRoutingForPopUps();
+  }
+
+  private closeProductInfoPopup() {
+    this.holdRFQForm = false;
+    this.productInfoPopupInstance = null;
+    this.productInfoPopupContainerRef.remove();
+    this.displayCardCta = false;
   }
 
   async handleFaqListPopup() {
@@ -3890,4 +3912,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
     this.resetLazyComponents();
   }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.clearImageCrouselPopup();
+    this.closeProductInfoPopup();
+  }
+
+
 }

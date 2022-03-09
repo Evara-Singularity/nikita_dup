@@ -147,6 +147,20 @@ export class AddressService
         );
     }
 
+    getSericeability(data)
+    {
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.VALIDATE_PRODUCT_SER}`;
+        return this._dataService.callRestful("POST", URL, { body: data }).pipe(
+            map((response) =>
+            {
+                if (response['status']) { return response['dataList'] }
+                return [];
+            }),
+            catchError((error: HttpErrorResponse) => { return of([]); })
+        );
+
+    }
+
     //utility methods section 
 
     //idAddressType=1 implies delivery

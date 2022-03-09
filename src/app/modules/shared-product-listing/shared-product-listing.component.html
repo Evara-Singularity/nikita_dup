@@ -42,10 +42,10 @@
 </div>
 <div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
     <ng-container>
-        <h1 class="left list-name">
+        <h1 class="list-name">
             {{ headerName }}
         </h1>
-        <div class="right" *ngIf="productsListingData?.products">
+        <div class="list-num" *ngIf="productsListingData?.products">
             Showing {{ productsListingData?.products.length }} out of {{ (productsListingData?.totalCount >
             (productsListingData?.products.length) ? productsListingData?.totalCount :(
             productsListingData?.products.length) ) }} products

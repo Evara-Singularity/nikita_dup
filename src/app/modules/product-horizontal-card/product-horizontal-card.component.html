@@ -38,11 +38,6 @@
                         *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
                     <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span>
                 </div>
-                <!-- <div class="name" (click)="trackProductTitle('title')">
-                    <span *ngIf="cardFeaturesConfig.horizontalOrientation">{{product.productName | slice:0:60}}<span
-                            *ngIf="product.productName.length>60">...</span></span>
-                    <p class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</p>
-                </div> -->
                 <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                     <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation">
                         <span>{{product.productName | slice:0:60}}

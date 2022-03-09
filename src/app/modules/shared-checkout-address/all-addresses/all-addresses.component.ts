@@ -22,7 +22,7 @@ export class AllAddressesComponent implements OnInit, OnDestroy
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
-    @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<any> = new EventEmitter<any>();
+    @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<SelectedAddressModel> = new EventEmitter<SelectedAddressModel>();
 
     invoiceType: FormControl = null;
     addressListInstance = null;

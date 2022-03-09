@@ -147,18 +147,18 @@ export class AddressService
         );
     }
 
-    getSericeability(data)
+    //use this in product and checkout
+    getServiceabilityAndCashOnDelivery(data)
     {
         const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.VALIDATE_PRODUCT_SER}`;
         return this._dataService.callRestful("POST", URL, { body: data }).pipe(
             map((response) =>
             {
-                if (response['status']) { return response['dataList'] }
+                if (response['status']) { return response['data'] }
                 return [];
             }),
-            catchError((error: HttpErrorResponse) => { return of([]); })
+            catchError((error: HttpErrorResponse) => { return of(null); })
         );
-
     }
 
     //utility methods section 

@@ -1387,5 +1387,4 @@ export class CommonService
         console.log(data);
         alert('check console');
     }
-
 }

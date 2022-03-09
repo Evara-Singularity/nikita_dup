@@ -372,6 +372,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.checkDuplicateProduct();
       this.backUrlNavigationHandler();
       this.attachSwipeEvents();
+      this.attachBackClickHandler();
     }
   }
   
@@ -2319,6 +2320,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.goToLoginPage(this.productUrl);
     }
   }
+  
+  backTrackIndex = -1;
+  attachBackClickHandler() {
+    window.addEventListener('popstate', (event) => {
+      //Your code here
+      let url = this.backTrackIndex < 0 ? this.rawProductData.defaultCanonicalUrl : this.productService.oosSimilarProductsData.similarData[this.backTrackIndex]["productUrl"];
+      window.history.replaceState('', '', url);
+    });
+  }
 
   handleRoutingForPopUps() {
     window.history.replaceState('', '', this.router.url);
@@ -2383,6 +2393,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.moveToSlide$.next(slideData.currentSlide);
         }
       });
+      this.backTrackIndex = oosProductIndex;
       this.handleRoutingForPopUps();
     }
   }
@@ -3427,6 +3438,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.handleRestoreRoutingForPopups();
     });
     this.handleRoutingForPopUps();
+    this.backTrackIndex = oosProductIndex;
   }
 
   private closeProductInfoPopup() {

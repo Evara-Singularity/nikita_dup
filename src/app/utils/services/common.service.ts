@@ -4,7 +4,7 @@ import { mergeMap } from "rxjs/operators";
 import { Observer, of, Subscription } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
-import { NavigationExtras, Router } from "@angular/router";
+import { NavigationEnd, NavigationExtras, Router } from "@angular/router";
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from "./cart.service";
@@ -78,7 +78,10 @@ export class CommonService
     private routeData: { currentUrl: string; previousUrl: string };
     userSession;
     idleNudgeTimer: IdleTimer;
-    private _renderer2: Renderer2;
+    private _renderer2: Renderer2
+    ;
+    private previousUrl: string = null;
+    private currentUrl: string = null;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -102,8 +105,24 @@ export class CommonService
         this.isBrowser = isPlatformBrowser(platformId);
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
-        this.abTesting = this._dataService.getCookie('AB_TESTING')
+        this.abTesting = this._dataService.getCookie('AB_TESTING');
+        this.setRoutingInfo();
+
     }
+
+    private setRoutingInfo() {
+        this.currentUrl = this._router.url;
+        this._router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.previousUrl = this.currentUrl;
+                this.currentUrl = event.url;
+            };
+        });
+    }
+
+    get getPreviousUrl() {
+        return this.previousUrl;
+    } 
 
     setNetworkSpeedState(speed)
     {

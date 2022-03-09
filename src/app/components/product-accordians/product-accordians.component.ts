@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, EventEmitter, Output } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
+import { Component, Input, NgModule} from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { ENDPOINTS } from '@app/config/endpoints';
-import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
 import { forkJoin } from 'rxjs';
+import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 
 
 @Component({
@@ -21,20 +20,16 @@ export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
   ACCORDIAN_DATA: Array<any> = [[],[],[]];
-  popularLinks: Array<any>= [];
-  prodUrl=CONSTANTS.PROD;
+  accordiansDetails:AccordiansDetails[]=[];
 
   constructor(
     public _commonService: CommonService,
     private _dataService: DataService,
     private _productListService: ProductListService,
-    private globalAnalyticService: GlobalAnalyticsService,
-    private _router: Router
   ) { }
 
   ngOnInit() {
     this.loadShopByAttributeData();
-    this.prodUrl = CONSTANTS.PROD;
   }
 
   loadShopByAttributeData() {
@@ -48,28 +43,38 @@ export class ProductAccordiansComponent {
     forkJoin(apiList).subscribe(res => {
       if (res[0]['status']) {
         this.ACCORDIAN_DATA[0] = res[0]['data'];
+        // accordian data
+        if (this.ACCORDIAN_DATA[0]?.length > 0) {
+          this.accordiansDetails.push({
+            name: 'Related Searches',
+            data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            icon:'icon-attribute'
+          });
+        }
       }
       if (res[1].hasOwnProperty('categoryLinkList') && res[1]['categoryLinkList']) {
         this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
-        this.popularLinks = Object.keys(res[1]['categoryLinkList']);
+
+        // accordian data
+        this.accordiansDetails.push({
+          name: 'Popular Brand Categories',
+          extra: this.categoryBrandDetails.brand.brandName,
+          data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+          icon: 'icon-brand_store'
+        });
       }
       if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
         this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
+        // accordian data
+        if (this.ACCORDIAN_DATA[2]?.length > 0) {
+          this.accordiansDetails.push({
+            name: ' Shop by Related Categories',
+            data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            icon:'icon-categories'
+          });
+        }
       }
     });
-
-  }
-
-  sendAdobeTracking(accordian, linkName, link) {
-    const PAGE = this.analyticsInfo['page'];
-    PAGE['subSection'] = accordian;
-    PAGE['linkName'] = link;
-    this.globalAnalyticService.sendAdobeCall({ page: PAGE, custData: this.analyticsInfo['custData'], order: this.analyticsInfo['order'] }, "genericClick");
-    if(link.indexOf('http') == -1){
-      this._commonService.navigateTo(link, true);
-    }else{
-      window.location = link;
-    }
   }
 }
 
@@ -78,8 +83,8 @@ export class ProductAccordiansComponent {
   declarations: [ProductAccordiansComponent],
   imports: [
     CommonModule,
-    KpToggleDirectiveModule,
-    RouterModule
+    RouterModule,
+    AccordianModule
   ]
 })
 export default class ProductAccordiansModule {

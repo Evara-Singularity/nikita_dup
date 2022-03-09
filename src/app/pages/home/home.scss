@@ -172,6 +172,16 @@
             color: #2D2D2D;
         }
     }
+
+
+
+    .home-card-container{
+        display: flex;
+        flex-wrap: wrap;
+        .card-container-inner{
+            width: 50%;
+        }
+    }
     /* Above code for top widgets and trending categories*/
     
    

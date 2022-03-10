@@ -1,10 +1,13 @@
-<div class="container pad-tb-10">
-    <h2 class="f-left f-14 pad-tb-10 upper-case">Featured Brands</h2>
-    <a [routerLink]="['/store/brands']" routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
+<div class="view-all-strip">
+    <h2 class="">Featured Brands</h2>
+    <a [routerLink]="['/store/brands']" routerLinkActive="router-link-active" class="btn-red">VIEW ALL
     </a>
 </div>
-<div class="on-half-banner">
-    <div *ngFor="let brandBanner of featureBrandData" class="inner-banner">
+<div class="pwa-banner">
+    <div *ngFor="let brandBanner of featureBrandData | slice:0:1" class="full-banner">
             <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imagePath + brandBanner.image_name">
     </div>
+    <div *ngFor="let brandBanner of featureBrandData | slice:1:3" class="half-banner">
+        <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imagePath + brandBanner.image_name">
+   </div>
 </div>

@@ -9,17 +9,16 @@
         padding:var(--base-card-padding);
         position: relative;
         background:$white;
-        flex-direction:column;
-        .product-img {
-            img {
-                max-width: $fullwidth;
-                max-height: $fullwidth;
-            }
+        justify-content: space-between;
+        .view-products-card{
+          display:flex;
+          align-items:center;
         }
         .description-txt {
             font-size:$medium-font;
             margin-bottom: 4px;
             line-height: 20px;
+            width:$fullwidth;
         }
         .request-text {
             font-weight: bold;
@@ -38,23 +37,53 @@
             a {
                 display: block;
             }
+            .view-products-card{
+                display:flex;
+                align-items:center;
+                justify-content: space-between;
+              }
+              .left{
+                  width:100px;
+                  img {
+                      max-width: $fullwidth;
+                      max-height: $fullwidth;
+                      
+                  }
+              }
+              .right{
+                width:calc(100% - 115px);
+              }
             .product-img {
                 display:inline-flex;
                 width: $list-image-width;
             }
             .product-description{
                 display:inline-flex;
-                width: 75%;
+               
             }
         }
     }
     &.grid {
         flex-direction:row;
+        flex-wrap:wrap;
         li {
             width:$half-width;
             display:inline-flex;
             height:$grid-card-height;
             position: relative;
+            .view-products-card{
+                flex-direction:column;
+              }
+              .left{
+                  width:$fullwidth;
+                  img {
+                      max-width: var(--home-card-width);
+                      max-height: var(--home-card-width);
+                  }
+              }
+              .right{
+                  width:$fullwidth;;
+              }
             &:nth-child(odd) {
                 border-right: 1px solid $border-color;
             }
@@ -101,6 +130,7 @@
         }
     }
 }
+
 
 .price {
     .after-discount {

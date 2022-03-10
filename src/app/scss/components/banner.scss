@@ -1,28 +1,21 @@
 @import '../variables';
-.on-full-banner{
-    padding:var(--base-padding);
-    width:$fullwidth;
-    img {
-        width:$fullwidth;
-        max-width:$fullwidth;
-    }
-}
-.on-half-banner{
-    padding:var(--base-padding);
+.pwa-banner{
     display:flex;
-    .inner-banner{
-       width:$half-width;
-    }
+    flex-wrap:wrap;
+    background:$white;
     img {
         width:$fullwidth;
         max-width:$fullwidth;
     }
-    // &:nth-child(odd){
-    //     padding-right: $default-gap15/2;
-    // }
-    // &:nth-child(even){
-    //     padding-left: $default-gap15/2;
-    // }
+    .full-banner{
+        padding:5px;
+        width:$fullwidth;
+    }
+    .half-banner{
+        padding:5px;
+        width:$half-width;
+    }
 }
+
 
 

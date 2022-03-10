@@ -1,18 +1,7 @@
 @import '../../scss/variables.scss';
 @import '../../scss/components/home-listing.scss';
-.banner-ad {
-    margin: 10px 0px;
-    a {
-        display: block;
-    }
-    img {
-        width: 100%;
-    }
-    &.bulk {
-        margin-bottom: 0px;
-    }
-}
 .category-wrap{
+    margin-top:var(--spacing-unit);
     .view-all-strip{
         @extend %view-all-strip;
     }

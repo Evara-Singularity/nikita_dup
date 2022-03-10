@@ -1,4 +1,7 @@
 @import '../../../../src/app/scss/utils/spacing.scss';
 @import '../../scss/variables';
 @import '../../scss/components/banner.scss';
-  
+.view-all-strip{
+    @extend %view-all-strip;
+    border-bottom-width:0px;;
+}

@@ -114,19 +114,16 @@ header-nav {
     }
 }
 //head icons
-.head-icons{
-    &>* {
-        float: left;
-        margin-left: 5px;
-        font-size: 20px;
-        padding: 10px 5px;
-        position: relative;
-        color: $white;
-    }
-  .icon-cart1 {
-        font-size: 22px;
-    }
-}
+// .head-icons{
+//     &>* {
+//         float: left;
+//         margin-left: 5px;
+//         font-size: 20px;
+//         padding: 10px 5px;
+//         position: relative;
+//         color: $white;
+//     }
+// }
 
 .small-font{
     font-size: $small-font;

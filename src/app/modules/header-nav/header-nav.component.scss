@@ -35,6 +35,13 @@ header {
                     color: $white-color;
                     margin-top: -5px;
                 }
+                .icon-brand_store {
+                    font-size: 20px;
+                }
+                & > * {
+                    padding: 10px 5px;
+                    color: $white;
+                }
             }
         }
         // header varient-2

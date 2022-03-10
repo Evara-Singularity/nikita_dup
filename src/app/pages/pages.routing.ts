@@ -793,19 +793,6 @@ const routes: Routes = [
 					pageName: 'Payment Confirmation'
 				},
 			},
-            {
-                path: 'checkout-revamp',
-                loadChildren: () =>
-                    import('./checkout-revamp/checkout-revamp.module').then((m) => m.CheckoutRevampModule),
-                data: {
-                    footer: false,
-                    moreOpt: false,
-                    cart: false,
-                    menuBar: false,
-                    searchBar: false,
-                    pageName: 'Checkout Revamp'
-                },
-            },
 			{
 				path: '**',
 				loadChildren: () =>

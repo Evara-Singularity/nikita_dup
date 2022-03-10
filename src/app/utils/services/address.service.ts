@@ -2,25 +2,27 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { LocalAuthService } from '@services/auth.service';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AddressListModal } from './../models/shared-checkout.modals';
+import { AddressListModel } from '../models/shared-checkout.models';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
 
-//TODO:Below methods in common service.
-
-
+//TODO:Below methods in common service so clean up accordigly.
 @Injectable({
     providedIn: 'root'
 })
 export class AddressService
 {
     readonly API = CONSTANTS.NEW_MOGLIX_API;
-    readonly EMPTY_ADDRESS: AddressListModal = { deliveryAddressList: [], billingAddressList: [] };
+    readonly EMPTY_ADDRESS: AddressListModel = { deliveryAddressList: [], billingAddressList: [] };
+    handleError = (returnValue) => { this._globaleLoader.setLoaderState(false); return of(returnValue); }
 
-    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService) { }
+    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService,
+        private _localAuthService: LocalAuthService) { }
 
+    //serviceable methods
     getAddressList(params)
     {
         this._globaleLoader.setLoaderState(true);
@@ -36,12 +38,70 @@ export class AddressService
                     }
                     return this.EMPTY_ADDRESS;
                 }),
-                catchError((res: HttpErrorResponse) =>
-                {
-                    this._globaleLoader.setLoaderState(false);
-                    return of(this.EMPTY_ADDRESS);
-                }),
+                catchError((error: HttpErrorResponse) => this.handleError(this.EMPTY_ADDRESS))
             );
+    }
+
+    postAddress(address)
+    {
+        this._globaleLoader.setLoaderState(true);
+        const URL = `${this.API}${ENDPOINTS.POST_ADD}?onlineab=y`;
+        return this._dataService.callRestful("POST", URL, { body: address }).pipe(
+            map((response) =>
+            {
+                this._globaleLoader.setLoaderState(false);
+                if (response['status']) {
+                    return response['addressList'];
+                }
+                return this.EMPTY_ADDRESS;
+            }),
+            catchError((error: HttpErrorResponse) => this.handleError([])),
+        );
+    }
+
+    getGSTINDetails(gstin)
+    {
+        const URL = `${this.API}${ENDPOINTS.TAXPAYER_BY_TIN}${gstin}`;
+        return this._dataService.callRestful("GET", URL).pipe(
+            map((response) =>
+            {
+                if (response['statusCode'] && response['valid']) {
+                    return response;
+                }
+                return null;
+            }),
+            catchError((error: HttpErrorResponse) => { return of(null); })
+        );
+    }
+
+    getBusinessDetail(data)
+    {
+        this._globaleLoader.setLoaderState(true);
+        const URL = `${this.API}${ENDPOINTS.CBD}`;
+        return this._dataService.callRestful("GET", URL, { params: data }).pipe(
+            map((response) =>
+            {
+                this._globaleLoader.setLoaderState(false);
+                if (response['status']) {
+                    return response['data'];
+                }
+                return null;
+            }),
+            catchError((error: HttpErrorResponse) => this.handleError(null)),
+        );
+    }
+
+    setBusinessDetail(obj)
+    {
+        let URL = `${this.API}${ENDPOINTS.UPD_CUS}`;
+        return this._dataService.callRestful("POST", URL, { body: obj }).pipe(
+            map((response) =>
+            {
+                if (response['status']) { return response['status'] }
+                return false;
+            }),
+            catchError((error: HttpErrorResponse) => this.handleError(false))
+        );;
     }
 
     getStateList(countryId)
@@ -53,34 +113,55 @@ export class AddressService
             map((response) =>
             {
                 this._globaleLoader.setLoaderState(false);
-                return response
+                if (response['status']) { return response['dataList'] }
+                return [];
             }),
-            catchError((res: HttpErrorResponse) =>
-            {
-                this._globaleLoader.setLoaderState(false);
-                return of({ status: false, statusCode: res.status, addressList: [] });
-            }),
+            catchError((error: HttpErrorResponse) => this.handleError([]))
         );
     }
 
     getCountryList()
     {
-        this._globaleLoader.setLoaderState(true);
         const URL = `${this.API}${ENDPOINTS.GET_CountryList}`;
         return this._dataService.callRestful("GET", URL)
             .pipe(
                 map((response) =>
                 {
-                    this._globaleLoader.setLoaderState(false);
-                    return response
+                    if (response['status']) { return response['dataList'] }
+                    return [];
                 }),
-                catchError((res: HttpErrorResponse) =>
-                {
-                    this._globaleLoader.setLoaderState(false);
-                    return of({ status: false, statusCode: res.status, dataList: [] });
-                })
+                catchError((error: HttpErrorResponse) => { return of([]); })
             );
     }
+
+    getCityByPostcode(postCode)
+    {
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CITY_BY_PIN}${postCode}`;
+        return this._dataService.callRestful("GET", URL).pipe(
+            map((response) =>
+            {
+                if (response['status']) { return response['dataList'] }
+                return [];
+            }),
+            catchError((error: HttpErrorResponse) => { return of([]); })
+        );
+    }
+
+    //use this in product and checkout
+    getServiceabilityAndCashOnDelivery(data)
+    {
+        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.VALIDATE_PRODUCT_SER}`;
+        return this._dataService.callRestful("POST", URL, { body: data }).pipe(
+            map((response) =>
+            {
+                if (response['status']) { return response['data'] }
+                return [];
+            }),
+            catchError((error: HttpErrorResponse) => { return of(null); })
+        );
+    }
+
+    //utility methods section 
 
     //idAddressType=1 implies delivery
     //idAddressType=2 implies billing

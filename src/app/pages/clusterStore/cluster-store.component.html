@@ -3,9 +3,12 @@
     <!-- <app-cluster-category
             *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
             [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category> -->
-    <category-card *ngFor="let item of  data['category_cluster']['data']" [page]="'cluster-store'"
-        [routerLink]="['/'+item.category_url]" [image]="imagePath + item.category_image" [title]="item.CategoryName">
-    </category-card>
+    <div class="category-card-scroll-bar">
+        <category-card *ngFor="let item of  data['category_cluster']['data']" [page]="'cluster-store'"
+            [routerLink]="['/'+item.category_url]" [image]="imagePath + item.category_image"
+            [title]="item.CategoryName">
+        </category-card>
+    </div>
     <div class="cluster-body">
 
         <div>

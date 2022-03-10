@@ -3,26 +3,25 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
 
-import { PromoOfferService } from './promo-offer.service';
-import { cartSession } from '../../../utils/models/cart.initial';
+import { PromoCodeService } from './../promo-code.service';
+import { cartSession } from '@utils/models/cart.initial';
 import { CommonService } from '@app/utils/services/common.service';
 
 declare let dataLayer: any;
 
 @Component({
-    selector: 'app-promo-offer',
-    templateUrl: './promo-offer.component.html',
-    styleUrls: ['./promo-offer.component.scss']
+    selector: 'promo-code-list',
+    templateUrl: './promo-code-list.component.html',
+    styleUrls: ['./promo-code-list.component.scss']
 })
-export class PromoOfferComponent implements OnInit {
+export class PromoCodeListComponent implements OnInit {
     allPromoCodes: Array<any> = [];
-    selectedPromoCode;
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
 
     constructor(
         private _commonService: CommonService,
         private _loaderService: GlobalLoaderService,
-        private _promoOfferService: PromoOfferService
+        private _promoCodeService: PromoCodeService
     ){}
 
     ngOnInit() {
@@ -32,7 +31,7 @@ export class PromoOfferComponent implements OnInit {
     getAllPromoCodesByUserId(userId) {
         this._loaderService.setLoaderState(true);
         if (this._commonService.userSession.authenticated === 'true') {
-            this._promoOfferService.getAllPromoCodesByUserId(userId).subscribe(res => {
+            this._promoCodeService.getAllPromoCodesByUserId(userId).subscribe(res => {
                 if (res['statusCode'] === 200) {
                     this.allPromoCodes = res['data'];
                 }
@@ -44,8 +43,9 @@ export class PromoOfferComponent implements OnInit {
     }
 
     setPromoCode(item) {
-        this.selectedPromoCode = item.promoCode;
-        alert(this.selectedPromoCode);
+        this._promoCodeService.appliedPromoCode = item.promoCode;
+        console.trace('sss' + this._promoCodeService.appliedPromoCode);
+        alert(this._promoCodeService.appliedPromoCode);
     }
 
     handleApplyCustomPromoCode(promoCode) {

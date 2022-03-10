@@ -35,4 +35,12 @@ export class OrderSummaryComponent {
             this.router.navigate(["/login"]);
         }
     }
+
+    handleApplyCustomPromoCode(promoCode) {
+        alert(promoCode);
+    }
+
+    handleRemoveCustomPromoCode(promoCode) {
+        alert(promoCode);
+    }
 }

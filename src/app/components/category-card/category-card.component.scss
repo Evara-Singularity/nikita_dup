@@ -18,11 +18,10 @@
             border: 1px solid $border-color;
             border-radius: $border-radius;
             background: $white-color;
-            max-height: 70px;
-            min-height: 70px;
             .category-Img{
                 display: inline-flex;
                 width: 45px;
+                margin-right: 5px;
                 img{
                     width: $fullwidth;
                 }        

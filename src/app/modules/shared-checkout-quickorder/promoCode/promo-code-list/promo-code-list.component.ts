@@ -1,10 +1,6 @@
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { LocalStorageService } from 'ngx-webstorage';
-import { Subject } from 'rxjs';
-
 import { PromoCodeService } from './../promo-code.service';
-import { cartSession } from '@utils/models/cart.initial';
 import { CommonService } from '@app/utils/services/common.service';
 
 declare let dataLayer: any;
@@ -21,7 +17,7 @@ export class PromoCodeListComponent implements OnInit {
     constructor(
         private _commonService: CommonService,
         private _loaderService: GlobalLoaderService,
-        private _promoCodeService: PromoCodeService
+        public _promoCodeService: PromoCodeService
     ){}
 
     ngOnInit() {
@@ -42,17 +38,11 @@ export class PromoCodeListComponent implements OnInit {
         }
     }
 
-    setPromoCode(item) {
+    setPromoCode(e, item) {
+        e.preventDefault();
+        e.stopPropagation();
         this._promoCodeService.appliedPromoCode = item.promoCode;
-        console.trace('sss' + this._promoCodeService.appliedPromoCode);
-        alert(this._promoCodeService.appliedPromoCode);
-    }
-
-    handleApplyCustomPromoCode(promoCode) {
-        alert(promoCode);
-    }
-
-    handleRemoveCustomPromoCode(promoCode) {
-        alert(promoCode);
+        alert('Apply : ' + this._promoCodeService.appliedPromoCode);
+        this._promoCodeService.genericApplyPromoCode()
     }
 }

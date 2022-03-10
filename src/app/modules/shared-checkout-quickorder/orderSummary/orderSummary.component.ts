@@ -1,15 +1,8 @@
-import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { OrderSummaryService } from './orderSummary.service';
-import { Subject } from 'rxjs';
-import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
-import { NavigationExtras, Router } from '@angular/router';
-import { LocalStorageService } from 'ngx-webstorage';
-import { DataService } from '@utils/services/data.service';
-import { CartService } from '@utils/services/cart.service';
-import { GlobalLoaderService } from '@utils/services/global-loader.service';
-import { mergeMap } from 'rxjs/operators';
-import { LocalAuthService } from '@app/utils/services/auth.service';
+import { PromoCodeService } from '@modules/shared-checkout-quickorder/promoCode/promo-code.service';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
+
 declare let dataLayer: any;
 
 
@@ -25,6 +18,7 @@ export class OrderSummaryComponent {
 
     constructor(
         public router: Router,
+        public _promoCodeService: PromoCodeService,
         private _commonService: CommonService,
     ) {}
 

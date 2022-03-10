@@ -19,8 +19,6 @@ import { NgModule } from '@angular/core';
         PromoCodeListComponent,
         CustomPromoCodeComponent
     ],
-    providers: [
-        PromoCodeService
-    ]
+    providers: []
 })
 export class PromoCodeModule {}

@@ -1,0 +1,44 @@
+@import '../../scss/variables';
+@import '../../scss/utils/spacing.scss';
+
+
+// @mixin inner-card {
+    
+// }
+
+.category-card-container{
+    padding: var(--base-padding);  
+    background: $body-color; 
+    .category-OverBlk{
+        display: flex;
+        .category-block{
+            display: inline-flex;
+            margin: var(--base-margin);
+            padding: var(--card-padding);
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            background: $white-color;
+            max-height: 70px;
+            min-height: 70px;
+            .category-Img{
+                display: inline-flex;
+                width: 45px;
+                img{
+                    width: $fullwidth;
+                }        
+            }
+            .category-Name{
+                display: inline-flex;
+                font-size: $medium-font;
+                font-weight: $font-normal;
+                margin-top: 5px;
+            }    
+            
+        }
+    }
+    // .horizontal-card-container{
+    //     display: flex; 
+    //     overflow-x: auto;
+    //     @include inner-card;
+    // }
+}

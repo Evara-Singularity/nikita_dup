@@ -10,6 +10,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { HomefooterAccordianModule } from '@app/components/homefooter-accordian/homefooter-accordian.component';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
+import CategoryCardModule from '@app/components/category-card/category-card.component';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toa
         TrendingCategoriesModule,
         KpToggleDirectiveModule,
         AppPromoModule,
-        HomefooterAccordianModule
+        HomefooterAccordianModule,
+        CategoryCardModule
     ],
     declarations: [
         HomeComponent,

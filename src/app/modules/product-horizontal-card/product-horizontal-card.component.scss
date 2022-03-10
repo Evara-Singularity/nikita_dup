@@ -1,3 +1,4 @@
+@import "../../scss/variables";
 @media screen and (max-width: 320px) {
     .card-container {
         .left {
@@ -17,7 +18,7 @@
 
 .card-container {
     width: 100%;
-    padding: 15px 10px;
+    @extend %card-padding-horizontal;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -36,7 +37,6 @@
             text-align: center;
             position: relative;
         }
-
         .right {
             width: 100%;
 
@@ -49,18 +49,7 @@
                 height: 2.8em;
                 margin-bottom: 5px;
                 line-height: 1.6em;
-                // p {
-                //     text-align: left;
-                //     -webkit-line-clamp: 3;
-                //     display: -webkit-box;
-                //     -webkit-box-orient: vertical;
-                //     overflow: hidden;
-                //     text-overflow: ellipsis;
-                //     height: 47px;
-                //     margin-bottom: 5px;
-                // }
             }
-
             .brand {
                 span {
                     text-align: left;
@@ -89,34 +78,26 @@
             }
         }
     }
-
     &.list-view {
         .left {
             width: 100px;
         }
-
         .right {
             width: calc(100% - 115px);
-
             .price-details {
                 flex-direction: row;
 
                 .left {
                     text-align: left;
                     width: calc(100% - 120px);
-
-
                 }
-
                 .right {
                     text-align: right;
                     width: 115px;
-
                 }
             }
         }
     }
-
     .left {
         width: 100px;
         text-align: center;
@@ -127,7 +108,6 @@
             height: auto;
             max-width: 100px;
         }
-
         .tags {
             position: absolute;
             top: 0px;
@@ -139,7 +119,6 @@
             }
         }
     }
-
     .right {
         width: calc(100% - 115px);
 
@@ -156,19 +135,18 @@
                 position: absolute;
                 right: 10px;
                 padding: 1px 3px;
-                border: 1px solid #C0C0C0;
+                border: 1px solid #c0c0c0;
                 border-radius: 2px;
             }
 
             span {
                 margin-right: 5px;
             }
-
             .avgrating {
                 display: inline;
-                background-color: #458D00;
+                background-color: #458d00;
                 padding: 3px 5px;
-                color: #FFF;
+                color: #fff;
                 border-radius: 3px;
                 font-size: 10px;
 
@@ -177,12 +155,10 @@
                     font-size: 7px;
                 }
             }
-
             .count {
-                color: #C0C0C0;
+                color: #c0c0c0;
             }
         }
-
         .name {
             span {
                 text-align: left;
@@ -191,23 +167,20 @@
                 line-height: 16px;
             }
         }
-
         .brand {
             span {
                 margin-top: 4px;
                 text-align: left;
                 font-size: 12px;
-                color: #B1B1B1;
+                color: #b1b1b1;
             }
 
             margin-bottom: 10px;
         }
-
         .price-details {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-
             .left {
                 text-align: left;
                 width: calc(100% - 120px);
@@ -219,78 +192,70 @@
                     span {
                         margin-right: 4px;
                     }
-
                     .crossed {
-                        color: #2B2B2B;
+                        color: #2b2b2b;
                         text-decoration: line-through;
                         opacity: 0.5;
                     }
 
                     .green-label {
                         font-weight: bold;
-                        color: #3B9E26;
+                        color: #3b9e26;
                     }
                 }
-
                 .main-price {
                     font-size: 14px;
-                    color: #2B2B2B;
+                    color: #2b2b2b;
                     font-weight: bold;
                 }
-
                 .out-of-stock-text {
                     font-size: 10px;
-                    color: #2B2B2B;
+                    color: #2b2b2b;
                     opacity: 0.5;
                 }
-
                 .out-of-stock-price {
                     font-size: 14px;
-                    color: #2B2B2B;
+                    color: #2b2b2b;
                     opacity: 0.5;
                     font-weight: bold;
                     margin-top: 4px;
                     margin-bottom: 10px;
                 }
             }
-
             .right {
                 text-align: right;
                 width: 115px;
 
                 button {
                     padding: 10px 10px;
-                    background-color: #D9232D;
+                    background-color: #d9232d;
                     text-transform: uppercase;
-                    color: #FFF;
+                    color: #fff;
                     border: 0;
                     margin: 0;
                     border-radius: 3px;
                     display: inline;
                     font-size: 11px;
                     font-weight: bold;
-                    width: calc(100% - 40px)
+                    width: calc(100% - 40px);
                 }
-
                 button.white {
                     padding: 10px 10px;
-                    background-color: #FFF;
+                    background-color: #fff;
                     margin-right: 5px;
-                    color: #D9232D;
-                    border: 1px solid #D9232D;
+                    color: #d9232d;
+                    border: 1px solid #d9232d;
 
                     i {
-                        color: #D9232D;
+                        color: #d9232d;
                     }
                 }
             }
         }
     }
 }
-
 .youtubeThumbnail-listing {
     padding-top: 10px;
-
     .thumbnail {
         background-size: cover;
         height: 120px;
@@ -300,7 +265,6 @@
         margin: 0px 10px;
         border-radius: 8px;
     }
-
     .youtube_icon {
         width: 70px;
         height: 70px;
@@ -312,7 +276,7 @@
 }
 
 .add_cart_btn {
-    border: 1px solid #D9232D;
+    border: 1px solid #d9232d;
     display: inline-block;
     border-radius: 4px;
     margin-right: 8px;
@@ -320,34 +284,29 @@
     text-align: center;
     vertical-align: middle;
     line-height: 30px;
-
     i {
         font-size: 20px;
-        color: #D9232D;
+        color: #d9232d;
         vertical-align: middle;
     }
 }
-
 .keyfeatures {
-    background-color: #FFF;
+    background-color: #fff;
     padding: 0px 8px 8px 18px;
-
     ul {
         list-style: disc;
 
         li {
-            color: #7B7B7B;
+            color: #7b7b7b;
             font-size: 10px;
             margin-bottom: 5px;
         }
     }
 }
-
 .no-card-border {
-    border-bottom: 1px solid #E2E2E2;
+    border-bottom: 1px solid #e2e2e2;
     background: #fff;
 }
-
 .card-vertical {
     width: 165px;
     padding: 5px 7px 20px;
@@ -355,22 +314,21 @@
     background: white;
     float: left;
 }
-
-.available-item-card{
+.available-item-card {
     width: 330px;
     border-radius: 8px;
     background: #fff;
     .card-container {
         padding: 5px 10px 5px 5px;
-        .left{
+        .left {
             width: 90px;
-            img{
+            img {
                 width: 90px;
             }
         }
-        .right{
+        .right {
             width: calc(100% - 100px);
-            .name{
+            .name {
                 -webkit-line-clamp: 2;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
@@ -383,19 +341,18 @@
             .rating {
                 margin-top: 0px;
             }
-            .green-label{
+            .green-label {
                 margin-right: 0px !important;
             }
         }
     }
 }
-
 .s-h-l {
     pointer-events: none;
     opacity: 0;
     height: 0px;
     display: block;
 }
-.send-query-btn{
+.send-query-btn {
     width: 100% !important;
 }

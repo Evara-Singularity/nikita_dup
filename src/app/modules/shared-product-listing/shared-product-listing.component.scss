@@ -2,26 +2,15 @@
 .list-heading {
     width: 100%;
     padding: 7px 10px;
-    justify-content: space-between;
-    align-items: center;
     background: #fff;
     border-bottom: 1px solid #d7d7d7;
     border-top: 1px solid #d7d7d7;
-    div {
-        width: 50%;
-    }
-    div.left {
-        text-align: left;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    div.right {
+    .list-num {
         font-size: 10px;
-        width: 100% !important;
     }
     .list-name {
         padding: 5px 0px;
-        font-weight: 600 !important;
+        font-weight: 600;
         text-transform: capitalize;
         font-size: 16px;
     }

@@ -1,0 +1,20 @@
+.tabs-container{
+    display: flex;
+    align-items: center;
+    flex-wrap: no-wrap;
+    transition: transform 300ms ease-in-out;
+    padding: 0 15px;
+    scroll-behavior: smooth;
+    .tab{
+        color: #303030;
+        font-size: 14px;
+        margin-right: 10px;
+        flex-shrink: 0;
+        text-align: center;
+        border: 1px solid #E7E7E8;
+        border-radius: 4px;
+        padding: 10px 15px;
+        font-weight: bold;
+        box-shadow: 0px 3px 8px #455b6314;
+    }
+}

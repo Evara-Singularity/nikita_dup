@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
+import { ProductHorizontalCardModule } from '../product-horizontal-card/product-horizontal-card.module';
 
 @Component({
 	selector: 'home-categories',
@@ -107,6 +108,7 @@ export class Categories {
 		RouterModule,
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
+		ProductHorizontalCardModule
 	],
 	providers: [],
 })

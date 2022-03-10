@@ -1,0 +1,46 @@
+ /*Mixins*/
+        
+ @mixin gridForCategory($noOfItems, $space: null) {
+    @if $space {
+        width: calc(100% / #{$noOfItems} - (#{$space}px / #{$noOfItems}));
+    }
+    @else {
+        width: calc(100% / #{$noOfItems});
+    }
+    float:left;
+}
+
+@mixin transform($transforms) {
+    -moz-transform: $transforms;
+    -o-transform: $transforms;
+    -ms-transform: $transforms;
+    -webkit-transform: $transforms;
+    transform: $transforms;
+}
+
+@mixin rotate ($deg) {
+    @include transform(rotate(#{$deg}deg));
+}
+
+@mixin scale($scale) {
+    @include transform(scale($scale));
+}
+
+@mixin translate ($x, $y) {
+    @include transform(translate($x, $y));
+}
+
+@mixin placeholder {
+     ::-webkit-input-placeholder {
+        @content
+    }
+     :-moz-placeholder {
+        @content
+    }
+     ::-moz-placeholder {
+        @content
+    }
+     :-ms-input-placeholder {
+        @content
+    }
+}

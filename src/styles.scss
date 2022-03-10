@@ -1,15 +1,4 @@
 @import './app/scss/variables';
-
-// @font-face {
-//     font-family: 'icomooon_pwa';
-//     font-display: swap;
-//     src: local('icomoon_pwa.eot');
-//     src: local('icomoon_pwa.eot'),
-//     url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype');
-//     font-weight: normal;
-//     font-style: normal;
-// }
-
 @font-face {
     font-family: "icomooon_pwa";
     src: url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype');
@@ -17,51 +6,31 @@
 // font-icons
 @import './app/scss/font-icons/flat-icons.scss';
 @import './app/scss/font-icons/stacked-icons.scss';
-//spacing
-// @import './app/scss/utils/spacing.scss';
-// common classes
 @import './app/scss/utils/utilities.scss';
-// colors
 @import './app/scss/utils/colors.scss';
-// buttons
-// @import './app/scss/components/buttons.scss';
-
-
-
-
-
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    // font-family: Arial, Helvetica, sans-serif;
 }
-
-
 body {
     background: $body-color;
     font-size: 12px;
     color: $txt-color;
     font-family: $font-family;
 }
-
-
 .clearfix,
 ul,
 [class*='grid'] {
     @extend %clear-fix;
 }
-
 img {
     border: none;
     width: 100%;
 }
-
 ul {
     list-style: none;
 }
-
 a {
     color: $link-color;
     text-decoration: none;
@@ -128,18 +97,7 @@ header-nav {
     }
 }
 
-.small-font{
-    font-size: $small-font;
-}
-.medium-font{
-    font-size: $medium-font;
-}
-.large-font{
-    font-size: $large-font;
-}
-.extra-large-font{
-    font-size: $extra-large-font;
-}
+
 
 
 

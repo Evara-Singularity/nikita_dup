@@ -3,10 +3,8 @@
     <a [routerLink]="['/store/brands']" routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
     </a>
 </div>
-<div class="banner_container">
-    <div *ngFor="let brandBanner of featureBrandData" class="featr_Banner">
-        <a [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)">
-            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + brandBanner.image_name">
-        </a>
+<div class="on-half-banner">
+    <div *ngFor="let brandBanner of featureBrandData" class="inner-banner">
+            <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imagePath + brandBanner.image_name">
     </div>
 </div>

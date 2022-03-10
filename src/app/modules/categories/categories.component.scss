@@ -1,11 +1,5 @@
 @import '../../scss/variables.scss';
-@import '../../scss/layout/grid.scss';
-
-.pad-tb-10{
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
+@import '../../scss/components/home-listing.scss';
 .banner-ad {
     margin: 10px 0px;
     a {
@@ -18,16 +12,12 @@
         margin-bottom: 0px;
     }
 }
-
-.deals-offers {
-    margin-top: 0px;
-    margin-bottom: 10px;
+.category-wrap{
+    .view-all-strip{
+        @extend %view-all-strip;
+    }
 }
-
 .category-brand {
-    margin: 5px 0 0 0;
-    padding-bottom: 5px;
-    border-bottom: 1px solid $border-color;
     li {
         font-size: 12px;
         text-align: center;
@@ -39,15 +29,4 @@
         }
     }
 }
-
-// Listing View
-.icon-list-view,
-.icon-grid-view {
-    font-size: 21px;
-    line-height: 30px;
-}
-
-.bestSeller {
-    background: #ddd;
-    padding-bottom: 10px;
-}
+ 

@@ -1,11 +1,6 @@
 @import '../../scss/variables';
 @import '../../scss/utils/spacing.scss';
 
-
-// @mixin inner-card {
-    
-// }
-
 .category-card-container{
     padding: var(--base-padding);  
     background: $body-color; 
@@ -36,9 +31,4 @@
             
         }
     }
-    // .horizontal-card-container{
-    //     display: flex; 
-    //     overflow-x: auto;
-    //     @include inner-card;
-    // }
 }

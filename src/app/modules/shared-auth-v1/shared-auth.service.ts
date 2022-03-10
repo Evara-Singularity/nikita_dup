@@ -102,6 +102,7 @@ export class SharedAuthService implements OnInit
             {
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     console.log("SharedAuthService", "Authentication Failer", response);
+                    this._sharedAuthUtilService.sendGenericPageErrorTracking();
                 } else {
                     this._sharedAuthUtilService.processAuthentication(response, isCheckout, this.redirectUrl);
                 }

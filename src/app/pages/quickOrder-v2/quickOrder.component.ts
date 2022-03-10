@@ -1,3 +1,4 @@
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 import { LocalStorageService } from 'ngx-webstorage';
 import { Component, ViewEncapsulation, Input } from '@angular/core';
@@ -28,6 +29,7 @@ export class QuickOrderComponent {
 
     // New Variables
     API_RESPONSE: any;
+    itemsValidationMessage: Array<{}>;
 
     constructor(
         private _gState: GlobalState,
@@ -35,6 +37,7 @@ export class QuickOrderComponent {
         private _activatedRoute: ActivatedRoute,
         private _localAuthService: LocalAuthService,
         private title: Title,
+        private _loaderService: GlobalLoaderService,
         private localStorageService: LocalStorageService,
         public footerService: FooterService,
         public cartService: CartService,
@@ -42,18 +45,24 @@ export class QuickOrderComponent {
         public _commonService: CommonService,
         private _analytics: GlobalAnalyticsService,
         public router: Router) {
+            this.itemsValidationMessage = [];
     }
 
     ngOnInit() {
         this.setDataFromResolver();
     }
 
+    itemsValidationMessageUpdated(itemsValidationMessage) {
+        console.log(itemsValidationMessage);
+        itemsValidationMessage = this._commonService.itemsValidationMessage;
+        this.itemsValidationMessage = itemsValidationMessage;
+    }
+
     setDataFromResolver() {
+        this._loaderService.setLoaderState(true);
         this._activatedRoute.data.pipe(
             mergeMap((data: any) => {
-                console.clear();
                 const cartSession = data.data;
-                //  ;
                 if (this._commonService.isServer) {
                     return of(null);
                 }
@@ -66,7 +75,7 @@ export class QuickOrderComponent {
                 return this.getShippingValue(cartSession);
             }),
         ) .subscribe(result => {
-            this.API_RESPONSE = result;
+            this._loaderService.setLoaderState(false);
             this.API_RESPONSE = this.cartService.updateCart(result);
             this.cartService.setCartSession(this.API_RESPONSE);
         });

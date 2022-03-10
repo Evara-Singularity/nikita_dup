@@ -1,5 +1,5 @@
-<div *ngIf="cartData?.itemsList && cartData?.itemsList.length > 0">
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartData?.itemsList; let i = index">
+<div *ngIf="cartSession?.itemsList && cartSession?.itemsList.length > 0">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartSession?.itemsList; let i = index">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -8,13 +8,13 @@
         <div class="container pb-15" [ngClass]="{'oos':item.oos}">
             <div class="product-left">
                 <div class="product-img product-img-v2">
-                    <img (click)="redirectToProductURL(null,item.productUrl)" src="{{item.productImg}}">
+                    <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
                 </div>
 
             </div>
             <div class="product-detail">
                 <div class="p-name">
-                    <a  (click)="redirectToProductURL(null,item.productUrl)" > {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName) }}</a>
+                    <a  (click)="redirectToProductURL(item.productUrl)" > {{ (item.productName.length > 50) ? (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
                 </div>
                 <p class="seller">
                     Brand: {{item.brandName}}
@@ -23,15 +23,15 @@
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹ {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax  | mathFloor | number : '1.2-2'}}</span>
                 </p>
-                <!-- <div *ngIf="!item.oos" class="remove-btn" (click)="showPopup(sbm.index = i)">
+                <div *ngIf="!item.oos" class="remove-btn" (click)="removePopup = true">
                     <span>REMOVE</span>
-                </div> -->
+                </div>
             </div>
         </div>
-        <!-- <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="showPopup(sbm.index = i)">
+        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true">
             <span>REMOVE</span>
-        </div> -->
-        <!-- <div class="alert-box" *ngIf="removePopup && sbm.index == i">
+        </div>
+        <div class="alert-box" *ngIf="removePopup">
             <div class="overlay"></div>
             <div class="content-area">
                 <div class="info-area">
@@ -39,11 +39,11 @@
                     <p class="info">Are you sure you want to remove this item?</p>
                 </div>
                 <div class="button-area">
-                    <button (click)="cancelRemove()" class="cancel">CANCEL</button>
-                    <button (click)="deleteProduct(sbm.index = i)" class="continue">REMOVE</button>
+                    <button (click)="removePopup = false" class="cancel">CANCEL</button>
+                    <button (click)="deleteProduct(i)" class="continue">REMOVE</button>
                 </div>
             </div>
-        </div> -->
+        </div>
         <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle">
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>
@@ -54,8 +54,8 @@
             <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
                 <div class="f-right">
                     <div class="f-left">
-                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2'}}</h3>
-                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2'}}</h3>
+                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                         <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
                         <span class="grey-txt" *ngIf="item.shippingCharges == 0 && !item.oos">Price Details</span>
                         <span class="grey-txt" *ngIf="item.shippingCharges > 0 && !item.oos">Price + Shipping Details</span>
@@ -83,3 +83,5 @@
         </div>
     </div>
 </div>
+
+

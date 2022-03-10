@@ -9,6 +9,7 @@ import { CartService } from '@utils/services/cart.service';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { mergeMap } from 'rxjs/operators';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 declare let dataLayer: any;
 
 
@@ -18,19 +19,28 @@ declare let dataLayer: any;
     styleUrls: ['./orderSummary.scss'],
 })
 export class OrderSummaryComponent {
+    shippingCharges: number = 0;
+    showPromoOfferPopup: boolean = false;
+    @Input('orderSummaryData') orderSummaryData;
 
     constructor(
         public router: Router,
-        public _dataService: DataService,
-        public orderSummaryService: OrderSummaryService,
-        public _cartService: CartService,
-        private _tms: ToastMessageService,
-        private localStorageService: LocalStorageService,
-        private _localAuthService: LocalAuthService,
-        private loaderService: GlobalLoaderService) {
+        private _commonService: CommonService,
+    ) {}
+
+    openOfferPopUp() {
+        if (this._commonService.userSession.authenticated == "true") {
+            this.showPromoOfferPopup = true;
+        } else {
+            this.router.navigate(["/login"]);
+        }
     }
-    shippingCharges = 0;
 
-    @Input('orderSummaryData') orderSummaryData;
+    handleApplyCustomPromoCode(promoCode) {
+        alert(promoCode);
+    }
 
+    handleRemoveCustomPromoCode(promoCode) {
+        alert(promoCode);
+    }
 }

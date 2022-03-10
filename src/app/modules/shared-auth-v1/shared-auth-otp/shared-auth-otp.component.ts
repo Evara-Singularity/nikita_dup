@@ -37,7 +37,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     isOTPClean: boolean = true;
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService) { }
+        private _router: Router, private _toastService: ToastMessageService, private _sharedAuthUtilService: SharedAuthUtilService,) { }
 
     ngOnInit(): void
     {
@@ -49,6 +49,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
+        this.sendTracking();
         this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((value) =>
         {
             if (this.otpFormArray.valid) { this.validateOTP(); }
@@ -56,6 +57,15 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
         this.OTP_INPUTS[0].focus();
         this.enableWebOTP();
+    }
+
+    sendTracking()
+    {
+        let SUB_SECTION = null;
+        if (!this.authFlow.isUserExists) {
+            SUB_SECTION = (this.authFlow.identifierType === this._sharedAuthService.AUTH_USING_PHONE) ? "phone" : "email";
+        }
+        this._sharedAuthUtilService.sendOTPGenericPageLoadTracking(this.authFlow.isUserExists, SUB_SECTION)
     }
 
     @HostListener('window:beforeunload', ['$event'])
@@ -138,6 +148,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     {
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
         let pastedText = (clipboardData) ? clipboardData.getData('text') : '';
+        this.autoFillOTP(pastedText);
+    }
+
+    private autoFillOTP(pastedText: any) {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {
             for (let index = 0; index < 6; index++) {
@@ -192,7 +206,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 {
                     if (otp && otp['code']) {
                         const OTPS = (otp['code'] as string).split("");
-                        OTPS.forEach((value, index) => { this.otpFormArray.controls[index].patchValue(value) })
+                        this.autoFillOTP(OTPS)
                     }
                 }).catch(err => { console.log(err) });
             })

@@ -63,88 +63,41 @@ export class PromoCodeService {
                     this.applyPromoCode(cartObject).subscribe(({status, data, statusDescription: message}:any) => {
                         this._globalLoaderService.setLoaderState(false);
                         if(status) {
+                            console.log(data);
                             if (data['discount'] <= cartSession['cart']['totalAmount']) {
-                                //  ;
-                                // this.iData.isApplied = true;
-                                // this.iData.text =
-                                // pcd : promo code detail
-                                // this.outData$.emit({
-                                //     pcd: {
-                                //         text: this.promoCodeGroup.controls['promoCode'].value,
-                                //         // type: this.iData.type,
-                                //         isApplied: true
-                                //     }
-                                // });
-                                // cartSession['cart']['totalOffer'] = resp['data']['discount'];
-                                // cartSession['extraOffer'] = null;
-                                // const productDiscount = resp['data']['productDis'];
-                                // const productIds = Object.keys(resp['data']['productDis'] ? resp['data']['productDis'] : {});
-                                // const itemsList: Array<{}> = cartSession['itemsList'];
+                                cartSession['cart']['totalOffer'] = data['discount'];
+                                cartSession['extraOffer'] = null;
+                                const productDiscount = data['productDis'];
+                                const productIds = Object.keys(data['productDis'] ? data['productDis'] : {});
 
-                                // itemsList.map((item) => {
-                                //     if (productIds.indexOf(item['productId']) !== -1) {
-                                //         return item['offer'] = productDiscount[item['productId']];
-                                //     } else {
-                                //         return item['offer'] = null;
-                                //     }
-                                // });
+                                cartSession.itemsList.map((item) => {
+                                    if (productIds.indexOf(item['productId']) !== -1) {
+                                        return item['offer'] = productDiscount[item['productId']];
+                                    } else {
+                                        return item['offer'] = null;
+                                    }
+                                });
 
-                                // this.itemsList = itemsList;
-                                // cartSession['itemsList'] = itemsList;
-
-                                // this._cs.updateCartSession(cartSession).pipe(
-                                //     mergeMap(cartSession => {
-                                //         return this._cs.getShippingAndUpdateCartSession(cartSession)
-                                //     })
-                                // ).subscribe(
-                                //     data => {
-                                //         this.updateCartSession$.next({ cartSession: data });
-                                //         // this.cartSession = data;
-                                //         this._cs.setCartSession(data);
-                                //         this.appliedPromoCode.promoCode = this.promoCodeResponse.data.promoAttributes.promoCode;
-                                //         this.appliedPromoCode.promoDescription = this.promoCodeResponse.data.promoAttributes.promoDescription;
-                                //         this._cs.validateCartSession.next(data);
-                                //         this._cs.prepaidDiscountSubject.next();
-                                //         this.isShowLoader = false;
-                                //         setTimeout(() => {
-                                //             this._tms.show({ type: 'success', text: 'Promo Code Applied' });
-                                //         }, 500);
-                                //     }
-                                // );
+                                this._cartService.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                    data => {
+                                        this._cartService.setCartSession(data);
+                                        this._globalLoaderService.setLoaderState(false);
+                                        this._tms.show({ type: 'success', text: 'Promo Code Applied' });
+                                    }
+                                );
                                 
-                            } 
-                            // else {
-
-                            //     cartSession['cart']['totalOffer'] = 0;
-                            //     cartSession['offersList'] = [];
-
-                            //     const itemLists: Array<{}> = cartSession['itemsList'];
-                            //     itemLists.map((item) => item['offer'] = null);
-                            //     this.itemsList = itemLists;
-                            //     cartSession['itemsList'] = itemLists;
-
-
-                            //     this.appliedPromoCode.promoCode = null;
-                            //     this.appliedPromoCode.promoDescription = null;
-                            //     this._cs.updateCartSession(cartSession).pipe(
-                            //         mergeMap(cartSession => {
-                            //             return this._cs.getShippingAndUpdateCartSession(cartSession)
-                            //         })
-                            //     ).subscribe(
-                            //         data => {
-                            //             this.updateCartSession$.next({ cartSession: data });
-                            //             this.cartSession = data;
-                            //             this._cs.setCartSession(data);
-                            //             this._cs.validateCartSession.next(this.cartSession);
-                            //             this._cs.prepaidDiscountSubject.next();
-                            //             this.isShowLoader = false;
-                            //             setTimeout(() => {
-                            //                 this._tms.show({ type: 'error', text: 'Your cart amount is less than ' + resp['data']['discount'] });
-                            //             }, 500);
-                            //         }
-                            //     );
-
-                            // }
+                            } else {
+                                cartSession['cart']['totalOffer'] = 0;
+                                cartSession['offersList'] = [];
+                                cartSession.itemLists.map((item) => item['offer'] = null);
+                                this._cartService.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                    data => {
+                                        this._cartService.setCartSession(data);
+                                        this._globalLoaderService.setLoaderState(false);
+                                        this._tms.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
+                                    }
+                                );
+                            }
                         } else {
                             this._tms.show({ type: 'error', text: message });
                         }
@@ -155,5 +108,26 @@ export class PromoCodeService {
                 }
             });
         }
+    }
+
+    genericRemovePromoCode() {
+        this._globalLoaderService.setLoaderState(true);
+        let cartSession = this._cartService.getCartSession();
+        cartSession['offersList'] = [];
+        cartSession['extraOffer'] = null;
+        cartSession['cart']['totalOffer'] = 0;
+
+        cartSession.itemsList.map((element) => {
+            element['offer'] = null;
+        });
+
+        this._cartService.getShippingAndUpdateCartSession(cartSession).subscribe(
+            data => {
+                this.appliedPromoCode = '';
+                this._cartService.setCartSession(data);
+                this._globalLoaderService.setLoaderState(false);
+                this._tms.show({ type: 'success', text: "Promo Code Removed" });
+            }
+        );
     }
 }

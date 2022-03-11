@@ -1,10 +1,11 @@
+import { CartNotificationsModel } from './../../../utils/models/shared-checkout.models';
 import { CartService } from '@services/cart.service';
 import { AddressService } from '@services/address.service';
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '@app/utils/services/cart.service';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutUtil } from '../checkout-util';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-checkout-address',
@@ -16,10 +17,14 @@ export class CheckoutAddressComponent implements OnInit
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
-    constructor(public _cartService: CartService, private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
+    cartNofication: CartNotificationsModel = { nonServiceableItems: null, nonCashOnDeliverableItems: null, outOfStockItems: null, priceUpdatedItems: null};
+    cartNotificationsObservable: Subject<CartNotificationsModel> = new Subject<CartNotificationsModel>()
+
+    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit(): void
     {
+        this.cartNotificationsObservable.next(this.cartNofication);
     }
 
     //Address Information
@@ -68,5 +73,12 @@ export class CheckoutAddressComponent implements OnInit
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
             console.log(NON_SERVICEABLE_ITEMS);
         }
+    }
+
+    //getters
+    get hasCartItems()
+    {
+        const CART_ITEMS = (this._cartService.getCartSession().itemsList) || [];
+        return CART_ITEMS.length > 0;
     }
 }

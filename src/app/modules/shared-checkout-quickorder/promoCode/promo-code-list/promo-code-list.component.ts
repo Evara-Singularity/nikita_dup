@@ -33,15 +33,12 @@ export class PromoCodeListComponent implements OnInit {
                 }
                 this._loaderService.setLoaderState(false);
             });
-        } else {
-            // this.getAllPromoCodes();
         }
     }
 
-    setPromoCode(e, item) {
+    updateCustomPromoCodeInput (e, item) {
         e.preventDefault();
         e.stopPropagation();
         this._promoCodeService.appliedPromoCode = item.promoCode;
-        this._promoCodeService.genericApplyPromoCode()
     }
 }

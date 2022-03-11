@@ -16,7 +16,6 @@ declare let dataLayer: any;
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomPromoCodeComponent implements OnInit {
-    @Input('appliedPromoCode') appliedPromoCode;
     constructor(
         public _promoCodeService: PromoCodeService
     ) {
@@ -30,7 +29,6 @@ export class CustomPromoCodeComponent implements OnInit {
     }
 
     removeAppliedCustomPromoCode() {
-        this._promoCodeService.appliedPromoCode = '';
-        alert('removePromocode')
+        this._promoCodeService.genericRemovePromoCode();
     }
 }

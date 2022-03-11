@@ -17,22 +17,31 @@ export class CheckoutAddressComponent implements OnInit
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
+    invoiceType = this.INVOICE_TYPES.RETAIL;
+    deliveryAddress = null;
+    billingAddress = null;
+
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit(): void
     {
+        
+    }
 
+    handleInvoiceTypeEvent(invoiceType: string)
+    {
+        this.invoiceType = invoiceType;
     }
 
     //Address Information
-    handleAddressEvents(addressInformation: SelectedAddressModel)
+    handleAddressEvent(addressInformation: SelectedAddressModel)
     {
         //TODO:updating index logic
         //TODO:Serviceable & COD available logic.
-        const INVOICE_TYPE = addressInformation.invoiceType;
-        const DELIVERY_ADDRESS = addressInformation.deliveryAddress;
-        const BILLING_ADDRESS = addressInformation.billingAddress;
-        this.verifyDeliveryAndBillingAddress(INVOICE_TYPE, DELIVERY_ADDRESS, BILLING_ADDRESS);
+        this.invoiceType = addressInformation.invoiceType;
+        this.deliveryAddress = addressInformation.deliveryAddress;
+        this.billingAddress = addressInformation.billingAddress;
+        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
     }
 
     verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress, billingAddress)

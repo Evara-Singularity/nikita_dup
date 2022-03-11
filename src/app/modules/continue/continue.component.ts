@@ -14,7 +14,8 @@ import { environment } from 'environments/environment';
 
 })
 
-export class ContinueComponent {
+export class ContinueComponent
+{
 
     @Output() updateTabIndex: EventEmitter<number> = new EventEmitter<number>();
     @Input() tabIndex: number;
@@ -28,10 +29,12 @@ export class ContinueComponent {
     constructor(
         public cartService: CartService,
         public localStorageService: LocalStorageService,
-        private _localAuthService: LocalAuthService) {
+        private _localAuthService: LocalAuthService)
+    {
     };
 
-    ngOnInit() {
+    ngOnInit()
+    {
         this.globalConstants = CONSTANTS.GLOBAL;
         let cart = this.cartService.getCartSession();
         let user = this.localStorageService.retrieve('user');
@@ -39,37 +42,43 @@ export class ContinueComponent {
             this.userLoggedIn = user;
         }
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
-        this.cartService.orderSummary.subscribe(data => {
+        this.cartService.orderSummary.subscribe(data =>
+        {
 
             this.totalAmount = data['cart']['totalAmount'] + data['cart']['shippingCharges'] - data['cart']['totalOffer'];
         });
         this._localAuthService.login$.subscribe(
-            () => {
+            () =>
+            {
                 this.userLoggedIn = this._localAuthService.getUserSession();
             }
         );
 
         /*Subscribe below event when user log out*/
         this._localAuthService.logout$.subscribe(
-            () => {
+            () =>
+            {
                 this.userLoggedIn = false;//this._localAuthService.getUserSession();
             }
         );
 
     }
 
-    ngOnChange(changes) {
+    ngOnChange(changes)
+    {
         ////console.log(changes);
     }
 
-    continueCheckout(tabIndex) {
+    continueCheckout(tabIndex)
+    {
         this.updateTabIndex.emit(tabIndex);
     }
 
-    scrollPaymentSummary() {
+    scrollPaymentSummary()
+    {
         if (document.getElementById('payment_summary')) {
             let footerOffset = document.getElementById('payment_summary').offsetTop;
-            ClientUtility.scrollToTop(1000,footerOffset - 30);
+            ClientUtility.scrollToTop(1000, footerOffset - 30);
         }
 
     }

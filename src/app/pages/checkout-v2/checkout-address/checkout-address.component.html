@@ -1,5 +1,6 @@
 <div class="main-container">
-    <all-addresses (emitAddressSelectEvent$)="handleAddressEvents($event)"></all-addresses>
+    <checkout-address-cta></checkout-address-cta>
+    <all-addresses (emitAddressSelectEvent$)="handleAddressEvent($event)" (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
     <notfications *ngIf="hasCartItems"></notfications>
     <cart *ngIf="hasCartItems"></cart>
     <order-summary [orderSummaryData]="hasCartSession"></order-summary>

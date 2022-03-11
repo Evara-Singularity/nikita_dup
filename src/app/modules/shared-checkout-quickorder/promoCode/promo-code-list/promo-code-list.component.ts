@@ -42,7 +42,6 @@ export class PromoCodeListComponent implements OnInit {
         e.preventDefault();
         e.stopPropagation();
         this._promoCodeService.appliedPromoCode = item.promoCode;
-        alert('Apply : ' + this._promoCodeService.appliedPromoCode);
         this._promoCodeService.genericApplyPromoCode()
     }
 }

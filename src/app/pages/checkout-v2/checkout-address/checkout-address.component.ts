@@ -1,6 +1,7 @@
 import { CartService } from '@services/cart.service';
 import { AddressService } from '@services/address.service';
 import { Component, OnInit } from '@angular/core';
+import { CartService } from '@app/utils/services/cart.service';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutUtil } from '../checkout-util';
@@ -15,8 +16,7 @@ export class CheckoutAddressComponent implements OnInit
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
-
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
+    constructor(public _cartService: CartService, private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit(): void
     {

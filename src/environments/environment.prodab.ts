@@ -64,4 +64,5 @@ export const environment = {
     MANUFACTURER_STORE: "macizo_m",
     MANUFACTURER_STORE_BRAND: "macizo",
   },
+  logger: false
 };

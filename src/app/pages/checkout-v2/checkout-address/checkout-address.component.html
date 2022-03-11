@@ -1,6 +1,7 @@
 <div class="main-container">
     <all-addresses (emitAddressSelectEvent$)="handleAddressEvents($event)"></all-addresses>
+    <notfications *ngIf="hasCartItems"></notfications>
     <cart *ngIf="hasCartItems"></cart>
-    <order-summary [orderSummaryData]="_cartService.getCartSession()"></order-summary>
+    <order-summary [orderSummaryData]="hasCartSession"></order-summary>
     <cart-no-item *ngIf="!(hasCartItems)"></cart-no-item>
 </div>

@@ -8,7 +8,7 @@
         <ul class="view-products grid-variant1">
             <li *ngFor="let item of featureArrivalData | slice:0:4">
                 <a [routerLink]="item.image_link" (click)="setCookieFeatured(item.image_title)">
-
+                 <div class ="product-card">
                     <div class="product-img">
                         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="product Image">
                     </div>
@@ -21,6 +21,7 @@
                                 (click)=setCookieFeatured(item.image_title)>{{imggen.general_text}}</a>
                         </p>
                     </div>
+                 </div>
                 </a>
             </li>
         </ul>

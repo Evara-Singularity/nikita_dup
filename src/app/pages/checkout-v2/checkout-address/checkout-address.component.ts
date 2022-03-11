@@ -17,14 +17,11 @@ export class CheckoutAddressComponent implements OnInit
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
-    cartNofication: CartNotificationsModel = { nonServiceableItems: null, nonCashOnDeliverableItems: null, outOfStockItems: null, priceUpdatedItems: null};
-    cartNotificationsObservable: Subject<CartNotificationsModel> = new Subject<CartNotificationsModel>()
-
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
 
     ngOnInit(): void
     {
-        this.cartNotificationsObservable.next(this.cartNofication);
+
     }
 
     //Address Information
@@ -59,9 +56,7 @@ export class CheckoutAddressComponent implements OnInit
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            if (NON_CASH_ON_DELIVERABLE_MSNS.length) {
-                this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            }
+            this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
         })
     }
 
@@ -71,13 +66,27 @@ export class CheckoutAddressComponent implements OnInit
         if (nonServiceableMsns.length) {
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
-            console.log(NON_SERVICEABLE_ITEMS);
+            this._cartService.updateNonServiceableItems(NON_SERVICEABLE_ITEMS);
+            return;
         }
+        this._cartService.updateNonServiceableItems(null);
+    }
+
+    updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
+    {
+        if (nonCashonDeliverableMsns.length) {
+            this._cartService.updateNonCashonDeliveryItems(nonCashonDeliverableMsns);
+            return;
+        }
+        this._cartService.updateNonCashonDeliveryItems(null);
     }
 
     //getters
+    get hasCartSession() { return this._cartService.getCartSession() ? true : false; }
+
     get hasCartItems()
     {
+        if (!this.hasCartSession) return false;
         const CART_ITEMS = (this._cartService.getCartSession().itemsList) || [];
         return CART_ITEMS.length > 0;
     }

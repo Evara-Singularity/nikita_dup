@@ -1,7 +1,6 @@
 <div class="main-container">
-    <all-addresses></all-addresses>
+    <all-addresses (emitAddressSelectEvent$)="handleAddressEvents($event)"></all-addresses>
     <cart *ngIf="_cartService.getCartSession()?.itemsList?.length > 0"></cart>
     <order-summary [orderSummaryData]="_cartService.getCartSession()"></order-summary>
     <cart-no-item *ngIf="_cartService.getCartSession()?.itemsList?.length === 0"></cart-no-item>
 </div>
-

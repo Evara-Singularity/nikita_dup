@@ -137,7 +137,6 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
      */
     onSubmit(data)
     {
-        debugger;
         if (!this.isPincodeBusy && this.isPinCodeApiValid) {
             if (this.phoneVerified.value) {
                 this.saveAddress(data);

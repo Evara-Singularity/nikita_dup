@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AllAddressesComponent } from './all-addresses/all-addresses.component';
 import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pipe';
 
-
-
 @NgModule({
   declarations: [AllAddressesComponent],
   imports: [

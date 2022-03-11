@@ -1,50 +1,48 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter, NgModule } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
-import { AddressListActionModal } from '@app/utils/models/shared-checkout.modals';
+import { AddressListActionModel } from '@app/utils/models/shared-checkout.models';
 import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pipe';
 
 //expected actions are Add, Edit, Deliver Here(default/selected)
-
 @Component({
     selector: 'address-list',
     templateUrl: './address-list.component.html',
     styleUrls: ['./../common-checkout.scss']
 })
-export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy
+export class AddressListComponent implements OnInit
 {
-    readonly ACTION_TYPES = { ADD: 'ADD', EDIT: 'EDIT', SELECTED: 'SELECTED'};
+    readonly ACTION_TYPES = { ADD: 'ADD', EDIT: 'EDIT', SELECTED: 'SELECTED' };
     @Input("addressType") addressType = "Delivery";
     @Input("displayAddressListPopup") displayAddressListPopup = false;
     @Input("addresses") addresses = [];
-    @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<AddressListActionModal> = new EventEmitter<AddressListActionModal>();
+    @Input("cIdAddress") cIdAddress = null;
+    @Output("emitCloseEvent$") emitCloseEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
+    @Output("emitActionEvent$") emitActionEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
 
     constructor() { }
 
     ngOnInit() { }
 
-    handlePopup($event)
+    updateAddressId(event, idAddress)
     {
-        this.closeAddressPopUp$.emit({ action: null, idAddress: null });
+        event.stopPropagation();
+        this.cIdAddress = idAddress;
     }
 
-    handleAction($event, action, idAddress)
+    handleClose($event)
     {
-        $event.stopPropagation()
-        this.closeAddressPopUp$.emit({ action: action, idAddress: idAddress });
+        this.emitCloseEvent$.emit({ action: null, address: null });
     }
 
-    ngAfterViewInit()
+    handleAction($event, action, address)
     {
-
+        $event.stopPropagation();
+        this.emitActionEvent$.emit({ action: action, address: address });
     }
 
     get headerText() { return `${this.addressType} Address` }
-
-    ngOnDestroy()
-    {
-
-    }
+    isAddressSelected(idAddress) { return idAddress === this.cIdAddress }
 }
 
 @NgModule({

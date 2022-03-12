@@ -11,12 +11,12 @@
         <ul class="txt-list">
             <li class="border">
                 <span class="tag-label">Total Amount</span>
-                <span class="tag-value">₹ {{orderSummaryData.cart.tawot | mathFloor | number : '1.2-2'}}</span>
+                <span class="tag-value">₹ {{_cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}</span>
                 <br>
             </li>
             <li>
                 <span class="tag-label">Total GST</span>
-                <span class="tag-value">₹ {{orderSummaryData.cart.tpt | mathFloor | number : '1.2-2'}}</span>
+                <span class="tag-value">₹ {{_cartService.getGenericCartSession.cart.tpt | mathFloor | number : '1.2-2'}}</span>
             </li>
 
             <li>
@@ -25,13 +25,13 @@
             </li>
             <li>
                 <span class="tag-label">Total Coupon Discount</span>
-                <span class="tag-value green-txt" *ngIf="orderSummaryData.cart.totalOffer!==0 && orderSummaryData.cart.totalOffer!==null">-₹
-            {{orderSummaryData.cart.totalOffer | mathFloor | number : '1.2-2'}}</span>
-                <span class="tag-value green-txt" *ngIf="orderSummaryData.cart.totalOffer==0 || orderSummaryData.cart.totalOffer==null">₹ 0.00</span>
+                <span class="tag-value green-txt" *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">-₹
+            {{_cartService.getGenericCartSession.cart.totalOffer | mathFloor | number : '1.2-2'}}</span>
+                <span class="tag-value green-txt" *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">₹ 0.00</span>
             </li>
             <li class="bold-txt">
                 <span class="tag-label">Total Price</span>
-                <span class="tag-value">₹ {{orderSummaryData.cart.totalAmount + shippingCharges - orderSummaryData.cart.totalOffer |
+                <span class="tag-value">₹ {{_cartService.getGenericCartSession.cart.totalAmount + shippingCharges - _cartService.getGenericCartSession.cart.totalOffer |
             mathCeil | number : '1.2-2'}}</span>
             </li>
         </ul>

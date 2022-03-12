@@ -55,7 +55,7 @@ export class PromoCodeService {
                         offerId: data['promoAttributes']['promoId'],
                         type: '15'
                     }];
-                    const cartSession = this._cartService.getCartSession();
+                    const cartSession = this._cartService.getGenericCartSession;
                     cartSession['offersList'] = obj;
                     const cartObject = {
                         'shoppingCartDto': cartSession
@@ -80,7 +80,7 @@ export class PromoCodeService {
 
                                 this._cartService.getShippingAndUpdateCartSession(cartSession).subscribe(
                                     data => {
-                                        this._cartService.setCartSession(data);
+                                        this._cartService.setGenericCartSession(data);
                                         this._globalLoaderService.setLoaderState(false);
                                         this._tms.show({ type: 'success', text: 'Promo Code Applied' });
                                     }
@@ -92,17 +92,19 @@ export class PromoCodeService {
                                 cartSession.itemLists.map((item) => item['offer'] = null);
                                 this._cartService.getShippingAndUpdateCartSession(cartSession).subscribe(
                                     data => {
-                                        this._cartService.setCartSession(data);
+                                        this._cartService.setGenericCartSession(data);
                                         this._globalLoaderService.setLoaderState(false);
                                         this._tms.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
                                     }
                                 );
                             }
                         } else {
+                            this.appliedPromoCode = '';
                             this._tms.show({ type: 'error', text: message });
                         }
                     });
                 } else {
+                    this.appliedPromoCode = '';
                     this._globalLoaderService.setLoaderState(false);
                     this._tms.show({ type: 'error', text: message });
                 }
@@ -112,7 +114,7 @@ export class PromoCodeService {
 
     genericRemovePromoCode() {
         this._globalLoaderService.setLoaderState(true);
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         cartSession['offersList'] = [];
         cartSession['extraOffer'] = null;
         cartSession['cart']['totalOffer'] = 0;
@@ -124,7 +126,7 @@ export class PromoCodeService {
         this._cartService.getShippingAndUpdateCartSession(cartSession).subscribe(
             data => {
                 this.appliedPromoCode = '';
-                this._cartService.setCartSession(data);
+                this._cartService.setGenericCartSession(data);
                 this._globalLoaderService.setLoaderState(false);
                 this._tms.show({ type: 'success', text: "Promo Code Removed" });
             }

@@ -41,6 +41,5 @@ export class PromoCodeListComponent implements OnInit {
         e.stopPropagation();
         if (item.promoCode === this._promoCodeService.appliedPromoCode) return;
         this._promoCodeService.appliedPromoCode = item.promoCode;
-        alert('a');
     }
 }

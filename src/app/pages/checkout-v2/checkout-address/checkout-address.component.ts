@@ -54,7 +54,7 @@ export class CheckoutAddressComponent implements OnInit
 
     verifyServiceablityAndCashOnDelivery(postCode)
     {
-        const cartSession = this._cartService.getCartSession();
+        const cartSession = this._cartService.getGenericCartSession;
         const cartItems: any[] = cartSession && cartSession['itemsList'];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
@@ -91,12 +91,12 @@ export class CheckoutAddressComponent implements OnInit
     }
 
     //getters
-    get hasCartSession() { return this._cartService.getCartSession() ? true : false; }
+    get hasCartSession() { return this._cartService.getGenericCartSession ? true : false; }
 
     get hasCartItems()
     {
         if (!this.hasCartSession) return false;
-        const CART_ITEMS = (this._cartService.getCartSession().itemsList) || [];
+        const CART_ITEMS = (this._cartService.getGenericCartSession.itemsList) || [];
         return CART_ITEMS.length > 0;
     }
 }

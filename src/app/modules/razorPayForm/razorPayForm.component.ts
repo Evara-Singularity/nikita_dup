@@ -147,7 +147,7 @@ export class RazorPayFormComponent {
   }
 
   getPrePaidDiscount() {
-    let cartSession = this._cartService.getCartSession();
+    let cartSession = this._cartService.getGenericCartSession;
 
     let userSession = this._localAuthService.getUserSession();
 
@@ -178,7 +178,7 @@ export class RazorPayFormComponent {
           let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
           this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
         }
-        this._cartService.setCartSession(cartSession);
+        this._cartService.setGenericCartSession(cartSession);
         this._cartService.orderSummary.next(cartSession);
         this.isShowLoader = false;
       }
@@ -187,7 +187,7 @@ export class RazorPayFormComponent {
 
   ngOnDestroy() {
     this.prepaidsubscription.unsubscribe();
-    this._cartService.setCartSession(this.cartSesssion);
+    this._cartService.setGenericCartSession(this.cartSesssion);
     this._cartService.orderSummary.next(this.cartSesssion);
   }
 }

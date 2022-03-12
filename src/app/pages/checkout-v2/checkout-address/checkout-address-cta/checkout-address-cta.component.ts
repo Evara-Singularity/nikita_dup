@@ -53,7 +53,7 @@ export class CheckoutAddressCtaComponent implements OnInit, AfterViewInit, OnDes
 
     updatePayableAmount()
     {
-        const CART = this._cartService.getCartSession() && this._cartService.getCartSession()['cart'];
+        const CART = this._cartService.getGenericCartSession && this._cartService.getGenericCartSession['cart'];
         if (CART) {
             const TOTAL_AMOUNT = CART['totalAmount'] || 0;
             const SHIPPPING_CHARGES = CART['shippingCharges'] || 0;

@@ -126,17 +126,6 @@ export class CartService
         return this.cartNotifications$;
     }
 
-    
-
-    ngOnInit()
-    {
-        // TODO: need to verify , how this is used
-        this._dataService.dataServiceCart.subscribe(data =>
-        {
-            this.cart.next({ count: data });
-        })
-    }
-
     getShippingValue(cartSession)
     {
         // console.trace('getShippingValue cartservice');
@@ -158,23 +147,22 @@ export class CartService
         return this.payBusinessDetails;
     }
 
-    // REVAMP CODE SECTION
-    updateCart(cartSessionResponse)
-    {
-        const cartSessionObj = {
-            cart: Object.assign({}, cartSessionResponse['cart']),
-            itemsList: (cartSessionResponse["itemsList"] ? [...cartSessionResponse["itemsList"]] : []),
-            addressList: (cartSessionResponse["addressList"] ? [...cartSessionResponse["addressList"]] : []),
-            payment: cartSessionResponse["payment"],
-            offersList: cartSessionResponse["offersList"],
-            extraOffer: cartSessionResponse["extraOffer"]
+    // get generic cart session object
+    generateGenericCartSession(cartSessionFromAPI) {
+        const modifiedCartSessionObject = {
+            cart: Object.assign({}, cartSessionFromAPI['cart']),
+            itemsList: (cartSessionFromAPI["itemsList"] ? [...cartSessionFromAPI["itemsList"]] : []),
+            addressList: (cartSessionFromAPI["addressList"] ? [...cartSessionFromAPI["addressList"]] : []),
+            payment: cartSessionFromAPI["payment"],
+            offersList: cartSessionFromAPI["offersList"],
+            extraOffer: cartSessionFromAPI["extraOffer"]
         }
 
         let totalAmount: number = 0;
         let tawot: number = 0; // totalAmountWithOutTax
         let tpt: number = 0; //totalPayableTax
 
-        let itemsList = cartSessionObj.itemsList ? cartSessionObj.itemsList : [];
+        let itemsList = modifiedCartSessionObject.itemsList ? modifiedCartSessionObject.itemsList : [];
         for (let item of itemsList) {
             if (item["bulkPrice"] == null) {
                 item["totalPayableAmount"] = this.getTwoDecimalValue(item["productUnitPrice"] * item["productQuantity"]);
@@ -191,17 +179,22 @@ export class CartService
             tpt = tpt + item['tax'];
         };
 
-        cartSessionObj.cart.totalAmount = totalAmount;
-        cartSessionObj.cart.totalPayableAmount = totalAmount + cartSessionObj.cart['shippingCharges'] - cartSessionObj.cart['totalOffer'];
-        cartSessionObj.cart.tawot = tawot;
-        cartSessionObj.cart.tpt = tpt;
-        cartSessionObj.itemsList = itemsList;
-        return cartSessionObj;
+        modifiedCartSessionObject.cart.totalAmount = totalAmount;
+        modifiedCartSessionObject.cart.totalPayableAmount = totalAmount + modifiedCartSessionObject.cart['shippingCharges'] - modifiedCartSessionObject.cart['totalOffer'];
+        modifiedCartSessionObject.cart.tawot = tawot;
+        modifiedCartSessionObject.cart.tpt = tpt;
+        modifiedCartSessionObject.itemsList = itemsList;
+        return modifiedCartSessionObject;
     }
 
-    setCartSession(cart)
-    {
-        this.cartSession = cart;
+    // Get generic cart session
+    get getGenericCartSession() {
+        return this.cartSession;
+    }
+
+    // return the Cart Session Object
+    setGenericCartSession(cart) {
+        this.cartSession = JSON.parse(JSON.stringify(cart));
     }
 
     getTwoDecimalValue(a)
@@ -221,11 +214,6 @@ export class CartService
             "offersList": sessionDetails['offersList']
         };
         return this.updateCartSession(cartObject)
-    }
-
-    getCartSession()
-    {
-        return JSON.parse(JSON.stringify(this.cartSession));
     }
 
     /**
@@ -325,7 +313,7 @@ export class CartService
 
     checkForShippingCharges()
     {
-        this._getShipping(this.getCartSession()).subscribe(cartSession =>
+        this._getShipping(this.getGenericCartSession).subscribe(cartSession =>
         {
             this._notifyCartChanges(cartSession, '')
         })
@@ -342,7 +330,7 @@ export class CartService
     ): Observable<any>
     {
         const userSession = this.localAuthService.getUserSession();
-        const cartSession = Object.assign(this.getCartSession());
+        const cartSession = Object.assign(this.getGenericCartSession);
         cartSession['cart']['userId'] = userSession.userId;
         return this.getSessionByUserId(cartSession)
             .pipe(
@@ -420,8 +408,8 @@ export class CartService
      */
     private _notifyCartChanges(result, redirectUrl)
     {
-        const cartSession = this.updateCart(result);
-        this.setCartSession(cartSession);
+        const cartSession = this.generateGenericCartSession(result);
+        this.setGenericCartSession(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);
         let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
@@ -618,10 +606,10 @@ export class CartService
                     // remove promocodes incase of buynow
                     cartSession = (args.buyNow) ? this._removePromoCode(cartSession) : Object.assign({}, cartSession);
                     // calculate total price and cart value.
-                    cartSession = this.updateCart(cartSession)
+                    cartSession = this.generateGenericCartSession(cartSession)
                     //if not buynow flow then update global cart session in service
                     if (!args.buyNow) {
-                        this.setCartSession(cartSession);
+                        this.setGenericCartSession(cartSession);
                     }
                     return cartSession;
                 }
@@ -685,7 +673,7 @@ export class CartService
                 {
                     this._loaderService.setLoaderState(false);
                     if (cartSessionReponse['status']) {
-                        return this.updateCart(cartSessionReponse)
+                        return this.generateGenericCartSession(cartSessionReponse)
                     }
                     // api returns false, then return actual object returned from server
                     return cartSessionReponse;
@@ -705,7 +693,7 @@ export class CartService
                 return this.getCartBySession(request).pipe(
                     map((res: any) =>
                     {
-                        return this.updateCart(res);
+                        return this.generateGenericCartSession(res);
                     })
                 );
             }),
@@ -870,11 +858,11 @@ export class CartService
      */
     private _checkForUserAndCartSession(): Observable<any>
     {
-        return of(this.getCartSession()).pipe(
+        return of(this.getGenericCartSession).pipe(
             mergeMap(cartSessionDetails =>
             {
                 if (cartSessionDetails && cartSessionDetails['cart']) {
-                    return of(this.updateCart(cartSessionDetails));
+                    return of(this.generateGenericCartSession(cartSessionDetails));
                 } else {
                     return this._getUserSession().pipe(
                         map(userSessionDetails =>
@@ -884,7 +872,7 @@ export class CartService
                         mergeMap(request =>
                         {
                             return this.getCartBySession(request).pipe(
-                                map((res: any) => this.updateCart(res))
+                                map((res: any) => this.generateGenericCartSession(res))
                             );
                         })
                     )
@@ -974,5 +962,4 @@ export class CartService
             })
         );
     }
-
 }

@@ -36,7 +36,7 @@ export class ContinueComponent
     ngOnInit()
     {
         this.globalConstants = CONSTANTS.GLOBAL;
-        let cart = this.cartService.getCartSession();
+        let cart = this.cartService.getGenericCartSession;
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
             this.userLoggedIn = user;

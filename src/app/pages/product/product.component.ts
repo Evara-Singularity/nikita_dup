@@ -1465,7 +1465,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
           if (!buyNow) {
-            this.cartService.setCartSession(result);
+            this.cartService.setGenericCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
             this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
             this.globalLoader.setLoaderState(false);
@@ -1499,7 +1499,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   updateAddtoCartSocketAnalyticEvent(buynow: boolean) {
-    const cartSession = Object.assign({}, this.cartService.getCartSession())
+    const cartSession = Object.assign({}, this.cartService.getGenericCartSession)
     let totQuantity = 0;
     let trackData = {
       event_type: "click",

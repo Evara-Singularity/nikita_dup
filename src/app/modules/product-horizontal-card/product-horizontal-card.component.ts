@@ -340,7 +340,7 @@ export class ProductHorizontalCardComponent implements OnInit {
           // analytics call
           this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           if (!buyNow) {
-            this._cartService.setCartSession(result);
+            this._cartService.setGenericCartSession(result);
             this._cartService.cart.next({
               count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
               currentlyAdded: productDetails

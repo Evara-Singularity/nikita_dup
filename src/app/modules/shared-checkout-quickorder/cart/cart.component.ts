@@ -1,20 +1,18 @@
+import { mergeMap } from 'rxjs/operators';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CONSTANTS } from '@app/config/constants';
 import { map, catchError } from 'rxjs/operators';
 import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
-import { DOCUMENT, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { TransferState } from '@angular/platform-browser';
-import { ViewChild, Renderer2, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { Component, Input, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
 import { ProductService } from '@utils/services/product.service';
 import { CartService } from '@utils/services/cart.service';
-import { LocalAuthService } from '@utils/services/auth.service';
 import { CheckoutService } from '@utils/services/checkout.service';
 import { CommonService } from '@utils/services/common.service';
 import { DataService } from '@utils/services/data.service';
@@ -22,7 +20,7 @@ import { ObjectToArray } from '@utils/pipes/object-to-array.pipe';
 import { FooterService } from '@utils/services/footer.service';
 import { GlobalState } from '@utils/global.state';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
-import { of, forkJoin } from 'rxjs';
+import { of } from 'rxjs';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -36,36 +34,77 @@ declare let _satellite;
 })
 
 export class CartComponent {
+    cartSession;
+
     constructor(
         private _location: Location,
         public _state: GlobalState,
         public meta: Meta,
         public pageTitle: Title,
-        @Inject(DOCUMENT) private _document,
-        private _renderer2: Renderer2,
-        private _injector: Injector,
         public objectToArray: ObjectToArray,
-        private _tState: TransferState,
         public footerService: FooterService,
-        private _cfr: ComponentFactoryResolver,
         public activatedRoute: ActivatedRoute,
-        private _loader: GlobalLoaderService,
         public dataService: DataService,
         public commonService: CommonService,
         public checkOutService: CheckoutService,
         public localStorageService: LocalStorageService,
         public _router: Router,
-        private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _tms: ToastMessageService,
         private _productService: ProductService,
+        private _globalLoaderService: GlobalLoaderService,
     ) {
     }
 
     ngOnInit() {
-        this.cartSession = this._cartService.getCartSession();
+        // Get the cart from API
+        this.loadCartDataFromAPI();
     }
 
+    // Function to get and set the latest cart
+    loadCartDataFromAPI() {
+        this._globalLoaderService.setLoaderState(true);
+        this._cartService.getCartBySession({ sessionid: this.commonService.userSession['sessionId'] }).pipe(
+            mergeMap((data: any) => {
+                if (this.commonService.isServer) {
+                    return of(null);
+                }
+                /**
+                 * return cartSession, if sessionId mis match
+                 */
+                if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
+                    return of(data);
+                }
+                return this.getShippingValue(data);
+            }),
+        ) .subscribe(result => {
+            this._globalLoaderService.setLoaderState(false);
+            this.cartSession = this._cartService.generateGenericCartSession(result);
+            this._cartService.setGenericCartSession(this.cartSession);
+        });
+    }
+
+    // Get shipping value of each product items in cart
+    getShippingValue(cartSession) {
+        let sro = this._cartService.getShippingObj(cartSession);
+        return this._cartService.getShippingValue(sro)
+            .pipe(
+                map((sv: any) => {
+                    if (sv && sv['status'] && sv['statusCode'] == 200) {
+                        cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
+                        if (sv['data']['totalShippingAmount'] != undefined && sv['data']['totalShippingAmount'] != null) {
+                            let itemsList = cartSession['itemsList'];
+                            for (let i = 0; i < itemsList.length; i++) {
+                                cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
+                            }
+                        }
+                    }
+                    return cartSession;
+                })
+            );
+    }
+
+    // In increment decrement and manually update of cart item quantity
     updateCartItemQuantity(quantityTarget, index, action, buyNow = false) {
         if (quantityTarget < 1) return;
 
@@ -80,7 +119,7 @@ export class CartComponent {
             incrementOrDecrementBy = -1;
             updatedCartItemCount = this.cartSession.itemsList[index].productQuantity - 1;
         }
-        this._loader.setLoaderState(true);
+        this._globalLoaderService.setLoaderState(true);
 
         const productMsnId = this.cartSession.itemsList[index].productId;
         this._productService.getProductGroupDetails(productMsnId).pipe(
@@ -110,7 +149,7 @@ export class CartComponent {
                         } else {
                             if (result) {
                                 if (!buyNow) {
-                                    this._cartService.setCartSession(result);
+                                    this._cartService.setGenericCartSession(result);
                                     this._cartService.cart.next({
                                         count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
                                         currentlyAdded: productDetails
@@ -132,15 +171,16 @@ export class CartComponent {
             } else {
                 this._tms.show('Product does not exist');
             }
-            this._loader.setLoaderState(false);
+            this._globalLoaderService.setLoaderState(false);
         }, error => {}, () => {
-            this._loader.setLoaderState(false);
+            this._globalLoaderService.setLoaderState(false);
         });        
     }
 
+    // check if the product quantity is available
     isQuantityAvailable(updatedQuantity, productPriceQuantity, index) {
         if (updatedQuantity > productPriceQuantity.quantityAvailable) {
-            this._loader.setLoaderState(false);
+            this._globalLoaderService.setLoaderState(false);
             this.cartSession.itemsList[index]['message'] = productPriceQuantity.quantityAvailable + ' is the maximum quantity available.';
             this._tms.show({ type: 'success', text: this.cartSession.itemsList[index]['message'] });
             return { status: false, message: "Quantity not available" };
@@ -148,7 +188,7 @@ export class CartComponent {
         }
         else if (updatedQuantity < productPriceQuantity.moq) {
 
-            this._loader.setLoaderState(false);
+            this._globalLoaderService.setLoaderState(false);
             this.cartSession.itemsList[index]['message'] = "Minimum quantity is " + productPriceQuantity.moq;
             // this.showPopup(index);
             if (this.removePopup == false) {
@@ -159,7 +199,7 @@ export class CartComponent {
         else {
             let remainder = (updatedQuantity - productPriceQuantity.moq) % productPriceQuantity.incrementUnit;
             if (remainder > 0) {
-                this._loader.setLoaderState(false);
+                this._globalLoaderService.setLoaderState(false);
                 this.cartSession.itemsList[index]['message'] = "Incremental Count not matched";
                 this._tms.show({ type: 'success', text: this.cartSession.itemsList[index]['message'] });
                 // alert("Incremental Count not matched");
@@ -226,11 +266,11 @@ export class CartComponent {
                 this.cartSession.itemsList[index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
                 this.cartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
                 // 
-                const cartSession = this._cartService.getCartSession();
+                const cartSession = this._cartService.getGenericCartSession;
                 cartSession['itemsList'][index]['bulkPrice'] = bulkPrice;
                 cartSession['itemsList'][index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
 
-                this._cartService.setCartSession(cartSession);
+                this._cartService.setGenericCartSession(cartSession);
                 return { status: true, message: "Cart quantity updated successfully", items: this.cartSession.itemsList };
 
             }
@@ -238,35 +278,26 @@ export class CartComponent {
     }
 
     removePopup: boolean = false;
-    cartSession;
-    deleteProduct(index) {
-        this._loader.setLoaderState(true);
-
-        this.cartSession = this._cartService.getCartSession();
-
+    removeIndex = 0;
+    deleteProduct(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this._globalLoaderService.setLoaderState(true);
+        this.updateAfterDelete(this.removeIndex);
         // Push data to data layer
-        this.pushDataToDatalayer(index);
-
-        this.removePopup = false;
-
-        this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-
+        this.pushDataToDatalayer(this.removeIndex);
         this.sendCritioData();
-
-        this.updateAfterDelete(index);
     }
 
     updateAfterDelete(index) {
-        let cartSessions = this._cartService.getCartSession();
-        let itemsList = cartSessions["itemsList"];
-        const removedItem = itemsList.splice(index, 1);
+        let cartSession = this._cartService.getGenericCartSession;
+        let itemsList = cartSession["itemsList"];
+        itemsList.splice(index, 1);
         this.removePopup = false;
         this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-        cartSessions["itemsList"] = itemsList;
-        cartSessions = this._cartService.updateCart(cartSessions);
-
-
-        this._cartService.setCartSession(cartSessions);
+        cartSession["itemsList"] = itemsList;
+        cartSession = this._cartService.generateGenericCartSession(cartSession);
+        this._cartService.setGenericCartSession(cartSession);
 
         if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
             var totQuantity = 0;
@@ -296,33 +327,33 @@ export class CartComponent {
             if (this.localStorageService.retrieve('user')) {
                 let userData = this.localStorageService.retrieve('user');
                 if (userData.authenticated == "true") {
-                    if (cartSessions['offersList'] && cartSessions['offersList'].length > 0) {
+                    if (cartSession['offersList'] && cartSession['offersList'].length > 0) {
                         let reqobj = {
-                            "shoppingCartDto": cartSessions
+                            "shoppingCartDto": cartSession
                         }
                     }
                     else {
-                        this._loader.setLoaderState(false);
+                        this._globalLoaderService.setLoaderState(false);
                         this._cartService.extra.next({ errorMessage: null });
-                        this.updateDeleteCart(cartSessions);
+                        this.updateDeleteCart(cartSession);
                     }
                 }
                 if (userData.authenticated == "false") {
-                    this._loader.setLoaderState(false);
-                    this.updateDeleteCart(cartSessions);
+                    this._globalLoaderService.setLoaderState(false);
+                    this.updateDeleteCart(cartSession);
                 }
             }
             else {
-                this._loader.setLoaderState(false);
-                this.updateDeleteCart(cartSessions);
+                this._globalLoaderService.setLoaderState(false);
+                this.updateDeleteCart(cartSession);
             }
         }
     }
 
     updateDeleteCart(cartSessions, extraData?) {
         if (!this.commonService.isServer) {
-            if (!this._loader.getLoaderState()) {
-                this._loader.setLoaderState(true);
+            if (!this._globalLoaderService.getLoaderState()) {
+                this._globalLoaderService.setLoaderState(true);
             }
 
             let sro = this._cartService.getShippingObj(cartSessions);
@@ -337,7 +368,7 @@ export class CartComponent {
                         }
 
                         this._cartService.updateCartSession(cartSessions).subscribe((data) => {
-                            this._loader.setLoaderState(false);
+                            this._globalLoaderService.setLoaderState(false);
                             if (extraData && extraData['showMessage']) {
                                 this._tms.show(extraData['showMessage']);
                             }
@@ -355,7 +386,7 @@ export class CartComponent {
                                 this.cartSession = res;
                                 this._cartService.cart.next({ count: (res.noOfItems || this.cartSession.itemsList.length), currentlyAdded: null });
                                 res["itemsList"] = itemsList;
-                                this._cartService.setCartSession(res);
+                                this._cartService.setGenericCartSession(res);
                                 this._cartService.orderSummary.next(this.cartSession);
 
                                 /* navigate to quick order page, if no item is present in itemlist */

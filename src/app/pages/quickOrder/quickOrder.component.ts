@@ -124,7 +124,7 @@ export class QuickOrderComponent {
                 this.isShowLoader = true;
                 if (cartSession && cartSession['cart'] && cartSession['itemsList'] && Array.isArray(cartSession['itemsList'])) {
                     cartSession = this.cartService.updateCart(cartSession);
-                    this.cartService.setCartSession(cartSession);
+                    this.cartService.setGenericCartSession(cartSession);
                     this.cart = cartSession['cart'];
                     if (cartSession['itemsList'] == null) {
                         this.itemsList = [];
@@ -138,7 +138,7 @@ export class QuickOrderComponent {
                     }, 0)
                 } else if (cartSession && cartSession['statusCode'] !== undefined && cartSession['statusCode'] === 202) {
                     const cs = this.cartService.updateCart(cartSession['cart']);
-                    this.cartService.setCartSession(cs);
+                    this.cartService.setGenericCartSession(cs);
                     this.cart = cs;
                     if (cs['itemsList'] == null) {
                         this.itemsList = [];

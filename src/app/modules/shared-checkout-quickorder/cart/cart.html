@@ -1,5 +1,5 @@
 <div *ngIf="cartSession?.itemsList && cartSession?.itemsList.length > 0">
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartSession?.itemsList; let i = index">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartSession?.itemsList; let i = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -23,12 +23,12 @@
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹ {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax  | mathFloor | number : '1.2-2'}}</span>
                 </p>
-                <div *ngIf="!item.oos" class="remove-btn" (click)="removePopup = true">
+                <div *ngIf="!item.oos" class="remove-btn" (click)="removePopup = true; removeIndex = i">
                     <span>REMOVE</span>
                 </div>
             </div>
         </div>
-        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true">
+        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true; removeIndex = i">
             <span>REMOVE</span>
         </div>
         <div class="alert-box" *ngIf="removePopup">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="button-area">
                     <button (click)="removePopup = false" class="cancel">CANCEL</button>
-                    <button (click)="deleteProduct(i)" class="continue">REMOVE</button>
+                    <button (click)="deleteProduct($event)" class="continue">REMOVE</button>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ import { GlobalLoaderService } from './global-loader.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Router } from '@angular/router';
 import { Address } from '../models/address.modal';
+import { CartNotificationsModel } from '../models/shared-checkout.models';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -20,6 +21,7 @@ export class CartService
     readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
     readonly INVOICE_TYPE_RETAIL = 'retail';
     readonly INVOICE_TYPE_TAX = 'tax';
+    readonly _cartNofications: CartNotificationsModel = { nonServiceableItems: null, nonCashOnDeliverableItems: null, outOfStockItems: null, priceUpdatedItems: null };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     public cartUpdated: Subject<any> = new Subject();
     public extra: Subject<{ errorMessage: string }> = new Subject();
@@ -31,6 +33,7 @@ export class CartService
     public businessDetailSubject: Subject<any> = new Subject<any>();
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
+    private cartNotifications$: Subject<CartNotificationsModel> = new Subject<CartNotificationsModel>()
     public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -57,35 +60,74 @@ export class CartService
         private _loaderService: GlobalLoaderService,
         private _toastService: ToastMessageService,
         private _router: Router,
-    ) { }
+    ) { 
+        this.cartNotifications$.next(this._cartNofications);
+    }
 
-    set billingAddress(address: Address) {
+    set billingAddress(address: Address)
+    {
         this._billingAddress = address
     }
 
-    get billingAddress() {
+    get billingAddress()
+    {
         return this._billingAddress
     }
 
-    set shippingAddress(address: Address) {
+    set shippingAddress(address: Address)
+    {
         this._shippingAddress = address
     }
 
-    get shippingAddress() {
+    get shippingAddress()
+    {
         return this._shippingAddress
+    }
+
+    updateNonServiceableItems(items)
+    {
+        this._cartNofications.nonServiceableItems = items;
+        this.cartNotifications$.next(this._cartNofications);
+    }
+
+    updateNonCashonDeliveryItems(items)
+    {
+        this._cartNofications.nonCashOnDeliverableItems = items;
+        this.cartNotifications$.next(this._cartNofications);
+    }
+
+    updateOutOfStockItems(items)
+    {
+        this._cartNofications.outOfStockItems = items;
+        this.cartNotifications$.next(this._cartNofications);
+    }
+
+    updatePriceUpdatedItems(items)
+    {
+        this._cartNofications.priceUpdatedItems = items;
+        this.cartNotifications$.next(this._cartNofications);
     }
 
     /**
      * Use const INVOICE_TYPE_RETAIL && INVOICE_TYPE_TAX
      */
-    set invoiceType(type: 'retail' | 'tax') {
+    set invoiceType(type: 'retail' | 'tax')
+    {
         this._invoiceType = type
     }
 
-    get invoiceType() {
+    get invoiceType()
+    {
         return this._invoiceType
     }
+
+    get cartNotifications()
+    {
+        return this.cartNotifications$;
+    }
+
     
+
     ngOnInit()
     {
         // TODO: need to verify , how this is used
@@ -207,14 +249,16 @@ export class CartService
         return sro;
     }
 
-    getCartBySession(params): Observable<any> {
+    getCartBySession(params): Observable<any>
+    {
         /**
          *  Return cart from server session.
          *  Save returned to service local variable: `cartSession`
          */
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartBySession, { params: params })
             .pipe(
-                map((cartSessionResponse) => {
+                map((cartSessionResponse) =>
+                {
                     if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 200) {
                         return cartSessionResponse
                     }
@@ -237,15 +281,18 @@ export class CartService
             );
     }
 
-    logOutAndClearCart(redirectURL = null) {
+    logOutAndClearCart(redirectURL = null)
+    {
         this.logoutCall().pipe(
-            map(logoutReponse => {
+            map(logoutReponse =>
+            {
                 this._localStorageService.clear("user");
                 this.cart.next({ count: 0 });
                 return logoutReponse;
             }),
             mergeMap(logoutReponse => this.checkForUserAndCartSessionAndNotify()),
-        ).subscribe(status => {
+        ).subscribe(status =>
+        {
             if (status) {
                 this._router.navigate([(redirectURL) ? redirectURL : '/login']);
             }
@@ -385,12 +432,13 @@ export class CartService
 
     // PAYMENTS RELATED UTILS STARTS 
 
-    createValidatorRequest(extra) {
+    createValidatorRequest(extra)
+    {
         const cart = this.cartSession["cart"];
         const cartItems = this.cartSession["itemsList"];
         const billingAddress = this.billingAddress;
         const userSession = this._localStorageService.retrieve('user');
-        const offersList =  Object.assign([], this.cartSession["offersList"]);;
+        const offersList = Object.assign([], this.cartSession["offersList"]);;
 
         if (offersList != undefined && offersList.length > 0) {
             for (let key in offersList) {
@@ -462,7 +510,8 @@ export class CartService
         return obj;
     }
 
-    private getItemsList(cartItems) {
+    private getItemsList(cartItems)
+    {
         let itemsList = [];
         if (cartItems != undefined && cartItems != null && cartItems.length > 0) {
             for (let i = 0; i < cartItems.length; i++) {
@@ -496,7 +545,7 @@ export class CartService
             }
         }
     }
-     // PAYMENTS RELATED UTILS STARTS 
+    // PAYMENTS RELATED UTILS STARTS 
 
     // COMMON CART LOGIC IMPLEMENTATION STARTS
     /** 
@@ -519,7 +568,7 @@ export class CartService
                 // console.log('step 1 ==>', cartSession);
                 // incase of buynow do not exlude 
                 // console.log('product info ==> cartSession origin', Object.assign({}, cartSession));
-                
+
                 let productItemExistInCart = false;
 
                 productItemExistInCart = this._checkProductItemExistInCart(args.productDetails.productId, cartSession);
@@ -550,7 +599,7 @@ export class CartService
             // Action : update sessionId & cartId in productDetails
             map(({ cartSession, productItemExistInCart }) =>
             {
-                
+
                 // console.log('step 2 ==>', cartSession);
                 if (!cartSession) {
                     return cartSession;
@@ -579,7 +628,7 @@ export class CartService
             }),
             mergeMap(cartSession =>
             {
-                
+
                 return this._getUserSession().pipe(
                     map(userSession =>
                     {
@@ -819,17 +868,21 @@ export class CartService
      * or by calling usersession api and then calling getcartsession API
      * use this function to always get cart session no further handling required.
      */
-    private _checkForUserAndCartSession(): Observable<any> {
+    private _checkForUserAndCartSession(): Observable<any>
+    {
         return of(this.getCartSession()).pipe(
-            mergeMap(cartSessionDetails => {
+            mergeMap(cartSessionDetails =>
+            {
                 if (cartSessionDetails && cartSessionDetails['cart']) {
                     return of(this.updateCart(cartSessionDetails));
                 } else {
                     return this._getUserSession().pipe(
-                        map(userSessionDetails => {
+                        map(userSessionDetails =>
+                        {
                             return Object.assign({}, { "sessionid": userSessionDetails['sessionId'] })
                         }),
-                        mergeMap(request => {
+                        mergeMap(request =>
+                        {
                             return this.getCartBySession(request).pipe(
                                 map((res: any) => this.updateCart(res))
                             );
@@ -906,8 +959,9 @@ export class CartService
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/product/getProductGroup", { params: params });
     }
 
-    logoutCall() {
-        return this._dataService.callRestful("GET",CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
+    logoutCall()
+    {
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
     }
 
     getShippingChargesApi(obj)

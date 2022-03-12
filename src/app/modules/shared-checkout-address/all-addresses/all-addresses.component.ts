@@ -23,6 +23,7 @@ export class AllAddressesComponent implements OnInit, OnDestroy
     readonly USER_SESSION = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
     @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<SelectedAddressModel> = new EventEmitter<SelectedAddressModel>();
+    @Output("emitInvoiceTypeEvent$") emitInvoiceTypeEvent$: EventEmitter<string> = new EventEmitter<string>();
 
     invoiceType: FormControl = null;
     addressListInstance = null;
@@ -62,6 +63,7 @@ export class AllAddressesComponent implements OnInit, OnDestroy
     updateInvoiceType(isGST: boolean)
     {
         this.invoiceType.patchValue(isGST ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL);
+        this.emitInvoiceTypeEvent$.emit(this.invoiceType.value);
         this.emitAddressEvent(null, null);
     }
 

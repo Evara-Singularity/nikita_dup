@@ -8,9 +8,8 @@ import { OffersComponent } from './offers/offers.component';
 
 
 @NgModule({
-  declarations: [CartListComponent, NotficationsComponent, CouponsComponent, OffersComponent],
-  imports: [
-    CommonModule
-  ],
+    declarations: [CartListComponent, NotficationsComponent, CouponsComponent, OffersComponent],
+    imports: [CommonModule],
+    exports: [CartListComponent, NotficationsComponent, CouponsComponent, OffersComponent],
 })
 export class SharedCheckoutQuickorderModule { }

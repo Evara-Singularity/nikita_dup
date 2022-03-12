@@ -1,6 +1,6 @@
-import { MathCeilPipeModule } from './../../../utils/pipes/math-ceil';
-import { SharedCartModule } from './../../../modules/shared-checkout-quickorder/shared-cart.module';
-import { OrderSummaryModule } from './../../../modules/shared-checkout-quickorder/orderSummary/orderSummary.module';
+import { CartNoItemModule } from '@modules/shared-checkout-quickorder/cart-no-item/cart-no-item.module';
+import { MathCeilPipeModule } from '@utils/pipes/math-ceil';
+import { OrderSummaryModule } from '@modules/shared-checkout-quickorder/orderSummary/orderSummary.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +16,7 @@ import { CheckoutAddressCtaComponent } from './checkout-address-cta/checkout-add
   imports: [
     CommonModule,
     CartModule,
-    SharedCartModule,
+    CartNoItemModule,
     OrderSummaryModule,
     CheckoutAddressRoutingModule,
     SharedCheckoutAddressModule,

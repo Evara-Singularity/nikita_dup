@@ -1,3 +1,4 @@
+import { CartNoItemModule } from './../../modules/shared-checkout-quickorder/cart-no-item/cart-no-item.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { routing } from "./quickOrder.routing";
@@ -11,13 +12,12 @@ import { UnAvailableItemsModule } from '@modules/unAvailableItems/unAvailableIte
 
 // Newly created Modules
 import { CartModule } from '@modules/shared-checkout-quickorder/cart/cart.module';
-import { SharedCartModule } from '@modules/shared-checkout-quickorder/shared-cart.module';
 import { OrderSummaryModule } from '@modules/shared-checkout-quickorder/orderSummary/orderSummary.module';
 
 @NgModule({
     imports: [
         CommonModule,
-        SharedCartModule,
+        CartNoItemModule,
         routing,
         ObjectToArrayPipeModule,
         MathFloorPipeModule,

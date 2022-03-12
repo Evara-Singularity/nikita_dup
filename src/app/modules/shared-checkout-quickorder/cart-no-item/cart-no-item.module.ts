@@ -13,4 +13,4 @@ import { CartNoItemComponent } from "./cart-no-item.component";
     providers: []
 })
 
-export class SharedCartModule {}
+export class CartNoItemModule {}

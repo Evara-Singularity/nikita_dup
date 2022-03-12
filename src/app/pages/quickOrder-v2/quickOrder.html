@@ -1,9 +1,9 @@
 <div id="quickOrderPage">
-    <div *ngIf="cartService.getCartSession()?.itemsList?.length > 0" class="mb-65">
-        <!-- <cart-updates [itemsValidationMessage]="itemsValidationMessage"></cart-updates> -->
+    <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
+        <!-- <cart-updates></cart-updates> -->
         <cart></cart>
-        <order-summary [orderSummaryData]="cartService.getCartSession()"></order-summary>
+        <order-summary></order-summary>
         <button class="btn continue-btn mt-10" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'Proceed to Checkout' : 'Sign In to Checkout' }}</button>
     </div>
-    <cart-no-item *ngIf="cartService.getCartSession()?.itemsList?.length === 0"></cart-no-item>
+    <cart-no-item *ngIf="_cartService.getGenericCartSession?.itemsList?.length === 0"></cart-no-item>
 </div>

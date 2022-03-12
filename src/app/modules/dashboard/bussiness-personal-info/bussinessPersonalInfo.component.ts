@@ -90,7 +90,7 @@ export class BussinessInfoComponent {
       if (this.isBrowser) {
       }
       this._commonService
-        .getSession()
+        .getUserSession()
         .pipe(
           map((res: any) => {
             this._localAuthService.setUserSession(res);
@@ -102,15 +102,15 @@ export class BussinessInfoComponent {
             let params = { sessionid: data["sessionId"] };
             return this._cartService.getCartBySession(params).pipe(
               map((res: any) => {
-                return this._cartService.updateCart(res);
+                return this._cartService.generateGenericCartSession(res);
               })
             );
           })
         )
         .subscribe((response: any) => {
           let cartSession = response;
-          const cs = this._cartService.updateCart(cartSession);
-          this._cartService.setCartSession(cs);
+          const cs = this._cartService.generateGenericCartSession(cartSession);
+          this._cartService.setGenericCartSession(cs);
           this._cartService.cart.next({count:cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0});
           this._cartService.orderSummary.next(cartSession);
         });

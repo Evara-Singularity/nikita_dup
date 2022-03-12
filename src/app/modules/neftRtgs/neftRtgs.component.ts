@@ -45,7 +45,7 @@ export class NeftRtgsComponent {
     }
 
     ngOnInit() {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         let invoiceType = this._checkoutService.getInvoiceType();
         this.invoiceType = invoiceType;
         if (cartSession["cart"]["totalPayableAmount"] < 2000) {
@@ -60,7 +60,7 @@ export class NeftRtgsComponent {
     }
 
     pay() {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
 
         let userSession = this._localAuthService.getUserSession();
         let addressList = this._checkoutService.getCheckoutAddress()

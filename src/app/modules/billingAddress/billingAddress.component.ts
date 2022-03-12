@@ -110,7 +110,7 @@ export class BillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
         }
-        this.cartSession = this._cartService.getCartSession();
+        this.cartSession = this._cartService.getGenericCartSession;
         this.itemsList = (this.cartSession['itemsList']) ? this.cartSession['itemsList'] : [];
     }
 

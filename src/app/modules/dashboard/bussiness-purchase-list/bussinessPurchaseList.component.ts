@@ -544,7 +544,7 @@ export class BussinessPurchaseListComponent {
         sessionCartObject = this.sessionDetails.cart;
         this.addProductInCart(routerlink, sessionCartObject, quantity);
       } else {
-        this.commonService.getSession().subscribe((res) => {
+        this.commonService.getUserSession().subscribe((res) => {
           if (res["statusCode"] != undefined && res["statusCode"] == 500) {
           } else {
             this._localAuthService.setUserSession(res);
@@ -576,7 +576,7 @@ export class BussinessPurchaseListComponent {
 
   addProductInCart(routerLink, sessionCartObject, quantity) {
     let sessionItemList: Array<any> = [];
-    let sessionDetails = this.cartService.getCartSession();
+    let sessionDetails = this.cartService.getGenericCartSession;
     if (sessionDetails["itemsList"] == null) {
       sessionItemList = [];
     } else {
@@ -619,13 +619,13 @@ export class BussinessPurchaseListComponent {
     if (checkAddToCartData.isvalid) {
       this.showLoader = true;
       sessionDetails["itemsList"] = checkAddToCartData.itemlist;
-      sessionDetails = this.cartService.updateCart(sessionDetails);
-      this.cartService.setCartSession(sessionDetails);
+      sessionDetails = this.cartService.generateGenericCartSession(sessionDetails);
+      this.cartService.setGenericCartSession(sessionDetails);
     }
   }
 
   updateCartSessions(routerLink) {
-    let sessionDetails = this.cartService.getCartSession();
+    let sessionDetails = this.cartService.getGenericCartSession;
     this.showLoader = true;
     let cartObject = {
       cart: sessionDetails["cart"],
@@ -643,7 +643,7 @@ export class BussinessPurchaseListComponent {
         if (data.status) {
           this.sessionDetails = data;
           this.uniqueRequestNo = 0;
-          this.cartService.setCartSession(data);
+          this.cartService.setGenericCartSession(data);
           this.cartService.cart.next({count: data["noOfItems"]});
           this.successMessage = this.selectedIndex;
         } else {
@@ -659,7 +659,7 @@ export class BussinessPurchaseListComponent {
   }
 
   removePromoCode() {
-    let cartSession = this.cartService.getCartSession();
+    let cartSession = this.cartService.getGenericCartSession;
     cartSession["offersList"] = [];
     cartSession["extraOffer"] = null;
     cartSession["cart"]["totalOffer"] = 0;
@@ -668,7 +668,7 @@ export class BussinessPurchaseListComponent {
     itemsList.forEach((element, index) => {
       cartSession["itemsList"][index]["offer"] = null;
     });
-    this.cartService.setCartSession(cartSession);
+    this.cartService.setGenericCartSession(cartSession);
   }
 
   applyPromoCode(routerLink) {

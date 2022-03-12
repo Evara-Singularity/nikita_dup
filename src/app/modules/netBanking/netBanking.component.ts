@@ -102,7 +102,7 @@ export class NetBankingComponent {
         }
 
         this.getPrePaidDiscount();
-        this.cartSesssion = Object.assign({}, this._cartService.getCartSession());
+        this.cartSesssion = Object.assign({}, this._cartService.getGenericCartSession);
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
         })
@@ -136,7 +136,7 @@ export class NetBankingComponent {
             return;
         ////console.log(data.requestParams);
 
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
         let cartItems = cartSession["itemsList"];
 
@@ -260,7 +260,7 @@ export class NetBankingComponent {
     }
 
     getPrePaidDiscount() {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
 
         let userSession = this._localAuthService.getUserSession();
 
@@ -291,7 +291,7 @@ export class NetBankingComponent {
                     let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
                     this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
                 }
-                this._cartService.setCartSession(cartSession);
+                this._cartService.setGenericCartSession(cartSession);
                 // console.log(this.cartSesssion);
                 this._cartService.orderSummary.next(cartSession);
                 this.isShowLoader = false;
@@ -325,7 +325,7 @@ export class NetBankingComponent {
     ngOnDestroy() {
 
         this.prepaidsubscription.unsubscribe();
-        this._cartService.setCartSession(this.cartSesssion);
+        this._cartService.setGenericCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
     }
 }

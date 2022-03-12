@@ -243,7 +243,7 @@ export class CartComponent {
                 const user = this.localStorageService.retrieve('user');
 
                 if (user && user.authenticated == "true") {
-                    let cartobj = this._cartService.getCartSession();
+                    let cartobj = this._cartService.getGenericCartSession;
                     let itemLists = cartobj["itemsList"];
                     itemLists.forEach((element) => {
                         element.shipping = element.shippingCharges;
@@ -360,7 +360,7 @@ export class CartComponent {
     }
 
     getCartFromSession() {
-        this.cartSession = this._cartService.getCartSession();
+        this.cartSession = this._cartService.getGenericCartSession;
         this.cart = this.cartSession['cart'];
         this.itemsList = (this.cartSession['itemsList'] != undefined && this.cartSession['itemsList'] != null) ? this.cartSession['itemsList'] : [];
     }
@@ -479,15 +479,15 @@ export class CartComponent {
                         if (oosData && oosData.length > 0) {
                             reqobj.shoppingCartDto['itemsList'] = itemsList;
                             const sessionDetails = this._cartService.updateCart(reqobj.shoppingCartDto);
-                            this._cartService.setCartSession(sessionDetails);
-                            const cartSession = this._cartService.getCartSession();
+                            this._cartService.setGenericCartSession(sessionDetails);
+                            const cartSession = this._cartService.getGenericCartSession;
                             this.itemsList = cartSession["itemsList"];
                         }
                         // update cart session, only when any price, shipping or coupon is updated 
                         if (ucs) {
                             reqobj.shoppingCartDto['itemsList'] = itemsList;
                             const sessionDetails = this._cartService.updateCart(reqobj.shoppingCartDto);
-                            this._cartService.setCartSession(sessionDetails);
+                            this._cartService.setGenericCartSession(sessionDetails);
 
                             //if any offer exit on cart, call apply promocode else update cart session flow
                             if (sessionDetails['offersList'] && sessionDetails['offersList'].length > 0) {
@@ -496,7 +496,7 @@ export class CartComponent {
                                 this.updateCartSessions();
                             }
                         } else {
-                            const sessionDetails = this._cartService.getCartSession();
+                            const sessionDetails = this._cartService.getGenericCartSession;
                             if (sessionDetails['offersList'] && sessionDetails['offersList'].length > 0) {
                                 this.applyPromoCode();
                             } else {
@@ -935,7 +935,7 @@ export class CartComponent {
 
         if (this.uniqueRequestNo == 0) {
             this.uniqueRequestNo = 1;
-            let cartSessions = this._cartService.getCartSession();
+            let cartSessions = this._cartService.getGenericCartSession;
             let itemsList = cartSessions["itemsList"];
             const removedItem = itemsList.splice(index, 1);
             this.removePopup = false;
@@ -1034,7 +1034,7 @@ export class CartComponent {
             /*End Adobe Analytics Tags */
 
             // Update cart in service
-            this._cartService.setCartSession(cartSessions);
+            this._cartService.setGenericCartSession(cartSessions);
             // console.log('trigger4');
             if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                 var totQuantity = 0;
@@ -1180,7 +1180,7 @@ export class CartComponent {
             this.getShippingCharges(sro).subscribe(
                 res => {
                     if (res['statusCode'] == 200) {
-                        // this.cartSession = this._cartService.getCartSession();
+                        // this.cartSession = this._cartService.getGenericCartSession;
                         // console.log('trigger5');
                         cartSessions['cart']['shippingCharges'] = res['data']['totalShippingAmount'];
                         let productShippingCharge = res['data']['itemShippingAmount'];
@@ -1214,7 +1214,7 @@ export class CartComponent {
                                 this.cart = res.cart;
                                 this._cartService.cart.next({ count: (res.noOfItems || this.itemsList.length), currentlyAdded: null });
                                 res["itemsList"] = itemsList;
-                                this._cartService.setCartSession(res);
+                                this._cartService.setGenericCartSession(res);
                                 // alert(this.itemsList.length);
                                 this._cartService.orderSummary.next(this.cartSession);
 
@@ -1246,7 +1246,7 @@ export class CartComponent {
             return;
         }
 
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         let itemsList = cartSession["itemsList"];
         var taxonomy = this.cartSession["itemsList"][i]['taxonomyCode'];
         var trackingData = {
@@ -1324,7 +1324,7 @@ export class CartComponent {
                     }
                     itemsList[i]['message'] = "Cart quantity updated successfully";
                     cartSession["itemsList"] = itemsList;
-                    this._cartService.setCartSession(cartSession);
+                    this._cartService.setGenericCartSession(cartSession);
                     this.updateCartSession();
                 }
                 //Do not update cart object if isQuantityAvailable returns false and revert the entered quantity to previous.
@@ -1360,7 +1360,7 @@ export class CartComponent {
 
     incrementQuantity(quantityTarget, i) {
         //  ;
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         // console.log(cartSession, "incrementQuantityincrementQuantity")
         let itemsList = cartSession["itemsList"];
         var taxonomy = cartSession["itemsList"][i]['taxonomyCode'];
@@ -1414,7 +1414,7 @@ export class CartComponent {
 
                 let isQua = this.isQuantityAvailable(updatedQuantity, productPriceQuantity, i);
 
-                cartSession = this._cartService.getCartSession();
+                cartSession = this._cartService.getGenericCartSession;
                 itemsList = cartSession['itemsList'];
 
                 //console.log('cartSession updateCart after', Object.assign({}, cartSession), Object.assign({}, this.itemsList));
@@ -1459,7 +1459,7 @@ export class CartComponent {
 
                     cartSession["itemsList"] = itemsList;
 
-                    this._cartService.setCartSession(cartSession);
+                    this._cartService.setGenericCartSession(cartSession);
                     this.updateCartSession();
                 } else {
                     //this.itemsList[i]['productQuantity'] = currentQuantity;
@@ -1471,7 +1471,7 @@ export class CartComponent {
     }
 
     decrementQuantity(quantityTarget, i) {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         let itemsList = cartSession["itemsList"];
         var taxonomy = this.cartSession["itemsList"][i]['taxonomyCode'];
         var trackingData = {
@@ -1519,7 +1519,7 @@ export class CartComponent {
                 }
                 // updatedQuantity = parseInt(currentQuantity) - parseInt(productPriceQuantity.incrementUnit);
                 let isQua = this.isQuantityAvailable(updatedQuantity, productPriceQuantity, i);
-                cartSession = this._cartService.getCartSession();
+                cartSession = this._cartService.getGenericCartSession;
                 itemsList = cartSession['itemsList'];
                 //Update cart object only when isQuantityAvailable returns true.
                 // console.log('trigger10');
@@ -1560,7 +1560,7 @@ export class CartComponent {
                     // itemsList[i] = this.itemsList[i];
                     cartSession["itemsList"] = itemsList;
                     // console.log('cartSession 0', Object.assign({}, cartSession));
-                    this._cartService.setCartSession(cartSession);
+                    this._cartService.setGenericCartSession(cartSession);
                     this.updateCartSession();
                 } else {
                     //this.itemsList[i]['productQuantity'] = currentQuantity;
@@ -1669,11 +1669,11 @@ export class CartComponent {
                 //this.updateCartSession();
                 this.itemsList[index]['message'] = "Cart quantity updated successfully";
                 // 
-                const cartSession = this._cartService.getCartSession();
+                const cartSession = this._cartService.getGenericCartSession;
                 cartSession['itemsList'][index]['bulkPrice'] = bulkPrice;
                 cartSession['itemsList'][index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
 
-                this._cartService.setCartSession(cartSession);
+                this._cartService.setGenericCartSession(cartSession);
                 // alert("Cart quantity updated successfully");
                 return { status: true, message: "Cart quantity updated successfully", items: this.itemsList };
 
@@ -1691,14 +1691,14 @@ export class CartComponent {
             this.isShowLoader = true;
         if (!this.isServer) {
             // $("#page-loader").show();
-            let cs = Object.assign({}, this._cartService.getCartSession());
+            let cs = Object.assign({}, this._cartService.getGenericCartSession);
             let sro = this._cartService.getShippingObj(cs);
             // console.log('updateCartSessionssro', sro); 
             // // console.log('trigger11');
             this.getShippingCharges(sro).subscribe(
                 res => {
                     if (res['statusCode'] == 200) {
-                        let cartSession = this._cartService.getCartSession();
+                        let cartSession = this._cartService.getGenericCartSession;
                         // console.log('cartSession 1', Object.assign({}, cartSession));
                         // console.log(cartSession, "lakjsdlfjaldjfljadsf");
                         cartSession['cart']['shippingCharges'] = res['data']['totalShippingAmount'];
@@ -1780,7 +1780,7 @@ export class CartComponent {
         const showMessage = { type: 'error', text: "Product successfully removed from Cart" };
         this.isShowLoader = true;
 
-        let cartSessions = this._cartService.getCartSession();
+        let cartSessions = this._cartService.getGenericCartSession;
         // console.log("Cart After removal", cartSessions);
         let itemsList = cartSessions["itemsList"];
         const removedItem = itemsList.filter(item => unAvailableItemsIndex.indexOf(item['productId']) != -1);
@@ -1803,7 +1803,7 @@ export class CartComponent {
         cartSessions = this._cartService.updateCart(cartSessions);
 
         // Update cart in service
-        this._cartService.setCartSession(cartSessions);
+        this._cartService.setGenericCartSession(cartSessions);
 
         // alert(JSON.stringify(cartSessions));
         // this.isShowLoader = true;
@@ -1884,7 +1884,7 @@ export class CartComponent {
 
     applyPromoCode() {
 
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         // console.log(cartSession, "applyPromoCode")
         if (this.isBrowser) {
             if (this.uniqueRequestNo == 0) {
@@ -1937,7 +1937,7 @@ export class CartComponent {
                                             cartSession["itemsList"] = itemsList;
                                         }
                                         console.log('cartSession 1', Object.assign({}, cartSession));
-                                        this._cartService.setCartSession(cartSession);
+                                        this._cartService.setGenericCartSession(cartSession);
                                         //this.cartSession['cart']['totalOffer']=res.data.discount
                                         //alert(res.data.discount);
                                         // this.errorMeesage = res.statusDescription;
@@ -1953,7 +1953,7 @@ export class CartComponent {
                                         }); */
                                         itemsList.map((item) => item["offer"] = null);
                                         cartSession["itemsList"] = itemsList;
-                                        this._cartService.setCartSession(cartSession);
+                                        this._cartService.setGenericCartSession(cartSession);
                                         this._cartService.extra.next({ errorMessage: res["statusDescription"] });
                                         this.updateCartSessions();
                                         // this.errorMeesage = res.statusDescription;

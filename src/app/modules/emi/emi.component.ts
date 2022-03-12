@@ -98,7 +98,7 @@ export class EmiComponent {
             }),
         })
 
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         cartSession['nocostEmi'] = 0;
         let cart = cartSession["cart"];
         this.type = this._checkoutService.getInvoiceType();
@@ -391,7 +391,7 @@ export class EmiComponent {
         else
             emitenureFlag = 0;
 
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
         let cartItems = cartSession["itemsList"];
 
@@ -558,7 +558,7 @@ export class EmiComponent {
 
     getEmiDiscount(month, rate, amount) {
         this.isShowLoader = true;
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
         this.nocostEmiDiscount = 0;
         if (month == 3 || month == 6) {
@@ -615,7 +615,7 @@ export class EmiComponent {
                 )
             }
         }
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         cartSession["nocostEmi"] = 0;
         this._cartService.orderSummary.next(cartSession);
     }
@@ -640,7 +640,7 @@ export class EmiComponent {
     }
 
     changeCardType(card) {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         cartSession['nocostEmi'] = 0;
         let cart = cartSession["cart"];
         this.selectedBank = null;
@@ -688,7 +688,7 @@ export class EmiComponent {
     }
 
     ngOnDestroy() {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         cartSession["nocostEmi"] = 0;
         this._cartService.orderSummary.next(cartSession);
     }

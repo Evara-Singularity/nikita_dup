@@ -2,15 +2,14 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CartNotificationsModel } from '@app/utils/models/shared-checkout.models';
 import { CartService } from '@services/cart.service';
 import { Subscription } from 'rxjs';
-import { LoggerService } from './../../../utils/services/logger.service';
+import { LoggerService } from '@services/logger.service';
 
 @Component({
-    selector: 'notfications',
-    templateUrl: './notfications.component.html',
-    styleUrls: ['./notfications.component.scss']
+    selector: 'notifications',
+    templateUrl: './notifications.component.html',
+    styleUrls: ['./notifications.component.scss']
 })
-export class NotficationsComponent implements OnInit, AfterViewInit, OnDestroy
-{
+export class NotificationsComponent implements OnInit, AfterViewInit, OnDestroy {
     cartNotifications: CartNotificationsModel = null;
     cartNotificationsSubscription: Subscription = null;
 

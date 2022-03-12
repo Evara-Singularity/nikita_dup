@@ -56,7 +56,7 @@ export class CashOnDeliveryComponent {
         this.currUser = this._localAuthService.getUserSession();
         this.userNum = parseInt(this._checkoutService.getCheckoutAddress()['phone']);
         this.userEmail = this._checkoutService.getCheckoutAddress()['email'];
-        let cartSession: any = this._cartService.getCartSession();        
+        let cartSession: any = this._cartService.getGenericCartSession;        
 
         if (cartSession['cart']['totalPayableAmount'] < this.globalConstants['codMin']) {
             this.message = 'COD not applicable on orders below Rs. ' + this.globalConstants['codMin'];
@@ -110,7 +110,7 @@ export class CashOnDeliveryComponent {
     pay() {
         this.isShowLoader = true;
         let invoiceType = this._checkoutService.getInvoiceType(); 
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
 
         let userSession = this._localAuthService.getUserSession();
         let addressList = this._checkoutService.getCheckoutAddress();

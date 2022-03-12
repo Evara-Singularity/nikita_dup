@@ -68,7 +68,7 @@ export class PaymentComponent implements OnInit {
     private intialize() {
         if (this._commonService.isBrowser) {
 
-            const cartData = this._cartService.getCartSession();
+            const cartData = this._cartService.getGenericCartSession;
 
             this.canNEFT_RTGS = cartData['cart']['agentId'];
             this.totalAmount = (cartData['cart']['totalAmount']) + +(cartData['cart']['shippingCharges']) - +(cartData['cart']['totalOffer']); // intialize total amount
@@ -120,7 +120,7 @@ export class PaymentComponent implements OnInit {
     }
 
     updatePaymentBlock(block, mode?, elementId?) {
-        let cart = this._cartService.getCartSession();
+        let cart = this._cartService.getGenericCartSession;
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
         this.messageEmi = "";
         this.messageCod = "";

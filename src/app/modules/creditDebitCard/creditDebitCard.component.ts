@@ -83,7 +83,7 @@ export class CreditDebitCardComponent implements OnInit  {
     }
 
     ngOnInit() {
-        this.cartSession = this._cartService.getCartSession();
+        this.cartSession = this._cartService.getGenericCartSession;
         this.getPrePaidDiscount('CC'); // Credit card as default options
 
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
@@ -96,7 +96,7 @@ export class CreditDebitCardComponent implements OnInit  {
 
         if (!valid) return;
            
-        const cartSession = this._cartService.getCartSession();
+        const cartSession = this._cartService.getGenericCartSession;
         const ccnum = data.requestParams.ccnum.replace(/ /g, '');
         const bankcode = this.getBankCode(ccnum);
         const userSession = this._localAuthService.getUserSession();
@@ -224,7 +224,7 @@ export class CreditDebitCardComponent implements OnInit  {
     }
 
     getPrePaidDiscount(mode) {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
 
         let userSession = this._localAuthService.getUserSession();
 
@@ -254,7 +254,7 @@ export class CreditDebitCardComponent implements OnInit  {
                     let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
                     this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
                 }
-                this._cartService.setCartSession(cartSession);
+                this._cartService.setGenericCartSession(cartSession);
                 this._cartService.orderSummary.next(cartSession);
                 this.isShowLoader = false;
             }
@@ -312,7 +312,7 @@ export class CreditDebitCardComponent implements OnInit  {
 
     ngOnDestroy() {
         this.prepaidsubscription.unsubscribe();
-        this._cartService.setCartSession(this.cartSession);
+        this._cartService.setGenericCartSession(this.cartSession);
         this._cartService.orderSummary.next(this.cartSession);
     }
     

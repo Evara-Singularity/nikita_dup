@@ -68,7 +68,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         if (!this.isServer) {
-            this.cartSession = this._cartService.getCartSession();
+            this.cartSession = this._cartService.getGenericCartSession;
             this.shippingCharges = this.cartSession['cart']['shippingCharges'];
 
             const items: Array<any> = this.cartSession['itemsList'];
@@ -111,7 +111,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             this._cartService.orderSummary.subscribe(
                 (data: { cartSession?: {}, extra?: { errorMessage: string } }) => {
                     // console.trace('cartsummary  ===========> ');
-                    this.cartSession = this._cartService.getCartSession();
+                    this.cartSession = this._cartService.getGenericCartSession;
                     if (this.cartSession['itemsList'] !== null && this.cartSession['itemsList']) {
                         let items: Array<any> = this.cartSession['itemsList'];
                         this.noOfCart = items.length;
@@ -242,7 +242,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
             ).subscribe(
                 data => {
                     this.isShowLoader = false;
-                    this._cartService.setCartSession(data);
+                    this._cartService.setGenericCartSession(data);
                     // (<HTMLElement>document.querySelector('#page-loader')).style.display = 'none';//.hide();
                     this.appliedPromoCode.promoCode = null;
                     this.appliedPromoCode.promoDescription = null;

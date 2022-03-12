@@ -104,6 +104,10 @@ export class CommonService
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
     }
 
+    updateUserSession() {
+        this.userSession = this._localStorageService.retrieve("user");
+    }
+
     setNetworkSpeedState(speed)
     {
         this._networkSpeed = speed;
@@ -695,7 +699,7 @@ export class CommonService
         return actualParams;
     }
 
-    getSession(): Observable<{}>
+    getUserSession(): Observable<{}>
     {
         let user = this._localStorageService.retrieve("user");
         // return user from localstorage OR call API

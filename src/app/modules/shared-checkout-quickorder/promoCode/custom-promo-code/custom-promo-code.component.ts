@@ -15,20 +15,8 @@ declare let dataLayer: any;
     styleUrls: ['./custom-promo-code.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomPromoCodeComponent implements OnInit {
+export class CustomPromoCodeComponent {
     constructor(
         public _promoCodeService: PromoCodeService
-    ) {
-    }
-
-    ngOnInit(): void {
-    }
-
-    emitCustomPromoCode() {
-        this._promoCodeService.genericApplyPromoCode();
-    }
-
-    removeAppliedCustomPromoCode() {
-        this._promoCodeService.genericRemovePromoCode();
-    }
+    ) {}
 }

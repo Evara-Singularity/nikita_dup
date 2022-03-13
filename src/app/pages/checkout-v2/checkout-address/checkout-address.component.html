@@ -1,9 +1,8 @@
-<div class="main-container">
+<div class="main-container" *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0">
     <checkout-address-cta></checkout-address-cta>
     <all-addresses (emitAddressSelectEvent$)="handleAddressEvent($event)" (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-    <cart-updates></cart-updates>
+    <cart-notifications></cart-notifications>
     <!-- <notifications *ngIf="hasCartItems"></notifications> -->
-    <cart *ngIf="hasCartItems"></cart>
-    <order-summary *ngIf="hasCartItems"></order-summary>
-    <cart-no-item *ngIf="!(hasCartItems)"></cart-no-item>
+    <cart></cart>
+    <order-summary></order-summary>
 </div>

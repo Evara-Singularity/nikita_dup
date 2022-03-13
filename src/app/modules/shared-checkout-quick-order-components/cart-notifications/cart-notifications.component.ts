@@ -2,17 +2,16 @@ import { UnAvailableItemsComponent } from './unAvailableItems/unAvailableItems.c
 import { ModalService } from '@app/modules/modal/modal.service';
 import { GlobalState } from '@utils/global.state';
 import { CommonService } from '@app/utils/services/common.service';
-import { Input } from '@angular/core';
 import { Component } from '@angular/core';
 import { CartService } from '@app/utils/services/cart.service';
 
 @Component({
-    selector: 'cart-updates',
-    templateUrl: 'cartUpdates.html',
-    styleUrls: ['./cartUpdates.scss'],
+    selector: 'cart-notifications',
+    templateUrl: 'cart-notifications.html',
+    styleUrls: ['./cart-notifications.scss'],
 })
 
-export class CartUpdatesComponent {
+export class CartNotificationsComponent {
     constructor(
         public _cartService: CartService, 
         private _commonService: CommonService,

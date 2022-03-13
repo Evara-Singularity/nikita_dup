@@ -2,7 +2,7 @@ import { UnAvailableItemsComponent } from './unAvailableItems/unAvailableItems.c
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CartUpdatesComponent } from './cartUpdates.component';
+import { CartNotificationsComponent } from './cart-notifications.component';
 import { OutOfStockValidationMessagePipeModule } from '@pipes/oos-validation-message.pipe'
 import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 
@@ -14,11 +14,11 @@ import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
         KpToggleDirectiveModule
     ],
     declarations: [
-        CartUpdatesComponent,
+        CartNotificationsComponent,
         UnAvailableItemsComponent,
     ],
     exports: [
-        CartUpdatesComponent,
+        CartNotificationsComponent,
         UnAvailableItemsComponent,
     ],
     providers: [
@@ -26,4 +26,4 @@ import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
     ]
 })
 
-export class CartUpdatesModule { }
+export class CartNotificationsModule { }

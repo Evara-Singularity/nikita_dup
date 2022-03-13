@@ -1,6 +1,6 @@
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { PromoCodeService } from './../promo-code.service';
+import { PromoCodeService } from '../promo-code.service';
 import { CommonService } from '@app/utils/services/common.service';
 
 declare let dataLayer: any;

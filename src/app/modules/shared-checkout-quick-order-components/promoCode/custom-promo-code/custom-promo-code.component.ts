@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PromoCodeService } from './../promo-code.service';
+import { PromoCodeService } from '../promo-code.service';
 
 declare let dataLayer: any;
 

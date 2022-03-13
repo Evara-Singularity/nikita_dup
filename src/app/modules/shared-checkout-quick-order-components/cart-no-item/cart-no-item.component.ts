@@ -1,6 +1,6 @@
 import { CartService } from '@services/cart.service';
 import { CONSTANTS } from '@config/constants';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'cart-no-item',

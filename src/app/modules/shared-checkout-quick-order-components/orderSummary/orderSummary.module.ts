@@ -5,7 +5,7 @@ import {OrderSummaryComponent} from './orderSummary.component';
 import {OrderSummaryService} from './orderSummary.service';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
 import { MathFloorPipeModule } from '@pipes/math-floor';
-import { PromoCodeModule } from '@modules/shared-checkout-quickorder/promoCode/promoCode.module';
+import { PromoCodeModule } from '@app/modules/shared-checkout-quick-order-components/promoCode/promoCode.module';
 
 @NgModule({
     imports: [

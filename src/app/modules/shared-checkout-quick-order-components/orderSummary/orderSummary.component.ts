@@ -1,4 +1,4 @@
-import { PromoCodeService } from '@modules/shared-checkout-quickorder/promoCode/promo-code.service';
+import { PromoCodeService } from '@app/modules/shared-checkout-quick-order-components/promoCode/promo-code.service';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';

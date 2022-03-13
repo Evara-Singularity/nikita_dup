@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CheckoutLoginV2Module } from '@app/modules/checkout-login-v2/checkout-login-v2.module';
-import { CartModule } from '../../modules/cart/cart.module';
+import { CartModule } from '../../modules/legacyCart/cart.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
 import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-header.module';
 import { ContinueModule } from '../../modules/continue/continue.module';

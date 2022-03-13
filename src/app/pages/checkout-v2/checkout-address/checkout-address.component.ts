@@ -21,6 +21,7 @@ export class CheckoutAddressComponent implements OnInit
     constructor(private _addressService: AddressService, public _cartService: CartService) { }
 
     ngOnInit(): void {
+        console.log(this._cartService.getGenericCartSession);
     }
 
     handleInvoiceTypeEvent(invoiceType: string)

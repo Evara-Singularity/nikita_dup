@@ -81,8 +81,6 @@ export class CartComponent {
         ) .subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
             this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(result));
-            console.trace('---------------');
-            console.log('latest cart data from API : ', this._cartService.generateGenericCartSession(result));
             this.validateCart();
         });
     }
@@ -400,51 +398,18 @@ export class CartComponent {
     }
 
     updateAfterDelete(index) {
-        let cartSession = this._cartService.getGenericCartSession;
+        let cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
         cartSession.itemsList.splice(index, 1);
-        this._cartService.setGenericCartSession(cartSession);
         this.removePopup = false;
-
-        // if (this._cartService.getGenericCartSession['itemsList']) {
-        //     var totQuantity = 0;
-        //     var trackData = {
-        //         event_type: "click",
-        //         page_type: this._router.url == "/quickorder" ? "Cart" : "Checkout",
-        //         label: "cart_updated",
-        //         channel: this._router.url == "/quickorder" ? "Cart" : "Checkout",
-        //         price: this._cartService.getGenericCartSession["cart"]["totalPayableAmount"] ? this._cartService.getGenericCartSession["cart"]["totalPayableAmount"].toString() : "0",
-        //         quantity: this._cartService.getGenericCartSession["itemsList"].map(item => {
-        //             return totQuantity = totQuantity + item.productQuantity;
-        //         })[this._cartService.getGenericCartSession["itemsList"].length - 1],
-        //         shipping: parseFloat(this._cartService.getGenericCartSession["shippingCharges"]),
-        //         itemList: this._cartService.getGenericCartSession["itemsList"].map(item => {
-        //             return {
-        //                 category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
-        //                 category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
-        //                 category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
-        //                 price: item["totalPayableAmount"].toString(),
-        //                 quantity: item["productQuantity"]
-        //             }
-        //         })
-        //     }
-        //     this.dataService.sendMessage(trackData);
-        // }
-
-        if (this._commonService.userSession.authenticated == "true") {
-            if (cartSession['offersList'] && cartSession['offersList'].length > 0) {
-                let reqobj = {
-                        "shoppingCartDto": cartSession
-                }
-                
-            } else {
-                    this._globalLoaderService.setLoaderState(false);
-                    this._cartService.extra.next({ errorMessage: null });
-                    this.updateDeleteCart(cartSession);
+        this._globalLoaderService.setLoaderState(false);
+        this._cartService.updateCartSession(cartSession).subscribe(res => {
+            this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
+            this._cartService.setGenericCartSession(cartSession);
+            if (this._commonService.userSession.authenticated == "true" && cartSession['offersList'].length > 0) {
+                this._cartService.genericApplyPromoCode();
             }
-        } else {
-            this._globalLoaderService.setLoaderState(false);
-            this.updateDeleteCart(cartSession);
-        }
+        });
+        
     }
 
     updateDeleteCart(cartSessions, extraData?) {
@@ -505,7 +470,6 @@ export class CartComponent {
     }
 
     getShippingCharges(obj) {
-        // console.trace('getShippingCharges cart comp');
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this.dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {

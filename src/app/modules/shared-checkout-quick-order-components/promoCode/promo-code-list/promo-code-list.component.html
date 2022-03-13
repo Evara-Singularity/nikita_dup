@@ -11,7 +11,7 @@
   <div class="custom-cbox">
     <p class="mt-15 border-top">Take advantage of our exclusive offers</p>
     <ng-container *ngFor="let item of allPromoCodes; let i = index;">
-      <label for="{{i}}couponcode" [class.selected]="item.promoCode === _promoCodeService.appliedPromoCode" (click)="updateCustomPromoCodeInput($event,item)">
+      <label for="{{i}}couponcode" [class.selected]="item.promoCode === _cartService.appliedPromoCode" (click)="updateCustomPromoCodeInput($event,item)">
         <input [id]="i+'couponcode'" type="radio" name="promo-code" value="{{item.promoCode}}" #isCheckedBox>
         <span class="custom-box"></span>
         <span class="chk-txt">

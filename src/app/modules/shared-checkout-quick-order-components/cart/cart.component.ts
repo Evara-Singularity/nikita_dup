@@ -57,7 +57,8 @@ export class CartComponent {
     ) {}
 
     ngOnInit() {
-        // Get the cart from API
+        // Get latest cart from API
+        this._commonService.updateUserSession();
         this.loadCartDataFromAPI();
     }
 
@@ -79,8 +80,9 @@ export class CartComponent {
             }),
         ) .subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
-            const cartSession = this._cartService.generateGenericCartSession(result);
-            this._cartService.setGenericCartSession(cartSession);
+            this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(result));
+            console.trace('---------------');
+            console.log('latest cart data from API : ', this._cartService.generateGenericCartSession(result));
             this.validateCart();
         });
     }
@@ -399,62 +401,49 @@ export class CartComponent {
 
     updateAfterDelete(index) {
         let cartSession = this._cartService.getGenericCartSession;
-        let itemsList = cartSession["itemsList"];
-        itemsList.splice(index, 1);
-        this.removePopup = false;
-        this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-        cartSession["itemsList"] = itemsList;
-        cartSession = this._cartService.generateGenericCartSession(cartSession);
+        cartSession.itemsList.splice(index, 1);
         this._cartService.setGenericCartSession(cartSession);
+        this.removePopup = false;
 
-        if (this._cartService.getGenericCartSession['itemsList'] !== null && this._cartService.getGenericCartSession['itemsList']) {
-            var totQuantity = 0;
-            var trackData = {
-                event_type: "click",
-                page_type: this._router.url == "/quickorder" ? "Cart" : "Checkout",
-                label: "cart_updated",
-                channel: this._router.url == "/quickorder" ? "Cart" : "Checkout",
-                price: this._cartService.getGenericCartSession["cart"]["totalPayableAmount"] ? this._cartService.getGenericCartSession["cart"]["totalPayableAmount"].toString() : "0",
-                quantity: this._cartService.getGenericCartSession["itemsList"].map(item => {
-                    return totQuantity = totQuantity + item.productQuantity;
-                })[this._cartService.getGenericCartSession["itemsList"].length - 1],
-                shipping: parseFloat(this._cartService.getGenericCartSession["shippingCharges"]),
-                itemList: this._cartService.getGenericCartSession["itemsList"].map(item => {
-                    return {
-                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
-                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
-                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
-                        price: item["totalPayableAmount"].toString(),
-                        quantity: item["productQuantity"]
-                    }
-                })
-            }
-            this.dataService.sendMessage(trackData);
-        }
-        if (!this._commonService.isServer) {
-            if (this.localStorageService.retrieve('user')) {
-                let userData = this.localStorageService.retrieve('user');
-                if (userData.authenticated == "true") {
-                    if (cartSession['offersList'] && cartSession['offersList'].length > 0) {
-                        let reqobj = {
-                            "shoppingCartDto": cartSession
-                        }
-                    }
-                    else {
-                        this._globalLoaderService.setLoaderState(false);
-                        this._cartService.extra.next({ errorMessage: null });
-                        this.updateDeleteCart(cartSession);
-                    }
+        // if (this._cartService.getGenericCartSession['itemsList']) {
+        //     var totQuantity = 0;
+        //     var trackData = {
+        //         event_type: "click",
+        //         page_type: this._router.url == "/quickorder" ? "Cart" : "Checkout",
+        //         label: "cart_updated",
+        //         channel: this._router.url == "/quickorder" ? "Cart" : "Checkout",
+        //         price: this._cartService.getGenericCartSession["cart"]["totalPayableAmount"] ? this._cartService.getGenericCartSession["cart"]["totalPayableAmount"].toString() : "0",
+        //         quantity: this._cartService.getGenericCartSession["itemsList"].map(item => {
+        //             return totQuantity = totQuantity + item.productQuantity;
+        //         })[this._cartService.getGenericCartSession["itemsList"].length - 1],
+        //         shipping: parseFloat(this._cartService.getGenericCartSession["shippingCharges"]),
+        //         itemList: this._cartService.getGenericCartSession["itemsList"].map(item => {
+        //             return {
+        //                 category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
+        //                 category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
+        //                 category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
+        //                 price: item["totalPayableAmount"].toString(),
+        //                 quantity: item["productQuantity"]
+        //             }
+        //         })
+        //     }
+        //     this.dataService.sendMessage(trackData);
+        // }
+
+        if (this._commonService.userSession.authenticated == "true") {
+            if (cartSession['offersList'] && cartSession['offersList'].length > 0) {
+                let reqobj = {
+                        "shoppingCartDto": cartSession
                 }
-                if (userData.authenticated == "false") {
+                
+            } else {
                     this._globalLoaderService.setLoaderState(false);
+                    this._cartService.extra.next({ errorMessage: null });
                     this.updateDeleteCart(cartSession);
-                }
             }
-            else {
-                this._globalLoaderService.setLoaderState(false);
-                this.updateDeleteCart(cartSession);
-            }
+        } else {
+            this._globalLoaderService.setLoaderState(false);
+            this.updateDeleteCart(cartSession);
         }
     }
 

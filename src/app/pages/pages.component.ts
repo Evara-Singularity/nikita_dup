@@ -71,7 +71,8 @@ export class PagesComponent implements OnInit {
       queryParams.hasOwnProperty("token")
     ) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } else {
+    } 
+    else {
       this.checkForUserAndCartSession();
     }
   }
@@ -235,7 +236,7 @@ export class PagesComponent implements OnInit {
   }
 
   checkForUserAndCartSession() {
-    if (this.router.url.indexOf('checkout') < 0 && this.router.url.indexOf('payment') < 0) {
+    if (this.router.url.indexOf('quickorder') && this.router.url.indexOf('checkout') < 0 && this.router.url.indexOf('payment') < 0) {
       this._cartService.checkForUserAndCartSessionAndNotify().subscribe(cartSessionStatus => {
         if (cartSessionStatus) {
           console.log('CART SESSION SUCCESSFUL.')

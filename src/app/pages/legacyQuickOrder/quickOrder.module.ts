@@ -11,7 +11,7 @@ import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { CartModule } from '../../modules/legacyCart/cart.module';
 import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
-import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
+import { OrderSummaryModule } from '../../modules/legacyOrderSummary/orderSummary.module';
 import { SharedCheckoutQuickorderModule } from '@app/modules/shared-checkout-quickorder-components/shared-checkout-quickorder.module';
 
 @NgModule({

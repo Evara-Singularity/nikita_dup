@@ -1,7 +1,7 @@
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { PromoCodeService } from '../promo-code.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { CartService } from '@app/utils/services/cart.service';
 
 declare let dataLayer: any;
 
@@ -17,7 +17,7 @@ export class PromoCodeListComponent implements OnInit {
     constructor(
         private _commonService: CommonService,
         private _loaderService: GlobalLoaderService,
-        public _promoCodeService: PromoCodeService
+        public _cartService: CartService
     ){}
 
     ngOnInit() {
@@ -27,7 +27,7 @@ export class PromoCodeListComponent implements OnInit {
     getAllPromoCodesByUserId(userId) {
         this._loaderService.setLoaderState(true);
         if (this._commonService.userSession.authenticated === 'true') {
-            this._promoCodeService.getAllPromoCodesByUserId(userId).subscribe(res => {
+            this._cartService.getAllPromoCodesByUserId(userId).subscribe(res => {
                 if (res['statusCode'] === 200) {
                     this.allPromoCodes = res['data'];
                 }
@@ -39,7 +39,7 @@ export class PromoCodeListComponent implements OnInit {
     updateCustomPromoCodeInput (e, item) {
         e.preventDefault();
         e.stopPropagation();
-        if (item.promoCode === this._promoCodeService.appliedPromoCode) return;
-        this._promoCodeService.appliedPromoCode = item.promoCode;
+        if (item.promoCode === this._cartService.appliedPromoCode) return;
+        this._cartService.appliedPromoCode = item.promoCode;
     }
 }

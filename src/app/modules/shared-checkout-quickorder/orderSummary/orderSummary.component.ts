@@ -19,7 +19,7 @@ export class OrderSummaryComponent {
 
     constructor(
         public router: Router,
-        private _cartService: CartService,
+        public _cartService: CartService,
         public _promoCodeService: PromoCodeService,
         private _commonService: CommonService,
     ) {}

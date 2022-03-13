@@ -1,3 +1,4 @@
+import { CartUpdatesModule } from '@modules/shared-checkout-quickorder/cart-updates/cartUpdates.module';
 import { CartNoItemModule } from '@modules/shared-checkout-quickorder/cart-no-item/cart-no-item.module';
 import { MathCeilPipeModule } from '@utils/pipes/math-ceil';
 import { OrderSummaryModule } from '@modules/shared-checkout-quickorder/orderSummary/orderSummary.module';
@@ -18,6 +19,7 @@ import { CheckoutAddressCtaComponent } from './checkout-address-cta/checkout-add
     CartModule,
     CartNoItemModule,
     OrderSummaryModule,
+    CartUpdatesModule,
     CheckoutAddressRoutingModule,
     SharedCheckoutAddressModule,
     SharedCheckoutQuickorderModule,

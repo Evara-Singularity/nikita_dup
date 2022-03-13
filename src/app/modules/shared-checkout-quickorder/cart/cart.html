@@ -1,5 +1,5 @@
-<div *ngIf="cartSession?.itemsList && cartSession?.itemsList.length > 0">
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartSession?.itemsList; let i = index;">
+<div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -48,7 +48,7 @@
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>
                 <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">-</span>
-                <input type="text" min="1" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
+                <input type="text" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
                 <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
             </div>
             <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
@@ -69,15 +69,15 @@
             <ul class="txt-list">
                     <li>
                         <span class="tag-label">{{item.taxPercentage}}% GST </span>
-                        <span class="tag-value">₹ {{item.tax | mathFloor | number : '1.2-2'}}</span>
+                        <span class="tag-value">₹ {{ (item.tax | mathFloor | number : '1.2-2') || 0 }}</span>
                     </li>
                     <li>
                         <span class="tag-label">Shipping</span>
-                        <span class="tag-value">₹ {{item.shippingCharges | mathFloor | number : '1.2-2'}}</span>
+                        <span class="tag-value">₹ {{ (item.shippingCharges | mathFloor | number : '1.2-2') || 0 }}</span>
                     </li>
                     <li class="bold-txt">
                         <span class="tag-label">Total</span>
-                        <span class="tag-value">₹ {{item.totalPayableAmount + item.shippingCharges - item.offer | mathFloor |number : '1.2-2'}}</span>
+                        <span class="tag-value">₹ {{ (item.totalPayableAmount + item.shippingCharges - item.offer | mathFloor |number : '1.2-2') || 0 }}</span>
                     </li>
             </ul>
         </div>

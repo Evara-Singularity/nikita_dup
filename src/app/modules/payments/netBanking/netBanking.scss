@@ -1,0 +1,13 @@
+@import '../../../scss/variables';
+@import '../../../scss/payment-common';
+
+.netBankingInner {
+    padding-bottom: 20px;
+    @extend %pwa-universal-radio;
+}
+
+span.lowsuccessRate {
+    font-size: $small-font;
+    color: $logo-color;
+    display: block;
+}

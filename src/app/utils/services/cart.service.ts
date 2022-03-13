@@ -895,29 +895,25 @@ export class CartService
     /**
      * @returns get user session details from localstorage or by API
      */
-    private _getUserSession(): Observable<any>
-    {
+    private _getUserSession(): Observable<any> {
         let user = this._localStorageService.retrieve('user');
         if (user) {
             return of(user);
         }
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION).pipe(
-            map(res =>
-            {
+            map(res => {
                 this.localAuthService.setUserSession(res);
                 return res;
             })
         );
     }
 
-    private _removePromoCode(cartSession): any
-    {
+    private _removePromoCode(cartSession): any {
         cartSession['offersList'] = [];
         cartSession['extraOffer'] = null;
         cartSession['cart']['totalOffer'] = 0;
         let itemsList = cartSession["itemsList"];
-        itemsList.forEach((element, index) =>
-        {
+        itemsList.forEach((element, index) => {
             cartSession["itemsList"][index]['offer'] = null;
         });
         return cartSession;
@@ -926,49 +922,81 @@ export class CartService
 
     // HTTP Wrappers
 
-    getValidateCartMessageApi(params)
-    {
+    getValidateCartMessageApi(params) {
         // used in cart.components.ts
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_GetCartValidationMessages, { params: params });
     }
 
-    setValidateCartMessageApi(data)
-    {
+    setValidateCartMessageApi(data) {
         // used in cart.components.ts
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SET_SetCartValidationMessages, { body: data });
     }
 
-    validateCartApi(cart)
-    {
+    validateCartApi(cart) {
         // used in cart.components.ts
         const cartN = JSON.parse(JSON.stringify(cart));
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart });
     }
 
-    getSessionByUserId(cart)
-    {
+    getSessionByUserId(cart) {
         // used in Shared Auth modules components
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartByUser, { body: cart });
     }
 
     // TOOD: only used on cart.component.ts if required can be removed
-    getProduct(product)
-    {
+    getProduct(product) {
         let params = { productId: product.productId };
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/product/getProductGroup", { params: params });
     }
 
     logoutCall() {
-        return this._dataService.callRestful("GET",CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
+        return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
     }
 
-    getShippingChargesApi(obj)
-    {
+    getShippingChargesApi(obj) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    private _getUserBusinessDetail(data) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
+        return this._dataService.callRestful("GET", url, { params: data }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    pay(pdata) {
+        let userSession = this._localStorageService.retrieve("user");
+        return this._getUserBusinessDetail({ customerId: userSession.userId }).pipe(
+            map((res: any) => res),
+            mergeMap((d) => {
+                let bd: any = null;
+                if (d && d.status && d.statusCode == 200) {
+                    bd = {
+                        company: d["data"]["companyName"],
+                        gstin: d["data"]["gstin"],
+                        is_gstin: d["data"]["isGstInvoice"],
+                    };
+                }
+                pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
+                return this._dataService
+                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {
+                        body: pdata,
+                    })
+                    .pipe(
+                        catchError((res: HttpErrorResponse) => {
+                            return of({ status: false, statusCode: res.status });
+                        }),
+                        map((res: any) => {
+                            return res;
+                        })
+                    );
             })
         );
     }

@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-<!--   
+        
         <div id="emiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')"
                 class="payment-accordion_header">
@@ -63,8 +63,6 @@
                 </div>
             </div>
         </div>
- -->
-
  
         <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')"
@@ -79,7 +77,7 @@
                 </div>
             </div>
         </div>
-<!-- 
+
         <div id="upiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')"
                 class="payment-accordion_header">
@@ -94,6 +92,7 @@
                 </div>
             </div>
         </div>
+
 
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']"
             class="payment_accordion_item">
@@ -126,7 +125,7 @@
                         (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <div id="pseudoSection" *ngIf="!isPaymentSelected">
             <div class="continue-button">

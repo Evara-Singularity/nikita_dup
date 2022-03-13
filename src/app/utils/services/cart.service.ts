@@ -962,4 +962,232 @@ export class CartService
             })
         );
     }
+
+    getMessageList(data, items) {
+        let messageList = [];
+        const msns: Array<string> = data ? Object.keys(data) : null;
+        if (msns && items && items.length > 0) {
+            items.forEach((item) => {
+                if (msns.indexOf(item['productId']) != -1) {
+                    let msg = {};
+                    msg['msnid'] = item['productId'];
+                    if (data[item['productId']]['updates']['outOfStockFlag']) {
+                        msg['data'] = { productName: item['productName'], text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
+                        msg['type'] = "oos";
+                    }
+                    else if (data[item['productId']]['updates']['priceWithoutTax'] && (data[item['productId']]['productDetails']['priceWithoutTax'] < item["priceWithoutTax"])) {
+                        msg['data'] = { productName: item['productName'], text1: ' price has been updated from ', text2: 'to', oPrice: item["priceWithoutTax"], nPrice: data[item['productId']]['productDetails']['priceWithoutTax'] };
+                        // msg['data'] = item['productName']+" has " + (item["priceWithoutTax"]>data[item['productId']]['productDetails']['priceWithoutTax'] ? 'decreased' : 'increased') + " from Rs." + item["priceWithoutTax"] + " to Rs." + data[item['productId']]['productDetails']['priceWithoutTax'];
+                        msg['type'] = "price";
+                    } else if (data[item['productId']]['updates']['shipping'] != undefined) {
+
+                        //check if shipping msg is already present in message list.
+                        // let addmsg: number = messageList.findIndex(ml=>ml.type == "shipping" || ml.type == "coupon");
+                        let addmsg: number = messageList.findIndex(ml => ml.type == "shipping");
+                        //if(addmsg == -1){
+                        if (data[item['productId']]['updates']['shipping'] != undefined) {
+                            msg['data'] = { text1: 'Shipping Charges have been updated.' };
+                            msg['type'] = "shipping";
+                        }
+                        if (data[item['productId']]['updates']['discount'] != undefined) {
+                            if (msg['data']) {
+                                msg['data'] = { text1: 'Shipping Charges and Applied Promo Code have been updated.' };
+                                msg['type'] = "shippingcoupon";
+                            }
+                        }
+                        //  }
+                    } else if (data[item['productId']]['updates']['discount'] == true || data[item['productId']]['updates']['discount'] == false) {
+                        //check if shipping msg is already present in message list.
+                        // let addmsg: number = messageList.findIndex(ml=>ml.type == "shipping" || ml.type == "coupon");
+                        let addmsg: number = messageList.findIndex(ml => ml.type == "coupon");
+                        // if(addmsg == -1){
+                        if (data[item['productId']]['updates']['discount'] == true || data[item['productId']]['updates']['discount'] == false) {
+                            msg['data'] = { text1: 'Applied Promo Code has been updated.' };
+                            msg['type'] = "coupon";
+                        }
+                        if (data[item['productId']]['updates']['shipping']) {
+                            if (msg['data']) {
+                                msg['data'] = { text1: 'Shipping Charges and Applied Promo Code have been updated.' };
+                                msg['type'] = "shippingcoupon";
+                            }
+                        }
+
+                        // } 
+
+                    }
+
+                    if (msg['data']) {
+                        if (messageList.findIndex(ml => ml.type == "shipping") != -1 && (msg['type'] == 'coupon' || msg['type'] == 'shippingcoupon')) {
+                            const index = messageList.findIndex(ml => ml.type == "shipping");
+                            if (index > -1) {
+                                messageList[index].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
+                                messageList[index].type = "shippingcoupon";
+                            }
+
+                        }
+                        else if (messageList.findIndex(ml => ml.type == "coupon") != -1 && (msg['type'] == 'shipping' || msg['type'] == 'shippingcoupon')) {
+                            const index = messageList.findIndex(ml => ml.type == "coupon");
+                            if (index > -1) {
+                                messageList[index].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
+                                messageList[index].type = "shippingcoupon";
+                            }
+                        }
+
+                        else if (messageList.findIndex(ml => ml.type == "shipping") == -1 && messageList.findIndex(ml => ml.type == "coupon") == -1 && messageList.findIndex(ml => ml.type == "shippingcoupon") == -1) {
+                            messageList.push(msg);
+                        }
+
+
+
+                        //  messageList.push(msg);
+
+                    }
+                }
+            });
+        }
+        return messageList;
+    }
+
+    /**
+     * 
+     * @param itemsValidationMessage : new updates in item: price, shipping, coupon
+     * This function add new items validation or update the older one for oos, and price.
+     */
+    setValidationMessageLocalstorage(itemsValidationMessageNew, itemsValidationMessageOld) {
+        // const user = this.localStorageService.retrieve('user');
+        if (itemsValidationMessageOld && itemsValidationMessageOld.length > 0) {
+            itemsValidationMessageNew.forEach((itemValidationMessageNew) => {
+                let isExist = false;
+                for (let i = 0; i < itemsValidationMessageOld.length; i++) {
+                    let itemValidationMessageOld = itemsValidationMessageOld[i];
+                    if (itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']) {
+                        isExist = true;
+                        if (itemValidationMessageNew['type'] == 'price' || itemValidationMessageNew['type'] == 'oos') {
+                            itemsValidationMessageOld[i] = Object.assign({}, itemValidationMessageNew);
+                        }
+                        break;
+                    }
+                }
+                if (!isExist) {
+                    itemsValidationMessageOld.push(itemValidationMessageNew);
+                }
+                else {
+                    itemsValidationMessageOld = itemsValidationMessageNew;
+                }
+            })
+        } else {
+            itemsValidationMessageOld = itemsValidationMessageNew;
+        }
+        // Remove oos validation message, if it is instock after sometime
+        itemsValidationMessageOld = itemsValidationMessageOld.filter((itemValidationMessageOld) => {
+            if (itemValidationMessageOld['type'] == 'oos') {
+                return itemsValidationMessageNew.some(itemValidationMessageNew => itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']);
+            }
+            return true;
+
+        })
+        return itemsValidationMessageOld;
+        // this.localStorageService.store("user", user);
+    }
+
+    deleteValidationMessageLocalstorage(item, type?) {
+        const user = this._localStorageService.retrieve('user');
+        if (user && user.authenticated == "true") {
+            /** 
+             * remove cart item message from local storage
+             * 
+             * */
+            // let itemsValidationMessage: Array<string> = this.getValidationMessageLocalstorage();
+            let itemsValidationMessage: Array<{}> = this.itemsValidationMessage;
+
+            if (!itemsValidationMessage.length) {
+                return itemsValidationMessage;
+            }
+
+            let itemsUnServicableMessage = [];
+            if (!type || type != "delete") {
+                itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
+            }
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['msnid'] != item['productId']);
+            if (type && type == "delete") {
+                itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
+            }
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "unservicable");
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "coupon");
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shipping");
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shippingcoupon");
+
+            // userData["itemsValidationMessage"] = itemsValidationMessage;
+            // this.localStorageService.store("user", userData);
+            this.setValidateCartMessageApi({ userId: user['userId'], data: itemsValidationMessage }).subscribe(() => { });
+            return [...itemsValidationMessage, ...itemsUnServicableMessage];
+        } else {
+            return null;
+        }
+    }
+
+    itemsValidationMessage;
+    getValidationMessageLocalstorage() {
+        // return itemValidationMessage;
+        // const user = this.localStorageService.retrieve('user');
+        // return user["itemsValidationMessage"] ? user["itemsValidationMessage"] : [];
+        return this.itemsValidationMessage;
+    }
+
+    addPriceUpdateToCart(itemsList, itemsValidationMessage) {
+        //  ;
+        // console.log(itemsValidationMessage);
+        let itemsListNew = JSON.parse(JSON.stringify(itemsList));
+        let itemsValidationMessageT = {}; //Transformed Items validation messages;
+        for (let ivm in itemsValidationMessage) {
+            itemsValidationMessageT[itemsValidationMessage[ivm]['msnid']] = itemsValidationMessage[ivm];
+        }
+        itemsListNew = itemsListNew.map((item) => {
+            item.text1 = null;
+            item.text2 = null;
+            item.oPrice = null;
+            item.nPrice = null;
+
+            if (itemsValidationMessageT[item['productId']] && itemsValidationMessageT[item['productId']]['type'] == 'price') {
+                const data = itemsValidationMessageT[item['productId']]['data'];
+                item.text1 = data['text1'];
+                item.text2 = data['text2'];
+                item.oPrice = data['oPrice'];
+                item.nPrice = data['nPrice'];
+                // item.text1 = item.text1.toUpperCase();
+            }
+            return item;
+        })
+
+        return itemsListNew;
+    }
+
+    updateCartItem(item, productResult) {
+        item["amount"] = Number(productResult['mrp']),
+            item["totalPayableAmount"] = Number(productResult['sellingPrice']),
+            item["productMRP"] = productResult['mrp'],
+            item["priceWithoutTax"] = productResult['priceWithoutTax'],
+            item["tpawot"] = Number(productResult['priceWithoutTax']),
+            item["productSelling"] = productResult['sellingPrice'],
+            item["productUnitPrice"] = Number(productResult['sellingPrice'])
+        // item["bulkPriceMap"] = productResult['bulkPriceWithSameDiscount']
+        // ;
+        if (item['bulkPriceWithoutTax'] && productResult['bulkPrices']) {
+            item['bulkPriceMap'] = productResult['bulkPrices'];
+            productResult['bulkPrices']['india'].forEach((element, index) => {
+                if (element.minQty <= item['productQuantity'] && item['productQuantity'] <= element.maxQty) {
+                    // this.bulkPriceSelctedQuatity = element.minQty;
+                    item['bulkPrice'] = element.bulkSellingPrice;
+                    item['bulkPriceWithoutTax'] = element.bulkSPWithoutTax;
+                    // this.bulkDiscount = element.discount;                                        
+                }
+                if (productResult['bulkPrices']['india'].length - 1 == index && item['productQuantity'] >= element.maxQty) {
+                    item['bulkPrice'] = element.bulkSellingPrice;
+                    item['bulkPriceWithoutTax'] = element.bulkSPWithoutTax;
+
+                }
+            });
+        }
+        return item;
+    }
 }

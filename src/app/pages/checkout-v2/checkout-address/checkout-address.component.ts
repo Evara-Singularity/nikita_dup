@@ -1,11 +1,8 @@
-import { CartNotificationsModel } from './../../../utils/models/shared-checkout.models';
 import { CartService } from '@services/cart.service';
 import { AddressService } from '@services/address.service';
 import { Component, OnInit } from '@angular/core';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
-import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutUtil } from '../checkout-util';
-import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-checkout-address',
@@ -21,11 +18,9 @@ export class CheckoutAddressComponent implements OnInit
     deliveryAddress = null;
     billingAddress = null;
 
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
+    constructor(private _addressService: AddressService, public _cartService: CartService) { }
 
-    ngOnInit(): void
-    {
-        
+    ngOnInit(): void {
     }
 
     handleInvoiceTypeEvent(invoiceType: string)

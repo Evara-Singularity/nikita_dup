@@ -21,5 +21,6 @@ export class QuickOrderComponent {
     navigateToCheckout() {
         this._localAuthService.setBackURLTitle(null, 'Continue to checkout');
         this.router.navigate(['/checkout'], { queryParams: { title: 'Continue to checkout' } });
+        this._commonService.updateUserSession();
     }
 }

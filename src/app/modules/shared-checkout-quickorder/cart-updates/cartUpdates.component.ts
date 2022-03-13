@@ -13,17 +13,14 @@ import { CartService } from '@app/utils/services/cart.service';
 })
 
 export class CartUpdatesComponent {
-    @Input('itemsValidationMessage') itemsValidationMessage;
-
     constructor(
-        private _cartService: CartService, 
+        public _cartService: CartService, 
         private _commonService: CommonService,
         private _modalService: ModalService,
         public _state: GlobalState,
     ) {}
 
     ngOnInit() {
-        console.log(this.itemsValidationMessage);
     }
 
     viewUnavailableItems() {

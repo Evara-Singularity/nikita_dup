@@ -1,124 +1,66 @@
 @import '../../scss/variables';
-.view-products {
-    padding-bottom: 0;
-    &.border-top {
-        border-top: 1px solid #e6e6e6;
-    }
-    li {
-        @extend %clear-fix;
-        padding: 10px;
-        position: relative;
-        background: white;
-        margin-bottom: 2px;
-        .product-img {
-            img {
-                max-width: 100%;
-                max-height: 100%;
-            }
-        }
-        .description-txt {
-            font-size: 14px;
-            margin-bottom: 4px;
-            line-height: 20px;
-        }
-        .request-text {
-            font-weight: bold;
-            font-size: 16px;
-            color: $black;
-            margin-top: 5px;
-        }
-    }
-    li:last-child {
-        border-bottom: none !important;
-    }
-    &.list {
-        li {
-            width: 100%;
-            border-bottom: 1px solid $border-color;
-            a {
-                display: block;
-            }
-            .product-img {
-                width: 84px;
-                height: 84px;
-                float: left;
-            }
-            .product-description {
-                float: right;
-                width: 75%;
-                width: calc(100% - 104px);
-            }
-        }
-    }
-    &.grid {
-        li {
-            width: 50%;
-            float: left;
-            border-bottom: 1px solid $border-color;
-            height: 260px;
-            position: relative;
-            &:nth-child(2n+1) {
-                border-right: 1px solid $border-color;
-            }
-            .product-img {
-                display: block;
-                margin-bottom: 10px;
-                height: 115px;
-                text-align: center;
-            }
-            .product-description {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-            .price {
-                display: block;
-            }
-        }
-    }
-}
+//width
+$fullwidth:100%;
+$half-width:50%;
 
-.price {
-    .after-discount {
-        font-weight: bold;
-        font-size: 20px;
-        display: block;
-        margin: 5px 0 5px 0;
-    }
-    .before-discount {
-        text-decoration: line-through;
-        opacity: 0.5;
-        margin: 0 6px 0 0;
-    }
-    .discount {
-        color: $green-color;
-        font-weight: bold;
-    }
-}
-
-.seller {
-    margin-top: 10px;
-    span {
-        color: #9e9d9d;
-    }
-}
-//grid
-.pwa-row {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 10px 15px;
-    // justify-content: space-evenly;
-    align-items: center;
-}
-
+//grid variables
+$colmax:12;
+$default-gap:15px;
+$default-gap15:15px;
 @for $i from 1 through 12 {
     $colnum: $i;
-
-    .pwa-col-#{$i} {
+    .mg-col-#{$i} { 
         -webkit-box-flex: 0;
         -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
         flex: 0 0 ($fullwidth / $colmax)*$colnum;
         max-width: ($fullwidth / $colmax)*$colnum;
-        // padding-left: $default-gap;
-        // padding-right: $default-gap;
-    }
+        padding-left: $default-gap15;
+        padding-right: $default-gap15;
+     }
 }
+
+.mg-col{
+   flex: auto;
+}
+
+ .mg-container{
+    width: $fullwidth;
+    position: relative;
+ }
+
+ .mg-row{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -$default-gap15;
+    justify-content: space-evenly;
+    align-items: center;
+    
+ }
+ .mg-row-no-marg{
+   width: $fullwidth;
+   display: flex;
+   flex-wrap: wrap;
+   grid-view-card{
+     width: 50%;
+     max-width: 50%;
+     padding-bottom: $default-gap15;
+     &:nth-child(odd){
+        padding-right: $default-gap15/2;
+    }
+    &:nth-child(even){
+        padding-left: $default-gap15/2;
+    }
+  }
+}
+.mg-row-no-wrap{
+   display: flex;
+   align-items: center;
+   overflow-x: auto;
+   -ms-overflow-style: none;  /* IE and Edge */
+   scrollbar-width: none;  /* Firefox */
+   &::-webkit-scrollbar {display: none;}
+   grid-view-card{
+      width: 50%;
+      max-width: 50%;
+   }
+ }

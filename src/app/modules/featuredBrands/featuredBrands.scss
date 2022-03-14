@@ -1,41 +1,7 @@
 @import '../../../../src/app/scss/utils/spacing.scss';
 @import '../../scss/variables';
- // Feature Brand Banner
- .featr_brand {
-  @extend %cards;
-  padding: 5px;
-  margin-bottom: 10px;
-  .banner_container {
-      .featr_Banner {
-          width: 50%;
-          float: left;
-          padding: 5px;
-          &:first-child {
-              width: 100%;
-          }
-          img {
-              width: 100%;
-          }
-      }
-  }
-  min-height: 100px;
+@import '../../scss/components/banner.scss';
+.view-all-strip{
+    @extend %view-all-strip;
+    border-bottom-width:0px;;
 }
-
-.banner_container{
-    .featr_Banner{
-        width:50%;
-        float:left;
-        padding:5px;
-        &:first-child{
-          width:100%;   
-        }
-        img{
-          width:100%;
-        }  
-    }
-  }
-
-//   .pad-tb-10{
-//     padding-top: 10px;
-//     padding-bottom: 10px;
-// }

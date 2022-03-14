@@ -1,18 +1,21 @@
- // Top Banner Carousel
- .css-banner-component {
-    padding: 10px;
-    .internalBanner {
-        img {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+@import '../variables';
+.pwa-banner{
+    display:flex;
+    flex-wrap:wrap;
+    background:$white;
+    img {
+        width:$fullwidth;
+        max-width:$fullwidth;
+    }
+    .full-banner{
+        padding:5px;
+        width:$fullwidth;
+    }
+    .half-banner{
+        padding:5px;
+        width:$half-width;
     }
 }
-// .brand_Banner {
-//     padding: 0 0 15px 0;
-//     margin-bottom: 10px;
-//     img {
-//         width: 100%;
-//     }
-// }
+
+
+

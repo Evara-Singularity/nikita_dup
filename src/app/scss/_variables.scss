@@ -71,7 +71,25 @@ $dark-green: #309615;
 $border-radius: 4px;
 
 //width
-$fullwidth: 100%;
+$fullwidth:100%;
+$half-width:50%;
+$card-width:100px;
+
+//Height
+$grid-image-height:115px;
+$list-image-width:84px;
+$grid-card-height:260px;
+$grid1-card-height:210px;
+
+/*Font Size*/
+$small-font: 10px;
+$medium-font: 12px;
+$large-font: 14px;
+$extra-large-font: 16px;
+
+//grid variables
+$colmax:12;
+$default-gap:15px;
 
 /*Font Size*/
 $small-font: 10px;
@@ -83,7 +101,19 @@ $extra-large-font: 16px;
 $colmax: 12;
 $default-gap: 15px;
 /*Extends*/
-
+%view-all-strip{
+    background: $white;
+    border: 1px solid $border-color;
+    display:flex;
+    padding:var(--base-padding);
+    align-items:center;
+    .view-all-heading{
+       width:75%
+    }
+   .btn-red{
+      margin-left:auto;
+   }
+}
 %cards {
     padding: 10px;
     color: #333;

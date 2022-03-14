@@ -1,33 +1,12 @@
 @import '../../scss/variables.scss';
-@import '../../scss/layout/grid.scss';
-
-.pad-tb-10{
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.banner-ad {
-    margin: 10px 0px;
-    a {
-        display: block;
-    }
-    img {
-        width: 100%;
-    }
-    &.bulk {
-        margin-bottom: 0px;
+@import '../../scss/components/home-listing.scss';
+.category-wrap{
+    margin-top:var(--spacing-unit);
+    .view-all-strip{
+        @extend %view-all-strip;
     }
 }
-
-.deals-offers {
-    margin-top: 0px;
-    margin-bottom: 10px;
-}
-
 .category-brand {
-    margin: 5px 0 0 0;
-    padding-bottom: 5px;
-    border-bottom: 1px solid $border-color;
     li {
         font-size: 12px;
         text-align: center;
@@ -39,15 +18,4 @@
         }
     }
 }
-
-// Listing View
-.icon-list-view,
-.icon-grid-view {
-    font-size: 21px;
-    line-height: 30px;
-}
-
-.bestSeller {
-    background: #ddd;
-    padding-bottom: 10px;
-}
+ 

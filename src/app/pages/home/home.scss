@@ -1,7 +1,6 @@
     /* below code for top widgets and trending categories*/
     @import '../../scss/variables';
     @import '../../../app/scss/components/banner';
-    @import '../../../app/scss/layout/cards.scss';
      ::ng-deep {
         .home-parent{
             h2 {
@@ -48,17 +47,6 @@
         background: #ddd;
         padding-bottom: 10px;
     }
+
+
     
-    //Feature Brand Arrival
-    .featr_arrival {
-        background: #ddd;
-        margin-top: 10px;
-    }
-    
-    .deals-offers {
-        margin-top: 0px;
-        margin-bottom: 10px;
-    }
-    .Recently-view {
-        margin-top: 0px;
-    }

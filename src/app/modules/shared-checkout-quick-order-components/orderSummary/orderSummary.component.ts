@@ -1,4 +1,3 @@
-import { PromoCodeService } from '@app/modules/shared-checkout-quick-order-components/promoCode/promo-code.service';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
@@ -20,7 +19,6 @@ export class OrderSummaryComponent {
     constructor(
         public router: Router,
         public _cartService: CartService,
-        public _promoCodeService: PromoCodeService,
         private _commonService: CommonService,
     ) {}
 
@@ -34,13 +32,5 @@ export class OrderSummaryComponent {
         } else {
             this.router.navigate(["/login"]);
         }
-    }
-
-    handleApplyCustomPromoCode(promoCode) {
-        alert(promoCode);
-    }
-
-    handleRemoveCustomPromoCode(promoCode) {
-        alert(promoCode);
     }
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { Meta } from "@angular/platform-browser";
-import { OrderSummaryService } from "@app/modules/orderSummary/orderSummary.service";
+import { OrderSummaryService } from "@app/modules/legacyOrderSummary/orderSummary.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import CONSTANTS from "@app/config/constants";
 import { CartService } from "@app/utils/services/cart.service";

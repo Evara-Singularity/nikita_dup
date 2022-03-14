@@ -9,7 +9,7 @@ import { CheckoutHeaderModule } from '../../modules/checkout-header/checkout-hea
 import { ContinueModule } from '../../modules/continue/continue.module';
 import { DeliveryAddressModule } from '../../modules/deliveryAddress/deliveryAddress.module';
 import { InvoiceTypeModule } from '../../modules/invoiceType/invoiceType.module';
-import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
+import { OrderSummaryModule } from '../../modules/legacyOrderSummary/orderSummary.module';
 import { PaymentModule } from '../../modules/payments/payment.module';
 import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
 import { CheckoutV1RoutingModule } from './checkout-v1-routing.module';

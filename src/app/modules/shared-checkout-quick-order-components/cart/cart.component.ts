@@ -57,7 +57,8 @@ export class CartComponent {
     ) {}
 
     ngOnInit() {
-        // Get the cart from API
+        // Get latest cart from API
+        this._commonService.updateUserSession();
         this.loadCartDataFromAPI();
     }
 
@@ -79,8 +80,7 @@ export class CartComponent {
             }),
         ) .subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
-            const cartSession = this._cartService.generateGenericCartSession(result);
-            this._cartService.setGenericCartSession(cartSession);
+            this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(result));
             this.validateCart();
         });
     }
@@ -387,6 +387,7 @@ export class CartComponent {
         }
     }
 
+    // make cosmetic changes after deleting an item from cart
     deleteProduct(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -397,126 +398,24 @@ export class CartComponent {
         this.sendCritioData();
     }
 
+    // delete a item from cart and update cart session
     updateAfterDelete(index) {
-        let cartSession = this._cartService.getGenericCartSession;
-        let itemsList = cartSession["itemsList"];
-        itemsList.splice(index, 1);
+        let cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
+        cartSession.itemsList.splice(index, 1);
         this.removePopup = false;
-        this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-        cartSession["itemsList"] = itemsList;
-        cartSession = this._cartService.generateGenericCartSession(cartSession);
-        this._cartService.setGenericCartSession(cartSession);
-
-        if (this._cartService.getGenericCartSession['itemsList'] !== null && this._cartService.getGenericCartSession['itemsList']) {
-            var totQuantity = 0;
-            var trackData = {
-                event_type: "click",
-                page_type: this._router.url == "/quickorder" ? "Cart" : "Checkout",
-                label: "cart_updated",
-                channel: this._router.url == "/quickorder" ? "Cart" : "Checkout",
-                price: this._cartService.getGenericCartSession["cart"]["totalPayableAmount"] ? this._cartService.getGenericCartSession["cart"]["totalPayableAmount"].toString() : "0",
-                quantity: this._cartService.getGenericCartSession["itemsList"].map(item => {
-                    return totQuantity = totQuantity + item.productQuantity;
-                })[this._cartService.getGenericCartSession["itemsList"].length - 1],
-                shipping: parseFloat(this._cartService.getGenericCartSession["shippingCharges"]),
-                itemList: this._cartService.getGenericCartSession["itemsList"].map(item => {
-                    return {
-                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
-                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
-                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
-                        price: item["totalPayableAmount"].toString(),
-                        quantity: item["productQuantity"]
-                    }
-                })
+        this._globalLoaderService.setLoaderState(false);
+        this._cartService.updateCartSession(cartSession).subscribe(res => {
+            this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
+            this._cartService.setGenericCartSession(cartSession);
+            if (this._commonService.userSession.authenticated == "true" && cartSession['offersList'].length > 0) {
+                this._cartService.genericApplyPromoCode();
             }
-            this.dataService.sendMessage(trackData);
-        }
-        if (!this._commonService.isServer) {
-            if (this.localStorageService.retrieve('user')) {
-                let userData = this.localStorageService.retrieve('user');
-                if (userData.authenticated == "true") {
-                    if (cartSession['offersList'] && cartSession['offersList'].length > 0) {
-                        let reqobj = {
-                            "shoppingCartDto": cartSession
-                        }
-                    }
-                    else {
-                        this._globalLoaderService.setLoaderState(false);
-                        this._cartService.extra.next({ errorMessage: null });
-                        this.updateDeleteCart(cartSession);
-                    }
-                }
-                if (userData.authenticated == "false") {
-                    this._globalLoaderService.setLoaderState(false);
-                    this.updateDeleteCart(cartSession);
-                }
-            }
-            else {
-                this._globalLoaderService.setLoaderState(false);
-                this.updateDeleteCart(cartSession);
-            }
-        }
+        });
+        
     }
 
-    updateDeleteCart(cartSessions, extraData?) {
-        if (!this._commonService.isServer) {
-            if (!this._globalLoaderService.getLoaderState()) {
-                this._globalLoaderService.setLoaderState(true);
-            }
-
-            let sro = this._cartService.getShippingObj(cartSessions);
-            this.getShippingCharges(sro).subscribe(
-                res => {
-                    if (res['statusCode'] == 200) {
-                        cartSessions['cart']['shippingCharges'] = res['data']['totalShippingAmount'];
-                        let productShippingCharge = res['data']['itemShippingAmount'];
-
-                        for (let i = 0; i < cartSessions['itemsList'].length; i++) {
-                            cartSessions['itemsList'][i]['shippingCharges'] = res['data']['itemShippingAmount'][cartSessions['itemsList'][i]['productId']];
-                        }
-
-                        this._cartService.updateCartSession(cartSessions).subscribe((data) => {
-                            this._globalLoaderService.setLoaderState(false);
-                            if (extraData && extraData['showMessage']) {
-                                this._tms.show(extraData['showMessage']);
-                            }
-                            let res = data;
-                            if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
-                                let itemsList = res['itemsList'];
-                                // console.log('trigger6');
-                                itemsList.forEach((element, index) => {
-                                    for (let key in productShippingCharge) {
-                                        if (key == element['productId']) {
-                                            itemsList[index]['shippingCharges'] = productShippingCharge[key];
-                                        }
-                                    }
-                                })
-                                this._cartService.setGenericCartSession(res);
-                                this._cartService.cart.next({ count: (res.noOfItems || this._cartService.getGenericCartSession.itemsList.length), currentlyAdded: null });
-                                res["itemsList"] = itemsList;
-                                this._cartService.setGenericCartSession(res);
-                                this._cartService.orderSummary.next(this._cartService.getGenericCartSession);
-
-                                /* navigate to quick order page, if no item is present in itemlist */
-                                if (itemsList.length == 0 && this._router.url.indexOf('/checkout') != -1) {
-                                    this._location.replaceState('/'); // clears browser history so they can't navigate with back button
-                                    this._router.navigateByUrl('/quickorder');
-                                }
-                            }
-                            else {
-                            }
-
-                        }, err => {
-                        });
-                    }
-                }
-
-            );
-        }
-    }
-
+    // get shipping charges of each item in cart
     getShippingCharges(obj) {
-        // console.trace('getShippingCharges cart comp');
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this.dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {
@@ -525,6 +424,7 @@ export class CartComponent {
         );
     }
 
+    // redirect to product page 
     redirectToProductURL(url) {
         this._commonService.setSectionClickInformation('cart', 'pdp');
         this._router.navigateByUrl('/' + url);

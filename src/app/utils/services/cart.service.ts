@@ -1234,6 +1234,122 @@ export class CartService
         }
         return item;
     }
+
+    getAllPromoCodes() {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    getAllPromoCodesByUserId(userID) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes +'?userId=' + userID;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    getPromoCodeDetailById(offerId) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getPromoCodeDetails +'?promoId=' + offerId;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    applyPromoCode(obj) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.validatePromoCode;
+        return this._dataService.callRestful('POST', url, { body: obj });
+    }
+
+    getPromoCodeDetailByName(promoCode) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getPromoCodeDetails + '?promoCode=' + promoCode;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    appliedPromoCode;
+    genericApplyPromoCode() {
+        this._loaderService.setLoaderState(true);
+        const user = this.localAuthService.getUserSession();
+        if (user.authenticated !== 'true') {
+            this._toastService.show({ type: 'error', text: "To Avail Offer Please Login" });
+        } else {
+            this.getPromoCodeDetailByName(this.appliedPromoCode).subscribe(({status, data, statusDescription: message}: any) => {
+                if (status) {
+                    let obj = [{
+                        offerId: data['promoAttributes']['promoId'],
+                        type: '15'
+                    }];
+                    const cartSession = this.getGenericCartSession;
+                    cartSession['offersList'] = obj;
+                    const cartObject = {
+                        'shoppingCartDto': cartSession
+                    };
+                    this.applyPromoCode(cartObject).subscribe(({status, data, statusDescription: message}:any) => {
+                        this._loaderService.setLoaderState(false);
+                        if(status) {
+                            console.log(data);
+                            if (data['discount'] <= cartSession['cart']['totalAmount']) {
+                                cartSession['cart']['totalOffer'] = data['discount'];
+                                cartSession['extraOffer'] = null;
+                                const productDiscount = data['productDis'];
+                                const productIds = Object.keys(data['productDis'] ? data['productDis'] : {});
+
+                                cartSession.itemsList.map((item) => {
+                                    if (productIds.indexOf(item['productId']) !== -1) {
+                                        return item['offer'] = productDiscount[item['productId']];
+                                    } else {
+                                        return item['offer'] = null;
+                                    }
+                                });
+
+                                this.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                    data => {
+                                        this.setGenericCartSession(data);
+                                        this._loaderService.setLoaderState(false);
+                                        this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
+                                    }
+                                );
+                                
+                            } else {
+                                cartSession['cart']['totalOffer'] = 0;
+                                cartSession['offersList'] = [];
+                                cartSession.itemLists.map((item) => item['offer'] = null);
+                                this.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                    data => {
+                                        this.setGenericCartSession(data);
+                                        this._loaderService.setLoaderState(false);
+                                        this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
+                                    }
+                                );
+                            }
+                        } else {
+                            this.appliedPromoCode = '';
+                            this._toastService.show({ type: 'error', text: message });
+                        }
+                    });
+                } else {
+                    this.appliedPromoCode = '';
+                    this._loaderService.setLoaderState(false);
+                    this._toastService.show({ type: 'error', text: message });
+                }
+            });
+        }
+    }
+
+    genericRemovePromoCode() {
+        this._loaderService.setLoaderState(true);
+        let cartSession = this.getGenericCartSession;
+        cartSession['offersList'] = [];
+        cartSession['extraOffer'] = null;
+        cartSession['cart']['totalOffer'] = 0;
+
+        cartSession.itemsList.map((element) => {
+            element['offer'] = null;
+        });
+
+        this.getShippingAndUpdateCartSession(cartSession).subscribe(
+            data => {
+                this.appliedPromoCode = '';
+                this.setGenericCartSession(data);
+                this._loaderService.setLoaderState(false);
+                this._toastService.show({ type: 'success', text: "Promo Code Removed" });
+            }
+        );
+    }
     private _getUserBusinessDetail(data) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
         return this._dataService.callRestful("GET", url, { params: data }).pipe(
@@ -1272,5 +1388,4 @@ export class CartService
             })
         );
     }
-
 }

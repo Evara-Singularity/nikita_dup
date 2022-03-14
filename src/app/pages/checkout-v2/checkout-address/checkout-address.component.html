@@ -22,8 +22,8 @@
     </section>
     <all-addresses [addDeliveryorBilling]="addDeliveryorBilling" (emitAddressSelectEvent$)="handleAddressEvent($event)"
         (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-    <cart-notifications *ngIf="hasCartItems"></cart-notifications>
-    <cart *ngIf="hasCartItems"></cart>
-    <!-- <order-summary [orderSummaryData]="hasCartSession"></order-summary> -->
-    <cart-no-item *ngIf="!(hasCartItems)"></cart-no-item>
+    <cart-notifications></cart-notifications>
+    <cart></cart>
+    <order-summary></order-summary>
+    <cart-no-item *ngIf="!hasCartItems"></cart-no-item>
 </div>

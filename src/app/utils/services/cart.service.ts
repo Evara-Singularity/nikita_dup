@@ -195,6 +195,9 @@ export class CartService
     // return the Cart Session Object
     setGenericCartSession(cart) {
         this.cartSession = JSON.parse(JSON.stringify(cart));
+        if (cart.offersList.length > 0) {
+            this.appliedPromoCode = cart.offersList[0]['id'];
+        }
     }
 
     getCartSession()
@@ -1345,8 +1348,10 @@ export class CartService
             data => {
                 this.appliedPromoCode = '';
                 this.setGenericCartSession(data);
-                this._loaderService.setLoaderState(false);
-                this._toastService.show({ type: 'success', text: "Promo Code Removed" });
+                this.updateCartSession(data).subscribe(res => {
+                    this._loaderService.setLoaderState(false);
+                    this._toastService.show({ type: 'success', text: "Promo Code Removed" });
+                });
             }
         );
     }

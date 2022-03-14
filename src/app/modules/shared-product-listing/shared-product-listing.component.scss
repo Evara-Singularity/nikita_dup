@@ -80,9 +80,9 @@
     padding: 20px 10px;
     background: $white-color;
     overflow-x: auto;
-    // overflow-y: hidden;
+    overflow-y: hidden;
     white-space: nowrap;
-    // width: auto;
+    width: auto;
     &::-webkit-scrollbar {
         display: none;
     }

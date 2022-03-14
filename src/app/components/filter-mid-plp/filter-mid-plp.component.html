@@ -1,107 +1,105 @@
 <ng-container *ngIf="!_productListService?.showMidPlpFilterLoader && (inlineFilterData | checkForCount)">
     <div class="filter-container">
         <p class="filter-heading" *ngIf="inlineFilterData.name !== 'category-search-plp'">
-            Shop by {{ inlineFilterData.name | titlecase}} <ng-container *ngIf="inlineFilterData.name === 'price'">Range</ng-container>
+            Shop by {{ inlineFilterData.name | titlecase}} <ng-container *ngIf="inlineFilterData.name === 'price'">Range
+            </ng-container>
         </p>
         <p class="filter-heading" *ngIf="inlineFilterData.name === 'category-search-plp'">
             Are you looking for
         </p>
         <div class="inline-filter-card-list">
-            
-                <div class="inner-card-list">
-                    <ng-container *ngIf="inlineFilterData.name !== 'category'">
-                        <ng-container *ngIf="inlineFilterData.terms.length < 5">
-                            <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
-                                <div class="inline-filter-card-one" *ngIf="!(item?.selected) && item?.count">
-                                    <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData?.name, item)">
-                                        {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                        <ng-container *ngIf="inlineFilterData.terms.length > 4">
-                            <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
-                                <div class="inline-filter-card-one" *ngIf="(i < (inlineFilterData.terms.length/2)) && !(item?.selected)  && (item?.count)">
-                                    <div class="inline-filter-card-value" [class.disabled]="!item?.enabled" (click)="checkAndApplyFilter(inlineFilterData.name, item)">
+            <div class="inner-card-list">
+                <ng-container *ngIf="inlineFilterData.name !== 'category'">
+                    <ng-container *ngIf="inlineFilterData.terms.length < 5">
+                        <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
+                            <div class="inline-filter-card-one" *ngIf="!(item?.selected) && item?.count">
+                                <div class="inline-filter-card-value pad-10-15" [class.disabled]="!item?.enabled"
+                                    (click)="checkAndApplyFilter(inlineFilterData?.name, item)">
                                     {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
-                                </div>
-                            </ng-container>
-                            <div class="inner-card-list">
-                                <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
-                                    <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData.terms.length/2)) && !(item?.selected) &&  item?.count">
-                                        <div class="inline-filter-card-value card-value-2" [class.disabled]="!item?.enabled" [class.active]="item?.selected" (click)="checkAndApplyFilter(inlineFilterData.name, item)">
-                                        {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
-                                    </div>
-                                </ng-container>
                             </div>
                         </ng-container>
                     </ng-container>
-                    <ng-container *ngIf="inlineFilterData.name === 'category'">
-                        <ng-container *ngIf="inlineFilterData?.terms[0]?.childCategoryList?.length < 5">
-                            <ng-container *ngFor="let item of inlineFilterData?.terms[0]?.childCategoryList; let i = index;">
-                                <div class="inline-filter-card-one">
-                                    <div class="inline-filter-card-value" [routerLink]="[item?.categoryLink]">{{ item.term }}</div>
+                    <ng-container *ngIf="inlineFilterData.terms.length > 4">
+                        <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
+                            <div class="inline-filter-card-one"
+                                *ngIf="(i < (inlineFilterData.terms.length/2)) && !(item?.selected)  && (item?.count)">
+                                <div class="inline-filter-card-value pad-10-15" [class.disabled]="!item?.enabled"
+                                    (click)="checkAndApplyFilter(inlineFilterData.name, item)">
+                                    {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
+                            </div>
+                        </ng-container>
+                        <div class="inner-card-list">
+                            <ng-container *ngFor="let item of inlineFilterData.terms | removeSelected; let i = index;">
+                                <div class="inline-filter-card-two"
+                                    *ngIf="(i >= (inlineFilterData.terms.length/2)) && !(item?.selected) &&  item?.count">
+                                    <div class="inline-filter-card-value pad-10-15 card-value-2" [class.disabled]="!item?.enabled"
+                                        [class.active]="item?.selected"
+                                        (click)="checkAndApplyFilter(inlineFilterData.name, item)">
+                                        {{ item.term | addFilterSymbol:inlineFilterData.name }}</div>
                                 </div>
                             </ng-container>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="inlineFilterData.name === 'category'">
+                    <ng-container *ngIf="inlineFilterData?.terms[0]?.childCategoryList?.length < 5">
+                        <ng-container
+                            *ngFor="let item of inlineFilterData?.terms[0]?.childCategoryList; let i = index;">
+                            <div class="inline-filter-card-one">
+                                <div class="inline-filter-card-value pad-10-15" [routerLink]="[item?.categoryLink]">{{ item.term
+                                    }}</div>
+                            </div>
                         </ng-container>
-                        <ng-container *ngIf="inlineFilterData?.terms[0]?.childCategoryList?.length > 4">
-                            <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
-                                <div class="inline-filter-card-one" *ngIf="(i < (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
-                                    <div class="inline-filter-card-value"  [routerLink]="[item?.categoryLink]">
-                                        <!-- <label>
+                    </ng-container>
+                    <ng-container *ngIf="inlineFilterData?.terms[0]?.childCategoryList?.length > 4">
+                        <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
+                            <div class="inline-filter-card-one"
+                                *ngIf="(i < (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
+                                <div class="inline-filter-card-value pad-10-15" [routerLink]="[item?.categoryLink]">
+                                    <!-- <label>
                                         <input type="checkbox" formControlName="type">
                                         <span class="custom-box icon-box"></span>
                                     </label> -->
-                                    {{ item.term }}</div>
+                                    {{ item.term }}
                                 </div>
-                            </ng-container>
-                            <div class="inner-card-list">
-                                <ng-container *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
-                                    <div class="inline-filter-card-two"  *ngIf="(i >= (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
-                                        <div class="inline-filter-card-value card-value-2" >
+                            </div>
+                        </ng-container>
+                        <div class="inner-card-list">
+                            <ng-container
+                                *ngFor="let item of inlineFilterData.terms[0]?.childCategoryList; let i = index;">
+                                <div class="inline-filter-card-two"
+                                    *ngIf="(i >= (inlineFilterData?.terms[0]?.childCategoryList?.length/2))">
+                                    <div class="inline-filter-card-value pad-10-15 card-value-2">
                                         <!-- <label>
                                             <input type="checkbox" formControlName="type">
                                             <span class="custom-box icon-box"></span>
                                         </label> -->
-                                        {{ item.term }}</div>
+                                        {{ item.term }}
                                     </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
                     </ng-container>
-                </div>
-
+                </ng-container>
+            </div>
         </div>
-        <!-- <div class="apl-btn-filter-area">
-            <button class="apl-btn-filter">Apply</button>
-        </div> -->
-        
     </div>
 </ng-container>
 <div *ngIf="_productListService?.showMidPlpFilterLoader" class="skeleton-filter-container">
     <div class="skeleton-inline-filter-card-list">
-      <div class="card-inner-list">
-        <div class="heading-filter"></div>
-        <div class="inline-filter-card-one"></div>
-        <div class="inline-filter-card-two"></div>
-        <div class="inline-filter-card-two"></div>
-        <div class="inline-filter-card-two"></div>
-        <div class="inline-filter-card-two"></div>
-      </div>
-      
-      <div class="card-inner-list">
-        <div class="inline-filter-card-three"></div>
-        <div class="inline-filter-card-three"></div>
-        <div class="inline-filter-card-three"></div>
-        <div class="inline-filter-card-three"></div>
-      </div>
+        <div class="card-inner-list">
+            <div class="heading-filter"></div>
+            <div class="inline-filter-card-one"></div>
+            <div class="inline-filter-card-two"></div>
+            <div class="inline-filter-card-two"></div>
+            <div class="inline-filter-card-two"></div>
+            <div class="inline-filter-card-two"></div>
+        </div>
+        <div class="card-inner-list">
+            <div class="inline-filter-card-three"></div>
+            <div class="inline-filter-card-three"></div>
+            <div class="inline-filter-card-three"></div>
+            <div class="inline-filter-card-three"></div>
+        </div>
     </div>
-
 </div>
-
-
-<!-- <div class="sachin" style="background-color: salmon; height: 100px;">
-    <label>
-        <input type="checkbox" formControlName="type">
-        <span class="custom-box icon-box"></span>
-    </label>
-</div> -->

@@ -1,26 +1,30 @@
+import { AfterViewInit } from '@angular/core';
 /**
  * This is cemtralised component in which delivery & billing address can be viewed, added & edited.
  * AddressListComponent: to display all the address list for selection as pop-up
  * CreateEditDeliveryComponent/CreateEditDeliveryComponent: to handle add or edit of delivery or billing details as pop-up
  */
 
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AddressListActionModel, AddressListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'all-addresses',
     templateUrl: './all-addresses.component.html',
     styleUrls: ['./../common-checkout.scss']
 })
-export class AllAddressesComponent implements OnInit, OnDestroy
+export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
+
+    //trigger to display pop-up for delivery or billing address.
+    @Input("addDeliveryorBilling") addDeliveryorBilling: Subject<boolean> = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
     @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<SelectedAddressModel> = new EventEmitter<SelectedAddressModel>();
     @Output("emitInvoiceTypeEvent$") emitInvoiceTypeEvent$: EventEmitter<string> = new EventEmitter<string>();
@@ -43,6 +47,7 @@ export class AllAddressesComponent implements OnInit, OnDestroy
     addressListCloseSubscription: Subscription = null;
     addressListActionSubscription: Subscription = null;
     createEditAddressSubscription: Subscription = null;
+    triggerDeliveryOrBillingSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
         private injector: Injector) 
@@ -54,6 +59,21 @@ export class AllAddressesComponent implements OnInit, OnDestroy
     {
         this.invoiceType = new FormControl(this.INVOICE_TYPES.RETAIL);
         this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.TAX);
+    }
+
+    ngAfterViewInit(): void
+    {
+        if (this.addDeliveryorBilling) {
+            this.triggerDeliveryOrBillingSubscription = this.addDeliveryorBilling.subscribe((flag: boolean) =>
+            {
+                if (!flag) return;
+                let addressType = this.ADDRESS_TYPES.DELIVERY;
+                if (this.invoiceType.value === this.INVOICE_TYPES.TAX) {
+                    addressType = this.ADDRESS_TYPES.BILLING;
+                }
+                this.displayAddressFormPopup(addressType, null);
+            })
+        }
     }
 
     /**
@@ -229,5 +249,6 @@ export class AllAddressesComponent implements OnInit, OnDestroy
         if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();
         if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();
         if (this.createEditAddressSubscription) this.createEditAddressSubscription.unsubscribe();
+        if (this.triggerDeliveryOrBillingSubscription) this.triggerDeliveryOrBillingSubscription.unsubscribe();
     }
 }

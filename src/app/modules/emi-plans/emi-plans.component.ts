@@ -1,8 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 import { BankNamePipe } from '@app/utils/pipes/bank.pipe';
 import { ObjectToArray } from '@app/utils/pipes/object-to-array.pipe';
-import { EmiService } from './../emi/emi.service';
+import { DataService } from '@app/utils/services/data.service';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
     selector: 'emi-plans',
@@ -35,10 +39,10 @@ export class EmiPlansComponent implements OnInit
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(
-        private _emiService: EmiService,
         private _objectToArray: ObjectToArray,
         private _bankNamePipe: BankNamePipe,
         private cfr: ComponentFactoryResolver,
+        private _dataService: DataService,
         private injector: Injector,
     ) { }
 
@@ -49,7 +53,7 @@ export class EmiPlansComponent implements OnInit
         const price = this.getModifiedPrice();
         this.isTermConditionShow = false;
         this.isLoading.emit(true);
-        this._emiService.getEmiValues({ price: price }).subscribe(
+        this.getEmiValuesCall({ price: price }).subscribe(
             res =>
             {
                 this.isLoading.emit(false);
@@ -213,6 +217,14 @@ export class EmiPlansComponent implements OnInit
     {
         this.out.emit(data);
         this.openEMIPopup = false;
+    }
+
+    getEmiValuesCall(data){
+        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CLUSTER_EMI_VAL, {params:data}).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({status: false, statusCode: res.status});
+            })
+        );
     }
 
     async handleEMIStepsPopup()

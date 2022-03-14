@@ -1,19 +1,19 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { SavedCardService } from './savedCard.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 
 import { CartService } from '../../../utils/services/cart.service';
 import { LocalAuthService } from '../../../utils/services/auth.service';
 import { ObjectToArray } from '../../../utils/pipes/object-to-array.pipe';
 import { CommonService } from '../../../utils/services/common.service';
-import { CheckoutService } from '../../../utils/services/checkout.service';
 import CONSTANTS from '../../../config/constants';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-
-declare var dataLayer;
+import { DataService } from '@app/utils/services/data.service';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 @Component({
     selector: 'saved-card',
@@ -23,76 +23,71 @@ declare var dataLayer;
 })
 export class SavedCardComponent {
 
-    selectedBankCode: String;
-    savedCardForm: FormGroup;
-    isValid: boolean;
-    payuData: {};
-    savedCards: Array<{}>;
+    
+    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     @Input() savedCardsData: any;
+    @Input() type;
+    @Output() removeTab$: EventEmitter<any> = new EventEmitter<any>();
+    
+    savedCardForm: FormGroup;
+    isValid: boolean = false;
+    payuData: any = {};
+    savedCards: Array<{}> = [];
     selectedCardIndex: number;
     cartSesssion: any;
     prepaidDiscount: number = 0;
     totalPayableAmount: number = 0;
     prepaidsubscription: Subscription;
-    @Output() removeTab$: EventEmitter<any>;
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
-    @Input() type;
+    payEnable = false;
+    selectedBankCode: String = 'AXIB';
+
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
     }
 
-    constructor(private _localStorageService: LocalStorageService, private loaderService: GlobalLoaderService, private _checkoutService: CheckoutService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private _cartService: CartService, private _objectToArray: ObjectToArray, private _savedCardService: SavedCardService, private _formBuilder: FormBuilder
-        ,private _analytics:GlobalAnalyticsService) {
-        this.removeTab$ = new EventEmitter<any>();
-        this.savedCards = [];
-        // this.selectedCardIndex = 0;
-        this.payuData = {};
-        this.selectedBankCode = 'AXIB';
-
-        this.isValid = false;
+    constructor(
+        private _localStorageService: LocalStorageService,
+        private loaderService: GlobalLoaderService,
+        private _commonService: CommonService,
+        private _localAuthService: LocalAuthService,
+        private _cartService: CartService,
+        private _objectToArray: ObjectToArray,
+        private _dataService: DataService,
+        private _formBuilder: FormBuilder,
+        private _analytics: GlobalAnalyticsService) {
     }
 
     ngOnInit() {
+        this.isShowLoader = false;
+        this.cartSesssion = this._cartService.getGenericCartSession;
+        this.initForm();
+        this.checkPrepaidDiscount();
+    }
 
-        this.cartSesssion = Object.assign({}, this._cartService.getGenericCartSession);
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
-            this.getPrePaidDiscount();
-        });
-        this.isShowLoader = true;
-
-        const userSession = this._localAuthService.getUserSession();
-
+    private checkPrepaidDiscount() {
         let data = {};
+        const userSession = this._localAuthService.getUserSession();
         if (this.type == "tax") {
             data["userId"] = userSession["userId"];
         } else {
-            data['userEmail'] = (userSession && userSession["email"]) ? userSession["email"] : userSession["phone"]
+            data['userEmail'] = (userSession && userSession["email"]) ? userSession["email"] : userSession["phone"];
         }
-        // this._savedCardService.getSavedCards(data).subscribe((res) => {
+        this.getPrePaidDiscount(0);
+        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+            this.getPrePaidDiscount();
+        });
+    }
 
-        // if (res['status'] === true) {
-        // if (res['data']['user_cards'] !== undefined && res['data']['user_cards'] !== null) {
+    private initForm() {
         this.savedCards = this._objectToArray.transform(this.savedCardsData);
         this.savedCardForm = this._formBuilder.group({
             cards: this._formBuilder.array(this.createSavedCardForm(this.savedCards))
         });
-        this.getPrePaidDiscount(0);
-        // }
-        // }
-        this.isShowLoader = false;
-        // })
-
     }
 
-    ngAfterViewInit() {
-    }
-    payEnable = false;
     checkpayEnable(val) {
         if (val) this.payEnable = true
         else this.payEnable = false;
-    }
-    updateSavedCardBank(selectedBank) {
-
     }
 
     createSavedCardForm(savedCards) {
@@ -120,7 +115,7 @@ export class SavedCardComponent {
         } else {
             data["gateWay"] = "payu";
         }
-        this._savedCardService.deleteSavedCard(data).subscribe((res) => {
+        this.deleteSavedCard(data).subscribe((res) => {
             if (res['status'] == true) {//delete card
                 if (this.savedCards.length === 1) {
                     this.savedCardForm = undefined;
@@ -139,58 +134,28 @@ export class SavedCardComponent {
         });
     }
 
-    /**
-     * 
-     * @param sci : Selected Card ndex
-     */
+
     getPrePaidDiscount(sci?: number) {
-        const cartSession = this._cartService.getGenericCartSession;
-
-        const userSession = this._localAuthService.getUserSession();
-
-        const addressList = this._checkoutService.getCheckoutAddress();
-
         const extra = {
             mode: this.savedCards[sci !== undefined && sci === 0 ? sci : this.selectedCardIndex]['card_mode'],
             paymentId: this.savedCards[sci !== undefined && sci === 0 ? sci : this.selectedCardIndex]['card_mode'] === 'CC' ? 9 : 2,
-            addressList: addressList
         };
-        cartSession['extraOffer'] = null;
-
-        const validatorRequest = this._commonService.createValidatorRequest(cartSession, userSession, extra);
-
-        const body = validatorRequest.shoppingCartDto;
         this.isShowLoader = true;
-        this._checkoutService.getPrepaidDiscountUpdate(body).subscribe((res) => {
-
-            if (res['status']) {
-                cartSession['extraOffer'] = res['data']['extraOffer'];
-                const cart = res['data']['cart'];
-                if (res['data']['extraOffer'] && res['data']['extraOffer']['prepaid']) {
-                    this.prepaidDiscount = res['data']['extraOffer']['prepaid'];
-                }
-                if (cart) {
-                    const shipping = cart.shippingCharges ? cart.shippingCharges : 0;
-                    const totalAmount = cart.totalAmount ? cart.totalAmount : 0;
-                    const totalOffer = cart.totalOffer ? cart.totalOffer : 0;
-                    this.totalPayableAmount = totalAmount + shipping - totalOffer - this.prepaidDiscount;
-                }
-                this._cartService.setGenericCartSession(cartSession);
-                this._cartService.orderSummary.next(cartSession);
-                this.isShowLoader = false;
+        this._cartService.validatePaymentsDiscount(extra.mode, extra.paymentId).subscribe(response => {
+            this.isShowLoader = false;
+            if (response) {
+                this.prepaidDiscount = response['prepaidDiscount'];
+                this.totalPayableAmount = response['totalPayableAmount']
             }
-        });
+        })
     }
 
     pay(data, valid) {
-        if (!valid)
-            return;
+        if (!valid) return;
 
         const cartSession = this._cartService.getGenericCartSession;
-
         const userSession = this._localAuthService.getUserSession();
-
-        const addressList = this._checkoutService.getCheckoutAddress();
+        const addressList = this._cartService.shippingAddress;
 
         let shippingInformation = {
             'shippingCost': cartSession['cart']['shippingCharges'],
@@ -198,7 +163,7 @@ export class SavedCardComponent {
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
 
-        dataLayer.push({
+        this._analytics.sendGTMCall({
             'event': 'checkoutStarted',
             'shipping_Information': shippingInformation,
             'city': addressList["city"],
@@ -219,7 +184,7 @@ export class SavedCardComponent {
             "paymentId": extra.paymentId,
             "paymentGateway": "",
             "isSavedCard": true,
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
         if (this.type == "tax") {
             newdata["requestParams"] = {};
@@ -246,20 +211,15 @@ export class SavedCardComponent {
                 "card_token": this.savedCards[this.selectedCardIndex]['card_token']
             };
         }
-        this._analytics.sendAdobeOrderRequestTracking(newdata, "pay-initiated:saved card");  
+        this._commonService.isBrowser && this._analytics.sendAdobeOrderRequestTracking(newdata, "pay-initiated:saved card");
         this.isShowLoader = true;
-
-        this._savedCardService.pay(newdata).subscribe((res): void => {
-
+        this._cartService.pay(newdata).subscribe((res): void => {
             if (res['status'] != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
                 return;
             }
-
             data = res['data'];
-
-
             let payuData;
             if (this.type == "retail") {
                 payuData = {
@@ -326,10 +286,12 @@ export class SavedCardComponent {
         this.payEnable = false;
         this.savedCardForm.reset();
     }
+
     stop(e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
     }
+
     updateTopBank($event) {
         this.selectedBankCode = $event.target.value;
     }
@@ -338,5 +300,21 @@ export class SavedCardComponent {
         this.prepaidsubscription.unsubscribe();
         this._cartService.setGenericCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
+    }
+
+    getSavedCards(data) {
+        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CARD.GET_SAVED_CARD, { params: data }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    deleteSavedCard(data) {
+        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CARD.PD_SAVED_CARD, { body: data }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
     }
 }

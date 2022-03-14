@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {SavedCardComponent} from "./savedCard.component";
-import {SavedCardService} from "./savedCard.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PayuFormModule} from "../payment-forms/payuForm/payuForm.module";
 import { RazorPayFormModule } from '../payment-forms/razorPayForm/razorPayForm.module';
@@ -25,9 +24,7 @@ import { MathCeilPipeModule } from '@pipes/math-ceil';
         SavedCardComponent
     ],
     //entryComponents: [BestSellerComponent],
-    providers: [
-        SavedCardService,
-    ]
+    providers: []
 })
 
 export class SavedCardModule{}

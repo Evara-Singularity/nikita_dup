@@ -42,16 +42,6 @@
         }
     }
 }
-
-.sub_category_heading {
-    font-size: $large-font;
-    font-weight: 600;
-    padding: 10px 0px;
-    span {
-        font-weight: 400;
-    }
-}
-
 // Listing Cards Section
 .view-products {
     padding-bottom: 0;
@@ -102,22 +92,19 @@
         }
     }
 }
-
-.cate-container {
-    .bg_white {
-        background: #fff;
-    }
-    // margin-bottom: 65px;
-    .sub-cate-container {
-        h1 {
-            font-size: 16px;
-        }
-    }
-    .card-head {
-        border-bottom: 1px solid $border-color;
-    }
-}
-
+// .cate-container {
+//     .bg_white {
+//         background: #fff;
+//     }
+//     .sub-cate-container {
+//         h1 {
+//             font-size: $extra-large-font;
+//         }
+//     }
+//     .card-head {
+//         border-bottom: 1px solid $border-color;
+//     }
+// }
 .productTags {
     position: absolute;
     width: 70px;
@@ -127,7 +114,6 @@
         max-width: 100%;
     }
 }
-
 .card-head {
     @extend %clear-fix;
     border-bottom: 1px solid #e6e6e6;
@@ -137,7 +123,6 @@
         margin-top: 11px;
     }
 }
-
 .price {
     .after-discount {
         font-weight: bold;
@@ -155,20 +140,17 @@
         font-weight: bold;
     }
 }
-
 .seller {
     margin-top: 10px;
     span {
         color: #9e9d9d;
     }
 }
-
 .icon-list-view,
 .icon-grid-view {
     font-size: 21px;
     line-height: 30px;
 }
-
 .reviewRatingWrap {
     padding-bottom: 8px;
     .reviewRating {
@@ -189,7 +171,6 @@
         font-weight: 500;
     }
 }
-
 .quickLinksSection {
     border-radius: 4px;
     opacity: 1;
@@ -224,31 +205,26 @@
         font-size: 14px;
     }
 }
-
 // Brand Specific BreadCrumb
 .bread-head {
     // background-color: white;
     padding: 10px;
 }
-
 .bread-head li {
     list-style: none;
     display: inline;
     margin-right: 10px;
     cursor: pointer;
 }
-
 .bread-head li:not(:last-child):after {
     content: ">";
     margin-left: 10px;
     margin-right: -5px;
 }
-
 .visibility {
     visibility: hidden;
     display: none;
 }
-
 ::ng-deep {
     .slpLayout1 {
         @include layout1;
@@ -403,7 +379,6 @@
         }
     }
 }
-
 // Panel Head Footer
 .panel-head {
     background: #fff;
@@ -412,7 +387,6 @@
         padding: 15px 0;
     }
 }
-
 .common_table {
     th,
     td {
@@ -423,14 +397,12 @@
         padding: 5px;
     }
 }
-
 .safetyban {
     .slp-heading {
         text-transform: uppercase;
         font-size: 20px !important;
     }
 }
-
 .recent-article-container {
     padding: 15px 0px 0px 0px;
 }
@@ -438,4 +410,12 @@
     background-color: #C6DCF9;
     padding: 3px 15px;
     padding-bottom: 20px;
+    .sub_category_heading {
+        font-size: $large-font;
+        font-weight: 600;
+        padding: 10px 0px;
+        span {
+            font-weight: 400;
+        }
+    }
 }

@@ -73,11 +73,11 @@
                             <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                                 <i class="icon-cart1"></i>
                             </span>
-                            <button *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
+                            <button class="btn btn-red-bg pad-10" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
                         <ng-container
                             *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
-                            <button class="white send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
+                            <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
                         </ng-container>
                     </div>
                 </div>

@@ -12,14 +12,14 @@ button {
 
 .btn-red-bg {
     padding: 10px 20px;
-    background-color: #D9232D;
+    background-color: $btn-color-red;
     text-transform: uppercase;
-    color: #FFF;
+    color: #fff;
     border: 0;
     margin: 0;
     border-radius: 3px;
     display: inline;
-    font-size: 12px;
+    font-size: $medium-font;
     font-weight: bold;
 }
 // Buttons
@@ -42,12 +42,12 @@ button {
         color: $disable-txt;
         border: 1px solid $disabled;
     }
-    &.btn-variant1{
+    &.btn-variant1 {
         width: 100%;
-        color: #FFF;
-        background-color: #D9232D;
+        color: #fff;
+        background-color: #d9232d;
         border: 0;
-        height: 40px; 
+        height: 40px;
         font-size: $large-font;
         &.btn-dark-grey {
             background-color: #3c3c3c;
@@ -60,18 +60,23 @@ button {
         }
     }
 
-    &.btn-transparent-red{
-        background: #ffffff;
-        color: #D9232D;
+    &.btn-transparent-red {
+        background: transparent;
+        color: #d9232d;
+        text-align: center;
         box-shadow: none;
-        font-size: 14px;
+        font-size: $large-font;
         &.btn-disabled {
-            color: #C4C4C4;
+            color: #c4c4c4;
         }
     }
-    
+    &.btn-red-bordered {
+        background-color: #fff;
+        color: $logo-color;
+        border: 1px solid $logo-color;
+        box-shadow: none;
+    }
 }
-
 
 .continue-btn,
 .signInbtn {
@@ -85,7 +90,7 @@ button {
     &.disabledButton {
         border-color: $disabled;
         color: #fff;
-        background: #B6B6B6;
+        background: #b6b6b6;
     }
 }
 
@@ -110,7 +115,7 @@ button {
 // Blue btn
 .blue-border-btn-full {
     color: $blue-link-color;
-    border: 1px solid #278BED;
+    border: 1px solid #278bed;
     padding: 8px 10px;
     width: 100%;
     text-align: center;
@@ -118,8 +123,6 @@ button {
     font-weight: 600;
     font-size: $medium-font;
 }
-
-
 
 // Fixed Button
 .bottom-stick {
@@ -137,21 +140,21 @@ button {
     z-index: 5;
     padding: 5px;
     box-shadow: 0px -3px 6px #00000029;
-    background: #F2F2F2;
+    background: #f2f2f2;
 
     .continue-btn {
         width: 100%;
-        color: #FFF;
-        background-color: #D9232D;
+        color: #fff;
+        background-color: #d9232d;
         border: 0;
         height: 50px;
     }
-    .btn-variant1{
+    .btn-variant1 {
         width: 100%;
-        color: #FFF;
-        background-color: #D9232D;
+        color: #fff;
+        background-color: #d9232d;
         border: 0;
-        height: 40px; 
+        height: 40px;
         &.btn-dark-grey {
             background-color: #3c3c3c;
             color: #ffffff;

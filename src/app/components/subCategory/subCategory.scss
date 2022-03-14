@@ -1,12 +1,9 @@
 @import './../../scss/variables';
-
 #subcCategoryTop {
-  background-color: white;
+  background: $white;
   border-radius: 8px;
-
   li {
     @include gridForCategory('2');
-    padding: 10px;
     min-height: 155px;
     max-height: 155px;
     &:nth-child(1){
@@ -21,33 +18,18 @@
       border-bottom: 1px solid #EFEFF4;
       
     }
-
     .prod-image {
-      padding: 10px;
-      background: $white;
-      // @extend %box-shadow;
       min-height: 92px;
       text-align: center;
-
-      img {
-        width: 100%;
-      }
     }
-
     h4 {
-      font-size: 12px;
+      font-size: $medium-font;
       font-weight: 400;
       text-align: center;
     }
   }
-}
-
-.show-more {
-  display: block;
-  font-size: $large-font;
-  text-align: center;
-  color: #D9232D;
-  margin: 0 auto;
-  font-weight: 600;
-  padding: 20px;
+  .show-more {
+    display: block;
+    padding: 20px;
+  }
 }

@@ -158,9 +158,9 @@
         </div>
 
         <!--recently bought product section -->
-        <div class="recent-bought-wrap" *ngIf="rawProductCountMessage">
+        <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
             <i class="icon-trending"></i>
-            <span class="inner-text">{{rawProductCountMessage}}</span>
+            <span class="pwa-tooltip-text">>{{rawProductCountMessage}}</span>
         </div>
         <!-- Share section is loaded on demand  -->
         <ng-container #productShare></ng-container>
@@ -237,67 +237,66 @@
     <!-- other sections starts -->
     <div>
         <!-- RFQ section ends -->
-        <div class="moglix-benifits moglix-ben-n-ret-policy-Container clearfix"
-            *ngIf="isProductReturnAble && !productOutOfStock">
+        <div class="pwa-row moglix-benfits" *ngIf="isProductReturnAble && !productOutOfStock">
             <!-- start moglix benifits -->
             <h2 class="heading-3"> Moglix Benefits</h2>
-            <div class="moglix-ben-n-ret-policy-InnerContainer">
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
+            <div class="pwa-tabs-container">
+                <div class="pwa-image-tab">
+                    <span class="tab-img">
                         <i class="icon-Group-14030"></i>
                     </span>
-                    <span class="returnTxt benefits-txt">
+                    <span class="tab-img-txt">
                         GST Invoice<br> Available
                     </span>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
+                <div class="pwa-image-tab">
+                    <span class="tab-img">
                         <i class="icon-secure-payment-fill"></i>
                     </span>
-                    <span class="returnTxt benefits-txt">
+                    <span class="tab-img-txt">
                         Secure <br> Payments
                     </span>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner">
-                    <span class="returnImg">
+                <div class="pwa-image-tab">
+                    <span class="tab-img">
                         <i class="icon-customer-service-fill"></i>
                     </span>
-                    <span class="returnTxt benefits-txt">
+                    <span class="tab-img-txt">
                         365 Days <br> Help Desk
                     </span>
                 </div>
             </div>
             <h2 class="heading-3"> Return Policy</h2>
-            <div class=" moglix-ben-n-ret-policy-InnerContainer pad-lr-0">
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation(); navigateToFAQ();">
-                    <span class="returnImg">
+            <div class="pwa-tabs-container">
+                <div class="pwa-image-tab" (click)="$event.stopPropagation(); navigateToFAQ();">
+                    <span class="tab-img">
                         <i class="icon-restart-line"></i>
                     </span>
-                    <span class="returnTxt">
+                    <span class="tab-img-txt">
                         Upto 7 days <br /> returnable
                     </span>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
+                <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="tab-img">
                         <i class="icon-restart-line-1"></i>
                     </span>
-                    <span class="returnTxt">
+                    <span class="tab-img-txt">
                         Wrong <br /> Product
                     </span>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
+                <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="tab-img">
                         <i class="icon-restart-line-3"></i>
                     </span>
-                    <span class="returnTxt">
+                    <span class="tab-img-txt">
                         Damaged <br /> Product
                     </span>
                 </div>
-                <div class="moglix-ben-n-ret-policy-Inner" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="returnImg">
+                <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+                    <span class="tab-img">
                         <i class="icon-restart-line-2"></i>
                     </span>
-                    <span class="returnTxt">
+                    <span class="tab-img-txt">
                         Defective <br />Product
                     </span>
                 </div>
@@ -442,7 +441,7 @@
                     <p class="heading-3">Reviews & Ratings</p>
                 </div>
                 <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
-                    <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+                    <button class="btn-red" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
         

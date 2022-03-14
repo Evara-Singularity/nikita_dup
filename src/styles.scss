@@ -4,10 +4,12 @@
     src: url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype');
 }
 // font-icons
+@import './app/scss/root';
 @import './app/scss/font-icons/flat-icons.scss';
 @import './app/scss/font-icons/stacked-icons.scss';
 @import './app/scss/utils/utilities.scss';
 @import './app/scss/utils/colors.scss';
+@import './app/scss/components/buttons.scss';
 * {
     margin: 0;
     padding: 0;
@@ -30,6 +32,8 @@ img {
 }
 ul {
     list-style: none;
+    padding:0px;
+    margin:0px;
 }
 a {
     color: $link-color;
@@ -82,17 +86,6 @@ header-nav {
         }
     }
 }
-//head icons
-// .head-icons{
-//     &>* {
-//         float: left;
-//         margin-left: 5px;
-//         font-size: 20px;
-//         padding: 10px 5px;
-//         position: relative;
-//         color: $white;
-//     }
-// }
 
 
 

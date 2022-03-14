@@ -393,28 +393,24 @@ export class CartComponent {
         e.preventDefault();
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
-        this.updateAfterDelete(this.removeIndex);
+        this.updateAfterDelete();
         // Push data to data layer
         this.pushDataToDatalayer(this.removeIndex);
         this.sendCritioData();
     }
 
     // delete a item from cart and update cart session
-    updateAfterDelete(index) {
+    updateAfterDelete() {
         let cartSession = this._cartService.getGenericCartSession;
-        cartSession.itemsList.splice(index, 1);
+        cartSession.itemsList.splice(this.removeIndex, 1);
+        console.log(cartSession);
         this.removePopup = false;
-        this._globalLoaderService.setLoaderState(false);
-        this._cartService.updateCartSession(cartSession).subscribe(res => {
-            if (!res.itemsList.length) this._router.navigateByUrl('/quickorder');
+        this._cartService.updateCartSession(cartSession).subscribe(updatedCartSession => {
+            this._globalLoaderService.setLoaderState(false);
+            if (!updatedCartSession.itemsList.length) this._router.navigateByUrl('/quickorder');
             this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-            this._cartService.setGenericCartSession(cartSession);
-            if (this._commonService.userSession.authenticated == "true" && cartSession['offersList'].length > 0) {
-                this._cartService.genericApplyPromoCode();
-                this.validateCart();
-            }
+            this._cartService.setGenericCartSession(updatedCartSession);
         });
-        
     }
 
     // get shipping charges of each item in cart

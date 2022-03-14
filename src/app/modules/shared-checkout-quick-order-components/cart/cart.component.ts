@@ -257,7 +257,7 @@ export class CartComponent {
                             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
                         } else {
                             if (result) {
-                                if (!buyNow) {
+                                if (!buyNow) {                                    
                                     this.validateCart();
                                     this._cartService.setGenericCartSession(result);
                                     this._cartService.cart.next({
@@ -401,11 +401,12 @@ export class CartComponent {
 
     // delete a item from cart and update cart session
     updateAfterDelete(index) {
-        let cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
+        let cartSession = this._cartService.getGenericCartSession;
         cartSession.itemsList.splice(index, 1);
         this.removePopup = false;
         this._globalLoaderService.setLoaderState(false);
         this._cartService.updateCartSession(cartSession).subscribe(res => {
+            if (!res.itemsList.length) this._router.navigateByUrl('/quickorder');
             this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
             this._cartService.setGenericCartSession(cartSession);
             if (this._commonService.userSession.authenticated == "true" && cartSession['offersList'].length > 0) {

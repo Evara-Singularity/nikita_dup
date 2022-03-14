@@ -1334,6 +1334,7 @@ export class CartService
     }
 
     genericRemovePromoCode() {
+        if (!this.appliedPromoCode.length) return;
         this._loaderService.setLoaderState(true);
         let cartSession = this.getGenericCartSession;
         cartSession['offersList'] = [];

@@ -9,10 +9,9 @@ import { CheckoutAddressComponent } from './checkout-address.component';
 import { SharedCheckoutAddressModule } from '@app/modules/shared-checkout-address/shared-checkout-address.module';
 import { SharedCheckoutQuickorderModule } from '@app/modules/shared-checkout-quickorder/shared-checkout-quickorder.module';
 import { CartModule } from '@modules/shared-checkout-quickorder/cart/cart.module';
-import { CheckoutAddressCtaComponent } from './checkout-address-cta/checkout-address-cta.component';
 
 @NgModule({
-  declarations: [CheckoutAddressComponent, CheckoutAddressCtaComponent],
+  declarations: [CheckoutAddressComponent],
   imports: [
     CommonModule,
     CartModule,

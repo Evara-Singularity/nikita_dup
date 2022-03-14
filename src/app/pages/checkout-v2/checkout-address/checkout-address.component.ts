@@ -1,31 +1,105 @@
-import { CartNotificationsModel } from './../../../utils/models/shared-checkout.models';
-import { CartService } from '@services/cart.service';
-import { AddressService } from '@services/address.service';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ClientUtility } from '@app/utils/client.utility';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { AddressService } from '@services/address.service';
+import { CartService } from '@services/cart.service';
+import { environment } from 'environments/environment';
+import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
-import { Subject } from 'rxjs';
 
 @Component({
-    selector: 'app-checkout-address',
+    selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
-    styleUrls: ['./checkout-address.component.css']
+    styleUrls: ['./checkout-address.component.scss']
 })
-export class CheckoutAddressComponent implements OnInit
+export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {
+    readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
+    @Input("addDeliveryorBilling") addDeliveryorBilling: Subject<boolean> = new Subject();
+
     invoiceType = this.INVOICE_TYPES.RETAIL;
+    payableAmount = 0;
+    isUserLoggedIn = false;
+    canDisplayCTA = false;
+
     deliveryAddress = null;
     billingAddress = null;
+    moveSectionTo = null;
 
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
+    orderSummarySubscription; Subscription = null;
+    loginSubscription: Subscription = null;
+    logoutSubscription: Subscription = null;
+
+    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
+        private _router: Router) { }
 
     ngOnInit(): void
     {
-        
+        this.updateUserStatus();
+        this.updatePayableAmount();
+    }
+
+    ngAfterViewInit(): void
+    {
+        this.orderSummarySubscription = this._cartService.orderSummary.subscribe((data) => { this.updatePayableAmount() });
+        this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
+        if (!this.isUserLoggedIn) {
+            this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
+        }
+    }
+
+    updateUserStatus()
+    {
+        const USER_SESSION = this._localAuthService.getUserSession();
+        if (USER_SESSION && USER_SESSION.authenticated == "true") {
+            this.isUserLoggedIn = true;
+        }
+    }
+
+    updatePayableAmount()
+    {
+        const CART = this._cartService.getCartSession() && this._cartService.getCartSession()['cart'];
+        if (CART) {
+            const TOTAL_AMOUNT = CART['totalAmount'] || 0;
+            const SHIPPPING_CHARGES = CART['shippingCharges'] || 0;
+            const TOTAL_OFFER = CART['totalOffer'] || 0;
+            this.payableAmount = (TOTAL_AMOUNT + SHIPPPING_CHARGES) - TOTAL_OFFER;
+        }
+    }
+
+    scrollPaymentSummary()
+    {
+        if (document.getElementById('payment_summary')) {
+            let footerOffset = document.getElementById('payment_summary').offsetTop;
+            ClientUtility.scrollToTop(1000, footerOffset - 30);
+        }
+    }
+
+    continueCheckout()
+    {
+        if(this.canContinue())
+        {
+            this._router.navigate(['/checkout/payment']);
+        }
+    }
+
+    canContinue()
+    {
+        //TODO:CHECK for atleast one address is selected.
+        //Cart validity
+        let returnValue = true;
+        //address check
+        if (!this.deliveryAddress) 
+        {
+            this.addDeliveryorBilling.next(true);
+            returnValue  = false;
+        }
+        return returnValue;
     }
 
     handleInvoiceTypeEvent(invoiceType: string)
@@ -98,5 +172,12 @@ export class CheckoutAddressComponent implements OnInit
         if (!this.hasCartSession) return false;
         const CART_ITEMS = (this._cartService.getCartSession().itemsList) || [];
         return CART_ITEMS.length > 0;
+    }
+
+    ngOnDestroy(): void
+    {
+        if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe()
+        if (this.loginSubscription) this.loginSubscription.unsubscribe()
+        if (this.logoutSubscription) this.logoutSubscription.unsubscribe()
     }
 }

@@ -1,4 +1,4 @@
-<div class="main-container" *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0">
+<div class="main-container">
     <checkout-address-cta></checkout-address-cta>
     <all-addresses (emitAddressSelectEvent$)="handleAddressEvent($event)" (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
     <cart-notifications></cart-notifications>

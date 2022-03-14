@@ -258,6 +258,7 @@ export class CartComponent {
                         } else {
                             if (result) {
                                 if (!buyNow) {
+                                    this.validateCart();
                                     this._cartService.setGenericCartSession(result);
                                     this._cartService.cart.next({
                                         count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
@@ -409,6 +410,7 @@ export class CartComponent {
             this._cartService.setGenericCartSession(cartSession);
             if (this._commonService.userSession.authenticated == "true" && cartSession['offersList'].length > 0) {
                 this._cartService.genericApplyPromoCode();
+                this.validateCart();
             }
         });
         

@@ -387,6 +387,7 @@ export class CartComponent {
         }
     }
 
+    // make cosmetic changes after deleting an item from cart
     deleteProduct(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -397,6 +398,7 @@ export class CartComponent {
         this.sendCritioData();
     }
 
+    // delete a item from cart and update cart session
     updateAfterDelete(index) {
         let cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
         cartSession.itemsList.splice(index, 1);
@@ -412,63 +414,7 @@ export class CartComponent {
         
     }
 
-    updateDeleteCart(cartSessions, extraData?) {
-        if (!this._commonService.isServer) {
-            if (!this._globalLoaderService.getLoaderState()) {
-                this._globalLoaderService.setLoaderState(true);
-            }
-
-            let sro = this._cartService.getShippingObj(cartSessions);
-            this.getShippingCharges(sro).subscribe(
-                res => {
-                    if (res['statusCode'] == 200) {
-                        cartSessions['cart']['shippingCharges'] = res['data']['totalShippingAmount'];
-                        let productShippingCharge = res['data']['itemShippingAmount'];
-
-                        for (let i = 0; i < cartSessions['itemsList'].length; i++) {
-                            cartSessions['itemsList'][i]['shippingCharges'] = res['data']['itemShippingAmount'][cartSessions['itemsList'][i]['productId']];
-                        }
-
-                        this._cartService.updateCartSession(cartSessions).subscribe((data) => {
-                            this._globalLoaderService.setLoaderState(false);
-                            if (extraData && extraData['showMessage']) {
-                                this._tms.show(extraData['showMessage']);
-                            }
-                            let res = data;
-                            if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
-                                let itemsList = res['itemsList'];
-                                // console.log('trigger6');
-                                itemsList.forEach((element, index) => {
-                                    for (let key in productShippingCharge) {
-                                        if (key == element['productId']) {
-                                            itemsList[index]['shippingCharges'] = productShippingCharge[key];
-                                        }
-                                    }
-                                })
-                                this._cartService.setGenericCartSession(res);
-                                this._cartService.cart.next({ count: (res.noOfItems || this._cartService.getGenericCartSession.itemsList.length), currentlyAdded: null });
-                                res["itemsList"] = itemsList;
-                                this._cartService.setGenericCartSession(res);
-                                this._cartService.orderSummary.next(this._cartService.getGenericCartSession);
-
-                                /* navigate to quick order page, if no item is present in itemlist */
-                                if (itemsList.length == 0 && this._router.url.indexOf('/checkout') != -1) {
-                                    this._location.replaceState('/'); // clears browser history so they can't navigate with back button
-                                    this._router.navigateByUrl('/quickorder');
-                                }
-                            }
-                            else {
-                            }
-
-                        }, err => {
-                        });
-                    }
-                }
-
-            );
-        }
-    }
-
+    // get shipping charges of each item in cart
     getShippingCharges(obj) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this.dataService.callRestful("POST", url, { body: obj }).pipe(
@@ -478,6 +424,7 @@ export class CartComponent {
         );
     }
 
+    // redirect to product page 
     redirectToProductURL(url) {
         this._commonService.setSectionClickInformation('cart', 'pdp');
         this._router.navigateByUrl('/' + url);

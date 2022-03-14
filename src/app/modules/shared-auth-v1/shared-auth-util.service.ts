@@ -27,7 +27,7 @@ export class SharedAuthUtilService implements OnInit
 
     ngOnInit(): void
     {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         //TODO:handle for checkout
         this._activatedRoute.queryParams.subscribe(
             data => { this.redirectUrl = data['backurl'] || this.HOME_URL; }
@@ -47,7 +47,7 @@ export class SharedAuthUtilService implements OnInit
         if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
             redirectUrl += '?state=' + queryParams['state'];
         }
-        let cartSession = Object.assign(this._cartService.getCartSession());
+        let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
         this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);
     }
@@ -75,7 +75,7 @@ export class SharedAuthUtilService implements OnInit
     {
         this._localStorage.clear('tocd');
         this._localStorage.store('user', response);
-        let cartSession = Object.assign(this._cartService.getCartSession());
+        let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
         this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, redirectUrl);
     }

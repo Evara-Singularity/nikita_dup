@@ -21,8 +21,8 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 export class PaymentComponent implements OnInit {
 
     paymentBlock: number;
-    globalConstants: any;
-    isSavedCardExist: boolean;
+    globalConstants: any = CONSTANTS.GLOBAL;
+    isSavedCardExist: boolean = false;
     savedCardsData: any;
     updateTabIndex: EventEmitter<number> = new EventEmitter();
     spp: boolean; // spp: Show Payment Popup
@@ -50,25 +50,20 @@ export class PaymentComponent implements OnInit {
         public _commonService: CommonService,
         private _analytics: GlobalAnalyticsService,
         private _elementRef: ElementRef) {
-
-        this.globalConstants = CONSTANTS.GLOBAL;
-        this.isSavedCardExist = false;
         this.isShowLoader = true;
     }
 
     ngOnInit() {
        
         this.intialize();
-
-        // TODO: confirm how this works if used in current app then move this to card payment method
-        // this.getSavedCardData();
+        this.getSavedCardData();
 
     }
 
     private intialize() {
         if (this._commonService.isBrowser) {
 
-            const cartData = this._cartService.getCartSession();
+            const cartData = this._cartService.getGenericCartSession;
 
             this.canNEFT_RTGS = cartData['cart']['agentId'];
             this.totalAmount = (cartData['cart']['totalAmount']) + +(cartData['cart']['shippingCharges']) - +(cartData['cart']['totalOffer']); // intialize total amount
@@ -107,7 +102,7 @@ export class PaymentComponent implements OnInit {
             data['userId'] = userSession['userId'];
             data['userEmail'] = '';
         }
-
+        console.log('getSavedCardData ==>', 'called', data, this.invoiceType)
         this._paymentService.getSavedCards(data, this.invoiceType)
             .subscribe((res) => {
                 if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
@@ -120,7 +115,7 @@ export class PaymentComponent implements OnInit {
     }
 
     updatePaymentBlock(block, mode?, elementId?) {
-        let cart = this._cartService.getCartSession();
+        let cart = this._cartService.getGenericCartSession;
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
         this.messageEmi = "";
         this.messageCod = "";

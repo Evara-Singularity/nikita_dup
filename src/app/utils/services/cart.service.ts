@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddToCartProductSchema } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, pipe, Subject } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -126,17 +126,6 @@ export class CartService
         return this.cartNotifications$;
     }
 
-    
-
-    ngOnInit()
-    {
-        // TODO: need to verify , how this is used
-        this._dataService.dataServiceCart.subscribe(data =>
-        {
-            this.cart.next({ count: data });
-        })
-    }
-
     getShippingValue(cartSession)
     {
         // console.trace('getShippingValue cartservice');
@@ -158,23 +147,22 @@ export class CartService
         return this.payBusinessDetails;
     }
 
-    // REVAMP CODE SECTION
-    updateCart(cartSessionResponse)
-    {
-        const cartSessionObj = {
-            cart: Object.assign({}, cartSessionResponse['cart']),
-            itemsList: (cartSessionResponse["itemsList"] ? [...cartSessionResponse["itemsList"]] : []),
-            addressList: (cartSessionResponse["addressList"] ? [...cartSessionResponse["addressList"]] : []),
-            payment: cartSessionResponse["payment"],
-            offersList: cartSessionResponse["offersList"],
-            extraOffer: cartSessionResponse["extraOffer"]
+    // get generic cart session object
+    generateGenericCartSession(cartSessionFromAPI) {
+        const modifiedCartSessionObject = {
+            cart: Object.assign({}, cartSessionFromAPI['cart']),
+            itemsList: (cartSessionFromAPI["itemsList"] ? [...cartSessionFromAPI["itemsList"]] : []),
+            addressList: (cartSessionFromAPI["addressList"] ? [...cartSessionFromAPI["addressList"]] : []),
+            payment: cartSessionFromAPI["payment"],
+            offersList: cartSessionFromAPI["offersList"],
+            extraOffer: cartSessionFromAPI["extraOffer"]
         }
 
         let totalAmount: number = 0;
         let tawot: number = 0; // totalAmountWithOutTax
         let tpt: number = 0; //totalPayableTax
 
-        let itemsList = cartSessionObj.itemsList ? cartSessionObj.itemsList : [];
+        let itemsList = modifiedCartSessionObject.itemsList ? modifiedCartSessionObject.itemsList : [];
         for (let item of itemsList) {
             if (item["bulkPrice"] == null) {
                 item["totalPayableAmount"] = this.getTwoDecimalValue(item["productUnitPrice"] * item["productQuantity"]);
@@ -191,17 +179,30 @@ export class CartService
             tpt = tpt + item['tax'];
         };
 
-        cartSessionObj.cart.totalAmount = totalAmount;
-        cartSessionObj.cart.totalPayableAmount = totalAmount + cartSessionObj.cart['shippingCharges'] - cartSessionObj.cart['totalOffer'];
-        cartSessionObj.cart.tawot = tawot;
-        cartSessionObj.cart.tpt = tpt;
-        cartSessionObj.itemsList = itemsList;
-        return cartSessionObj;
+        modifiedCartSessionObject.cart.totalAmount = totalAmount;
+        modifiedCartSessionObject.cart.totalPayableAmount = totalAmount + modifiedCartSessionObject.cart['shippingCharges'] - modifiedCartSessionObject.cart['totalOffer'];
+        modifiedCartSessionObject.cart.tawot = tawot;
+        modifiedCartSessionObject.cart.tpt = tpt;
+        modifiedCartSessionObject.itemsList = itemsList;
+        return modifiedCartSessionObject;
     }
 
-    setCartSession(cart)
+    // Get generic cart session
+    get getGenericCartSession() {
+        return this.cartSession;
+    }
+
+    // return the Cart Session Object
+    setGenericCartSession(cart) {
+        this.cartSession = JSON.parse(JSON.stringify(cart));
+        if (cart.offersList.length > 0) {
+            this.appliedPromoCode = cart.offersList[0]['id'];
+        }
+    }
+
+    getCartSession()
     {
-        this.cartSession = cart;
+        return JSON.parse(JSON.stringify(this.cartSession));
     }
 
     getTwoDecimalValue(a)
@@ -221,11 +222,6 @@ export class CartService
             "offersList": sessionDetails['offersList']
         };
         return this.updateCartSession(cartObject)
-    }
-
-    getCartSession()
-    {
-        return JSON.parse(JSON.stringify(this.cartSession));
     }
 
     /**
@@ -257,28 +253,29 @@ export class CartService
          */
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartBySession, { params: params })
             .pipe(
-                map((cartSessionResponse) =>
-                {
-                    if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 200) {
-                        return cartSessionResponse
-                    }
-
-                    if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
-                        // incase of session mismatch update new cart and userData 
-                        // cartsesion response will be different from regular cart session response
-                        console.log('CARTSESSION LOGS ==> mismatch condition encountered', cartSessionResponse);
-                        this.localAuthService.setUserSession(cartSessionResponse['userData']);
-                        return cartSessionResponse['cart'];
-                    }
-
-                    if (cartSessionResponse?.['status'] == false) {
-                        // logout user this case so that new valid session can be created
-                        this._toastService.show({ type: 'error', text: "Cart failed, Please login and try again", tDelay: 5000 });
-                        this.logOutAndClearCart();
-                        return null;
-                    }
-                }),
+                map((cartSessionResponse) => this.handleCartResponse(cartSessionResponse)),
             );
+    }
+
+    private handleCartResponse(cartSessionResponse): any {
+        if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 200) {
+            return cartSessionResponse
+        }
+
+        if (cartSessionResponse?.['status'] == true && cartSessionResponse?.['statusCode'] == 202) {
+            // incase of session mismatch update new cart and userData 
+            // cartsesion response will be different from regular cart session response
+            console.log('CARTSESSION LOGS ==> mismatch condition encountered', cartSessionResponse);
+            this.localAuthService.setUserSession(cartSessionResponse['userData']);
+            return cartSessionResponse['cart'];
+        }
+
+        if (cartSessionResponse?.['status'] == false) {
+            // logout user this case so that new valid session can be created
+            this._toastService.show({ type: 'error', text: "Cart failed, Please login and try again", tDelay: 5000 });
+            this.logOutAndClearCart();
+            return null;
+        }
     }
 
     logOutAndClearCart(redirectURL = null)
@@ -325,7 +322,7 @@ export class CartService
 
     checkForShippingCharges()
     {
-        this._getShipping(this.getCartSession()).subscribe(cartSession =>
+        this._getShipping(this.getGenericCartSession).subscribe(cartSession =>
         {
             this._notifyCartChanges(cartSession, '')
         })
@@ -342,7 +339,7 @@ export class CartService
     ): Observable<any>
     {
         const userSession = this.localAuthService.getUserSession();
-        const cartSession = Object.assign(this.getCartSession());
+        const cartSession = Object.assign(this.getGenericCartSession);
         cartSession['cart']['userId'] = userSession.userId;
         return this.getSessionByUserId(cartSession)
             .pipe(
@@ -420,8 +417,8 @@ export class CartService
      */
     private _notifyCartChanges(result, redirectUrl)
     {
-        const cartSession = this.updateCart(result);
-        this.setCartSession(cartSession);
+        const cartSession = this.generateGenericCartSession(result);
+        this.setGenericCartSession(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);
         let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
@@ -545,7 +542,57 @@ export class CartService
             }
         }
     }
-    // PAYMENTS RELATED UTILS STARTS 
+
+    private _getPrepaidDiscount(body) {
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PrepaidDiscount, { body: body }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    validatePaymentsDiscount(paymentMode, paymentId): Observable<any> {
+        return of({
+            "mode": paymentMode,
+            "paymentId": paymentId,
+            addressList: this.shippingAddress
+        }).pipe(
+            map((args) => {
+                const validatorRequest = this.createValidatorRequest(args);
+                return validatorRequest.shoppingCartDto;
+            }),
+            mergeMap((payload) => {
+                return this._getPrepaidDiscount(payload).pipe(map((cartSessionResponse) => {
+                    if (cartSessionResponse) {
+                        return this._notifyCartChanges(cartSessionResponse, null);
+                    }
+                    return null;
+                }))
+            }),
+            map((cartSession) => {
+                if (!cartSession) return null;
+                let prepaidDiscount = 0;
+                let totalPayableAmount = 0;
+                if (cartSession['extraOffer'] && cartSession['extraOffer']['prepaid']) {
+                    prepaidDiscount = cartSession['extraOffer']['prepaid']
+                }
+                if (cartSession && cartSession['cart']) {
+                    const cart = Object.assign({}, cartSession['cart']);
+                    let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
+                    let totalAmount = cart.totalAmount ? cart.totalAmount : 0;
+                    let totalOffer = cart.totalOffer ? cart.totalOffer : 0;
+                    totalPayableAmount = totalAmount + shipping - totalOffer - prepaidDiscount;
+                }
+                return {
+                    prepaidDiscount,
+                    totalPayableAmount,
+                    cartSession
+                }
+            })
+        )
+    }
+
+     // PAYMENTS RELATED UTILS STARTS 
 
     // COMMON CART LOGIC IMPLEMENTATION STARTS
     /** 
@@ -618,10 +665,10 @@ export class CartService
                     // remove promocodes incase of buynow
                     cartSession = (args.buyNow) ? this._removePromoCode(cartSession) : Object.assign({}, cartSession);
                     // calculate total price and cart value.
-                    cartSession = this.updateCart(cartSession)
+                    cartSession = this.generateGenericCartSession(cartSession)
                     //if not buynow flow then update global cart session in service
                     if (!args.buyNow) {
-                        this.setCartSession(cartSession);
+                        this.setGenericCartSession(cartSession);
                     }
                     return cartSession;
                 }
@@ -685,7 +732,7 @@ export class CartService
                 {
                     this._loaderService.setLoaderState(false);
                     if (cartSessionReponse['status']) {
-                        return this.updateCart(cartSessionReponse)
+                        return this.generateGenericCartSession(cartSessionReponse)
                     }
                     // api returns false, then return actual object returned from server
                     return cartSessionReponse;
@@ -705,7 +752,7 @@ export class CartService
                 return this.getCartBySession(request).pipe(
                     map((res: any) =>
                     {
-                        return this.updateCart(res);
+                        return this.generateGenericCartSession(res);
                     })
                 );
             }),
@@ -870,11 +917,11 @@ export class CartService
      */
     private _checkForUserAndCartSession(): Observable<any>
     {
-        return of(this.getCartSession()).pipe(
+        return of(this.getGenericCartSession).pipe(
             mergeMap(cartSessionDetails =>
             {
                 if (cartSessionDetails && cartSessionDetails['cart']) {
-                    return of(this.updateCart(cartSessionDetails));
+                    return of(this.generateGenericCartSession(cartSessionDetails));
                 } else {
                     return this._getUserSession().pipe(
                         map(userSessionDetails =>
@@ -884,7 +931,7 @@ export class CartService
                         mergeMap(request =>
                         {
                             return this.getCartBySession(request).pipe(
-                                map((res: any) => this.updateCart(res))
+                                map((res: any) => this.generateGenericCartSession(res))
                             );
                         })
                     )
@@ -896,29 +943,25 @@ export class CartService
     /**
      * @returns get user session details from localstorage or by API
      */
-    private _getUserSession(): Observable<any>
-    {
+    private _getUserSession(): Observable<any> {
         let user = this._localStorageService.retrieve('user');
         if (user) {
             return of(user);
         }
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION).pipe(
-            map(res =>
-            {
+            map(res => {
                 this.localAuthService.setUserSession(res);
                 return res;
             })
         );
     }
 
-    private _removePromoCode(cartSession): any
-    {
+    private _removePromoCode(cartSession): any {
         cartSession['offersList'] = [];
         cartSession['extraOffer'] = null;
         cartSession['cart']['totalOffer'] = 0;
         let itemsList = cartSession["itemsList"];
-        itemsList.forEach((element, index) =>
-        {
+        itemsList.forEach((element, index) => {
             cartSession["itemsList"][index]['offer'] = null;
         });
         return cartSession;
@@ -927,52 +970,428 @@ export class CartService
 
     // HTTP Wrappers
 
-    getValidateCartMessageApi(params)
-    {
+    getValidateCartMessageApi(params) {
         // used in cart.components.ts
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_GetCartValidationMessages, { params: params });
     }
 
-    setValidateCartMessageApi(data)
-    {
+    setValidateCartMessageApi(data) {
         // used in cart.components.ts
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SET_SetCartValidationMessages, { body: data });
     }
 
-    validateCartApi(cart)
-    {
+    validateCartApi(cart) {
         // used in cart.components.ts
         const cartN = JSON.parse(JSON.stringify(cart));
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart });
     }
 
-    getSessionByUserId(cart)
-    {
+    getSessionByUserId(cart) {
         // used in Shared Auth modules components
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartByUser, { body: cart });
     }
 
     // TOOD: only used on cart.component.ts if required can be removed
-    getProduct(product)
-    {
+    getProduct(product) {
         let params = { productId: product.productId };
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/product/getProductGroup", { params: params });
     }
 
-    logoutCall()
-    {
+    logoutCall() {
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGOUT);
     }
 
-    getShippingChargesApi(obj)
-    {
+    getShippingChargesApi(obj) {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
+            catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status });
             })
         );
     }
 
+    getMessageList(data, items) {
+        let messageList = [];
+        const msns: Array<string> = data ? Object.keys(data) : null;
+        if (msns && items && items.length > 0) {
+            items.forEach((item) => {
+                if (msns.indexOf(item['productId']) != -1) {
+                    let msg = {};
+                    msg['msnid'] = item['productId'];
+                    if (data[item['productId']]['updates']['outOfStockFlag']) {
+                        msg['data'] = { productName: item['productName'], text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
+                        msg['type'] = "oos";
+                    }
+                    else if (data[item['productId']]['updates']['priceWithoutTax'] && (data[item['productId']]['productDetails']['priceWithoutTax'] < item["priceWithoutTax"])) {
+                        msg['data'] = { productName: item['productName'], text1: ' price has been updated from ', text2: 'to', oPrice: item["priceWithoutTax"], nPrice: data[item['productId']]['productDetails']['priceWithoutTax'] };
+                        // msg['data'] = item['productName']+" has " + (item["priceWithoutTax"]>data[item['productId']]['productDetails']['priceWithoutTax'] ? 'decreased' : 'increased') + " from Rs." + item["priceWithoutTax"] + " to Rs." + data[item['productId']]['productDetails']['priceWithoutTax'];
+                        msg['type'] = "price";
+                    } else if (data[item['productId']]['updates']['shipping'] != undefined) {
+
+                        //check if shipping msg is already present in message list.
+                        // let addmsg: number = messageList.findIndex(ml=>ml.type == "shipping" || ml.type == "coupon");
+                        let addmsg: number = messageList.findIndex(ml => ml.type == "shipping");
+                        //if(addmsg == -1){
+                        if (data[item['productId']]['updates']['shipping'] != undefined) {
+                            msg['data'] = { text1: 'Shipping Charges have been updated.' };
+                            msg['type'] = "shipping";
+                        }
+                        if (data[item['productId']]['updates']['discount'] != undefined) {
+                            if (msg['data']) {
+                                msg['data'] = { text1: 'Shipping Charges and Applied Promo Code have been updated.' };
+                                msg['type'] = "shippingcoupon";
+                            }
+                        }
+                        //  }
+                    } else if (data[item['productId']]['updates']['discount'] == true || data[item['productId']]['updates']['discount'] == false) {
+                        //check if shipping msg is already present in message list.
+                        // let addmsg: number = messageList.findIndex(ml=>ml.type == "shipping" || ml.type == "coupon");
+                        let addmsg: number = messageList.findIndex(ml => ml.type == "coupon");
+                        // if(addmsg == -1){
+                        if (data[item['productId']]['updates']['discount'] == true || data[item['productId']]['updates']['discount'] == false) {
+                            msg['data'] = { text1: 'Applied Promo Code has been updated.' };
+                            msg['type'] = "coupon";
+                        }
+                        if (data[item['productId']]['updates']['shipping']) {
+                            if (msg['data']) {
+                                msg['data'] = { text1: 'Shipping Charges and Applied Promo Code have been updated.' };
+                                msg['type'] = "shippingcoupon";
+                            }
+                        }
+
+                        // } 
+
+                    }
+
+                    if (msg['data']) {
+                        if (messageList.findIndex(ml => ml.type == "shipping") != -1 && (msg['type'] == 'coupon' || msg['type'] == 'shippingcoupon')) {
+                            const index = messageList.findIndex(ml => ml.type == "shipping");
+                            if (index > -1) {
+                                messageList[index].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
+                                messageList[index].type = "shippingcoupon";
+                            }
+
+                        }
+                        else if (messageList.findIndex(ml => ml.type == "coupon") != -1 && (msg['type'] == 'shipping' || msg['type'] == 'shippingcoupon')) {
+                            const index = messageList.findIndex(ml => ml.type == "coupon");
+                            if (index > -1) {
+                                messageList[index].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
+                                messageList[index].type = "shippingcoupon";
+                            }
+                        }
+
+                        else if (messageList.findIndex(ml => ml.type == "shipping") == -1 && messageList.findIndex(ml => ml.type == "coupon") == -1 && messageList.findIndex(ml => ml.type == "shippingcoupon") == -1) {
+                            messageList.push(msg);
+                        }
+
+
+
+                        //  messageList.push(msg);
+
+                    }
+                }
+            });
+        }
+        return messageList;
+    }
+
+    /**
+     * 
+     * @param itemsValidationMessage : new updates in item: price, shipping, coupon
+     * This function add new items validation or update the older one for oos, and price.
+     */
+    setValidationMessageLocalstorage(itemsValidationMessageNew, itemsValidationMessageOld) {
+        // const user = this.localStorageService.retrieve('user');
+        if (itemsValidationMessageOld && itemsValidationMessageOld.length > 0) {
+            itemsValidationMessageNew.forEach((itemValidationMessageNew) => {
+                let isExist = false;
+                for (let i = 0; i < itemsValidationMessageOld.length; i++) {
+                    let itemValidationMessageOld = itemsValidationMessageOld[i];
+                    if (itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']) {
+                        isExist = true;
+                        if (itemValidationMessageNew['type'] == 'price' || itemValidationMessageNew['type'] == 'oos') {
+                            itemsValidationMessageOld[i] = Object.assign({}, itemValidationMessageNew);
+                        }
+                        break;
+                    }
+                }
+                if (!isExist) {
+                    itemsValidationMessageOld.push(itemValidationMessageNew);
+                }
+                else {
+                    itemsValidationMessageOld = itemsValidationMessageNew;
+                }
+            })
+        } else {
+            itemsValidationMessageOld = itemsValidationMessageNew;
+        }
+        // Remove oos validation message, if it is instock after sometime
+        itemsValidationMessageOld = itemsValidationMessageOld.filter((itemValidationMessageOld) => {
+            if (itemValidationMessageOld['type'] == 'oos') {
+                return itemsValidationMessageNew.some(itemValidationMessageNew => itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']);
+            }
+            return true;
+
+        })
+        return itemsValidationMessageOld;
+        // this.localStorageService.store("user", user);
+    }
+
+    deleteValidationMessageLocalstorage(item, type?) {
+        const user = this._localStorageService.retrieve('user');
+        if (user && user.authenticated == "true") {
+            /** 
+             * remove cart item message from local storage
+             * 
+             * */
+            // let itemsValidationMessage: Array<string> = this.getValidationMessageLocalstorage();
+            let itemsValidationMessage: Array<{}> = this.itemsValidationMessage;
+
+            if (!itemsValidationMessage.length) {
+                return itemsValidationMessage;
+            }
+
+            let itemsUnServicableMessage = [];
+            if (!type || type != "delete") {
+                itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
+            }
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['msnid'] != item['productId']);
+            if (type && type == "delete") {
+                itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
+            }
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "unservicable");
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "coupon");
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shipping");
+            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shippingcoupon");
+
+            // userData["itemsValidationMessage"] = itemsValidationMessage;
+            // this.localStorageService.store("user", userData);
+            this.setValidateCartMessageApi({ userId: user['userId'], data: itemsValidationMessage }).subscribe(() => { });
+            return [...itemsValidationMessage, ...itemsUnServicableMessage];
+        } else {
+            return null;
+        }
+    }
+
+    itemsValidationMessage;
+    getValidationMessageLocalstorage() {
+        // return itemValidationMessage;
+        // const user = this.localStorageService.retrieve('user');
+        // return user["itemsValidationMessage"] ? user["itemsValidationMessage"] : [];
+        return this.itemsValidationMessage;
+    }
+
+    addPriceUpdateToCart(itemsList, itemsValidationMessage) {
+        //  ;
+        // console.log(itemsValidationMessage);
+        let itemsListNew = JSON.parse(JSON.stringify(itemsList));
+        let itemsValidationMessageT = {}; //Transformed Items validation messages;
+        for (let ivm in itemsValidationMessage) {
+            itemsValidationMessageT[itemsValidationMessage[ivm]['msnid']] = itemsValidationMessage[ivm];
+        }
+        itemsListNew = itemsListNew.map((item) => {
+            item.text1 = null;
+            item.text2 = null;
+            item.oPrice = null;
+            item.nPrice = null;
+
+            if (itemsValidationMessageT[item['productId']] && itemsValidationMessageT[item['productId']]['type'] == 'price') {
+                const data = itemsValidationMessageT[item['productId']]['data'];
+                item.text1 = data['text1'];
+                item.text2 = data['text2'];
+                item.oPrice = data['oPrice'];
+                item.nPrice = data['nPrice'];
+                // item.text1 = item.text1.toUpperCase();
+            }
+            return item;
+        })
+
+        return itemsListNew;
+    }
+
+    updateCartItem(item, productResult) {
+        item["amount"] = Number(productResult['mrp']),
+            item["totalPayableAmount"] = Number(productResult['sellingPrice']),
+            item["productMRP"] = productResult['mrp'],
+            item["priceWithoutTax"] = productResult['priceWithoutTax'],
+            item["tpawot"] = Number(productResult['priceWithoutTax']),
+            item["productSelling"] = productResult['sellingPrice'],
+            item["productUnitPrice"] = Number(productResult['sellingPrice'])
+        // item["bulkPriceMap"] = productResult['bulkPriceWithSameDiscount']
+        // ;
+        if (item['bulkPriceWithoutTax'] && productResult['bulkPrices']) {
+            item['bulkPriceMap'] = productResult['bulkPrices'];
+            productResult['bulkPrices']['india'].forEach((element, index) => {
+                if (element.minQty <= item['productQuantity'] && item['productQuantity'] <= element.maxQty) {
+                    // this.bulkPriceSelctedQuatity = element.minQty;
+                    item['bulkPrice'] = element.bulkSellingPrice;
+                    item['bulkPriceWithoutTax'] = element.bulkSPWithoutTax;
+                    // this.bulkDiscount = element.discount;                                        
+                }
+                if (productResult['bulkPrices']['india'].length - 1 == index && item['productQuantity'] >= element.maxQty) {
+                    item['bulkPrice'] = element.bulkSellingPrice;
+                    item['bulkPriceWithoutTax'] = element.bulkSPWithoutTax;
+
+                }
+            });
+        }
+        return item;
+    }
+
+    getAllPromoCodes() {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    getAllPromoCodesByUserId(userID) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes +'?userId=' + userID;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    getPromoCodeDetailById(offerId) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getPromoCodeDetails +'?promoId=' + offerId;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    applyPromoCode(obj) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.validatePromoCode;
+        return this._dataService.callRestful('POST', url, { body: obj });
+    }
+
+    getPromoCodeDetailByName(promoCode) {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getPromoCodeDetails + '?promoCode=' + promoCode;
+        return this._dataService.callRestful('GET', url);
+    }
+
+    appliedPromoCode;
+    genericApplyPromoCode() {
+        this._loaderService.setLoaderState(true);
+        const user = this.localAuthService.getUserSession();
+        if (user.authenticated !== 'true') {
+            this._toastService.show({ type: 'error', text: "To Avail Offer Please Login" });
+        } else {
+            this.getPromoCodeDetailByName(this.appliedPromoCode).subscribe(({status, data, statusDescription: message}: any) => {
+                if (status) {
+                    let obj = [{
+                        offerId: data['promoAttributes']['promoId'],
+                        type: '15'
+                    }];
+                    const cartSession = this.getGenericCartSession;
+                    cartSession['offersList'] = obj;
+                    const cartObject = {
+                        'shoppingCartDto': cartSession
+                    };
+                    this.applyPromoCode(cartObject).subscribe(({status, data, statusDescription: message}:any) => {
+                        this._loaderService.setLoaderState(false);
+                        if(status) {
+                            console.log(data);
+                            if (data['discount'] <= cartSession['cart']['totalAmount']) {
+                                cartSession['cart']['totalOffer'] = data['discount'];
+                                cartSession['extraOffer'] = null;
+                                const productDiscount = data['productDis'];
+                                const productIds = Object.keys(data['productDis'] ? data['productDis'] : {});
+
+                                cartSession.itemsList.map((item) => {
+                                    if (productIds.indexOf(item['productId']) !== -1) {
+                                        return item['offer'] = productDiscount[item['productId']];
+                                    } else {
+                                        return item['offer'] = null;
+                                    }
+                                });
+
+                                this.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                    data => {
+                                        this.setGenericCartSession(data);
+                                        this._loaderService.setLoaderState(false);
+                                        this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
+                                    }
+                                );
+                                
+                            } else {
+                                cartSession['cart']['totalOffer'] = 0;
+                                cartSession['offersList'] = [];
+                                cartSession.itemLists.map((item) => item['offer'] = null);
+                                this.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                    data => {
+                                        this.setGenericCartSession(data);
+                                        this._loaderService.setLoaderState(false);
+                                        this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
+                                    }
+                                );
+                            }
+                        } else {
+                            this.appliedPromoCode = '';
+                            this._toastService.show({ type: 'error', text: message });
+                        }
+                    });
+                } else {
+                    this.appliedPromoCode = '';
+                    this._loaderService.setLoaderState(false);
+                    this._toastService.show({ type: 'error', text: message });
+                }
+            });
+        }
+    }
+
+    genericRemovePromoCode() {
+        if (!this.appliedPromoCode.length) return;
+        this._loaderService.setLoaderState(true);
+        let cartSession = this.getGenericCartSession;
+        cartSession['offersList'] = [];
+        cartSession['extraOffer'] = null;
+        cartSession['cart']['totalOffer'] = 0;
+
+        cartSession.itemsList.map((element) => {
+            element['offer'] = null;
+        });
+
+        this.getShippingAndUpdateCartSession(cartSession).subscribe(
+            data => {
+                this.appliedPromoCode = '';
+                this.setGenericCartSession(data);
+                this.updateCartSession(data).subscribe(res => {
+                    this._loaderService.setLoaderState(false);
+                    this._toastService.show({ type: 'success', text: "Promo Code Removed" });
+                });
+            }
+        );
+    }
+    private _getUserBusinessDetail(data) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
+        return this._dataService.callRestful("GET", url, { params: data }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    pay(pdata) {
+        let userSession = this._localStorageService.retrieve("user");
+        return this._getUserBusinessDetail({ customerId: userSession.userId }).pipe(
+            map((res: any) => res),
+            mergeMap((d) => {
+                let bd: any = null;
+                if (d && d.status && d.statusCode == 200) {
+                    bd = {
+                        company: d["data"]["companyName"],
+                        gstin: d["data"]["gstin"],
+                        is_gstin: d["data"]["isGstInvoice"],
+                    };
+                }
+                pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
+                return this._dataService
+                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {
+                        body: pdata,
+                    })
+                    .pipe(
+                        catchError((res: HttpErrorResponse) => {
+                            return of({ status: false, statusCode: res.status });
+                        }),
+                        map((res: any) => {
+                            return res;
+                        })
+                    );
+            })
+        );
+    }
 }

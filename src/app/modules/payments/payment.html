@@ -1,11 +1,11 @@
 <section class="payment-container payment-modal-bottom">
 
-    <!-- <div class="card-30">
+    <div class="card-30">
         <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
-    </div> -->
+    </div>
 
     <section class="payment_accordion">
-        
+
         <div id="creditDebitCardSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')"
                 class="payment-accordion_header">
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-<!--         
+
         <div id="netBankingSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')"
                 class="payment-accordion_header">
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div id="emiSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')"
                 class="payment-accordion_header">
@@ -63,7 +63,7 @@
                 </div>
             </div>
         </div>
-
+ 
         <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')"
                 class="payment-accordion_header">
@@ -92,6 +92,7 @@
                 </div>
             </div>
         </div>
+
 
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']"
             class="payment_accordion_item">
@@ -136,13 +137,13 @@
                 </div>
             </div>
         </div>
- -->
+
         <div class="note-section">
             <p>Please note: You might be redirected to 3-D secure page to complete your transaction.</p>
         </div>
 
     </section>
-    
+
 </section>
 
 

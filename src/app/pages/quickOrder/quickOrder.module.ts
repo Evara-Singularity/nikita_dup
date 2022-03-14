@@ -1,39 +1,32 @@
+import { CartNoItemModule } from '../../modules/shared-checkout-quick-order-components/cart-no-item/cart-no-item.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
-import { FormsModule } from '@angular/forms';
 import { routing } from "./quickOrder.routing";
-
 import { QuickOrderComponent } from "./quickOrder.component";
-import { QuickOrderService } from "./quickOrder.service";
-import { QuickOrderResolver } from './quickOrder.resolver';
-import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
-import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
-import { CartModule } from '../../modules/cart/cart.module';
-import { CartUpdatesModule } from '../../modules/cartUpdates/cartUpdates.module';
-import { UnAvailableItemsModule } from '../../modules/unAvailableItems/unAvailableItems.module';
-import { OrderSummaryModule } from '../../modules/orderSummary/orderSummary.module';
-import { SharedCheckoutQuickorderModule } from '@app/modules/shared-checkout-quickorder/shared-checkout-quickorder.module';
+import { ObjectToArrayPipeModule } from '@utils/pipes/object-to-array.pipe';
+import { MathFloorPipeModule } from '@utils/pipes/math-floor';
+
+// Newly created Modules
+import { CartNotificationsModule } from '@app/modules/shared-checkout-quick-order-components/cart-notifications/cart-notifications.module';
+import { CartModule } from '@app/modules/shared-checkout-quick-order-components/cart/cart.module';
+import { OrderSummaryModule } from '@app/modules/shared-checkout-quick-order-components/orderSummary/orderSummary.module';
 
 @NgModule({
     imports: [
-        CommonModule,
         routing,
+        CommonModule,
+        // Usable UI modules
+        CartModule,
+        CartNoItemModule,
+        CartNotificationsModule,
+        OrderSummaryModule,
+        // Custom utils modules added
         ObjectToArrayPipeModule,
         MathFloorPipeModule,
-        OrderSummaryModule,
-        FormsModule,
-        CartModule,
-        CartUpdatesModule,
-        UnAvailableItemsModule,
-        // SharedCheckoutQuickorderModule,
     ],
     declarations: [
         QuickOrderComponent,
     ],
-    providers: [
-        QuickOrderResolver,
-        QuickOrderService,
-    ]
 })
 
 export class QuickOrderModule { }

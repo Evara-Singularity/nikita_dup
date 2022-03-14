@@ -104,6 +104,10 @@ export class CommonService
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
     }
 
+    updateUserSession() {
+        this.userSession = this._localStorageService.retrieve("user");
+    }
+
     setNetworkSpeedState(speed)
     {
         this._networkSpeed = speed;
@@ -695,7 +699,7 @@ export class CommonService
         return actualParams;
     }
 
-    getSession(): Observable<{}>
+    getUserSession(): Observable<{}>
     {
         let user = this._localStorageService.retrieve("user");
         // return user from localstorage OR call API
@@ -818,13 +822,11 @@ export class CommonService
         });
     }
 
-    pay(pdata)
-    {
-        let userSession = this._localStorageService.retrieve("user");
+    pay(pdata) {
+        const userSession = this._localStorageService.retrieve("user");
         return this.getBusinessDetail({ customerId: userSession.userId }).pipe(
             map((res: any) => res),
-            mergeMap((d) =>
-            {
+            mergeMap((d) => {
                 let bd: any = null;
                 if (d && d.status && d.statusCode == 200) {
                     bd = {
@@ -834,17 +836,12 @@ export class CommonService
                     };
                 }
                 pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
-                return this._dataService
-                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {
-                        body: pdata,
-                    })
+                return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {})
                     .pipe(
-                        catchError((res: HttpErrorResponse) =>
-                        {
+                        catchError((res: HttpErrorResponse) => {
                             return of({ status: false, statusCode: res.status });
                         }),
-                        map((res: any) =>
-                        {
+                        map((res: any) => {
                             return res;
                         })
                     );

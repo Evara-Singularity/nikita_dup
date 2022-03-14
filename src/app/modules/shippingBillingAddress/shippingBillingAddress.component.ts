@@ -85,7 +85,7 @@ export class ShippingBillingAddressComponent {
     }
     ngOnInit() {
         // alert(this.invoiceType);
-        this.cartSession = this._cartService.getCartSession();
+        this.cartSession = this._cartService.getGenericCartSession;
         //this._cartService.orderSummary.next(cartSession);
         // this.cart = this.cartSession["cart"];
         this.itemsList = (this.cartSession["itemsList"] != undefined && this.cartSession["itemsList"] != null) ? this.cartSession["itemsList"] : [];

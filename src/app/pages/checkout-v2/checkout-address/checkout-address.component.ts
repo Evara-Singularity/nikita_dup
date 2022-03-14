@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -8,12 +7,6 @@ import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
-=======
-import { CartService } from '@services/cart.service';
-import { AddressService } from '@services/address.service';
-import { Component, OnInit } from '@angular/core';
-import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
->>>>>>> b444579e4bab5275ee6518df8aac9ca890af5d41
 import { CheckoutUtil } from '../checkout-util';
 
 @Component({
@@ -42,7 +35,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
 
-<<<<<<< HEAD
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router) { }
 
@@ -108,11 +100,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             returnValue  = false;
         }
         return returnValue;
-=======
-    constructor(private _addressService: AddressService, public _cartService: CartService) { }
-
-    ngOnInit(): void {
->>>>>>> b444579e4bab5275ee6518df8aac9ca890af5d41
     }
 
     handleInvoiceTypeEvent(invoiceType: string)

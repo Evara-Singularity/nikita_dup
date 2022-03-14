@@ -1,5 +1,4 @@
 <div class="main-container">
-<<<<<<< HEAD
     <!--continue-CTA-->
     <section>
         <div *ngIf="isUserLoggedIn else hideContinue" class="continue-button">
@@ -23,16 +22,8 @@
     </section>
     <all-addresses [addDeliveryorBilling]="addDeliveryorBilling" (emitAddressSelectEvent$)="handleAddressEvent($event)"
         (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-    <notfications *ngIf="hasCartItems"></notfications>
+    <cart-notifications *ngIf="hasCartItems"></cart-notifications>
     <cart *ngIf="hasCartItems"></cart>
-    <order-summary [orderSummaryData]="hasCartSession"></order-summary>
+    <!-- <order-summary [orderSummaryData]="hasCartSession"></order-summary> -->
     <cart-no-item *ngIf="!(hasCartItems)"></cart-no-item>
-=======
-    <checkout-address-cta></checkout-address-cta>
-    <all-addresses (emitAddressSelectEvent$)="handleAddressEvent($event)" (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-    <cart-notifications></cart-notifications>
-    <!-- <notifications *ngIf="hasCartItems"></notifications> -->
-    <cart></cart>
-    <order-summary></order-summary>
->>>>>>> b444579e4bab5275ee6518df8aac9ca890af5d41
 </div>

@@ -11,34 +11,39 @@ import { CartService } from '@app/utils/services/cart.service';
     styleUrls: ['./cart-notifications.scss'],
 })
 
-export class CartNotificationsComponent {
+export class CartNotificationsComponent
+{
     constructor(
-        public _cartService: CartService, 
+        public _cartService: CartService,
         private _commonService: CommonService,
         private _modalService: ModalService,
         public _state: GlobalState,
-    ) {}
+    ) { }
 
-    ngOnInit() {
+    ngOnInit()
+    {
     }
 
-    viewUnavailableItems() {
+    viewUnavailableItems()
+    {
         const cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
         const unServiceableMSNs = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))
-        .filter(item=>item['type'] == 'unservicable')
-        .reduce((acc, cv)=>{
-            return [...acc, ...[cv['msnid']]]
-        }, []);
+            .filter(item => item['type'] == 'unservicable')
+            .reduce((acc, cv) =>
+            {
+                return [...acc, ...[cv['msnid']]]
+            }, []);
         let itemsList = cartSession.itemsList.filter(item => item['oos'] || unServiceableMSNs.indexOf(item['productId']) != -1);
         this._modalService.show({
             component: UnAvailableItemsComponent,
             inputs: { data: { page: 'all', items: itemsList, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
             outputs: {},
-            mConfig:{className:'ex'}
+            mConfig: { className: 'ex' }
         });
     }
 
-    removeUnavailableItems(items){
+    removeUnavailableItems(items)
+    {
         this._state.notifyDataChanged('cart.rui', items);
     }
 }

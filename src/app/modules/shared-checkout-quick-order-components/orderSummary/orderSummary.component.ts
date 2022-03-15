@@ -26,7 +26,10 @@ export class OrderSummaryComponent {
     }
 
     updateShippingCharges() {
-        if (!this._cartService.getGenericCartSession.itemList || !this._cartService.getGenericCartSession.length) this.shippingCharges = 0;
+        if (!this._cartService.getGenericCartSession.itemList || !this._cartService.getGenericCartSession.length) {
+            this.shippingCharges = 0;
+            return;
+        } 
 
         this.shippingCharges = this._cartService.getGenericCartSession.itemList.reduce((shippingCharges, item) => {
             shippingCharges +=  (item.shipping || 0);

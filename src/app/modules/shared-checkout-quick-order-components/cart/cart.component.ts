@@ -394,6 +394,7 @@ export class CartComponent {
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
         this.updateAfterDelete();
+        this.validateCart();
         // Push data to data layer
         this.pushDataToDatalayer(this.removeIndex);
         this.sendCritioData();
@@ -403,7 +404,6 @@ export class CartComponent {
     updateAfterDelete() {
         let cartSession = this._cartService.getGenericCartSession;
         cartSession.itemsList.splice(this.removeIndex, 1);
-        console.log(cartSession);
         this.removePopup = false;
         this._cartService.updateCartSession(cartSession).subscribe(updatedCartSession => {
             this._globalLoaderService.setLoaderState(false);

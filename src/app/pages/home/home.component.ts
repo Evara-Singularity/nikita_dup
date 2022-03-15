@@ -320,6 +320,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}
 			this.carouselData = ncd; //carousel data
+			// this.carouselData = (ncd as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+			for(let i=0;i< this.categories.length;i++){
+				for(let j=0 ;j<this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length;j++){
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['priceWithoutTax'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['pricewithouttax']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['pricewithoutTax'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['pricewithouttax']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['discount'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['discount_percentage']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['mainImageThumnailLink'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['imageLink_medium'] 
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['moglixPartNumber'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['msn']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['moglixProductNumber'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['msn']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['productUrl'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['productLink']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['shortDesc'] = this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['short_description']
+				this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]['quantityAvailable']=22;
+				}
+			}
 
 			if (this.middleImageJsonData && this.middleImageJsonData.block_data) {
 				this.middleImageJsonDataLink = this.middleImageJsonData.block_data[

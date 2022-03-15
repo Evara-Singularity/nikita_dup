@@ -104,8 +104,10 @@ export class CartComponent {
                         itemsValidationMessage = this._cartService.setValidationMessageLocalstorage(itemsValidationMessage, itemsValidationMessageOld);
                     } else {
                         //remove all oos product from message list
-                        itemsValidationMessageOld = itemsValidationMessageOld.filter((itemValidationMessageOld) => {
-                            if (itemValidationMessageOld['type'] == 'oos') {
+                        itemsValidationMessageOld = itemsValidationMessageOld.filter(item => {
+                            const indexInValidationMesage = this._cartService.getGenericCartSession.itemList.findIndex(cartItem => item['msnid'] === cartItem['productId']);
+                            if (indexInValidationMesage < 0) return false;
+                            if (item['type'] == 'oos') {
                                 return false;
                             } else {
                                 return true;

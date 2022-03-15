@@ -14,7 +14,6 @@ declare let dataLayer: any;
 export class OrderSummaryComponent {
     shippingCharges: number = 0;
     showPromoOfferPopup: boolean = false;
-    orderSummaryData;
 
     constructor(
         public router: Router,
@@ -23,7 +22,18 @@ export class OrderSummaryComponent {
     ) {}
 
     ngOnInit(): void {
-        this.orderSummaryData = this._cartService.getGenericCartSession;
+        this.updateShippingCharges();
+    }
+
+    updateShippingCharges() {
+        if (!this._cartService.getGenericCartSession.itemList || !this._cartService.getGenericCartSession.length) {
+            this.shippingCharges = 0;
+            return;
+        } 
+
+        this.shippingCharges = this._cartService.getGenericCartSession.itemList.reduce((shippingCharges, item) => {
+            shippingCharges +=  (item.shipping || 0);
+        }, 0);
     }
 
     openOfferPopUp() {

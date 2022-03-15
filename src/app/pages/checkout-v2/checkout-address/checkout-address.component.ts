@@ -121,6 +121,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress, billingAddress)
     {
+        this._cartService.shippingAddress = deliveryAddress
+        this._cartService.billingAddress = billingAddress;
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
         if (invoiceType === this.INVOICE_TYPES.TAX && (!billingAddress)) return;

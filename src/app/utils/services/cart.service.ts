@@ -22,6 +22,7 @@ export class CartService
     readonly INVOICE_TYPE_RETAIL = 'retail';
     readonly INVOICE_TYPE_TAX = 'tax';
     readonly _cartNofications: CartNotificationsModel = { nonServiceableItems: null, nonCashOnDeliverableItems: null, outOfStockItems: null, priceUpdatedItems: null };
+    readonly cashOnDeliveryStatus = { isEnable: true, message: "" };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     public cartUpdated: Subject<any> = new Subject();
     public extra: Subject<{ errorMessage: string }> = new Subject();
@@ -38,6 +39,8 @@ export class CartService
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
+    itemsValidationMessage;
+    appliedPromoCode;
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -1173,7 +1176,7 @@ export class CartService
         }
     }
 
-    itemsValidationMessage;
+    
     getValidationMessageLocalstorage() {
         // return itemValidationMessage;
         // const user = this.localStorageService.retrieve('user');
@@ -1263,7 +1266,7 @@ export class CartService
         return this._dataService.callRestful('GET', url);
     }
 
-    appliedPromoCode;
+    
     genericApplyPromoCode() {
         this._loaderService.setLoaderState(true);
         const user = this.localAuthService.getUserSession();

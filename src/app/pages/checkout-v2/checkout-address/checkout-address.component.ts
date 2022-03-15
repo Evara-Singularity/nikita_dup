@@ -8,7 +8,6 @@ import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
-
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
@@ -51,6 +50,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
+        
     }
 
     updateUserStatus()
@@ -120,6 +120,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress, billingAddress)
     {
+        this._cartService.shippingAddress = deliveryAddress
+        this._cartService.billingAddress = billingAddress;
+        this._cartService.invoiceType = invoiceType;
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
         if (invoiceType === this.INVOICE_TYPES.TAX && (!billingAddress)) return;
@@ -150,6 +153,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
             this._cartService.updateNonServiceableItems(NON_SERVICEABLE_ITEMS);
+            this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
             return;
         }
         this._cartService.updateNonServiceableItems(null);
@@ -157,11 +161,20 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
+        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
+        this._cartService.codNotAvailableObj['itemsArray'] = nonCashonDeliverableMsns;
         if (nonCashonDeliverableMsns.length) {
             this._cartService.updateNonCashonDeliveryItems(nonCashonDeliverableMsns);
             return;
         }
         this._cartService.updateNonCashonDeliveryItems(null);
+    }
+
+    updateValidationMessage(unServicableItems)
+    {
+        let itemsValidationMessage = this._cartService.itemsValidationMessage;
+        itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
+        this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
     //getters

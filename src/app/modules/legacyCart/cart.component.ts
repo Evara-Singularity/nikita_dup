@@ -2827,7 +2827,7 @@ export class CartComponent {
                 this.similarProducts = this._tState.get(SPD, []);
             }
             else {
-                this._productService.getSimilarProducts(productName, categoryCode).subscribe(
+                this._productService.getSimilarProducts(productName, categoryCode, this.productId, productObject['productBO']['groupId']).subscribe(
                     data => {
                         let sp = [];
                         data['products'].forEach(product => {

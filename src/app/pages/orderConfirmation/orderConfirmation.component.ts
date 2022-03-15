@@ -1,3 +1,4 @@
+import { GlobalSessionStorageService } from './../../utils/services/global-session-storage.service';
 import { Component, OnInit, ComponentFactoryResolver, Injector, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -59,9 +60,9 @@ export class OrderConfirmationComponent implements OnInit {
         private globalLoader: GlobalLoaderService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
-        public _commonService: CommonService
-    ) {
-
+        public _commonService: CommonService,
+        private _globalSessionService:GlobalSessionStorageService
+        ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
         this._activatedRoute.params.subscribe((data) => { });
@@ -375,8 +376,13 @@ export class OrderConfirmationComponent implements OnInit {
             obj: [],
             obj1: [],
         }
-
-        cartSession["itemsList"].forEach((element) => {
+        const PAYMENT_MSNS = this._globalSessionService.fetchPaymentMsns();
+        console.log("PAYMENT_MSNS:", PAYMENT_MSNS);
+        const ACTUAL_CART_ITEMS:any[] = (cartSession["itemsList"] as any[]);
+        console.log("ACTUAL_CART_ITEMS:", ACTUAL_CART_ITEMS);
+        const PAYMENT_CART_ITEMS = ACTUAL_CART_ITEMS.filter((item) => PAYMENT_MSNS.includes(item.productId))
+        console.log("PAYMENT_CART_ITEMS:", PAYMENT_CART_ITEMS);
+        PAYMENT_CART_ITEMS.forEach((element) => {
             let price = element.productUnitPrice;
 
             if (element.bulkPrice != "" && element.bulkPrice != null) {
@@ -458,7 +464,7 @@ export class OrderConfirmationComponent implements OnInit {
             if (element.productQuantity)
                 dataObj.aTotalQuantity = parseInt(element.productQuantity) + dataObj.aTotalQuantity;
         });
-
+        this._globalSessionService.clearPaymentMsns();
         return dataObj;
     }
 

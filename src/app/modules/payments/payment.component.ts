@@ -1,3 +1,4 @@
+import { GlobalSessionStorageService } from './../../utils/services/global-session-storage.service';
 import { FormGroup } from '@angular/forms';
 import { Component, EventEmitter, AfterViewInit, OnInit, ElementRef } from '@angular/core';
 import { PaymentService } from './payment.service';
@@ -68,8 +69,12 @@ export class PaymentComponent implements OnInit {
             this.canNEFT_RTGS = cartData['cart']['agentId'];
             this.totalAmount = (cartData['cart']['totalAmount']) + +(cartData['cart']['shippingCharges']) - +(cartData['cart']['totalOffer']); // intialize total amount
 
+            const _cartItems = cartData['itemsList'] || [];
+            const _cartMSNs = (_cartItems as any[]).map(item => item['productId']);
+            this._paymentService.updatePaymentMsns(_cartMSNs);
+
             // TODO  -- change this and use it from cart service 
-            let invoiceType = 'retail' // this.checkOutService.getInvoiceType();
+            let invoiceType = this._cartService.invoiceType 
             this.invoiceType = invoiceType;
 
             if (invoiceType == 'tax') {
@@ -77,10 +82,9 @@ export class PaymentComponent implements OnInit {
                 this.isShowLoader = false;
             }
 
-            // TODO - check feasibilty of this section 
-            // if (!this._commonService.cashOnDeliveryStatus.isEnable) {
-            //     this.disableCod = true;
-            // }
+            if (!this._commonService.cashOnDeliveryStatus.isEnable) {
+                this.disableCod = true;
+            }
 
             // TODO - this should used in case there are some COD not avalible
             this.unAvailableMsnList = this._cartService.codNotAvailableObj['itemsArray'];

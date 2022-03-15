@@ -167,7 +167,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                    this._toastService.show({ type: "error", text: response['status'] });
+                    this._toastService.show({ type: "error", text: response['status'] || response['message'] });
                     this._cartService.logOutAndClearCart();
                     return;
                 }

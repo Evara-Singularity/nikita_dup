@@ -5,27 +5,30 @@
     }
 }
 .thumbnailImageSlider{
-    display:flex;
-    overflow-x:auto;
-    background:#F2F2F2;
-    padding:15px;
-    &::-webkit-scrollbar {
-        display: none;
-    } 
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
-    &>div{
-       margin-right:15px;
-       .activeImgSlide{
-         border: 1px solid #D9232D;
-       }
-       &:last-child{
-           margin-right:0px;
-       }
-        img{
-            width:100px;
-            height:100px;
+    width:100%;
+    .thumbnailImageSlider-wrap{
+       display:flex;
+       overflow-x:auto;
+       background:#F2F2F2;
+       padding:15px;
+       &::-webkit-scrollbar {
+           display: none;
+       } 
+       -ms-overflow-style: none;  /* IE and Edge */
+       scrollbar-width: none; 
+       &>div{
+        margin-right:15px;
+        .activeImgSlide{
+          border: 1px solid #D9232D;
         }
+        &:last-child{
+            margin-right:0px;
+        }
+         img{
+             width:100px;
+             height:100px;
+         }
+     }
     }
 }
 

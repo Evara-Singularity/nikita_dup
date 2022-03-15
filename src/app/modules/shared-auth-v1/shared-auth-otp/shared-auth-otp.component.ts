@@ -35,6 +35,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     incorrectOTP = null;
     authFlow: AuthFlowType;//important:gives information on OTP journey
     isOTPClean: boolean = true;
+    
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService, private _sharedAuthUtilService: SharedAuthUtilService,) { }
@@ -50,13 +51,23 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     ngAfterViewInit(): void
     {
         this.sendTracking();
-        this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((value) =>
+        this.otpFormSubscriber = this.otpFormArray.valueChanges.subscribe((otps:any[]) =>
         {
-            if (this.otpFormArray.valid) { this.validateOTP(); }
+            const OTPS: string = otps.join("").trim();
+            if (OTPS.length === 6 && this.otpFormArray.valid)
+            {
+                this.validateOTP(OTPS);
+            }
         });
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
         this.OTP_INPUTS[0].focus();
         this.enableWebOTP();
+    }
+
+    @HostListener('window:beforeunload', ['$event'])
+    beforeUnloadHander(event)
+    {
+        this._localAuthService.clearAuthFlow();
     }
 
     sendTracking()
@@ -68,15 +79,8 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthUtilService.sendOTPGenericPageLoadTracking(this.authFlow.isUserExists, SUB_SECTION)
     }
 
-    @HostListener('window:beforeunload', ['$event'])
-    beforeUnloadHander(event)
-    {
-        this._localAuthService.clearAuthFlow();
-    }
-
     initiateOTP(isResend?)
     {
-
         const REQUEST = this.getUserData();
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.sendOTP(REQUEST).subscribe(
@@ -97,22 +101,21 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         )
     }
 
-    validateOTP()
+    validateOTP(otpValue)
     {
-        const REQUEST = this.getUserData();
-        REQUEST['otp'] = (this.otpFormArray.value as string[]).join("");
         this._globalLoader.setLoaderState(true);
+        const REQUEST = this.getUserData();
+        REQUEST['otp'] = otpValue;
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-
                 if (response['status']) {
-                    this.verifiedOTP = this.otpValue;
+                    this.verifiedOTP = otpValue;
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(this.otpValue); }, 200) };
+                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(otpValue); }, 200) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
@@ -146,18 +149,19 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     onPaste(event: ClipboardEvent, inputIndex)
     {
+        event.stopPropagation();
+        event.preventDefault();
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
-        let pastedText = (clipboardData) ? clipboardData.getData('text') : '';
+        let pastedText:string = (clipboardData) ? clipboardData.getData('text') : '';
         this.autoFillOTP(pastedText);
     }
 
-    private autoFillOTP(pastedText: any) {
+    autoFillOTP(pastedText: any)  
+    {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {
-            for (let index = 0; index < 6; index++) {
-                this.OTP_INPUTS[index].value = pastedText[index];
-            }
-            this.otpEmitter.emit(pastedText);
+            const OTPS:any[] = pastedText.split("");
+            OTPS.forEach((value, index) => { this.otpFormArray.controls[index].patchValue(value)})
         }
     }
 
@@ -169,6 +173,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     processOTPError(response)
     {
+        this._globalLoader.setLoaderState(false);
         const invalidOTPMessage = (response['message'] as string).toLowerCase();
         this._toastService.show({ type: 'error', text: invalidOTPMessage });
         this._router.navigate(["/login"]);
@@ -197,19 +202,16 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
-        if (typeof window !== 'undefined' && 'OTPCredential' in window) {
-            window.addEventListener('DOMContentLoaded', e =>
+        if ('OTPCredential' in window) {
+            const ac = new AbortController();
+            var reqObj = { otp: { transport: ['sms'] }, signal: ac.signal };
+            navigator.credentials.get(reqObj).then(otp =>
             {
-                const ac = new AbortController();
-                var reqObj = { otp: { transport: ['sms'] }, signal: ac.signal };
-                navigator.credentials.get(reqObj).then(otp =>
-                {
-                    if (otp && otp['code']) {
-                        const OTPS = (otp['code'] as string).split("");
-                        this.autoFillOTP(OTPS)
-                    }
-                }).catch(err => { console.log(err) });
-            })
+                if (otp && otp['code']) {
+                    const OTPS = (otp['code'] as string);
+                    this.autoFillOTP(OTPS)
+                }
+            }).catch(err => { console.log(err) });
         } else {
             console.log('WebOTP not supported!.');
         }

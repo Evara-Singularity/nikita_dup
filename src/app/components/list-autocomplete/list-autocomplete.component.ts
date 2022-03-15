@@ -7,7 +7,7 @@ export function listValidator(list: string[]): ValidatorFn
 {
     return (control: AbstractControl): ValidationErrors | null =>
     {
-        const value = (control.value as string).trim();
+        const value = (control.value.toString()).trim();
         return list.includes(value) ? null : { "not-found": "invalid selection name" }
     };
 }

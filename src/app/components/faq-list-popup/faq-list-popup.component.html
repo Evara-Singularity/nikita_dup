@@ -1,0 +1,37 @@
+<app-pop-up [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
+            <p class="txt header_text page-name">Frequently Asked Questions</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15 hp-100 pad-b-70" content>
+        <section class="pdp-section-card">
+            <p class="display-qn">
+                Displaying Questions
+                <span>{{questionAnswerList?.data.qlist.length}}</span> of
+                <span>{{questionAnswerList?.data.qlist.length}} </span>
+            </p>
+            <div *ngFor="let item of questionAnswerList?.data.qlist; let i = index;">
+                <div class="qna-block">
+                    <div class="qn">
+                        <span class="heading-3">Q{{i+1}}:</span>
+                        <span class="qn-right heading-3"> {{item.questionText}}</span>
+                    </div>
+                    <div class="answers">
+                        <div class="answer-block">
+                            <p class=" answer">Ans:</p>
+                            <p class="ans-details answer">{{item.answerText}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+        </section>
+        <div class="question-submit">
+            <p>Didn’t get the right answer you are looking for</p>
+            <button (click)="toggleAskQuestionPopup()" class="btn btn-red-bg">ASK YOUR QUESTION</button>
+        </div>
+    </div>
+</app-pop-up>

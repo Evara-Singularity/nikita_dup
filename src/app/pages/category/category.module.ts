@@ -10,7 +10,7 @@ import { CategoryFooterModule } from '@app/components/category-footer/category-f
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
-
+import { AccordianModule } from "@app/modules/accordian/accordian.module";
 @NgModule({
     imports: [
         CommonModule,
@@ -22,7 +22,8 @@ import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-p
         CategoryRoutingModule,
         KpToggleDirectiveModule,
         SharedProductListingModule,
-        ProductListingAppPromoModule
+        ProductListingAppPromoModule,
+        AccordianModule
     ],
     declarations: [
         CategoryComponent,

@@ -1,3 +1,4 @@
+import { CommonService } from '@app/utils/services/common.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -36,7 +37,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     logoutSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router) { }
+        private _router: Router, private _commonService:CommonService) { }
 
     ngOnInit(): void
     {
@@ -150,6 +151,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
             this._cartService.updateNonServiceableItems(NON_SERVICEABLE_ITEMS);
+            this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
             return;
         }
         this._cartService.updateNonServiceableItems(null);
@@ -157,11 +159,19 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
+        this._commonService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
         if (nonCashonDeliverableMsns.length) {
             this._cartService.updateNonCashonDeliveryItems(nonCashonDeliverableMsns);
             return;
         }
         this._cartService.updateNonCashonDeliveryItems(null);
+    }
+
+    updateValidationMessage(unServicableItems)
+    {
+        let itemsValidationMessage = this._commonService.itemsValidationMessage;
+        itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
+        this._commonService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
     //getters

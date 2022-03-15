@@ -38,6 +38,7 @@ export class CartService
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
+    itemsValidationMessage;
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -1173,7 +1174,7 @@ export class CartService
         }
     }
 
-    itemsValidationMessage;
+    
     getValidationMessageLocalstorage() {
         // return itemValidationMessage;
         // const user = this.localStorageService.retrieve('user');

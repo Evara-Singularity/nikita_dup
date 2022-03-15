@@ -34,7 +34,7 @@ export class Categories {
 		enableRating: true,
 		enableVideo: false,
 		// design config
-		enableCard: true,
+		enableCard: false,
 		verticalOrientation: false,
 		horizontalOrientation: true,
 		lazyLoadImage: true

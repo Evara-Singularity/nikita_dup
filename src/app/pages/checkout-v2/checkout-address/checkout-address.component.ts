@@ -1,4 +1,3 @@
-import { CommonService } from '@app/utils/services/common.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -9,7 +8,6 @@ import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
-
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
@@ -37,7 +35,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     logoutSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _commonService:CommonService) { }
+        private _router: Router) { }
 
     ngOnInit(): void
     {
@@ -52,6 +50,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
+        
     }
 
     updateUserStatus()
@@ -123,6 +122,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this._cartService.shippingAddress = deliveryAddress
         this._cartService.billingAddress = billingAddress;
+        this._cartService.invoiceType = invoiceType;
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
         if (invoiceType === this.INVOICE_TYPES.TAX && (!billingAddress)) return;
@@ -161,7 +161,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
-        this._commonService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
+        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
+        this._cartService.codNotAvailableObj['itemsArray'] = nonCashonDeliverableMsns;
         if (nonCashonDeliverableMsns.length) {
             this._cartService.updateNonCashonDeliveryItems(nonCashonDeliverableMsns);
             return;
@@ -171,9 +172,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     updateValidationMessage(unServicableItems)
     {
-        let itemsValidationMessage = this._commonService.itemsValidationMessage;
+        let itemsValidationMessage = this._cartService.itemsValidationMessage;
         itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
-        this._commonService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
+        this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
     //getters

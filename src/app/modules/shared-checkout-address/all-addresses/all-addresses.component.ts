@@ -1,13 +1,13 @@
-import { AfterViewInit } from '@angular/core';
 /**
- * This is cemtralised component in which delivery & billing address can be viewed, added & edited.
+ * This is cemtralised component in which shipping & billing address can be viewed, added & edited.
  * AddressListComponent: to display all the address list for selection as pop-up
- * CreateEditDeliveryComponent/CreateEditDeliveryComponent: to handle add or edit of delivery or billing details as pop-up
+ * CreateEditDeliveryComponent/CreateEditDeliveryComponent: to handle add or edit of shipping or billing details as pop-up
  */
 
+import { AfterViewInit } from '@angular/core';
 import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AddressListActionModel, AddressListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { AddressListActionModel, AddressListModel, CountryListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Subject, Subscription } from 'rxjs';
@@ -37,6 +37,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
     deliveryAddressList = [];
     billingAddressList = [];
+    countryList = [];
 
     @ViewChild("addressListRef", { read: ViewContainerRef })
     addressListRef: ViewContainerRef;
@@ -57,8 +58,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnInit()
     {
+        this.fetchCountryList();
         this.invoiceType = new FormControl(this.INVOICE_TYPES.RETAIL);
-        this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.TAX);
+        this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.RETAIL);
     }
 
     ngAfterViewInit(): void
@@ -76,6 +78,16 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
+    /**@description to fetch country list which is used in future */
+    fetchCountryList()
+    {
+        this._addressService.getCountryList().subscribe((countryList: CountryListModel[]) =>
+        {
+            this.countryList = countryList;
+        })
+    }
+
+
     /**
      * @description:to trace invoicetype as 'tax' or 'retail'
      * @param isGST: comes from template by event binding 
@@ -84,7 +96,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     {
         this.invoiceType.patchValue(isGST ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL);
         this.emitInvoiceTypeEvent$.emit(this.invoiceType.value);
-        this.emitAddressEvent(null, null);
+        this.updateAddressTypes(this.USER_SESSION.userId, this.invoiceType.value);
     }
 
     /**
@@ -171,6 +183,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.createEditAddressInstance.instance['invoiceType'] = this.invoiceType.value;
         this.createEditAddressInstance.instance['verifiedPhones'] = verifiedPhones;
         this.createEditAddressInstance.instance['displayCreateEditPopup'] = true;
+        this.createEditAddressInstance.instance['countryList'] = this.countryList;
         this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
         {
             //Expected Actions: "Add or Edit or null", null implies no action to be taken
@@ -229,9 +242,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.emitAddressSelectEvent$.emit(DATA);
     }
 
-    /**
-     * @description:closes the address list pop-up depending on address form pop-up
-     */
+    /** @description:closes the address list pop-up depending on address form pop-up     */
     closeAddressListPopup()
     {
         if (!this.addressListInstance) return

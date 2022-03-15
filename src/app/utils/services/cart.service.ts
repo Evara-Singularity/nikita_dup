@@ -12,7 +12,6 @@ import { GlobalLoaderService } from './global-loader.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Router } from '@angular/router';
 import { Address } from '../models/address.modal';
-import { CartNotificationsModel } from '../models/shared-checkout.models';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -21,7 +20,6 @@ export class CartService
     readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
     readonly INVOICE_TYPE_RETAIL = 'retail';
     readonly INVOICE_TYPE_TAX = 'tax';
-    readonly _cartNofications: CartNotificationsModel = { nonServiceableItems: null, nonCashOnDeliverableItems: null, outOfStockItems: null, priceUpdatedItems: null };
     readonly cashOnDeliveryStatus = { isEnable: true, message: "" };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     public cartUpdated: Subject<any> = new Subject();
@@ -34,7 +32,6 @@ export class CartService
     public businessDetailSubject: Subject<any> = new Subject<any>();
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
-    private cartNotifications$: Subject<CartNotificationsModel> = new Subject<CartNotificationsModel>()
     public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -64,7 +61,6 @@ export class CartService
         private _toastService: ToastMessageService,
         private _router: Router,
     ) { 
-        this.cartNotifications$.next(this._cartNofications);
     }
 
     set billingAddress(address: Address)
@@ -87,30 +83,6 @@ export class CartService
         return this._shippingAddress
     }
 
-    updateNonServiceableItems(items)
-    {
-        this._cartNofications.nonServiceableItems = items;
-        this.cartNotifications$.next(this._cartNofications);
-    }
-
-    updateNonCashonDeliveryItems(items)
-    {
-        this._cartNofications.nonCashOnDeliverableItems = items;
-        this.cartNotifications$.next(this._cartNofications);
-    }
-
-    updateOutOfStockItems(items)
-    {
-        this._cartNofications.outOfStockItems = items;
-        this.cartNotifications$.next(this._cartNofications);
-    }
-
-    updatePriceUpdatedItems(items)
-    {
-        this._cartNofications.priceUpdatedItems = items;
-        this.cartNotifications$.next(this._cartNofications);
-    }
-
     /**
      * Use const INVOICE_TYPE_RETAIL && INVOICE_TYPE_TAX
      */
@@ -122,11 +94,6 @@ export class CartService
     get invoiceType()
     {
         return this._invoiceType
-    }
-
-    get cartNotifications()
-    {
-        return this.cartNotifications$;
     }
 
     getShippingValue(cartSession)

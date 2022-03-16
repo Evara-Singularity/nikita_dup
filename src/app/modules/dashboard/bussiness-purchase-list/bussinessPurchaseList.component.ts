@@ -507,7 +507,7 @@ export class BussinessPurchaseListComponent {
 
     if (userSession) {
       let params = { sessionid: userSession.sessionId };
-      this._productService.getCartBySession(params).subscribe((res) => {
+      this.cartService.getCartBySession(params).subscribe((res) => {
         if (res["statusCode"] == 200) {
           this.getPurcahseList();
           this.sessionDetails = res;
@@ -524,7 +524,7 @@ export class BussinessPurchaseListComponent {
           alert(session);
         } else {
           let params = { sessionid: session["sessionId"] };
-          this._productService.getCartBySession(params).subscribe((cartRes) => {
+          this.cartService.getCartBySession(params).subscribe((cartRes) => {
             if (cartRes["statusCode"] == 200) {
               this.sessionDetails = cartRes;
             }

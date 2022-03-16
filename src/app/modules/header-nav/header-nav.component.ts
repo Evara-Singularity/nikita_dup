@@ -82,7 +82,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         public router: Router,
         private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
-        private cartService: CartService,
+        public cartService: CartService,
         private location: Location,
         private sharedAuthService: SharedAuthService,
         private cfr: ComponentFactoryResolver,

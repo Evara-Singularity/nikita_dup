@@ -34,18 +34,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
 
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
+    constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router) { }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.updateUserStatus();
-        this.updatePayableAmount();
     }
 
     ngAfterViewInit(): void
     {
-        this.orderSummarySubscription = this._cartService.orderSummary.subscribe((data) => { this.updatePayableAmount() });
         this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
@@ -58,18 +55,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const USER_SESSION = this._localAuthService.getUserSession();
         if (USER_SESSION && USER_SESSION.authenticated == "true") {
             this.isUserLoggedIn = true;
-        }
-    }
-
-    /** @description calulates the total payable amount from order summary subscription*/
-    updatePayableAmount()
-    {
-        const CART = this._cartService.getCartSession() && this._cartService.getCartSession()['cart'];
-        if (CART) {
-            const TOTAL_AMOUNT = CART['totalAmount'] || 0;
-            const SHIPPPING_CHARGES = CART['shippingCharges'] || 0;
-            const TOTAL_OFFER = CART['totalOffer'] || 0;
-            this.payableAmount = (TOTAL_AMOUNT + SHIPPPING_CHARGES) - TOTAL_OFFER;
         }
     }
 

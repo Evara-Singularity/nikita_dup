@@ -35,8 +35,8 @@ export class Categories {
 		enableVideo: false,
 		// design config
 		enableCard: false,
-		verticalOrientation: false,
-		horizontalOrientation: true,
+		verticalOrientation: true,
+		horizontalOrientation: false,
 		lazyLoadImage: true
 	  }
 	openPopup;

@@ -15,9 +15,9 @@
     }
 }
 
-.card-container , .list-view{
+.card-container{
     @extend %horizontal-card-container;
-    &.grid-view-scrllable {
+    &.grid-view-scrollable {
         width: 100%;
         padding: 10px 7px;
         border: 1px solid #e3e3e3;
@@ -71,7 +71,7 @@
             }
         }
     }
-    &.grid-view {
+    &.home-grid-view {
         width: 100%;
         padding: 10px 7px;
         border: 1px solid #e3e3e3;
@@ -125,25 +125,25 @@
             }
         }
     }
-    // &.list-view {
-    //     .left {
-    //         width: 100px;
-    //     }
-    //     .right {
-    //         width: calc(100% - 115px);
-    //         .price-details {
-    //             flex-direction: row;
-    //             .left {
-    //                 text-align: left;
-    //                 width: calc(100% - 120px);
-    //             }
-    //             .right {
-    //                 text-align: right;
-    //                 width: 115px;
-    //             }
-    //         }
-    //     }
-    // }
+    &.list-view {
+        .left {
+            width: 100px;
+        }
+        .right {
+            width: calc(100% - 115px);
+            .price-details {
+                flex-direction: row;
+                .left {
+                    text-align: left;
+                    width: calc(100% - 120px);
+                }
+                .right {
+                    text-align: right;
+                    width: 115px;
+                }
+            }
+        }
+    }
     .left {
         width: 100px;
         text-align: center;
@@ -335,7 +335,18 @@
     min-height: 90px;
     background: white;
     float: left;
+    // display: inline-flex;
+    // &.card-half-width{
+    //     width: 50%;
+    //     display: inline-flex;
+    // }
+    // &.card-custom-width{
+    //     width: 165px;
+    // }
 }
+// .card-vertical-home{
+//     width: 50% !important;
+// }
 .home-grid-view{
     width: 100%;
 }

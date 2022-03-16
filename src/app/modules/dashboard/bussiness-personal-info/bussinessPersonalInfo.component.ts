@@ -83,45 +83,7 @@ export class BussinessInfoComponent {
   logout() {
     this._localAuthService.clearAuthFlow();
     this._localAuthService.clearBackURLTitle();
-    this._commonService.logout().subscribe((response) => {
-      this._localStorageService.clear("user");
-      console.log(this._localStorageService.retrieve("user"));
-      this._cartService.cart.next({count:0});
-      if (this.isBrowser) {
-      }
-      this._commonService
-        .getUserSession()
-        .pipe(
-          map((res: any) => {
-            this._localAuthService.setUserSession(res);
-            this.user = this._localAuthService.getUserSession();
-            return res;
-          }),
-          delay(100),
-          mergeMap((data) => {
-            let params = { sessionid: data["sessionId"] };
-            return this._cartService.getCartBySession(params).pipe(
-              map((res: any) => {
-                return this._cartService.generateGenericCartSession(res);
-              })
-            );
-          })
-        )
-        .subscribe((response: any) => {
-          let cartSession = response;
-          const cs = this._cartService.generateGenericCartSession(cartSession);
-          this._cartService.setGenericCartSession(cs);
-          this._cartService.cart.next({count:cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0});
-          this._cartService.orderSummary.next(cartSession);
-        });
-      this._localAuthService.logout$.emit();
-      if (!this.isServer) {
-        setTimeout(() => {
-          this._location.replaceState("/"); // clears browser history so they can't navigate with back button
-          this._router.navigateByUrl("/");
-        }, 1000);
-      }
-    });
+    this._cartService.logOutAndClearCart();
   }
 
   onSubmit(data) {

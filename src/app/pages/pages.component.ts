@@ -237,13 +237,7 @@ export class PagesComponent implements OnInit {
 
   checkForUserAndCartSession() {
     if (this.router.url.indexOf('quickorder') && this.router.url.indexOf('checkout') < 0 && this.router.url.indexOf('payment') < 0) {
-      this._cartService.checkForUserAndCartSessionAndNotify().subscribe(cartSessionStatus => {
-        if (cartSessionStatus) {
-          console.log('CART SESSION SUCCESSFUL.')
-        } else {
-          console.log('CART SESSION FAILED.')
-        }
-      })
+      this._cartService.refreshCartSesion();
     }
   }
 

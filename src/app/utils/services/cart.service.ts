@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddToCartProductSchema } from "../models/cart.initial";
 import { DataService } from './data.service';
-import { Observable, of, pipe, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, pipe, Subject } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -21,8 +21,6 @@ export class CartService
     readonly INVOICE_TYPE_RETAIL = 'retail';
     readonly INVOICE_TYPE_TAX = 'tax';
     readonly cashOnDeliveryStatus = { isEnable: true, message: "" };
-    public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
-    public cartUpdated: Subject<any> = new Subject();
     public extra: Subject<{ errorMessage: string }> = new Subject();
     public orderSummary: Subject<any> = new Subject();
     public homePageFlyOut: Subject<any> = new Subject();
@@ -52,6 +50,8 @@ export class CartService
         "cart": {},
         "itemsList": [],
     };
+    public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
+    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
 
     constructor(
         private _dataService: DataService,
@@ -81,6 +81,11 @@ export class CartService
     get shippingAddress()
     {
         return this._shippingAddress
+    }
+
+
+    public getCartUpdatesChanges(): Observable<any> {
+        return this._cartUpdatesChanges.asObservable()
     }
 
     /**
@@ -250,6 +255,7 @@ export class CartService
 
     logOutAndClearCart(redirectURL = null)
     {
+        this._localStorageService.clear("user");
         this.logoutCall().pipe(
             map(logoutReponse =>
             {
@@ -708,6 +714,16 @@ export class CartService
                     return cartSessionReponse;
                 })
             );
+    }
+
+    refreshCartSesion() {
+        this.checkForUserAndCartSessionAndNotify().subscribe(status => {
+            if (status) {
+                this._cartUpdatesChanges.next(this.cartSession);
+            } else {
+                console.trace('cart refresh failed');
+            }
+        })
     }
 
     checkForUserAndCartSessionAndNotify(): Observable<boolean>

@@ -83,11 +83,6 @@ export class CartService
         return this._shippingAddress
     }
 
-
-    public getCartUpdatesChanges(): Observable<any> {
-        return this._cartUpdatesChanges.asObservable()
-    }
-
     /**
      * Use const INVOICE_TYPE_RETAIL && INVOICE_TYPE_TAX
      */
@@ -395,6 +390,7 @@ export class CartService
     {
         const cartSession = this.generateGenericCartSession(result);
         this.setGenericCartSession(cartSession);
+        this._cartUpdatesChanges.next(cartSession);
         this.orderSummary.next(result);
         this.localAuthService.login$.next(redirectUrl);
         let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
@@ -716,7 +712,11 @@ export class CartService
             );
     }
 
-    refreshCartSesion() {
+    public getCartUpdatesChanges(): Observable<any> {
+        return this._cartUpdatesChanges.asObservable()
+    }
+
+    public refreshCartSesion() {
         this.checkForUserAndCartSessionAndNotify().subscribe(status => {
             if (status) {
                 this._cartUpdatesChanges.next(this.cartSession);
@@ -724,6 +724,10 @@ export class CartService
                 console.trace('cart refresh failed');
             }
         })
+    }
+
+    private publishCartUpdateChange(cartSession) {
+        this._cartUpdatesChanges.next(cartSession);
     }
 
     checkForUserAndCartSessionAndNotify(): Observable<boolean>

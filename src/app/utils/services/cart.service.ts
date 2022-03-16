@@ -712,10 +712,12 @@ export class CartService
             );
     }
 
+    // latest cartsession
     public getCartUpdatesChanges(): Observable<any> {
         return this._cartUpdatesChanges.asObservable()
     }
 
+    // refresh and chnages to communicated 
     public refreshCartSesion() {
         this.checkForUserAndCartSessionAndNotify().subscribe(status => {
             if (status) {
@@ -726,6 +728,7 @@ export class CartService
         })
     }
 
+    // incase of update use this to notify cart session
     private publishCartUpdateChange(cartSession) {
         this._cartUpdatesChanges.next(cartSession);
     }

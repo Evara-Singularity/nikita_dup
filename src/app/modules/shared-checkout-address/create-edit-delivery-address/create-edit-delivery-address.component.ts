@@ -30,13 +30,13 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     @Input("invoiceType") invoiceType = "retail";
     @Input("address") address = null;
     @Input("verifiedPhones") verifiedPhones: string[];
+    @Input("countryList") countryList = [];
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
     addressForm: FormGroup = null;
     userSesssion = null;
     lastSearchedPostcode = null;
 
-    countryList = [];
     stateList = [];
 
     isVerifyingPostcode = false;
@@ -55,11 +55,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     ngOnInit() 
     {
         this.createAddressForm(this.address);
-        this._addressService.getCountryList().subscribe((countryList: CountryListModel[]) =>
-        {
-            this.countryList = countryList;
-            this.fetchStateList(this.countryList[0]['idCountry']);
-        })
+        this.fetchStateList(this.countryList[0]['idCountry']);
     }
 
     ngAfterViewInit()
@@ -99,7 +95,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             'phoneVerified': [(address && address.phoneVerified) ? address.phoneVerified : false]
         });
         if (this.phone.value) { this.verifyPhone(this.phone.value); }
-        if (this.postCode.value) { this.isPostcodeValid = true;}
+        if (this.postCode.value) { this.isPostcodeValid = true; }
     }
 
     fetchStateList(countryId)
@@ -181,7 +177,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         this._addressService.postAddress(this.getRequestData(address)).subscribe((addressList: any[]) =>
         {
             if (addressList.length) {
-                this._toastMessage.show({ type: "success", text: `${this.ADDRESS_TYPE} address saved successfully`});
+                this._toastMessage.show({ type: "success", text: `${this.ADDRESS_TYPE} address saved successfully` });
                 this.closeAddressPopUp$.emit({ aType: A_TYPE, action: this.modeType, addresses: addressList });
             }
         });

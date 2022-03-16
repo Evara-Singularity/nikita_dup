@@ -36,9 +36,3 @@ export interface SelectedAddressModel
     billingAddress:any;
 }
 
-export interface CartNotificationsModel {
-    nonServiceableItems:any[]
-    nonCashOnDeliverableItems:any[]
-    outOfStockItems:any[]
-    priceUpdatedItems:any[]
-}

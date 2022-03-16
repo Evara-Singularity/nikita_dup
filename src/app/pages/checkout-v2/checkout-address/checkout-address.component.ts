@@ -50,9 +50,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
-        
     }
 
+    /** @description updates user status and is used to display the continue CTA*/
     updateUserStatus()
     {
         const USER_SESSION = this._localAuthService.getUserSession();
@@ -61,6 +61,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
+    /** @description calulates the total payable amount from order summary subscription*/
     updatePayableAmount()
     {
         const CART = this._cartService.getCartSession() && this._cartService.getCartSession()['cart'];
@@ -72,6 +73,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
+    /**@description scrolls to payment summary section on click of info icon*/
     scrollPaymentSummary()
     {
         if (document.getElementById('payment_summary')) {
@@ -80,44 +82,32 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
+    /**@description deicdes whether to procees to payment or not.*/
     continueCheckout()
     {
-        if(this.canContinue())
-        {
-            this._router.navigate(['/checkout/payment']);
-        }
-    }
-
-    canContinue()
-    {
-        //TODO:CHECK for atleast one address is selected.
-        //Cart validity
-        let returnValue = true;
-        //address check
-        if (!this.deliveryAddress) 
-        {
+        //TODO:add all checkout conditions
+        if (!this.deliveryAddress) {
             this.addDeliveryorBilling.next(true);
-            returnValue  = false;
+            return;
         }
-        return returnValue;
-    }
-
-    handleInvoiceTypeEvent(invoiceType: string)
-    {
-        this.invoiceType = invoiceType;
+        this._router.navigate(['/checkout/payment']);
     }
 
     //Address Information
     handleAddressEvent(addressInformation: SelectedAddressModel)
     {
-        //TODO:updating index logic
-        //TODO:Serviceable & COD available logic.
         this.invoiceType = addressInformation.invoiceType;
         this.deliveryAddress = addressInformation.deliveryAddress;
         this.billingAddress = addressInformation.billingAddress;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
     }
 
+    /**
+     * @description initiates the non-serviceable & non COD items processing
+     * @param invoiceType containes retail | tax
+     * @param deliveryAddress contains deliverable address
+     * @param billingAddress contains billing address and optional for 'retail' case
+     */
     verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress, billingAddress)
     {
         this._cartService.shippingAddress = deliveryAddress
@@ -129,6 +119,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this.verifyServiceablityAndCashOnDelivery(POST_CODE);
     }
 
+    /**
+     * @description to extract non-serviceable and COD msns
+     * @param postCode deliverable post code
+     */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
         const cartSession = this._cartService.getGenericCartSession;
@@ -142,34 +136,34 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+            this.updateNonDeliverableItems(NON_CASH_ON_DELIVERABLE_MSNS);
         })
     }
 
+    /**
+     * @description to update the non serviceable items which are used in cart notfications
+     * @param contains items is cart
+     * @param nonServiceableMsns containes non serviceable msns
+     */
     updateNonServiceableItems(cartItems: any[], nonServiceableMsns: any[])
     {
-        //TODO:handle in case of all are serviceable
         if (nonServiceableMsns.length) {
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
-            this._cartService.updateNonServiceableItems(NON_SERVICEABLE_ITEMS);
             this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
             return;
         }
-        this._cartService.updateNonServiceableItems(null);
+        this.updateValidationMessage([]);
     }
 
-    updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
+    /**@description updates global object to set in COD is available or not and used in payment section */
+    updateNonDeliverableItems(nonCashonDeliverableMsns: any[])
     {
+        this._cartService.codNotAvailableObj['itemsArray'] = nonCashonDeliverableMsns.length || nonCashonDeliverableMsns;
         this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
-        this._cartService.codNotAvailableObj['itemsArray'] = nonCashonDeliverableMsns;
-        if (nonCashonDeliverableMsns.length) {
-            this._cartService.updateNonCashonDeliveryItems(nonCashonDeliverableMsns);
-            return;
-        }
-        this._cartService.updateNonCashonDeliveryItems(null);
     }
 
+    /**@description updates global validation messages which are used in cart notifications */
     updateValidationMessage(unServicableItems)
     {
         let itemsValidationMessage = this._cartService.itemsValidationMessage;
@@ -177,9 +171,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
+    handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
     //getters
     get hasCartSession() { return this._cartService.getGenericCartSession ? true : false; }
-
     get hasCartItems()
     {
         if (!this.hasCartSession) return false;

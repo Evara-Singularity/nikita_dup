@@ -81,8 +81,12 @@
 
         //grid variables
         $colmax:12;
-        $default-gap:15px;
+        $default-gap:10px;
+        $default-gap15:10px;
 
+
+        $small-icon-font:16px;
+        $large-icon-font:20px;
 
         /*Extends*/
          %cards {
@@ -410,4 +414,7 @@
                 width: calc(100% - 38px);
             }
         }
+
+      
+         
        

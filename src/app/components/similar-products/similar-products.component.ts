@@ -21,6 +21,8 @@ export class SimilarProductsComponent implements OnInit {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     similarProducts: ProductsEntity[] = null;
     @Input('outOfStock') outOfStock = false;
+    @Input('partNumber') partNumber;
+    @Input('groupId') groupId;
     @Input('productName') productName;
     @Input('categoryCode') categoryCode;
     @Input('analytics') analytics = null;
@@ -55,7 +57,7 @@ export class SimilarProductsComponent implements OnInit {
     }
 
     getProductSimilar() {
-        this.productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) => {
+        this.productService.getSimilarProducts(this.productName, this.categoryCode, this.partNumber, this.groupId).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
                 this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));

@@ -59,16 +59,3 @@
         }
     }
 }
-
-.vertical-scroll-container {
-    background-color: $white-color;
-    overflow-x: auto;
-    width: 100%;
-    ::-webkit-scrollbar {
-        display: none;
-    } 
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
-    .inner-scroll-container {
-    }
-}

@@ -8,13 +8,18 @@
         </div> -->
     </div>
     <div class="vertical-scroll-container similar-products">
-        <div class="inner-scroll-container" [style.width.px]="similarProducts.length * 165">
-            <ng-container *ngFor="let product of similarProducts;let pIndex=index">
-                <product-horizontal-card [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
-                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                    [analytics]="analytics">
-                </product-horizontal-card>
-            </ng-container>
+        <div class="inner-scroll-container">
+
         </div>
     </div>
+
+    <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
+        <ng-container *ngFor="let product of similarProducts;let pIndex=index">
+            <product-horizontal-card [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                [analytics]="analytics">
+            </product-horizontal-card>
+        </ng-container>
+    </product-card-vertical-container>
+
 </section>

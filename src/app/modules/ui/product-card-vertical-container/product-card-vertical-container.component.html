@@ -1,0 +1,7 @@
+<ng-container *ngIf="numberOfItems > 0">
+    <div class="vertical-scroll-container similar-products">
+        <div class="inner-scroll-container" [style.width.px]=" numberOfItems * 165">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</ng-container>

@@ -11,6 +11,7 @@ import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/ut
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductListService } from '@app/utils/services/productList.service';
+import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 
 @Component({
     selector: 'app-similar-products',
@@ -85,7 +86,8 @@ export class SimilarProductsComponent implements OnInit {
         MathFloorPipeModule,
         MathCeilPipeModule,
         ProductHorizontalCardModule,
-        LazyLoadImageModule
+        LazyLoadImageModule,
+        ProductCardVerticalContainerModule
     ]
 })
 export class ProductModule { }

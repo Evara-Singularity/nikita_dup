@@ -44,11 +44,12 @@
                     </li>
                 </ng-template>
             </ul>
-            <ul class="view-products"
+            <!-- carouselData[category.dataKey]{{carouselData[category.dataKey]|json}} -->
+            <ul class="view-products home-grid-view-container"
                 [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
                 [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
-                <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
-                    <div [routerLink]="item.productlink"
+                <!-- <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4"> -->
+                    <!-- <div [routerLink]="item.productlink"
                         (click)="setCookieLink(carouselData[category.dataKey]['layout_name'], item.msn, 'pdp')" class="view-products-card">
                         <div class="left">
                             <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.imageLink_medium"
@@ -74,8 +75,12 @@
                                 <span>By :</span> {{getBrandName(item.short_description)}}
                             </p>
                         </div>
-                    </div>
-                </li>
+                    </div> -->
+                    <product-horizontal-card [cardFeaturesConfig]="oosSimilarcardFeaturesConfig" [isOosSimilarCard]="false"
+                        [isFirstView]="true" [hideAd]="true"
+                        *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4"
+                        [moduleUsedIn]="'FeaturedArrivalModule'" [product]="item">
+                    </product-horizontal-card>
             </ul>
         </div>
     </section>

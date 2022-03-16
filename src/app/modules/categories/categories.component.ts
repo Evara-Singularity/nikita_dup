@@ -11,6 +11,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 import { ProductHorizontalCardModule } from '../product-horizontal-card/product-horizontal-card.module';
+import { ProductCardFeature } from '@app/utils/models/product.listing.search';
 
 @Component({
 	selector: 'home-categories',
@@ -25,7 +26,19 @@ export class Categories {
 	@Input('imagePath') imagePath;
 	@Input('recentProductList') recentProductList;
 	@Output('sendDataToPopUP') sendDataToPopUP = new EventEmitter();
-
+	readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
+		// feature config
+		enableAddToCart: false,
+		enableBuyNow: false,
+		enableFeatures: false,
+		enableRating: true,
+		enableVideo: false,
+		// design config
+		enableCard: false,
+		verticalOrientation: true,
+		horizontalOrientation: false,
+		lazyLoadImage: true
+	  }
 	openPopup;
 	categoryNameFromHomePage;
 

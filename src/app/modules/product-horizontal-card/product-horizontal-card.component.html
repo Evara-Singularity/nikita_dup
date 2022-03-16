@@ -9,10 +9,11 @@
     </div>
     <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a>
     <!-- wrapper div for card class -->
-    <div [class.available-item-card]="isOosSimilarCard"
+    <div [class.available-item-card]="isOosSimilarCard" class="card-vertical-home"
         [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.verticalOrientation}">
+        <!-- add .home-grid-view class in below container -->
         <div class="card-container"
-            [ngClass]="{'list-view': (cardFeaturesConfig.horizontalOrientation), 'grid-view': (cardFeaturesConfig.verticalOrientation)}">
+            [ngClass]="{'list-view': (cardFeaturesConfig.horizontalOrientation), 'grid-view-scrollable': (cardFeaturesConfig.verticalOrientation)}">
             <div class="left" (click)="navigateToPDP()">
                 <div class="tags" *ngFor="let tags of product['productTags']">
                     <img [src]="tags['tagImageLink']" />
@@ -73,11 +74,11 @@
                             <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                                 <i class="icon-cart1"></i>
                             </span>
-                            <button *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
+                            <button class="btn btn-red-bg pad-10" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
                         <ng-container
                             *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
-                            <button class="white send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
+                            <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
                         </ng-container>
                     </div>
                 </div>

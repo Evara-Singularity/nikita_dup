@@ -75,17 +75,36 @@ $fullwidth:100%;
 $half-width:50%;
 $card-width:100px;
 
+//grid variables
+$colmax:12;
+$default-gap:10px;
+$default-gap15:10px;
+
+
 //Height
 $grid-image-height:115px;
 $list-image-width:84px;
 $grid-card-height:260px;
 $grid1-card-height:210px;
 
+
 /*Font Size*/
 $small-font: 10px;
 $medium-font: 12px;
 $large-font: 14px;
 $extra-large-font: 16px;
+
+$small-icon-font:16px;
+$large-icon-font:20px;
+
+/*Extends*/
+ %cards {
+    padding: 10px;
+    color: #333;
+    background: $white;
+    border: 1px solid #ccc;
+}
+
 
 //grid variables
 $colmax:12;
@@ -421,6 +440,7 @@ $default-gap: 15px;
             content: "\e912";
             color: #b9b9b9;
         }
+
     }
     .chk-txt {
         font-size: 15px;
@@ -430,48 +450,8 @@ $default-gap: 15px;
         width: calc(100% - 38px);
     }
 }
-/*Mixins*/
 
-@mixin gridForCategory($noOfItems, $space: null) {
-    @if $space {
-        width: calc(100% / #{$noOfItems} - (#{$space}px / #{$noOfItems}));
-    } @else {
-        width: calc(100% / #{$noOfItems});
-    }
-    float: left;
-}
 
-@mixin transform($transforms) {
-    -moz-transform: $transforms;
-    -o-transform: $transforms;
-    -ms-transform: $transforms;
-    -webkit-transform: $transforms;
-    transform: $transforms;
-}
-
-@mixin rotate($deg) {
-    @include transform(rotate(#{$deg}deg));
-}
-
-@mixin scale($scale) {
-    @include transform(scale($scale));
-}
-
-@mixin translate($x, $y) {
-    @include transform(translate($x, $y));
-}
-
-@mixin placeholder {
-    ::-webkit-input-placeholder {
-        @content;
-    }
-    :-moz-placeholder {
-        @content;
-    }
-    ::-moz-placeholder {
-        @content;
-    }
-    :-ms-input-placeholder {
-        @content;
-    }
-}
+      
+         
+ 

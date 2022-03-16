@@ -632,116 +632,116 @@
         }
     }
 
-    .deals-list {
-        .heading-3 {
-            padding-left: 15px;
-            border-bottom: 0.5px solid #E3E3E3;
-        }
+    // .deals-list {
+    //     .heading-3 {
+    //         padding-left: 15px;
+    //         border-bottom: 0.5px solid #E3E3E3;
+    //     }
 
-        li {
-            @extend %clear-fix;
-            border-bottom: 0.5px solid #E3E3E3;
-            padding: 15px;
+    //     li {
+    //         @extend %clear-fix;
+    //         border-bottom: 0.5px solid #E3E3E3;
+    //         padding: 15px;
 
-            &.location {
-                background: rgba(65, 123, 253, 0.1);
-            }
+    //         &.location {
+    //             background: rgba(65, 123, 253, 0.1);
+    //         }
 
-            .ico_offer {
-                font-size: $extra-large-font;
-                float: left;
-                line-height: initial;
-                padding-right: 10px;
-            }
+    //         .ico_offer {
+    //             font-size: $extra-large-font;
+    //             float: left;
+    //             line-height: initial;
+    //             padding-right: 10px;
+    //         }
 
-            .gst-icon {
-                float: left;
-                padding-right: 10px;
+    //         .gst-icon {
+    //             float: left;
+    //             padding-right: 10px;
 
-                img {
-                    width: 18px;
-                }
-            }
+    //             img {
+    //                 width: 18px;
+    //             }
+    //         }
 
-            .ofr_txt {
-                font-size: $large-font;
-                float: left;
-                width: 70%;
-                width: calc(100% - 120px);
-                padding-bottom: 2px;
+    //         .ofr_txt {
+    //             font-size: $large-font;
+    //             float: left;
+    //             width: 70%;
+    //             width: calc(100% - 120px);
+    //             padding-bottom: 2px;
 
-                .first-txt {
-                    font-weight: 500;
-                    line-height: 21px;
-                }
+    //             .first-txt {
+    //                 font-weight: 500;
+    //                 line-height: 21px;
+    //             }
 
-                small {
-                    font-size: $medium-font;
-                    padding-top: 5px;
-                    display: block;
-                    color: gray
-                }
+    //             small {
+    //                 font-size: $medium-font;
+    //                 padding-top: 5px;
+    //                 display: block;
+    //                 color: gray
+    //             }
 
-                &.location-txt {
-                    width: calc(100% - 110px);
-                }
-            }
+    //             &.location-txt {
+    //                 width: calc(100% - 110px);
+    //             }
+    //         }
 
-            .ofr_img {
-                width: 25px;
-                float: left;
-                margin-right: 5px;
-            }
+    //         .ofr_img {
+    //             width: 25px;
+    //             float: left;
+    //             margin-right: 5px;
+    //         }
 
-            .ico-right {
-                float: right;
-                color: #0D99FF;
-                line-height: 21px;
-                font-weight: 500;
-                font-size: $medium-font;
-            }
+    //         .ico-right {
+    //             float: right;
+    //             color: #0D99FF;
+    //             line-height: 21px;
+    //             font-weight: 500;
+    //             font-size: $medium-font;
+    //         }
 
-            small {
-                color: #303030;
-                font-size: $medium-font;
-            }
+    //         small {
+    //             color: #303030;
+    //             font-size: $medium-font;
+    //         }
 
-            strong {
-                font-weight: 500;
-            }
+    //         strong {
+    //             font-weight: 500;
+    //         }
 
-            .full-txt {
-                color: $btn-color-red;
-                font-size: $large-font;
-                font-weight: bold;
-                padding-bottom: 10px;
-            }
+    //         .full-txt {
+    //             color: $btn-color-red;
+    //             font-size: $large-font;
+    //             font-weight: bold;
+    //             padding-bottom: 10px;
+    //         }
 
-            .getQuote {
-                padding: 6px 8px;
-                color: $btn-color-red;
-                background: $color-red-light;
-                border-radius: 3px;
-                font-weight: bold;
-            }
-        }
+    //         .getQuote {
+    //             padding: 6px 8px;
+    //             color: $btn-color-red;
+    //             background: $color-red-light;
+    //             border-radius: 3px;
+    //             font-weight: bold;
+    //         }
+    //     }
 
-        li.active {
-            background: rgba(65, 123, 253, 0.1);
-        }
-    }
+    //     li.active {
+    //         background: rgba(65, 123, 253, 0.1);
+    //     }
+    // }
 
-    .deals-block {
-        margin: 10px 0 10px 0;
+    // .deals-block {
+    //     margin: 10px 0 10px 0;
 
-        .view-order {
-            color: #0D99FF;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 15px 0px;
-        }
-    }
+    //     .view-order {
+    //         color: #0D99FF;
+    //         text-align: center;
+    //         font-size: 14px;
+    //         font-weight: 500;
+    //         padding: 15px 0px;
+    //     }
+    // }
 
     .product-specification {
         background: white;

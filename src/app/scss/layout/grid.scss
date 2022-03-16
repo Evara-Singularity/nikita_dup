@@ -1,66 +1,20 @@
 @import '../../scss/variables';
-//width
-$fullwidth:100%;
-$half-width:50%;
-
-//grid variables
-$colmax:12;
-$default-gap:15px;
-$default-gap15:15px;
+.pwa-row {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   padding:10px 15px;
+}
 @for $i from 1 through 12 {
     $colnum: $i;
-    .mg-col-#{$i} { 
+    .pwa-col-#{$i} { 
         -webkit-box-flex: 0;
         -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
-        flex: 0 0 ($fullwidth / $colmax)*$colnum;
+        flex: 0 0 auto;
         max-width: ($fullwidth / $colmax)*$colnum;
-        padding-left: $default-gap15;
-        padding-right: $default-gap15;
+        width:($fullwidth / $colmax)*$colnum;
+      //   padding-left: $default-gap;
+      //   padding-right: $default-gap;
      }
 }
 
-.mg-col{
-   flex: auto;
-}
-
- .mg-container{
-    width: $fullwidth;
-    position: relative;
- }
-
- .mg-row{
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -$default-gap15;
-    justify-content: space-evenly;
-    align-items: center;
-    
- }
- .mg-row-no-marg{
-   width: $fullwidth;
-   display: flex;
-   flex-wrap: wrap;
-   grid-view-card{
-     width: 50%;
-     max-width: 50%;
-     padding-bottom: $default-gap15;
-     &:nth-child(odd){
-        padding-right: $default-gap15/2;
-    }
-    &:nth-child(even){
-        padding-left: $default-gap15/2;
-    }
-  }
-}
-.mg-row-no-wrap{
-   display: flex;
-   align-items: center;
-   overflow-x: auto;
-   -ms-overflow-style: none;  /* IE and Edge */
-   scrollbar-width: none;  /* Firefox */
-   &::-webkit-scrollbar {display: none;}
-   grid-view-card{
-      width: 50%;
-      max-width: 50%;
-   }
- }

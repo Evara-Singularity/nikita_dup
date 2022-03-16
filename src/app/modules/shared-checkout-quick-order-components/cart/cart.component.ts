@@ -78,14 +78,16 @@ export class CartComponent {
                 }
                 return this.getShippingValue(data);
             }),
-        ) .subscribe(result => {
+        ).subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
             this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(result));
+            console.log(this._cartService.getGenericCartSession);
             this.validateCart();
         });
     }
 
     validateCart() {
+        if (!this._commonService.userSession['authenticated'] || this._commonService.userSession['authenticated'] == 'false') return;
         const cartSession = { "shoppingCartDto": this._cartService.getGenericCartSession };
         forkJoin([
             this._cartService.validateCartApi(cartSession),
@@ -105,7 +107,7 @@ export class CartComponent {
                     } else {
                         //remove all oos product from message list
                         itemsValidationMessageOld = itemsValidationMessageOld.filter(item => {
-                            const indexInValidationMesage = this._cartService.getGenericCartSession.itemList.findIndex(cartItem => item['msnid'] === cartItem['productId']);
+                            const indexInValidationMesage = (this._cartService.getGenericCartSession.itemList && this._cartService.getGenericCartSession.itemList.length > 0) ? this._cartService.getGenericCartSession.itemList.findIndex(cartItem => item['msnid'] === cartItem['productId']) : -1;
                             if (indexInValidationMesage < 0) return false;
                             if (item['type'] == 'oos') {
                                 return false;
@@ -254,7 +256,20 @@ export class CartComponent {
                 productDetails.productQuantity = incrementOrDecrementBy;
                 let isQua = this.isQuantityAvailable(updatedCartItemCount, productDetails, index);
                 if (isQua["status"]) {
-                    this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
+                    this._cartService.addToCart({ buyNow, productDetails }).pipe(
+                        mergeMap((data: any) => {
+                            if (this._commonService.isServer) {
+                                return of(null);
+                            }
+                            /**
+                             * return cartSession, if sessionId mis match
+                             */
+                            if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
+                                return of(data);
+                            }
+                            return this.getShippingValue(data);
+                        }),
+                    ).subscribe(result => {
                         if (!result && this._cartService.buyNowSessionDetails) {
                             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
                         } else {
@@ -268,6 +283,7 @@ export class CartComponent {
                                     });
                                     this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
                                     this._cartService.getGenericCartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
+                                    console.log(this._cartService.getGenericCartSession.itemsList);
                                     this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
                                 } else {
                                     this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });

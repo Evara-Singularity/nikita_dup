@@ -1270,7 +1270,8 @@ export class CartService
                                     }
                                 });
 
-                                this.getShippingAndUpdateCartSession(cartSession).subscribe(
+                                this.getShippingAndUpdateCartSession(cartSession).pipe(
+                                    mergeMap(cartSession => this.updateCartSession(cartSession))).subscribe(
                                     data => {
                                         this.setGenericCartSession(data);
                                         this._loaderService.setLoaderState(false);

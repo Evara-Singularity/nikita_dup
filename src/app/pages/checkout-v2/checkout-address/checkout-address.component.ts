@@ -43,7 +43,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngAfterViewInit(): void
     {
-        this.orderSummarySubscription = this._cartService.orderSummary.subscribe((data) => { this.updatePayableAmount() });
         this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });

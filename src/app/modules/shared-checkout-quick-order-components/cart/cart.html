@@ -57,8 +57,8 @@
                         <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                         <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                         <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
-                        <span class="grey-txt" *ngIf="item.shippingCharges == 0 && !item.oos">Price Details</span>
-                        <span class="grey-txt" *ngIf="item.shippingCharges > 0 && !item.oos">Price + Shipping Details</span>
+                        <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                        <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping Details</span>
                         <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
                     </div>
                     <i [style.color]="item.oos ? '#9c9292' : '#3875FD'" class="icon-down"></i>

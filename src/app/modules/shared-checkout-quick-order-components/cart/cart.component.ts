@@ -65,23 +65,8 @@ export class CartComponent {
     // Function to get and set the latest cart
     loadCartDataFromAPI() {
         this._globalLoaderService.setLoaderState(true);
-        this._cartService.getCartBySession({ sessionid: this._commonService.userSession['sessionId'] }).pipe(
-            mergeMap((data: any) => {
-                if (this._commonService.isServer) {
-                    return of(null);
-                }
-                /**
-                 * return cartSession, if sessionId mis match
-                 */
-                if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
-                    return of(data);
-                }
-                return this.getShippingValue(data);
-            }),
-        ).subscribe(result => {
+        this._cartService.getCartUpdatesChanges().subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
-            this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(result));
-            console.log(this._cartService.getGenericCartSession);
             this.validateCart();
         });
     }

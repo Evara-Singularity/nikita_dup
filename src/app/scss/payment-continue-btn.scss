@@ -1,16 +1,4 @@
-@import '../../../scss/variables';
-
-.main-container {
-    margin-top: 50px;
-}
-
-button.btn[disabled] {
-    background: #bdbdbd;
-}
-
-.animateClass {
-    @extend %transition;
-}
+@import '../../app/scss/variables';
 
 .continue-button {
     padding: 10px 0;
@@ -48,8 +36,15 @@ button.btn[disabled] {
     button {
         width: 175px;
         background: $btn-color-red;
+        // 
         float: right;
         height: 55px;
         text-transform: uppercase;
+    }
+    button:disabled,
+    button[disabled]{
+        border: 1px solid #999999;
+        background-color: #d6d6d6;
+        color: #666666;
     }
 }

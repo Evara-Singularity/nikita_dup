@@ -332,7 +332,7 @@ export class CartService
                         return of(cartSession);
                     }
                 }),
-                mergeMap((result) =>
+                map((result) =>
                 {
                     if (result && result['cart'] && result['itemsList'] && Array.isArray(result['itemsList'])) {
                         return this._notifyCartChanges(result, config.redirectUrl || null);
@@ -386,16 +386,21 @@ export class CartService
      * @param redirectUrl
      * @returns 
      */
-    private _notifyCartChanges(result, redirectUrl)
-    {
+    private _notifyCartChanges(result, redirectUrl) {
+        // create generic format of cart
         const cartSession = this.generateGenericCartSession(result);
+        // set cart obj copy in local var
         this.setGenericCartSession(cartSession);
+        // this notify that cart is updated subcribe to changes when required. 
+        // USE @getCartUpdatesChanges for subscribing
         this._cartUpdatesChanges.next(cartSession);
+        // used in checkout order summary
         this.orderSummary.next(result);
+        // incase login used
         this.localAuthService.login$.next(redirectUrl);
-        let obj = { count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) };
-        this.cart.next(obj);
-        return of(cartSession);
+        // add product in cart count for header nav
+        this.cart.next({ count: result.noOfItems || (result.itemsList ? result.itemsList.length : 0) });
+        return cartSession;
     }
 
 
@@ -535,8 +540,8 @@ export class CartService
             }),
             mergeMap((payload) => {
                 return this._getPrepaidDiscount(payload).pipe(map((cartSessionResponse) => {
-                    if (cartSessionResponse) {
-                        return this._notifyCartChanges(cartSessionResponse, null);
+                    if (cartSessionResponse && cartSessionResponse['status'] == true && cartSessionResponse['data']) {
+                        return cartSessionResponse['data']
                     }
                     return null;
                 }))
@@ -545,9 +550,11 @@ export class CartService
                 if (!cartSession) return null;
                 let prepaidDiscount = 0;
                 let totalPayableAmount = 0;
+
                 if (cartSession['extraOffer'] && cartSession['extraOffer']['prepaid']) {
                     prepaidDiscount = cartSession['extraOffer']['prepaid']
                 }
+
                 if (cartSession && cartSession['cart']) {
                     const cart = Object.assign({}, cartSession['cart']);
                     let shipping = cart.shippingCharges ? cart.shippingCharges : 0;
@@ -674,6 +681,9 @@ export class CartService
                         map((cartSession: any) =>
                         {
                             return cartSession;
+                        }),
+                        map((cartSession)=>{
+                            return this._notifyCartChanges(cartSession, null);
                         })
                     );
                 } else {
@@ -704,9 +714,7 @@ export class CartService
                 {
                     this._loaderService.setLoaderState(false);
                     if (cartSessionReponse['status']) {
-                        const updatedCartResponse = this.generateGenericCartSession(cartSessionReponse);
-                        this._notifyCartChanges(updatedCartResponse, null);
-                        return updatedCartResponse;
+                        return this.generateGenericCartSession(cartSessionReponse);;
                     }
                     // api returns false, then return actual object returned from server
                     return cartSessionReponse;

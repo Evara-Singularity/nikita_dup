@@ -55,10 +55,9 @@ export class CashOnDeliveryComponent {
     }
 
     ngOnInit() {
-
         this.currUser = this._localAuthService.getUserSession();
-        this.userNum = parseInt(this._cartService.shippingAddress as any['phone']);
-        this.userEmail = this._cartService.shippingAddress as any['email'];
+        this.userNum = (this._cartService.shippingAddress && this._cartService.shippingAddress['phone']) || null;
+        this.userEmail = (this._cartService.shippingAddress && this._cartService.shippingAddress['email']) || null;
         let cartSession: any = this._cartService.getCartSession();        
 
         if (cartSession['cart']['totalPayableAmount'] < this.globalConstants['codMin']) {

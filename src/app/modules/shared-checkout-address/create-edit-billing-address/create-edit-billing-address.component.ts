@@ -29,6 +29,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     @Input("isAddMode") isAddMode = true;
     @Input("invoiceType") invoiceType = "tax";
     @Input("address") address = null;
+    @Input("countryList") countryList = [];
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
     businessForm: FormGroup = null;
@@ -36,7 +37,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     lastSearchedPostcode = null;
     verifiedGSTINDetails = null;
 
-    countryList = [];
     stateList = [];
 
     isVerifyingPostcode = false;
@@ -58,11 +58,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     ngOnInit() 
     {
         this.createBusinessForm(this.address);
-        this._addressService.getCountryList().subscribe((countryList: CountryListModel[]) =>
-        {
-            this.countryList = countryList;
-            this.fetchStateList(this.countryList[0]['idCountry']);
-        })
+        this.fetchStateList(this.countryList[0]['idCountry']);
     }
 
     ngAfterViewInit()
@@ -194,7 +190,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                 landmark: [(address && address.landmark) ? address.landmark : null],
                 addressLine: [(address && address.addressLine) ? address.addressLine : null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9._;, \/()-]*$/)]],
                 city: [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
-                idCountry: [{value:null, disabled:true}, [Validators.required]],
+                idCountry: [{ value: null, disabled: true }, [Validators.required]],
                 idState: [{ value: null, disabled: true }, [Validators.required]],
             })
         });
@@ -246,7 +242,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                     }
                     return;
                 }
-                this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] || "Unable to save address"});
+                this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] || "Unable to save address" });
             });
         }
     }
@@ -257,11 +253,12 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     isBusinessFieldFocus(control: string)
     {
         const VALUE = this.businessForm.get('businessDetail').get(control).value;
-        return VALUE?true:false;
+        return VALUE ? true : false;
     }
-    isBillingFieldFocus(control: string) { 
+    isBillingFieldFocus(control: string)
+    {
         const VALUE = this.businessForm.get('billingAddress').get(control).value
-        return VALUE ? true : false; 
+        return VALUE ? true : false;
     }
 
     //getters

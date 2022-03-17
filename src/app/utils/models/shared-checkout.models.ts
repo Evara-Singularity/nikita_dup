@@ -35,3 +35,10 @@ export interface SelectedAddressModel
     deliveryAddress:any;
     billingAddress:any;
 }
+
+export interface CheckoutHeaderModel
+{
+    label:string;
+    status:boolean;
+}
+

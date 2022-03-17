@@ -5,6 +5,7 @@ import {
   ComponentFactoryResolver,
   ElementRef,
   EventEmitter,
+  HostListener,
   Inject,
   Injector,
   OnInit,
@@ -27,7 +28,6 @@ import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject, Subscription } from "rxjs";
@@ -151,7 +151,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   similarForOOSContainer = [];
   similarForOOSLoaded = true;
-
   // Q&A vars
   questionMessage: string;
   listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
@@ -264,6 +263,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  // ondemad loaded components for FAQ listing
+  faqListPopupInstance = null;
+  @ViewChild("faqListPopup", { read: ViewContainerRef })
+  faqListPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components to submit question
+  askQuestionPopupInstance = null;
+  @ViewChild("askQuestionPopup", { read: ViewContainerRef })
+  askQuestionPopupContainerRef: ViewContainerRef;
+  // ondemad loaded components for FAQ success popup
+  faqSuccessPopupInstance = null;
+  @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
+  faqSuccessPopupContainerRef: ViewContainerRef;
 
   iOptions: any = null;
 
@@ -288,6 +299,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   rfqTotalValue: any;
   hasGstin: boolean;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
+  isAskQuestionPopupOpen: boolean;
 
 
   set showLoader(value: boolean) {
@@ -324,7 +336,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private renderer2: Renderer2,
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
-    private _trackingService: TrackingService,
     @Inject(DOCUMENT) private document,
     @Optional() @Inject(RESPONSE) private _response: any
   ) {
@@ -359,15 +370,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.checkDuplicateProduct();
       this.backUrlNavigationHandler();
       this.attachSwipeEvents();
+      this.attachBackClickHandler();
     }
   }
+  
 
   backUrlNavigationHandler() {
     // make sure no browser history is present
     if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
       this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
-      window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
-      window.history.pushState('', '', this.router.url);
+      if (this.productCategoryDetails && this.productCategoryDetails['categoryLink']) {
+        window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
+        window.history.pushState('', '', this.router.url);
+      }
     }
   }
 
@@ -468,6 +483,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.showLoader = false;
         this.globalLoader.setLoaderState(false);
         this.checkForRfqGetQuote();
+        this.checkForAskQuestion();
         this.updateUserSession();
       },
       (error) => {
@@ -481,7 +497,16 @@ export class ProductComponent implements OnInit, AfterViewInit {
     if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
       this.raiseRFQQuote();
       setTimeout(() => {
-        this.scrollToResults('get-quote-section');
+        this.scrollToResults('get-quote-section',-30);
+      }, 1000);
+    }
+  }
+
+  checkForAskQuestion(){
+    if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+      this.askQuestion();
+      setTimeout(() => {
+        this.scrollToResults('ask-question-section',166);
       }, 1000);
     }
   }
@@ -537,6 +562,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       .getGroupProductObj(productId)
       .subscribe((productData) => {
         if (productData["status"] == true) {
+         
           this.processProductData(
             {
               productBO: productData["productBO"],
@@ -777,7 +803,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         ? this.priceQuantityCountry["moq"]
         : 1;
 
-
+    this.getFirstAttributeValue();
     this.setOutOfStockFlag();
     this.checkForBulkPricesProduct();
 
@@ -786,7 +812,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.productService.resetOOOSimilarProductsData();
       this.similarForOOSLoaded = true;
       this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
-      this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"]);
+      this.setSimilarProducts(this.productName, this.productCategoryDetails["categoryCode"], this.rawProductData['partNumber'], this.rawProductData['groupId']);
     }
 
     /**
@@ -842,7 +868,23 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
+  getFirstAttributeValue(){
+    let selectedValue;
+    if (this.productFilterAttributesList && this.productFilterAttributesList.length > 0) {
+      this.productFilterAttributesList.forEach((singleAttrList, index) => {
+        if (singleAttrList["items"] &&  singleAttrList["items"].length > 0) {
+          singleAttrList["items"] = singleAttrList["items"].filter((item) =>{
+            if(item.selected == 0){
+              return true;
+            }
+            selectedValue = item;
+            return false;
+          });
+          singleAttrList["items"] = [selectedValue].concat(singleAttrList["items"]);
+        }
+      });
+    }
+  }
   removeSimilarProductInstanceOOS() {
     if (this.similarProductInstanceOOS) {
       this.similarProductInstanceOOS = null;
@@ -952,11 +994,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setSimilarProducts(productName, categoryCode) {
+  setSimilarProducts(productName, categoryCode, productId, groupId) {
     this.similarProducts = [];
     if (this.isBrowser) {
       this.productService
-        .getSimilarProducts(productName, categoryCode)
+        .getSimilarProducts(productName, categoryCode, productId, groupId)
         .subscribe((response: any) => {
           let products = response["products"];
           if (products && (products as []).length > 0) {
@@ -1181,6 +1223,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
           const calculatedDiscount = ((this.productMrp - priceMap.bulkSPWithoutTax) / this.productMrp) * 100;
           return { ...priceMap, calculatedDiscount }
         })
+        //filtering Data to show the 
+        this.productBulkPrices=this.productBulkPrices.filter((bulkPrice)=>{
+          return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty']
+
+        });
+
         this.checkBulkPriceMode();
       }
     }
@@ -1467,9 +1515,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
           if (!buyNow) {
-            this.cartService.setCartSession(result);
+            this.cartService.setGenericCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
-            this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
             this.globalLoader.setLoaderState(false);
             this.showAddToCartToast();
           } else {
@@ -1501,7 +1548,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   updateAddtoCartSocketAnalyticEvent(buynow: boolean) {
-    const cartSession = Object.assign({}, this.cartService.getCartSession())
+    const cartSession = Object.assign({}, this.cartService.getGenericCartSession)
     let totQuantity = 0;
     let trackData = {
       event_type: "click",
@@ -1622,6 +1669,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.injector
         );
 
+      this.similarProductInstance.instance["partNumber"] = this.rawProductData['partNumber'];
+      this.similarProductInstance.instance["groupId"] = this.rawProductData['groupId'];
       this.similarProductInstance.instance["productName"] = this.productName;
       this.similarProductInstance.instance["categoryCode"] =
         this.productCategoryDetails["categoryCode"];
@@ -2268,6 +2317,25 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.goToLoginPage(this.productUrl);
     }
   }
+  
+  backTrackIndex = -1;
+  attachBackClickHandler() {
+    window.addEventListener('popstate', (event) => {
+      //Your code here
+      let url = this.backTrackIndex < 0 ? this.rawProductData.defaultCanonicalUrl : this.productService.oosSimilarProductsData.similarData[this.backTrackIndex]["productUrl"];
+      window.history.replaceState('', '', url);
+    });
+  }
+
+  handleRoutingForPopUps() {
+    window.history.replaceState('', '', this.router.url);
+    window.history.pushState('', '', this.router.url);
+  }
+
+  handleRestoreRoutingForPopups() {
+    window.history.replaceState('', '', this.commonService.getPreviousUrl);
+    window.history.pushState('', '', this.router.url);
+  }
 
   async openPopUpcrousel(
     slideNumber: number = 1,
@@ -2296,7 +2364,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
 
-      this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
+      this.popupCrouselInstance.instance["analyticProduct"] = this.analytics.basicPDPTracking(this.rawProductData);
       this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
@@ -2310,9 +2378,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
       (
         this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>
       ).subscribe((status) => {
-        this.displayCardCta = false;
-        this.popupCrouselInstance = null;
-        this.popupCrouselContainerRef.remove();
+        this.clearImageCrouselPopup();
+        this.handleRestoreRoutingForPopups();
       });
       (
         this.popupCrouselInstance.instance[
@@ -2323,7 +2390,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
           this.moveToSlide$.next(slideData.currentSlide);
         }
       });
+      this.backTrackIndex = oosProductIndex;
+      this.handleRoutingForPopUps();
     }
+  }
+
+  private clearImageCrouselPopup() {
+    this.displayCardCta = false;
+    this.popupCrouselInstance = null;
+    this.popupCrouselContainerRef.remove();
   }
 
   async loadProductCrousel(slideIndex) {
@@ -2509,8 +2584,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
-      const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
-      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
+      const PRODUCT = this.analytics.basicPDPTracking(this.rawProductData);
+      let analyticsDetails = this.analytics.getCommonTrackingObject(PRODUCT, "pdp");
       let ytParams = "?autoplay=1&rel=0&controls=1&loop&enablejsapi=1";
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true }, };
@@ -3234,10 +3309,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
   }
 
-  scrollToResults(id: string) {
+  scrollToResults(id: string,offset) {
     if (document.getElementById(id)) {
       let footerOffset = document.getElementById(id).offsetTop;
-      ClientUtility.scrollToTop(1000, footerOffset - 30);
+      ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
 
@@ -3345,7 +3420,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
-    this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
+    this.productInfoPopupInstance.instance["analyticProduct"] = this.analytics.basicPDPTracking(this.rawProductData);
     this.productInfoPopupInstance.instance["modalData"] =
       oosProductIndex > -1
         ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -3356,11 +3431,124 @@ export class ProductComponent implements OnInit, AfterViewInit {
       "closePopup$"
       ] as EventEmitter<boolean>
     ).subscribe((data) => {
-      this.holdRFQForm = false;
-      // document.getElementById('infoTabs').scrollLeft = 0;
-      this.productInfoPopupInstance = null;
-      this.productInfoPopupContainerRef.remove();
-      this.displayCardCta = false;
+      this.closeProductInfoPopup();
+      this.handleRestoreRoutingForPopups();
+    });
+    this.handleRoutingForPopUps();
+    this.backTrackIndex = oosProductIndex;
+  }
+
+  private closeProductInfoPopup() {
+    this.holdRFQForm = false;
+    this.productInfoPopupInstance = null;
+    this.productInfoPopupContainerRef.remove();
+    this.displayCardCta = false;
+  }
+
+  async handleFaqListPopup() {
+    this.showLoader = true;
+    const { FaqListPopoupComponent } = await import(
+      "./../../components/faq-list-popup/faq-list-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqListPopoupComponent);
+    this.faqListPopupInstance =
+      this.faqListPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqListPopupInstance.instance["questionAnswerList"] = this.questionAnswerList;
+    (
+      this.faqListPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.faqListPopupInstance = null;
+      this.faqListPopupContainerRef.remove();
+    });
+    (
+      this.faqListPopupInstance.instance[
+      "emitAskQuestinPopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe(() => {
+      this.askQuestion();
+    });
+  }
+
+  async askQuestion() {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      this.askQuestionPopup();
+      } else {
+      this.goToLoginPage(this.productUrl,"Continue to ask question", "askQuestion");
+    }
+  }
+
+  async askQuestionPopup() {
+        this.showLoader = true;
+        const { AskQuestionPopoupComponent } = await import(
+          "./../../components/ask-question-popup/ask-question-popup.component"
+        ).finally(() => {
+          this.showLoader = false;
+          this.isAskQuestionPopupOpen = true;
+        });
+        const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
+        this.askQuestionPopupInstance =
+          this.askQuestionPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+          );
+        this.askQuestionPopupInstance.instance["productCategoryDetails"] = this.productCategoryDetails;
+        this.askQuestionPopupInstance.instance["productSubPartNumber"] = this.productSubPartNumber;
+        this.askQuestionPopupInstance.instance["defaultPartNumber"] = this.defaultPartNumber;
+        (
+          this.askQuestionPopupInstance.instance[
+          "closePopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.askQuestionPopupInstance = null;
+          this.askQuestionPopupContainerRef.remove();
+          this.isAskQuestionPopupOpen = false;
+        });
+        (
+          this.askQuestionPopupInstance.instance[
+          "showSuccessPopup$"
+          ] as EventEmitter<boolean>
+        ).subscribe(() => {
+          this.handleFaqSuccessPopup();
+        });
+  }
+
+  async handleFaqSuccessPopup() {
+    this.showLoader = true;
+    const { FaqSuccessPopoupComponent } = await import(
+      "./../../components/faq-success-popup/faq-success-popup.component"
+    ).finally(() => {
+      this.showLoader = false;
+    });
+    const factory = this.cfr.resolveComponentFactory(FaqSuccessPopoupComponent);
+    this.faqSuccessPopupInstance =
+      this.faqSuccessPopupContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+    this.faqSuccessPopupInstance.instance["rawReviewsData"] = this.questionAnswerList;
+    (
+      this.faqSuccessPopupInstance.instance[
+      "closePopup$"
+      ] as EventEmitter<boolean>
+    ).subscribe((section) => {
+      this.faqSuccessPopupInstance = null;
+      this.faqSuccessPopupContainerRef.remove();
+       if (section === 'pdpPage') {
+        this.askQuestionPopupInstance = null;
+        this.askQuestionPopupContainerRef.remove();
+        this.commonService.scrollToTop()
+      }
     });
   }
 
@@ -3611,6 +3799,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return analytices;
   }
 
+  sendTrackingData(){
+    const TAXONS = this.taxons;
+    const page={
+    "linkPageName": `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`, 
+    "linkName": "WhatsApp",
+    "loginStatus": this.commonService.loginStatusTracking
+    }
+    const custData = this.commonService.custDataTracking;
+    const order = this.orderTracking;
+    this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
+  }
+
   get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
 
   initialMouse;
@@ -3688,7 +3888,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      let currentMouse = event.clientX || event.originalEvent.touches[0].pageX;
+      let currentMouse = event.clientX || (event.originalEvent ? event.originalEvent.touches[0].pageX : 0);
       let relativeMouse = currentMouse - this.initialMouse;
       let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
       // $('.slide-text').fadeTo(0, slidePercent);
@@ -3708,7 +3908,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   sliderMouseDownEvent(event) {
     this.mouseIsDown = true;
     this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    this.initialMouse = event.clientX || event.originalEvent.touches[0].pageX;
+    this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
   }
 
 
@@ -3721,4 +3921,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
     this.resetLazyComponents();
   }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.clearImageCrouselPopup();
+    this.closeProductInfoPopup();
+  }
+
+
 }

@@ -1,3 +1,28 @@
 <div class="main-container">
-    <all-addresses (emitAddressSelectEvent$)="handleAddressEvents($event)"></all-addresses>
+    <section>
+        <div *ngIf="isUserLoggedIn else hideContinue" class="continue-button">
+            <div class="container payable">
+                <p class="total-mount">
+                    <span class="payable-amnt">Payable Amount
+                        <span (click)="scrollPaymentSummary();">
+                            <img src="{{IMG_PATH}}assets/img/info.png">
+                        </span>
+                    </span>
+                    ₹ {{ (_cartService.getGenericCartSession['cart']['totalAmount'] || 0 ) + ( _cartService.getGenericCartSession['cart']['shippingCharges'] || 0 ) + ( _cartService.getGenericCartSession['cart']['totalOffer'] || 0) | mathCeil | number : '1.2-2'}}
+                </p>
+                <button [disabled]="canDisplayCTA" class="btn" (click)="continueCheckout()">
+                    CONTINUE
+                </button>
+            </div>
+        </div>
+        <ng-template #hideContinue>
+            <div></div>
+        </ng-template>
+    </section>
+    <all-addresses [addDeliveryorBilling]="addDeliveryorBilling" (emitAddressSelectEvent$)="handleAddressEvent($event)"
+        (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
+    <cart-notifications></cart-notifications>
+    <cart></cart>
+    <order-summary></order-summary>
+    <cart-no-item *ngIf="!hasCartItems"></cart-no-item>
 </div>

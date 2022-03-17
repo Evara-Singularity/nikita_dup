@@ -1,4 +1,4 @@
-import { TrackingService } from '@app/utils/services/tracking.service';
+
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -37,7 +37,6 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     private ngxSiemaService: NgxSiemaService,
     private modalService: ModalService,
     private _analyticService: GlobalAnalyticsService,
-    private _trackingService : TrackingService,
   ) { }
 
   ngOnInit(): void {
@@ -93,7 +92,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   showYTVideo(link) {
     let analyticsDetails = null;
     if(this.analyticProduct){
-        analyticsDetails = this._trackingService.getCommonTrackingObject(this.analyticProduct, "listing");      
+        analyticsDetails = this._analyticService.getCommonTrackingObject(this.analyticProduct, "listing");      
     }
     let videoDetails = { url: link, params: this.ytParams };
     let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };

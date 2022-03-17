@@ -44,7 +44,7 @@ export class InvoiceTypeComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.globalConstants = CONSTANTS.GLOBAL;
-        var cartData = this.cartService.getCartSession();
+        var cartData = this.cartService.getGenericCartSession;
         if (cartData['itemsList'] !== null && cartData['itemsList']) {
             var totQuantity = 0;
             var trackData = {
@@ -92,7 +92,7 @@ export class InvoiceTypeComponent implements OnInit, AfterViewInit {
 
         this._checkoutService.setInvoiceType(this.type);
 
-        var cartData = this.cartService.getCartSession();
+        var cartData = this.cartService.getGenericCartSession;
         if (cartData['itemsList'] !== null && cartData['itemsList']) {
             var totQuantity = 0;
             var trackData = {

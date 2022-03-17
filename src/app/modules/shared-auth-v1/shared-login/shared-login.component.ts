@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -9,6 +9,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { Subscription } from 'rxjs';
 import CONSTANTS from '../../../../app/config/constants';
+import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
 
@@ -53,6 +54,7 @@ export class SharedLoginComponent implements OnInit
     constructor(
         private _fb: FormBuilder,
         private _sharedAuthService: SharedAuthService,
+        private _sharedAuthUtilService: SharedAuthUtilService,
         private _localAuthService: LocalAuthService,
         private _loader: GlobalLoaderService,
         private _tms: ToastMessageService,
@@ -72,14 +74,12 @@ export class SharedLoginComponent implements OnInit
         }
         this.handleBackUrlTitle();
         this.addQueryParamSubscribers();
+        this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage");
     }
 
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];
-            // if (data['state']) {
-            //     this._sharedAuthService.redirectUrl += '?state=' + data['state'];
-            // }
         });
     }
 

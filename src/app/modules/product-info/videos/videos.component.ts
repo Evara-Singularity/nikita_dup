@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
 import { ModalService } from '@app/modules/modal/modal.service';
-import { TrackingService } from '@app/utils/services/tracking.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
     selector: 'videos',
@@ -17,7 +17,7 @@ export class VideosComponent implements OnInit
     readonly youtubeAPI = 'https://www.youtube.com/iframe_api';
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(private modalService: ModalService, private _trackingService: TrackingService,) { }
+    constructor(private modalService: ModalService, private _analytics: GlobalAnalyticsService,) { }
 
     ngOnInit()
     {
@@ -30,7 +30,7 @@ export class VideosComponent implements OnInit
 
     async showYTVideo(link)
     {
-        let analyticsDetails = this._trackingService.getCommonTrackingObject(this.analyticProduct, "pdp");
+        let analyticsDetails = this._analytics.getCommonTrackingObject(this.analyticProduct, "pdp");
         let ytParams = '?autoplay=1&rel=0&controls=1&loop&enablejsapi=1';
         let videoDetails = { url: link, params: ytParams };
         let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };

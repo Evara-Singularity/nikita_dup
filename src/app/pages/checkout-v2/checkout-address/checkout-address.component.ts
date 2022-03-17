@@ -1,49 +1,124 @@
-import { CartService } from '@services/cart.service';
-import { AddressService } from '@services/address.service';
-import { Component, OnInit } from '@angular/core';
-import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ClientUtility } from '@app/utils/client.utility';
+import { SelectedAddressModel, CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { AddressService } from '@services/address.service';
+import { CartService } from '@services/cart.service';
+import { environment } from 'environments/environment';
+import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
-
 @Component({
-    selector: 'app-checkout-address',
+    selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
-    styleUrls: ['./checkout-address.component.css']
+    styleUrls: ['./checkout-address.component.scss']
 })
-export class CheckoutAddressComponent implements OnInit
+export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {
+    readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
     readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
+    @Input("addDeliveryorBilling") addDeliveryorBilling: Subject<boolean> = new Subject();
 
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,) { }
+    invoiceType = this.INVOICE_TYPES.RETAIL;
+    payableAmount = 0;
+    isUserLoggedIn = false;
+    canDisplayCTA = false;
 
-    ngOnInit(): void
+    deliveryAddress = null;
+    billingAddress = null;
+    moveSectionTo = null;
+
+    orderSummarySubscription; Subscription = null;
+    loginSubscription: Subscription = null;
+    logoutSubscription: Subscription = null;
+    cartUpdatesSubscription: Subscription = null;
+
+    constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
+        private _router: Router) { }
+
+    ngOnInit(): void {
+        this._cartService.getCartUpdatesChanges().subscribe(result => {
+            this.updateUserStatus();
+            console.log(result);
+        });
+    }
+
+    ngAfterViewInit(): void
     {
+        this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
+        if (!this.isUserLoggedIn) {
+            this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
+        }
+        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe((cartSession)=>
+        {
+            console.log(cartSession);
+        })
+    }
+
+    /** @description updates user status and is used to display the continue CTA*/
+    updateUserStatus()
+    {
+        const USER_SESSION = this._localAuthService.getUserSession();
+        if (USER_SESSION && USER_SESSION.authenticated == "true") {
+            this.isUserLoggedIn = true;
+        }
+    }
+
+    /**@description scrolls to payment summary section on click of info icon*/
+    scrollPaymentSummary()
+    {
+        if (document.getElementById('payment_summary')) {
+            let footerOffset = document.getElementById('payment_summary').offsetTop;
+            ClientUtility.scrollToTop(1000, footerOffset - 30);
+        }
+    }
+
+    /**@description deicdes whether to procees to payment or not.*/
+    continueCheckout()
+    {
+        //TODO:add all checkout conditions
+        if (!this.deliveryAddress) {
+            this.addDeliveryorBilling.next(true);
+            return;
+        }
+        this._router.navigate(['/checkout/payment']);
     }
 
     //Address Information
-    handleAddressEvents(addressInformation: SelectedAddressModel)
+    handleAddressEvent(addressInformation: SelectedAddressModel)
     {
-        //TODO:updating index logic
-        //TODO:Serviceable & COD available logic.
-        const INVOICE_TYPE = addressInformation.invoiceType;
-        const DELIVERY_ADDRESS = addressInformation.deliveryAddress;
-        const BILLING_ADDRESS = addressInformation.billingAddress;
-        this.verifyDeliveryAndBillingAddress(INVOICE_TYPE, DELIVERY_ADDRESS, BILLING_ADDRESS);
+        this.invoiceType = addressInformation.invoiceType;
+        this.deliveryAddress = addressInformation.deliveryAddress;
+        this.billingAddress = addressInformation.billingAddress;
+        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
     }
 
+    /**
+     * @description initiates the non-serviceable & non COD items processing
+     * @param invoiceType containes retail | tax
+     * @param deliveryAddress contains deliverable address
+     * @param billingAddress contains billing address and optional for 'retail' case
+     */
     verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress, billingAddress)
     {
+        this._cartService.shippingAddress = deliveryAddress
+        this._cartService.billingAddress = billingAddress;
+        this._cartService.invoiceType = invoiceType;
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
         if (invoiceType === this.INVOICE_TYPES.TAX && (!billingAddress)) return;
         this.verifyServiceablityAndCashOnDelivery(POST_CODE);
     }
 
+    /**
+     * @description to extract non-serviceable and COD msns
+     * @param postCode deliverable post code
+     */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
-        const cartSession = this._cartService.getCartSession();
+        const cartSession = this._cartService.getGenericCartSession;
         const cartItems: any[] = cartSession && cartSession['itemsList'];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
@@ -54,19 +129,56 @@ export class CheckoutAddressComponent implements OnInit
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            if (NON_CASH_ON_DELIVERABLE_MSNS.length) {
-                this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            }
+            this.updateNonDeliverableItems(NON_CASH_ON_DELIVERABLE_MSNS);
         })
     }
 
+    /**
+     * @description to update the non serviceable items which are used in cart notfications
+     * @param contains items is cart
+     * @param nonServiceableMsns containes non serviceable msns
+     */
     updateNonServiceableItems(cartItems: any[], nonServiceableMsns: any[])
     {
-        //TODO:handle in case of all are serviceable
         if (nonServiceableMsns.length) {
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
-            console.log(NON_SERVICEABLE_ITEMS);
+            this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
+            return;
         }
+        this.updateValidationMessage([]);
+    }
+
+    /**@description updates global object to set in COD is available or not and used in payment section */
+    updateNonDeliverableItems(nonCashonDeliverableMsns: any[])
+    {
+        this._cartService.codNotAvailableObj['itemsArray'] = nonCashonDeliverableMsns.length || nonCashonDeliverableMsns;
+        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
+    }
+
+    /**@description updates global validation messages which are used in cart notifications */
+    updateValidationMessage(unServicableItems)
+    {
+        let itemsValidationMessage = this._cartService.itemsValidationMessage;
+        itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
+        this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
+    }
+
+    handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+    //getters
+    get hasCartSession() { return this._cartService.getGenericCartSession ? true : false; }
+    get hasCartItems()
+    {
+        if (!this.hasCartSession) return false;
+        const CART_ITEMS = (this._cartService.getGenericCartSession.itemsList) || [];
+        return CART_ITEMS.length > 0;
+    }
+
+    ngOnDestroy(): void
+    {
+        if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe();
+        if (this.loginSubscription) this.loginSubscription.unsubscribe();
+        if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
+        if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
     }
 }

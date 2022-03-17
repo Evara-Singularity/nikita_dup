@@ -1,4 +1,5 @@
 @import '../../scss/variables';
+@import '../../scss/payment-continue-btn';
 .payment-options {
     &>div {
         @extend %cards;
@@ -13,19 +14,6 @@
 ::ng-deep {
     .wp-50 {
         width: 50%;
-    }
-}
-
-.payment-container {
-    .card-30 {
-        padding: 0;
-    }
-    label {
-        padding: 20px 15px;
-        border-bottom: 1px solid $border-sec-color;
-        &:last-child {
-            border-bottom: 0;
-        }
     }
 }
 
@@ -223,5 +211,19 @@ label.payment-radio-btn {
         font-size: 13px;
         padding: 20px 15px 15px;
         line-height: 20px;
+    }
+}
+
+.payment-container {
+    margin-top: 50px;
+    .card-30 {
+        padding: 0;
+    }
+    label {
+        padding: 20px 15px;
+        border-bottom: 1px solid $border-sec-color;
+        &:last-child {
+            border-bottom: 0;
+        }
     }
 }

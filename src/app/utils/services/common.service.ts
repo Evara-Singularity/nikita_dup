@@ -4,7 +4,7 @@ import { mergeMap } from "rxjs/operators";
 import { Observer, of, Subscription } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
-import { NavigationExtras, Router } from "@angular/router";
+import { NavigationEnd, NavigationExtras, Router } from "@angular/router";
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from "./cart.service";
@@ -78,7 +78,10 @@ export class CommonService
     private routeData: { currentUrl: string; previousUrl: string };
     userSession;
     idleNudgeTimer: IdleTimer;
-    private _renderer2: Renderer2;
+    private _renderer2: Renderer2
+    ;
+    private previousUrl: string = null;
+    private currentUrl: string = null;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -102,7 +105,28 @@ export class CommonService
         this.isBrowser = isPlatformBrowser(platformId);
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
+        // this.abTesting = this._dataService.getCookie('AB_TESTING');
+        this.setRoutingInfo();
+
     }
+
+    updateUserSession() {
+        this.userSession = this._localStorageService.retrieve("user");
+    }
+
+    private setRoutingInfo() {
+        this.currentUrl = this._router.url;
+        this._router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.previousUrl = this.currentUrl;
+                this.currentUrl = event.url;
+            };
+        });
+    }
+
+    get getPreviousUrl() {
+        return this.previousUrl;
+    } 
 
     setNetworkSpeedState(speed)
     {
@@ -695,7 +719,7 @@ export class CommonService
         return actualParams;
     }
 
-    getSession(): Observable<{}>
+    getUserSession(): Observable<{}>
     {
         let user = this._localStorageService.retrieve("user");
         // return user from localstorage OR call API
@@ -818,13 +842,11 @@ export class CommonService
         });
     }
 
-    pay(pdata)
-    {
-        let userSession = this._localStorageService.retrieve("user");
+    pay(pdata) {
+        const userSession = this._localStorageService.retrieve("user");
         return this.getBusinessDetail({ customerId: userSession.userId }).pipe(
             map((res: any) => res),
-            mergeMap((d) =>
-            {
+            mergeMap((d) => {
                 let bd: any = null;
                 if (d && d.status && d.statusCode == 200) {
                     bd = {
@@ -834,17 +856,12 @@ export class CommonService
                     };
                 }
                 pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
-                return this._dataService
-                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {
-                        body: pdata,
-                    })
+                return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {})
                     .pipe(
-                        catchError((res: HttpErrorResponse) =>
-                        {
+                        catchError((res: HttpErrorResponse) => {
                             return of({ status: false, statusCode: res.status });
                         }),
-                        map((res: any) =>
-                        {
+                        map((res: any) => {
                             return res;
                         })
                     );
@@ -852,8 +869,7 @@ export class CommonService
         );
     }
 
-    createValidatorRequest(cartSession, userSession, extra)
-    {
+    createValidatorRequest(cartSession, userSession, extra) {
         let cart = cartSession["cart"];
         let cartItems = cartSession["itemsList"];
         let billingAddress: any = this.checkoutService.getBillingAddress();

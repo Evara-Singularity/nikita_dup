@@ -60,9 +60,6 @@ export class ProductListService {
       return;
     }
 
-    console.log('-----------------------------------');
-    console.log(rawSearchData);
-
     //Removing Products with null images
     rawSearchData.productSearchResult.products =
       rawSearchData.productSearchResult.products.filter(
@@ -204,7 +201,6 @@ export class ProductListService {
     data.forEach((el) => {
       for (let i = 0; i < el.terms.length; i++) {
         if (el.terms[i].selected) {
-          console.log(el);
           count++;
           break;
         }
@@ -214,7 +210,6 @@ export class ProductListService {
   }
 
   analyticRFQ(isSubmitted: boolean = false, product) {
-    console.log(product);
     const user = this._localStorageService.retrieve("user");
     let taxo1 = "";
     let taxo2 = "";
@@ -321,7 +316,6 @@ export class ProductListService {
   }
 
   analyticAddToCart(routerlink, productDetails, usedInModule = 'PRODUCT') {
-    // console.log('productDetails ==> usedInModule ====>', usedInModule);
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
     const pageName = this.pageName.toLowerCase();
@@ -360,7 +354,6 @@ export class ProductListService {
       tags: tagsForAdobe,
     };
 
-    console.log({ page, custData, order });
     this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
     this._analytics.sendGTMCall({
@@ -423,7 +416,7 @@ export class ProductListService {
     };
     let criteoItem = [];
     setTimeout(() => {
-      const cartSession = this._cartService.getCartSession() || {};
+      const cartSession = this._cartService.getGenericCartSession || {};
       if (cartSession && cartSession.hasOwnProperty("itemsList")) {
         for (let p = 0; p < cartSession["itemsList"].length; p++) {
           criteoItem.push({

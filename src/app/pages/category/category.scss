@@ -413,16 +413,16 @@
     }
 }
 
-.common_table {
-    th,
-    td {
-        font-size: 12px;
-        font-weight: normal;
-        text-align: left;
-        border-bottom: 1px solid $border-color;
-        padding: 5px;
-    }
-}
+// .common_table {
+//     th,
+//     td {
+//         font-size: 12px;
+//         font-weight: normal;
+//         text-align: left;
+//         border-bottom: 1px solid $border-color;
+//         padding: 5px;
+//     }
+// }
 
 .safetyban {
     .slp-heading {
@@ -438,4 +438,7 @@
     background-color: #C6DCF9;
     padding: 3px 15px;
     padding-bottom: 20px;
+}
+.promo-container{
+    margin-top: 10px;
 }

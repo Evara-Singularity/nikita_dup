@@ -1,0 +1,32 @@
+<app-pop-up [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
+    <div class="head-sec header_add_edit" header>
+        <div class="container">
+            <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
+            <p class="txt header_text page-name">Write Question</p>
+        </div>
+    </div>
+    <div class="content-popup card mt-15 hp-100 pad-b-70" content>
+        <section>
+            <div class="pwa-row">
+                <div class="ask-question-area">
+                    <div class="question-text-field pb-15">
+                        <textarea [(ngModel)]="questionText" maxlength="200"
+                            placeholder="Type your question"></textarea>
+                        <p class="char-counter-text">{{questionText.length}}/200</p>
+                    </div>
+                    <div class="guidence-text mt-10">
+                        <ul class="ml-10">
+                            <li>Be specific, ask questions about the product and not about price, delivery, service etc.
+                            </li>
+                            <li>Ask for information which isn't captured in the product specification.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="question-submit">
+                <button (click)="postQuestion()" class="btn btn-red">SUBMIT YOUR QUESTION</button>
+            </div>
+        </section>
+    </div>
+</app-pop-up>

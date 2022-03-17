@@ -1,4 +1,9 @@
 @import '../../../scss/variables';
+
+.main-container {
+    margin-top: 50px;
+}
+
 button.btn[disabled] {
     background: #bdbdbd;
 }

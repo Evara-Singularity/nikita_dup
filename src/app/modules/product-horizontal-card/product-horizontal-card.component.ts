@@ -341,10 +341,6 @@ export class ProductHorizontalCardComponent implements OnInit {
           this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
           if (!buyNow) {
             this._cartService.setGenericCartSession(result);
-            this._cartService.cart.next({
-              count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
-              currentlyAdded: productDetails
-            });
             this.showAddToCartToast();
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });

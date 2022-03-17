@@ -409,6 +409,7 @@ export class CartComponent {
         cartSession.itemsList.splice(this.removeIndex, 1);
         this.removePopup = false;
         this._cartService.updateCartSession(cartSession).subscribe(updatedCartSession => {
+            this._cartService.publishCartUpdateChange(updatedCartSession);
             this._globalLoaderService.setLoaderState(false);
             if (!updatedCartSession.itemsList.length) this._router.navigateByUrl('/quickorder');
             this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });

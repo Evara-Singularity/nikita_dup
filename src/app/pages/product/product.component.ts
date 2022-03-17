@@ -1517,7 +1517,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           if (!buyNow) {
             this.cartService.setGenericCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
-            this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
             this.globalLoader.setLoaderState(false);
             this.showAddToCartToast();
           } else {

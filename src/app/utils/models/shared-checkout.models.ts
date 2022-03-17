@@ -36,3 +36,9 @@ export interface SelectedAddressModel
     billingAddress:any;
 }
 
+export interface CheckoutHeaderModel
+{
+    label:string;
+    status:boolean;
+}
+

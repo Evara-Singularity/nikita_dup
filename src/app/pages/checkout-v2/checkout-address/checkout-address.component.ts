@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
-import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { SelectedAddressModel, CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';

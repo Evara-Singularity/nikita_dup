@@ -45,7 +45,7 @@
                 </ng-template>
             </ul>
             <!-- carouselData[category.dataKey]{{carouselData[category.dataKey]|json}} -->
-            <ul class="view-products"
+            <ul class="view-products home-grid-view-container"
                 [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
                 [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
                 <!-- <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4"> -->

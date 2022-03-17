@@ -15,9 +15,9 @@
     }
 }
 
-.card-container , .list-view{
+.card-container{
     @extend %horizontal-card-container;
-    &.grid-view {
+    &.grid-view-scrollable {
         width: 100%;
         padding: 10px 7px;
         border: 1px solid #e3e3e3;
@@ -71,25 +71,79 @@
             }
         }
     }
-    // &.list-view {
-    //     .left {
-    //         width: 100px;
-    //     }
-    //     .right {
-    //         width: calc(100% - 115px);
-    //         .price-details {
-    //             flex-direction: row;
-    //             .left {
-    //                 text-align: left;
-    //                 width: calc(100% - 120px);
-    //             }
-    //             .right {
-    //                 text-align: right;
-    //                 width: 115px;
-    //             }
-    //         }
-    //     }
-    // }
+    &.home-grid-view {
+        width: 100%;
+        padding: 10px 7px;
+        border: 1px solid #e3e3e3;
+        border-radius: 6px;
+        background-color: #fff;
+        flex-direction: column;
+
+        .left {
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+        .right {
+            width: 100%;
+
+            .name {
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height: 2.8em;
+                margin-bottom: 5px;
+                line-height: 1.6em;
+            }
+            .brand {
+                span {
+                    text-align: left;
+                }
+
+                margin-bottom: 10px;
+            }
+
+            .price-details {
+                flex-direction: column;
+                min-height: 45px;
+
+                .left {
+                    text-align: left;
+                    width: 100%;
+
+                    .main-price {
+                        margin-bottom: 8px;
+                    }
+                }
+
+                .right {
+                    text-align: left;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    &.list-view {
+        .left {
+            width: 100px;
+        }
+        .right {
+            width: calc(100% - 115px);
+            .price-details {
+                flex-direction: row;
+                .left {
+                    text-align: left;
+                    width: calc(100% - 120px);
+                }
+                .right {
+                    text-align: right;
+                    width: 115px;
+                }
+            }
+        }
+    }
     .left {
         width: 100px;
         text-align: center;
@@ -281,6 +335,20 @@
     min-height: 90px;
     background: white;
     float: left;
+    // display: inline-flex;
+    // &.card-half-width{
+    //     width: 50%;
+    //     display: inline-flex;
+    // }
+    // &.card-custom-width{
+    //     width: 165px;
+    // }
+}
+// .card-vertical-home{
+//     width: 50% !important;
+// }
+.home-grid-view{
+    width: 100%;
 }
 .available-item-card {
     width: 330px;

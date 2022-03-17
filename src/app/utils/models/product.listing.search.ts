@@ -96,6 +96,7 @@ export interface ProductCardFeature {
     enableVideo: Boolean,
     verticalOrientation: Boolean,
     horizontalOrientation: Boolean,
+    verticalOrientationV2?: Boolean,
     lazyLoadImage: Boolean,
 }
 export interface ProductCardMetaInfo {

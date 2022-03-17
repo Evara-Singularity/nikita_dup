@@ -14,6 +14,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
+import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 
 let digitalData = {
     page: {},
@@ -58,6 +59,8 @@ export class CategoryComponent {
     wantedBucket: any[] = [];
     categoryFooterData: any;
     productRangeTableArray: any[] = [];
+    accordiansDetails:AccordiansDetails[]=[];
+    prodUrl=CONSTANTS.PROD;
 
     constructor(
         public _router: Router,
@@ -155,6 +158,8 @@ export class CategoryComponent {
                     this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                     // genrate popular links data
                     this.popularLinks = Object.keys(this.API_RESPONSE.category[1].categoryLinkList || {});
+                    //accordian data            
+                    this.createFooterAccordianData();
                 }
             });
 
@@ -166,6 +171,20 @@ export class CategoryComponent {
 
             // send tracking data 
             this.sendTrackingData();
+        });
+    }
+
+    private createFooterAccordianData() {
+        this.accordiansDetails = [];
+        this.accordiansDetails.push({
+            name: 'Popular Brand Category',
+            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            icon:'icon-brand_store'
+        });
+        this.accordiansDetails.push({
+            name: 'Related Searches',
+            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            icon:'icon-attribute'
         });
     }
 
@@ -830,6 +849,29 @@ export class CategoryComponent {
     getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
+    }
+
+    sendWhatsappTrackingData(){
+        let taxo1;
+        let taxo2;
+        let taxo3;
+        if (this.API_RESPONSE.category[0].categoryDetails.taxonomy) {
+            taxo1 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[0] || '';
+            taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
+            taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
+        }
+        const page = {
+            "linkPageName": "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+            "linkName": "WhatsApp",
+            "channel": "listing"
+        };
+        const custData = this._commonService.custDataTracking;
+        const order = {
+            "productCategoryL1": taxo1,
+            "productCategoryL2": taxo2,
+            "productCategoryL3": taxo3
+        } 
+        this._analytics.sendAdobeCall({ page,custData,order }, "genericClick");
     }
 
     ngOnDestroy() {

@@ -85,14 +85,23 @@ export class ProductService {
         );
     }
 
-    getSimilarProducts(productName, categoryId) {
-        const URL =
+    getSimilarProducts(productName, categoryId, productId, groupId) {
+        let URL =
             this.basePath +
             ENDPOINTS.SIMILAR_PRODUCTS +
             "?str=" +
             productName +
             "&category=" +
-            categoryId;
+            categoryId + 
+            "&productId=" +
+            productId;
+            
+        if (groupId) {
+            URL += "&groupId=" + groupId;
+        }
+        if (this._commonService.abTesting) {
+            URL += '&abt=y'
+        }
         return this._dataService.callRestful("GET", URL).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ products: [], httpStatus: res.status });
@@ -220,7 +229,6 @@ export class ProductService {
     }
 
     getCartBySession(params) {
-        console.trace('getCartBySession product service');
         return this._dataService.callRestful(
             "GET",
             this.basePath + ENDPOINTS.GET_CartBySession,
@@ -241,7 +249,7 @@ export class ProductService {
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.PRODUCT_STATUS_COUNT +
             "?productId=" +
-            productMsnId.toUpperCase();
+            (productMsnId ? productMsnId.toUpperCase() : '');
         return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL);
     }
 

@@ -11,6 +11,7 @@ import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/ut
 import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductListService } from '@app/utils/services/productList.service';
+import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 
 @Component({
     selector: 'app-similar-products',
@@ -21,6 +22,8 @@ export class SimilarProductsComponent implements OnInit {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     similarProducts: ProductsEntity[] = null;
     @Input('outOfStock') outOfStock = false;
+    @Input('partNumber') partNumber;
+    @Input('groupId') groupId;
     @Input('productName') productName;
     @Input('categoryCode') categoryCode;
     @Input('analytics') analytics = null;
@@ -55,7 +58,7 @@ export class SimilarProductsComponent implements OnInit {
     }
 
     getProductSimilar() {
-        this.productService.getSimilarProducts(this.productName, this.categoryCode).subscribe((response: any) => {
+        this.productService.getSimilarProducts(this.productName, this.categoryCode, this.partNumber, this.groupId).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
                 this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
@@ -83,7 +86,8 @@ export class SimilarProductsComponent implements OnInit {
         MathFloorPipeModule,
         MathCeilPipeModule,
         ProductHorizontalCardModule,
-        LazyLoadImageModule
+        LazyLoadImageModule,
+        ProductCardVerticalContainerModule
     ]
 })
 export class ProductModule { }

@@ -51,7 +51,7 @@
             productsListingData?.products.length) ) }} products
         </div>
         <!-- [innerHTML]="titleDescription.split('.',2)+'.'" -->
-        <div class="right titleDescription" *ngIf="productsListingData?.products" [innerHTML]="titleDescription">
+        <div class="right titleDescription" *ngIf="productsListingData?.products  && _commonService.selectedFilterData.page < 2" [innerHTML]="titleDescription">
         </div>
     </ng-container>
 </div>
@@ -71,17 +71,8 @@
 
     </ng-container>
 </ng-container>
-<ng-container *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
-    <div class="align-center">
-        <div class="container pt-15">
-            <h3 class="pb-15 mt-15 align-center f-16">No Product Found</h3>
-            <img class="no-product" src="{{imagePath}}b/I/P/B/d/no-search-result.svg" />
-            <p class="pad-tb-15 f-16">
-                Maybe your search was too specific. Contact for this specific product.
-            </p>
-        </div>
-    </div>
-</ng-container>
+
+<app-search-not-found *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0"></app-search-not-found>
 
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>

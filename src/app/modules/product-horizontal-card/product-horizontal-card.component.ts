@@ -40,6 +40,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     enableCard: false,
     verticalOrientation: false,
     horizontalOrientation: true,
+    verticalOrientationV2: false,
     lazyLoadImage: true,
   }
   // currently being used in PDP similar product

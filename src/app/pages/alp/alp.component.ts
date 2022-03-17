@@ -55,6 +55,7 @@ export class AlpComponent implements OnInit {
     alpCategoryCodeData = null;
     alpProductListingData = null;
     showPageNotFound: boolean;
+    alpPriceListData = [];
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -118,6 +119,7 @@ export class AlpComponent implements OnInit {
         this.metaDescription = attributeListing['metaDescription'];
         this._productListService.excludeAttributes = JSON.parse(JSON.stringify(attributeListing['attributes']));
         this.fetchCIMSRelatedData();
+        this.setAlpFooterData();
     }
 
     fetchCIMSRelatedData() {
@@ -487,5 +489,11 @@ export class AlpComponent implements OnInit {
             ampLink.href = CONSTANTS.PROD + '/ampl' + currentRoute.toLowerCase();
             this._renderer2.appendChild(this._document.head, ampLink);
         }
+    }
+
+    setAlpFooterData() {
+        this.alpPriceListData = (this._productListService.productListingData['products'].slice()).filter((product) => {  //Filtering type C products ( ODP-1608 )
+            return (product.priceWithoutTax !== 0 || product.quantityAvailable !== 0)
+        });
     }
 }

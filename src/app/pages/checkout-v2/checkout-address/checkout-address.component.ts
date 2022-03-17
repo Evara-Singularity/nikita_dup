@@ -33,6 +33,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
+    cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router) { }
@@ -47,6 +48,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
+        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe((cartSession)=>
+        {
+            console.log(cartSession);
+        })
     }
 
     /** @description updates user status and is used to display the continue CTA*/
@@ -168,8 +173,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngOnDestroy(): void
     {
-        if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe()
-        if (this.loginSubscription) this.loginSubscription.unsubscribe()
-        if (this.logoutSubscription) this.logoutSubscription.unsubscribe()
+        if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe();
+        if (this.loginSubscription) this.loginSubscription.unsubscribe();
+        if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
+        if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
     }
 }

@@ -236,9 +236,7 @@ export class PagesComponent implements OnInit {
   }
 
   checkForUserAndCartSession() {
-    if (this.router.url.indexOf('quickorder') && this.router.url.indexOf('checkout') < 0 && this.router.url.indexOf('payment') < 0) {
-      this._cartService.refreshCartSesion();
-    }
+    this._cartService.refreshCartSesion();
   }
 
   createHeaderData(_aRoute) {

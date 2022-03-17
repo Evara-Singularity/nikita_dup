@@ -165,7 +165,7 @@ export class CartService
     // return the Cart Session Object
     setGenericCartSession(cart) {
         this.cartSession = JSON.parse(JSON.stringify(cart));
-        if (cart.offersList.length > 0) {
+        if (cart && cart.offersList && cart.offersList.length > 0) {
             this.appliedPromoCode = cart.offersList[0]['id'];
         }
     }
@@ -743,6 +743,15 @@ export class CartService
             mergeMap(request =>
             {
                 return this.getCartBySession(request).pipe(
+                    map((res: any) =>
+                    {
+                        return this.generateGenericCartSession(res);
+                    })
+                );
+            }),
+            mergeMap(request =>
+            {
+                return this.getShippingAndUpdateCartSession(request).pipe(
                     map((res: any) =>
                     {
                         return this.generateGenericCartSession(res);

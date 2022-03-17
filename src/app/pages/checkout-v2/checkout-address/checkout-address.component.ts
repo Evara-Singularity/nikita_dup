@@ -39,7 +39,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         private _router: Router) { }
 
     ngOnInit(): void {
-        this.updateUserStatus();
+        this._cartService.getCartUpdatesChanges().subscribe(result => {
+            this.updateUserStatus();
+            console.log(result);
+        });
     }
 
     ngAfterViewInit(): void

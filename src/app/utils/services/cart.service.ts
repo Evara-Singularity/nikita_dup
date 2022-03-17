@@ -704,7 +704,9 @@ export class CartService
                 {
                     this._loaderService.setLoaderState(false);
                     if (cartSessionReponse['status']) {
-                        return this.generateGenericCartSession(cartSessionReponse)
+                        const updatedCartResponse = this.generateGenericCartSession(cartSessionReponse);
+                        this._notifyCartChanges(updatedCartResponse, null);
+                        return updatedCartResponse;
                     }
                     // api returns false, then return actual object returned from server
                     return cartSessionReponse;
@@ -729,7 +731,7 @@ export class CartService
     }
 
     // incase of update use this to notify cart session
-    private publishCartUpdateChange(cartSession) {
+    publishCartUpdateChange(cartSession) {
         this._cartUpdatesChanges.next(cartSession);
     }
 

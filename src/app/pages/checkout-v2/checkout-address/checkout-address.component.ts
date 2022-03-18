@@ -64,67 +64,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
-    /**@description scrolls to payment summary section on click of info icon*/
-    scrollPaymentSummary()
-    {
-        if (document.getElementById('payment_summary')) {
-            let footerOffset = document.getElementById('payment_summary').offsetTop;
-            ClientUtility.scrollToTop(1000, footerOffset - 30);
-        }
-    }
-
-    /**@description deicdes whether to procees to payment or not.*/
-    continueToPayment()
-    {
-        //address verification
-        if (!this.deliveryAddress) {
-            this.addDeliveryorBilling.next(true);
-            return;
-        }
-        if (this.invoiceType === this.INVOICE_TYPES.TAX) {
-            if (!this.billingAddress) {
-                this.addDeliveryorBilling.next(true);
-                return;
-            } else if (this.billingAddress['gstinVerified']) {
-                this.addDeliveryorBilling.next(true);
-                return;
-            }
-        }
-        //cart verification
-        const INVALID_CART_TYPES = ['unservicable', 'oos'];
-        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage));
-        const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
-        if (INVALID_CART_MESSAGES.length) {
-            this.viewUnavailableItems()
-            return;
-        }
-        this._router.navigate(['/checkout/payment']);
-    }
-
-    viewUnavailableItems()
-    {
-        const itemsList = this.cartSession['itemsList'];
-        const unservicableMsns = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage))
-            .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
-        const LIST = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);
-        this._modalService.show({
-            component: SharedCheckoutUnavailableItemsComponent,
-            inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
-            outputs: {},
-            mConfig: { className: 'ex' }
-        });
-    }
-
-    removeUnavailableItems(items)
-    {
-        this._state.notifyDataChanged('cart.rui', items);
-    }
-
-    viewUnavailableItemsFromNotifacions(display)
-    {
-        if (display) this.viewUnavailableItems();
-    }
-
     //Address Information
     handleAddressEvent(addressInformation: SelectedAddressModel)
     {
@@ -202,7 +141,66 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
+    /**@description scrolls to payment summary section on click of info icon*/
+    scrollPaymentSummary()
+    {
+        if (document.getElementById('payment_summary')) {
+            let footerOffset = document.getElementById('payment_summary').offsetTop;
+            ClientUtility.scrollToTop(1000, footerOffset - 30);
+        }
+    }
+
+    /**@description decides whether to procees to payment or not.*/
+    continueToPayment()
+    {
+        //address verification
+        if (!this.deliveryAddress) {
+            this.addDeliveryorBilling.next(true);
+            return;
+        }
+        if (this.invoiceType === this.INVOICE_TYPES.TAX) {
+            if (!this.billingAddress) {
+                this.addDeliveryorBilling.next(true);
+                return;
+            } else if (this.billingAddress['gstinVerified']) {
+                this.addDeliveryorBilling.next(true);
+                return;
+            }
+        }
+        //cart verification
+        const INVALID_CART_TYPES = ['unservicable', 'oos'];
+        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage));
+        const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
+        if (INVALID_CART_MESSAGES.length) {
+            this.viewUnavailableItems()
+            return;
+        }
+        this._router.navigate(['/checkout/payment']);
+    }
+
+    /**@description display unavailable items in pop-up */
+    viewUnavailableItems()
+    {
+        const itemsList:any[] = this.cartSession['itemsList'];
+        const unservicableMsns = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage))
+            .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
+        const LIST:any[] = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);
+        if(LIST.length === 0 )return;
+        this._modalService.show({
+            component: SharedCheckoutUnavailableItemsComponent,
+            inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
+            outputs: {},
+            mConfig: { className: 'ex' }
+        });
+    }
+
+    removeUnavailableItems(items) { this._state.notifyDataChanged('cart.rui', items); }
+    
+    /**@description triggers the unavailbel item pop-up from notfications */
+    viewUnavailableItemsFromNotifacions(display) { if (display) this.viewUnavailableItems(); }
+
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
     //getters
     get hasCartSession() { return this._cartService.getGenericCartSession ? true : false; }
     get hasCartItems()

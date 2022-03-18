@@ -16,20 +16,11 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit
     private cDistroyed = new Subject();
     itemsList: [] = [];
 
-    constructor(public _cartService: CartService)    {    }
+    constructor(public _cartService: CartService) { }
 
-    ngOnInit()
-    {
-        this.itemsList = this.data['items'];
-        console.log(this.data['items']);
-    }
+    ngOnInit() { this.itemsList = this.data['items']; }
 
-   
-
-    closeModal()
-    {
-        this.closePopup$.emit();
-    }
+    closeModal() { this.closePopup$.emit(); }
 
     removeUnavailableItems(callback)
     {
@@ -42,5 +33,4 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit
         this.cDistroyed.next();
         this.cDistroyed.unsubscribe();
     }
-
 }

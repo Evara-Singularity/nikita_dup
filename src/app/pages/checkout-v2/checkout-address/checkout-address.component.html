@@ -10,7 +10,7 @@
                     </span>
                     ₹ {{ (_cartService.getGenericCartSession['cart']['totalAmount'] || 0 ) + ( _cartService.getGenericCartSession['cart']['shippingCharges'] || 0 ) + ( _cartService.getGenericCartSession['cart']['totalOffer'] || 0) | mathCeil | number : '1.2-2'}}
                 </p>
-                <button [disabled]="canDisplayCTA" class="btn" (click)="continueCheckout()">
+                <button [disabled]="canDisplayCTA" class="btn" (click)="continueToPayment()">
                     CONTINUE
                 </button>
             </div>
@@ -21,7 +21,7 @@
     </section>
     <all-addresses [addDeliveryorBilling]="addDeliveryorBilling" (emitAddressSelectEvent$)="handleAddressEvent($event)"
         (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-    <cart-notifications></cart-notifications>
+    <cart-notifications (viewUnavailableItems$)=viewUnavailableItemsFromNotifacions($event)></cart-notifications>
     <cart></cart>
     <order-summary></order-summary>
     <cart-no-item *ngIf="!hasCartItems"></cart-no-item>

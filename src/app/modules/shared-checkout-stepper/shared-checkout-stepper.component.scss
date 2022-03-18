@@ -31,13 +31,13 @@
                 height: 10px;
                 position: relative;
                 display: block;
-                border-bottom: 4px solid #E2E2E2;
+                border-bottom: 4px solid #e2e2e2;
                 &:before {
                     width: 10px;
                     height: 10px;
-                    border: 1px solid #E2E2E2;
-                    content: '';
-                    background: #E2E2E2;
+                    border: 1px solid #e2e2e2;
+                    content: "";
+                    background: #e2e2e2;
                     border-radius: 25px;
                     position: absolute;
                     right: 0;
@@ -51,7 +51,7 @@
                         display: none;
                     }
                 }
-                &.gr-50~.gr-50 {
+                &.gr-50 ~ .gr-50 {
                     &:before {
                         display: initial;
                     }
@@ -59,10 +59,10 @@
             }
             .st_trackerline {
                 &.activeTracker {
-                    border-bottom: 4px solid #4AB316;
+                    border-bottom: 4px solid #4ab316;
                     &:before {
-                        background: #4AB316;
-                        border: 1px solid #4AB316;
+                        background: #4ab316;
+                        border: 1px solid #4ab316;
                     }
                 }
             }

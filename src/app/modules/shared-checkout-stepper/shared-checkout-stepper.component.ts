@@ -2,12 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 
 @Component({
-    selector: 'checkout-header',
-    templateUrl: './checkout-header.component.html',
-    styleUrls: ['./checkout-header.component.scss']
+  selector: 'shared-checkout-stepper',
+  templateUrl: './shared-checkout-stepper.component.html',
+  styleUrls: ['./shared-checkout-stepper.component.scss']
 })
-export class CheckoutHeaderComponent implements OnInit
-{
+export class SharedCheckoutStepperComponent implements OnInit {
+
     @Input("headers") headers: CheckoutHeaderModel[] = [];
     constructor() { }
     ngOnInit() { }

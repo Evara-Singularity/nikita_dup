@@ -6,6 +6,8 @@ import { CartNotificationsModule } from '@app/modules/shared-checkout-quick-orde
 import { CartModule } from '@app/modules/shared-checkout-quick-order-components/cart/cart.module';
 import { OrderSummaryModule } from '@app/modules/shared-checkout-quick-order-components/orderSummary/orderSummary.module';
 import { MathCeilPipeModule } from '@utils/pipes/math-ceil';
+import { SharedCheckoutStepperModule } from './../../../modules/shared-checkout-stepper/shared-checkout-stepper.module';
+import { SharedCheckoutUnavailableItemsModule } from './../../../modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.module';
 import { CheckoutAddressRoutingModule } from './checkout-address-routing.module';
 import { CheckoutAddressComponent } from './checkout-address.component';
 
@@ -19,6 +21,8 @@ import { CheckoutAddressComponent } from './checkout-address.component';
     CartNotificationsModule,
     CheckoutAddressRoutingModule,
     SharedCheckoutAddressModule,
+    SharedCheckoutStepperModule,
+    SharedCheckoutUnavailableItemsModule,
     MathCeilPipeModule
   ]
 })

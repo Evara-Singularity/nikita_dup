@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
@@ -17,7 +17,8 @@ import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'create-edit-billing-address',
     templateUrl: './create-edit-billing-address.component.html',
-    styleUrls: ['./create-edit-billing-address.component.scss']
+    styleUrls: ['../common-checkout.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {

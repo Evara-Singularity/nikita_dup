@@ -19,7 +19,7 @@ export class AddressListComponent implements OnInit
     @Input("cIdAddress") cIdAddress = null;
     @Output("emitCloseEvent$") emitCloseEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
     @Output("emitActionEvent$") emitActionEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
-
+    showRadio: boolean = true;
     constructor() { }
 
     ngOnInit() { }

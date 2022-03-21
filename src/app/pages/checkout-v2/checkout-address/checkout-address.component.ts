@@ -41,12 +41,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngOnInit(): void
     {
-        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => { this.cartSession = cartSession; });
         this.updateUserStatus();
     }
-
+    
     ngAfterViewInit(): void
     {
+        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => { 
+            this.cartSession = cartSession; 
+            this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+        });
         this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
@@ -94,7 +97,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
      */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
-        const cartItems: any[] = this.cartSession && this.cartSession['itemsList'];
+        const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>

@@ -89,4 +89,13 @@ export class LocalAuthService
         }
         this._router.navigateByUrl(NAVIGATE_TO);
     }
+
+    isUserLoggedIn()
+    {
+        const USER_SESSION = this._localStorageService.retrieve('user');
+        if (USER_SESSION && USER_SESSION['authenticated'] == "true") {
+            return true;
+        }
+        return false;
+    }
 }

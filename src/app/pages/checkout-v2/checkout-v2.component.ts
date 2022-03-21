@@ -25,6 +25,7 @@ export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
     ngOnInit() 
     {
         this.isUserLoggedIn = this._localAuthService.isUserLoggedIn();
+        this.updateCheckoutFlag(this._router.url.toLowerCase());
     }
 
     ngAfterViewInit(): void
@@ -32,10 +33,12 @@ export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
         this.routerSubscription = this._router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) =>
         {
             const URL = event.url.toLowerCase();
-            this.isCheckoutFlow = URL.includes("payment") || URL.includes("address");
+            this.updateCheckoutFlag(URL);
             this.headers = URL.includes("payment") ? this.PAYMENT_HEADERS : this.ADDRESS_HEADERS;
         });
     }
+
+    updateCheckoutFlag(url) { this.isCheckoutFlow = url.includes("payment") || url.includes("address");  }
 
     get displayStepper() { return this.isUserLoggedIn && this.isCheckoutFlow}
 

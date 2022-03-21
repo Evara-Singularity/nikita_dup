@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalService } from '@app/modules/modal/modal.service';
+import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.component';
 import { ClientUtility } from '@app/utils/client.utility';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -17,31 +19,30 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 {
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
-    readonly SECTIONS = { "ADDRESS": "ADDRESS", "CART-UPDATES": "CART-UPDATES", "CART-LIST": "CART-LIST", "OFFERS": "OFFERS", "PAYMENT-SUMMARY": "PAYMENT-SUMMARY", "PAYMENT": "PAYMENT" };
 
     @Input("addDeliveryorBilling") addDeliveryorBilling: Subject<boolean> = new Subject();
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
     isUserLoggedIn = false;
-    canDisplayCTA = false;
 
     deliveryAddress = null;
     billingAddress = null;
     moveSectionTo = null;
+    cartSession = null;
 
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
+    cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router) { }
+        private _router: Router, private _modalService: ModalService) { }
 
-    ngOnInit(): void {
-        this._cartService.getCartUpdatesChanges().subscribe(result => {
-            this.updateUserStatus();
-            console.log(result);
-        });
+    ngOnInit(): void
+    {
+        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => { this.cartSession = cartSession; });
+        this.updateUserStatus();
     }
 
     ngAfterViewInit(): void
@@ -59,26 +60,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (USER_SESSION && USER_SESSION.authenticated == "true") {
             this.isUserLoggedIn = true;
         }
-    }
-
-    /**@description scrolls to payment summary section on click of info icon*/
-    scrollPaymentSummary()
-    {
-        if (document.getElementById('payment_summary')) {
-            let footerOffset = document.getElementById('payment_summary').offsetTop;
-            ClientUtility.scrollToTop(1000, footerOffset - 30);
-        }
-    }
-
-    /**@description deicdes whether to procees to payment or not.*/
-    continueCheckout()
-    {
-        //TODO:add all checkout conditions
-        if (!this.deliveryAddress) {
-            this.addDeliveryorBilling.next(true);
-            return;
-        }
-        this._router.navigate(['/checkout/payment']);
     }
 
     //Address Information
@@ -113,8 +94,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
      */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
-        const cartSession = this._cartService.getGenericCartSession;
-        const cartItems: any[] = cartSession && cartSession['itemsList'];
+        const cartItems: any[] = this.cartSession && this.cartSession['itemsList'];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
@@ -159,20 +139,83 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
+    /**@description scrolls to payment summary section on click of info icon*/
+    scrollPaymentSummary()
+    {
+        if (document.getElementById('payment_summary')) {
+            let footerOffset = document.getElementById('payment_summary').offsetTop;
+            ClientUtility.scrollToTop(1000, footerOffset - 30);
+        }
+    }
+
+    /**@description decides whether to procees to payment or not.*/
+    continueToPayment()
+    {
+        //address verification
+        if (!this.deliveryAddress) {
+            this.addDeliveryorBilling.next(true);
+            return;
+        }
+        if (this.invoiceType === this.INVOICE_TYPES.TAX) {
+            if (!this.billingAddress) {
+                this.addDeliveryorBilling.next(true);
+                return;
+            } else if (this.billingAddress['gstinVerified']) {
+                this.addDeliveryorBilling.next(true);
+                return;
+            }
+        }
+        //cart verification
+        const INVALID_CART_TYPES = ['unservicable', 'oos'];
+        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage));
+        const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
+        if (INVALID_CART_MESSAGES.length) {
+            this.viewUnavailableItems()
+            return;
+        }
+        this._router.navigate(['/checkout/payment']);
+    }
+
+    /**@description display unavailable items in pop-up */
+    viewUnavailableItems()
+    {
+        const itemsList: any[] = this.cartSession['itemsList'];
+        const unservicableMsns = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage))
+            .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
+        const LIST: any[] = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);
+        if (LIST.length === 0) return;
+        this._modalService.show({
+            component: SharedCheckoutUnavailableItemsComponent,
+            inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
+            outputs: {},
+            mConfig: { className: 'ex' }
+        });
+    }
+
+    removeUnavailableItems(items: any[])
+    {
+        const MSNS = items.map(item => item['productId']);
+        this._cartService.removeItemsFromCartByMsns(MSNS);
+    }
+
+    /**@description triggers the unavailbel item pop-up from notfications */
+    viewUnavailableItemsFromNotifacions(display) { if (display) this.viewUnavailableItems(); }
+
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
     //getters
-    get hasCartSession() { return this._cartService.getGenericCartSession ? true : false; }
     get hasCartItems()
     {
-        if (!this.hasCartSession) return false;
-        const CART_ITEMS = (this._cartService.getGenericCartSession.itemsList) || [];
+        if (!this.cartSession) return false;
+        const CART_ITEMS = (this.cartSession['itemsList']) || [];
         return CART_ITEMS.length > 0;
     }
 
-    ngOnDestroy(): void
+    ngOnDestroy()
     {
-        if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe()
-        if (this.loginSubscription) this.loginSubscription.unsubscribe()
-        if (this.logoutSubscription) this.logoutSubscription.unsubscribe()
+        if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe();
+        if (this.loginSubscription) this.loginSubscription.unsubscribe();
+        if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
+        if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
     }
 }

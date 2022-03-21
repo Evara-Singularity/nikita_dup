@@ -16,7 +16,9 @@ export class QuickOrderComponent {
         private _localAuthService: LocalAuthService,
         public _cartService: CartService,
         public _commonService: CommonService,
-        public router: Router) {}
+        public router: Router) {
+            this._cartService.getGenericCartSession;
+        }
 
     navigateToCheckout() {
         this._localAuthService.setBackURLTitle(null, 'Continue to checkout');

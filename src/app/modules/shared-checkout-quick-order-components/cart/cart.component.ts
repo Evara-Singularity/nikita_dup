@@ -148,25 +148,6 @@ export class CartComponent {
                             cartSession.shoppingCartDto['itemsList'] = itemsList;
                             this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
                         }
-                        // update cart session, only when any price, shipping or coupon is updated 
-                        // if (ucs) {
-                        //     cartSession.shoppingCartDto['itemsList'] = itemsList;
-                        //     this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
-
-                        //     //if any offer exit on cart, call apply promocode else update cart session flow
-                        //     if (this._cartService.getGenericCartSession['offersList'] && this._cartService.getGenericCartSession['offersList'].length > 0) {
-                        //         // Apply Promocode
-                        //     } else {
-                        //         // this.updateCartSessions();
-                        //     }
-                        // } else {
-                        //     const sessionDetails = this._cartService.getGenericCartSession;
-                        //     if (sessionDetails['offersList'] && sessionDetails['offersList'].length > 0) {
-                        //         // Apply Promocode
-                        //     } else {
-                        //         this._globalLoaderService.setLoaderState(false);
-                        //     }
-                        // }
                     }
                 }
         });
@@ -268,7 +249,6 @@ export class CartComponent {
                                     });
                                     this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
                                     this._cartService.getGenericCartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
-                                    console.log(this._cartService.getGenericCartSession.itemsList);
                                     this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
                                 } else {
                                     this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
@@ -396,26 +376,15 @@ export class CartComponent {
         e.preventDefault();
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
-        this.updateAfterDelete();
+        this._cartService.updateCartAfterRemovingItem(this.removeIndex);
+        this.removePopup = false;
         this.validateCart();
         // Push data to data layer
         this.pushDataToDatalayer(this.removeIndex);
         this.sendCritioData();
     }
 
-    // delete a item from cart and update cart session
-    updateAfterDelete() {
-        let cartSession = this._cartService.getGenericCartSession;
-        cartSession.itemsList.splice(this.removeIndex, 1);
-        this.removePopup = false;
-        this._cartService.updateCartSession(cartSession).subscribe(updatedCartSession => {
-            this._cartService.publishCartUpdateChange(updatedCartSession);
-            this._globalLoaderService.setLoaderState(false);
-            if (!updatedCartSession.itemsList.length) this._router.navigateByUrl('/quickorder');
-            this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-            this._cartService.setGenericCartSession(updatedCartSession);
-        });
-    }
+    
 
     // get shipping charges of each item in cart
     getShippingCharges(obj) {

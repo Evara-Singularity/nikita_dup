@@ -764,6 +764,19 @@ export class CartService
         this._cartUpdatesChanges.next(cartSession);
     }
 
+    // delete a item from cart and update cart session
+    updateCartAfterRemovingItem (removeIndex) {
+        let cartSession = this.getGenericCartSession;
+        cartSession.itemsList.splice(removeIndex, 1);
+        this.updateCartSession(cartSession).subscribe(updatedCartSession => {
+            this.publishCartUpdateChange(updatedCartSession);
+            this._loaderService.setLoaderState(false);
+            if (!updatedCartSession.itemsList.length) this._router.navigateByUrl('/quickorder');
+            this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
+            this.setGenericCartSession(updatedCartSession);
+        });
+    }
+
     checkForUserAndCartSessionAndNotify(): Observable<boolean>
     {
         return this._getUserSession().pipe(

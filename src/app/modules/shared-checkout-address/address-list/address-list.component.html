@@ -13,7 +13,7 @@
         </div>
         <div class="address-container">
             <div class="address-list">
-                <div class="multiple-address withRadioContainer"
+                <div class="multiple-address" [class.withRadioContainer]="showRadio"
                     *ngFor="let address of addresses; let addressIndex = index">
                     <label>
                         <!--Todo-->

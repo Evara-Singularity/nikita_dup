@@ -119,7 +119,7 @@
             border-bottom: none;
         }
         .chk-txt {
-            margin-left: 5px;
+            margin-left: 5px !important;
         }
     }
     @extend %clear-fix;
@@ -161,3 +161,51 @@
 .content-popup {
     height: calc(100% - 50px);
 }
+.addAddressPopup {
+    .header_add_edit {
+        background: #d9232d !important;
+        &.head-sec {
+            padding: 12px 0;
+            margin: 0;
+            @extend %box-shadow;
+            background: $white;
+            i {
+                font-size: 20px;
+                line-height: 24px;
+                color:#fff;
+            }
+            i+.page-name {
+                font-size: $extra-large-font;
+                margin-left: 10px;
+                line-height: 26px;
+                color: #fff;
+                float: left;
+            }
+        }
+    }
+    .content-popup {
+        height: calc(100% - 100px);
+        overflow: auto;
+        margin-top: 0px;
+    }
+}
+.continue-btn {
+    height: 60px;
+    @extend %ripple;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+}
+.column-field{
+    @extend %clear-fix;
+    .w-65{
+      width: 65%;
+      float: left;
+    }
+    .w-30{
+      width: 30%;
+      float: right;
+    }
+  }
+

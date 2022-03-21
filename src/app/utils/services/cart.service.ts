@@ -527,6 +527,7 @@ export class CartService
                 itemsList.push(item);
             }
         }
+        return itemsList; 
     }
 
     private _getPrepaidDiscount(body)

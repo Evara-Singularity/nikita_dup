@@ -1,4 +1,3 @@
-import { CommonService } from '@app/utils/services/common.service';
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddToCartProductSchema } from "../models/cart.initial";
@@ -64,7 +63,6 @@ export class CartService
         private _router: Router,
         private _globalLoader: GlobalLoaderService,
         private _location: Location,
-        private _commonService:CommonService
     )
     {
     }

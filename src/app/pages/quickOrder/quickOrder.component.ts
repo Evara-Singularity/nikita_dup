@@ -25,4 +25,7 @@ export class QuickOrderComponent {
         this.router.navigate(['/checkout'], { queryParams: { title: 'Continue to checkout' } });
         this._commonService.updateUserSession();
     }
+
+    /**@description triggers the unavailbel item pop-up from notfications */
+    viewUnavailableItemsFromNotifacions(display) { if (display) this._cartService.viewUnavailableItems(); }
 }

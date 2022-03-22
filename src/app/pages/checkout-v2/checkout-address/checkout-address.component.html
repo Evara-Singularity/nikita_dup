@@ -1,5 +1,5 @@
 <div class="main-container">
-    <cart-notifications (viewUnavailableItems$)=viewUnavailableItemsFromNotifacions($event)></cart-notifications>
+    <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
     <section>
         <div *ngIf="isUserLoggedIn else hideContinue" class="continue-button">
             <div class="container payable">

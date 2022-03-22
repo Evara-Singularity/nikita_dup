@@ -6,7 +6,7 @@ import { LocalAuthService } from '../services/auth.service';
 import { CommonService } from '../services/common.service';
 
 @Injectable()
-export class IsAuthenticatedCheckoutLogin implements CanActivate {
+export class IsNotAuthenticatedCheckoutLogin implements CanActivate {
 
     private isServer: boolean;
     private isBrowser: boolean;
@@ -31,10 +31,10 @@ export class IsAuthenticatedCheckoutLogin implements CanActivate {
         }
         const user = this.localStorageService.retrieve('user');
         if (!user || (user && user.authenticated === 'true')) {
-            return true;
-        } else {
-            this.router.navigateByUrl('/checkout/login');
+            this.router.navigateByUrl('/checkout/address');
             return false;
+        } else {
+            return true;
         }
     }
 

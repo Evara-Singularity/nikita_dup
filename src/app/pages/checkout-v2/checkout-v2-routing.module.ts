@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { IsNotAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-auth.guard';
 import { IsAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-login.guard';
 import { CheckoutV2Component } from './checkout-v2.component';
 
@@ -12,6 +13,7 @@ const routes: Routes = [
       {
         path: 'login',
         loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
+        canActivate: [IsNotAuthenticatedCheckoutLogin],
         data: {
           hideHeader: true,
         },
@@ -19,6 +21,7 @@ const routes: Routes = [
       {
         path: 'otp',
         loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
+        canActivate: [IsNotAuthenticatedCheckoutLogin],
         data: {
           hideHeader: true,
         },
@@ -26,6 +29,7 @@ const routes: Routes = [
       {
         path: 'forgot-password',
         loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
+        canActivate: [IsNotAuthenticatedCheckoutLogin],
         data: {
           hideHeader: true,
         },
@@ -33,6 +37,7 @@ const routes: Routes = [
       {
         path: 'sign-up',
         loadChildren: () => import('./checkout-login/checkout-login.module').then((m) => m.CheckoutLoginModule),
+        canActivate: [IsNotAuthenticatedCheckoutLogin],
         data: {
           hideHeader: true,
         },

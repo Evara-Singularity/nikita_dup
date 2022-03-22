@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
-import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.component';
 import { ClientUtility } from '@app/utils/client.utility';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -39,7 +38,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _modalService: ModalService) { }
-
+        
     ngOnInit(): void
     {
         this.updateUserStatus();
@@ -193,36 +192,14 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage));
         const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
         if (INVALID_CART_MESSAGES.length) {
-            this.viewUnavailableItems()
+            this._cartService.viewUnavailableItems()
             return;
         }
         this._router.navigate(['/checkout/payment']);
     }
 
-    /**@description display unavailable items in pop-up */
-    viewUnavailableItems()
-    {
-        const itemsList: any[] = this.cartSession['itemsList'];
-        const unservicableMsns = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage))
-            .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
-        const LIST: any[] = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);
-        if (LIST.length === 0) return;
-        this._modalService.show({
-            component: SharedCheckoutUnavailableItemsComponent,
-            inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
-            outputs: {},
-            mConfig: { className: 'ex' }
-        });
-    }
-
-    removeUnavailableItems(items: any[])
-    {
-        const MSNS = items.map(item => item['productId']);
-        this._cartService.removeItemsFromCartByMsns(MSNS);
-    }
-
     /**@description triggers the unavailbel item pop-up from notfications */
-    viewUnavailableItemsFromNotifications(display) { if (display) this.viewUnavailableItems(); }
+    viewUnavailableItemsFromNotifacions(display) { if (display) this._cartService.viewUnavailableItems(); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
 

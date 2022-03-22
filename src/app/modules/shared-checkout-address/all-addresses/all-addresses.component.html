@@ -10,31 +10,25 @@
         </div>
     </div>
 </section>
-
 <!--shipping container-->
 <section>
     <ng-container
         *ngTemplateOutlet="tAddress; context: {address : selectedDeliveryAddress, label:ADDRESS_TYPES.DELIVERY, addressCount:deliveryAddressList.length}">
     </ng-container>
 </section>
-
 <!--billing container-->
 <section [style.display]="displayBillingAddresses">
     <ng-container
         *ngTemplateOutlet="tAddress; context: {address : selectedBillingAddress, label:ADDRESS_TYPES.BILLING, addressCount:billingAddressList.length}">
     </ng-container>
 </section>
-
 <!--common section to display both delivery and shipping-->
 <section>
     <ng-container #addressListRef></ng-container>
 </section>
-
-
 <section>
     <ng-container #createEditAddressRef></ng-container>
 </section>
-
 <!--common template to display address-->
 <ng-template #tAddress let-address="address" let-label="label" let-addressCount="addressCount">
     <div class="address-container">

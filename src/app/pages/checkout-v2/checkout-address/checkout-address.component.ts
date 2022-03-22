@@ -1,3 +1,4 @@
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
@@ -37,7 +38,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _modalService: ModalService) { }
+        private _router: Router,private _toastService:ToastMessageService) { }
         
     ngOnInit(): void
     {
@@ -182,7 +183,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             if (!this.billingAddress) {
                 this.addDeliveryorBilling.next(true);
                 return;
-            } else if (this.billingAddress['gstinVerified']) {
+            } else if (!this.billingAddress['gstinVerified']) {
+                this._toastService.show({
+                    type: 'error', text: "Either the provided GSTIN is invalid or the entered pincode doesn't match your GST certificate addresses"
+                });
                 this.addDeliveryorBilling.next(true);
                 return;
             }

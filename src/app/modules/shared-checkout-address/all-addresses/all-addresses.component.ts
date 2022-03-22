@@ -209,9 +209,11 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         }
         if (addressType === this.ADDRESS_TYPES.DELIVERY) {
             this.deliveryAddressList = addresses;
+            this.updateDeliveryOrBillingAddress(addressType, this.deliveryAddressList[0]);
             return;
         }
         this.billingAddressList = addresses;
+        this.updateDeliveryOrBillingAddress(addressType, this.billingAddressList[0]);
     }
 
     /**

@@ -36,7 +36,7 @@ export class AddressListComponent implements OnInit
     }
 
     handleAction($event, action, address)
-    {
+    {   
         $event.stopPropagation();
         this.emitActionEvent$.emit({ action: action, address: address });
     }

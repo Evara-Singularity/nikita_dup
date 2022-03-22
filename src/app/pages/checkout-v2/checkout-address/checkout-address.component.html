@@ -1,5 +1,5 @@
 <div class="main-container">
-    <cart-notifications (viewUnavailableItems$)=viewUnavailableItemsFromNotifacions($event)></cart-notifications>
+    <cart-notifications (viewUnavailableItems$)=viewUnavailableItemsFromNotifications($event)></cart-notifications>
     <section>
         <div *ngIf="isUserLoggedIn else hideContinue" class="continue-button">
             <div class="container payable">
@@ -9,7 +9,7 @@
                             <img src="{{IMG_PATH}}assets/img/info.png">
                         </span>
                     </span>
-                    ₹ {{ (_cartService.getGenericCartSession['cart']['totalAmount'] || 0 ) + ( _cartService.getGenericCartSession['cart']['shippingCharges'] || 0 ) + ( _cartService.getGenericCartSession['cart']['totalOffer'] || 0) | mathCeil | number : '1.2-2'}}
+                    ₹ {{ payableAmount | mathCeil | number : '1.2-2'}}
                 </p>
                 <button [disabled]="!(hasCartItems)" class="btn" (click)="continueToPayment()">
                     CONTINUE

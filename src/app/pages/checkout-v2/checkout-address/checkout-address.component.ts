@@ -25,6 +25,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
     isUserLoggedIn = false;
+    verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
 
     deliveryAddress = null;
     billingAddress = null;
@@ -36,7 +37,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
 
-    constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
+    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _modalService: ModalService) { }
 
     ngOnInit(): void
@@ -47,8 +48,18 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngAfterViewInit(): void
     {
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => { 
-            this.cartSession = cartSession; 
-            this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+            this.cartSession = cartSession;
+            if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length)
+            {
+                this.calculatePayableAmount(this.cartSession['cart']);
+            }
+            //address is getting updated and cart session is getting updated with some delay.
+            //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
+            if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length)
+            {
+                this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+                this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
+            }
         });
         this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
         if (!this.isUserLoggedIn) {
@@ -151,6 +162,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
+    /**@description calculates the total payable amount as per cart changes*/
+    calculatePayableAmount(cart)
+    {
+        const TOTAL_AMOUNT = cart['totalAmount'] || 0;
+        const SHIPPING_CHARGES = cart['shippingCharges'] || 0; 
+        const TOTAL_OFFER = cart['totalOffer'] || 0;
+        this.payableAmount = TOTAL_AMOUNT + SHIPPING_CHARGES + TOTAL_OFFER;
+    }
+
     /**@description decides whether to procees to payment or not.*/
     continueToPayment()
     {
@@ -202,7 +222,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */
-    viewUnavailableItemsFromNotifacions(display) { if (display) this.viewUnavailableItems(); }
+    viewUnavailableItemsFromNotifications(display) { if (display) this.viewUnavailableItems(); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
 

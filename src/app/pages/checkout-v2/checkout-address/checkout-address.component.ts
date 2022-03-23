@@ -1,7 +1,6 @@
-import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalService } from '@app/modules/modal/modal.service';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';

@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
-import { LocalAuthService } from '@services/auth.service';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AddressListModel } from '../models/shared-checkout.models';
@@ -19,8 +18,7 @@ export class AddressService
     readonly EMPTY_ADDRESS: AddressListModel = { deliveryAddressList: [], billingAddressList: [] };
     handleError = (returnValue) => { this._globaleLoader.setLoaderState(false); return of(returnValue); }
 
-    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService,
-        private _localAuthService: LocalAuthService) { }
+    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService) { }
 
     //serviceable methods
     getAddressList(params)
@@ -53,7 +51,7 @@ export class AddressService
                 if (response['status']) {
                     return response['addressList'];
                 }
-                return this.EMPTY_ADDRESS;
+                return { message: response['statusDescription'] || "Unable to save address"};
             }),
             catchError((error: HttpErrorResponse) => this.handleError([])),
         );
@@ -62,16 +60,7 @@ export class AddressService
     getGSTINDetails(gstin)
     {
         const URL = `${this.API}${ENDPOINTS.TAXPAYER_BY_TIN}${gstin}`;
-        return this._dataService.callRestful("GET", URL).pipe(
-            map((response) =>
-            {
-                if (response['statusCode'] && response['valid']) {
-                    return response;
-                }
-                return null;
-            }),
-            catchError((error: HttpErrorResponse) => { return of(null); })
-        );
+        return this._dataService.callRestful("GET", URL);
     }
 
     getBusinessDetail(data)

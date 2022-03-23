@@ -14,7 +14,7 @@
                     <input formControlName="addressCustomerName" type="text" placeholder="">
                     <span class="label">Name*</span>
                 </label>
-                <ng-container *ngIf="isSubmitted && addressCustomerName.invalid">
+                <ng-container *ngIf="addressCustomerName.touched || addressCustomerName.dirty">
                     <p *ngIf="addressCustomerName.hasError('required')" class="error-txt">
                         Kindly enter your full name
                     </p>
@@ -28,7 +28,7 @@
                     <input formControlName="email" type="text" placeholder="">
                     <span class="label">Email (Optional)</span>
                 </label>
-                <ng-container *ngIf="isSubmitted && email.invalid">
+                <ng-container *ngIf="email.dirty">
                     <p *ngIf="email.hasError('required')" class="error-txt">
                         Kindly enter your email
                     </p>
@@ -44,10 +44,10 @@
                         <span class="label">Phone Number*</span>
                     </label>
                 </div>
-                <div class="for-varification-r" *ngIf="phoneVerified.value">
+                <div class="for-varification-r" *ngIf="phone.valid && phoneVerified.value">
                     <span class="hidden">VERIFIED<i class="icon-done"></i></span>
                 </div>
-                <ng-container *ngIf="isSubmitted && phone.invalid">
+                <ng-container *ngIf="phone.touched || phone.dirty">
                     <p *ngIf="phone.hasError('required')" class="error-txt">
                         Kindly enter your 10 digit contact number
                     </p>
@@ -61,7 +61,7 @@
                     <input formControlName="alternatePhone" type="tel" placeholder="" maxlength="10">
                     <span class="label">Alternate Phone Number (Optional)</span>
                 </label>
-                <p *ngIf="isSubmitted && alternatePhone.hasError('pattern') && alternatePhone.value.length>0"
+                <p *ngIf="alternatePhone.hasError('pattern') && alternatePhone.value.length>0"
                     class="error-txt">
                     Kindly enter your 10 digit contact no.
                 </p>
@@ -71,7 +71,7 @@
                     <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
                     <span class="label">Address*</span>
                 </label>
-                <ng-container *ngIf="isSubmitted && addressLine.invalid">
+                <ng-container *ngIf="addressLine.touched || addressLine.dirty">
                     <p *ngIf="addressLine.hasError('required')" class="error-txt">
                         Kindly enter your address
                     </p>
@@ -91,7 +91,7 @@
                         <i class="icon-down"></i>
                         <span class="label">Country*</span>
                     </label>
-                    <p *ngIf="isSubmitted && idCountry.hasError('required')" class="error-txt">
+                    <p *ngIf="idCountry.hasError('required')" class="error-txt">
                         Kindly select your country
                     </p>
                 </div>
@@ -100,7 +100,7 @@
                         <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
                         <span class="label">Pin Code*</span>
                     </label>
-                    <ng-container *ngIf="isSubmitted && postCode.invalid">
+                    <ng-container *ngIf="postCode.touched || postCode.dirty">
                         <p *ngIf="postCode.hasError('required')" class="error-txt">
                             Kindly enter your pincode
                         </p>
@@ -120,7 +120,7 @@
                     <i class="icon-down"></i>
                     <span class="label">State*</span>
                 </label>
-                <p *ngIf="isSubmitted && idState.hasError('required')" class="error-txt">
+                <p *ngIf="idState.hasError('required')" class="error-txt">
                     Kindly select your state
                 </p>
             </div>
@@ -129,7 +129,7 @@
                     <input formControlName="city" type="text" placeholder="" readonly>
                     <span class="label">City*</span>
                 </label>
-                <ng-container *ngIf="isSubmitted && city.invalid">
+                <ng-container *ngIf="city.touched || city.dirty">
                     <p *ngIf="city.hasError('required')" class="error-txt">
                         Kindly enter your city/district/town
                     </p>
@@ -143,13 +143,13 @@
                     <input formControlName="landmark" type="text" placeholder="">
                     <span class="label">Landmark (Optional)</span>
                 </label>
-                <p *ngIf="isSubmitted && landmark.hasError('pattern')" class="error-txt">
+                <p *ngIf="landmark.hasError('pattern')" class="error-txt">
                     Special Characters are not allowed.
                 </p>
             </div>
             <div class="clearfix"></div>
             <div class=" mar-t-5 pad-lr-xs-5 o-hidden">
-                <button type="submit" class="btn continue-btn">SAVE ADDRESS</button>
+                <button [disabled]="addressForm.invalid" type="submit" class="btn continue-btn" >SAVE ADDRESS</button>
             </div>
         </form>
     </div>

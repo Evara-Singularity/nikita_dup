@@ -23,12 +23,11 @@
                             </span>
                         </ng-container>
                     </label>
-                    <ng-container *ngIf="isSubmitted && gstin.invalid">
+                    <ng-container *ngIf="gstin.touched || gstin.dirty">
                         <p class="error-txt" *ngIf="gstin.hasError('required')">Kindly enter your GSTIN</p>
                         <p class="error-txt" *ngIf="gstin.hasError('minlength')">Kindly enter a valid GSTIN of 15-digit
                         </p>
                     </ng-container>
-                    <p class="error-txt" *ngIf="isSubmitted && gstin.valid && !(isGSTINVerified)">Kindly verify GSTIN</p>
                 </div>
                 <div class="input-field">
                     <label [class.is-focus]="isBusinessFieldFocus('companyName')"
@@ -36,7 +35,7 @@
                         <input maxlength="75" type="text" formControlName="companyName" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Name*</span>
                     </label>
-                    <p class="error-txt" *ngIf="displayError && companyName.invalid">
+                    <p class="error-txt" *ngIf="companyName.dirty && companyName.invalid">
                         Kindly enter your business entity name
                     </p>
                 </div>
@@ -45,7 +44,7 @@
                         <input formControlName="email" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Email (Optional)</span>
                     </label>
-                    <ng-container *ngIf="displayError && email.invalid">
+                    <ng-container *ngIf="email.touched || email.dirty">
                         <p class="error-txt" *ngIf="email.hasError('required')">
                             Kindly enter your business email id</p>
                         <p class="error-txt" *ngIf="!(email.hasError('required')) && email.hasError('invalidEmail')">
@@ -57,7 +56,7 @@
                         <input formControlName="phone" type="tel" [readonly]="!(isGSTINVerified)" maxlength="10">
                         <span class="label">Business Phone*</span>
                     </label>
-                    <ng-container *ngIf="displayError && phone.invalid">
+                    <ng-container *ngIf="phone.touched || phone.dirty">
                         <p class="error-txt" *ngIf="phone.hasError('required')">
                             Kindly enter your business phone number</p>
                         <p class="error-txt" *ngIf="!(phone.hasError('required')) && phone.hasError('invalidPhone')">
@@ -71,11 +70,10 @@
                         [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="addressLine" type="text" placeholder="" [readonly]="!(isGSTINVerified)">
                         <span class=label>Address*</span>
-                        <ng-container *ngIf="displayError && addressLine.invalid">
+                        <ng-container *ngIf="addressLine.touched || addressLine.dirty">
                             <p *ngIf="addressLine.hasError('required')" class="error-txt">Kindly enter your address</p>
-                            <p *ngIf="addressLine.hasError('pattern')" class="error-txt">Special characters not allowed
-                                in
-                                adress</p>
+                            <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
+                                Special characters not allowed in adress</p>
                         </ng-container>
                     </label>
                 </div>
@@ -90,7 +88,7 @@
                             <i class="icon-down"></i>
                             <span class="label">Country*</span>
                         </label>
-                        <p *ngIf="displayError && idCountry.invalid" class=" error-txt">Kindly
+                        <p *ngIf="idCountry.invalid" class=" error-txt">Kindly
                             select your country</p>
                     </div>
                     <div class="input-field w-30">
@@ -100,9 +98,10 @@
                                 [readonly]="!(isGSTINVerified)">
                             <span class="label">Pin Code*</span>
                         </label>
-                        <ng-container *ngIf="displayError && postCode.invalid">
+                        <ng-container *ngIf="postCode.touched || postCode.dirty">
                             <p *ngIf="postCode.hasError('required')" class="error-txt">Kindly enter your pincode</p>
-                            <p *ngIf="!(postCode.hasError('required')) &&  postCode.hasError('invalidPostCode')" class="error-txt">
+                            <p *ngIf="!(postCode.hasError('required')) &&  postCode.hasError('invalidPostCode')"
+                                class="error-txt">
                                 Pincode should contain 6 digits
                             </p>
                         </ng-container>
@@ -119,7 +118,7 @@
                         <i class="icon-down"></i>
                         <span class="label">State*</span>
                     </label>
-                    <p *ngIf="displayError && idState.invalid" class="error-txt">
+                    <p *ngIf="idState.invalid" class="error-txt">
                         Kindly select your state</p>
                 </div>
                 <div class="input-field">
@@ -127,7 +126,7 @@
                         <input formControlName="city" type="text" placeholder="" readonly>
                         <span class="label">City*</span>
                     </label>
-                    <ng-container *ngIf="displayError && city.invalid">
+                    <ng-container *ngIf="city.dirty">
                         <p *ngIf="city.hasError('required')" class="error-txt">
                             Kindly enter your city/district/town
                         </p>
@@ -143,7 +142,7 @@
                     </label>
                 </div>
             </div>
-            <button type="submit" class="btn continue-btn">SAVE ADDRESS</button>
+            <button type="submit" class="btn continue-btn" [class.disabledButton]="!(canSave)">SAVE ADDRESS</button>
         </form>
     </div>
 </app-pop-up-variant2>

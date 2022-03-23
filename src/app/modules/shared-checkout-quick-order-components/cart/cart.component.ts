@@ -384,7 +384,6 @@ export class CartComponent {
         this.sendCritioData();
     }
 
-    
 
     // get shipping charges of each item in cart
     getShippingCharges(obj) {

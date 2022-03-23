@@ -645,7 +645,6 @@ export class CartService
             // Action : update sessionId & cartId in productDetails
             map(({ cartSession, productItemExistInCart }) =>
             {
-
                 // console.log('step 2 ==>', cartSession);
                 if (!cartSession) {
                     return cartSession;

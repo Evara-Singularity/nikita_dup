@@ -12,8 +12,8 @@ import { Subscription } from 'rxjs';
 })
 export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
 {
-    readonly ADDRESS_HEADERS: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }];
-    readonly PAYMENT_HEADERS: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
+    readonly ADDRESS_HEADERS: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
+    readonly PAYMENT_HEADERS: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: true }];
     headers = this.ADDRESS_HEADERS;
     isUserLoggedIn = false;
     isCheckoutFlow = false;

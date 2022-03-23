@@ -5,12 +5,12 @@
         <button class="btn skip-btn" *ngIf="isNormalLogin" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
         <img class="bg-moglix-logo" (click)="$event.stopPropagation();navigateHome()"
             src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png" *ngIf="isNormalLogin">
-        <h3 class="heading" [ngClass]="{'heading-padding': isCheckout}" *ngIf="headerTitle">{{headerTitle}}</h3>
-        <div class="login-card">
-            <h3 class="heading-custom-3">Sign-In <span class="normal-weight">or</span> Sign Up</h3>
+        <h3 class="heading pad-15" [ngClass]="{'heading-padding': isCheckout}" *ngIf="headerTitle">{{headerTitle}}</h3>
+        <div class="login-card pad-15 mar-15">
+            <h3 class="heading-custom-3 mb-15">Sign-In <span class="normal-weight">or</span> Sign Up</h3>
             <ng-container *ngIf="loginType == LOGIN_USING_PHONE">
                 <form class="material-form" [formGroup]="loginNumberForm">
-                    <div class="outline-input-label">
+                    <div class="outline-input-label mb-25">
                         <label [class.is-focus]="phoneFC.value.length!=0">
                             <input type="tel"
                                 [ngClass]="{'invalid-input': isLoginNumberFormSubmitted && phoneFC.invalid}"
@@ -32,7 +32,7 @@
             </ng-container>
             <ng-container *ngIf="loginType == LOGIN_USING_EMAIL">
                 <form class="material-form" [formGroup]="loginEmailForm">
-                    <div class="outline-input-label">
+                    <div class="outline-input-label mb-25">
                         <label [class.is-focus]="emailFC.value.length!=0">
                             <input [ngClass]="{'invalid-input': isLoginEmailFormSubmitted && emailFC.invalid}"
                                 type="text" (keyup)="$event.stopPropagation();filter($event.target.value)"
@@ -64,7 +64,7 @@
                     </div>
                 </form>
             </ng-container>
-            <p class="safe-text">Your details are safe with us.</p>
+            <p class="safe-text mt-20">Your details are safe with us.</p>
         </div>
         <div class="terms-n-policy">
             <p>By continuing, you agree to our <a target="blank" href="terms">Terms of Service</a> & <a target="blank"

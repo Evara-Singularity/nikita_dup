@@ -563,7 +563,7 @@ export class CartService
             taxonomyCode: productCategoryDetails['taxonomyCode'],
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(0),
             category: productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,

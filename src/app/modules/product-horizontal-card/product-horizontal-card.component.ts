@@ -99,7 +99,7 @@ export class ProductHorizontalCardComponent implements OnInit {
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
-    this.product['discount'] = Math.floor(+(((this.product.mrp - this.product.priceWithoutTax) / this.product.mrp) * 100));
+    this.product['discount'] = Math.floor(+(((this.product.mrp - this.product.salesPrice) / this.product.mrp) * 100));
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
     this.prodUrl = CONSTANTS.PROD;

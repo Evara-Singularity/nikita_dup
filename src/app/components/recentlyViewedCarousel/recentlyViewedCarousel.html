@@ -19,8 +19,8 @@
             <span class="before-discount">{{item.priceMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
             <!-- <span class="discount" *ngIf="item.discount > 0">{{item.discount | mathCeil}}% OFF</span> -->
             <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'> {{((item.priceMrp -
-              item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
-            <span class="after-discount">{{item.priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+              item.priceWithTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
+            <span class="after-discount">{{item.priceWithTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
           </p>
           <div class='prod_detail pad-t-5 pad-lr-10' *ngIf="item.outOfStock">
             <span class='f-size-13 text-darkgrey text-400 text-left' style="width: 100% !important;">
@@ -51,9 +51,9 @@
               <span class="before-discount">{{item.priceMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
               <!-- <span class="discount" *ngIf="item.discount">{{item.discount | mathCeil}}% OFF</span> -->
               <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'> {{((item.priceMrp -
-                item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
+                item.priceWithTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
 
-              <span class="after-discount">{{item.priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+              <span class="after-discount">{{item.priceWithTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
             </p>
             <div class='prod_detail pad-t-5 pad-lr-10' *ngIf="item.outOfStock">
               <span class='f-size-13 text-darkgrey text-400 text-left' style="width: 100% !important;">

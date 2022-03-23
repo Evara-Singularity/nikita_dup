@@ -5,7 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
-import { CountryListModel, StateListModel } from '@app/utils/models/shared-checkout.models';
+import { StateListModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -229,7 +229,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
             }
             forkJoin(fjData).subscribe((responses) =>
             {
-                debugger;
                 let response1: any[] = responses[0];
                 let response2: any[] = responses[1] ? responses[1] : true;
                 if (response1.length) {

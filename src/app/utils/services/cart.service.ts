@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AddToCartProductSchema } from "../models/cart.initial";
 import { DataService } from './data.service';
 import { BehaviorSubject, Observable, of, pipe, Subject } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -530,7 +530,7 @@ export class CartService
                 itemsList.push(item);
             }
         }
-        return itemsList; 
+        return itemsList;
     }
 
     private _getPrepaidDiscount(body)
@@ -768,10 +768,12 @@ export class CartService
     }
 
     // delete a item from cart and update cart session
-    updateCartAfterRemovingItem (removeIndex) {
+    updateCartAfterRemovingItem(removeIndex)
+    {
         let cartSession = this.getGenericCartSession;
         cartSession.itemsList.splice(removeIndex, 1);
-        this.updateCartSession(cartSession).subscribe(updatedCartSession => {
+        this.updateCartSession(cartSession).subscribe(updatedCartSession =>
+        {
             this.publishCartUpdateChange(updatedCartSession);
             this._loaderService.setLoaderState(false);
             if (!updatedCartSession.itemsList.length) this._router.navigateByUrl('/quickorder');
@@ -1490,131 +1492,194 @@ export class CartService
         );
     }
 
-    removeItemsFromCartByMsns(msns: string[])
+    //cart removal logic
+    deleteValidationMessages(removableItems: any[])
     {
-        const EXITING_CART_ITEMS: any[] = this.cartSession['itemsList'];
-        const REMOVABLE_ITEMS = [];
-        const NON_REMOVABLE_ITEMS = [];
-        EXITING_CART_ITEMS.forEach((item) =>
-        {
-            if (msns.includes(item['productId'])) {
-                REMOVABLE_ITEMS.push(item);
-                return;
-            }
-            NON_REMOVABLE_ITEMS.push(item);
-        });
         const DELETE = "delete";
         let NEW_VALIDATION_MSGS = [];
-        REMOVABLE_ITEMS.forEach((item) => { NEW_VALIDATION_MSGS = this.deleteValidationMessageLocalstorage(item, DELETE); });
+        removableItems.forEach((item) => { NEW_VALIDATION_MSGS = this.deleteValidationMessageLocalstorage(item, DELETE); });
         this.itemsValidationMessage = NEW_VALIDATION_MSGS;
-        this.verifyPromocode(NON_REMOVABLE_ITEMS, "Product successfully removed from Cart");
-        //TODO:write a subject to subscribe in notificaions with new messages
-        //TODO:write code to update the cart with new item list and calculates the cart totalAmount
-        //TODO:Check with Yogender if we update the cart then automatically everything is calculated
-        //1773
     }
 
-    verifyPromocode(items: any[], message)
+    verifyOfferList(cartSession)
     {
-        const MSG = { type: 'error', text: message };
         const USER_SESSION = this._localStorageService.retrieve('user');
         if (USER_SESSION && USER_SESSION['authenticated'] === "true") {
-            if (this.cartSession['offersList'] && this.cartSession['offersList'].length) {
+            if (cartSession['offersList'] && cartSession['offersList'].length) {
                 const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.validatePromoCode}`;
-                let reqobj = { "shoppingCartDto": this.cartSession };
-                this._globalLoader.setLoaderState(true);
-                this._dataService.callRestful('POST', URL, { body: reqobj }).subscribe((response) =>
-                {
-                    const SUCCESS = response['status'];
-                    if (!SUCCESS) { MSG.text = response["statusDescription"] }
-                    if (message) { this._toastService.show(MSG); }
-                    this.processOfferList(SUCCESS, response['data'], items);
-                    this._globalLoader.setLoaderState(false);
-                }, error => { this._globalLoader.setLoaderState(false) })
+                let reqobj = { "shoppingCartDto": cartSession };
+                return this._dataService.callRestful('POST', URL, { body: reqobj }).subscribe(
+                    (response) =>
+                    {
+                        const SUCCESS = response['status'];
+                        if (SUCCESS) {
+                            cartSession = this.updateOfferList(cartSession, response['data']);
+                            return cartSession;
+                        }
+                        this._toastService.show(({ type: "error", text: response["statusDescription"] || "Unable to update the offer list." }))
+                        return cartSession;
+                    },
+                    (error) =>
+                    {
+                        this._toastService.show(({ type: "error", text: "Unable to process the offer list." }));
+                        return cartSession;
+                    })
             }
         }
+        return cartSession;
     }
 
-    processOfferList(success, data, items: any[])
+    updateOfferList(cartSession, data)
     {
         const DISCOUNT = data['discount'];
         const TOTAL_AMOUNT = this.cartSession['cart']['totalAmount'];
-        if (success && (DISCOUNT < TOTAL_AMOUNT)) {
-            this.cartSession['cart']['totalOffer'] = DISCOUNT;
+        if (DISCOUNT < TOTAL_AMOUNT) {
+            cartSession['cart']['totalOffer'] = DISCOUNT;
+            const ITEMS: any[] = cartSession['itemsList'];
             const DISCOUNT_WISE_PRODUCTS = data['productDis'] ? Object.keys(data['productDis']) : [];
-            items.forEach((item) =>
+            ITEMS.forEach((item) =>
             {
                 item['offer'] = null;
                 if (DISCOUNT_WISE_PRODUCTS.includes(item['productId'])) {
                     item['offer'] = data["productDis"][item["productId"]];
                 }
             });
-            this.cartSession.itemsList["itemsList"] = items;
-            return;
+            cartSession["itemsList"] = ITEMS;
+            return cartSession;
         }
-        this.cartSession['cart']['totalOffer'] = 0;
-        this.cartSession['offersList'] = [];
-        this.cartSession.itemsList.forEach((item) => item["offer"] = null);
-        this.cartSession.itemsList["itemsList"] = items;
-        this.refreshShippingChargesAfterDelete(this.cartSession, null);
+        cartSession['cart']['totalOffer'] = 0;
+        cartSession['offersList'] = [];
+        cartSession.itemsList.forEach((item) => item["offer"] = null);
+        return cartSession;
     }
 
-    refreshShippingChargesAfterDelete(cartSession, message)
+    verifyShippingCharges(cartSession)
     {
-        this._globalLoader.setLoaderState(true);
-        const SHIPPING_DATA = this.getShippingObj(this.cartSession);
+        const SHIPPING_DATA = this.getShippingObj(cartSession);
         const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.getShippingValue}`;
-        this._dataService.callRestful("POST", URL, { body: SHIPPING_DATA }).subscribe(
-            (response) =>
+        return this._dataService.callRestful("POST", URL, { body: SHIPPING_DATA }).pipe(
+            map((response) =>
             {
                 if (response['statusCode'] == 200) {
-                    this.processShippingCharges(response['data']);
-                }
-                this._globalLoader.setLoaderState(false);
-            },
-            (error) => { this._globalLoader.setLoaderState(false); }
-        )
-    }
-
-    processShippingCharges(shipping)
-    {
-        this.cartSession['cart']['shippingCharges'] = shipping['totalShippingAmount'];
-        const PRODUCT_WISE_SHIPPING_CHARGES: any[] = shipping['itemShippingAmount'];
-        for (let item in this.cartSession['itemsList']) {
-            const PRODUCT_ID = item['productId']
-            item['shippingCharges'] = shipping['itemShippingAmount'][PRODUCT_ID];
-        }
-        this.updateCartSessionAfterDelete(PRODUCT_WISE_SHIPPING_CHARGES, this.cartSession);
-    }
-
-    updateCartSessionAfterDelete(PRODUCT_WISE_SHIPPING_CHARGES: any[], cartSessions)
-    {
-        this.updateCartSession(cartSessions).subscribe((data) =>
-        {
-            let res = data;
-            if (res && res['cart'] && res['itemsList'] && Array.isArray(res['itemsList'])) {
-                let itemsList = res['itemsList'];
-                itemsList.forEach((element, index) =>
-                {
-                    for (let key in PRODUCT_WISE_SHIPPING_CHARGES) {
-                        if (key == element['productId']) {
-                            itemsList[index]['shippingCharges'] = PRODUCT_WISE_SHIPPING_CHARGES[key];
-                        }
+                    const DATA = response['data']
+                    cartSession['cart']['shippingCharges'] = DATA['totalShippingAmount'];
+                    for (let item in cartSession['itemsList']) {
+                        const PRODUCT_ID = item['productId']
+                        item['shippingCharges'] = DATA['itemShippingAmount'][PRODUCT_ID];
                     }
-                })
-                this.cartSession = res;
-                this.cart = res.cart;
-                if (itemsList.length == 0 && this._router.url.indexOf('/checkout') != -1) {
+                    return cartSession;
+                }
+            },
+                catchError((error: HttpErrorResponse) => { return cartSession }))
+        );
+    }
+
+
+    //post processing logic
+    removeCartItemsByMsns(msns: string[])
+    {
+        const CART_SESSION = JSON.parse(JSON.stringify(this.cartSession));
+        const EXISTING_ITEMS = (CART_SESSION['itemsList'] as any[]);
+        const REMOVABLE_ITEMS = []; const NON_REMOVABLE_ITEMS = [];
+        EXISTING_ITEMS.forEach((item) =>
+        {
+            if (msns.includes(item['productId'])) { REMOVABLE_ITEMS.push(item); return; }
+            NON_REMOVABLE_ITEMS.push(item);
+        });
+        this.deleteValidationMessages(REMOVABLE_ITEMS);
+        this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
+    }
+
+    updateCartAfterItemsDelete(CART_SESSION, items: any[])
+    {
+        CART_SESSION['itemsList'] = items;
+        this._globalLoader.setLoaderState(true);
+        this.updateCartSession(CART_SESSION).pipe(
+            switchMap((newCartSession) => { return this.verifyOfferList(newCartSession) }),
+            switchMap((newCartSession) => { return of(this.verifyShippingCharges(newCartSession)) })).
+            subscribe((newCartSession) =>
+            {
+                this.cart = newCartSession['cart'];
+                this._globalLoader.setLoaderState(false);
+                this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
+                const ITEM_LIST = newCartSession['itemsList'];
+                if (ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
                     // clears browser history so they can't navigate with back button
-                    this._location.replaceState('/'); 
+                    this._location.replaceState('/');
                     this._router.navigateByUrl('/quickorder');
                 }
-            }
-        }, err => {  });
+                this._notifyCartChanges(newCartSession, null);
+            })
     }
 
+    //pre-processing logic
+    removeItemsFromCartByMsns(msns: string[])
+    {
+        const CART_SESSION = JSON.parse(JSON.stringify(this.cartSession));
+        const EXITING_CART_ITEMS: any[] = CART_SESSION['itemsList'];
+        const REMOVABLE_ITEMS = []; const NON_REMOVABLE_ITEMS = [];
+        EXITING_CART_ITEMS.forEach((item) =>
+        {
+            if (msns.includes(item['productId'])) { REMOVABLE_ITEMS.push(item); return; }
+            NON_REMOVABLE_ITEMS.push(item);
+        });
+        this.deleteValidationMessages(REMOVABLE_ITEMS);
+        this.updateCartAfterDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
+    }
+
+    verifyPromocode(cartSession)
+    {
+        const USER_SESSION = this._localStorageService.retrieve('user');
+        if (USER_SESSION && USER_SESSION['authenticated'] === "true") {
+            if (cartSession['offersList'] && cartSession['offersList'].length) {
+                const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.validatePromoCode}`;
+                let reqobj = { "shoppingCartDto": this.cartSession };
+                return this._dataService.callRestful('POST', URL, { body: reqobj })
+                    .pipe(
+                        map((response) =>
+                        {
+                            const SUCCESS = response['status'];
+                            if (SUCCESS) {
+                                cartSession = this.updateOfferList(cartSession, response['data']);
+                                return cartSession;
+                            }
+                            this._toastService.show(({ type: "error", text: response["statusDescription"] || "Unable to update the offer list." }))
+                            return cartSession;
+                        }),
+                        catchError((error: HttpErrorResponse) => cartSession)
+                    );
+            }
+        }
+        return of(cartSession);
+    }
+
+    updateCartAfterDelete(cartSession, items)
+    {
+        cartSession['itemsList'] = items;
+        this._globalLoader.setLoaderState(true);
+        this.verifyPromocode(cartSession).pipe(
+            map(cartSession => cartSession),
+            switchMap((newCartSession) => { return this.verifyShippingCharges(newCartSession) }),
+            switchMap((newCartSession) => { return this.updateCartSession(newCartSession) })).
+            subscribe((newCartSession) =>
+            {
+                this.cart = newCartSession['cart'];
+                this._globalLoader.setLoaderState(false);
+                this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
+                const ITEM_LIST = newCartSession['itemsList'];
+                if (ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
+                    // clears browser history so they can't navigate with back button
+                    this._location.replaceState('/');
+                    this._router.navigateByUrl('/quickorder');
+                }
+                this._notifyCartChanges(newCartSession, null);
+            })
+    }
+
+    
     /**@description display unavailable items in pop-up */
-    viewUnavailableItems() {
+    viewUnavailableItems()
+    {
         const itemsList: any[] = this.getGenericCartSession['itemsList'];
         const unservicableMsns = JSON.parse(JSON.stringify(this.itemsValidationMessage))
             .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
@@ -1631,6 +1696,7 @@ export class CartService
     removeUnavailableItems(items: any[])
     {
         const MSNS = items.map(item => item['productId']);
-        this.removeItemsFromCartByMsns(MSNS);
+        this.removeItemsFromCartByMsns(MSNS);//preprocessing
+        //this.removeCartItemsByMsns(MSNS)//postprocessing
     }
 }

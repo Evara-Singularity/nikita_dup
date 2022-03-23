@@ -28,6 +28,7 @@
                         <p class="error-txt" *ngIf="gstin.hasError('minlength')">Kindly enter a valid GSTIN of 15-digit
                         </p>
                     </ng-container>
+                    <p class="error-txt" *ngIf="isSubmitted && gstin.valid && !(isGSTINVerified)">Kindly verify GSTIN</p>
                 </div>
                 <div class="input-field">
                     <label [class.is-focus]="isBusinessFieldFocus('companyName')"
@@ -53,7 +54,7 @@
                 </div>
                 <div class="input-field">
                     <label [class.is-focus]="isBusinessFieldFocus('phone')" [class.disableInput]="!(isGSTINVerified)">
-                        <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)">
+                        <input formControlName="phone" type="tel" [readonly]="!(isGSTINVerified)" maxlength="10">
                         <span class="label">Business Phone*</span>
                     </label>
                     <ng-container *ngIf="displayError && phone.invalid">

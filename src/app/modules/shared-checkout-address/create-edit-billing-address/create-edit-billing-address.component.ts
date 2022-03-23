@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import CONSTANTS from '@app/config/constants';
 import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant2.module';
@@ -20,7 +20,7 @@ import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
     styleUrls: ['../common-checkout.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit, OnDestroy
+export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
 {
     readonly ADDRESS_TYPE = "Billing";
     readonly globalConstants = CONSTANTS.GLOBAL;
@@ -44,17 +44,15 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     isPostcodeValid = false;
     isGSTINVerified = false;
     isBusinessDetailExists = false;
-    isSubmitted = false;
 
     gstingSubscription: Subscription = null;
     postCodeSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private _localStorageService: LocalStorageService,
-        private _commonService: CommonService, private _toastMessageService: ToastMessageService, private _formBuilder: FormBuilder,)
+        private _commonService: CommonService, private _toastMessageService: ToastMessageService, private _formBuilder: FormBuilder, private cdr: ChangeDetectorRef)
     {
         this.userSesssion = this._localAuthService.getUserSession();
     }
-
 
     ngOnInit() 
     {
@@ -64,6 +62,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     ngAfterViewInit()
     {
+
         if (this.address) {
             this.isPostcodeValid = true;
             this.isGSTINVerified = this.address['gstinVerified'] ? true : false;
@@ -72,6 +71,8 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
             return;
         }
     }
+
+    ngAfterViewChecked() { this.cdr.detectChanges(); }
 
     fetchBusinessDetails()
     {
@@ -104,10 +105,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     addSubscribers()
     {
-        this.gstingSubscription = this.gstin.valueChanges.subscribe((value: string) =>
-        {
-            this.isGSTINVerified = false;
-        })
+        this.gstingSubscription = this.gstin.valueChanges.subscribe((value: string) => { this.isGSTINVerified = false; })
         this.postCodeSubscription = this.postCode.valueChanges.subscribe(
             (data) =>
             {
@@ -199,7 +197,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     onSubmit()
     {
-        this.isSubmitted = true;
+        if(!this.canSave)return;
         let data = this.businessForm.getRawValue();
         if (!(this.canSubmit)) return;
         const BILLING_DETAILS = data['billingAddress'];
@@ -242,7 +240,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                     }
                     return;
                 }
-                this._toastMessageService.show({ type: 'error', text: response1['statusDescription'] || "Unable to save address" });
+                this._toastMessageService.show({ type: 'error', text: response1['message'] });
             });
         }
     }
@@ -261,6 +259,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         return VALUE ? true : false;
     }
 
+    get canSave() { return this.isPostcodeValid && this.businessForm.valid && this.isGSTINVerified; }
     //getters
     get gstin() { return this.businessForm.get('businessDetail').get('gstin') as FormControl; }
     get companyName() { return this.businessForm.get('businessDetail').get('companyName') as FormControl; }
@@ -271,7 +270,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     get city() { return this.businessForm.get('billingAddress').get('city') as FormControl; }
     get idState() { return this.businessForm.get('billingAddress').get('idState') as FormControl; }
     get idCountry() { return this.businessForm.get('billingAddress').get('idCountry') as FormControl; }
-    get displayError() { return (this.isGSTINVerified && this.isSubmitted) ? true : false }
 
     ngOnDestroy(): void
     {

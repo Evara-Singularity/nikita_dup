@@ -5,7 +5,7 @@ import { OtpPopupComponent } from '@app/components/otp-popup/otp-popup.component
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
-import { CountryListModel, StateListModel } from '@app/utils/models/shared-checkout.models';
+import { StateListModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { Step } from '@app/utils/validators/step.validate';
@@ -41,7 +41,6 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     isVerifyingPostcode = false;
     isPostcodeValid = false;
-    isSubmitted = false;
 
     phoneSubscription: Subscription = null;
     postCodeSubscription: Subscription = null;
@@ -71,10 +70,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             }
         );
         this.phoneSubscription = this.phone.valueChanges.subscribe(
-            (phone: string) =>
-            {
-                if (phone.length === 10) { this.verifyPhone(phone); }
-            }
+            (phone: string) => { if (phone.length === 10) { this.verifyPhone(phone); } }
         );
     }
 
@@ -140,7 +136,6 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
 
     saveOrUpdateAddress()
     {
-        this.isSubmitted = true;
         if (!this.canSubmit) return;
         if (this.phoneVerified.value) { this.saveAddress(this.addressForm.getRawValue()); return }
         const request = { device: 'mobile', email: '', phone: this.phone.value, type: 'p', source: "address", userId: this.userSesssion["userId"] };
@@ -191,7 +186,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     }
 
     handlePopup($event) { this.closeAddressPopUp$.emit({ aType: null, action: null, addresses: null }); }
-    get canSubmit() { return this.addressForm.valid && this.isPostcodeValid && !(this.isVerifyingPostcode) }
+    get canSubmit() { return this.isPostcodeValid && !(this.isVerifyingPostcode) }
     get modeType() { return this.isAddMode ? "Add" : "Edit"; }
     displayFocus(control: string) { return this.addressForm.get(control).value ? true : false }
     verifyPhone(phone: string) { this.phoneVerified.patchValue(this.verifiedPhones.includes(phone)); }

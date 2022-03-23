@@ -183,6 +183,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.createEditAddressInstance.instance['invoiceType'] = this.invoiceType.value;
         this.createEditAddressInstance.instance['verifiedPhones'] = verifiedPhones;
         this.createEditAddressInstance.instance['displayCreateEditPopup'] = true;
+        this.createEditAddressInstance.instance['address'] = address;
         this.createEditAddressInstance.instance['countryList'] = this.countryList;
         this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
         {
@@ -203,16 +204,18 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     updateAddressAfterAction(addressType, addresses)
     {
-        if (!addresses) return
+        if (!addresses) return;
+        const IS_DEVLIVERY = addressType === this.ADDRESS_TYPES.DELIVERY;
+        const SEPARATED_ADDRESS:AddressListModel = this._addressService.separateDeliveryAndBillingAddress(addresses);
+        this.deliveryAddressList = SEPARATED_ADDRESS.deliveryAddressList;
+        this.billingAddressList = SEPARATED_ADDRESS.billingAddressList;
         if (this.addressListInstance) {
-            this.addressListInstance.instance['addresses'] = addresses;
+            this.addressListInstance.instance['addresses'] = IS_DEVLIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
-            this.deliveryAddressList = addresses;
+        if (IS_DEVLIVERY) {
             this.updateDeliveryOrBillingAddress(addressType, this.deliveryAddressList[0]);
             return;
         }
-        this.billingAddressList = addresses;
         this.updateDeliveryOrBillingAddress(addressType, this.billingAddressList[0]);
     }
 

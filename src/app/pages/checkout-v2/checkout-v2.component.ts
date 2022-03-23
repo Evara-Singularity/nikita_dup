@@ -12,9 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
 {
-    readonly ADDRESS_HEADERS: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: false }];
-    readonly PAYMENT_HEADERS: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
-    headers = this.ADDRESS_HEADERS;
+    readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     isUserLoggedIn = false;
     isCheckoutFlow = false;
     userSession = null;
@@ -34,7 +32,7 @@ export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
         {
             const URL = event.url.toLowerCase();
             this.updateCheckoutFlag(URL);
-            this.headers = URL.includes("payment") ? this.PAYMENT_HEADERS : this.ADDRESS_HEADERS;
+            this.STEPPER[1]['status'] = URL.includes("payment");
         });
     }
 

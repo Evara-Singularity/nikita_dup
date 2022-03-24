@@ -751,14 +751,17 @@ export class CartService
     // refresh and chnages to communicated 
     public refreshCartSesion()
     {
-        this.checkForUserAndCartSessionAndNotify().subscribe(status =>
-        {
-            if (status) {
-                this._cartUpdatesChanges.next(this.cartSession);
-            } else {
-                console.trace('cart refresh failed');
-            }
-        })
+        // we do not want to refresh cart by pages component in case buynow event
+        if(!this._buyNow && !this.buyNowSessionDetails){
+            this.checkForUserAndCartSessionAndNotify().subscribe(status =>
+            {
+                if (status) {
+                    this._cartUpdatesChanges.next(this.cartSession);
+                } else {
+                    console.trace('cart refresh failed');
+                }
+            })
+        }
     }
 
     // incase of update use this to notify cart session

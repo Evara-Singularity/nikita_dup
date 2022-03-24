@@ -1511,7 +1511,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           state: (buyNow ? { buyNow: buyNow } : {})
         });
       } else {
-
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
           if (!buyNow) {

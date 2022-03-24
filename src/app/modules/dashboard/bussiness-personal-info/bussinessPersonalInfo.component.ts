@@ -83,7 +83,7 @@ export class BussinessInfoComponent {
   logout() {
     this._localAuthService.clearAuthFlow();
     this._localAuthService.clearBackURLTitle();
-    this._cartService.logOutAndClearCart();
+    this._cartService.logOutAndClearCart('/');
   }
 
   onSubmit(data) {

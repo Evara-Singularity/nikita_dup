@@ -22,18 +22,18 @@ export class OrderSummaryComponent {
     ) {}
 
     ngOnInit(): void {
-        this.updateShippingCharges();
+        this._cartService.getCartUpdatesChanges().subscribe(result => {
+            this.updateShippingCharges();
+        });
     }
 
     updateShippingCharges() {
-        if (!this._cartService.getGenericCartSession.itemList || !this._cartService.getGenericCartSession.length) {
-            this.shippingCharges = 0;
-            return;
-        } 
-
-        this.shippingCharges = this._cartService.getGenericCartSession.itemList.reduce((shippingCharges, item) => {
-            shippingCharges +=  (item.shipping || 0);
-        }, 0);
+        this.shippingCharges = 0;
+        if (this._cartService.getGenericCartSession && this._cartService.getGenericCartSession.itemsList && this._cartService.getGenericCartSession.itemsList.length > 0) {
+            this._cartService.getGenericCartSession.itemsList.map((item) => {
+                this.shippingCharges = this.shippingCharges + (item.shippingCharges || 0);
+            });
+        }
     }
 
     openOfferPopUp() {

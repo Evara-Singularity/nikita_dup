@@ -54,14 +54,14 @@
                 left: 0;
                 width: 67%;
                 margin: 0 auto;
-                background: #DB1510;
+                background: $btn-color-red;
                 padding: 8px 0px;
                 border-radius: 17px;
                 text-align: center;
                 color: #fff;
-                font-size: 12px;
+                font-size: $medium-font;
                 line-height: 15px;
-                font-weight: 600;
+                font-weight: $font-bolder;
             }
             &:after {
                 width: 30px;

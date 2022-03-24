@@ -1,3 +1,5 @@
+@import '../../scss/variables';
+
 body {
     margin: 0;
     padding: 0;
@@ -8,7 +10,7 @@ body {
     background-repeat: no-repeat;
     height: 500px;
     background-position: 50% 0%;
-    width: 100%;
+    width: $fullwidth;
     background-size: cover;
     position: relative;
     .page-title {
@@ -19,7 +21,7 @@ body {
         max-width: 1170px;
         margin: auto;
         transform: translateY(-50%);
-        color: #fff;
+        color: $white-color;
         .header-content {
             margin-top: 15px;
             .arrow-vid-img {
@@ -31,14 +33,14 @@ body {
             }
             p {
                 width: 90%;
-                color: #fff;
-                font-size: 16px;
+                color: $white-color;
+                font-size: $extra-large-font;
                 line-height: 28px;
             }
             .explorebtn {
                 border-radius: 3px;
                 background: #db232e;
-                color: #fff !important;
+                color: $white-color !important;
                 padding: 15px;
                 text-decoration: none;
                 text-transform: uppercase;
@@ -53,7 +55,7 @@ body {
             padding-top: 100px;
             line-height: 39px;
             font-size: 29px;
-            font-weight: 400;
+            font-weight: $font-normal;
         }
     }
 }
@@ -73,20 +75,20 @@ body {
 .main-content {
     padding: 40px 15px;
     text-align: center;
-    background: #fff;
+    background: $white-color;
     .inner-content {
         max-width: 1140px;
         margin: auto;
         h2 {
             font-size: 28px;
-            color: #3c3c3c;
-            font-weight: 700;
+            color: $txt-color;
+            font-weight: $font-bold;
             padding-bottom: 20px;
         }
         p {
-            color: #3c3c3c;
+            color: $txt-color;
             line-height: 19px;
-            font-size: 14px;
+            font-size: $large-font;
         }
         .widget-wrap {
             display: flex;
@@ -108,9 +110,9 @@ body {
                     width: auto;
                 }
                 h4 {
-                    font-size: 14px;
+                    font-size: $large-font;
                     font-weight: 600;
-                    color: #3C3C3C;
+                    color: $txt-color;
                     padding: 20px 0 10px;
                 }
             }
@@ -127,13 +129,14 @@ body {
         h2 {
             font-size: 28px;
             text-align: center;
-            font-weight: 700;
-            color: #3c3c3c;
+            font-weight: $font-bold;
+            color:  $txt-color;
         }
         p {
             text-align: center;
             padding: 30px 15px 60px;
             line-height: 1.5;
+            color: $txt-color;
         }
     }
     /* overlay images */
@@ -143,9 +146,9 @@ body {
         margin: auto;
         margin-bottom: 45px;
         h3 {
-            color: #3C3C3C;
+            color: $txt-color;
             font-size: 20px;
-            font-weight: 400;
+            font-weight: $font-normal;
             text-align: center;
             padding-top: 20px;
         }
@@ -159,18 +162,18 @@ body {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: $fullwidth;
             height: 100%;
             background: #db232e;
-            color: #fff;
-            border-radius: 4px;
+            color: $white-color;
+            border-radius: $border-radius;
             font-weight: 500;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 10px 20px;
-            font-size: 14px;
+            font-size: $large-font;
             text-align: center;
             opacity: 0;
             transition: opacity 0.25s;
@@ -187,8 +190,8 @@ body {
             }
             .image-title {
                 font-size: 16px;
-                color: #fff;
-                font-weight: 700;
+                color: $white-color;
+                $font-bold: 700;
                 padding-bottom: 10px;
             }
             blur {
@@ -199,24 +202,24 @@ body {
 }
 
 .team-wrap {
-    background: #fff;
+    background: $white-color;
     padding: 50px 15px;
     .hear-from-team {
         text-align: center;
         margin: auto;
         h2 {
             font-size: 26px;
-            color: #3c3c3c;
-            font-weight: 700;
+            color: $txt-color;
+            font-weight: $font-bold;
             padding-bottom: 30px;
         }
         .team-wrap-overlay {
             position: relative;
-            width: 100%;
+            width: $fullwidth;
             margin-bottom: 20px;
             img {
                 display: block;
-                width: 100%;
+                width: $fullwidth;
                 height: auto;
                 max-width: 350px;
                 margin: auto;
@@ -230,7 +233,7 @@ body {
                 font-weight: 500;
                 padding: 15px;
                 text-align: left;
-                background: #fff;
+                background: $white-color;
                 bottom: 75px;
                 line-height: 24px;
                 color: #3c3c3c;
@@ -279,13 +282,13 @@ body {
 }
 
 .cta-wrap {
-    background: #fff;
+    background: $white-color;
     padding: 0 15px;
     .call-to-action {
         margin: auto;
         max-width: 1140px;
         background: #db232e;
-        color: #fff;
+        color: $white-color;
         border-radius: 12px;
         padding: 30px;
         .inner-text {
@@ -294,13 +297,13 @@ body {
             h2 {
                 font-size: 22px;
                 font-weight: 700;
-                color: #fff;
+                color: $white-color;
                 padding-bottom: 10px;
                 line-height: 20px;
             }
             p {
                 font-size: 15px;
-                color: #fff;
+                color: $white-color;
                 line-height: 1.5;
             }
         }
@@ -309,7 +312,7 @@ body {
             margin-top: 35px;
             text-align: center;
             vertical-align: top;
-            background: #fff;
+            background: $white-color;
             color: #db232e !important;
             border-width: 1px 1px 1px 1px;
             border-radius: 4px;
@@ -319,7 +322,7 @@ body {
             box-shadow: 0px 0px 3px -1px rgba(0, 0, 0, .2);
             &:hover {
                 background: #db232e;
-                color: #fff !important;
+                color: $white-color !important;
                 transition: .5s;
             }
         }

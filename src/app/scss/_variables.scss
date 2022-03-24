@@ -70,6 +70,7 @@ $trackeryellow: #edce09;
 $yellow-txt: #fdb92c;
 $dark-green: #309615;
 $border-radius: 4px;
+$background-red:#dc1410;
 
 //width
 $fullwidth:100%;
@@ -97,6 +98,9 @@ $extra-large-font: 16px;
 
 $small-icon-font:16px;
 $large-icon-font:20px;
+
+/*gradient*/
+$light-gray-gradient:radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
 
 /*Extends*/
  %cards {

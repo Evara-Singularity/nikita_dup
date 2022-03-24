@@ -5,6 +5,7 @@ import {
 	Output,
 	EventEmitter,
 	NgModule,
+	HostBinding,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';

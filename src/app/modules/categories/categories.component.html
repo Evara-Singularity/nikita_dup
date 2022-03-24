@@ -44,6 +44,10 @@
                     </li>
                 </ng-template>
             </ul>
+            <div  class="horizontal-scroll">
+                <product-horizontal-card [isBlue]="true" *ngFor="let i of [1,2,3,4]"></product-horizontal-card>
+            </div>
+            
             <!-- carouselData[category.dataKey]{{carouselData[category.dataKey]|json}} -->
             <ul class="view-products home-grid-view-container"
                 [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
@@ -76,11 +80,11 @@
                             </p>
                         </div>
                     </div> -->
-                    <product-horizontal-card [cardFeaturesConfig]="oosSimilarcardFeaturesConfig" [isOosSimilarCard]="false"
+                    <!-- <product-horizontal-card [cardFeaturesConfig]="oosSimilarcardFeaturesConfig" [isOosSimilarCard]="false"
                         [isFirstView]="true" [hideAd]="true"
                         *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4"
                         [moduleUsedIn]="'FeaturedArrivalModule'" [product]="item">
-                    </product-horizontal-card>
+                    </product-horizontal-card> -->
             </ul>
         </div>
     </section>

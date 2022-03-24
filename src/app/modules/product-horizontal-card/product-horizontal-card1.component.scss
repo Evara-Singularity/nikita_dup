@@ -1,0 +1,15 @@
+@import "../../scss/variables";
+.product-horizontal-card{
+   display:flex;
+}
+.horizontal-scroll{
+    :host.blue-color {
+        color: blue;
+        display: block;
+        background:#cdf3cd;
+        .product-horizontal-card{
+            background:green
+        }
+    }
+}
+

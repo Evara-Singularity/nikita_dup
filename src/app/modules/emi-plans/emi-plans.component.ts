@@ -179,11 +179,11 @@ export class EmiPlansComponent implements OnInit
         let quantity = this.quantity;
         let price = 0;
         if (!isNaN(quantity) && quantity > 0) {
-            price = Number(quantity) * Number(this.productInfo['priceWithoutTax']);
+            price = Number(quantity) * Number(this.productInfo['productPrice']);
             this.emiPlansPrice.price = price;
             this.emiPlansPrice.quantity = quantity;
         } else {
-            price = this.productInfo['priceWithoutTax'];
+            price = this.productInfo['productPrice'];
             this.emiPlansPrice.price = price;
             this.emiPlansPrice.quantity = this.productInfo['minimal_quantity'];
         }

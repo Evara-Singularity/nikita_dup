@@ -1,17 +1,17 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, EventEmitter, Output, NgModule } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription, Subject, Observable, concat, combineLatest, zip, forkJoin } from 'rxjs';
-import { ProductUtilsService } from '../../utils/services/product-utils.service';
-import { CartService } from '../../utils/services/cart.service';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { Subject, Subscription } from 'rxjs';
+import CONSTANTS from '../../config/constants';
 import { ModalModule } from '../../modules/modal/modal.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
-import CONSTANTS from '../../config/constants';
-import { CommonService } from '@app/utils/services/common.service';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { CartService } from '../../utils/services/cart.service';
+import { ProductUtilsService } from '../../utils/services/product-utils.service';
 
 @Component({
     selector: 'fbt',
@@ -99,7 +99,7 @@ export class FbtComponent implements OnInit
             this.rootProduct = mainValidation.mProduct;
             this.rootProduct['isFBT'] = false;
             this.rootProduct['isSelected'] = true;
-            this.mainMSNPrice = this.rootProduct['priceWithoutTax'];
+            this.mainMSNPrice = this.rootProduct['sellingPrice'];
             this.fbtProducts.forEach((item, index) =>
             {
                 let fbtValidation = this.modifyProduct(item, false);
@@ -194,7 +194,7 @@ export class FbtComponent implements OnInit
             delete this.fbtMSNPrices[msn];
             this.mFBTProducts[index]['isSelected'] = false;
         } else {
-            this.fbtMSNPrices[msn] = product['priceWithoutTax'];
+            this.fbtMSNPrices[msn] = product['sellingPrice'];
             this.mFBTProducts[index]['isSelected'] = true;
         }
         this.updateFBTPriceSection();

@@ -570,7 +570,8 @@ export class CartService
             productMRP: productMrp,
             productSmallImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
             productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
-            url: productPartDetails.canonicalUrl
+            url: productPartDetails.canonicalUrl,
+            sellingPrice: productPrice
         } as AddToCartProductSchema;
 
         if (args.isFbt) {

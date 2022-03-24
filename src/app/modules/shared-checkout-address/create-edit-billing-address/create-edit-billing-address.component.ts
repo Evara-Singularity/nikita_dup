@@ -58,6 +58,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     {
         this.createBusinessForm(this.address);
         this.fetchStateList(this.countryList[0]['idCountry']);
+        this.fetchBusinessDetails();
     }
 
     ngAfterViewInit()

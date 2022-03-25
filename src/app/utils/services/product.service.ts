@@ -280,6 +280,8 @@ export class ProductService {
                 this.oosSimilarProductsData.similarData[index].productDiscount,
             bulkPriceWithoutTax:
                 this.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax,
+            bulkSellingPrice:
+                this.oosSimilarProductsData.similarData[index].bulkSellingPrice,
             priceWithoutTax:
                 this.oosSimilarProductsData.similarData[index].priceWithoutTax,
             taxPercentage:
@@ -662,7 +664,7 @@ export class ProductService {
             brandId: product["brandId"],
             brandName: product["brandName"],
             quantityAvailable: product["quantityAvailable"],
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(
+            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(
                 0
             ),
             rating: product["rating"] || null,
@@ -716,7 +718,7 @@ export class ProductService {
             brandId: product["brandId"] || null,
             brandName: product["brandName"],
             quantityAvailable: 1,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(
+            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(
                 0
             ),
             rating: product["rating"] || null,
@@ -761,7 +763,7 @@ export class ProductService {
         const productCategoryDetails = productBO['categoryDetails'][0];
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1
 
-        const product: ProductsEntity = {
+        const product: any = {
             moglixPartNumber: partNumber,
             moglixProductNo: null,
             mrp: productMrp,
@@ -775,7 +777,7 @@ export class ProductService {
             brandName: productBrandDetails['brandName'],
             quantityAvailable: priceQuantityCountry['quantityAvailable'],
             productMinimmumQuantity: productMinimmumQuantity,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(0),
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],
@@ -785,7 +787,8 @@ export class ProductService {
             avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
             itemInPack: null,
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
-            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null //this.product.reviewCount
+            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null, //this.product.reviewCount
+            bulkSellingPrice: (priceQuantityCountry) ? priceQuantityCountry['bulkSellingPrice'] : null
         };
         return product;
     }

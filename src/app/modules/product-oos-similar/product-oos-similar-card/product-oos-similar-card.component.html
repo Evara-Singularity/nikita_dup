@@ -62,14 +62,14 @@
                             <small class="inline-price"><i class="icon-expand"></i>₹88 GST</small>
                         </p>
                         <p class="mrp"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].priceWithoutTax">
-                            MRP&nbsp;<small>{{productService.oosSimilarProductsData.similarData[index].productMrp | currency:
+                            *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].salesPrice">
+                            <small>{{productService.oosSimilarProductsData.similarData[index].productMrp | currency:
                                 'INR' :
                                 'symbol' : '1.0-0'}}</small>
                             <span
                                 *ngIf="productService.oosSimilarProductsData.similarData[index].productDiscount != undefined && productService.oosSimilarProductsData.similarData[index].productDiscount>0 && productService.oosSimilarProductsData.similarData[index].productMrp > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
                                 {{((productService.oosSimilarProductsData.similarData[index].productMrp -
-                                productService.oosSimilarProductsData.similarData[index].priceWithoutTax)/productService.oosSimilarProductsData.similarData[index].productMrp)*100
+                                productService.oosSimilarProductsData.similarData[index].salesPrice)/productService.oosSimilarProductsData.similarData[index].productMrp)*100
                                 | mathFloor | number:'1.0-0'}}% OFF
                             </span>
                             <span
@@ -77,6 +77,19 @@
                                 {{ productService.oosSimilarProductsData.similarData[index].bulkDiscount | mathFloor |
                                 number:'1.0-0'}}% OFF
                             </span>
+                        </p>
+                        <p class="actual-price"
+                            *ngIf="productService.oosSimilarProductsData.similarData[index].salesPrice > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
+                            {{productService.oosSimilarProductsData.similarData[index].salesPrice | currency: 'INR'
+                            :
+                            'symbol' : '1.0-0'}}
+                            <!-- <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
+                                GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc.
+                                Price:
+                                {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
+                                currency: 'INR' :
+                                'symbol' : '1.0-0'}}
+                            </small> -->
                         </p>
                         <!-- <p class="actual-price"
                             *ngIf="productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!==null">

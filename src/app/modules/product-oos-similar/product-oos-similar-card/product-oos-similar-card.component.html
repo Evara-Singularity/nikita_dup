@@ -44,9 +44,26 @@
                 <div class="price-block"
                     *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
                     <ng-container *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
+                        <p class="actual-price"
+                            *ngIf="productService.oosSimilarProductsData.similarData[index].priceWithoutTax > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
+                            <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
+                                <!-- GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc.
+                                Price:
+                                {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
+                                currency: 'INR' :
+                                'symbol' : '1.0-0'}} -->
+                                {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
+                                    currency: 'INR' :'symbol' : '1.0-0'}} (Incl. of all taxes)
+                            </small>
+                        </p>
+                        <p class="actual-price main-price">
+                            <strong>{{productService.oosSimilarProductsData.similarData[index].priceWithoutTax | currency: 'INR' :
+                                'symbol' : '1.0-0'}}</strong>
+                            <small class="inline-price"><i class="icon-expand"></i>₹88 GST</small>
+                        </p>
                         <p class="mrp"
                             *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].priceWithoutTax">
-                            <small>{{productService.oosSimilarProductsData.similarData[index].productMrp | currency:
+                            MRP&nbsp;<small>{{productService.oosSimilarProductsData.similarData[index].productMrp | currency:
                                 'INR' :
                                 'symbol' : '1.0-0'}}</small>
                             <span
@@ -60,19 +77,6 @@
                                 {{ productService.oosSimilarProductsData.similarData[index].bulkDiscount | mathFloor |
                                 number:'1.0-0'}}% OFF
                             </span>
-                        </p>
-                        <p class="actual-price"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].priceWithoutTax > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
-                            {{productService.oosSimilarProductsData.similarData[index].priceWithoutTax | currency: 'INR'
-                            :
-                            'symbol' : '1.0-0'}}
-                            <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
-                                GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc.
-                                Price:
-                                {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
-                                currency: 'INR' :
-                                'symbol' : '1.0-0'}}
-                            </small>
                         </p>
                         <!-- <p class="actual-price"
                             *ngIf="productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!==null">

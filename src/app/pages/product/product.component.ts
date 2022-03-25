@@ -2053,7 +2053,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         data['rfqEnquiryCustomer'] = {
             'customerId': user['userId'],
-            'platform': 'mobile',
+            'device': 'mobile',
             'email': user['email'] ? user['email'] : '',
             'firstName': user['userName'],
             'mobile': user['phone'],

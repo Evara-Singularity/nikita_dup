@@ -1284,6 +1284,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.isBulkPricesProduct) {
             const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
             this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
+            // this.bulkSellingPrice = this.selectedProductBulkPrice['bulkSellingPrice'];
         }
     }
 

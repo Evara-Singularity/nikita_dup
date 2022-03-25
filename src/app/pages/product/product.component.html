@@ -87,46 +87,53 @@
             </div>
         </ng-container>
         <div class="pdp-price-qty-block">
+            
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">
-                    <p class="actual-price" *ngIf="productPrice > 0 && bulkSellingPrice==null">
-                        <small *ngIf="taxPercentage">
-                            {{productPrice | mathFloor | currency: 'INR' :
-                            'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
-                        </small>
-                    </p>
-                    <p class="actual-price main-price">
-                        <strong>{{productPrice | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
-                        <small class="inline-price"><i class="icon-expand"></i>₹88 GST</small>
-                    </p>
-                    <p class="actual-price main-price" *ngIf="bulkSellingPrice!==null">
-                        <strong>{{bulkSellingPrice| currency: 'INR' :'symbol': '1.0-0'}}</strong>
-                        <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
-                            'symbol' : '1.0-0'}}
-                        </small>
-                    </p>
-                    <p class="mrp" *ngIf="productMrp > productPrice">
-                        MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkSellingPrice==null">
-                         {{((productMrp - productPrice)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
-                        </span>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkSellingPrice!=null">
-                            {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
-                        </span>
-                    </p>
+
+                    <!-- NON BULK PRICE BLOCK STARTS -->
+                    <ng-container *ngIf="selectedProductBulkPrice==null">
+                        <p class="actual-price" *ngIf="productPrice > 0">
+                            <small>
+                                {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
+                            </small>
+                        </p>
+                        <p class="actual-price main-price">
+                            <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
+                            <small class="inline-price"><i class="icon-expand"></i>₹{{ +(productPrice-priceWithoutTax)  }} GST</small>
+                        </p>
+                        <p class="mrp" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
+                            MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                            <span >
+                             {{((+productMrp - +productPrice)/+productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                        </p>
+                    </ng-container> 
+                    <!-- NON BULK PRICE BLOCK ENDS -->
+
+                    <!-- BULK PRICE BLOCK STARTS -->
+                    <ng-container *ngIf="selectedProductBulkPrice!=null">
+                        <p class="actual-price" *ngIf="selectedProductBulkPrice['bulkSellingPrice'] > 0">
+                            <small>
+                                {{selectedProductBulkPrice['bulkSellingPrice'] | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
+                            </small>
+                        </p>
+                        <p class="actual-price main-price">
+                            <strong>{{selectedProductBulkPrice['bulkSPWithoutTax'] | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
+                            <small class="inline-price"><i class="icon-expand"></i>₹{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])  }} GST</small>
+                        </p>
+                        <p class="mrp" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
+                            MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                            <span >
+                             {{selectedProductBulkPrice['calculatedDiscount'] | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                        </p>
+                    </ng-container> 
+                    <!--BULK PRICE BLOCK ENDS -->
+
                 </ng-container>
             </div>
-            <!-- <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
-                <p class="actual-price">
-                    <small>
-                        Min Order Qty :
-                        <span>{{productMinimmumQuantity}} Pack</span>
-                    </small>
-                </p>
-             </div> -->
+
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>

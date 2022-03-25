@@ -59,7 +59,8 @@
                         <p class="actual-price main-price">
                             <strong>{{productService.oosSimilarProductsData.similarData[index].priceWithoutTax | currency: 'INR' :
                                 'symbol' : '1.0-0'}}</strong>
-                            <small class="inline-price"><i class="icon-expand"></i>₹88 GST</small>
+                            <small class="inline-price"><i class="icon-expand"></i>₹{{(+productService.oosSimilarProductsData.similarData[index].productPrice - +productService.oosSimilarProductsData.similarData[index].priceWithoutTax) | currency: 'INR' :
+                                'symbol' : '1.0-0'}} GST</small>
                         </p>
                         <p class="mrp"
                             *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].salesPrice">

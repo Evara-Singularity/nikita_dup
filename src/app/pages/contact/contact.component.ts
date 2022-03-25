@@ -13,6 +13,9 @@ export class ContactComponent {
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   imgAssetPath = CONSTANTS.IMAGE_ASSET_URL;
+  startTime=CONSTANTS.CUSTOMER_CARE_TIME.startTime;
+  endTime=CONSTANTS.CUSTOMER_CARE_TIME.endTime;
+
   contactUsSchema;
   isServer: boolean;
 

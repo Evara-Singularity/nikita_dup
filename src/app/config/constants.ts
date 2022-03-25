@@ -378,6 +378,10 @@ export const CONSTANTS = {
     'medium': 'xlarge',
     'large': 'xxlarge',
     'xlarge': 'xxlarge',
+  },
+  CUSTOMER_CARE_TIME:{
+    'startTime':'9:00 AM',
+    'endTime':'8:00 PM'
   }
 };
 export default CONSTANTS;

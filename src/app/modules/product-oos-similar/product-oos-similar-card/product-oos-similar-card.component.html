@@ -45,14 +45,14 @@
                     *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
                     <ng-container *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
                         <p class="mrp"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].priceWithoutTax">
+                            *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].salesPrice">
                             <small>{{productService.oosSimilarProductsData.similarData[index].productMrp | currency:
                                 'INR' :
                                 'symbol' : '1.0-0'}}</small>
                             <span
                                 *ngIf="productService.oosSimilarProductsData.similarData[index].productDiscount != undefined && productService.oosSimilarProductsData.similarData[index].productDiscount>0 && productService.oosSimilarProductsData.similarData[index].productMrp > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
                                 {{((productService.oosSimilarProductsData.similarData[index].productMrp -
-                                productService.oosSimilarProductsData.similarData[index].priceWithoutTax)/productService.oosSimilarProductsData.similarData[index].productMrp)*100
+                                productService.oosSimilarProductsData.similarData[index].salesPrice)/productService.oosSimilarProductsData.similarData[index].productMrp)*100
                                 | mathFloor | number:'1.0-0'}}% OFF
                             </span>
                             <span
@@ -62,8 +62,8 @@
                             </span>
                         </p>
                         <p class="actual-price"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].priceWithoutTax > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
-                            {{productService.oosSimilarProductsData.similarData[index].priceWithoutTax | currency: 'INR'
+                            *ngIf="productService.oosSimilarProductsData.similarData[index].salesPrice > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
+                            {{productService.oosSimilarProductsData.similarData[index].salesPrice | currency: 'INR'
                             :
                             'symbol' : '1.0-0'}}
                             <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">

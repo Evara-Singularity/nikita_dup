@@ -78,19 +78,19 @@
                                 number:'1.0-0'}}% OFF
                             </span>
                         </p>
-                        <p class="actual-price"
+                        <!-- <p class="actual-price"
                             *ngIf="productService.oosSimilarProductsData.similarData[index].salesPrice > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
                             {{productService.oosSimilarProductsData.similarData[index].salesPrice | currency: 'INR'
                             :
                             'symbol' : '1.0-0'}}
-                            <!-- <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
+                            <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
                                 GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc.
                                 Price:
                                 {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
                                 currency: 'INR' :
                                 'symbol' : '1.0-0'}}
-                            </small> -->
-                        </p>
+                            </small>
+                        </p> -->
                         <!-- <p class="actual-price"
                             *ngIf="productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!==null">
                             {{productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax | currency: 'INR'

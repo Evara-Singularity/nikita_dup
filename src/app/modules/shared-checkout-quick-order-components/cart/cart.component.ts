@@ -199,6 +199,16 @@ export class CartComponent {
             return;
         };
 
+        if (action === 'update') {
+            if (this._cartService.getGenericCartSession.itemsList[index].moq < quantityTarget) {
+                this._tms.show({
+                    type: 'error',
+                    text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
+                })
+            }
+            return;
+        }
+        
         this._globalLoaderService.setLoaderState(true);
 
         const productMsnId = this._cartService.getGenericCartSession.itemsList[index].productId;

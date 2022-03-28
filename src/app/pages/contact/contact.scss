@@ -2,7 +2,7 @@
 
 .revamped-contact {
     .top-banner {
-        background: #fff;
+        background: $white-color;
         border-radius: 8pt;
         margin: 20px 10px;
         display: inline-block;
@@ -17,13 +17,13 @@
                 display: block;
                 h1 {
                     font-size: 12pt;
-                    color: #3C3C3C;
-                    font-weight: 600;
+                    color: $txt-color;
+                    font-weight: $font-bolder;
                     line-height: 18px;
                 }
                 p {
                     font-size: 10pt;
-                    font-weight: 400;
+                    font-weight: $font-normal;
                     line-height: 16px;
                     padding-top: 10px;
                 }
@@ -40,8 +40,8 @@
         padding: 0 15px;
         p {
             font-size: 10pt;
-            color: #3C3C3C;
-            font-weight: 400;
+            color: $txt-color;
+            font-weight: $font-normal;
             line-height: 1.5;
         }
     }
@@ -49,7 +49,7 @@
         padding: 15px 10px;
         .faq-wrap {
             border: 1px solid #EFEFF4;
-            background: #fff;
+            background: $white-color;
             border-radius: 8pt;
             padding: 20px 7px;
             margin-bottom: 15px;
@@ -60,13 +60,13 @@
                 display: inline-block;
                 h6 {
                     font-size: 12pt;
-                    color: #303030;
-                    font-weight: 600;
+                    color:$txt-color;
+                    font-weight: $font-bolder;
                     line-height: 18px;
                 }
                 p {
                     font-size: 9pt;
-                    font-weight: 400;
+                    font-weight: $font-normal;
                     line-height: 16px;
                     padding-top: 2px;
                 }
@@ -98,7 +98,7 @@
             padding-bottom: 10px;
         }
         .international {
-            background: #fff;
+            background: $white-color;
             border-radius: 8pt;
             padding: 15px;
             margin-bottom: 15px;
@@ -107,26 +107,26 @@
             }
             span {
                 background: #EFEFF4;
-                border-radius: 4pt;
+                border-radius: $border-radius;
                 color: #979797;
                 font-size: 10pt;
-                font-weight: 600;
+                font-weight: $font-bolder;
                 line-height: 16px;
                 padding: 5px 10px;
                 margin-bottom: 12px;
                 display: inline-block;
             }
             h6 {
-                color: #3C3C3C;
+                color: $txt-color;
                 font-size: 12pt;
-                font-weight: 700;
+                font-weight: $font-bold;
                 line-height: 18px;
                 padding-bottom: 5px;
             }
             p {
                 font-size: 10pt;
-                color: #303030;
-                font-weight: 400;
+                color: $txt-color;
+                font-weight: $font-normal;
                 line-height: 16px;
             }
             .call-timings {
@@ -145,9 +145,9 @@
     }
 }
 
-.upper-case {
-    text-transform: uppercase;
-}
+// .upper-case {
+//     text-transform: uppercase;
+// }
 
 .card-30 {
     @extend %cards;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { CartService } from '@app/utils/services/cart.service';
 
 @Component({
@@ -8,6 +9,8 @@ import { CartService } from '@app/utils/services/cart.service';
   styleUrls: ['./checkout-payment.component.scss']
 })
 export class CheckoutPaymentComponent implements OnInit {
+
+  readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: true }];
 
   constructor(
     private _cartService: CartService,

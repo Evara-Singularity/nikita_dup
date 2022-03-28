@@ -1,5 +1,5 @@
 import { LocalStorageService } from "ngx-webstorage";
-import { map } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
 import { Observer, of, Subscription } from "rxjs";
 import { catchError } from "rxjs/operators";
@@ -1403,4 +1403,19 @@ export class CommonService
         console.log(data);
         alert('check console');
     }
+
+    getRoutingData(_aRoute): Observable<any>{
+        return of(_aRoute)
+        .pipe(
+          map((route) => {
+            while (route.firstChild) {
+              route = route.firstChild;
+            }
+            return route;
+          }),
+          filter((route) => route.outlet === "primary"),
+          mergeMap((route) => route.data)
+        )
+    }
+
 }

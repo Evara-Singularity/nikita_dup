@@ -4,6 +4,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'app-checkout-v2',
@@ -12,18 +13,32 @@ import { Subscription } from 'rxjs';
 })
 export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
 {
-    readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     isUserLoggedIn = false;
     isCheckoutFlow = false;
     userSession = null;
     routerSubscription:Subscription = null;
+    routingData: any = null;
 
-    constructor(private _router: Router, private _localAuthService: LocalAuthService) { }
+    constructor(
+        private _router: Router, 
+        public _route: ActivatedRoute,
+        private _localAuthService: LocalAuthService,
+        private _commonService: CommonService
+    ) { }
     
-    ngOnInit() 
-    {
+    ngOnInit() {
         this.isUserLoggedIn = this._localAuthService.isUserLoggedIn();
         this.updateCheckoutFlag(this._router.url.toLowerCase());
+        this.subcribers();
+    }
+
+    private subcribers() {
+        if (this._commonService.isBrowser) {
+            this.createHeaderData();
+            this._router.events.subscribe((res) => {
+                this.createHeaderData();
+            });
+        }
     }
 
     ngAfterViewInit(): void
@@ -32,16 +47,20 @@ export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
         {
             const URL = event.url.toLowerCase();
             this.updateCheckoutFlag(URL);
-            this.STEPPER[1]['status'] = URL.includes("payment");
         });
     }
 
     updateCheckoutFlag(url) { this.isCheckoutFlow = url.includes("payment") || url.includes("address");  }
 
-    get displayStepper() { return this.isUserLoggedIn && this.isCheckoutFlow}
-
     ngOnDestroy(): void
     {
         if (this.routerSubscription) this.routerSubscription.unsubscribe();
     }
+
+    createHeaderData() {
+        this._commonService.getRoutingData(this._route).subscribe((rData) => {
+            this.routingData = rData;
+        });
+    }
+
 }

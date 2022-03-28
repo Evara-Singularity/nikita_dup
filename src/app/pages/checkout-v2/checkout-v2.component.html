@@ -1,4 +1,3 @@
-<div class="mt-50">
-    <shared-checkout-stepper [headers]="STEPPER" *ngIf="displayStepper"></shared-checkout-stepper>
+<div [ngClass]="{'mt-50': !(routingData && routingData.hideHeader)}">
     <router-outlet></router-outlet>
 </div>

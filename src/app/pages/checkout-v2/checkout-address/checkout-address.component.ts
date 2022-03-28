@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/cor
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
-import { SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { CheckoutHeaderModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';
@@ -16,6 +16,7 @@ import { CheckoutUtil } from '../checkout-util';
 })
 export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {
+    readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
 

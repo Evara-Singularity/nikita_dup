@@ -240,20 +240,9 @@ export class PagesComponent implements OnInit {
   }
 
   createHeaderData(_aRoute) {
-    of(_aRoute)
-      .pipe(
-        map((route) => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-        filter((route) => route.outlet === "primary"),
-        mergeMap((route) => route.data)
-      )
-      .subscribe((rData) => {
-        this.iData = rData;
-      });
+    this._commonService.getRoutingData(_aRoute).subscribe((rData) => {
+      this.iData = rData;
+    });
   }
 
   clickFooter() {

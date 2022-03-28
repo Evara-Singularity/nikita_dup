@@ -9,7 +9,6 @@ import { CheckoutV2Component } from './checkout-v2.component';
     declarations: [CheckoutV2Component],
     imports: [
         CommonModule,
-        SharedCheckoutStepperModule,
         CheckoutV2RoutingModule,
     ],
     providers: [

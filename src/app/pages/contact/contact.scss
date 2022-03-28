@@ -49,7 +49,7 @@
     .contact-info {
         padding: 15px 10px;
         .faq-wrap {
-            border: 1px solid #EFEFF4;
+            border: 1px solid var(--ghost-white);
             background:  var(--white);
             border-radius: 8pt;
             padding: 20px 7px;
@@ -108,7 +108,7 @@
                 margin-bottom: 0;
             }
             span {
-                background: #EFEFF4;
+                background: var(--ghost-white);
                 border-radius: $border-radius;
                 color: var(--spanish-gray);
                 font-size: 10pt;

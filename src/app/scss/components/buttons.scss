@@ -60,6 +60,11 @@ button {
             background: #c4c4c4;
         }
     }
+    &.btn-white{
+        background:var(--white);
+        padding: 8px 15px;
+        color:var(--primary);
+    }
 
     &.btn-transparent-red {
         background: transparent;

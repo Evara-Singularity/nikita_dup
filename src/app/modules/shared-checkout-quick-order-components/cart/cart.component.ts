@@ -7,7 +7,7 @@ import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
@@ -36,6 +36,7 @@ declare let _satellite;
 export class CartComponent {
     removePopup: boolean = false;
     removeIndex = 0;
+    @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
 
     constructor(
         private _location: Location,
@@ -397,8 +398,10 @@ export class CartComponent {
 
     // redirect to product page 
     redirectToProductURL(url) {
-        this._commonService.setSectionClickInformation('cart', 'pdp');
-        this._router.navigateByUrl('/' + url);
+        if (this.moduleName == 'QUICKORDER') {
+            this._commonService.setSectionClickInformation('cart', 'pdp');
+            this._router.navigateByUrl('/' + url);
+        }
         return false;
     }
 

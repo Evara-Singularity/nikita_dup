@@ -161,7 +161,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
         } else if (cartSession['itemsList']) {
           count = cartSession['itemsList'].length;
         }
-        this._cartService.cart.next({ count });
+        this._cartService.cart.next({ "count" : count });
       })
     }
   }

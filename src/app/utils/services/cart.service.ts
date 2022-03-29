@@ -1566,7 +1566,7 @@ export class CartService
                 if (response['statusCode'] == 200) {
                     const DATA = response['data']
                     cartSession['cart']['shippingCharges'] = DATA['totalShippingAmount'];
-                    for (let item in cartSession['itemsList']) {
+                    for (let item of cartSession['itemsList']) {
                         const PRODUCT_ID = item['productId']
                         item['shippingCharges'] = DATA['itemShippingAmount'][PRODUCT_ID];
                     }
@@ -1602,7 +1602,6 @@ export class CartService
             switchMap((newCartSession) => { return of(this.verifyShippingCharges(newCartSession)) })).
             subscribe((newCartSession) =>
             {
-                this.cart = newCartSession['cart'];
                 this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = newCartSession['itemsList'];
@@ -1666,7 +1665,6 @@ export class CartService
             switchMap((newCartSession) => { return this.updateCartSession(newCartSession) })).
             subscribe((newCartSession) =>
             {
-                this.cart = newCartSession['cart'];
                 this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = newCartSession['itemsList'];

@@ -37,7 +37,7 @@
                                         <span class="green-label">{{product.discount}}% OFF</span>
                                     </div>
                                     <div class="main-price">
-                                        <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
+                                        <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
                                             '1.0-0' }}</span>
                                     </div>
                                 </div>

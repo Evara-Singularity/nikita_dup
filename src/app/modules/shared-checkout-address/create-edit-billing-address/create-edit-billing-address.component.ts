@@ -63,10 +63,8 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
 
     ngAfterViewInit()
     {
-
         if (this.address) {
             this.isPostcodeValid = true;
-            this.isGSTINVerified = this.address['gstinVerified'] ? true : false;
             this.companyName.markAsDirty();
             this.addressLine.markAsDirty();
             return;
@@ -88,6 +86,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                 this.email.patchValue(response['email']);
                 this.companyName.markAsDirty();
             }
+            this.isGSTINVerified = this.address && this.address['gstinVerified'] ? true : false;
         });
     }
 

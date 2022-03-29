@@ -20,7 +20,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
 
-    @Input("addDeliveryorBilling") addDeliveryorBilling: Subject<boolean> = new Subject();
+    @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
@@ -176,18 +176,18 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         //address verification
         if (!this.deliveryAddress) {
-            this.addDeliveryorBilling.next(true);
+            this.addDeliveryOrBilling.next("Delivery");
             return;
         }
         if (this.invoiceType === this.INVOICE_TYPES.TAX) {
             if (!this.billingAddress) {
-                this.addDeliveryorBilling.next(true);
+                this.addDeliveryOrBilling.next("Billing");
                 return;
             } else if (!this.billingAddress['gstinVerified']) {
                 this._toastService.show({
                     type: 'error', text: "Either the provided GSTIN is invalid or the entered pincode doesn't match your GST certificate addresses"
                 });
-                this.addDeliveryorBilling.next(true);
+                this.addDeliveryOrBilling.next("Billing");
                 return;
             }
         }

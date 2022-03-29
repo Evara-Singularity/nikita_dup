@@ -1,10 +1,9 @@
-import { LocalAuthService } from './../../utils/services/auth.service';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { LocalAuthService } from './../../utils/services/auth.service';
 
 @Component({
     selector: 'app-checkout-v2',

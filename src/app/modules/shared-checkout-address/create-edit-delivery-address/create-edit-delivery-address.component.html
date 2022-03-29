@@ -104,7 +104,7 @@
                         <p *ngIf="postCode.hasError('required')" class="error-txt">
                             Kindly enter your pincode
                         </p>
-                        <p *ngIf="postCode.hasError('invalidPostCode')" class="error-txt">
+                        <p *ngIf="!(postCode.hasError('required')) && postCode.hasError('invalidPostCode')" class="error-txt">
                             Pincode should contain valid 6 digits
                         </p>
                     </ng-container>

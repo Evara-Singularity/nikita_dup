@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { AddressListActionModel, AddressListModel, CountryListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
 import { AddressService } from '@app/utils/services/address.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { Subject, Subscription } from 'rxjs';
 import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
@@ -24,7 +25,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     readonly USER_SESSION = null;
 
     //trigger to display pop-up for delivery or billing address.
-    @Input("addDeliveryorBilling") addDeliveryorBilling: Subject<boolean> = null;
+    @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
     @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<SelectedAddressModel> = new EventEmitter<SelectedAddressModel>();
     @Output("emitInvoiceTypeEvent$") emitInvoiceTypeEvent$: EventEmitter<string> = new EventEmitter<string>();
@@ -51,7 +52,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     triggerDeliveryOrBillingSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
-        private injector: Injector) 
+        private injector: Injector, private _cartService:CartService) 
     {
         this.USER_SESSION = this._localAuthService.getUserSession();
     }
@@ -65,14 +66,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngAfterViewInit(): void
     {
-        if (this.addDeliveryorBilling) {
-            this.triggerDeliveryOrBillingSubscription = this.addDeliveryorBilling.subscribe((flag: boolean) =>
+        if (this.addDeliveryOrBilling) {
+            this.triggerDeliveryOrBillingSubscription = this.addDeliveryOrBilling.subscribe((addressType: string) =>
             {
-                if (!flag) return;
-                let addressType = this.ADDRESS_TYPES.DELIVERY;
-                if (this.invoiceType.value === this.INVOICE_TYPES.TAX) {
-                    addressType = this.ADDRESS_TYPES.BILLING;
-                }
+                if (!addressType) return;
                 this.displayAddressFormPopup(addressType, null);
             })
         }
@@ -86,7 +83,6 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             this.countryList = countryList;
         })
     }
-
 
     /**
      * @description:to trace invoicetype as 'tax' or 'retail'
@@ -111,7 +107,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         {
             this.deliveryAddressList = response.deliveryAddressList;
             this.billingAddressList = response.billingAddressList;
-            this.emitAddressEvent(this.deliveryAddressList[0], this.billingAddressList[0]);
+            const DELIVERY_ADDRESS = this._cartService.shippingAddress ? this._cartService.shippingAddress : this.deliveryAddressList[0];
+            const BILLING_ADDRESS = this._cartService.billingAddress ? this._cartService.billingAddress : this.billingAddressList[0];
+            this.emitAddressEvent(DELIVERY_ADDRESS, BILLING_ADDRESS);
         });
     }
 
@@ -213,10 +211,12 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             this.addressListInstance.instance['addresses'] = IS_DEVLIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
         if (IS_DEVLIVERY) {
-            this.updateDeliveryOrBillingAddress(addressType, this.deliveryAddressList[0]);
+            const ADDRESS = this._cartService.shippingAddress ? this._cartService.shippingAddress : this.deliveryAddressList[0];
+            this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
             return;
         }
-        this.updateDeliveryOrBillingAddress(addressType, this.billingAddressList[0]);
+        const ADDRESS = this._cartService.billingAddress ? this._cartService.billingAddress : this.billingAddressList[0];
+        this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
     }
 
     /**

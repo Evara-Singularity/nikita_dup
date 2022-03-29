@@ -1,27 +1,14 @@
 @import '../../scss/variables';
 @import '../../scss/root';
-
-#about_us_page * {
-    color: #343434;
-}
-
-#about_us_page {
-    margin: 0px auto;
-    padding: 0px;
-    overflow-x: hidden;
-}
-
-#about_us_page .about-video-div {
-    padding-top: 80px;
-}
+@import '../../scss/layout/grid.scss';
 
 #about-container {
     margin: 0px auto;
     overflow: hidden;
-    .about-fstwrp {
+    .about-first-wrap {
         padding: 70px 20px 35px 20px;
         background: $light-gray-gradient;
-        .abt-logo {
+        .about-logo {
             border-left: 6px solid var(--text-color);
             text-align: center;
             height: 120px;
@@ -49,7 +36,7 @@
                 font-size: $extra-large-font;
                 text-transform: uppercase;
             }
-            .abt-span {
+            .about-span {
                 position: absolute;
                 bottom: -18px;
                 right: 0;
@@ -84,7 +71,7 @@
                 background: var(--text-color);
             }
         }
-        .about-text {
+        .about-summary {
             p {
                 &:first-child {
                     padding: 40px 0 0px 0;

@@ -1,5 +1,6 @@
 @import '../../scss/variables';
 @import '../../scss/components/buttons.scss';
+@import '../../scss/root';
 
 body {
     margin: 0;
@@ -22,7 +23,7 @@ body {
         max-width: 1170px;
         margin: auto;
         transform: translateY(-50%);
-        color: $white-color;
+        color: var(--white);
         .header-content {
             margin-top: 15px;
             .arrow-vid-img {
@@ -34,10 +35,21 @@ body {
             }
             p {
                 width: 90%;
-                color: $white-color;
+                color: var(--white);
                 font-size: $extra-large-font;
                 line-height: 28px;
             }
+            button{
+                margin-top: 50px;
+                &.explorebtn{
+                    padding: 15px;
+                    font-size: $medium-font;
+                    font-weight: $font-normal;
+                    border-radius: 0;
+                }
+            }
+
+
           
         }
         h1 {
@@ -64,34 +76,34 @@ body {
 .main-content {
     padding: 40px 15px;
     text-align: center;
-    background: $white-color;
+    background: var(--white);
     .inner-content {
         max-width: 1140px;
         margin: auto;
         h2 {
             font-size: 28px;
-            color: $txt-color;
+            color: var(--text-color);
             font-weight: $font-bold;
             padding-bottom: 20px;
         }
         p {
-            color: $txt-color;
+            color: var(--text-color);
             line-height: 19px;
             font-size: $large-font;
         }
         .widget-wrap {
-            display: flex;
-            flex-wrap: wrap;
+            // display: flex;
+            // flex-wrap: wrap;
             padding: 60px 0;
             margin: 0 15px;
             .widget-items {
                 margin-bottom: 0;
-                background: #FCFCFC;
+                background: var(--cultured);
                 padding: 30px 50px;
                 min-height: 230px;
                 margin: auto;
                 &:nth-child(even) {
-                    background: #f1f1f1;
+                    background: var(--ghost-white);
                 }
                 .widget-img {
                     display: block;
@@ -101,7 +113,7 @@ body {
                 h4 {
                     font-size: $large-font;
                     font-weight: 600;
-                    color: $txt-color;
+                    color: var(--text-color);
                     padding: 20px 0 10px;
                 }
             }
@@ -110,7 +122,7 @@ body {
 }
 
 .qualities-section {
-    background: #D1D1D7;
+    background: var(--ghost-white);
     padding: 60px 0;
     .inner-content {
         max-width: 900px;
@@ -119,13 +131,13 @@ body {
             font-size: 28px;
             text-align: center;
             font-weight: $font-bold;
-            color:  $txt-color;
+            color:  var(--text-color);
         }
         p {
             text-align: center;
             padding: 30px 15px 60px;
             line-height: 1.5;
-            color: $txt-color;
+            color: var(--text-color);
         }
     }
     /* overlay images */
@@ -135,7 +147,7 @@ body {
         margin: auto;
         margin-bottom: 45px;
         h3 {
-            color: $txt-color;
+            color: var(--text-color);
             font-size: 20px;
             font-weight: $font-normal;
             text-align: center;
@@ -151,10 +163,8 @@ body {
             position: absolute;
             top: 0;
             left: 0;
-            width: $fullwidth;
-            height: 100%;
-            background: #db232e;
-            color: $white-color;
+            background: var(--primary);
+            color: var(--white);
             border-radius: $border-radius;
             font-weight: 500;
             display: flex;
@@ -178,9 +188,9 @@ body {
                 transition: transform 0.25s;
             }
             .image-title {
-                font-size: 16px;
-                color: $white-color;
-                $font-bold: 700;
+                font-size: $extra-large-font;
+                color: var(--white);
+                font-weight: $font-bolder;
                 padding-bottom: 10px;
             }
             blur {
@@ -191,14 +201,14 @@ body {
 }
 
 .team-wrap {
-    background: $white-color;
+    background: var(--white);
     padding: 50px 15px;
     .hear-from-team {
         text-align: center;
         margin: auto;
         h2 {
             font-size: 26px;
-            color: $txt-color;
+            color: var(--text-color);
             font-weight: $font-bold;
             padding-bottom: 30px;
         }
@@ -210,7 +220,6 @@ body {
                 display: block;
                 width: $fullwidth;
                 height: auto;
-                max-width: 350px;
                 margin: auto;
             }
             .text {
@@ -222,19 +231,19 @@ body {
                 font-weight: 500;
                 padding: 15px;
                 text-align: left;
-                background: $white-color;
+                background: var(--white);
                 bottom: 75px;
                 line-height: 24px;
-                color: #3c3c3c;
+                color: var(--text-color);
             }
             .team-member-name {
                 position: absolute;
                 left: 20px;
                 right: 20px;
                 bottom: 20px;
-                color: #db232e;
+                color: var(--primary);
                 font-weight: 600;
-                background: #f1f1f1;
+                background: var(--ghost-white);
             }
             .hover {
                 position: absolute;
@@ -271,28 +280,26 @@ body {
 }
 
 .cta-wrap {
-    background: $white-color;
+    background: var(--white);
     padding: 0 15px;
     .call-to-action {
         margin: auto;
-        max-width: 1140px;
-        background: #db232e;
-        color: $white-color;
+        background: var(--primary);
+        color: var(--white);
         border-radius: 12px;
         padding: 30px;
         .inner-text {
             text-align: left;
-            display: inline-block;
             h2 {
                 font-size: 22px;
                 font-weight: 700;
-                color: $white-color;
+                color: var(--white);
                 padding-bottom: 10px;
                 line-height: 20px;
             }
             p {
                 font-size: 15px;
-                color: $white-color;
+                color: var(--white);
                 line-height: 1.5;
             }
           

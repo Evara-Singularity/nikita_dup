@@ -1,4 +1,6 @@
 @import '../../scss/variables';
+@import '../../scss/root';
+
 #about_us_page * {
     color: #343434;
 }
@@ -16,17 +18,17 @@
 #about-container {
     margin: 0px auto;
     overflow: hidden;
-    .about_fstwrp {
+    .about-fstwrp {
         padding: 70px 20px 35px 20px;
         background: $light-gray-gradient;
         .abt-logo {
-            border-left: 6px solid #343434;
+            border-left: 6px solid var(--text-color);
             text-align: center;
             height: 120px;
             position: relative;
-            color: $txt-color;
-            border-bottom: 6px solid #343434;
-            border-right: 6px solid #343434;
+            color: var(--text-color);
+            border-bottom: 6px solid var(--text-color);
+            border-right: 6px solid var(--text-color);
             h2 {
                 position: absolute;
                 top: -22px;
@@ -44,7 +46,7 @@
                 position: relative;
                 left: 0px;
                 top: 50px;
-                font-size: 16px;
+                font-size: $extra-large-font;
                 text-transform: uppercase;
             }
             .abt-span {
@@ -54,11 +56,11 @@
                 left: 0;
                 width: 67%;
                 margin: 0 auto;
-                background: $btn-color-red;
+                background: var(--primary);
                 padding: 8px 0px;
                 border-radius: 17px;
                 text-align: center;
-                color: #fff;
+                color: var(--white);
                 font-size: $medium-font;
                 line-height: 15px;
                 font-weight: $font-bolder;
@@ -70,7 +72,7 @@
                 right: 0;
                 top: 0;
                 content: "";
-                background: #343434;
+                background: var(--text-color);
             }
             &:before {
                 width: 30px;
@@ -79,7 +81,7 @@
                 left: 0;
                 top: 0;
                 content: "";
-                background: #343434;
+                background: var(--text-color);
             }
         }
         .about-text {
@@ -89,28 +91,28 @@
                 }
                 padding-top:15px;
                 font-size: $large-font;
-                color: #2d2d2d;
+                color: var(--text-color);
                 line-height: 28px;
             }
         }
     }
     .about-video {
-        background: $background-red;
+        background: var(--primary);
         padding: 40px 20px 0 20px;
         .about-video-desc {
             padding: 30px 0px;
             .text-white {
                 text-align: left;
                 width: 90%;
-                margin: 0px auto !important;
+                margin: 0px auto ;
                 font-size:$large-font;
                 line-height: 30px;
-                color: $white-color;
+                color: var(--white);
             }
         }
         h1 {
             font-size: 18px;
-            color: $white-color !important;
+            color: var(--white);
             text-align: center;
             text-transform: uppercase;
             padding: 0 0 10px 0;
@@ -122,11 +124,13 @@
         h1 {
             font-size: 18px;
             text-align: center;
+            color: var(--text-color);
         }
         p {
             font-size: $large-font;
             font-weight: $font-normal;
             margin: 16px 0;
+            color: var(--text-color);
         }
     }
     .about-pointer {
@@ -134,8 +138,9 @@
         position: relative;
         padding: 30px 20px;
         text-align: center;
+        color: var(--white);
         h2 {
-            color: $white-color;
+            color: var(--white);
             text-align: center;
             font-size: $large-font;
             margin: 0 0 35px 0;
@@ -147,7 +152,7 @@
                 margin: 0;
             }
             .count {
-                color: red !important;
+                color: var(--primary);
                 font-size: 35px;
             }
             span::after {
@@ -157,10 +162,6 @@
         }
     }
     .about_first {
-        /*background-image:
-        linear-gradient(
-            150deg, #ebebeb, #ffffff
-        );	*/
         background: $light-gray-gradient;
     }
     .about-people {
@@ -170,16 +171,15 @@
             box-sizing: border-box;
             h3 {
                 font-size: 18px;
-                color: $background-red !important;
+                color: var(--primary);
                 font-weight: bold;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                text-align: center;
             }
             p {
                 font-size: $large-font;
                 line-height: 23px;
                 padding: 10px 0;
+                color: var(--text-color);
             }
         }
         .center-block {
@@ -198,16 +198,17 @@
                         display: block;
                     }
                     p {
-                        background: $background-red;
+                        background: var(--primary);
                         height: 75px;
                         padding-top: 5px;
                         text-align: center;
-                        font-weight: bold;
+                        font-weight: $font-bolder;
+                        color: var(--white);
                         span {
                             display: block;
                             font-size: $medium-font;
                             line-height: 13px;
-                            color: #ffffff !important;
+                            color: var(--white);
                             font-weight: normal;
                         }
                     }
@@ -217,65 +218,4 @@
     }
 }
 
-a {
-    text-decoration: none;
-}
 
-img {
-    max-width: $fullwidth;
-}
-
-// .about-us {
-//     left: 15px;
-//     right: 15px;
-//     width: auto !important;
-// }
-
-
-.about_text {
-    clear: both;
-}
-
-.text-white {
-    color: $white-color;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// .about-pointer h4 {
-//     position: absolute;
-//     content: "";
-//     left: 201px;
-//     right: 0px;
-//     color: #dc1410 !important;
-//     top: -8px;
-//     bottom: 0px;
-//     font-size: 49px;
-// }
-
-// .text-arrange1 {
-//     font-size: 14px;
-// }
-
-// .pad-t-30 {
-//     padding: 30px 0 15px 0;
-// }
-
-// .pad-t-60 {
-//     padding-top: 60px !important;
-// }
-
-// .abt_number span::after {
-//     content: "+";
-//     padding-left: 10px;
-// }

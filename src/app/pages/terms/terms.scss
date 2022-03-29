@@ -1,70 +1,74 @@
 @import '../../scss/variables';
 @import '../../scss/root';
 
-.terms_wrap {
-    padding: 10px 20px;
-    h1{
-        font-size: $extra-large-font;
-        text-align: center;
-        color: var(--text-color);
-    }
-    p {
-        font-size: $medium-font;
-        color: var(--text-color);
-        line-height: 24px;
-        margin-top: 10px;
-        font-weight: $font-bolder;
-    }
-    ol li{
-        color: var(--text-color);
-        ol li{
-            color: var(--text-color);  
+.terms-container{
+    background: var(--white);
+    .terms_wrap {
+        padding: 10px 20px;
+        h1{
+            font-size: $extra-large-font;
+            text-align: center;
+            color: var(--text-color);
         }
-    }
-    li:not(:last-child) {
-        padding-bottom: 9pt;
-    }
-    ol ol > li:first-child {
-        padding-top: 9pt;
-    }
-    ol ol li span{
-        font-weight: $font-bolder;
-    }
-    
-    /* hierarchical ordering:  */
-    ol {
-        padding-left: 12pt;	
-        counter-reset: item
-    }
-    li {
-      display: block
-    }
-    li:before {
-      content: counters(item, ".")" ";
-      counter-increment: item
-    }
-    section > ol li:before {
-        position: relative;
-        left:-4px;
-    }
-
-    section > ol li ol li:before {
-        display: none;
+        p {
+            font-size: $medium-font;
+            color: var(--text-color);
+            line-height: 24px;
+            margin-top: 10px;
+            font-weight: $font-bolder;
+        }
+        ol li{
+            color: var(--text-color);
+            ol li{
+                color: var(--text-color);  
+            }
+        }
+        li:not(:last-child) {
+            padding-bottom: 9pt;
+        }
+        ol ol > li:first-child {
+            padding-top: 9pt;
+        }
+        ol ol li span{
+            font-weight: $font-bolder;
+        }
         
+        /* hierarchical ordering:  */
+        ol {
+            padding-left: 12pt;	
+            counter-reset: item
+        }
+        li {
+          display: block
+        }
+        li:before {
+          content: counters(item, ".")" ";
+          counter-increment: item
+        }
+        section > ol li:before {
+            position: relative;
+            left:-4px;
+        }
+    
+        section > ol li ol li:before {
+            display: none;
+            
+        }
+        /* hard coding section numbers to avoid risks on bad browsers */
+        #sec1 > ol > li::before  { content: "1." counter(item) ".";font-weight: $font-bolder; }
+        #sec2 > ol > li::before  { content: "2." counter(item) ".";font-weight: $font-bolder; }
+        #sec3 > ol > li::before  { content: "3." counter(item) ".";font-weight: $font-bolder; }
+        #sec4 > ol > li::before  { content: "4." counter(item) ".";font-weight: $font-bolder; }
+        #sec5 > ol > li::before  { content: "5." counter(item) ".";font-weight: $font-bolder; }
+        #sec6 > ol > li::before  { content: "6." counter(item) ".";font-weight: $font-bolder; }
+        #sec7 > ol > li::before  { content: "7." counter(item) ".";font-weight: $font-bolder; }
+        #sec8 > ol > li::before  { content: "8." counter(item) ".";font-weight: $font-bolder; }
+        #sec9 > ol > li::before  { content: "9." counter(item) ".";font-weight: $font-bolder; }
+        #sec10 > ol > li::before  { content: "10." counter(item) ".";font-weight: $font-bolder; }
+        #sec11 > ol > li::before  { content: "11." counter(item) ".";font-weight: $font-bolder; }
+        #sec12 > ol > li::before  { content: "12." counter(item) ".";font-weight: $font-bolder; }
+        #sec13 > ol > li::before  { content: "13." counter(item) ".";font-weight: $font-bolder; }
+        #sec14 > ol > li::before  { content: "14." counter(item) ".";font-weight: $font-bolder;}
     }
-    /* hard coding section numbers to avoid risks on bad browsers */
-    #sec1 > ol > li::before  { content: "1." counter(item) ".";font-weight: $font-bolder; }
-    #sec2 > ol > li::before  { content: "2." counter(item) ".";font-weight: $font-bolder; }
-    #sec3 > ol > li::before  { content: "3." counter(item) ".";font-weight: $font-bolder; }
-    #sec4 > ol > li::before  { content: "4." counter(item) ".";font-weight: $font-bolder; }
-    #sec5 > ol > li::before  { content: "5." counter(item) ".";font-weight: $font-bolder; }
-    #sec6 > ol > li::before  { content: "6." counter(item) ".";font-weight: $font-bolder; }
-    #sec7 > ol > li::before  { content: "7." counter(item) ".";font-weight: $font-bolder; }
-    #sec8 > ol > li::before  { content: "8." counter(item) ".";font-weight: $font-bolder; }
-    #sec9 > ol > li::before  { content: "9." counter(item) ".";font-weight: $font-bolder; }
-    #sec10 > ol > li::before  { content: "10." counter(item) ".";font-weight: $font-bolder; }
-    #sec11 > ol > li::before  { content: "11." counter(item) ".";font-weight: $font-bolder; }
-    #sec12 > ol > li::before  { content: "12." counter(item) ".";font-weight: $font-bolder; }
-    #sec13 > ol > li::before  { content: "13." counter(item) ".";font-weight: $font-bolder; }
-    #sec14 > ol > li::before  { content: "14." counter(item) ".";font-weight: $font-bolder;}
 }
+

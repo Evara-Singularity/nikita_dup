@@ -95,6 +95,7 @@
                     <ng-container *ngIf="selectedProductBulkPrice==null">
                         <p class="actual-price" *ngIf="productPrice > 0">
                             <small *ngIf="(+(productPrice-priceWithoutTax) > 0)" >
+                                <ng-container *ngIf="+productMrp == +productPrice" >MRP&nbsp;</ng-container>
                                 {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
                             </small>
                         </p>
@@ -106,11 +107,9 @@
                         </p>
                         <p class="mrp" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-
                             <span >
                              {{((+productMrp - +productPrice)/+productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
                             </span>
-
                         </p>
                     </ng-container> 
                     <!-- NON BULK PRICE BLOCK ENDS -->

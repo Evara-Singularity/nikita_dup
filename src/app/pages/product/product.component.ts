@@ -3788,6 +3788,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             contentInfo["specifications"] = {
                 attributes: this.productAttributes,
                 brand: brand,
+                secondaryAttributes: this.getSecondaryAttributes()
             };
         }
         if (this.productVideos && this.productVideos.length) {
@@ -3824,6 +3825,18 @@ export class ProductComponent implements OnInit, AfterViewInit
             order: this.orderTracking,
         };
         return productInfo;
+    }
+
+    private getSecondaryAttributes() {
+        return {
+            "Manufacturer Details": (this.rawProductData["manufacturerDetails"])? [this.rawProductData["manufacturerDetails"]]:[],
+            "Packer Details": (this.rawProductData["packerDetails"])? [this.rawProductData["packerDetails"]]:[],
+            "Importer Details": (this.rawProductData["importerDetails"])? [this.rawProductData["importerDetails"]]:[],
+            "Common/Generic Name": (this.rawProductData["displayName"])? [this.rawProductData["displayName"]]:[],
+            "Best Before": (this.rawProductData["bestBefore"])? [this.rawProductData["bestBefore"]]:[],
+            "Dimensions LxWxH": (this.rawProductData["itemDimension"])? [this.rawProductData["itemDimension"]]:[],
+            "Weight": (this.rawProductData["itemWeight"])? [this.rawProductData["itemWeight"]]:[],
+        }
     }
 
     sendProductInfotracking(cta)

@@ -21,12 +21,28 @@
                 </div>
             </td>
         </tr>
-        <tr class="spec-row">
+        <ng-container *ngIf="showSecondaryAttributes">
+            <tr class="spec-row" *ngFor="let attr of specifications.secondaryAttributes | objectToArray:'associative'">
+                <ng-container *ngIf="attr.value && attr.value.length > 0">
+                    <td class="left">
+                        <div>{{attr.key}}</div>
+                    </td>
+                    <td class="right">
+                        <div *ngFor="let item of attr.value">
+                            {{item}}
+                        </div>
+                    </td>
+                </ng-container>
+            </tr>
+        </ng-container>
+
+        <tr class="spec-row" *ngIf="enableSecondaryAttributes" >
             <td class="right" [attr.colspan]="2">
                 <div (click)="showMore()">
                     <a class="show-more">{{showtText}}</a>
                 </div>
             </td>
         </tr>
+
     </table>
 </div>

@@ -14,19 +14,34 @@ export class SpecificationsComponent implements OnInit
     @Input("specifications") specifications = null;
     public isAllListShow:boolean;
     showtText:string="SHOW MORE";
+    enableSecondaryAttributes: boolean = false;
+    showSecondaryAttributes: boolean = false;
     
     constructor(public _commonService: CommonService) { }
 
     ngOnInit() {
+        this.checkSecondaryAttributes();
     }
+
+    checkSecondaryAttributes() {
+        if (this.specifications['secondaryAttributes']) {
+            const secondaryAttributes = Object.assign({}, this.specifications['secondaryAttributes']);
+            for (const key in secondaryAttributes) {
+                if (Object.prototype.hasOwnProperty.call(secondaryAttributes, key)) {
+                    const element = secondaryAttributes[key];
+                    this.enableSecondaryAttributes = this.enableSecondaryAttributes || (element && element.length > 0)
+                }
+            }
+        }
+    }
+
     showMore() {
-        this.isAllListShow = !this.isAllListShow;
-        if(this.isAllListShow)
-        {
-            this.showtText="SHOW LESS";
-        }
-        else{
-            this.showtText="SHOW MORE";
+        this.showSecondaryAttributes = !this.showSecondaryAttributes;
+        if (this.showSecondaryAttributes) {
+            this.showtText = "SHOW MORE";
+        } else {
+            this.showtText = "SHOW LESS";
         }
     }
+
 }

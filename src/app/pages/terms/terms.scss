@@ -1,17 +1,24 @@
 @import '../../scss/variables';
+@import '../../scss/root';
 
 .terms_wrap {
     padding: 10px 20px;
+    h1{
+        font-size: $extra-large-font;
+        text-align: center;
+        color: var(--text-color);
+    }
     p {
         font-size: $medium-font;
+        color: var(--text-color);
         line-height: 24px;
-        margin-top: 10px !important;
+        margin-top: 10px;
+        font-weight: $font-bolder;
     }
-    h4 {
-        margin-top: 20px;
-        margin-bottom: 10px;
-        &.lh-18 {
-            line-height: 18px;
+    ol li{
+        color: var(--text-color);
+        ol li{
+            color: var(--text-color);  
         }
     }
     li:not(:last-child) {
@@ -19,6 +26,9 @@
     }
     ol ol > li:first-child {
         padding-top: 9pt;
+    }
+    ol ol li span{
+        font-weight: $font-bolder;
     }
     
     /* hierarchical ordering:  */
@@ -58,13 +68,3 @@
     #sec13 > ol > li::before  { content: "13." counter(item) ".";font-weight: $font-bolder; }
     #sec14 > ol > li::before  { content: "14." counter(item) ".";font-weight: $font-bolder;}
 }
-
-.bold{
-    // font-size: 12px;
-    // color: #303030;
-    font-weight: $font-bolder;
-    
-}
-.center {
-    text-align: center
-   }

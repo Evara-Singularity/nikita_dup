@@ -68,12 +68,16 @@ export class CartComponent {
         this._globalLoaderService.setLoaderState(true);
         this._cartService.getCartUpdatesChanges().subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
+            
             this.validateCart();
         });
     }
 
     validateCart() {
-        if (!this._commonService.userSession['authenticated'] || this._commonService.userSession['authenticated'] == 'false') return;
+        debugger;
+        const USER_SESSION = this.localStorageService.retrieve("user");
+        const IS_LOGGED_IN = (USER_SESSION && USER_SESSION['authenticated'] === "true");
+        if (!IS_LOGGED_IN) return;
         const cartSession = { "shoppingCartDto": this._cartService.getGenericCartSession };
         forkJoin([
             this._cartService.validateCartApi(cartSession),

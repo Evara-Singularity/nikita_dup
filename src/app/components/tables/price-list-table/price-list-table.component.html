@@ -24,10 +24,10 @@
                             *ngFor="let product of priceListData | slice:0:10, let i=index">
                             <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
                                 <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
-                                <td>₹{{product.priceWithoutTax | mathFloor | number : '1.0-0'}}</td>
+                                <td>₹{{product.salesPrice | mathFloor | number : '1.0-0'}}</td>
                                 <td>
                                     {{product.discount == 0? "-": ((product.mrp -
-                                    product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
+                                    product.salesPrice)/product.mrp)*100 | mathFloor | number : '1.0-0'}} % off
                                 </td>
                             </tr>
                         </ng-container>

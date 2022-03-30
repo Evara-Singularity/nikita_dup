@@ -322,7 +322,7 @@ export class CategoryComponent {
             const product = {
                 id: psrp[p].moglixPartNumber,
                 name: psrp[p].productName,
-                price: psrp[p].priceWithoutTax,
+                price: psrp[p].salesPrice,
                 brand: psrp[p].brandName,
                 category: cr,
                 variant: '',

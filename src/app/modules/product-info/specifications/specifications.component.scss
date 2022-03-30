@@ -7,9 +7,19 @@
 }
 .product-spec {
     border-top: 1px dashed #c7c7c7;
+    a{
+        color: #006DF0;
+        &.show-more{
+            text-transform:uppercase;
+            font-weight:bold;
+        }
+    }
     .spec-row{
         &:nth-child(2n){
           background:#F1F1F1;
+        }
+        &:nth-last-child(1){
+          background:white;  
         }
     }
     td {
@@ -23,9 +33,6 @@
         div {
             width: 100%;
             padding: 15px 10px;
-            .brandName {
-                color: #006DF0;
-            }
         }
     }
 }

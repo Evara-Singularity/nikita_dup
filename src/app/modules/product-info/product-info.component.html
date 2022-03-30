@@ -22,24 +22,24 @@
                 </div>
                 <div class="price-details" *ngIf="productMrp > 0">
                     <div class="left">
-                        <div class="price" *ngIf="productMrp > priceWithoutTax">
+                        <div class="price" *ngIf="productMrp > productPrice">
                             <span class="crossed">{{productMrp | currency: 'INR' : 'symbol' :
                                 '1.0-0'}}</span>
                             <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
-                                <span class="green-label" *ngIf="bulkPriceWithoutTax==null">
-                                    {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}%
+                                <span class="green-label" *ngIf="bulkSellingPrice==null">
+                                    {{((productMrp - productPrice)/productMrp)*100 | mathFloor | number:'1.0-0'}}%
                                     OFF
                                 </span>
-                                <span class="green-label" *ngIf="bulkPriceWithoutTax!=null">
+                                <span class="green-label" *ngIf="bulkSellingPrice!=null">
                                     {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF% OFF
                                 </span>
                             </ng-container>
                         </div>
                         <div class="main-price">
-                            <span *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
-                                {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span> <span
-                                *ngIf="bulkPriceWithoutTax!==null">
-                                {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+                            <span *ngIf="productPrice > 0 && bulkSellingPrice==null">
+                                {{productPrice | currency: 'INR' : 'symbol' : '1.0-0'}}</span> <span
+                                *ngIf="bulkSellingPrice!==null">
+                                {{bulkSellingPrice | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
                         </div>
                         <div class="out-of-stock-text" *ngIf="productOutOfStock">
                             <span>Available on Request</span>
@@ -64,7 +64,7 @@
                     <key-features [features]="contentInfo['key features']"> </key-features>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="displaySlide('specifications')">
-                    <specifications [specifications]="contentInfo['specifications']"></specifications>
+                    <specifications (callback)="callSpecification($event);" [specifications]="contentInfo['specifications']"></specifications>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="contentInfo['videos'] && contentInfo['videos'].length > 0">
                     <videos [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName">

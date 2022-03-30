@@ -18,7 +18,7 @@
                     </div>
                     <p class="price" *ngIf="!item.productDetail.productBO.outOfStock">
                         <span class="after-discount">
-                            {{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                            {{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].sellingPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
                         </span>
 
                         <span class="before-discount"
@@ -28,7 +28,7 @@
 
                         <span class="discount"
                             *ngIf="item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp">
-                            {{discountPrice(item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp,item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].priceWithoutTax | mathCeil)}}%
+                            {{discountPrice(item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp,item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].sellingPrice | mathCeil)}}%
                             Off
                         </span>
 

@@ -1504,9 +1504,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       if (!result && this.cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
-        this.router.navigate(['/checkout'], {
+        this.localAuthService.setBackURLTitle(this.router.url, "Continue to place order");
+        this.router.navigate(['/checkout/login'], {
           queryParams: {
             title: 'Continue to place order',
+            backurl: this.router.url
           },
           state: (buyNow ? { buyNow: buyNow } : {})
         });

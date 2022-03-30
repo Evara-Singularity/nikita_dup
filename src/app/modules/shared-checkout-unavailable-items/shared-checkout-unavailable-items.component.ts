@@ -16,7 +16,7 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit
     private cDistroyed = new Subject();
     itemsList: [] = [];
 
-    constructor(public _cartService: CartService) { }
+    constructor() { }
 
     ngOnInit() { this.itemsList = this.data['items']; }
 

@@ -161,7 +161,7 @@ export class ProductInfoComponent implements OnInit
     {
         if(this.siemaTab && this.slides)
         {
-            this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+40}px`;
+            this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+20}px`;
             
         }
     }
@@ -170,7 +170,7 @@ export class ProductInfoComponent implements OnInit
         this.updateTabContentHeight(this.selectedIndex);
      }, 0);
     }
-    
+
     moveTheSelectedIndex(selectedValue)
     {
         if (this._commonService.isBrowser) {

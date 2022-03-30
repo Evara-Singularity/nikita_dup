@@ -49,7 +49,7 @@
                 text-align: center;
                 color: var(--white);
                 font-size: $medium-font;
-                line-height: 15px;
+                line-height: $medium-line-height;
                 font-weight: $font-bolder;
             }
             &:after {
@@ -79,37 +79,44 @@
                 padding-top:15px;
                 font-size: $large-font;
                 color: var(--text-color);
-                line-height: 28px;
+                line-height: $large-line-height;
             }
         }
     }
     .about-video {
         background: var(--primary);
         padding: 40px 20px 0 20px;
-        .about-video-desc {
+        .video-section{
+            iframe{
+                border: 8px solid var(--white);
+                width: $fullwidth;
+                height:200px;
+            }
+        }
+        .about-video-description {
             padding: 30px 0px;
             .text-white {
                 text-align: left;
                 width: 90%;
                 margin: 0px auto ;
                 font-size:$large-font;
-                line-height: 30px;
+                line-height: $large-line-height;
                 color: var(--white);
             }
         }
         h1 {
-            font-size: 18px;
+            font-size: $xl-1-font;
             color: var(--white);
             text-align: center;
             text-transform: uppercase;
             padding: 0 0 10px 0;
         }
     }
-    .about-wall {
+    .about-wall-fame-container {
         background:url("#{$cdn_url}/assets/img/others/wall-bg.jpg") repeat top left;
         padding: 30px 20px 10px 20px;
         h1 {
-            font-size: 18px;
+            font-size: $xl-1-font;
             text-align: center;
             color: var(--text-color);
         }
@@ -122,83 +129,81 @@
     }
     .about-pointer {
         background:url("#{$cdn_url}/assets/img/others/pointer_background.jpeg");
-        position: relative;
         padding: 30px 20px;
         text-align: center;
         color: var(--white);
         h2 {
             color: var(--white);
-            text-align: center;
             font-size: $large-font;
             margin: 0 0 35px 0;
             font-weight: normal;
         }
-        .abt_number {
+        .about-number {
             margin: 0 0 35px 0;
             &:first-child {
                 margin: 0;
             }
-            .count {
+            .count-block {
                 color: var(--primary);
-                font-size: 35px;
+                font-size: $xl-4-font;
             }
             span::after {
                 content: "+";
                 padding-left: 10px;
             }
+            p{
+                font-size: $medium-font;
+            }
         }
     }
-    .about_first {
+    .about-people-container {
         background: $light-gray-gradient;
-    }
-    .about-people {
         padding: 20px 20px 0 20px;
         .about-people-wrap {
             padding-bottom: 12px;
             box-sizing: border-box;
             h3 {
-                font-size: 18px;
+                font-size: $xl-1-font;
                 color: var(--primary);
-                font-weight: bold;
                 text-align: center;
             }
             p {
                 font-size: $large-font;
-                line-height: 23px;
+                line-height: $large-line-height;
                 padding: 10px 0;
                 color: var(--text-color);
             }
         }
-        .center-block {
-            .segment {
-                display: flex;
-                justify-content: space-between;
-                .about-people-section {
-                    flex-basis: 50%;
-                    flex: 1;
-                    padding-bottom: 20px;
-                    &:nth-child(even) {
-                        padding: 0 0px 0px 20px;
-                    }
-                    img {
-                        width: 100%;
-                        display: block;
-                    }
-                    p {
-                        background: var(--primary);
-                        height: 75px;
-                        padding-top: 5px;
-                        text-align: center;
-                        font-weight: $font-bolder;
-                        color: var(--white);
-                        span {
-                            display: block;
-                            font-size: $medium-font;
-                            line-height: 13px;
-                            color: var(--white);
-                            font-weight: normal;
-                        }
-                    }
+        .segment {
+            width: 100%;
+            padding: 0;
+            padding-bottom: 20px;
+            img {
+                width: 100%;
+                display: block;
+            }
+            p {
+                background: var(--primary);
+                height: 75px;
+                padding-top: 5px;
+                text-align: center;
+                font-weight: $font-bolder;
+                color: var(--white);
+                span {
+                    display: block;
+                    font-size: $medium-font;
+                    line-height: $medium-line-height;
+                    color: var(--white);
+                    font-weight: normal;
+                }
+            }
+            .about-persons{
+                                
+                &:nth-child(odd) {
+                    padding: 0 10px 0px 0px;
+                }
+                &:nth-child(even) {
+                    padding: 0 0px 0px 10px;
                 }
             }
         }

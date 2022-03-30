@@ -1,10 +1,12 @@
 @import '../../scss/variables';
 @import '../../scss/root';
+@import '../../scss/layout/grid.scss';
 
-.revamped-contact {
+.contact-container {
     .top-banner {
+        padding: 0;
         background:  var(--white);
-        border-radius: 8pt;
+        border-radius: 11px;
         margin: 20px 10px;
         display: inline-block;
         .banner-content {
@@ -17,15 +19,14 @@
                 padding: 20px 15px;
                 display: block;
                 h1 {
-                    font-size: 12pt;
+                    font-size: $extra-large-font;
                     color: var(--text-color);
                     font-weight: $font-bolder;
-                    line-height: 18px;
                 }
                 p {
-                    font-size: 10pt;
+                    font-size: $medium-font;
                     font-weight: $font-normal;
-                    line-height: 16px;
+                    line-height: $medium-line-height;
                     padding-top: 10px;
                 }
             }
@@ -40,10 +41,10 @@
     .contact-description {
         padding: 0 15px;
         p {
-            font-size: 10pt;
+            font-size: $medium-font;
             color: var(--text-color);
             font-weight: $font-normal;
-            line-height: 1.5;
+            line-height: $ml-line-height;
         }
     }
     .contact-info {
@@ -51,7 +52,7 @@
         .faq-wrap {
             border: 1px solid var(--ghost-white);
             background:  var(--white);
-            border-radius: 8pt;
+            border-radius: 11px;
             padding: 20px 7px;
             margin-bottom: 15px;
             &:last-child {
@@ -60,15 +61,15 @@
             span {
                 display: inline-block;
                 h6 {
-                    font-size: 12pt;
+                    font-size: $extra-large-font;
                     color:var(--text-color);
                     font-weight: $font-bolder;
-                    line-height: 18px;
+                    line-height: $ml-line-height;
                 }
                 p {
-                    font-size: 9pt;
+                    font-size: $medium-font;
                     font-weight: $font-normal;
-                    line-height: 16px;
+                    line-height: $medium-line-height;
                     padding-top: 2px;
                     color:var(--text-color);
                 }
@@ -84,7 +85,7 @@
             .icons {
                 vertical-align: top;
                 img {
-                    width: 21pt;
+                    width: 28px;
                     vertical-align: middle;
                 }
             }
@@ -94,14 +95,14 @@
     .customer-care {
         padding: 30px 10px;
         p {
-            font-size: 12pt;
-            font-weight: 500;
-            line-height: 18px;
+            font-size: $extra-large-font;
+            font-weight: $font-normal;
+            line-height: $ml-line-height;
             padding-bottom: 10px;
         }
         .international {
             background:  var(--white);
-            border-radius: 8pt;
+            border-radius: 11px;
             padding: 15px;
             margin-bottom: 15px;
             &:last-child {
@@ -111,25 +112,25 @@
                 background: var(--ghost-white);
                 border-radius: $border-radius;
                 color: var(--spanish-gray);
-                font-size: 10pt;
+                font-size: $medium-font;
                 font-weight: $font-bolder;
-                line-height: 16px;
+                line-height: $medium-line-height;
                 padding: 5px 10px;
                 margin-bottom: 12px;
                 display: inline-block;
             }
             h6 {
                 color: var(--text-color);
-                font-size: 12pt;
+                font-size: $extra-large-font;
                 font-weight: $font-bold;
-                line-height: 18px;
+                line-height: $ml-line-height;
                 padding-bottom: 5px;
             }
             p {
-                font-size: 10pt;
+                font-size: $medium-font;
                 color: var(--text-color);
                 font-weight: $font-normal;
-                line-height: 16px;
+                line-height: $medium-line-height;
             }
             .call-timings {
                 padding: 8px 0;
@@ -140,18 +141,3 @@
         padding: 0 10px 30px;
     }
 }
-
-// @media only screen and (max-width: 320px) {
-//     .contact-content {
-//         width: 79% !important;
-//     }
-// }
-
-// // .upper-case {
-// //     text-transform: uppercase;
-// // }
-
-// .card-30 {
-//     @extend %cards;
-//     padding: 30px 15px;
-// }

@@ -1,11 +1,7 @@
 @import '../../scss/variables';
 @import '../../scss/components/buttons.scss';
 @import '../../scss/root';
-
-body {
-    margin: 0;
-    padding: 0;
-}
+@import '../../scss/layout/grid.scss';
 
 .cs-section {
     background-image: url('/assets/img/revamp-career/moglixteam.jpg');
@@ -20,10 +16,10 @@ body {
         top: 50%;
         left: 25px;
         right: 0;
-        max-width: 1170px;
         margin: auto;
         transform: translateY(-50%);
         color: var(--white);
+        padding: 0;
         .header-content {
             margin-top: 15px;
             .arrow-vid-img {
@@ -37,7 +33,7 @@ body {
                 width: 90%;
                 color: var(--white);
                 font-size: $extra-large-font;
-                line-height: 28px;
+                line-height: $large-line-height;
             }
             button{
                 margin-top: 50px;
@@ -48,20 +44,17 @@ body {
                     border-radius: 0;
                 }
             }
-
-
-          
         }
         h1 {
             padding-top: 100px;
-            line-height: 39px;
-            font-size: 29px;
+            line-height: $large-line-height;
+            font-size: $xl-3-font;
             font-weight: $font-normal;
         }
     }
 }
 
-#page_header {
+.page-header {
     &:before {
         content: '';
         position: absolute;
@@ -78,26 +71,21 @@ body {
     text-align: center;
     background: var(--white);
     .inner-content {
-        max-width: 1140px;
         margin: auto;
         h2 {
-            font-size: 28px;
+            font-size: $xl-3-font;
             color: var(--text-color);
-            font-weight: $font-bold;
             padding-bottom: 20px;
         }
         p {
             color: var(--text-color);
-            line-height: 19px;
+            line-height: $ml-line-height;
             font-size: $large-font;
         }
         .widget-wrap {
-            // display: flex;
-            // flex-wrap: wrap;
             padding: 60px 0;
             margin: 0 15px;
             .widget-items {
-                margin-bottom: 0;
                 background: var(--cultured);
                 padding: 30px 50px;
                 min-height: 230px;
@@ -112,7 +100,6 @@ body {
                 }
                 h4 {
                     font-size: $large-font;
-                    font-weight: 600;
                     color: var(--text-color);
                     padding: 20px 0 10px;
                 }
@@ -125,18 +112,18 @@ body {
     background: var(--ghost-white);
     padding: 60px 0;
     .inner-content {
-        max-width: 900px;
         margin: auto;
         h2 {
-            font-size: 28px;
+            font-size: $xl-3-font;
             text-align: center;
             font-weight: $font-bold;
             color:  var(--text-color);
         }
         p {
             text-align: center;
+            font-size: $medium-font;
             padding: 30px 15px 60px;
-            line-height: 1.5;
+            line-height: $ml-line-height;
             color: var(--text-color);
         }
     }
@@ -148,7 +135,7 @@ body {
         margin-bottom: 45px;
         h3 {
             color: var(--text-color);
-            font-size: 20px;
+            font-size: $xl-2-font;
             font-weight: $font-normal;
             text-align: center;
             padding-top: 20px;
@@ -157,7 +144,6 @@ body {
             display: block;
             width: auto;
             margin: auto;
-            height: 188px;
         }
         .image-overlay {
             position: absolute;
@@ -207,7 +193,7 @@ body {
         text-align: center;
         margin: auto;
         h2 {
-            font-size: 26px;
+            font-size: $xl-3-font;
             color: var(--text-color);
             font-weight: $font-bold;
             padding-bottom: 30px;
@@ -233,16 +219,14 @@ body {
                 text-align: left;
                 background: var(--white);
                 bottom: 75px;
-                line-height: 24px;
+                line-height: $ml-2-line-height;
                 color: var(--text-color);
             }
             .team-member-name {
                 position: absolute;
-                left: 20px;
-                right: 20px;
                 bottom: 20px;
                 color: var(--primary);
-                font-weight: 600;
+                font-weight: $font-bolder;
                 background: var(--ghost-white);
             }
             .hover {
@@ -278,7 +262,6 @@ body {
         }
     }
 }
-
 .cta-wrap {
     background: var(--white);
     padding: 0 15px;
@@ -291,18 +274,16 @@ body {
         .inner-text {
             text-align: left;
             h2 {
-                font-size: 22px;
-                font-weight: 700;
+                font-size: $xl-2-font;
                 color: var(--white);
                 padding-bottom: 10px;
                 line-height: 20px;
             }
             p {
-                font-size: 15px;
+                font-size: $large-font;
                 color: var(--white);
-                line-height: 1.5;
-            }
-          
+                line-height: $ml-line-height;
+            } 
         }
         button{
             margin-top:35px;

@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { fade } from '@utils/animations/animation';
+
 @Component({
     selector: 'specifications',
     templateUrl: './specifications.component.html',
@@ -11,9 +12,9 @@ import { fade } from '@utils/animations/animation';
 })
 export class SpecificationsComponent implements OnInit
 {
+    @Output() callback: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input("specifications") specifications = null;
     public isAllListShow:boolean;
-    showtText:string="SHOW MORE";
     enableSecondaryAttributes: boolean = false;
     showSecondaryAttributes: boolean = false;
     
@@ -34,14 +35,8 @@ export class SpecificationsComponent implements OnInit
             }
         }
     }
-
     showMore() {
         this.showSecondaryAttributes = !this.showSecondaryAttributes;
-        if (this.showSecondaryAttributes) {
-            this.showtText = "SHOW MORE";
-        } else {
-            this.showtText = "SHOW LESS";
-        }
+        this.callback.emit(this.showSecondaryAttributes);
     }
-
 }

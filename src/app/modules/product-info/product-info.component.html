@@ -64,7 +64,7 @@
                     <key-features [features]="contentInfo['key features']"> </key-features>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="displaySlide('specifications')">
-                    <specifications [specifications]="contentInfo['specifications']"></specifications>
+                    <specifications (callback)="callSpecification($event);" [specifications]="contentInfo['specifications']"></specifications>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="contentInfo['videos'] && contentInfo['videos'].length > 0">
                     <videos [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName">

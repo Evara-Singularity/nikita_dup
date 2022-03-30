@@ -24,6 +24,7 @@ import { LocalStorageService } from "ngx-webstorage";
 })
 export class ProductInfoComponent implements OnInit
 {
+  
     @Input("openProductInfo") openProductInfo = false;
     @Input("modalData") modalData = null;
     @Input("oosProductIndex") oosProductIndex = -1;
@@ -160,10 +161,16 @@ export class ProductInfoComponent implements OnInit
     {
         if(this.siemaTab && this.slides)
         {
-            this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+20}px`;
+            this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+40}px`;
+            
         }
     }
-
+    callSpecification(event){
+       setTimeout(() => {
+        this.updateTabContentHeight(this.selectedIndex);
+     }, 0);
+    }
+    
     moveTheSelectedIndex(selectedValue)
     {
         if (this._commonService.isBrowser) {

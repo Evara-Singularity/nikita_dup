@@ -1,5 +1,6 @@
-<div class="login-bg" [class.checkout-login-bg]="true">
+<div class="login-bg pwa-row" [class.checkout-login-bg]="true">
     <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
+    
     <div class="fixed-view" [class.mt-20]="isNormalLogin">
         <button class="btn skip-btn" *ngIf="isNormalLogin" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
         <img class="bg-moglix-logo" (click)="$event.stopPropagation();navigateHome()"

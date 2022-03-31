@@ -13,5 +13,11 @@
     @extend %login-card;
 }
 .otp-card {
-    @extend %login-card;
+    @extend %otp-card;
+}
+.shared-otp-card{
+    margin-top: 15px !important;
+}
+.login-card{
+    border-radius: 12px !important;
 }

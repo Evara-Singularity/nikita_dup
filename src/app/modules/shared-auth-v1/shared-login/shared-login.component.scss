@@ -2,7 +2,8 @@
 @import "../login-card.scss";
 // New login start
 .login-bg {
-    background: linear-gradient(#d9232d, #f5555e);
+    // background: linear-gradient(#d9232d, #f5555e);
+    background: var(--red-light-and-dark-gradient);
     min-height: 100vh !important;
     overflow-y: scroll;
     position: relative;
@@ -32,6 +33,7 @@
         position: relative;
         left: 0;
         right: 0;
+        width: 100%;
         .bg-moglix-logo {
             width: 90px;
             display: block;

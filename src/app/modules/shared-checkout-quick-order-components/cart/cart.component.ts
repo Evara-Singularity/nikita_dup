@@ -1,4 +1,4 @@
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil, concatMap, tap } from 'rxjs/operators';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CONSTANTS } from '@app/config/constants';
@@ -77,24 +77,17 @@ export class CartComponent {
         const IS_LOGGED_IN = (USER_SESSION && USER_SESSION['authenticated'] === "true");
         if (!IS_LOGGED_IN) return;
         const cartSession = { "shoppingCartDto": this._cartService.getGenericCartSession };
-        forkJoin([
-            this._cartService.validateCartApi(cartSession),
-            this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] })
-        ]).subscribe(res => {
-            let itemsValidationMessageOld = [];
-                let itemsValidationMessage = [];
-                if (res[1]['statusCode'] == 200) {
-                    itemsValidationMessageOld = res[1]['data'];
-                }
-                if (res[0]['status'] == 200) {
-                    itemsValidationMessage = this._cartService.getMessageList(res[0]['data'], cartSession.shoppingCartDto.itemsList);
+        this._cartService.validateCartApi(cartSession).pipe(
+            tap(res=> {
+                if (res['status'] == 200) {
+                    this._cartService.itemsValidationMessage = this._cartService.getMessageList(res['data'], cartSession.shoppingCartDto.itemsList);
 
                     //Only set validation message if any, if no validation message is found then dont override or remove previous validation messages;
-                    if (itemsValidationMessage && itemsValidationMessage.length > 0) {
-                        itemsValidationMessage = this._cartService.setValidationMessageLocalstorage(itemsValidationMessage, itemsValidationMessageOld);
+                    if (this._cartService.itemsValidationMessage && this._cartService.itemsValidationMessage.length > 0) {
+                        this._cartService.itemsValidationMessage = this._cartService.setValidationMessageLocalstorage(this._cartService.itemsValidationMessage, this._cartService.itemsValidationMessage);
                     } else {
                         //remove all oos product from message list
-                        itemsValidationMessageOld = itemsValidationMessageOld.filter(item => {
+                        this._cartService.itemsValidationMessage = this._cartService.itemsValidationMessage.filter(item => {
                             const indexInValidationMesage = (this._cartService.getGenericCartSession.itemList && this._cartService.getGenericCartSession.itemList.length > 0) ? this._cartService.getGenericCartSession.itemList.findIndex(cartItem => item['msnid'] === cartItem['productId']) : -1;
                             if (indexInValidationMesage < 0) return false;
                             if (item['type'] == 'oos') {
@@ -103,39 +96,38 @@ export class CartComponent {
                                 return true;
                             }
                         })
-                        itemsValidationMessage = itemsValidationMessageOld;
                     }
-                    this._cartService.itemsValidationMessage = itemsValidationMessage;
-                    this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: itemsValidationMessage }).subscribe(res => {});
+                    this._cartService.itemsValidationMessage = this._cartService.itemsValidationMessage;
+                    this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(res => {});
 
                     let items = cartSession.shoppingCartDto['itemsList'];
-                    const msns: Array<string> = res[0]['data'] ? Object.keys(res[0]['data']) : [];
+                    const msns: Array<string> = res['data'] ? Object.keys(res['data']) : [];
                     if (items && items.length > 0) {
                         // Below function is used to show price update at item level if any validation message is present corresponding to item.
-                        items = this._cartService.addPriceUpdateToCart(items, itemsValidationMessage);
+                        items = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
                         cartSession.shoppingCartDto.itemsList = items;
                         // ucs: updateCartSession
                         let ucs: boolean = false;
                         let oosData: Array<{}> = [];
                         let itemsList = items.map((item) => {
                             if (msns.indexOf(item['productId']) != -1) {
-                                if (res[0]['data'][item['productId']]['updates']['outOfStockFlag']) {
+                                if (res['data'][item['productId']]['updates']['outOfStockFlag']) {
                                     item['oos'] = true;
                                     oosData.push({ msnid: item['productId'] });
                                 }
-                                else if (res[0]['data'][item['productId']]['updates']['priceWithoutTax']) {
+                                else if (res['data'][item['productId']]['updates']['priceWithoutTax']) {
                                     ucs = true;
                                     //delete oos from frontend because item is again instock
                                     if (item['oos']) {
                                         delete item['oos'];
                                     }
-                                    return this._cartService.updateCartItem(item, res[0]['data'][item['productId']]['productDetails']);
-                                } else if (res[0]['data'][item['productId']]['updates']['shipping']) {
+                                    return this._cartService.updateCartItem(item, res['data'][item['productId']]['productDetails']);
+                                } else if (res['data'][item['productId']]['updates']['shipping']) {
                                     if (item['oos']) {
                                         delete item['oos'];
                                     }
                                     ucs = true;
-                                } else if (res[0]['data'][item['productId']]['updates']['coupon']) {
+                                } else if (res['data'][item['productId']]['updates']['coupon']) {
                                     if (item['oos']) {
                                         delete item['oos'];
                                     }
@@ -150,9 +142,13 @@ export class CartComponent {
                         if (oosData && oosData.length > 0) {
                             cartSession.shoppingCartDto['itemsList'] = itemsList;
                             this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
+                            this._cartService.publishCartUpdateChange(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
                         }
                     }
                 }
+            }),
+            concatMap(res => this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] }))
+        ).subscribe(res => {
         });
     };
 

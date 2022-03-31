@@ -261,7 +261,6 @@ export class CartService
 
     logOutAndClearCart(redirectURL = null)
     {
-        this._localStorageService.clear("user");
         this.logoutCall().pipe(
             map(logoutReponse =>
             {

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
@@ -328,8 +327,8 @@ export class ProductHorizontalCardComponent implements OnInit {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
         this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, this.moduleUsedIn);
-        this._router.navigate(['/checkout'], {
-          queryParams: {
+        this._localAuthService.setBackURLTitle(this._router.url, "Continue to place order");
+        this._router.navigate(['/checkout/login'], {          queryParams: {
             title: 'Continue to place order',
           },
           state: (buyNow ? { buyNow: buyNow } : {})

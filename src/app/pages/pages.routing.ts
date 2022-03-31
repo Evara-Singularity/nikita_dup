@@ -151,7 +151,7 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
-					// title: 'Checkout',
+					title: 'Checkout',
 					moreOpt: true,
 				},
 			},

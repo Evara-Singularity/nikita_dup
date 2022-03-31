@@ -1033,11 +1033,12 @@ export class ProductComponent implements OnInit, AfterViewInit
                     if (products && (products as []).length > 0) {
                         if (this.productOutOfStock) {
                             this.productService.oosSimilarProductsData.similarData = JSON.parse(
-                                JSON.stringify(products.map(p =>
-                                {
-                                    p.mainImageMediumLink = p.mainImageLink;
-                                    return p;
-                                }))
+                                JSON.stringify(
+                                    products.map(product => this.productService.searchResponseToProductEntity(product)).map(p => {
+                                        p.mainImageMediumLink = p.mainImageLink;
+                                        return p;
+                                    })
+                                )
                             );
                         } else {
                             this.similarProducts = products;
@@ -4180,7 +4181,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         this.clearImageCrouselPopup();
         this.closeProductInfoPopup();
-    }
 
+    }
 
 }

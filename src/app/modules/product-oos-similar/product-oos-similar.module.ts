@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { ProductInfoSectionPipeModule } from '@app/utils/pipes/product-oos-similar-card-section.pipe';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
+import {  MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 
 @NgModule({
   declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
@@ -18,6 +19,7 @@ import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-
     SwipeDirectiveModule,
     CommonModule,
     MathFloorPipeModule,
+    MathCeilPipeModule,
     SliceArrayPipeModule,
     ReactiveFormsModule,
     ProductInfoSectionPipeModule,

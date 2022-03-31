@@ -1,5 +1,6 @@
 @import '../../scss/variables';
-@import '../../scss/payment-continue-btn';
+@import './payment-continue-btn.scss';
+
 .payment-options {
     &>div {
         @extend %cards;

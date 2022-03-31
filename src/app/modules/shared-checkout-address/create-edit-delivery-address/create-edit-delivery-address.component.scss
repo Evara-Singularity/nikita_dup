@@ -10,7 +10,7 @@
     }
 }
 
-button.continue-btn[disabled] {
+.continue-btn:disabled {
     background: #bdbdbd;
 }
 

@@ -5,8 +5,8 @@
     padding: 15px 15px 0px 15px;
     p {
         font-size: $medium-font;
-        line-height: 16px;
-        color: #3C3C3C;
+        line-height: $medium-line-height;
+        color: var(--onyx-black);
     }
 }
 .login-card {
@@ -19,5 +19,5 @@
     margin-top: 15px !important;
 }
 .login-card{
-    border-radius: 12px !important;
+    border-radius: $login-card-border !important;
 }

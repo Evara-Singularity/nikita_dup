@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OtpPopupComponent } from '@app/components/otp-popup/otp-popup.component';
 import { ModalService } from '@app/modules/modal/modal.service';
@@ -18,7 +18,8 @@ import { PopUpVariant2Module } from './../../pop-up-variant2/pop-up-variant2.mod
 @Component({
     selector: 'create-edit-delivery-address',
     templateUrl: './create-edit-delivery-address.component.html',
-    styleUrls: ['../common-checkout.scss']
+    styleUrls: ['../common-checkout.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {

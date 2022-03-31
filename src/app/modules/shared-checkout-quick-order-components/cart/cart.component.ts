@@ -74,7 +74,6 @@ export class CartComponent {
     }
 
     validateCart() {
-        debugger;
         const USER_SESSION = this.localStorageService.retrieve("user");
         const IS_LOGGED_IN = (USER_SESSION && USER_SESSION['authenticated'] === "true");
         if (!IS_LOGGED_IN) return;

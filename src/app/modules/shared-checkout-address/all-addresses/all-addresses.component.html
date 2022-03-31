@@ -1,7 +1,7 @@
 <section class="invoice-container">
     <div class="invoice-select">
         <label>
-            <input type="checkbox" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
+            <input type="checkbox" [checked]="isGSTUser" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
             <span class="custom-box icon-box"></span>
         </label>
         <div class="invoice-txt">

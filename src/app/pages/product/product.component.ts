@@ -3139,6 +3139,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             clickStreamData["price_with_tax"] = this.productPrice;
             clickStreamData["out_of_stock"] = this.productOutOfStock;
         }
+        // console.log('clickStreamData ==>', clickStreamData);
         this.analytics.sendToClicstreamViaAPI(clickStreamData);
     }
 

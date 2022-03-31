@@ -380,8 +380,7 @@ export const CONSTANTS = {
     'xlarge': 'xxlarge',
   },
   CUSTOMER_CARE_TIME:{
-    'startTime':'9:00 AM',
-    'endTime':'8:00 PM'
+    'call_timing_text': 'Call Timings: 9:00 AM - 8:00 PM (Monday to Saturday)'
   }
 };
 export default CONSTANTS;

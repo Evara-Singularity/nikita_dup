@@ -54,9 +54,9 @@
                 </div>
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">
-                        <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                            <span class="crossed" *ngIf="product.discount > 0" >{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-                            <span class="green-label" *ngIf="product.discount > 0" >{{product.discount}}% OFF</span>
+                        <div class="price" *ngIf="(!isOutOfStockByQuantity && !isOutOfStockByPrice) && +(+product.mrp > product.salesPrice) ">
+                            <span class="crossed" *ngIf="product.discount && product.discount > 0" >{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+                            <span class="green-label" *ngIf="product.discount && product.discount > 0" >{{product.discount}}% OFF</span>
                         </div>
                         <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                             <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'

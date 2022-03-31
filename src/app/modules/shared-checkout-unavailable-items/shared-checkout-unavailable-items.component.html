@@ -1,5 +1,5 @@
 <ng-container>
-    <div class="unavailableItems">
+    <div class="unavailableItems product-card">
         <div class="container">
             <div class="container-head-sec">
                 <p class="txt">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not
@@ -15,7 +15,7 @@
                         <img [routerLink]="showLink ? '/'+item.productUrl:[]" src="{{item.productImg}}">
                     </div>
                 </div>
-                <div class="product-detail pad-tb-10">
+                <div class="product-detail">
                     <div class="p-name f-14">
                         <a [ngClass]="{'cursor-initial':!showLink}" [routerLink]="showLink ? '/'+item.productUrl:[]">
                             {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName)

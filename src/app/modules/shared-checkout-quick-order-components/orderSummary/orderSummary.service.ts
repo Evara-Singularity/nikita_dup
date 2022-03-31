@@ -18,7 +18,6 @@ export class OrderSummaryService {
     }
 
     getShippingCharges(obj) {
-        console.trace('getShippingValue order summary');
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this._ds.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {

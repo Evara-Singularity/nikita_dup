@@ -26,11 +26,11 @@ export class OrderSummaryComponent {
             this.updateShippingCharges();
         });
     }
-
+    
     updateShippingCharges() {
         this.shippingCharges = 0;
         if (this._cartService.getGenericCartSession && this._cartService.getGenericCartSession.itemsList && this._cartService.getGenericCartSession.itemsList.length > 0) {
-            this._cartService.getGenericCartSession.itemsList.map((item) => {
+            this._cartService.getGenericCartSession.itemsList.forEach((item) => {
                 this.shippingCharges = this.shippingCharges + (item.shippingCharges || 0);
             });
         }

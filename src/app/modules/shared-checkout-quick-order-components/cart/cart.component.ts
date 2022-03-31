@@ -75,10 +75,14 @@ export class CartComponent {
     validateCartApiSubscription: Subscription;
     cartSubscription: Subscription;
     validateCart(cartSession) {
+        const USER_SESSION = this.localStorageService.retrieve("user");
+        const IS_LOGGED_IN = (USER_SESSION && USER_SESSION['authenticated'] === "true");
+        if (!IS_LOGGED_IN) return;
+
+
         let itemsValidationMessageOld;
         let itemsValidationMessage;
 
-        if (!this._commonService.userSession['authenticated'] || this._commonService.userSession['authenticated'] == 'false') return;
         this.validateCartApiSubscription = this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] }).pipe(
             tap(res => {
                 itemsValidationMessageOld = res['data'];
@@ -89,16 +93,22 @@ export class CartComponent {
                     itemsValidationMessage = this._cartService.getMessageList(res['data'], cartSession.shoppingCartDto.itemsList);
 
                     this._cartService.itemsValidationMessage = itemsValidationMessage;
-                    this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(res => {
+
+                    this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(resp => {
+                        
                         let items = cartSession.shoppingCartDto['itemsList'];
+                        
                         const msns: Array<string> = res['data'] ? Object.keys(res['data']) : [];
+                        
                         if (items && items.length > 0) {
                             // Below function is used to show price update at item level if any validation message is present corresponding to item.
                             items = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
                             cartSession.shoppingCartDto.itemsList = items;
+                            
                             // ucs: updateCartSession
                             let ucs: boolean = false;
                             let oosData: Array<{}> = [];
+                            
                             let itemsList = items.map((item) => {
                                 if (msns.indexOf(item['productId']) != -1) {
                                     if (res['data'][item['productId']]['updates']['outOfStockFlag']) {
@@ -128,12 +138,13 @@ export class CartComponent {
                                     return item;
                                 }
                             });
-                            
+
                             cartSession.shoppingCartDto['itemsList'] = itemsList;
                             this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
+                            this._cartService.getShippingAndUpdateCartSession(this._cartService.getGenericCartSession).subscribe(res => {
+                            });
                         }
                     });
-
                 }
         });
     };

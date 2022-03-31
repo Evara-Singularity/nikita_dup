@@ -261,7 +261,6 @@ export class CartService
 
     logOutAndClearCart(redirectURL = null)
     {
-        this._localStorageService.clear("user");
         this.logoutCall().pipe(
             map(logoutReponse =>
             {
@@ -1552,7 +1551,7 @@ export class CartService
     /**@description display unavailable items in pop-up */
     viewUnavailableItems()
     {
-        const itemsList: any[] = this.getGenericCartSession['itemsList'];
+        const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unservicableMsns = JSON.parse(JSON.stringify(this.itemsValidationMessage))
             .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
         const LIST: any[] = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);

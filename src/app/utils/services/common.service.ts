@@ -1396,14 +1396,6 @@ export class CommonService
             return queryParams;
     }
 
-    customDebugger(data)
-    {
-        console.clear();
-        console.trace();
-        console.log(data);
-        alert('check console');
-    }
-
     getRoutingData(_aRoute): Observable<any>{
         return of(_aRoute)
         .pipe(

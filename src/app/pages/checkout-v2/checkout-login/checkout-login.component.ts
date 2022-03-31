@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SharedAuthService } from '@app/modules/shared-auth-v1/shared-auth.service';
 
 @Component({
   selector: 'app-checkout-login',
   templateUrl: './checkout-login.component.html',
-  styleUrls: ['./checkout-login.component.css']
+  styleUrls: ['./checkout-login.component.scss']
 })
 export class CheckoutLoginComponent implements OnInit {
 

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { mergeMap, takeUntil, concatMap, tap } from 'rxjs/operators';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -65,87 +66,75 @@ export class CartComponent {
     // Function to get and set the latest cart
     loadCartDataFromAPI() {
         this._globalLoaderService.setLoaderState(true);
-        this._cartService.getCartUpdatesChanges().subscribe(result => {
+        this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(result => {
             this._globalLoaderService.setLoaderState(false);
-            this.validateCart();
+            this.validateCart({ "shoppingCartDto": result });
         });
     }
 
-    validateCart() {
+    validateCartApiSubscription: Subscription;
+    cartSubscription: Subscription;
+    validateCart(cartSession) {
+        let itemsValidationMessageOld;
+        let itemsValidationMessage;
+
         if (!this._commonService.userSession['authenticated'] || this._commonService.userSession['authenticated'] == 'false') return;
-        const cartSession = { "shoppingCartDto": this._cartService.getGenericCartSession };
-        this._cartService.validateCartApi(cartSession).pipe(
-            tap(res=> {
+        this.validateCartApiSubscription = this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] }).pipe(
+            tap(res => {
+                itemsValidationMessageOld = res['data'];
+            }),
+            concatMap(res => this._cartService.validateCartApi(cartSession))
+        ).subscribe(res => {
                 if (res['status'] == 200) {
-                    this._cartService.itemsValidationMessage = this._cartService.getMessageList(res['data'], cartSession.shoppingCartDto.itemsList);
+                    itemsValidationMessage = this._cartService.getMessageList(res['data'], cartSession.shoppingCartDto.itemsList);
 
-                    //Only set validation message if any, if no validation message is found then dont override or remove previous validation messages;
-                    if (this._cartService.itemsValidationMessage && this._cartService.itemsValidationMessage.length > 0) {
-                        this._cartService.itemsValidationMessage = this._cartService.setValidationMessageLocalstorage(this._cartService.itemsValidationMessage, this._cartService.itemsValidationMessage);
-                    } else {
-                        //remove all oos product from message list
-                        this._cartService.itemsValidationMessage = this._cartService.itemsValidationMessage.filter(item => {
-                            const indexInValidationMesage = (this._cartService.getGenericCartSession.itemList && this._cartService.getGenericCartSession.itemList.length > 0) ? this._cartService.getGenericCartSession.itemList.findIndex(cartItem => item['msnid'] === cartItem['productId']) : -1;
-                            if (indexInValidationMesage < 0) return false;
-                            if (item['type'] == 'oos') {
-                                return false;
-                            } else {
-                                return true;
-                            }
-                        })
-                    }
-                    this._cartService.itemsValidationMessage = this._cartService.itemsValidationMessage;
-                    this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(res => {});
-
-                    let items = cartSession.shoppingCartDto['itemsList'];
-                    const msns: Array<string> = res['data'] ? Object.keys(res['data']) : [];
-                    if (items && items.length > 0) {
-                        // Below function is used to show price update at item level if any validation message is present corresponding to item.
-                        items = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
-                        cartSession.shoppingCartDto.itemsList = items;
-                        // ucs: updateCartSession
-                        let ucs: boolean = false;
-                        let oosData: Array<{}> = [];
-                        let itemsList = items.map((item) => {
-                            if (msns.indexOf(item['productId']) != -1) {
-                                if (res['data'][item['productId']]['updates']['outOfStockFlag']) {
-                                    item['oos'] = true;
-                                    oosData.push({ msnid: item['productId'] });
+                    this._cartService.itemsValidationMessage = itemsValidationMessage;
+                    this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(res => {
+                        let items = cartSession.shoppingCartDto['itemsList'];
+                        const msns: Array<string> = res['data'] ? Object.keys(res['data']) : [];
+                        if (items && items.length > 0) {
+                            // Below function is used to show price update at item level if any validation message is present corresponding to item.
+                            items = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
+                            cartSession.shoppingCartDto.itemsList = items;
+                            // ucs: updateCartSession
+                            let ucs: boolean = false;
+                            let oosData: Array<{}> = [];
+                            let itemsList = items.map((item) => {
+                                if (msns.indexOf(item['productId']) != -1) {
+                                    if (res['data'][item['productId']]['updates']['outOfStockFlag']) {
+                                        item['oos'] = true;
+                                        oosData.push({ msnid: item['productId'] });
+                                    }
+                                    else if (res['data'][item['productId']]['updates']['priceWithoutTax']) {
+                                        ucs = true;
+                                        //delete oos from frontend because item is again instock
+                                        if (item['oos']) {
+                                            delete item['oos'];
+                                        }
+                                        return this._cartService.updateCartItem(item, res['data'][item['productId']]['productDetails']);
+                                    } else if (res['data'][item['productId']]['updates']['shipping']) {
+                                        if (item['oos']) {
+                                            delete item['oos'];
+                                        }
+                                        ucs = true;
+                                    } else if (res['data'][item['productId']]['updates']['coupon']) {
+                                        if (item['oos']) {
+                                            delete item['oos'];
+                                        }
+                                        ucs = true;
+                                    }
+                                    return item;
+                                } else {
+                                    return item;
                                 }
-                                else if (res['data'][item['productId']]['updates']['priceWithoutTax']) {
-                                    ucs = true;
-                                    //delete oos from frontend because item is again instock
-                                    if (item['oos']) {
-                                        delete item['oos'];
-                                    }
-                                    return this._cartService.updateCartItem(item, res['data'][item['productId']]['productDetails']);
-                                } else if (res['data'][item['productId']]['updates']['shipping']) {
-                                    if (item['oos']) {
-                                        delete item['oos'];
-                                    }
-                                    ucs = true;
-                                } else if (res['data'][item['productId']]['updates']['coupon']) {
-                                    if (item['oos']) {
-                                        delete item['oos'];
-                                    }
-                                    ucs = true;
-                                }
-                                return item;
-                            } else {
-                                return item;
-                            }
-                        });
-                        
-                        if (oosData && oosData.length > 0) {
+                            });
+                            
                             cartSession.shoppingCartDto['itemsList'] = itemsList;
                             this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
-                            this._cartService.publishCartUpdateChange(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
                         }
-                    }
+                    });
+
                 }
-            }),
-            concatMap(res => this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] }))
-        ).subscribe(res => {
         });
     };
 
@@ -249,7 +238,7 @@ export class CartComponent {
                         } else {
                             if (result) {
                                 if (!buyNow) {                                    
-                                    this.validateCart();
+                                    this.validateCart({ "shoppingCartDto": this._cartService.getGenericCartSession });
                                     this._cartService.setGenericCartSession(result);
                                     this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
                                     this._cartService.cart.next({
@@ -387,7 +376,7 @@ export class CartComponent {
         this._globalLoaderService.setLoaderState(true);
         this._cartService.removeUnavailableItems([this._cartService.getGenericCartSession.itemsList[this.removeIndex]]);
         this.removePopup = false;
-        this.validateCart();
+        this.validateCart({ "shoppingCartDto": this._cartService.getGenericCartSession });
         // Push data to data layer
         this.pushDataToDatalayer(this.removeIndex);
         this.sendCritioData();
@@ -541,5 +530,10 @@ export class CartComponent {
             _satellite.track("genericClick");
         }
         /*End Adobe Analytics Tags */
+    }
+
+    ngOnDestroy(){
+        this.validateCartApiSubscription.unsubscribe();
+        this.cartSubscription.unsubscribe();
     }
 }

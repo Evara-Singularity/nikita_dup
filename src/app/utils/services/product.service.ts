@@ -664,7 +664,7 @@ export class ProductService {
             brandId: product["brandId"],
             brandName: product["brandName"],
             quantityAvailable: product["quantityAvailable"],
-            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(
+            discount: Math.ceil((((productMrp - productPrice) / productMrp) * 100)).toFixed(
                 0
             ),
             rating: product["rating"] || null,

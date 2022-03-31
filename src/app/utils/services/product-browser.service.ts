@@ -52,7 +52,7 @@ export class ProductBrowserService
             brandId: product["brandId"] || null,
             brandName: product["shortDescription"] ? product["shortDescription"] : "",
             quantityAvailable: 1,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: Math.ceil((((productMrp - productPrice) / productMrp) * 100)).toFixed(0),
             rating: product["rating"] || null,
             categoryCodes: null,
             taxonomy: product["taxonomy"] || null,

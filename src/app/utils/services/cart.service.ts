@@ -82,6 +82,8 @@ export class CartService
 
     set shippingAddress(address: Address)
     {
+        console.trace();
+        console.log(address);
         this._shippingAddress = address
     }
 
@@ -1035,7 +1037,6 @@ export class CartService
 
     getValidateCartMessageApi(params)
     {
-        console.trace();
         // used in cart.components.ts
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_GetCartValidationMessages, { params: params });
     }

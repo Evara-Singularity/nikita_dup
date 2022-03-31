@@ -60,8 +60,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnInit()
     {
         this.fetchCountryList();
-        this.invoiceType = new FormControl(this.INVOICE_TYPES.RETAIL);
-        this.updateAddressTypes(this.USER_SESSION.userId, this.INVOICE_TYPES.RETAIL);
+        const INVOICE_TYPE = this._cartService.invoiceType ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
+        this.invoiceType = new FormControl(INVOICE_TYPE);
+        this.updateAddressTypes(this.USER_SESSION.userId, INVOICE_TYPE);
     }
 
     ngAfterViewInit(): void
@@ -257,6 +258,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
+    get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX}
 
     ngOnDestroy(): void
     {

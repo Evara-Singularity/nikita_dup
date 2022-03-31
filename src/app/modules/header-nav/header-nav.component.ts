@@ -366,7 +366,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
-            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
+            (window.history.length > 2) ? this.redirectToBackURL() : this.router.navigate(['/']);
         } else {
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
@@ -374,11 +374,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.sharedAuthService.isAtCheckoutLoginFirstTab) {
                     let index = this._checkoutService.getCheckoutTabIndex();
                     if (index === 1) {
-                        this.location.back();
+                        this.redirectToBackURL();
                     }
                     else if (index === 2) {
                         this._checkoutService.setCheckoutTabIndex(index - 1);
-                        this.location.back();
+                        this.redirectToBackURL();
                     } else {
                         this._state.notifyData('routeChanged', index - 2);
                     }
@@ -389,6 +389,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.router.navigate(['/']);
             }
         }
+    }
+
+    redirectToBackURL() {
+        // incase redirected back from checkout then we need to call cartsession API
+        if( ((this.router.url).indexOf('checkout')  > -1) || ((this.router.url).indexOf('quickorder')  > -1) ){
+            console.log('bakbtn cart session API called');
+            this.cartService.resetBuyNow();
+            this.cartService.refreshCartSesion();
+            this.location.back();
+        }else{
+            this.location.back();
+        }
+        
     }
 
     refreshIcon() {

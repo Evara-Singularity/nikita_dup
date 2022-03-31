@@ -39,7 +39,6 @@ export class CartComponent {
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
 
     constructor(
-        private _location: Location,
         public _state: GlobalState,
         public meta: Meta,
         public pageTitle: Title,
@@ -204,6 +203,8 @@ export class CartComponent {
 
         if (action === 'update') {
             if (this._cartService.getGenericCartSession.itemsList[index].moq < quantityTarget) {
+                this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
+                this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
                 this._tms.show({
                     type: 'error',
                     text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
@@ -257,6 +258,7 @@ export class CartComponent {
                                 if (!buyNow) {                                    
                                     this.validateCart();
                                     this._cartService.setGenericCartSession(result);
+                                    this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
                                     this._cartService.cart.next({
                                         count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
                                         currentlyAdded: productDetails
@@ -390,7 +392,7 @@ export class CartComponent {
         e.preventDefault();
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
-        this._cartService.updateCartAfterRemovingItem(this.removeIndex);
+        this._cartService.removeUnavailableItems([this._cartService.getGenericCartSession.itemsList[this.removeIndex]]);
         this.removePopup = false;
         this.validateCart();
         // Push data to data layer

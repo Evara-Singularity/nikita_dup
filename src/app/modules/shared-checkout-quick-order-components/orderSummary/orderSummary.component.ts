@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { CartService } from '@app/utils/services/cart.service';
 
@@ -40,7 +40,10 @@ export class OrderSummaryComponent {
         if (this._commonService.userSession.authenticated == "true") {
             this.showPromoOfferPopup = true;
         } else {
-            this.router.navigate(["/login"]);
+            let link = this.router.url.replace('/', '');
+            const queryParams = { backurl: link };
+            let navigationExtras: NavigationExtras = {queryParams: queryParams};
+            this.router.navigate(["/login"], navigationExtras);
         }
     }
 }

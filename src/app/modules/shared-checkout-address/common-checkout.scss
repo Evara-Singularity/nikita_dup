@@ -196,6 +196,9 @@
     bottom: 0;
     left: 0;
     z-index: 2;
+    &:disabled{
+        background: #bdbdbd;;
+    }
 }
 .column-field{
     @extend %clear-fix;

@@ -13,8 +13,7 @@ export class ContactComponent {
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   imgAssetPath = CONSTANTS.IMAGE_ASSET_URL;
-  startTime=CONSTANTS.CUSTOMER_CARE_TIME.startTime;
-  endTime=CONSTANTS.CUSTOMER_CARE_TIME.endTime;
+  CUSTOMER_CARE_TIME=CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text;
 
   contactUsSchema;
   isServer: boolean;

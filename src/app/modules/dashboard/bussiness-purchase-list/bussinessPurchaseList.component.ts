@@ -771,7 +771,7 @@ export class BussinessPurchaseListComponent {
     }
     const discount = markedPrice - sellingPrice;
     const discountPercentage = (discount / markedPrice) * 100;
-    const roundOff = Math.floor(discountPercentage); // Round off to two digits after decimal.
+    const roundOff = Math.ceil(discountPercentage).toFixed(0); // Round off to two digits after decimal.
     return roundOff;
   }
 }

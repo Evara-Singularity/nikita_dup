@@ -85,6 +85,7 @@ export class ProductListService {
               "medium"
             );
           product["internalProduct"] = true;
+          product['discount'] = Math.ceil((((product['mrp'] - product['salesPrice']) / product['mrp']) * 100)).toFixed(0);
           return product;
         }
       ),

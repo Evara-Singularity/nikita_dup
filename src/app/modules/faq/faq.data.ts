@@ -1,9 +1,11 @@
+import CONSTANTS from "@app/config/constants";
+
 export const faqData = [
      [{
         id:1,
         question: "How do I place an order?",
         para: "Ordering at Moglix is easy. Placing your first order at Moglix? Please follow the below mentioned steps",
-        answer: ' Just select the items you want to shop. | Enter your shipping address. | Enter your payment information and you are home. | If you need any assistance give us a call. We would love to take your order over phone. You may contact us on +91 8448 233 444 to book your order on COD mode. Call Timings:- 9:30 AM to 7 PM.'
+        answer: ' Just select the items you want to shop. | Enter your shipping address. | Enter your payment information and you are home. | If you need any assistance give us a call. We would love to take your order over phone. You may contact us on +91 8448 233 444 to book your order on COD mode. '+ CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text 
     },
     {
         id:2,
@@ -51,7 +53,7 @@ export const faqData = [
     {
         id:9,
         question: "Do you take orders over phone?",
-        para: "Yes. We do take orders over phone. You may contact us on +91 8448 233 444 to book your order on COD mode. Call Timings:- 9:30 AM to 7 PM",
+        para: "Yes. We do take orders over phone. You may contact us on +91 8448 233 444 to book your order on COD mode. "+ CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text ,
         answer: ""
     },
     {
@@ -81,7 +83,7 @@ export const faqData = [
     {
         id:14,
         question: "I tried placing order using my credit card but it isn't working. Can you help me place an order?",
-        para: "Yes if your debit/credit card isn't working we can always take your order over phone. Do call us on +91 8448 233 444. Call Timings:- 9:30 AM to 7 PM",
+        para: "Yes if your debit/credit card isn't working we can always take your order over phone. Do call us on +91 8448 233 444. "+ CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text ,
         answer : ""
     },
     {
@@ -243,7 +245,7 @@ export const faqData = [
     },
     {
         question: "What should I do if my payment fails?",
-        para: 'In case of a payment failure, please retry ensuring that information passed on to payment gateway is accurate i.e. account details, billing address, password (for net banking), your internet connection is not disrupted in the process. If your account has been debited after a payment failure, it is normally rolled back to your bank account within 7 business days. All you need is to call us through at +91 8448 233 444. Call Timings:- 9:30 AM to 7 PM',
+        para: 'In case of a payment failure, please retry ensuring that information passed on to payment gateway is accurate i.e. account details, billing address, password (for net banking), your internet connection is not disrupted in the process. If your account has been debited after a payment failure, it is normally rolled back to your bank account within 7 business days. All you need is to call us through at +91 8448 233 444. '+ CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text ,
         answer:""
     },
     {

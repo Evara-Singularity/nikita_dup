@@ -718,9 +718,7 @@ export class ProductService {
             brandId: product["brandId"] || null,
             brandName: product["brandName"],
             quantityAvailable: 1,
-            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(
-                0
-            ),
+            discount: Math.ceil((((productMrp - productPrice) / productMrp) * 100)).toFixed(0),
             rating: product["rating"] || null,
             categoryCodes: null,
             taxonomy: product["taxonomy"] || null,
@@ -777,7 +775,7 @@ export class ProductService {
             brandName: productBrandDetails['brandName'],
             quantityAvailable: priceQuantityCountry['quantityAvailable'],
             productMinimmumQuantity: productMinimmumQuantity,
-            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(0),
+            discount: Math.ceil((((productMrp - productPrice) / productMrp) * 100)).toFixed(0),
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],

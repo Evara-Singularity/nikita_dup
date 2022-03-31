@@ -69,11 +69,11 @@
                                 *ngIf="similarData[index].productDiscount != undefined && similarData[index].productDiscount>0 && similarData[index].productMrp > 0 && similarData[index].bulkPriceWithoutTax==null">
                                 {{((similarData[index].productMrp -
                                 similarData[index].salesPrice)/similarData[index].productMrp)*100
-                                | mathFloor | number:'1.0-0'}}% OFF
+                                | mathCeil | number:'1.0-0'}}% OFF
                             </span>
                             <span
                                 *ngIf="similarData[index].productDiscount != undefined && similarData[index].productDiscount>0 && similarData[index].productMrp > 0 && similarData[index].bulkPriceWithoutTax!=null">
-                                {{ similarData[index].bulkDiscount | mathFloor |
+                                {{ similarData[index].bulkDiscount | mathCeil |
                                 number:'1.0-0'}}% OFF
                             </span>
                         </p>

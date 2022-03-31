@@ -1633,21 +1633,33 @@ export class CartService
     {
         CART_SESSION['itemsList'] = items;
         this._globalLoader.setLoaderState(true);
+        let newCartSessionFromSwitchMap;
         this.updateCartSession(CART_SESSION).pipe(
-            switchMap((newCartSession) => { return this.verifyPromocode(newCartSession) }),
-            switchMap((newCartSession) => { return this.verifyShippingCharges(newCartSession) }),
-            switchMap((newCartSession) => { return this.validateCartApi(newCartSession) })).
+            switchMap((newCartSession) => { 
+                console.log('verifyPromocode', newCartSession);
+                return this.verifyPromocode(newCartSession) 
+            }),
+            switchMap((newCartSession) => { 
+                newCartSessionFromSwitchMap = newCartSession;
+                return this.verifyShippingCharges(newCartSession) 
+            }),
+            switchMap((newCartSession) => { 
+                newCartSessionFromSwitchMap = newCartSession;
+                return this.validateCartApi(newCartSession) 
+            })).
             subscribe((newCartSession) =>
             {
                 this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
-                const ITEM_LIST = newCartSession['itemsList'];
-                if (ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
+                const ITEM_LIST = newCartSessionFromSwitchMap['itemsList'];
+                if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {5
                     // clears browser history so they can't navigate with back button
                     this._location.replaceState('/');
                     this._router.navigateByUrl('/quickorder');
                 }
-                this._notifyCartChanges(newCartSession, null);
+                if (newCartSessionFromSwitchMap.hasOwnProperty('itemsList')) {
+                    this._notifyCartChanges(newCartSessionFromSwitchMap, null);
+                }
             })
     }
 

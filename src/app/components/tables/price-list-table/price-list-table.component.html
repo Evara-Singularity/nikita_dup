@@ -22,11 +22,21 @@
                     <tbody>
                         <ng-container
                             *ngFor="let product of priceListData | slice:0:10, let i=index">
+                            <!-- <pre>{{ product | json }}</pre> -->
                             <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
                                 <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
                                 <td>₹{{product.salesPrice | mathFloor | number : '1.0-0'}}</td>
                                 <td>
-                                    {{ _commonService.calculcateDiscount(null, product.mrp, product.salesPrice)| number : '1.0-0'}} % off
+                                    <!-- <pre>
+                                        product.mrp : {{product.mrp}} <br/>
+                                        product.salesPrice : {{product.salesPrice}} <br/>
+                                    </pre> -->
+                                    <ng-container *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) == 0">
+                                        -
+                                    </ng-container>
+                                    <ng-container *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) > 0">
+                                        {{ _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) | number : '1.0-0'}}% off
+                                    </ng-container>
                                 </td>
                             </tr>
                         </ng-container>

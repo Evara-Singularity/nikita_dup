@@ -108,7 +108,7 @@
                         <p class="mrp" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
                             <span >
-                             {{((+productMrp - +productPrice)/+productMrp)*100 | mathCeil | number:'1.0-0'}}% OFF
+                             {{ productDiscount | number:'1.0-0'}}% OFF
                             </span>
                         </p>
                     </ng-container> 

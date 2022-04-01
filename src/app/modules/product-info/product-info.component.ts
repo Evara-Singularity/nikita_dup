@@ -78,7 +78,7 @@ export class ProductInfoComponent implements OnInit
 
     constructor(
         private globalAnalyticService: GlobalAnalyticsService,
-        private _commonService: CommonService,
+        public _commonService: CommonService,
         public localStorageService: LocalStorageService,
         private _productService: ProductService,
         private ngxSiemaService: NgxSiemaService,

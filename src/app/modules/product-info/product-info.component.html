@@ -27,8 +27,7 @@
                                 '1.0-0'}}</span>
                             <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
                                 <span class="green-label" *ngIf="bulkSellingPrice==null">
-                                    {{((productMrp - productPrice)/productMrp)*100 | mathFloor | number:'1.0-0'}}%
-                                    OFF
+                                    {{ productDiscount | number:'1.0-0'}}% OFF
                                 </span>
                                 <span class="green-label" *ngIf="bulkSellingPrice!=null">
                                     {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF% OFF

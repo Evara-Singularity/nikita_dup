@@ -92,7 +92,7 @@ export class ProductUtilsService{
                     product['bulkSellingPrice'] = element.bulkSellingPrice;
                     product['bulkPriceWithoutTax'] = element.bulkSPWithoutTax;
                     if (product['mrp'] > 0 && product['price'] > 0) {
-                        product['discount'] = (((product['mrp'] - element.bulkSellingPrice) / product['mrp']) * 100)
+                        product['discount'] = this.commonService.calculcateDiscount(null, product['mrp'], element.bulkSellingPrice)
                     }
                 }
             })

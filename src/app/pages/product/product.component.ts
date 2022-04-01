@@ -727,6 +727,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             // this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
         }
     }
+
     navigateToCategory()
     {
         if (this.breadcrumbData) {
@@ -735,6 +736,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.navigateToUrl(category);
         }
     }
+
     processProductData(args: ProductDataArg, rawData)
     {
         this.rawProductData = args.productBO;
@@ -815,7 +817,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.priceWithoutTax = this.priceQuantityCountry ? this.priceQuantityCountry["priceWithoutTax"] : null;
         this.productPrice = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) : 0;
         if (this.priceQuantityCountry && this.priceQuantityCountry["mrp"] > 0 && this.priceQuantityCountry["sellingPrice"] > 0) {
-            this.productDiscount = ((this.priceQuantityCountry["mrp"] - this.priceQuantityCountry["sellingPrice"]) / this.priceQuantityCountry["mrp"]) * 100;
+            this.productDiscount = this.commonService.calculcateDiscount(null, this.priceQuantityCountry["mrp"], this.priceQuantityCountry["sellingPrice"]);
         }
         this.taxPercentage = this.priceQuantityCountry ? this.priceQuantityCountry["taxRule"]["taxPercentage"] : null;
 
@@ -1265,7 +1267,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap =>
                 {
-                    const calculatedDiscount = ((this.productMrp - priceMap.bulkSellingPrice) / this.productMrp) * 100;
+                    const calculatedDiscount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
                     return { ...priceMap, calculatedDiscount }
                 })
                 //filtering Data to show the 

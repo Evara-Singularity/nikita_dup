@@ -11,6 +11,7 @@ import { LocalAuthService } from './auth.service';
 import { GlobalLoaderService } from './global-loader.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { Router } from '@angular/router';
+import { CommonService } from './common.service';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -45,6 +46,7 @@ export class CartService
         private _loaderService: GlobalLoaderService,
         private _toastService: ToastMessageService,
         private _router: Router,
+        private _commonService: CommonService,
     )
     {
         this.cartSession = cartSession;
@@ -563,7 +565,7 @@ export class CartService
             taxonomyCode: productCategoryDetails['taxonomyCode'],
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
-            discount: (((productMrp - productPrice) / productMrp) * 100).toFixed(0),
+            discount: this._commonService.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
             category: productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,

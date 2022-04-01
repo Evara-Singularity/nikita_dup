@@ -766,12 +766,6 @@ export class BussinessPurchaseListComponent {
     this.spp = true;
   }
   discountPrice(markedPrice, sellingPrice) {
-    if (!markedPrice) {
-      return 0;
-    }
-    const discount = markedPrice - sellingPrice;
-    const discountPercentage = (discount / markedPrice) * 100;
-    const roundOff = Math.floor(discountPercentage); // Round off to two digits after decimal.
-    return roundOff;
+    return this.commonService.calculcateDiscount(null,markedPrice, sellingPrice);
   }
 }

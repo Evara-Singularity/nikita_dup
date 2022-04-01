@@ -18,7 +18,7 @@
                     Added to Cart
                 </span>
                 <span class="fbt_price" *ngIf="!rootProductInCart">
-                    {{rootProduct.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    {{rootProduct.sellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                 </span>
             </div>
         </a>
@@ -40,11 +40,11 @@
                         <div class="product-description">
                             <p class="description-txt">{{product.productName}}</p>
                             <p class="price">
-                                <span class="after-discount">{{product.priceWithoutTax | mathFloor | currency:
+                                <span class="after-discount">{{product.sellingPrice | mathFloor | currency:
                                     'INR' : 'symbol' : '1.0-0'}}</span>
-                                <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
+                                <span class="before-discount" *ngIf="product.discount > 0" >{{product.productMRP | mathFloor | currency: 'INR':
                                     'symbol': '1.0-0'}}</span>
-                                <span class="discount">{{product.discount | mathFloor}}% OFF</span>
+                                <span class="discount" *ngIf="product.discount > 0" >{{product.discount | mathFloor}}% OFF</span>
                             </p>
                         </div>
                     </a>

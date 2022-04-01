@@ -87,43 +87,58 @@
             </div>
         </ng-container>
         <div class="pdp-price-qty-block">
+            
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">
-                    <p class="mrp" *ngIf="productMrp > priceWithoutTax">
-                        <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
-                            {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
-                        </span>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
-                            {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
-                        </span>
-                    </p>
-                    <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
-                        {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inc. Price: {{productPrice | mathFloor | currency: 'INR' :
-                            'symbol' : '1.0-0'}}
-                        </small>
-                    </p>
-                    <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
-                        {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
-                            'symbol' : '1.0-0'}}
-                        </small>
-                    </p>
+
+                    <!-- NON BULK PRICE BLOCK STARTS -->
+                    <ng-container *ngIf="selectedProductBulkPrice==null">
+                        <p class="actual-price" *ngIf="productPrice > 0">
+                            <small *ngIf="(+(productPrice-priceWithoutTax) > 0)" >
+                                <ng-container *ngIf="+productMrp == +productPrice" >MRP&nbsp;</ng-container>
+                                {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
+                            </small>
+                        </p>
+                        <p class="actual-price main-price">
+                            <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
+                            <small class="inline-price" *ngIf="(+(productPrice-priceWithoutTax) > 0)" >
+                                <i class="icon-expand"></i>{{ +(productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
+                            </small>
+                        </p>
+                        <p class="mrp" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
+                            MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                            <span >
+                             {{ productDiscount | number:'1.0-0'}}% OFF
+                            </span>
+                        </p>
+                    </ng-container> 
+                    <!-- NON BULK PRICE BLOCK ENDS -->
+
+                    <!-- BULK PRICE BLOCK STARTS -->
+                    <ng-container *ngIf="selectedProductBulkPrice!=null">
+                        <p class="actual-price" *ngIf="selectedProductBulkPrice['bulkSellingPrice'] > 0">
+                            <small *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0" >
+                                {{selectedProductBulkPrice['bulkSellingPrice'] | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
+                            </small>
+                        </p>
+                        <p class="actual-price main-price">
+                            <strong>{{selectedProductBulkPrice['bulkSPWithoutTax'] | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
+                            <small class="inline-price" *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0" >
+                                <i class="icon-expand"></i>{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax']) | currency: 'INR' : 'symbol' : '1.0-0' }} GST
+                            </small>
+                        </p>
+                        <p class="mrp" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
+                            MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                            <span >
+                             {{selectedProductBulkPrice['calculatedDiscount'] | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                        </p>
+                    </ng-container> 
+                    <!--BULK PRICE BLOCK ENDS -->
+
                 </ng-container>
             </div>
-            <!-- <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
-                <p class="actual-price">
-                    <small>
-                        Min Order Qty :
-                        <span>{{productMinimmumQuantity}} Pack</span>
-                    </small>
-                </p>
-             </div> -->
+
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
@@ -205,7 +220,8 @@
                         class="inner-blk-contain clearfix">
                         <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
                             (click)="selectProductBulkPrice(items.minQty)">
-                            <div class="bulk-block bulk-block-multi-grp" *ngIf="rawProductData['quantityAvailable']>=items.minQty"
+                            <div class="bulk-block bulk-block-multi-grp"
+                                *ngIf="rawProductData['quantityAvailable']>=items.minQty"
                                 [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                                 <p class="qty">Qty
                                     <span
@@ -216,7 +232,7 @@
                                         *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
                                 </p>
                                 <p class="per-qty">
-                                    {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                                    {{items.bulkSellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                                     <span>&nbsp;/pc</span>
                                 </p>
                                 <p *ngIf="items.discount>0" class="green-txt">
@@ -241,13 +257,18 @@
                     (click)="selectProductBulkPrice(items.minQty)"
                     [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                     <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
-                        <h3>Buy <span *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
-                            {{items.minQty!==items.maxQty ?
-                            -items.maxQty:'' }}</span>
-                        <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty
+                        <h3>Buy <span
+                                *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                                {{items.minQty!==items.maxQty ?
+                                -items.maxQty:'' }}</span>
+                            <span
+                                *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
+                            Qty
                             <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
-                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor |
-                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span></h3>
+                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSellingPrice |
+                                mathFloor |
+                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span>
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -384,8 +405,8 @@
             </div>
         </div>
 
-        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleProductRFQ($event)">
+        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility
+            [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
         </section>
 
@@ -479,7 +500,7 @@
                     <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
-        
+
             <div class="pwa-row" *ngIf="overallRating < 1">
                 <p class="review_text">
                     Be the first one to provide review for this product
@@ -594,7 +615,7 @@
                 (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
-        </section>   
+        </section>
 
         <section id="ask-question-section" class="Qa">
             <div class="faq-head">
@@ -603,7 +624,7 @@
                 <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
             </div>
             <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-        
+
                 <p class="display-qn">
                     Displaying Questions
                     <span>1-2</span> of
@@ -626,11 +647,12 @@
                 </div>
             </ng-container>
         </section>
-        
+
         <!-- New GET Quote section starts -->
-        <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <h4  class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-            <p  class="small-txt prodct-name"> {{ productName }} </p>
+        <div id="get-quote-section" class="buy-nowsec"
+            *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+            <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+            <p class="small-txt prodct-name"> {{ productName }} </p>
             <div class="buynow-flex">
                 <div class="bn-left">
                     <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
@@ -645,7 +667,7 @@
                 <ng-template #nonRaisedTemplate>
                     <p class="small-txt">We will get in touch with you on<br>
                         <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                                {{ '+91-' + commonService?.userSession?.phone }}  
+                            {{ '+91-' + commonService?.userSession?.phone }}
                             <ng-container *ngIf="commonService?.userSession?.email">
                                 {{ ' | ' +commonService?.userSession?.email }}
                             </ng-container>
@@ -654,26 +676,28 @@
                     <div class="swipper">
                         <div id="button-background" class="button-area wrapper">
                             <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="slider" class="arrow-container next-btn next-btn-invalid"  (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
-                                    <i class="icon-next icon-animate-1"></i>
-                                    <i class="icon-next icon-animate-2"></i>
-                                    <i class="icon-next icon-animate-3"></i>
+                            <div id="slider" class="arrow-container next-btn next-btn-invalid"
+                                (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                                <i class="icon-next icon-animate-1"></i>
+                                <i class="icon-next icon-animate-2"></i>
+                                <i class="icon-next icon-animate-3"></i>
                             </div>
                         </div>
                     </div>
                 </ng-template>
                 <ng-template #raisedTemplate>
-                    <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                    <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
                     <div class="button-area wrapper">
                         <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
                     </div>
                 </ng-template>
             </div>
         </div>
-        
-        
+
+
         <!-- GET Quote section starts -->
-        <div class="payments-block" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <div class="payments-block"
+            *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <ul class="deals-list">
                 <li class="clearfix">
                     <i class="icon-dropbox-fill"></i>

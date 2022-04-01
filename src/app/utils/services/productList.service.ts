@@ -85,6 +85,7 @@ export class ProductListService {
               "medium"
             );
           product["internalProduct"] = true;
+          product['discount'] = this._commonService.calculcateDiscount(product['discount'], product['mrp'], product['salesPrice']);
           return product;
         }
       ),

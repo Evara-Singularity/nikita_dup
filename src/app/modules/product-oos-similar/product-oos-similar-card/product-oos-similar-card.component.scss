@@ -262,11 +262,10 @@
 
         .price-block {
             padding: 5px 0px 0px 0px;
-
             .mrp {
                 font-size: $small-font;
                 color: #a2a2a2;
-
+                padding-top:5px;
                 span {
                     color: #5BA621;
                     text-decoration: initial;
@@ -282,18 +281,34 @@
             }
 
             .actual-price {
-                padding: 5px 0px 0 0;
                 color: #000;
                 font-size: 20px;
-                font-weight: 700;
-                letter-spacing: 0.5px;
-
+                font-weight:bold;
+                strong{
+                    font-size:22px;
+                }
+               &.main-price{
+                   display:flex;
+                   align-items:baseline;
+                   span{
+                       font-size:24px;
+                   }
+                }
                 small {
-                    font-size: $small-font;
+                    font-size: $medium-font;
                     font-weight: normal !important;
-                    display: block;
                     padding-top: 5px;
-                    color: #74777A;
+                    padding-bottom: 5px;
+                    color: #74777a;
+                    display:block;
+                    &.inline-price{
+                      display:inline-block;
+                      padding:0px;
+                    }
+                }
+                i{
+                    font-size: 6px;
+                    padding:0px 4px;
                 }
             }
         }

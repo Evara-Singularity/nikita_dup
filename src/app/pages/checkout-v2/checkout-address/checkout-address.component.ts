@@ -148,8 +148,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     /**@description updates global validation messages which are used in cart notifications */
     updateValidationMessage(unServicableItems)
     {
-        let itemsValidationMessage = this._cartService.itemsValidationMessage;
-        itemsValidationMessage = itemsValidationMessage.filter(item => item['type'] != 'unservicable')
+        let itemsValidationMessage = this._cartService.itemsValidationMessage || [];
+        itemsValidationMessage = (itemsValidationMessage.filter(item => item['type'] != 'unservicable')) || [];
         this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 

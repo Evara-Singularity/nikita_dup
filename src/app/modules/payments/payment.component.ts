@@ -81,8 +81,7 @@ export class PaymentComponent implements OnInit {
                 this.paymentBlock = this.globalConstants["razorPay"];
                 this.isShowLoader = false;
             }
-
-            if (!this._commonService.cashOnDeliveryStatus.isEnable) {
+            if (!this._cartService.cashOnDeliveryStatus.isEnable) {
                 this.disableCod = true;
             }
 

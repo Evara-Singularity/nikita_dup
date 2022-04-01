@@ -9,7 +9,6 @@ import { BankNamePipeModule } from '../../../utils/pipes/bank.pipe';
 import { MathCeilPipeModule } from '../../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../../utils/directives/kpAutocompleteOff.directive';
 import { SelectPopupModule } from '../../select-popup/select-popup.module';
-import { NumberDirective } from '@app/utils/directives/numeric-only.directive';
 
 
 @NgModule({
@@ -24,7 +23,6 @@ import { NumberDirective } from '@app/utils/directives/numeric-only.directive';
         MathCeilPipeModule,
         KpAutocompleteOffDirectiveModule,
         SelectPopupModule,
-        NumberDirective
     ],
     declarations: [
         EmiComponent,

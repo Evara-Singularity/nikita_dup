@@ -28,7 +28,7 @@
 
                         <span class="discount"
                             *ngIf="item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp">
-                            {{discountPrice(item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp,item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].sellingPrice | mathCeil)}}%
+                            {{discountPrice(item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp,item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].sellingPrice | mathFloor)}}%
                             Off
                         </span>
 

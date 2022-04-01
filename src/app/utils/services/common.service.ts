@@ -1415,9 +1415,9 @@ export class CommonService
      */
     calculcateDiscount(discountIfExist, mrp, SellingPrice): number {
         if (discountIfExist && !Number.isNaN(discountIfExist)) {
-            return Math.floor(+(discountIfExist).toFixed(0))
+            return +Math.floor(+(discountIfExist)).toFixed(0)
         } else if (mrp && SellingPrice && !Number.isNaN(mrp) && !Number.isNaN(SellingPrice)) {
-            return Math.floor(+(((mrp - SellingPrice) / mrp) * 100).toFixed(0))
+            return +(Math.floor(+(((mrp - SellingPrice) / mrp) * 100)).toFixed(0))
         } else {
             return 0;
         }

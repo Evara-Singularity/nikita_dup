@@ -14,9 +14,9 @@
                         </p>
                         <p class="price">
                             <span
-                                class="before-discount">₹{{item.mrp | currency: 'INR' : 'symbol' : '1.0-0'}}
+                                class="before-discount">₹{{beforeDiscount(item.sellingPrice,item.discount_percentage)}}
                             </span>
-                            <span class="discount">{{item.discount_percentage}}% OFF</span>
+                            <span class="discount">{{item.discount_percentage | mathCeil}}% OFF</span>
                             <span class="after-discount">{{item.sellingPrice | currency: 'INR' : 'symbol' :
                                 '1.0-0'}}</span>
                         </p>

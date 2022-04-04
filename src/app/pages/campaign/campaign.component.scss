@@ -1,6 +1,71 @@
-    .moglixhainacampwrap {
-        margin: 0px;
+@import '../../scss/variables';
+@import '../../scss/layout/grid.scss';
+@import '../../scss/root';
+
+.moglixhainacampwrap {
+    .moglixHainaBanner {
+        background: #FEAE2D;
+        padding: 20px 15px;
+        h2 {
+            font-size: $xl-2-font;
+            color: var(--white);
+            font-weight: $font-normal;
+            line-height: $large-line-height;
+        }
+        h1 {
+            font-size: $xl-3-font;
+            color: #fff;
+            padding: 15px 0 20px;
+            box-sizing: border-box;
+        }
+        p {
+            font-size: $large-font;
+            color: var(--white);
+            line-height: $ml-2-line-height;
+        }
+        .watch-now {
+            background: var(--white);
+            border-radius: 5px;
+            color: var(--onyx-black);
+            padding: 9px 20px;
+            font-size: $small-font;
+            font-weight: 500;
+            margin: 25px 0;
+        }
     }
+    .celebrates-wrap {
+        width: 100%;
+        background-color: var(--cultured);
+        padding: 30px 0 40px 0;
+        .content-box{
+            padding: 10px 0;
+            margin: auto;
+            p{
+                color: var(--primary);
+                font-size: $xl-1-font;
+                text-align: center;
+                margin-bottom: 20px;
+                span{
+                    text-decoration: line-through;
+                }
+            }
+
+            img {
+                width: 93%;
+                margin: 0 auto -50px;
+                display: block;
+            }
+            .txt-content{
+                background: var(--ghost-white);
+                padding: 75px 20px 26px 20px;
+                p{
+                    color: var(--onyx-black);
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
     
     .banner-slide {
         width: 100%;
@@ -106,42 +171,38 @@
         padding-bottom: 20px;
     }
     
-    .celebrates-wrap {
-        width: 100%;
-        background-color: #F8F8F8;
-        padding: 60px 0 70px 0;
-    }
     
-    .celebrates-wrap .content-box {
-        width: 100%;
-        padding: 10px 15px;
-        position: relative;
-    }
     
-    .celebrates-wrap .content-box .heading-txt {
-        margin: 0 -15px 20px;
-    }
+    // .celebrates-wrap .content-box {
+    //     width: 100%;
+    //     padding: 10px 15px;
+    //     position: relative;
+    // }
     
-    .celebrates-wrap .content-box .heading-txt p {
-        font-size: 18px;
-        line-height: 26px;
-        margin-bottom: 5px;
-        text-align: center;
-    }
+    // .celebrates-wrap .content-box .heading-txt {
+    //     margin: 0 -15px 20px;
+    // }
     
-    .celebrates-wrap .content-box .heading-txt p.black {
-        color: #2B2B2B;
-    }
+    // .celebrates-wrap .content-box .heading-txt p {
+    //     font-size: 18px;
+    //     line-height: 26px;
+    //     margin-bottom: 5px;
+    //     text-align: center;
+    // }
     
-    .celebrates-wrap .content-box .heading-txt p.red {
-        color: #EA3223;
-        font-weight: 300
-    }
+    // .celebrates-wrap .content-box .heading-txt p.black {
+    //     color: #2B2B2B;
+    // }
     
-    .celebrates-wrap .content-box .heading-txt p.red strong {
-        font-weight: 500;
-        color: #EA3223;
-    }
+    // .celebrates-wrap .content-box .heading-txt p.red {
+    //     color: #EA3223;
+    //     font-weight: 300
+    // }
+    
+    // .celebrates-wrap .content-box .heading-txt p.red strong {
+    //     font-weight: 500;
+    //     color: #EA3223;
+    // }
     
     .celebrates-wrap .content-box img {
         width: 100%;
@@ -750,39 +811,7 @@
     }
     /*css moglix haina -manisha*/
     
-    .moglixHainaBanner {
-        background: #FEAE2D;
-        padding: 20px 15px;
-        h2 {
-            font-size: 20px;
-            color: #fff;
-            font-weight: 400;
-            line-height: 30px;
-        }
-        h1 {
-            font-size: 30px;
-            color: #fff;
-            line-height: 45px;
-            padding: 5px 0 20px;
-            box-sizing: border-box;
-        }
-        p {
-            font-size: 15px;
-            font-weight: 400;
-            color: #fff;
-            line-height: 23px;
-        }
-        .watch-now {
-            background: #fff;
-            border-radius: 5px;
-            color: #2B2B2B;
-            padding: 9px 20px;
-            font-size: 10px;
-            font-weight: 500;
-            display: inline-block;
-            margin: 25px 0;
-        }
-    }
+    
     
     .container {
         margin-right: auto;
@@ -791,22 +820,22 @@
         padding-right: 15px;
     }
     
-    @media (min-width: 1200px) {
-        .container {
-            width: 1170px;
-        }
-    }
+    // @media (min-width: 1200px) {
+    //     .container {
+    //         width: 1170px;
+    //     }
+    // }
     
-    @media (max-width: 992px) {
-        .container {
-            width: 970px;
-        }
-    }
+    // @media (max-width: 992px) {
+    //     .container {
+    //         width: 970px;
+    //     }
+    // }
     
     @media (max-width: 768px) {
-        .container {
-            width: 100%;
-        }
+        // .container {
+        //     width: 100%;
+        // }
         .main-wrapper1 .container,
         .mdl_content_section .container,
         .last-section-accordion .container,
@@ -818,11 +847,11 @@
     }
     
     @media (max-width: 767px) {
-        .container {
-            width: 100%;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
+        // .container {
+        //     width: 100%;
+        //     padding-left: 15px;
+        //     padding-right: 15px;
+        // }
         .rotatebox>.rotateboxcontent {
             margin-right: 0;
             top: auto;
@@ -965,14 +994,14 @@
         .desktophidden {
             display: block
         }
-        .celebrates-wrap .content-box {
-            padding: 10px 0px
-        }
-        .celebrates-wrap .content-box img {
-            width: 93%;
-            margin: 0 auto -50px;
-            display: block;
-        }
+        // .celebrates-wrap .content-box {
+        //     padding: 10px 0px
+        // }
+        // .celebrates-wrap .content-box img {
+        //     width: 93%;
+        //     margin: 0 auto -50px;
+        //     display: block;
+        // }
         .celebrates-wrap .content-box .txt-content {
             padding: 75px 20px 26px 20px;
         }
@@ -1124,9 +1153,6 @@
                     float: none;
                 }
             }
-        }
-        .celebrates-wrap {
-            padding: 30px 0 40px 0;
         }
         .moglixhaina_head2 {
             font-size: 22px;

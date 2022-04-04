@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, HostBinding, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
@@ -17,10 +17,11 @@ import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 
+
 @Component({
   selector: 'product-horizontal-card',
-  templateUrl: './product-horizontal-card.component.html',
-  styleUrls: ['./product-horizontal-card.component.scss'],
+  templateUrl: './product-horizontal-card1.component.html',
+  styleUrls: ['./product-horizontal-card1.component.scss'],
   providers: []
 })
 export class ProductHorizontalCardComponent implements OnInit {
@@ -58,6 +59,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   @Input() isOosSimilarCard = null;
   @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' | 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP' | 'PRODUCT_SIMILAR_OUT_OF_STOCK' | 'SEACRH_SUGGESTION' | 'PRODUCT_PAST_ORDER' = 'LISTING_PAGES';
   productGroupData: any = null;
+  @Input() @HostBinding("class.blue-color") public isBlue = false;
 
   isOutOfStockByQuantity: boolean = false;
   isOutOfStockByPrice: boolean = false;

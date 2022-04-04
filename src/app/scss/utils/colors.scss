@@ -19,6 +19,7 @@
 .error-txt {
     color: $error-color;
     margin-top: 5px;
+    font-size: $small-font;
     &.inline-error {
         margin-left: 10px;
         font-size: 12px;

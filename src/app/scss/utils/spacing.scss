@@ -49,12 +49,22 @@
     padding-bottom: 15px;
 }
 
+// margin all
+.mar-15{
+    margin: 15px;
+}
+.mar-20{
+    margin: 20px;
+}
 // margin-top
 .mt-10 {
     margin-top: 10px;
 }
 .mt-15 {
     margin-top: 15px;
+}
+.mt-20 {
+    margin-top: 20px;
 }
 .mt-25{
     margin-top: 25px;
@@ -74,10 +84,15 @@
 .mb-15 {
     margin-bottom: 15px;
 }
+.mb-25 {
+    margin-bottom: 25px;
+}
 .mb-60 {
     margin-bottom: 60px;
 }
 .mb-65 {
     margin-bottom: 65px;
 }
-
+.error-field{
+    margin-top: 5px;
+}

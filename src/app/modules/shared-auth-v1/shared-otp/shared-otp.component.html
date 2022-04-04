@@ -15,7 +15,7 @@
         <ng-container>
             <!--*ngIf="authFlow?.isUserExists"-->
             <!--Use this shared-otp-card:use this for forgot paswword-->
-            <div class="login-card shared-otp-card">
+            <div class="login-card shared-otp-card pad-15 mar-15">
                 <div class="login-seperator-text "> <span>Or</span></div>
                 <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
                     SIGN-IN WITH PASSWORD
@@ -31,9 +31,9 @@
         <h3 class="heading-custom-3">Enter Password</h3>
         <p>Linked with {{authFlow?.identifier}}</p>
     </div>
-    <div class="login-card">
+    <div class="login-card pad-15 mar-15">
         <form class="material-form">
-            <div class="outline-input-label">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="password.value.length!=0">
                     <input 
                         [ngClass]="{'invalid-input': (password.touched || password.dirty) && (password.hasError('space') || password.hasError('minlength') || (password.valid && incorrectPassword))  }"

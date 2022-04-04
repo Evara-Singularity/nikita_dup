@@ -133,6 +133,25 @@ $small-font: 10px;
 $medium-font: 12px;
 $large-font: 14px;
 $extra-large-font: 16px;
+$xl-1-font:18px;
+$xl-2-font:20px;
+$xl-3-font: 28px;
+$xl-4-font:36px;
+
+$small-icon-font:16px;
+$large-icon-font:20px;
+
+
+/*Line Height*/ 
+
+$medium-line-height:16px;
+$ml-line-height:20px;
+$ml-2-line-height:24px;
+$large-line-height:28px;
+$medium-line-height:15px;
+
+// border-redius
+$login-card-border: 12px;
 
 //grid variables
 $colmax: 12;
@@ -353,6 +372,8 @@ $default-gap: 15px;
     justify-content: space-between;
     align-items: center;
 }
+
+
 
 %ico-txt {
     i {

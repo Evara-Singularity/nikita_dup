@@ -1,23 +1,24 @@
+@import "../../../scss/variables";
 .shared-auth-header{
     height: 50px;
     display: flex;
     background: transparent;
-    padding: 0px 15px 0px 15px;
+    padding: 0px 15px;
     align-items: center;
     .icon-logo {
         font-size: 70px;
         margin-left: 15px;
-        color: #d9232d !important;
+        color: $logo-color !important;
     }
     .icon-back-arrow{
         font-size: 24px;
     }
     &.white-shared-auth-header{
         .icon-logo {
-            color: #ffffff !important;
+            color: $white !important;
         }
         .icon-back-arrow{
-            color: #ffffff !important;
+            color: $white !important;
         } 
     }
 }

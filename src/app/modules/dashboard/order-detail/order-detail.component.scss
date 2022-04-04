@@ -2,12 +2,15 @@
 .orderdtDesc {
   margin-bottom: 10px !important;
   border-bottom: 1px solid #ddd !important;
-  background: #fff;
+  background: var(--white);
   padding: 10px;
   &:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+  }
+  .orderdtBoxinner{
+    display: flex;
   }
 }
 
@@ -16,7 +19,7 @@
 }
 
 .rateprod.singrating {
-  background: #fff;
+  background: var(--white);
   margin-top: 0;
   .rate {
     .writeReview {
@@ -26,7 +29,7 @@
 }
 
 .bottomft {
-  background: #fff;
+  background: var(--white);
   position: relative !important;
   border: 1px solid #e3e3e3 !important;
   span {
@@ -238,7 +241,7 @@
 }
 
 .cancel {
-  background: red;
+  background: var(--primary);
 }
 
 .policyTxt {

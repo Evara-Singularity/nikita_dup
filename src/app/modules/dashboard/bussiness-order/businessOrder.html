@@ -16,10 +16,11 @@
             </div>
         </div>
         <ng-container *ngIf="order.isOrderVisible">
+            <!-- inner box -->
             <div class="orderdtBox" id="one">
                 <div *ngFor="let detail of orderDetail[order.orderId]" class="orderdtBoxinner">
                     <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
-                        <div class="orderdtDesc clearfix">
+                        <div class="orderdtDesc">
                             <div class="orderproImg">
                                 <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                             </div>

@@ -70,6 +70,7 @@ $trackeryellow: #edce09;
 $yellow-txt: #fdb92c;
 $dark-green: #309615;
 $border-radius: 4px;
+$background-red:#dc1410;
 
 //width
 $fullwidth:100%;
@@ -94,9 +95,25 @@ $small-font: 10px;
 $medium-font: 12px;
 $large-font: 14px;
 $extra-large-font: 16px;
+$xl-1-font:18px;
+$xl-2-font:20px;
+$xl-3-font: 28px;
+$xl-4-font:36px;
 
 $small-icon-font:16px;
 $large-icon-font:20px;
+
+/*Line Height*/ 
+
+$medium-line-height:15px;
+$ml-line-height:20px;
+$ml-2-line-height:24px;
+$large-line-height:28px;
+
+
+
+/*gradient*/
+$light-gray-gradient:radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
 
 /*Extends*/
  %cards {

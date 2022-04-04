@@ -38,25 +38,24 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router,private _toastService:ToastMessageService) { }
-        
+        private _router: Router, private _toastService: ToastMessageService) { }
+
     ngOnInit(): void
     {
         this.updateUserStatus();
     }
-    
+
     ngAfterViewInit(): void
     {
-        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => { 
+        this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
+        {
             this.cartSession = cartSession;
-            if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length)
-            {
+            if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
                 this.calculatePayableAmount(this.cartSession['cart']);
             }
             //address is getting updated and cart session is getting updated with some delay.
             //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
-            if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length)
-            {
+            if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
                 this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
                 this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
             }
@@ -95,7 +94,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         if (deliveryAddress) { this._cartService.shippingAddress = deliveryAddress; }
         if (billingAddress) { this._cartService.billingAddress = billingAddress; }
-        if (invoiceType) { this._cartService.invoiceType = invoiceType;}
+        if (invoiceType) { this._cartService.invoiceType = invoiceType; }
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
         if (invoiceType === this.INVOICE_TYPES.TAX && (!billingAddress)) return;
@@ -118,7 +117,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            this.updateNonDeliverableItems(NON_CASH_ON_DELIVERABLE_MSNS);
+            this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
         })
     }
 
@@ -139,10 +138,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */
-    updateNonDeliverableItems(nonCashonDeliverableMsns: any[])
+    updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
-        this._cartService.codNotAvailableObj['itemsArray'] = nonCashonDeliverableMsns.length || nonCashonDeliverableMsns;
-        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length > 0;
+        this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
+        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length === 0;
     }
 
     /**@description updates global validation messages which are used in cart notifications */
@@ -166,7 +165,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     calculatePayableAmount(cart)
     {
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
-        const SHIPPING_CHARGES = cart['shippingCharges'] || 0; 
+        const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
         this.payableAmount = TOTAL_AMOUNT + SHIPPING_CHARGES + TOTAL_OFFER;
     }

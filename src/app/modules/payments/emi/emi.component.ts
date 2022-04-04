@@ -75,7 +75,6 @@ export class EmiComponent {
 
     constructor(
         private _localStorageService: LocalStorageService, 
-        private _checkoutService: CheckoutService, 
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
         private _cartService: CartService, 
@@ -383,7 +382,7 @@ export class EmiComponent {
 
         let userSession = this._localAuthService.getUserSession();
 
-        let addressList = this._checkoutService.getCheckoutAddress();
+        let addressList = this._cartService.shippingAddress;
 
         let shippingInformation = {
             'shippingCost': cartSession['cart']['shippingCharges'],

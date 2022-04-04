@@ -22,7 +22,7 @@ import { SelectPopupModule } from '../../select-popup/select-popup.module';
         BankNamePipeModule,
         MathCeilPipeModule,
         KpAutocompleteOffDirectiveModule,
-        SelectPopupModule
+        SelectPopupModule,
     ],
     declarations: [
         EmiComponent,

@@ -155,7 +155,7 @@ export class CartComponent
                         }
                     );
                 }
-                if (itemsValidationMessage.length) { this._cartService.itemsValidationMessage = itemsValidationMessage; }
+                this._cartService.itemsValidationMessage = itemsValidationMessage;
                 //TODO:missed
                 //this.itemsValidationMessage$.emit();
                 this._cartService.setValidateCartMessageApi({ userId: USER['userId'], data: itemsValidationMessage })
@@ -231,6 +231,7 @@ export class CartComponent
     // To increment decrement and manually update of cart item quantity
     updateCartItemQuantity(quantityTarget, index, action, buyNow = false)
     {
+        const MOQ = this._cartService.getGenericCartSession.itemsList[index].moq || 1;
         const currentItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
         let updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
         let incrementOrDecrementBy = 0;
@@ -239,6 +240,15 @@ export class CartComponent
             incrementOrDecrementBy = 1;
             updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity + 1;
         } else if (action === 'decrement') {
+            const DECREMENTED_QTY = quantityTarget ? parseInt(quantityTarget)-1 : 1;
+            if (DECREMENTED_QTY < MOQ)
+            {
+                this._tms.show({
+                    type: 'error',
+                    text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
+                });
+                return;
+            }
             if (quantityTarget < 2) {
                 this.removeIndex = index;
                 this.removePopup = true;
@@ -253,7 +263,6 @@ export class CartComponent
             this.removePopup = true;
             return;
         };
-
         if (action === 'update') {
             if (this._cartService.getGenericCartSession.itemsList[index].moq < quantityTarget) {
                 this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;

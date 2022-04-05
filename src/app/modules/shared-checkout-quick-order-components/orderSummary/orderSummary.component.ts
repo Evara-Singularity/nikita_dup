@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 
 declare let dataLayer: any;
 
@@ -19,6 +20,7 @@ export class OrderSummaryComponent {
         public router: Router,
         public _cartService: CartService,
         private _commonService: CommonService,
+        private _localAuthService: LocalAuthService,
     ) {}
 
     ngOnInit(): void {
@@ -40,10 +42,8 @@ export class OrderSummaryComponent {
         if (this._commonService.userSession.authenticated == "true") {
             this.showPromoOfferPopup = true;
         } else {
-            let link = this.router.url.replace('/', '');
-            const queryParams = { backurl: link };
-            let navigationExtras: NavigationExtras = {queryParams: queryParams};
-            this.router.navigate(["/login"], navigationExtras);
+            this._localAuthService.setBackURLTitle('/quickorder', null);
+            this.router.navigate(["/login"]);
         }
     }
 }

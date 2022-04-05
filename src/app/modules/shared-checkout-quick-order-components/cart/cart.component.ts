@@ -149,11 +149,13 @@ export class CartComponent
                 } else {
                     //remove all oos product from message list
                     itemsValidationMessageOld = itemsValidationMessageOld.filter(
-                        (itemValidationMessageOld) => { 
-                            return (itemValidationMessageOld['type'] != 'oos') }
+                        (itemValidationMessageOld) =>
+                        {
+                            return (itemValidationMessageOld['type'] != 'oos')
+                        }
                     );
                 }
-                this._cartService.itemsValidationMessage = itemsValidationMessage;
+                if (itemsValidationMessage.length) { this._cartService.itemsValidationMessage = itemsValidationMessage; }
                 //TODO:missed
                 //this.itemsValidationMessage$.emit();
                 this._cartService.setValidateCartMessageApi({ userId: USER['userId'], data: itemsValidationMessage })

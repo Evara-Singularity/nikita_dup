@@ -1,27 +1,23 @@
-import { Subscription } from 'rxjs';
-import { mergeMap, takeUntil, concatMap, tap } from 'rxjs/operators';
-import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CONSTANTS } from '@app/config/constants';
-import { map, catchError } from 'rxjs/operators';
-import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Title, Meta } from '@angular/platform-browser';
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { LocalStorageService } from 'ngx-webstorage';
+import { Meta, Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CONSTANTS } from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
-import { ProductService } from '@utils/services/product.service';
+import { GlobalState } from '@utils/global.state';
+import { ObjectToArray } from '@utils/pipes/object-to-array.pipe';
 import { CartService } from '@utils/services/cart.service';
 import { CheckoutService } from '@utils/services/checkout.service';
 import { CommonService } from '@utils/services/common.service';
 import { DataService } from '@utils/services/data.service';
-import { ObjectToArray } from '@utils/pipes/object-to-array.pipe';
 import { FooterService } from '@utils/services/footer.service';
-import { GlobalState } from '@utils/global.state';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
-import { of, forkJoin } from 'rxjs';
+import { ProductService } from '@utils/services/product.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { forkJoin, of, Subscription } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, tap } from 'rxjs/operators';
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -74,68 +70,71 @@ export class CartComponent
         this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(result =>
         {
             this._globalLoaderService.setLoaderState(false);
-            this.validateCart_v1({ "shoppingCartDto": result });
+            this.validateCart({ "shoppingCartDto": result });
         });
     }
 
-    validateCart(cartSession)
-    {
-        const USER_SESSION = this.localStorageService.retrieve("user");
-        const IS_LOGGED_IN = (USER_SESSION && USER_SESSION['authenticated'] === "true");
-        if (!IS_LOGGED_IN || !cartSession.shoppingCartDto.itemsList.length) return;
+    //Abishek code
+    // validateCart(cartSession)
+    // {
+    //     const USER_SESSION = this.localStorageService.retrieve("user");
+    //     const IS_LOGGED_IN = (USER_SESSION && USER_SESSION['authenticated'] === "true");
+    //     if (!IS_LOGGED_IN || !cartSession.shoppingCartDto.itemsList.length) return;
 
-        let itemsValidationMessageOld;
-        let itemsValidationMessage;
+    //     let itemsValidationMessageOld;
+    //     let itemsValidationMessage;
 
-        this.validateCartApiSubscription = this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] }).pipe(
-            tap(res =>
-            {
-                itemsValidationMessageOld = res['data'];
-            }),
-            concatMap(res => this._cartService.validateCartApi(cartSession))
-        ).subscribe(res =>
-        {
-            if (res['status'] == 200) {
-                itemsValidationMessage = this._cartService.getMessageList(res['data'], cartSession.shoppingCartDto.itemsList);
+    //     this.validateCartApiSubscription = this._cartService.getValidateCartMessageApi({ userId: this._commonService.userSession['userId'] }).pipe(
+    //         tap(res =>
+    //         {
+    //             itemsValidationMessageOld = res['data'];
+    //         }),
+    //         concatMap(res => this._cartService.validateCartApi(cartSession))
+    //     ).subscribe(res =>
+    //     {
+    //         if (res['status'] == 200) {
+    //             itemsValidationMessage = this._cartService.getMessageList(res['data'], cartSession.shoppingCartDto.itemsList);
 
-                this._cartService.itemsValidationMessage = itemsValidationMessage;
-                this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(resp =>
-                {
+    //             //this._cartService.itemsValidationMessage = itemsValidationMessage;
+    //             this._cartService.setValidateCartMessageApi({ userId: this._commonService.userSession['userId'], data: this._cartService.itemsValidationMessage }).subscribe(resp =>
+    //             {
 
-                    let items = JSON.parse(JSON.stringify(cartSession.shoppingCartDto['itemsList']));
+    //                 let items = JSON.parse(JSON.stringify(cartSession.shoppingCartDto['itemsList']));
 
-                    const msns: Array<string> = res['data'] ? Object.keys(res['data']) : [];
+    //                 const msns: Array<string> = res['data'] ? Object.keys(res['data']) : [];
 
-                    if (items && items.length > 0) {
-                        // Below function is used to show price update at item level if any validation message is present corresponding to item.
-                        cartSession.shoppingCartDto.itemsList = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
+    //                 if (items && items.length > 0) {
+    //                     // Below function is used to show price update at item level if any validation message is present corresponding to item.
+    //                     cartSession.shoppingCartDto.itemsList = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
 
-                        cartSession.shoppingCartDto.itemsList.map((item) =>
-                        {
-                            if (msns.indexOf(item['productId']) != -1) {
-                                if (res['data'][item['productId']]['updates']['outOfStockFlag']) {
-                                    item['oos'] = true;
-                                }
-                                return item;
-                            } else {
-                                return item;
-                            }
-                        });
+    //                     cartSession.shoppingCartDto.itemsList.map((item) =>
+    //                     {
+    //                         if (msns.indexOf(item['productId']) != -1) {
+    //                             if (res['data'][item['productId']]['updates']['outOfStockFlag']) {
+    //                                 item['oos'] = true;
+    //                             }
+    //                             return item;
+    //                         } else {
+    //                             return item;
+    //                         }
+    //                     });
 
-                        this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
-                    }
-                });
-            }
-        });
-    };
+    //                     this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
+    //                 }
+    //             });
+    //         }
+    //     });
+    // };
 
-    validateCart_v1(cartSession)
+    validateCart(requestObj)
     {
         const USER = this.localStorageService.retrieve('user');
+        const IS_LOGGED_IN = (USER && USER['authenticated'] === "true");
+        if (!IS_LOGGED_IN || !requestObj.shoppingCartDto.itemsList.length) return;
         const vcmData = { userId: USER['userId'] };
         const buyNow = this._cartService.buyNow;
         if (buyNow) { vcmData['buyNow'] = buyNow; }
-        forkJoin([this._cartService.validateCartApi(cartSession), this._cartService.getValidateCartMessageApi(vcmData)]).subscribe((responses) =>
+        forkJoin([this._cartService.validateCartApi(requestObj), this._cartService.getValidateCartMessageApi(vcmData)]).subscribe((responses) =>
         {
             const validateCartResponse = responses[0];
             const validateCartMessageResponse = responses[1];
@@ -143,36 +142,63 @@ export class CartComponent
             let itemsValidationMessage = [];
             if (validateCartMessageResponse['status'] == 200) { itemsValidationMessageOld = validateCartMessageResponse['status']; }
             if (validateCartResponse['status'] == 200) {
-                itemsValidationMessage = this._cartService.getMessageList(validateCartResponse, cartSession.shoppingCartDto.itemsList);
+                itemsValidationMessage = this._cartService.getMessageList(validateCartResponse, requestObj.shoppingCartDto.itemsList);
+                //Only set validation message if any, if no validation message is found then dont override or remove previous validation messages;
                 if (itemsValidationMessage && itemsValidationMessage.length > 0) {
                     itemsValidationMessage = this._cartService.setValidationMessageLocalstorage(itemsValidationMessage, itemsValidationMessageOld);
                 } else {
                     //remove all oos product from message list
-                    itemsValidationMessageOld = itemsValidationMessageOld.filter((itemValidationMessageOld) =>
-                    { return (itemValidationMessageOld['type'] == 'oos') })
-                    itemsValidationMessage = itemsValidationMessageOld;
+                    itemsValidationMessageOld = itemsValidationMessageOld.filter(
+                        (itemValidationMessageOld) => { 
+                            return (itemValidationMessageOld['type'] != 'oos') }
+                    );
                 }
                 this._cartService.itemsValidationMessage = itemsValidationMessage;
                 //TODO:missed
                 //this.itemsValidationMessage$.emit();
                 this._cartService.setValidateCartMessageApi({ userId: USER['userId'], data: itemsValidationMessage })
                     .pipe(catchError((err) => { return of(null); })).subscribe(() => { });
-                let items = JSON.parse(JSON.stringify(cartSession.shoppingCartDto['itemsList']));
+                let items = JSON.parse(JSON.stringify(requestObj.shoppingCartDto['itemsList']));
                 const msns: Array<string> = validateCartResponse['data'] ? Object.keys(validateCartResponse['data']) : [];
+                let canUpdateCart = false;
+                let oosData = [];
                 if (items && items.length > 0) {
                     // Below function is used to show price update at item level if any validation message is present corresponding to item.
-                    cartSession.shoppingCartDto.itemsList = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
-                    cartSession.shoppingCartDto.itemsList.map((item) =>
+                    requestObj.shoppingCartDto.itemsList = this._cartService.addPriceUpdateToCart(items, this._cartService.itemsValidationMessage);
+                    requestObj.shoppingCartDto.itemsList.map((item) =>
                     {
                         if (msns.indexOf(item['productId']) != -1) {
-                            if (validateCartResponse['data'][item['productId']]['updates']['outOfStockFlag']) {
+                            const UPDATES = validateCartResponse['data'][item['productId']]['updates'];
+                            if (UPDATES['outOfStockFlag']) {
                                 item['oos'] = true;
+                                oosData.push({ msnid: item['productId'] });
+                            }
+                            else if (UPDATES['priceWithoutTax']) {
+                                canUpdateCart = true;
+                                if (item['oos']) {
+                                    delete item['oos'];
+                                }
+                                return this._cartService.updateCartItem(item, validateCartResponse['data'][item['productId']]['productDetails']);
+                            }
+                            else if (UPDATES['shipping'] || UPDATES['coupon']) {
+                                if (item['oos']) {
+                                    delete item['oos'];
+                                }
+                                canUpdateCart = true;
                             }
                             return item;
                         }
                         return item;
                     });
-                    this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(cartSession.shoppingCartDto));
+                    /**
+                     * if product is out of stock, then add item to oos on frontend.
+                     * if product price is instock after out of stock, then remove out of stock on frontend
+                     */
+                    this._cartService.setGenericCartSession(this._cartService.generateGenericCartSession(requestObj.shoppingCartDto));
+                    // update cart session, only when any price, shipping or coupon is updated
+                    if (canUpdateCart) {
+                        this._cartService.genericApplyPromoCode();
+                    }
                 }
             }
         })
@@ -592,7 +618,7 @@ export class CartComponent
 
     ngOnDestroy()
     {
-        if (this.validateCartApiSubscription)this.validateCartApiSubscription.unsubscribe();
-        if (this.cartSubscription)this.cartSubscription.unsubscribe();
+        if (this.validateCartApiSubscription) this.validateCartApiSubscription.unsubscribe();
+        if (this.cartSubscription) this.cartSubscription.unsubscribe();
     }
 }

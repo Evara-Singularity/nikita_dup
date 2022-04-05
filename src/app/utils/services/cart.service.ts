@@ -1097,14 +1097,10 @@ export class CartService
                     }
                     else if (data[item['productId']]['updates']['priceWithoutTax'] && (data[item['productId']]['productDetails']['priceWithoutTax'] < item["priceWithoutTax"])) {
                         msg['data'] = { productName: item['productName'], text1: ' price has been updated from ', text2: 'to', oPrice: item["priceWithoutTax"], nPrice: data[item['productId']]['productDetails']['priceWithoutTax'] };
-                        // msg['data'] = item['productName']+" has " + (item["priceWithoutTax"]>data[item['productId']]['productDetails']['priceWithoutTax'] ? 'decreased' : 'increased') + " from Rs." + item["priceWithoutTax"] + " to Rs." + data[item['productId']]['productDetails']['priceWithoutTax'];
                         msg['type'] = "price";
                     } else if (data[item['productId']]['updates']['shipping'] != undefined) {
-
                         //check if shipping msg is already present in message list.
-                        // let addmsg: number = messageList.findIndex(ml=>ml.type == "shipping" || ml.type == "coupon");
                         let addmsg: number = messageList.findIndex(ml => ml.type == "shipping");
-                        //if(addmsg == -1){
                         if (data[item['productId']]['updates']['shipping'] != undefined) {
                             msg['data'] = { text1: 'Shipping Charges have been updated.' };
                             msg['type'] = "shipping";
@@ -1118,9 +1114,6 @@ export class CartService
                         //  }
                     } else if (data[item['productId']]['updates']['discount'] == true || data[item['productId']]['updates']['discount'] == false) {
                         //check if shipping msg is already present in message list.
-                        // let addmsg: number = messageList.findIndex(ml=>ml.type == "shipping" || ml.type == "coupon");
-                        let addmsg: number = messageList.findIndex(ml => ml.type == "coupon");
-                        // if(addmsg == -1){
                         if (data[item['productId']]['updates']['discount'] == true || data[item['productId']]['updates']['discount'] == false) {
                             msg['data'] = { text1: 'Applied Promo Code has been updated.' };
                             msg['type'] = "coupon";
@@ -1131,11 +1124,7 @@ export class CartService
                                 msg['type'] = "shippingcoupon";
                             }
                         }
-
-                        // } 
-
                     }
-
                     if (msg['data']) {
                         if (messageList.findIndex(ml => ml.type == "shipping") != -1 && (msg['type'] == 'coupon' || msg['type'] == 'shippingcoupon')) {
                             const index = messageList.findIndex(ml => ml.type == "shipping");
@@ -1143,7 +1132,6 @@ export class CartService
                                 messageList[index].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                                 messageList[index].type = "shippingcoupon";
                             }
-
                         }
                         else if (messageList.findIndex(ml => ml.type == "coupon") != -1 && (msg['type'] == 'shipping' || msg['type'] == 'shippingcoupon')) {
                             const index = messageList.findIndex(ml => ml.type == "coupon");
@@ -1152,15 +1140,9 @@ export class CartService
                                 messageList[index].type = "shippingcoupon";
                             }
                         }
-
                         else if (messageList.findIndex(ml => ml.type == "shipping") == -1 && messageList.findIndex(ml => ml.type == "coupon") == -1 && messageList.findIndex(ml => ml.type == "shippingcoupon") == -1) {
                             messageList.push(msg);
                         }
-
-
-
-                        //  messageList.push(msg);
-
                     }
                 }
             });

@@ -542,7 +542,6 @@ export class CartComponent {
      * This function add new items validation or update the older one for oos, and price.
      */
     setValidationMessageLocalstorage(itemsValidationMessageNew, itemsValidationMessageOld) {
-        // const user = this.localStorageService.retrieve('user');
         if (itemsValidationMessageOld && itemsValidationMessageOld.length > 0) {
             itemsValidationMessageNew.forEach((itemValidationMessageNew) => {
                 let isExist = false;
@@ -575,7 +574,6 @@ export class CartComponent {
 
         })
         return itemsValidationMessageOld;
-        // this.localStorageService.store("user", user);
     }
 
     deleteValidationMessageLocalstorage(item, type?) {

@@ -4,7 +4,7 @@
 
 .moglixhainacampwrap {
     .moglixHainaBanner {
-        background: #FEAE2D;
+        background: var(--orange-red);
         padding: 20px 15px;
         h2 {
             font-size: $xl-2-font;
@@ -65,144 +65,188 @@
             }
         }
     }
-}
-    
-    .banner-slide {
-        width: 100%;
-        position: relative;
-    }
-    
-    .headerStaticContent {
-        background: #D9232D;
-        color: #fff;
-        padding: 20px 15px;
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        min-width: 300px;
-        &.headerStaticType2 {
-            background: #FEAE2D;
-            a {
-                margin-top: 10px;
-            }
-            .heading-type-2 {
-                font-weight: 400;
-                color: #fff;
-                line-height: 28px;
-                font-size: 20px;
-                margin: 10px 0px;
-                &>* {
-                    color: #fff;
-                }
-                span {
-                    font-weight: bold;
-                    font-size: 30px;
-                    margin: 20px 0px;
-                    display: inline-block;
-                }
-            }
-            .heading-type-2-txt {
-                font-size: 16px;
-                line-height: 25px;
-                color: #fff;
-                padding: 15px 0px;
+    .moglixhaina-head{
+        margin-bottom: 20px;
+        h2{
+            font-size:$xlm-2-font;
+            color: var(--onyx-black);
+            text-align: center;
+            span{
+                color: var(--primary);
             }
         }
     }
-    
-    .headerStaticContent .aeroplane_img {
-        position: absolute;
-        top: 60px;
-        width: 375px;
-        left: -18px;
-        height: 275px;
-        z-index: -1;
+    .categories-section{
+        padding: 50px 0 30px;
+        background: var(--white);
+        .inner-block{
+            &:first-child {
+                .category-wrap {
+                    &>div.category-innercontent {
+                        background: #FFFBD6;
+                    }
+                }
+            }
+            &:last-child {
+                .category-wrap {
+                    &>div.category-innercontent {
+                        background: var(--nyanza);
+                    }
+                }
+            }
+            .category-wrap {
+                img {
+                    width: 100%;
+                    display: block;
+                    max-width: 320px;
+                    margin: 0 auto -100px;
+                }
+                .category-innercontent {
+                    background: var(--champagne-pink);
+                    border-radius: 10px;
+                    padding: 120px 30px 30px;
+                    h3 {
+                        font-size: $xl-1-font;
+                        margin-bottom: 10px;
+                    }
+                    p {
+                        font-size: $large-font;
+                        line-height: $ml-line-height;
+                    }
+                    .explore-now {
+                        font-size: $small-font;
+                        padding: 12px 8px;
+                        border-radius: $border-radius;
+                        margin-top: 20px;
+                    }
+                } 
+            }
+        }
+        
     }
-    
-    .headerStaticContent p {
-        font-size: 20px;
-        margin: 10px 0px;
-        color: #fff;
-    }
-    
-    .headerStaticContent p.small-txt {
-        font-size: 10px;
-    }
-    
-    .headerStaticContent h4 {
-        font-size: 30px;
-        font-weight: bold;
-    }
-    
-    .headerStaticContent .yatra_section {
-        display: inline-block;
-        font-size: 11px;
-        vertical-align: middle;
-        background: #ffffff6b;
-        padding: 5px;
-    }
-    
-    .headerStaticContent .yatra_section img {
-        vertical-align: middle;
-        width: 60px;
-    }
-    
-    .headerStaticContent a {
-        border-radius: 5px;
-        color: #2B2B2B;
+    .popular-categories {
         background: #fff;
-        font-size: 12px;
-        font-weight: bold;
-        display: inline-block;
-        padding: 10px 15px;
-        margin-top: 40px;
+        padding: 20px 0 30px;
+        .popular-category-list{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            li {
+                display: inline-block;
+                width: 100%;
+                vertical-align: top;
+                margin-bottom: 30px;
+                .category-wrap-item {
+                    position: relative;
+                    img {
+                        display: block;
+                    }
+                    h3 {
+                        font-size: $large-font;
+                        font-weight: 600;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        color: var(--onyx-black);
+                        span {
+                            color: var(--spanish-gray);
+                            display: block;
+                            font-weight: $font-normal;
+                            margin-top: 5px;
+                            font-size: $medium-font;
+                        }
+                    }
+                }
+            }
+        }
     }
-    
-    .contestSection {
-        background: #fff;
-        padding: 20px 40px;
-        text-align: center;
+    .industrialneed-wrap{
+        background: var(--paleturquoise);
+        border-radius: 10px;
+        padding: 40px 5px 0;
+        margin-bottom: 40px;
+        .industrial-heading{
+            padding-bottom: 30px;
+            h2{
+                font-size: $xl-2-font;
+                font-weight: $font-normal;
+                text-align: center;
+            }
+        }
+        .listingview-inner {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            min-height: auto;
+            margin-bottom: 15px;
+            img {
+                width: 60px;
+                margin-bottom: 15px;
+            }
+            h3 {
+                font-size: $xl-1-font;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            p {
+                font-size: 14px;
+                line-height: 23px
+            }
+        }
     }
-    
-    .contestSection h3 {
-        color: #2B2B2B;
-        font-size: 20px;
-        font-weight: 400;
-        padding-bottom: 20px;
+    .watchaction-wrap {
+        width: 100%;
+        padding: 40px 0 30px ;
+        .watch-action-heading{
+            padding: 0 15px;
+            h3{
+                font-size: $xl-2-font;
+                font-weight: $font-normal;
+                color: var(--onyx-black);
+                padding: 10px 0;
+            }
+        }
+        .video-action{
+            width: 100%;
+            // .video-block{
+            //     background:url('/assets/img/thumbnail2.png') no-repeat center top;
+            //     background-size: cover;
+            // }
+            .video-thumb{
+                .playbtn {
+                    position: absolute;
+                    top: 50%;
+                    transform: translatey(-50%);
+                    left: 0;
+                    right: 0;
+                    width: 65px;
+                    height: 65px;
+                    background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/video_play.svg) no-repeat top left;
+                    background-size: 100%;
+                    margin: auto;
+                    cursor: pointer
+                }
+                .video-text {
+                    position: absolute;
+                    bottom: 10px;
+                    color: #fff;
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
+                    font-weight: $font-bolder;
+                    span {
+                        display: block;
+                        color: #fff;
+                        font-weight: $font-normal;
+                        font-size: $medium-font;
+                        padding-top: 6px
+                    }
+                }
+            }
+        }
     }
+}
     
-    
-    
-    // .celebrates-wrap .content-box {
-    //     width: 100%;
-    //     padding: 10px 15px;
-    //     position: relative;
-    // }
-    
-    // .celebrates-wrap .content-box .heading-txt {
-    //     margin: 0 -15px 20px;
-    // }
-    
-    // .celebrates-wrap .content-box .heading-txt p {
-    //     font-size: 18px;
-    //     line-height: 26px;
-    //     margin-bottom: 5px;
-    //     text-align: center;
-    // }
-    
-    // .celebrates-wrap .content-box .heading-txt p.black {
-    //     color: #2B2B2B;
-    // }
-    
-    // .celebrates-wrap .content-box .heading-txt p.red {
-    //     color: #EA3223;
-    //     font-weight: 300
-    // }
-    
-    // .celebrates-wrap .content-box .heading-txt p.red strong {
-    //     font-weight: 500;
-    //     color: #EA3223;
-    // }
     
     .celebrates-wrap .content-box img {
         width: 100%;
@@ -271,46 +315,6 @@
         text-decoration: none
     }
     
-    .offerings {
-        background: #A9F0F6;
-        border-radius: 10px;
-        padding: 50px 0;
-        margin-bottom: -130px
-    }
-    
-    .offerings h2 {
-        font-size: 25px;
-        font-weight: 400;
-        margin-bottom: 40px
-    }
-    
-    .offerings h2 strong {
-        font-weight: 500
-    }
-    
-    .listingview-inner {
-        background: #fff;
-        border-radius: 10px;
-        padding: 30px;
-        text-align: left;
-        min-height: 350px
-    }
-    
-    .listingview-inner img {
-        width: 100px;
-        margin-bottom: 20px
-    }
-    
-    .listingview-inner h3 {
-        font-size: 20px;
-        font-weight: 500;
-        margin-bottom: 20px
-    }
-    
-    .listingview-inner p {
-        font-size: 14px;
-        line-height: 23px
-    }
     
     .offeringaction {
         padding: 40px 20px 20px
@@ -337,11 +341,7 @@
     .offeringaction a:hover {
         text-decoration: none
     }
-    
-    .watchaction-wrap {
-        width: 100%;
-        padding: 130px 0 70px 0;
-    }
+
     
     .watchaction-wrap h3 {
         font-size: 20px;
@@ -361,14 +361,7 @@
         display: inline-block;
         vertical-align: middle
     }
-    
-    .watchaction-wrap .first-row {
-        margin-bottom: 25px;
-    }
-    
-    .watchaction-wrap .video-block {
-        width: 100%;
-    }
+
     
     .video-block .video-thumb {
         background-size: 100% !important;
@@ -376,9 +369,6 @@
         padding: 120px 20px;
     }
     
-    .watchaction-wrap .video-block img {
-        width: 100%;
-    }
     
     .playbtnonslider {
         position: absolute;
@@ -393,36 +383,9 @@
         z-index: 10
     }
     
-    .playbtn {
-        position: absolute;
-        top: 50%;
-        transform: translatey(-50%);
-        left: 0;
-        right: 0;
-        width: 65px;
-        height: 65px;
-        background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/video_play.svg) no-repeat top left;
-        background-size: 100%;
-        margin: auto;
-        cursor: pointer
-    }
+
     
-    .videotext {
-        position: absolute;
-        bottom: 20px;
-        color: #fff;
-        font-size: 15px;
-        line-height: 17px;
-        font-weight: 600;
-    }
     
-    .videotext span {
-        display: block;
-        color: #fff;
-        font-weight: 400;
-        font-size: 13px;
-        padding-top: 6px
-    }
     
     .mog_awardssection {
         padding: 100px 40px 0px;
@@ -707,108 +670,7 @@
         }
     }
     
-    .moglixhaina_head2 {
-        font-size: 28px;
-        color: #2B2B2B;
-        text-align: center;
-        margin-bottom: 30px;
-        span {
-            color: #D9232D;
-        }
-    }
-    
-    .cat_wrap {
-        &>img {
-            width: 100%;
-            display: block;
-            max-width: 320px;
-            margin: 0 auto -100px;
-        }
-        &>div.cat_innercontent {
-            background: #FCF1DF;
-            border-radius: 10px;
-            padding: 120px 30px 30px;
-            h3 {
-                font-size: 18px;
-                font-weight: 600;
-                margin-bottom: 10px;
-            }
-            p {
-                font-size: 15px;
-                line-height: 20px;
-            }
-            a {
-                height: 36px;
-                padding: 0 10px;
-                border-radius: 5px;
-                background: #D9232D;
-                margin-top: 20px;
-                color: #fff !important;
-                font-weight: 500;
-                line-height: 36px;
-                display: inline-block;
-            }
-        }
-    }
-    
-    .categories_sec {
-        padding: 50px 0 60px;
-        background: #fff;
-        .col-md-4 {
-            &:first-child {
-                .cat_wrap {
-                    &>div.cat_innercontent {
-                        background: #FFFBD6;
-                    }
-                }
-            }
-            &:last-child {
-                .cat_wrap {
-                    &>div.cat_innercontent {
-                        background: #EAF8FF;
-                    }
-                }
-            }
-        }
-    }
-    
-    .categories_sec2 {
-        background: #fff;
-        padding: 20px 0 50px;
-    }
-    
-    .popularcat_list {
-        list-style: none;
-        padding: 0;
-        margin: 0 -15px;
-        li {
-            display: inline-block;
-            width: 32%;
-            vertical-align: top;
-            padding: 0 15px;
-            margin-bottom: 30px;
-            .cat_wrap_item {
-                position: relative;
-                img {
-                    display: block;
-                }
-                h3 {
-                    font-size: 15px;
-                    font-weight: 600;
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    span {
-                        color: #666;
-                        display: block;
-                        font-weight: 400;
-                        margin-top: 5px;
-                        font-size: 13px;
-                    }
-                }
-            }
-        }
-    }
+   
     /*css moglix haina -manisha*/
     
     
@@ -945,9 +807,9 @@
             width: 100%;
             margin-bottom: 20px;
         }
-        .watchaction-wrap .first-row {
-            margin-bottom: 0
-        }
+        // .watchaction-wrap .first-row {
+        //     margin-bottom: 0
+        // }
         .slidewrap {
             max-height: none !important;
             height: auto !important;
@@ -1038,40 +900,40 @@
             line-height: 35px;
             font-size: 16px;
         }
-        .offerings {
-            padding: 40px 10px 0;
-            margin-bottom: 0;
-            z-index: 1;
-            position: relative;
-        }
-        .offerings h2 {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-        .offerings>.container {
-            padding: 0 5px 10px
-        }
-        .industryneed-wrap {
-            background: none;
-        }
-        .listingview-inner {
-            min-height: auto;
-            padding: 15px;
-            margin-bottom: 15px
-        }
-        .listingview-inner img {
-            width: 60px;
-            margin-bottom: 15px;
-        }
-        .listingview-inner h3 {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-        .listingview-inner p {
-            font-size: 14px;
-            line-height: 21px;
-        }
+        // .offerings {
+        //     padding: 40px 10px 0;
+        //     margin-bottom: 0;
+        //     z-index: 1;
+        //     position: relative;
+        // }
+        // .offerings h2 {
+        //     font-size: 20px;
+        //     margin-bottom: 30px;
+        // }
+        // .offerings>.container {
+        //     padding: 0 5px 10px
+        // }
+        // .industryneed-wrap {
+        //     background: none;
+        // }
+        // .listingview-inner {
+        //     min-height: auto;
+        //     padding: 15px;
+        //     margin-bottom: 15px
+        // }
+        // .listingview-inner img {
+        //     width: 60px;
+        //     margin-bottom: 15px;
+        // }
+        // .listingview-inner h3 {
+        //     font-size: 18px;
+        //     font-weight: 500;
+        //     margin-bottom: 10px;
+        // }
+        // .listingview-inner p {
+        //     font-size: 14px;
+        //     line-height: 21px;
+        // }
         .offeringaction {
             display: none
         }
@@ -1154,28 +1016,28 @@
                 }
             }
         }
-        .moglixhaina_head2 {
-            font-size: 22px;
-        }
-        .categories_sec {
-            padding: 50px 0 30px;
-        }
-        .popularcat_list {
-            li {
-                width: 100%;
-            }
-        }
-        .categories_sec2 {
-            padding: 20px 0 30px;
-        }
+        // .moglixhaina_head2 {
+        //     font-size: 22px;
+        // }
+        // .categories_sec {
+        //     padding: 50px 0 30px;
+        // }
+        // .popularcat_list {
+        //     li {
+        //         width: 100%;
+        //     }
+        // }
+        // .categories_sec2 {
+        //     padding: 20px 0 30px;
+        // }
         .watchaction-wrap {
             padding: 40px 0 30px;
         }
-        .popularcat_list {
-            li {
-                padding: 0 15px;
-            }
-        }
+        // .popularcat_list {
+        //     li {
+        //         padding: 0 15px;
+        //     }
+        // }
         .celebrates-wrap .content-box .heading-txt {
             margin: 0 0px 20px;
         }

@@ -1,3 +1,4 @@
+import { addressList } from './../deliveryAddress/deliveryAddress';
 export class SharedCheckoutAddressUtil
 {
     static filterAddressesById(addresses: any[], idAddress)
@@ -71,5 +72,17 @@ export class SharedCheckoutAddressUtil
         } else {
             return stateList[0]['idState'];
         }
+    }
+
+    static verifyCheckoutAddress(addressList: any[], checkoutAddress)
+    {
+        const length = addressList.length-1;
+        if (checkoutAddress)
+        {
+            const index = addressList.findIndex((address) => { address.idAddress === checkoutAddress.idAddress });
+            if (index > -1) { return checkoutAddress; }
+            return addressList[length];
+        }
+        return addressList[length];
     }
 }

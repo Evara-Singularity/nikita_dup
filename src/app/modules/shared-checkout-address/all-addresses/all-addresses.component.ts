@@ -108,8 +108,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         {
             this.deliveryAddressList = response.deliveryAddressList;
             this.billingAddressList = response.billingAddressList;
-            const DELIVERY_ADDRESS = this._cartService.shippingAddress ? this._cartService.shippingAddress : this.deliveryAddressList[0];
-            const BILLING_ADDRESS = this._cartService.billingAddress ? this._cartService.billingAddress : this.billingAddressList[0];
+            const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);  
+            const BILLING_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
             this.emitAddressEvent(DELIVERY_ADDRESS, BILLING_ADDRESS);
         });
     }
@@ -212,11 +212,11 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             this.addressListInstance.instance['addresses'] = IS_DEVLIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
         if (IS_DEVLIVERY) {
-            const ADDRESS = this._cartService.shippingAddress ? this._cartService.shippingAddress : this.deliveryAddressList[0];
+            const ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
             this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
             return;
         }
-        const ADDRESS = this._cartService.billingAddress ? this._cartService.billingAddress : this.billingAddressList[0];
+        const ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
         this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
     }
 

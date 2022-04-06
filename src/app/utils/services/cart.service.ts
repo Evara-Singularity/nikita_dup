@@ -602,14 +602,12 @@ export class CartService
     addToCart(args: {
         buyNow: boolean,
         productDetails: AddToCartProductSchema
-    }): Observable<any>
-    {
+    }): Observable<any> {
         this.buyNow = args.buyNow;
         this.buyNowSessionDetails = null;
         return this._checkForUserAndCartSession().pipe((
             // Action : Check whether product already exist in cart itemList if exist exit
-            map(cartSession =>
-            {
+            map(cartSession => {
                 // console.log('step 1 ==>', cartSession);
                 // incase of buynow do not exlude 
                 // console.log('product info ==> cartSession origin', Object.assign({}, cartSession));
@@ -642,8 +640,7 @@ export class CartService
             })
         )).pipe(
             // Action : update sessionId & cartId in productDetails
-            map(({ cartSession, productItemExistInCart }) =>
-            {
+            map(({ cartSession, productItemExistInCart }) => {
                 // console.log('step 2 ==>', cartSession);
                 if (!cartSession) {
                     return cartSession;
@@ -670,12 +667,9 @@ export class CartService
                     return cartSession;
                 }
             }),
-            mergeMap(cartSession =>
-            {
-
+            mergeMap(cartSession => {
                 return this._getUserSession().pipe(
-                    map(userSession =>
-                    {
+                    map(userSession => {
                         // console.log('step 3 ==>', cartSession);
                         if (args.buyNow && (!userSession || userSession['authenticated'] != "true")) {
                             // add temp session for buynow
@@ -691,24 +685,31 @@ export class CartService
                     }),
                 )
             }),
-            mergeMap(request =>
-            {
+            mergeMap(request => {
                 if (request) {
                     // console.log('step 4 ==>', request, args);
-                    return this.updateCartSession(request).pipe(
-                        map((cartSession: any) =>
-                        {
+                    return this.updateCartSession(request);
+                } else {
+                    return of(null)
+                }
+            }),
+            mergeMap((cartSession: any) => {
+                // only run shipping API when specified, eg. not required in Auth Module
+                // shipping API should be called after updatecart API always
+                if (cartSession) {
+                    return this._getShipping(cartSession).pipe(
+                        map((cartSession: any) => {
+                            console.trace();
                             return cartSession;
                         }),
-                        map((cartSession) =>
-                        {
+                        map((cartSession) => {
                             return this._notifyCartChanges(cartSession, null);
                         })
                     );
                 } else {
-                    return of(null)
+                    return of(cartSession);
                 }
-            })
+            }),
         )
     }
 

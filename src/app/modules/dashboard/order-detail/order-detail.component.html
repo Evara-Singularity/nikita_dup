@@ -1,5 +1,4 @@
-<div class="orderdtDesc" *ngIf="detail">
-    <div class="orderdtBoxinner">
+<div class="orderdtDesc pad-10 pwa-row" *ngIf="detail">
         <div class="orderproImg">
             <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
         </div>
@@ -10,13 +9,12 @@
                 <span class="orderstatus f-left">Status:<span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED' || detail.status == 'DELIVERED' || detail.status == 'RETURN DONE' || detail.status == 'RETURN REQUESTED' || detail.status == 'RETURN APPROVED' || detail.status == 'RETURN PICKED' || detail.status == 'EXCHANGE REQUESTED' || detail.status == 'EXCHANGE PICKED' || detail.status == 'EXCHANGE APPROVED' || detail.status == 'EXCHANGE DONE' ? 'green-txt':'red-txt'">{{detail.status}}</span></span>
             </div>
         </div>
-    </div>
 </div>
 
 <ng-container *ngIf="detail && detail.requestType !=='cancel' && detail.status !=='PAYMENT FAILED' && detail.status !=='
 AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     <div class="trackOrderBox singleproStatus ">
-        <div class="trackerWrap ">
+        <div class="trackerWrap pwa-row">
             <ul>
                 <li class="grsolid ">
                     <span class="grtrackerline "></span>
@@ -41,8 +39,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         </div>
 
                         <div>
-                            <span class="gotoTrackerpage " (click)="fetchTrackingData(detail) ">Track Now
-                                    <i class="icon-next "></i>
+                            <span class="gotoTrackerpage" (click)="fetchTrackingData(detail) "><span class="blue-text">Track Now <i class="icon-next "></i></span>
                                     <span class="see-details ">See Details</span>
                             </span>
                         </div>
@@ -336,8 +333,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </div>
 </app-pop-up>
 
-<div class="orderShipDet">
-    <div class="ordersumBox">
+<div class="orderShipDet pwa-container">
+    <div class="ordersumBox pwa-row">
         <h5 class="clearfix" *ngIf="detail && detail.dates && detail.dates.accepted.date">Order Date:
             <span>{{detail.dates.accepted.date | date : 'dd-MM-yyyy'}}</span>
         </h5>
@@ -359,7 +356,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             <span class="paymode">₹ {{totalPrice(detail.price, detail.Quantity, detail.shipping_charge, detail.discount)}}</span>
         </div>
     </div>
-    <div class="orderaddressBox" *ngIf="detail && detail.address.shipping_address">
+    <div class="orderaddressBox pwa-row" *ngIf="detail && detail.address.shipping_address">
         <h3>Shipping address</h3>
         <span>{{detail.address.shipping_address.firstname}}</span>
         <span>{{detail.address.shipping_address.address}}</span>

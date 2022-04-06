@@ -1,21 +1,8 @@
 @import "../../../scss/variables";
-.orderdtDesc {
-  margin-bottom: 10px !important;
-  border-bottom: 1px solid #ddd !important;
-  background: var(--white);
-  padding: 10px;
-  &:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-  .orderdtBoxinner{
-    display: flex;
-  }
-}
+@import "../orders.scss";
 
 .singleproStatus {
-  border: 1px solid #ddd !important;
+  border: 1px solid var(--ghost-white) !important;
 }
 
 .rateprod.singrating {
@@ -29,37 +16,241 @@
 }
 
 .bottomft {
-  background: var(--white);
-  position: relative !important;
-  border: 1px solid #e3e3e3 !important;
+  position: absolute !important;
+  bottom: 0;
+  height: 50px;
+  line-height: 49px;
+  text-align: center;
+  border: 1px solid var(--ghost-white);
+  left: 0;
+  right: 0;
   span {
+    text-transform: uppercase;
     font-size: $medium-font !important;
+    cursor: pointer;
+    width: 50%;
+    display: inline-block;
+    border-right: 1px solid var(--ghost-white);
+    color: var(--bleu-de-france);
+    &:last-child {
+      border-right: none;
+    }
   }
 }
-
 .trackOrderBox {
+  @extend %cards;
+  position: relative;
+  color: var(--onyx-black);
+  border: 0;
+  h3 {
+    font-size: $extra-large-font;
+    font-weight: $font-bolder;
+    span {
+      vertical-align: middle;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
+  .orderdet {
+    font-size: $large-font;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    h4 {
+      font-weight: $font-bolder;
+      font-size: $large-font;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: $medium-font;
+    }
+  }
   .trackerWrap {
+    padding: 20px 0;
+    list-style: none;
+    position: static;
     li {
-      &:last-child {
-        height: 105px;
+      position: relative;
+      padding-left: 32px;
+      height: 70px;
+      .grtrackerline {
+        position: absolute;
+        left: 0;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        top: 0;
+        z-index: 1;
+        &.grtrackerline-40 {
+          left: calc(30% - 6px);
+        }
+      }
+      &.newTrackerStyle {
+        padding-left: 5px;
+        &:before {
+          left: 30%;
+          border-left: 2px solid $trackeryellow;
+        }
+        &:first-child {
+          &:after {
+            display: none;
+          }
+        }
+        &:last-child {
+          &:after {
+            position: absolute;
+            left: calc(30% - 6px);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            top: 0;
+            background: $green-color;
+            content: "";
+          }
+        }
+        .grLeftTracker {
+          width: 30%;
+          float: left;
+          padding-right: 30px;
+        }
+        .grRightTracker {
+          width: 70%;
+          float: right;
+          padding: 0px 30px 0px 30px;
+        }
+      }
+      &:before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        border-left: 2px solid var(--ghost-white);
+        height: 70px;
+        top: -55px;
+      }
+      .trackerdate {
+        color: var(--spanish-gray);
+        font-size: $medium-font;
+        padding-top: 0px;
+        span {
+          display: block;
+          font-size: $medium-font;
+          margin-top: 3px;
+          .blue-text {
+            color: var(--bleu-de-france);
+          }
+        }
+      }
+      &.grsolid {
+        .grtrackerline {
+          background: $green-color;
+        }
+        &:before {
+          border-left: 1px solid $green-color;
+          border-right: 1px solid $green-color;
+          background: $green-color;
+        }
+        .trackerdate {
+          color: var(--onyx-black);
+        }
+      }
+      &.grdashed {
+        .grtrackerline {
+          background: var(--white);
+          border: 1px solid var(--ghost-white);
+        }
+        &:before {
+          border-left: 2px solid #e1e1e1;
+          background: var(--white);
+        }
+      }
+      &.yellsolid {
+        .grtrackerline {
+          background: $trackeryellow;
+        }
+        &:before {
+          border-left: 2px solid $trackeryellow;
+          background: $trackeryellow;
+        }
+        .trackerdate {
+          color: var(--onyx-black);
+        }
+      }
+      &:first-child {
+        &:after {
+          position: absolute;
+          left: 0;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          top: 0;
+          background: $green-color;
+          content: "";
+        }
+        &:before {
+          background: none;
+          border: none;
+        }
       }
     }
   }
-  &.static_pos {
-    position: static;
+}
+.bottomBtn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: $large-font;
+  font-weight: $font-bolder;
+  text-align: center;
+  height: 50px;
+  background: var(--white);
+  color: $blue-link-color;
+  right: 0;
+  width: 100%;
+  box-shadow: 0px -3px 9px var(--ghost-white);
+  border: none;
+  border-radius: 0 !important;
+  &.disabled {
+    background: #b6b6b6;
+    color: var(--white);
   }
 }
 
-.email-container {
-  h3 {
-    color: $blue-link-color;
+.cancelOrderBox {
+  .returnedOrder {
+    border: none;
+    padding: 10px 0;
+    .orderdtBoxinner {
+      padding: 0;
+      & > p {
+        color: #8c8c8c;
+        font-size: $medium-font;
+        line-height: 18px;
+        margin-bottom: 10px;
+      }
+      .note {
+        color: #424242;
+        font-size: $medium-font;
+        line-height: 18px;
+        strong {
+          font-weight: 600;
+        }
+      }
+    }
   }
-  .icon-email-invoice {
-    float: left;
-    color: #868686;
+  .pos-rel {
+    position: relative;
+  }
+  h4 {
+    margin: 15px 0px 10px;
+  }
+  .commentBox {
+    border: 1px solid #888;
+    padding: 10px;
+    font-size: $medium-font;
+    width: 100%;
+    margin-bottom: 10px;
+    height: 100px;
   }
 }
-
 .upload-img {
   border: 1px solid #d6d6d6;
   @extend %border-radius;
@@ -170,11 +361,19 @@
     }
   }
 }
-
+.confirmbtn {
+  background: $btn-color;
+  text-transform: uppercase;
+  box-shadow: none;
+  color: var(--white);
+  font-size: 16px;
+}
 .confirmbtn:disabled {
   background: $disable-txt;
 }
-
+.confirmbtn {
+  background: var(--slimy-green);
+}
 .returnwrap {
   padding: 8px;
   .cancitem {
@@ -283,8 +482,8 @@
   @extend %clear-fix;
   margin-bottom: 20px;
   span.track_id {
-    background: #f5f8ff;
-    border: 1px solid #e0e9ff;
+    background: var(--cultured);
+    border: 1px solid var(--ghost-white);
     font-size: 9px;
     padding: 5px;
     border-radius: 4px;
@@ -299,9 +498,9 @@
   background: $white;
   padding: 15px 20px;
   margin-top: 10px;
-  border: 1px solid #d2d2d2;
+  border: 1px solid var(--ghost-white);
   a {
-    color: #278bed;
+    color: var(--bleu-de-france);
     display: block;
     font-size: $large-font;
   }
@@ -338,4 +537,28 @@
 
 .show {
   display: block !important;
+}
+
+.orderaddressBox {
+  @extend %cards;
+  display: block;
+  h3 {
+    color: var(--onyx-black);
+    font-size: $extra-large-font;
+    font-weight: $font-bolder;
+    text-transform: uppercase;
+    padding-top: 0;
+    padding-bottom: 5px;
+  }
+  span {
+    font-size: $medium-font;
+    line-height: 20px;
+    display: block;
+  }
+}
+.icon-next {
+  &.ico-right {
+    font-size: 11px;
+    margin-left: 12px;
+  }
 }

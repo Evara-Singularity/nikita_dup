@@ -17,6 +17,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
+import { SortByEMIMonthsPipe } from '@app/utils/pipes/emiSort.pipe';
 
 @Component({
     selector: 'emi',
@@ -80,6 +81,7 @@ export class EmiComponent {
         private _cartService: CartService, 
         private _formBuilder: FormBuilder, 
         private _objectToArray: ObjectToArray,
+        private _sortByEMIMonths: SortByEMIMonthsPipe,
         private elementRef: ElementRef, 
         private loaderService: GlobalLoaderService, 
         private _bankNamePipe: BankNamePipe, 
@@ -158,9 +160,11 @@ export class EmiComponent {
             const withCostEMI = emiArr.filter(item => item['value']['emi_interest_paid'] !== 0)
             // console.log('noCostEMI ==>', noCostEMI, withCostEMI);
             if (noCostEMI.length > 0) {
+                this._sortByEMIMonths.transform(noCostEMI);
                 this.selectedEMIKey = noCostEMI[0]['key'];
                 this.selectEmI(this.getEmiMonths(data.key), noCostEMI[0]['value']['emiBankInterest'], noCostEMI[0]['value']['transactionAmount'])
             } else {
+                this._sortByEMIMonths.transform(withCostEMI);
                 this.selectedEMIKey = withCostEMI[0]['key'];
                 this.selectEmI(this.getEmiMonths(data.key), withCostEMI[0]['value']['emiBankInterest'], withCostEMI[0]['value']['transactionAmount'])
             }
@@ -562,12 +566,13 @@ export class EmiComponent {
     }
 
     onBankChange(value, emiValues) {
-        // console.log("value ==>", value, emiValues);
+        //console.log("value ==>", value, emiValues);
         if (value == "0") {
             this.step = 0;
         } else {
             this.step = 1;
-            const emiKey = emiValues[0]['key'] // select first key by default
+            this._sortByEMIMonths.transform(emiValues);
+            const emiKey = emiValues[0]['key']; // select first key by default
             this.selectedEMIKey = emiKey;
             if (value == 'BAJFIN' || value == 'BAJAJ') {
                 // this.disableInterest = true;

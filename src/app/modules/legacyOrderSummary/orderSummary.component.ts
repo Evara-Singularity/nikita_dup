@@ -196,6 +196,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getPromoCodeDetail(offerId) {
+        if (!offerId) return;
         this.orderSummaryService.getPromoCodeDetailById(offerId).subscribe(res => {
             if (res['status']) {
                 this.appliedPromoCode.promoCode = res['data']['promoAttributes']['promoCode'];

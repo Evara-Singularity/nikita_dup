@@ -9,6 +9,7 @@ import { BankNamePipeModule } from '../../../utils/pipes/bank.pipe';
 import { MathCeilPipeModule } from '../../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../../utils/directives/kpAutocompleteOff.directive';
 import { SelectPopupModule } from '../../select-popup/select-popup.module';
+import { SortByEMIMonthsPipeModule } from '@app/utils/pipes/emiSort.pipe';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { SelectPopupModule } from '../../select-popup/select-popup.module';
         MathCeilPipeModule,
         KpAutocompleteOffDirectiveModule,
         SelectPopupModule,
+        SortByEMIMonthsPipeModule
     ],
     declarations: [
         EmiComponent,

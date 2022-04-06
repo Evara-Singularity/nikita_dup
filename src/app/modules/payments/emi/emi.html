@@ -44,7 +44,7 @@
                         <h3 class="heading medium-heading">No Cost EMI Plans</h3>
                         <div class="emi-plans-list">
                             <ng-container
-                                *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'; index as i;">
+                                *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative' | sortByEMIMonths; index as i;">
                                 <label *ngIf="emi.value.emi_interest_paid === 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
                                         <input formControlName="bankcode" [checked]="selectedEMIKey == emi.key"
@@ -70,7 +70,7 @@
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
                         <h3 class="heading medium-heading">Standard EMI Plans </h3>
                         <div class="emi-plans-list">
-                            <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'">
+                            <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'| sortByEMIMonths">
                                 <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
                                     <label class="payment-radio-btn">
 

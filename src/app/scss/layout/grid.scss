@@ -10,7 +10,7 @@
     .pwa-col-#{$i} { 
         -webkit-box-flex: 0;
         -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
-        flex: 0 0 auto;
+        flex: 0 0 ($fullwidth / $colmax)*$colnum;
         max-width: ($fullwidth / $colmax)*$colnum;
         width:($fullwidth / $colmax)*$colnum;
       //   padding-left: $default-gap;

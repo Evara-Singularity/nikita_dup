@@ -245,6 +245,122 @@
             }
         }
     }
+    .moglix-awardsection{
+        position: relative;
+        padding: 40px 0 0;
+        background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/mobile_background.jpg) no-repeat center top #125e9e;
+        height: 580px;
+
+        .moglix-list{
+            position: absolute;
+            color: #fff;
+            width: 100%;
+            .list-container{
+                margin-bottom: 20px;
+                width: 100%;
+                .list-item{
+                
+                    img{
+                        width: 34px;
+                        justify-content: flex-start;
+                        margin-bottom: 15px;
+                    }
+                    &:nth-child(odd){
+                        padding-right: 10px;
+                    }
+                    &:nth-child(even){
+                        padding-left: 10px;
+                    }
+                    
+                    .counter-text{
+                        font-size: $medium-font;
+                        line-height: $medium-line-height;
+                        margin-bottom: 0;
+                        font-weight: $font-bold;
+                    }
+                    span{
+                        font-size: $small-font;
+                        line-height: $medium-line-height;
+                    }
+                    &:before{
+                        border-right: 1px solid hsla(0,0%,100%,.2);
+                        height: 40px;
+                        content: "";
+                        position: absolute;
+                        right: 0;
+                    }
+                }
+            }
+
+        }
+    }
+    .awards-section{
+        .award-container{
+            padding: 30px 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 50px rgba(0, 0, 0, 0.16);
+            h2{
+                font-size: $xl-2-font;
+                font-weight: 400;
+                margin-bottom: 15px;
+            }
+            .industry-recognition{
+                margin-bottom: 15px;
+                padding: 0;
+                .recognition-column{
+                    &:nth-child(odd){
+                        padding-right: 5px;
+                    }
+                    &:nth-child(even){
+                        padding-left: 5px;
+                    }
+                    .blackOverlay{
+                        height: 150px;
+                        position: relative;
+                        cursor: pointer;
+                        border: 1px solid #ccc;
+                        padding: 10px;
+                        &:before {
+                            background: rgba(0, 0, 0, 0.8);
+                            z-index: 1;
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            bottom: 0;
+                            content: '';
+                            right: 0;
+                            transition: 0.2s all ease-in
+                        }
+                        h4{
+                            font-size: 12px;
+                            font-weight: 400;
+                            left: 10px;
+                            right: 10px;
+                            text-align: center;
+                            top: 50%;
+                            transition: all .2s ease-in;
+                            transform: translatey(-50%);
+                            z-index: 2;
+                            line-height: 18px;
+                            position: absolute;
+                            color: #fff;
+                        }
+                        img{
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            margin: auto;
+                            display: inline-block;
+                            max-width: 120px;
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+    }
 }
     
     
@@ -392,6 +508,8 @@
         background-size: contain;
         position: relative;
         z-index: 1;
+        background:url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/rsz_why_moglix.jpg) no-repeat center top #f5f5f5; 
+        background-size:100%;
     }
     
     // .mog_awardssection h2{font-size:28px;font-weight:400;color:#fff;margin-bottom:40px}
@@ -1121,4 +1239,4 @@
     //         max-width: 100%;
     //     }
     // }
-    
+

@@ -1373,28 +1373,16 @@ export class CartService
                                     }
                                 });
 
-                                this.getShippingAndUpdateCartSession(cartSession).pipe(
-                                    mergeMap(cartSession => this.updateCartSession(cartSession))).subscribe(
-                                        data =>
-                                        {
-                                            this.setGenericCartSession(data);
-                                            this._loaderService.setLoaderState(false);
-                                            this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
-                                        }
-                                    );
-
+                                this.setGenericCartSession(cartSession);
+                                this._loaderService.setLoaderState(false);
+                                this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
                             } else {
                                 cartSession['cart']['totalOffer'] = 0;
                                 cartSession['offersList'] = [];
                                 cartSession.itemLists.map((item) => item['offer'] = null);
-                                this.getShippingAndUpdateCartSession(cartSession).subscribe(
-                                    data =>
-                                    {
-                                        this.setGenericCartSession(data);
-                                        this._loaderService.setLoaderState(false);
-                                        this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
-                                    }
-                                );
+                                this.setGenericCartSession(cartSession);
+                                this._loaderService.setLoaderState(false);
+                                this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
                             }
                         } else {
                             this.appliedPromoCode = '';

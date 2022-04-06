@@ -67,7 +67,9 @@ export class CartComponent
     loadCartDataFromAPI()
     {
         this._globalLoaderService.setLoaderState(true);
-        this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(result =>
+        this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
+            concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))
+        ).subscribe(result =>
         {
             this._globalLoaderService.setLoaderState(false);
             this.validateCart({ "shoppingCartDto": result });
@@ -312,7 +314,7 @@ export class CartComponent
                                 if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
                                     return of(data);
                                 }
-                                return this.getShippingValue(data);
+                                return data;
                             }),
                         ).subscribe(result =>
                         {

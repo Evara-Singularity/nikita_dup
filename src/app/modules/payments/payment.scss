@@ -1,5 +1,6 @@
 @import '../../scss/variables';
 @import './payment-continue-btn.scss';
+@import './../../scss/checkout-prod-card.scss';
 
 .payment-options {
     &>div {
@@ -225,5 +226,11 @@ label.payment-radio-btn {
         &:last-child {
             border-bottom: 0;
         }
+    }
+}
+.cod-Popup{
+    position: relative;
+    &.product-card{
+        margin-top:10px;
     }
 }

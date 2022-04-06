@@ -4,7 +4,7 @@
   color: $blue-link-color;
   border: 1px solid $border-color;
 }
-.continue-btn {
+.fixed-cta{
   height: 60px;
   @extend %ripple;
   position: fixed;

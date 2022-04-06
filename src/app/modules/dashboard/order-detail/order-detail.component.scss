@@ -287,40 +287,6 @@
     }
   }
 }
-
-.next {
-  font-size: 40px;
-  color: $disabled;
-  display: block;
-  width: 40px;
-  line-height: 40px;
-  margin: 20px auto 0 auto;
-  position: absolute;
-  bottom: 15px;
-  left: 48%;
-  left: calc(50% - 20px);
-  &.active {
-    color: $active-color;
-  }
-}
-
-.prev {
-  font-size: 40px;
-  color: $disabled;
-  display: block;
-  width: 40px;
-  line-height: 40px;
-  margin: 20px auto 0 auto;
-  position: absolute;
-  bottom: 60px;
-  left: 48%;
-  left: calc(50% - 20px);
-  transform: rotate(180deg);
-  &.active {
-    color: $active-color;
-  }
-}
-
 .light-txt {
   color: $disable-txt;
   line-height: 18px;
@@ -339,19 +305,6 @@
   margin: 5px 0;
 }
 
-.price-label {
-  strong {
-    font-size: $extra-large-font;
-    margin-left: 5px;
-  }
-}
-
-.view-products {
-  li {
-    border-bottom: 0;
-  }
-}
-
 .material-form {
   .input-field {
     label {
@@ -366,10 +319,10 @@
   text-transform: uppercase;
   box-shadow: none;
   color: var(--white);
-  font-size: 16px;
+  font-size: $extra-large-font;
 }
 .confirmbtn:disabled {
-  background: $disable-txt;
+  background: var(--silver);
 }
 .confirmbtn {
   background: var(--slimy-green);
@@ -397,24 +350,6 @@
     padding-right: 5px;
   }
 }
-
-.mar-t-10 {
-  margin-top: 10px;
-}
-
-.mar-b-10 {
-  margin-bottom: 10px;
-}
-
-.backBtnContainer {
-  width: calc(20% - 2px);
-  padding: 0px;
-  float: left;
-  background: #f2f2f2;
-  text-align: center;
-  height: 100%;
-}
-
 .bottomBar {
   position: absolute;
   right: 0;
@@ -435,7 +370,7 @@
     width: calc(15% - 1px);
     line-height: 49px;
     text-align: center;
-    font-size: 18px;
+    font-size: $xl-1-font;
   }
 }
 
@@ -446,11 +381,11 @@
 .policyTxt {
   float: left;
   margin-top: 15px;
-  font-size: 12px;
+  font-size: $medium-font;
 }
 
 .photoNotetxt {
-  font-size: 10px;
+  font-size: $small-font;
   font-weight: 500;
   margin-bottom: 10px;
   line-height: 14px;
@@ -463,10 +398,6 @@
     color: $txt-color;
     font-weight: 500;
   }
-}
-
-.commentFld {
-  margin-bottom: 10px;
 }
 
 .returnPopup {
@@ -554,11 +485,5 @@
     font-size: $medium-font;
     line-height: 20px;
     display: block;
-  }
-}
-.icon-next {
-  &.ico-right {
-    font-size: 11px;
-    margin-left: 12px;
   }
 }

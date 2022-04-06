@@ -109,7 +109,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
                         <div class="orderproDesc">
                             <p>{{detail.product_name}}</p>
-                            <div class="orderqty clearfix mar-t-10">
+                            <div class="orderqty clearfix mt-10">
                                 <span class="priceright">Order Cancelled :
                                         <span>{{currentDate | date: 'd-MMMM-y'}}</span>
                                 </span>
@@ -172,7 +172,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max" class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded</p>
 
                     </div>
-                    <div class="input-field commentFld">
+                    <div class="input-field commentFld mb-10">
                         <label class="pos-rel" [class.is-focus]="commentMsg.value.length > 0">
                             <textarea formControlName="comment" #commentMsg></textarea>
                             <span class="label">Comment</span>
@@ -270,7 +270,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}" width="100" height="100" alt="imagename" />
                                     <div class="itemname">
                                         <h3 class="">{{detail.product_name}}</h3>
-                                        <p class="mar-b-10">Qty :
+                                        <p class="mb-10">Qty :
                                             <span class="text-500">{{detail.Quantity}}</span>
                                         </p>
                                         <p>Price :
@@ -367,7 +367,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         <span>Contact: {{detail.address.shipping_address.phone}}</span>
 
     </div>
-    <div class="mt-10 orderaddressBox" *ngIf="detail && detail.address.billing_address">
+    <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail.address.billing_address">
         <h3>Billing address</h3>
         <span>{{detail.address.billing_address.firstname}}</span>
         <span>{{detail.address.billing_address.address}}</span>

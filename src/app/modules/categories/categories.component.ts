@@ -13,6 +13,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
 import { ProductHorizontalCardModule } from '../product-horizontal-card/product-horizontal-card.module';
 import { ProductCardFeature } from '@app/utils/models/product.listing.search';
+import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 
 @Component({
 	selector: 'home-categories',
@@ -122,6 +123,7 @@ export class Categories {
 		RouterModule,
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
+		ProductCardHorizontalScrollModule,
 		ProductHorizontalCardModule
 	],
 	providers: [],

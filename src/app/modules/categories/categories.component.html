@@ -44,10 +44,9 @@
                     </li>
                 </ng-template>
             </ul>
-            <div  class="horizontal-scroll">
-                <product-horizontal-card [isBlue]="true" *ngFor="let i of [1,2,3,4]"></product-horizontal-card>
-            </div>
-            
+            <!-- Yajya -->
+            <product-card-horizontal-scroll></product-card-horizontal-scroll>
+            <product-horizontal-card></product-horizontal-card>
             <!-- carouselData[category.dataKey]{{carouselData[category.dataKey]|json}} -->
             <ul class="view-products home-grid-view-container"
                 [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "

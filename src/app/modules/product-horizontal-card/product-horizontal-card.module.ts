@@ -9,7 +9,6 @@ import { ProductCardSkeletonComponent } from './product-card-skeleton/product-ca
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { RouterModule } from '@angular/router';
 import { BrandNamePipeModule } from '@app/utils/pipes/brandName.pipe';
-import { ProductHorizontalScrollModule } from '../ui/product-horizontal-scroll/product-horizontal-scroll.module';
 
 @NgModule({
   declarations: [ProductHorizontalCardComponent, ProductCardSkeletonComponent],
@@ -22,7 +21,6 @@ import { ProductHorizontalScrollModule } from '../ui/product-horizontal-scroll/p
     ObserveVisibilityDirectiveModule,
     RouterModule,
     BrandNamePipeModule,
-    ProductHorizontalScrollModule
   ],
   exports: [
     ProductHorizontalCardComponent,

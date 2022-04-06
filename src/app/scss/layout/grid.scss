@@ -2,7 +2,6 @@
 .pwa-row {
    display: flex;
    flex-wrap: wrap;
-  //  align-items: center;
    padding:10px 15px;
 }
 @for $i from 1 through 12 {
@@ -13,8 +12,6 @@
         flex: 0 0 auto;
         max-width: ($fullwidth / $colmax)*$colnum;
         width:($fullwidth / $colmax)*$colnum;
-      //   padding-left: $default-gap;
-      //   padding-right: $default-gap;
      }
 }
 

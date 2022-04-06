@@ -154,10 +154,9 @@ export class CartComponent
                             return (itemValidationMessageOld['type'] != 'oos')
                         }
                     );
+                    itemsValidationMessage = itemsValidationMessageOld;
                 }
                 this._cartService.itemsValidationMessage = itemsValidationMessage;
-                //TODO:missed
-                //this.itemsValidationMessage$.emit();
                 this._cartService.setValidateCartMessageApi({ userId: USER['userId'], data: itemsValidationMessage })
                     .pipe(catchError((err) => { return of(null); })).subscribe(() => { });
                 let items = JSON.parse(JSON.stringify(requestObj.shoppingCartDto['itemsList']));

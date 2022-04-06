@@ -37,7 +37,7 @@ export class CartService
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
-    itemsValidationMessage;
+    itemsValidationMessage = [];
     appliedPromoCode;
 
     // checkout related global vars
@@ -763,7 +763,8 @@ export class CartService
         }
     }
 
-    resetBuyNow(){
+    resetBuyNow()
+    {
         this._buyNow = false;
         this.buyNowSessionDetails = null;
     }
@@ -1621,24 +1622,28 @@ export class CartService
         this._globalLoader.setLoaderState(true);
         let newCartSessionFromSwitchMap;
         this.updateCartSession(CART_SESSION).pipe(
-            switchMap((newCartSession) => { 
+            switchMap((newCartSession) =>
+            {
                 console.log('verifyPromocode', newCartSession);
-                return this.verifyPromocode(newCartSession) 
+                return this.verifyPromocode(newCartSession)
             }),
-            switchMap((newCartSession) => { 
+            switchMap((newCartSession) =>
+            {
                 newCartSessionFromSwitchMap = newCartSession;
-                return this.verifyShippingCharges(newCartSession) 
+                return this.verifyShippingCharges(newCartSession)
             }),
-            switchMap((newCartSession) => { 
+            switchMap((newCartSession) =>
+            {
                 newCartSessionFromSwitchMap = newCartSession;
-                return this.validateCartApi(newCartSession) 
+                return this.validateCartApi(newCartSession)
             })).
             subscribe((newCartSession) =>
             {
                 this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = newCartSessionFromSwitchMap['itemsList'];
-                if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {5
+                if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
+                    this.clearBuyNowFlow();                    
                     // clears browser history so they can't navigate with back button
                     this._location.replaceState('/');
                     this._router.navigateByUrl('/quickorder');
@@ -1647,6 +1652,16 @@ export class CartService
                     this._notifyCartChanges(newCartSessionFromSwitchMap, null);
                 }
             })
+    }
+
+    clearBuyNowFlow()
+    {
+        if(this._buyNow || this._buyNowSessionDetails)
+        {
+            this.buyNow = false;
+            this.buyNowSessionDetails = null;
+            this.refreshCartSesion();
+        }
     }
 
     //IMPORTANT:This is old logic where process is done and then updating cart

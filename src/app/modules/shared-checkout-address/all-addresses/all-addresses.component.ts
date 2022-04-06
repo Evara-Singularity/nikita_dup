@@ -33,8 +33,6 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     invoiceType: FormControl = null;
     addressListInstance = null;
     createEditAddressInstance = null;
-    selectedDeliveryAddress = null
-    selectedBillingAddress = null
 
     deliveryAddressList = [];
     billingAddressList = [];
@@ -52,7 +50,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     triggerDeliveryOrBillingSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
-        private injector: Injector, private _cartService:CartService) 
+        private injector: Injector, private _cartService: CartService) 
     {
         this.USER_SESSION = this._localAuthService.getUserSession();
     }
@@ -108,7 +106,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         {
             this.deliveryAddressList = response.deliveryAddressList;
             this.billingAddressList = response.billingAddressList;
-            const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);  
+            const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
             const BILLING_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
             this.emitAddressEvent(DELIVERY_ADDRESS, BILLING_ADDRESS);
         });
@@ -127,10 +125,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         let cIdAddress = null;
         if (addressType === this.ADDRESS_TYPES.DELIVERY) {
             ADDRESSES = this.deliveryAddressList;
-            cIdAddress = this.selectedDeliveryAddress['idAddress'];
+            cIdAddress = this._cartService.shippingAddress['idAddress'];
         } else {
             ADDRESSES = this.billingAddressList;
-            cIdAddress = this.selectedBillingAddress['idAddress'];
+            cIdAddress = this._cartService.billingAddress['idAddress'];
         }
         this.addressListInstance.instance['addresses'] = ADDRESSES;
         this.addressListInstance.instance['cIdAddress'] = cIdAddress;
@@ -204,14 +202,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     updateAddressAfterAction(addressType, addresses)
     {
         if (!addresses) return;
-        const IS_DEVLIVERY = addressType === this.ADDRESS_TYPES.DELIVERY;
-        const SEPARATED_ADDRESS:AddressListModel = this._addressService.separateDeliveryAndBillingAddress(addresses);
+        const IS_DELIVERY = addressType === this.ADDRESS_TYPES.DELIVERY;
+        const SEPARATED_ADDRESS: AddressListModel = this._addressService.separateDeliveryAndBillingAddress(addresses);
         this.deliveryAddressList = SEPARATED_ADDRESS.deliveryAddressList;
         this.billingAddressList = SEPARATED_ADDRESS.billingAddressList;
         if (this.addressListInstance) {
-            this.addressListInstance.instance['addresses'] = IS_DEVLIVERY ? this.deliveryAddressList : this.billingAddressList;
+            this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (IS_DEVLIVERY) {
+        if (IS_DELIVERY) {
             const ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
             this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
             return;
@@ -242,9 +240,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     emitAddressEvent(deliveryAddress, billingAddress)
     {
         const INVOICE_TYPE = this.invoiceType.value;
-        this.selectedDeliveryAddress = deliveryAddress ? deliveryAddress : this.selectedDeliveryAddress;
-        this.selectedBillingAddress = billingAddress ? billingAddress : this.selectedBillingAddress;
-        const DATA: SelectedAddressModel = { invoiceType: INVOICE_TYPE, deliveryAddress: this.selectedDeliveryAddress, billingAddress: this.selectedBillingAddress }
+        const DATA: SelectedAddressModel = { invoiceType: INVOICE_TYPE, deliveryAddress: deliveryAddress, billingAddress: billingAddress }
         this.emitAddressSelectEvent$.emit(DATA);
     }
 
@@ -257,8 +253,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.addressListInstance = null;
     }
 
+    get selectedDeliveryAddress() { return this._cartService.shippingAddress; }
+    get selectedBillingAddress() { return this._cartService.billingAddress;}
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
-    get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX}
+    get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
 
     ngOnDestroy(): void
     {

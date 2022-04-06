@@ -79,7 +79,7 @@ export class SharedCheckoutAddressUtil
         const length = addressList.length-1;
         if (checkoutAddress)
         {
-            const index = addressList.findIndex((address) => { address.idAddress === checkoutAddress.idAddress });
+            const index = addressList.findIndex((address) => { return address.idAddress === checkoutAddress.idAddress });
             if (index > -1) { return checkoutAddress; }
             return addressList[length];
         }

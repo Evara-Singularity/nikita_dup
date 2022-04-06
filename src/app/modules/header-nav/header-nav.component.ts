@@ -434,13 +434,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.cartHeaderText = '';
                 }
             } else if (this.router.url.includes('/checkout')) {
-                if (this._checkoutService.getCheckoutTabIndex() === 4) {
-                    this.routerData['title'] = 'Payment';
-                }
-                else {
-                    this.cartHeaderText = '';
-                    this.routerData['title'] = 'Checkout';
-                }
+                this.cartHeaderText = '';
+                this.routerData['title'] = this.router.url.includes('/payment') ? 'Payment' : 'Checkout';
             } else {
                 this.cartHeaderText = '';
                 this.hideElLogin = false;

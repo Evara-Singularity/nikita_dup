@@ -89,6 +89,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     updateInvoiceType(isGST: boolean)
     {
+        this._cartService.billingAddress = null;
         this.invoiceType.patchValue(isGST ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL);
         this.emitInvoiceTypeEvent$.emit(this.invoiceType.value);
         this.updateAddressTypes(this.USER_SESSION.userId, this.invoiceType.value);
@@ -108,8 +109,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
             if (!(this.isGSTUser)) { this.emitAddressEvent(DELIVERY_ADDRESS, null); return; }
             this.billingAddressList = response.billingAddressList;
-            const BILLING_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
-            this.emitAddressEvent(DELIVERY_ADDRESS, BILLING_ADDRESS);
+            this.emitAddressEvent(DELIVERY_ADDRESS, this.billingAddressList[0]);
         });
     }
 

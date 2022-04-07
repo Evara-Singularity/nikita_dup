@@ -244,10 +244,8 @@ export class CartComponent
             const DECREMENTED_QTY = quantityTarget ? parseInt(quantityTarget)-1 : 1;
             if (DECREMENTED_QTY < MOQ)
             {
-                this._tms.show({
-                    type: 'error',
-                    text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
-                });
+                this.removePopup = true; 
+                this.removeIndex = index;
                 return;
             }
             if (quantityTarget < 2) {

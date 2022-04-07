@@ -105,8 +105,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this._addressService.getAddressList(params).subscribe((response: AddressListModel) =>
         {
             this.deliveryAddressList = response.deliveryAddressList;
-            this.billingAddressList = response.billingAddressList;
             const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
+            if (!(this.isGSTUser)) { this.emitAddressEvent(DELIVERY_ADDRESS, null); return; }
+            this.billingAddressList = response.billingAddressList;
             const BILLING_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
             this.emitAddressEvent(DELIVERY_ADDRESS, BILLING_ADDRESS);
         });
@@ -121,9 +122,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         const { AddressListComponent } = await import("./../address-list/address-list.component").finally(() => { });
         const factory = this.cfr.resolveComponentFactory(AddressListComponent);
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
+        const IS_DELIVERY = addressType === this.ADDRESS_TYPES.DELIVERY;
         let ADDRESSES = null;
         let cIdAddress = null;
-        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
+        if (IS_DELIVERY) {
             ADDRESSES = this.deliveryAddressList;
             cIdAddress = this._cartService.shippingAddress['idAddress'];
         } else {
@@ -149,7 +151,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             //Below code is to handle "Deliver Here".
             if (actionInfo.action === "SELECTED") {
                 this.closeAddressListPopup();
-                this.updateDeliveryOrBillingAddress(addressType, actionInfo.address);
+                this.updateDeliveryOrBillingAddress(IS_DELIVERY, actionInfo.address);
                 return;
             }
         });
@@ -209,13 +211,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (IS_DELIVERY) {
-            const ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
-            this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
-            return;
+        if (this.deliveryAddressList.length === 1 || this.billingAddressList.length === 1) {
+            const address = this.deliveryAddressList.length === 1 ? this.deliveryAddressList[0] : this.billingAddressList[0];
+            this.updateDeliveryOrBillingAddress(IS_DELIVERY, address);
         }
-        const ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
-        this.updateDeliveryOrBillingAddress(addressType, ADDRESS);
     }
 
     /**
@@ -223,13 +222,19 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      * @param addressType: Delivery or Billing
      * @param address: can be delivery or billing address 
      */
-    updateDeliveryOrBillingAddress(addressType, address)
+    updateDeliveryOrBillingAddress(isDelivery, address)
     {
-        if (addressType === this.ADDRESS_TYPES.DELIVERY) {
+        if (!(this.isGSTUser)) {
             this.emitAddressEvent(address, null);
             return;
         }
-        this.emitAddressEvent(null, address);
+        if (this.isGSTUser) {
+            if (isDelivery) {
+                this.emitAddressEvent(address, this._cartService.billingAddress);
+            } else {
+                this.emitAddressEvent(this._cartService.shippingAddress, address);
+            }
+        }
     }
 
     /**
@@ -254,7 +259,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get selectedDeliveryAddress() { return this._cartService.shippingAddress; }
-    get selectedBillingAddress() { return this._cartService.billingAddress;}
+    get selectedBillingAddress() { return this._cartService.billingAddress; }
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
     get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
 

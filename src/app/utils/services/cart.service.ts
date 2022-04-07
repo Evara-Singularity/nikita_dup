@@ -12,7 +12,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from './auth.service';
 import { GlobalLoaderService } from './global-loader.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Address } from '../models/address.modal';
 import { Location } from '@angular/common';
 
@@ -56,6 +56,9 @@ export class CartService
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
 
+    private previousUrl: string = null;
+    private currentUrl: string = null;
+
     constructor(
         private _dataService: DataService,
         private _localStorageService: LocalStorageService,
@@ -66,8 +69,8 @@ export class CartService
         private _router: Router,
         private _globalLoader: GlobalLoaderService,
         private _location: Location,
-    )
-    {
+    ) {
+        this.setRoutingInfo();
     }
 
     set billingAddress(address: Address)
@@ -102,6 +105,20 @@ export class CartService
     {
         return this._invoiceType
     }
+
+    private setRoutingInfo() {
+        this.currentUrl = this._router.url;
+        this._router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.previousUrl = this.currentUrl;
+                this.currentUrl = event.url;
+            };
+        });
+    }
+
+    get getPreviousUrl() {
+        return this.previousUrl;
+    } 
 
     getShippingValue(cartSession)
     {
@@ -749,12 +766,17 @@ export class CartService
     }
 
     // refresh and chnages to communicated 
-    public refreshCartSesion()
-    {
+    public refreshCartSesion() {
         // we do not want to refresh cart by pages component in case buynow event
-        if (!this._buyNow && !this.buyNowSessionDetails) {
-            this.checkForUserAndCartSessionAndNotify().subscribe(status =>
-            {
+        // conditional are hacks used because localtion.goback() refrsh page and call getcartsession API from pages component (root module)
+        // console.log('url', this._router.url, this.previousUrl)
+        if (
+            !this._buyNow &&
+            !this.buyNowSessionDetails &&
+            (this._router.url.indexOf('checkout/payment') === -1) &&
+            !(this._router.url.indexOf('checkout/address') > 0 && this.previousUrl.indexOf('checkout/payment') > 0)
+        ) {
+            this.checkForUserAndCartSessionAndNotify().subscribe(status => {
                 if (status) {
                     this._cartUpdatesChanges.next(this.cartSession);
                 } else {

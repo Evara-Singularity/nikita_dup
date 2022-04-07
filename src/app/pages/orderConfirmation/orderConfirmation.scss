@@ -1,46 +1,46 @@
 @import '../../../../src/app/modules/continue/continue.scss';
 .order-container {
-    padding-top: 10px;
     padding-bottom: 80px;
     .card-30 {
-        padding: 10px 15px 30px;
+        p{
+            width: 100%;
+        }
+        .order-detail {
+            text-align: left;
+            .txt-list {
+                margin: 15px 0px;
+                li {
+                    padding: 2px 0;
+                    span {
+                        width: 50%;
+                        float: left !important;
+                    }
+                    .tag-label {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+        .main-img {
+            width: 120px;
+            margin: auto;
+        }
     }
     .f-16 {
-        font-size: 16px;
+        font-size: $extra-large-font;
     }
     .f-12 {
-        font-size: 12px;
+        font-size: $medium-font;
     }
     .f-14 {
-        font-size: 14px;
+        font-size: $large-font;
     }
     .bold-txt {
         font-weight: 600;
     }
-    .txt-list {
-        margin: 15px 0px;
-        li {
-            padding: 2px 0;
-            span {
-                width: 50%;
-                float: left !important;
-            }
-            .tag-label {
-                font-weight: bold;
-            }
-        }
+    .continue-button p {
+        line-height: $ml-line-height;
+        margin: 10px 0 0 20px;
+        font-size: $extra-large-font;
     }
-    .main-img {
-        width: 120px;
-    }
-}
-
-.order-detail {
-    text-align: left;
-}
-
-.continue-button p {
-    line-height: 20px;
-    margin: 10px 0 0 20px;
-    font-size: 16px;
 }

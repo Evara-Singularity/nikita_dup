@@ -190,6 +190,23 @@
           border: none;
         }
       }
+      .track-id-info {
+        position: absolute;
+        top: -32px;
+        @extend %clear-fix;
+        margin-bottom: 20px;
+        span.track_id {
+          background: var(--cultured);
+          border: 1px solid var(--ghost-white);
+          font-size: 9px;
+          padding: 5px;
+          border-radius: 4px;
+          float: left;
+          &:first-of-type {
+            margin-right: 5px;
+          }
+        }
+      }
     }
   }
 }
@@ -407,23 +424,23 @@
   }
 }
 
-.track-id-info {
-  position: absolute;
-  top: -32px;
-  @extend %clear-fix;
-  margin-bottom: 20px;
-  span.track_id {
-    background: var(--cultured);
-    border: 1px solid var(--ghost-white);
-    font-size: 9px;
-    padding: 5px;
-    border-radius: 4px;
-    float: left;
-    &:first-of-type {
-      margin-right: 5px;
-    }
-  }
-}
+// .track-id-info {
+//   position: absolute;
+//   top: -32px;
+//   @extend %clear-fix;
+//   margin-bottom: 20px;
+//   span.track_id {
+//     background: var(--cultured);
+//     border: 1px solid var(--ghost-white);
+//     font-size: 9px;
+//     padding: 5px;
+//     border-radius: 4px;
+//     float: left;
+//     &:first-of-type {
+//       margin-right: 5px;
+//     }
+//   }
+// }
 
 .invoiceSection {
   background: $white;

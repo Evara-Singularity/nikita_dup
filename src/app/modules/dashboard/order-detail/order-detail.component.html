@@ -99,7 +99,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
         </div>
 
-        <div class="cancelOrderBox " [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
+        <div class="cancelOrderBox pwa-row" [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
             <div class="returnedOrder orderdtBox ">
                 <div class="orderdtBoxinner ">
                     <div class="orderdtDesc clearfix ">
@@ -303,7 +303,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 <app-pop-up *ngIf="spp" class="" (outData$)="outData($event)" [data]="{selector: 'spp',headerText:'Order Status'}">
     <div class="content-popup" content>
-        <div class="trackOrderBox static_pos">
+        <div class="trackOrderBox pwa-row static_pos">
             <!-- <h3>Order Status</h3> -->
             <div class="orderdet">
                 <h4>Order Id : {{detail.order_id}}</h4>

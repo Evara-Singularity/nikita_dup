@@ -1,4 +1,4 @@
-<div class="cart-errors" *ngIf="_cartService.itemsValidationMessage && _cartService.itemsValidationMessage.length > 0">
+<div class="cart-errors" *ngIf="displayNotifications">
     <div class="panel-head" [appKpToggle]="{idName: 'cart-errors' ,iconMode : true}">
         <h3 class="heading titleError">
             Updates for your cart items
@@ -6,8 +6,8 @@
     </div>
     <div class="panel-body" id="cart-errors">
         <ul>
-            <li *ngFor="let ivm of _cartService.itemsValidationMessage | oosValitionMessage">
-                <ng-container *ngIf="ivm.type == 'oos' || ivm.type == 'unservicable'">
+            <li *ngFor="let ivm of notfications">
+                <ng-container *ngIf="ivm.type == 'oos' || 'unservicable'">
                     <p class="unservicable">
                         <span class="prod-name">{{ivm.count}} {{ivm['data']['text1']}}</span>
                         <span class="mar-l-10 view-btn" (click)="viewUnavailableItems()"> VIEW ITEMS </span>
@@ -15,17 +15,13 @@
                 </ng-container>
                 <ng-container *ngIf="ivm.type == 'price'">
                     <span class="prod-name">{{ivm['data']['productName']}}</span>
-                    {{ivm['data']['text1']}} <span class="bold">{{ivm['data']['oPrice'] | currency:'INR' : 'symbol' :
-                        '1.2-2'}} to
-                        {{ivm['data']['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</span>
-                </ng-container>
-                <ng-container *ngIf="ivm.type == 'shipping'">
                     {{ivm['data']['text1']}}
+                    <span class="bold">
+                        {{ivm['data']['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} to
+                        {{ivm['data']['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}
+                    </span>
                 </ng-container>
-                <ng-container *ngIf="ivm.type == 'coupon'">
-                    {{ivm['data']['text1']}}
-                </ng-container>
-                <ng-container *ngIf="ivm.type == 'shippingcoupon'">
+                <ng-container *ngIf="displaySecondaryNotifications(ivm.type)">
                     {{ivm['data']['text1']}}
                 </ng-container>
             </li>

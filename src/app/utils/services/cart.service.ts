@@ -15,8 +15,6 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { NavigationEnd, Router } from '@angular/router';
 import { Address } from '../models/address.modal';
 import { Location } from '@angular/common';
-import { CartNotificationsModel } from '../models/shared-checkout.models';
-import { typeofExpr } from '@angular/compiler/src/output/output_ast';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -36,6 +34,7 @@ export class CartService
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notifcationsSubject: Subject<any[]> = new Subject<any[]>();
+    private unserviceableSubject: Subject<any[]> = new Subject<any[]>();
     public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -43,6 +42,7 @@ export class CartService
     itemsValidationMessage = [];
     notifcations = [];
     appliedPromoCode;
+    unserviceables = [];
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -1547,20 +1547,6 @@ export class CartService
         return cartSession;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**@description display unavailable items in pop-up */
     viewUnavailableItems()
     {
@@ -1596,6 +1582,7 @@ export class CartService
             NON_REMOVABLE_ITEMS.push(item);
         });
         this.deleteValidationMessages(REMOVABLE_ITEMS);
+        this.removeNotifications(msns)
         this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
     }
 
@@ -1732,15 +1719,27 @@ export class CartService
     //         })
     // }
 
-    /**Cart Notification 
-     * Step-1:Validate Cart + getValidationMessages.
+
+    /**Cart Notification to be displayed only for logged in user
+     * Validate Cart + getValidationMessages.
      * compare with cart and update messages
      * hit setvalidationMessage to update notifications
      * hit the update cart api with latest prices from validate cart
      * Once increment/decrment/change/remove remove validation message and hit the setValidations
      * On land of payment clear validations and hit the setvalidations api
      * OOS to instock, instock to OOS.
+     * quick order page : hide non-serviceable
+     * checkout : display all notifications.
+     * payment:clear all validations
     */
+
+    setUnserviceables(unserviceables: any[])
+    {
+        this.unserviceables = unserviceables;
+        this.unserviceableSubject.next(unserviceables)
+    }
+
+    getUnserviceableNotifcations() { return this.unserviceableSubject }
 
     verifyAndUpdateNotfications()
     {
@@ -1749,7 +1748,7 @@ export class CartService
             const CART_SESSION = this.getGenericCartSession();
             const VALIDATE_CART_REQUEST = { "shoppingCartDto": CART_SESSION };
             const VALIDATE_CART_MESSAGE_REQUEST = { userId: USER_SESSION['userId'] };
-            const buyNow = this._buyNow;
+            const buyNow = this.buyNow;
             if (buyNow) { VALIDATE_CART_MESSAGE_REQUEST['buyNow'] = buyNow; }
             forkJoin([this.validateCartApi(VALIDATE_CART_REQUEST), this.getValidateCartMessageApi(VALIDATE_CART_MESSAGE_REQUEST)]).subscribe((responses) =>
             {
@@ -1763,13 +1762,20 @@ export class CartService
         }
     }
 
+    /**
+     * @description
+     * @param userId :logged in user id
+     * @param items : current cart items
+     * @param validateCartData : data of any updated cart related item changes
+     * @param validateCartMessageData : provides current existing notifications
+     */
     processNotifications(userId, items: any[], validateCartData, validateCartMessageData)
     {
         const VALIDATE_CART_NOTIFICATION_MSNS: string[] = validateCartData ? Object.keys(validateCartData) : [];
-        const FILTERED_ITEMS: any[] = items.filter((item) => VALIDATE_CART_NOTIFICATION_MSNS.includes(item['productId']));
+        const FILTERED_CART_ITEMS: any[] = items.filter((item) => VALIDATE_CART_NOTIFICATION_MSNS.includes(item['productId']));
         if (VALIDATE_CART_NOTIFICATION_MSNS.length === 0 || items.length === 0) { return }
         const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
-        const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_ITEMS, validateCartData);
+        const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
         if (NEW_NOTIFICATIONS.length > 0) {
             this.notifcations = this.updateNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
             this.notifcationsSubject.next(this.notifcations);
@@ -1780,104 +1786,6 @@ export class CartService
         });
         this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
-
-    updateNotifications(oldNotfications: any[], newNotfications: any[]): any[]
-    {
-        if (oldNotfications.length === 0) { return newNotfications; }
-        let finalNotifications: any[] = null;
-        for (let newNotification of newNotfications) {
-            for (let oldNotfication of oldNotfications) {
-                if (oldNotfication['msnid'] === newNotification['msnid']) {
-                    if (newNotification['type'] == 'price' || newNotification['type'] == 'oos') {
-                        finalNotifications.push(newNotification);
-                        continue;
-                    }
-                    finalNotifications.push(oldNotfication);
-                    finalNotifications.push(newNotification);
-                }
-            }
-        }
-        return finalNotifications;
-    }
-
-    removeNotification(msn: any[], userId)
-    {
-        this.notifcations = this.notifcations.filter((notification) => { notification['msnid'] === msn; })
-        this.notifcationsSubject.next(this.notifcations);
-        this.setValidateCartMessageApi({ userId: userId, data: this.notifcations }).subscribe(() =>
-        {
-            console.log("Successfully updated notifications")
-        });
-    }
-
-    modifyCartAItemsAfterNotifications(items: any[], validateCartData)
-    {
-        let msn_data = {}
-        this.notifcations.forEach((notification) =>
-        {
-            if (notification["type"] === "price") {
-                msn_data[notification["msnid"]] = notification;
-            }
-        });
-        let itemsListNew = JSON.parse(JSON.stringify(items));
-        itemsListNew = itemsListNew.map((item) =>
-        {
-            const PRODUCT_ID = item['productId'];
-            item.text1 = null; item.text2 = null; item.oPrice = null; item.nPrice = null;
-            if (msn_data.hasOwnProperty(PRODUCT_ID)) {
-                const data = msn_data[PRODUCT_ID]['data'];
-                item.text1 = data['text1'];
-                item.text2 = data['text2'];
-                item.oPrice = data['oPrice'];
-                item.nPrice = data['nPrice'];
-            }
-            return item;
-        })
-        this.updateCartItemsAfterNotfications(itemsListNew, validateCartData)
-    }
-
-    updateCartItemsAfterNotfications(newItems: any[], validateCartData)
-    {
-        let canUpdateCart = false;
-        let oosData = [];
-        let itemsList = newItems.map((item) =>
-        {
-            const PRODUCT_ID = item['productId'];
-            if (!validateCartData.hasOwnProperty(PRODUCT_ID)) return item;
-            const UPDATES = validateCartData[PRODUCT_ID]['updates'];
-            if (UPDATES['outOfStockFlag']) {
-                item['oos'] = true;
-                oosData.push({ msnid: item['productId'] });
-            }
-            else if (UPDATES['priceWithoutTax'] || UPDATES['shipping'] ) {
-                canUpdateCart = true;
-                //delete oos from frontend because item is again instock
-                if (item['oos']) {
-                    delete item['oos'];
-                }
-                return this.updateCartItem(item, validateCartData[PRODUCT_ID]['productDetails']);
-            } else if (UPDATES['shipping'] || UPDATES['coupon']) {
-                canUpdateCart = true;
-                if (item['oos']) {
-                    delete item['oos'];
-                }
-            }
-            return item;
-        });
-        if (oosData.length > 0 || canUpdateCart) {
-            const CART_SESSION = this.getGenericCartSession();
-            CART_SESSION.shoppingCartDto['itemsList'] = itemsList;
-            this.updateCartSession(CART_SESSION);
-        }
-
-
-    }
-
-
-
-
-
-
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
     {
@@ -1932,5 +1840,150 @@ export class CartService
         return messageList;
     }
 
-    getCartNotifications() { return this.notifcationsSubject }
+    updateNotifications(oldNotfications: any[], newNotfications: any[]): any[]
+    {
+        if (oldNotfications.length === 0) { return newNotfications; }
+        let finalNotifications: any[] = null;
+        for (let newNotification of newNotfications) {
+            for (let oldNotfication of oldNotfications) {
+                if (oldNotfication['msnid'] === newNotification['msnid']) {
+                    if (newNotification['type'] == 'price' || newNotification['type'] == 'oos') {
+                        finalNotifications.push(newNotification);
+                        continue;
+                    }
+                    finalNotifications.push(oldNotfication);
+                    finalNotifications.push(newNotification);
+                }
+            }
+        }
+        return finalNotifications;
+    }
+
+    removeNotifications(msn: any[])
+    {
+        if (!this.localAuthService.isUserLoggedIn()) return;
+        const userSession = this.localAuthService.getUserSession();
+        this.notifcations = this.notifcations.filter((notification) => { notification['msnid'] === msn; })
+        this.notifcationsSubject.next(this.notifcations);
+        this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifcations }).subscribe(() =>
+        {
+            console.log("Successfully updated notifications")
+        });
+    }
+
+    modifyCartAItemsAfterNotifications(items: any[], validateCartData)
+    {
+        let msn_data = {}
+        this.notifcations.forEach((notification) =>
+        {
+            if (notification["type"] === "price") {
+                msn_data[notification["msnid"]] = notification;
+            }
+        });
+        let itemsListNew = JSON.parse(JSON.stringify(items));
+        itemsListNew = itemsListNew.map((item) =>
+        {
+            const PRODUCT_ID = item['productId'];
+            item.text1 = null; item.text2 = null; item.oPrice = null; item.nPrice = null;
+            if (msn_data.hasOwnProperty(PRODUCT_ID)) {
+                const data = msn_data[PRODUCT_ID]['data'];
+                item.text1 = data['text1'];
+                item.text2 = data['text2'];
+                item.oPrice = data['oPrice'];
+                item.nPrice = data['nPrice'];
+            }
+            return item;
+        })
+        this.updateCartItemsAfterNotfications(itemsListNew, validateCartData)
+    }
+
+    updateCartItemsAfterNotfications(newItems: any[], validateCartData)
+    {
+        let canUpdateCart = false;
+        let oosData = [];
+        let itemsList = newItems.map((item) =>
+        {
+            const PRODUCT_ID = item['productId'];
+            if (!validateCartData.hasOwnProperty(PRODUCT_ID)) return item;
+            const UPDATES = validateCartData[PRODUCT_ID]['updates'];
+            if (UPDATES['outOfStockFlag']) {
+                item['oos'] = true;
+                oosData.push({ msnid: item['productId'] });
+            }
+            else if (UPDATES['priceWithoutTax'] || UPDATES['shipping']) {
+                canUpdateCart = true;
+                //delete oos from frontend because item is again instock
+                if (item['oos']) {
+                    delete item['oos'];
+                }
+                return this.updateCartItem(item, validateCartData[PRODUCT_ID]['productDetails']);
+            } else if (UPDATES['shipping'] || UPDATES['coupon']) {
+                canUpdateCart = true;
+                if (item['oos']) {
+                    delete item['oos'];
+                }
+            }
+            return item;
+        });
+        if (oosData.length > 0 || canUpdateCart) {
+            const CART_SESSION = this.getGenericCartSession();
+            CART_SESSION.shoppingCartDto['itemsList'] = itemsList;
+            const NEW_SESSSION_DETAILS = this.updateCart(CART_SESSION.shoppingCartDto);
+            this.setGenericCartSession(NEW_SESSSION_DETAILS);
+            if (canUpdateCart) { this.updateCartSession(NEW_SESSSION_DETAILS); }
+        }
+    }
+
+    updateCart(cartSessionResponse)
+    {
+        const cartSessionObj = {
+            cart: Object.assign({}, cartSessionResponse['cart']),
+            itemsList: (cartSessionResponse["itemsList"] ? [...cartSessionResponse["itemsList"]] : []),
+            addressList: (cartSessionResponse["addressList"] ? [...cartSessionResponse["addressList"]] : []),
+            payment: cartSessionResponse["payment"],
+            offersList: cartSessionResponse["offersList"],
+            extraOffer: cartSessionResponse["extraOffer"]
+        }
+
+        let totalAmount: number = 0;
+        let tawot: number = 0; // totalAmountWithOutTax
+        let tpt: number = 0; //totalPayableTax
+
+        let itemsList = cartSessionObj.itemsList ? cartSessionObj.itemsList : [];
+        for (let item of itemsList) {
+            if (item["bulkPrice"] == null) {
+                item["totalPayableAmount"] = this.getTwoDecimalValue(item["productUnitPrice"] * item["productQuantity"]);
+                item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax'] * item['productQuantity']);
+                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
+            }
+            else {
+                item["totalPayableAmount"] = (item["bulkPrice"]) ? this.getTwoDecimalValue(item["bulkPrice"] * item["productQuantity"]) : 0;
+                item['tpawot'] = (item['bulkPriceWithoutTax']) ? this.getTwoDecimalValue(item['bulkPriceWithoutTax'] * item['productQuantity']) : 0;
+                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
+            }
+            totalAmount = this.getTwoDecimalValue(totalAmount + item.totalPayableAmount);
+            tawot = this.getTwoDecimalValue(tawot + item.tpawot);
+            tpt = tpt + item['tax'];
+        };
+
+        cartSessionObj.cart.totalAmount = totalAmount;
+        cartSessionObj.cart.totalPayableAmount = totalAmount + cartSessionObj.cart['shippingCharges'] - cartSessionObj.cart['totalOffer'];
+        cartSessionObj.cart.tawot = tawot;
+        cartSessionObj.cart.tpt = tpt;
+        cartSessionObj.itemsList = itemsList;
+        return cartSessionObj;
+    }
+
+    getCartNotifications() { return this.notifcationsSubject; }
+
+    clearAllNotfications()
+    {
+        this.notifcations = [];
+        this.unserviceables = [];
+        this.setValidateCartMessageApi([]).subscribe(() =>
+        {
+            console.log("cleared all notfication");
+        })
+    }
+
 }

@@ -1,3 +1,4 @@
+import { CartNotificationService } from '@app/utils/services/cart-notification.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -38,7 +39,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService) { }
+        private _router: Router, private _toastService: ToastMessageService, private _cartNotificationsService:CartNotificationService) { }
 
     ngOnInit(): void
     {
@@ -131,10 +132,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (nonServiceableMsns.length) {
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
-            this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
+            //this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
+            this._cartNotificationsService.setUnserviceables(NON_SERVICEABLE_ITEMS);
             return;
         }
-        this.updateValidationMessage([]);
+        //this.updateValidationMessage([]);
+        this._cartNotificationsService.setUnserviceables([]);
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */

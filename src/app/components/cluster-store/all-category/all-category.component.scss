@@ -1,19 +1,23 @@
+@import '../../../scss/variables';
+@import '../../../scss/root';
+@import '../../../scss/layout/grid.scss';
+
 .allCategoryBlock{
-    background:#F3F7F8;
+    background: var(--ghost-white);
     padding: 15px 5px;
     &.grey_bg{
-        background:#ECECEC
+        background:var(--ghost-white);
     }
     li{
        width:33.3%;
        float: left;
        padding: 5px;
        .inner_category{
-           background: #fff;
+           background: var(--white);
            text-align: center;
            padding: 5px;
            height: 140px;
-           border-radius:4px;
+           border-radius:$border-radius;
            .allcategoryImage{
                height:80px;
                img{
@@ -22,10 +26,9 @@
                }
            }
            p{
-               font-size: 10px;
-               font-weight: 500;
+               font-size: $small-font;
                padding-top: 5px;
-               line-height: 16px;
+               line-height: $medium-line-height;
            }
        }
         &.view_all_category{
@@ -34,14 +37,14 @@
                word-break: break-word;
            }
            .viewall_category{
-               background: #FDEAEB;
+               background: var(--champagne-pink);
                height:100%;
-               color:#D9232D;
+               color:var(--primary);
                padding: 15px 5px;
-               line-height: 18px;
+               line-height: $medium-line-height;
                text-transform:capitalize;
-               border-radius:4px;
-               font-size:10px
+               border-radius:$border-radius;
+               font-size:$small-font;
            }
        } 
     } 

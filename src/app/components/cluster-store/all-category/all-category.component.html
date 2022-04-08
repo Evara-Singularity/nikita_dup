@@ -1,9 +1,6 @@
-
-
-
-<div class="allCategoryBlock bg-white" *ngIf="data['data'] && data['data'].length > 0">
+<div class="pwa-row allCategoryBlock bg-white" *ngIf="data['data'] && data['data'].length > 0">
   <h3 class="l0_heading">{{data.title}}({{data['data'].length}})</h3>
-  <ul class="clearfix">
+  <ul class="pwa-col-12 clearfix">
       <li *ngFor="let item of data['data'] | slice:0:5;let i=index">
           <div [routerLink]="['/'+item?.category_url]" class="inner_category">
               <div class="allcategoryImage">
@@ -23,8 +20,8 @@
   </ul>
 </div>
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup'}">
-  <div class="content-popup allCategoryBlock grey_bg" content>
-      <ul class="clearfix">
+  <div class="pwa-row content-popup allCategoryBlock grey_bg" content>
+      <ul class="pwa-col-12 clearfix">
           <li *ngFor="let prod of data['data'] ;let i=index">
               <div [routerLink]="['/'+prod?.category_url]" class="inner_category">
                   <div class="allcategoryImage">

@@ -167,3 +167,11 @@ button {
         }
     }
 }
+.btn-red-small{
+    padding: 10px 15px;
+    background-color: #d9232d;
+    text-transform: uppercase;
+    color: $white;
+    font-size: $small-font;
+    font-weight: bold;
+}

@@ -30,12 +30,12 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
      
-        this.pClass = (this.data && this.data.class) ? this.pClass + this.data.class : this.pClass;
-        this.paraClass = (this.data && this.data.paraClass) ? this.data.paraClass : this.paraClass;
-        this.closeClass = (this.data && this.data.closeClass) ? this.data.closeClass : this.closeClass;
-        this.headerText = (this.data && this.data.headerText) ? this.data.headerText : "";
-        this.selector = (this.data && this.data.selector) ? this.data.selector : "";
-        this.headerCustom = (this.data && this.data.headerCustom) ? this.data.headerCustom : false;
+        // this.pClass = (this.data && this.data.class) ? this.pClass + this.data.class : this.pClass;
+        // this.paraClass = (this.data && this.data.paraClass) ? this.data.paraClass : this.paraClass;
+        // this.closeClass = (this.data && this.data.closeClass) ? this.data.closeClass : this.closeClass;
+        // this.headerText = (this.data && this.data.headerText) ? this.data.headerText : "";
+        // this.selector = (this.data && this.data.selector) ? this.data.selector : "";
+        // this.headerCustom = (this.data && this.data.headerCustom) ? this.data.headerCustom : false;
         if (this.isBrowser) {
             setTimeout(() => {
                 document.querySelector('app-pop-up').classList.add('open');

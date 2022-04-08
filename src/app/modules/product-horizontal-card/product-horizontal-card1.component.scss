@@ -1,61 +1,68 @@
 @import "../../scss/variables";
-
+@import "../../scss/components/buttons.scss";
 .product-horizontal-card{
-   display:flex;
-   width:100%;;
-}
-// .horizontal-scroll{
-//     :host.blue-color {
-//         color: blue;
-//         display: block;
-//         background:#cdf3cd;
-//         .product-horizontal-card{
-//             background:green
-//         }
-//     }
-// }
-.left {
-    width: 100%;
-    text-align: center;
-    position: relative;
-}
-.right {
-    width: 100%;
-    .name {
-        -webkit-line-clamp: 2;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 2.8em;
-        margin-bottom: 5px;
-        line-height: 1.6em;
+    .pwa-col-4 {
+        width:100px;
+        text-align: center;
+        position: relative;
     }
-    .brand {
-        span {
-            text-align: left;
+    .pwa-col-8{
+        width: 100%;
+        .name {
+            -webkit-line-clamp: 2;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 2.8em;
+            margin-bottom: 5px;
+            line-height: 1.6em;
         }
+        .rating {
+            position: relative;
+            font-size: $small-font;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            .avgrating {
+                display: inline;
+                background-color: #458d00;
+                padding: 3px 5px;
+                color: #fff;
+                border-radius: 3px;
+                font-size: $small-font;
 
-        margin-bottom: 10px;
-    }
-
-    .price-details {
-        flex-direction: column;
-        min-height: 45px;
-
-        .left {
-            text-align: left;
-            width: 100%;
-
-            .main-price {
-                margin-bottom: 8px;
+                i {
+                    padding-left: 2px;
+                    font-size: 7px;
+                }
+            }
+            .count {
+                color: #c0c0c0;
             }
         }
-
-        .right {
-            text-align: left;
-            width: 100%;
-        }
-    
+    }  
+}
+.add_cart_btn {
+    border: 1px solid $logo-color;
+    display: inline-block;
+    border-radius: 4px;
+    margin-right: 8px;
+    width: 32px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 28px;
+    i {
+        font-size: 20px;
+        color: $logo-color;
+        vertical-align: middle;
     }
-}  
+}
+button{
+    font-size:$small-font;
+}
+
+
+

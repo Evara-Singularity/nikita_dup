@@ -38,21 +38,11 @@ export class CartComponent
     cartSubscription: Subscription;
 
     constructor(
-        public _state: GlobalState,
-        public meta: Meta,
-        public pageTitle: Title,
-        public objectToArray: ObjectToArray,
-        public footerService: FooterService,
-        public activatedRoute: ActivatedRoute,
-        public dataService: DataService,
-        public _commonService: CommonService,
-        public checkOutService: CheckoutService,
-        public localStorageService: LocalStorageService,
-        public _router: Router,
-        public _cartService: CartService,
-        private _tms: ToastMessageService,
-        private _productService: ProductService,
-        private _globalLoaderService: GlobalLoaderService,
+        public _state: GlobalState, public meta: Meta, public pageTitle: Title,
+        public objectToArray: ObjectToArray, public footerService: FooterService, public activatedRoute: ActivatedRoute,
+        public dataService: DataService, public _commonService: CommonService, public checkOutService: CheckoutService,
+        public localStorageService: LocalStorageService, public _router: Router, public _cartService: CartService,
+        private _tms: ToastMessageService, private _productService: ProductService, private _globalLoaderService: GlobalLoaderService,
     ) { }
 
     ngOnInit()
@@ -104,7 +94,6 @@ export class CartComponent
         const currentItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
         let updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
         let incrementOrDecrementBy = 0;
-
         if (action === 'increment') {
             incrementOrDecrementBy = 1;
             updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity + 1;
@@ -123,7 +112,6 @@ export class CartComponent
             incrementOrDecrementBy = -1;
             updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity - 1;
         }
-
         if (updatedCartItemCount < 0 || quantityTarget < 0) {
             this.removeIndex = index;
             this.removePopup = true;
@@ -140,9 +128,7 @@ export class CartComponent
             }
             return;
         }
-
         this._globalLoaderService.setLoaderState(true);
-
         const productMsnId = this._cartService.getGenericCartSession.itemsList[index].productId;
         this._productService.getProductGroupDetails(productMsnId).pipe(
             map(productRawData =>
@@ -256,8 +242,6 @@ export class CartComponent
                 let bulkPricesWithInida: Array<any> = [];
                 if (productPriceQuantity['bulkPrices'] && productPriceQuantity['bulkPrices']['india'])
                     bulkPricesWithInida = productPriceQuantity['bulkPrices']['india'];
-
-
                 if (bulkPricesWithInida && bulkPricesWithInida !== null && bulkPricesWithInida !== undefined && bulkPricesWithInida.length > 0) {
                     let isvalid: boolean = true;
 
@@ -277,40 +261,25 @@ export class CartComponent
                         if (productPriceQuantity['moq'] == minQty || !isvalid) {
                             isvalid = false;
                             element.minQty = element.minQty + 1;
-
                             element.maxQty = element.maxQty + 1;
                         }
                         if (isvalid && productPriceQuantity['moq'] > minQty && productPriceQuantity['moq'] > 1) {
-
                             element.minQty = element.minQty + productPriceQuantity['moq'];
-
                             element.maxQty = element.maxQty + productPriceQuantity['moq'];
-
                         }
-
-
                     });
-
                     bulkPrices.forEach((element, indexBulk) =>
                     {
                         if (element.minQty <= updatedQuantity && updatedQuantity <= element.maxQty) {
-
                             bulkPrice = element.bulkSellingPrice;
                             bulkPriceWithoutTax = element.bulkSPWithoutTax;
-
-
                         }
                         if (bulkPrices.length - 1 === indexBulk && updatedQuantity >= element.maxQty) {
-
                             bulkPrice = element.bulkSellingPrice;
                             bulkPriceWithoutTax = element.bulkSPWithoutTax;
-
                         }
-
-
                     });
                 }
-
                 this._cartService.getGenericCartSession.itemsList[index]['bulkPrice'] = bulkPrice;
                 this._cartService.getGenericCartSession.itemsList[index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
                 this._cartService.getGenericCartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
@@ -318,10 +287,8 @@ export class CartComponent
                 const cartSession = this._cartService.getGenericCartSession;
                 cartSession['itemsList'][index]['bulkPrice'] = bulkPrice;
                 cartSession['itemsList'][index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
-
                 this._cartService.setGenericCartSession(cartSession);
                 return { status: true, message: "Cart quantity updated successfully", items: this._cartService.getGenericCartSession.itemsList };
-
             }
         }
     }
@@ -402,25 +369,14 @@ export class CartComponent
 
     sendCritioData()
     {
-
-        let eventData = {
-            'prodId': '',
-            'prodPrice': 0,
-            'prodQuantity': 0,
-            'prodImage': '',
-            'prodName': '',
-            'prodURL': ''
-        };
-
+        let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
         let criteoItem = [];
         let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
         for (let p = 0; p < this._cartService.getGenericCartSession["itemsList"].length; p++) {
-
             let price = this._cartService.getGenericCartSession["itemsList"][p]['productUnitPrice'];
             if (this._cartService.getGenericCartSession["itemsList"][p]['bulkPrice'] != '' && this._cartService.getGenericCartSession["itemsList"][p]['bulkPrice'] != null) {
                 price = this._cartService.getGenericCartSession["itemsList"][p]['bulkPrice'];
             }
-
             criteoItem.push({ name: this._cartService.getGenericCartSession["itemsList"][p]['productName'], id: this._cartService.getGenericCartSession["itemsList"][p]['productId'], price: this._cartService.getGenericCartSession["itemsList"][p]['productUnitPrice'], quantity: this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'], image: this._cartService.getGenericCartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this._cartService.getGenericCartSession["itemsList"][p]['productUrl'] });
             eventData['prodId'] = this._cartService.getGenericCartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
             eventData['prodPrice'] = this._cartService.getGenericCartSession["itemsList"][p]['productUnitPrice'] * this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
@@ -443,7 +399,6 @@ export class CartComponent
             totalShipping = this._cartService.getGenericCartSession["itemsList"][p]['shippingCharges'] + totalShipping;
         }
         let user = this.localStorageService.retrieve('user');
-
         /*Start Criteo DataLayer Tags */
         dataLayer.push({
             'event': 'viewBasket',
@@ -460,7 +415,6 @@ export class CartComponent
         let user = this.localStorageService.retrieve('user');
         let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
         /*Start Adobe Analytics Tags */
-
         let page = {
             'linkPageName': "moglix:cart summary",
             'linkName': "Remove from cart",
@@ -486,7 +440,6 @@ export class CartComponent
             'totalPrice': totalPrice,
             'shippingCharges': totalShipping
         }
-
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;
@@ -496,8 +449,5 @@ export class CartComponent
         /*End Adobe Analytics Tags */
     }
 
-    ngOnDestroy()
-    {
-        if (this.cartSubscription) this.cartSubscription.unsubscribe();
-    }
+    ngOnDestroy() { if (this.cartSubscription) this.cartSubscription.unsubscribe(); }
 }

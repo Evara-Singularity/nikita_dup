@@ -256,7 +256,7 @@
             color: #fff;
             width: 100%;
             .list-container{
-                margin-bottom: 20px;
+                margin-bottom: 10px;
                 width: 100%;
                 .list-item{
                 
@@ -295,6 +295,9 @@
         }
     }
     .awards-section{
+        position: absolute;
+        margin-top: -130px;
+        width: 100%;
         .award-container{
             padding: 30px 15px;
             background: #fff;
@@ -306,7 +309,7 @@
                 margin-bottom: 15px;
             }
             .industry-recognition{
-                margin-bottom: 15px;
+                margin-bottom: 20px;
                 padding: 0;
                 .recognition-column{
                     &:nth-child(odd){
@@ -315,45 +318,76 @@
                     &:nth-child(even){
                         padding-left: 5px;
                     }
-                    .blackOverlay{
-                        height: 150px;
+                    // .blackOverlay{
+                    //     height: 150px;
+                    //     position: relative;
+                    //     cursor: pointer;
+                    //     border: 1px solid #ccc;
+                    //     padding: 10px;
+                    //     &:before {
+                    //         background: rgba(0, 0, 0, 0.8);
+                    //         z-index: 1;
+                    //         position: absolute;
+                    //         left: 0;
+                    //         top: 0;
+                    //         bottom: 0;
+                    //         content: '';
+                    //         right: 0;
+                    //         transition: 0.2s all ease-in
+                    //     }
+                    //     h4{
+                    //         font-size: 12px;
+                    //         font-weight: 400;
+                    //         left: 10px;
+                    //         right: 10px;
+                    //         text-align: center;
+                    //         top: 50%;
+                    //         transition: all .2s ease-in;
+                    //         transform: translatey(-50%);
+                    //         z-index: 2;
+                    //         line-height: 18px;
+                    //         position: absolute;
+                    //         color: #fff;
+                    //     }
+                    //     img{
+                    //         position: absolute;
+                    //         left: 0;
+                    //         right: 0;
+                    //         margin: auto;
+                    //         display: inline-block;
+                    //         max-width: 120px;
+                    //     }
+                    // }
+                    .overlay-section{
                         position: relative;
-                        cursor: pointer;
+                        width: 100%;
                         border: 1px solid #ccc;
-                        padding: 10px;
-                        &:before {
-                            background: rgba(0, 0, 0, 0.8);
-                            z-index: 1;
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            bottom: 0;
-                            content: '';
-                            right: 0;
-                            transition: 0.2s all ease-in
-                        }
-                        h4{
-                            font-size: 12px;
-                            font-weight: 400;
-                            left: 10px;
-                            right: 10px;
-                            text-align: center;
-                            top: 50%;
-                            transition: all .2s ease-in;
-                            transform: translatey(-50%);
-                            z-index: 2;
-                            line-height: 18px;
-                            position: absolute;
-                            color: #fff;
-                        }
-                        img{
-                            position: absolute;
-                            left: 0;
-                            right: 0;
-                            margin: auto;
-                            display: inline-block;
+                        .overlay-image {
+                            display: block;
                             max-width: 120px;
+                            margin: 16px auto;
+                            
                         }
+                        .overlay-text {
+                            position: absolute; 
+                            height:100%;
+                            bottom: 0; 
+                            background: rgba(0, 0, 0, 0.8);
+                            color: #f1f1f1; 
+                            width: 100%;
+                            transition: .5s ease;
+                            opacity:0;
+                            color: white;
+                            font-size: 12px;
+                            padding: 10px;
+                            text-align: center;
+                            align-items: center;
+                            justify-content: center;
+                            display: flex;
+                        }
+                        &:hover .overlay-text {
+                            opacity: 1;
+                          }  
                     }
                 }
                 
@@ -1240,3 +1274,6 @@
     //     }
     // }
 
+
+
+    

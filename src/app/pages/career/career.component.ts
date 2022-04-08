@@ -12,8 +12,9 @@ import CONSTANTS from '@app/config/constants';
   styleUrls: ['career.scss']
 })
 export class CareerComponent {
-
-  imagePath = CONSTANTS.IMAGE_BASE_URL;
+  API = CONSTANTS;
+  readonly imagePathCareer = CONSTANTS.IMAGE_ASSET_URL;
+  readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   isServer: boolean;
   // ondemand load of youtube video player in modal
   youtubeModalInstance = null;

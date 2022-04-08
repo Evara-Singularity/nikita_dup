@@ -56,7 +56,7 @@
                                 'symbol' : '1.0-0'}}</strong>
                             <small class="inline-price" *ngIf="((+similarData[index].productPrice - +similarData[index].priceWithoutTax)) > 0" >
                                 <i class="icon-expand"></i>
-                                ₹{{(+similarData[index].productPrice - +similarData[index].priceWithoutTax) | currency: 'INR' :
+                                {{(+similarData[index].productPrice - +similarData[index].priceWithoutTax) | currency: 'INR' :
                                 'symbol' : '1.0-0'}} GST
                             </small>
                         </p>

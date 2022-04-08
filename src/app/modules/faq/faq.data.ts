@@ -133,7 +133,7 @@ export const faqData = [
         id:21,
         question: "Moglix is happy to serve customer and fulfil their requirements. If customer receives any product which fulfils the below mentioned criterion, customer is eligible for return / exchange:",
         para: "",
-        answer: 'Product is used/altered/poor in quality/Defective product. | Physical / in-transit damage to the product. | Branded product received seal opened. | Empty packet/some items or accessories are missing. | Significant difference found in Moglix website as comparison to product. | Wrong Item sent '
+        answer: 'Product is used/altered/Defective product. | Physical / in-transit damage to the product. | Branded product received seal opened. | Empty packet/some items or accessories are missing. | Significant difference found in Moglix website as comparison to product. | Wrong Item sent '
     },
     {
         question: 'Customer is not eligible for return/exchange if',

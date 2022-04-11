@@ -263,15 +263,25 @@ export class CartComponent
             return;
         };
         if (action === 'update') {
-            if (this._cartService.getGenericCartSession.itemsList[index].moq < quantityTarget) {
+            // if (this._cartService.getGenericCartSession.itemsList[index].moq < quantityTarget) {
+            //     this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
+            //     this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
+            //     this._tms.show({
+            //         type: 'error',
+            //         text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
+            //     });
+            // } 
+            
+            if (quantityTarget < this._cartService.getGenericCartSession.itemsList[index].moq) {
                 this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
-                this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
+                this.removeIndex = index;
+                this.removePopup = true;
                 this._tms.show({
                     type: 'error',
                     text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
-                })
+                });
+                return;
             }
-            return;
         }
 
         this._globalLoaderService.setLoaderState(true);
@@ -312,7 +322,7 @@ export class CartComponent
                                 if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
                                     return of(data);
                                 }
-                                return data;
+                                return of(data);
                             }),
                         ).subscribe(result =>
                         {
@@ -329,8 +339,7 @@ export class CartComponent
                                             currentlyAdded: productDetails
                                         });
                                         this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
-                                        this._cartService.getGenericCartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
-                                        this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
+                                        this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
                                     } else {
                                         this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
                                     }

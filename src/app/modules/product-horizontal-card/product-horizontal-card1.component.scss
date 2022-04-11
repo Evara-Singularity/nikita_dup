@@ -1,6 +1,7 @@
 @import "../../scss/variables";
 @import "../../scss/components/buttons.scss";
 @import "../../scss/components/rating.scss";
+@import "../../scss/utils/mixins.scss";
 
 .product-horizontal-card{
     .pwa-row{
@@ -61,7 +62,10 @@ button{
     font-size:$small-font;
 }
 .pwa-right-custom{
-    @include pwa-right-custom('115');
+    @include pwa-right-custom(115px,false);
+}
+.pwa-left-custom{
+    @include pwa-right-custom(115px,true);
 }
 
 

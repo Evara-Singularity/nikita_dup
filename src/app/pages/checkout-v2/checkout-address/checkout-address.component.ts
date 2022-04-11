@@ -1,4 +1,3 @@
-import { CartNotificationService } from '@app/utils/services/cart-notification.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -39,7 +38,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService, private _cartNotificationsService:CartNotificationService) { }
+        private _router: Router, private _toastService: ToastMessageService) { }
 
     ngOnInit(): void
     {
@@ -132,12 +131,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (nonServiceableMsns.length) {
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
-            //this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
-            this._cartNotificationsService.setUnserviceables(NON_SERVICEABLE_ITEMS);
+            this._cartService.setUnserviceables(NON_SERVICEABLE_ITEMS);
             return;
         }
-        //this.updateValidationMessage([]);
-        this._cartNotificationsService.setUnserviceables([]);
+        this._cartService.setUnserviceables([]);
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */
@@ -145,14 +142,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
         this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length === 0;
-    }
-
-    /**@description updates global validation messages which are used in cart notifications */
-    updateValidationMessage(unServicableItems)
-    {
-        let itemsValidationMessage = this._cartService.itemsValidationMessage || [];
-        itemsValidationMessage = (itemsValidationMessage.filter(item => item['type'] != 'unservicable')) || [];
-        this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
     /**@description scrolls to payment summary section on click of info icon*/
@@ -194,8 +183,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             }
         }
         //cart verification
-        const INVALID_CART_TYPES = ['unservicable', 'oos'];
-        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage));
+        const INVALID_CART_TYPES = ['unserviceable', 'oos'];
+        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.getCartNotifications()));
         const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
         if (INVALID_CART_MESSAGES.length) {
             this._cartService.viewUnavailableItems()

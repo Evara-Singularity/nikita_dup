@@ -33,16 +33,14 @@ export class CartService
     public businessDetailSubject: Subject<any> = new Subject<any>();
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
-    private notifcationsSubject: Subject<any[]> = new Subject<any[]>();
-    private unserviceableSubject: Subject<any[]> = new Subject<any[]>();
+    private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
     itemsValidationMessage = [];
-    notifcations = [];
+    notifications = [];
     appliedPromoCode;
-    unserviceables = [];
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -100,7 +98,6 @@ export class CartService
 
     getShippingValue(cartSession)
     {
-        // console.trace('getShippingValue cartservice');
         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ShippingValue, { body: cartSession }).
             pipe(catchError((res: HttpErrorResponse) => { return of({ status: false, statusCode: res.status }); }));
     }
@@ -1414,9 +1411,9 @@ export class CartService
     viewUnavailableItems()
     {
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
-        const unservicableMsns = JSON.parse(JSON.stringify(this.itemsValidationMessage))
-            .filter(item => item['type'] == 'unservicable').reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
-        const LIST: any[] = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);
+        const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
+            .filter(item => item['type'] == 'unserviceable' ).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
+        const LIST: any[] = itemsList.filter(item => item['oos'] || unserviceableMsns.indexOf(item['productId']) != -1);
         if (LIST.length === 0) return;
         this._modalService.show({
             component: SharedCheckoutUnavailableItemsComponent,
@@ -1557,17 +1554,16 @@ export class CartService
 
     setUnserviceables(unserviceables: any[])
     {
-        this.unserviceables = unserviceables;
-        this.unserviceableSubject.next(unserviceables)
+        this.notifications = this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
+        this.notifications = [...this.notifications, ...unserviceables];
+        this.notificationsSubject.next(this.notifications);
     }
-
-    getUnserviceableNotifcations() { return this.unserviceableSubject }
 
     verifyAndUpdateNotfications()
     {
         if (this.localAuthService.isUserLoggedIn()) {
             const USER_SESSION = this.localAuthService.getUserSession();
-            const CART_SESSION = this.getGenericCartSession();
+            const CART_SESSION = this.getGenericCartSession;
             const VALIDATE_CART_REQUEST = { "shoppingCartDto": CART_SESSION };
             const VALIDATE_CART_MESSAGE_REQUEST = { userId: USER_SESSION['userId'] };
             const buyNow = this.buyNow;
@@ -1598,15 +1594,16 @@ export class CartService
         if (VALIDATE_CART_NOTIFICATION_MSNS.length === 0 || items.length === 0) { return }
         const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
         const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
+        console.log(NEW_NOTIFICATIONS);
         if (NEW_NOTIFICATIONS.length > 0) {
-            this.notifcations = this.updateNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
-            this.notifcationsSubject.next(this.notifcations);
+            this.notifications = this.updateNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
+            this.notificationsSubject.next(this.notifications);
         }
-        this.setValidateCartMessageApi({ userId: userId, data: this.notifcations }).subscribe(() =>
-        {
-            console.log("Successfully updated notifications")
-        });
-        this.modifyCartAItemsAfterNotifications(items, validateCartData);
+        // this.setValidateCartMessageApi({ userId: userId, data: this.notifications }).subscribe(() =>
+        // {
+        //     console.log("Successfully updated notifications")
+        // });
+        // this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
@@ -1646,15 +1643,16 @@ export class CartService
                 const SHIPPING_INDEX = messageList.findIndex(ml => ml.type == "shipping");
                 const COUPON_INDEX = messageList.findIndex(ml => ml.type == "coupon");
                 const SHIPPING_COUPON_INDEX = messageList.findIndex(ml => ml.type == "shippingcoupon");
-                if (SHIPPING_INDEX > -1 && (msg['type'] == 'coupon' || msg['type'] == 'shippingcoupon')) {
+                const IS_SHIPPINGCOUPON_TYPE = (msg['type'] === 'shippingcoupon');
+                if (SHIPPING_INDEX > -1 && (msg['type'] == 'coupon' || IS_SHIPPINGCOUPON_TYPE)) {
                     messageList[SHIPPING_INDEX].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                     messageList[SHIPPING_INDEX].type = "shippingcoupon";
                 }
-                else if (COUPON_INDEX > -1 && (msg['type'] == 'shipping' || msg['type'] == 'shippingcoupon')) {
+                else if (COUPON_INDEX > -1 && (msg['type'] == 'shipping' || IS_SHIPPINGCOUPON_TYPE)) {
                     messageList[COUPON_INDEX].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                     messageList[COUPON_INDEX].type = "shippingcoupon";
                 }
-                else if (SHIPPING_INDEX > -1 && COUPON_INDEX > -1 && SHIPPING_COUPON_INDEX > -1) {
+                else if (SHIPPING_INDEX === -1 && COUPON_INDEX === -1 && SHIPPING_COUPON_INDEX === -1) {
                     messageList.push(msg);
                 }
             }
@@ -1685,9 +1683,9 @@ export class CartService
     {
         if (!this.localAuthService.isUserLoggedIn()) return;
         const userSession = this.localAuthService.getUserSession();
-        this.notifcations = this.notifcations.filter((notification) => { notification['msnid'] === msn; })
-        this.notifcationsSubject.next(this.notifcations);
-        this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifcations }).subscribe(() =>
+        this.notifications = this.notifications.filter((notification) => { notification['msnid'] === msn; })
+        this.notificationsSubject.next(this.notifications);
+        this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications }).subscribe(() =>
         {
             console.log("Successfully updated notifications")
         });
@@ -1696,7 +1694,7 @@ export class CartService
     modifyCartAItemsAfterNotifications(items: any[], validateCartData)
     {
         let msn_data = {}
-        this.notifcations.forEach((notification) =>
+        this.notifications.forEach((notification) =>
         {
             if (notification["type"] === "price") {
                 msn_data[notification["msnid"]] = notification;
@@ -1744,7 +1742,7 @@ export class CartService
             return item;
         });
         if (oosData.length > 0 || canUpdateCart) {
-            const CART_SESSION = this.getGenericCartSession();
+            const CART_SESSION = this.getGenericCartSession;
             CART_SESSION.shoppingCartDto['itemsList'] = itemsList;
             const NEW_SESSSION_DETAILS = this.updateCart(CART_SESSION.shoppingCartDto);
             this.setGenericCartSession(NEW_SESSSION_DETAILS);
@@ -1789,11 +1787,13 @@ export class CartService
         return cartSessionObj;
     }
 
-    getCartNotifications() { return this.notifcationsSubject; }
+    getCartNotificationsSubject() { return this.notificationsSubject; }
+    
+    getCartNotifications() { return this.notifications; }
 
     clearAllNotfications()
     {
-        this.notifcations = []; this.unserviceables = [];
+        this.notifications = []; 
         this.setValidateCartMessageApi([]).subscribe(() => { console.log("cleared all notfication"); })
     }
 }

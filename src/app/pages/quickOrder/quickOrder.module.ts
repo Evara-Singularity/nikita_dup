@@ -1,3 +1,4 @@
+import { CartNotifiesModule } from './../../modules/shared-checkout-quick-order-components/cart-notifies/cart-notifies.module';
 import { CartNoItemModule } from '../../modules/shared-checkout-quick-order-components/cart-no-item/cart-no-item.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
@@ -19,6 +20,7 @@ import { CartModule } from '@app/modules/shared-checkout-quick-order-components/
         CartModule,
         CartNoItemModule,
         CartNotificationsModule,
+        CartNotifiesModule,
         OrderSummaryModule,
         // Custom utils modules added
         ObjectToArrayPipeModule,

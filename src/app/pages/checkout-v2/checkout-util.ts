@@ -33,8 +33,8 @@ export class CheckoutUtil
         const ITEMS = [];
         nonServiceableItems.forEach((item, index) =>
         {
-            const ITEM = { type: "unservicable", count: index + 1, msnid: item['productId'], data: null };
-            ITEM['data'] = { productName: item['productName'], text1: "in your cart is unservicable" };
+            const ITEM = { type: "unserviceable", count: index + 1, msnid: item['productId'], data: null };
+            ITEM['data'] = { productName: item['productName'], text1: "in your cart is unserviceable" };
             ITEMS.push(ITEM);
         });
         return ITEMS;

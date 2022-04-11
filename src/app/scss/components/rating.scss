@@ -1,0 +1,25 @@
+.rating {
+    position: relative;
+    font-size: $small-font;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    .avgrating {
+        display: inline;
+        background-color: #458d00;
+        padding: 3px 5px;
+        color: #fff;
+        border-radius: 3px;
+        font-size: $small-font;
+
+        i {
+            padding-left: 2px;
+            font-size: 7px;
+        }
+    }
+    .count {
+        color: #c0c0c0;
+    }
+}

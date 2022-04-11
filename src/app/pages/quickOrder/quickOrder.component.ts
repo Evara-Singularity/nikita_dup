@@ -27,5 +27,5 @@ export class QuickOrderComponent {
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */
-    viewUnavailableItemsFromNotifacions(display) { if (display) this._cartService.viewUnavailableItems(); }
+    viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 }

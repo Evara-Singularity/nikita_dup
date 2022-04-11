@@ -1408,11 +1408,11 @@ export class CartService
     }
 
     /**@description display unavailable items in pop-up */
-    viewUnavailableItems()
+    viewUnavailableItems(types:string[])
     {
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
-            .filter(item => item['type'] == 'unserviceable' ).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
+            .filter(item => types.includes(item['type'])).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
         const LIST: any[] = itemsList.filter(item => item['oos'] || unserviceableMsns.indexOf(item['productId']) != -1);
         if (LIST.length === 0) return;
         this._modalService.show({
@@ -1614,7 +1614,7 @@ export class CartService
             let msg = {};
             const CART_PRODUCT_MSN = item['productId'];
             const CART_PRODUCT_NAME = item['productName'];
-            const CART_PRODUCT_PRICE = validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'];
+            const CART_PRODUCT_PRICE = item["priceWithoutTax"];
             const UPDATES = validateCartData[CART_PRODUCT_MSN]['updates'];
             msg['msnid'] = item['productId'];
             if (UPDATES['outOfStockFlag']) {

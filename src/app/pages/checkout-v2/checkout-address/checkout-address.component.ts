@@ -187,14 +187,14 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.getCartNotifications()));
         const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
         if (INVALID_CART_MESSAGES.length) {
-            this._cartService.viewUnavailableItems()
+            this._cartService.viewUnavailableItems(INVALID_CART_TYPES)
             return;
         }
         this._router.navigate(['/checkout/payment']);
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */
-    viewUnavailableItemsFromNotifacions(display) { if (display) this._cartService.viewUnavailableItems(); }
+    viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
 

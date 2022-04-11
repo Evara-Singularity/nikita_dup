@@ -1,17 +1,25 @@
+@import "../../../scss/variables";
+@import "../../../scss/root";
+// @import '../../../scss/layout/grid.scss';
+
 .featuredBanner{
+    padding: 0;
     .featrBannerBlock{
         overflow-y:hidden;
         overflow-x:scroll;
         width:auto;
         padding: 10px 5px;
-        background: #fff;
+        background: var(--white);
+        &::-webkit-scrollbar{
+            display: block;
+        }
     }
     .featrBannerSlide{
         float: left;
         margin-right:10px;
         width: 340px;
             img{
-                width:100%;
+                width:$fullwidth;
             }
-        }
     }
+}

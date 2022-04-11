@@ -1,5 +1,5 @@
-<div class="featuredBanner" *ngIf="data['data'] && data['data'].length > 0">
-  <div class="featrBannerBlock">
+<div class="pwa-row featuredBanner" *ngIf="data['data'] && data['data'].length > 0">
+  <div class="pwa-col-12 featrBannerBlock">
     <div [style.width.px]="data['data'].length * 350">
       <div class="featrBannerSlide" *ngFor="let item of data['data'];let i=index">
         <a href="{{item?.image_link}}">

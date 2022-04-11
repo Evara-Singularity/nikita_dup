@@ -1,35 +1,35 @@
-<div class="pwa-row allCategoryBlock bg-white" *ngIf="data['data'] && data['data'].length > 0">
+<div class="allCategoryBlock bg-white" *ngIf="data['data'] && data['data'].length > 0">
   <h3 class="l0_heading">{{data.title}}({{data['data'].length}})</h3>
-  <ul class="pwa-col-12 clearfix">
-      <li *ngFor="let item of data['data'] | slice:0:5;let i=index">
-          <div [routerLink]="['/'+item?.category_url]" class="inner_category">
-              <div class="allcategoryImage">
-                <img src="{{imagePath + item.category_image}}" alt="{{item['CategoryName']}}">
-                  <!-- [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}} -->
-              </div>
-              <p class="categoryName">{{item['CategoryName']}}</p>
-          </div>
-      </li> 
-      <li *ngIf ="data['data'].length > 5" (click)="openPopup = true;" class="view_all_category">
-          <div class="inner_category">
-              <div class="viewall_category">
-                  <span>VIEW {{data.title}}</span>
-              </div>
-          </div>
-      </li>
-  </ul>
+  <div class="pwa-row outer-view-container">
+    <div *ngFor="let item of data['data'] | slice:0:5;let i=index" class="pwa-col-4 all-category-setion">
+        <div [routerLink]="['/'+item?.category_url]" class="inner_category">
+            <div class="allcategoryImage">
+            <img src="{{imagePath + item.category_image}}" alt="{{item['CategoryName']}}">
+                <!-- [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}} -->
+            </div>
+            <p class="categoryName">{{item['CategoryName']}}</p>
+        </div>
+    </div> 
+    <div *ngIf ="data['data'].length > 5" (click)="openPopup = true;" class="view_all_category" class="pwa-col-4 all-category-setion">
+        <div class="inner_category">
+            <div class="viewall_category">
+                <span>VIEW {{data.title}}</span>
+            </div>
+        </div>
+    </div>
+  </div>
 </div>
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup'}">
-  <div class="pwa-row content-popup allCategoryBlock grey_bg" content>
-      <ul class="pwa-col-12 clearfix">
-          <li *ngFor="let prod of data['data'] ;let i=index">
-              <div [routerLink]="['/'+prod?.category_url]" class="inner_category">
-                  <div class="allcategoryImage">
-                    <img src="{{imagePath + prod.category_image}}" alt="{{prod['CategoryName']}}">
-                  </div>
-                  <p class="categoryName">{{prod['CategoryName']}}</p>
-              </div>
-          </li>
-      </ul>
-  </div>
+    <div class="allCategoryBlock content-popup" content>
+      <div class="pwa-row pwa-row-noPad">
+        <div *ngFor="let prod of data['data'] ;let i=index" class="pwa-col-4 all-category-setion">
+            <div [routerLink]="['/'+prod?.category_url]" class="inner_category">
+                <div class="allcategoryImage">
+                  <img src="{{imagePath + prod.category_image}}" alt="{{prod['CategoryName']}}">
+                </div>
+                <p class="categoryName">{{prod['CategoryName']}}</p>
+            </div>
+        </div>
+      </div>
+    </div>
 </app-pop-up>

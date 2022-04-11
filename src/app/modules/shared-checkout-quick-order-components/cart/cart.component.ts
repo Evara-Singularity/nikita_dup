@@ -233,7 +233,6 @@ export class CartComponent
     updateCartItemQuantity(quantityTarget, index, action, buyNow = false)
     {
         const MOQ = this._cartService.getGenericCartSession.itemsList[index].moq || 1;
-        const currentItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
         let updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
         let incrementOrDecrementBy = 0;
 
@@ -263,15 +262,6 @@ export class CartComponent
             return;
         };
         if (action === 'update') {
-            // if (this._cartService.getGenericCartSession.itemsList[index].moq < quantityTarget) {
-            //     this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
-            //     this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
-            //     this._tms.show({
-            //         type: 'error',
-            //         text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
-            //     });
-            // } 
-            
             if (quantityTarget < this._cartService.getGenericCartSession.itemsList[index].moq) {
                 this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
                 this.removeIndex = index;
@@ -349,7 +339,7 @@ export class CartComponent
                             }
                         });
                     } else {
-                        this._cartService.getGenericCartSession.itemsList[index].productQuantity = +currentItemCount;
+                        this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update');
                         this._tms.show({ type: 'error', text: productDetails.quantityAvailable + ' is the maximum quantity available.' });
                     }
                 } else {

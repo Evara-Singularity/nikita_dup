@@ -1554,6 +1554,7 @@ export class CartService
 
     setUnserviceables(unserviceables: any[])
     {
+        console.log('unserviceables ==>', unserviceables, this.notifications);
         this.notifications = this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
         this.notifications = [...this.notifications, ...unserviceables];
         this.notificationsSubject.next(this.notifications);
@@ -1589,21 +1590,25 @@ export class CartService
      */
     processNotifications(userId, items: any[], validateCartData, validateCartMessageData)
     {
+        // console.trace();
         const VALIDATE_CART_NOTIFICATION_MSNS: string[] = validateCartData ? Object.keys(validateCartData) : [];
         const FILTERED_CART_ITEMS: any[] = items.filter((item) => VALIDATE_CART_NOTIFICATION_MSNS.includes(item['productId']));
         if (VALIDATE_CART_NOTIFICATION_MSNS.length === 0 || items.length === 0) { return }
         const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
         const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
-        console.log(NEW_NOTIFICATIONS);
+        
+        // this.notificationsSubject.next(NEW_NOTIFICATIONS);
         if (NEW_NOTIFICATIONS.length > 0) {
             this.notifications = this.mergeNotifications(userId, OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
+            console.log('notification logs FINAL ==>',NEW_NOTIFICATIONS, OLD_NOTIFICATIONS);
             this.notificationsSubject.next(this.notifications);
         }
-        this.modifyCartAItemsAfterNotifications(items, validateCartData);
+        // this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
     {
+          
         let messageList = [];
         FILTERED_ITEMS.forEach((item) =>
         {
@@ -1613,11 +1618,12 @@ export class CartService
             const CART_PRODUCT_PRICE = item["priceWithoutTax"];
             const UPDATES = validateCartData[CART_PRODUCT_MSN]['updates'];
             msg['msnid'] = item['productId'];
+            
             if (UPDATES['outOfStockFlag']) {
                 msg['type'] = "oos";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
-            }
-            else if (UPDATES['priceWithoutTax'] && (validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] < CART_PRODUCT_PRICE)) {
+            } else if (UPDATES['priceWithoutTax'] && (+UPDATES['priceWithoutTax']  < +CART_PRODUCT_PRICE)) {
+                // console.log('notification logs ==>', +UPDATES['priceWithoutTax'],  +CART_PRODUCT_PRICE, (+UPDATES['priceWithoutTax']  < +CART_PRODUCT_PRICE)); 
                 msg['type'] = "price";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
             } else if (UPDATES['shipping']) {
@@ -1635,11 +1641,13 @@ export class CartService
                     msg['type'] = "shippingcoupon";
                 }
             }
+
             if (msg['data']) {
                 const SHIPPING_INDEX = messageList.findIndex(ml => ml.type == "shipping");
                 const COUPON_INDEX = messageList.findIndex(ml => ml.type == "coupon");
                 const SHIPPING_COUPON_INDEX = messageList.findIndex(ml => ml.type == "shippingcoupon");
                 const IS_SHIPPINGCOUPON_TYPE = (msg['type'] === 'shippingcoupon');
+                // console.log('notification logs ==>', {SHIPPING_INDEX, COUPON_INDEX, SHIPPING_COUPON_INDEX, IS_SHIPPINGCOUPON_TYPE}); 
                 if (SHIPPING_INDEX > -1 && (msg['type'] == 'coupon' || IS_SHIPPINGCOUPON_TYPE)) {
                     messageList[SHIPPING_INDEX].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                     messageList[SHIPPING_INDEX].type = "shippingcoupon";
@@ -1648,16 +1656,18 @@ export class CartService
                     messageList[COUPON_INDEX].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                     messageList[COUPON_INDEX].type = "shippingcoupon";
                 }
-                else if (SHIPPING_INDEX > -1 && COUPON_INDEX > -1 && SHIPPING_COUPON_INDEX > -1) {
+                else if (SHIPPING_INDEX == -1 && COUPON_INDEX == -1 && SHIPPING_COUPON_INDEX == -1) {
                     messageList.push(msg);
                 }
             }
+            
         });
+        // console.log('notification logs ==>', messageList); 
         return messageList;
     }
 
-    mergeNotifications(userId, oldNotfications: any[], newNotfications: any[])
-    {
+    mergeNotifications(userId, oldNotfications: any[], newNotfications: any[]) {
+        // debugger;
         let finalNotfications = [];
         let canUpdateNotification = true;
         if (oldNotfications.length > 0 && newNotfications.length === 0) {
@@ -1670,18 +1680,18 @@ export class CartService
             finalNotfications = newNotfications;
             if (oldNotfications.length > newNotfications.length) {
                 finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
+            } else if (oldNotfications.length < newNotfications.length) {
+                finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
             } else {
                 finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
             }
-            finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
         }
-        if (canUpdateNotification)
-        {
-            this.setValidateCartMessageApi({ userId: userId, data: finalNotfications }).subscribe(() =>
-            {
+        if (canUpdateNotification) {
+            this.setValidateCartMessageApi({ userId: userId, data: finalNotfications }).subscribe(() => {
                 console.log("Successfully updated notifications")
             });
         }
+        console.log('notification logs  finalNotfications ==>', finalNotfications);
         return finalNotfications;
     }
 
@@ -1698,6 +1708,9 @@ export class CartService
                 }
             }
         }
+        if(COMMON_MSNS.length === 0){
+            return [...oldNotfications, ...newNotfications];
+        }
         oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
         finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
         oldNotfications = [...oldNotfications, ...finalNotifications]
@@ -1706,6 +1719,7 @@ export class CartService
 
     updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
     {
+        // debugger;
         let finalNotifications: any[] = [];
         const COMMON_MSNS = [];
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
@@ -1785,6 +1799,10 @@ export class CartService
             }
             return item;
         });
+        // replace items in cart with new items
+        // setgenereric cart session (use generateGenericCartSession func)
+        // call shipping API -> shippingCartDTo payload, (_getShipping)
+        // update shiupoing prices in generic acrt session 
         if (oosData.length > 0 || canUpdateCart) {
             const CART_SESSION = this.getGenericCartSession;
             CART_SESSION.shoppingCartDto['itemsList'] = itemsList;
@@ -1831,7 +1849,7 @@ export class CartService
         return cartSessionObj;
     }
     
-    getCartNotificationsSubject() { return this.notificationsSubject; }
+    getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }
 
     getCartNotifications() { return this.notifications; }
 

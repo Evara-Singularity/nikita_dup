@@ -50,17 +50,18 @@ export class CartComponent
         // Get latest cart from API
         this._commonService.updateUserSession();
         this.loadCartDataFromAPI();
-        this._cartService.verifyAndUpdateNotfications();
     }
 
     // Function to get and set the latest cart
-    loadCartDataFromAPI()
-    {
+    loadCartDataFromAPI() {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
+            map((cart: any) => {
+                this._cartService.verifyAndUpdateNotfications();
+                return cart;
+            }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
-                (result) =>
-                {
+                (result) => {
                     this._globalLoaderService.setLoaderState(false);
                 });
     }

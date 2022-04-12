@@ -17,18 +17,18 @@ export class CartNotifiesComponent implements OnInit, OnDestroy
     @Output("viewUnavailableItems$") viewUnavailableItems$: EventEmitter<string[]> = new EventEmitter<string[]>();
     constructor(public _cartService: CartService, private _router: Router) { }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.is_quickorder = this._router.url.includes("quickorder");
-        this.notificationSubscription = this._cartService.getCartNotificationsSubject().subscribe((notifications: any[]) =>
-        {
+        this.notificationSubscription = this._cartService.getCartNotificationsSubject().subscribe((notifications: any[]) => {
+            console.trace();
+            console.log('notifications subscribeed ==>', notifications)
             this.notfications = notifications || [];
         })
     }
 
     viewUnavailableItems() { 
         const VIEW_ITEMS_TYPE = this.is_quickorder ? ['oos'] :['oos', 'unserviceable'];
-        console.log(VIEW_ITEMS_TYPE);
+        // console.log(VIEW_ITEMS_TYPE);
         this.viewUnavailableItems$.emit(VIEW_ITEMS_TYPE); 
     }
     

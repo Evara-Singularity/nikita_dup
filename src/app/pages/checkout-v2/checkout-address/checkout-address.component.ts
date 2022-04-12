@@ -113,15 +113,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
         const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
-        this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
-        {
-            if (!response) return;
-            const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
-            const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
-            const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
-            this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
-            this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
-        })
+        // this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
+        // {
+        //     if (!response) return;
+        //     const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
+        //     const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
+        //     const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
+        //     this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
+        //     this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+        // })
     }
 
     /**

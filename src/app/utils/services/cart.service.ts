@@ -1408,7 +1408,7 @@ export class CartService
     }
 
     /**@description display unavailable items in pop-up */
-    viewUnavailableItems(types:string[])
+    viewUnavailableItems(types: string[])
     {
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
@@ -1660,6 +1660,64 @@ export class CartService
         return messageList;
     }
 
+    mergeNotifications(oldNotfications: any[], newNotfications: any[])
+    {
+        let finalNotfications = [];
+        if (oldNotfications.length > 0 && newNotfications.length === 0) {
+            finalNotfications = oldNotfications;
+        } else if (newNotfications.length > 0 && oldNotfications.length === 0) {
+            finalNotfications = newNotfications;
+        }
+        else if (oldNotfications.length > 0 && newNotfications.length > 0) {
+            finalNotfications = newNotfications;
+            if (oldNotfications.length > newNotfications.length) {
+                finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
+            } else {
+                finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
+            }
+            finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
+        }
+        return finalNotfications;
+    }
+
+    updateOldWithNewNotifications(oldNotfications: any[], newNotfications: any[])
+    {
+        let finalNotifications: any[] = []
+        const COMMON_MSNS = [];
+        const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
+        for (let oIndex = 0; oIndex < oldNotfications.length; oIndex++) {
+            for (let iIndex = 0; iIndex < newNotfications.length; iIndex++) {
+                if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
+                    oldNotfications[oIndex] = newNotfications[iIndex];
+                    COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
+                }
+            }
+        }
+        oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
+        finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
+        oldNotfications = [...oldNotfications, ...finalNotifications]
+        return oldNotfications;
+    }
+
+    updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
+    {
+        let finalNotifications: any[] = [];
+        const COMMON_MSNS = [];
+        const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
+        for (let oIndex = 0; oIndex < newNotfications.length; oIndex++) {
+            for (let iIndex = 0; iIndex < oldNotfications.length; iIndex++) {
+                if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
+                    oldNotfications[oIndex] = newNotfications[iIndex];
+                    COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
+                }
+            }
+        }
+        oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
+        finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
+        oldNotfications = [...oldNotfications, ...finalNotifications]
+        return oldNotfications;
+    }
+
     updateNotifications(oldNotfications: any[], newNotfications: any[]): any[]
     {
         if (oldNotfications.length === 0) { return newNotfications; }
@@ -1788,12 +1846,12 @@ export class CartService
     }
 
     getCartNotificationsSubject() { return this.notificationsSubject; }
-    
+
     getCartNotifications() { return this.notifications; }
 
     clearAllNotfications()
     {
-        this.notifications = []; 
+        this.notifications = [];
         this.setValidateCartMessageApi([]).subscribe(() => { console.log("cleared all notfication"); })
     }
 }

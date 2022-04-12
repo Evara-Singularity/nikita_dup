@@ -1596,13 +1596,9 @@ export class CartService
         const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
         console.log(NEW_NOTIFICATIONS);
         if (NEW_NOTIFICATIONS.length > 0) {
-            this.notifications = this.updateNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
+            this.notifications = this.mergeNotifications(userId, OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
             this.notificationsSubject.next(this.notifications);
         }
-        this.setValidateCartMessageApi({ userId: userId, data: this.notifications }).subscribe(() =>
-        {
-            console.log("Successfully updated notifications")
-        });
         this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
 
@@ -1652,7 +1648,7 @@ export class CartService
                     messageList[COUPON_INDEX].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                     messageList[COUPON_INDEX].type = "shippingcoupon";
                 }
-                else if (SHIPPING_INDEX === -1 && COUPON_INDEX === -1 && SHIPPING_COUPON_INDEX === -1) {
+                else if (SHIPPING_INDEX > -1 && COUPON_INDEX > -1 && SHIPPING_COUPON_INDEX > -1) {
                     messageList.push(msg);
                 }
             }
@@ -1660,11 +1656,13 @@ export class CartService
         return messageList;
     }
 
-    mergeNotifications(oldNotfications: any[], newNotfications: any[])
+    mergeNotifications(userId, oldNotfications: any[], newNotfications: any[])
     {
         let finalNotfications = [];
+        let canUpdateNotification = true;
         if (oldNotfications.length > 0 && newNotfications.length === 0) {
             finalNotfications = oldNotfications;
+            canUpdateNotification = false;
         } else if (newNotfications.length > 0 && oldNotfications.length === 0) {
             finalNotfications = newNotfications;
         }
@@ -1676,6 +1674,13 @@ export class CartService
                 finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
             }
             finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
+        }
+        if (canUpdateNotification)
+        {
+            this.setValidateCartMessageApi({ userId: userId, data: finalNotfications }).subscribe(() =>
+            {
+                console.log("Successfully updated notifications")
+            });
         }
         return finalNotfications;
     }
@@ -1716,25 +1721,6 @@ export class CartService
         finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
         oldNotfications = [...oldNotfications, ...finalNotifications]
         return oldNotfications;
-    }
-
-    updateNotifications(oldNotfications: any[], newNotfications: any[]): any[]
-    {
-        if (oldNotfications.length === 0) { return newNotfications; }
-        let finalNotifications: any[] = null;
-        for (let newNotification of newNotfications) {
-            for (let oldNotfication of oldNotfications) {
-                if (oldNotfication['msnid'] === newNotification['msnid']) {
-                    if (newNotification['type'] == 'price' || newNotification['type'] == 'oos') {
-                        finalNotifications.push(newNotification);
-                        continue;
-                    }
-                    finalNotifications.push(oldNotfication);
-                    finalNotifications.push(newNotification);
-                }
-            }
-        }
-        return finalNotifications;
     }
 
     removeNotifications(msn: any[])

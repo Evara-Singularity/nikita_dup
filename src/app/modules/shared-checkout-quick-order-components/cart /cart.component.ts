@@ -178,7 +178,7 @@ export class CartComponent
                                         //TODO:remove notifcation and call setValidationMessage and no need to call verifyAndUpdateNotfications.
                                         this._cartService.setGenericCartSession(result);
                                         //this._cartService.verifyAndUpdateNotfications();
-                                        this._cartService.removeNotifications([]);
+                                        this._cartService.removeNotifications([productMsnId]);
                                         this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
                                         this._cartService.cart.next({
                                             count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),

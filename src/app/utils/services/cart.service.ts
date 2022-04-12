@@ -1589,24 +1589,19 @@ export class CartService
      */
     processNotifications(userId, items: any[], validateCartData, validateCartMessageData)
     {
-        // console.trace();
         const VALIDATE_CART_NOTIFICATION_MSNS: string[] = validateCartData ? Object.keys(validateCartData) : [];
         const FILTERED_CART_ITEMS: any[] = items.filter((item) => VALIDATE_CART_NOTIFICATION_MSNS.includes(item['productId']));
-        if (VALIDATE_CART_NOTIFICATION_MSNS.length === 0 || items.length === 0) { return }
         const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
         const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
-        this.notifications = this.mergeNotifications(userId, OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
-        if(this.notifications)
-        {
-            console.log("Next notifications====>", this.notifications)
+        this.notifications = this.mergeNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
+        if (this.notifications) {
             this.notificationsSubject.next(this.notifications);
         }
-        // this.modifyCartAItemsAfterNotifications(items, validateCartData);
+        this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
     {
-
         let messageList = [];
         FILTERED_ITEMS.forEach((item) =>
         {
@@ -1616,12 +1611,10 @@ export class CartService
             const CART_PRODUCT_PRICE = item["priceWithoutTax"];
             const UPDATES = validateCartData[CART_PRODUCT_MSN]['updates'];
             msg['msnid'] = item['productId'];
-
             if (UPDATES['outOfStockFlag']) {
                 msg['type'] = "oos";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
-            } else if (UPDATES['priceWithoutTax'] && (+UPDATES['priceWithoutTax'] < +CART_PRODUCT_PRICE)) {
-                // console.log('notification logs ==>', +UPDATES['priceWithoutTax'],  +CART_PRODUCT_PRICE, (+UPDATES['priceWithoutTax']  < +CART_PRODUCT_PRICE)); 
+            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] != CART_PRODUCT_PRICE)) {
                 msg['type'] = "price";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
             } else if (UPDATES['shipping']) {
@@ -1639,13 +1632,11 @@ export class CartService
                     msg['type'] = "shippingcoupon";
                 }
             }
-
             if (msg['data']) {
                 const SHIPPING_INDEX = messageList.findIndex(ml => ml.type == "shipping");
                 const COUPON_INDEX = messageList.findIndex(ml => ml.type == "coupon");
                 const SHIPPING_COUPON_INDEX = messageList.findIndex(ml => ml.type == "shippingcoupon");
                 const IS_SHIPPINGCOUPON_TYPE = (msg['type'] === 'shippingcoupon');
-                // console.log('notification logs ==>', {SHIPPING_INDEX, COUPON_INDEX, SHIPPING_COUPON_INDEX, IS_SHIPPINGCOUPON_TYPE}); 
                 if (SHIPPING_INDEX > -1 && (msg['type'] == 'coupon' || IS_SHIPPINGCOUPON_TYPE)) {
                     messageList[SHIPPING_INDEX].data.text1 = "Shipping Charges and Applied Promo Code have been updated.";
                     messageList[SHIPPING_INDEX].type = "shippingcoupon";
@@ -1658,19 +1649,15 @@ export class CartService
                     messageList.push(msg);
                 }
             }
-
         });
-        // console.log('notification logs ==>', messageList); 
         return messageList;
     }
 
-    mergeNotifications(userId, oldNotfications: any[], newNotfications: any[])
+    mergeNotifications(oldNotfications: any[], newNotfications: any[])
     {
         let finalNotfications = [];
-        let canUpdateNotification = true;
         if (oldNotfications.length > 0 && newNotfications.length === 0) {
             finalNotfications = oldNotfications;
-            canUpdateNotification = false;
         } else if (newNotfications.length > 0 && oldNotfications.length === 0) {
             finalNotfications = newNotfications;
         }
@@ -1680,24 +1667,14 @@ export class CartService
             } else if (oldNotfications.length < newNotfications.length) {
                 finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
             } else {
-                console.log("Equal");
-                finalNotfications = this.updateOldWithNewNotifications(newNotfications, oldNotfications)
+                finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
             }
         }
-        if (canUpdateNotification) {
-            this.setValidateCartMessageApi({ userId: userId, data: finalNotfications }).subscribe(() =>
-            {
-                console.log("Successfully updated notifications")
-            });
-        }
-        console.log('notification logs  finalNotfications ==>', finalNotfications);
         return finalNotfications;
     }
 
     updateOldWithNewNotifications(oldNotfications: any[], newNotfications: any[])
     {
-        console.log("oldNotfications", oldNotfications);
-        console.log("newNotfications", newNotfications);
         let finalNotifications: any[] = []
         const COMMON_MSNS = [];
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
@@ -1705,7 +1682,6 @@ export class CartService
             for (let iIndex = 0; iIndex < newNotfications.length; iIndex++) {
                 if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
                     finalNotifications.push(newNotfications[iIndex]);
-                    oldNotfications[oIndex] = newNotfications[iIndex];
                     COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
                 }
             }
@@ -1778,6 +1754,12 @@ export class CartService
 
     updateCartItemsAfterNotfications(newItems: any[], validateCartData)
     {
+        if (!validateCartData) {
+            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
+            NEW_CART_SESSION['itemsList'] = newItems;
+            this.setGenericCartSession(NEW_CART_SESSION);
+            return;
+        }
         let canUpdateCart = false;
         let oosData = [];
         let itemsList = newItems.map((item) =>
@@ -1791,7 +1773,6 @@ export class CartService
             }
             else if (UPDATES['priceWithoutTax'] || UPDATES['shipping']) {
                 canUpdateCart = true;
-                //delete oos from frontend because item is again instock
                 if (item['oos']) { delete item['oos']; }
                 return this.updateCartItem(item, validateCartData[PRODUCT_ID]['productDetails']);
             } else if (UPDATES['shipping'] || UPDATES['coupon']) {
@@ -1800,54 +1781,34 @@ export class CartService
             }
             return item;
         });
-        // replace items in cart with new items
-        // setgenereric cart session (use generateGenericCartSession func)
-        // call shipping API -> shippingCartDTo payload, (_getShipping)
-        // update shiupoing prices in generic acrt session 
-        if (oosData.length > 0 || canUpdateCart) {
-            const CART_SESSION = this.getGenericCartSession;
-            CART_SESSION.shoppingCartDto['itemsList'] = itemsList;
-            const NEW_SESSSION_DETAILS = this.updateCart(CART_SESSION.shoppingCartDto);
-            this.setGenericCartSession(NEW_SESSSION_DETAILS);
-            if (canUpdateCart) { this.updateCartSession(NEW_SESSSION_DETAILS); }
+        const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
+        NEW_CART_SESSION['itemsList'] = itemsList;
+        this.setGenericCartSession(NEW_CART_SESSION);
+        if (canUpdateCart) {
+            const user = this._localStorageService.retrieve('user');
+            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession, { ...itemsList });
+            forkJoin([this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications }), this.updateCartAfterNotifcations(NEW_CART_SESSION)]).subscribe(
+                (responses) =>
+                {
+                    const cartSession = this.generateGenericCartSession(responses[1]);
+                    this.setGenericCartSession(cartSession);
+                    this.orderSummary.next(cartSession);
+                    this.cart.next({ count: (cartSession.itemsList ? cartSession.itemsList.length : 0) });
+                }
+            )
         }
     }
-
-    updateCart(cartSessionResponse)
+    updateCartAfterNotifcations(CART_SESSION)
     {
-        const cartSessionObj = {
-            cart: Object.assign({}, cartSessionResponse['cart']),
-            itemsList: (cartSessionResponse["itemsList"] ? [...cartSessionResponse["itemsList"]] : []),
-            addressList: (cartSessionResponse["addressList"] ? [...cartSessionResponse["addressList"]] : []),
-            payment: cartSessionResponse["payment"],
-            offersList: cartSessionResponse["offersList"],
-            extraOffer: cartSessionResponse["extraOffer"]
-        }
-        let totalAmount: number = 0;
-        let tawot: number = 0; // totalAmountWithOutTax
-        let tpt: number = 0; //totalPayableTax
-        let itemsList = cartSessionObj.itemsList ? cartSessionObj.itemsList : [];
-        for (let item of itemsList) {
-            if (item["bulkPrice"] == null) {
-                item["totalPayableAmount"] = this.getTwoDecimalValue(item["productUnitPrice"] * item["productQuantity"]);
-                item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax'] * item['productQuantity']);
-                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
-            }
-            else {
-                item["totalPayableAmount"] = (item["bulkPrice"]) ? this.getTwoDecimalValue(item["bulkPrice"] * item["productQuantity"]) : 0;
-                item['tpawot'] = (item['bulkPriceWithoutTax']) ? this.getTwoDecimalValue(item['bulkPriceWithoutTax'] * item['productQuantity']) : 0;
-                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
-            }
-            totalAmount = this.getTwoDecimalValue(totalAmount + item.totalPayableAmount);
-            tawot = this.getTwoDecimalValue(tawot + item.tpawot);
-            tpt = tpt + item['tax'];
-        };
-        cartSessionObj.cart.totalAmount = totalAmount;
-        cartSessionObj.cart.totalPayableAmount = totalAmount + cartSessionObj.cart['shippingCharges'] - cartSessionObj.cart['totalOffer'];
-        cartSessionObj.cart.tawot = tawot;
-        cartSessionObj.cart.tpt = tpt;
-        cartSessionObj.itemsList = itemsList;
-        return cartSessionObj;
+        return this.updateCartSession(CART_SESSION).pipe(
+            switchMap((newCartSession) =>
+            {
+                return this.verifyPromocode(newCartSession)
+            }),
+            switchMap((newCartSession) =>
+            {
+                return this.verifyShippingCharges(newCartSession)
+            }));
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }
@@ -1857,7 +1818,7 @@ export class CartService
     clearAllNotfications()
     {
         this.notifications = [];
-        this.setValidateCartMessageApi([]).subscribe(() => { console.log("cleared all notfication"); })
+        const user = this._localStorageService.retrieve('user');
+        this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications }).subscribe(() => { console.log("cleared all notfication"); })
     }
-
 }

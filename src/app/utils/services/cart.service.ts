@@ -1554,7 +1554,6 @@ export class CartService
 
     setUnserviceables(unserviceables: any[])
     {
-        console.log('unserviceables ==>', unserviceables, this.notifications);
         this.notifications = this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
         this.notifications = [...this.notifications, ...unserviceables];
         this.notificationsSubject.next(this.notifications);
@@ -1596,11 +1595,10 @@ export class CartService
         if (VALIDATE_CART_NOTIFICATION_MSNS.length === 0 || items.length === 0) { return }
         const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
         const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
-        
-        // this.notificationsSubject.next(NEW_NOTIFICATIONS);
-        if (NEW_NOTIFICATIONS.length > 0) {
-            this.notifications = this.mergeNotifications(userId, OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
-            console.log('notification logs FINAL ==>',NEW_NOTIFICATIONS, OLD_NOTIFICATIONS);
+        this.notifications = this.mergeNotifications(userId, OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
+        if(this.notifications)
+        {
+            console.log("Next notifications====>", this.notifications)
             this.notificationsSubject.next(this.notifications);
         }
         // this.modifyCartAItemsAfterNotifications(items, validateCartData);
@@ -1608,7 +1606,7 @@ export class CartService
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
     {
-          
+
         let messageList = [];
         FILTERED_ITEMS.forEach((item) =>
         {
@@ -1618,11 +1616,11 @@ export class CartService
             const CART_PRODUCT_PRICE = item["priceWithoutTax"];
             const UPDATES = validateCartData[CART_PRODUCT_MSN]['updates'];
             msg['msnid'] = item['productId'];
-            
+
             if (UPDATES['outOfStockFlag']) {
                 msg['type'] = "oos";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
-            } else if (UPDATES['priceWithoutTax'] && (+UPDATES['priceWithoutTax']  < +CART_PRODUCT_PRICE)) {
+            } else if (UPDATES['priceWithoutTax'] && (+UPDATES['priceWithoutTax'] < +CART_PRODUCT_PRICE)) {
                 // console.log('notification logs ==>', +UPDATES['priceWithoutTax'],  +CART_PRODUCT_PRICE, (+UPDATES['priceWithoutTax']  < +CART_PRODUCT_PRICE)); 
                 msg['type'] = "price";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
@@ -1660,14 +1658,14 @@ export class CartService
                     messageList.push(msg);
                 }
             }
-            
+
         });
         // console.log('notification logs ==>', messageList); 
         return messageList;
     }
 
-    mergeNotifications(userId, oldNotfications: any[], newNotfications: any[]) {
-        // debugger;
+    mergeNotifications(userId, oldNotfications: any[], newNotfications: any[])
+    {
         let finalNotfications = [];
         let canUpdateNotification = true;
         if (oldNotfications.length > 0 && newNotfications.length === 0) {
@@ -1677,17 +1675,18 @@ export class CartService
             finalNotfications = newNotfications;
         }
         else if (oldNotfications.length > 0 && newNotfications.length > 0) {
-            finalNotfications = newNotfications;
             if (oldNotfications.length > newNotfications.length) {
                 finalNotfications = this.updateOldWithNewNotifications(oldNotfications, newNotfications)
             } else if (oldNotfications.length < newNotfications.length) {
                 finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
             } else {
-                finalNotfications = this.updateNewWithOldNotifications(newNotfications, oldNotfications)
+                console.log("Equal");
+                finalNotfications = this.updateOldWithNewNotifications(newNotfications, oldNotfications)
             }
         }
         if (canUpdateNotification) {
-            this.setValidateCartMessageApi({ userId: userId, data: finalNotfications }).subscribe(() => {
+            this.setValidateCartMessageApi({ userId: userId, data: finalNotfications }).subscribe(() =>
+            {
                 console.log("Successfully updated notifications")
             });
         }
@@ -1697,44 +1696,46 @@ export class CartService
 
     updateOldWithNewNotifications(oldNotfications: any[], newNotfications: any[])
     {
+        console.log("oldNotfications", oldNotfications);
+        console.log("newNotfications", newNotfications);
         let finalNotifications: any[] = []
         const COMMON_MSNS = [];
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
         for (let oIndex = 0; oIndex < oldNotfications.length; oIndex++) {
             for (let iIndex = 0; iIndex < newNotfications.length; iIndex++) {
                 if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
+                    finalNotifications.push(newNotfications[iIndex]);
                     oldNotfications[oIndex] = newNotfications[iIndex];
                     COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
                 }
             }
         }
-        if(COMMON_MSNS.length === 0){
+        if (COMMON_MSNS.length === 0) {
             return [...oldNotfications, ...newNotfications];
         }
-        oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
-        finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
-        oldNotfications = [...oldNotfications, ...finalNotifications]
-        return oldNotfications;
+        const _oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
+        const _finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
+        oldNotfications = [...finalNotifications, ..._oldNotfications, ..._finalNotifications]
+        return finalNotifications;
     }
 
     updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
     {
-        // debugger;
         let finalNotifications: any[] = [];
         const COMMON_MSNS = [];
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
         for (let oIndex = 0; oIndex < newNotfications.length; oIndex++) {
             for (let iIndex = 0; iIndex < oldNotfications.length; iIndex++) {
                 if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
-                    oldNotfications[oIndex] = newNotfications[iIndex];
+                    finalNotifications.push(newNotfications[iIndex]);
                     COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
                 }
             }
         }
-        oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
-        finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
-        oldNotfications = [...oldNotfications, ...finalNotifications]
-        return oldNotfications;
+        const _oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
+        const _finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
+        oldNotfications = [...finalNotifications, ..._oldNotfications, ..._finalNotifications]
+        return finalNotifications;
     }
 
     removeNotifications(msn: any[])
@@ -1848,7 +1849,7 @@ export class CartService
         cartSessionObj.itemsList = itemsList;
         return cartSessionObj;
     }
-    
+
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }
 
     getCartNotifications() { return this.notifications; }

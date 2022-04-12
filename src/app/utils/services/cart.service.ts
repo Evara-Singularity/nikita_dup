@@ -1599,11 +1599,11 @@ export class CartService
             this.notifications = this.updateNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
             this.notificationsSubject.next(this.notifications);
         }
-        // this.setValidateCartMessageApi({ userId: userId, data: this.notifications }).subscribe(() =>
-        // {
-        //     console.log("Successfully updated notifications")
-        // });
-        // this.modifyCartAItemsAfterNotifications(items, validateCartData);
+        this.setValidateCartMessageApi({ userId: userId, data: this.notifications }).subscribe(() =>
+        {
+            console.log("Successfully updated notifications")
+        });
+        this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
@@ -1844,7 +1844,7 @@ export class CartService
         cartSessionObj.itemsList = itemsList;
         return cartSessionObj;
     }
-
+    
     getCartNotificationsSubject() { return this.notificationsSubject; }
 
     getCartNotifications() { return this.notifications; }
@@ -1854,4 +1854,5 @@ export class CartService
         this.notifications = [];
         this.setValidateCartMessageApi([]).subscribe(() => { console.log("cleared all notfication"); })
     }
+
 }

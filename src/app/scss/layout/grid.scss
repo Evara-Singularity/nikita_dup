@@ -3,6 +3,8 @@
    display: flex;
    flex-wrap: wrap;
    padding:10px 15px;
+   justify-content: space-between;
+   align-items: center;
 }
 @for $i from 1 through 12 {
     $colnum: $i;
@@ -16,8 +18,6 @@
      }
 }
 .pwa-row-noPad{
-  width: $fullwidth;
-  display: flex;
-  padding:10px 0px;
+  padding:10px 0px !important;
 }
 

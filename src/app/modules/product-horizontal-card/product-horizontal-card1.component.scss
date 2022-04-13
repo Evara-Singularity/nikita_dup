@@ -1,46 +1,52 @@
 @import "../../scss/variables";
 @import "../../scss/components/buttons.scss";
+@import "../../scss/components/rating.scss";
+@import "../../scss/utils/mixins.scss";
+
 .product-horizontal-card{
-    .pwa-col-4 {
-        width:100px;
+    background:#fff;
+    border-bottom:1px solid var(--platinum);
+    .pwa-row{
+        padding:5px 10px;
+    }
+    .pwa-row-noPad{
+        padding:5px 0px;
+    }
+    .pwa-col-left{
         text-align: center;
         position: relative;
     }
-    .pwa-col-8{
-        width: 100%;
-        .name {
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: 2.8em;
-            margin-bottom: 5px;
-            line-height: 1.6em;
+    .pwa-col-right{
+        .prod-name {
+            text-align: left;
+            font-size: 14px;
+            color: #303030;
+            line-height: 16px;
         }
-        .rating {
-            position: relative;
-            font-size: $small-font;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            .avgrating {
-                display: inline;
-                background-color: #458d00;
-                padding: 3px 5px;
-                color: #fff;
-                border-radius: 3px;
-                font-size: $small-font;
-
-                i {
-                    padding-left: 2px;
-                    font-size: 7px;
-                }
+        .prod-brand{
+            margin-top: 4px;
+            margin-bottom: 4px;
+            text-align: left;
+            font-size: 12px;
+            color: #b1b1b1;
+        }
+        .prod-price-row{
+            margin-bottom:4px;
+            .prod-mrp{
+                color: #2b2b2b;
+                text-decoration: line-through;
+                opacity: .5;
+                margin-right:5px;
             }
-            .count {
-                color: #c0c0c0;
+            .prod-discount{
+                font-weight: 700;
+                color: #3b9e26;
+            }
+            .prod-selling-price{
+                margin-top:4px;
+                font-size: 14px;
+                color: #2b2b2b;
+                font-weight: 700;
             }
         }
     }  
@@ -60,9 +66,20 @@
         vertical-align: middle;
     }
 }
+
 button{
     font-size:$small-font;
 }
+.pwa-left-fixed-125{
+    @include pwa-custom-row(125px,$leftFixedWidth:true);
+}
+.pwa-right-fixed-125{
+    @include pwa-custom-row(125px,$leftFixedWidth:false);
+}
+.pwa-left-fixed-100{
+    @include pwa-custom-row(100px,$leftFixedWidth:true);
+}
+
 
 
 

@@ -9,7 +9,6 @@ import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-car
   declarations: [ProductCardHorizontalScrollComponent],
   imports: [
     CommonModule,
-    ProductHorizontalCardModule
   ],
   exports:[
     ProductCardHorizontalScrollComponent

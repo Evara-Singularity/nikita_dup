@@ -57,7 +57,8 @@ export class CartComponent
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
             map((cart: any) => {
-                this._cartService.verifyAndUpdateNotfications();
+                const delay = this._router.url.includes("quickorder")?0:500;
+                this._cartService.verifyAndUpdateNotfications(delay);
                 return cart;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(

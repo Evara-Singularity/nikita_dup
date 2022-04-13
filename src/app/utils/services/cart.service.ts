@@ -8,7 +8,7 @@ import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-che
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, switchMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { Address } from '../models/address.modal';
 import { AddToCartProductSchema } from "../models/cart.initial";
@@ -39,6 +39,7 @@ export class CartService
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
     itemsValidationMessage = [];
+    cartNotications = [];
     notifications = [];
     appliedPromoCode;
 
@@ -634,7 +635,7 @@ export class CartService
                 // shipping API should be called after updatecart API always
                 if (cartSession) {
                     return this._getShipping(cartSession).pipe(
-                        map((cartSession: any) => { console.trace(); return cartSession; }),
+                        map((cartSession: any) => { return cartSession; }),
                         map((cartSession) => { return this._notifyCartChanges(cartSession, null); })
                     );
                 } else {
@@ -1559,7 +1560,16 @@ export class CartService
         this.notificationsSubject.next(this.notifications);
     }
 
-    verifyAndUpdateNotfications()
+    setCartNotifications(cartNotifications: any[])
+    {
+        this.notifications = this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
+        this.notifications = [...this.notifications, ...cartNotifications];
+        this.notificationsSubject.next(this.notifications);
+    }
+
+    
+
+    verifyAndUpdateNotfications(time?)
     {
         if (this.localAuthService.isUserLoggedIn()) {
             const USER_SESSION = this.localAuthService.getUserSession();
@@ -1568,7 +1578,7 @@ export class CartService
             const VALIDATE_CART_MESSAGE_REQUEST = { userId: USER_SESSION['userId'] };
             const buyNow = this.buyNow;
             if (buyNow) { VALIDATE_CART_MESSAGE_REQUEST['buyNow'] = buyNow; }
-            forkJoin([this.validateCartApi(VALIDATE_CART_REQUEST), this.getValidateCartMessageApi(VALIDATE_CART_MESSAGE_REQUEST)]).subscribe((responses) =>
+            forkJoin([this.validateCartApi(VALIDATE_CART_REQUEST), this.getValidateCartMessageApi(VALIDATE_CART_MESSAGE_REQUEST)]).pipe(delay(time ? time : 0)).subscribe((responses) =>
             {
                 const validateCartResponse = responses[0];
                 const validateCartMessageResponse = responses[1];
@@ -1594,14 +1604,14 @@ export class CartService
         let oldNotfications: any[] = validateCartMessageData || [];
         let info = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
         let newNotfications: any[] = info['messageList'];
-        let increasedPrice:string[] = info['increasedPriceMSNS'];
-        oldNotfications = oldNotfications.filter((notification) => !increasedPrice.includes(notification['msnid']))
-        this.notifications = this.mergeNotifications(oldNotfications, newNotfications);
+        let increasedPrice: string[] = info['increasedPriceMSNS'];
+        oldNotfications = oldNotfications.filter((notification) => !increasedPrice.includes(notification['msnid']));
+        this.cartNotications = this.mergeNotifications(oldNotfications, newNotfications);
         this.updateCartItemsAfterNotfications(items, validateCartData);
-        this.notificationsSubject.next(this.notifications);
+        this.setCartNotifications(this.cartNotications);
     }
 
-    buildNotifications(FILTERED_ITEMS: any[], validateCartData): { messageList: any[], increasedPriceMSNS: string[]}
+    buildNotifications(FILTERED_ITEMS: any[], validateCartData): { messageList: any[], increasedPriceMSNS: string[] }
     {
         const messageList = [];
         const increasedPriceMSNS = []
@@ -1738,8 +1748,7 @@ export class CartService
         let canUpdateCart = false;
         let oosData = [];
         let itemsList = newItems;
-        if (validateCartData)
-        {
+        if (validateCartData) {
             itemsList = newItems.map((item) =>
             {
                 const PRODUCT_ID = item['productId'];
@@ -1763,7 +1772,7 @@ export class CartService
                 const user = this._localStorageService.retrieve('user');
                 const newCartSession = Object.assign({}, this.getGenericCartSession);
                 newCartSession['itemsList'] = itemsList;
-                const setValidation$ = this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications });
+                const setValidation$ = this.setValidateCartMessageApi({ userId: user['userId'], data: this.cartNotications });
                 if (canUpdateCart) {
                     this.updateCartAfterNotifcations(newCartSession, setValidation$);
                     return;
@@ -1802,14 +1811,13 @@ export class CartService
     modifyCartItemsForPriceNotfication()
     {
         let msn_data = {}
-        this.notifications.forEach((notification) =>
+        this.cartNotications.forEach((notification) =>
         {
             if (notification["type"] === "price") {
                 msn_data[notification["msnid"]] = notification;
             }
         });
-        if (Object.keys(msn_data).length)
-        {
+        if (Object.keys(msn_data).length) {
             const newCartSession = Object.assign({}, this.getGenericCartSession);
             let itemsListNew = JSON.parse(JSON.stringify(newCartSession['itemsList']));
             itemsListNew = itemsListNew.map((item) =>
@@ -1834,19 +1842,25 @@ export class CartService
     {
         if (!this.localAuthService.isUserLoggedIn()) return of([]);
         const userSession = this.localAuthService.getUserSession();
-        this.notifications = this.notifications.filter((notification) => { notification['msnid'] === msn; })
-        this.notificationsSubject.next(this.notifications);
-        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications })
+        this.cartNotications = this.cartNotications.filter((notification) => { notification['msnid'] === msn; })
+        this.setCartNotifications(this.notifications);
+        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.cartNotications })
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }
 
     getCartNotifications() { return this.notifications; }
 
-    clearAllNotfications()
+    clearNotifications()
     {
+        this.cartNotications = [];
         this.notifications = [];
+    }
+
+    clearCartNotfications()
+    {
+        this.clearNotifications()
         const user = this._localStorageService.retrieve('user');
-        this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications }).subscribe(() => { console.log("cleared all notfication"); })
+        this.setValidateCartMessageApi({ userId: user['userId'], data: this.cartNotications }).subscribe(() => { console.log("cleared all notfication"); })
     }
 }

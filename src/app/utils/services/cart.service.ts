@@ -1781,6 +1781,12 @@ export class CartService
             }
             return item;
         });
+        if (oosData.length)
+        {
+            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
+            NEW_CART_SESSION['itemsList'] = newItems;
+            this.setGenericCartSession(NEW_CART_SESSION);
+        }
         const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
         NEW_CART_SESSION['itemsList'] = itemsList;
         this.setGenericCartSession(NEW_CART_SESSION);

@@ -1,4 +1,3 @@
-import { CartNotifiesModule } from './../../../modules/shared-checkout-quick-order-components/cart-notifies/cart-notifies.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedCheckoutAddressModule } from '@app/modules/shared-checkout-address/shared-checkout-address.module';
@@ -20,7 +19,6 @@ import { CheckoutAddressComponent } from './checkout-address.component';
     CartNoItemModule,
     OrderSummaryModule,
     CartNotificationsModule,
-    CartNotifiesModule,
     CheckoutAddressRoutingModule,
     SharedCheckoutAddressModule,
     SharedCheckoutStepperModule,

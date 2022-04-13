@@ -823,8 +823,7 @@ export class CartComponent {
 
     calCulateDiscount() {
         this.itemsList.forEach((element) => {
-
-            element['discount'] = ((element['amount'] - element['productUnitPrice']) / element['amount']) * 100;
+            element['discount'] = this.commonService.calculcateDiscount(null, element['amount'], element['productUnitPrice']);
         })
     }
 
@@ -2569,7 +2568,7 @@ export class CartComponent {
 
         let disc = 0;
         if (priceQuantityCountry.mrp > 0 && this.productResult['priceWithoutTax'] > 0) {
-            disc = (((priceQuantityCountry.mrp - this.productResult['priceWithoutTax']) / priceQuantityCountry.mrp) * 100)
+            disc = this.commonService.calculcateDiscount(null, priceQuantityCountry.mrp, this.productResult['priceWithoutTax'])
         }
         this.productResult['discount'] = disc;
         this.productResult['outOfStock'] = priceQuantityCountry.outOfStockFlag;
@@ -2606,7 +2605,7 @@ export class CartComponent {
         if (this.productResult['bulkPrice'] !== null) {
             this.productResult['bulkPrice'].forEach(element => {
                 if (priceQuantityCountry.mrp > 0) {
-                    element.discount = ((priceQuantityCountry.mrp - element.bulkSPWithoutTax) / priceQuantityCountry.mrp) * 100;
+                    element.discount = this.commonService.calculcateDiscount(null, priceQuantityCountry.mrp, element.bulkPrice);
                 }
                 else {
                     element.discount = element.discount;
@@ -2683,7 +2682,7 @@ export class CartComponent {
             productObject['taxPercentage'] = priceQuantityCountry.taxRule.taxPercentage;
             // productObject['discount']=((productObject['mrp']-productObject['price'])/productObject['mrp'])/100;
             if (priceQuantityCountry.mrp > 0 && productObject['priceWithoutTax'] > 0) {
-                disc = (((priceQuantityCountry.mrp - productObject['priceWithoutTax']) / priceQuantityCountry.mrp) * 100)
+                disc = this.commonService.calculcateDiscount(null, priceQuantityCountry.mrp, productObject['price'])
             }
             productObject['discount'] = disc;
             productObject['outOfStock'] = priceQuantityCountry.outOfStockFlag;
@@ -2739,11 +2738,9 @@ export class CartComponent {
             // alert(priceQuantityCountry.bulkPrices!==null);
 
             if (productObject['bulkPrice'] !== null) {
-
-
                 productObject['bulkPrice'].forEach(element => {
                     if (priceQuantityCountry.mrp > 0) {
-                        element.discount = ((priceQuantityCountry.mrp - element.bulkSellingPrice) / priceQuantityCountry.mrp) * 100;
+                        element.discount = this.commonService.calculcateDiscount(null, priceQuantityCountry.mrp, element.bulkSellingPrice);
                     }
                     else {
                         element.discount = element.discount;

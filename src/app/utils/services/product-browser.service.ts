@@ -5,6 +5,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProductsEntity } from '../models/product.listing.search';
+import { CommonService } from './common.service';
 import { DataService } from './data.service';
 const ERROR_RESPONSE = { data: null, status: false };
 
@@ -14,7 +15,7 @@ const ERROR_RESPONSE = { data: null, status: false };
 export class ProductBrowserService
 {
 
-    constructor(private _dataService: DataService, public http: HttpClient)
+    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService)
     { }
 
     getPastOrderProducts(userId)
@@ -52,7 +53,7 @@ export class ProductBrowserService
             brandId: product["brandId"] || null,
             brandName: product["shortDescription"] ? product["shortDescription"] : "",
             quantityAvailable: 1,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: this._commonService.calculcateDiscount( product["discount"],productMrp, productPrice ),
             rating: product["rating"] || null,
             categoryCodes: null,
             taxonomy: product["taxonomy"] || null,

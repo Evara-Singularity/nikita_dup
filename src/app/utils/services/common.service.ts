@@ -1,16 +1,15 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { filter, map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
-import { Observer, of, Subscription } from "rxjs";
+import { Observer, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NavigationEnd, NavigationExtras, Router } from "@angular/router";
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
-import { CartService } from "./cart.service";
 import { DataService } from "./data.service";
 import { CheckoutService } from "./checkout.service";
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from "@angular/common";
+import { isPlatformServer, isPlatformBrowser } from "@angular/common";
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -89,7 +88,6 @@ export class CommonService
         private _localStorageService: LocalStorageService,
         private _activatedRoute: ActivatedRoute,
         private _dataService: DataService,
-        public _cartService: CartService,
         private _analytics: GlobalAnalyticsService,
         private _loaderService: GlobalLoaderService,
         private rendererFactory: RendererFactory2,
@@ -1408,6 +1406,23 @@ export class CommonService
           filter((route) => route.outlet === "primary"),
           mergeMap((route) => route.data)
         )
+    }
+
+    /**
+     * 
+     * @param discountIfExist : If discount is given then it will make sure it has 0 places after decimal & is floor value
+     * @param mrp : used if discountIfExist does not exist
+     * @param SellingPrice  used if discountIfExist does not exist
+     * @returns discount or 0
+     */
+    calculcateDiscount(discountIfExist, mrp, SellingPrice): number {
+        if (discountIfExist && !Number.isNaN(discountIfExist)) {
+            return +Math.floor(+(discountIfExist)).toFixed(0)
+        } else if (mrp && SellingPrice && !Number.isNaN(mrp) && !Number.isNaN(SellingPrice)) {
+            return +(Math.floor(+(((mrp - SellingPrice) / mrp) * 100)).toFixed(0))
+        } else {
+            return 0;
+        }
     }
 
 }

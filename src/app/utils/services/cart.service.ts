@@ -805,7 +805,7 @@ export class CartService
             taxonomyCode: productCategoryDetails['taxonomyCode'],
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: this.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
             category: productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
@@ -814,6 +814,7 @@ export class CartService
             productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
             url: productPartDetails.canonicalUrl,
             isProductUpdate: 0,
+            sellingPrice: productPrice
         } as AddToCartProductSchema;
         if (args.isFbt) {
             product['isFbt'] = args.isFbt;
@@ -823,6 +824,23 @@ export class CartService
             product['bulkPriceWithoutTax'] = args.selectPriceMap['bulkSPWithoutTax']
         }
         return product
+    }
+
+    /**
+ * 
+ * @param discountIfExist : If discount is given then it will make sure it has 0 places after decimal & is floor value
+ * @param mrp : used if discountIfExist does not exist
+ * @param SellingPrice  used if discountIfExist does not exist
+ * @returns discount or 0
+ */
+    calculcateDiscount(discountIfExist, mrp, SellingPrice): number {
+        if (discountIfExist && !Number.isNaN(discountIfExist)) {
+            return +Math.floor(+(discountIfExist)).toFixed(0)
+        } else if (mrp && SellingPrice && !Number.isNaN(mrp) && !Number.isNaN(SellingPrice)) {
+            return +(Math.floor(+(((mrp - SellingPrice) / mrp) * 100)).toFixed(0))
+        } else {
+            return 0;
+        }
     }
 
     private _checkProductItemExistInCart(productId, cartSession)

@@ -5,6 +5,7 @@ import CONSTANTS from '@app/config/constants';
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CharacterremovePipeModule } from '@app/utils/pipes/characterRemove.pipe';
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
+import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 
 @Component({
   selector: 'app-bestseller',
@@ -35,7 +36,7 @@ export class BestsellerComponent implements OnInit {
       CommonModule,
       RouterModule,
       CharacterremovePipeModule,
-      MathCeilPipeModule,
+      MathFloorPipeModule,
       PopUpModule
   ],
 })

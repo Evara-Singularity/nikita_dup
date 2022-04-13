@@ -11,8 +11,9 @@
         <div class="container clearfix pad-tb-10">
             <h2 class="f-left f-14 pad-tb-10 upper-case">{{carouselData[category.dataKey]['layout_name']}}</h2>
             <a *ngIf="category.viewAllLink; else showPop"
-                [routerLink]="'/'+carouselData[category.dataKey]['layout_url']" (click)="setSourceLink(carouselData[category.dataKey]['layout_url'])" routerLinkActive="router-link-active"
-                class="btn-red f-right">VIEW ALL
+                [routerLink]="'/'+carouselData[category.dataKey]['layout_url']"
+                (click)="setSourceLink(carouselData[category.dataKey]['layout_url'])"
+                routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
             </a>
             <ng-template #showPop>
                 <a (click)="openPopup=true;sendDataToPopUP.emit(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
@@ -71,12 +72,12 @@
                             </p>
                             <p class="price">
                                 <span
-                                    class="before-discount">{{beforeDiscount(item.pricewithouttax,item.discount_percentage)
+                                    class="before-discount">{{beforeDiscount(item.sellingPrice,item.discount_percentage)
                                     | currency: 'INR' : 'symbol'
                                     : '1.0-0'}}
                                 </span>
                                 <span class="discount">{{item.discount_percentage}}% OFF</span>
-                                <span class="after-discount">{{item.pricewithouttax | currency: 'INR' : 'symbol' :
+                                <span class="after-discount">{{item.sellingPrice | currency: 'INR' : 'symbol' :
                                     '1.0-0'}}</span>
                             </p>
                             <p class="seller">

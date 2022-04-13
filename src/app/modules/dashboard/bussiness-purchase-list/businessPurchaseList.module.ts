@@ -7,7 +7,7 @@ import { routing } from "./businessPurchaseList.routing";
 import { BusinessPurchaseListService } from "./businessPurchaseList.service";
 import { OrderSummaryService } from "@app/modules/legacyOrderSummary/orderSummary.service";
 import { ProductService } from "@app/utils/services/product.service";
-import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
+import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
     FormsModule,
     ReactiveFormsModule,
     routing,
-    MathCeilPipeModule,
+    MathFloorPipeModule
   ],
   declarations: [BussinessPurchaseListComponent],
   exports: [],

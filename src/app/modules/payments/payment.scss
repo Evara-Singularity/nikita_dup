@@ -1,4 +1,7 @@
 @import '../../scss/variables';
+@import './payment-continue-btn.scss';
+@import './../../scss/checkout-prod-card.scss';
+
 .payment-options {
     &>div {
         @extend %cards;
@@ -13,19 +16,6 @@
 ::ng-deep {
     .wp-50 {
         width: 50%;
-    }
-}
-
-.payment-container {
-    .card-30 {
-        padding: 0;
-    }
-    label {
-        padding: 20px 15px;
-        border-bottom: 1px solid $border-sec-color;
-        &:last-child {
-            border-bottom: 0;
-        }
     }
 }
 
@@ -225,6 +215,22 @@ label.payment-radio-btn {
         line-height: 20px;
     }
 }
-.page-name-black {
-    color: $black;
+
+.payment-container {
+    .card-30 {
+        padding: 0;
+    }
+    label {
+        padding: 20px 15px;
+        border-bottom: 1px solid $border-sec-color;
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+}
+.cod-Popup{
+    position: relative;
+    &.product-card{
+        margin-top:10px;
+    }
 }

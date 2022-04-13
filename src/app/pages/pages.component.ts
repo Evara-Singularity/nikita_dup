@@ -67,7 +67,8 @@ export class PagesComponent implements OnInit {
       queryParams.hasOwnProperty("token")
     ) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } else {
+    } 
+    else {
       this.checkForUserAndCartSession();
     }
   }
@@ -231,32 +232,13 @@ export class PagesComponent implements OnInit {
   }
 
   checkForUserAndCartSession() {
-    if (this.router.url.indexOf('checkout') < 0 && this.router.url.indexOf('payment') < 0) {
-      this._cartService.checkForUserAndCartSessionAndNotify().subscribe(cartSessionStatus => {
-        if (cartSessionStatus) {
-          console.log('CART SESSION SUCCESSFUL.')
-        } else {
-          console.log('CART SESSION FAILED.')
-        }
-      })
-    }
+    this._cartService.refreshCartSesion();
   }
 
   createHeaderData(_aRoute) {
-    of(_aRoute)
-      .pipe(
-        map((route) => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-        filter((route) => route.outlet === "primary"),
-        mergeMap((route) => route.data)
-      )
-      .subscribe((rData) => {
-        this.iData = rData;
-      });
+    this._commonService.getRoutingData(_aRoute).subscribe((rData) => {
+      this.iData = rData;
+    });
   }
 
   setEnvIdentiferCookie() {

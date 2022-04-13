@@ -332,13 +332,11 @@ export const CONSTANTS = {
   ],
   ASSET_IMG: "assets/img/home_card.webp",
   SCHEMA: "https://schema.org",
-
   RAZORPAY: {
     CHECKOUT: "https://checkout.razorpay.com/v1/razorpay.js",
     IMAGE: "https://i.imgur.com/n5tjHFD.png",
     SUCCESS: "/paymentRazorPayWallet/success",
   },
-
   SL: {
     API: "/login/sociallogin",
     LINKEDIN_OAUTH:
@@ -378,6 +376,8 @@ export const CONSTANTS = {
     'medium': 'xlarge',
     'large': 'xxlarge',
     'xlarge': 'xxlarge',
-  }
+  },
+  NEFT_AMOUNT_LMIT: 2000,
+  EMI_MINIMUM_AMOUNT: 3000
 };
 export default CONSTANTS;

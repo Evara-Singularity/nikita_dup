@@ -155,7 +155,7 @@ export class CheckoutV1Component implements OnInit {
   ngOnInit(): void {
 
     const userSession = this.isBrowser ? this._localAuthService.getUserSession() : null;
-    this.cartData = this._cartService.getCartSession();
+    this.cartData = this._cartService.getGenericCartSession;
 
     if (this.cartData['itemsList'] !== null && this.cartData['itemsList']) {
       var totQuantity = 0;
@@ -284,7 +284,7 @@ export class CheckoutV1Component implements OnInit {
         //  ;
         if (cartSession && cartSession['cart'] && cartSession['itemsList'] && Array.isArray(cartSession['itemsList'])) {
           const cs = this._cartService.updateCart(cartSession);
-          this._cartService.setCartSession(cs);
+          this._cartService.setGenericCartSession(cs);
           setTimeout(() => {
             this.cartSessionUpdated$.next(cartSession);
           }, 100);
@@ -299,7 +299,7 @@ export class CheckoutV1Component implements OnInit {
           }
         } else if (cartSession['statusCode'] != undefined && cartSession['statusCode'] == 202) {
           const cs = this._cartService.updateCart(cartSession['cart']);
-          this._cartService.setCartSession(cs);
+          this._cartService.setGenericCartSession(cs);
           setTimeout(() => {
             this.cartSessionUpdated$.next(cs);
           }, 100);
@@ -315,7 +315,7 @@ export class CheckoutV1Component implements OnInit {
           }
         }
 
-        this.itemsCount = this._cartService.getCartSession()['itemsList'].length;
+        this.itemsCount = this._cartService.getGenericCartSession['itemsList'].length;
       })
   }
 
@@ -524,7 +524,7 @@ export class CheckoutV1Component implements OnInit {
   viewUnavailableItems() {
     // console.log('continue viewUnavailableItems ==>', 'called');
 
-    const cartSession = JSON.parse(JSON.stringify(this._cartService.getCartSession()));
+    const cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
     let itemsList = cartSession['itemsList'];
     const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))
       .filter(item => item['type'] == 'unservicable')

@@ -4,24 +4,26 @@ import { Component, EventEmitter, AfterViewInit, OnInit, ElementRef } from '@ang
 import { PaymentService } from './payment.service';
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '../../utils/services/common.service';
-import { CheckoutService } from '../../utils/services/checkout.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { DataService } from '../../utils/services/data.service';
 import { CartService } from '../../utils/services/cart.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
+// TODO: 
+/**
+ * remove isSavedCardExist, savedCardsData, paymentForm
+ */
 @Component({
-    selector: 'payment',
+    selector: 'checkout-payment',
     templateUrl: './payment.html',
-    styleUrls: [
-        './payment.scss'
-    ],
+    styleUrls: ['./payment.scss' ],
 })
+export class PaymentComponent implements OnInit {
 
-export class PaymentComponent implements OnInit, AfterViewInit {
     paymentBlock: number;
-    globalConstants: {};
-    isSavedCardExist: boolean;
+    globalConstants: any = CONSTANTS.GLOBAL;
+    isSavedCardExist: boolean = false;
     savedCardsData: any;
     updateTabIndex: EventEmitter<number> = new EventEmitter();
     spp: boolean; // spp: Show Payment Popup
@@ -36,119 +38,87 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     paymentForm: FormGroup;
     isPaymentSelected: boolean = false;
     canNEFT_RTGS = true;
-    set isShowLoader(value) {
-        this.loaderService.setLoaderState(value);
-    }
-    successPercentageRawData = null; 
+    successPercentageRawData = null;
 
-    constructor(public _dataService: DataService, private loaderService: GlobalLoaderService, public cartService: CartService, private _paymentService: PaymentService, private _localAuthService: LocalAuthService, public checkOutService: CheckoutService, public commonService: CommonService, private elementRef: ElementRef
-        ,private _globalSessionService:GlobalSessionStorageService) {
-        this.globalConstants = CONSTANTS.GLOBAL;
-        this.isSavedCardExist = false;
+
+    
+    constructor(
+        public _dataService: DataService,
+        private _loaderService: GlobalLoaderService,
+        public _cartService: CartService,
+        private _paymentService: PaymentService,
+        private _localAuthService: LocalAuthService,
+        public _commonService: CommonService,
+        private _analytics: GlobalAnalyticsService,
+        private _elementRef: ElementRef) {
         this.isShowLoader = true;
     }
 
     ngOnInit() {
-        const _cartItems = this.cartService.getCartSession()['itemsList'];
-        const _cartMSNs = (_cartItems as any[]).map(item => item['productId']);
-        this._globalSessionService.updatePaymentMsns(_cartMSNs);
-        let invoiceType = this.checkOutService.getInvoiceType();
-        this.invoiceType = invoiceType;
+       
+        this.intialize();
+        this.getSavedCardData();
+        this._cartService.clearAllNotfications();
+    }
 
+    private intialize() {
+        if (this._commonService.isBrowser) {
+
+            const cartData = this._cartService.getGenericCartSession;
+
+            this.canNEFT_RTGS = cartData['cart']['agentId'];
+            this.totalAmount = (cartData['cart']['totalAmount']) + +(cartData['cart']['shippingCharges']) - +(cartData['cart']['totalOffer']); // intialize total amount
+
+            const _cartItems = cartData['itemsList'] || [];
+            const _cartMSNs = (_cartItems as any[]).map(item => item['productId']);
+            this._paymentService.updatePaymentMsns(_cartMSNs);
+
+            // TODO  -- change this and use it from cart service 
+            let invoiceType = this._cartService.invoiceType 
+            this.invoiceType = invoiceType;
+
+            if (invoiceType == 'tax') {
+                this.paymentBlock = this.globalConstants["razorPay"];
+                this.isShowLoader = false;
+            }
+            if (!this._cartService.cashOnDeliveryStatus.isEnable) {
+                this.disableCod = true;
+            }
+
+            // TODO - this should used in case there are some COD not avalible
+            this.unAvailableMsnList = this._cartService.codNotAvailableObj['itemsArray'];
+
+            // TODO - check with pritam how this used
+            this.getPaymentSuccessAssistData();
+
+            this.analyticVisit(cartData);
+        }
+    }
+
+    private getSavedCardData() {
         const userSession = this._localAuthService.getUserSession();
         const data = {
             userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
         };
 
-        if (invoiceType == 'tax') {
+        if (this.invoiceType == 'tax') {
             data['userId'] = userSession['userId'];
             data['userEmail'] = '';
         }
-
-        this._paymentService.getSavedCards(data, invoiceType)
+        console.log('getSavedCardData ==>', 'called', data, this.invoiceType)
+        this._paymentService.getSavedCards(data, this.invoiceType)
             .subscribe((res) => {
                 if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
                     this.savedCardsData = res['data']['user_cards'];
                     this.isSavedCardExist = true;
                     this.paymentBlock = this.globalConstants['savedCard'];
                 }
-
-                // New requirement (Checkout flow): Do not auto select any payment meth
-                // else {
-                //     this.paymentBlock = this.globalConstants['creditDebitCard'];
-                // }
-
                 this.isShowLoader = false;
             });
-
-        if (invoiceType == 'tax') {
-
-            this.paymentBlock = this.globalConstants["razorPay"];
-            this.isShowLoader = false;
-        }
-
-        if (!this.commonService.cashOnDeliveryStatus.isEnable) {
-            this.disableCod = true;
-        }
-
-        this.unAvailableMsnList = this.cartService.codNotAvailableObj['itemsArray'];
-
-        var cartData = this.cartService.getCartSession();
-        this.canNEFT_RTGS = cartData['cart']['agentId'];
-        this.totalAmount = cartData['cart']['totalAmount'] + cartData['cart']['shippingCharges'] - cartData['cart']['totalOffer']; // intialize total amount
-
-        if (cartData['itemsList'] !== null && cartData['itemsList']) {
-            var trackData = {
-                event_type: "page_load",
-                page_type: "payment",
-                label: "view",
-                channel: "Checkout",
-                price: cartData["cart"]["totalPayableAmount"].toString(),
-                quantity: cartData["noOfItems"],
-                shipping: parseFloat(cartData["shippingCharges"]),
-                invoiceType: this.invoiceType,
-                itemList: cartData["itemsList"].map(item => {
-                    return {
-                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
-                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
-                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
-                        price: item["totalPayableAmount"].toString(),
-                        quantity: item["productQuantity"]
-                    }
-                })
-            }
-            this._dataService.sendMessage(trackData);
-        }
-
-        this.getPaymentSuccessAssistData();
     }
-
-
-    getPaymentSuccessAssistData() {
-        this._paymentService.getPaymentsMethodData(this.invoiceType).subscribe(result => {
-            if (result['status']) {
-                this.successPercentageRawData = result['data'] || null;
-            }
-        })
-    }
-
-    ngAfterViewInit() {
-    }
-
-    checkEmiAmount() {
-        // let cart=this.cartService.getCartSession();
-        // this.totalAmount=cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
-        // // console.log('totalAmount',this.totalAmount);
-        // if (this.totalAmount < 3000) {
-        //     this.message = "Emi not available below Rs. 3000";
-        //     //this.isEmiEnable = false;
-        //     console.log("message", this.message);
-        // }
-    }
-
 
     updatePaymentBlock(block, mode?, elementId?) {
-        let cart = this.cartService.getCartSession();
+        let cart = this._cartService.getGenericCartSession;
         this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
         this.messageEmi = "";
         this.messageCod = "";
@@ -175,13 +145,21 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             return;
         }
         else {
-            // ClientUtility.scrollToTop(1000, (<HTMLElement>document.querySelector('.tab-content')).offsetTop);
             this.paymentBlock = block;
             this.spp = true;
         }
 
         this.isPaymentSelected = true;
 
+        this.changeInPaymentBlockAnalytic(cart, mode);
+
+        if (elementId) {
+            this.scollToSection(elementId);
+        }
+
+    }
+
+    private changeInPaymentBlockAnalytic(cart: any, mode: any) {
         if (cart['itemsList'] !== null && cart['itemsList']) {
             var trackData = {
                 event_type: "click",
@@ -200,59 +178,62 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                         category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
                         price: item["totalPayableAmount"].toString(),
                         quantity: item["productQuantity"]
-                    }
+                    };
                 })
-            }
-            this._dataService.sendMessage(trackData);
+            };
+            this._analytics.sendToClicstreamViaSocket(trackData);
         }
+    }
 
-        if (elementId) {
-            this.scollToSection(elementId);
+    private analyticVisit(cartData: any) {
+        if (cartData['itemsList'] !== null && cartData['itemsList']) {
+            var trackData = {
+                event_type: "page_load",
+                page_type: "payment",
+                label: "view",
+                channel: "Checkout",
+                price: cartData["cart"]["totalPayableAmount"].toString(),
+                quantity: cartData["noOfItems"],
+                shipping: parseFloat(cartData["shippingCharges"]),
+                invoiceType: this.invoiceType,
+                itemList: cartData["itemsList"].map(item => {
+                    return {
+                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
+                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
+                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
+                        price: item["totalPayableAmount"].toString(),
+                        quantity: item["productQuantity"]
+                    };
+                })
+            };
+            this._analytics.sendToClicstreamViaSocket(trackData);
         }
-
     }
 
     scollToSection(elementId) {
         setTimeout(() => {
-            this.elementRef.nativeElement.ownerDocument.getElementById(elementId).scrollIntoView({ behavior: 'smooth',block: 'center'});
+            this._elementRef.nativeElement.ownerDocument.getElementById(elementId).scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 300);
     }
 
     outData(data) {
         this[data.selector] = !this[data.selector];
-        // this.openPinCodePopup = !data.hide;
-    }
-
-    getPopupHeading(): string {
-        if (this.paymentBlock === this.globalConstants['creditDebitCard']) {
-            return 'Credit/Debit Card';
-        } else if (this.paymentBlock === this.globalConstants['netBanking']) {
-            return 'Net Banking';
-        } else if (this.paymentBlock === this.globalConstants['wallet']) {
-            return 'Wallet';
-        } else if (this.paymentBlock === this.globalConstants['emi']) {
-            return 'EMI';
-        } else if (this.paymentBlock === this.globalConstants['cashOnDelivery']) {
-            return 'Cash on Delivery';
-        } else if (this.paymentBlock === this.globalConstants['neftRtgs']) {
-            return 'NEFT/RTGS';
-        } else if (this.paymentBlock === this.globalConstants['upi']) {
-            return 'UPI';
-        } else if (this.paymentBlock === this.globalConstants['paytmUpi']) {
-            return 'Paytm UPI';
-        }
-        return null;
     }
 
     removeTab(tabId) {
         this.isSavedCardExist = false;
-        // this.paymentBlock = this.globalConstants['creditDebitCard'];
     }
 
     tabIndexUpdated(index) {
-        // console.log("Payment Component", index);
-
         this.updateTabIndex.emit(index);
+    }
+
+    getPaymentSuccessAssistData() {
+        this._paymentService.getPaymentsMethodData(this.invoiceType).subscribe(result => {
+            if (result['status']) {
+                this.successPercentageRawData = result['data'] || null;
+            }
+        })
     }
 
     get neftSuccessPercentageData() {
@@ -266,8 +247,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     get upiSuccessPercentageData() {
         return (this.successPercentageRawData && this.successPercentageRawData['UPI']) ? this.successPercentageRawData['UPI'] : null
     }
-    
-    
 
     learnMore(e) {
         if (e !== undefined) {
@@ -275,4 +254,30 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         }
         this.showPopup = true;
     }
+    
+    set isShowLoader(value) {
+        this._loaderService.setLoaderState(value);
+    }
+
+    // getPopupHeading(): string {
+    //     if (this.paymentBlock === this.globalConstants['creditDebitCard']) {
+    //         return 'Credit/Debit Card';
+    //     } else if (this.paymentBlock === this.globalConstants['netBanking']) {
+    //         return 'Net Banking';
+    //     } else if (this.paymentBlock === this.globalConstants['wallet']) {
+    //         return 'Wallet';
+    //     } else if (this.paymentBlock === this.globalConstants['emi']) {
+    //         return 'EMI';
+    //     } else if (this.paymentBlock === this.globalConstants['cashOnDelivery']) {
+    //         return 'Cash on Delivery';
+    //     } else if (this.paymentBlock === this.globalConstants['neftRtgs']) {
+    //         return 'NEFT/RTGS';
+    //     } else if (this.paymentBlock === this.globalConstants['upi']) {
+    //         return 'UPI';
+    //     } else if (this.paymentBlock === this.globalConstants['paytmUpi']) {
+    //         return 'Paytm UPI';
+    //     }
+    //     return null;
+    // }
+
 }

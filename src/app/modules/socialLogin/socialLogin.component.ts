@@ -120,7 +120,7 @@ export class SocialLoginComponent {
                             }
                         }
 
-                        let cartSession = Object.assign(this._cartService.getCartSession());
+                        let cartSession = Object.assign(this._cartService.getGenericCartSession);
                         cartSession['cart']['userId'] = res['userId'];
 
                         this._cartService.getSessionByUserId(cartSession)
@@ -157,7 +157,7 @@ export class SocialLoginComponent {
                             .subscribe((res) => {
                                 if (res.statusCode != undefined && res.statusCode == 200) {
                                     let cs = this._cartService.updateCart(res);
-                                    this._cartService.setCartSession(cs);
+                                    this._cartService.setGenericCartSession(cs);
                                     this._cartService.orderSummary.next(res);
                                     this._cartService.cart.next({ count: res.noOfItems || (res['itemsList'] as any[]).length  || 0 });
                                 }
@@ -169,7 +169,7 @@ export class SocialLoginComponent {
                                         if (this._router.url.includes('/checkout')) {
                                             this._localAuthService.login$.next(this.redirectUrl);
                                             data['userId'] = userSession.userId
-                                            this._cartService.setCartSession(data);
+                                            this._cartService.setGenericCartSession(data);
                                             this._cartService.orderSummary.next(data);
                                             this._cartService.cart.next({ count: data.noOfItems || (data['itemsList'] as any[]).length || 0 });
                                             // this._router.navigate(['/checkout'], { queryParams: { index: 2 }, replaceUrl: true });

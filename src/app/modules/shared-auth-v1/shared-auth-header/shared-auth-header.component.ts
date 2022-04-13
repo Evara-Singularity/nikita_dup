@@ -1,8 +1,7 @@
-import { LocalAuthService } from './../../../utils/services/auth.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SharedAuthService } from '../shared-auth.service';
+import { LocalAuthService } from './../../../utils/services/auth.service';
 
 @Component({
     selector: 'shared-auth-header',
@@ -21,39 +20,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     constructor(
         private _router: Router,
-        private _sharedAuthService: SharedAuthService,
         private _localAuthService: LocalAuthService) { }
 
-    ngOnInit() 
-    {
-        if (this.isCheckout) {
-            this.checkOutTabSubscriber = this._sharedAuthService.getCheckoutTab().subscribe((TAB) =>
-            {
-                this.tab = TAB;
-            })
-        }
-    }
-
-    handleClick()
-    {
-        if (this.isCheckout) {
-            this.moveTabTo()
-            return
-        }
-        this.navigateBack();
-    }
-
-    moveTabTo()
-    {
-        let nextTab = this._sharedAuthService.LOGIN_TAB;
-        if (this.tab === this._sharedAuthService.FORGET_PASSWORD_TAB) {
-            nextTab = this._sharedAuthService.OTP_TAB;
-        }
-        else if (this.tab === this._sharedAuthService.OTP_TAB) {
-            nextTab = this._sharedAuthService.LOGIN_TAB;
-        }
-        this._sharedAuthService.emitCheckoutChangeTab(nextTab);
-    }
+    ngOnInit() { }
 
     navigateBack()
     {
@@ -69,7 +38,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
             this._localAuthService.handleBackURL(true);
             return;
         }
-        this.navigateTo(NAVIGATE_TO);
+        this.navigateTo(this.isCheckout ? `checkout/${NAVIGATE_TO}` : NAVIGATE_TO);
     }
 
     navigateToHome(link)

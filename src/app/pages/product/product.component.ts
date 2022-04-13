@@ -28,7 +28,6 @@ import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject, Subscription } from "rxjs";
@@ -337,7 +336,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private renderer2: Renderer2,
     private analytics: GlobalAnalyticsService,
     private checkoutService: CheckoutService,
-    private _trackingService: TrackingService,
     @Inject(DOCUMENT) private document,
     @Optional() @Inject(RESPONSE) private _response: any
   ) {
@@ -1506,20 +1504,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
       if (!result && this.cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
-        this.router.navigate(['/checkout'], {
+        this.localAuthService.setBackURLTitle(this.router.url, "Continue to place order");
+        this.router.navigate(['/checkout/login'], {
           queryParams: {
             title: 'Continue to place order',
+            backurl: this.router.url
           },
           state: (buyNow ? { buyNow: buyNow } : {})
         });
       } else {
-
         if (result) {
           this.checkoutService.setCheckoutTabIndex(1);
           if (!buyNow) {
-            this.cartService.setCartSession(result);
+            this.cartService.setGenericCartSession(result);
             // console.log('cart session', result['noOfItems'] || result.itemsList.length );
-            this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
             this.globalLoader.setLoaderState(false);
             this.showAddToCartToast();
           } else {
@@ -1551,7 +1549,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
 
   updateAddtoCartSocketAnalyticEvent(buynow: boolean) {
-    const cartSession = Object.assign({}, this.cartService.getCartSession())
+    const cartSession = Object.assign({}, this.cartService.getGenericCartSession)
     let totQuantity = 0;
     let trackData = {
       event_type: "click",
@@ -2367,7 +2365,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const options = Object.assign({}, this.iOptions);
       options.pager = false;
 
-      this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
+      this.popupCrouselInstance.instance["analyticProduct"] = this.analytics.basicPDPTracking(this.rawProductData);
       this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
       this.popupCrouselInstance.instance["options"] = options;
       this.popupCrouselInstance.instance["productAllImages"] =
@@ -2587,8 +2585,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
 
   async showYTVideo(link) {
     if (!this.youtubeModalInstance) {
-      const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
-      let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
+      const PRODUCT = this.analytics.basicPDPTracking(this.rawProductData);
+      let analyticsDetails = this.analytics.getCommonTrackingObject(PRODUCT, "pdp");
       let ytParams = "?autoplay=1&rel=0&controls=1&loop&enablejsapi=1";
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true }, };
@@ -3423,7 +3421,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.injector
       );
     this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
-    this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
+    this.productInfoPopupInstance.instance["analyticProduct"] = this.analytics.basicPDPTracking(this.rawProductData);
     this.productInfoPopupInstance.instance["modalData"] =
       oosProductIndex > -1
         ? this.productService.getProductInfo(infoType, oosProductIndex)

@@ -416,7 +416,7 @@ export class ProductListService {
     };
     let criteoItem = [];
     setTimeout(() => {
-      const cartSession = this._cartService.getCartSession() || {};
+      const cartSession = this._cartService.getGenericCartSession || {};
       if (cartSession && cartSession.hasOwnProperty("itemsList")) {
         for (let p = 0; p < cartSession["itemsList"].length; p++) {
           criteoItem.push({

@@ -1,0 +1,30 @@
+@import './../../../../scss/variables';
+
+p {
+    margin-bottom: 5px;
+}
+
+i.icon-circle-delete {
+    z-index: 2;
+}
+
+.pos-rel {
+    position: relative;
+}
+
+.applied-code {
+    position: relative;
+    input:read-only {
+        color: $green-color;
+    }
+    button:disabled {
+        background: $green-color;
+        border: 1px solid $green-color;
+    }
+    i {
+        position: absolute;
+        top: 12px;
+        right: 128px;
+        font-size: 16px;
+    }
+}

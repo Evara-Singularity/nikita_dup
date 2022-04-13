@@ -8,8 +8,8 @@ import { MathFloorPipeModule } from '@utils/pipes/math-floor';
 
 // Newly created Modules
 import { CartNotificationsModule } from '@app/modules/shared-checkout-quick-order-components/cart-notifications/cart-notifications.module';
-import { CartModule } from '@app/modules/shared-checkout-quick-order-components/cart/cart.module';
 import { OrderSummaryModule } from '@app/modules/shared-checkout-quick-order-components/orderSummary/orderSummary.module';
+import { CartModule } from '@app/modules/shared-checkout-quick-order-components/cart /cart.module';
 
 @NgModule({
     imports: [

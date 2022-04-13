@@ -42,3 +42,10 @@ export interface CheckoutHeaderModel
     status:boolean;
 }
 
+export interface CartNotificationsModel
+{
+    unserviceable:any[];
+    oos:any[];
+    price:any[]
+}
+

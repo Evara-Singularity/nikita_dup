@@ -58,7 +58,7 @@ export class PaymentComponent implements OnInit {
        
         this.intialize();
         this.getSavedCardData();
-
+        this._cartService.clearAllNotfications();
     }
 
     private intialize() {

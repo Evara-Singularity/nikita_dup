@@ -16,18 +16,18 @@ export class OutOfStockValidationMessage implements PipeTransform {
         //  ;
         let oosMessage = [];
         let isOOS = false;
-        let isUnservicable = false;
+        let isUnserviceable = false;
         // below msnlist is just for checking is any ms
         const msnList = [];
         const itemsValidationMessage = value.filter((ivm) => {
-            if (ivm['type'] != 'oos' && ivm['type'] != 'unservicable') {
+            if (ivm['type'] != 'oos' && ivm['type'] != 'unserviceable') {
                 return true;
             }
 
             if (ivm['type'] == 'oos') {
                 isOOS = true;
-            } else if (ivm['type'] == 'unservicable') {
-                isUnservicable = true;
+            } else if (ivm['type'] == 'unserviceable') {
+                isUnserviceable = true;
             }
 
             if (!oosMessage.length) {
@@ -49,11 +49,11 @@ export class OutOfStockValidationMessage implements PipeTransform {
         if (isOOS) {
             let text1 = oosMessage[0]['count'] > 1 ? "Items in your cart are" : "Item in your cart is";
             text1 = text1 + " not available for order currently";
-            if (isUnservicable) {
+            if (isUnserviceable) {
                 text1 = text1 + " or not deliverable at the selected shipping address";
             }
             oosMessage[0]['data']['text1'] = text1;
-        } else if (isUnservicable) {
+        } else if (isUnserviceable) {
             let text1 = oosMessage[0]['count'] > 1 ? "Items in your cart are" : "Item in your cart is";
             text1 = text1 + " not deliverable at the selected shipping address";
             oosMessage[0]['data']['text1'] = text1;

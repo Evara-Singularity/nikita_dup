@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from '@app/utils/services/cart.service';
-import { GlobalState } from '@utils/global.state';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'cart-notifications',
@@ -8,10 +9,34 @@ import { GlobalState } from '@utils/global.state';
     styleUrls: ['./cart-notifications.scss'],
 })
 
-export class CartNotificationsComponent
+export class CartNotificationsComponent implements OnInit, OnDestroy
 {
-    @Output("viewUnavailableItems$") viewUnavailableItems$: EventEmitter<boolean> = new EventEmitter<boolean>();
-    constructor(public _cartService: CartService, public _state: GlobalState,) { }
-    ngOnInit() { }
-    viewUnavailableItems() { this.viewUnavailableItems$.emit(true); }
+    readonly SECONDARY_NOTIFICATIONS = ['shipping', 'coupon', 'shippingcoupon'];
+    notificationSubscription: Subscription = null;
+    notfications = [];
+    is_quickorder = true;
+    @Output("viewUnavailableItems$") viewUnavailableItems$: EventEmitter<string[]> = new EventEmitter<string[]>();
+    constructor(public _cartService: CartService, private _router: Router) { }
+
+    ngOnInit()
+    {
+        this.is_quickorder = this._router.url.includes("quickorder");
+        this.notificationSubscription = this._cartService.getCartNotificationsSubject().subscribe((notifications: any[]) =>
+        {
+            this.notfications = notifications || [];
+        })
+    }
+
+    viewUnavailableItems()
+    {
+        const VIEW_ITEMS_TYPE = this.is_quickorder ? ['oos'] : ['oos', 'unserviceable'];
+        this.viewUnavailableItems$.emit(VIEW_ITEMS_TYPE);
+    }
+
+    get displayNotifications() { return this.notfications.length > 0 }
+    displaySecondaryNotifications(type: string) { return this.SECONDARY_NOTIFICATIONS.includes(type) }
+    ngOnDestroy()
+    {
+        if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
+    }
 }

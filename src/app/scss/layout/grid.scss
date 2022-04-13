@@ -20,43 +20,4 @@
 .pwa-row-noPad{
   padding:10px 0px !important;
 }
-//fixed width cols
-.pwa-left-custom-#{width}{
-  .pwa-col-left{
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 width;
-    flex: 0 0 width;
-  }
-  .pwa-col-right{
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 calc($fullwidth - width);
-    flex: 0 0 calc($fullwidth - width);
-  }
-}
-@mixin pwa-right-custom($width){
-  .pwa-col-left{
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 calc($fullwidth - $width);
-    flex: 0 0 calc($fullwidth - $width);
-    }
-    .pwa-col-right{
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 $width;
-    flex: 0 0 $width;
-    }
-    width:$width;
- }
-// .pwa-right-custom-#{width}{
-//   .pwa-col-left{
-//     -webkit-box-flex: 0;
-//     -ms-flex: 0 0 calc($fullwidth - width);
-//     flex: 0 0 calc($fullwidth - width);
-//   }
-//   .pwa-col-right{
-//     -webkit-box-flex: 0;
-//     -ms-flex: 0 0 width;
-//     flex: 0 0 width;
-//   }
-// }
-
 

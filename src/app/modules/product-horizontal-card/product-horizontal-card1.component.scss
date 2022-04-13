@@ -4,41 +4,49 @@
 @import "../../scss/utils/mixins.scss";
 
 .product-horizontal-card{
+    background:#fff;
+    border-bottom:1px solid var(--platinum);
     .pwa-row{
-        padding:10px;
+        padding:5px 10px;
     }
-    .left-col{
+    .pwa-row-noPad{
+        padding:5px 0px;
+    }
+    .pwa-col-left{
         text-align: center;
         position: relative;
-        flex-basis:100px;
     }
-    .right-col{
-        flex-basis:calc(100% - 100px);
-        .name {
+    .pwa-col-right{
+        .prod-name {
             text-align: left;
             font-size: 14px;
             color: #303030;
             line-height: 16px;
         }
-        .brand{
+        .prod-brand{
             margin-top: 4px;
+            margin-bottom: 4px;
             text-align: left;
             font-size: 12px;
             color: #b1b1b1;
         }
         .prod-price-row{
-            padding:0px;
+            margin-bottom:4px;
             .prod-mrp{
+                color: #2b2b2b;
                 text-decoration: line-through;
-                opacity: 0.5;
+                opacity: .5;
+                margin-right:5px;
             }
             .prod-discount{
                 font-weight: 700;
                 color: #3b9e26;
             }
             .prod-selling-price{
-                font-size: $large-font;
-                font-weight: bold;
+                margin-top:4px;
+                font-size: 14px;
+                color: #2b2b2b;
+                font-weight: 700;
             }
         }
     }  
@@ -58,15 +66,20 @@
         vertical-align: middle;
     }
 }
+
 button{
     font-size:$small-font;
 }
-.pwa-right-custom{
-    @include pwa-right-custom(115px,false);
+.pwa-left-fixed-125{
+    @include pwa-custom-row(125px,$leftFixedWidth:true);
 }
-.pwa-left-custom{
-    @include pwa-right-custom(115px,true);
+.pwa-right-fixed-125{
+    @include pwa-custom-row(125px,$leftFixedWidth:false);
 }
+.pwa-left-fixed-100{
+    @include pwa-custom-row(100px,$leftFixedWidth:true);
+}
+
 
 
 

@@ -29,31 +29,32 @@
 @mixin translate ($x, $y) {
     @include transform(translate($x, $y));
 }
-@mixin pwa-custom-row($width,$leftFixedWidth){
-    @if($leftFixedWidth){
+@mixin pwa-custom-row($width,$leftFixedWidth:false){
+    @if $leftFixedWidth{
         .pwa-col-left{
-            -webkit-box-flex: 0;
-            -ms-flex: 0 0 calc($fullwidth - $width);
-            flex: 0 0 calc($fullwidth - $width);
-        }
-        .pwa-col-right{
             -ms-flex: 0 0 $width;
             flex: 0 0 $width;
+            text-align:left;
+        }
+        .pwa-col-right{
+            -ms-flex: 0 0 calc(100% - #{$width});
+            flex: 0 0 calc(100% - #{$width});
         }
     }
     @else{
         .pwa-col-left{
-            -webkit-box-flex: 0;
-            -ms-flex: 0 0 calc($fullwidth - width);
-            flex: 0 0 calc($fullwidth - width);
+            -ms-flex: 0 0 calc(100% - #{$width});
+            flex: 0 0 calc(100% - #{$width});
+            text-align:left;
         }
         .pwa-col-right{
             -webkit-box-flex: 0;
-            -ms-flex: 0 0 width;
-            flex: 0 0 width;
+            -ms-flex: 0 0 $width;
+            flex: 0 0 $width;
+            text-align:right;
         }
     }
-}
+} 
 
 @mixin placeholder {
      ::-webkit-input-placeholder {

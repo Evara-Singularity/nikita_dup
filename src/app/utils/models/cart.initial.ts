@@ -41,6 +41,7 @@ export interface AddToCartProductSchema {
     productSmallImage:string;
     productImage:string;
     url:string;
+    isProductUpdate: number;
 }
 
 export interface CartMasterSchema {

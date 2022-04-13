@@ -46,7 +46,7 @@ export class CartUpdatesComponent {
 
     viewUnavailableItems() {
          ;
-        const cartSession = JSON.parse(JSON.stringify(this._cartService.getCartSession()));
+        const cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
         let itemsList = cartSession['itemsList']; 
         const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))
         .filter(item=>item['type'] == 'unservicable')

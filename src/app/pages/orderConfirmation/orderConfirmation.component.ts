@@ -524,7 +524,7 @@ export class OrderConfirmationComponent implements OnInit {
     }
 
     private resetCartSession() {
-        let currentCartSession = this._cartService.getCartSession();
+        let currentCartSession = this._cartService.getGenericCartSession;
         let userSession = this._las.getUserSession();
         let emptyCart = {
             cart: {
@@ -569,7 +569,7 @@ export class OrderConfirmationComponent implements OnInit {
             this._cartService.cart.next({ count: data["noOfItems"] || (data["itemsList"] as any[]).length || 0 });
             let res = data;
             if (res["statusCode"] == 200) {
-                this._cartService.setCartSession(res);
+                this._cartService.setGenericCartSession(res);
             }
         });
     }

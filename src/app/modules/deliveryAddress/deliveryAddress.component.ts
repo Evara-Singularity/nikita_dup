@@ -152,7 +152,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
             if (rd['statusCode'] === 200) {
                 this.user = userSession;
 
-                const cartSession = this.cartService.getCartSession();
+                const cartSession = this.cartService.getGenericCartSession;
                 this.totalAmount = (cartSession['itemsList'] != undefined && cartSession['itemsList'] != null) ? cartSession['cart']['totalAmount'] + cartSession['cart']['shippingCharges'] - cartSession['cart']['totalOffer'] : 0.00;
                 this.cartService.orderSummary.subscribe(data => {
                     this.totalAmount = data['cart']['totalAmount'] + data['cart']['shippingCharges'] - data['cart']['totalOffer'];
@@ -484,7 +484,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         this._commonService.cashOnDeliveryStatus.isEnable = codAvailable;
         if (serviceAvailable && true) {
             if (!this.isServer) {
-                let cartSession = this.cartService.getCartSession();
+                let cartSession = this.cartService.getGenericCartSession;
                 let dlp = [];
                 for (let p = 0; p < cartSession["itemsList"].length; p++) {
                     let product = {
@@ -542,7 +542,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         if (ca == undefined || ca == null)
             return [of(null)];
         if (ca && ca['postCode']) {
-            let cartSession = this.cartService.getCartSession();
+            let cartSession = this.cartService.getGenericCartSession;
             let itemsList: Array<any> = (cartSession["itemsList"] != undefined && cartSession["itemsList"] != null) ? cartSession["itemsList"] : [];
             let pinCode = ca['postCode'];
             // checkPinCodeAddressObservable = itemsList.map((element, i) => {
@@ -562,7 +562,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
         let allPinCodeStatus: Array<any> = [];
         const unServicableItems = [];
 
-        let cartSession = this.cartService.getCartSession();
+        let cartSession = this.cartService.getGenericCartSession;
         let itemsList: Array<any> = (cartSession["itemsList"] != undefined && cartSession["itemsList"] != null) ? cartSession["itemsList"] : [];
         const itemsListObject = itemsList.reduce((obj, item) => {
             return {

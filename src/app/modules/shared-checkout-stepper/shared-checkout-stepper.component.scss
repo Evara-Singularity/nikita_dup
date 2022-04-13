@@ -1,0 +1,70 @@
+.trackStatusWrap {
+    .trackStatusline {
+        position: relative;
+        padding-left: 0;
+        width: 100%;
+        li {
+            list-style: none;
+            float: left;
+            position: relative;
+            background: #fff;
+            text-align: center;
+            padding-top: 10px;
+            &:last-child {
+                .st_trackerline {
+                    &:before {
+                        display: none;
+                    }
+                }
+            }
+            .trackerStatusHeading {
+                font-weight: 600;
+                font-size: 12px;
+                &.green,
+                &.green-txt {
+                    color: #429611;
+                }
+            }
+            .st_trackerline {
+                width: 100%;
+                height: 10px;
+                position: relative;
+                display: block;
+                border-bottom: 4px solid #e2e2e2;
+                &:before {
+                    width: 10px;
+                    height: 10px;
+                    border: 1px solid #e2e2e2;
+                    content: "";
+                    background: #e2e2e2;
+                    border-radius: 25px;
+                    position: absolute;
+                    right: 0;
+                    top: 2px;
+                    z-index: 1;
+                }
+                &.gr-50 {
+                    width: 50%;
+                    float: left;
+                    &:before {
+                        display: none;
+                    }
+                }
+                &.gr-50 ~ .gr-50 {
+                    &:before {
+                        display: initial;
+                    }
+                }
+            }
+            .st_trackerline {
+                &.activeTracker {
+                    border-bottom: 4px solid #4ab316;
+                    &:before {
+                        background: #4ab316;
+                        border: 1px solid #4ab316;
+                    }
+                }
+            }
+        }
+    }
+}

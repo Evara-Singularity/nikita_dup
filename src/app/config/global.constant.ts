@@ -5,7 +5,7 @@ export const GLOBAL_CONSTANT = {
   created: 1,
   oosSimilarCardCountTop: 2,
   oosSimilarCardCountBottom: 8,
-  whatsapp_number: "+919999034709",
+  whatsapp_number: "+919999049135",
   updated: 2,
   searchNudgeTimer: 10,    //expired after 10 secs
   trendingCategoryLimit: 10,

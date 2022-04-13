@@ -1,0 +1,70 @@
+@import './../../scss/variables';
+.column-field {
+    .w-65 {
+        width: 65%;
+        float: left;
+    }
+    .w-30 {
+        width: 30%;
+        float: right;
+    }
+}
+
+
+.for-varification {
+    position: relative;
+    .for-varification-r {
+        position: absolute;
+        bottom: 8px;
+        right: 0px;
+        a.show {
+            color: #176fd8 !important;
+            text-align: right;
+            display: none;
+            font-size: $large-font;
+        }
+        span.hidden {
+            color: #209F19 !important;
+            font-size: $medium-font;
+            i {
+                font-size: $large-font;
+                display: inline-block;
+                vertical-align: middle;
+                color: #5ba621;
+                padding-left: 5px;
+            }
+        }
+    }
+}
+
+.varified-checkbox {
+    @extend %custom-check-box-checkout
+}
+
+.addAddressPopup {
+        .header_add_edit {
+            background: #d9232d !important;
+            &.head-sec {
+                padding: 12px 0;
+                margin: 0;
+                @extend %box-shadow;
+                background: $white;
+                i {
+                    font-size: 20px;
+                    line-height: 24px;
+                }
+                i+.page-name {
+                    font-size: $extra-large-font;
+                    margin-left: 10px;
+                    line-height: 26px;
+                    color: #fff;
+                    float: left;
+                }
+            }
+        }
+        .content-popup {
+            height: calc(100% - 100px);
+            overflow: auto;
+            margin-top: 0px;
+        }
+    }

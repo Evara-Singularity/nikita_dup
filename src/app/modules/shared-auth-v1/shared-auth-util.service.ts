@@ -27,7 +27,7 @@ export class SharedAuthUtilService implements OnInit
 
     ngOnInit(): void
     {
-        let cartSession = this._cartService.getCartSession();
+        let cartSession = this._cartService.getGenericCartSession;
         //TODO:handle for checkout
         this._activatedRoute.queryParams.subscribe(
             data => { this.redirectUrl = data['backurl'] || this.HOME_URL; }
@@ -49,7 +49,7 @@ export class SharedAuthUtilService implements OnInit
             queryParams.state === 'askQuestion')) {
             redirectUrl += '?state=' + queryParams['state'];
         }
-        let cartSession = Object.assign(this._cartService.getCartSession());
+        let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
         this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);
     }
@@ -64,12 +64,7 @@ export class SharedAuthUtilService implements OnInit
         {
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
-                if (isCheckout) {
-                    // value: 2 should be emited for checkout login
-                    this.emitCheckoutLogin(2);
-                } else {
-                    this._commonService.redirectPostAuth(redirectUrl);
-                }
+                this._commonService.redirectPostAuth(redirectUrl);
                 this._toastService.show({ type: 'success', text: message });
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
@@ -82,7 +77,7 @@ export class SharedAuthUtilService implements OnInit
     {
         this._localStorage.clear('tocd');
         this._localStorage.store('user', response);
-        let cartSession = Object.assign(this._cartService.getCartSession());
+        let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
         this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, redirectUrl);
     }

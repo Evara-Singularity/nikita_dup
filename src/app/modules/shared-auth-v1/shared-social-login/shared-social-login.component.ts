@@ -12,6 +12,7 @@ import { SharedAuthService } from '../shared-auth.service';
 })
 export class SharedSocialLoginComponent implements OnInit {
   readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
+  readonly CHECKOUT_ADDRESS = "/checkout/address";
   @Input('isCheckout') isCheckout = false;
 
   constructor(
@@ -47,7 +48,11 @@ export class SharedSocialLoginComponent implements OnInit {
             this._sharedAuthUtilService.logoutUserOnError();
           } else {
             this._localAuthService.setUserSession(userResponse);
-            this._sharedAuthUtilService.processAuthentication(userResponse, this.isCheckout, this._sharedAuthService.redirectUrl);       
+            this._sharedAuthUtilService.processAuthentication(
+              userResponse,
+              this.isCheckout,
+              (this.isCheckout) ? this.CHECKOUT_ADDRESS : this._sharedAuthService.redirectUrl
+            );
           }
         }, (error) => {
           console.log('social sign in error', error);

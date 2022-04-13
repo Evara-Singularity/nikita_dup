@@ -1614,7 +1614,7 @@ export class CartService
             if (UPDATES['outOfStockFlag']) {
                 msg['type'] = "oos";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
-            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] != CART_PRODUCT_PRICE)) {
+            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] < CART_PRODUCT_PRICE)) {
                 msg['type'] = "price";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
             } else if (UPDATES['shipping']) {
@@ -1692,7 +1692,7 @@ export class CartService
         const _oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
         const _finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
         oldNotfications = [...finalNotifications, ..._oldNotfications, ..._finalNotifications]
-        return finalNotifications;
+        return oldNotfications;
     }
 
     updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
@@ -1711,7 +1711,7 @@ export class CartService
         const _oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
         const _finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
         oldNotfications = [...finalNotifications, ..._oldNotfications, ..._finalNotifications]
-        return finalNotifications;
+        return oldNotfications;
     }
 
     removeNotifications(msn: any[])
@@ -1786,7 +1786,8 @@ export class CartService
         this.setGenericCartSession(NEW_CART_SESSION);
         if (canUpdateCart) {
             const user = this._localStorageService.retrieve('user');
-            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession, { ...itemsList });
+            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
+            NEW_CART_SESSION['itemsList'] = itemsList;
             forkJoin([this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications }), this.updateCartAfterNotifcations(NEW_CART_SESSION)]).subscribe(
                 (responses) =>
                 {
@@ -1798,6 +1799,7 @@ export class CartService
             )
         }
     }
+
     updateCartAfterNotifcations(CART_SESSION)
     {
         return this.updateCartSession(CART_SESSION).pipe(

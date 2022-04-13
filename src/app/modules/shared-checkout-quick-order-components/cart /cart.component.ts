@@ -16,7 +16,7 @@ import { FooterService } from '@utils/services/footer.service';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { of, Subscription } from 'rxjs';
+import { of, Subscription, forkJoin } from 'rxjs';
 import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
 
 declare let dataLayer;
@@ -154,46 +154,7 @@ export class CartComponent
                     productDetails.productQuantity = incrementOrDecrementBy;
                     let isQua = this.isQuantityAvailable(updatedCartItemCount, productDetails, index);
                     if (isQua["status"]) {
-                        this._cartService.addToCart({ buyNow, productDetails }).pipe(
-                            mergeMap((data: any) =>
-                            {
-                                if (this._commonService.isServer) {
-                                    return of(null);
-                                }
-                                /**
-                                 * return cartSession, if sessionId mis match
-                                 */
-                                if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
-                                    return of(data);
-                                }
-                                return of(data);
-                            }),
-                        ).subscribe(result =>
-                        {
-                            if (!result && this._cartService.buyNowSessionDetails) {
-                                this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
-                            } else {
-                                if (result) {
-                                    if (!buyNow) {
-                                        //TODO:remove notifcation and call setValidationMessage and no need to call verifyAndUpdateNotfications.
-                                        this._cartService.setGenericCartSession(result);
-                                        //this._cartService.verifyAndUpdateNotfications();
-                                        this._cartService.removeNotifications([productMsnId]);
-                                        this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
-                                        this._cartService.cart.next({
-                                            count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
-                                            currentlyAdded: productDetails
-                                        });
-                                        this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
-                                        this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
-                                    } else {
-                                        this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
-                                    }
-                                } else {
-                                    this._tms.show(('Product already added'));
-                                }
-                            }
-                        });
+                        this.updateCartAndRemoveNotfication(productMsnId, buyNow, productDetails, index, updatedCartItemCount);
                     } else {
                         if (productDetails.quantityAvailable !== this._cartService.getGenericCartSession.itemsList[index].productQuantity) {
                             this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update');
@@ -208,6 +169,49 @@ export class CartComponent
             {
                 this._globalLoaderService.setLoaderState(false);
             });
+    }
+
+    updateCartAndRemoveNotfication(msn, buyNow, productDetails, index, updatedCartItemCount)
+    {
+        const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn]);
+        const addToCart$ = this._cartService.addToCart({ buyNow, productDetails }).pipe(
+            mergeMap((data: any) =>
+            {
+                if (this._commonService.isServer) {
+                    return of(null);
+                }
+                /**
+                 * return cartSession, if sessionId mis match
+                 */
+                if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
+                    return of(data);
+                }
+                return of(data);
+            }),
+        );
+        forkJoin([setValidationMessages$, addToCart$]).subscribe(result =>
+        {
+            if (!result && this._cartService.buyNowSessionDetails) {
+                this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+            } else {
+                if (result) {
+                    if (!buyNow) {
+                        this._cartService.setGenericCartSession(result);
+                        this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
+                        this._cartService.cart.next({
+                            count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
+                            currentlyAdded: productDetails
+                        });
+                        this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
+                        this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
+                    } else {
+                        this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+                    }
+                } else {
+                    this._tms.show(('Product already added'));
+                }
+            }
+        });
     }
 
     // check if the product quantity is available
@@ -305,7 +309,6 @@ export class CartComponent
         this.removePopup = false;
         //TODO;remove notfication and no need to call verifyAndUpdateNotfications
         //this._cartService.verifyAndUpdateNotfications();
-        this._cartService.removeNotifications([]);
         // Push data to data layer
         this.pushDataToDatalayer(this.removeIndex);
         this.sendCritioData();

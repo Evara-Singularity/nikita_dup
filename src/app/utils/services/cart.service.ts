@@ -1441,7 +1441,7 @@ export class CartService
             NON_REMOVABLE_ITEMS.push(item);
         });
         this.deleteValidationMessages(REMOVABLE_ITEMS);
-        this.removeNotifications(msns)
+        this.removeNotificationsByMsns(msns).subscribe((response) => console.log("removeCartItemsByMsns"))
         this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
     }
 
@@ -1575,7 +1575,7 @@ export class CartService
                 let validateCartData = null, validateCartMessageData = null;
                 if (validateCartResponse['status']) { validateCartData = validateCartResponse['data'] }
                 if (validateCartMessageResponse['statusCode']) { validateCartMessageData = validateCartMessageResponse['data'] }
-                this.processNotifications(USER_SESSION['userId'], CART_SESSION['itemsList'], validateCartData, validateCartMessageData);
+                this.processNotifications(CART_SESSION['itemsList'], validateCartData, validateCartMessageData);
             });
         }
     }
@@ -1587,26 +1587,24 @@ export class CartService
      * @param validateCartData : data of any updated cart related item changes
      * @param validateCartMessageData : provides current existing notifications
      */
-    processNotifications(userId, items: any[], validateCartData, validateCartMessageData)
+    processNotifications(items: any[], validateCartData, validateCartMessageData)
     {
         const VALIDATE_CART_NOTIFICATION_MSNS: string[] = validateCartData ? Object.keys(validateCartData) : [];
         const FILTERED_CART_ITEMS: any[] = items.filter((item) => VALIDATE_CART_NOTIFICATION_MSNS.includes(item['productId']));
-        const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
-        const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
-
-        // inc in price... remove from old notifications
-
-        this.notifications = this.mergeNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
-        console.log('notifications ==>', OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
-        if (this.notifications) {
-            this.notificationsSubject.next(this.notifications);
-        }
-        // this.modifyCartAItemsAfterNotifications(items, validateCartData);
+        let oldNotfications: any[] = validateCartMessageData || [];
+        let info = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
+        let newNotfications: any[] = info['messageList'];
+        let increasedPrice:string[] = info['increasedPriceMSNS'];
+        oldNotfications = oldNotfications.filter((notification) => !increasedPrice.includes(notification['msnid']))
+        this.notifications = this.mergeNotifications(oldNotfications, newNotfications);
+        this.updateCartItemsAfterNotfications(items, validateCartData);
+        this.notificationsSubject.next(this.notifications);
     }
 
-    buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
+    buildNotifications(FILTERED_ITEMS: any[], validateCartData): { messageList: any[], increasedPriceMSNS: string[]}
     {
-        let messageList = [];
+        const messageList = [];
+        const increasedPriceMSNS = []
         FILTERED_ITEMS.forEach((item) =>
         {
             let msg = {};
@@ -1618,13 +1616,13 @@ export class CartService
             if (UPDATES['outOfStockFlag']) {
                 msg['type'] = "oos";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' is currently Out of Stock. Please remove from cart', text2: '', oPrice: '', nPrice: '' };
-            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] < CART_PRODUCT_PRICE)) {
-                msg['type'] = "price";
-                msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
-            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] > CART_PRODUCT_PRICE)) {
-                // update price for inc price in cart item 
-                // update SET message to clear message for that specfic MSN
-                console.log('UPDATE CART ==>', validateCartData);
+            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] != CART_PRODUCT_PRICE)) {
+                if (UPDATES['priceWithoutTax'] < CART_PRODUCT_PRICE) {
+                    msg['type'] = "price";
+                    msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
+                } else {
+                    increasedPriceMSNS.push(CART_PRODUCT_MSN);
+                }
             } else if (UPDATES['shipping']) {
                 msg['type'] = "shipping";
                 msg['data'] = { text1: 'Shipping Charges have been updated.' };
@@ -1658,7 +1656,7 @@ export class CartService
                 }
             }
         });
-        return messageList;
+        return { messageList: messageList, increasedPriceMSNS: increasedPriceMSNS };
     }
 
     mergeNotifications(oldNotfications: any[], newNotfications: any[])
@@ -1683,140 +1681,104 @@ export class CartService
 
     updateOldWithNewNotifications(oldNotfications: any[], newNotfications: any[])
     {
-        let finalNotifications: any[] = []
+        let overriddenNotfications = [];
+        let freshNotifications = [];
+        let oosNotifications = [];
+        let remainingNotfications = [];
         const COMMON_MSNS = [];
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
         for (let oIndex = 0; oIndex < oldNotfications.length; oIndex++) {
             for (let iIndex = 0; iIndex < newNotfications.length; iIndex++) {
                 if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
-                    finalNotifications.push(newNotfications[iIndex]);
+                    overriddenNotfications.push(newNotfications[iIndex]);
                     COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
+                    break;
                 }
             }
         }
-        if (COMMON_MSNS.length === 0) {
-            return [...oldNotfications, ...newNotfications];
-        }
-        const _oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
-        const _finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
-        oldNotfications = [...finalNotifications, ..._oldNotfications, ..._finalNotifications]
-        return oldNotfications;
+        freshNotifications = newNotfications.filter((notification) => !(COMMON_MSNS.includes(notification['msnid'])));
+        oosNotifications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
+        remainingNotfications = oldNotfications.filter((notification) =>
+        {
+            const msn = notification['msnid'];
+            return !(NEW_OOS_MSNS.includes(msn)) && !(COMMON_MSNS.includes(msn))
+        })
+        return [...overriddenNotfications, ...freshNotifications, ...oosNotifications, ...remainingNotfications];
     }
 
     updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
     {
-        let finalNotifications: any[] = [];
+        let overriddenNotfications = [];
+        let freshNotifications = [];
+        let oosNotifications = [];
+        let remainingNotfications = [];
         const COMMON_MSNS = [];
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
         for (let oIndex = 0; oIndex < newNotfications.length; oIndex++) {
             for (let iIndex = 0; iIndex < oldNotfications.length; iIndex++) {
                 if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
-                    finalNotifications.push(newNotfications[iIndex]);
+                    overriddenNotfications.push(newNotfications[iIndex]);
                     COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
+                    break;
                 }
             }
         }
-        const _oldNotfications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
-        const _finalNotifications = newNotfications.filter((notification) => !COMMON_MSNS.includes(notification['msnid']));
-        oldNotfications = [...finalNotifications, ..._oldNotfications, ..._finalNotifications]
-        return oldNotfications;
-    }
-
-    removeNotifications(msn: any[])
-    {
-        if (!this.localAuthService.isUserLoggedIn()) return;
-        const userSession = this.localAuthService.getUserSession();
-        this.notifications = this.notifications.filter((notification) => { notification['msnid'] === msn; })
-        this.notificationsSubject.next(this.notifications);
-        this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications }).subscribe(() =>
+        freshNotifications = newNotfications.filter((notification) => !(COMMON_MSNS.includes(notification['msnid'])));
+        oosNotifications = oldNotfications.filter((notification) => NEW_OOS_MSNS.includes(notification['msnid']));
+        remainingNotfications = oldNotfications.filter((notification) =>
         {
-            console.log("Successfully updated notifications")
-        });
-    }
-
-    modifyCartAItemsAfterNotifications(items: any[], validateCartData)
-    {
-        let msn_data = {}
-        this.notifications.forEach((notification) =>
-        {
-            if (notification["type"] === "price") {
-                msn_data[notification["msnid"]] = notification;
-            }
-        });
-        let itemsListNew = JSON.parse(JSON.stringify(items));
-        itemsListNew = itemsListNew.map((item) =>
-        {
-            const PRODUCT_ID = item['productId'];
-            item.text1 = null; item.text2 = null; item.oPrice = null; item.nPrice = null;
-            if (msn_data.hasOwnProperty(PRODUCT_ID)) {
-                const data = msn_data[PRODUCT_ID]['data'];
-                item.text1 = data['text1'];
-                item.text2 = data['text2'];
-                item.oPrice = data['oPrice'];
-                item.nPrice = data['nPrice'];
-            }
-            return item;
+            const msn = notification['msnid'];
+            return !(NEW_OOS_MSNS.includes(msn)) && !(COMMON_MSNS.includes(msn))
         })
-        this.updateCartItemsAfterNotfications(itemsListNew, validateCartData)
+        return [...overriddenNotfications, ...freshNotifications, ...oosNotifications, ...remainingNotfications];
     }
 
     updateCartItemsAfterNotfications(newItems: any[], validateCartData)
     {
-        if (!validateCartData) {
-            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
-            NEW_CART_SESSION['itemsList'] = newItems;
-            this.setGenericCartSession(NEW_CART_SESSION);
-            return;
-        }
         let canUpdateCart = false;
         let oosData = [];
-        let itemsList = newItems.map((item) =>
+        let itemsList = newItems;
+        if (validateCartData)
         {
-            const PRODUCT_ID = item['productId'];
-            if (!validateCartData.hasOwnProperty(PRODUCT_ID)) return item;
-            const UPDATES = validateCartData[PRODUCT_ID]['updates'];
-            if (UPDATES['outOfStockFlag']) {
-                item['oos'] = true;
-                oosData.push({ msnid: item['productId'] });
-            }
-            else if (UPDATES['priceWithoutTax'] || UPDATES['shipping']) {
-                canUpdateCart = true;
-                if (item['oos']) { delete item['oos']; }
-                return this.updateCartItem(item, validateCartData[PRODUCT_ID]['productDetails']);
-            } else if (UPDATES['shipping'] || UPDATES['coupon']) {
-                canUpdateCart = true;
-                if (item['oos']) { delete item['oos']; }
-            }
-            return item;
-        });
-        if (oosData.length)
-        {
-            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
-            NEW_CART_SESSION['itemsList'] = newItems;
-            this.setGenericCartSession(NEW_CART_SESSION);
-        }
-        const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
-        NEW_CART_SESSION['itemsList'] = itemsList;
-        this.setGenericCartSession(NEW_CART_SESSION);
-        if (canUpdateCart) {
-            const user = this._localStorageService.retrieve('user');
-            const NEW_CART_SESSION = Object.assign({}, this.getGenericCartSession);
-            NEW_CART_SESSION['itemsList'] = itemsList;
-            forkJoin([this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications }), this.updateCartAfterNotifcations(NEW_CART_SESSION)]).subscribe(
-                (responses) =>
-                {
-                    const cartSession = this.generateGenericCartSession(responses[1]);
-                    this.setGenericCartSession(cartSession);
-                    this.orderSummary.next(cartSession);
-                    this.cart.next({ count: (cartSession.itemsList ? cartSession.itemsList.length : 0) });
+            itemsList = newItems.map((item) =>
+            {
+                const PRODUCT_ID = item['productId'];
+                if (!validateCartData[PRODUCT_ID]) return item;
+                const UPDATES = validateCartData[PRODUCT_ID]['updates'];
+                if (UPDATES['outOfStockFlag']) {
+                    item['oos'] = true;
+                    oosData.push({ msnid: item['productId'] });
                 }
-            )
+                else if (UPDATES['priceWithoutTax'] || UPDATES['shipping']) {
+                    canUpdateCart = true;
+                    if (item['oos']) { delete item['oos']; }
+                    return this.updateCartItem(item, validateCartData[PRODUCT_ID]['productDetails']);
+                } else if (UPDATES['shipping'] || UPDATES['coupon']) {
+                    canUpdateCart = true;
+                    if (item['oos']) { delete item['oos']; }
+                }
+                return item;
+            });
+            if (oosData.length || canUpdateCart) {
+                const user = this._localStorageService.retrieve('user');
+                const newCartSession = Object.assign({}, this.getGenericCartSession);
+                newCartSession['itemsList'] = itemsList;
+                const setValidation$ = this.setValidateCartMessageApi({ userId: user['userId'], data: this.notifications });
+                if (canUpdateCart) {
+                    this.updateCartAfterNotifcations(newCartSession, setValidation$);
+                    return;
+                }
+                this.modifyCartItemsForPriceNotfication();
+                setValidation$.subscribe((response) => console.log("Cycle completed successfully"));
+                return;
+            }
         }
+        this.modifyCartItemsForPriceNotfication();
     }
 
-    updateCartAfterNotifcations(CART_SESSION)
+    updateCartAfterNotifcations(cartSession, setValidation$)
     {
-        return this.updateCartSession(CART_SESSION).pipe(
+        const cartUpdate$ = this.updateCartSession(cartSession).pipe(
             switchMap((newCartSession) =>
             {
                 return this.verifyPromocode(newCartSession)
@@ -1825,6 +1787,56 @@ export class CartService
             {
                 return this.verifyShippingCharges(newCartSession)
             }));
+        forkJoin([setValidation$, cartUpdate$]).subscribe(
+            (responses) =>
+            {
+                const cartSession = this.generateGenericCartSession(responses[1]);
+                this.setGenericCartSession(cartSession);
+                this.modifyCartItemsForPriceNotfication();
+                this.orderSummary.next(cartSession);
+                this.cart.next({ count: (cartSession.itemsList ? cartSession.itemsList.length : 0) });
+            }
+        )
+    }
+
+    modifyCartItemsForPriceNotfication()
+    {
+        let msn_data = {}
+        this.notifications.forEach((notification) =>
+        {
+            if (notification["type"] === "price") {
+                msn_data[notification["msnid"]] = notification;
+            }
+        });
+        if (Object.keys(msn_data).length)
+        {
+            const newCartSession = Object.assign({}, this.getGenericCartSession);
+            let itemsListNew = JSON.parse(JSON.stringify(newCartSession['itemsList']));
+            itemsListNew = itemsListNew.map((item) =>
+            {
+                const PRODUCT_ID = item['productId'];
+                item.text1 = null; item.text2 = null; item.oPrice = null; item.nPrice = null;
+                if (msn_data[PRODUCT_ID]) {
+                    const data = msn_data[PRODUCT_ID]['data'];
+                    item.text1 = data['text1'];
+                    item.text2 = data['text2'];
+                    item.oPrice = data['oPrice'];
+                    item.nPrice = data['nPrice'];
+                }
+                return item;
+            });
+            newCartSession['itemsList'] = itemsListNew;
+            this.setGenericCartSession(newCartSession);
+        }
+    }
+
+    removeNotificationsByMsns(msn: any[])
+    {
+        if (!this.localAuthService.isUserLoggedIn()) return of([]);
+        const userSession = this.localAuthService.getUserSession();
+        this.notifications = this.notifications.filter((notification) => { notification['msnid'] === msn; })
+        this.notificationsSubject.next(this.notifications);
+        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications })
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }

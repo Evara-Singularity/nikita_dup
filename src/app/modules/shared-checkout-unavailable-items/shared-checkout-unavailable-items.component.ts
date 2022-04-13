@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CartService } from '@app/utils/services/cart.service';
 import { Subject } from 'rxjs';
 
 @Component({

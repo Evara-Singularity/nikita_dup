@@ -1,4 +1,3 @@
-import { UnAvailableItemsComponent } from './unAvailableItems/unAvailableItems.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -15,11 +14,9 @@ import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
     ],
     declarations: [
         CartNotificationsComponent,
-        UnAvailableItemsComponent,
     ],
     exports: [
         CartNotificationsComponent,
-        UnAvailableItemsComponent,
     ],
     providers: [
 

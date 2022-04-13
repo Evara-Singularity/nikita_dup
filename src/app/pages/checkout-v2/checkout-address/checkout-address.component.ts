@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -12,9 +12,9 @@ import { CheckoutUtil } from '../checkout-util';
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
-    styleUrls: ['./checkout-address.component.scss']
+    styleUrls: ['./checkout-address.component.scss'],
 })
-export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestroy
+export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
 {
     readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
@@ -25,6 +25,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
     isUserLoggedIn = false;
+    hasCartItems = true;
     verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
 
     deliveryAddress = null;
@@ -38,7 +39,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService) { }
+        private _router: Router, private _toastService: ToastMessageService,private cd: ChangeDetectorRef) { }
+    
 
     ngOnInit(): void
     {
@@ -50,6 +52,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
             this.cartSession = cartSession;
+            this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
             if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
                 this.calculatePayableAmount(this.cartSession['cart']);
             }
@@ -131,10 +134,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (nonServiceableMsns.length) {
             const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
             const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
-            this.updateValidationMessage(NON_SERVICEABLE_ITEMS);
+            this._cartService.setUnserviceables(NON_SERVICEABLE_ITEMS);
             return;
         }
-        this.updateValidationMessage([]);
+        this._cartService.setUnserviceables([]);
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */
@@ -142,14 +145,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
         this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length === 0;
-    }
-
-    /**@description updates global validation messages which are used in cart notifications */
-    updateValidationMessage(unServicableItems)
-    {
-        let itemsValidationMessage = this._cartService.itemsValidationMessage || [];
-        itemsValidationMessage = (itemsValidationMessage.filter(item => item['type'] != 'unservicable')) || [];
-        this._cartService.itemsValidationMessage = [...unServicableItems, ...itemsValidationMessage];
     }
 
     /**@description scrolls to payment summary section on click of info icon*/
@@ -191,28 +186,20 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             }
         }
         //cart verification
-        const INVALID_CART_TYPES = ['unservicable', 'oos'];
-        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.itemsValidationMessage));
+        const INVALID_CART_TYPES = ['unserviceable', 'oos'];
+        const CART_MESSAGES = JSON.parse(JSON.stringify(this._cartService.getCartNotifications()));
         const INVALID_CART_MESSAGES: any[] = CART_MESSAGES.filter(item => INVALID_CART_TYPES.includes(item['type']));
         if (INVALID_CART_MESSAGES.length) {
-            this._cartService.viewUnavailableItems()
+            this._cartService.viewUnavailableItems(INVALID_CART_TYPES)
             return;
         }
         this._router.navigate(['/checkout/payment']);
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */
-    viewUnavailableItemsFromNotifacions(display) { if (display) this._cartService.viewUnavailableItems(); }
+    viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
-
-    //getters
-    get hasCartItems()
-    {
-        if (!this.cartSession) return false;
-        const CART_ITEMS = (this.cartSession['itemsList']) || [];
-        return CART_ITEMS.length > 0;
-    }
 
     ngOnDestroy()
     {

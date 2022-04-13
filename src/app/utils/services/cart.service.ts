@@ -1593,11 +1593,15 @@ export class CartService
         const FILTERED_CART_ITEMS: any[] = items.filter((item) => VALIDATE_CART_NOTIFICATION_MSNS.includes(item['productId']));
         const OLD_NOTIFICATIONS: any[] = validateCartMessageData || [];
         const NEW_NOTIFICATIONS: any[] = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
+
+        // inc in price... remove from old notifications
+
         this.notifications = this.mergeNotifications(OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
+        console.log('notifications ==>', OLD_NOTIFICATIONS, NEW_NOTIFICATIONS);
         if (this.notifications) {
             this.notificationsSubject.next(this.notifications);
         }
-        this.modifyCartAItemsAfterNotifications(items, validateCartData);
+        // this.modifyCartAItemsAfterNotifications(items, validateCartData);
     }
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): any[]
@@ -1617,6 +1621,10 @@ export class CartService
             } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] < CART_PRODUCT_PRICE)) {
                 msg['type'] = "price";
                 msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
+            } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] > CART_PRODUCT_PRICE)) {
+                // update price for inc price in cart item 
+                // update SET message to clear message for that specfic MSN
+                console.log('UPDATE CART ==>', validateCartData);
             } else if (UPDATES['shipping']) {
                 msg['type'] = "shipping";
                 msg['data'] = { text1: 'Shipping Charges have been updated.' };

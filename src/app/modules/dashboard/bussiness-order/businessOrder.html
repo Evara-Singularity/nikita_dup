@@ -1,6 +1,6 @@
 <div *ngIf="orders && orders.length>0">
-    <div class="orderbox" *ngFor="let order of orders;let i=index">
-        <div class="orderIdtab" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
+    <div class="orderbox pwa-container" *ngFor="let order of orders;let i=index">
+        <div class="orderIdtab pwa-row pad-0" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
             <div class="orderSum">
                 <span class="orderId">Order ID : {{order.orderId}}</span>
                 <span class="orderOthDet">
@@ -41,8 +41,8 @@
                         </div>
                     </a>
                 </div>
-                <div class="orderShipDet">
-                    <div class="ordersumBox businessBox">
+                <div class="orderShipDet pwa-container">
+                    <div class="ordersumBox businessBox pwa-row">
                         <h3 class="top_txt clearfix">
                             Payment Summary
                         </h3>
@@ -60,14 +60,13 @@
                             <span class="paymode">₹ {{getTotalAmount(orderDetail[order.orderId]) | number : '1.0-0'}}</span>
                         </div>
                     </div>
-
                 </div>
             </div>
         </ng-container>
     </div>
 </div>
 
-<div class="norder" *ngIf="orders && orders.length===0">
+<div class="norder pwa-row" *ngIf="orders && orders.length===0">
     <img alt="" src="{{imagePath}}b/I/P/B/d/no-order-image.png" width="200" />
     <div class="noordertext"> No Orders placed yet. Add items to your cart and make a purchase.</div>
     <button [routerLink]="['/']" class="btn startshop">START SHOPPING</button>

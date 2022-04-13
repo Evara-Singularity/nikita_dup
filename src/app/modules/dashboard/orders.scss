@@ -1,0 +1,122 @@
+@import "./../../scss/variables";
+.orderdtDesc {
+    position: relative;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    background: var(--white);
+    display: flex;
+    &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    &:last-child {
+        border: none;
+    }
+    .moreOptions {
+        position: absolute;
+        right: -11px;
+        cursor: pointer;
+        font-size: $extra-large-font;
+        top: 0;
+    }
+    .orderproImg {
+        width: 27%;
+        padding: 5px;
+        border: 1px solid var(--ghost-white);
+        img {
+            display: block;
+            max-height: 100%;
+            max-width: 100%;
+        }
+    }
+    .orderproDesc {
+        width: 73%;
+        padding-left: 15px;
+        padding-right: 5px;
+        p {
+            font-size: $large-font;
+            color: var(--black);
+            cursor: pointer;
+            margin-bottom: 5px;
+            line-height: 17px;
+        }
+        .orderstatus {
+            font-size: $medium-font;
+            display: block;
+            span {
+                display: block;
+                padding-top: 3px;
+            }
+        }
+        .orderqty {
+            font-size: $medium-font;
+            margin-bottom: 8px;
+            .qtyleft {
+                display: block;
+                margin-bottom: 5px;
+                color: #444;
+                span {
+                    font-weight: $font-bolder;
+                    color: #111;
+                }
+                small {
+                    color: #989898;
+                    padding-left: 5px;
+                }
+            }
+            .priceright {
+                display: block;
+                span {
+                    font-weight: $font-bolder;
+                    font-size: $large-font;
+                }
+            }
+        }
+    }
+}
+.ordersumBox {
+    @extend %cards;
+    padding-right: 0;
+    padding-left: 0;
+    margin: 10px 0;
+    display: block;
+    h5 {
+        padding: 10px 15px;
+        font-size: $large-font;
+        color: var(--onyx-black);
+        font-weight: 500;
+        border-bottom: 1px solid var(--ghost-white);
+        margin-bottom: 12px;
+        span {
+            float: right;
+            display: inline-block;
+            font-weight: $font-bolder;
+        }
+    }
+    .chargestext {
+        padding: 5px 15px;
+        font-size: $medium-font;
+        span {
+            float: right;
+            display: inline-block;
+            &.paymode {
+                font-size: $large-font;
+            }
+        }
+    }
+    .totPrice {
+        padding: 10px 15px;
+        font-size: $extra-large-font;
+        color: var(--onyx-black);
+        font-weight: $font-bolder;
+        margin-top: 12px;
+        border-top: 1px solid var(--ghost-white);
+        span {
+            float: right;
+            display: inline-block;
+            font-weight: $font-bolder;
+        }
+    }
+}

@@ -97,6 +97,7 @@ $large-font: 14px;
 $extra-large-font: 16px;
 $xl-1-font:18px;
 $xl-2-font:20px;
+$xlm-2-font:24px;
 $xl-3-font: 28px;
 $xl-4-font:36px;
 
@@ -105,7 +106,7 @@ $large-icon-font:20px;
 
 /*Line Height*/ 
 
-$medium-line-height:15px;
+$medium-line-height:16px;
 $ml-line-height:20px;
 $ml-2-line-height:24px;
 $large-line-height:28px;
@@ -120,7 +121,7 @@ $light-gray-gradient:radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
     padding: 10px;
     color: #333;
     background: $white;
-    border: 1px solid #ccc;
+    border: 1px solid var(--silver);
 }
 
 
@@ -135,6 +136,7 @@ $large-font: 14px;
 $extra-large-font: 16px;
 $xl-1-font:18px;
 $xl-2-font:20px;
+$xlm-2-font:24px;
 $xl-3-font: 28px;
 $xl-4-font:36px;
 
@@ -174,7 +176,7 @@ $default-gap: 15px;
     padding: 10px;
     color: #333;
     background: $white;
-    border: 1px solid #ccc;
+    border: 1px solid var(--silver);
 }
 
 %border-radius {

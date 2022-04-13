@@ -1,5 +1,4 @@
-<div class="orderdtDesc" *ngIf="detail">
-    <div class="orderdtBoxinner">
+<div class="orderdtDesc pad-10 pwa-row" *ngIf="detail">
         <div class="orderproImg">
             <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
         </div>
@@ -10,13 +9,12 @@
                 <span class="orderstatus f-left">Status:<span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED' || detail.status == 'DELIVERED' || detail.status == 'RETURN DONE' || detail.status == 'RETURN REQUESTED' || detail.status == 'RETURN APPROVED' || detail.status == 'RETURN PICKED' || detail.status == 'EXCHANGE REQUESTED' || detail.status == 'EXCHANGE PICKED' || detail.status == 'EXCHANGE APPROVED' || detail.status == 'EXCHANGE DONE' ? 'green-txt':'red-txt'">{{detail.status}}</span></span>
             </div>
         </div>
-    </div>
 </div>
 
 <ng-container *ngIf="detail && detail.requestType !=='cancel' && detail.status !=='PAYMENT FAILED' && detail.status !=='
 AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     <div class="trackOrderBox singleproStatus ">
-        <div class="trackerWrap ">
+        <div class="trackerWrap pwa-row">
             <ul>
                 <li class="grsolid ">
                     <span class="grtrackerline "></span>
@@ -41,8 +39,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         </div>
 
                         <div>
-                            <span class="gotoTrackerpage " (click)="fetchTrackingData(detail) ">Track Now
-                                    <i class="icon-next "></i>
+                            <span class="gotoTrackerpage" (click)="fetchTrackingData(detail) "><span class="blue-text">Track Now <i class="icon-next "></i></span>
                                     <span class="see-details ">See Details</span>
                             </span>
                         </div>
@@ -102,7 +99,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
         </div>
 
-        <div class="cancelOrderBox " [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
+        <div class="cancelOrderBox pwa-row" [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
             <div class="returnedOrder orderdtBox ">
                 <div class="orderdtBoxinner ">
                     <div class="orderdtDesc clearfix ">
@@ -112,7 +109,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
                         <div class="orderproDesc">
                             <p>{{detail.product_name}}</p>
-                            <div class="orderqty clearfix mar-t-10">
+                            <div class="orderqty clearfix mt-10">
                                 <span class="priceright">Order Cancelled :
                                         <span>{{currentDate | date: 'd-MMMM-y'}}</span>
                                 </span>
@@ -175,7 +172,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max" class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded</p>
 
                     </div>
-                    <div class="input-field commentFld">
+                    <div class="input-field commentFld mb-10">
                         <label class="pos-rel" [class.is-focus]="commentMsg.value.length > 0">
                             <textarea formControlName="comment" #commentMsg></textarea>
                             <span class="label">Comment</span>
@@ -273,7 +270,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}" width="100" height="100" alt="imagename" />
                                     <div class="itemname">
                                         <h3 class="">{{detail.product_name}}</h3>
-                                        <p class="mar-b-10">Qty :
+                                        <p class="mb-10">Qty :
                                             <span class="text-500">{{detail.Quantity}}</span>
                                         </p>
                                         <p>Price :
@@ -306,7 +303,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 <app-pop-up *ngIf="spp" class="" (outData$)="outData($event)" [data]="{selector: 'spp',headerText:'Order Status'}">
     <div class="content-popup" content>
-        <div class="trackOrderBox static_pos">
+        <div class="trackOrderBox pwa-row static_pos">
             <!-- <h3>Order Status</h3> -->
             <div class="orderdet">
                 <h4>Order Id : {{detail.order_id}}</h4>
@@ -336,8 +333,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </div>
 </app-pop-up>
 
-<div class="orderShipDet">
-    <div class="ordersumBox">
+<div class="orderShipDet pwa-container">
+    <div class="ordersumBox pwa-row">
         <h5 class="clearfix" *ngIf="detail && detail.dates && detail.dates.accepted.date">Order Date:
             <span>{{detail.dates.accepted.date | date : 'dd-MM-yyyy'}}</span>
         </h5>
@@ -359,7 +356,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             <span class="paymode">₹ {{totalPrice(detail.price, detail.Quantity, detail.shipping_charge, detail.discount)}}</span>
         </div>
     </div>
-    <div class="orderaddressBox" *ngIf="detail && detail.address.shipping_address">
+    <div class="orderaddressBox pwa-row" *ngIf="detail && detail.address.shipping_address">
         <h3>Shipping address</h3>
         <span>{{detail.address.shipping_address.firstname}}</span>
         <span>{{detail.address.shipping_address.address}}</span>
@@ -370,7 +367,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         <span>Contact: {{detail.address.shipping_address.phone}}</span>
 
     </div>
-    <div class="mt-10 orderaddressBox" *ngIf="detail && detail.address.billing_address">
+    <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail.address.billing_address">
         <h3>Billing address</h3>
         <span>{{detail.address.billing_address.firstname}}</span>
         <span>{{detail.address.billing_address.address}}</span>

@@ -29,6 +29,7 @@ export class CampaignComponent implements OnInit {
   bannerInterval;
   isBrowser: boolean;
   isServer: boolean;
+  isblackOverlay:boolean= false;
   constructor(
     public pageTitle: Title,
     public meta: Meta,

@@ -113,7 +113,7 @@ export class CartComponent
             incrementOrDecrementBy = -1;
             updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity - 1;
         }
-        if (updatedCartItemCount < 0 || quantityTarget < 0) {
+        if (updatedCartItemCount < 0 || quantityTarget < 0 || isNaN(parseInt(quantityTarget))) {
             this.removeIndex = index;
             this.removePopup = true;
             this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);

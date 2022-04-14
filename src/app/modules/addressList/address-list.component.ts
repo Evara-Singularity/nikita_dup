@@ -42,6 +42,8 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.cartService.shippingAddress = null;
+        this.cartService.billingAddress = null;
         this.sai = 0;
         this.cartService.selectedBusinessAddressObservable.subscribe((data) => {
             this.selectedBillingAddress = data.length - 1;

@@ -1553,16 +1553,16 @@ export class CartService
      * payment:clear all validations
     */
 
-    async setUnserviceables(unserviceables: any[])
+    setUnserviceables(unserviceables: any[])
     {
-        this.notifications = await this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
+        this.notifications = this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
         this.notifications = [...this.notifications, ...unserviceables];
         this.notificationsSubject.next(this.notifications);
     }
 
-    async setCartNotifications(cartNotifications: any[])
+    setCartNotifications(cartNotifications: any[])
     {
-        this.notifications = await this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
+        this.notifications = this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
         this.notifications = [...this.notifications, ...cartNotifications];
         this.notificationsSubject.next(this.notifications);
     }

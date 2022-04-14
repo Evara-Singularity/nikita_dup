@@ -90,7 +90,7 @@ export class CartComponent
     }
 
     // To increment decrement and manually update of cart item quantity
-    updateCartItemQuantity(quantityTarget, index, action, buyNow = false)
+    updateCartItemQuantity(quantityTarget, index, action, buyNow = false, showToastMsg?: boolean)
     {
         const MOQ = this._cartService.getGenericCartSession.itemsList[index].moq || 1;
         let updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
@@ -116,6 +116,7 @@ export class CartComponent
         if (updatedCartItemCount < 0 || quantityTarget < 0) {
             this.removeIndex = index;
             this.removePopup = true;
+            this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);
             return;
         };
         if (action === 'update') {
@@ -127,6 +128,7 @@ export class CartComponent
                     type: 'error',
                     text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
                 });
+                this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);
                 return;
             }
         }
@@ -155,10 +157,10 @@ export class CartComponent
                     productDetails.productQuantity = incrementOrDecrementBy;
                     let isQua = this.isQuantityAvailable(updatedCartItemCount, productDetails, index);
                     if (isQua["status"]) {
-                        this.updateCartAndRemoveNotfication(productMsnId, buyNow, productDetails, index, updatedCartItemCount);
+                        this.updateCartAndRemoveNotfication(productMsnId, buyNow, productDetails, index, updatedCartItemCount, showToastMsg);
                     } else {
                         if (productDetails.quantityAvailable !== this._cartService.getGenericCartSession.itemsList[index].productQuantity) {
-                            this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update');
+                            this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update', buyNow, true);
                         }
                         this._tms.show({ type: 'error', text: productDetails.quantityAvailable + ' is the maximum quantity available.' });
                     }
@@ -172,7 +174,7 @@ export class CartComponent
             });
     }
 
-    updateCartAndRemoveNotfication(msn, buyNow, productDetails, index, updatedCartItemCount)
+    updateCartAndRemoveNotfication(msn, buyNow, productDetails, index, updatedCartItemCount, showToastMsg?: boolean)
     {
         const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn]);
         const addToCart$ = this._cartService.addToCart({ buyNow, productDetails }).pipe(
@@ -203,7 +205,9 @@ export class CartComponent
                         const count = { count: (addToCartResponse['itemsList'] ? addToCartResponse['itemsList'].length : 0), currentlyAdded: productDetails}
                         this._cartService.cart.next(count);
                         this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
-                        this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
+                        if (!showToastMsg) {
+                            this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
+                        }
                     } else {
                         this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
                     }

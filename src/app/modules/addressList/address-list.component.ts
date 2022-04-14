@@ -42,8 +42,7 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.cartService.shippingAddress = null;
-        this.cartService.billingAddress = null;
+        
         this.sai = 0;
         this.cartService.selectedBusinessAddressObservable.subscribe((data) => {
             this.selectedBillingAddress = data.length - 1;
@@ -166,19 +165,25 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     deleteAddress(index?,type?,address?) {
-        
-        this.sbm = {index: index, type: type, address: address}
-        this.outData$.emit({
-            da: this.sbm
-        });
-
+        if (address)
+        {
+            const addressType = address['addressType']['addressType'];
+            const idAddress = address['idAddress']
+            if (addressType === 'shipping' && this.cartService.shippingAddress){
+                const cidAddress = this.cartService.shippingAddress['idAddress'];
+                if (idAddress === cidAddress) { this.cartService.shippingAddress = null; }
+            } else if (this.cartService.billingAddress) {
+                const cidAddress = this.cartService.billingAddress['idAddress'];
+                if (idAddress === cidAddress) { this.cartService.billingAddress = null; }
+            }
+        }else{
+            this.cartService.shippingAddress = null;
+            this.cartService.billingAddress = null;
+        }
+        this.sbm = { index: index, type: type, address: address }
+        this.outData$.emit({ da: this.sbm });
         this.sai = null;
-        // if (this.sai == this.sbm.index) {
-        //     this.sai = 0;
-        // }
-
         this.sbm = undefined;
-        
         this.setAddressIndex();
     }
 

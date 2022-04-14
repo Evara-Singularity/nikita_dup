@@ -1,48 +1,24 @@
 <section class="static-container faqfixedhead">
-    <div class="faq-search">
+    <div class="faq-search faq-search-container">
         <div class="searchfield">
-            <!-- <input type="text"  value="" placeholder="Search"> -->
             <input id="searchvalue" #searchValue (keyup)="showSearchSuggestion(searchValue?.value,$event)" value=""
                 placeholder="Search for topics or questions">
             <span *ngIf="searchValue.value.length>0" class="crosstext" (click)="cleartext()"><i class="icon-delete"></i>
             </span>
             <button (click)="searchFaq(searchValue?.value)" type="submit"><i class="icon-search"></i></button>
         </div>
-
-        <!-- Search suggestion -->
-        <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="no-padding no-margin no-list-style searchresult"
+        <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="searchresult"
             *ngIf="searchValue?.value?.length > 0">
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li active-faq" *ngFor="let result of suggestionArr">
+            <li class="sidebar_li active-faq" *ngFor="let result of suggestionArr">
                 <a class="pad-tb-15 pad-lr-20" (click)="showQuestion(result?.question);">{{ result?.question }}</a>
             </li>
-
             <li *ngIf="noResults">
                 <a class=""> No Result Found </a>
             </li>
         </ul>
-        <!-- Search suggestion -->
     </div>
-    <div class="clearfix">
-        <ul data-tabe='scrollItem' class="no-padding no-margin no-list-style faqUllist" *ngIf="showSideMenu">
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li active-faq" (click)="scrollTo('#faq0',0)">
-                <a class="pad-tb-15 pad-lr-20">Order Tracking</a>
-            </li>
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li" (click)="scrollTo('#faq1',1)" #CRP>
-                <a class="pad-tb-15 pad-lr-20">Customer Return Policy</a>
-            </li>
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li" (click)="scrollTo('#faq2',2)">
-                <a class="pad-tb-15 pad-lr-20">Refund</a>
-            </li>
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li" (click)="scrollTo('#faq3',3)">
-                <a class="pad-tb-15 pad-lr-20">Payment Options</a>
-            </li>
-        </ul>
-    </div>
-
-    <!--Initial data -->
     <div class="fq-wrap card">
         <div *ngIf="filteredArray?.length > 0;then filterd else original"></div>
-        <!-- start of Original content -->
         <ng-template #original>
             <ng-container *ngFor="let block of faqData; let i = index;">
                 <div [attr.id]="'faq' + i">
@@ -78,15 +54,11 @@
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </ng-container>
         </ng-template>
-        <!--End of Original content-->
-        <!--Start of Filtered content-->
         <ng-template #filterd>
             <div id="order_tracking">
-                <!-- <h3 class="fqhead" >Order Tracking</h3> -->
                 <h3 class="fqhead" *ngIf="!hideSuggestionInMobile">Order Tracking <span>
                         <i class="icon-expand"></i>
                         <i class="icon-collaps"></i>
@@ -104,7 +76,6 @@
                 </div>
             </div>
         </ng-template>
-        <!--End of Filtered content-->
     </div>
     <div class="black-overlay" *ngIf="overlaysuggestion"></div>
 </section>

@@ -1553,21 +1553,19 @@ export class CartService
      * payment:clear all validations
     */
 
-    setUnserviceables(unserviceables: any[])
+    async setUnserviceables(unserviceables: any[])
     {
-        this.notifications = this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
+        this.notifications = await this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
         this.notifications = [...this.notifications, ...unserviceables];
         this.notificationsSubject.next(this.notifications);
     }
 
-    setCartNotifications(cartNotifications: any[])
+    async setCartNotifications(cartNotifications: any[])
     {
-        this.notifications = this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
+        this.notifications = await this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
         this.notifications = [...this.notifications, ...cartNotifications];
         this.notificationsSubject.next(this.notifications);
     }
-
-    
 
     verifyAndUpdateNotfications(time?)
     {
@@ -1843,7 +1841,7 @@ export class CartService
         if (!this.localAuthService.isUserLoggedIn()) return of([]);
         const userSession = this.localAuthService.getUserSession();
         this.cartNotications = this.cartNotications.filter((notification) => { notification['msnid'] === msn; })
-        this.setCartNotifications(this.notifications);
+        this.setCartNotifications(this.cartNotications);
         return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.cartNotications })
     }
 

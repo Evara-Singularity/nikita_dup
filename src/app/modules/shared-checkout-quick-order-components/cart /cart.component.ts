@@ -190,19 +190,18 @@ export class CartComponent
                 return of(data);
             }),
         );
-        forkJoin([setValidationMessages$, addToCart$]).subscribe(result =>
+        forkJoin([setValidationMessages$, addToCart$]).subscribe(responses =>
         {
-            if (!result && this._cartService.buyNowSessionDetails) {
+            const addToCartResponse = responses[1];
+            if (!addToCartResponse && this._cartService.buyNowSessionDetails) {
                 this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
             } else {
-                if (result) {
+                if (addToCartResponse) {
                     if (!buyNow) {
-                        this._cartService.setGenericCartSession(result);
+                        this._cartService.setGenericCartSession(addToCartResponse);
                         this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
-                        this._cartService.cart.next({
-                            count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
-                            currentlyAdded: productDetails
-                        });
+                        const count = { count: (addToCartResponse['itemsList'] ? addToCartResponse['itemsList'].length : 0), currentlyAdded: productDetails}
+                        this._cartService.cart.next(count);
                         this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
                         this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
                     } else {

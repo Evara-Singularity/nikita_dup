@@ -159,9 +159,7 @@ export class CartComponent
                     if (isQua["status"]) {
                         this.updateCartAndRemoveNotfication(productMsnId, buyNow, productDetails, index, updatedCartItemCount, showToastMsg);
                     } else {
-                        if (productDetails.quantityAvailable !== this._cartService.getGenericCartSession.itemsList[index].productQuantity) {
-                            this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update', buyNow, true);
-                        }
+                        this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update', buyNow, true);
                         this._tms.show({ type: 'error', text: productDetails.quantityAvailable + ' is the maximum quantity available.' });
                     }
                 } else {

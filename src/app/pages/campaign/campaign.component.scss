@@ -21,7 +21,7 @@
         p {
             font-size: $large-font;
             color: var(--white);
-            line-height: $ml-2-line-height;
+            line-height: $large-line-height;
         }
         .watch-now {
             background: var(--white);
@@ -61,7 +61,7 @@
                     color: var(--onyx-black);
                     text-align: left;
                     font-size: $large-font;
-                    line-height: $ml-line-height;
+                    line-height: $medium-line-height;
                 }
             }
         }
@@ -69,7 +69,7 @@
     .moglixhaina-head{
         margin-bottom: 20px;
         h2{
-            font-size:$xlm-2-font;
+            font-size:$extra-large-2-font;
             color: var(--onyx-black);
             text-align: center;
             span{
@@ -112,7 +112,7 @@
                     }
                     p {
                         font-size: $large-font;
-                        line-height: $ml-line-height;
+                        line-height: $medium-line-height;
                     }
                     .explore-now {
                         font-size: $small-font;
@@ -191,7 +191,7 @@
             }
             p {
                 font-size: $large-font;
-                line-height: $ml-2-line-height;
+                line-height: $large-line-height;
             }
         }
     }
@@ -233,7 +233,7 @@
                         bottom: 10px;
                         color: var(--white);
                         font-size: $large-font;
-                        line-height: $medium-line-height;
+                        line-height: $small-line-height;
                         font-weight: $font-bolder;
                         span {
                             display: block;
@@ -273,13 +273,13 @@
                     }
                     .counter-text{
                         font-size: $medium-font;
-                        line-height: $medium-line-height;
+                        line-height: $small-line-height;
                         margin-bottom: 0;
                         font-weight: $font-bold;
                     }
                     span{
                         font-size: $small-font;
-                        line-height: $medium-line-height;
+                        line-height: $small-line-height;
                     }
                     &:before{
                         border-right: 1px solid hsla(0,0%,100%,.2);
@@ -379,7 +379,7 @@
                 background: var(--white);
                 z-index: 2;
                 position: absolute;
-                line-height: $ml-line-height;
+                line-height: $medium-line-height;
                 color: var(--primary);
                 font-size: $extra-large-1-font;
                 text-align: center;

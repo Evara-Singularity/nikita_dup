@@ -380,7 +380,11 @@ export class OrderConfirmationComponent implements OnInit {
         console.log("PAYMENT_MSNS:", PAYMENT_MSNS);
         const ACTUAL_CART_ITEMS:any[] = (cartSession["itemsList"] as any[]);
         console.log("ACTUAL_CART_ITEMS:", ACTUAL_CART_ITEMS);
-        const PAYMENT_CART_ITEMS = ACTUAL_CART_ITEMS.filter((item) => PAYMENT_MSNS.includes(item.productId))
+        let PAYMENT_CART_ITEMS = ACTUAL_CART_ITEMS
+        if (PAYMENT_MSNS)
+        {
+            PAYMENT_CART_ITEMS = ACTUAL_CART_ITEMS.filter((item) => PAYMENT_MSNS.includes(item.productId))
+        }
         console.log("PAYMENT_CART_ITEMS:", PAYMENT_CART_ITEMS);
         PAYMENT_CART_ITEMS.forEach((element) => {
             let price = element.productUnitPrice;
@@ -527,7 +531,8 @@ export class OrderConfirmationComponent implements OnInit {
         if(buyNow){
             // incase of buynow from backend service order placed item get removed 
             // we just need to read getcartsession
-            this._cartService.refreshCartSesion();
+            this.localStorageService.clear("flashData");
+            this._cartService.clearBuyNowFlow();
         }else{
             // in normal flow 
             // first need to clear all item from cart by updateCart API
@@ -560,6 +565,7 @@ export class OrderConfirmationComponent implements OnInit {
                 giftMessage: null,
                 giftPackingCharges: null,
                 totalPayableAmount: null,
+                buyNow:false
             },
             itemsList: [],
             addressList: null,
@@ -567,16 +573,6 @@ export class OrderConfirmationComponent implements OnInit {
             deliveryMethod: null,
             offersList: null,
         };
-
-        /**
-         * For buyNow item remove buynow data from localstorage.
-         */
-        const flashData = this.localStorageService.retrieve("flashData");
-        if (flashData && flashData["buyNow"]) {
-            emptyCart["cart"]["buyNow"] = true;
-            this.localStorageService.clear("flashData");
-        }
-        //ENDS
         this._cartService.updateCartSession(emptyCart).subscribe((data) => {
             this._cartService.cart.next({ count: data["noOfItems"] || (data["itemsList"] as any[]).length || 0 });
             let res = data;

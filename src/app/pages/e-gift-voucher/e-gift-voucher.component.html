@@ -4,104 +4,105 @@
         </h1>
         <h3>200+ Brands to choose from!</h3>
     </div>
-    <div class="gifting-form-container">
+    <div class="gifting-form-container pwa-row">
         <p class="gifting-form-heading">Fill your E-gift card requirements and we will call you with the <span>best discounts</span> within 30 min.
         </p>
         <h3 class="heading-3" (click)="togglePopUp2()">Check list of 200+ brands e-Gift<br> vouchers & validity</h3>
-        <div class="pwa-row">
             <form [formGroup]="eGiftForm" class="material-form material-form-boxed">
-                <div formGroupName="rfqEnquiryCustomer">
-                        <div class="input-field-boxed">
-                            <label>Full Name*</label>
-                            <input type="text" (keypress)="checkForspecialChars($event)" formControlName="name"
-                                placeholder="Enter full name">
-                            <p *ngIf="name.touched && (name.hasError('required') || name.hasError('whitespace'))">Kindly enter your name
-                                <span>(Special characters are not allowed)</span>
-                            </p>
-                        </div>
-                        <div class="input-field-boxed">
-                            <label>Email ID*</label>
-                            <input type="text" formControlName="email" placeholder="Enter email Id">
-                            <p *ngIf="email.touched && email.hasError('required')" class="">Kindly enter valid email ID</p>
-                            <p *ngIf="!email.hasError('required') && email.hasError('invalidEmail')" class="">Kindly enter
-                                valid email ID. Ex: abc@xxx.com
-                            </p>
-                        </div>
-                        <div class="input-field-boxed">
-                            <label>Mobile No*</label>
-                            <input type="text" (keypress)="checkNumberic($event)" maxlength="10" minlength="10"
-                                formControlName="mobile" placeholder="Enter mobile no">
-                            <p *ngIf="mobile.touched && mobile.hasError('required')" class="">Kindly enter your phone no.
-                            </p>
-                            <p *ngIf="!mobile.hasError('required') && mobile.hasError('minlength')" class="">Kindly enter
-                                10 digit contact no.</p>
-                        </div>
-                        <div class="input-field-boxed">
-                            <label>Company (Optional)</label>
-                            <input (keypress)="checkForspecialChars($event)" type="text" formControlName="company"
-                                placeholder="Enter company name">
-                        </div>
-                    
+                <div class="card pwa-row"> 
+                    <div formGroupName="rfqEnquiryCustomer">
+                            <div class="input-field-boxed">
+                                <label>Full Name*</label>
+                                <input type="text" (keypress)="checkForspecialChars($event)" formControlName="name"
+                                    placeholder="Enter full name">
+                                <p *ngIf="name.touched && (name.hasError('required') || name.hasError('whitespace'))">Kindly enter your name
+                                    <span>(Special characters are not allowed)</span>
+                                </p>
+                            </div>
+                            <div class="input-field-boxed">
+                                <label>Email ID*</label>
+                                <input type="text" formControlName="email" placeholder="Enter email Id">
+                                <p *ngIf="email.touched && email.hasError('required')" class="">Kindly enter valid email ID</p>
+                                <p *ngIf="!email.hasError('required') && email.hasError('invalidEmail')" class="">Kindly enter
+                                    valid email ID. Ex: abc@xxx.com
+                                </p>
+                            </div>
+                            <div class="input-field-boxed">
+                                <label>Mobile No*</label>
+                                <input type="text" (keypress)="checkNumberic($event)" maxlength="10" minlength="10"
+                                    formControlName="mobile" placeholder="Enter mobile no">
+                                <p *ngIf="mobile.touched && mobile.hasError('required')" class="">Kindly enter your phone no.
+                                </p>
+                                <p *ngIf="!mobile.hasError('required') && mobile.hasError('minlength')" class="">Kindly enter
+                                    10 digit contact no.</p>
+                            </div>
+                            <div class="input-field-boxed">
+                                <label>Company (Optional)</label>
+                                <input (keypress)="checkForspecialChars($event)" type="text" formControlName="company"
+                                    placeholder="Enter company name">
+                            </div>
+                        
+                    </div>
                 </div>
-                <div class="gift-card-req" formArrayName="rfqEnquiryItemsList" >
-                    <div class="gift-card-req-form">
-                          <h3>Enter your gift card requirement:</h3>
-                        <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
-                            <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement"
-                                *ngIf="brandList.length">
-                                <div class="brand req-flex-child">
-                                     <span class="gift-card-heading">Gift Card {{rIndex+1}}</span>
-                                 </div>
-                                <div class="brand req-flex-child">
-                                    <list-autocomplete [placeholder]="'Brand'" [brandList]="brandList"
-                                        [control]="requirement.get('brandName')"
-                                        (onSelect)="updateBrand(requirement.get('brandName'), $event)"></list-autocomplete>
-                                        <i class="icon-down list-icon-arrow-down"></i>
-                                    <p *ngIf="requirement.get('brandName').touched && requirement.get('brandName').invalid"
-                                        class="error-txt">
-                                        Kindly select brand name.
-                                    </p>
-                                </div>
-                                <div class="multiple-form-field">
-                                    <div class="value req-flex-child">
-                                        <list-autocomplete class="value-auto-co" [control]="requirement.get('itemValue')" [placeholder]="'Value (INR)'" [amountList]="PRICE_VALUES">
-                                        </list-autocomplete>
-                                        <i class="icon-down"></i>
-                                        <p *ngIf="requirement.get('itemValue').touched && requirement.get('itemValue').invalid"
+                    <div class="gift-card-req" formArrayName="rfqEnquiryItemsList" >
+                        <div class="gift-card-req-form">
+                            <h3>Enter your gift card requirement:</h3>
+                            <ng-container *ngFor="let requirement of rfqEnquiryItemsList['controls'];let rIndex=index">
+                                <div class="req-flex" [class.valid-row]="requirement.valid" [formGroup]="requirement"
+                                    *ngIf="brandList.length">
+                                    <div class="brand req-flex-child">
+                                        <span class="gift-card-heading">Gift Card {{rIndex+1}}</span>
+                                    </div>
+                                    <div class="brand req-flex-child">
+                                        <list-autocomplete [placeholder]="'Brand'" [brandList]="brandList"
+                                            [control]="requirement.get('brandName')"
+                                            (onSelect)="updateBrand(requirement.get('brandName'), $event)"></list-autocomplete>
+                                            <i class="icon-down list-icon-arrow-down"></i>
+                                        <p *ngIf="requirement.get('brandName').touched && requirement.get('brandName').invalid"
                                             class="error-txt">
-                                            Kindly enter valid value.
+                                            Kindly select brand name.
                                         </p>
                                     </div>
-                                    <div class="qty req-flex-child">
-                                        <input (change)="updateItemTotalValue(requirement)" type="text"
-                                            placeholder="Enter Qty" formControlName="quantity">
-                                        <p *ngIf="requirement.get('quantity').touched && requirement.get('quantity').invalid"
-                                            class="error-txt">
-                                            Kindly enter valid quantity.
-                                        </p>
+                                    <div class="multiple-form-field">
+                                        <div class="value req-flex-child">
+                                            <list-autocomplete class="value-auto-co" [control]="requirement.get('itemValue')" [placeholder]="'Value (INR)'" [amountList]="PRICE_VALUES">
+                                            </list-autocomplete>
+                                            <i class="icon-down"></i>
+                                            <p *ngIf="requirement.get('itemValue').touched && requirement.get('itemValue').invalid"
+                                                class="error-txt">
+                                                Kindly enter valid value.
+                                            </p>
+                                        </div>
+                                        <div class="qty req-flex-child">
+                                            <input (change)="updateItemTotalValue(requirement)" type="text"
+                                                placeholder="Enter Qty" formControlName="quantity">
+                                            <p *ngIf="requirement.get('quantity').touched && requirement.get('quantity').invalid"
+                                                class="error-txt">
+                                                Kindly enter valid quantity.
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="multiple-form-field">
-                                    <div class="total-value req-flex-child">
-                                        <span [class.validated-dark-text]="requirement.get('totalValue').value > 0">
-                                            <ng-container *ngIf="requirement.get('totalValue').value > 0">
-                                                {{requirement.get('totalValue').value | mathFloor | indianCurrency }}
-                                            </ng-container>
-                                            <ng-container *ngIf="requirement.get('totalValue').value == 0">
-                                                Total Value (INR)
-                                            </ng-container>
-                                        </span>
-                                    </div>
-                                    <div class="action req-flex-child" (click)="removeProduct(rIndex);">
-                                        <div class="bin-area">
-                                            <i  [class.selectedIcon]="requirement.valid" class="icon-bin"></i>
+                                    <div class="multiple-form-field">
+                                        <div class="total-value req-flex-child">
+                                            <span [class.validated-dark-text]="requirement.get('totalValue').value > 0">
+                                                <ng-container *ngIf="requirement.get('totalValue').value > 0">
+                                                    {{requirement.get('totalValue').value | mathFloor | indianCurrency }}
+                                                </ng-container>
+                                                <ng-container *ngIf="requirement.get('totalValue').value == 0">
+                                                    Total Value (INR)
+                                                </ng-container>
+                                            </span>
+                                        </div>
+                                        <div class="action req-flex-child" (click)="removeProduct(rIndex);">
+                                            <div class="bin-area">
+                                                <i  [class.selectedIcon]="requirement.valid" class="icon-bin"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </ng-container>
+                            </ng-container>
+                        </div>
                     </div>
-                </div>
                 <div class="add-another-card" [ngClass]="{ 'add-another-card-enabled': eGiftForm.valid}">
                     <input type="button" [disabled]="eGiftForm.invalid" (click)="addRequirementForm()"
                         value="+ ADD ANOTHER CARD">
@@ -126,7 +127,6 @@
                 </div>
             </form>
         </div>
-    </div>
 </div>
 
 <!-- category+brand+validity popup -->

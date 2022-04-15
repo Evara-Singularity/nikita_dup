@@ -1,6 +1,7 @@
 @import '../../scss/variables';
 @import '../../scss/layout/forms.scss';
 @import '../../scss/components/checkbox';
+@import '../../scss/layout/cards.scss';
 
 .e-gifting {
     padding-bottom: 85px;
@@ -43,7 +44,9 @@
         background: #ffffff;
         box-shadow: 0px 3px 12px #00000014;
         border-radius: 8px;
-        padding: 15px 0px;
+        .pwa-row{
+            background-color: #faf7f7;
+        }
         .gifting-form-heading{
             text-align: center;
             font-size: 18px;

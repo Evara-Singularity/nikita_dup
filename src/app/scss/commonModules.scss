@@ -3,11 +3,6 @@
 // @import '../../app/scss/layout/forms.scss';
 // @import './../scss/components/buttons.scss';
 
-//Cards
-.card {
-    @extend %cards;
-    padding: 0;
-}
 .overlay {
     position: fixed;
     top: 0;

@@ -105,7 +105,7 @@
             }
         }
         h1 {
-            font-size: $xl-1-font;
+            font-size: $extra-large-1-font;
             color: var(--white);
             text-align: center;
             text-transform: uppercase;
@@ -116,7 +116,7 @@
         background:url("#{$cdn_url}/assets/img/others/wall-bg.jpg") repeat top left;
         padding: 30px 20px 10px 20px;
         h1 {
-            font-size: $xl-1-font;
+            font-size: $extra-large-1-font;
             text-align: center;
             color: var(--text-color);
         }
@@ -145,7 +145,7 @@
             }
             .count-block {
                 color: var(--primary);
-                font-size: $xl-4-font;
+                font-size: $extra-large-5-font;
             }
             span::after {
                 content: "+";
@@ -163,7 +163,7 @@
             padding-bottom: 12px;
             box-sizing: border-box;
             h3 {
-                font-size: $xl-1-font;
+                font-size: $extra-large-1-font;
                 color: var(--primary);
                 text-align: center;
             }

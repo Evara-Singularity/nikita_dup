@@ -1,66 +1,54 @@
 /*Heading Classes*/
+h1,
 h2,
-h3 {
-    color: #3c3c3c;
+h3,h4,h5,h6 {
+    color:var(--onyx-black);
 }
-h3,
-.heading-3 {
-    font-size: $large-font;
-    padding: 10px 0;
-}
-//Common Heading
-.heading-3,
-h3 {
-    font-size: 14px;
-    padding: 10px 0;
-    font-weight: bold;
-}
-.heading-3-txt {
-    color: $dark-gray-color;
-    font-size: $medium-font;
-}
-
-.small-txt {
-    font-size: $medium-font;
-    font-weight: 400;
-}
-
-.extra-small-txt {
-    font-size: $small-font;
-    font-weight: 400;
-    line-height: 14px;
-}
-
-
-.normal-txt {
-    font-weight: 400;
-}
-
-.content {
-    font-size: 14px;
-    line-height: 20px;
-}
-
-h2,
-.heading-2 {
-    font-size: 18px;
-}
-
-.heading-4 {
-    font-size: $large-font;
-    font-weight: 400;
-}
-
+/*Common Heading Classes*/
 .heading {
     font-size: $extra-large-font;
 }
+h1{
+    font-size:$extra-large-3-font;
+}
+h2,
+.heading-2 {
+    font-size:$extra-large-font;
+}
+h3,
+.heading-3{
+    font-size: $large-font;
+    padding: 10px 0;
+    font-weight:$font-bold;
+    .txt{
+        color: $dark-gray-color;
+        font-size: $medium-font;
+    }
+}
+// custom h3
 .heading-custom-3{
     font-size: $extra-large-font;
     line-height: 21px;
     padding: 0px;
-    .normal-weight{
-        font-weight: normal;
-    }
+}
+// custom h3
+.heading-4,h4 {
+    font-size: $medium-font;
+}
+.heading-5,h5 {
+    font-size:$small-font;
+}
+.heading-6,h6 {
+    font-size:$extra-small-font;
+}
+.small-txt {
+    font-size: $medium-font;
+    font-weight:$font-normal;
+}
+.extra-small-txt {
+    font-size: $small-font;
+    font-weight: $font-normal;
+    line-height: 14px;
 }
 .link-text{
     color:var(--bleu-de-france);

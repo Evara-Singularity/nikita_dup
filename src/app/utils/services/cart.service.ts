@@ -680,6 +680,10 @@ export class CartService
         return this._cartUpdatesChanges.asObservable()
     }
 
+    public setCartUpdatesChanges(cartsession): void {
+        this._cartUpdatesChanges.next(cartsession);
+    }
+
     // refresh and chnages to communicated 
     public refreshCartSesion()
     {

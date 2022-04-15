@@ -154,7 +154,7 @@
         margin-bottom:10px;
         color:var(--onyx-black);    
         padding-top:10px;
-        line-height: $ml-line-height;
+        line-height: $medium-line-height;
         &:first-child{
           border-top:none;
           margin-top:0px;
@@ -165,7 +165,7 @@
       }
       p{
         font-size:$large-font;
-        line-height:$ml-line-height;
+        line-height:$medium-line-height;
       }
       ul{
         font-size:$large-font;
@@ -174,7 +174,7 @@
         margin-top: 9px;
         li{
           padding: 0 0 4px; 
-          line-height: $ml-line-height;      
+          line-height: $medium-line-height;      
         }
       }
       table{

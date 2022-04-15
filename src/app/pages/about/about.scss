@@ -49,7 +49,7 @@
                 text-align: center;
                 color: var(--white);
                 font-size: $medium-font;
-                line-height: $medium-line-height;
+                line-height: $small-line-height;
                 font-weight: $font-bolder;
             }
             &:after {
@@ -192,7 +192,7 @@
                 span {
                     display: block;
                     font-size: $medium-font;
-                    line-height: $medium-line-height;
+                    line-height: $small-line-height;
                     color: var(--white);
                     font-weight: normal;
                 }

@@ -1,3 +1,9 @@
+
+.card {
+    @extend %cards;
+    padding: 0;
+}
+//Cards
 // .card {
 //     margin-top: 10px;
 //     margin-bottom: 0;

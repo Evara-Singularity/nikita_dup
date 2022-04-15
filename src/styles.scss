@@ -12,6 +12,7 @@
 @import './app/scss/components/buttons.scss';
 @import './app/scss/base/typography.scss';
 @import './app/scss/layout/grid.scss';
+@import './app/scss/utils/spacing.scss';
 * {
     margin: 0;
     padding: 0;
@@ -87,4 +88,12 @@ header-nav {
             margin-top: 0px !important;
         }
     }
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.20);
+    width: 100%;
+    height: 100%;
 }

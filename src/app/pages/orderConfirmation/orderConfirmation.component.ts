@@ -528,17 +528,16 @@ export class OrderConfirmationComponent implements OnInit {
     }
 
     private getUpdatedCart(buyNow) {
-        // if(buyNow){
-        //     // incase of buynow from backend service order placed item get removed 
-        //     // we just need to read getcartsession
-        //     this.localStorageService.clear("flashData");
-        //     this._cartService.clearBuyNowFlow();
-        // }else{
-        //     // in normal flow 
-        //     // first need to clear all item from cart by updateCart API
-        //     this.resetCartSessionForNormalFlow();
-        // }
-        this.resetCartSessionForNormalFlow();
+        if(buyNow){
+            // incase of buynow from backend service order placed item get removed 
+            // we just need to read getcartsession
+            this.localStorageService.clear("flashData");
+            this._cartService.clearBuyNowFlow();
+        }else{
+            // in normal flow 
+            // first need to clear all item from cart by updateCart API
+            this.resetCartSessionForNormalFlow();
+        }
     }
 
     private resetCartSessionForNormalFlow() {

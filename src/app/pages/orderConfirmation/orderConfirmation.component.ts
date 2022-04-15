@@ -117,7 +117,7 @@ export class OrderConfirmationComponent implements OnInit {
                     this.gtmTracking(userSession, anayticsData);
                     this.abobeTracking(userSession, anayticsData);
                     this.sendClickStreamData(cartSession);
-                    this.resetCartSession();
+                    this.getUpdatedCart(buyNow);
                 }
             },
                 (reponseError) => {
@@ -523,7 +523,19 @@ export class OrderConfirmationComponent implements OnInit {
         }
     }
 
-    private resetCartSession() {
+    private getUpdatedCart(buyNow) {
+        if(buyNow){
+            // incase of buynow from backend service order placed item get removed 
+            // we just need to read getcartsession
+            this._cartService.refreshCartSesion();
+        }else{
+            // in normal flow 
+            // first need to clear all item from cart by updateCart API
+            this.resetCartSessionForNormalFlow();
+        }
+    }
+
+    private resetCartSessionForNormalFlow() {
         let currentCartSession = this._cartService.getGenericCartSession;
         let userSession = this._las.getUserSession();
         let emptyCart = {
@@ -569,7 +581,7 @@ export class OrderConfirmationComponent implements OnInit {
             this._cartService.cart.next({ count: data["noOfItems"] || (data["itemsList"] as any[]).length || 0 });
             let res = data;
             if (res["statusCode"] == 200) {
-                this._cartService.setGenericCartSession(res);
+                this._cartService.setCartUpdatesChanges(res);
             }
         });
     }

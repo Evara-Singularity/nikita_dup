@@ -274,9 +274,10 @@ export class CashOnDeliveryComponent {
     }
 
     doPay(){
-        if (this.userNum !== parseInt(this._cartService.shippingAddress as any['phone'])) {
-            this.updateShippingAddress();
-        }
+        //legacy code to be removed.
+        // if (this.userNum !== parseInt(this._cartService.shippingAddress as any['phone'])) {
+        //     this.updateShippingAddress();
+        // }
         this.pay();
     }
     
@@ -305,37 +306,38 @@ export class CashOnDeliveryComponent {
         });
     }
 
-    verifyMyOtp(val) {
-        if (!this.submittedOnce) {
-            let body = {};
-            body['phone'] = this.userNum;
-            body['otp'] = val.otp;
-            body['userId'] = this.currUser['userId'];
-            this.submittedOnce = true;
-            this.isShowLoader = true;
-            this.verifyOtpCall(body).subscribe(data => {
-                this.isShowLoader = false;
-                if (data['status']) {
-                    if (this.transactionId) {
-                        if (this.userNum !== parseInt(this._cartService.shippingAddress as any['phone'])) {
-                            this.updateShippingAddress();
-                        }
-                        this.pay();
-                    } else {
-                        this.verifyOtp = false;
-                        this.isShowLoader = false;
-                        this._tms.show({type: 'error', text: 'Please fill your details again to proceed ahead.'});
-                    }
+    //legacy code which is to be removed.
+    // verifyMyOtp(val) {
+    //     if (!this.submittedOnce) {
+    //         let body = {};
+    //         body['phone'] = this.userNum;
+    //         body['otp'] = val.otp;
+    //         body['userId'] = this.currUser['userId'];
+    //         this.submittedOnce = true;
+    //         this.isShowLoader = true;
+    //         this.verifyOtpCall(body).subscribe(data => {
+    //             this.isShowLoader = false;
+    //             if (data['status']) {
+    //                 if (this.transactionId) {
+    //                     if (this.userNum !== parseInt(this._cartService.shippingAddress as any['phone'])) {
+    //                         this.updateShippingAddress();
+    //                     }
+    //                     this.pay();
+    //                 } else {
+    //                     this.verifyOtp = false;
+    //                     this.isShowLoader = false;
+    //                     this._tms.show({type: 'error', text: 'Please fill your details again to proceed ahead.'});
+    //                 }
 
-                } else {
-                    this.submittedOnce = false;
-                    // this.otpError = 'You have entered wrong OTP';
-                    this._tms.show({type: 'error', text: 'You have entered wrong OTP'});
-                    this.otpErrorFlag = false;
-                }
-            });
-        }
-    }
+    //             } else {
+    //                 this.submittedOnce = false;
+    //                 // this.otpError = 'You have entered wrong OTP';
+    //                 this._tms.show({type: 'error', text: 'You have entered wrong OTP'});
+    //                 this.otpErrorFlag = false;
+    //             }
+    //         });
+    //     }
+    // }
 
 
     sendOtpCall(data){

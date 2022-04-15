@@ -198,6 +198,7 @@ export class CartService
 
     getCartBySession(params): Observable<any>
     {
+        console.trace();
         /**
          *  Return cart from server session.
          *  Save returned to service local variable: `cartSession`
@@ -1537,7 +1538,7 @@ export class CartService
 
     clearBuyNowFlow()
     {
-        if (this._buyNow || this._buyNowSessionDetails) {
+        if (this._buyNow) {
             this.buyNow = false;
             this.buyNowSessionDetails = null;
             this.refreshCartSesion();
@@ -1720,6 +1721,7 @@ export class CartService
 
     updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
     {
+        console.log(newNotfications, oldNotfications);
         let overriddenNotfications = [];
         let freshNotifications = [];
         let oosNotifications = [];
@@ -1728,7 +1730,7 @@ export class CartService
         const NEW_OOS_MSNS = newNotfications.filter((notification) => notification['type'] === 'oos').map((notification) => notification['msnid']);
         for (let oIndex = 0; oIndex < newNotfications.length; oIndex++) {
             for (let iIndex = 0; iIndex < oldNotfications.length; iIndex++) {
-                if (oldNotfications[oIndex]['msnid'] === newNotfications[iIndex]['msnid']) {
+                if (oldNotfications[iIndex]['msnid'] === newNotfications[oIndex]['msnid']) {
                     overriddenNotfications.push(newNotfications[iIndex]);
                     COMMON_MSNS.push(oldNotfications[oIndex]['msnid']);
                     break;

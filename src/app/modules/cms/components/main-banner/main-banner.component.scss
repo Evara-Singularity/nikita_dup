@@ -1,8 +1,7 @@
+@import '../../../../scss/variables';
 .mainbanner-article {
-    background: #F0F0F0;
-    margin: 10px 0px;
     img {
-        width: 100%;
+        width: $fullwidth;
         max-width: 100%;
     }
 }

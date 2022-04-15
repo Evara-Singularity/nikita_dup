@@ -1,4 +1,8 @@
 @import './../../scss/variables';
+@import '../../scss/components/checkbox';
+@import '../../scss/components/radio';
+
+
 .sort-by {
     text-align: left;
     .container {

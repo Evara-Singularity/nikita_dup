@@ -1,4 +1,5 @@
     @import '../../scss/variables';
+    @import '../../scss/components/checkbox.scss';
     .mob_filter {
         @extend %transition;
         top: 115%;

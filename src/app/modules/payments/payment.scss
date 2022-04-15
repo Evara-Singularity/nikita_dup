@@ -1,6 +1,9 @@
 @import '../../scss/variables';
 @import './payment-continue-btn.scss';
 @import './../../scss/checkout-prod-card.scss';
+@import '../../scss/components/checkbox';
+@import '../../scss/components/radio';
+
 
 .payment-options {
     &>div {

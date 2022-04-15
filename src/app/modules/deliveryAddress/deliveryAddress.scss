@@ -1,4 +1,7 @@
-    @import '../../scss/variables';
+@import '../../scss/variables';
+@import '../../scss/components/checkbox';
+@import '../../scss/components/radio';
+
     .shipping-container {
         margin-top: 10px;
         @extend %cards;

@@ -1,0 +1,79 @@
+@import './../variables';
+%custom-green-radio-checkout {
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e912";
+            color: $green-color;
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        margin-right: 5px;
+        position: relative;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e912";
+            font-size: 16px;
+            color: #b9b9b9;
+        }
+    }
+    .chk-txt {
+        font-size: 15px;
+        float: left;
+        margin-left: 10px;
+        line-height: 20px;
+    }
+}
+%custom-radio-checkout {
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a6";
+            color: $logo-color;
+            font-size: 24px;
+        }
+    }
+    .custom-box {
+        width: 24px;
+        float: left;
+        margin-right: 5px;
+        position: relative;
+        line-height: 20px;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a7";
+            font-size: 24px;
+            color: #303030;
+        }
+    }
+    .chk-txt {
+        font-size: 15px;
+        float: left;
+        margin-left: 10px;
+        line-height: 20px;
+    }
+}
+%pwa-universal-radio {
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a6";
+            color: $logo-color;
+            font-size: 24px;
+        }
+    }
+    .custom-box {
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a7";
+            font-size: 24px;
+            color: #303030;
+        }
+    }
+}

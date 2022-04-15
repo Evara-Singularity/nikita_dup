@@ -1,4 +1,7 @@
 @import "../../../scss/variables";
+@import '../../../scss/components/checkbox';
+@import '../../../scss/components/radio';
+
 .invoice-container {
     background: $white;
     padding: 15px;

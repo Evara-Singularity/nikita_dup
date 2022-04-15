@@ -1,0 +1,72 @@
+@import './../variables';
+// Custom Check Box
+%custom-check-box{
+    input[type="checkbox"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e912";
+            color: $active-color;
+        }
+    }
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e912";
+            color: $green-color;
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        font-size: 18px;
+        line-height: 20px;
+        margin-right: 5px;
+        @extend %transition;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e912";
+            color: #b9b9b9;
+        }
+
+    }
+    .chk-txt {
+        font-size: 15px;
+        float: left;
+        margin-left: 10px;
+        line-height: 20px;
+        width: calc(100% - 38px);
+    }
+}
+%custom-check-box-checkout {
+    input[type="checkbox"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e914";
+            color: $active-color;
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        font-size: 18px;
+        line-height: 20px;
+        margin-right: 5px;
+        @extend %transition;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e915";
+            color: #000;
+        }
+    }
+    .chk-txt {
+        font-size: 15px;
+        float: left;
+        margin-left: 5px;
+        line-height: 20px;
+        width: calc(100% - 38px);
+    }
+}

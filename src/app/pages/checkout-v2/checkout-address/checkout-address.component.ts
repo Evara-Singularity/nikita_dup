@@ -51,16 +51,29 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     {
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
-            this.cartSession = cartSession;
-            this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
-            if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
-                this.calculatePayableAmount(this.cartSession['cart']);
-            }
-            //address is getting updated and cart session is getting updated with some delay.
-            //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
-            if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
-                this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
-                this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
+            if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
+                this.cartSession = cartSession;
+                this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
+                if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
+                    this.calculatePayableAmount(this.cartSession['cart']);
+                }
+                //address is getting updated and cart session is getting updated with some delay.
+                //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
+                if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+                    this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
+                }
+            } else {
+                // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
+                // user will receive empty cartSession.
+                // in this case we need explicitly trigger cartSession update.
+                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status => {
+                    if (status) {
+                        this._cartService.setCartUpdatesChanges(this.cartSession);
+                    } else {
+                        console.trace('cart refresh failed');
+                    }
+                })
             }
         });
         this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });

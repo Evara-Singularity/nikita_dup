@@ -8,7 +8,8 @@ header {
         z-index: 6;
     }
     .main-header {
-        background: $logo-color;
+        background: var(--white);
+        box-shadow: 0px 12px 16px var(--silver);
         // start header varient 1
         .header-varient-1 {
             display: flex;
@@ -17,9 +18,8 @@ header {
             width: 96%;
             margin: auto;
             min-height: 52px;
-            .icon-back {
-                font-size: 20px;
-                color: $white-color;
+            .icon-back-arrow {
+                font-size: 24px;
                 margin-right: 10px;
             }
             .head-d-flex-inner {
@@ -32,15 +32,23 @@ header {
                 .icon-menu {
                     font-size: $large-font;
                     padding: 0px 20px 0 0;
-                    color: $white-color;
+                    color: var(--onyx-black);
                     margin-top: -5px;
                 }
                 .icon-brand_store {
                     font-size: 20px;
                 }
                 & > * {
-                    padding: 10px 5px;
-                    color: $white;
+                    padding: 5px 5px;
+                    color: var(--onyx-black);
+                }
+                .login-txt{
+                    color: var(--primary);
+                    background-color: var(--champagne-pink);
+                    border-radius: $border-radius-4;
+                    margin-right: 10px;
+                    font-weight: bold;
+                    padding: 5px 10px;
                 }
             }
         }
@@ -59,8 +67,12 @@ header {
                 display: flex;
                 justify-content: center;
                 position: relative;
-                font-size: 18px;
-                color: $white;
+                font-size: 24px;
+                color: var(--onyx-black);
+                width: 30px;
+            }
+            .icon-moglix_app_logo{
+                color: var(--primary);
             }
             .page-name {
                 width: 70%;
@@ -75,16 +87,18 @@ header {
             .search-bar-mini {
                 position: relative;
                 width: 58%;
+                margin-left: 5px;
                 input {
-                    background: #fff;
+                    background: var(--white);
                     border: none;
                     font-size: $medium-font !important;
-                    color: #898989;
                     font-weight: 400;
-                    height: 30px;
+                    height: 35px;
                     width: 100%;
                     padding: 0px 5px 0 30px;
-                    border-radius: 3px;
+                    border-radius: $border-radius-8;
+                    border: 1px solid var(--silver);
+
                 }
                 i {
                     color: #303030;
@@ -106,7 +120,7 @@ header {
             justify-content: space-between;
             align-items: center;
             a {
-                color: $white;
+                color: var(--onyx-black);
                 &.search-bar {
                     width: 80%;
                     margin: 2px 0px 2px 10px;
@@ -131,13 +145,14 @@ header {
                 width: 100%;
                 border: 0;
                 padding: 0 25px 0 40px;
-                background: #fff;
                 letter-spacing: -0.2px;
                 display: inline-block;
                 vertical-align: middle;
-                border-radius: 3px;
-                background-color: #fff;
+                border-radius: $border-radius-8;
+                background-color: var(--white);
                 line-height: 40px;
+                border: 1px solid var(--silver);
+                box-shadow: 0px 3px 6px #C4C4C429;
             }
             &:after {
                 content: "\e972";
@@ -145,7 +160,7 @@ header {
                 position: absolute;
                 left: 10px;
                 top: 10px;
-                color: #303030;
+                color: var(--primary);
                 font-size: 18px;
             }
         }

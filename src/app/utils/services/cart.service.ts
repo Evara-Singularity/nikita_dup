@@ -1,3 +1,4 @@
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -65,7 +66,7 @@ export class CartService
     constructor(
         private _dataService: DataService, private _localStorageService: LocalStorageService, private localAuthService: LocalAuthService,
         private _modalService: ModalService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
-        private _router: Router, private _globalLoader: GlobalLoaderService, private _location: Location,
+        private _router: Router, private _globalLoader: GlobalLoaderService, private _location: Location, private _globalAnalyticsService:GlobalAnalyticsService
     ) { this.setRoutingInfo(); }
 
     set billingAddress(address: Address) { this._billingAddress = address }
@@ -1721,7 +1722,6 @@ export class CartService
 
     updateNewWithOldNotifications(newNotfications: any[], oldNotfications: any[])
     {
-        console.log(newNotfications, oldNotfications);
         let overriddenNotfications = [];
         let freshNotifications = [];
         let oosNotifications = [];
@@ -1866,5 +1866,88 @@ export class CartService
         this.clearNotifications()
         const user = this._localStorageService.retrieve('user');
         this.setValidateCartMessageApi({ userId: user['userId'], data: this.cartNotications }).subscribe(() => { console.log("cleared all notfication"); })
+    }
+
+    //Analytics
+    sendCritieoDataonView(cartSession)
+    {
+        if (this._router.url !== '/quickorder') { return }
+        let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
+        let criteoItem = [];
+        let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+            let price = cartSession["itemsList"][p]['productUnitPrice'];
+            if (cartSession["itemsList"][p]['bulkPrice'] != '' && cartSession["itemsList"][p]['bulkPrice'] != null) {
+                price = cartSession["itemsList"][p]['bulkPrice'];
+            }
+            criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+            eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+            eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+            eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+            eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+            eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+            eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+            taxo1 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
+            taxo2 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
+            taxo3 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
+            productList = cartSession["itemsList"][p]['productId'] + '|' + productList;
+            brandList = cartSession["itemsList"][p]['brandName'] ? cartSession["itemsList"][p]['brandName'] + '|' + brandList : '';
+            productPriceList = price + '|' + productPriceList;
+            shippingList = cartSession["itemsList"][p]['shippingCharges'] + '|' + shippingList;
+            couponDiscountList = cartSession["itemsList"][p]['offer'] ? cartSession["itemsList"][p]['offer'] + '|' + couponDiscountList : '';
+            quantityList = cartSession["itemsList"][p]['productQuantity'] + '|' + quantityList;
+            totalDiscount = cartSession["itemsList"][p]['offer'] + totalDiscount;
+            totalQuantity = cartSession["itemsList"][p]['productQuantity'] + totalQuantity;
+            totalPrice = (price * cartSession["itemsList"][p]['productQuantity']) + totalPrice;
+            totalShipping = cartSession["itemsList"][p]['shippingCharges'] + totalShipping;
+        }
+        let user = this._localStorageService.retrieve('user');
+        let data = {
+            'event': 'viewBasket',
+            'email': (user && user.email) ? user.email : '',
+            'currency': 'INR',
+            'productBasketProducts': criteoItem,
+            'eventData': eventData
+        }
+        this._globalAnalyticsService.sendGTMCall(data);
+    }
+
+    sendAdobeAnalyticsData(trackingname)
+    {
+        if (this._router.url !== '/quickorder') { return };
+        let data = {};
+        let user = this._localStorageService.retrieve('user');
+        let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
+        /*Start Adobe Analytics Tags */
+        let page = {
+            'linkPageName': "moglix:cart summary",
+            'linkName': "Remove from cart",
+        }
+        let custData = {
+            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+            'customerType': (user && user["userType"]) ? user["userType"] : '',
+        }
+        let order = {
+            'productCategoryL1': taxo1,
+            'productCategoryL2': taxo2,
+            'productCategoryL3': taxo3,
+            'productID': productList,
+            'brand': brandList,
+            'productPrice': productPriceList,
+            'shipping': shippingList,
+            'couponDiscount': couponDiscountList,
+            'quantity': quantityList,
+            'totalDiscount': totalDiscount,
+            'totalQuantity': totalQuantity,
+            'totalPrice': totalPrice,
+            'shippingCharges': totalShipping
+        }
+        data["page"] = page;
+        data["custData"] = custData;
+        data["order"] = order;
+        this._globalAnalyticsService.sendAdobeCall(data, trackingname);
+        /*End Adobe Analytics Tags */
     }
 }

@@ -1,3 +1,4 @@
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 /**
  * This is cemtralised component in which shipping & billing address can be viewed, added & edited.
  * AddressListComponent: to display all the address list for selection as pop-up
@@ -50,7 +51,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     triggerDeliveryOrBillingSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
-        private injector: Injector, private _cartService: CartService) 
+        private injector: Injector, private _cartService: CartService,private _globalAnalyticsService:GlobalAnalyticsService) 
     {
         this.USER_SESSION = this._localAuthService.getUserSession();
     }
@@ -164,6 +165,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     async displayAddressFormPopup(addressType: string, address)
     {
+        this.sendAdobeAnalysis();
         let factory = null;
         let verifiedPhones = null;
         verifiedPhones = SharedCheckoutAddressUtil.getVerifiedPhones(this.USER_SESSION, this.deliveryAddressList);
@@ -262,6 +264,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     get selectedBillingAddress() { return this._cartService.billingAddress; }
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
     get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
+
+    sendAdobeAnalysis()
+    {
+        let data = {page:{}}
+        data['page']['pageName'] = "moglix:order checkout:address details";
+        data['page']['subSection'] = "moglix:order checkout:address details";
+        this._globalAnalyticsService.sendAdobeCall("genericPageLoad");
+    }
 
     ngOnDestroy(): void
     {

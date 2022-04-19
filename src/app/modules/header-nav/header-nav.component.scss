@@ -182,10 +182,10 @@ header {
                 height: 18px;
                 text-align: center;
                 line-height: 18px;
-                border-radius: 50%;
-                color: $logo-color;
-                background: $white;
-                font-size: 11px;
+                border-radius: $border-radius-4;
+                color: var(--white);
+                background: var(--primary);
+                font-size: $small-font;
                 font-family: "Roboto", sans-serif;
             }
         }

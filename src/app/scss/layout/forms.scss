@@ -1,4 +1,13 @@
 @import '../components/checkbox';
+textarea,
+input.text,
+input,
+select,
+.input-checkbox {
+    -webkit-appearance: none;
+    border-radius: 0;
+    outline: none;
+}
 input,
 select {
     background-image: none;
@@ -22,7 +31,8 @@ select {
                 height: 45px;
                 padding: 14px 25px 0 0;
                 font-size: $large-font;
-
+                line-height: 18px;
+                position: relative;
                 &.input-password {
                     padding: 14px 140px 0 0;
                 }
@@ -284,22 +294,11 @@ select {
     }
 }
 
-textarea,
-input.text,
-input,
-select,
-.input-checkbox {
-    -webkit-appearance: none;
-    border-radius: 0;
-    outline: none;
-}
+
 
 input,
 select {
-    // background-image: none;
-    // background: none;
-    line-height: 18px;
-    position: relative;
+  
 }
 
 select {
@@ -337,5 +336,29 @@ option {
         padding: 10px 0;
         @extend %clear-fix;
         @extend %custom-check-box;
+    }
+}
+.date-type-select{
+    .custom_select_box {
+        color: #B5B5B5;
+    }
+    .input-field-boxed {
+        width: 22%;
+        margin-bottom: 0px;
+        select {
+            text-align: center;
+        }
+        &:first-child {
+            position: relative;
+            margin-right: 20px;
+            &:after {
+                content: "/";
+                position: absolute;
+                right: -23px;
+                font-size: 20px;
+                padding: 10px;
+                top: 0
+            }
+        }
     }
 }

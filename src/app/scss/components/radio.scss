@@ -77,3 +77,45 @@
         }
     }
 }
+.radio-with-label-container {
+    display: flex;
+    margin: 10px 0px;
+    label.radio-with-label {
+        display: inline-flex;
+        @extend %pwa-universal-radio;
+        width: 160px;//(payment-radio-card-width)
+        align-items: center;
+        .custom-box {
+            margin-right: 10px;
+        }
+        .radio-text {
+            font-size: $medium-font;
+        }
+    }
+}
+.pwa-radio-list {
+    .pwa-radio-list-item {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid $border-grey;
+        padding: 10px 0px;
+        &:last-child {
+            border-bottom: none;
+        }
+        .payment-radio-btn {
+            margin-right: 10px;
+        }
+        img {
+            width: 35px;
+            margin-right:15px;
+            &.wallet-img {
+                width: 140px;
+            }
+        }
+        .pwa-radio-list-text {
+            p {
+                margin-bottom: 5px;
+            }
+        }
+    }
+}

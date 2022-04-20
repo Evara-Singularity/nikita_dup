@@ -4,7 +4,7 @@
    flex-wrap: wrap;
    padding:10px 15px;
    justify-content: space-between;
-   align-items: center;
+  //  align-items: center;
 }
 @for $i from 1 through 12 {
     $colnum: $i;

@@ -48,33 +48,6 @@
 .creditDebitCardInner {
     background: #fff;
     padding-bottom: 15px;
-    .card-expiryDate {
-        .multiple-form-field {
-            margin-bottom: 20px;
-        }
-        .custom_select_box {
-            color: #B5B5B5;
-        }
-        .input-field-boxed {
-            width: 22%;
-            margin-bottom: 0px;
-            select {
-                text-align: center;
-            }
-            &:first-child {
-                position: relative;
-                margin-right: 20px;
-                &:after {
-                    content: "/";
-                    position: absolute;
-                    right: -23px;
-                    font-size: 20px;
-                    padding: 10px;
-                    top: 0
-                }
-            }
-        }
-    }
     .cvvField {
         .multiple-form-field {
             align-items: center;

@@ -4,7 +4,7 @@
         display: none;
         &:checked + .custom-box::before {
             content: "\e912";
-            color: $green-color;
+            color: var(--slimy-green);
         }
     }
     .custom-box {
@@ -17,15 +17,15 @@
         &::before {
             font-family: "icomooon_pwa";
             content: "\e912";
-            font-size: 16px;
-            color: #b9b9b9;
+            font-size: $extra-large-font;
+            color: var(--silver);
         }
     }
     .chk-txt {
-        font-size: 15px;
+        font-size: $large-font;
         float: left;
         margin-left: 10px;
-        line-height: 20px;
+        line-height: $medium-line-height;
     }
 }
 %custom-radio-checkout {
@@ -34,8 +34,8 @@
         &:checked + .custom-box::before {
             font-family: "icomooon_pwa";
             content: "\e9a6";
-            color: $logo-color;
-            font-size: 24px;
+            color: var(--primary);
+            font-size: $extra-large-3-font;
         }
     }
     .custom-box {
@@ -43,19 +43,19 @@
         float: left;
         margin-right: 5px;
         position: relative;
-        line-height: 20px;
+        line-height: $medium-line-height;
         &::before {
             font-family: "icomooon_pwa";
             content: "\e9a7";
-            font-size: 24px;
-            color: #303030;
+            font-size: $extra-large-3-font;
+            color: var(--onyx-black);
         }
     }
     .chk-txt {
-        font-size: 15px;
+        font-size: $large-font;
         float: left;
         margin-left: 10px;
-        line-height: 20px;
+        line-height: $medium-line-height;
     }
 }
 %pwa-universal-radio {
@@ -64,16 +64,16 @@
         &:checked + .custom-box::before {
             font-family: "icomooon_pwa";
             content: "\e9a6";
-            color: $logo-color;
-            font-size: 24px;
+            color: var(--primary);
+            font-size: $extra-large-3-font;
         }
     }
     .custom-box {
         &::before {
             font-family: "icomooon_pwa";
             content: "\e9a7";
-            font-size: 24px;
-            color: #303030;
+            font-size: $extra-large-3-font;
+            color: var(--onyx-black);
         }
     }
 }
@@ -83,7 +83,7 @@
     label.radio-with-label {
         display: inline-flex;
         @extend %pwa-universal-radio;
-        width: 160px;//(payment-radio-card-width)
+        width: $payment-radio-card-width;//(payment-radio-card-width)
         align-items: center;
         .custom-box {
             margin-right: 10px;
@@ -97,7 +97,7 @@
     .pwa-radio-list-item {
         display: flex;
         align-items: center;
-        border-bottom: 1px solid $border-grey;
+        border-bottom: 1px solid var(--silver);
         padding: 10px 0px;
         &:last-child {
             border-bottom: none;

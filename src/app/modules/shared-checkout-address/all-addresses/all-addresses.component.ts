@@ -109,7 +109,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
             if (!(this.isGSTUser)) { this.emitAddressEvent(DELIVERY_ADDRESS, null); return; }
             this.billingAddressList = response.billingAddressList;
-            this.emitAddressEvent(DELIVERY_ADDRESS, this.billingAddressList[0]);
+            const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
+            this.emitAddressEvent(DELIVERY_ADDRESS, billingAddress);
         });
     }
 

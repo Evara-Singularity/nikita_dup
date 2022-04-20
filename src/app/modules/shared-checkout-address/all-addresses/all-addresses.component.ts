@@ -214,7 +214,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
         if (this.deliveryAddressList.length === 1 || this.billingAddressList.length === 1) {
-            const address = this.deliveryAddressList.length === 1 ? this.deliveryAddressList[0] : this.billingAddressList[0];
+            const address = IS_DELIVERY ? this.deliveryAddressList[0] : this.billingAddressList[0];
             this.updateDeliveryOrBillingAddress(IS_DELIVERY, address);
         }
     }

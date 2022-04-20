@@ -1,3 +1,4 @@
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
@@ -36,6 +37,7 @@ export class CartComponent
     removeIndex = 0;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
+    pageEvent = "genericPageLoad";
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -43,6 +45,7 @@ export class CartComponent
         public dataService: DataService, public _commonService: CommonService, public checkOutService: CheckoutService,
         public localStorageService: LocalStorageService, public _router: Router, public _cartService: CartService,
         private _tms: ToastMessageService, private _productService: ProductService, private _globalLoaderService: GlobalLoaderService,
+        private _globalAnalyticsService: GlobalAnalyticsService
     ) { }
 
     ngOnInit()
@@ -53,16 +56,22 @@ export class CartComponent
     }
 
     // Function to get and set the latest cart
-    loadCartDataFromAPI() {
+    loadCartDataFromAPI()
+    {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
-            map((cart: any) => {
-                const delay = this._router.url.includes("quickorder")?0:500;
+            map((cart: any) =>
+            {
+                const delay = this._router.url.includes("quickorder") ? 0 : 500;
                 this._cartService.verifyAndUpdateNotfications(delay);
+                this.sendCritieoDataonView(this._cartService.getGenericCartSession);
+                this.sendAdobeAnalyticsData(this.pageEvent);
+                this.pageEvent = "genericClick";
                 return cart;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
-                (result) => {
+                (result) =>
+                {
                     this._globalLoaderService.setLoaderState(false);
                 });
     }
@@ -98,6 +107,7 @@ export class CartComponent
         if (action === 'increment') {
             incrementOrDecrementBy = 1;
             updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity + 1;
+            this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "increment_quantity");
         } else if (action === 'decrement') {
             const DECREMENTED_QTY = quantityTarget ? parseInt(quantityTarget) - 1 : 1;
             if (DECREMENTED_QTY < MOQ) {
@@ -112,6 +122,7 @@ export class CartComponent
             };
             incrementOrDecrementBy = -1;
             updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity - 1;
+            this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "decrement_quantity");
         }
         if (updatedCartItemCount < 0 || quantityTarget < 0 || isNaN(parseInt(quantityTarget))) {
             this.removeIndex = index;
@@ -120,6 +131,7 @@ export class CartComponent
             return;
         };
         if (action === 'update') {
+            this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "quantity_updated");
             if (quantityTarget < this._cartService.getGenericCartSession.itemsList[index].moq) {
                 this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
                 this.removeIndex = index;
@@ -200,12 +212,13 @@ export class CartComponent
                     if (!buyNow) {
                         this._cartService.setGenericCartSession(addToCartResponse);
                         this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
-                        const count = { count: (addToCartResponse['itemsList'] ? addToCartResponse['itemsList'].length : 0), currentlyAdded: productDetails}
+                        const count = { count: (addToCartResponse['itemsList'] ? addToCartResponse['itemsList'].length : 0), currentlyAdded: productDetails }
                         this._cartService.cart.next(count);
                         this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
                         if (!showToastMsg) {
                             this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
                         }
+                        this.sendMessageAfterCartAction(addToCartResponse)
                     } else {
                         this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
                     }
@@ -307,13 +320,9 @@ export class CartComponent
         e.preventDefault();
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
+        this.pushDataToDatalayerOnRemove(this.removeIndex);
         this._cartService.removeUnavailableItems([this._cartService.getGenericCartSession.itemsList[this.removeIndex]]);
         this.removePopup = false;
-        //TODO;remove notfication and no need to call verifyAndUpdateNotfications
-        //this._cartService.verifyAndUpdateNotfications();
-        // Push data to data layer
-        this.pushDataToDatalayer(this.removeIndex);
-        this.sendCritioData();
     }
 
     // get shipping charges of each item in cart
@@ -338,87 +347,54 @@ export class CartComponent
         return false;
     }
 
-    pushDataToDatalayer(index)
+    sendCritieoDataonView(cartSession)
     {
-        if (!this._cartService.getGenericCartSession["itemsList"][index]) return;
-        var taxonomy = this._cartService.getGenericCartSession["itemsList"][index]['taxonomyCode'];
-        var trackingData = {
-            event_type: "click",
-            label: "remove_from_cart",
-            product_name: this._cartService.getGenericCartSession["itemsList"][index]['productName'],
-            msn: this._cartService.getGenericCartSession["itemsList"][index]['productId'],
-            brand: this._cartService.getGenericCartSession["itemsList"][index]['brandName'],
-            price: this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
-            quantity: this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
-            channel: "Cart",
-            category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
-            category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
-            category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-            page_type: "Cart"
-        }
-        this.dataService.sendMessage(trackingData);
-        dataLayer.push({
-            'event': 'removeFromCart',
-            'ecommerce': {
-                'remove': {
-                    'products': [{
-                        'name': this._cartService.getGenericCartSession["itemsList"][index]['productName'],
-                        'id': this._cartService.getGenericCartSession["itemsList"][index]['productId'],
-                        'price': this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
-                        'variant': '',
-                        'quantity': this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
-                        'prodImg': this._cartService.getGenericCartSession["itemsList"][index]['productImg']
-                    }]
-                }
-            },
-        });
-    }
-
-    sendCritioData()
-    {
+        if (this._router.url !== '/quickorder') { return }
         let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
         let criteoItem = [];
         let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
-        for (let p = 0; p < this._cartService.getGenericCartSession["itemsList"].length; p++) {
-            let price = this._cartService.getGenericCartSession["itemsList"][p]['productUnitPrice'];
-            if (this._cartService.getGenericCartSession["itemsList"][p]['bulkPrice'] != '' && this._cartService.getGenericCartSession["itemsList"][p]['bulkPrice'] != null) {
-                price = this._cartService.getGenericCartSession["itemsList"][p]['bulkPrice'];
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+            let price = cartSession["itemsList"][p]['productUnitPrice'];
+            if (cartSession["itemsList"][p]['bulkPrice'] != '' && cartSession["itemsList"][p]['bulkPrice'] != null) {
+                price = cartSession["itemsList"][p]['bulkPrice'];
             }
-            criteoItem.push({ name: this._cartService.getGenericCartSession["itemsList"][p]['productName'], id: this._cartService.getGenericCartSession["itemsList"][p]['productId'], price: this._cartService.getGenericCartSession["itemsList"][p]['productUnitPrice'], quantity: this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'], image: this._cartService.getGenericCartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + this._cartService.getGenericCartSession["itemsList"][p]['productUrl'] });
-            eventData['prodId'] = this._cartService.getGenericCartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
-            eventData['prodPrice'] = this._cartService.getGenericCartSession["itemsList"][p]['productUnitPrice'] * this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
-            eventData['prodQuantity'] = this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
-            eventData['prodImage'] = this._cartService.getGenericCartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
-            eventData['prodName'] = this._cartService.getGenericCartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
-            eventData['prodURL'] = this._cartService.getGenericCartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
-            taxo1 = this._cartService.getGenericCartSession["itemsList"][p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
-            taxo2 = this._cartService.getGenericCartSession["itemsList"][p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
-            taxo3 = this._cartService.getGenericCartSession["itemsList"][p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
-            productList = this._cartService.getGenericCartSession["itemsList"][p]['productId'] + '|' + productList;
-            brandList = this._cartService.getGenericCartSession["itemsList"][p]['brandName'] ? this._cartService.getGenericCartSession["itemsList"][p]['brandName'] + '|' + brandList : '';
+            criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+            eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+            eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+            eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+            eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+            eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+            eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+            taxo1 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
+            taxo2 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
+            taxo3 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
+            productList = cartSession["itemsList"][p]['productId'] + '|' + productList;
+            brandList = cartSession["itemsList"][p]['brandName'] ? cartSession["itemsList"][p]['brandName'] + '|' + brandList : '';
             productPriceList = price + '|' + productPriceList;
-            shippingList = this._cartService.getGenericCartSession["itemsList"][p]['shippingCharges'] + '|' + shippingList;
-            couponDiscountList = this._cartService.getGenericCartSession["itemsList"][p]['offer'] ? this._cartService.getGenericCartSession["itemsList"][p]['offer'] + '|' + couponDiscountList : '';
-            quantityList = this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'] + '|' + quantityList;
-            totalDiscount = this._cartService.getGenericCartSession["itemsList"][p]['offer'] + totalDiscount;
-            totalQuantity = this._cartService.getGenericCartSession["itemsList"][p]['productQuantity'] + totalQuantity;
-            totalPrice = (price * this._cartService.getGenericCartSession["itemsList"][p]['productQuantity']) + totalPrice;
-            totalShipping = this._cartService.getGenericCartSession["itemsList"][p]['shippingCharges'] + totalShipping;
+            shippingList = cartSession["itemsList"][p]['shippingCharges'] + '|' + shippingList;
+            couponDiscountList = cartSession["itemsList"][p]['offer'] ? cartSession["itemsList"][p]['offer'] + '|' + couponDiscountList : '';
+            quantityList = cartSession["itemsList"][p]['productQuantity'] + '|' + quantityList;
+            totalDiscount = cartSession["itemsList"][p]['offer'] + totalDiscount;
+            totalQuantity = cartSession["itemsList"][p]['productQuantity'] + totalQuantity;
+            totalPrice = (price * cartSession["itemsList"][p]['productQuantity']) + totalPrice;
+            totalShipping = cartSession["itemsList"][p]['shippingCharges'] + totalShipping;
         }
         let user = this.localStorageService.retrieve('user');
-        /*Start Criteo DataLayer Tags */
-        dataLayer.push({
+        let data = {
             'event': 'viewBasket',
             'email': (user && user.email) ? user.email : '',
             'currency': 'INR',
             'productBasketProducts': criteoItem,
             'eventData': eventData
-        });
+        }
+        this._globalAnalyticsService.sendGTMCall(data);
         /*End Criteo DataLayer Tags */
     }
 
-    sendAdobeAnalyticsData()
+    sendAdobeAnalyticsData(trackingname)
     {
+        if (this._router.url !== '/quickorder') { return };
+        let data = {};
         let user = this.localStorageService.retrieve('user');
         let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
         /*Start Adobe Analytics Tags */
@@ -447,13 +423,97 @@ export class CartComponent
             'totalPrice': totalPrice,
             'shippingCharges': totalShipping
         }
-        digitalData["page"] = page;
-        digitalData["custData"] = custData;
-        digitalData["order"] = order;
-        if (_satellite) {
-            _satellite.track("genericClick");
-        }
+        data["page"] = page;
+        data["custData"] = custData;
+        data["order"] = order;
+        this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
+    }
+
+    pushDataToDatalayerOnRemove(index)
+    {
+        if (!this._cartService.getGenericCartSession["itemsList"][index]) return;
+        var taxonomy = this._cartService.getGenericCartSession["itemsList"][index]['taxonomyCode'];
+        var trackingData = {
+            event_type: "click",
+            label: "remove_from_cart",
+            product_name: this._cartService.getGenericCartSession["itemsList"][index]['productName'],
+            msn: this._cartService.getGenericCartSession["itemsList"][index]['productId'],
+            brand: this._cartService.getGenericCartSession["itemsList"][index]['brandName'],
+            price: this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
+            quantity: this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
+            channel: "Cart",
+            category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
+            category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
+            category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
+            page_type: "Cart"
+        }
+        this._globalAnalyticsService.sendToClicstreamViaSocket(trackingData);
+        dataLayer.push({
+            'event': 'removeFromCart',
+            'ecommerce': {
+                'remove': {
+                    'products': [{
+                        'name': this._cartService.getGenericCartSession["itemsList"][index]['productName'],
+                        'id': this._cartService.getGenericCartSession["itemsList"][index]['productId'],
+                        'price': this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
+                        'variant': '',
+                        'quantity': this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
+                        'prodImg': this._cartService.getGenericCartSession["itemsList"][index]['productImg']
+                    }]
+                }
+            },
+        });
+    }
+
+    sendMessageOnQuantityChanges(cartSession, quantityTarget, index, label)
+    {
+        var taxonomy = cartSession["itemsList"][index]['taxonomyCode'];
+        var trackingData = {
+            event_type: "click",
+            label: "quantity_updated",//quantity_updated, increment_quantity, decrement_quantity
+            product_name: cartSession["itemsList"][index]['productName'],
+            msn: cartSession["itemsList"][index]['productId'],
+            brand: cartSession["itemsList"][index]['brandName'],
+            price: cartSession["itemsList"][index]['totalPayableAmount'],
+            quantity: parseInt(quantityTarget),
+            channel: "Cart",
+            category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
+            category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
+            category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
+            page_type: "Cart"
+        }
+        this._globalAnalyticsService.sendToClicstreamViaSocket(trackingData);
+    }
+
+    sendMessageAfterCartAction(cartSession)
+    {
+        if (cartSession['itemsList'] !== null && cartSession['itemsList']) {
+            var totQuantity = 0;
+            var trackData = {
+                event_type: "click",
+                page_type: this._router.url == "/quickorder" ? "Cart" : "Checkout",
+                label: "cart_updated",
+                channel: this._router.url == "/quickorder" ? "Cart" : "Checkout",
+                price: cartSession["cart"]["totalPayableAmount"] ? cartSession["cart"]["totalPayableAmount"].toString() : "0",
+                quantity: cartSession["itemsList"].map(item =>
+                {
+                    return totQuantity = totQuantity + item.productQuantity;
+                })[cartSession["itemsList"].length - 1],
+                shipping: parseFloat(cartSession["shippingCharges"]),
+                itemList: cartSession["itemsList"].map(item =>
+                {
+                    return {
+                        category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
+                        category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
+                        category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
+                        price: item["totalPayableAmount"].toString(),
+                        quantity: item["productQuantity"]
+                    }
+                })
+            }
+            this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
+        }
     }
 
     ngOnDestroy() { if (this.cartSubscription) this.cartSubscription.unsubscribe(); }

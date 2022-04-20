@@ -9,6 +9,7 @@ import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
+declare let dataLayer;
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
@@ -151,6 +152,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
             return;
         }
         this._cartService.setUnserviceables([]);
+        this.sendServiceableCriteo();
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */
@@ -213,6 +215,40 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
+    sendServiceableCriteo()
+    {
+        let cartSession = this._cartService.getGenericCartSession;
+        let dlp = [];
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+            let product = {
+                id: cartSession["itemsList"][p]['productId'],
+                name: cartSession["itemsList"][p]['productName'],
+                price: cartSession["itemsList"][p]['totalPayableAmount'],
+                variant: '',
+                quantity: cartSession["itemsList"][p]['productQuantity']
+            };
+            dlp.push(product);
+        }
+        dataLayer.push({
+            'event': 'checkout',
+            'ecommerce': {
+                'checkout': {
+                    'actionField': { 'step': 3, 'option': 'address' },
+                    'products': dlp
+                }
+            },
+        });
+        let userSession = this._localAuthService.getUserSession();
+        if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            /*Start Criteo DataLayer Tags */
+            dataLayer.push({
+                'event': 'setEmail',
+                'email': (userSession && userSession.email) ? userSession.email : ''
+            });
+            /*End Criteo DataLayer Tags */
+        }
+    }
 
     ngOnDestroy()
     {

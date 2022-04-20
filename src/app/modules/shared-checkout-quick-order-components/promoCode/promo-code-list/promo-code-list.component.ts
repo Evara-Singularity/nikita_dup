@@ -30,6 +30,7 @@ export class PromoCodeListComponent implements OnInit {
             this._cartService.getAllPromoCodesByUserId(userId).subscribe(res => {
                 if (res['statusCode'] === 200) {
                     this.allPromoCodes = res['data'];
+                    this.pushDataLayer();
                 }
                 this._loaderService.setLoaderState(false);
             });
@@ -41,5 +42,32 @@ export class PromoCodeListComponent implements OnInit {
         e.stopPropagation();
         if (item.promoCode === this._cartService.appliedPromoCode) return;
         this._cartService.appliedPromoCode = item.promoCode;
+    }
+
+    //analytics
+    pushDataLayer()
+    {
+        setTimeout(() =>
+        {
+            const dlp = [];
+            for (let p = 0; p < this.allPromoCodes.length; p++) {
+                const promo = {
+                    id: this.allPromoCodes[p]['promoId'],
+                    name: this.allPromoCodes[p]['promoCode'],
+                    'creative': 'banner1',
+                    'position': 'slot1'
+                };
+                dlp.push(promo);
+            }
+
+            dataLayer.push({
+                'event': 'promo- impressions',
+                'ecommerce': {
+                    'promoView': {
+                        'promotions': dlp
+                    }
+                }
+            });
+        }, 3000);
     }
 }

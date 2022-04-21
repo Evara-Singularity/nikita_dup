@@ -1,63 +1,62 @@
 @import "../../scss/variables";
+@import '../../scss/layout/forms.scss';
 
 .submit-review {
-    .container {
-        width: 88%;
-    }
     .popup-bottom {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
     }
-    .head-sec {
-        i {
-            font-size: 20px;
-        }
-    }
-    .prod-name {
-        font-size: 16px;
+    .product-name {
+        font-size: $extra-large-font;
         padding-bottom: 30px;
-        line-height: 21px;
-        font-weight: 500;
+        line-height: $medium-line-height;
     }
-    .rate-heading {
+    .rate_review-product {
         font-size: $large-font;
         padding-bottom: 10px;
+        font-weight: $font-bold;
     }
     .stars-block {
-        font-size: 35px;
-        padding: 10px 0px;
+        font-size: $extra-large-5-font;
+        padding: 0px 0px 30px;
+        justify-content: space-between;
+        display: flex;
         .icon-rating-star {
             margin-right: 10px;
+            &:last-child{
+                margin-right: 0;
+            }
         }
     }
-    .form-head {
-        font-size: 14px;
-        padding-bottom: 5px;
-        padding-top: 20px;
-    }
     .with-rating {
-        color: #FDB92C;
+        color: var(--orange-red);
     }
     .without-rating {
-        color: #DBDBDB;
+        color: var(--silver);
     }
+    .material-form{
+        .input-field label .message-field{
+            border: 1px solid var(--silver);
+            border-radius: 4px;
+            padding-left: 10px;
+        }
+        .max-char{
+            font-size: $extra-small-font;
+            text-align: end;
+            color: var(--silver);
+        }
+    } 
 }
-
-
-.submit-btn {
+.submit-btn{
     width: 100%;
-    color: white;
-    text-align: center;
-    height: 45px;
-    font-size: 16px;
-    border-radius: 0px !important;
-    border: none;
-    background: #A9A9A9;
-    font-weight: 500;
+    background: var(--spanish-gray);
+    padding: 15px 0;
+    border-radius: 0;
     letter-spacing: 0.5px;
+    text-align: center;
     &.active {
-        background: $btn-color;
+        background: var(--primary);
     }
 }

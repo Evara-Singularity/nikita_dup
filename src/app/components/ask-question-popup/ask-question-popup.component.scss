@@ -1,0 +1,60 @@
+@import "../../scss/variables";
+@import "../../scss/layout/forms.scss";
+
+.ask-question-area {
+    background-color: $white-color;
+    width: 100%;
+    padding: 5px 0px;
+    .question-text-field {
+        position: relative;
+        textarea {
+            height: 100px;
+            width: $fullwidth;
+            border: 1px solid var(--silver);
+            padding: 10px;
+            border-radius: 4px;
+            resize: none;
+            color: $note-text;
+            margin-bottom: 20px;
+            &::placeholder {
+                color: var(--silver);
+                font-size: $large-font;
+            }
+        }
+        .char-counter-text {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            font-size: $small-font;
+            color: var(--silver);
+            background-color: $white-color;
+        }
+    }
+    .guidence-text {
+        padding-top: 10px;
+        border-top: 1px dashed var(--silver);
+        ul {
+            list-style: disc;
+            font-size: $medium-font;
+            li {
+                margin: 10px 0 0 10px;
+                line-height: $small-line-height;
+            }
+        }
+    }
+}
+.question-submit {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    .question-send{
+        width: 100%;
+        background: var(--spanish-gray);
+        padding: 15px 0;
+        border-radius: 0;
+        letter-spacing: 0.5px;
+        text-align: center;
+    }
+}

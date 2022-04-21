@@ -1,11 +1,11 @@
 <!--Side Menu start-->
 <section class="sidemenu" [class.open]="sideMenuOpen">
     <div class="overlay" (click)="sideMenu()"></div>
-    <div class="menu-content">
-        <div class="menu-header" (click)="sideMenu();redirectProfile();">
+    <div class="menu-content pad-10">
+        <div class="menu-header pad-10" (click)="sideMenu();redirectProfile();">
             <i class="icon-profile"></i>
-            <p class="customer-detail" *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
-                Sign In | Join Free
+            <p class="customer-detail login-sign-text pad-10" *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
+                LOGIN / SIGN UP
             </p>
             <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
                 <span class="user-name">
@@ -16,33 +16,21 @@
         </div>
         <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>
-                <a (click)="trackAnalyticAndRedirect('/')" >
+                <a (click)="trackAnalyticAndRedirect('/')">
                     <i class="icon-home"></i>
                     <span class="text">Home </span>
                 </a>
             </li>
             <li>
-                <a (click)="trackAnalyticAndRedirect('/all-categories')" >
+                <a (click)="trackAnalyticAndRedirect('/all-categories')">
                     <i class="icon-all-categories"></i>
                     <span class="text">All Categories</span>
                 </a>
             </li>
             <li>
-                <a (click)="trackAnalyticAndRedirect('/store/brands')"  [routerLink]="['/store/brands']">
+                <a (click)="trackAnalyticAndRedirect('/store/brands')" [routerLink]="['/store/brands']">
                     <i class="icon-brand_store"></i>
                     <span class="text">Explore All Brands</span>
-                </a>
-            </li>
-            <li>
-                <a (click)="trackAnalyticAndRedirect('/dashboard/order',true, 'Continue to track your orders')" >
-                    <i class="icon-my-orders"></i>
-                    <span class="text">My Orders</span>
-                </a>
-            </li>
-            <li>
-                <a (click)="trackAnalyticAndRedirect('/dashboard/rfq', true, 'Continue to view your RFQs')" >
-                    <i class="icon-my-rfq"></i>
-                    <span class="text">My RFQs</span>
                 </a>
             </li>
             <li>
@@ -51,32 +39,50 @@
                     <span class="text">Best Deals</span>
                 </a>
             </li>
+        </ul>
+        <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>
-                <a  (click)="trackAnalyticAndRedirect('/dashboard/business-detail', true, 'Continue to view your Business Details')" >
+                <a (click)="trackAnalyticAndRedirect('/dashboard/order',true, 'Continue to track your orders')">
+                    <i class="icon-my-orders"></i>
+                    <span class="text">My Orders</span>
+                </a>
+            </li>
+            <li>
+                <a (click)="trackAnalyticAndRedirect('/dashboard/rfq', true, 'Continue to view your RFQs')">
+                    <i class="icon-my-rfq"></i>
+                    <span class="text">My RFQs</span>
+                </a>
+            </li>
+            <li>
+                <a
+                    (click)="trackAnalyticAndRedirect('/dashboard/business-detail', true, 'Continue to view your Business Details')">
                     <i class="icon-business-details"></i>
                     <span class="text">My Business Details</span>
                 </a>
             </li>
             <li>
-                <a  (click)="trackAnalyticAndRedirect('/dashboard/address', true, 'Continue to view your address')" >
+                <a
+                    (click)="trackAnalyticAndRedirect('/dashboard/purchase-list', true, 'Continue to view your wishlist')">
+                    <i class="icon-purchase-list"></i>
+                    <span class="text">WishList</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
+            <li>
+                <a (click)="trackAnalyticAndRedirect('/dashboard/address', true, 'Continue to view your address')">
                     <i class="icon-location"></i>
                     <span class="text">My Address</span>
                 </a>
             </li>
             <li>
-                <a  (click)="trackAnalyticAndRedirect('/dashboard/purchase-list', true, 'Continue to view your wishlist')" >
-                    <i class="icon-purchase-list"></i>
-                    <span class="text">WishList</span>
-                </a>
-            </li>
-            <li>
-                <a  (click)="trackAnalyticAndRedirect('/faq')" >
+                <a (click)="trackAnalyticAndRedirect('/faq')">
                     <i class="icon-faq-side-navigation"></i>
                     <span class="text">FAQ</span>
                 </a>
             </li>
             <li>
-                <a  (click)="trackAnalyticAndRedirect('/contact')" >
+                <a (click)="trackAnalyticAndRedirect('/contact')">
                     <i class="icon-call"></i>
                     <span class="text">Contact Us</span>
                 </a>

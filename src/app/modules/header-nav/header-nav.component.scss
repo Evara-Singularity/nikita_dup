@@ -9,19 +9,14 @@ header {
     }
     .main-header {
         background: var(--white);
-        // box-shadow: 0px 12px 16px var(--silver);
         // start header varient 1
-        .header-varient-1 {
+        .pwa-header-1 {
             display: flex;
+            padding: 10px;
             flex-wrap: wrap;
             justify-content: space-between;
-            width: 96%;
             margin: auto;
             min-height: 52px;
-            .icon-back-arrow {
-                font-size: 24px;
-                margin-right: 10px;
-            }
             .head-d-flex-inner {
                 display: flex;
                 align-items: center;
@@ -30,17 +25,15 @@ header {
                     justify-content: flex-end;
                 }
                 .icon-menu {
-                    font-size: $large-font;
-                    padding: 0px 20px 0 0;
-                    color: var(--onyx-black);
                     margin-top: -5px;
-                }
-                .icon-brand_store {
-                    font-size: 20px;
                 }
                 & > * {
                     padding: 5px 5px;
                     color: var(--onyx-black);
+                    margin-right: 10px;
+                    &:last-child{
+                        margin-right: 0px;
+                    }
                 }
                 .login-txt{
                     color: var(--primary);
@@ -53,7 +46,7 @@ header {
             }
         }
         // header varient-2
-        .header-varient-2 {
+        .pwa-header-2 {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -67,12 +60,9 @@ header {
                 display: flex;
                 justify-content: center;
                 position: relative;
-                font-size: 14px;
+                font-size: $large-font;
                 color: var(--onyx-black);
                 width: 30px;
-            }
-            .icon-moglix_app_logo{
-                color: var(--primary);
             }
             .page-name {
                 width: 70%;
@@ -81,7 +71,7 @@ header {
             }
             .moglix-app-logo {
                 i {
-                    font-size: 24px;
+                    font-size: $extra-large-3-font;
                 }
             }
             .search-bar-mini {
@@ -102,7 +92,7 @@ header {
                 }
                 i {
                     color: #303030;
-                    font-size: 15px;
+                    font-size: $large-font;
                     position: absolute;
                     z-index: 1;
                     left: 8px;
@@ -111,9 +101,32 @@ header {
                 }
             }
         }
+        // header dashboard varient
+        .pwa-header-dashboard{
+            display: flex;
+            flex-wrap: wrap;
+            padding: 5px 0px;
+            .hvd-inner{
+                width: 50%;
+                display: flex;
+                align-items: center;
+                &:nth-child(2){
+                    justify-content: flex-end;
+                }
+                a{
+                    margin-right: 10px;
+                    &:last-child{
+                        margin-right: 0px;
+                    }
+                    .page-name{
+                        font-size: $extra-large-font;
+                    }
+                }
+            }
+
+        }
         // header varient 3
         .scrolledHeader {
-            max-width: 96%;
             margin: auto;
             height: 54px;
             display: flex;
@@ -124,10 +137,11 @@ header {
                 &.search-bar {
                     width: 75%;
                     margin: 2px 0px 2px 10px;
-                }
-                &.header-icon {
-                    &.icon-menu {
-                        font-size: $large-font;
+                    input{
+                        height: 35px !important;
+                    }
+                    &:after {
+                        top: 8px !important;
                     }
                 }
             }
@@ -138,7 +152,7 @@ header {
             position: relative;
             @include placeholder {
                 color: $place-holder-color;
-                font-size: 16px;
+                font-size: $extra-large-font;
             }
             .search-bar-input {
                 height: 45px;
@@ -159,9 +173,9 @@ header {
                 font-family: "icomooon_pwa";
                 position: absolute;
                 left: 10px;
-                top: 10px;
+                top: 12px;
                 color: var(--primary);
-                font-size: 18px;
+                font-size: $extra-large-1-font;
             }
         }
 
@@ -170,27 +184,49 @@ header {
             height: 22px;
         }
         .icon-cart1 {
-            font-size: 22px !important;
             position: relative;
             padding: 5px 5px !important;
-            min-width: 40px;
             display: block;
             .badge {
                 position: absolute;
                 top: 0px;
-                right: 3px;
-                // width: 18px;
-                // height: 18px;
-                // line-height: 18px;
+                right: 0px;
                 padding: 2px 4px;
-                // text-align: center;
                 border-radius: $border-radius-6;
                 color: var(--white);
                 background: var(--primary);
-                font-size: 8px;
+                font-size: $extra-small-font;
                 border: 2px solid var(--white);
                 font-family: "Roboto", sans-serif;
             }
         }
     }
+}
+
+// global icons
+.icon-menu{
+    font-size: $large-font !important;
+    color: var(--onyx-black);
+}
+.icon-cart1 {
+    font-size: $extra-large-3-font !important;
+    color: var(--onyx-black);
+}
+.icon-back-arrow{
+    font-size: $extra-large-2_5-font !important;
+    color: var(--onyx-black);
+}
+.icon-more_options{
+    font-size: $extra-large-2-font !important;
+    color: var(--onyx-black);
+}
+.icon-moglix_app_logo{
+    font-size: $extra-large-3-font !important;
+    color: var(--primary);
+}
+.icon-search{
+    font-size: $extra-large-1-font !important;
+}
+.icon-brand_store {
+    font-size: $extra-large-3-font;
 }

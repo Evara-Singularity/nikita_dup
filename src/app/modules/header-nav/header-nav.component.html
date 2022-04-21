@@ -2,7 +2,7 @@
     <div class="main-header">
         <!-- start header varient 1 -->
         <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
-            class="header-varient-1">
+            class="pwa-header-1">
             <div class="head-d-flex-inner logo-container">
                 <i *ngIf="(_commonService.isHomeHeader) || (routerData && routerData['menuBar'])" class="icon-menu"
                     id="icon-menu" (click)="loadSideNav()"></i>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <!-- Category Header, header varient-2 -->
-        <div class="header-varient-2 container">
+        <div class="pwa-header-2">
             <ng-container
                 *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
                 <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
@@ -60,7 +60,6 @@
                     {{cartHeaderText}}</span>
                 <a *ngIf="!_commonService.isHomeHeader && !(routerData && routerData['title'])" class="moglix-app-logo"
                     [routerLink]="['/']">
-
                     <i class="icon-moglix_app_logo"></i>
                 </a>
                 <a class="search-bar-mini"
@@ -81,8 +80,29 @@
         </div>
         <!-- Category Header, header varient-2  END -->
 
+        <!-- dashboard header -->
+        <!-- <div class="pwa-header-dashboard container">
+            <div class="hvd-inner">
+                <a><i (click)="goBack()" class="icon-back-arrow" id="icon-back"></i></a>
+                <a>
+                    <i class="icon-moglix_app_logo"></i>
+                </a>
+                <a><span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
+                    {{cartHeaderText}}</span></a>
+            </div>
+            <div class="hvd-inner">
+                <a *ngIf="!_commonService.isHomeHeader  && !isLoginPage && (routerData && routerData['title'])"
+                    (click)="loadSearchNav()" class="icon-search "></a>
+                <a *ngIf="!_commonService.isHomeHeader && !isLoginPage && displayCart"
+                    (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
+                    <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
+                </a>
+                <a class="icon-more_options"></a>
+            </div>
+        </div> -->
+
         <!-- When Home page Header is scrolled , header varient 3 -->
-        <div class="scrolledHeader" *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
+        <div class="scrolledHeader pad-10" *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
             [ngClass]="{'headerFixed': _commonService.isScrolledHeader}">
             <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader" class="icon-menu header-icon"
                 id="icon-menu" (click)="loadSideNav()"></a>

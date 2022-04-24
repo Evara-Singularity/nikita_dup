@@ -17,7 +17,7 @@
         </div>
         <ng-container *ngIf="order.isOrderVisible">
             <!-- inner box -->
-            <div class="orderdtBox" id="one">
+            <div class="orderdtBox pad-10" id="one">
                 <div *ngFor="let detail of orderDetail[order.orderId]" class="orderdtBoxinner">
                     <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
                         <div class="orderdtDesc">
@@ -32,12 +32,17 @@
                                 <div class="orderqty clearfix">
                                     <span class="qtyleft"><span>Qty :{{detail.Quantity}} | {{detail.price}}</span><small class="greytxt">(Price Inclusive of GST)</small></span>
                                 </div>
-                                <div class="clearfix">
-                                    <span class="orderstatus f-left">Status:<span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED' || detail.status == 'DELIVERED' || detail.status == 'RETURN DONE' || detail.status == 'RETURN REQUESTED' || detail.status == 'RETURN APPROVED' || detail.status == 'RETURN PICKED' || detail.status == 'EXCHANGE REQUESTED' || detail.status == 'EXCHANGE PICKED' || detail.status == 'EXCHANGE APPROVED' || detail.status == 'EXCHANGE DONE' ? 'green-txt':'red-txt'">{{detail.status}}</span></span>
-                                    <span *ngIf="showBuyAgain_Invoice(detail['status'])" class="buy-again f-right"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY AGAIN</a></span>
-
-                                </div>
+                               
                             </div>
+                            
+                        </div>
+                        <div class="orderdtbottom pad-10">
+                            <div class="orderdtbottom-inner">
+                                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
+                            </div>
+                            <div class="orderdtbottom-inner">
+                                <span  class="buy-again"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
+                            </div>    
                         </div>
                     </a>
                 </div>

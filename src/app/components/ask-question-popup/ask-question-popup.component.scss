@@ -1,31 +1,28 @@
 @import "../../scss/variables";
 @import "../../scss/layout/forms.scss";
+@import "../../scss/utils/utilities.scss";
 
-.ask-question-area {
-        .char-counter-text {
-            position: absolute;
-            bottom: 20px;
-            right: 10px;
-            font-size: $small-font;
-            color: var(--silver);
-        }
-    
-    .guidence-text {
-        padding-top: 10px;
-        border-top: 1px dashed var(--silver);
-        ul {
-            list-style: disc;
-            font-size: $medium-font;
-            li {
-                margin: 10px 0 0 10px;
-                line-height: $small-line-height;
-            }
-        }
+.ask-question-container{
+  .ask-question-field{
+    background:var(--white);
+    padding:15px 15px 0;
+    .char-counter-text {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: $small-font;
+      color: var(--silver);
     }
-}
-.bottom-stick{
+  }
+  .info-list{
+    padding: 0 15px 10px;
+    border-top: 1px dashed var(--silver);
+  }
+  .stickyBottomBtn{
     button{
      width:$fullwidth;
      height:50px;
+     font-size: $large-font;
+    }
   }
 }

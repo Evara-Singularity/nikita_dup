@@ -1,62 +1,54 @@
 @import "../../scss/variables";
 @import '../../scss/layout/forms.scss';
+@import "../../scss/utils/utilities.scss";
 
 .submit-review {
-    .popup-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-    .product-name {
-        font-size: $extra-large-font;
-        padding-bottom: 30px;
-        line-height: $medium-line-height;
-    }
-    .rate_review-product {
-        font-size: $large-font;
-        padding-bottom: 10px;
-        font-weight: $font-bold;
-    }
-    .stars-block {
-        font-size: $extra-large-5-font;
-        padding: 0px 0px 30px;
-        justify-content: space-between;
-        display: flex;
-        .icon-rating-star {
-            margin-right: 10px;
-            &:last-child{
-                margin-right: 0;
+    .write-review-section{
+        background: var(--white);
+        padding: 15px 15px 0;
+        .product-name {
+            font-size: $extra-large-font;
+            padding-bottom: 30px;
+            line-height: $medium-line-height;
+        }
+        .rate_review-text {
+            font-size: $large-font;
+            padding-bottom: 10px;
+            font-weight: $font-bold;
+        }
+        .stars-block {
+            font-size: $extra-large-5-font;
+            padding: 0px 0px 30px;
+            justify-content: space-between;
+            display: flex;
+            .icon-rating-star {
+                margin-right: 10px;
+                &:last-child{
+                    margin-right: 0;
+                }
             }
         }
-    }
-    .with-rating {
-        color: var(--orange-red);
-    }
-    .without-rating {
-        color: var(--silver);
-    }
-    .material-form{
-        .input-field label .message-field{
-            border: 1px solid var(--silver);
-            border-radius: 4px;
-            padding-left: 10px;
+        .with-rating {
+            color: var(--orange-red);
+        }
+        .without-rating {
+            color: var(--silver);
         }
         .max-char{
             font-size: $extra-small-font;
             text-align: end;
             color: var(--silver);
         }
-    } 
-}
-.submit-btn{
-    width: 100%;
-    background: var(--spanish-gray);
-    padding: 15px 0;
-    border-radius: 0;
-    letter-spacing: 0.5px;
-    text-align: center;
-    &.active {
-        background: var(--primary);
     }
+    .info-list{
+        padding: 0 15px 10px;
+        border-top: 1px dashed var(--silver);
+      }
+    .stickyBottomBtn{
+        button{
+         width:$fullwidth;
+         height:50px;
+         font-size: $large-font;
+        }
+      }
 }

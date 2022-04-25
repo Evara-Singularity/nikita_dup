@@ -11,11 +11,6 @@
             padding-bottom: 30px;
             line-height: $medium-line-height;
         }
-        .rate_review-text {
-            font-size: $large-font;
-            padding-bottom: 10px;
-            font-weight: $font-bold;
-        }
         .stars-block {
             font-size: $extra-large-5-font;
             padding: 0px 0px 30px;
@@ -40,8 +35,13 @@
             color: var(--silver);
         }
     }
+    .rate_review-text {
+        font-size: $large-font;
+        padding-bottom: 10px;
+        font-weight: $font-bold;
+    }
     .info-list{
-        padding: 0 15px 10px;
+        padding: 15px 15px 10px;
         border-top: 1px dashed var(--silver);
       }
     .stickyBottomBtn{

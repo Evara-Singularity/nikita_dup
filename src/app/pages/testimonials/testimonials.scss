@@ -6,19 +6,12 @@
 	.card{
 		border-color: var(--ghost-white);
 		margin-bottom:15px;
+		padding: 15px;
 		.testimonial-heading{
 			display: flex;
-			align-items: center;
 			i{
 				margin-left: auto;
 			}
 		   }
-		.decimal-list{
-			list-style: decimal;
-			padding-left: 15px;
-			li{
-				padding: 5px;
-			}
-		 }
 	 }
 }

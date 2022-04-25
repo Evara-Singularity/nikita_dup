@@ -50,5 +50,8 @@ ul {
     li {
       margin: 10px 0 0 10px;
       line-height: $small-line-height;
+      &:last-child{
+          margin-bottom: 10px;
+      }
     }
 }

@@ -1,4 +1,4 @@
-<header class="inner-pages" *ngIf="!extraData.hideHeader">
+<header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
     <div class="main-header">
         <!-- start header varient 1 -->
         <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
@@ -104,7 +104,7 @@
         <!-- When Home page Header is scrolled , header varient 3 -->
         <div class="scrolledHeader pad-10" *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
             [ngClass]="{'headerFixed': _commonService.isScrolledHeader}">
-            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader" class="icon-menu header-icon"
+            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader" class="icon-menu header-icon mt-10"
                 id="icon-menu" (click)="loadSideNav()"></a>
             <a class="search-bar">
                 <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"

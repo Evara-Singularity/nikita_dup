@@ -1846,9 +1846,9 @@ export class CartService
     {
         if (!this.localAuthService.isUserLoggedIn()) return of([]);
         const userSession = this.localAuthService.getUserSession();
-        this.cartNotications = this.cartNotications.filter((notification) => { notification['msnid'] === msn; })
-        this.setCartNotifications(this.cartNotications);
-        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.cartNotications })
+        const cNotifications: any[] = JSON.parse(JSON.stringify(this.notifications));
+        this.notifications = cNotifications.filter((notification) => { notification['msnid'] === msn; })
+        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications })
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }

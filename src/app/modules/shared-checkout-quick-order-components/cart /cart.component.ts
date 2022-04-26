@@ -186,7 +186,7 @@ export class CartComponent
 
     updateCartAndRemoveNotfication(msn, buyNow, productDetails, index, updatedCartItemCount, showToastMsg?: boolean)
     {
-        const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn]);
+        const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
         const addToCart$ = this._cartService.addToCart({ buyNow, productDetails }).pipe(
             mergeMap((data: any) =>
             {

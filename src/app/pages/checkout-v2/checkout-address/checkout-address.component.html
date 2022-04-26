@@ -1,5 +1,5 @@
 <div class="main-container">
-    <shared-checkout-stepper [headers]="STEPPER" ></shared-checkout-stepper>
+    <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
@@ -13,7 +13,8 @@
                         </span>
                         ₹ {{ payableAmount | mathCeil | number : '1.2-2'}}
                     </p>
-                    <button [disabled]="!(hasCartItems)" class="btn" (click)="$event.stopPropagation();continueToPayment()">
+                    <button [disabled]="!(hasCartItems)" class="btn"
+                        (click)="$event.stopPropagation();continueToPayment()">
                         CONTINUE
                     </button>
                 </div>
@@ -22,9 +23,11 @@
                 <div></div>
             </ng-template>
         </section>
-        <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling" (emitAddressSelectEvent$)="handleAddressEvent($event)"
+        <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling"
+            (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+            (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'" ></cart>
+        <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
     </ng-container>
 </div>

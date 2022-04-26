@@ -101,6 +101,19 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
     }
 
+    handleDeliveryAddressEvent(address)
+    {
+        this.deliveryAddress = address;
+        this._cartService.shippingAddress = address;
+        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+    }
+
+    handleBillingAddressEvent(address)
+    {
+        this.billingAddress = address;
+        this._cartService.billingAddress = address;
+    }
+
     /**
      * @description initiates the non-serviceable & non COD items processing
      * @param invoiceType containes retail | tax

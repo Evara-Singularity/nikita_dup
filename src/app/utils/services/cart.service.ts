@@ -1842,12 +1842,25 @@ export class CartService
         }
     }
 
-    removeNotificationsByMsns(msn: any[])
+    removeNotificationsByMsns(msns: any[], isCartUpdate?)
     {
         if (!this.localAuthService.isUserLoggedIn()) return of([]);
         const userSession = this.localAuthService.getUserSession();
         const cNotifications: any[] = JSON.parse(JSON.stringify(this.notifications));
-        this.notifications = cNotifications.filter((notification) => { notification['msnid'] === msn; })
+        if (!(isCartUpdate)) {
+            this.notifications = cNotifications.filter((notification) => { return !(msns.includes(notification['msnid'])) });
+        } else {
+            this.notifications = cNotifications.filter((notification) =>
+            {
+                if (!(msns.includes(notification['msnid']))) {
+                    return true;
+                }
+                if ((msns.includes(notification['msnid']) && (notification['type'] === "oos" || notification['type'] === "unserviceable"))) {
+                    return true;
+                }
+                return false;
+            });
+        }
         return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications })
     }
 

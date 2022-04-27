@@ -5,14 +5,14 @@
         display: none;
         &:checked + .custom-box::before {
             content: "\e912";
-            color: $active-color;
+            color: var(--blue);
         }
     }
     input[type="radio"] {
         display: none;
         &:checked + .custom-box::before {
             content: "\e912";
-            color: $green-color;
+            color: var(--slimy-green);
         }
     }
     .custom-box {
@@ -20,22 +20,22 @@
         height: 18px;
         display: block;
         float: left;
-        font-size: 18px;
-        line-height: 20px;
+        font-size: $extra-large-1-font;
+        line-height: $medium-line-height;
         margin-right: 5px;
         @extend %transition;
         &::before {
             font-family: "icomooon_pwa";
             content: "\e912";
-            color: #b9b9b9;
+            color: var(--silver);
         }
 
     }
     .chk-txt {
-        font-size: 15px;
+        font-size: $large-font;
         float: left;
         margin-left: 10px;
-        line-height: 20px;
+        line-height: $medium-line-height;
         width: calc(100% - 38px);
     }
 }
@@ -44,7 +44,7 @@
         display: none;
         &:checked + .custom-box::before {
             content: "\e914";
-            color: $active-color;
+            color: var(--blue);
         }
     }
     .custom-box {
@@ -52,21 +52,21 @@
         height: 18px;
         display: block;
         float: left;
-        font-size: 18px;
-        line-height: 20px;
+        font-size: $extra-large-1-font;
+        line-height: $medium-line-height;
         margin-right: 5px;
         @extend %transition;
         &::before {
             font-family: "icomooon_pwa";
             content: "\e915";
-            color: #000;
+            color: var(--black);
         }
     }
     .chk-txt {
-        font-size: 15px;
+        font-size: $large-font;
         float: left;
         margin-left: 5px;
-        line-height: 20px;
+        line-height: $medium-line-height;
         width: calc(100% - 38px);
     }
 }

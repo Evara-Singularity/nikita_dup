@@ -34,6 +34,12 @@
 }
 
 // align items
-.align-items-center{
+.align-center{
     align-items: center;
+}
+
+.pwa-text{
+    font-size: $medium-font;
+    line-height:$medium-line-height;
+    padding-bottom: 5px;
 }

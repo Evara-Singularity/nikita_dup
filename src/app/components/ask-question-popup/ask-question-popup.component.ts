@@ -10,7 +10,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 @Component({
     selector: 'ask-question-popup',
     templateUrl: './ask-question-popup.component.html',
-    styleUrls: ['./../../pages/product/product.component.scss']
+    styleUrls: ['./ask-question-popup.component.scss']
 })
 export class AskQuestionPopoupComponent {
     questionText = '';

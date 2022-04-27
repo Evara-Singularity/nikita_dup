@@ -1,18 +1,18 @@
 @import "./../../scss/variables";
 .orderdtDesc {
     position: relative;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    border-bottom: 1px solid var(--ghost-white);
     background: var(--white);
+    padding: 10px;
+    // background-color: red;
     display: flex;
     &:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
+        // border-bottom: none;
+        // margin-bottom: 0;
+        // padding-bottom: 0;
     }
     &:last-child {
-        border: none;
+        // border: none;
     }
     .moreOptions {
         position: absolute;
@@ -24,7 +24,7 @@
     .orderproImg {
         width: 27%;
         padding: 5px;
-        border: 1px solid var(--ghost-white);
+        // border: 1px solid var(--ghost-white);
         img {
             display: block;
             max-height: 100%;
@@ -36,8 +36,10 @@
         padding-left: 15px;
         padding-right: 5px;
         p {
-            font-size: $large-font;
+            font-size: $medium-font;
+            line-height: $small-line-height;
             color: var(--black);
+            color: var(--onyx-black);
             cursor: pointer;
             margin-bottom: 5px;
             line-height: 17px;
@@ -57,6 +59,12 @@
                 display: block;
                 margin-bottom: 5px;
                 color: #444;
+                font-weight: bold;
+                font-size: $extra-large-font;
+                .qtynum{
+                    font-size: $medium-font;
+                    font-weight: normal;
+                }
                 span {
                     font-weight: $font-bolder;
                     color: #111;
@@ -77,10 +85,12 @@
     }
 }
 .ordersumBox {
-    @extend %cards;
+    // @extend %cards;
     padding-right: 0;
+    background-color: var(--white);
     padding-left: 0;
-    margin: 10px 0;
+    margin: 10px 15px;
+    border-radius: $border-radius-8;
     display: block;
     h5 {
         padding: 10px 15px;
@@ -88,7 +98,6 @@
         color: var(--onyx-black);
         font-weight: 500;
         border-bottom: 1px solid var(--ghost-white);
-        margin-bottom: 12px;
         span {
             float: right;
             display: inline-block;
@@ -96,7 +105,7 @@
         }
     }
     .chargestext {
-        padding: 5px 15px;
+        padding: 10px 15px;
         font-size: $medium-font;
         span {
             float: right;
@@ -108,7 +117,7 @@
     }
     .totPrice {
         padding: 10px 15px;
-        font-size: $extra-large-font;
+        font-size: $large-font;
         color: var(--onyx-black);
         font-weight: $font-bolder;
         margin-top: 12px;

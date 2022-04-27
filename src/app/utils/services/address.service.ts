@@ -159,15 +159,9 @@ export class AddressService
         let deliveryAddressList: any[] = null;
         let billingAddressList: any[] = null;
         if (addressList.length === 0) { return { deliveryAddressList: [], billingAddressList: [] } }
-        addressList.sort((address1, address2) =>
-        {
-            const a1 = address1['addressType']['idAddressType'];
-            const a2 = address2['addressType']['idAddressType'];
-            return (a1 < a2) ? -1 : 1;
-        });
         deliveryAddressList = addressList.filter((address) => address['addressType']['idAddressType'] === 1);
         if (deliveryAddressList.length === addressList.length) { return { deliveryAddressList: deliveryAddressList, billingAddressList: [] } }
-        billingAddressList = addressList.slice(deliveryAddressList.length);
+        billingAddressList = addressList.filter((address) => address['addressType']['idAddressType'] === 2);
         return { deliveryAddressList: deliveryAddressList, billingAddressList: billingAddressList }
     }
 }

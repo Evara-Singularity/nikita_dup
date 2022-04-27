@@ -83,6 +83,6 @@ export class SharedCheckoutAddressUtil
             if (index > -1) { return checkoutAddress; }
             return addressList[length];
         }
-        return addressList[length];
+        return addressList[0];
     }
 }

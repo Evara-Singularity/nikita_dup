@@ -1,3 +1,4 @@
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { NgModule} from '@angular/core';
 import { CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
@@ -23,8 +24,8 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         HttpClientModule,
         KpToggleDirectiveModule,
         // PopUpModule,
-        // CartUpdatesModule
-        
+        // CartUpdatesModule,
+        NumberDirectiveModule
     ],
     declarations: [
         CartComponent

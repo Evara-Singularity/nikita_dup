@@ -1,4 +1,6 @@
 @import "../../scss/variables";
+@import '../../scss/components/home-listing';
+
 .fixedCategory {
     position: relative;
     display: block;
@@ -20,10 +22,6 @@
         min-height: 140px;
     }
 }
-
-
-
-
 .product_h3 {
     background: #fff;
     padding: 15px 5px 5px;

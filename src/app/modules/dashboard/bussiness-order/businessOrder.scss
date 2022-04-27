@@ -35,7 +35,7 @@ pagination-controls {
     .businessBox {
         margin: 0px;
         border: none;
-        border-top: 1px solid var(--ghost-white);
+        border: 1px solid var(--ghost-white);
         padding-bottom: 0px;
         .top_txt {
             padding: 5px 15px;
@@ -47,7 +47,7 @@ pagination-controls {
     padding: 0;
     .orderSum {
         padding: 8px 15px 10px;
-        border-bottom: 1px solid var(--ghost-white);
+        // border-bottom: 1px solid var(--ghost-white);
         width: 100%;
         position: relative;
         .orderId {
@@ -76,13 +76,49 @@ pagination-controls {
     padding-left: 0;
     padding-right: 0;
     position: relative;
+    border: none !important;
     .orderdtBoxinner {
         position: relative;
         min-height: 80px;
-        padding: 0 10px;
+        // padding: 0 10px;
         margin-bottom: 10px;
+        border: 1px solid var(--ghost-white);
+        border-radius: $border-radius-8;
+        padding-top: 10px;
         &:last-child {
             margin-bottom: 0;
+        }
+        .orderdtbottom{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .orderdtbottom-inner{
+                .buy-again {
+                    border: none;
+                    
+                    
+                    color: var(--white);
+                    font-size: 12px;
+                    // position: absolute;
+                    right: 0px;
+                    a {
+                        color: var(--white);
+                        display: block;
+                        background: var(--primary);
+                        font-weight: 600;
+                        border-radius: $border-radius-4;
+                        padding: 8px 10px;
+                    }
+                }
+            }
+            .orderstatus{
+                color: var(--onyx-black) !important;
+                font-size: $small-font;
+                font-weight: bold;
+                .dot{
+                    color: red;
+                }
+            }
         }
     }
 }
@@ -131,16 +167,4 @@ pagination-controls {
     right: 10px;
     top: 10px;
 }
-.buy-again {
-    background: var(--orange-red);
-    border: none;
-    font-weight: 600;
-    padding: 8px 10px;
-    border-radius: 3px;
-    color: var(--white);
-    font-size: 12px;
-    a {
-        color: var(--white);
-        display: block;
-    }
-}
+

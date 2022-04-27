@@ -463,19 +463,56 @@
   display: block !important;
 }
 .orderaddressBox {
-  @extend %cards;
+  // @extend %cards;
   display: block;
+  .adressbox-inner{
+    background: var(--white);
+    border-radius: $border-radius-8;
+    padding: 10px;
+    .order-name{
+      font-size: $medium-font;
+      font-weight: $font-bolder;
+    }
+    .address-type{
+      background-color: var(--ghost-white);
+      display: inline;
+      padding: 5px;
+      border-radius: $border-radius-4;
+      color: var(--onyx-black);
+      font-size: $small-font;
+      font-weight: bold;
+    }
+  }
   h3 {
     color: var(--onyx-black);
-    font-size: $extra-large-font;
-    font-weight: $font-bolder;
-    text-transform: uppercase;
+    font-size: $medium-font;
     padding-top: 0;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
   }
   span {
     font-size: $medium-font;
     line-height: 20px;
     display: block;
+  }
+}
+
+.orderdtBox{
+  border-radius: 8px !important;
+}
+.need-help-strip{
+  background-color: var(--white);
+  border-radius: $border-radius-8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  .cncl-item{
+    background-color: var(--ghost-white);
+    padding: 8px 25px;
+    border-radius: $border-radius-4;
+  }
+  .need-help{
+    color: var(--primary);
+    margin-right: 20px;
   }
 }

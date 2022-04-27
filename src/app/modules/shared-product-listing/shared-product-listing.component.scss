@@ -21,10 +21,11 @@
     position: fixed;
     // bottom: -200px;
     top: 54px;
-    z-index: 5;
+    z-index: 10;
     left: 0px;
     width: 100%;
     box-shadow: 0px 12px 16px #455B631A;
+    border-top: 1px solid var(--ghost-white);
     background: $white;
     @extend %box-shadow;
     &.translateHeader {

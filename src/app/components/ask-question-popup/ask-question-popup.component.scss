@@ -1,0 +1,31 @@
+@import "../../scss/variables";
+@import "../../scss/layout/forms.scss";
+
+.ask-question-area {
+        .char-counter-text {
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+            font-size: $small-font;
+            color: var(--silver);
+        }
+    
+    .guidence-text {
+        padding-top: 10px;
+        border-top: 1px dashed var(--silver);
+        ul {
+            list-style: disc;
+            font-size: $medium-font;
+            li {
+                margin: 10px 0 0 10px;
+                line-height: $small-line-height;
+            }
+        }
+    }
+}
+.bottom-stick{
+    button{
+     width:$fullwidth;
+     height:50px;
+  }
+}

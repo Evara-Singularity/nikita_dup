@@ -12,8 +12,11 @@
                     purchases.
                 </b><br>
             </ng-container>
-            <ng-container *ngFor="let item of data['image_block'][0].image_general" >
-                <b >{{item.general_url}} </b><br/>
+            <ng-container *ngIf="offerIndex != null && offerIndex > 0">
+                <b>{{data['image_block'][0]['image_title']}}</b><br>
+            </ng-container>
+            <ng-container *ngFor="let item of data['image_block'][0].image_general">
+                <b>{{item.general_url}} </b>
             </ng-container>
         </div>
         <div class="wallet-body">

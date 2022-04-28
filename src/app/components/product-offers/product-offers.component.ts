@@ -30,10 +30,9 @@ export class ProductOffersComponent implements OnInit
 
     getOfferData()
     {
-        this.productService.getAllOffers().subscribe((data: any) =>
-        {
+        this.productService.getAllOffers().subscribe((data: any) => {
             if (data.statusCode == 200) {
-                this.allofferData = data.data;
+                this.allofferData = (data.data as any[]).map((item: any, index) => Object.assign({}, item, { index }));
             }
         });
     }

@@ -381,6 +381,8 @@ export const CONSTANTS = {
   },
   CUSTOMER_CARE_TIME:{
     'call_timing_text': 'Call Timings: 9:00 AM - 8:00 PM (Monday to Saturday)'
-  }
+  },
+  SEARCH_ABT_FLAG: 'y',
+  SEARCH_ONLINE_ABT_FLAG: 'y'
 };
 export default CONSTANTS;

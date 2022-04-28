@@ -1,11 +1,20 @@
-<app-pop-up *ngIf="openMobikwikPopup" (outData$)="outData($event)"  class="openMobikwikPopup" [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:'Offer Details'}">
+<app-pop-up *ngIf="openMobikwikPopup" (outData$)="outData($event)" class="openMobikwikPopup"
+    [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:'Offer Details'}">
     <div class="content-popup mobikwik-wallet" content>
         <div class="wallet-block">
             <img src="{{IMG_PATH}}{{data['image_block'][0].image_name}}" width="80%">
         </div>
         <div class="top-txt">
-            <b>Get GST invoice and save up to {{gstPercentage}}% on business purchases.</b><br>
-            <b *ngFor="let item of data['image_block'][0].image_general">{{item.general_url}} </b>
+            <ng-container *ngIf="offerIndex != null && offerIndex == 0">
+                <b>
+                    Get GST invoice and save up to {{gstPercentage}}% on
+                    business
+                    purchases.
+                </b><br>
+            </ng-container>
+            <ng-container *ngFor="let item of data['image_block'][0].image_general" >
+                <b >{{item.general_url}} </b><br/>
+            </ng-container>
         </div>
         <div class="wallet-body">
             <div class="inner-mobikwik">

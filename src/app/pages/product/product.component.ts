@@ -2265,6 +2265,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.injector
             );
             this.offerPopupInstance.instance["data"] = data["block_data"];
+            this.offerPopupInstance.instance["offerIndex"] = data["index"];
             let gstPercentage = this.taxPercentage;
             this.offerPopupInstance.instance['gstPercentage'] = gstPercentage;
             this.offerPopupInstance.instance["openMobikwikPopup"] = true;

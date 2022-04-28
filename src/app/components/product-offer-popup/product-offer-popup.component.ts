@@ -12,15 +12,16 @@ import CONSTANTS from '../../config/constants';
 export class ProductOfferPopupComponent implements OnInit {
 
   @Input() openMobikwikPopup: boolean = false;
-  @Input() data: any =  null;
+  @Input() offerIndex: number = null;
+  @Input() data: any = null;
   @Input() gstPercentage;
-  @Output() out: EventEmitter<any> =  new EventEmitter<any>();
+  @Output() out: EventEmitter<any> = new EventEmitter<any>();
   IMG_PATH = CONSTANTS.IMAGE_BASE_URL;
 
   ngOnInit(): void {
   }
 
-  outData(data){
+  outData(data) {
     console.log('outData', data);
     this.out.emit(data);
   }

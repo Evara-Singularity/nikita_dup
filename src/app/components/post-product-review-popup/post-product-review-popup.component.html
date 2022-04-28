@@ -1,31 +1,43 @@
 <app-pop-up (outData$)="outData($event)" [data]="{headerText: 'REVIEW & RATING', selector:'openReviewPopup'}">
     <div class="content-popup submit-review"   content>
-        <div class="pwa-row">
+        <div class="pwa-row write-review-section">
             <div class="pwa-col-12">
                 <p class="product-name">
                     {{productInfo.productName}}
                 </p>
-                <p class="rate_review-product">Rate your product:</p>
+                <p class="rate_review-text">Rate your product:</p>
             </div>
             <div class="pwa-col-12 stars-block">
                 <i *ngFor="let star of [1,2,3,4,5];let i=index;" (click)="ratingValue=star;" [ngClass]="{'with-rating': ratingValue>=star, 'without-rating': ratingValue < star}" class="star icon-rating-star"></i>
             </div>
             <div class="pwa-col-12">
-                <p class="rate_review-product">Write your review :</p>
+                <p class="rate_review-text">Write your review :</p>
             </div>
-            <form class="pwa-col-12 material-form material-form-boxed" [formGroup]="reviewForm">
+            <div class="pwa-col-12 material-form material-form-boxed" [formGroup]="reviewForm">
                 <div class="input-field-boxed">
                     <label class="max-char">(Maximum 100 characters)</label>
                     <input type="text" formControlName="review_subject" maxlength="100" #title placeholder="Title">
                 </div>
-                <div class="input-field">
-                    <label>
-                        <label class="max-char">(Maximum 600 characters)</label>
-                        <textarea class="message-field" type="text" formControlName="review_text" maxlength="600" #review placeholder="Your thoughts (Optional)"></textarea>
-                    </label>
+                <div class="input-field-boxed">
+                    <label class="max-char">(Maximum 600 characters)</label>
+                    <textarea class="message-field" type="text" formControlName="review_text" maxlength="600" #review placeholder="Your thoughts (Optional)"></textarea>
                 </div>
-            </form>
-            <button class="btn submit-btn popup-bottom" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
+            </div>
         </div>
+        <div class="pwa-row info-list">
+            <div class="pwa-col-12">
+                <p class="rate_review-text">What makes a good review</p>
+                <ul>
+                    <li>Have you used this product? It’s always better to review a product you have personally experienced.</li>
+                    <li>Educate your readers Provide a relevant, unbiased overview of the product. Readers are interested in the pros and the cons of the product.</li>
+                    <li>Be yourself, be informative Let your personality shine through, but it’s equally important to provide facts to back up your opinion.</li>
+                    <li>Stay concise Be creative but also remember to stay on topic. A catchy title will always get attention!</li>
+                    <li>Easy to read, easy on the eyes A quick edit and spell check will work wonders for your credibility. Also, break reviews into small, digestible paragraphs.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="stickyBottomBtn">
+            <button class="btn-red-bg" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
+        </div>   
     </div>
 </app-pop-up>

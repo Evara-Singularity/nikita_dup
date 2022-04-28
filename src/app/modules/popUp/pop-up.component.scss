@@ -13,7 +13,7 @@
         height: 100%;
         top: 120%;
         left: 0;
-        background: $white;
+        background: var(--ghost-white);
         @extend %transition;
         .head-sec {
             padding: 12px 0;
@@ -69,7 +69,7 @@
             }
         }
         &.addAddressPopup {
-            background: #fff !important;
+            background: var(--ghost-white) !important;
             &.screen-view {
                 .head-sec {
                     background: $logo-color !important;

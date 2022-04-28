@@ -3,48 +3,48 @@
 <div id="create_rfq">
 
     <div class="rfq">
-        <div class="rfq-banner">
-            <h2>Buying for Your Business?</h2>
-            <h2>Get the Best Quotes. 100+ Products at Bargain Deals + GST Benefit</h2>
+        <div class="bannerBlock">
+            <p>Buying for Your Business?</p>
+            <p>Get the Best Quotes. 100+ Products at Bargain Deals + GST Benefit</p>
         </div>
-        <div class="rfq-form-container">
-            <div class="rfq-form-heading">
-                <h2>
-                    Fill your bulk query requirement & our<br/> experts will get in touch with you with the <br/>best -
-                    <span>All of this within 30 min.</span>
-                </h2>
-            </div>
-            <form [formGroup]="bulkEnquiryForm" >
-                <div class="personal-details">
-                    <div class="form-pd-field">
+        <div class="pwa-row ">
+            <div class="pwa-col-12 card">
+                <div class="rfq-form-heading">
+                    <p>
+                        Fill your bulk query requirement & our<br/> experts will get in touch with you with the <br/>best -
+                        <span>All of this within 30 min.</span>
+                    </p>
+                </div>
+                <div class="material-form material-form-boxed">
+                    <div class="input-field-boxed">
                         <label>Full Name*</label>
                         <input type="text" formControlName='name' placeholder="Enter full name">
                         <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" >
                             Kindly enter your fullname
                         </div>
                     </div>
-                    <div class="form-pd-field">
+                    <div class="input-field-boxed">
                         <label>Email ID*</label>
                         <input type="text" formControlName='email' placeholder="Enter Email ID">
                         <div class="error-txt" *ngIf="isFormSubmitted && emailFC.invalid" >
                             Kindly enter valid email
                         </div>
                     </div>
-                    <div class="form-pd-field">
+                    <div class="input-field-boxed">
                         <label>Mobile No*</label>
                         <input type="text" numbersOnly formControlName='phoneno' placeholder="Enter Mobile No">
                         <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
                             Kindly enter valid mobile number
                         </div>
                     </div>
-                    <div class="form-pd-field">
+                    <div class="input-field-boxed">
                         <label>Company (Optional)</label>
                         <input type="text" formControlName='company_name' placeholder="Enter Company (Optional)">
                     </div>
                     <button class="btn btn-variant1" (click)="submit()" >SUBMIT REQUEST</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </div>  
     </div>
     <!-- success popup -->
     

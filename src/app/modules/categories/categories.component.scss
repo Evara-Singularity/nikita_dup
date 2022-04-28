@@ -1,5 +1,5 @@
 @import '../../scss/variables.scss';
-// @import '../../scss/components/home-listing.scss';
+@import '../../scss/components/home-listing.scss';
 .category-wrap{
     margin-top:var(--spacing-unit);
     .view-all-strip{
@@ -21,7 +21,8 @@
 .home-grid-view-container{
     display: flex;
     flex-wrap: wrap;
-    product-horizontal-card{
+    .product-horizontal-card{
         width: 50%;
     }
 }
+

@@ -75,6 +75,10 @@
             .view-products-card{
                 flex-direction:column;
               }
+             img {
+                max-width: $fullwidth;
+                max-height: $fullwidth;
+            }
               .left{
                   width:$fullwidth;
                   img {

@@ -10,11 +10,11 @@
         <span class="chk-txt">
           <span class="heading-container">
             <span class="heading">
-              <span [ngClass]="{'persnName':!showRadio}">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
-              <span *ngIf="layoutType == 'SINGLE'">{{address.phone}}</span>
+              <span class="address-name" [ngClass]="{'persnName':!showRadio}">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
             </span>
           </span>
           <span class="txt">{{displayAddress(address)}}</span>
+          <span *ngIf="layoutType == 'SINGLE'">Mobile : {{address.phone}}</span>
           <span class="txt" *ngIf="layoutType == 'LIST' ">{{address.phone}}</span>
           <span *ngIf="showRadio" class="address-btn-section">
             <span class="small-btn edit" (click)="updateAddressV1({index: i, type: type, address: address})">

@@ -1,4 +1,5 @@
 @import "./../../../scss/variables";
+@import "./../../../scss/layout/forms.scss";
 .material-form {
     position: relative;
     .card {
@@ -92,21 +93,98 @@
     }
 }
 
-.other-strip {
-    display: block;
-    @extend %container;
-    @extend %clear-fix;
-    h3 {
-        float: left;
-        font-size: $extra-large-font;
-        font-weight: 400;
-        line-height: 30px;
+// .other-strip {
+//     display: block;
+//     @extend %container;
+//     @extend %clear-fix;
+//     h3 {
+//         float: left;
+//         font-size: $extra-large-font;
+//         font-weight: 400;
+//         line-height: 30px;
+//     }
+//     i {
+//         float: right;
+//         font-size: 17px;
+//         line-height: 30px;
+//         padding: 10px 0;
+//         top: 0 !important;
+//     }
+// }
+
+
+
+.profile-card {
+    @extend %white-card;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .profile-card-inner {
+        display: flex;
+        align-items: center;
+        .profile-card-inner-2 {
+            margin-left: 10px;
+        }
     }
-    i {
-        float: right;
-        font-size: 17px;
-        line-height: 30px;
-        padding: 10px 0;
-        top: 0 !important;
+}
+.profile-name {
+    background-color: var(--primary);
+    color: var(--white);
+    margin-top: 65px;
+    padding: 25px 15px;
+    .name {
+        .icon-profile {
+            font-size: 40px;
+        }
+        .name-space {
+            font-size: $medium-font;
+            line-height: $medium-line-height;
+            .name-main {
+                font-size: $large-font;
+                line-height: $large-line-height;
+                font-weight: bold;
+            }
+        }
+    }
+    .update-name {
+        background-color: #e72b35;
+        padding: 5px 10px;
+        font-weight: bold;
+        border-radius: $border-radius-4;
+    }
+}
+.personal-details {
+    @extend %white-card;
+    padding-left: 10px;
+    .personal-details-inner {
+        padding: 8px 0px;
+        border-bottom: 1px solid var(--ghost-white);
+        &:last-child {
+            border: none !important;
+        }
+        label {
+            font-size: $medium-font;
+            color: var(--silver);
+            line-height: $medium-line-height;
+        }
+        h4 {
+            font-size: $large-font;
+            line-height: $medium-line-height;
+        }
+    }
+}
+.profile-bottom-card{
+    background-color: var(--white);
+    .profile-bottom-card-inner{
+        i{
+            font-size: $extra-large-3-font;
+        }
+        span{
+            font-size: $large-font;
+            font-weight: bold;
+        }
+    }
+    .icon-next{
+        font-size: $large-font;
     }
 }

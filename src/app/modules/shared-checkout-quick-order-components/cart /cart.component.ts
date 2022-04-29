@@ -637,7 +637,7 @@ export class CartComponent
         forkJoin([setValidationMessages$, updateCart$]).subscribe((responses)=>{
             this._globalLoaderService.setLoaderState(false);
             const cartSession = responses[1];
-            if (cartSession && cartSession['status']){
+            if (cartSession){
                 this._cartService.setGenericCartSession(cartSession);
                 this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
                 this._cartService.orderSummary.next(cartSession);

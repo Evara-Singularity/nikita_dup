@@ -1,19 +1,17 @@
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AddressListActionModel, AddressListModel, CountryListModel, CreateEditAddressModel } from '@app/utils/models/shared-checkout.models';
+import { AddressService } from '@app/utils/services/address.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { Subject, Subscription } from 'rxjs';
+import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 /**
  * This is cemtralised component in which shipping & billing address can be viewed, added & edited.
  * AddressListComponent: to display all the address list for selection as pop-up
  * CreateEditDeliveryComponent/CreateEditDeliveryComponent: to handle add or edit of shipping or billing details as pop-up
  */
-
-import { AfterViewInit } from '@angular/core';
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { AddressListActionModel, AddressListModel, CountryListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
-import { AddressService } from '@app/utils/services/address.service';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { CartService } from '@app/utils/services/cart.service';
-import { Subject, Subscription } from 'rxjs';
-import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'all-addresses',
     templateUrl: './all-addresses.component.html',
@@ -194,8 +192,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         {
             //Expected Actions: "Add or Edit or null", null implies no action to be taken
             if (response.action) {
+                const isEditMode = response.action === "Edit";
+                console.log(response.action);
                 const ADDRESSES = response['addresses'];
-                this.updateAddressAfterAction(addressType, ADDRESSES);
+                this.updateAddressAfterAction(addressType, ADDRESSES, isEditMode);
             }
             this.createEditAddressInstance.instance['displayCreateEditPopup'] = false;
             this.createEditAddressRef.remove();
@@ -207,7 +207,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      * @param addressType:Delivery or Billing
      * @param addresses :can be delivery or billing address or 'null' in case of addition
      */
-    updateAddressAfterAction(addressType, addresses)
+    updateAddressAfterAction(addressType, addresses, isEditMode)
     {
         if (!addresses) return;
         const canUpdateDelivery = (this.deliveryAddressList.length === 0);
@@ -219,12 +219,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (canUpdateDelivery)
-        {
-
+        if (IS_DELIVERY && (canUpdateDelivery || isEditMode)) {
+            const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
+            this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
+            return;
         }
-        if (canUpdateBilling) {
-
+        if ((!IS_DELIVERY) || (canUpdateBilling && isEditMode)) {
+            const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
+            this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
         }
     }
 

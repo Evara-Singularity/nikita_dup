@@ -52,17 +52,11 @@
                     </li>
                 </ng-template>
             </ul>
-<<<<<<< HEAD
             <!-- Yajya -->
             <!-- <product-card-horizontal-scroll></product-card-horizontal-scroll>
             <product-horizontal-card></product-horizontal-card> -->
             <!-- carouselData[category.dataKey]{{carouselData[category.dataKey]|json}} -->
             <ul class="view-products home-grid-view-container"
-=======
-
-            <ul class="view-products"
-
->>>>>>> a92ac39ebfb9e29254f0f1cebc10d5c82a75cd5f
                 [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
                 [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
                 <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">

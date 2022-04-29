@@ -562,7 +562,7 @@ export class CartComponent
         this.verifyQuantityChangesByAPI(itemIndex, msn, parseInt(updateQtyTo));
     }
 
-    verifyQuantityChangesByAPI(itemIndex, msn, updatedQtyTo)
+    verifyQuantityChangesByAPI(itemIndex, msn, newQty)
     {
         const buyNow = this._cartService.buyNow;
         this._productService.getProductGroupDetails(msn).pipe(
@@ -579,28 +579,28 @@ export class CartComponent
                 this._tms.show({ type: 'error', text: "Product does not exist" });
                 return;
             }
-            if (product['productQuantity'] && (product['quantityAvailable'] < updatedQtyTo)) {
+            if (product['productQuantity'] && (product['quantityAvailable'] < newQty)) {
                 this._tms.show({ type: 'error', text: "Quantity not available" });
                 return;
             }
             this.traceProductDetails[msn] = product;
-            this.verifyInUpdatedProductDetails(itemIndex, msn, updatedQtyTo);
+            this.verifyInUpdatedProductDetails(itemIndex, msn, newQty);
         })
     }
 
-    verifyInUpdatedProductDetails(itemIndex, msn, updatedQtyTo)
+    verifyInUpdatedProductDetails(itemIndex, msn, newQty)
     {
         let productToUpdate = null;
         let bulkPriceMap = []
         productToUpdate = this.traceProductDetails[msn];
         const moq = productToUpdate['moq'];
         const available = productToUpdate['quantityAvailable'];
-        if (updatedQtyTo < moq) {
+        if (newQty < moq) {
             this._globalLoaderService.setLoaderState(false);
             this._tms.show({ type: 'error', text: `Minimum qty can be ordered is: ${moq}` });
             return;
         }
-        if (updatedQtyTo > available) {
+        if (newQty > available) {
             this._globalLoaderService.setLoaderState(false);
             this._tms.show({ type: 'error', text: `Maximum qty can be ordered is: ${available}` });
             return;
@@ -608,14 +608,14 @@ export class CartComponent
         if (productToUpdate['bulkPriceMap'] && productToUpdate['bulkPriceMap']['india'] && (productToUpdate['bulkPriceMap']['india'] as any[]).length) {
             bulkPriceMap = (productToUpdate['bulkPriceMap']['india'] as any[]).filter((bulk) =>
             {
-                return bulk['active'] && updatedQtyTo >= bulk['minQty'] && updatedQtyTo <= bulk['maxQty']
+                return bulk['active'] && newQty >= bulk['minQty'] && newQty <= bulk['maxQty']
             });
             if (bulkPriceMap.length) {
                 this._cartService.getGenericCartSession.itemsList[itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];;
                 this._cartService.getGenericCartSession.itemsList[itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
             }
         }
-        this.updateCart(itemIndex, msn , updatedQtyTo)
+        this.updateCart(itemIndex, msn , newQty)
     }
 
     updateCart(itemIndex, msn, newQty)

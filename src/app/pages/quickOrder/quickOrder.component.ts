@@ -21,6 +21,8 @@ export class QuickOrderComponent {
         }
 
     navigateToCheckout() {
+        const invalidIndex = this._cartService.findInvalidItem();
+        if (invalidIndex > -1) return;
         this._localAuthService.setBackURLTitle(this.router.url, 'Continue to checkout');
         this.router.navigate(['/checkout/login'], { queryParams: { title: 'Continue to checkout' } });
         this._commonService.updateUserSession();

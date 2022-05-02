@@ -1170,7 +1170,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
   }
 
-  private checkCartQuantityAndUpdate(value): void {
+  private checkCartQuantityAndUpdate(value): void { 
     if (!value) {
       this._tms.show({
         type: 'error',

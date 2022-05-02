@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" *ngIf="displayPage">
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>

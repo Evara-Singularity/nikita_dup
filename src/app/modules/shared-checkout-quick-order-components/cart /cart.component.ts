@@ -18,11 +18,11 @@ import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { of, Subscription, forkJoin } from 'rxjs';
-import { catchError, concatMap, map, mergeMap } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
 declare let dataLayer;
-declare var digitalData: {};
-declare let _satellite;
+//declare var digitalData: {};
+//declare let _satellite;
 
 
 @Component({
@@ -38,6 +38,7 @@ export class CartComponent
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     pageEvent = "genericPageLoad";
+    traceProductDetails = {};//trace for any product changes'
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -77,242 +78,249 @@ export class CartComponent
     }
 
     // Get shipping value of each product items in cart
-    getShippingValue(cartSession)
-    {
-        let sro = this._cartService.getShippingObj(cartSession);
-        return this._cartService.getShippingValue(sro)
-            .pipe(
-                map((sv: any) =>
-                {
-                    if (sv && sv['status'] && sv['statusCode'] == 200) {
-                        cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
-                        if (sv['data']['totalShippingAmount'] != undefined && sv['data']['totalShippingAmount'] != null) {
-                            let itemsList = cartSession['itemsList'];
-                            for (let i = 0; i < itemsList.length; i++) {
-                                cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
-                            }
-                        }
-                    }
-                    return cartSession;
-                })
-            );
-    }
+    // getShippingValue(cartSession)
+    // {
+    //     let sro = this._cartService.getShippingObj(cartSession);
+    //     return this._cartService.getShippingValue(sro)
+    //         .pipe(
+    //             map((sv: any) =>
+    //             {
+    //                 if (sv && sv['status'] && sv['statusCode'] == 200) {
+    //                     cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
+    //                     if (sv['data']['totalShippingAmount'] != undefined && sv['data']['totalShippingAmount'] != null) {
+    //                         let itemsList = cartSession['itemsList'];
+    //                         for (let i = 0; i < itemsList.length; i++) {
+    //                             cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
+    //                         }
+    //                     }
+    //                 }
+    //                 return cartSession;
+    //             })
+    //         );
+    // }
 
     // To increment decrement and manually update of cart item quantity
-    updateCartItemQuantity(quantityTarget, index, action, buyNow = false, showToastMsg?: boolean)
+    // updateCartItemQuantity(quantityTarget, index, action, buyNow = false, showToastMsg?: boolean)
+    // {
+    //     console.log(this._cartService.getGenericCartSession.itemsList[index])
+    //     const MOQ = this._cartService.getGenericCartSession.itemsList[index].moq || 1;
+    //     let updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
+    //     let incrementOrDecrementBy = 0;
+    //     if (action === 'increment') {
+    //         incrementOrDecrementBy = 1;
+    //         updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity + 1;
+    //         this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "increment_quantity");
+    //     } else if (action === 'decrement') {
+    //         const DECREMENTED_QTY = quantityTarget ? parseInt(quantityTarget) - 1 : 1;
+    //         if (DECREMENTED_QTY < MOQ) {
+    //             this.removePopup = true;
+    //             this.removeIndex = index;
+    //             return;
+    //         }
+    //         if (quantityTarget < 2) {
+    //             this.removeIndex = index;
+    //             this.removePopup = true;
+    //             return;
+    //         };
+    //         incrementOrDecrementBy = -1;
+    //         updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity - 1;
+    //         this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "decrement_quantity");
+    //     }
+    //     if (updatedCartItemCount < 0 || quantityTarget < 0 || isNaN(parseInt(quantityTarget))) {
+    //         this.removeIndex = index;
+    //         this.removePopup = true;
+    //         this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);
+    //         return;
+    //     };
+    //     if (action === 'update') {
+    //         this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "quantity_updated");
+    //         if (quantityTarget < this._cartService.getGenericCartSession.itemsList[index].moq) {
+    //             this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
+    //             this.removeIndex = index;
+    //             this.removePopup = true;
+    //             this._tms.show({
+    //                 type: 'error',
+    //                 text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
+    //             });
+    //             this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);
+    //             return;
+    //         }
+    //     }
+    //     this._globalLoaderService.setLoaderState(true);
+    //     const productMsnId = this._cartService.getGenericCartSession.itemsList[index].productId;
+    //     this._productService.getProductGroupDetails(productMsnId).pipe(
+    //         map(productRawData =>
+    //         {
+    //             if (productRawData['productBO']) {
+    //                 let productData = this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
+    //                 if (action === 'update') {
+    //                     updatedCartItemCount = +quantityTarget;
+    //                     productData.isProductUpdate = quantityTarget;
+    //                 }
+    //                 return productData;
+    //             } else {
+    //                 return null;
+    //             }
+    //         })).subscribe((productDetails: AddToCartProductSchema) =>
+    //         {
+    //             if (productDetails) {
+    //                 if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
+    //                     this._tms.show({ type: 'error', text: "Quantity not available" });
+    //                     return;
+    //                 }
+    //                 productDetails.productQuantity = incrementOrDecrementBy;
+    //                 let isQua = this.isQuantityAvailable(updatedCartItemCount, productDetails, index);
+    //                 if (isQua["status"]) {
+    //                     this.updateCartAndRemoveNotfication(productMsnId, buyNow, productDetails, index, updatedCartItemCount, showToastMsg);
+    //                 } else {
+    //                     this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update', buyNow, true);
+    //                     this._tms.show({ type: 'error', text: productDetails.quantityAvailable + ' is the maximum quantity available.' });
+    //                 }
+    //             } else {
+    //                 this._tms.show('Product does not exist');
+    //             }
+    //             this._globalLoaderService.setLoaderState(false);
+    //         }, error => { }, () =>
+    //         {
+    //             this._globalLoaderService.setLoaderState(false);
+    //         });
+    // }
+
+    removeItemFromCart(itemIndex)
     {
-        const MOQ = this._cartService.getGenericCartSession.itemsList[index].moq || 1;
-        let updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity;
-        let incrementOrDecrementBy = 0;
-        if (action === 'increment') {
-            incrementOrDecrementBy = 1;
-            updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity + 1;
-            this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "increment_quantity");
-        } else if (action === 'decrement') {
-            const DECREMENTED_QTY = quantityTarget ? parseInt(quantityTarget) - 1 : 1;
-            if (DECREMENTED_QTY < MOQ) {
-                this.removePopup = true;
-                this.removeIndex = index;
-                return;
-            }
-            if (quantityTarget < 2) {
-                this.removeIndex = index;
-                this.removePopup = true;
-                return;
-            };
-            incrementOrDecrementBy = -1;
-            updatedCartItemCount = this._cartService.getGenericCartSession.itemsList[index].productQuantity - 1;
-            this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "decrement_quantity");
-        }
-        if (updatedCartItemCount < 0 || quantityTarget < 0 || isNaN(parseInt(quantityTarget))) {
-            this.removeIndex = index;
-            this.removePopup = true;
-            this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);
-            return;
-        };
-        if (action === 'update') {
-            this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updatedCartItemCount, index, "quantity_updated");
-            if (quantityTarget < this._cartService.getGenericCartSession.itemsList[index].moq) {
-                this._cartService.getGenericCartSession.itemsList[index].productQuantity = this._cartService.getGenericCartSession.itemsList[index].moq;
-                this.removeIndex = index;
-                this.removePopup = true;
-                this._tms.show({
-                    type: 'error',
-                    text: 'Minimum qty can be ordered is: ' + this._cartService.getGenericCartSession.itemsList[index].moq
-                });
-                this.updateCartItemQuantity(this._cartService.getGenericCartSession.itemsList[index].moq, index, 'update', buyNow, true);
-                return;
-            }
-        }
-        this._globalLoaderService.setLoaderState(true);
-        const productMsnId = this._cartService.getGenericCartSession.itemsList[index].productId;
-        this._productService.getProductGroupDetails(productMsnId).pipe(
-            map(productRawData =>
-            {
-                if (productRawData['productBO']) {
-                    let productData = this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
-                    if (action === 'update') {
-                        updatedCartItemCount = +quantityTarget;
-                        productData.isProductUpdate = quantityTarget;
-                    }
-                    return productData;
-                } else {
-                    return null;
-                }
-            })).subscribe((productDetails: AddToCartProductSchema) =>
-            {
-                if (productDetails) {
-                    if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
-                        this._tms.show({ type: 'error', text: "Quantity not available" });
-                        return;
-                    }
-                    productDetails.productQuantity = incrementOrDecrementBy;
-                    let isQua = this.isQuantityAvailable(updatedCartItemCount, productDetails, index);
-                    if (isQua["status"]) {
-                        this.updateCartAndRemoveNotfication(productMsnId, buyNow, productDetails, index, updatedCartItemCount, showToastMsg);
-                    } else {
-                        this.updateCartItemQuantity(productDetails.quantityAvailable, index, 'update', buyNow, true);
-                        this._tms.show({ type: 'error', text: productDetails.quantityAvailable + ' is the maximum quantity available.' });
-                    }
-                } else {
-                    this._tms.show('Product does not exist');
-                }
-                this._globalLoaderService.setLoaderState(false);
-            }, error => { }, () =>
-            {
-                this._globalLoaderService.setLoaderState(false);
-            });
+        this.removePopup = true;
+        this.removeIndex = itemIndex;
     }
 
-    updateCartAndRemoveNotfication(msn, buyNow, productDetails, index, updatedCartItemCount, showToastMsg?: boolean)
-    {
-        const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
-        const addToCart$ = this._cartService.addToCart({ buyNow, productDetails }).pipe(
-            mergeMap((data: any) =>
-            {
-                if (this._commonService.isServer) {
-                    return of(null);
-                }
-                /**
-                 * return cartSession, if sessionId mis match
-                 */
-                if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
-                    return of(data);
-                }
-                return of(data);
-            }),
-        );
-        forkJoin([setValidationMessages$, addToCart$]).subscribe(responses =>
-        {
-            const addToCartResponse = responses[1];
-            if (!addToCartResponse && this._cartService.buyNowSessionDetails) {
-                this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
-            } else {
-                if (addToCartResponse) {
-                    if (!buyNow) {
-                        this._cartService.setGenericCartSession(addToCartResponse);
-                        this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
-                        const count = { count: (addToCartResponse['itemsList'] ? addToCartResponse['itemsList'].length : 0), currentlyAdded: productDetails }
-                        this._cartService.cart.next(count);
-                        this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
-                        if (!showToastMsg) {
-                            this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
-                        }
-                        this.sendMessageAfterCartAction(addToCartResponse)
-                    } else {
-                        this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
-                    }
-                } else {
-                    this._tms.show(('Product already added'));
-                }
-            }
-        });
-    }
+    // updateCartAndRemoveNotfication(msn, buyNow, productDetails, index, updatedCartItemCount, showToastMsg?: boolean)
+    // {
+    //     const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
+    //     const addToCart$ = this._cartService.addToCart({ buyNow, productDetails }).pipe(
+    //         mergeMap((data: any) =>
+    //         {
+    //             if (this._commonService.isServer) {
+    //                 return of(null);
+    //             }
+    //             /**
+    //              * return cartSession, if sessionId mis match
+    //              */
+    //             if (data['statusCode'] !== undefined && data['statusCode'] === 202) {
+    //                 return of(data);
+    //             }
+    //             return of(data);
+    //         }),
+    //     );
+    //     forkJoin([setValidationMessages$, addToCart$]).subscribe(responses =>
+    //     {
+    //         const addToCartResponse = responses[1];
+    //         if (!addToCartResponse && this._cartService.buyNowSessionDetails) {
+    //             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+    //         } else {
+    //             if (addToCartResponse) {
+    //                 if (!buyNow) {
+    //                     this._cartService.setGenericCartSession(addToCartResponse);
+    //                     this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
+    //                     const count = { count: (addToCartResponse['itemsList'] ? addToCartResponse['itemsList'].length : 0), currentlyAdded: productDetails }
+    //                     this._cartService.cart.next(count);
+    //                     this._cartService.getGenericCartSession.itemsList[index].productQuantity = updatedCartItemCount;
+    //                     if (!showToastMsg) {
+    //                         this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
+    //                     }
+    //                     this.sendMessageAfterCartAction(addToCartResponse);
+    //                 } else {
+    //                     this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
+    //                 }
+    //             } else {
+    //                 this._tms.show(('Product already added'));
+    //             }
+    //         }
+    //     });
+    // }
 
     // check if the product quantity is available
-    isQuantityAvailable(updatedQuantity, productPriceQuantity, index)
-    {
-        if (updatedQuantity > productPriceQuantity.quantityAvailable) {
-            this._globalLoaderService.setLoaderState(false);
-            this._cartService.getGenericCartSession.itemsList[index]['message'] = productPriceQuantity.quantityAvailable + ' is the maximum quantity available.';
-            this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
-            return { status: false, message: "Quantity not available" };
+    // isQuantityAvailable(updatedQuantity, productPriceQuantity, index)
+    // {
+    //     if (updatedQuantity > productPriceQuantity.quantityAvailable) {
+    //         this._globalLoaderService.setLoaderState(false);
+    //         this._cartService.getGenericCartSession.itemsList[index]['message'] = productPriceQuantity.quantityAvailable + ' is the maximum quantity available.';
+    //         this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
+    //         return { status: false, message: "Quantity not available" };
 
-        }
-        else if (updatedQuantity < productPriceQuantity.moq) {
+    //     }
+    //     else if (updatedQuantity < productPriceQuantity.moq) {
 
-            this._globalLoaderService.setLoaderState(false);
-            this._cartService.getGenericCartSession.itemsList[index]['message'] = "Minimum quantity is " + productPriceQuantity.moq;
-            // this.showPopup(index);
-            if (this.removePopup == false) {
-                this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
-            }
-            return { status: false, message: "Minimum quantity is " + productPriceQuantity.moq };
-        }
-        else {
-            let remainder = (updatedQuantity - productPriceQuantity.moq) % productPriceQuantity.incrementUnit;
-            if (remainder > 0) {
-                this._globalLoaderService.setLoaderState(false);
-                this._cartService.getGenericCartSession.itemsList[index]['message'] = "Incremental Count not matched";
-                this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
-                // alert("Incremental Count not matched");
-                return { status: false, message: "Incremental Count not matched" };
-            } else {
-                let bulkPrice = null;
-                let bulkPriceWithoutTax = null;
-                let bulkPricesWithInida: Array<any> = [];
-                if (productPriceQuantity['bulkPrices'] && productPriceQuantity['bulkPrices']['india'])
-                    bulkPricesWithInida = productPriceQuantity['bulkPrices']['india'];
-                if (bulkPricesWithInida && bulkPricesWithInida !== null && bulkPricesWithInida !== undefined && bulkPricesWithInida.length > 0) {
-                    let isvalid: boolean = true;
+    //         this._globalLoaderService.setLoaderState(false);
+    //         this._cartService.getGenericCartSession.itemsList[index]['message'] = "Minimum quantity is " + productPriceQuantity.moq;
+    //         // this.showPopup(index);
+    //         if (this.removePopup == false) {
+    //             this._tms.show({ type: 'error', text: 'Product successfully removed from Cart' });
+    //         }
+    //         return { status: false, message: "Minimum quantity is " + productPriceQuantity.moq };
+    //     }
+    //     else {
+    //         let remainder = (updatedQuantity - productPriceQuantity.moq) % productPriceQuantity.incrementUnit;
+    //         if (remainder > 0) {
+    //             this._globalLoaderService.setLoaderState(false);
+    //             this._cartService.getGenericCartSession.itemsList[index]['message'] = "Incremental Count not matched";
+    //             this._tms.show({ type: 'success', text: this._cartService.getGenericCartSession.itemsList[index]['message'] });
+    //             // alert("Incremental Count not matched");
+    //             return { status: false, message: "Incremental Count not matched" };
+    //         } else {
+    //             let bulkPrice = null;
+    //             let bulkPriceWithoutTax = null;
+    //             let bulkPricesWithInida: Array<any> = [];
+    //             if (productPriceQuantity['bulkPrices'] && productPriceQuantity['bulkPrices']['india'])
+    //                 bulkPricesWithInida = productPriceQuantity['bulkPrices']['india'];
+    //             if (bulkPricesWithInida && bulkPricesWithInida !== null && bulkPricesWithInida !== undefined && bulkPricesWithInida.length > 0) {
+    //                 let isvalid: boolean = true;
 
-                    let bulkPrices: Array<any> = productPriceQuantity['bulkPrices']['india'];
-                    bulkPrices.forEach((element, index) =>
-                    {
-                        if (!element.active) {
-                            bulkPrices.splice(index, 1);
-                        }
-                    })
-                    let minQty = 0;
-                    if (bulkPrices.length > 0) {
-                        minQty = bulkPrices[0].minQty
-                    }
-                    bulkPrices.forEach((element, bindex) =>
-                    {
-                        if (productPriceQuantity['moq'] == minQty || !isvalid) {
-                            isvalid = false;
-                            element.minQty = element.minQty + 1;
-                            element.maxQty = element.maxQty + 1;
-                        }
-                        if (isvalid && productPriceQuantity['moq'] > minQty && productPriceQuantity['moq'] > 1) {
-                            element.minQty = element.minQty + productPriceQuantity['moq'];
-                            element.maxQty = element.maxQty + productPriceQuantity['moq'];
-                        }
-                    });
-                    bulkPrices.forEach((element, indexBulk) =>
-                    {
-                        if (element.minQty <= updatedQuantity && updatedQuantity <= element.maxQty) {
-                            bulkPrice = element.bulkSellingPrice;
-                            bulkPriceWithoutTax = element.bulkSPWithoutTax;
-                        }
-                        if (bulkPrices.length - 1 === indexBulk && updatedQuantity >= element.maxQty) {
-                            bulkPrice = element.bulkSellingPrice;
-                            bulkPriceWithoutTax = element.bulkSPWithoutTax;
-                        }
-                    });
-                }
-                this._cartService.getGenericCartSession.itemsList[index]['bulkPrice'] = bulkPrice;
-                this._cartService.getGenericCartSession.itemsList[index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
-                this._cartService.getGenericCartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
-                // 
-                const cartSession = this._cartService.getGenericCartSession;
-                cartSession['itemsList'][index]['bulkPrice'] = bulkPrice;
-                cartSession['itemsList'][index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
-                this._cartService.setGenericCartSession(cartSession);
-                return { status: true, message: "Cart quantity updated successfully", items: this._cartService.getGenericCartSession.itemsList };
-            }
-        }
-    }
+    //                 let bulkPrices: Array<any> = productPriceQuantity['bulkPrices']['india'];
+    //                 bulkPrices.forEach((element, index) =>
+    //                 {
+    //                     if (!element.active) {
+    //                         bulkPrices.splice(index, 1);
+    //                     }
+    //                 })
+    //                 let minQty = 0;
+    //                 if (bulkPrices.length > 0) {
+    //                     minQty = bulkPrices[0].minQty
+    //                 }
+    //                 bulkPrices.forEach((element, bindex) =>
+    //                 {
+    //                     if (productPriceQuantity['moq'] == minQty || !isvalid) {
+    //                         isvalid = false;
+    //                         element.minQty = element.minQty + 1;
+    //                         element.maxQty = element.maxQty + 1;
+    //                     }
+    //                     if (isvalid && productPriceQuantity['moq'] > minQty && productPriceQuantity['moq'] > 1) {
+    //                         element.minQty = element.minQty + productPriceQuantity['moq'];
+    //                         element.maxQty = element.maxQty + productPriceQuantity['moq'];
+    //                     }
+    //                 });
+    //                 bulkPrices.forEach((element, indexBulk) =>
+    //                 {
+    //                     if (element.minQty <= updatedQuantity && updatedQuantity <= element.maxQty) {
+    //                         bulkPrice = element.bulkSellingPrice;
+    //                         bulkPriceWithoutTax = element.bulkSPWithoutTax;
+    //                     }
+    //                     if (bulkPrices.length - 1 === indexBulk && updatedQuantity >= element.maxQty) {
+    //                         bulkPrice = element.bulkSellingPrice;
+    //                         bulkPriceWithoutTax = element.bulkSPWithoutTax;
+    //                     }
+    //                 });
+    //             }
+    //             this._cartService.getGenericCartSession.itemsList[index]['bulkPrice'] = bulkPrice;
+    //             this._cartService.getGenericCartSession.itemsList[index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
+    //             this._cartService.getGenericCartSession.itemsList[index]['message'] = "Cart quantity updated successfully";
+    //             // 
+    //             const cartSession = this._cartService.getGenericCartSession;
+    //             cartSession['itemsList'][index]['bulkPrice'] = bulkPrice;
+    //             cartSession['itemsList'][index]['bulkPriceWithoutTax'] = bulkPriceWithoutTax;
+    //             this._cartService.setGenericCartSession(cartSession);
+    //             return { status: true, message: "Cart quantity updated successfully", items: this._cartService.getGenericCartSession.itemsList };
+    //         }
+    //     }
+    // }
 
     // make cosmetic changes after deleting an item from cart
     deleteProduct(e)
@@ -326,16 +334,16 @@ export class CartComponent
     }
 
     // get shipping charges of each item in cart
-    getShippingCharges(obj)
-    {
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
-        return this.dataService.callRestful("POST", url, { body: obj }).pipe(
-            catchError((res: HttpErrorResponse) =>
-            {
-                return of({ status: false, statusCode: res.status });
-            })
-        );
-    }
+    // getShippingCharges(obj)
+    // {
+    //     let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
+    //     return this.dataService.callRestful("POST", url, { body: obj }).pipe(
+    //         catchError((res: HttpErrorResponse) =>
+    //         {
+    //             return of({ status: false, statusCode: res.status });
+    //         })
+    //     );
+    // }
 
     // redirect to product page 
     redirectToProductURL(url)
@@ -514,6 +522,134 @@ export class CartComponent
             }
             this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
         }
+    }
+
+    //new implmentation
+    handleItemQuantityChanges(itemIndex: number, action: string, value?)
+    {
+        const item = this._cartService.getGenericCartSession.itemsList[itemIndex];
+        const currentQty = item.productQuantity;
+        if (currentQty === "") { action = 'update';}
+        const msn = item['productId'];
+        const incrementUnit = item['incrementUnit'] || 1;
+        let updateQtyTo = null;
+        switch (action) {
+            case 'increment': {
+                updateQtyTo = currentQty + incrementUnit;
+                this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "increment_quantity");
+                break;
+            }
+            case 'decrement': {
+                updateQtyTo = currentQty - incrementUnit;
+                this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "increment_quantity");
+                break;
+            }
+            case 'update': {
+                updateQtyTo = value ? parseInt(value) : "";
+                this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "quantity_updated");
+                break;
+            }
+        }
+        if (updateQtyTo < 1 || updateQtyTo === "") {
+            const errorTxt = `${item.productName} cannot have invalid quantity.`;
+            this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = updateQtyTo;
+            this._tms.show({ type: 'error', text: errorTxt });
+            return
+        }
+        if (this.traceProductDetails[msn])
+        {
+            this.verifyInUpdatedProductDetails(itemIndex, msn, parseInt(updateQtyTo));
+            return;
+        }
+        this.verifyQuantityChangesByAPI(itemIndex, msn, parseInt(updateQtyTo));
+    }
+
+    verifyQuantityChangesByAPI(itemIndex, msn, newQty)
+    {
+        const buyNow = this._cartService.buyNow;
+        this._productService.getProductGroupDetails(msn).pipe(
+            map((response) =>
+            {
+                if (!response['productBO']) return null;
+                let productData = this._cartService.getAddToCartProductItemRequest({ productGroupData: response['productBO'], buyNow });
+                return productData;
+            }),
+            catchError((error) => { return null })
+        ).subscribe((product) =>
+        {
+            if(!product){
+                this._tms.show({ type: 'error', text: "Product does not exist" });
+                return;
+            }
+            if (product['productQuantity'] && (product['quantityAvailable'] < newQty)) {
+                this._tms.show({ type: 'error', text: "Quantity not available" });
+                return;
+            }
+            this.traceProductDetails[msn] = product;
+            this.verifyInUpdatedProductDetails(itemIndex, msn, newQty);
+        })
+    }
+
+    verifyInUpdatedProductDetails(itemIndex, msn, newQty)
+    {
+        let productToUpdate = null;
+        let bulkPriceMap = []
+        productToUpdate = this.traceProductDetails[msn];
+        const moq = productToUpdate['moq'];
+        const available = productToUpdate['quantityAvailable'];
+        if (newQty < moq) {
+            this._globalLoaderService.setLoaderState(false);
+            this._tms.show({ type: 'error', text: `Minimum qty can be ordered is: ${moq}` });
+            return;
+        }
+        if (newQty > available) {
+            this._globalLoaderService.setLoaderState(false);
+            this._tms.show({ type: 'error', text: `Maximum qty can be ordered is: ${available}` });
+            return;
+        }
+        if (productToUpdate['bulkPriceMap'] && productToUpdate['bulkPriceMap']['india'] && (productToUpdate['bulkPriceMap']['india'] as any[]).length) {
+            bulkPriceMap = (productToUpdate['bulkPriceMap']['india'] as any[]).filter((bulk) =>
+            {
+                return bulk['active'] && newQty >= bulk['minQty'] && newQty <= bulk['maxQty']
+            });
+            if (bulkPriceMap.length) {
+                this._cartService.getGenericCartSession.itemsList[itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];;
+                this._cartService.getGenericCartSession.itemsList[itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
+            }
+        }
+        this.updateCart(itemIndex, msn , newQty)
+    }
+
+    updateCart(itemIndex, msn, newQty)
+    {
+        this._globalLoaderService.setLoaderState(true);
+        const oldQty = this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'];
+        this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = newQty;
+        const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
+        const newCartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
+        const updateCart$ = this._cartService.updateCartSession(newCartSession).pipe(
+            switchMap((newCartSession) =>
+            {
+                return this._cartService.verifyPromocode(newCartSession)
+            }),
+            switchMap((newCartSession) =>
+            {
+                return this._cartService.verifyShippingCharges(newCartSession)
+            }));
+        forkJoin([setValidationMessages$, updateCart$]).subscribe((responses)=>{
+            this._globalLoaderService.setLoaderState(false);
+            const cartSession = responses[1];
+            if (cartSession){
+                this._cartService.setGenericCartSession(cartSession);
+                this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
+                this._cartService.orderSummary.next(cartSession);
+                this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
+                this.sendMessageAfterCartAction(cartSession);
+                return;
+            }
+            this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = oldQty;
+            this._tms.show({ type: 'error', text: cartSession["message"] || "Cart quanity is not updated." });
+        })
     }
 
     ngOnDestroy() { if (this.cartSubscription) this.cartSubscription.unsubscribe(); }

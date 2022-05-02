@@ -76,12 +76,13 @@ export class SharedCheckoutAddressUtil
 
     static verifyCheckoutAddress(addressList: any[], checkoutAddress)
     {
-        const length = addressList.length-1;
-        if (checkoutAddress)
-        {
+        const length = addressList.length;
+        if (length == 0) { return null; }
+        if (length == 1) { return addressList[0]; }
+        if (checkoutAddress) {
             const index = addressList.findIndex((address) => { return address.idAddress === checkoutAddress.idAddress });
-            if (index > -1) { return checkoutAddress; }
-            return addressList[length];
+            if (index > -1) { return addressList[index]; }
+            return addressList[0];
         }
         return addressList[0];
     }

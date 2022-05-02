@@ -49,9 +49,9 @@ export class OrderConfirmationComponent implements OnInit {
     constructor(
         private localStorageService: LocalStorageService,
         public _dataService: DataService,
-        private _ocs: OrderConfirmationService,
-        private _lss: LocalStorageService,
-        private _las: LocalAuthService,
+        private _orderConfrimationService: OrderConfirmationService,
+        private _localStorageService: LocalStorageService,
+        private _localAuthService: LocalAuthService,
         private _cartService: CartService,
         private _router: Router,
         private footerService: FooterService,
@@ -69,55 +69,51 @@ export class OrderConfirmationComponent implements OnInit {
     }
 
     ngOnInit() {
-        const utm_medium = this._lss.retrieve("utm_medium");
-        const userSession = this._las.getUserSession();
-
+        console.log("----Order Confrimtaion Logs----")
+        const utm_medium = this._localStorageService.retrieve("utm_medium");
+        const userSession = this._localAuthService.getUserSession();
         this.routeUrl = this._router.url;
         this.queryParams = this._activatedRoute.snapshot.queryParams;
         this.mode = this.queryParams["mode"];
         this.orderId = this.queryParams["orderId"];
         this.amount = this.queryParams["transactionAmount"];
-
-        console.log('order onfirmation logs ==> routeUrl, queryParams, mode, orderId, amount', this.routeUrl, this.queryParams, this.mode, this.orderId, this.amount)
-
+        const log = `OrderId:${this.orderId}, Mode:${this.mode}, Amount:${this.amount}`;
+        console.log("ngOnInit")
+        console.log(log);
         if (this.isBrowser) {
-
             this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_1" });
             this.utmBasedTracking(utm_medium, {
                 orderId: this.queryParams["orderId"],
                 transactionAmount: this.queryParams["transactionAmount"],
             });
-
             this.getCartSessionAnalyticsCall(userSession, utm_medium);
             this.footerService.setFooterObj({ footerData: false });
             this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
-
         }
     }
 
     private getCartSessionAnalyticsCall(userSession: any, utm_medium: any) {
-
-        console.log('order onfirmation logs ==> getCartSessionAnalyticsCall started');
+        console.log("---getCartSessionAnalyticsCall---");
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
             let buyNow = false;
             const FLASHDATA = this.localStorageService.retrieve("flashData");
-            if (FLASHDATA){buyNow = FLASHDATA['buyNow'];}
+            if (FLASHDATA) {
+                 buyNow = FLASHDATA['buyNow'].toString() == "true" ? true : false; 
+            }
+            console.log(`User SessionId:${userSession.sessionId}, Buy Now:${buyNow}`);
             this._cartService.getCartBySession({
                 buyNow: buyNow,
                 sessionid: userSession.sessionId
             }).subscribe((cartSession) => {
-                console.log('order onfirmation logs ==> completed response ', cartSession);
+                console.log("Received Processed Cart Session");
                 if (cartSession["cart"]) {
-                    // this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_2" });
                     this.setVars(cartSession);
-                    // sent to analytics
                     const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
-                    console.log('order onfirmation logs ==> completed processed obj ', anayticsData);
                     this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
                     this.gtmTracking(userSession, anayticsData);
-                    this.abobeTracking(userSession, anayticsData);
+                    this.adobeTracking(userSession, anayticsData);
                     this.sendClickStreamData(cartSession);
-                    this.getUpdatedCart(buyNow);
+                    this.getUpdatedCart(buyNow, userSession, cartSession);
                 }
             },
                 (reponseError) => {
@@ -126,25 +122,21 @@ export class OrderConfirmationComponent implements OnInit {
                         reponseError
                     );
                 },
-
             );
         }
     }
 
 
     private setVars(cartSession: Object) {
-        let couponId = [];
-        if (cartSession["offersList"].length > 0) {
-            cartSession["offersList"].forEach((element) => {
-                couponId.push(element.offerId);
-            });
-            this.couponCodeData = couponId.toString();
-        } else {
-            this.couponCodeData = "";
-        }
-
+        this.couponCodeData = "";
         if (cartSession["userInfo"]) {
             this.userType = cartSession["userInfo"].userType;
+        }
+        if (cartSession["offersList"] && (cartSession["offersList"] as any[]).length)
+        {
+            let couponId = [];
+            cartSession["offersList"].forEach(element =>couponId.push(element.offerId));
+            this.couponCodeData = couponId.toString();
         }
     }
 
@@ -153,8 +145,7 @@ export class OrderConfirmationComponent implements OnInit {
             ADMITAD = window["ADMITAD"] || {};
             ADMITAD.Invoice = ADMITAD.Invoice || {};
             ADMITAD.Invoice.broker = "adm";
-            ADMITAD.Invoice.referencesOrder =
-                ADMITAD.Invoice.referencesOrder || [];
+            ADMITAD.Invoice.referencesOrder = ADMITAD.Invoice.referencesOrder || [];
             ADMITAD.Invoice.category = "1";
             // adding items to the order
             ADMITAD.Invoice.referencesOrder.push({
@@ -220,11 +211,11 @@ export class OrderConfirmationComponent implements OnInit {
             ecomm_totalvalue: google_tag_params.ecomm_totalvalue,
             google_tag_params: google_tag_params,
         });
-        this._lss.clear("utm_medium");
+        this._localStorageService.clear("utm_medium");
         console.log('order onfirmation logs ==> gtmTracking completed');
     }
 
-    private abobeTracking(userSession: any, anayticsData) {
+    private adobeTracking(userSession: any, anayticsData) {
         let page = {
             pageName: "order-Confirmation",
             channel: "purchase",
@@ -269,7 +260,7 @@ export class OrderConfirmationComponent implements OnInit {
         digitalData["order"] = order;
         console.log(digitalData);
         _satellite.track("genericPageLoad");
-        console.log('order onfirmation logs ==> abobeTracking completed');
+        console.log('order onfirmation logs ==> adobeTracking completed');
     }
 
     private utmBasedTracking(utm_medium: any, data: { orderId: any; transactionAmount: any; }) {
@@ -290,7 +281,7 @@ export class OrderConfirmationComponent implements OnInit {
                     this.queryParams["orderId"] +
                     "&MID=916096&PID=17423&status=" +
                     this.queryParams["transactionAmount"];
-                this._ocs.cs(src, "script");
+                this._orderConfrimationService.cs(src, "script");
             } else if (utm_medium === "cuelinks_desidime") {
                 this.afType = "image";
                 this.iFrameUrl =
@@ -307,7 +298,7 @@ export class OrderConfirmationComponent implements OnInit {
                         "&sub1=" +
                         this.queryParams["orderId"],
                 };
-                this._ocs.cns(e);
+                this._orderConfrimationService.cns(e);
                 data["affiliateId"] = 8;
             } else if (utm_medium == "admitad") {
                 data["affiliateId"] = 9;
@@ -325,7 +316,7 @@ export class OrderConfirmationComponent implements OnInit {
                 this.id = "pixelcodeurl";
             }
             console.log('order onfirmation logs ==> started with body', data);
-            this._ocs.addAffiliateOrder(data).subscribe((res) => {
+            this._orderConfrimationService.addAffiliateOrder(data).subscribe((res) => {
                 console.log('order onfirmation logs ==> completed with res', res);
             });
         }
@@ -527,27 +518,17 @@ export class OrderConfirmationComponent implements OnInit {
         }
     }
 
-    private getUpdatedCart(buyNow) {
-        if(buyNow){
-            // incase of buynow from backend service order placed item get removed 
-            // we just need to read getcartsession
-            this.localStorageService.clear("flashData");
-            this._cartService.clearBuyNowFlow();
-        }else{
-            // in normal flow 
-            // first need to clear all item from cart by updateCart API
-            this.resetCartSessionForNormalFlow();
-        }
+    private getUpdatedCart(buyNow, userSession, cartSession) {
+        this.localStorageService.clear("flashData");
+        this.resetCartSessionForNormalFlow(buyNow, userSession, cartSession);
     }
 
-    private resetCartSessionForNormalFlow() {
-        let currentCartSession = this._cartService.getGenericCartSession;
-        let userSession = this._las.getUserSession();
+    private resetCartSessionForNormalFlow(buyNow, userSession, cartSession) {
         let emptyCart = {
             cart: {
-                cartId: currentCartSession.cart.cartId,
-                sessionId: currentCartSession.cart.sessionId,
-                agentId: currentCartSession.cart["agentId"],
+                cartId: cartSession.cart.cartId,
+                sessionId: cartSession.cart.sessionId,
+                agentId: cartSession.cart["agentId"],
                 userId: userSession.userId,
                 isPersistant: true,
                 createdAt: null,
@@ -565,7 +546,7 @@ export class OrderConfirmationComponent implements OnInit {
                 giftMessage: null,
                 giftPackingCharges: null,
                 totalPayableAmount: null,
-                buyNow:false
+                buyNow: buyNow
             },
             itemsList: [],
             addressList: null,
@@ -573,12 +554,16 @@ export class OrderConfirmationComponent implements OnInit {
             deliveryMethod: null,
             offersList: null,
         };
-        this._cartService.updateCartSession(emptyCart).subscribe((data) => {
-            this._cartService.cart.next({ count: data["noOfItems"] || (data["itemsList"] as any[]).length || 0 });
-            let res = data;
-            if (res["statusCode"] == 200) {
-                this._cartService.setCartUpdatesChanges(res);
+        this._cartService.updateCartSession(emptyCart).subscribe((response) => {
+            //new code
+            if (response['statusCode'] === 200)
+            {
+                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(res =>
+                {
+                    console.log('cart updated');
+                });
             }
+            
         });
     }
 

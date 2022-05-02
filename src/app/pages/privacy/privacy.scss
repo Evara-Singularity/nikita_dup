@@ -1,43 +1,21 @@
 @import '../../scss/variables';
+@import '../../scss/utils/utilities.scss';
 
 .privacy{
     padding:0px;
     .privacy-desc{
         background: var(--white);
-        padding: 20px 20px;
         text-align: left;
     }
     p{
         font-size: $medium-font; 
         color: var(--text-color);
         line-height: 24px;
-        margin-bottom: 10px !important;
+        margin-bottom: 10px;
     }
-    h4{
-        margin-top: 20px;
-        margin-bottom:10px;
-        font-size:$large-font;
-        font-weight: $font-bolder;
-        color: var(--text-color);
-    }
-    // .text-blue{ color: #0061d5;}
-    ol{
-        padding: 5px 15px;
-         li{
-             padding: 0px 0 5px 0;
-             font-size:$medium-font;
-             line-height:18px;
-             color: var(--text-color);
-         }
-     }
-     ul{
-        padding: 5px 15px;
-         li{
-             padding: 0px 0 5px 0;
-             font-size:$medium-font;
-             line-height:18px;
-             list-style-type: disc;
-             color: var(--text-color);
-         }
-     }
+    ul{
+        li{
+            line-height: $medium-line-height;
+        }
+    }  
 }

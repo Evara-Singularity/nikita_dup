@@ -1563,7 +1563,6 @@ export class CartService
 
     async setUnserviceables(unserviceables: any[])
     {
-        console.trace();
         this.notifications = await this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
         this.notifications = [...this.notifications, ...unserviceables];
         this.notificationsSubject.next(this.notifications);
@@ -1571,7 +1570,6 @@ export class CartService
 
     async setCartNotifications(cartNotifications: any[])
     {
-        console.trace();
         this.notifications = await this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
         this.notifications = [...this.notifications, ...cartNotifications];
         this.notificationsSubject.next(this.notifications);

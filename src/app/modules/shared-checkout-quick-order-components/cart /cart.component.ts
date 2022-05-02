@@ -19,7 +19,6 @@ import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { of, Subscription, forkJoin } from 'rxjs';
 import { catchError, concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 declare let dataLayer;
 //declare var digitalData: {};
